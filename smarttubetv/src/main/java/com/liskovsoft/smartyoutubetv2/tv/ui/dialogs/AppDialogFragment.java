@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.leanback.preference.LeanbackPreferenceFragment;
@@ -16,6 +17,7 @@ import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragment;
 import androidx.preference.PreferenceScreen;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionCategory;
@@ -38,15 +40,14 @@ import java.util.List;
 
 public class AppDialogFragment extends LeanbackSettingsFragment implements AppDialogView {
     private static final String TAG = AppDialogFragment.class.getSimpleName();
+    private static final String PREFERENCE_FRAGMENT_TAG =
+            "androidx.leanback.preference.LeanbackSettingsFragment.PREFERENCE_FRAGMENT";
     private AppDialogPresenter mPresenter;
     private AppPreferenceManager mManager;
     private boolean mIsTransparent;
     private boolean mIsOverlay;
     private boolean mIsPaused;
     private int mId;
-
-    private static final String PREFERENCE_FRAGMENT_TAG =
-            "androidx.leanback.preference.LeanbackSettingsFragment.PREFERENCE_FRAGMENT";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -287,7 +288,7 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
     public void onFinish() {
         mPresenter.onFinish();
     }
-    
+
     public static class AppPreferenceFragment extends LeanbackPreferenceFragment {
         private static final String TAG = AppPreferenceFragment.class.getSimpleName();
         private List<OptionCategory> mCategories;

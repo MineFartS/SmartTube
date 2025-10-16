@@ -2,8 +2,10 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.playback.mod;
 
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.leanback.widget.PlaybackSeekDataProvider;
 import androidx.leanback.widget.PlaybackSeekUi;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 
 /**
@@ -14,26 +16,6 @@ public class SeekModePlaybackFragment extends EventsOverridePlaybackFragment {
     private static final int START_FADE_OUT = 1;
     private PlaybackSeekUi.Client mSeekUiClient2;
     private boolean mInSeek;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Object chainedClient = Helpers.getField(this, "mChainedClient");
-
-        if (chainedClient != null) {
-            Helpers.setField(this, "mChainedClient", mChainedClient2);
-        }
-    }
-
-    /**
-     * Interface to be implemented by UI widget to support PlaybackSeekUi.
-     */
-    @Override
-    public void setPlaybackSeekUiClient(PlaybackSeekUi.Client client) {
-        mSeekUiClient2 = client;
-    }
-
     private final PlaybackSeekUi.Client mChainedClient2 = new PlaybackSeekUi.Client() {
         @Override
         public boolean isSeekEnabled() {
@@ -70,11 +52,32 @@ public class SeekModePlaybackFragment extends EventsOverridePlaybackFragment {
         }
     };
 
-    protected void onSeekPositionChanged(long positionMs) {}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Object chainedClient = Helpers.getField(this, "mChainedClient");
+
+        if (chainedClient != null) {
+            Helpers.setField(this, "mChainedClient", mChainedClient2);
+        }
+    }
+
+    /**
+     * Interface to be implemented by UI widget to support PlaybackSeekUi.
+     */
+    @Override
+    public void setPlaybackSeekUiClient(PlaybackSeekUi.Client client) {
+        mSeekUiClient2 = client;
+    }
+
+    protected void onSeekPositionChanged(long positionMs) {
+    }
 
     /**
      * NOTE: MOD version. Removed part: hiding rows.<br/>
      * Show or hide other rows other than PlaybackRow.
+     *
      * @param inSeek True to make other rows visible, false to make other rows invisible.
      */
     private void setSeekMode(boolean inSeek) {
@@ -92,7 +95,7 @@ public class SeekModePlaybackFragment extends EventsOverridePlaybackFragment {
     private void stopFadeTimer() {
         Object handler = Helpers.getField(this, "mHandler");
         if (handler != null) {
-            ((Handler)handler).removeMessages(START_FADE_OUT);
+            ((Handler) handler).removeMessages(START_FADE_OUT);
         }
     }
 }

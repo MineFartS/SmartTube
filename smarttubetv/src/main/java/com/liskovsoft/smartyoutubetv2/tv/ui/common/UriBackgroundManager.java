@@ -7,9 +7,11 @@ import android.net.Uri;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.leanback.app.BackgroundManager;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -22,13 +24,13 @@ import com.liskovsoft.smartyoutubetv2.tv.util.ViewUtil;
 public class UriBackgroundManager {
     private static final String TAG = UriBackgroundManager.class.getSimpleName();
     private static final int BACKGROUND_UPDATE_DELAY_MS = 300;
+    private final Activity mActivity;
+    private final Handler mHandler;
     private Uri mBackgroundURI;
     private Drawable mDefaultBackground;
     private DisplayMetrics mMetrics;
     private Runnable mBackgroundTask;
     private BackgroundManager mBackgroundManager;
-    private final Activity mActivity;
-    private final Handler mHandler;
     private int mBackgroundColor = -1;
 
     public UriBackgroundManager(Activity activity) {
@@ -95,15 +97,6 @@ public class UriBackgroundManager {
         mBackgroundManager.setColor(color);
     }
 
-    private class UpdateBackgroundTask implements Runnable {
-        @Override
-        public void run() {
-            if (mBackgroundURI != null) {
-                showBackground(mBackgroundURI.toString());
-            }
-        }
-    }
-
     public BackgroundManager getBackgroundManager() {
         return mBackgroundManager;
     }
@@ -155,6 +148,15 @@ public class UriBackgroundManager {
 
         if (mBackgroundManager != null) {
             mBackgroundManager.setColor(ContextCompat.getColor(mActivity, colorResId));
+        }
+    }
+
+    private class UpdateBackgroundTask implements Runnable {
+        @Override
+        public void run() {
+            if (mBackgroundURI != null) {
+                showBackground(mBackgroundURI.toString());
+            }
         }
     }
 }

@@ -114,10 +114,6 @@ public class GridFragmentHelper {
         return new Pair<>((int) width, (int) height);
     }
 
-    public interface RowFreezer {
-        void freeze(boolean freeze);
-    }
-
     public static VideoGroupObjectAdapter findRelatedAdapter(Map<Integer, VideoGroupObjectAdapter> mediaGroupAdapters, VideoGroup group, RowFreezer freezer) {
         if (group == null || mediaGroupAdapters == null) {
             return null;
@@ -167,7 +163,11 @@ public class GridFragmentHelper {
                 && group.getMediaGroup().getNextPageKey() == null
                 && lastGroup.isShorts() == group.isShorts()
                 && (Helpers.equals(lastGroup.getTitle(), group.getTitle())
-                    || lastGroup.getTitle() == null); // we could set title to null in the previous iteration
+                || lastGroup.getTitle() == null); // we could set title to null in the previous iteration
         return matchedRowFound;
+    }
+
+    public interface RowFreezer {
+        void freeze(boolean freeze);
     }
 }

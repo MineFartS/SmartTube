@@ -17,6 +17,7 @@ import androidx.annotation.RestrictTo;
 
 /**
  * Math Utilities for leanback library.
+ *
  * @hide
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY)
@@ -28,6 +29,7 @@ public final class MathUtil {
 
     /**
      * Convert long to int safely. Similar with Math.toIntExact() in Java 8.
+     *
      * @param numLong Number of type long to convert.
      * @return int version of input.
      * @throws ArithmeticException If input overflows int.

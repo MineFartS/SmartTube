@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.widgets.marqueetextview;
 
 import android.content.Context;
 import android.util.AttributeSet;
+
 import com.liskovsoft.smartyoutubetv2.tv.util.ViewUtil;
 
 /**

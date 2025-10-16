@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+
 import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.PlaybackControlsRow.MultiAction;
 
@@ -25,6 +26,7 @@ public class PlaybackModeAction extends MultiAction {
 
     /**
      * Constructor
+     *
      * @param context Context used for loading resources.
      */
     public PlaybackModeAction(Context context) {
@@ -33,7 +35,8 @@ public class PlaybackModeAction extends MultiAction {
 
     /**
      * Constructor
-     * @param context Context used for loading resources
+     *
+     * @param context        Context used for loading resources
      * @param selectionColor Color to display the repeat-all icon.
      */
     public PlaybackModeAction(Context context, int selectionColor) {

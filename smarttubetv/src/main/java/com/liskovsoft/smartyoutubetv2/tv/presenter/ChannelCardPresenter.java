@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -26,6 +28,18 @@ import com.liskovsoft.smartyoutubetv2.tv.util.ViewUtil;
 
 public class ChannelCardPresenter extends LongClickPresenter {
     private static final String TAG = VideoCardPresenter.class.getSimpleName();
+    private final RequestListener<Drawable> mErrorListener = new RequestListener<Drawable>() {
+        @Override
+        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+            Log.e(TAG, "Glide load failed: " + e);
+            return false;
+        }
+
+        @Override
+        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+            return false;
+        }
+    };
     private int mDefaultBackgroundColor;
     private int mDefaultTextColor;
     private int mSelectedBackgroundColor;
@@ -62,7 +76,7 @@ public class ChannelCardPresenter extends LongClickPresenter {
             int backgroundColor = hasFocus ? mSelectedBackgroundColor :
                     textView.getTag(R.id.channel_new_content) != null ? mNewContentBackgroundColor : mDefaultBackgroundColor;
             int textColor = hasFocus ? mSelectedTextColor : mDefaultTextColor;
-            
+
             textView.setBackgroundColor(backgroundColor);
             textView.setTextColor(textColor);
 
@@ -125,17 +139,4 @@ public class ChannelCardPresenter extends LongClickPresenter {
                 MainUIData.instance(context).getVideoGridScale(),
                 true);
     }
-
-    private final RequestListener<Drawable> mErrorListener = new RequestListener<Drawable>() {
-        @Override
-        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-            Log.e(TAG, "Glide load failed: " + e);
-            return false;
-        }
-
-        @Override
-        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-            return false;
-        }
-    };
 }

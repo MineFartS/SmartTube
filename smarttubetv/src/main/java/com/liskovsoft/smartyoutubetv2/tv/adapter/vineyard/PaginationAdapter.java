@@ -6,6 +6,7 @@ import android.os.Handler;
 import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.PresenterSelector;
+
 import com.liskovsoft.smartyoutubetv2.tv.R;
 import com.liskovsoft.smartyoutubetv2.common.app.models.search.vineyard.Option;
 import com.liskovsoft.smartyoutubetv2.tv.presenter.vineyard.IconItemPresenter;
@@ -148,7 +149,7 @@ public abstract class PaginationAdapter extends ArrayObjectAdapter {
             String noVideosTitle = mContext.getString(R.string.title_no_videos);
             String oopsTitle = mContext.getString(R.string.title_oops);
             return (option.title.equals(noVideosTitle) ||
-                            option.title.equals(oopsTitle));
+                    option.title.equals(oopsTitle));
         }
         return false;
     }

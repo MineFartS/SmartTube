@@ -3,7 +3,9 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.widgets.styled;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ProgressBar;
+
 import androidx.annotation.RequiresApi;
+
 import com.liskovsoft.smartyoutubetv2.tv.R;
 
 public class CardProgressBar extends ProgressBar {

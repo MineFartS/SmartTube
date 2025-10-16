@@ -2,9 +2,11 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.widgets.layout;
 
 import android.content.Context;
 import android.util.AttributeSet;
+
 import androidx.annotation.NonNull;
 import androidx.leanback.widget.HorizontalGridView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.liskovsoft.sharedutils.mylogger.Log;
 
 /**

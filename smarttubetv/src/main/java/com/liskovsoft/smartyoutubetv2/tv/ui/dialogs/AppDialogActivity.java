@@ -24,7 +24,7 @@ public class AppDialogActivity extends MotherActivity {
     private static final String TAG = AppDialogActivity.class.getSimpleName();
     private AppDialogFragment mFragment;
     private GlobalKeyTranslator mGlobalKeyTranslator;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +64,7 @@ public class AppDialogActivity extends MotherActivity {
         KeyEvent newEvent = mGlobalKeyTranslator.translate(event);
         return handleNavigation(newEvent) || super.dispatchKeyEvent(newEvent);
     }
-    
+
     private boolean handleNavigation(KeyEvent event) {
         if (event == null) {
             return false;

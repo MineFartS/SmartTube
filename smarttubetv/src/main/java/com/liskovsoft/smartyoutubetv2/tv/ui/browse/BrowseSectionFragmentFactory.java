@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment;
 import androidx.leanback.app.BrowseSupportFragment;
 import androidx.leanback.widget.HeaderItem;
 import androidx.leanback.widget.Row;
+
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.BrowseSection;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.SettingsGroup;
@@ -29,10 +30,6 @@ public class BrowseSectionFragmentFactory extends BrowseSupportFragment.Fragment
     private int mSelectedItemIndex = -1;
     private Video mSelectedItem;
     private Runnable mOnSectionSelected;
-
-    public interface OnSectionSelectedListener {
-        void onSectionSelected(Row row);
-    }
 
     public BrowseSectionFragmentFactory() {
         this(null);
@@ -213,5 +210,9 @@ public class BrowseSectionFragmentFactory extends BrowseSupportFragment.Fragment
 
         // Wait till the main fragment changed
         Utils.postDelayed(mOnSectionSelected, 100);
+    }
+
+    public interface OnSectionSelectedListener {
+        void onSectionSelected(Row row);
     }
 }

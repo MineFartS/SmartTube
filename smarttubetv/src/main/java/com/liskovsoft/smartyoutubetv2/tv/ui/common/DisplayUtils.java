@@ -16,15 +16,6 @@ import java.util.HashMap;
 
 public class DisplayUtils {
 
-    public interface MediaDimensions {
-        double MEDIA_HEIGHT = 0.95;
-        double MEDIA_WIDTH = 0.95;
-        double MEDIA_TOP_MARGIN = 0.025;
-        double MEDIA_RIGHT_MARGIN = 0.025;
-        double MEDIA_BOTTOM_MARGIN = 0.025;
-        double MEDIA_LEFT_MARGIN = 0.025;
-    }
-    
     private DisplayUtils() {
         // NOP
     }
@@ -53,6 +44,16 @@ public class DisplayUtils {
         return Math.round((float) dp * density);
     }
 
+    public static long getDuration(String videoUrl) {
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            mmr.setDataSource(videoUrl, new HashMap<>());
+        } else {
+            mmr.setDataSource(videoUrl);
+        }
+        return Long.parseLong(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
+    }
+
     /**
      * Example for handling resizing content for overscan.  Typically you won't need to resize when
      * using the Leanback support library.
@@ -71,13 +72,12 @@ public class DisplayUtils {
         videoView.setLayoutParams(lp);
     }
 
-    public static long getDuration(String videoUrl) {
-        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            mmr.setDataSource(videoUrl, new HashMap<>());
-        } else {
-            mmr.setDataSource(videoUrl);
-        }
-        return Long.parseLong(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
+    public interface MediaDimensions {
+        double MEDIA_HEIGHT = 0.95;
+        double MEDIA_WIDTH = 0.95;
+        double MEDIA_TOP_MARGIN = 0.025;
+        double MEDIA_RIGHT_MARGIN = 0.025;
+        double MEDIA_BOTTOM_MARGIN = 0.025;
+        double MEDIA_LEFT_MARGIN = 0.025;
     }
 }

@@ -20,16 +20,18 @@ import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.leanback.R;
 import androidx.leanback.widget.Action;
 import androidx.leanback.widget.PlaybackControlsRow;
 import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.PresenterSelector;
+
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.PaddingAction;
 
 /**
  * Displays primary and secondary controls for a {@link PlaybackControlsRow}.
- *
+ * <p>
  * Binds to items of type {@link Action}.
  */
 public class ControlButtonPresenterSelector extends PresenterSelector {
@@ -150,7 +152,7 @@ public class ControlButtonPresenterSelector extends PresenterSelector {
         }
 
         public void setOnLongClickListener(ViewHolder viewHolder,
-                                       View.OnLongClickListener listener) {
+                                           View.OnLongClickListener listener) {
             ((ActionViewHolder) viewHolder).mFocusableView.setOnLongClickListener(listener);
         }
     }

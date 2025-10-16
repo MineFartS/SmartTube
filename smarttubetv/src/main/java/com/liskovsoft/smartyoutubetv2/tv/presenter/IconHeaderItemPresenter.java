@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.HeaderItem;
@@ -15,6 +16,7 @@ import androidx.leanback.widget.ListRow;
 import androidx.leanback.widget.PageRow;
 import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.RowHeaderPresenter;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -26,9 +28,21 @@ import com.liskovsoft.smartyoutubetv2.tv.util.ViewUtil;
 
 public class IconHeaderItemPresenter extends RowHeaderPresenter {
     private static final String TAG = IconHeaderItemPresenter.class.getSimpleName();
-    private float mUnselectedAlpha;
     private final int mResId;
     private final String mIconUrl;
+    private final RequestListener<Drawable> mErrorListener = new RequestListener<Drawable>() {
+        @Override
+        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+            Log.e(TAG, "Glide load failed: " + e);
+            return false;
+        }
+
+        @Override
+        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+            return false;
+        }
+    };
+    private float mUnselectedAlpha;
     private Drawable mDefaultIcon;
 
     public IconHeaderItemPresenter(int resId, String iconUrl) {
@@ -97,17 +111,4 @@ public class IconHeaderItemPresenter extends RowHeaderPresenter {
         holder.view.setAlpha(mUnselectedAlpha + holder.getSelectLevel() *
                 (1.0f - mUnselectedAlpha));
     }
-
-    private final RequestListener<Drawable> mErrorListener = new RequestListener<Drawable>() {
-        @Override
-        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-            Log.e(TAG, "Glide load failed: " + e);
-            return false;
-        }
-
-        @Override
-        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-            return false;
-        }
-    };
 }

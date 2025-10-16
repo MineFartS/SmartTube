@@ -6,8 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.Presenter;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.SettingsItem;
 import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
@@ -43,7 +45,7 @@ public class SettingsCardPresenter extends Presenter {
         container.setOnFocusChangeListener((v, hasFocus) -> {
             int backgroundColor = hasFocus ? mSelectedBackgroundColor : mDefaultBackgroundColor;
             int textColor = hasFocus ? mSelectedTextColor : mDefaultTextColor;
-            
+
             textView.setBackgroundColor(backgroundColor);
             textView.setTextColor(textColor);
 

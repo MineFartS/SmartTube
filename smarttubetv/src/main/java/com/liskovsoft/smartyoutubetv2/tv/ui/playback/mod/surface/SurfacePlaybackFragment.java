@@ -8,7 +8,9 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
 import androidx.leanback.app.PlaybackSupportFragment;
+
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout.ResizeMode;
 import com.liskovsoft.sharedutils.helpers.Helpers;
@@ -71,7 +73,9 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
         super.onDestroyView();
     }
 
-    /** Returns the {@link ResizeMode}. */
+    /**
+     * Returns the {@link ResizeMode}.
+     */
     protected @ResizeMode int getResize() {
         return mVideoSurfaceRoot.getResizeMode();
     }
@@ -168,6 +172,7 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
 
     /**
      * Setup player's background used when controls are showed.
+     *
      * @param resId background
      */
     protected void setBackgroundResource(int resId) {

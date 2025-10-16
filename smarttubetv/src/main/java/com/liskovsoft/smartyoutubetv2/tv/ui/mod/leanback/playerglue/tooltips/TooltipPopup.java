@@ -30,7 +30,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
+
 import androidx.annotation.RestrictTo;
+
 import com.liskovsoft.smartyoutubetv2.tv.R;
 //import androidx.appcompat.R;
 
@@ -72,8 +74,32 @@ class TooltipPopup {
                 | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
     }
 
+    private static View getAppRootView(View anchorView) {
+        View rootView = anchorView.getRootView();
+        ViewGroup.LayoutParams lp = rootView.getLayoutParams();
+        if (lp instanceof WindowManager.LayoutParams
+                && (((WindowManager.LayoutParams) lp).type
+                == WindowManager.LayoutParams.TYPE_APPLICATION)) {
+            // This covers regular app windows and Dialog windows.
+            return rootView;
+        }
+        // For non-application window types (such as popup windows) try to find the main app window
+        // through the context.
+        Context context = anchorView.getContext();
+        while (context instanceof ContextWrapper) {
+            if (context instanceof Activity) {
+                return ((Activity) context).getWindow().getDecorView();
+            } else {
+                context = ((ContextWrapper) context).getBaseContext();
+            }
+        }
+        // Main app window not found, fall back to the anchor's root view. There is no guarantee
+        // that the tooltip position will be computed correctly.
+        return rootView;
+    }
+
     void show(View anchorView, int anchorX, int anchorY, boolean fromTouch,
-            CharSequence tooltipText) {
+              CharSequence tooltipText) {
         if (isShowing()) {
             hide();
         }
@@ -100,7 +126,7 @@ class TooltipPopup {
     }
 
     private void computePosition(View anchorView, int anchorX, int anchorY, boolean fromTouch,
-            WindowManager.LayoutParams outParams) {
+                                 WindowManager.LayoutParams outParams) {
         outParams.token = anchorView.getApplicationWindowToken();
         final int tooltipPreciseAnchorThreshold = mContext.getResources().getDimensionPixelOffset(
                 R.dimen.tooltip_precise_anchor_threshold);
@@ -181,29 +207,5 @@ class TooltipPopup {
                 outParams.y = yAbove;
             }
         }
-    }
-
-    private static View getAppRootView(View anchorView) {
-        View rootView = anchorView.getRootView();
-        ViewGroup.LayoutParams lp = rootView.getLayoutParams();
-        if (lp instanceof WindowManager.LayoutParams
-                && (((WindowManager.LayoutParams) lp).type
-                    == WindowManager.LayoutParams.TYPE_APPLICATION)) {
-            // This covers regular app windows and Dialog windows.
-            return rootView;
-        }
-        // For non-application window types (such as popup windows) try to find the main app window
-        // through the context.
-        Context context = anchorView.getContext();
-        while (context instanceof ContextWrapper) {
-            if (context instanceof Activity) {
-                return ((Activity) context).getWindow().getDecorView();
-            } else {
-                context = ((ContextWrapper) context).getBaseContext();
-            }
-        }
-        // Main app window not found, fall back to the anchor's root view. There is no guarantee
-        // that the tooltip position will be computed correctly.
-        return rootView;
     }
 }

@@ -7,9 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.WebBrowserPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.views.WebBrowserView;
 import com.liskovsoft.smartyoutubetv2.tv.R;

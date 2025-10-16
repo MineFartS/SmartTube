@@ -6,6 +6,7 @@ import android.os.Build.VERSION;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 
 @SuppressLint("AppCompatCustomView")
@@ -68,13 +69,13 @@ public class MarqueeTextView extends TextView implements View.OnLayoutChangeList
         updateMarqueeSpeed();
     }
 
+    public float getMarqueeSpeedFactor() {
+        return mMarqueeSpeedFactor;
+    }
+
     public void setMarqueeSpeedFactor(float factor) {
         if (factor > 0) {
             mMarqueeSpeedFactor = factor;
         }
-    }
-
-    public float getMarqueeSpeedFactor() {
-        return mMarqueeSpeedFactor;
     }
 }

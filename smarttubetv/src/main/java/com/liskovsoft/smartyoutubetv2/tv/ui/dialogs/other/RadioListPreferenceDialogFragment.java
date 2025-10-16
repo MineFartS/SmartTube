@@ -4,21 +4,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.Nullable;
 import androidx.leanback.widget.VerticalGridView;
 import androidx.preference.ListPreference;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
+
 import com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.preference.LeanbackListPreferenceDialogFragment;
 import com.liskovsoft.smartyoutubetv2.tv.util.ViewUtil;
 
 public class RadioListPreferenceDialogFragment extends LeanbackListPreferenceDialogFragment {
     private boolean mIsTransparent;
-
-    @Override
-    public Adapter<ViewHolder> onCreateAdapter() {
-        return new AdapterRadio(mEntries, mEntryValues, mInitialSelection);
-    }
 
     public static RadioListPreferenceDialogFragment newInstanceSingle(String key) {
         final Bundle args = new Bundle(1);
@@ -29,6 +26,11 @@ public class RadioListPreferenceDialogFragment extends LeanbackListPreferenceDia
         fragment.setArguments(args);
 
         return fragment;
+    }
+
+    @Override
+    public Adapter<ViewHolder> onCreateAdapter() {
+        return new AdapterRadio(mEntries, mEntryValues, mInitialSelection);
     }
 
     /**

@@ -1,15 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- MOD: intention to add subtitle/debug view -->
+<?xml version="1.0" encoding="utf-8"?><!-- MOD: intention to add subtitle/debug view -->
 <!-- More info: https://github.com/google/ExoPlayer/issues/6587 -->
-<FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/playback_fragment_root"
-        android:transitionGroup="false"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="UnusedAttribute, RtlHardcoded">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/playback_fragment_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:transitionGroup="false"
+    tools:ignore="UnusedAttribute, RtlHardcoded">
 
     <!-- Original place for VideoSurfaceView -->
 
@@ -29,87 +27,88 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="150sp"
-        android:paddingRight="150sp"/>
+        android:paddingRight="150sp" />
 
     <LinearLayout
         android:id="@+id/live_chat_wrapper"
         android:layout_width="300sp"
         android:layout_height="match_parent"
         android:layout_gravity="right">
+
         <com.liskovsoft.smartyoutubetv2.tv.ui.widgets.chat.LiveChatView
             android:id="@+id/live_chat"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:showIncomingTime="false"
-            app:isMessageFocusable="false"
-            app:incomingDefaultBubbleColor="@color/live_chat_bg"
-            app:incomingTextColor="@color/white"
+            android:visibility="gone"
+            app:incomingAvatarHeight="20dp"
+            app:incomingAvatarWidth="20dp"
+            app:incomingBubblePaddingBottom="0sp"
             app:incomingBubblePaddingLeft="10sp"
             app:incomingBubblePaddingRight="10sp"
             app:incomingBubblePaddingTop="0sp"
-            app:incomingBubblePaddingBottom="0sp"
-            app:incomingAvatarHeight="20dp"
-            app:incomingAvatarWidth="20dp"
-            android:visibility="gone"
-        />
+            app:incomingDefaultBubbleColor="@color/live_chat_bg"
+            app:incomingTextColor="@color/white"
+            app:isMessageFocusable="false"
+            app:showIncomingTime="false" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/player_overlay_wrapper"
-        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|right"
         android:gravity="right"
+        android:orientation="vertical"
         android:padding="10sp">
         <!-- Global clock -->
         <com.liskovsoft.smartyoutubetv2.tv.ui.widgets.time.DateTimeView
             android:id="@+id/global_time"
+            style="?attr/playbackControlsTimeStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:visibility="gone"
-            android:textColor="@color/white"
             android:shadowColor="@color/black"
             android:shadowDx="1.5"
             android:shadowDy="1.3"
             android:shadowRadius="1.6"
+            android:textColor="@color/white"
+            android:textSize="20sp"
             android:textStyle="bold"
-            style="?attr/playbackControlsTimeStyle"/>
+            android:visibility="gone" />
         <!-- Global ending time -->
         <com.liskovsoft.smartyoutubetv2.tv.ui.widgets.time.EndingTimeView
             android:id="@+id/global_ending_time"
+            style="?attr/playbackControlsTimeStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:visibility="gone"
-            android:textColor="@color/white"
             android:shadowColor="@color/black"
             android:shadowDx="1.5"
             android:shadowDy="1.3"
             android:shadowRadius="1.6"
+            android:textColor="@color/white"
+            android:textSize="20sp"
             android:textStyle="bold"
-            style="?attr/playbackControlsTimeStyle"/>
+            android:visibility="gone" />
     </LinearLayout>
 
     <!-- Add debug view -->
-    <FrameLayout android:id="@+id/debug_view_group"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:padding="4sp"
-                 android:visibility="gone"
-                 android:layout_gravity="top|right"
-                 android:background="#70000000"/>
+    <FrameLayout
+        android:id="@+id/debug_view_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:background="#70000000"
+        android:padding="4sp"
+        android:visibility="gone" />
 
     <androidx.leanback.widget.NonOverlappingFrameLayout
         android:id="@+id/playback_fragment_background"
-        android:transitionGroup="false"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:transitionGroup="false" />
 
     <androidx.leanback.widget.NonOverlappingFrameLayout
-            android:id="@+id/playback_controls_dock"
-            android:transitionGroup="true"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"/>
+        android:id="@+id/playback_controls_dock"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:transitionGroup="true" />
 </FrameLayout>

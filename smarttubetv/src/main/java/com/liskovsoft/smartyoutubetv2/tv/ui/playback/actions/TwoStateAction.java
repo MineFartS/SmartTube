@@ -3,8 +3,10 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+
 import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.PlaybackControlsRow.MultiAction;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 import com.liskovsoft.smartyoutubetv2.tv.R;
@@ -21,8 +23,8 @@ public class TwoStateAction extends MultiAction {
     public static final int INDEX_ON = 1;
 
     private final Context mContext;
-    private TwoStateAction mBoundAction;
     private final boolean mEnableLongPressMsg;
+    private TwoStateAction mBoundAction;
 
     public TwoStateAction(Context context, int actionId, int offIconResId) {
         this(context, actionId, offIconResId, true);
@@ -34,6 +36,7 @@ public class TwoStateAction extends MultiAction {
 
     /**
      * Constructor
+     *
      * @param context Context used for loading resources.
      */
     public TwoStateAction(Context context, int actionId, int offIconResId, int highlightColor) {

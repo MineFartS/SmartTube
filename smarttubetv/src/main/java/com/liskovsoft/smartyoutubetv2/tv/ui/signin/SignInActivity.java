@@ -1,7 +1,9 @@
 package com.liskovsoft.smartyoutubetv2.tv.ui.signin;
 
 import android.os.Bundle;
+
 import androidx.leanback.app.GuidedStepSupportFragment;
+
 import com.liskovsoft.smartyoutubetv2.tv.ui.common.LeanbackActivity;
 
 public class SignInActivity extends LeanbackActivity {

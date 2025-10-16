@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
      Copyright (C) 2014 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +14,8 @@
      limitations under the License.
 -->
 <com.liskovsoft.smartyoutubetv2.tv.ui.widgets.browse.NavigateTitleView xmlns:android="http://schemas.android.com/apk/res/android"
-                                                                       android:id="@+id/browse_title_group"
-                                                                       android:layout_width="match_parent"
-                                                                       android:layout_height="wrap_content"
-                                                                       style="?attr/browseTitleViewStyle" />
+    android:id="@+id/browse_title_group"
+    style="?attr/browseTitleViewStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
 

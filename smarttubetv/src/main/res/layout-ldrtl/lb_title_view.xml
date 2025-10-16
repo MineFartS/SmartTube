@@ -18,76 +18,78 @@
      limitations under the License.
 -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-       xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include layout="@layout/lb_title_view_logo"/>
+    <include layout="@layout/lb_title_view_logo" />
 
     <!-- MODIFIED: add additional buttons -->
-    <LinearLayout android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:orientation="horizontal"
-                  android:layout_gravity="center_vertical|start">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|start"
+        android:orientation="horizontal">
+
         <androidx.leanback.widget.SearchOrbView
             android:id="@+id/title_orb"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:transitionGroup="true"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|start"
             android:nextFocusLeft="@id/account_orb"
+            android:transitionGroup="true"
             android:visibility="invisible" />
 
         <com.liskovsoft.smartyoutubetv2.tv.ui.widgets.search.LongClickSearchOrbView
             android:id="@+id/account_orb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:transitionGroup="true"
             android:layout_marginStart="@dimen/search_bar_right_items_margin"
-            android:nextFocusRight="@id/title_orb"
             android:nextFocusLeft="@id/language_orb"
-            app:searchOrbIcon="@drawable/browse_title_account"
-            app:searchOrbColor="@color/orb_color"
+            android:nextFocusRight="@id/title_orb"
+            android:transitionGroup="true"
+            android:visibility="gone"
             app:searchOrbBrightColor="@color/orb_bright_color"
-            app:searchOrbIconColor="@color/orb_icon_color"
-            android:visibility="gone" />
+            app:searchOrbColor="@color/orb_color"
+            app:searchOrbIcon="@drawable/browse_title_account"
+            app:searchOrbIconColor="@color/orb_icon_color" />
 
         <androidx.leanback.widget.SearchOrbView
             android:id="@+id/language_orb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:transitionGroup="true"
             android:layout_marginStart="@dimen/search_bar_right_items_margin"
-            android:nextFocusRight="@id/account_orb"
             android:nextFocusLeft="@id/exit_pip"
-            app:searchOrbIcon="@drawable/search_bar_language_orb"
-            app:searchOrbColor="@color/orb_color"
+            android:nextFocusRight="@id/account_orb"
+            android:transitionGroup="true"
+            android:visibility="gone"
             app:searchOrbBrightColor="@color/orb_bright_color"
-            app:searchOrbIconColor="@color/orb_icon_color"
-            android:visibility="gone" />
+            app:searchOrbColor="@color/orb_color"
+            app:searchOrbIcon="@drawable/search_bar_language_orb"
+            app:searchOrbIconColor="@color/orb_icon_color" />
 
         <androidx.leanback.widget.SearchOrbView
             android:id="@+id/exit_pip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:transitionGroup="true"
             android:layout_marginStart="@dimen/search_bar_right_items_margin"
             android:nextFocusRight="@id/language_orb"
-            app:searchOrbIcon="@drawable/browse_title_pip"
-            app:searchOrbColor="@color/orb_color"
+            android:transitionGroup="true"
+            android:visibility="gone"
             app:searchOrbBrightColor="@color/orb_bright_color"
-            app:searchOrbIconColor="@color/orb_icon_color"
-            android:visibility="gone" />
+            app:searchOrbColor="@color/orb_color"
+            app:searchOrbIcon="@drawable/browse_title_pip"
+            app:searchOrbIconColor="@color/orb_icon_color" />
 
         <!-- Add android:ellipsize="marquee" to horizontal scrolling -->
         <com.liskovsoft.smartyoutubetv2.tv.ui.widgets.marqueetextview.TitleMarqueeTextView
             android:id="@+id/pip_title"
+            style="?attr/browseTitleTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/search_bar_right_items_margin"
             android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/search_bar_right_items_margin"
+            android:ellipsize="marquee"
             android:maxWidth="@dimen/pip_title_max_width"
             android:textSize="@dimen/pip_title_size"
-            style="?attr/browseTitleTextStyle"
-            android:ellipsize="marquee"
             android:visibility="gone" />
     </LinearLayout>
 </merge>

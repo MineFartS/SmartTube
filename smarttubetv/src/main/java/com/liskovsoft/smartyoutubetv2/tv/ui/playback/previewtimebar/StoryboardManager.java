@@ -3,9 +3,11 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.playback.previewtimebar;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.collection.ArraySet;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.Target;
@@ -19,6 +21,7 @@ import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import com.liskovsoft.smartyoutubetv2.tv.util.ViewUtil;
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
+
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
@@ -32,17 +35,13 @@ public class StoryboardManager {
     private static final int DIRECTION_LEFT = 1;
     private final MediaItemService mMediaItemService;
     private final Context mContext;
+    private final Set<Integer> mCachedImageNums = new ArraySet<>();
     private long mLengthMs;
     private MediaItemStoryboard mStoryboard;
     private Disposable mFormatAction;
     private long[] mSeekPositions;
     private int mCurrentImgNum = -1;
-    private final Set<Integer> mCachedImageNums = new ArraySet<>();
     private int mSeekDirection = DIRECTION_RIGHT;
-
-    public interface Callback {
-        void onBitmapLoaded(Bitmap bitmap);
-    }
 
     public StoryboardManager(Context context) {
         mContext = context;
@@ -195,5 +194,9 @@ public class StoryboardManager {
         Glide.with(mContext)
                 .load(link)
                 .preload();
+    }
+
+    public interface Callback {
+        void onBitmapLoaded(Bitmap bitmap);
     }
 }

@@ -8,12 +8,14 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.SearchOrbView;
 import androidx.leanback.widget.SearchOrbView.Colors;
 import androidx.leanback.widget.TitleView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -84,6 +86,22 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
         // findViewById is null in constructor. Init mAccountView later.
     }
 
+    private static void loadIcon(Context context, SearchOrbView view, String url, int iconWidth, int iconHeight, boolean useCache) {
+        Glide.with(context)
+                .load(url)
+                .apply(ViewUtil.glideOptions())
+                .diskCacheStrategy(useCache ? DiskCacheStrategy.ALL : DiskCacheStrategy.NONE)
+                .circleCrop() // resize image
+                .into(new SimpleTarget<Drawable>(iconWidth, iconHeight) {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        Colors orbColors = view.getOrbColors();
+                        view.setOrbColors(new Colors(orbColors.color, orbColors.brightColor, Color.TRANSPARENT));
+                        view.setOrbIcon(resource);
+                    }
+                });
+    }
+
     @Override
     public View focusSearch(View focused, int direction) {
         View nextFoundFocusableViewInLayout = null;
@@ -93,11 +111,11 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
 
             // Try to find the next focusable item in this layout for the supplied direction
             int nextFoundFocusableViewInLayoutId = -1;
-            switch(direction) {
-                case View.FOCUS_LEFT :
+            switch (direction) {
+                case View.FOCUS_LEFT:
                     nextFoundFocusableViewInLayoutId = focused.getNextFocusLeftId();
                     break;
-                case View.FOCUS_RIGHT :
+                case View.FOCUS_RIGHT:
                     nextFoundFocusableViewInLayoutId = focused.getNextFocusRightId();
                     break;
             }
@@ -340,22 +358,6 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
             // Glide Kivi error
             e.printStackTrace();
         }
-    }
-
-    private static void loadIcon(Context context, SearchOrbView view, String url, int iconWidth, int iconHeight, boolean useCache) {
-        Glide.with(context)
-                .load(url)
-                .apply(ViewUtil.glideOptions())
-                .diskCacheStrategy(useCache ? DiskCacheStrategy.ALL : DiskCacheStrategy.NONE)
-                .circleCrop() // resize image
-                .into(new SimpleTarget<Drawable>(iconWidth, iconHeight) {
-                    @Override
-                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        Colors orbColors = view.getOrbColors();
-                        view.setOrbColors(new Colors(orbColors.color, orbColors.brightColor, Color.TRANSPARENT));
-                        view.setOrbIcon(resource);
-                    }
-                });
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.leanback.app.BrowseSupportFragment;
@@ -24,6 +25,7 @@ import androidx.leanback.widget.VerticalGridPresenter;
 import androidx.leanback.widget.VerticalGridView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
+
 import com.liskovsoft.smartyoutubetv2.tv.R;
 
 /**
@@ -34,20 +36,23 @@ import com.liskovsoft.smartyoutubetv2.tv.R;
 public class MultiGridFragment extends Fragment implements BrowseSupportFragment.MainFragmentAdapterProvider {
     private static final String TAG = "VerticalGridFragment";
     private static boolean DEBUG = false;
-
+    final private OnChildLaidOutListener mChildLaidOutListener2 =
+            new OnChildLaidOutListener() {
+                @Override
+                public void onChildLaidOut(ViewGroup parent, View view, int position, long id) {
+                    if (position == 0) {
+                        // First child has been added.
+                        // Don't check title on second grid.
+                        // showOrHideTitle2();
+                    }
+                }
+            };
     private ObjectAdapter mAdapter1;
     private ObjectAdapter mAdapter2;
     private VerticalGridPresenter mGridPresenter1;
     private VerticalGridPresenter mGridPresenter2;
     private VerticalGridPresenter.ViewHolder mGridViewHolder1;
     private VerticalGridPresenter.ViewHolder mGridViewHolder2;
-    private OnItemViewSelectedListener mOnItemViewSelectedListener1;
-    private OnItemViewSelectedListener mOnItemViewSelectedListener2;
-    private OnItemViewClickedListener mOnItemViewClickedListener1;
-    private OnItemViewClickedListener mOnItemViewClickedListener2;
-    private Object mSceneAfterEntranceTransition;
-    private int mSelectedPosition1 = -1;
-    private int mSelectedPosition2 = -1;
     private final BrowseSupportFragment.MainFragmentAdapter<Fragment> mMainFragmentAdapter =
             new BrowseSupportFragment.MainFragmentAdapter<Fragment>(this) {
                 @Override
@@ -55,87 +60,12 @@ public class MultiGridFragment extends Fragment implements BrowseSupportFragment
                     MultiGridFragment.this.setEntranceTransitionState(state);
                 }
             };
-
-    /**
-     * Sets the grid1 presenter.
-     */
-    public void setGridPresenter1(VerticalGridPresenter gridPresenter1) {
-        if (gridPresenter1 == null) {
-            throw new IllegalArgumentException("Grid presenter may not be null");
-        }
-        mGridPresenter1 = gridPresenter1;
-        mGridPresenter1.setOnItemViewSelectedListener(mViewSelectedListener1);
-        if (mOnItemViewClickedListener1 != null) {
-            mGridPresenter1.setOnItemViewClickedListener(mOnItemViewClickedListener1);
-        }
-    }
-
-    /**
-     * Sets the grid1 presenter.
-     */
-    public void setGridPresenter2(VerticalGridPresenter gridPresenter2) {
-        if (gridPresenter2 == null) {
-            throw new IllegalArgumentException("Grid presenter may not be null");
-        }
-        mGridPresenter2 = gridPresenter2;
-        mGridPresenter2.setOnItemViewSelectedListener(mViewSelectedListener2);
-        if (mOnItemViewClickedListener2 != null) {
-            mGridPresenter2.setOnItemViewClickedListener(mOnItemViewClickedListener2);
-        }
-    }
-
-    /**
-     * Returns the grid1 presenter.
-     */
-    public VerticalGridPresenter getGridPresenter1() {
-        return mGridPresenter1;
-    }
-
-    /**
-     * Returns the grid2 presenter.
-     */
-    public VerticalGridPresenter getGridPresenter2() {
-        return mGridPresenter2;
-    }
-
-    public VerticalGridView getBrowseGrid1() {
-        return mGridViewHolder1 != null ? mGridViewHolder1.getGridView() : null;
-    }
-
-    public VerticalGridView getBrowseGrid2() {
-        return mGridViewHolder2 != null ? mGridViewHolder2.getGridView() : null;
-    }
-
-    /**
-     * Sets the object adapter for the fragment.
-     */
-    public void setAdapter1(ObjectAdapter adapter) {
-        mAdapter1 = adapter;
-        updateAdapter1();
-    }
-
-    /**
-     * Returns the object adapter.
-     */
-    public ObjectAdapter getAdapter1() {
-        return mAdapter1;
-    }
-
-    /**
-     * Sets the object adapter for the fragment.
-     */
-    public void setAdapter2(ObjectAdapter adapter) {
-        mAdapter2 = adapter;
-        updateAdapter2();
-    }
-
-    /**
-     * Returns the object adapter.
-     */
-    public ObjectAdapter getAdapter2() {
-        return mAdapter2;
-    }
-
+    private OnItemViewSelectedListener mOnItemViewSelectedListener1;
+    private OnItemViewSelectedListener mOnItemViewSelectedListener2;
+    private OnItemViewClickedListener mOnItemViewClickedListener1;
+    private OnItemViewClickedListener mOnItemViewClickedListener2;
+    private Object mSceneAfterEntranceTransition;
+    private int mSelectedPosition1 = -1;
     final private OnItemViewSelectedListener mViewSelectedListener1 =
             new OnItemViewSelectedListener() {
                 @Override
@@ -153,7 +83,18 @@ public class MultiGridFragment extends Fragment implements BrowseSupportFragment
                     }
                 }
             };
-
+    final private OnChildLaidOutListener mChildLaidOutListener1 =
+            new OnChildLaidOutListener() {
+                @Override
+                public void onChildLaidOut(ViewGroup parent, View view, int position, long id) {
+                    if (position == 0) {
+                        // First child has been added.
+                        // Check title on first grid only!
+                        showOrHideTitle1();
+                    }
+                }
+            };
+    private int mSelectedPosition2 = -1;
     final private OnItemViewSelectedListener mViewSelectedListener2 =
             new OnItemViewSelectedListener() {
                 @Override
@@ -172,29 +113,85 @@ public class MultiGridFragment extends Fragment implements BrowseSupportFragment
                 }
             };
 
-    final private OnChildLaidOutListener mChildLaidOutListener1 =
-            new OnChildLaidOutListener() {
-                @Override
-                public void onChildLaidOut(ViewGroup parent, View view, int position, long id) {
-                    if (position == 0) {
-                        // First child has been added.
-                        // Check title on first grid only!
-                        showOrHideTitle1();
-                    }
-                }
-            };
+    /**
+     * Returns the grid1 presenter.
+     */
+    public VerticalGridPresenter getGridPresenter1() {
+        return mGridPresenter1;
+    }
 
-    final private OnChildLaidOutListener mChildLaidOutListener2 =
-            new OnChildLaidOutListener() {
-                @Override
-                public void onChildLaidOut(ViewGroup parent, View view, int position, long id) {
-                    if (position == 0) {
-                        // First child has been added.
-                        // Don't check title on second grid.
-                        // showOrHideTitle2();
-                    }
-                }
-            };
+    /**
+     * Sets the grid1 presenter.
+     */
+    public void setGridPresenter1(VerticalGridPresenter gridPresenter1) {
+        if (gridPresenter1 == null) {
+            throw new IllegalArgumentException("Grid presenter may not be null");
+        }
+        mGridPresenter1 = gridPresenter1;
+        mGridPresenter1.setOnItemViewSelectedListener(mViewSelectedListener1);
+        if (mOnItemViewClickedListener1 != null) {
+            mGridPresenter1.setOnItemViewClickedListener(mOnItemViewClickedListener1);
+        }
+    }
+
+    /**
+     * Returns the grid2 presenter.
+     */
+    public VerticalGridPresenter getGridPresenter2() {
+        return mGridPresenter2;
+    }
+
+    /**
+     * Sets the grid1 presenter.
+     */
+    public void setGridPresenter2(VerticalGridPresenter gridPresenter2) {
+        if (gridPresenter2 == null) {
+            throw new IllegalArgumentException("Grid presenter may not be null");
+        }
+        mGridPresenter2 = gridPresenter2;
+        mGridPresenter2.setOnItemViewSelectedListener(mViewSelectedListener2);
+        if (mOnItemViewClickedListener2 != null) {
+            mGridPresenter2.setOnItemViewClickedListener(mOnItemViewClickedListener2);
+        }
+    }
+
+    public VerticalGridView getBrowseGrid1() {
+        return mGridViewHolder1 != null ? mGridViewHolder1.getGridView() : null;
+    }
+
+    public VerticalGridView getBrowseGrid2() {
+        return mGridViewHolder2 != null ? mGridViewHolder2.getGridView() : null;
+    }
+
+    /**
+     * Returns the object adapter.
+     */
+    public ObjectAdapter getAdapter1() {
+        return mAdapter1;
+    }
+
+    /**
+     * Sets the object adapter for the fragment.
+     */
+    public void setAdapter1(ObjectAdapter adapter) {
+        mAdapter1 = adapter;
+        updateAdapter1();
+    }
+
+    /**
+     * Returns the object adapter.
+     */
+    public ObjectAdapter getAdapter2() {
+        return mAdapter2;
+    }
+
+    /**
+     * Sets the object adapter for the fragment.
+     */
+    public void setAdapter2(ObjectAdapter adapter) {
+        mAdapter2 = adapter;
+        updateAdapter2();
+    }
 
     /**
      * Sets an item selection listener for the grid1.
@@ -263,6 +260,13 @@ public class MultiGridFragment extends Fragment implements BrowseSupportFragment
     }
 
     /**
+     * Returns the item clicked listener.
+     */
+    public OnItemViewClickedListener getOnItemViewClickedListener1() {
+        return mOnItemViewClickedListener1;
+    }
+
+    /**
      * Sets an item clicked listener.
      */
     public void setOnItemViewClickedListener1(OnItemViewClickedListener listener) {
@@ -273,6 +277,13 @@ public class MultiGridFragment extends Fragment implements BrowseSupportFragment
     }
 
     /**
+     * Returns the item clicked listener.
+     */
+    public OnItemViewClickedListener getOnItemViewClickedListener2() {
+        return mOnItemViewClickedListener2;
+    }
+
+    /**
      * Sets an item clicked listener.
      */
     public void setOnItemViewClickedListener2(OnItemViewClickedListener listener) {
@@ -280,20 +291,6 @@ public class MultiGridFragment extends Fragment implements BrowseSupportFragment
         if (mGridPresenter2 != null) {
             mGridPresenter2.setOnItemViewClickedListener(mOnItemViewClickedListener2);
         }
-    }
-
-    /**
-     * Returns the item clicked listener.
-     */
-    public OnItemViewClickedListener getOnItemViewClickedListener1() {
-        return mOnItemViewClickedListener1;
-    }
-
-    /**
-     * Returns the item clicked listener.
-     */
-    public OnItemViewClickedListener getOnItemViewClickedListener2() {
-        return mOnItemViewClickedListener2;
     }
 
     @Override
@@ -356,14 +353,22 @@ public class MultiGridFragment extends Fragment implements BrowseSupportFragment
         return mMainFragmentAdapter;
     }
 
+    public int getSelectedPosition1() {
+        return mSelectedPosition1;
+    }
+
     /**
      * Sets the grid1 selected item position.
      */
     public void setSelectedPosition1(int position) {
         mSelectedPosition1 = position;
-        if(mGridViewHolder1 != null && mGridViewHolder1.getGridView().getAdapter() != null) {
+        if (mGridViewHolder1 != null && mGridViewHolder1.getGridView().getAdapter() != null) {
             mGridViewHolder1.getGridView().setSelectedPosition(position);
         }
+    }
+
+    public int getSelectedPosition2() {
+        return mSelectedPosition2;
     }
 
     /**
@@ -371,17 +376,9 @@ public class MultiGridFragment extends Fragment implements BrowseSupportFragment
      */
     public void setSelectedPosition2(int position) {
         mSelectedPosition2 = position;
-        if(mGridViewHolder2 != null && mGridViewHolder2.getGridView().getAdapter() != null) {
+        if (mGridViewHolder2 != null && mGridViewHolder2.getGridView().getAdapter() != null) {
             mGridViewHolder2.getGridView().setSelectedPosition(position);
         }
-    }
-
-    public int getSelectedPosition1() {
-        return mSelectedPosition1;
-    }
-
-    public int getSelectedPosition2() {
-        return mSelectedPosition2;
     }
 
     private void updateAdapter1() {
@@ -407,6 +404,12 @@ public class MultiGridFragment extends Fragment implements BrowseSupportFragment
         mGridPresenter1.setEntranceTransitionState(mGridViewHolder2, afterTransition);
     }
 
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        public ViewHolder(View v) {
+            super(v);
+        }
+    }
+
     class MultiGridAdapter extends Adapter<ViewHolder> {
         @NonNull
         @Override
@@ -426,12 +429,6 @@ public class MultiGridFragment extends Fragment implements BrowseSupportFragment
         @Override
         public int getItemCount() {
             return 2;
-        }
-    }
-
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        public ViewHolder(View v) {
-            super(v);
         }
     }
 }

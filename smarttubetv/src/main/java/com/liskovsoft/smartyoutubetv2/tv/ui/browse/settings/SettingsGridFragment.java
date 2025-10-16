@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.browse.settings;
 
 import android.os.Bundle;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.OnItemViewClickedListener;
@@ -9,6 +10,7 @@ import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.Row;
 import androidx.leanback.widget.RowPresenter;
 import androidx.leanback.widget.VerticalGridPresenter;
+
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.SettingsGroup;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.SettingsItem;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.BrowsePresenter;
@@ -29,10 +31,10 @@ import java.util.List;
 
 public class SettingsGridFragment extends GridFragment implements SettingsSection {
     private static final String TAG = SettingsGridFragment.class.getSimpleName();
+    private final List<SettingsGroup> mPendingUpdates = new ArrayList<>();
     private ArrayObjectAdapter mSettingsAdapter;
     private BrowsePresenter mMainPresenter;
     private UriBackgroundManager mBackgroundManager;
-    private final List<SettingsGroup> mPendingUpdates = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

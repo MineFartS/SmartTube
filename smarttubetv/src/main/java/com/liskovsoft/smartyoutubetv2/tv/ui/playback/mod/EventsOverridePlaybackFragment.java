@@ -4,14 +4,16 @@ import android.os.Bundle;
 import android.view.InputEvent;
 import android.view.KeyEvent;
 import android.view.View;
+
 import androidx.leanback.app.PlaybackSupportFragment;
 import androidx.leanback.widget.VerticalGridView;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.mod.surface.SurfacePlaybackFragment;
 
 /**
- *  Every successfully handled event invokes {@link PlaybackSupportFragment#tickle} that makes ui to appear.
- *  Fixing that for keys.
+ * Every successfully handled event invokes {@link PlaybackSupportFragment#tickle} that makes ui to appear.
+ * Fixing that for keys.
  */
 public class EventsOverridePlaybackFragment extends SurfacePlaybackFragment {
     @Override
@@ -58,7 +60,7 @@ public class EventsOverridePlaybackFragment extends SurfacePlaybackFragment {
             case KeyEvent.KEYCODE_SPACE:
             case KeyEvent.KEYCODE_NUMPAD_ENTER:
             case KeyEvent.KEYCODE_BUTTON_A:
-            // Navigation key
+                // Navigation key
             case KeyEvent.KEYCODE_DPAD_DOWN:
             case KeyEvent.KEYCODE_DPAD_UP:
             case KeyEvent.KEYCODE_DPAD_LEFT:

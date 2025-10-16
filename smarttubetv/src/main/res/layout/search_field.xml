@@ -12,11 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autofillHints=""
+        android:backgroundTint="@color/dialog_text_color"
         android:hint="@string/channel_filter_hint"
         android:imeOptions="actionDone"
         android:inputType="textPersonName"
         android:textColor="@color/dialog_text_color"
-        android:textCursorDrawable="@null"
-        android:backgroundTint="@color/dialog_text_color"
-        android:textColorHint="@color/white_50" />
+        android:textColorHint="@color/white_50"
+        android:textCursorDrawable="@null" />
 </LinearLayout>

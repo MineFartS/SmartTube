@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.common.keyhandler;
 import android.app.Activity;
 import android.os.Handler;
 import android.view.KeyEvent;
+
 import com.liskovsoft.sharedutils.helpers.KeyHelpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -11,9 +12,9 @@ import com.liskovsoft.smartyoutubetv2.tv.R;
 public class DoubleBackManager {
     private static final String TAG = DoubleBackManager.class.getSimpleName();
     private static final int DEFAULT_REPEAT_COUNT = 2;
+    private static final long BACK_PRESS_DURATION_MS = 1_000;
     private final Handler mHandler;
     private final Activity mContext;
-    private static final long BACK_PRESS_DURATION_MS = 1_000;
     private boolean mEnableDoubleBackExit;
     private boolean mDownPressed;
     private boolean mIsDoubleBackPressed;
@@ -43,7 +44,7 @@ public class DoubleBackManager {
             resetBackPressed();
         }
     }
-    
+
     public void checkDoubleBack(KeyEvent event) {
         // Reset if the user didn't do second press within interval
         if (System.currentTimeMillis() - mMsgShownTimeMs > 5_000) {

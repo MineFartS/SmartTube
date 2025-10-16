@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.util.AttributeSet;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
+
 import androidx.leanback.widget.ImageCardView;
 
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;

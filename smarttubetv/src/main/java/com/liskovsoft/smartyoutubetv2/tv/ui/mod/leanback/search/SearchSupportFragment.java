@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.CompletionInfo;
 import android.widget.FrameLayout;
+
 import androidx.fragment.app.Fragment;
 import androidx.leanback.R;
 import androidx.leanback.app.BrowseSupportFragment;
@@ -36,6 +37,7 @@ import androidx.leanback.widget.SearchOrbView;
 import androidx.leanback.widget.SpeechOrbView;
 import androidx.leanback.widget.SpeechRecognitionCallback;
 import androidx.leanback.widget.VerticalGridView;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.KeyHelpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
@@ -70,70 +72,26 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 public class SearchSupportFragment extends Fragment {
     static final String TAG = SearchSupportFragment.class.getSimpleName();
     static final boolean DEBUG = BuildConfig.DEBUG;
-
-    private static final String EXTRA_LEANBACK_BADGE_PRESENT = "LEANBACK_BADGE_PRESENT";
-    private static final String ARG_PREFIX = SearchSupportFragment.class.getCanonicalName();
-    private static final String ARG_QUERY =  ARG_PREFIX + ".query";
-    private static final String ARG_TITLE = ARG_PREFIX  + ".title";
-
     static final long SPEECH_RECOGNITION_DELAY_MS = 300;
-
     static final int RESULTS_CHANGED = 0x1;
     static final int QUERY_COMPLETE = 0x2;
-
     static final int AUDIO_PERMISSION_REQUEST_CODE = 0;
-
-    /**
-     * Search API to be provided by the application.
-     */
-    public static interface SearchResultProvider {
-        /**
-         * <p>Method invoked some time prior to the first call to onQueryTextChange to retrieve
-         * an ObjectAdapter that will contain the results to future updates of the search query.</p>
-         *
-         * <p>As results are retrieved, the application should use the data set notification methods
-         * on the ObjectAdapter to instruct the SearchSupportFragment to update the results.</p>
-         *
-         * @return ObjectAdapter The result object adapter.
-         */
-        public ObjectAdapter getResultsAdapter();
-
-        /**
-         * <p>Method invoked when the search query is updated.</p>
-         *
-         * <p>This is called as soon as the query changes; it is up to the application to add a
-         * delay before actually executing the queries if needed.
-         *
-         * <p>This method might not always be called before onQueryTextSubmit gets called, in
-         * particular for voice input.
-         *
-         * @param newQuery The current search query.
-         * @return whether the results changed as a result of the new query.
-         */
-        public boolean onQueryTextChange(String newQuery);
-
-        /**
-         * Method invoked when the search query is submitted, either by dismissing the keyboard,
-         * pressing search or next on the keyboard or when voice has detected the end of the query.
-         *
-         * @param query The query entered.
-         * @return whether the results changed as a result of the query.
-         */
-        public boolean onQueryTextSubmit(String query);
-    }
-
-    final DataObserver mAdapterObserver = new DataObserver() {
-        @Override
-        public void onChanged() {
-            // onChanged() may be called multiple times e.g. the provider add
-            // rows to ArrayObjectAdapter one by one.
-            mHandler.removeCallbacks(mResultsChangedCallback);
-            mHandler.post(mResultsChangedCallback);
-        }
-    };
-
+    private static final String EXTRA_LEANBACK_BADGE_PRESENT = "LEANBACK_BADGE_PRESENT";
+    private static final String ARG_PREFIX = SearchSupportFragment.class.getCanonicalName();
+    private static final String ARG_QUERY = ARG_PREFIX + ".query";
+    private static final String ARG_TITLE = ARG_PREFIX + ".title";
     final Handler mHandler = new Handler();
-
+    RowsSupportFragment mRowsSupportFragment;
+    SearchBar mSearchBar;
+    SearchEditText mSearchTextEditor;
+    SpeechOrbView mSpeechOrbView;
+    SearchResultProvider mProvider;
+    String mPendingQuery = null;
+    SearchOrbView mSearchOrbView;
+    SearchOrbView mSearchSettingsOrbView;
+    OnItemViewSelectedListener mOnItemViewSelectedListener;
+    ObjectAdapter mResultAdapter;
+    int mStatus;
     final Runnable mResultsChangedCallback = new Runnable() {
         @Override
         public void run() {
@@ -153,7 +111,23 @@ public class SearchSupportFragment extends Fragment {
             updateSearchBarNextFocusId();
         }
     };
-
+    final DataObserver mAdapterObserver = new DataObserver() {
+        @Override
+        public void onChanged() {
+            // onChanged() may be called multiple times e.g. the provider add
+            // rows to ArrayObjectAdapter one by one.
+            mHandler.removeCallbacks(mResultsChangedCallback);
+            mHandler.post(mResultsChangedCallback);
+        }
+    };
+    boolean mAutoStartRecognition = false; // MOD: don't start search immediately
+    final Runnable mStartRecognitionRunnable = new Runnable() {
+        @Override
+        public void run() {
+            mAutoStartRecognition = false;
+            startRecognitionInt();
+        }
+    };
     /**
      * Runs when a new provider is set AND when the fragment view is created.
      */
@@ -200,63 +174,24 @@ public class SearchSupportFragment extends Fragment {
             }
         }
     };
-
-    final Runnable mStartRecognitionRunnable = new Runnable() {
-        @Override
-        public void run() {
-            mAutoStartRecognition = false;
-            startRecognitionInt();
-        }
-    };
-
-    RowsSupportFragment mRowsSupportFragment;
-    SearchBar mSearchBar;
-    SearchEditText mSearchTextEditor;
-    SpeechOrbView mSpeechOrbView;
-    SearchResultProvider mProvider;
-    String mPendingQuery = null;
-    SearchOrbView mSearchOrbView;
-    SearchOrbView mSearchSettingsOrbView;
-
-    OnItemViewSelectedListener mOnItemViewSelectedListener;
     private OnItemViewClickedListener mOnItemViewClickedListener;
-    ObjectAdapter mResultAdapter;
     private SpeechRecognitionCallback mSpeechRecognitionCallback;
-
     private String mTitle;
     private Drawable mBadgeDrawable;
     private ExternalQuery mExternalQuery;
     private boolean mIsKeyboardAutoShowEnabled;
     private boolean mIsKeyboardFixEnabled;
     private boolean mIsTypingCorrectionDisabled;
-
     private SpeechRecognizer mSpeechRecognizer;
-
-    int mStatus;
-    boolean mAutoStartRecognition = false; // MOD: don't start search immediately
-    
     private boolean mPendingStartRecognition;
     private SearchBar.SearchBarPermissionListener mPermissionListener =
             new SearchBar.SearchBarPermissionListener() {
-        @Override
-        public void requestAudioPermission() {
-            requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO},
-                    AUDIO_PERMISSION_REQUEST_CODE);
-        }
-    };
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                           int[] grantResults) {
-        if (requestCode == AUDIO_PERMISSION_REQUEST_CODE && permissions.length > 0) {
-            if (permissions[0].equals(Manifest.permission.RECORD_AUDIO)
-                    && grantResults[0] == PERMISSION_GRANTED) {
-                startRecognition();
-            } else {
-                MessageHelpers.showMessage(getContext(), com.liskovsoft.smartyoutubetv2.common.R.string.not_supported_by_device);
-            }
-        }
-    }
+                @Override
+                public void requestAudioPermission() {
+                    requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO},
+                            AUDIO_PERMISSION_REQUEST_CODE);
+                }
+            };
 
     /**
      * @param args Bundle to use for the arguments, if null a new Bundle will be created.
@@ -265,7 +200,7 @@ public class SearchSupportFragment extends Fragment {
         return createArgs(args, query, null);
     }
 
-    public static Bundle createArgs(Bundle args, String query, String title)  {
+    public static Bundle createArgs(Bundle args, String query, String title) {
         if (args == null) {
             args = new Bundle();
         }
@@ -288,6 +223,19 @@ public class SearchSupportFragment extends Fragment {
         Bundle args = createArgs(null, query);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == AUDIO_PERMISSION_REQUEST_CODE && permissions.length > 0) {
+            if (permissions[0].equals(Manifest.permission.RECORD_AUDIO)
+                    && grantResults[0] == PERMISSION_GRANTED) {
+                startRecognition();
+            } else {
+                MessageHelpers.showMessage(getContext(), com.liskovsoft.smartyoutubetv2.common.R.string.not_supported_by_device);
+            }
+        }
     }
 
     @Override
@@ -576,7 +524,7 @@ public class SearchSupportFragment extends Fragment {
      * Sets an item selection listener for the results.
      *
      * @param listener The item selection listener to be invoked when an item in
-     *        the search results is selected.
+     *                 the search results is selected.
      */
     public void setOnItemViewSelectedListener(OnItemViewSelectedListener listener) {
         mOnItemViewSelectedListener = listener;
@@ -586,7 +534,7 @@ public class SearchSupportFragment extends Fragment {
      * Sets an item clicked listener for the results.
      *
      * @param listener The item clicked listener to be invoked when an item in
-     *        the search results is clicked.
+     *                 the search results is clicked.
      */
     public void setOnItemViewClickedListener(OnItemViewClickedListener listener) {
         if (listener != mOnItemViewClickedListener) {
@@ -595,6 +543,16 @@ public class SearchSupportFragment extends Fragment {
                 mRowsSupportFragment.setOnItemViewClickedListener(mOnItemViewClickedListener);
             }
         }
+    }
+
+    /**
+     * Returns the title set in the search bar.
+     */
+    public String getTitle() {
+        if (null != mSearchBar) {
+            return mSearchBar.getTitle();
+        }
+        return null;
     }
 
     /**
@@ -610,11 +568,11 @@ public class SearchSupportFragment extends Fragment {
     }
 
     /**
-     * Returns the title set in the search bar.
+     * Returns the badge drawable in the search bar.
      */
-    public String getTitle() {
+    public Drawable getBadgeDrawable() {
         if (null != mSearchBar) {
-            return mSearchBar.getTitle();
+            return mSearchBar.getBadgeDrawable();
         }
         return null;
     }
@@ -628,16 +586,6 @@ public class SearchSupportFragment extends Fragment {
         if (null != mSearchBar) {
             mSearchBar.setBadgeDrawable(drawable);
         }
-    }
-
-    /**
-     * Returns the badge drawable in the search bar.
-     */
-    public Drawable getBadgeDrawable() {
-        if (null != mSearchBar) {
-            return mSearchBar.getBadgeDrawable();
-        }
-        return null;
     }
 
     /**
@@ -667,7 +615,7 @@ public class SearchSupportFragment extends Fragment {
      * a list of query completions that the system will show in the IME.
      *
      * @param completions A list of completions to show in the IME. Setting to
-     *        null or empty will clear the list.
+     *                    null or empty will clear the list.
      */
     public void displayCompletions(List<String> completions) {
         mSearchBar.displayCompletions(completions);
@@ -678,7 +626,7 @@ public class SearchSupportFragment extends Fragment {
      * a list of query completions that the system will show in the IME.
      *
      * @param completions A list of completions to show in the IME. Setting to
-     *        null or empty will clear the list.
+     *                    null or empty will clear the list.
      */
     public void displayCompletions(CompletionInfo[] completions) {
         mSearchBar.displayCompletions(completions);
@@ -687,8 +635,9 @@ public class SearchSupportFragment extends Fragment {
     /**
      * Sets this callback to have the fragment pass speech recognition requests
      * to the activity rather than using a SpeechRecognizer object.
+     *
      * @deprecated Launching voice recognition activity is no longer supported. App should declare
-     *             android.permission.RECORD_AUDIO in AndroidManifest file.
+     * android.permission.RECORD_AUDIO in AndroidManifest file.
      */
     @Deprecated
     public void setSpeechRecognitionCallback(SpeechRecognitionCallback callback) {
@@ -707,7 +656,7 @@ public class SearchSupportFragment extends Fragment {
      * {@link SearchResultProvider#onQueryTextSubmit onQueryTextSubmit} will be
      * called on the provider if it is set.
      *
-     * @param query The search query to set.
+     * @param query  The search query to set.
      * @param submit Whether to submit the query.
      */
     public void setSearchQuery(String query, boolean submit) {
@@ -749,7 +698,7 @@ public class SearchSupportFragment extends Fragment {
      * <li>{@link RecognizerIntent#EXTRA_PARTIAL_RESULTS} set to true</li>
      * <li>{@link RecognizerIntent#EXTRA_PROMPT} set to the search bar hint text</li>
      * </ul>
-     *
+     * <p>
      * For handling the intent returned from the service, see
      * {@link #setSearchQuery(Intent, boolean)}.
      */
@@ -865,7 +814,7 @@ public class SearchSupportFragment extends Fragment {
     void updateSearchBarVisibility() {
         int position = mRowsSupportFragment != null ? mRowsSupportFragment.getSelectedPosition() : -1;
         try {
-            mSearchBar.setVisibility(position <=0 || mResultAdapter == null
+            mSearchBar.setVisibility(position <= 0 || mResultAdapter == null
                     || mResultAdapter.size() == 0 ? View.VISIBLE : View.GONE);
         } catch (NullPointerException e) {
             // Fatal Exception: java.lang.NullPointerException
@@ -881,8 +830,8 @@ public class SearchSupportFragment extends Fragment {
         }
         final int viewId = (mResultAdapter.size() == 0 || mRowsSupportFragment == null
                 || mRowsSupportFragment.getVerticalGridView() == null)
-                        ? 0 : mRowsSupportFragment.getVerticalGridView().getId();
-        
+                ? 0 : mRowsSupportFragment.getVerticalGridView().getId();
+
         mSearchBar.setNextFocusDownId(viewId);
     }
 
@@ -941,6 +890,45 @@ public class SearchSupportFragment extends Fragment {
 
     protected void stopSpeechService() {
         // NOP
+    }
+
+    /**
+     * Search API to be provided by the application.
+     */
+    public static interface SearchResultProvider {
+        /**
+         * <p>Method invoked some time prior to the first call to onQueryTextChange to retrieve
+         * an ObjectAdapter that will contain the results to future updates of the search query.</p>
+         *
+         * <p>As results are retrieved, the application should use the data set notification methods
+         * on the ObjectAdapter to instruct the SearchSupportFragment to update the results.</p>
+         *
+         * @return ObjectAdapter The result object adapter.
+         */
+        public ObjectAdapter getResultsAdapter();
+
+        /**
+         * <p>Method invoked when the search query is updated.</p>
+         *
+         * <p>This is called as soon as the query changes; it is up to the application to add a
+         * delay before actually executing the queries if needed.
+         *
+         * <p>This method might not always be called before onQueryTextSubmit gets called, in
+         * particular for voice input.
+         *
+         * @param newQuery The current search query.
+         * @return whether the results changed as a result of the new query.
+         */
+        public boolean onQueryTextChange(String newQuery);
+
+        /**
+         * Method invoked when the search query is submitted, either by dismissing the keyboard,
+         * pressing search or next on the keyboard or when voice has detected the end of the query.
+         *
+         * @param query The query entered.
+         * @return whether the results changed as a result of the query.
+         */
+        public boolean onQueryTextSubmit(String query);
     }
 
     static class ExternalQuery {

@@ -54,35 +54,6 @@ public class ChannelHeaderPresenter extends RowPresenter {
     private int mStatus;
     private String mTitle;
 
-    public interface ChannelHeaderProvider {
-        boolean onSearchChange(String newQuery);
-        boolean onSearchSubmit(String query);
-        void onSearchSettingsClicked();
-        String getChannelTitle();
-    }
-
-    public static class ChannelHeaderCallback extends Row implements ChannelHeaderProvider {
-        @Override
-        public boolean onSearchChange(String newQuery) {
-            return false;
-        }
-
-        @Override
-        public boolean onSearchSubmit(String query) {
-            return false;
-        }
-
-        @Override
-        public void onSearchSettingsClicked() {
-
-        }
-
-        @Override
-        public String getChannelTitle() {
-            return null;
-        }
-    }
-
     @Override
     protected ViewHolder createRowViewHolder(ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -226,6 +197,144 @@ public class ChannelHeaderPresenter extends RowPresenter {
         }
     }
 
+    /**
+     * Returns an intent that can be used to request speech recognition.
+     * Built from the base {@link RecognizerIntent#ACTION_RECOGNIZE_SPEECH} plus
+     * extras:
+     *
+     * <ul>
+     * <li>{@link RecognizerIntent#EXTRA_LANGUAGE_MODEL} set to
+     * {@link RecognizerIntent#LANGUAGE_MODEL_FREE_FORM}</li>
+     * <li>{@link RecognizerIntent#EXTRA_PARTIAL_RESULTS} set to true</li>
+     * <li>{@link RecognizerIntent#EXTRA_PROMPT} set to the search bar hint text</li>
+     * </ul>
+     */
+    private Intent getRecognizerIntent(SearchBar searchBar) {
+        Intent recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
+        if (searchBar != null && searchBar.getHint() != null) {
+            recognizerIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, searchBar.getHint());
+        }
+        recognizerIntent.putExtra(EXTRA_LEANBACK_BADGE_PRESENT, mBadgeDrawable != null);
+        return recognizerIntent;
+    }
+
+    private String getRecognizerResult(Intent intent) {
+        ArrayList<String> matches = intent.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+        return matches != null && matches.size() > 0 ? matches.get(0) : null;
+    }
+
+    private void submitQuery(ChannelHeaderProvider provider, String query) {
+        if (query == null) {
+            return;
+        }
+
+        if (null != provider) {
+            provider.onSearchSubmit(query);
+        }
+    }
+
+    private String getSearchBarText(SearchEditText searchTextEditor) {
+        return searchTextEditor.getText().toString();
+    }
+
+    private void retrieveResults(ChannelHeaderProvider provider, String searchQuery) {
+        if (BuildConfig.DEBUG) Log.v(TAG, "retrieveResults " + searchQuery);
+        if (provider.onSearchChange(searchQuery)) {
+            mStatus &= ~QUERY_COMPLETE;
+        }
+    }
+
+    private void stopSpeechService(Context context) {
+        // Note: Other services don't need to be stopped
+
+        if (SearchData.instance(context).getSpeechRecognizerType() != SearchData.SPEECH_RECOGNIZER_GOTEV) {
+            return;
+        }
+
+        try {
+            Speech.getInstance().stopListening();
+        } catch (IllegalArgumentException |
+                 NoSuchMethodError e) { // Speech service not registered/Android 4 (no such method)
+            e.printStackTrace();
+        }
+    }
+
+    private void setTitle(SearchBar searchBar, String title) {
+        mTitle = title;
+        if (null != searchBar) {
+            searchBar.setTitle(title);
+        }
+    }
+
+    private void setBadgeDrawable(SearchBar searchBar, Drawable drawable) {
+        mBadgeDrawable = drawable;
+        if (null != searchBar) {
+            searchBar.setBadgeDrawable(drawable);
+        }
+    }
+
+    private void applyExternalQuery(ChannelHeaderProvider provider, SearchBar mSearchBar, String query, boolean submit) {
+        if (query == null || mSearchBar == null) {
+            return;
+        }
+        mSearchBar.setSearchQuery(query);
+        if (submit) {
+            submitQuery(provider, query);
+        }
+    }
+
+    private void showListening(SpeechOrbView speechOrbView) {
+        if (speechOrbView != null) {
+            speechOrbView.showListening();
+        }
+    }
+
+    private void showNotListening(SpeechOrbView speechOrbView) {
+        if (speechOrbView != null) {
+            speechOrbView.showNotListening();
+        }
+
+        //if (mSearchTextEditor != null) {
+        //    // Hide "Speak to search" when not listening
+        //    mSearchTextEditor.setHint("");
+        //}
+    }
+
+    public interface ChannelHeaderProvider {
+        boolean onSearchChange(String newQuery);
+
+        boolean onSearchSubmit(String query);
+
+        void onSearchSettingsClicked();
+
+        String getChannelTitle();
+    }
+
+    public static class ChannelHeaderCallback extends Row implements ChannelHeaderProvider {
+        @Override
+        public boolean onSearchChange(String newQuery) {
+            return false;
+        }
+
+        @Override
+        public boolean onSearchSubmit(String query) {
+            return false;
+        }
+
+        @Override
+        public void onSearchSettingsClicked() {
+
+        }
+
+        @Override
+        public String getChannelTitle() {
+            return null;
+        }
+    }
+
     private final class RecognizerIntentCallback implements SpeechRecognitionCallback {
         private final Context mContext;
         private final ChannelHeaderProvider mProvider;
@@ -335,110 +444,5 @@ public class ChannelHeaderPresenter extends RowPresenter {
                 }
             }
         }
-    }
-
-    /**
-     * Returns an intent that can be used to request speech recognition.
-     * Built from the base {@link RecognizerIntent#ACTION_RECOGNIZE_SPEECH} plus
-     * extras:
-     *
-     * <ul>
-     * <li>{@link RecognizerIntent#EXTRA_LANGUAGE_MODEL} set to
-     * {@link RecognizerIntent#LANGUAGE_MODEL_FREE_FORM}</li>
-     * <li>{@link RecognizerIntent#EXTRA_PARTIAL_RESULTS} set to true</li>
-     * <li>{@link RecognizerIntent#EXTRA_PROMPT} set to the search bar hint text</li>
-     * </ul>
-     */
-    private Intent getRecognizerIntent(SearchBar searchBar) {
-        Intent recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
-        if (searchBar != null && searchBar.getHint() != null) {
-            recognizerIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, searchBar.getHint());
-        }
-        recognizerIntent.putExtra(EXTRA_LEANBACK_BADGE_PRESENT, mBadgeDrawable != null);
-        return recognizerIntent;
-    }
-
-    private String getRecognizerResult(Intent intent) {
-        ArrayList<String> matches = intent.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-        return matches != null && matches.size() > 0 ? matches.get(0) : null;
-    }
-
-    private void submitQuery(ChannelHeaderProvider provider, String query) {
-        if (query == null) {
-            return;
-        }
-        
-        if (null != provider) {
-            provider.onSearchSubmit(query);
-        }
-    }
-
-    private String getSearchBarText(SearchEditText searchTextEditor) {
-        return searchTextEditor.getText().toString();
-    }
-
-    private void retrieveResults(ChannelHeaderProvider provider, String searchQuery) {
-        if (BuildConfig.DEBUG) Log.v(TAG, "retrieveResults " + searchQuery);
-        if (provider.onSearchChange(searchQuery)) {
-            mStatus &= ~QUERY_COMPLETE;
-        }
-    }
-
-    private void stopSpeechService(Context context) {
-        // Note: Other services don't need to be stopped
-
-        if (SearchData.instance(context).getSpeechRecognizerType() != SearchData.SPEECH_RECOGNIZER_GOTEV) {
-            return;
-        }
-
-        try {
-            Speech.getInstance().stopListening();
-        } catch (IllegalArgumentException | NoSuchMethodError e) { // Speech service not registered/Android 4 (no such method)
-            e.printStackTrace();
-        }
-    }
-
-    private void setTitle(SearchBar searchBar, String title) {
-        mTitle = title;
-        if (null != searchBar) {
-            searchBar.setTitle(title);
-        }
-    }
-
-    private void setBadgeDrawable(SearchBar searchBar, Drawable drawable) {
-        mBadgeDrawable = drawable;
-        if (null != searchBar) {
-            searchBar.setBadgeDrawable(drawable);
-        }
-    }
-
-    private void applyExternalQuery(ChannelHeaderProvider provider, SearchBar mSearchBar, String query, boolean submit) {
-        if (query == null || mSearchBar == null) {
-            return;
-        }
-        mSearchBar.setSearchQuery(query);
-        if (submit) {
-            submitQuery(provider, query);
-        }
-    }
-
-    private void showListening(SpeechOrbView speechOrbView) {
-        if (speechOrbView != null) {
-            speechOrbView.showListening();
-        }
-    }
-
-    private void showNotListening(SpeechOrbView speechOrbView) {
-        if (speechOrbView != null) {
-            speechOrbView.showNotListening();
-        }
-
-        //if (mSearchTextEditor != null) {
-        //    // Hide "Speak to search" when not listening
-        //    mSearchTextEditor.setHint("");
-        //}
     }
 }

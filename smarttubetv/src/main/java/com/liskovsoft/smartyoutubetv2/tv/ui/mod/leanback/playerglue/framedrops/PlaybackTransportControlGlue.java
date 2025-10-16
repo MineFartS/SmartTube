@@ -22,6 +22,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+
 import androidx.leanback.media.MediaPlayerAdapter;
 import androidx.leanback.media.PlaybackGlueHost;
 import androidx.leanback.media.PlayerAdapter;
@@ -35,6 +36,7 @@ import androidx.leanback.widget.PlaybackSeekDataProvider;
 import androidx.leanback.widget.PlaybackSeekUi;
 import androidx.leanback.widget.PlaybackTransportRowPresenter;
 import androidx.leanback.widget.RowPresenter;
+
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
 
 import java.lang.ref.WeakReference;
@@ -84,6 +86,7 @@ import java.lang.ref.WeakReference;
  *     }
  * }
  * </code></pre>
+ *
  * @param <T> Type of {@link PlayerAdapter} passed in constructor.
  */
 public class PlaybackTransportControlGlue<T extends PlayerAdapter>
@@ -94,32 +97,17 @@ public class PlaybackTransportControlGlue<T extends PlayerAdapter>
 
     static final int MSG_UPDATE_PLAYBACK_STATE = 100;
     static final int UPDATE_PLAYBACK_STATE_DELAY_MS = 2000;
-
+    static final Handler sHandler = new UpdatePlaybackStateHandler();
+    final WeakReference<PlaybackBaseControlGlue> mGlueWeakReference = new WeakReference(this);
+    final SeekUiClient mPlaybackSeekUiClient = new SeekUiClient();
     PlaybackSeekDataProvider mSeekProvider;
     boolean mSeekEnabled;
-
-    static class UpdatePlaybackStateHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == MSG_UPDATE_PLAYBACK_STATE) {
-                PlaybackTransportControlGlue glue =
-                        ((WeakReference<PlaybackTransportControlGlue>) msg.obj).get();
-                if (glue != null) {
-                    glue.onUpdatePlaybackState();
-                }
-            }
-        }
-    }
-
-    static final Handler sHandler = new UpdatePlaybackStateHandler();
-
-    final WeakReference<PlaybackBaseControlGlue> mGlueWeakReference =  new WeakReference(this);
 
     /**
      * Constructor for the glue.
      *
      * @param context
-     * @param impl Implementation to underlying media player.
+     * @param impl    Implementation to underlying media player.
      */
     public PlaybackTransportControlGlue(Context context, T impl) {
         super(context, impl);
@@ -144,7 +132,7 @@ public class PlaybackTransportControlGlue<T extends PlayerAdapter>
                 new AbstractDetailsDescriptionPresenter() {
                     @Override
                     protected void onBindDescription(ViewHolder
-                            viewHolder, Object obj) {
+                                                             viewHolder, Object obj) {
                         PlaybackBaseControlGlue glue = (PlaybackBaseControlGlue) obj;
                         viewHolder.getTitle().setText(glue.getTitle());
                         viewHolder.getSubtitle().setText(glue.getSubtitle());
@@ -159,6 +147,7 @@ public class PlaybackTransportControlGlue<T extends PlayerAdapter>
                 super.onBindRowViewHolder(vh, item);
                 vh.setOnKeyListener(PlaybackTransportControlGlue.this);
             }
+
             @Override
             protected void onUnbindRowViewHolder(RowPresenter.ViewHolder vh) {
                 super.onUnbindRowViewHolder(vh);
@@ -325,7 +314,55 @@ public class PlaybackTransportControlGlue<T extends PlayerAdapter>
         }
     }
 
-    final SeekUiClient mPlaybackSeekUiClient = new SeekUiClient();
+    /**
+     * Get seek data provider used during user seeking.
+     *
+     * @return Seek data provider used during user seeking.
+     */
+    public final PlaybackSeekDataProvider getSeekProvider() {
+        return mSeekProvider;
+    }
+
+    /**
+     * Set seek data provider used during user seeking.
+     *
+     * @param seekProvider Seek data provider used during user seeking.
+     */
+    public final void setSeekProvider(PlaybackSeekDataProvider seekProvider) {
+        mSeekProvider = seekProvider;
+    }
+
+    ;
+
+    /**
+     * @return True if seek is enabled without {@link PlaybackSeekDataProvider}, false otherwise.
+     */
+    public final boolean isSeekEnabled() {
+        return mSeekEnabled;
+    }
+
+    /**
+     * Enable or disable seek when {@link #getSeekProvider()} is null. When true,
+     * {@link PlayerAdapter#seekTo(long)} will be called during user seeking.
+     *
+     * @param seekEnabled True to enable seek, false otherwise
+     */
+    public final void setSeekEnabled(boolean seekEnabled) {
+        mSeekEnabled = seekEnabled;
+    }
+
+    static class UpdatePlaybackStateHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == MSG_UPDATE_PLAYBACK_STATE) {
+                PlaybackTransportControlGlue glue =
+                        ((WeakReference<PlaybackTransportControlGlue>) msg.obj).get();
+                if (glue != null) {
+                    glue.onUpdatePlaybackState();
+                }
+            }
+        }
+    }
 
     class SeekUiClient extends PlaybackSeekUi.Client {
         boolean mPausedBeforeSeek;
@@ -391,38 +428,5 @@ public class PlaybackTransportControlGlue<T extends PlayerAdapter>
                 onUpdateProgress();
             }
         }
-    };
-
-    /**
-     * Set seek data provider used during user seeking.
-     * @param seekProvider Seek data provider used during user seeking.
-     */
-    public final void setSeekProvider(PlaybackSeekDataProvider seekProvider) {
-        mSeekProvider = seekProvider;
-    }
-
-    /**
-     * Get seek data provider used during user seeking.
-     * @return Seek data provider used during user seeking.
-     */
-    public final PlaybackSeekDataProvider getSeekProvider() {
-        return mSeekProvider;
-    }
-
-    /**
-     * Enable or disable seek when {@link #getSeekProvider()} is null. When true,
-     * {@link PlayerAdapter#seekTo(long)} will be called during user seeking.
-     *
-     * @param seekEnabled True to enable seek, false otherwise
-     */
-    public final void setSeekEnabled(boolean seekEnabled) {
-        mSeekEnabled = seekEnabled;
-    }
-
-    /**
-     * @return True if seek is enabled without {@link PlaybackSeekDataProvider}, false otherwise.
-     */
-    public final boolean isSeekEnabled() {
-        return mSeekEnabled;
     }
 }

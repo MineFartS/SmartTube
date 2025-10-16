@@ -3,12 +3,14 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.widgets.search;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+
 import androidx.leanback.widget.SearchOrbView;
+
 import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
 
 /**
- *     1) Add long click listener <br/>
- *     2) Disable short click if corresponding option enabled
+ * 1) Add long click listener <br/>
+ * 2) Disable short click if corresponding option enabled
  */
 public class LongClickSearchOrbView extends SearchOrbView implements View.OnLongClickListener {
     private OnLongClickListener mListener2;

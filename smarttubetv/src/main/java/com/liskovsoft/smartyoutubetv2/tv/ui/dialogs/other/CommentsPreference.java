@@ -2,7 +2,9 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.dialogs.other;
 
 import android.content.Context;
 import android.util.AttributeSet;
+
 import androidx.preference.DialogPreference;
+
 import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.CommentsReceiver;
 
 public class CommentsPreference extends DialogPreference {
@@ -24,11 +26,11 @@ public class CommentsPreference extends DialogPreference {
         super(context);
     }
 
-    public void setCommentsReceiver(CommentsReceiver commentsReceiver) {
-        mCommentsReceiver = commentsReceiver;
-    }
-
     public CommentsReceiver getCommentsReceiver() {
         return mCommentsReceiver;
+    }
+
+    public void setCommentsReceiver(CommentsReceiver commentsReceiver) {
+        mCommentsReceiver = commentsReceiver;
     }
 }

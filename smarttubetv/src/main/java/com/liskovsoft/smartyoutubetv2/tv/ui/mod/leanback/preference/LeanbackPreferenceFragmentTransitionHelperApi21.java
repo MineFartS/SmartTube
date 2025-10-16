@@ -19,7 +19,9 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.preference;
 import android.app.Fragment;
 import android.transition.Transition;
 import android.view.Gravity;
+
 import androidx.annotation.RequiresApi;
+
 import com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.transition.FadeAndShortSlide;
 
 /**
@@ -27,6 +29,9 @@ import com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.transition.FadeAndShort
  */
 @RequiresApi(21)
 public class LeanbackPreferenceFragmentTransitionHelperApi21 {
+
+    private LeanbackPreferenceFragmentTransitionHelperApi21() {
+    }
 
     public static void addTransitions(Fragment f) {
         final Transition transitionStartEdge = new FadeAndShortSlide(Gravity.START);
@@ -36,9 +41,5 @@ public class LeanbackPreferenceFragmentTransitionHelperApi21 {
         f.setExitTransition(transitionStartEdge);
         f.setReenterTransition(transitionStartEdge);
         f.setReturnTransition(transitionEndEdge);
-    }
-
-
-    private LeanbackPreferenceFragmentTransitionHelperApi21() {
     }
 }

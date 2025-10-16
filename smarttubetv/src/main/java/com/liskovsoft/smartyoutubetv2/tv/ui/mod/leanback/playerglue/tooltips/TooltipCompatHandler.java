@@ -23,6 +23,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.accessibility.AccessibilityManager;
+
 import androidx.annotation.RestrictTo;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.ViewConfigurationCompat;
@@ -44,36 +45,44 @@ public class TooltipCompatHandler implements View.OnLongClickListener, View.OnHo
     private static final long LONG_CLICK_HIDE_TIMEOUT_MS = 2500;
     private static final long HOVER_HIDE_TIMEOUT_MS = 15000;
     private static final long HOVER_HIDE_TIMEOUT_SHORT_MS = 3000;
-
+    // The handler currently scheduled to show a tooltip, triggered by a hover
+    // (there can be only one).
+    private static TooltipCompatHandler sPendingHandler;
+    // The handler currently showing a tooltip (there can be only one).
+    private static TooltipCompatHandler sActiveHandler;
     private final View mAnchor;
     private final CharSequence mTooltipText;
-    private final int mHoverSlop;
-
-    private final Runnable mShowRunnable = new Runnable() {
+    private final int mHoverSlop;    private final Runnable mShowRunnable = new Runnable() {
         @Override
         public void run() {
             show(false /* not from touch*/);
         }
     };
-    private final Runnable mHideRunnable = new Runnable() {
+    private int mAnchorX;
+    private int mAnchorY;    private final Runnable mHideRunnable = new Runnable() {
         @Override
         public void run() {
             hide();
         }
     };
-
-    private int mAnchorX;
-    private int mAnchorY;
-
     private TooltipPopup mPopup;
     private boolean mFromTouch;
 
-    // The handler currently scheduled to show a tooltip, triggered by a hover
-    // (there can be only one).
-    private static TooltipCompatHandler sPendingHandler;
+    private TooltipCompatHandler(View anchor, CharSequence tooltipText) {
+        mAnchor = anchor;
+        mTooltipText = tooltipText;
+        mHoverSlop = ViewConfigurationCompat.getScaledHoverSlop(
+                ViewConfiguration.get(mAnchor.getContext()));
+        clearAnchorPos();
 
-    // The handler currently showing a tooltip (there can be only one).
-    private static TooltipCompatHandler sActiveHandler;
+        // MODIFIED: listener already added in ControlBarPresenter
+        //mAnchor.setOnLongClickListener(this);
+
+        // Invisible controls bar can react on mouse pointer
+        //mAnchor.setOnHoverListener(this);
+
+        mAnchor.setOnFocusChangeListener(this);
+    }
 
     /**
      * Set the tooltip text for the view.
@@ -121,20 +130,14 @@ public class TooltipCompatHandler implements View.OnLongClickListener, View.OnHo
         }
     }
 
-    private TooltipCompatHandler(View anchor, CharSequence tooltipText) {
-        mAnchor = anchor;
-        mTooltipText = tooltipText;
-        mHoverSlop = ViewConfigurationCompat.getScaledHoverSlop(
-                ViewConfiguration.get(mAnchor.getContext()));
-        clearAnchorPos();
-
-        // MODIFIED: listener already added in ControlBarPresenter
-        //mAnchor.setOnLongClickListener(this);
-
-        // Invisible controls bar can react on mouse pointer
-        //mAnchor.setOnHoverListener(this);
-
-        mAnchor.setOnFocusChangeListener(this);
+    private static void setPendingHandler(TooltipCompatHandler handler) {
+        if (sPendingHandler != null) {
+            sPendingHandler.cancelPendingShow();
+        }
+        sPendingHandler = handler;
+        if (sPendingHandler != null) {
+            sPendingHandler.scheduleShow();
+        }
     }
 
     @Override
@@ -237,16 +240,6 @@ public class TooltipCompatHandler implements View.OnLongClickListener, View.OnHo
         mAnchor.removeCallbacks(mHideRunnable);
     }
 
-    private static void setPendingHandler(TooltipCompatHandler handler) {
-        if (sPendingHandler != null) {
-            sPendingHandler.cancelPendingShow();
-        }
-        sPendingHandler = handler;
-        if (sPendingHandler != null) {
-            sPendingHandler.scheduleShow();
-        }
-    }
-
     private void scheduleShow() {
         mAnchor.postDelayed(mShowRunnable, ViewConfiguration.getLongPressTimeout());
     }
@@ -275,10 +268,16 @@ public class TooltipCompatHandler implements View.OnLongClickListener, View.OnHo
     }
 
     /**
-     *  Clear the anchor position to ensure that the next change is considered significant.
+     * Clear the anchor position to ensure that the next change is considered significant.
      */
     private void clearAnchorPos() {
         mAnchorX = Integer.MAX_VALUE;
         mAnchorY = Integer.MAX_VALUE;
     }
+
+
+
+
+
+
 }

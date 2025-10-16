@@ -2,11 +2,13 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.dialogs;
 
 import android.content.Context;
 import android.text.TextUtils;
+
 import androidx.preference.DialogPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.SwitchPreference;
+
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionCategory;
 import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionItem;
@@ -23,20 +25,6 @@ import java.util.Set;
 public class AppPreferenceManager {
     private final Context mContext;
     private final Runnable mOnChange;
-
-    public static class ListPreferenceData {
-        public final CharSequence[] entries;
-        public final CharSequence[] values;
-        public final String defaultValue;
-        public final Set<String> defaultValues;
-
-        public ListPreferenceData(CharSequence[] entries, CharSequence[] values, String defaultValue, Set<String> defaultValues) {
-            this.entries = entries;
-            this.values = values;
-            this.defaultValue = defaultValue;
-            this.defaultValues = defaultValues;
-        }
-    }
 
     public AppPreferenceManager(Context context) {
         this(context, null);
@@ -67,7 +55,7 @@ public class AppPreferenceManager {
                 return createCommentsPreference(category);
         }
 
-        throw  new IllegalStateException("Can't find matched preference for type: " + category.type);
+        throw new IllegalStateException("Can't find matched preference for type: " + category.type);
     }
 
     private Preference createStringListPreference(OptionCategory category) {
@@ -277,5 +265,19 @@ public class AppPreferenceManager {
         pref.setTitle(category.title);
         pref.setDialogTitle(category.title);
         pref.setKey(category.toString());
+    }
+
+    public static class ListPreferenceData {
+        public final CharSequence[] entries;
+        public final CharSequence[] values;
+        public final String defaultValue;
+        public final Set<String> defaultValues;
+
+        public ListPreferenceData(CharSequence[] entries, CharSequence[] values, String defaultValue, Set<String> defaultValues) {
+            this.entries = entries;
+            this.values = values;
+            this.defaultValue = defaultValue;
+            this.defaultValues = defaultValues;
+        }
     }
 }

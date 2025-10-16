@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.browse.video;
 
 import android.os.Bundle;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.leanback.widget.OnItemViewSelectedListener;
 import androidx.leanback.widget.Presenter;
@@ -35,15 +36,14 @@ import java.util.List;
 public class VideoGridFragment extends GridFragment implements VideoSection {
     private static final String TAG = VideoGridFragment.class.getSimpleName();
     private static final int RESTORE_MAX_SIZE = 10_000;
-    private VideoGroupObjectAdapter mGridAdapter;
     private final List<VideoGroup> mPendingUpdates = new ArrayList<>();
+    private VideoGroupObjectAdapter mGridAdapter;
     private UriBackgroundManager mBackgroundManager;
     private VideoGroupPresenter mMainPresenter;
     private VideoCardPresenter mCardPresenter;
     private int mSelectedItemIndex = -1;
     private Video mSelectedItem;
     private float mVideoGridScale;
-    private final Runnable mRestoreTask = this::restorePosition;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class VideoGridFragment extends GridFragment implements VideoSection {
 
     protected VideoGroupPresenter getMainPresenter() {
         return BrowsePresenter.instance(getContext());
-    }
+    }    private final Runnable mRestoreTask = this::restorePosition;
 
     private void setupEventListeners() {
         setOnItemViewClickedListener(new ItemViewClickedListener());
@@ -286,4 +286,8 @@ public class VideoGridFragment extends GridFragment implements VideoSection {
             }
         }
     }
+
+
+
+
 }

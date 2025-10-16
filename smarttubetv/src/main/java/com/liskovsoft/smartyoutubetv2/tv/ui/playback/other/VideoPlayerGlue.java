@@ -5,6 +5,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.KeyEvent;
 import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -17,6 +18,7 @@ import androidx.leanback.widget.ObjectAdapter;
 import androidx.leanback.widget.PlaybackControlsRow;
 import androidx.leanback.widget.PlaybackControlsRow.MultiAction;
 import androidx.leanback.widget.PlaybackRowPresenter;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -72,7 +74,7 @@ import java.util.concurrent.TimeUnit;
  *   <li>{@link androidx.leanback.widget.PlaybackControlsRow.FastForwardAction}
  *   <li>{@link androidx.leanback.widget.PlaybackControlsRow.RewindAction}
  * </ul>
- *
+ * <p>
  * Note that the superclass, {@link PlaybackTransportControlGlue}, manages the playback controls
  * row.
  */
@@ -289,14 +291,18 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         }
     }
 
-    /** Skips backwards 10 seconds. */
+    /**
+     * Skips backwards 10 seconds.
+     */
     public void rewind() {
         long newPosition = getCurrentPosition() - TEN_SECONDS;
         newPosition = (newPosition < 0) ? 0 : newPosition;
         getPlayerAdapter().seekTo(newPosition);
     }
 
-    /** Skips forward 10 seconds. */
+    /**
+     * Skips forward 10 seconds.
+     */
     public void fastForward() {
         if (getDuration() > -1) {
             long newPosition = getCurrentPosition() + TEN_SECONDS;
@@ -569,12 +575,18 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         mActionListener.onTopEdgeFocused();
     }
 
-    /** Listens for when skip to next and previous actions have been dispatched. */
+    /**
+     * Listens for when skip to next and previous actions have been dispatched.
+     */
     public interface OnActionClickedListener {
-        /** Skip to the previous item in the queue. */
+        /**
+         * Skip to the previous item in the queue.
+         */
         void onPrevious();
 
-        /** Skip to the next item in the queue. */
+        /**
+         * Skip to the next item in the queue.
+         */
         void onNext();
 
         void onPlay();

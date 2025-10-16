@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:lb="http://schemas.android.com/apk/res-auto"
-             android:id="@+id/browse_dummy"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent" >
+    xmlns:lb="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/browse_dummy"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <androidx.leanback.widget.BrowseFrameLayout
-            android:id="@+id/grid_frame"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:descendantFocusability="afterDescendants"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+        android:id="@+id/grid_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:descendantFocusability="afterDescendants"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <!-- Place multiple grids horizontally -->
         <!--
@@ -25,10 +25,10 @@
         <!-- focusOutFront: allow navigating out from left side to the main menu. -->
         <androidx.leanback.widget.HorizontalGridView
             android:id="@+id/browse_grid_dock"
-            lb:focusOutFront="true"
-            lb:focusOutEnd="true"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            lb:focusOutEnd="true"
+            lb:focusOutFront="true" />
 
     </androidx.leanback.widget.BrowseFrameLayout>
 </FrameLayout>

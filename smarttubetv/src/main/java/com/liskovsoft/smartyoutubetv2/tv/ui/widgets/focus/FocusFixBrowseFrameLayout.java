@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.widgets.focus;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+
 import androidx.leanback.widget.BrowseFrameLayout;
 
 public class FocusFixBrowseFrameLayout extends BrowseFrameLayout {

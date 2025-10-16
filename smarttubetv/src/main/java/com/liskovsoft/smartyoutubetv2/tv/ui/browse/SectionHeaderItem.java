@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv2.tv.ui.browse;
 
 import androidx.leanback.widget.HeaderItem;
+
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.BrowseSection;
 
 public class SectionHeaderItem extends HeaderItem {

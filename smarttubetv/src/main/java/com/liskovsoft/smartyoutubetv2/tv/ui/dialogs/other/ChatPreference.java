@@ -2,7 +2,9 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.dialogs.other;
 
 import android.content.Context;
 import android.util.AttributeSet;
+
 import androidx.preference.DialogPreference;
+
 import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.ChatReceiver;
 
 public class ChatPreference extends DialogPreference {
@@ -24,11 +26,11 @@ public class ChatPreference extends DialogPreference {
         super(context);
     }
 
-    public void setChatReceiver(ChatReceiver chatReceiver) {
-        mChatReceiver = chatReceiver;
-    }
-
     public ChatReceiver getChatReceiver() {
         return mChatReceiver;
+    }
+
+    public void setChatReceiver(ChatReceiver chatReceiver) {
+        mChatReceiver = chatReceiver;
     }
 }

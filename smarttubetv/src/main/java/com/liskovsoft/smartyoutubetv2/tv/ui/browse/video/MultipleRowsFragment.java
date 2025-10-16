@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.browse.video;
 
 import android.os.Bundle;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.leanback.app.RowsSupportFragment;
 import androidx.leanback.widget.ArrayObjectAdapter;
@@ -41,11 +42,11 @@ import java.util.Map;
 
 public abstract class MultipleRowsFragment extends RowsSupportFragment implements VideoSection {
     private static final String TAG = MultipleRowsFragment.class.getSimpleName();
+    private final List<VideoGroup> mPendingUpdates = new ArrayList<>();
     private UriBackgroundManager mBackgroundManager;
     private ArrayObjectAdapter mRowsAdapter;
     private ListRowPresenter mRowPresenter;
     private Map<Integer, VideoGroupObjectAdapter> mVideoGroupAdapters;
-    private final List<VideoGroup> mPendingUpdates = new ArrayList<>();
     private VideoGroupPresenter mMainPresenter;
     private VideoCardPresenter mCardPresenter;
     private ShortsCardPresenter mShortsPresenter;
@@ -55,7 +56,7 @@ public abstract class MultipleRowsFragment extends RowsSupportFragment implement
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         mMainPresenter = getMainPresenter();
         mCardPresenter = new VideoCardPresenter();
         mShortsPresenter = new ShortsCardPresenter();
@@ -352,7 +353,7 @@ public abstract class MultipleRowsFragment extends RowsSupportFragment implement
 
                 mMainPresenter.onVideoItemSelected((Video) item);
 
-                checkScrollEnd((Video)item);
+                checkScrollEnd((Video) item);
             }
         }
 

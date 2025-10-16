@@ -9,9 +9,11 @@ import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.Presenter;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -35,6 +37,30 @@ import com.liskovsoft.smartyoutubetv2.tv.util.ViewUtil;
  */
 public class VideoCardPresenter extends LongClickPresenter {
     private static final String TAG = VideoCardPresenter.class.getSimpleName();
+    private final RequestListener<Drawable> mErrorListener = new RequestListener<Drawable>() {
+        @Override
+        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+            Log.e(TAG, "Glide load failed: " + e);
+            return false;
+        }
+
+        @Override
+        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+            return false;
+        }
+    };
+    private final RequestListener<Bitmap> mErrorListener2 = new RequestListener<Bitmap>() {
+        @Override
+        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+            Log.e(TAG, "Glide load failed: " + e);
+            return false;
+        }
+
+        @Override
+        public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+            return false;
+        }
+    };
     private int mDefaultBackgroundColor = -1;
     private int mDefaultTextColor = -1;
     private int mSelectedBackgroundColor = -1;
@@ -49,7 +75,7 @@ public class VideoCardPresenter extends LongClickPresenter {
         Context context = parent.getContext();
 
         mDefaultBackgroundColor =
-            ContextCompat.getColor(context, Helpers.getThemeAttr(context, R.attr.cardDefaultBackground));
+                ContextCompat.getColor(context, Helpers.getThemeAttr(context, R.attr.cardDefaultBackground));
         mDefaultTextColor =
                 ContextCompat.getColor(context, R.color.card_default_text);
         mSelectedBackgroundColor =
@@ -125,9 +151,9 @@ public class VideoCardPresenter extends LongClickPresenter {
         cardView.setProgress(video.percentWatched > 0 && video.percentWatched < 1 ? 1 : Math.round(video.percentWatched));
         cardView.setBadgeText(
                 video.hasNewContent ? context.getString(R.string.badge_new_content) :
-                video.isLive ? context.getString(R.string.badge_live) :
-                video.isShorts ? context.getString(R.string.header_shorts).toUpperCase() :
-                video.badge
+                        video.isLive ? context.getString(R.string.badge_live) :
+                                video.isShorts ? context.getString(R.string.header_shorts).toUpperCase() :
+                                        video.badge
         );
         cardView.setBadgeColor(video.hasNewContent || video.isLive || video.isUpcoming ?
                 ContextCompat.getColor(context, R.color.dark_red) : ContextCompat.getColor(context, R.color.black));
@@ -156,13 +182,13 @@ public class VideoCardPresenter extends LongClickPresenter {
                 .diskCacheStrategy(VERSION.SDK_INT > 21 ? DiskCacheStrategy.ALL : DiskCacheStrategy.NONE)
                 .listener(mErrorListener)
                 .error(
-                    // Updated thumbnail url not found
-                    Glide.with(context)
-                        .load(video.cardImageUrl) // always working
-                        //.placeholder(mDefaultCardImage)
-                        .apply(ViewUtil.glideOptions())
-                        .listener(mErrorListener)
-                        .error(R.drawable.card_placeholder) // R.color.lb_grey
+                        // Updated thumbnail url not found
+                        Glide.with(context)
+                                .load(video.cardImageUrl) // always working
+                                //.placeholder(mDefaultCardImage)
+                                .apply(ViewUtil.glideOptions())
+                                .listener(mErrorListener)
+                                .error(R.drawable.card_placeholder) // R.color.lb_grey
                 )
                 .into(cardView.getMainImageView());
     }
@@ -187,7 +213,7 @@ public class VideoCardPresenter extends LongClickPresenter {
         mWidth = dimens.first;
         mHeight = dimens.second;
     }
-    
+
     protected Pair<Integer, Integer> getCardDimensPx(Context context) {
         return GridFragmentHelper.getCardDimensPx(context, R.dimen.card_width, R.dimen.card_height, MainUIData.instance(context).getVideoGridScale());
     }
@@ -227,30 +253,4 @@ public class VideoCardPresenter extends LongClickPresenter {
     protected boolean isBadgeEnabled() {
         return true;
     }
-
-    private final RequestListener<Drawable> mErrorListener = new RequestListener<Drawable>() {
-        @Override
-        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-            Log.e(TAG, "Glide load failed: " + e);
-            return false;
-        }
-
-        @Override
-        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-            return false;
-        }
-    };
-
-    private final RequestListener<Bitmap> mErrorListener2 = new RequestListener<Bitmap>() {
-        @Override
-        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
-            Log.e(TAG, "Glide load failed: " + e);
-            return false;
-        }
-
-        @Override
-        public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
-            return false;
-        }
-    };
 }

@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.preference.DialogPreference;
+
 import com.bumptech.glide.Glide;
 import com.liskovsoft.mediaserviceinterfaces.data.CommentGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.CommentItem;
@@ -34,18 +36,6 @@ public class CommentsPreferenceDialogFragment extends LeanbackPreferenceDialogFr
     private CommentGroup mCurrentGroup;
     private List<ChatItemMessage> mBackupMessages;
     private ChatItemMessage mFocusedMessage;
-
-    private static class CommentsBackup implements Backup {
-        public CommentsBackup(List<ChatItemMessage> backupMessages, ChatItemMessage focusedMessage, CommentGroup currentGroup) {
-            this.backupMessages = backupMessages;
-            this.focusedMessage = focusedMessage;
-            this.currentGroup = currentGroup;
-        }
-
-        public final List<ChatItemMessage> backupMessages;
-        public final ChatItemMessage focusedMessage;
-        public final CommentGroup currentGroup;
-    }
 
     public static CommentsPreferenceDialogFragment newInstance(CommentsReceiver commentsReceiver, String key) {
         final Bundle args = new Bundle(1);
@@ -88,10 +78,10 @@ public class CommentsPreferenceDialogFragment extends LeanbackPreferenceDialogFr
         MessagesList messagesList = (MessagesList) view.findViewById(R.id.messagesList);
         MessagesListAdapter<ChatItemMessage> adapter = new MessagesListAdapter<>(SENDER_ID, (imageView, url, payload) ->
                 Glide.with(view.getContext())
-                    .load(url)
-                    .apply(ViewUtil.glideOptions())
-                    .circleCrop() // resize image
-                    .into(imageView));
+                        .load(url)
+                        .apply(ViewUtil.glideOptions())
+                        .circleCrop() // resize image
+                        .into(imageView));
         adapter.setLoadMoreListener((page, totalItemsCount) -> mCommentsReceiver.onLoadMore(mCurrentGroup));
         adapter.setOnMessageViewClickListener((v, message) -> mCommentsReceiver.onCommentClicked(message.getCommentItem()));
         adapter.setOnMessageViewLongClickListener((v, message) -> mCommentsReceiver.onCommentLongClicked(message.getCommentItem()));
@@ -216,5 +206,17 @@ public class CommentsPreferenceDialogFragment extends LeanbackPreferenceDialogFr
         MessagesListAdapter<ChatItemMessage> adapter = (MessagesListAdapter<ChatItemMessage>) messagesList.getAdapter();
 
         mBackupMessages = adapter != null ? adapter.getMessages() : null;
+    }
+
+    private static class CommentsBackup implements Backup {
+        public final List<ChatItemMessage> backupMessages;
+        public final ChatItemMessage focusedMessage;
+        public final CommentGroup currentGroup;
+
+        public CommentsBackup(List<ChatItemMessage> backupMessages, ChatItemMessage focusedMessage, CommentGroup currentGroup) {
+            this.backupMessages = backupMessages;
+            this.focusedMessage = focusedMessage;
+            this.currentGroup = currentGroup;
+        }
     }
 }

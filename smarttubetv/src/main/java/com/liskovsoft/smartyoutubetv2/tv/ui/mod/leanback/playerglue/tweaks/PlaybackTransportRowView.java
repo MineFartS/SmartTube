@@ -24,6 +24,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
 import androidx.annotation.RestrictTo;
 import androidx.leanback.R;
 
@@ -31,21 +32,11 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 /**
  * View for PlaybackTransportRowPresenter that has a custom focusSearch.
+ *
  * @hide
  */
 @RestrictTo(LIBRARY_GROUP)
 public class PlaybackTransportRowView extends LinearLayout {
-
-    /**
-     * @hide
-     */
-    @RestrictTo(LIBRARY_GROUP)
-    public interface OnUnhandledKeyListener {
-        /**
-         * Returns true if the key event should be consumed.
-         */
-        boolean onUnhandledKey(KeyEvent event);
-    }
 
     private OnUnhandledKeyListener mOnUnhandledKeyListener;
 
@@ -57,12 +48,12 @@ public class PlaybackTransportRowView extends LinearLayout {
         super(context, attrs, defStyle);
     }
 
-    void setOnUnhandledKeyListener(OnUnhandledKeyListener listener) {
-        mOnUnhandledKeyListener = listener;
-    }
-
     OnUnhandledKeyListener getOnUnhandledKeyListener() {
         return mOnUnhandledKeyListener;
+    }
+
+    void setOnUnhandledKeyListener(OnUnhandledKeyListener listener) {
+        mOnUnhandledKeyListener = listener;
     }
 
     @Override
@@ -121,5 +112,16 @@ public class PlaybackTransportRowView extends LinearLayout {
     @Override
     public boolean hasOverlappingRendering() {
         return false;
+    }
+
+    /**
+     * @hide
+     */
+    @RestrictTo(LIBRARY_GROUP)
+    public interface OnUnhandledKeyListener {
+        /**
+         * Returns true if the key event should be consumed.
+         */
+        boolean onUnhandledKey(KeyEvent event);
     }
 }

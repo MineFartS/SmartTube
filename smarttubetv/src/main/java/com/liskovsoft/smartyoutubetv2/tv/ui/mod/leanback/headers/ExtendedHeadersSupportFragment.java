@@ -3,34 +3,17 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.headers;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnLayoutChangeListener;
+
 import androidx.leanback.app.HeadersSupportFragment;
 import androidx.leanback.widget.ItemBridgeAdapter;
 import androidx.leanback.widget.Row;
 import androidx.leanback.widget.RowHeaderPresenter;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.KeyHelpers;
 
 public class ExtendedHeadersSupportFragment extends HeadersSupportFragment {
-    public interface OnHeaderLongPressedListener {
-        /**
-         * Called when a header item has been long pressed.
-         *
-         * @param viewHolder Row ViewHolder object corresponding to the selected Header.
-         * @param row Row object corresponding to the selected Header.
-         */
-        void onHeaderLongPressed(RowHeaderPresenter.ViewHolder viewHolder, Row row);
-    }
-
     private OnHeaderLongPressedListener mOnHeaderLongPressedListener;
-
-    public ExtendedHeadersSupportFragment() {
-        Helpers.setField(this, "mAdapterListener", mCustomAdapterListener);
-    }
-
-    public void setOnHeaderLongPressedListener(OnHeaderLongPressedListener listener) {
-        mOnHeaderLongPressedListener = listener;
-    }
-
     private final ItemBridgeAdapter.AdapterListener mCustomAdapterListener =
             new ItemBridgeAdapter.AdapterListener() {
                 @Override
@@ -84,4 +67,22 @@ public class ExtendedHeadersSupportFragment extends HeadersSupportFragment {
                 }
 
             };
+
+    public ExtendedHeadersSupportFragment() {
+        Helpers.setField(this, "mAdapterListener", mCustomAdapterListener);
+    }
+
+    public void setOnHeaderLongPressedListener(OnHeaderLongPressedListener listener) {
+        mOnHeaderLongPressedListener = listener;
+    }
+
+    public interface OnHeaderLongPressedListener {
+        /**
+         * Called when a header item has been long pressed.
+         *
+         * @param viewHolder Row ViewHolder object corresponding to the selected Header.
+         * @param row        Row object corresponding to the selected Header.
+         */
+        void onHeaderLongPressed(RowHeaderPresenter.ViewHolder viewHolder, Row row);
+    }
 }

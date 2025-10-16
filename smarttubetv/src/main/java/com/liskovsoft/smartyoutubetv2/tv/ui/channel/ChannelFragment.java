@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.channel;
 
 import android.os.Bundle;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -26,7 +27,7 @@ public class ChannelFragment extends MultipleRowsFragment implements ChannelView
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(null); // Real restore takes place in the presenter
-        
+
         mRestoredItemIndex = savedInstanceState != null ? savedInstanceState.getInt(SELECTED_ITEM_INDEX, -1) : -1;
         mIsFragmentCreated = true;
         mChannelPresenter = ChannelPresenter.instance(getContext());

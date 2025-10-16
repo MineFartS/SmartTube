@@ -2,6 +2,7 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.dialogs.other;
 
 import android.content.Context;
 import android.util.AttributeSet;
+
 import androidx.preference.MultiSelectListPreference;
 
 public class StringListPreference extends MultiSelectListPreference {

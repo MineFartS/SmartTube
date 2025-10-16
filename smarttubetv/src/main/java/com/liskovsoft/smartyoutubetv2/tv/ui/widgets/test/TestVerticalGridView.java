@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
 import androidx.leanback.widget.VerticalGridView;
 
 public class TestVerticalGridView extends VerticalGridView {

@@ -14,7 +14,7 @@ public class TextureViewSurfaceHolder implements SurfaceHolder {
 
     @Override
     public void addCallback(Callback callback) {
-        
+
     }
 
     @Override

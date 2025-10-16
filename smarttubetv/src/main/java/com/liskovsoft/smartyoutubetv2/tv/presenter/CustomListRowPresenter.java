@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv2.tv.presenter;
 
 import androidx.leanback.widget.ListRowPresenter;
+
 import com.liskovsoft.smartyoutubetv2.tv.util.ViewUtil;
 
 public class CustomListRowPresenter extends ListRowPresenter {

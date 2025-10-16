@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.leanback.R;
 import androidx.leanback.app.BrandedSupportFragment;
 
@@ -43,6 +44,19 @@ public class ErrorSupportFragment extends BrandedSupportFragment {
     private View.OnClickListener mButtonClickListener;
     private Drawable mBackgroundDrawable;
     private boolean mIsBackgroundTranslucent = true;
+
+    private static FontMetricsInt getFontMetricsInt(TextView textView) {
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setTextSize(textView.getTextSize());
+        paint.setTypeface(textView.getTypeface());
+        return paint.getFontMetricsInt();
+    }
+
+    private static void setTopMargin(TextView textView, int topMargin) {
+        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) textView.getLayoutParams();
+        lp.topMargin = topMargin;
+        textView.setLayoutParams(lp);
+    }
 
     /**
      * Sets the default background.
@@ -64,6 +78,13 @@ public class ErrorSupportFragment extends BrandedSupportFragment {
     }
 
     /**
+     * Returns the background drawable.  May be null if a default is used.
+     */
+    public Drawable getBackgroundDrawable() {
+        return mBackgroundDrawable;
+    }
+
+    /**
      * Sets a drawable for the fragment background.
      *
      * @param drawable The drawable used for the background.
@@ -80,10 +101,10 @@ public class ErrorSupportFragment extends BrandedSupportFragment {
     }
 
     /**
-     * Returns the background drawable.  May be null if a default is used.
+     * Returns the drawable used for the error image.
      */
-    public Drawable getBackgroundDrawable() {
-        return mBackgroundDrawable;
+    public Drawable getImageDrawable() {
+        return mDrawable;
     }
 
     /**
@@ -97,10 +118,10 @@ public class ErrorSupportFragment extends BrandedSupportFragment {
     }
 
     /**
-     * Returns the drawable used for the error image.
+     * Returns the error message.
      */
-    public Drawable getImageDrawable() {
-        return mDrawable;
+    public CharSequence getMessage() {
+        return mMessage;
     }
 
     /**
@@ -114,10 +135,10 @@ public class ErrorSupportFragment extends BrandedSupportFragment {
     }
 
     /**
-     * Returns the error message.
+     * Returns the button text.
      */
-    public CharSequence getMessage() {
-        return mMessage;
+    public String getButtonText() {
+        return mButtonText;
     }
 
     /**
@@ -131,10 +152,10 @@ public class ErrorSupportFragment extends BrandedSupportFragment {
     }
 
     /**
-     * Returns the button text.
+     * Returns the button click listener.
      */
-    public String getButtonText() {
-        return mButtonText;
+    public View.OnClickListener getButtonClickListener() {
+        return mButtonClickListener;
     }
 
     /**
@@ -147,16 +168,9 @@ public class ErrorSupportFragment extends BrandedSupportFragment {
         updateButton();
     }
 
-    /**
-     * Returns the button click listener.
-     */
-    public View.OnClickListener getButtonClickListener() {
-        return mButtonClickListener;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.lb_error_fragment, container, false);
 
         mErrorFrame = (ViewGroup) root.findViewById(R.id.error_frame);
@@ -227,19 +241,6 @@ public class ErrorSupportFragment extends BrandedSupportFragment {
         super.onStart();
         // MOD: don't autofocus (header menu will be collapsed).
         //mErrorFrame.requestFocus();
-    }
-
-    private static FontMetricsInt getFontMetricsInt(TextView textView) {
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setTextSize(textView.getTextSize());
-        paint.setTypeface(textView.getTypeface());
-        return paint.getFontMetricsInt();
-    }
-
-    private static void setTopMargin(TextView textView, int topMargin) {
-        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) textView.getLayoutParams();
-        lp.topMargin = topMargin;
-        textView.setLayoutParams(lp);
     }
 
 }

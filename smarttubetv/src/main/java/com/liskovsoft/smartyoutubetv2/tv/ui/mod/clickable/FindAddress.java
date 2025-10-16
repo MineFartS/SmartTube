@@ -34,41 +34,16 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
  */
 @RestrictTo(LIBRARY_GROUP_PREFIX)
 class FindAddress {
-    private static class ZipRange {
-        int mLow;
-        int mHigh;
-        int mException1;
-        int mException2;
-
-        ZipRange(int low, int high, int exception1, int exception2) {
-            mLow = low;
-            mHigh = high;
-            mException1 = exception1;
-            mException2 = exception2;
-        }
-
-        boolean matches(String zipCode) {
-            int prefix = Integer.parseInt(zipCode.substring(0, 2));
-            return (mLow <= prefix && prefix <= mHigh) || prefix == mException1
-                    || prefix == mException2;
-        }
-    }
-
     // Addresses consist of at least this many words, not including state and zip code.
     private static final int MIN_ADDRESS_WORDS = 4;
-
     // Adddresses consist of at most this many words, not including state and zip code.
     private static final int MAX_ADDRESS_WORDS = 14;
-
     // Addresses consist of at most this many lines.
     private static final int MAX_ADDRESS_LINES = 5;
-
     // No words in an address are longer than this many characters.
     private static final int kMaxAddressNameWordLength = 25;
-
     // Location name should be in the first MAX_LOCATION_NAME_DISTANCE words
     private static final int MAX_LOCATION_NAME_DISTANCE = 5;
-
     private static final ZipRange[] sStateZipCodeRanges = {
             new ZipRange(99, 99, -1, -1), // AK Alaska.
             new ZipRange(35, 36, -1, -1), // AL Alabama.
@@ -130,47 +105,21 @@ class FindAddress {
             new ZipRange(24, 26, -1, -1), // WV West Virginia.
             new ZipRange(82, 83, -1, -1) // WY Wyoming.
     };
-
     // Newlines
     private static final String NL = "\n\u000B\u000C\r\u0085\u2028\u2029";
-
     // Space characters
     private static final String SP = "\u0009\u0020\u00A0\u1680\u2000\u2001"
             + "\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F"
             + "\u205F\u3000";
-
     // Whitespace
     private static final String WS = SP + NL;
-
     // Characters that are considered word delimiters.
     private static final String WORD_DELIM = ",*\u2022" + WS;
-
     // Lookahead for word end.
     private static final String WORD_END = "(?=[" + WORD_DELIM + "]|$)";
-
     // Address words are a sequence of non-delimiter characters.
     private static final Pattern sWordRe =
             Pattern.compile("[^" + WORD_DELIM + "]+" + WORD_END, Pattern.CASE_INSENSITIVE);
-
-    // Characters that are considered suffix delimiters for house numbers.
-    private static final String HOUSE_POST_DELIM = ",\"'" + WS;
-
-    // Lookahead for house end.
-    private static final String HOUSE_END = "(?=[" + HOUSE_POST_DELIM + "]|$)";
-
-    // Characters that are considered prefix delimiters for house numbers.
-    private static final String HOUSE_PRE_DELIM = ":" + HOUSE_POST_DELIM;
-
-    // A house number component is "one" or a number, optionally
-    // followed by a single alphabetic character, or
-    private static final String HOUSE_COMPONENT = "(?:one|[0-9]+([a-z](?=[^a-z]|$)|st|nd|rd|th)?)";
-
-    // House numbers are a repetition of |HOUSE_COMPONENT|, separated by -, and followed by
-    // a delimiter character.
-    private static final Pattern sHouseNumberRe =
-            Pattern.compile(HOUSE_COMPONENT + "(?:-" + HOUSE_COMPONENT + ")*" + HOUSE_END,
-                    Pattern.CASE_INSENSITIVE);
-
     // XXX: do we want to accept whitespace other than 0x20 in state names?
     private static final Pattern sStateRe = Pattern.compile("(?:"
                     + "(ak|alaska)|"
@@ -234,7 +183,6 @@ class FindAddress {
                     + "(wy|wyoming)"
                     + ")" + WORD_END,
             Pattern.CASE_INSENSITIVE);
-
     private static final Pattern sLocationNameRe = Pattern.compile("(?:"
                     + "alley|annex|arcade|ave[.]?|avenue|alameda|bayou|"
                     + "beach|bend|bluffs?|bottom|boulevard|branch|bridge|"
@@ -260,12 +208,27 @@ class FindAddress {
                     + "valleys?|viaduct|views?|villages?|ville|vista|walks?|"
                     + "wall|ways?|wells?|xing|xrd)" + WORD_END,
             Pattern.CASE_INSENSITIVE);
-
+    private static final Pattern sZipCodeRe =
+            Pattern.compile("(?:[0-9]{5}(?:-[0-9]{4})?)" + WORD_END, Pattern.CASE_INSENSITIVE);
+    // Characters that are considered suffix delimiters for house numbers.
+    private static final String HOUSE_POST_DELIM = ",\"'" + WS;
+    // Lookahead for house end.
+    private static final String HOUSE_END = "(?=[" + HOUSE_POST_DELIM + "]|$)";
+    // Characters that are considered prefix delimiters for house numbers.
+    private static final String HOUSE_PRE_DELIM = ":" + HOUSE_POST_DELIM;
+    // A house number component is "one" or a number, optionally
+    // followed by a single alphabetic character, or
+    private static final String HOUSE_COMPONENT = "(?:one|[0-9]+([a-z](?=[^a-z]|$)|st|nd|rd|th)?)";
+    // House numbers are a repetition of |HOUSE_COMPONENT|, separated by -, and followed by
+    // a delimiter character.
+    private static final Pattern sHouseNumberRe =
+            Pattern.compile(HOUSE_COMPONENT + "(?:-" + HOUSE_COMPONENT + ")*" + HOUSE_END,
+                    Pattern.CASE_INSENSITIVE);
     private static final Pattern sSuffixedNumberRe =
             Pattern.compile("([0-9]+)(st|nd|rd|th)", Pattern.CASE_INSENSITIVE);
 
-    private static final Pattern sZipCodeRe =
-            Pattern.compile("(?:[0-9]{5}(?:-[0-9]{4})?)" + WORD_END, Pattern.CASE_INSENSITIVE);
+    private FindAddress() {
+    }
 
     private static boolean checkHouseNumber(String houseNumber) {
         // Make sure that there are at most 5 digits.
@@ -514,6 +477,23 @@ class FindAddress {
         return null;
     }
 
-    private FindAddress() {
+    private static class ZipRange {
+        int mLow;
+        int mHigh;
+        int mException1;
+        int mException2;
+
+        ZipRange(int low, int high, int exception1, int exception2) {
+            mLow = low;
+            mHigh = high;
+            mException1 = exception1;
+            mException2 = exception2;
+        }
+
+        boolean matches(String zipCode) {
+            int prefix = Integer.parseInt(zipCode.substring(0, 2));
+            return (mLow <= prefix && prefix <= mHigh) || prefix == mException1
+                    || prefix == mException2;
+        }
     }
 }

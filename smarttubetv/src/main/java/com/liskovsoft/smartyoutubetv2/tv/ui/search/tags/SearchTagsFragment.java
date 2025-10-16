@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.search.tags;
 import android.os.Bundle;
 import android.speech.SpeechRecognizer;
 import android.text.TextUtils;
+
 import androidx.annotation.Nullable;
 import androidx.leanback.widget.HeaderItem;
 import androidx.leanback.widget.ListRow;
@@ -200,7 +201,7 @@ public class SearchTagsFragment extends SearchTagsFragmentBase {
         for (int i = 0; i < rows.size(); i++) {
             Object row = rows.get(i);
             if (row instanceof ListRow &&
-                ((ListRow) row).getAdapter() instanceof VideoGroupObjectAdapter) {
+                    ((ListRow) row).getAdapter() instanceof VideoGroupObjectAdapter) {
                 index = i;
                 break;
             }
@@ -262,7 +263,7 @@ public class SearchTagsFragment extends SearchTagsFragmentBase {
                 return adapter;
             }
         }
-        
+
         return null;
     }
 
@@ -325,7 +326,7 @@ public class SearchTagsFragment extends SearchTagsFragmentBase {
             VideoGroupObjectAdapter mediaGroupAdapter = new VideoGroupObjectAdapter(group, group.isShorts() ? mShortsPresenter : mCardPresenter);
 
             mSearchGroupAdapters.put(mediaGroupId, mediaGroupAdapter);
-            
+
             attachAdapter(getResultsAdapter().size(), rowHeader, mediaGroupAdapter);
         } else {
             Log.d(TAG, "Continue row %s %s", group.getTitle(), System.currentTimeMillis());

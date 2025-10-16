@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.fragment.app.Fragment;
 import androidx.leanback.app.BrowseSupportFragment;
 import androidx.leanback.transition.TransitionHelper;
@@ -17,6 +18,7 @@ import androidx.leanback.widget.Row;
 import androidx.leanback.widget.RowPresenter;
 import androidx.leanback.widget.VerticalGridPresenter;
 import androidx.leanback.widget.VerticalGridView;
+
 import com.liskovsoft.smartyoutubetv2.tv.R;
 
 /**
@@ -31,10 +33,6 @@ public class GridFragment extends Fragment implements BrowseSupportFragment.Main
     private ObjectAdapter mAdapter;
     private VerticalGridPresenter mGridPresenter;
     private VerticalGridPresenter.ViewHolder mGridViewHolder;
-    private OnItemViewSelectedListener mOnItemViewSelectedListener;
-    private OnItemViewClickedListener mOnItemViewClickedListener;
-    private Object mSceneAfterEntranceTransition;
-    private int mSelectedPosition = -1;
     private final BrowseSupportFragment.MainFragmentAdapter<Fragment> mMainFragmentAdapter =
             new BrowseSupportFragment.MainFragmentAdapter<Fragment>(this) {
                 @Override
@@ -42,49 +40,10 @@ public class GridFragment extends Fragment implements BrowseSupportFragment.Main
                     GridFragment.this.setEntranceTransitionState(state);
                 }
             };
-    /**
-     * Sets the grid presenter.
-     */
-    public void setGridPresenter(VerticalGridPresenter gridPresenter) {
-        if (gridPresenter == null) {
-            throw new IllegalArgumentException("Grid presenter may not be null");
-        }
-        mGridPresenter = gridPresenter;
-        mGridPresenter.setOnItemViewSelectedListener(mViewSelectedListener);
-        if (mOnItemViewClickedListener != null) {
-            mGridPresenter.setOnItemViewClickedListener(mOnItemViewClickedListener);
-        }
-    }
-
-    /**
-     * Returns the grid presenter.
-     */
-    public VerticalGridPresenter getGridPresenter() {
-        return mGridPresenter;
-    }
-
-    /**
-     * Returns R.id.browse_grid
-     */
-    public VerticalGridView getBrowseGrid() {
-        return mGridViewHolder != null ? mGridViewHolder.getGridView() : null;
-    }
-
-    /**
-     * Sets the object adapter for the fragment.
-     */
-    public void setAdapter(ObjectAdapter adapter) {
-        mAdapter = adapter;
-        updateAdapter();
-    }
-
-    /**
-     * Returns the object adapter.
-     */
-    public ObjectAdapter getAdapter() {
-        return mAdapter;
-    }
-
+    private OnItemViewSelectedListener mOnItemViewSelectedListener;
+    private OnItemViewClickedListener mOnItemViewClickedListener;
+    private Object mSceneAfterEntranceTransition;
+    private int mSelectedPosition = -1;
     final private OnItemViewSelectedListener mViewSelectedListener =
             new OnItemViewSelectedListener() {
                 @Override
@@ -102,7 +61,6 @@ public class GridFragment extends Fragment implements BrowseSupportFragment.Main
                     }
                 }
             };
-
     final private OnChildLaidOutListener mChildLaidOutListener =
             new OnChildLaidOutListener() {
                 @Override
@@ -112,6 +70,49 @@ public class GridFragment extends Fragment implements BrowseSupportFragment.Main
                     }
                 }
             };
+
+    /**
+     * Returns the grid presenter.
+     */
+    public VerticalGridPresenter getGridPresenter() {
+        return mGridPresenter;
+    }
+
+    /**
+     * Sets the grid presenter.
+     */
+    public void setGridPresenter(VerticalGridPresenter gridPresenter) {
+        if (gridPresenter == null) {
+            throw new IllegalArgumentException("Grid presenter may not be null");
+        }
+        mGridPresenter = gridPresenter;
+        mGridPresenter.setOnItemViewSelectedListener(mViewSelectedListener);
+        if (mOnItemViewClickedListener != null) {
+            mGridPresenter.setOnItemViewClickedListener(mOnItemViewClickedListener);
+        }
+    }
+
+    /**
+     * Returns R.id.browse_grid
+     */
+    public VerticalGridView getBrowseGrid() {
+        return mGridViewHolder != null ? mGridViewHolder.getGridView() : null;
+    }
+
+    /**
+     * Returns the object adapter.
+     */
+    public ObjectAdapter getAdapter() {
+        return mAdapter;
+    }
+
+    /**
+     * Sets the object adapter for the fragment.
+     */
+    public void setAdapter(ObjectAdapter adapter) {
+        mAdapter = adapter;
+        updateAdapter();
+    }
 
     /**
      * Sets an item selection listener.
@@ -145,6 +146,13 @@ public class GridFragment extends Fragment implements BrowseSupportFragment.Main
     }
 
     /**
+     * Returns the item clicked listener.
+     */
+    public OnItemViewClickedListener getOnItemViewClickedListener() {
+        return mOnItemViewClickedListener;
+    }
+
+    /**
      * Sets an item clicked listener.
      */
     public void setOnItemViewClickedListener(OnItemViewClickedListener listener) {
@@ -152,13 +160,6 @@ public class GridFragment extends Fragment implements BrowseSupportFragment.Main
         if (mGridPresenter != null) {
             mGridPresenter.setOnItemViewClickedListener(mOnItemViewClickedListener);
         }
-    }
-
-    /**
-     * Returns the item clicked listener.
-     */
-    public OnItemViewClickedListener getOnItemViewClickedListener() {
-        return mOnItemViewClickedListener;
     }
 
     @Override
@@ -200,6 +201,10 @@ public class GridFragment extends Fragment implements BrowseSupportFragment.Main
         return mMainFragmentAdapter;
     }
 
+    public int getSelectedPosition() {
+        return mSelectedPosition;
+    }
+
     /**
      * Sets the selected item position.
      */
@@ -208,10 +213,6 @@ public class GridFragment extends Fragment implements BrowseSupportFragment.Main
         if (mGridViewHolder != null && mGridViewHolder.getGridView().getAdapter() != null) {
             mGridViewHolder.getGridView().setSelectedPosition(position);
         }
-    }
-
-    public int getSelectedPosition() {
-        return mSelectedPosition;
     }
 
     private void updateAdapter() {

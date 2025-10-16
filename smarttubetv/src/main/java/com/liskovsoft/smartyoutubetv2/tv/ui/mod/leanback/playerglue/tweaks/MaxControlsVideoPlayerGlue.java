@@ -4,11 +4,13 @@ import android.content.Context;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+
 import androidx.leanback.media.PlayerAdapter;
 import androidx.leanback.widget.AbstractDetailsDescriptionPresenter;
 import androidx.leanback.widget.PlaybackControlsRow;
 import androidx.leanback.widget.PlaybackRowPresenter;
 import androidx.leanback.widget.RowPresenter;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.SeekBarSegment;
@@ -101,6 +103,7 @@ public abstract class MaxControlsVideoPlayerGlue<T extends PlayerAdapter>
                 // Don't uncomment
                 //viewHolder.setSeekBarSegments(null);
             }
+
             @Override
             protected void onUnbindRowViewHolder(RowPresenter.ViewHolder vh) {
                 super.onUnbindRowViewHolder(vh);
@@ -176,7 +179,7 @@ public abstract class MaxControlsVideoPlayerGlue<T extends PlayerAdapter>
         }
         if (getDescriptionViewHolder() != null) { // the chapter title when show full ui
             getDescriptionViewHolder().getBody().setText(title);
-            getDescriptionViewHolder().getBody().setVisibility(title != null ? View.VISIBLE: View.GONE);
+            getDescriptionViewHolder().getBody().setVisibility(title != null ? View.VISIBLE : View.GONE);
         }
     }
 

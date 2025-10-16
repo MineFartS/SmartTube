@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
 import androidx.annotation.RestrictTo;
 import androidx.leanback.R;
 
@@ -34,6 +35,7 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 @RestrictTo(LIBRARY_GROUP)
 public class ThumbsBar extends LinearLayout {
 
+    final SparseArray<Bitmap> mBitmaps = new SparseArray<>();
     // initial value for Thumb's number before measuring the screen size
     int mNumOfThumbs = -1;
     int mMeasuredNumOfThumbs;
@@ -42,8 +44,6 @@ public class ThumbsBar extends LinearLayout {
     int mHeroThumbWidthInPixel;
     int mHeroThumbHeightInPixel;
     int mMeasuredMarginInPixel;
-    final SparseArray<Bitmap> mBitmaps = new SparseArray<>();
-
     // flag to determine if the number of thumbs in thumbs bar is set by user through
     // setNumberofThumbs API or auto-calculated according to android tv design spec.
     private boolean mIsUserSets = false;
@@ -67,6 +67,10 @@ public class ThumbsBar extends LinearLayout {
         // According to the spec, the margin between thumbs to be 4dp
         mMeasuredMarginInPixel = context.getResources().getDimensionPixelSize(
                 R.dimen.lb_playback_transport_thumbs_margin);
+    }
+
+    private static int roundUp(int num, int divisor) {
+        return (num + divisor - 1) / divisor;
     }
 
     /**
@@ -182,17 +186,13 @@ public class ThumbsBar extends LinearLayout {
         }
     }
 
-    private static int roundUp(int num, int divisor) {
-        return (num + divisor - 1) / divisor;
-    }
-
     /**
      * Helper function to compute how many thumbs should be put in the screen
      * Assume we should put x's non-hero thumbs in the screen, the equation should be
-     *   192dp (width of hero thumbs) +
-     *   154dp (width of common thumbs) * x +
-     *   4dp (width of the margin between thumbs) * x
-     *     = width
+     * 192dp (width of hero thumbs) +
+     * 154dp (width of common thumbs) * x +
+     * 4dp (width of the margin between thumbs) * x
+     * = width
      * So the calculated number of non-hero thumbs should be (width - 192dp) / 158dp.
      * If the calculated number of non-hero thumbs is less than 2, it will be updated to 2
      * or if the calculated number or non-hero thumbs is not an even number, it will be
@@ -202,7 +202,7 @@ public class ThumbsBar extends LinearLayout {
      * Also there should be a hero thumb in the middle of the ThumbsBar,
      * the final result should be non-hero thumbs (after processing) + 1.
      *
-     * @param  widthInPixel measured width in pixel
+     * @param widthInPixel measured width in pixel
      * @return The number of thumbs
      */
     private int calculateNumOfThumbs(int widthInPixel) {

@@ -3,6 +3,7 @@ package com.liskovsoft.smartyoutubetv2.tv.presenter.vineyard;
 import android.view.ViewGroup;
 
 import androidx.core.content.ContextCompat;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv2.tv.R;
 import com.liskovsoft.smartyoutubetv2.common.app.models.search.vineyard.Tag;
@@ -15,6 +16,14 @@ public class TagPresenter extends LongClickPresenter {
     private static int sDefaultTextColor;
     private static int sSelectedBackgroundColor;
     private static int sSelectedTextColor;
+
+    private static void updateCardBackgroundColor(TagCardView view, boolean selected) {
+        view.setBackgroundColor(selected ? sSelectedBackgroundColor : sDefaultBackgroundColor);
+    }
+
+    private static void updateCardTextColor(TagCardView view, boolean selected) {
+        view.setTextColor(selected ? sSelectedTextColor : sDefaultTextColor);
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent) {
@@ -41,14 +50,6 @@ public class TagPresenter extends LongClickPresenter {
         updateCardBackgroundColor(cardView, false);
         updateCardTextColor(cardView, false);
         return new ViewHolder(cardView);
-    }
-
-    private static void updateCardBackgroundColor(TagCardView view, boolean selected) {
-        view.setBackgroundColor(selected ? sSelectedBackgroundColor : sDefaultBackgroundColor);
-    }
-
-    private static void updateCardTextColor(TagCardView view, boolean selected) {
-        view.setTextColor(selected ? sSelectedTextColor : sDefaultTextColor);
     }
 
     @Override

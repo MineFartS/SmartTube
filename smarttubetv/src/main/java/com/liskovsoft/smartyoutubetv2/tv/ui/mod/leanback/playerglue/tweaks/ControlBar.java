@@ -24,17 +24,12 @@ import java.util.ArrayList;
 
 class ControlBar extends LinearLayout {
 
-    public interface OnChildFocusedListener {
-
-        public void onChildFocusedListener(View child, View focused);
-    }
-
+    // MOD: Maintain global focus index to seamless navigation between control rows.
+    private static int mGlobalFocusIndex = -1;
     private int mChildMarginFromCenter;
     private OnChildFocusedListener mOnChildFocusedListener;
     // Can't set to static. Because we have two control bars.
     private int mLastFocusIndex = -1;
-    // MOD: Maintain global focus index to seamless navigation between control rows.
-    private static int mGlobalFocusIndex = -1;
     private boolean mDefaultFocusToMiddle = true;
     private boolean mFocusRecovery = true;
     private boolean mGlobalFocus = true;
@@ -135,7 +130,7 @@ class ControlBar extends LinearLayout {
         int totalExtraMargin = 0;
         for (int i = 0; i < getChildCount() - 1; i++) {
             View first = getChildAt(i);
-            View second = getChildAt(i+1);
+            View second = getChildAt(i + 1);
             int measuredWidth = first.getMeasuredWidth() + second.getMeasuredWidth();
             int marginStart = mChildMarginFromCenter - measuredWidth / 2;
             LayoutParams lp = (LayoutParams) second.getLayoutParams();
@@ -147,12 +142,17 @@ class ControlBar extends LinearLayout {
         setMeasuredDimension(getMeasuredWidth() + totalExtraMargin, getMeasuredHeight());
     }
 
+    private int getFocusIndex() {
+        return mGlobalFocus ? mGlobalFocusIndex : mLastFocusIndex;
+    }
+
     private void setFocusIndex(int index) {
         mLastFocusIndex = index;
         mGlobalFocusIndex = index;
     }
 
-    private int getFocusIndex() {
-        return mGlobalFocus ? mGlobalFocusIndex : mLastFocusIndex;
+    public interface OnChildFocusedListener {
+
+        public void onChildFocusedListener(View child, View focused);
     }
 }

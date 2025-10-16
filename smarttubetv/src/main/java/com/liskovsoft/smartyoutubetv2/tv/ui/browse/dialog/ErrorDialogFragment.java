@@ -6,10 +6,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.leanback.app.BrowseSupportFragment;
 import androidx.leanback.app.BrowseSupportFragment.MainFragmentAdapter;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv2.common.app.models.errors.CategoryEmptyError;
 import com.liskovsoft.smartyoutubetv2.common.app.models.errors.ErrorFragmentData;

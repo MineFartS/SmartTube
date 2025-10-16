@@ -14,11 +14,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.FocusHighlight;
 import androidx.leanback.widget.ListRow;
 import androidx.leanback.widget.RowPresenter;
 import androidx.leanback.widget.VerticalGridView;
+
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.liskovsoft.sharedutils.helpers.Helpers;

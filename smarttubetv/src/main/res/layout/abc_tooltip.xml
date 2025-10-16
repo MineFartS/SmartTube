@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2017 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,26 +16,25 @@
 
 <!-- MODIFIED: extracted private values -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/tooltip_margin_mod"
-        android:paddingLeft="@dimen/tooltip_horizontal_padding_mod"
-        android:paddingStart="@dimen/tooltip_horizontal_padding_mod"
-        android:paddingRight="@dimen/tooltip_horizontal_padding_mod"
-        android:paddingEnd="@dimen/tooltip_horizontal_padding_mod"
-        android:paddingTop="@dimen/tooltip_vertical_padding_mod"
-        android:paddingBottom="@dimen/tooltip_vertical_padding_mod"
         android:background="@drawable/tooltip_frame_dark_mod"
-        android:textAppearance="@style/TextAppearance.AppCompat.Tooltip"
-        android:textColor="@color/foreground_material_dark_mod"
-        android:maxLines="1"
         android:ellipsize="end"
-    />
+        android:maxLines="1"
+        android:paddingStart="@dimen/tooltip_horizontal_padding_mod"
+        android:paddingLeft="@dimen/tooltip_horizontal_padding_mod"
+        android:paddingTop="@dimen/tooltip_vertical_padding_mod"
+        android:paddingEnd="@dimen/tooltip_horizontal_padding_mod"
+        android:paddingRight="@dimen/tooltip_horizontal_padding_mod"
+        android:paddingBottom="@dimen/tooltip_vertical_padding_mod"
+        android:textAppearance="@style/TextAppearance.AppCompat.Tooltip"
+        android:textColor="@color/foreground_material_dark_mod" />
 
 </LinearLayout>

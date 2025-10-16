@@ -15,6 +15,7 @@ import java.util.List;
 
 public class VideoGroupObjectAdapter extends ObjectAdapter {
     private static final String TAG = VideoGroupObjectAdapter.class.getSimpleName();
+    private static final int CHECK_MAX_SIZE = 200;
     //private final List<Video> mVideoItems = new ArrayList<Video>() {
     //    @Override
     //    public boolean addAll(@NonNull Collection<? extends Video> c) {
@@ -36,7 +37,6 @@ public class VideoGroupObjectAdapter extends ObjectAdapter {
     //};
     private final List<Video> mVideoItems = new ArrayList<>();
     private final List<VideoGroup> mVideoGroups = new ArrayList<>(); // keep groups from being garbage collected
-    private static final int CHECK_MAX_SIZE = 200;
 
     public VideoGroupObjectAdapter(VideoGroup videoGroup, Presenter presenter) {
         super(presenter);

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import androidx.leanback.widget.BaseCardView;
+
 import com.liskovsoft.smartyoutubetv2.tv.R;
 
 public class LoadingCardView extends BaseCardView {
@@ -23,6 +24,32 @@ public class LoadingCardView extends BaseCardView {
     public LoadingCardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(getStyledContext(context, attrs, defStyleAttr), attrs, defStyleAttr);
         buildLoadingCardView(getImageCardViewStyle(context, attrs, defStyleAttr));
+    }
+
+    public LoadingCardView(Context context) {
+        this(context, null);
+    }
+
+    public LoadingCardView(Context context, AttributeSet attrs) {
+        this(context, attrs, R.attr.imageCardViewStyle);
+    }
+
+    private static Context getStyledContext(Context context, AttributeSet attrs, int defStyleAttr) {
+        int style = getImageCardViewStyle(context, attrs, defStyleAttr);
+        return new ContextThemeWrapper(context, style);
+    }
+
+    private static int getImageCardViewStyle(Context context, AttributeSet attrs, int defStyleAttr) {
+        int style = null == attrs ? 0 : attrs.getStyleAttribute();
+        if (0 == style) {
+            TypedArray styledAttrs =
+                    context.obtainStyledAttributes(
+                            R.styleable.LeanbackTheme);
+            style = styledAttrs.getResourceId(
+                    R.styleable.LeanbackTheme_imageCardViewStyle, 0);
+            styledAttrs.recycle();
+        }
+        return style;
     }
 
     @Override
@@ -48,32 +75,6 @@ public class LoadingCardView extends BaseCardView {
 
     public void isLoading(boolean isLoading) {
         mProgressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-    }
-
-    private static Context getStyledContext(Context context, AttributeSet attrs, int defStyleAttr) {
-        int style = getImageCardViewStyle(context, attrs, defStyleAttr);
-        return new ContextThemeWrapper(context, style);
-    }
-
-    private static int getImageCardViewStyle(Context context, AttributeSet attrs, int defStyleAttr) {
-        int style = null == attrs ? 0 : attrs.getStyleAttribute();
-        if (0 == style) {
-            TypedArray styledAttrs =
-                    context.obtainStyledAttributes(
-                            R.styleable.LeanbackTheme);
-            style = styledAttrs.getResourceId(
-                            R.styleable.LeanbackTheme_imageCardViewStyle, 0);
-            styledAttrs.recycle();
-        }
-        return style;
-    }
-
-    public LoadingCardView(Context context) {
-        this(context, null);
-    }
-
-    public LoadingCardView(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.imageCardViewStyle);
     }
 
 }

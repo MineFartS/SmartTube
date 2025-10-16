@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.leanback.widget.BaseCardView;
+
 import com.liskovsoft.smartyoutubetv2.tv.R;
 import com.liskovsoft.smartyoutubetv2.tv.util.vineyard.NetworkUtil;
 
@@ -35,6 +37,31 @@ public class VideoCardView extends BaseCardView {
     public VideoCardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(getStyledContext(context, attrs, defStyleAttr), attrs, defStyleAttr);
         buildImageCardView(getImageCardViewStyle(context, attrs, defStyleAttr));
+    }
+
+    public VideoCardView(Context context) {
+        this(context, null);
+    }
+
+    public VideoCardView(Context context, AttributeSet attrs) {
+        this(context, attrs, R.attr.imageCardViewStyle);
+    }
+
+    private static Context getStyledContext(Context context, AttributeSet attrs, int defStyleAttr) {
+        int style = getImageCardViewStyle(context, attrs, defStyleAttr);
+        return new ContextThemeWrapper(context, style);
+    }
+
+    private static int getImageCardViewStyle(Context context, AttributeSet attrs, int defStyleAttr) {
+        // Read style attribute defined in XML layout.
+        int style = null == attrs ? 0 : attrs.getStyleAttribute();
+        if (0 == style) {
+            // Not found? Read global ImageCardView style from Theme attribute.
+            TypedArray styledAttrs = context.obtainStyledAttributes(R.styleable.LeanbackTheme);
+            style = styledAttrs.getResourceId(R.styleable.LeanbackTheme_imageCardViewStyle, 0);
+            styledAttrs.recycle();
+        }
+        return style;
     }
 
     @Override
@@ -107,31 +134,6 @@ public class VideoCardView extends BaseCardView {
         }
 
         cardAttrs.recycle();
-    }
-
-    private static Context getStyledContext(Context context, AttributeSet attrs, int defStyleAttr) {
-        int style = getImageCardViewStyle(context, attrs, defStyleAttr);
-        return new ContextThemeWrapper(context, style);
-    }
-
-    private static int getImageCardViewStyle(Context context, AttributeSet attrs, int defStyleAttr) {
-        // Read style attribute defined in XML layout.
-        int style = null == attrs ? 0 : attrs.getStyleAttribute();
-        if (0 == style) {
-            // Not found? Read global ImageCardView style from Theme attribute.
-            TypedArray styledAttrs = context.obtainStyledAttributes(R.styleable.LeanbackTheme);
-            style = styledAttrs.getResourceId(R.styleable.LeanbackTheme_imageCardViewStyle, 0);
-            styledAttrs.recycle();
-        }
-        return style;
-    }
-
-    public VideoCardView(Context context) {
-        this(context, null);
-    }
-
-    public VideoCardView(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.imageCardViewStyle);
     }
 
     /**

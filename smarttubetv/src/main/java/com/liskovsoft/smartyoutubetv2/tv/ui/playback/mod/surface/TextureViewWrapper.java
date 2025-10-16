@@ -10,11 +10,12 @@ import android.view.TextureView;
 import android.view.TextureView.SurfaceTextureListener;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.liskovsoft.smartyoutubetv2.tv.R;
 
 public class TextureViewWrapper implements SurfaceWrapper {
-    private int mState = SURFACE_NOT_CREATED;
     private final TextureView mVideoSurface;
+    private int mState = SURFACE_NOT_CREATED;
     private SurfaceHolder.Callback mMediaPlaybackCallback;
 
     public TextureViewWrapper(Context context, ViewGroup root) {

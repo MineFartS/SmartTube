@@ -34,20 +34,18 @@ import java.util.List;
  * https://chatgpt.com/c/6806b729-1ab0-8010-94f0-56f6b71cdbfb
  */
 public class EmbedPlayerView extends PlayerView implements PlaybackView {
-    private static final String TAG = EmbedPlayerView.class.getSimpleName();
     public static final int QUALITY_LOW = 0;
     public static final int QUALITY_NORMAL = 1;
+    private static final String TAG = EmbedPlayerView.class.getSimpleName();
+    private final Runnable mShowView = this::showView;
     private SimpleExoPlayer mPlayer;
     private ExoPlayerInitializer mPlayerInitializer;
     private ExoPlayerController mExoPlayerController;
     private PlaybackPresenter mPlaybackPresenter;
     private Video mVideo;
     private boolean mIsMute;
-    private final Runnable mShowView = this::showView;
-    private final Runnable mStopPlayback = this::finish;
     private int mQuality;
-    private float mPercentWatched;
-
+    private float mPercentWatched;    private final Runnable mStopPlayback = this::finish;
     public EmbedPlayerView(Context context) {
         super(context);
         hideView();
@@ -188,7 +186,7 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
 
     @Override
     public void showProgressBar(boolean show) {
-        
+
     }
 
     @Override
@@ -207,17 +205,17 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
     }
 
     @Override
+    public Video getVideo() {
+        return mVideo;
+    }
+
+    @Override
     public void setVideo(Video item) {
         mVideo = item;
 
         if (mExoPlayerController != null) {
             mExoPlayerController.setVideo(mVideo);
         }
-    }
-
-    @Override
-    public Video getVideo() {
-        return mVideo;
     }
 
     @Override
@@ -314,13 +312,13 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public void setPlayWhenReady(boolean play) {
-        mExoPlayerController.setPlayWhenReady(play);
+    public boolean getPlayWhenReady() {
+        return mExoPlayerController.getPlayWhenReady();
     }
 
     @Override
-    public boolean getPlayWhenReady() {
-        return mExoPlayerController.getPlayWhenReady();
+    public void setPlayWhenReady(boolean play) {
+        mExoPlayerController.setPlayWhenReady(play);
     }
 
     @Override
@@ -408,13 +406,6 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public void setSpeed(float speed) {
-        if (mExoPlayerController != null) {
-            mExoPlayerController.setSpeed(speed);
-        }
-    }
-
-    @Override
     public float getSpeed() {
         if (mExoPlayerController == null) {
             return 1f;
@@ -424,9 +415,9 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public void setPitch(float pitch) {
+    public void setSpeed(float speed) {
         if (mExoPlayerController != null) {
-            mExoPlayerController.setPitch(pitch);
+            mExoPlayerController.setSpeed(speed);
         }
     }
 
@@ -440,9 +431,9 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public void setVolume(float volume) {
-        if (!mIsMute && mExoPlayerController != null) {
-            mExoPlayerController.setVolume(volume);
+    public void setPitch(float pitch) {
+        if (mExoPlayerController != null) {
+            mExoPlayerController.setPitch(pitch);
         }
     }
 
@@ -453,6 +444,13 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
         }
 
         return mExoPlayerController.getVolume();
+    }
+
+    @Override
+    public void setVolume(float volume) {
+        if (!mIsMute && mExoPlayerController != null) {
+            mExoPlayerController.setVolume(volume);
+        }
     }
 
     @Override
@@ -482,7 +480,7 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
 
     @Override
     public void setVideoGravity(int gravity) {
-        
+
     }
 
     @Override
@@ -611,4 +609,8 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
             mExoPlayerController.setVolume(mute ? 0 : 1f);
         }
     }
+
+
+
+
 }

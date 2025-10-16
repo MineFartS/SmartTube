@@ -1,7 +1,9 @@
 package com.liskovsoft.smartyoutubetv2.tv.ui.browse.video;
 
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.BrowsePresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.interfaces.VideoGroupPresenter;
 

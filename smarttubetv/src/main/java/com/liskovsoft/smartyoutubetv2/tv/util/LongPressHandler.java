@@ -11,6 +11,12 @@ public class LongPressHandler {
     // Long press handler
     private long mKeyTimeMs;
     private int mKeyCode;
+    private final Runnable mOnKeyUpShortPress = () -> {
+        boolean result = onKeyUpShortPress(mKeyCode);
+        if (!result) {
+            //Utils.sendKey(this, mKeyCode);
+        }
+    };
     private int mKeyRepeatTimes;
 
     public void updateLongPressHandler(KeyEvent event) {
@@ -34,13 +40,6 @@ public class LongPressHandler {
         mKeyTimeMs = currentTimeMs;
         mKeyCode = keyCode;
     }
-
-    private final Runnable mOnKeyUpShortPress = () -> {
-        boolean result = onKeyUpShortPress(mKeyCode);
-        if (!result) {
-            //Utils.sendKey(this, mKeyCode);
-        }
-    };
 
     private boolean onKeyUpShortPress(int keyCode) {
         return false;

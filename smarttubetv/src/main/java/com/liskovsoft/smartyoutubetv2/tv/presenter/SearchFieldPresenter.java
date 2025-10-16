@@ -23,18 +23,6 @@ public class SearchFieldPresenter extends Presenter {
     private int mWidth;
     private int mHeight;
 
-    public static class SearchFieldCallback {
-        private String mText;
-
-        public void onTextChanged(String text) {
-            mText = text;
-        }
-
-        public String getText() {
-            return mText;
-        }
-    }
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent) {
         updateDimensions(parent.getContext());
@@ -105,5 +93,17 @@ public class SearchFieldPresenter extends Presenter {
                 R.dimen.channel_card_height,
                 MainUIData.instance(context).getVideoGridScale(),
                 true);
+    }
+
+    public static class SearchFieldCallback {
+        private String mText;
+
+        public void onTextChanged(String text) {
+            mText = text;
+        }
+
+        public String getText() {
+            return mText;
+        }
     }
 }

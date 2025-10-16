@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.leanback.widget.BaseCardView;
+
 import com.liskovsoft.smartyoutubetv2.tv.R;
 
 public class IconCardView extends BaseCardView {
@@ -30,6 +31,34 @@ public class IconCardView extends BaseCardView {
     public IconCardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(getStyledContext(context, attrs, defStyleAttr), attrs, defStyleAttr);
         buildCardView(getImageCardViewStyle(context, attrs, defStyleAttr));
+    }
+
+    public IconCardView(Context context) {
+        this(context, null);
+    }
+
+    public IconCardView(Context context, AttributeSet attrs) {
+        this(context, attrs, R.attr.imageCardViewStyle);
+    }
+
+    private static Context getStyledContext(Context context, AttributeSet attrs, int defStyleAttr) {
+        int style = getImageCardViewStyle(context, attrs, defStyleAttr);
+        return new ContextThemeWrapper(context, style);
+    }
+
+    private static int getImageCardViewStyle(Context context, AttributeSet attrs, int defStyleAttr) {
+        // Read style attribute defined in XML layout.
+        int style = null == attrs ? 0 : attrs.getStyleAttribute();
+        if (0 == style) {
+            // Not found? Read global ImageCardView style from Theme attribute.
+            TypedArray styledAttrs =
+                    context.obtainStyledAttributes(
+                            R.styleable.LeanbackTheme);
+            style = styledAttrs.getResourceId(
+                    R.styleable.LeanbackTheme_imageCardViewStyle, 0);
+            styledAttrs.recycle();
+        }
+        return style;
     }
 
     private void buildCardView(int styleResId) {
@@ -71,34 +100,6 @@ public class IconCardView extends BaseCardView {
 
     public void setOptionValueText(String valueText) {
         mValue.setText(valueText);
-    }
-
-    private static Context getStyledContext(Context context, AttributeSet attrs, int defStyleAttr) {
-        int style = getImageCardViewStyle(context, attrs, defStyleAttr);
-        return new ContextThemeWrapper(context, style);
-    }
-
-    private static int getImageCardViewStyle(Context context, AttributeSet attrs, int defStyleAttr) {
-        // Read style attribute defined in XML layout.
-        int style = null == attrs ? 0 : attrs.getStyleAttribute();
-        if (0 == style) {
-            // Not found? Read global ImageCardView style from Theme attribute.
-            TypedArray styledAttrs =
-                    context.obtainStyledAttributes(
-                            R.styleable.LeanbackTheme);
-            style = styledAttrs.getResourceId(
-                    R.styleable.LeanbackTheme_imageCardViewStyle, 0);
-            styledAttrs.recycle();
-        }
-        return style;
-    }
-
-    public IconCardView(Context context) {
-        this(context, null);
-    }
-
-    public IconCardView(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.imageCardViewStyle);
     }
 
     @Override

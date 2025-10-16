@@ -22,6 +22,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+
 import androidx.annotation.CallSuper;
 import androidx.leanback.media.MediaPlayerAdapter;
 import androidx.leanback.media.PlaybackGlue;
@@ -34,6 +35,7 @@ import androidx.leanback.widget.PlaybackControlsRow;
 import androidx.leanback.widget.PlaybackRowPresenter;
 import androidx.leanback.widget.PlaybackTransportRowPresenter;
 import androidx.leanback.widget.Presenter;
+
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
 import com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.playerglue.tooltips.ControlButtonPresenterSelector;
 
@@ -213,12 +215,19 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
      * Constructor for the glue.
      *
      * @param context
-     * @param impl Implementation to underlying media player.
+     * @param impl    Implementation to underlying media player.
      */
     public PlaybackBaseControlGlue(Context context, T impl) {
         super(context);
         mPlayerAdapter = impl;
         mPlayerAdapter.setCallback(mAdapterCallback);
+    }
+
+    protected static void notifyItemChanged(ArrayObjectAdapter adapter, Object object) {
+        int index = adapter.indexOf(object);
+        if (index >= 0) {
+            adapter.notifyArrayItemRangeChanged(index, 1);
+        }
     }
 
     public final T getPlayerAdapter() {
@@ -296,7 +305,17 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
     protected abstract PlaybackRowPresenter onCreateRowPresenter();
 
     /**
+     * Returns true if the controls auto hides after a timeout when media is playing.
+     *
+     * @see PlaybackGlueHost#isControlsOverlayAutoHideEnabled()
+     */
+    public boolean isControlsOverlayAutoHideEnabled() {
+        return mFadeWhenPlaying;
+    }
+
+    /**
      * Sets the controls to auto hide after a timeout when media is playing.
+     *
      * @param enable True to enable auto hide after a timeout when media is playing.
      * @see PlaybackGlueHost#setControlsOverlayAutoHideEnabled(boolean)
      */
@@ -308,11 +327,10 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
     }
 
     /**
-     * Returns true if the controls auto hides after a timeout when media is playing.
-     * @see PlaybackGlueHost#isControlsOverlayAutoHideEnabled()
+     * Returns the playback controls row managed by the glue layer.
      */
-    public boolean isControlsOverlayAutoHideEnabled() {
-        return mFadeWhenPlaying;
+    public PlaybackControlsRow getControlsRow() {
+        return mControlsRow;
     }
 
     /**
@@ -348,24 +366,17 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
     }
 
     /**
-     * Sets the controls row Presenter to be managed by the glue layer.
-     */
-    public void setPlaybackRowPresenter(PlaybackRowPresenter presenter) {
-        mControlsRowPresenter = presenter;
-    }
-
-    /**
-     * Returns the playback controls row managed by the glue layer.
-     */
-    public PlaybackControlsRow getControlsRow() {
-        return mControlsRow;
-    }
-
-    /**
      * Returns the playback controls row Presenter managed by the glue layer.
      */
     public PlaybackRowPresenter getPlaybackRowPresenter() {
         return mControlsRowPresenter;
+    }
+
+    /**
+     * Sets the controls row Presenter to be managed by the glue layer.
+     */
+    public void setPlaybackRowPresenter(PlaybackRowPresenter presenter) {
+        mControlsRowPresenter = presenter;
     }
 
     /**
@@ -408,13 +419,6 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
     @Override
     public void previous() {
         mPlayerAdapter.previous();
-    }
-
-    protected static void notifyItemChanged(ArrayObjectAdapter adapter, Object object) {
-        int index = adapter.indexOf(object);
-        if (index >= 0) {
-            adapter.notifyArrayItemRangeChanged(index, 1);
-        }
     }
 
     /**
@@ -529,9 +533,17 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
     }
 
     /**
+     * @return The drawable representing cover image.
+     */
+    public Drawable getArt() {
+        return mCover;
+    }
+
+    /**
      * Sets the drawable representing cover image. The drawable will be rendered by default
      * description presenter in
      * {@link PlaybackTransportRowPresenter#setDescriptionPresenter(Presenter)}.
+     *
      * @param cover The drawable representing cover image.
      */
     public void setArt(Drawable cover) {
@@ -546,15 +558,16 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
     }
 
     /**
-     * @return The drawable representing cover image.
+     * Return The media body (located under subtitle).
      */
-    public Drawable getArt() {
-        return mCover;
+    public CharSequence getBody() {
+        return mBody;
     }
 
     /**
      * Sets the media body (located under subtitle). The body will be rendered by default description presenter
      * {@link PlaybackTransportRowPresenter#setDescriptionPresenter(Presenter)}.
+     *
      * @param body Body to set.
      */
     public void setBody(CharSequence body) {
@@ -568,15 +581,16 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
     }
 
     /**
-     * Return The media body (located under subtitle).
+     * Return The media subtitle.
      */
-    public CharSequence getBody() {
-        return mBody;
+    public CharSequence getSubtitle() {
+        return mSubtitle;
     }
 
     /**
      * Sets the media subtitle. The subtitle will be rendered by default description presenter
      * {@link PlaybackTransportRowPresenter#setDescriptionPresenter(Presenter)}.
+     *
      * @param subtitle Subtitle to set.
      */
     public void setSubtitle(CharSequence subtitle) {
@@ -590,10 +604,10 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
     }
 
     /**
-     * Return The media subtitle.
+     * Returns the title of the media item.
      */
-    public CharSequence getSubtitle() {
-        return mSubtitle;
+    public CharSequence getTitle() {
+        return mTitle;
     }
 
     /**
@@ -608,13 +622,6 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
         if (getHost() != null) {
             getHost().notifyPlaybackRowChanged();
         }
-    }
-
-    /**
-     * Returns the title of the media item.
-     */
-    public CharSequence getTitle() {
-        return mTitle;
     }
 
     /**
@@ -664,6 +671,7 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
 
     /**
      * Seek media to a new position.
+     *
      * @param position New position.
      */
     public final void seekTo(long position) {

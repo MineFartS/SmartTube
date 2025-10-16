@@ -26,12 +26,14 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import androidx.annotation.ColorInt;
 import androidx.leanback.R;
 import androidx.leanback.widget.Action;
 import androidx.leanback.widget.ObjectAdapter;
 import androidx.leanback.widget.PlaybackControlsRow;
 import androidx.leanback.widget.Presenter;
+
 import com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.playerglue.MathUtil;
 
 /**
@@ -41,152 +43,17 @@ import com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.playerglue.MathUtil;
  */
 class PlaybackControlsPresenter extends ControlBarPresenter {
 
+    private static int sChildMarginBigger;
+    private static int sChildMarginBiggest;
+    private boolean mMoreActionsEnabled = true;
+
     /**
-     * The data type expected by this presenter.
+     * Constructor for a PlaybackControlsRowPresenter.
+     *
+     * @param layoutResourceId The resource id of the layout for this presenter.
      */
-    static class BoundData extends ControlBarPresenter.BoundData {
-        /**
-         * The adapter containing secondary actions.
-         */
-        ObjectAdapter secondaryActionsAdapter;
-    }
-
-    class ViewHolder extends ControlBarPresenter.ViewHolder {
-        ObjectAdapter mMoreActionsAdapter;
-        ObjectAdapter.DataObserver mMoreActionsObserver;
-        final FrameLayout mMoreActionsDock;
-        Presenter.ViewHolder mMoreActionsViewHolder;
-        boolean mMoreActionsShowing;
-        final TextView mCurrentTime;
-        final TextView mTotalTime;
-        final ProgressBar mProgressBar;
-        long mCurrentTimeInMs = -1;         // Hold current time in milliseconds
-        long mTotalTimeInMs = -1;           // Hold total time in milliseconds
-        long mSecondaryProgressInMs = -1;   // Hold secondary progress in milliseconds
-        StringBuilder mTotalTimeStringBuilder = new StringBuilder();
-        StringBuilder mCurrentTimeStringBuilder = new StringBuilder();
-        int mCurrentTimeMarginStart;
-        int mTotalTimeMarginEnd;
-
-        ViewHolder(View rootView) {
-            super(rootView);
-            mMoreActionsDock = (FrameLayout) rootView.findViewById(R.id.more_actions_dock);
-            mCurrentTime = (TextView) rootView.findViewById(R.id.current_time);
-            mTotalTime = (TextView) rootView.findViewById(R.id.total_time);
-            mProgressBar = (ProgressBar) rootView.findViewById(R.id.playback_progress);
-            mMoreActionsObserver = new ObjectAdapter.DataObserver() {
-                @Override
-                public void onChanged() {
-                    if (mMoreActionsShowing) {
-                        showControls(mPresenter);
-                    }
-                }
-                @Override
-                public void onItemRangeChanged(int positionStart, int itemCount) {
-                    if (mMoreActionsShowing) {
-                        for (int i = 0; i < itemCount; i++) {
-                            bindControlToAction(positionStart + i, mPresenter);
-                        }
-                    }
-                }
-            };
-            mCurrentTimeMarginStart =
-                    ((MarginLayoutParams) mCurrentTime.getLayoutParams()).getMarginStart();
-            mTotalTimeMarginEnd =
-                    ((MarginLayoutParams) mTotalTime.getLayoutParams()).getMarginEnd();
-        }
-
-        void showMoreActions(boolean show) {
-            if (show) {
-                if (mMoreActionsViewHolder == null) {
-                    Action action = new PlaybackControlsRow.MoreActions(mMoreActionsDock.getContext());
-                    mMoreActionsViewHolder = mPresenter.onCreateViewHolder(mMoreActionsDock);
-                    mPresenter.onBindViewHolder(mMoreActionsViewHolder, action);
-                    mPresenter.setOnClickListener(mMoreActionsViewHolder, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            toggleMoreActions();
-                        }
-                    });
-                }
-                if (mMoreActionsViewHolder.view.getParent() == null) {
-                    mMoreActionsDock.addView(mMoreActionsViewHolder.view);
-                }
-            } else if (mMoreActionsViewHolder != null
-                    && mMoreActionsViewHolder.view.getParent() != null) {
-                mMoreActionsDock.removeView(mMoreActionsViewHolder.view);
-            }
-        }
-
-        void toggleMoreActions() {
-            mMoreActionsShowing = !mMoreActionsShowing;
-            showControls(mPresenter);
-        }
-
-        @Override
-        ObjectAdapter getDisplayedAdapter() {
-            return mMoreActionsShowing ? mMoreActionsAdapter : mAdapter;
-        }
-
-        @Override
-        int getChildMarginFromCenter(Context context, int numControls) {
-            int margin = getControlIconWidth(context);
-            if (numControls < 4) {
-                margin += getChildMarginBiggest(context);
-            } else if (numControls < 6) {
-                margin += getChildMarginBigger(context);
-            } else {
-                margin += getChildMarginDefault(context);
-            }
-            return margin;
-        }
-
-        void setTotalTime(long totalTimeMs) {
-            if (totalTimeMs <= 0) {
-                mTotalTime.setVisibility(View.GONE);
-                mProgressBar.setVisibility(View.GONE);
-            } else {
-                mTotalTime.setVisibility(View.VISIBLE);
-                mProgressBar.setVisibility(View.VISIBLE);
-                mTotalTimeInMs = totalTimeMs;
-                formatTime(totalTimeMs / 1000, mTotalTimeStringBuilder);
-                mTotalTime.setText(mTotalTimeStringBuilder.toString());
-                mProgressBar.setMax(Integer.MAX_VALUE);//current progress will be a fraction of this
-            }
-        }
-
-        long getTotalTime() {
-            return mTotalTimeInMs;
-        }
-
-        void setCurrentTime(long currentTimeMs) {
-            long seconds = currentTimeMs / 1000;
-            if (currentTimeMs != mCurrentTimeInMs) {
-                mCurrentTimeInMs = currentTimeMs;
-                formatTime(seconds, mCurrentTimeStringBuilder);
-                mCurrentTime.setText(mCurrentTimeStringBuilder.toString());
-            }
-            // Use ratio to represent current progres
-            double ratio = (double) mCurrentTimeInMs / mTotalTimeInMs;     // Range: [0, 1]
-            double progressRatio = ratio * Integer.MAX_VALUE;   // Could safely cast to int
-            mProgressBar.setProgress((int)progressRatio);
-        }
-
-        long getCurrentTime() {
-            return mTotalTimeInMs;
-        }
-
-        void setSecondaryProgress(long progressMs) {
-            mSecondaryProgressInMs = progressMs;
-            // Solve the progress bar by using ratio
-            double ratio = (double) progressMs / mTotalTimeInMs;           // Range: [0, 1]
-            double progressRatio = ratio * Integer.MAX_VALUE;   // Could safely cast to int
-            mProgressBar.setSecondaryProgress((int) progressRatio);
-        }
-
-        long getSecondaryProgress() {
-            return mSecondaryProgressInMs;
-        }
+    public PlaybackControlsPresenter(int layoutResourceId) {
+        super(layoutResourceId);
     }
 
     static void formatTime(long seconds, StringBuilder sb) {
@@ -207,19 +74,6 @@ class PlaybackControlsPresenter extends ControlBarPresenter {
             sb.append('0');
         }
         sb.append(seconds);
-    }
-
-    private boolean mMoreActionsEnabled = true;
-    private static int sChildMarginBigger;
-    private static int sChildMarginBiggest;
-
-    /**
-     * Constructor for a PlaybackControlsRowPresenter.
-     *
-     * @param layoutResourceId The resource id of the layout for this presenter.
-     */
-    public PlaybackControlsPresenter(int layoutResourceId) {
-        super(layoutResourceId);
     }
 
     /**
@@ -317,7 +171,7 @@ class PlaybackControlsPresenter extends ControlBarPresenter {
     @Override
     public Presenter.ViewHolder onCreateViewHolder(ViewGroup parent) {
         View v = LayoutInflater.from(parent.getContext())
-            .inflate(getLayoutResourceId(), parent, false);
+                .inflate(getLayoutResourceId(), parent, false);
         return new ViewHolder(v);
     }
 
@@ -361,5 +215,154 @@ class PlaybackControlsPresenter extends ControlBarPresenter {
                     R.dimen.lb_playback_controls_child_margin_biggest);
         }
         return sChildMarginBiggest;
+    }
+
+    /**
+     * The data type expected by this presenter.
+     */
+    static class BoundData extends ControlBarPresenter.BoundData {
+        /**
+         * The adapter containing secondary actions.
+         */
+        ObjectAdapter secondaryActionsAdapter;
+    }
+
+    class ViewHolder extends ControlBarPresenter.ViewHolder {
+        final FrameLayout mMoreActionsDock;
+        final TextView mCurrentTime;
+        final TextView mTotalTime;
+        final ProgressBar mProgressBar;
+        ObjectAdapter mMoreActionsAdapter;
+        ObjectAdapter.DataObserver mMoreActionsObserver;
+        Presenter.ViewHolder mMoreActionsViewHolder;
+        boolean mMoreActionsShowing;
+        long mCurrentTimeInMs = -1;         // Hold current time in milliseconds
+        long mTotalTimeInMs = -1;           // Hold total time in milliseconds
+        long mSecondaryProgressInMs = -1;   // Hold secondary progress in milliseconds
+        StringBuilder mTotalTimeStringBuilder = new StringBuilder();
+        StringBuilder mCurrentTimeStringBuilder = new StringBuilder();
+        int mCurrentTimeMarginStart;
+        int mTotalTimeMarginEnd;
+
+        ViewHolder(View rootView) {
+            super(rootView);
+            mMoreActionsDock = (FrameLayout) rootView.findViewById(R.id.more_actions_dock);
+            mCurrentTime = (TextView) rootView.findViewById(R.id.current_time);
+            mTotalTime = (TextView) rootView.findViewById(R.id.total_time);
+            mProgressBar = (ProgressBar) rootView.findViewById(R.id.playback_progress);
+            mMoreActionsObserver = new ObjectAdapter.DataObserver() {
+                @Override
+                public void onChanged() {
+                    if (mMoreActionsShowing) {
+                        showControls(mPresenter);
+                    }
+                }
+
+                @Override
+                public void onItemRangeChanged(int positionStart, int itemCount) {
+                    if (mMoreActionsShowing) {
+                        for (int i = 0; i < itemCount; i++) {
+                            bindControlToAction(positionStart + i, mPresenter);
+                        }
+                    }
+                }
+            };
+            mCurrentTimeMarginStart =
+                    ((MarginLayoutParams) mCurrentTime.getLayoutParams()).getMarginStart();
+            mTotalTimeMarginEnd =
+                    ((MarginLayoutParams) mTotalTime.getLayoutParams()).getMarginEnd();
+        }
+
+        void showMoreActions(boolean show) {
+            if (show) {
+                if (mMoreActionsViewHolder == null) {
+                    Action action = new PlaybackControlsRow.MoreActions(mMoreActionsDock.getContext());
+                    mMoreActionsViewHolder = mPresenter.onCreateViewHolder(mMoreActionsDock);
+                    mPresenter.onBindViewHolder(mMoreActionsViewHolder, action);
+                    mPresenter.setOnClickListener(mMoreActionsViewHolder, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            toggleMoreActions();
+                        }
+                    });
+                }
+                if (mMoreActionsViewHolder.view.getParent() == null) {
+                    mMoreActionsDock.addView(mMoreActionsViewHolder.view);
+                }
+            } else if (mMoreActionsViewHolder != null
+                    && mMoreActionsViewHolder.view.getParent() != null) {
+                mMoreActionsDock.removeView(mMoreActionsViewHolder.view);
+            }
+        }
+
+        void toggleMoreActions() {
+            mMoreActionsShowing = !mMoreActionsShowing;
+            showControls(mPresenter);
+        }
+
+        @Override
+        ObjectAdapter getDisplayedAdapter() {
+            return mMoreActionsShowing ? mMoreActionsAdapter : mAdapter;
+        }
+
+        @Override
+        int getChildMarginFromCenter(Context context, int numControls) {
+            int margin = getControlIconWidth(context);
+            if (numControls < 4) {
+                margin += getChildMarginBiggest(context);
+            } else if (numControls < 6) {
+                margin += getChildMarginBigger(context);
+            } else {
+                margin += getChildMarginDefault(context);
+            }
+            return margin;
+        }
+
+        long getTotalTime() {
+            return mTotalTimeInMs;
+        }
+
+        void setTotalTime(long totalTimeMs) {
+            if (totalTimeMs <= 0) {
+                mTotalTime.setVisibility(View.GONE);
+                mProgressBar.setVisibility(View.GONE);
+            } else {
+                mTotalTime.setVisibility(View.VISIBLE);
+                mProgressBar.setVisibility(View.VISIBLE);
+                mTotalTimeInMs = totalTimeMs;
+                formatTime(totalTimeMs / 1000, mTotalTimeStringBuilder);
+                mTotalTime.setText(mTotalTimeStringBuilder.toString());
+                mProgressBar.setMax(Integer.MAX_VALUE);//current progress will be a fraction of this
+            }
+        }
+
+        long getCurrentTime() {
+            return mTotalTimeInMs;
+        }
+
+        void setCurrentTime(long currentTimeMs) {
+            long seconds = currentTimeMs / 1000;
+            if (currentTimeMs != mCurrentTimeInMs) {
+                mCurrentTimeInMs = currentTimeMs;
+                formatTime(seconds, mCurrentTimeStringBuilder);
+                mCurrentTime.setText(mCurrentTimeStringBuilder.toString());
+            }
+            // Use ratio to represent current progres
+            double ratio = (double) mCurrentTimeInMs / mTotalTimeInMs;     // Range: [0, 1]
+            double progressRatio = ratio * Integer.MAX_VALUE;   // Could safely cast to int
+            mProgressBar.setProgress((int) progressRatio);
+        }
+
+        long getSecondaryProgress() {
+            return mSecondaryProgressInMs;
+        }
+
+        void setSecondaryProgress(long progressMs) {
+            mSecondaryProgressInMs = progressMs;
+            // Solve the progress bar by using ratio
+            double ratio = (double) progressMs / mTotalTimeInMs;           // Range: [0, 1]
+            double progressRatio = ratio * Integer.MAX_VALUE;   // Could safely cast to int
+            mProgressBar.setSecondaryProgress((int) progressRatio);
+        }
     }
 }

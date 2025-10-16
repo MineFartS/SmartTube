@@ -6,7 +6,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
 import androidx.annotation.Nullable;
+
 import com.bumptech.glide.Glide;
 import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.ChatReceiver;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerTweaksData;
@@ -78,6 +80,6 @@ public class LiveChatView extends com.stfalcon.chatkit.messages.MessagesList {
             gravity = Gravity.LEFT;
         }
 
-        ((FrameLayout.LayoutParams)((ViewGroup) getParent()).getLayoutParams()).gravity = gravity;
+        ((FrameLayout.LayoutParams) ((ViewGroup) getParent()).getLayoutParams()).gravity = gravity;
     }
 }

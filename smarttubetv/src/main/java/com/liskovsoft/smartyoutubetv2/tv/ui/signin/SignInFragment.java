@@ -3,12 +3,14 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.signin;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.leanback.app.GuidedStepSupportFragment;
 import androidx.leanback.widget.GuidanceStylist;
 import androidx.leanback.widget.GuidedAction;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -27,6 +29,18 @@ public class SignInFragment extends GuidedStepSupportFragment implements SignInV
     private static final String TAG = SignInFragment.class.getSimpleName();
     private static final int CONTINUE = 2;
     private static final int OPEN_BROWSER = 3;
+    private final RequestListener<Drawable> mErrorListener = new RequestListener<Drawable>() {
+        @Override
+        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+            Log.e(TAG, "Glide load failed: " + e);
+            return false;
+        }
+
+        @Override
+        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+            return false;
+        }
+    };
     private SignInPresenter mSignInPresenter;
     private String mFullSignInUrl;
 
@@ -120,17 +134,4 @@ public class SignInFragment extends GuidedStepSupportFragment implements SignInV
             }
         }
     }
-
-    private final RequestListener<Drawable> mErrorListener = new RequestListener<Drawable>() {
-        @Override
-        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-            Log.e(TAG, "Glide load failed: " + e);
-            return false;
-        }
-
-        @Override
-        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-            return false;
-        }
-    };
 }

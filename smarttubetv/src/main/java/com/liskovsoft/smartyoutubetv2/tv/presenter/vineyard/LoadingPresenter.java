@@ -1,7 +1,9 @@
 package com.liskovsoft.smartyoutubetv2.tv.presenter.vineyard;
 
 import android.view.ViewGroup;
+
 import androidx.leanback.widget.Presenter;
+
 import com.liskovsoft.smartyoutubetv2.tv.ui.widgets.vineyard.LoadingCardView;
 
 public class LoadingPresenter extends Presenter {
@@ -14,7 +16,7 @@ public class LoadingPresenter extends Presenter {
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, Object item) {
-        if (item instanceof LoadingCardView){
+        if (item instanceof LoadingCardView) {
             LoadingCardView cardView = (LoadingCardView) viewHolder.view;
             cardView.isLoading(true);
         }

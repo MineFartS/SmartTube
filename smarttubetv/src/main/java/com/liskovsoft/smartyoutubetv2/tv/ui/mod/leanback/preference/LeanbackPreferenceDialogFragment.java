@@ -18,14 +18,13 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.preference;
 
 import android.app.Fragment;
 import android.os.Build;
+
 import androidx.preference.DialogPreference;
 import androidx.preference.Preference;
 
 public class LeanbackPreferenceDialogFragment extends Fragment {
-    private Preference mPref;
-
     public static final String ARG_KEY = "key";
-
+    private Preference mPref;
     private DialogPreference mPreference;
 
     public LeanbackPreferenceDialogFragment() {
@@ -65,12 +64,12 @@ public class LeanbackPreferenceDialogFragment extends Fragment {
         // NOP
     }
 
-    public void setPreference(Preference pref) {
-        mPref = pref;
-    }
-
     // MODIFIED: allow use this fragment without target fragment
     public DialogPreference getPreference() {
         return mPref != null ? (DialogPreference) mPref : null;
+    }
+
+    public void setPreference(Preference pref) {
+        mPref = pref;
     }
 }

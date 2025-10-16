@@ -14,8 +14,8 @@ import com.liskovsoft.smartyoutubetv2.tv.R;
 
 @SuppressLint("AppCompatCustomView")
 public class SpeedMarquee extends TextView {
-    private TypedArray typedArray;
     private final Scroller textScroller;
+    private TypedArray typedArray;
     private int mXPaused = 0;
     private boolean isPaused = true;
     private float mScrollSpeed = 2.0f;
@@ -133,13 +133,13 @@ public class SpeedMarquee extends TextView {
         }
     }
 
+    public float getSpeed() {
+        return mScrollSpeed;
+    }
+
     public void setSpeed(float value) {
         mScrollSpeed = value;
         startScrollAfterUpdate(textScroller.getCurrX());
-    }
-
-    public float getSpeed() {
-        return mScrollSpeed;
     }
 }
 

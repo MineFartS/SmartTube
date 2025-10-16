@@ -1,7 +1,9 @@
 package com.liskovsoft.smartyoutubetv2.tv.ui.playback.previewtimebar;
 
 import android.graphics.Bitmap;
+
 import androidx.annotation.NonNull;
+
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.liskovsoft.sharedutils.mylogger.Log;

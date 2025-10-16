@@ -27,9 +27,11 @@ import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
 import androidx.annotation.RestrictTo;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.leanback.R;
+
 import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.SeekBarSegment;
 
 import java.util.ArrayList;
@@ -40,34 +42,11 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 /**
  * Replacement of SeekBar, has two bar heights and two thumb size when focused/not_focused.
  * The widget does not deal with KeyEvent, it's client's responsibility to set a key listener.
+ *
  * @hide
  */
 @RestrictTo(LIBRARY_GROUP)
 public final class SeekBar extends View {
-    /**
-     * @hide
-     */
-    @RestrictTo(LIBRARY_GROUP)
-    public abstract static class AccessibilitySeekListener {
-        /**
-         * Called to perform AccessibilityNodeInfoCompat.ACTION_SCROLL_FORWARD
-         */
-        public abstract boolean onAccessibilitySeekForward();
-        /**
-         * Called to perform AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD
-         */
-        public abstract boolean onAccessibilitySeekBackward();
-        /**
-         * Touch event handling
-         */
-        public abstract boolean onAccessibilitySeekProgress(int progress);
-    }
-
-    private static class SeekBarRectangle {
-        public final RectF rect = new RectF();
-        private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    }
-
     private final RectF mProgressRect = new RectF();
     private final RectF mSecondProgressRect = new RectF();
     private final RectF mBackgroundRect = new RectF();
@@ -75,18 +54,21 @@ public final class SeekBar extends View {
     private final Paint mProgressPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint mBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint mKnobPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-
+    private final List<SeekBarRectangle> mSeekBarRectangles = new ArrayList<>();
     private int mProgress;
     private int mSecondProgress;
     private int mMax;
     private int mKnobx;
-
     private int mActiveRadius;
     private int mBarHeight;
     private int mActiveBarHeight;
-    private final List<SeekBarRectangle> mSeekBarRectangles = new ArrayList<>();
-
     private AccessibilitySeekListener mAccessibilitySeekListener;
+    private int mScaledTouchSlop;
+    private int mPaddingLeft;
+    private int mPaddingRight;
+    private int mTouchProgressOffset;
+    private float mTouchDownX;
+    private boolean mIsDragging;
 
     public SeekBar(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -129,7 +111,7 @@ public final class SeekBar extends View {
 
     @Override
     protected void onFocusChanged(boolean gainFocus,
-            int direction, Rect previouslyFocusedRect) {
+                                  int direction, Rect previouslyFocusedRect) {
         super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
         calculate();
         //calculateSegments();
@@ -159,19 +141,6 @@ public final class SeekBar extends View {
     }
 
     /**
-     * Set progress within 0 and {@link #getMax()}
-     */
-    public void setProgress(int progress) {
-        if (progress > mMax) {
-            progress = mMax;
-        } else if (progress < 0) {
-            progress = 0;
-        }
-        mProgress = progress;
-        calculate();
-    }
-
-    /**
      * Set secondary progress within 0 and {@link #getMax()}
      */
     public void setSecondaryProgress(int progress) {
@@ -189,6 +158,19 @@ public final class SeekBar extends View {
      */
     public int getProgress() {
         return mProgress;
+    }
+
+    /**
+     * Set progress within 0 and {@link #getMax()}
+     */
+    public void setProgress(int progress) {
+        if (progress > mMax) {
+            progress = mMax;
+        } else if (progress < 0) {
+            progress = 0;
+        }
+        mProgress = progress;
+        calculate();
     }
 
     /**
@@ -223,15 +205,15 @@ public final class SeekBar extends View {
     /**
      * Set color for second progress which is usually for buffering indication.
      */
-    public void setSecondaryProgressColor(int color) {
-        mSecondProgressPaint.setColor(color);
+    public int getSecondaryProgressColor() {
+        return mSecondProgressPaint.getColor();
     }
 
     /**
      * Set color for second progress which is usually for buffering indication.
      */
-    public int getSecondaryProgressColor() {
-        return mSecondProgressPaint.getColor();
+    public void setSecondaryProgressColor(int color) {
+        mSecondProgressPaint.setColor(color);
     }
 
     private void calculate() {
@@ -267,6 +249,8 @@ public final class SeekBar extends View {
     public CharSequence getAccessibilityClassName() {
         return SeekBar.class.getName();
     }
+
+    // Touch interceptor
 
     public void setAccessibilitySeekListener(AccessibilitySeekListener listener) {
         mAccessibilitySeekListener = listener;
@@ -332,15 +316,6 @@ public final class SeekBar extends View {
         //invalidate();
     }
 
-    // Touch interceptor
-
-    private int mScaledTouchSlop;
-    private int mPaddingLeft;
-    private int mPaddingRight;
-    private int mTouchProgressOffset;
-    private float mTouchDownX;
-    private boolean mIsDragging;
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
@@ -403,7 +378,7 @@ public final class SeekBar extends View {
             bg.setHotspot(x, y);
         }
     }
-    
+
     private void trackTouchEvent(MotionEvent event) {
         final int x = Math.round(event.getX());
         final int y = Math.round(event.getY());
@@ -458,5 +433,31 @@ public final class SeekBar extends View {
 
     public synchronized int getMin() {
         return 0;
+    }
+
+    /**
+     * @hide
+     */
+    @RestrictTo(LIBRARY_GROUP)
+    public abstract static class AccessibilitySeekListener {
+        /**
+         * Called to perform AccessibilityNodeInfoCompat.ACTION_SCROLL_FORWARD
+         */
+        public abstract boolean onAccessibilitySeekForward();
+
+        /**
+         * Called to perform AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD
+         */
+        public abstract boolean onAccessibilitySeekBackward();
+
+        /**
+         * Touch event handling
+         */
+        public abstract boolean onAccessibilitySeekProgress(int progress);
+    }
+
+    private static class SeekBarRectangle {
+        public final RectF rect = new RectF();
+        private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
 }

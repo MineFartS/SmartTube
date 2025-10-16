@@ -5,11 +5,12 @@ import android.view.ViewGroup;
 
 import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.Presenter;
+
 import com.liskovsoft.smartyoutubetv2.common.app.models.search.vineyard.Option;
 import com.liskovsoft.smartyoutubetv2.tv.ui.widgets.vineyard.IconCardView;
 
 public class IconItemPresenter extends Presenter {
-    
+
     private static int GRID_ITEM_WIDTH = 350;
     private static int GRID_ITEM_HEIGHT = 400;
 
@@ -38,5 +39,6 @@ public class IconItemPresenter extends Presenter {
     }
 
     @Override
-    public void onUnbindViewHolder(ViewHolder viewHolder) { }
+    public void onUnbindViewHolder(ViewHolder viewHolder) {
+    }
 }

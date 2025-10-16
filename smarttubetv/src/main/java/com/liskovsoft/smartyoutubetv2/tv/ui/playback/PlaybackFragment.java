@@ -622,114 +622,6 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
         mShortsPresenter.setOnItemViewLongPressedListener(new ItemViewLongPressedListener());
     }
 
-    private final class ItemViewLongPressedListener implements OnItemLongPressedListener {
-        @Override
-        public void onItemLongPressed(
-                Presenter.ViewHolder itemViewHolder,
-                Object item) {
-
-            if (item instanceof Video) {
-                mPlaybackPresenter.onSuggestionItemLongClicked((Video) item);
-            }
-        }
-    }
-
-    private final class ItemViewClickedListener implements androidx.leanback.widget.OnItemViewClickedListener {
-        @Override
-        public void onItemClicked(
-                Presenter.ViewHolder itemViewHolder,
-                Object item,
-                RowPresenter.ViewHolder rowViewHolder,
-                Row row) {
-
-            if (item instanceof Video) {
-                mPlaybackPresenter.onSuggestionItemClicked((Video) item);
-            }
-        }
-    }
-
-    private final class ItemViewSelectedListener implements OnItemViewSelectedListener {
-        @Override
-        public void onItemSelected(Presenter.ViewHolder itemViewHolder, Object item,
-                                   RowPresenter.ViewHolder rowViewHolder, Row row) {
-            if (item instanceof Video) {
-                mBackgroundManager.setBackgroundFrom((Video) item);
-
-                checkScrollEnd((Video)item);
-            }
-        }
-
-        private void checkScrollEnd(Video item) {
-            for (VideoGroupObjectAdapter adapter : mVideoGroupAdapters.values()) {
-                int index = adapter.indexOf(item);
-
-                if (index != -1) {
-                    int size = adapter.size();
-                    if (index > (size - 4)) {
-                        mPlaybackPresenter.onScrollEnd(item);
-                    }
-                    break;
-                }
-            }
-        }
-    }
-
-    private class PlayerActionListener implements VideoPlayerGlue.OnActionClickedListener {
-        @Override
-        public void onPrevious() {
-            mPlaybackPresenter.onPreviousClicked();
-        }
-
-        @Override
-        public void onNext() {
-            mPlaybackPresenter.onNextClicked();
-        }
-
-        @Override
-        public void onPlay() {
-            mPlaybackPresenter.onPlayClicked();
-        }
-
-        @Override
-        public void onPause() {
-            mPlaybackPresenter.onPauseClicked();
-        }
-
-        @Override
-        public void onAction(int actionId, int actionIndex) {
-            mPlaybackPresenter.onButtonClicked(actionId, actionIndex);
-        }
-
-        @Override
-        public void onLongAction(int actionId, int actionIndex) {
-            mPlaybackPresenter.onButtonLongClicked(actionId, actionIndex);
-        }
-
-        @Override
-        public void onTopEdgeFocused() {
-            showOverlay(false);
-        }
-
-        @Override
-        public boolean onKeyDown(int keyCode) {
-            return mPlaybackPresenter.onKeyDown(keyCode);
-        }
-    }
-
-    // Begin Ui events
-
-    @Override
-    public void setVideo(Video video) {
-        mExoPlayerController.setVideo(video);
-
-        if (mPlayerGlue != null && video != null) {
-            // Preserve player formatting
-            mPlayerGlue.setTitle(video.getTitleFull() != null ? video.getTitleFull() : "...");
-            mPlayerGlue.setSubtitle(video.getSecondTitleFull() != null ? createSubtitle(video) : "...");
-            mPlayerGlue.setVideo(video);
-        }
-    }
-
     @Override
     public void showBackground(String url) {
         mBackgroundManager.showBackground(url);
@@ -744,7 +636,7 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
         CharSequence result = video.getSecondTitleFull();
 
         if (getContext() != null && video.isLive) {
-            result = TextUtils.concat( result, " ", Video.TERTIARY_TEXT_DELIM, " ", Utils.color(getContext().getString(R.string.badge_live), ContextCompat.getColor(getContext(), R.color.red)));
+            result = TextUtils.concat(result, " ", Video.TERTIARY_TEXT_DELIM, " ", Utils.color(getContext().getString(R.string.badge_live), ContextCompat.getColor(getContext(), R.color.red)));
         }
 
         if (getContext() != null && video.likeCount != null) {
@@ -771,6 +663,8 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
 
         return result;
     }
+
+    // Begin Ui events
 
     @Override
     public void loadStoryboard() {
@@ -831,10 +725,6 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
         }
     }
 
-    // End Ui events
-
-    // Begin Engine Events
-
     @Override
     public void openSabr(MediaItemFormatInfo formatInfo) {
         mExoPlayerController.openSabr(formatInfo);
@@ -859,6 +749,10 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     public void openHlsUrl(String hlsPlaylistUrl) {
         mExoPlayerController.openHlsUrl(hlsPlaylistUrl);
     }
+
+    // End Ui events
+
+    // Begin Engine Events
 
     @Override
     public void openUrlList(List<String> urlList) {
@@ -899,13 +793,13 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     }
 
     @Override
-    public void setPlayWhenReady(boolean play) {
-        mExoPlayerController.setPlayWhenReady(play);
+    public boolean getPlayWhenReady() {
+        return mExoPlayerController.getPlayWhenReady();
     }
 
     @Override
-    public boolean getPlayWhenReady() {
-        return mExoPlayerController.getPlayWhenReady();
+    public void setPlayWhenReady(boolean play) {
+        mExoPlayerController.setPlayWhenReady(play);
     }
 
     @Override
@@ -1053,8 +947,6 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
         setGravity(gravity);
     }
 
-    // End Engine Events
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -1080,6 +972,18 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     }
 
     @Override
+    public void setVideo(Video video) {
+        mExoPlayerController.setVideo(video);
+
+        if (mPlayerGlue != null && video != null) {
+            // Preserve player formatting
+            mPlayerGlue.setTitle(video.getTitleFull() != null ? video.getTitleFull() : "...");
+            mPlayerGlue.setSubtitle(video.getSecondTitleFull() != null ? createSubtitle(video) : "...");
+            mPlayerGlue.setVideo(video);
+        }
+    }
+
+    @Override
     public void finish() {
         LeanbackActivity activity = getLeanbackActivity();
 
@@ -1099,6 +1003,8 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
             activity.finishReally();
         }
     }
+
+    // End Engine Events
 
     @Override
     public boolean isOverlayShown() {
@@ -1463,8 +1369,6 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
         }
     }
 
-    /* End PlayerController */
-
     private LeanbackActivity getLeanbackActivity() {
         return (LeanbackActivity) getActivity();
     }
@@ -1511,10 +1415,106 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
         }
     }
 
+    /* End PlayerController */
+
     /**
      * UI couldn't be properly displayed in PIP mode
      */
     private boolean forbidShowOverlay(boolean show) {
         return show && isInPIPMode();
+    }
+
+    private final class ItemViewLongPressedListener implements OnItemLongPressedListener {
+        @Override
+        public void onItemLongPressed(
+                Presenter.ViewHolder itemViewHolder,
+                Object item) {
+
+            if (item instanceof Video) {
+                mPlaybackPresenter.onSuggestionItemLongClicked((Video) item);
+            }
+        }
+    }
+
+    private final class ItemViewClickedListener implements androidx.leanback.widget.OnItemViewClickedListener {
+        @Override
+        public void onItemClicked(
+                Presenter.ViewHolder itemViewHolder,
+                Object item,
+                RowPresenter.ViewHolder rowViewHolder,
+                Row row) {
+
+            if (item instanceof Video) {
+                mPlaybackPresenter.onSuggestionItemClicked((Video) item);
+            }
+        }
+    }
+
+    private final class ItemViewSelectedListener implements OnItemViewSelectedListener {
+        @Override
+        public void onItemSelected(Presenter.ViewHolder itemViewHolder, Object item,
+                                   RowPresenter.ViewHolder rowViewHolder, Row row) {
+            if (item instanceof Video) {
+                mBackgroundManager.setBackgroundFrom((Video) item);
+
+                checkScrollEnd((Video) item);
+            }
+        }
+
+        private void checkScrollEnd(Video item) {
+            for (VideoGroupObjectAdapter adapter : mVideoGroupAdapters.values()) {
+                int index = adapter.indexOf(item);
+
+                if (index != -1) {
+                    int size = adapter.size();
+                    if (index > (size - 4)) {
+                        mPlaybackPresenter.onScrollEnd(item);
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    private class PlayerActionListener implements VideoPlayerGlue.OnActionClickedListener {
+        @Override
+        public void onPrevious() {
+            mPlaybackPresenter.onPreviousClicked();
+        }
+
+        @Override
+        public void onNext() {
+            mPlaybackPresenter.onNextClicked();
+        }
+
+        @Override
+        public void onPlay() {
+            mPlaybackPresenter.onPlayClicked();
+        }
+
+        @Override
+        public void onPause() {
+            mPlaybackPresenter.onPauseClicked();
+        }
+
+        @Override
+        public void onAction(int actionId, int actionIndex) {
+            mPlaybackPresenter.onButtonClicked(actionId, actionIndex);
+        }
+
+        @Override
+        public void onLongAction(int actionId, int actionIndex) {
+            mPlaybackPresenter.onButtonLongClicked(actionId, actionIndex);
+        }
+
+        @Override
+        public void onTopEdgeFocused() {
+            showOverlay(false);
+        }
+
+        @Override
+        public boolean onKeyDown(int keyCode) {
+            return mPlaybackPresenter.onKeyDown(keyCode);
+        }
     }
 }

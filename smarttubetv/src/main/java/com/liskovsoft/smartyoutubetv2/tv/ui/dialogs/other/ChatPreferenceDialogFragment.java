@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.preference.DialogPreference;
+
 import com.bumptech.glide.Glide;
 import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.ChatReceiver;
 import com.liskovsoft.smartyoutubetv2.tv.R;
@@ -60,10 +62,10 @@ public class ChatPreferenceDialogFragment extends LeanbackPreferenceDialogFragme
         MessagesList messagesList = (MessagesList) view.findViewById(R.id.messagesList);
         MessagesListAdapter<ChatItemMessage> adapter = new MessagesListAdapter<>(SENDER_ID, (imageView, url, payload) ->
                 Glide.with(view.getContext())
-                    .load(url)
-                    .apply(ViewUtil.glideOptions())
-                    .circleCrop() // resize image
-                    .into(imageView));
+                        .load(url)
+                        .apply(ViewUtil.glideOptions())
+                        .circleCrop() // resize image
+                        .into(imageView));
         messagesList.setAdapter(adapter);
 
         if (mChatReceiver != null) {

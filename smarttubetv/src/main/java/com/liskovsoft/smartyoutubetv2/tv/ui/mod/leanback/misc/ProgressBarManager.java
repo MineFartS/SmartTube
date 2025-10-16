@@ -23,15 +23,24 @@ public final class ProgressBarManager {
     // Default delay for progress bar widget.
     private static final long SHOW_DELAY_MS = 500;
     private static final long HIDE_DELAY_MS = 50;
-    private long mHideTimeMs;
-    
     ViewGroup rootView;
     View mProgressBarView;
     boolean mEnableProgressBar = true;
     boolean mUserProvidedProgressBar;
+    private final Runnable hideRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (mUserProvidedProgressBar) {
+                mProgressBarView.setVisibility(View.INVISIBLE);
+            } else if (mProgressBarView != null) {
+                rootView.removeView(mProgressBarView);
+                mProgressBarView = null;
+            }
+        }
+    };
     boolean mIsShowing;
+    private long mHideTimeMs;
     private int mPosition = Gravity.CENTER;
-
     private final Runnable showRunnable = new Runnable() {
         @Override
         public void run() {
@@ -45,18 +54,6 @@ public final class ProgressBarManager {
                 } else if (mUserProvidedProgressBar) {
                     mProgressBarView.setVisibility(View.VISIBLE);
                 }
-            }
-        }
-    };
-
-    private final Runnable hideRunnable = new Runnable() {
-        @Override
-        public void run() {
-            if (mUserProvidedProgressBar) {
-                mProgressBarView.setVisibility(View.INVISIBLE);
-            } else if (mProgressBarView != null) {
-                rootView.removeView(mProgressBarView);
-                mProgressBarView = null;
             }
         }
     };
@@ -75,6 +72,12 @@ public final class ProgressBarManager {
         rootView.addView(progressBarView, progressBarParams);
 
         return progressBarView;
+    }
+
+    public static void setup(androidx.leanback.app.ProgressBarManager manager, ViewGroup rootView) {
+        if (rootView != null) {
+            manager.setProgressBarView(createProgressBar(rootView, Gravity.CENTER));
+        }
     }
 
     /**
@@ -145,11 +148,5 @@ public final class ProgressBarManager {
 
     public void setPosition(int position) {
         mPosition = position;
-    }
-
-    public static void setup(androidx.leanback.app.ProgressBarManager manager, ViewGroup rootView) {
-        if (rootView != null) {
-            manager.setProgressBarView(createProgressBar(rootView, Gravity.CENTER));
-        }
     }
 }

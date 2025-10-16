@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -19,6 +20,7 @@ import androidx.leanback.widget.PageRow;
 import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.PresenterSelector;
 import androidx.leanback.widget.TitleHelper;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.BrowseSection;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.SettingsGroup;
@@ -263,7 +265,7 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
 
         return (int) ((PageRow) mSectionRowAdapter.get(getSelectedPosition())).getHeaderItem().getId();
     }
-    
+
     public void updateErrorIfEmpty(ErrorFragmentData data) {
         mHandler.postDelayed(() -> showErrorIfEmpty(data), 500); // need delay because header may be not updated
     }

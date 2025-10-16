@@ -41,10 +41,10 @@ import java.util.List;
 
 public class MultiVideoGridFragment extends MultiGridFragment implements VideoSection {
     private static final String TAG = MultiVideoGridFragment.class.getSimpleName();
-    private HeaderVideoGroupObjectAdapter mGridAdapter1;
-    private VideoGroupObjectAdapter mGridAdapter2;
     private final List<VideoGroup> mPendingUpdates1 = new ArrayList<>();
     private final List<VideoGroup> mPendingUpdates2 = new ArrayList<>();
+    private HeaderVideoGroupObjectAdapter mGridAdapter1;
+    private VideoGroupObjectAdapter mGridAdapter2;
     private UriBackgroundManager mBackgroundManager;
     private VideoGroupPresenter mMainPresenter;
     private LongClickPresenter mCardPresenter1;
@@ -53,7 +53,6 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
     private int mSelectedItemIndex2 = -1;
     private Video mSelectedItem1;
     private float mVideoGridScale;
-    private final Runnable mRestore1Task = this::restorePosition1;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,7 +78,7 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
         super.onViewCreated(view, savedInstanceState);
 
         removePadding();
-    }
+    }    private final Runnable mRestore1Task = this::restorePosition1;
 
     @Override
     public int getPosition() {
@@ -269,7 +268,7 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
         }
 
         int action = group.getAction();
-        
+
         if (action == VideoGroup.ACTION_REPLACE) {
             clear2();
         } else if (action == VideoGroup.ACTION_REMOVE) {
@@ -407,7 +406,7 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
     private final class ItemViewClickedListener1 implements OnItemViewClickedListener {
         @Override
         public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
-                                   RowPresenter.ViewHolder rowViewHolder, Row row) {
+                                  RowPresenter.ViewHolder rowViewHolder, Row row) {
             if (item instanceof Video) {
                 mMainPresenter.onVideoItemClicked((Video) item);
             }
@@ -452,4 +451,8 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
             }
         }
     }
+
+
+
+
 }

@@ -3,7 +3,9 @@ package com.liskovsoft.smartyoutubetv2.tv.presenter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.leanback.widget.VerticalGridPresenter;
+
 import com.liskovsoft.smartyoutubetv2.tv.util.ViewUtil;
 
 public class CustomVerticalGridPresenter extends VerticalGridPresenter {
