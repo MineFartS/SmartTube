@@ -15,6 +15,18 @@ import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Presenter that builds and shows the DeArrow settings dialog.
+ *
+ * Responsibilities:
+ * - Read and persist DeArrow-related preferences (title/thumbnail replacement, thumb quality).
+ * - Compose dialog sections (switches, thumbnail quality radio group, informational links).
+ * - Invoke the AppDialogPresenter to display the assembled settings UI.
+ *
+ * Notes:
+ * - This presenter does not keep a long-lived singleton; a new instance is created via instance().
+ * - Changes are persisted immediately via MainUIData / DeArrowData setters.
+ */
 public class DeArrowSettingsPresenter extends BasePresenter<Void> {
     private final MainUIData mMainUIData;
     private final DeArrowData mDeArrowData;
@@ -25,13 +37,22 @@ public class DeArrowSettingsPresenter extends BasePresenter<Void> {
         mDeArrowData = DeArrowData.instance(context);
     }
 
+    /**
+     * Factory-style accessor. Returns a presenter tied to provided context.
+     */
     public static DeArrowSettingsPresenter instance(Context context) {
         return new DeArrowSettingsPresenter(context);
     }
 
+    /**
+     * Build and show the DeArrow settings dialog.
+     *
+     * @param onFinish optional callback executed when dialog is dismissed
+     */
     public void show(Runnable onFinish) {
         AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
-        
+
+        // Build UI sections
         appendSwitches(settingsPresenter);
         appendThumbQuality(settingsPresenter);
         appendLinks(settingsPresenter);
@@ -39,10 +60,17 @@ public class DeArrowSettingsPresenter extends BasePresenter<Void> {
         settingsPresenter.showDialog(getContext().getString(R.string.dearrow_provider), onFinish);
     }
 
+    /**
+     * Convenience overload without finish callback.
+     */
     public void show() {
         show(null);
     }
 
+    /**
+     * Append thumbnail quality radio options.
+     * Persists selection to MainUIData.setThumbQuality().
+     */
     private void appendThumbQuality(AppDialogPresenter settingsPresenter) {
         List<OptionItem> options = new ArrayList<>();
 
@@ -60,12 +88,20 @@ public class DeArrowSettingsPresenter extends BasePresenter<Void> {
         settingsPresenter.appendRadioCategory(getContext().getString(R.string.dearrow_not_submitted_thumbs), options);
     }
 
+    /**
+     * Append primary toggle switches for title/thumbnail replacement options.
+     *
+     * Behavior:
+     * - Ensures mutually exclusive title sources: enabling crowdsourced titles disables unlocalized titles and vice versa.
+     * - Persisted immediately when a switch is toggled.
+     */
     private void appendSwitches(AppDialogPresenter settingsPresenter) {
         List<OptionItem> options = new ArrayList<>();
 
         options.add(UiOptionItem.from(getContext().getString(R.string.card_unlocalized_titles),
                 option -> {
                     mMainUIData.setUnlocalizedTitlesEnabled(option.isSelected());
+                    // When enabling unlocalized titles, disable crowdsourced replacement
                     mDeArrowData.setReplaceTitlesEnabled(false);
                 },
                 mMainUIData.isUnlocalizedTitlesEnabled()));
@@ -73,6 +109,7 @@ public class DeArrowSettingsPresenter extends BasePresenter<Void> {
         options.add(UiOptionItem.from(getContext().getString(R.string.crowdsoursed_titles),
                 optionItem -> {
                     mDeArrowData.setReplaceTitlesEnabled(optionItem.isSelected());
+                    // When enabling crowdsourced replacements, disable unlocalized titles
                     mMainUIData.setUnlocalizedTitlesEnabled(false);
                 },
                 mDeArrowData.isReplaceTitlesEnabled()));
@@ -86,6 +123,10 @@ public class DeArrowSettingsPresenter extends BasePresenter<Void> {
         }
     }
 
+    /**
+     * Append informational links/buttons to the dialog (status page and provider site).
+     * Opens external links using Utils.openLink().
+     */
     private void appendLinks(AppDialogPresenter settingsPresenter) {
         OptionItem statsCheckOption = UiOptionItem.from(getContext().getString(R.string.dearrow_status),
                 option -> Utils.openLink(getContext(), getContext().getString(R.string.dearrow_status_url)));
@@ -97,6 +138,10 @@ public class DeArrowSettingsPresenter extends BasePresenter<Void> {
         settingsPresenter.appendSingleButton(webSiteOption);
     }
 
+    /**
+     * Helper that appends a switch controlling the global DeArrow provider enable flag.
+     * Not used by default UI but kept for completeness.
+     */
     private void appendDeArrowSwitch(AppDialogPresenter settingsPresenter) {
         String title = String.format(
                 "%s (%s)",

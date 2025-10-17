@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.prefs;
 
+/** Small wrapper for hidden/internal preferences (unique ids, debug flags, etc.). */
 import android.annotation.SuppressLint;
 import android.content.Context;
 

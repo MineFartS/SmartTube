@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters;
 
+/** YouTube-specific sign-in presenter that fetches device/user code and shows activation instructions. */
 import android.annotation.SuppressLint;
 import android.content.Context;
 

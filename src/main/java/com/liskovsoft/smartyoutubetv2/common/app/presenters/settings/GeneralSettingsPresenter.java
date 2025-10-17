@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters.settings;
 
+/** Presenter for general application preferences (notifications, backup, privacy). */
 import android.annotation.SuppressLint;
 import android.content.Context;
 

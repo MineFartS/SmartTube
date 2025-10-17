@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.prefs;
 
+/** Minimal storage for provider-specific runtime flags (example: instant voice search). */
 import android.annotation.SuppressLint;
 import android.content.Context;
 import com.liskovsoft.sharedutils.helpers.Helpers;

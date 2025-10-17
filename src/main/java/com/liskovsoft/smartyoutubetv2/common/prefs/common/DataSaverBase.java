@@ -1,15 +1,9 @@
 package com.liskovsoft.smartyoutubetv2.common.prefs.common;
 
-import android.content.Context;
-
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv2.common.prefs.AppPrefs;
-import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+/**
+ * Base helper for compact per-feature data storage backed by AppPrefs.
+ * Stores values keyed by index and batches persistence with a debounce.
+ */
 public abstract class DataSaverBase extends DataChangeBase {
     private final AppPrefs mAppPrefs;
     private final String mDataKey;

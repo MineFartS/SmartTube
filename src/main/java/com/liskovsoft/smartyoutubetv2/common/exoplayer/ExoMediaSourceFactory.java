@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.exoplayer;
 
+/**
+ * Factory for creating ExoPlayer MediaSource instances (DASH/HLS/Progressive).
+ * Centralizes project-specific adjustments (user-agent, caching, headers).
+ */
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;

@@ -30,17 +30,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Controller that integrates SponsorBlock/content-blocking features into the player.
+ *
+ * Responsibilities:
+ * - Query SponsorBlock (or equivalent) for sponsor/segment metadata for the current video.
+ * - Optionally render colored markers on the seek bar for segments.
+ * - Periodically poll playback position and perform configured actions (skip, toast, confirm dialog).
+ * - Respect user preferences for enabled categories and actions, and support exclusions.
+ *
+ * Note: This controller carefully disposes Rx actions to avoid threading/blocking issues.
+ */
 public class ContentBlockController extends BasePlayerController {
     private static final String TAG = ContentBlockController.class.getSimpleName();
+    // Poll interval used when actions are enabled (ms)
     private static final long POLL_INTERVAL_MS = 1_000;
+    // Dialog id used for transparent confirm dialog
     private static final int CONTENT_BLOCK_ID = 144;
+
+    // Service used to fetch sponsor segments for videos
     private MediaItemService mMediaItemService;
+    // Original segments returned from the service (immutable source)
     private List<SponsorSegment> mOriginalSegments;
+    // Active segments list used to apply "don't skip again" behavior
     private List<SponsorSegment> mActiveSegments;
+    // Last skip position to avoid repeated skipping of the same segment
     private long mLastSkipPosMs;
+    // Temporary flag used when evaluating channel exclusions during video load
     private boolean mSkipExclude;
+    // Rx disposable for the segment polling/subscription
     private Disposable mSegmentsAction;
+    // Cached observable to avoid repeated network calls for the same video+categories
     private Observable<List<SponsorSegment>> mCachedSegmentsAction;
+    // Currently cached video id for segments
     private String mVideoId;
 
     public static class SegmentAction {
@@ -81,12 +103,14 @@ public class ContentBlockController extends BasePlayerController {
 
     @Override
     public void onInit() {
+        // Obtain media service used to retrieve sponsor segments
         ServiceManager service = YouTubeServiceManager.instance();
         mMediaItemService = service.getMediaItemService();
     }
 
     @Override
     public void onNewVideo(Video item) {
+        // Reset skip-exclude guard for a new video and clear seek bar segments
         mSkipExclude = false;
         if (getPlayer() != null) {
             getPlayer().setSeekBarSegments(null); // reset colors
@@ -101,7 +125,9 @@ public class ContentBlockController extends BasePlayerController {
             return;
         }
 
+        // Determine whether content-blocking is enabled for this video according to preferences and exclusions
         boolean enabled = getContentBlockData().isSponsorBlockEnabled() && checkVideo(item) && !isChannelExcluded(item.channelId);
+        // Update UI button state
         getPlayer().setButtonState(R.id.action_content_block, enabled ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
 
         if (enabled) {
@@ -129,6 +155,7 @@ public class ContentBlockController extends BasePlayerController {
     @Override
     public void onButtonClicked(int buttonId, int buttonState) {
         if (buttonId == R.id.action_content_block) {
+            // If user presses the content-block button while inside a segment, jump to its end
             List<SponsorSegment> foundSegments = findMatchedSegments(getPlayer().getPositionMs(), mOriginalSegments, true);
 
             if (foundSegments != null) {
@@ -142,6 +169,7 @@ public class ContentBlockController extends BasePlayerController {
     @Override
     public void onButtonLongClicked(int buttonId, int buttonState) {
         if (buttonId == R.id.action_content_block) {
+            // Open settings and refresh segments afterwards
             ContentBlockSettingsPresenter.instance(getContext()).show(() -> {
                 if (getPlayer() != null) {
                     onVideoLoaded(getPlayer().getVideo());
@@ -151,7 +179,7 @@ public class ContentBlockController extends BasePlayerController {
     }
 
     private boolean checkVideo(Video video) {
-        //return video != null && !video.isLive && !video.isUpcoming;
+        // Basic guard; can be extended to exclude live/upcoming videos
         return video != null;
     }
 
@@ -163,8 +191,8 @@ public class ContentBlockController extends BasePlayerController {
         }
 
         if (!Helpers.equals(mVideoId, item.videoId) || mCachedSegmentsAction == null) {
-            // NOTE: SponsorBlock (when happened java.net.SocketTimeoutException) could block whole application with Schedulers.io()
-            // Because Schedulers.io() reuses blocked threads in RxJava 2: https://github.com/ReactiveX/RxJava/issues/6542
+            // Cache the observable to avoid multiple network requests for the same video
+            // NOTE: SponsorBlock network timeouts can block Schedulers.io threads — cache helps avoid repeated re-subscription.
             mCachedSegmentsAction = mMediaItemService.getSponsorSegmentsObserve(item.videoId, getContentBlockData().getEnabledCategories())
                     .cache();
             mVideoId = item.videoId;
@@ -189,11 +217,12 @@ public class ContentBlockController extends BasePlayerController {
         mActiveSegments = new ArrayList<>(segments);
 
         if (getContentBlockData().isColorMarkersEnabled()) {
+            // Render colored markers on seek bar according to category colors
             getPlayer().setSeekBarSegments(toSeekBarSegments(segments));
         }
         if (getContentBlockData().isActionsEnabled()) {
-            // Warn. Try to not access player object here.
-            // Or you'll get "Player is accessed on the wrong thread" error.
+            // When actions are enabled we poll the player position periodically.
+            // Use RxHelper to create an interval observable to avoid manual scheduling.
             return RxHelper.interval(POLL_INTERVAL_MS, TimeUnit.MILLISECONDS);
         } else {
             return Observable.empty();
@@ -227,7 +256,7 @@ public class ContentBlockController extends BasePlayerController {
 
         applyActions(foundSegments);
 
-        // Skip each segment only once
+        // Skip each segment only once if the preference is enabled
         if (foundSegments != null && getContentBlockData().isDontSkipSegmentAgainEnabled()) {
             mActiveSegments.removeAll(foundSegments);
         }
@@ -241,6 +270,7 @@ public class ContentBlockController extends BasePlayerController {
         if (fullMatch) {
             return positionMs >= segment.getStartMs() && positionMs <= segment.getEndMs();
         } else {
+            // Use a small window near the segment start to trigger actions reliably at varying playback speeds
             long windowSizeMs = (long) (2_000 * getPlayer().getSpeed());
             return positionMs >= segment.getStartMs() && positionMs <= Math.min(segment.getStartMs() + windowSizeMs, segment.getEndMs());
         }
@@ -260,6 +290,7 @@ public class ContentBlockController extends BasePlayerController {
             return;
         }
 
+        // Show a brief toast-like message before skipping
         MessageHelpers.showMessage(getContext(),
                 String.format("%s: %s", getContext().getString(R.string.content_block_provider), getContext().getString(R.string.msg_skipping_segment, category)));
         setPositionMs(skipPosMs);
@@ -278,6 +309,7 @@ public class ContentBlockController extends BasePlayerController {
             return;
         }
 
+        // Hide default controls while showing transparent confirm dialog
         getPlayer().showControls(false);
 
         OptionItem acceptOption = UiOptionItem.from(
@@ -289,6 +321,7 @@ public class ContentBlockController extends BasePlayerController {
                 }
         );
 
+        // Close dialog automatically when skip completes (timeout based on skip distance and playback speed)
         dialogPresenter.appendSingleButton(acceptOption);
         dialogPresenter.setCloseTimeoutMs((long) ((skipPosMs - getPlayer().getPositionMs()) * getPlayer().getSpeed()));
 
@@ -408,6 +441,7 @@ public class ContentBlockController extends BasePlayerController {
     }
 
     private boolean isChannelExcluded(String channelId) {
+        // When true we avoid checking exclusions for the current load (used to prevent double-skip during setup)
         return !mSkipExclude && getContentBlockData().isChannelExcluded(channelId);
     }
 }

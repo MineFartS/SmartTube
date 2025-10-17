@@ -1,5 +1,7 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters;
 
+/** Presenter to obtain pairing code for remote control pairing flows. */
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import com.liskovsoft.mediaserviceinterfaces.ServiceManager;

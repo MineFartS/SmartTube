@@ -1,5 +1,7 @@
 package com.liskovsoft.smartyoutubetv2.common.app.models.search.vineyard;
 
+/** Parcelable representation of a vineyard user used by search/tag features. */
+
 import android.os.Parcel;
 import android.os.Parcelable;
 

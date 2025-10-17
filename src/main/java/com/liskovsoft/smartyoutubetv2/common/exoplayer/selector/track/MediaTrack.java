@@ -1,5 +1,17 @@
 package com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.track;
 
+/**
+ * Base descriptor used for audio/video/subtitle tracks.
+ *
+ * Shared responsibilities:
+ * - Hold a lightweight Format snapshot (ExoPlayer Format) and renderer/group/track indices.
+ * - Provide common helpers for codec weight, bitrate comparisons and codec equality checks.
+ * - Subclasses implement inBounds() and compare() to express format matching and ordering rules.
+ *
+ * Notes:
+ * - Keep instances lightweight and avoid storing heavy objects or long-lived pointers to player internals.
+ */
+
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.TrackSelection.Definition;

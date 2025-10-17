@@ -25,11 +25,10 @@
 
 package com.liskovsoft.smartyoutubetv2.common.proxy;
 
-import java.net.InetSocketAddress;
-import java.net.ProxySelector;
-import java.net.SocketAddress;
-
 /**
+ * Minimal Proxy representation compatible with java.net.Proxy API.
+ * Extended here to accept PasswdInetSocketAddress for username/password support.
+ *
  * NOTE: Added support for PasswdInetSocketAddress<br/>
  * This class represents a proxy setting, typically a type (http, socks) and
  * a socket address.

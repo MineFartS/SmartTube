@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.autoframerate.internal;
 
+/**
+ * Helper that performs debounced display-sync operations (scheduling and mode requests).
+ * Keeps operations off the playback critical path and posts results to main thread.
+ */
+
 import android.content.Context;
 import android.os.Build;
 import android.os.Build.VERSION;

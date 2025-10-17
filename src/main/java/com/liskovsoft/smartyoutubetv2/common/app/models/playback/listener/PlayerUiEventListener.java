@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.app.models.playback.listener;
 
+/** UI event callbacks from the player (buttons, suggestions, overlay visibility). */
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 
 public interface PlayerUiEventListener {

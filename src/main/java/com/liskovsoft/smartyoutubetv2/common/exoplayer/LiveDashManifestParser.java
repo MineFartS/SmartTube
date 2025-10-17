@@ -1,30 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.exoplayer;
 
-import android.net.Uri;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.source.dash.DashSegmentIndex;
-import com.google.android.exoplayer2.source.dash.manifest.AdaptationSet;
-import com.google.android.exoplayer2.source.dash.manifest.DashManifest;
-import com.google.android.exoplayer2.source.dash.manifest.DashManifestParser;
-import com.google.android.exoplayer2.source.dash.manifest.Descriptor;
-import com.google.android.exoplayer2.source.dash.manifest.Period;
-import com.google.android.exoplayer2.source.dash.manifest.RangedUri;
-import com.google.android.exoplayer2.source.dash.manifest.Representation;
-import com.google.android.exoplayer2.source.dash.manifest.Representation.MultiSegmentRepresentation;
-import com.google.android.exoplayer2.source.dash.manifest.SegmentBase.MultiSegmentBase;
-import com.google.android.exoplayer2.source.dash.manifest.SegmentBase.SegmentList;
-import com.google.android.exoplayer2.source.dash.manifest.SegmentBase.SegmentTimelineElement;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.querystringparser.UrlQueryString;
-import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * Helper to parse live DASH (MPD) manifests and extract timing/segment information
+ * required by ExoPlayer-based playback (used for live timeline handling).
+ * Non-functional documentation only — place near top of file.
+ */
 /**
  * Supported ExoPlayer versions: 2.10.6
  */

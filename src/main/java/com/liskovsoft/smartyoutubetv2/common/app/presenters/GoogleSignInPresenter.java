@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters;
 
+/** Google sign-in presenter using GoogleSignInService to obtain device/user codes. */
 import android.annotation.SuppressLint;
 import android.content.Context;
 

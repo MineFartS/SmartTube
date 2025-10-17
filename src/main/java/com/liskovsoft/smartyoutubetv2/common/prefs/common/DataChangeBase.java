@@ -1,7 +1,9 @@
 package com.liskovsoft.smartyoutubetv2.common.prefs.common;
 
-import com.liskovsoft.sharedutils.misc.WeakHashSet;
-
+/**
+ * Small observable base for data-change notifications.
+ * Allows registering weak listeners and dispatching onDataChange events.
+ */
 public abstract class DataChangeBase {
     public interface OnDataChange {
         void onDataChange();

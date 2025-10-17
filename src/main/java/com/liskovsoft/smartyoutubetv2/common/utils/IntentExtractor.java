@@ -1,5 +1,9 @@
 package com.liskovsoft.smartyoutubetv2.common.utils;
 
+/**
+ * Helper for parsing incoming Intents (video id, playlist id, channel id, voice/search parameters).
+ * Keeps intent parsing logic centralized and testable.
+ */
 import android.content.Intent;
 import android.net.Uri;
 

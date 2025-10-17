@@ -1,5 +1,7 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters.settings;
 
+/** Presenter to manage backup & restore dialogs and actions (local/GDrive). */
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 

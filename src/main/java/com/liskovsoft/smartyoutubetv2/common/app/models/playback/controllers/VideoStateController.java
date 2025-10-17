@@ -18,21 +18,34 @@ import com.liskovsoft.smartyoutubetv2.common.utils.AppDialogUtil;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
+/**
+ * Controller that manages video playback state: saving/restoring position, speeds,
+ * handling live stream edge cases, incognito behavior and syncing history.
+ *
+ * It periodically persists playback state and reacts to player lifecycle events to
+ * keep state consistent.
+ */
 public class VideoStateController extends BasePlayerController {
     private static final String TAG = VideoStateController.class.getSimpleName();
+
+    // Various thresholds and time windows used for music/live/video heuristics
     private static final long MUSIC_VIDEO_MAX_DURATION_MS = 6 * 60 * 1000;
     private static final long RESTORE_LIVE_BUFFER_MS = 60_000;
     private static final long DEFAULT_LIVE_BUFFER_MS = 60_000; // Minimum issues
     private static final long OFFICIAL_LIVE_BUFFER_MS = 15_000; // Official app buffer
     private static final long LIVE_BUFFER_MS = OFFICIAL_LIVE_BUFFER_MS;
-    private static final long SHORT_LIVE_BUFFER_MS = 0; // Note, on buffer lower than the 60sec you'll notice segment skip
+    private static final long SHORT_LIVE_BUFFER_MS = 0; // Smaller buffer for special cases
     private static final long BEGIN_THRESHOLD_MS = 10_000;
     private static final long EMBED_THRESHOLD_MS = 30_000;
     private static final int HISTORY_UPDATE_INTERVAL_MINUTES = 5; // Sync history every five minutes
+
+    // Play state flags
     private boolean mIsPlayEnabled;
     private boolean mIsPlayBlocked;
     private int mTickleLeft;
     private boolean mIncognito;
+
+    // Runnable used for deferred state saving
     private final Runnable mUpdateHistory = this::saveState;
     private long mNewVideoTimeMs;
 
@@ -411,6 +424,40 @@ public class VideoStateController extends BasePlayerController {
         getPlayer().setFormat(result);
     }
 
+    /**
+     * Save current playback position and related state.
+     * Skips embed/muted preview states and handles live vs VOD differently.
+     */
+    private void savePosition() {
+        Video video = getVideo();
+
+        if (video == null || getPlayer() == null || !getPlayer().containsMedia()) {
+            return;
+        }
+
+        // Exceptional cases:
+        // 1) Track is ended
+        // 2) Pause on end enabled
+        // 3) Watching live stream in real time
+        long durationMs = getPlayer().getDurationMs();
+        long positionMs = getPlayer().getPositionMs();
+        long remainsMs = durationMs - positionMs;
+        boolean isPositionActual = remainsMs > 1_000;
+        boolean isLiveBroken = video.isLive && durationMs <= 30_000; // the live without a history
+        if (isPositionActual && !isLiveBroken) { // partially viewed
+            State state = new State(video, positionMs, durationMs, getPlayer().getSpeed());
+            getStateService().save(state);
+            // Sync video. You could safely use it later to restore state.
+            video.sync(state);
+        } else { // fully viewed
+            // Mark video as fully viewed. This could help to restore proper progress marker on the video card later.
+            getStateService().save(new State(video, durationMs, durationMs, getPlayer().getSpeed()));
+            video.markFullyViewed();
+        }
+
+        Playlist.instance().sync(video);
+    }
+
     private void saveState() {
         // Skip mini player, but don't save for the previews (mute enabled)
         if (isMutedEmbed()) {
@@ -447,78 +494,6 @@ public class VideoStateController extends BasePlayerController {
     //
     //    getStateService().persistState();
     //}
-
-    private void savePosition() {
-        Video video = getVideo();
-
-        if (video == null || getPlayer() == null || !getPlayer().containsMedia()) {
-            return;
-        }
-
-        // Exceptional cases:
-        // 1) Track is ended
-        // 2) Pause on end enabled
-        // 3) Watching live stream in real time
-        long durationMs = getPlayer().getDurationMs();
-        long positionMs = getPlayer().getPositionMs();
-        long remainsMs = durationMs - positionMs;
-        boolean isPositionActual = remainsMs > 1_000;
-        boolean isLiveBroken = video.isLive && durationMs <= 30_000; // the live without a history
-        if (isPositionActual && !isLiveBroken) { // partially viewed
-            State state = new State(video, positionMs, durationMs, getPlayer().getSpeed());
-            getStateService().save(state);
-            // Sync video. You could safely use it later to restore state.
-            video.sync(state);
-        } else { // fully viewed
-            // Mark video as fully viewed. This could help to restore proper progress marker on the video card later.
-            getStateService().save(new State(video, durationMs, durationMs, getPlayer().getSpeed()));
-            video.markFullyViewed();
-        }
-
-        Playlist.instance().sync(video);
-    }
-
-    private void restorePosition() {
-        Video item = getVideo();
-
-        State state = getStateService().getByVideoId(item.videoId);
-
-        boolean stateIsOutdated = isStateOutdated(state, item);
-        if (stateIsOutdated) { // check that the user logged in
-            // Web state is buggy on short videos (e.g. video clips)
-            boolean isLongVideo = getPlayer().getDurationMs() > MUSIC_VIDEO_MAX_DURATION_MS;
-            if (isLongVideo) {
-                state = new State(item, item.getPositionMs());
-            }
-        }
-
-        // Set actual position for live videos with uncommon length
-        if (item.isLive && (state == null || state.durationMs - state.positionMs < Math.max(RESTORE_LIVE_BUFFER_MS, getLiveThreshold()))) {
-            // Add buffer. Should I take into account segment offset???
-            state = new State(item, getPlayer().getDurationMs() - getLiveBuffer());
-        }
-
-        // Do I need to check that item isn't live? (state != null && !item.isLive)
-        if (state != null) {
-            getPlayer().setPositionMs(state.positionMs);
-        }
-
-        if (!mIsPlayBlocked) {
-            getPlayer().setPlayWhenReady(getPlayEnabled());
-        }
-    }
-
-    private void updateHistory() {
-        Video video = getVideo();
-
-        if (video == null || mIncognito || getPlayer() == null || !getPlayer().containsMedia()
-                || (video.isRemote && getRemoteControlData().isRemoteHistoryDisabled())
-                || getGeneralData().getHistoryState() == GeneralData.HISTORY_DISABLED) {
-            return;
-        }
-
-        MediaServiceManager.instance().updateHistory(video, Math.max(getPlayer().getPositionMs(), 3_000)); // 0 == fully watched
-    }
 
     /**
      * Restore position from description time code
@@ -603,6 +578,9 @@ public class VideoStateController extends BasePlayerController {
         getPlayer().setPitch(getPlayerData().getPitch());
     }
 
+    /**
+     * Restore format selections (video/audio/subtitle) when engine or video changes.
+     */
     private void restoreFormats() {
         restoreVideoFormat();
         restoreAudioFormat();

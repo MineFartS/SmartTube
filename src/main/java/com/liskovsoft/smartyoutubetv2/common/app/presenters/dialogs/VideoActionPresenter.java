@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs;
 
+/** Presenter for actions available on a video thumbnail (play, save, share, etc.). */
 import android.content.Context;
 
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;

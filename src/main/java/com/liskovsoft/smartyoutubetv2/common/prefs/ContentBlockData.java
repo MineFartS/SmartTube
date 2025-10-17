@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.prefs;
 
+/**
+ * Preferences and category mappings for SponsorBlock / content-blocking features.
+ * Keeps action mapping, color mapping and excluded channels.
+ */
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build.VERSION;

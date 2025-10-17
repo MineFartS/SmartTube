@@ -1,5 +1,20 @@
 package com.liskovsoft.smartyoutubetv2.common.exoplayer.other;
 
+/**
+ * Factory and helper for creating properly configured SimpleExoPlayer instances for this app.
+ *
+ * Responsibilities:
+ * - Build DefaultLoadControl tuned according to PlayerData buffer preferences.
+ * - Create and wire SimpleExoPlayer with DefaultRenderersFactory, DefaultTrackSelector and
+ *   device-specific adjustments (tunneling, audio attributes, seek parameters).
+ * - Configure audio focus/volume boosting helpers and apply playback fixes for known device issues.
+ *
+ * Notes:
+ * - Keep initialization lightweight on the UI thread. Heavy network/DNS or DRM operations should
+ *   be deferred or performed on background threads.
+ * - When releasing players, ensure listeners are removed and resources cleaned to avoid leaks.
+ */
+
 import android.content.Context;
 import android.os.Build;
 import android.os.Handler;

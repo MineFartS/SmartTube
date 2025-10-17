@@ -1,10 +1,13 @@
 package com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.track;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.videoinfo.models.TranslatedCaptionTrack;
-
-import java.util.regex.Pattern;
-
+/**
+ * Subtitle track metadata:
+ * - language (ISO code), label, kind (subtitles/captions), isDefault, isForced
+ *
+ * Behaviour:
+ * - Subtitle selection may enable/disable rendering and toggle closed-caption UI state.
+ * - Provide helper to match a preferred language (e.g., "en", "en-US") with tolerant matching.
+ */
 public class SubtitleTrack extends MediaTrack {
     private static final Pattern AUTO_PATTERN = Pattern.compile(" \\(.*\\)$"); // May have mismatches e.g. 'English (United Kingdom)'
     private static final Pattern TRIM_PATTERN1 = Pattern.compile(" \\(.*\\) - .*");

@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.app.models.playback.manager;
 
+/** Low-level playback engine API (open formats, control playback, retrieve tracks). */
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem;
 

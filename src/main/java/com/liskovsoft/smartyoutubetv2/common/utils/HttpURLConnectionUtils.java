@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.utils;
 
+/**
+ * Small helpers around HttpURLConnection used by legacy code paths.
+ * NOTE: Network calls must not be executed on the UI thread.
+ */
+
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;

@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs;
 
+/** Presenter for Amazon device bridge specifics (intent handling, device quirks). */
 import android.content.Context;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 

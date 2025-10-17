@@ -15,6 +15,21 @@ import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 
+/**
+ * Container for a group/row of Video items displayed in the UI.
+ *
+ * Responsibilities:
+ * - Hold metadata about the group (id, title, section, position, action, type).
+ * - Manage the underlying list of Video objects and provide utility operations
+ *   (add/remove/strip playlist info/lookup).
+ * - Convert from MediaGroup/MediaItem/ChapterItem representations to Video model objects.
+ *
+ * Notes:
+ * - Many factory "from" helpers exist to build VideoGroup from different sources.
+ * - mVideos may be null until items are added; several methods defensively handle that.
+ * - Some methods intentionally return unmodifiable lists (views) because adapters
+ *   expect a stable collection and filter it themselves.
+ */
 public class VideoGroup {
     /**
      * Add at the end of the existing group
@@ -41,6 +56,8 @@ public class VideoGroup {
     private int mAction = ACTION_APPEND;
     private int mType = -1;
     public boolean isQueue;
+
+    // Factory helpers -------------------------------------------------------
 
     public static VideoGroup from(BrowseSection section) {
         return from((MediaGroup) null, section);
@@ -74,6 +91,11 @@ public class VideoGroup {
         return from(items, section, extractGroupPosition(items));
     }
 
+    /**
+     * Main factory that constructs a VideoGroup from an existing list of Video objects.
+     * - Extracts group id/title from the topmost item that already contains group info.
+     * - Sets groupPosition and attaches the group reference into any Video items without one.
+     */
     public static VideoGroup from(List<Video> items, BrowseSection section, int groupPosition) {
         VideoGroup videoGroup = new VideoGroup();
         // Getting topmost element. Could help when syncing multi rows fragments.
@@ -96,6 +118,10 @@ public class VideoGroup {
         return videoGroup;
     }
 
+    /**
+     * Builds VideoGroup from MediaGroup (network/service model).
+     * Converts each MediaItem -> Video and appends into this group.
+     */
     public static VideoGroup from(MediaGroup mediaGroup, BrowseSection section, int groupPosition) {
         VideoGroup videoGroup = new VideoGroup();
         videoGroup.mSection = section;
@@ -126,6 +152,10 @@ public class VideoGroup {
         return videoGroup;
     }
 
+    /**
+     * Merge mediaGroup into an existing VideoGroup instance.
+     * The baseGroup will receive converted MediaItems appended to its list.
+     */
     public static VideoGroup from(VideoGroup baseGroup, MediaGroup mediaGroup) {
         baseGroup.mMediaGroup = mediaGroup;
 
@@ -163,6 +193,8 @@ public class VideoGroup {
         return videoGroup;
     }
 
+    // Accessors -------------------------------------------------------------
+
     public List<Video> getVideos() {
         // NOTE: Don't make the collection read only
         // The collection will be filtered inside VideoGroupObjectAdapter
@@ -174,7 +206,7 @@ public class VideoGroup {
     }
 
     /**
-     * The title is converted to unique row id.
+     * Set the title for this group. Title may be used as a stable id if desired.
      */
     public void setTitle(String title) {
         mTitle = title;
@@ -200,6 +232,10 @@ public class VideoGroup {
         return mSection;
     }
 
+    /**
+     * Heuristic: checks first up to 8 items to decide if this group is Shorts.
+     * All sampled items must have isShorts == true to count as Shorts.
+     */
     public boolean isShorts() {
         if (isEmpty()) {
             return false;
@@ -214,7 +250,7 @@ public class VideoGroup {
     }
 
     /**
-     * Group position in multi-grid fragments<br/>
+     * Group position in multi-grid fragments.
      * It isn't used on other types of fragments.
      */
     public int getPosition() {
@@ -229,6 +265,9 @@ public class VideoGroup {
         return mAction;
     }
 
+    /**
+     * When prepending a group its position becomes 0 (top of the fragment).
+     */
     public void setAction(int action) {
         mAction = action;
 
@@ -254,7 +293,7 @@ public class VideoGroup {
     }
 
     /**
-     * Lightweight copy (without nested videos)
+     * Lightweight copy (without nested videos) used by adapters when only metadata is required.
      */
     public VideoGroup copy() {
         VideoGroup videoGroup = new VideoGroup();
@@ -265,8 +304,11 @@ public class VideoGroup {
         return videoGroup;
     }
 
+    // Internal helpers -----------------------------------------------------
+
     /**
      * Getting topmost element. Could help when syncing multi rows fragments.
+     * Traverses from the end backward to find first Video that already carries group info.
      */
     private static Video findTopmostItemWithGroup(List<Video> items) {
         if (items.isEmpty()) {
@@ -301,6 +343,8 @@ public class VideoGroup {
         return groupPosition;
     }
 
+    // Mutators & utilities -------------------------------------------------
+
     public void removeAllBefore(Video video) {
         if (mVideos == null) {
             return;
@@ -318,11 +362,13 @@ public class VideoGroup {
             return;
         }
 
+        // Keep sublist starting at index (inclusive)
         mVideos = mVideos.subList(index, mVideos.size());
     }
 
     /**
-     * Remove playlist id from all videos
+     * Remove playlist id fields from all videos in this group.
+     * Useful when displaying the same group in different playlist contexts.
      */
     public void stripPlaylistInfo() {
         if (mVideos == null) {
@@ -392,6 +438,11 @@ public class VideoGroup {
         return mVideos.get(idx);
     }
 
+    /**
+     * Remove a video from the internal list.
+     * Catches UnsupportedOperationException and ConcurrentModificationException because
+     * adapters may pass read-only or concurrently-modified lists.
+     */
     public void remove(Video video) {
         if (mVideos == null) {
             return;
@@ -405,6 +456,9 @@ public class VideoGroup {
         }
     }
 
+    /**
+     * Safe check for emptiness; may catch ConcurrentModificationException from adapter mutations.
+     */
     public boolean isEmpty() {
         try {
             return mVideos == null || mVideos.isEmpty();
@@ -415,6 +469,10 @@ public class VideoGroup {
         return true;
     }
 
+    /**
+     * Append a Video to the end of the group.
+     * Contains a defensive duplicate-check to avoid UI duplication bugs.
+     */
     public void add(Video video) {
         // TODO: remove the hack someday.
         // Dirty hack for avoiding group duplication.
@@ -428,6 +486,14 @@ public class VideoGroup {
         add(size != -1 ? size : 0, video);
     }
 
+    /**
+     * Insert video at the provided index.
+     *
+     * Responsibilities:
+     * - Initialize mVideos if null.
+     * - Set video.groupPosition and attach back-reference to this group.
+     * - Try to sync playback state (percentWatched) from VideoStateService when available.
+     */
     public void add(int idx, Video video) {
         if (video == null || video.isEmpty()) {
             return;
@@ -441,6 +507,7 @@ public class VideoGroup {
         video.groupPosition = mPosition;
         video.setGroup(this);
 
+        // Try to hydrate watched percent/state from the global state service.
         VideoStateService stateService = VideoStateService.instance(null);
         if (stateService != null && (video.percentWatched == -1 || video.percentWatched == 100)) {
             State state = stateService.getByVideoId(video.videoId);

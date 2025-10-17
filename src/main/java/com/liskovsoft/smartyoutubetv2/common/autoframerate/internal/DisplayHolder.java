@@ -1,10 +1,8 @@
 package com.liskovsoft.smartyoutubetv2.common.autoframerate.internal;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 /**
- * Convenience class to hold {@link DisplayHolder} Display object.
+ * Immutable snapshot holder for display metadata (supported modes and refresh rates).
+ * Passed between helpers to avoid repeated platform queries.
  *
  */
 public class DisplayHolder {

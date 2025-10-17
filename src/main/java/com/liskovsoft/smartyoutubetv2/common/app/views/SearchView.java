@@ -1,8 +1,8 @@
 package com.liskovsoft.smartyoutubetv2.common.app.views;
 
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
-import com.liskovsoft.smartyoutubetv2.common.app.models.search.MediaServiceSearchTagProvider;
-
+/**
+ * View contract for search UI. Displays search rows, handles input/voice trigger and updates results.
+ */
 public interface SearchView {
     void updateSearch(VideoGroup group);
     void clearSearch();

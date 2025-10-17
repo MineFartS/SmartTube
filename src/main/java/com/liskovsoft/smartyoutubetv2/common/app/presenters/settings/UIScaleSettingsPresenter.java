@@ -1,5 +1,8 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters.settings;
 
+/**
+ * Presenter for UI scale settings (display density/zoom). Provides dialog building helpers.
+ */
 import android.content.Context;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;

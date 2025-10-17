@@ -6,6 +6,7 @@ import com.liskovsoft.smartyoutubetv2.common.app.presenters.base.BasePresenter;
 
 /**
  * Shows boot dialogs one by one.
+ * Presenter for dialogs shown at app boot (updates, migration warnings, first-run flows).
  */
 public class BootDialogPresenter extends BasePresenter<Void> {
     @SuppressLint("StaticFieldLeak")

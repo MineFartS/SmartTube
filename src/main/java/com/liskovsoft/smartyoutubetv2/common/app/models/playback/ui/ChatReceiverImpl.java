@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui;
 
+/** Simple ChatReceiver implementation that forwards incoming chat items to the UI callback. */
 import com.liskovsoft.mediaserviceinterfaces.data.ChatItem;
 
 public class ChatReceiverImpl implements ChatReceiver {

@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui;
 
+/**
+ * UI wrapper for OptionItem backed by FormatItem or simple title/description.
+ * Handles callback invocation when selection changes.
+ */
+
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem;
 
 import java.util.ArrayList;

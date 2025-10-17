@@ -1,13 +1,8 @@
 package com.liskovsoft.smartyoutubetv2.common.autoframerate.internal;
 
-import android.view.Window;
-
 /**
- * The interface that must be implemented and registered
- * with {@link UhdHelper#registerModeChangeListener(UhdHelperListener) registerListener}
- * to find out the result of requested mode change.
- * <p>
- * Callback will be issued on the Main/UI thread of the application.
+ * Listener for UHD/display helper events (mode availability/changes).
+ * Implementations receive lightweight callbacks, typically posted on UI thread.
  *
  * To unregister the listener, use
  * {@link UhdHelper#unregisterDisplayModeChangeListener(UhdHelperListener) unregisterDisplayModeChangeListener}

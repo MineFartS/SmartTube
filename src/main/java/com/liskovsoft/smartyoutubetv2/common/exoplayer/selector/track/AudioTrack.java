@@ -1,9 +1,25 @@
 package com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.track;
 
-import com.google.android.exoplayer2.Format;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.TrackSelectorUtil;
-
+/**
+ * Audio-specific MediaTrack with bitrate/language/DRC-aware selection heuristics.
+ *
+ * Behavior:
+ * - Compares tracks primarily by codec/bitrate and channel properties.
+ * - Provides helpers to detect DRC (dynamic range compression) marks and prefer tracks
+ *   that preserve DRC consistency with the origin track.
+ *
+ * Notes:
+ * - Some devices have issues with very high bitrate mp4a audio; TrackSelectorManager may
+ *   filter or prefer alternate codecs on problematic devices.
+ *
+ * Audio track details:
+ * - channels (mono/stereo/5.1+), sampleRate, language, codec, isDefault
+ *
+ * Notes:
+ * - When multiple audio tracks with same language exist prefer one with higher channel count
+ *   unless user preference forces stereo.
+ * - Expose a friendly title (e.g., "English • Stereo • AAC").
+ */
 public class AudioTrack extends MediaTrack {
     public AudioTrack(int rendererIndex) {
         super(rendererIndex);

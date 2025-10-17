@@ -1,5 +1,7 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters.service;
 
+/** Service managing sidebar sections, pinned items and boot section selection. */
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 

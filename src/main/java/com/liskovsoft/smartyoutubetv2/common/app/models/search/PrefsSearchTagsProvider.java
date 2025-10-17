@@ -5,6 +5,7 @@ import com.liskovsoft.smartyoutubetv2.common.app.models.search.vineyard.Tag;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Simple in-memory/fallback tag provider used for prefs or testing. */
 public class PrefsSearchTagsProvider implements SearchTagsProvider {
     @Override
     public void search(String query, ResultsCallback callback) {

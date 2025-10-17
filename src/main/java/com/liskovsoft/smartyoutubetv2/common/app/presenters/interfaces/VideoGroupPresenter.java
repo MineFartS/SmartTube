@@ -1,7 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters.interfaces;
 
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
-
+/** Presenter contract for components that display/manipulate VideoGroup lists (click/scroll callbacks). */
 public interface VideoGroupPresenter {
     void onVideoItemSelected(Video item);
     void onVideoItemClicked(Video item);

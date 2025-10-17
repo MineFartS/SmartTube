@@ -16,23 +16,41 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Controller responsible for presenting and handling High Quality / Playback settings dialog.
+ *
+ * Responsibilities:
+ * - Build dialog categories for video/audio formats, presets, zoom, buffering, and other playback tweaks.
+ * - Persist format selection and apply changes to the player.
+ * - Notify registered listeners when the dialog is hidden so other controllers can react.
+ *
+ * Note: This class orchestrates AppDialogPresenter usage and keeps dialog-related categories in maps
+ * so categories can be added/removed dynamically.
+ */
 public class HQDialogController extends BasePlayerController {
     private static final String TAG = HQDialogController.class.getSimpleName();
     private static final int VIDEO_FORMATS_ID = 132;
     private static final int AUDIO_FORMATS_ID = 133;
-    // NOTE: using map, because same item could be changed time to time
+
+    // Categories stored in insertion order; separate maps allow temporary internal categories vs public ones.
     private final Map<Integer, OptionCategory> mCategories = new LinkedHashMap<>();
     private final Map<Integer, OptionCategory> mCategoriesInt = new LinkedHashMap<>();
+
+    // Set of listeners invoked when HQ dialog is hidden (used by other controllers to react to changes).
     private final Set<Runnable> mHideListeners = new HashSet<>();
+
+    // Reference to the shared AppDialogPresenter used to show/append categories.
     private AppDialogPresenter mAppDialogPresenter;
 
     @Override
     public void onInit() {
+        // Obtain AppDialogPresenter for the current context
         mAppDialogPresenter = AppDialogPresenter.instance(getContext());
     }
 
     @Override
     public void onViewResumed() {
+        // reserved for potential future updates related to background playback
         //updateBackgroundPlayback();
     }
 
@@ -43,9 +61,15 @@ public class HQDialogController extends BasePlayerController {
         }
     }
 
+    /**
+     * Entry point when user requests high-quality playback settings.
+     * Prepares dialog categories and shows the dialog.
+     */
     private void onHighQualityClicked() {
+        // Ensure video fits properly into dialog before showing options
         fitVideoIntoDialog();
 
+        // Build categories
         addQualityCategories();
         addAudioLanguage();
         addPresetsCategory();
@@ -56,9 +80,11 @@ public class HQDialogController extends BasePlayerController {
         addPitchEffectCategory();
         //addBackgroundPlaybackCategory();
 
+        // Append internal and external categories to dialog presenter
         appendOptions(mCategoriesInt);
         appendOptions(mCategories);
 
+        // Show dialog and register hide callback
         mAppDialogPresenter.showDialog(getContext().getString(R.string.playback_settings), this::onDialogHide);
     }
 
@@ -81,6 +107,10 @@ public class HQDialogController extends BasePlayerController {
                 UiOptionItem.from(audioFormats, this::selectFormatOption, getContext().getString(R.string.option_disabled))));
     }
 
+    /**
+     * Called when user selects a format option (video/audio).
+     * Applies format to player and persists selection according to preset rules.
+     */
     private void selectFormatOption(OptionItem option) {
         FormatItem formatItem = UiOptionItem.toFormat(option);
         getPlayer().setFormat(formatItem);
@@ -95,7 +125,7 @@ public class HQDialogController extends BasePlayerController {
             getPlayer().reloadPlayback();
         }
 
-        // Make result easily be spotted by the user
+        // Make result easily be spotted by the user for video format changes
         if (formatItem.getType() == FormatItem.TYPE_VIDEO) {
             getPlayer().showOverlay(false);
         }
@@ -104,8 +134,10 @@ public class HQDialogController extends BasePlayerController {
     private void persistFormat(FormatItem formatItem) {
         if (formatItem.getType() == FormatItem.TYPE_VIDEO) {
             if (!getPlayerData().getFormat(FormatItem.TYPE_VIDEO).isPreset()) {
+                // Persist permanent selection
                 getPlayerData().setFormat(formatItem);
             } else {
+                // Use temporary format for preset mode
                 getPlayerData().setTempVideoFormat(formatItem);
             }
         } else {
@@ -137,6 +169,9 @@ public class HQDialogController extends BasePlayerController {
                 () -> getPlayer().restartEngine()));
     }
 
+    /**
+     * Called when the dialog is hidden. Notifies registered listeners so they can apply changes.
+     */
     private void onDialogHide() {
         //updateBackgroundPlayback();
 
@@ -207,6 +242,11 @@ public class HQDialogController extends BasePlayerController {
         mCategories.put(category.id, category);
     }
 
+    /**
+     * Register a listener to be called when the HQ dialog is hidden.
+     *
+     * @param listener Runnable to invoke on dialog hide
+     */
     public void addOnDialogHide(Runnable listener) {
         mHideListeners.add(listener);
     }

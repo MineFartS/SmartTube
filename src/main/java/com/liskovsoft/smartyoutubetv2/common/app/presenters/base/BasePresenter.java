@@ -35,6 +35,12 @@ import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Base presenter providing common helpers for presenters:
+ * - weakly-held view/context references
+ * - lifecycle hooks (onViewInitialized/onFinish/etc.)
+ * - helpers to access app services and sync VideoGroups with views
+ */
 public abstract class BasePresenter<T> implements Presenter<T> {
     private static final String TAG = BasePresenter.class.getSimpleName();
     private WeakReference<T> mView = new WeakReference<>(null);

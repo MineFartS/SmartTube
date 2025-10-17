@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.app.models.search.vineyard;
 
+/** Small POJO representing an option in vineyard search UI. */
 public class Option {
     public String title;
     public String value;

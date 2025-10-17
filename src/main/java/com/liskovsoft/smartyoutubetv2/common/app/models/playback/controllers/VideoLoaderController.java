@@ -35,13 +35,22 @@ import io.reactivex.disposables.Disposable;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Controller responsible for loading video format info and deciding how playback should be started:
+ * - handles formatInfo responses and chooses DASH/HLS/URL-list/SABR playback
+ * - reacts to format/engine errors and applies mitigation strategies
+ * - manages scheduling for reload/restart/reboot when severe failures occur
+ */
 public class VideoLoaderController extends BasePlayerController {
     private static final String TAG = VideoLoaderController.class.getSimpleName();
+
+    // Various thresholds for buffering/stream end heuristics
     private static final long STREAM_END_THRESHOLD_MS = 180_000;
     private static final long BUFFERING_THRESHOLD_MS = 3_000;
     private static final long BUFFERING_WINDOW_MS = 60_000;
     private static final long BUFFERING_RECURRENCE_COUNT = 5;
     private static final long BUFFERING_CONTINUATION_MS = 10_000;
+
     private final Playlist mPlaylist;
     private Video mPendingVideo;
     private int mLastErrorType = -1;
@@ -49,6 +58,7 @@ public class VideoLoaderController extends BasePlayerController {
     private long mSleepTimerStartMs;
     private Disposable mFormatInfoAction;
     private Disposable mMpdStreamAction;
+    // Runnables used for deferred actions like reload/restart etc.
     private final Runnable mReloadVideo = () -> {
         getMainController().onNewVideo(getVideo());
     };
@@ -65,6 +75,7 @@ public class VideoLoaderController extends BasePlayerController {
     };
     private final Runnable mOnLongBuffering = this::updateBufferingCountIfNeeded;
 
+    // Reboot helper used when service returns bot-check or similar blocking conditions
     private final Runnable mRebootApp = () -> {
         Video video = getVideo();
         if (getPlayer() != null) {
@@ -328,6 +339,10 @@ public class VideoLoaderController extends BasePlayerController {
         }
     }
 
+    /**
+     * Load format info for the given video item. This triggers the retrieval of available formats
+     * and prepares the player for playback.
+     */
     private void loadFormatInfo(Video video) {
         if (getPlayer() == null) {
             return;
@@ -346,6 +361,10 @@ public class VideoLoaderController extends BasePlayerController {
                            });
     }
 
+    /**
+     * Process retrieved MediaItemFormatInfo and decide what player open method to use.
+     * Handles unplayable states, dash/hls/sabr/url lists and schedules appropriate followups.
+     */
     private void processFormatInfo(MediaItemFormatInfo formatInfo) {
         PlaybackView player = getPlayer();
 
@@ -360,11 +379,13 @@ public class VideoLoaderController extends BasePlayerController {
         // Fix stretched video for a couple milliseconds (before the onVideoSizeChanged gets called)
         applyAspectRatio(formatInfo);
 
+        // If paid content text present show a brief message
         if (formatInfo.getPaidContentText() != null && getContentBlockData().isPaidContentNotificationEnabled()) {
             MessageHelpers.showMessage(getContext(), formatInfo.getPaidContentText());
         }
 
         if (formatInfo.isUnplayable()) {
+            // Handle unplayable: show title, schedule next or reboot depending on error type
             if (isEmbedPlayer()) {
                 player.finish();
                 return;
@@ -381,6 +402,7 @@ public class VideoLoaderController extends BasePlayerController {
                 scheduleNextVideoTimer(5_000);
             }
         } else if (acceptAdaptiveFormats(formatInfo) && formatInfo.containsDashFormats()) {
+            // DASH playback path
             Log.d(TAG, "Loading regular video in dash format...");
 
             if (getPlayerTweaksData().isHighBitrateFormatsEnabled() && formatInfo.hasExtendedHlsFormats()) {
@@ -389,8 +411,8 @@ public class VideoLoaderController extends BasePlayerController {
                 player.openDash(formatInfo);
             }
 
-            //player.openSabr(formatInfo);
         } else if (acceptAdaptiveFormats(formatInfo) && formatInfo.containsSabrFormats()) {
+            // SABR playback path
             Log.d(TAG, "Loading video in sabr format...");
             player.openSabr(formatInfo);
         } else if (acceptDashLive(formatInfo)) {

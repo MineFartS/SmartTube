@@ -34,10 +34,28 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * Central presenter that orchestrates playback-related controllers and forwards
+ * events between the PlaybackView and registered PlayerEventListener controllers.
+ *
+ * Responsibilities:
+ * - Hold singleton instance and application context.
+ * - Manage a list of ordered PlayerEventListener controllers (VideoState, UI, Loader, etc).
+ * - Provide convenience API for opening videos and manipulating playback from other UI.
+ * - Forward lifecycle, engine and UI events to all registered controllers.
+ *
+ * Notes:
+ * - Controllers are added in an order that matters; some rely on previous controllers.
+ * - Internally uses CopyOnWriteArrayList to allow safe concurrent iteration from UI threads.
+ */
 public class PlaybackPresenter extends BasePresenter<PlaybackView> implements PlayerEventListener {
     private static final String TAG = PlaybackPresenter.class.getSimpleName();
+
     @SuppressLint("StaticFieldLeak")
     private static PlaybackPresenter sInstance;
+
+    // Event listeners (controllers). CopyOnWriteArrayList to avoid CME when iterating.
+    // When a listener is added we initialize its main controller reference.
     private final List<PlayerEventListener> mEventListeners = new CopyOnWriteArrayList<PlayerEventListener>() {
         @Override
         public boolean add(PlayerEventListener listener) {
@@ -46,15 +64,20 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
             return super.add(listener);
         }
     };
+
+    // Weak reference to the currently active Video (to avoid leaking large objects).
     private WeakReference<Video> mVideo;
-    // Fix for using destroyed view
+
+    // Weak reference to the PlaybackView. View may be destroyed and recreated frequently.
     private WeakReference<PlaybackView> mPlayer = new WeakReference<>(null);
+
+    // Flag used to detect transitions from embed -> fullscreen player flows.
     private boolean mIsEmbedPlayerStarted;
 
     private PlaybackPresenter(Context context) {
         super(context);
 
-        // NOTE: position matters!!!
+        // NOTE: order matters — controllers may depend on work performed by earlier ones.
         mEventListeners.add(new VideoStateController());
         mEventListeners.add(new SuggestionsController());
         mEventListeners.add(new PlayerUIController());
@@ -67,6 +90,9 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
         mEventListeners.add(new CommentsController());
     }
 
+    /**
+     * Singleton accessor. Requires a context on first call.
+     */
     public static PlaybackPresenter instance(Context context) {
         if (sInstance == null) {
             sInstance = new PlaybackPresenter(context);
@@ -80,21 +106,33 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
     @Override
     public void onViewInitialized() {
         super.onViewInitialized();
-        
+
+        // Re-initialize controllers after view is ready (e.g. after app restart)
         initControllers();
     }
 
+    /**
+     * Initialize controllers by dispatching onInit.
+     * Called when presenter view is initialized or app restarts.
+     */
     private void initControllers() {
         // Re-init after app exit
         process(PlayerEventListener::onInit);
     }
+
+    // Convenience methods to open videos --------------------------------------------------
 
     public void openVideo(String videoId) {
         openVideo(videoId, false, -1, false);
     }
 
     /**
-     * Opens video item from splash view
+     * Open a video by id with optional parameters.
+     *
+     * @param videoId      video id to open
+     * @param finishOnEnded if true the player will finish when playback ends
+     * @param timeMs       initial seek position in milliseconds
+     * @param incognito    whether to open in incognito mode
      */
     public void openVideo(String videoId, boolean finishOnEnded, long timeMs, boolean incognito) {
         if (videoId == null) {
@@ -108,17 +146,19 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
         openVideo(video);
     }
 
+    /**
+     * Open a prepared Video instance.
+     * Handles switching from embed to fullscreen player and starts PlaybackView.
+     */
     public void openVideo(Video video) {
         if (video == null) {
             return;
         }
 
         if (getView() != null && getView().isEmbed()) { // switching from the embed player to the fullscreen one
-            // The embed player doesn't disposed properly
-            // NOTE: don't release after init check because this depends on timings
+            // The embed player doesn't disposed properly — ensure it finishes and detach view.
             getView().finishReally();
             setView(null);
-            //getController(VideoStateController.class).saveState();
         }
 
         onNewVideo(video);
@@ -131,13 +171,18 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
         return mVideo != null ? mVideo.get() : null;
     }
 
+    // State helpers ----------------------------------------------------------------------
+
+    /**
+     * Returns true when playback is running in background (engine initialized, view blocked,
+     * player not in foreground and activity is valid).
+     */
     public boolean isRunningInBackground() {
         return getView() != null &&
                 getView().isEngineBlocked() &&
-                //getView().getBackgroundMode() != PlayerEngine.BACKGROUND_MODE_DEFAULT &&
                 getView().isEngineInitialized() &&
                 !getViewManager().isPlayerInForeground() &&
-                getContext() instanceof Activity && Utils.checkActivity((Activity) getContext()); // Check that activity is not in Finishing state
+                getContext() instanceof Activity && Utils.checkActivity((Activity) getContext());
     }
 
     public boolean isInPipMode() {
@@ -160,9 +205,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
         return getView() != null && getView().isEngineInitialized();
     }
 
-    //public int getBackgroundMode() {
-    //    return getView() != null ? getView().getBackgroundMode() : -1;
-    //}
+    // UI helpers -------------------------------------------------------------------------
 
     public void forceFinish() {
         if (getView() != null) {
@@ -174,9 +217,11 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
         setPosition(ServiceHelper.timeTextToMillis(timeCode));
     }
 
+    /**
+     * Set playback position. If player is in foreground set directly on the view,
+     * otherwise save pending position to the Video and open the player.
+     */
     public void setPosition(long positionMs) {
-        // Check that the user isn't open context menu on suggestion item
-        // if (Utils.isPlayerInForeground(getContext()) && getView() != null && !getView().getController().isSuggestionsShown()) {
         if (getViewManager().isPlayerInForeground() && getView() != null) {
             getView().setPositionMs(positionMs);
             getView().setPlayWhenReady(true);
@@ -190,29 +235,34 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
         }
     }
 
-    // Controller methods
+    // Controller registration & access ---------------------------------------------------
 
     @Override
     public void setView(PlaybackView view) {
         super.setView(view);
         mPlayer = new WeakReference<>(view);
 
-        // Fix playing the previous video when switching between embed and fullscreen players.
-        // E.g. when the user pressed back on the Channel content screen
+        // When restoring view after embed -> fullscreen switching, preserve current video and add to playlist.
         if (view != null && view.getVideo() != null && mIsEmbedPlayerStarted) {
             mVideo = new WeakReference<>(view.getVideo());
-            Playlist.instance().add(view.getVideo()); // don't show queue
+            Playlist.instance().add(view.getVideo()); // keep playback queue consistent
         }
     }
 
+    /**
+     * Returns the PlaybackView even if it has been destroyed (weak ref may be null).
+     */
     public PlaybackView getPlayer() {
-        return mPlayer.get(); // return view even if the one is destroyed
+        return mPlayer.get();
     }
 
     public Activity getActivity() {
         return getContext() instanceof Activity ? (Activity) getContext() : null;
     }
 
+    /**
+     * Lookup a registered controller by class.
+     */
     @SuppressWarnings("unchecked")
     public <T extends PlayerEventListener> T getController(Class<T> clazz) {
         for (PlayerEventListener listener : mEventListeners) {
@@ -224,10 +274,11 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
         return null;
     }
 
-    // Core events
+    // Core event dispatching ------------------------------------------------------------
 
     @Override
     public void onNewVideo(Video video) {
+        // Propagate to controllers and keep weak reference to current video
         process(listener -> listener.onNewVideo(video));
         mVideo = new WeakReference<>(video);
         mIsEmbedPlayerStarted = true;
@@ -240,7 +291,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
 
     @Override
     public void onInit() {
-        // NOP. Internal event.
+        // No-op: internal only
     }
 
     @Override
@@ -248,9 +299,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
         process(listener -> listener.onMetadata(metadata));
     }
 
-    // End core events
-
-    // Helpers
+    // Helpers to apply processors over mEventListeners ----------------------------------
 
     private boolean chainProcess(ChainProcessor<PlayerEventListener> processor) {
         return Utils.chainProcess(mEventListeners, processor);
@@ -260,9 +309,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
         Utils.process(mEventListeners, processor);
     }
 
-    // End Helpers
-
-    // Common events
+    // View lifecycle event forwarding ---------------------------------------------------
 
     @Override
     public void onViewCreated() {
@@ -277,20 +324,16 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
     @Override
     public void onViewPaused() {
         super.onViewPaused();
-
         process(ViewEventListener::onViewPaused);
     }
 
     @Override
     public void onViewResumed() {
         super.onViewResumed();
-
         process(ViewEventListener::onViewResumed);
     }
 
-    // End common events
-
-    // Start engine events
+    // Engine related events ------------------------------------------------------------
 
     @Override
     public void onSourceChanged(Video item) {
@@ -300,14 +343,12 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
     @Override
     public void onEngineInitialized() {
         getTickleManager().addListener(this);
-
         process(PlayerEventListener::onEngineInitialized);
     }
 
     @Override
     public void onEngineReleased() {
         getTickleManager().removeListener(this);
-
         process(PlayerEventListener::onEngineReleased);
     }
 
@@ -376,9 +417,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
         process(PlayerEventListener::onTickle);
     }
 
-    // End engine events
-
-    // Start UI events
+    // UI events forwarded to controllers ------------------------------------------------
 
     @Override
     public void onSuggestionItemClicked(Video item) {
@@ -430,5 +469,5 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
         process(listener -> listener.onButtonLongClicked(buttonId, buttonState));
     }
 
-    // End UI events
+    // End of class
 }

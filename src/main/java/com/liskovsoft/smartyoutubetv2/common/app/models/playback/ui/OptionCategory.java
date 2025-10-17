@@ -1,9 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+/** Represents a category shown in dialogs; factory methods make common category types. */
 public class OptionCategory {
     public static OptionCategory radioList(String title, List<OptionItem> items) {
         return new OptionCategory(title, items, TYPE_RADIO_LIST);

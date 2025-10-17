@@ -37,6 +37,15 @@ import io.reactivex.disposables.Disposable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller that loads and manages suggestion rows for the player.
+ *
+ * Responsibilities:
+ * - Fetch metadata and suggestion rows for the current video
+ * - Merge remote (phone) queue and local queue when casting
+ * - Handle chapter markers, chapter notifications and seek preview titles
+ * - Provide logic to continue/append suggestion groups when the user scrolls or requests more
+ */
 public class SuggestionsController extends BasePlayerController {
     private static final String TAG = SuggestionsController.class.getSimpleName();
     private final List<Disposable> mActions = new ArrayList<>();
@@ -350,6 +359,12 @@ public class SuggestionsController extends BasePlayerController {
         callListener(mediaItemMetadata);
     }
 
+    /**
+     * Append suggestions rows from metadata and process priorities:
+     * - chapters
+     * - remote/user queue merges
+     * - section playlist handling
+     */
     private void appendSuggestions(Video video, MediaItemMetadata mediaItemMetadata) {
         if (video == null || getPlayer() == null) {
             return;
@@ -523,7 +538,7 @@ public class SuggestionsController extends BasePlayerController {
 
     private void appendChaptersIfNeeded(MediaItemMetadata mediaItemMetadata) {
         mChapters = mediaItemMetadata.getChapters();
-        
+
         addChapterMarkersIfNeeded();
         appendChapterSuggestionsIfNeeded();
         startChapterNotificationServiceIfNeeded();

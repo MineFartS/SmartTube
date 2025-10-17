@@ -21,7 +21,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Presenter responsible for building and showing the ContentBlock (SponsorBlock) settings dialog.
+ *
+ * Responsibilities:
+ * - Read and persist ContentBlockData preferences.
+ * - Compose dialog UI sections (enable switch, actions, color markers, misc options, links).
+ * - Expose a small API to show the dialog and optionally run a callback when it finishes.
+ *
+ * This presenter is lightweight and created per-call via instance(context).
+ */
 public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
+    // Preferences holder for content-block related settings.
     private final ContentBlockData mContentBlockData;
 
     public ContentBlockSettingsPresenter(Context context) {
@@ -29,13 +40,29 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
         mContentBlockData = ContentBlockData.instance(context);
     }
 
+    /**
+     * Factory accessor. Returns a new presenter using the provided context.
+     */
     public static ContentBlockSettingsPresenter instance(Context context) {
         return new ContentBlockSettingsPresenter(context);
     }
 
+    /**
+     * Build and show the settings dialog.
+     *
+     * Sections included:
+     * - Global enable switch (and exclude current channel button when applicable)
+     * - Action mapping per segment category (nested dialog)
+     * - Color markers toggles
+     * - Misc toggles (paid content notification, skip-once, alternate server)
+     * - Links to provider / status pages
+     *
+     * @param onFinish optional callback executed when dialog is dismissed
+     */
     public void show(Runnable onFinish) {
         AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
 
+        // Compose dialog sections
         appendSponsorBlockSwitch(settingsPresenter);
         appendExcludeChannelButton(settingsPresenter);
         appendActionsSection(settingsPresenter);
@@ -43,16 +70,27 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
         appendMiscSection(settingsPresenter);
         appendLinks(settingsPresenter);
 
+        // Show dialog with provider title and optional finish callback
         settingsPresenter.showDialog(getContext().getString(R.string.content_block_provider), onFinish);
     }
 
+    /**
+     * Convenience overload without finish callback.
+     */
     public void show() {
         show(null);
     }
 
+    /**
+     * Append the main enable switch for the content-block feature.
+     *
+     * If playback is active, attempts to detect current video to offer per-channel exclusion.
+     * Toggling the switch updates ContentBlockData immediately.
+     */
     private void appendSponsorBlockSwitch(AppDialogPresenter settingsPresenter) {
         Video video = null;
 
+        // Try to obtain current playback video when playback view is on top.
         if (getViewManager().getTopView() == PlaybackView.class) {
             video = PlaybackPresenter.instance(getContext()).getVideo();
         }
@@ -62,15 +100,28 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
 
         OptionItem sponsorBlockOption = UiOptionItem.from(getContext().getString(R.string.enable),
                 option -> {
+                    // Persist enable/disable state and ensure channel exclusion is reset.
                     mContentBlockData.enableSponsorBlock(option.isSelected());
                     ContentBlockData.instance(getContext()).stopExcludingChannel(channelId);
                 },
+                // Default switch state: enabled only if sponsor block is enabled and channel is not excluded.
                 !isChannelExcluded && mContentBlockData.isSponsorBlockEnabled()
         );
 
         settingsPresenter.appendSingleSwitch(sponsorBlockOption);
     }
 
+    /**
+     * Build the actions section: one entry per known segment category.
+     *
+     * Each category opens a nested dialog allowing user to pick what happens when such segments are found:
+     * - Do nothing
+     * - Skip only
+     * - Skip with toast
+     * - Show dialog
+     *
+     * Selections are persisted via ContentBlockData.persistActions callback.
+     */
     private void appendActionsSection(AppDialogPresenter settingsPresenter) {
         List<OptionItem> options = new ArrayList<>();
 
@@ -78,10 +129,12 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
 
         for (SegmentAction action : actions) {
             options.add(UiOptionItem.from(
+                    // Use localized category name with color marker in the label
                     getColoredString(mContentBlockData.getLocalizedRes(action.segmentCategory), mContentBlockData.getColorRes(action.segmentCategory)),
                     optionItem -> {
                         AppDialogPresenter dialogPresenter = AppDialogPresenter.instance(getContext());
 
+                        // Build nested radio options to choose action type for this category
                         List<OptionItem> nestedOptions = new ArrayList<>();
                         nestedOptions.add(UiOptionItem.from(getContext().getString(R.string.content_block_action_none),
                                 optionItem1 -> action.actionType = ContentBlockData.ACTION_DO_NOTHING,
@@ -98,6 +151,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
 
                         String title = getContext().getString(mContentBlockData.getLocalizedRes(action.segmentCategory));
 
+                        // Show nested dialog and persist changes on close
                         dialogPresenter.appendRadioCategory(title, nestedOptions);
                         dialogPresenter.showDialog(title, mContentBlockData::persistActions);
                     }));
@@ -106,6 +160,9 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
         settingsPresenter.appendStringsCategory(getContext().getString(R.string.content_block_action_type), options);
     }
 
+    /**
+     * Append toggles to enable color markers for each known segment category.
+     */
     private void appendColorMarkersSection(AppDialogPresenter settingsPresenter) {
         List<OptionItem> options = new ArrayList<>();
 
@@ -124,6 +181,9 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
         settingsPresenter.appendCheckedCategory(getContext().getString(R.string.sponsor_color_markers), options);
     }
 
+    /**
+     * Add provider links: status and about pages.
+     */
     private void appendLinks(AppDialogPresenter settingsPresenter) {
         OptionItem statsCheckOption = UiOptionItem.from(getContext().getString(R.string.content_block_status),
                 option -> Utils.openLink(getContext(), getContext().getString(R.string.content_block_status_url)));
@@ -135,6 +195,14 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
         settingsPresenter.appendSingleButton(webSiteOption);
     }
 
+    /**
+     * Miscellaneous toggles for content block behavior.
+     *
+     * Options include:
+     * - Paid content notification
+     * - Skip each segment only once
+     * - Use alternate server for segments
+     */
     private void appendMiscSection(AppDialogPresenter settingsPresenter) {
         List<OptionItem> options = new ArrayList<>();
 
@@ -154,6 +222,10 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
         settingsPresenter.appendCheckedCategory(getContext().getString(R.string.player_other), options);
     }
 
+    /**
+     * Append a button that allows excluding the currently playing video's channel from content blocking.
+     * This button is only shown when the playback view is active and a video is available.
+     */
     private void appendExcludeChannelButton(AppDialogPresenter settingsPresenter) {
         Video video = PlaybackPresenter.instance(getContext()).getVideo();
 
@@ -164,6 +236,9 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
         settingsPresenter.appendSingleButton(AppDialogUtil.createExcludeFromContentBlockButton(getContext(), video, MediaServiceManager.instance(), settingsPresenter::closeDialog));
     }
 
+    /**
+     * Helper to build a colored label for UI using a small colored dot followed by localized text.
+     */
     private CharSequence getColoredString(int strResId, int colorResId) {
         String origin = getContext().getString(strResId);
         CharSequence colorMark = Utils.color("●", ContextCompat.getColor(getContext(), colorResId));

@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.prefs;
 
+/** Small toggles for de-arrow behavior (title/thumbnail replacements). */
 import android.content.Context;
 
 import com.liskovsoft.smartyoutubetv2.common.prefs.common.DataSaverBase;

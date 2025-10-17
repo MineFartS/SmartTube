@@ -56,24 +56,64 @@ import java.util.concurrent.Callable;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
+/**
+ * Presenter responsible for orchestrating the BrowseView.
+ *
+ * Responsibilities:
+ * - Maintain the list of visible BrowseSection objects (including pinned & error ones).
+ * - Map section IDs to data sources (observables / callables) for grid/row content.
+ * - Handle user interactions coming from the view (selection, clicks, long-clicks).
+ * - Coordinate continuation/pagination of MediaGroup rows and grids.
+ * - Persist and restore selected positions for certain sections.
+ *
+ * This class is a singleton Presenter tied to the application context.
+ */
 public class BrowsePresenter extends BasePresenter<BrowseView> implements SectionPresenter, VideoGroupPresenter, AccountChangeListener {
     private static final String TAG = BrowsePresenter.class.getSimpleName();
     @SuppressLint("StaticFieldLeak")
     private static BrowsePresenter sInstance;
+
+    // Active sections displayed in the UI (includes pinned items).
     private final List<BrowseSection> mSections;
+
+    // Error sections shown temporarily when loading fails or password required.
     private final List<BrowseSection> mErrorSections;
+
+    // Mappings for section -> data observable for grid-style sections.
     private final Map<Integer, Observable<MediaGroup>> mGridMapping;
+
+    // Mappings for section -> observable producing multiple MediaGroup rows.
     private final Map<Integer, Observable<List<MediaGroup>>> mRowMapping;
+
+    // Mappings for settings section to a callable that builds the settings items.
     private final Map<Integer, Callable<List<SettingsItem>>> mSettingsGridMapping;
+
+    // Mappings for local data sources (e.g. playback queue).
     private final Map<Integer, Callable<List<Video>>> mLocalGridMappings;
+
+    // Lookup from known MediaGroup types to BrowseSection metadata.
     private final Map<Integer, BrowseSection> mSectionsMapping;
+
+    // Helper manager used to build setting items / other data sources.
     private final AppDataSourceManager mDataSourcePresenter;
+
+    // Background processor to sanitize/modify video groups before showing.
     private final BrowseProcessorManager mBrowseProcessor;
+
+    // Active Rx disposables for current data loads.
     private final List<Disposable> mActions;
+
+    // Runnable used to retry refresh after a load error.
     private final Runnable mRefreshSection = this::refresh;
+
+    // Currently focused section and video
     private BrowseSection mCurrentSection;
     private Video mCurrentVideo;
+
+    // Timestamp of the last successful update (used to throttle refresh)
     private long mLastUpdateTimeMs = -1;
+
+    // UI bootstrap params
     private int mBootSectionIndex;
     private int mBootstrapSectionId = -1;
 
@@ -89,7 +129,8 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         mSectionsMapping = new HashMap<>();
         MediaServiceManager.instance().addAccountListener(this);
         ScreenHelper.updateScreenInfo(context);
-        
+
+        // Processor applies transformations/syncs to VideoGroup objects before rendering
         mBrowseProcessor = new BrowseProcessorManager(getContext(), this::syncItem);
         mActions = new ArrayList<>();
 
@@ -99,6 +140,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         initPinnedData();
     }
 
+    /**
+     * Obtain singleton presenter instance. Keeps a static reference.
+     */
     public static BrowsePresenter instance(Context context) {
         if (sInstance == null) {
             sInstance = new BrowsePresenter(context);
@@ -121,9 +165,10 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
             return;
         }
 
+        // Load and present sections
         refreshSections();
 
-        // Move default focus
+        // Move default focus to saved / boot section
         int selectedSectionIndex = findSectionIndex(mCurrentSection != null ? mCurrentSection.getId() : mBootstrapSectionId);
         mBootstrapSectionId = -1;
         getView().selectSection(selectedSectionIndex != -1 ? selectedSectionIndex : mBootSectionIndex, true);
@@ -143,6 +188,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         refreshIfNeeded();
     }
 
+    /**
+     * Refresh sections only if enough time has passed since last update.
+     */
     private void refreshIfNeeded() {
         if (getView() == null || !isHomeSection() || mLastUpdateTimeMs == -1 || System.currentTimeMillis() - mLastUpdateTimeMs < 3 * 60 * 60 * 1_000) {
             return;
@@ -151,8 +199,11 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         refresh(false);
     }
 
+    /**
+     * Persist selected item positions for sections that remember selection.
+     */
     private void saveSelectedItems() {
-        // Fix position reset when jumping between sections
+        // Avoid saving immediately after fast focus changes
         if (mCurrentVideo != null && mCurrentVideo.getPositionInsideGroup() == 0 && (System.currentTimeMillis() - mCurrentVideo.timestamp) < 10_000) {
             return;
         }
@@ -163,6 +214,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         }
     }
 
+    /**
+     * Restore previously persisted selection for the current section (if enabled).
+     */
     private void restoreSelectedItems() {
         if (getView() == null) {
             return;
@@ -174,6 +228,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         }
     }
 
+    /**
+     * Initialize mappings between media types and section objects / data sources.
+     */
     private void initSectionMappings() {
         initSectionMapping();
 
@@ -183,6 +240,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         initLocalGridMapping();
     }
 
+    /**
+     * Build base BrowseSection instances for known MediaGroup types.
+     */
     private void initSectionMapping() {
         String country = LocaleUtility.getCurrentLocale(getContext()).getCountry();
         int uploadsType = getMainUIData().isUploadsOldLookEnabled() ? BrowseSection.TYPE_GRID : BrowseSection.TYPE_MULTI_GRID;
@@ -211,6 +271,10 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         }
     }
 
+    /**
+     * Map section ids to the observables that provide their data.
+     * These are typically provided by the content service.
+     */
     private void initRowAndGridMapping() {
         mRowMapping.put(MediaGroup.TYPE_HOME, getContentService().getHomeObserve());
         mRowMapping.put(MediaGroup.TYPE_TRENDING, getContentService().getTrendingObserve());
@@ -230,6 +294,10 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         mGridMapping.put(MediaGroup.TYPE_MY_VIDEOS, getContentService().getMyVideosObserve());
     }
 
+    /**
+     * Rebuild pinned sections list from sidebar pinned items.
+     * Pinned channels/playlists are shown as sections at the top.
+     */
     private void initPinnedSections() {
         mSections.clear();
 
@@ -251,6 +319,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         }
     }
 
+    /**
+     * Add mappings for pinned items which have dynamic data sources.
+     */
     private void initPinnedCallbacks() {
         Collection<Video> pinnedItems = getSidebarService().getPinnedItems();
 
@@ -266,9 +337,13 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
     }
 
     private void initLocalGridMapping() {
+        // Playback queue displayed from local playlist
         mLocalGridMappings.put(MediaGroup.TYPE_PLAYBACK_QUEUE, () -> Playlist.instance().getAll());
     }
 
+    /**
+     * Trigger full sections update and refresh UI.
+     */
     public void updateSections() {
         if (getView() == null) {
             return;
@@ -279,6 +354,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         refreshSections();
     }
 
+    /**
+     * Populate the BrowseView with sections (error sections first, then regular sections).
+     */
     private void refreshSections() {
         if (getView() == null) {
             return;
@@ -289,7 +367,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
 
         int bootSectionId = getSidebarService().getBootSectionId();
 
-        // Empty Home on first run fix. Switch Trending temporarily.
+        // Empty Home on first run fix. Switch Trending temporarily if not signed and no history.
         if (!getSignInService().isSigned() && VideoStateService.instance(getContext()).isEmpty()) {
             bootSectionId = MediaGroup.TYPE_TRENDING;
             //getSidebarService().enableSection(bootSectionId, true);
@@ -297,10 +375,12 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
 
         int index = 0;
 
+        // Add error sections at top
         for (BrowseSection section : mErrorSections) {
             getView().addSection(index++, section);
         }
 
+        // Add normal sections (including pinned)
         for (BrowseSection section : mSections) { // contains sections and pinned items!
             if (section.getId() == MediaGroup.TYPE_SETTINGS) {
                 section.setEnabled(true);
@@ -334,6 +414,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         });
     }
 
+    /**
+     * Reconfigure channel uploads mapping according to user sorting choice.
+     */
     public void updateChannelSorting() {
         int sortingType = getMainUIData().getChannelCategorySorting();
 
@@ -354,6 +437,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         }
     }
 
+    /**
+     * Switch playlists view style between grid and rows.
+     */
     public void updatePlaylistsStyle() {
         int playlistsStyle = getMainUIData().getPlaylistsStyle();
 
@@ -403,6 +489,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
             return;
         }
 
+        // If the item belongs to Channels multi-grid treat it differently (load uploads)
         if (belongsToChannelUploadsMultiGrid(item)) {
             if (getMainUIData().isUploadsAutoLoadEnabled()) {
                 updateChannelUploadsMultiGrid(item);
@@ -420,7 +507,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
             return;
         }
 
-        // Check that channels new look enabled and we're on the first columnAdd commentMore actions
+        // Channels new look: first column triggers action vs navigation
         if (belongsToChannelUploadsMultiGrid(item)) {
             if (getMainUIData().isUploadsAutoLoadEnabled()) {
                 VideoActionPresenter.instance(getContext()).apply(item);
@@ -438,6 +525,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
             return;
         }
 
+        // Show channel-specific menu or generic video menu depending on section
         if (belongsToChannelUploads(item)) { // We need to be sure we exactly on Channels section
             ChannelUploadsMenuPresenter.instance(getContext()).showMenu(item, (videoItem, action) -> {
                 if (action == VideoMenuCallback.ACTION_UNSUBSCRIBE) { // works with any uploads section look
@@ -522,6 +610,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         updateSections();
     }
 
+    /**
+     * Enable/disable a set of common sections in bulk.
+     */
     public void enableAllSections(boolean enable) {
         enableSection(MediaGroup.TYPE_HISTORY, enable);
         enableSection(MediaGroup.TYPE_USER_PLAYLISTS, enable);
@@ -535,6 +626,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         enableSection(MediaGroup.TYPE_SHORTS, enable);
     }
 
+    /**
+     * Enable or disable a single section id and update UI accordingly.
+     */
     public void enableSection(int sectionId, boolean enable) {
         getSidebarService().enableSection(sectionId, enable);
 
@@ -545,6 +639,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         updateSections();
     }
 
+    /**
+     * Pin an item into sidebar and create corresponding section + mapping.
+     */
     public void pinItem(Video item) {
         if (getView() == null) {
             return;
@@ -562,6 +659,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         getView().addSection(-1, newSection);
     }
 
+    /**
+     * Pin an error-like section (used to show password prompts / temporary errors).
+     */
     public void pinItem(String title, int resId, ErrorFragmentData data) {
         if (getView() == null) {
             return;
@@ -579,6 +679,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         mSections.add(new BrowseSection(id, title, BrowseSection.TYPE_ERROR, resId, false, data));
     }
 
+    /**
+     * Unpin an item and remove mapping + view section.
+     */
     public void unpinItem(Video item) {
         getSidebarService().removePinnedItem(item);
         getGeneralData().removeSelectedItem(item.getId());
@@ -603,6 +706,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         refresh(true);
     }
 
+    /**
+     * Refresh current section and optionally focus on content.
+     */
     public void refresh(boolean focusOnContent) {
         updateCurrentSection();
         if (focusOnContent && getView() != null) {
@@ -614,6 +720,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         mLastUpdateTimeMs = System.currentTimeMillis();
     }
 
+    /**
+     * Update currently selected section by fetching data according to its type.
+     */
     private void updateCurrentSection() {
         disposeActions();
 
@@ -625,6 +734,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         updateSection(mCurrentSection);
     }
 
+    /**
+     * Route update to specific handlers depending on section type.
+     */
     private void updateSection(BrowseSection section) {
         switch (section.getType()) {
             case BrowseSection.TYPE_GRID:
@@ -647,7 +759,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
                 break;
             case BrowseSection.TYPE_MULTI_GRID:
                 Observable<MediaGroup> group2 = mGridMapping.get(section.getId());
-                updateVideoGrid(section, group2, 0, section.isAuthOnly());
+                updateVideoGrid(section, group2, -1, section.isAuthOnly());
                 break;
             case BrowseSection.TYPE_ERROR:
                 getView().showProgressBar(false);
@@ -657,11 +769,17 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         updateRefreshTime();
     }
 
+    /**
+     * Load settings items and update view.
+     */
     private void updateSettingsGrid(BrowseSection section, Callable<List<SettingsItem>> items) {
         getView().updateSection(SettingsGroup.from(Helpers.get(items), section));
         getView().showProgressBar(false);
     }
 
+    /**
+     * Load local list (e.g. playback queue) and update view.
+     */
     private void updateLocalGrid(BrowseSection section, Callable<List<Video>> items) {
         VideoGroup videoGroup = VideoGroup.from(Helpers.get(items), section);
         videoGroup.setAction(VideoGroup.ACTION_REPLACE);
@@ -685,6 +803,10 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         authCheck(authCheck, () -> updateVideoGrid(section, group, column));
     }
 
+    /**
+     * Loads a rows section: shows initial placeholder, subscribes to groups observable,
+     * converts MediaGroup -> VideoGroup and updates the view as groups arrive.
+     */
     private void updateVideoRows(BrowseSection section, Observable<List<MediaGroup>> groups) {
         Log.d(TAG, "updateRowsHeader: Start loading section: " + section.getTitle());
 
@@ -695,9 +817,10 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
             getViewManager().startView(BrowseView.class);
             return;
         }
-        
+
         getView().showProgressBar(true);
 
+        // Insert placeholder replacing existing content
         VideoGroup firstGroup = VideoGroup.from(section);
         firstGroup.setAction(VideoGroup.ACTION_REPLACE);
         getView().updateSection(firstGroup);
@@ -741,6 +864,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         mActions.add(updateAction);
     }
 
+    /**
+     * Loads a grid section: shows placeholder group and then appends/updates as MediaGroup items arrive.
+     */
     private void updateVideoGrid(BrowseSection section, Observable<MediaGroup> group, int column) {
         disposeActions();
 
@@ -797,6 +923,10 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         continueGroup(group, true);
     }
 
+    /**
+     * Continue loading more items for the provided VideoGroup (pagination).
+     * showLoading controls whether a progress indicator should be shown.
+     */
     private void continueGroup(VideoGroup group, boolean showLoading) {
         if (getView() == null) {
             Log.e(TAG, "Can't continue group. The view is null.");
@@ -824,12 +954,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
 
         Observable<MediaGroup> continuation;
 
-        //if (mediaGroup.getType() == MediaGroup.TYPE_SUGGESTIONS) { // Pinned playlist
-        //    continuation = mItemService.continueGroupObserve(mediaGroup);
-        //} else {
-        //    continuation = getContentService().continueGroupObserve(mediaGroup);
-        //}
-
+        // Currently always uses content service continuation.
         continuation = getContentService().continueGroupObserve(mediaGroup);
 
         Disposable continueAction = continuation
@@ -865,6 +990,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         if (getSignInService().isSigned()) {
             callback.run();
         } else if (getView() != null) {
+            // If history section and we have history, show local history instead of sign in prompt
             if (isHistorySection() && !VideoStateService.instance(getContext()).isEmpty()) {
                 getView().showProgressBar(false);
                 VideoGroup videoGroup = VideoGroup.from(getCurrentSection());
@@ -879,14 +1005,14 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
     }
 
     /**
-     * Most tiny ui has 8 cards in a row or 24 in grid.
+     * Convenience overload to continue group only when conditions require.
      */
     private void continueGroupIfNeeded(VideoGroup group) {
         continueGroupIfNeeded(group, true);
     }
 
     /**
-     * Most tiny ui has 8 cards in a row or 24 in grid.
+     * Continue group if MediaServiceManager indicates it should (based on size, device UI).
      */
     private void continueGroupIfNeeded(VideoGroup group, boolean showLoading) {
         if (MediaServiceManager.instance().shouldContinueTheGroup(getContext(), group, isGridSection())) {
@@ -894,6 +1020,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         }
     }
 
+    /**
+     * Dispose any running Rx actions and scheduled refresh callbacks.
+     */
     private void disposeActions() {
         RxHelper.disposeActions(mActions);
         Utils.removeCallbacks(mRefreshSection);
@@ -922,288 +1051,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         return mCurrentSection;
     }
 
+    /**
+     * Find section by id among error and normal sections.
+     */
     private BrowseSection findSectionById(int sectionId) {
         for (BrowseSection section : mErrorSections) {
-            if (section.getId() == sectionId) {
-                return section;
-            }
-        }
-
-        for (BrowseSection section : mSections) {
-            if (section.getId() == sectionId) {
-                return section;
-            }
-        }
-
-        return null;
-    }
-
-    private int findSectionIndex(int sectionId) {
-        if (sectionId == -1) {
-            return -1;
-        }
-
-        int sectionIndex = -1;
-
-        for (BrowseSection section : mErrorSections) {
-            if (section.isEnabled()) {
-                sectionIndex++;
-                if (section.getId() == sectionId) {
-                    return sectionIndex;
-                }
-            }
-        }
-
-        for (BrowseSection section : mSections) {
-            if (section.isEnabled()) {
-                sectionIndex++;
-                if (section.getId() == sectionId) {
-                    return sectionIndex;
-                }
-            }
-        }
-
-        return -1;
-    }
-
-    private BrowseSection findNearestSection(int sectionId) {
-        BrowseSection result = findNearestSection(mErrorSections, sectionId);
-
-        if (result == null) {
-            result = findNearestSection(mSections, sectionId);
-        }
-
-        return result;
-    }
-
-    private BrowseSection findNearestSection(List<BrowseSection> sections, int sectionId) {
-        BrowseSection result = null;
-        BrowseSection previousSection = null;
-        boolean found = false;
-        for (BrowseSection section : sections) {
-            if (section.getId() == sectionId) {
-                found = true;
-                continue;
-            }
-            if (section.isEnabled()) {
-                if (found) {
-                    result = section;
-                    break;
-                }
-                previousSection = section;
-            }
-        }
-
-        return result != null ? result : previousSection;
-    }
-
-    private void filterHomeIfNeeded(List<MediaGroup> mediaGroups) {
-        if (mediaGroups == null || !isHomeSection()) {
-            return;
-        }
-
-        Helpers.removeIf(mediaGroups, value -> Helpers.containsAny(
-                value.getTitle(),
-                "Primetime", // Free movies and shows row
-                "News", // Top news
-                "news", // Top news
-                "NBA TV", // Sports
-                "The Life of a Showgirl"
-        ) || Helpers.equalsAny(
-                value.getTitle(),
-                //getContext().getString(R.string.news_row_name),
-                getContext().getString(R.string.breaking_news_row_name),
-                getContext().getString(R.string.covid_news_row_name)
-        ));
-    }
-
-    private int moveToTopIfNeeded(MediaGroup mediaGroup) {
-        if (mediaGroup == null) {
-            return -1;
-        }
-
-        return Helpers.equalsAny(mediaGroup.getTitle(), getContext().getString(R.string.trending_row_name)) ? 0 : -1;
-    }
-
-    private Observable<MediaGroup> createPinnedGridAction(Video item) {
-        if (item.channelGroupId != null) {
-            return getContentService().getSubscriptionsObserve(ChannelGroupServiceWrapper.instance(getContext()).findChannelIdsForGroup(item.channelGroupId));
-        }
-
-        return ChannelUploadsPresenter.instance(getContext()).obtainUploadsObservable(item);
-    }
-
-    private Observable<List<MediaGroup>> createPinnedRowAction(Video item) {
-        return ChannelPresenter.instance(getContext()).obtainChannelObservable(item.channelId);
-    }
-
-    /**
-     * Is Channels new look enabled?
-     */
-    public boolean isMultiGridChannelUploadsSection() {
-        return mCurrentSection != null && mCurrentSection.getType() == BrowseSection.TYPE_MULTI_GRID && mCurrentSection.getId() == MediaGroup.TYPE_CHANNEL_UPLOADS;
-    }
-
-    public boolean isSettingsSection() {
-        return isSection(MediaGroup.TYPE_SETTINGS);
-    }
-
-    public boolean isPlaylistsSection() {
-        return isSection(MediaGroup.TYPE_USER_PLAYLISTS);
-    }
-
-    public boolean isHomeSection() {
-        return isSection(MediaGroup.TYPE_HOME);
-    }
-
-    public boolean isHistorySection() {
-        return isSection(MediaGroup.TYPE_HISTORY);
-    }
-
-    public boolean isSubscriptionsSection() {
-        return isSection(MediaGroup.TYPE_SUBSCRIPTIONS);
-    }
-
-    public boolean isPinnedSection() {
-        return mCurrentSection != null && isPinnedId(mCurrentSection.getId());
-    }
-
-    private boolean isPinnedId(int id) {
-        return id > 100;
-    }
-
-    private boolean isSection(int sectionId) {
-        return mCurrentSection != null && mCurrentSection.getId() == sectionId;
-    }
-
-    public void selectSection(int sectionId) {
-        getViewManager().startView(BrowseView.class); // focus view
-
-        if (getView() == null) {
-            mBootstrapSectionId = sectionId;
-            return;
-        }
-
-        int sectionIndex = findSectionIndex(sectionId);
-
-        if (sectionIndex == -1) {
-            enableSection(sectionId, true);
-            sectionIndex = findSectionIndex(sectionId);
-            getSidebarService().enableSection(sectionId, false); // enable temporally (till restart)
-        }
-
-        if (sectionIndex != -1) {
-            getView().selectSection(sectionIndex, true);
-        }
-    }
-
-    public boolean inForeground() {
-        return getViewManager().getTopView() == BrowseView.class;
-    }
-
-    private boolean isGridSection() {
-        return mCurrentSection != null && mCurrentSection.getType() != BrowseSection.TYPE_ROW;
-    }
-
-    @Override
-    public void onAccountChanged(Account account) {
-        Log.d(TAG, "On account changed");
-
-        if (getView() == null) {
-            return;
-        }
-
-        initSectionMappings();
-        updateChannelSorting();
-        updatePlaylistsStyle();
-        updateSections();
-    }
-
-    public Video getCurrentVideo() {
-        return mCurrentVideo;
-    }
-
-    private void initPasswordSection() {
-        AccountsData accountsData = AccountsData.instance(getContext());
-        if (accountsData.getAccountPassword() == null || accountsData.isPasswordAccepted()) {
-            return;
-        }
-
-        mSections.clear();
-        appendToSections(getContext().getString(R.string.header_notifications), R.drawable.icon_notification, new PasswordError(getContext()));
-    }
-
-    private void createPinnedMapping(Video item) {
-        if (enableRows(item)) {
-            mRowMapping.put(item.getId(), createPinnedRowAction(item));
-        } else {
-            mGridMapping.put(item.getId(), createPinnedGridAction(item));
-        }
-    }
-
-    private BrowseSection createPinnedSection(Video item) {
-        return new BrowseSection(
-                item.getId(), item.getTitle(), enableRows(item) ? BrowseSection.TYPE_ROW : BrowseSection.TYPE_GRID, R.drawable.icon_pin, item.getCardImageUrl(), false, item);
-    }
-
-    private boolean enableRows(Video item) {
-        return getMainUIData().isPinnedChannelRowsEnabled() && item.hasChannel() && !item.isPlaylistAsChannel();
-    }
-
-    private void handleLoadError(Throwable error) {
-        if (getView() == null) {
-            return;
-        }
-
-        getView().showProgressBar(false);
-
-        if (getView().isEmpty() || error != null) {
-            ErrorFragmentData errorFragmentData;
-            if (error != null && !Helpers.containsAny(error.getMessage(), "fromNullable result is null")) {
-                errorFragmentData = new CategoryEmptyError(getContext(), error);
-            } else if (getSignInService().isSigned()) {
-                errorFragmentData = new CategoryEmptyError(getContext(), null);
-            } else {
-                errorFragmentData = new SignInError(getContext());
-            }
-
-            // TODO: should we find a better place e.g. RetrofitHelper
-            // java.net.UnknownHostException: Unable to resolve host "www.youtube.com": No address associated with hostname
-            if (error != null && Helpers.contains(error.getMessage(), "No address associated with hostname")) {
-                PlayerTweaksData playerTweaksData = PlayerTweaksData.instance(getContext());
-                if (!playerTweaksData.isIPv4DnsPreferred()) {
-                    playerTweaksData.setIPv4DnsPreferred(true);
-                    playerTweaksData.persistNow();
-                    // Restart app to reinit okhttp internal objects
-                    Utils.restartTheApp(getContext());
-                }
-            }
-
-            getView().showError(errorFragmentData);
-            Utils.postDelayed(mRefreshSection, 30_000);
-        }
-    }
-
-    private void appendLocalHistory(VideoGroup videoGroup) {
-        if (!isHistorySection()) {
-            return;
-        }
-
-        VideoStateService stateService = VideoStateService.instance(getContext());
-
-        if (stateService.isEmpty() || (!stateService.isHistoryBroken() && !videoGroup.isEmpty())) {
-            return;
-        }
-
-        Video lastHistoryItem = videoGroup.isEmpty() ? null : videoGroup.get(0);
-        State lastState = stateService.getLastState();
-
-        if (lastState == null || Helpers.equals(lastHistoryItem, lastState.video)) {
-            return;
-        }
-
-        for (State state : stateService.getStates()) {
-            videoGroup.add(0, state.video);
-        }
-    }
-}
+            if

@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.app.models.playback;
 
+/**
+ * Base class for player controllers providing convenient accessors and small helpers
+ * (fitVideoIntoDialog hooks etc.). Subclasses override lifecycle methods as needed.
+ */
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.Gravity;

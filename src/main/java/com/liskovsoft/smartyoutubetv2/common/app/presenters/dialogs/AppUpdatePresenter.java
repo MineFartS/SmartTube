@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs;
 
+/** Presenter that checks for app updates and shows related dialogs. */
 import android.annotation.SuppressLint;
 import android.content.Context;
 import com.liskovsoft.appupdatechecker2.AppUpdateChecker;

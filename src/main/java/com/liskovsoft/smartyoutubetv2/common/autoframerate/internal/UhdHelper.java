@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.autoframerate.internal;
 
+/**
+ * Internal helper interacting with platform/display APIs to query/request refresh-rate modes.
+ * Uses guarded calls as some interactions rely on OEM/private APIs.
+ */
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;

@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters.interfaces;
 
+/** Generic presenter lifecycle interface used by all presenters (setView, lifecycle hooks). */
 import android.content.Context;
 
 public interface Presenter<T> {

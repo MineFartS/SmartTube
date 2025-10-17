@@ -22,6 +22,10 @@ import java.net.URISyntaxException;
 import com.liskovsoft.smartyoutubetv2.common.BuildConfig;
 
 /**
+ * Manages system/app-wide web proxy configuration.
+ * Uses reflection to notify ProxyChangeListener instances on API19+ devices.
+ * WARNING: relies on non-public APIs and may break on platform changes.
+ *
  * Manages web proxy settings, to enable web view and http client using web proxy.
  * This implementation is based on the discussion here:
  * https://stackoverflow.com/questions/4488338/webview-android-proxy

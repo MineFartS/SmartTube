@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui;
 
+/** Interface for items used in AppDialog categories (radio/checkbox/string/etc.). */
 public interface OptionItem {
     int getId();
     CharSequence getTitle();

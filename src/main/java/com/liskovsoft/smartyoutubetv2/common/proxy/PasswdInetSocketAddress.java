@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.proxy;
 
+/**
+ * InetSocketAddress variant that optionally carries username/password for proxy auth.
+ * Note: it intentionally does not resolve the host to avoid DNS during configuration.
+ */
+
 import androidx.annotation.RequiresApi;
 
 import java.net.InetSocketAddress;

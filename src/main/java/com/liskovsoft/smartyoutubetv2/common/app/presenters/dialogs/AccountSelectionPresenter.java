@@ -1,5 +1,7 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs;
 
+/** Presenter to show account selection and manage account switching flows. */
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 

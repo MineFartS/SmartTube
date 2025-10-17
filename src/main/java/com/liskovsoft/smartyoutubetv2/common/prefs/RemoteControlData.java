@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.prefs;
 
+/**
+ * Stores remote-control related preferences and last-known remote video.
+ * Notifies listeners on change (used to start/stop RemoteController).
+ */
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import com.liskovsoft.sharedutils.helpers.Helpers;

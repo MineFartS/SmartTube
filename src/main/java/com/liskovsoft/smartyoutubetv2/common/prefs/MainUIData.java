@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.prefs;
 
+/**
+ * Main UI related persisted preferences (scales, menu ordering, color schemes).
+ * Keeps helpers to manage default ordering and preserves backward compatibility.
+ */
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;

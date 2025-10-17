@@ -1,5 +1,23 @@
 package com.liskovsoft.smartyoutubetv2.common.exoplayer.errors;
 
+/**
+ * Applies heuristics to mitigate common ExoPlayer track/source errors without a full restart.
+ *
+ * Functionality:
+ * - Detects network HTTP errors (404/503/500) and attempts to switch to an alternative track
+ *   (different codec or lower bitrate) when applicable.
+ * - Maintains a temporary blacklist of tracks to avoid immediate reselecting the same failing track.
+ * - Implements special-case fixes for empty/invalid chunks on live streams (sleep and retry).
+ *
+ * Integration:
+ * - Invoked by media source listeners and ExoPlayer error handlers; requests TrackSelectorManager
+ *   to change selection when appropriate.
+ *
+ * Safety:
+ * - Avoid overly-aggressive automatic changes (prefer switching to a lower-risk track then notify UI).
+ * - Rate-limit fixes to avoid rapid oscillation and ensure user-perceivable stability.
+ */
+
 import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.mediacodec.MediaCodecRenderer.DecoderInitializationException;

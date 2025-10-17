@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters;
 
+/**
+ * Base sign-in presenter delegating to concrete providers (YT/Google).
+ * Provides lifecycle glue for sign-in dialogs.
+ */
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 

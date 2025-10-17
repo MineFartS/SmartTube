@@ -25,6 +25,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Controller responsible for Auto Frame Rate (AFR) behavior.
+ *
+ * Responsibilities:
+ * - Coordinate AFR helper and mode sync manager
+ * - Provide UI options for AFR configuration
+ * - Apply or restore AFR depending on video playback and user preferences
+ * - Handle mode switch lifecycle events and playback pauses during mode switch
+ *
+ * Note: This class intentionally uses delayed apply/restore to accommodate device timing issues.
+ */
 public class AutoFrameRateController extends BasePlayerController implements AutoFrameRateListener {
     private static final String TAG = AutoFrameRateController.class.getSimpleName();
     private static final long AUTO_FRAME_RATE_DELAY_MS = 500;
@@ -33,13 +44,23 @@ public class AutoFrameRateController extends BasePlayerController implements Aut
     private static final int AUTO_FRAME_RATE_MODES_ID = 23;
     private static final long SHORTS_DURATION_MIN_MS = 30 * 1_000;
     private static final long SHORTS_DURATION_MAX_MS = 61 * 1_000;
+
+    // Helper that communicates with system/service to apply AFR settings
     private final AutoFrameRateHelper mAutoFrameRateHelper;
+    // Manager that synchronizes current display mode selection with AFR state
     private final ModeSyncManager mModeSyncManager;
+    // Runnables used for delayed application/stop calls
     private final Runnable mApplyAfr = this::applyAfr;
     private final Runnable mApplyAfrStop = this::applyAfrStop;
+
+    // Remember whether playback was playing before AFR operations
     private boolean mIsPlay;
+
+    // Controllers used to manage video state & HQ dialog UI categories
     private VideoStateController mStateController;
     private HQDialogController mHQDialogController;
+
+    // Handler to restore playback after a delay (e.g., after mode switch)
     private final Runnable mPlaybackResumeHandler = () -> {
         if (getPlayer() != null) {
             restorePlayback();
@@ -47,6 +68,7 @@ public class AutoFrameRateController extends BasePlayerController implements Aut
     };
 
     public AutoFrameRateController() {
+        // Obtain singleton instances and register as listener
         mAutoFrameRateHelper = AutoFrameRateHelper.instance(null);
         mAutoFrameRateHelper.setListener(this);
         mModeSyncManager = ModeSyncManager.instance();
@@ -55,6 +77,7 @@ public class AutoFrameRateController extends BasePlayerController implements Aut
 
     @Override
     public void onInit() {
+        // Save current system/display state so it can be restored later
         mAutoFrameRateHelper.saveOriginalState(getActivity());
         mStateController = getController(VideoStateController.class);
         mHQDialogController = getController(HQDialogController.class);
@@ -62,16 +85,19 @@ public class AutoFrameRateController extends BasePlayerController implements Aut
 
     @Override
     public void onViewResumed() {
+        // Configure helper according to persisted user preferences
         mAutoFrameRateHelper.setFpsCorrectionEnabled(getPlayerData().isAfrFpsCorrectionEnabled());
         mAutoFrameRateHelper.setResolutionSwitchEnabled(getPlayerData().isAfrResSwitchEnabled(), false);
         mAutoFrameRateHelper.setDoubleRefreshRateEnabled(getPlayerData().isDoubleRefreshRateEnabled());
         mAutoFrameRateHelper.setSkip24RateEnabled(getPlayerData().isSkip24RateEnabled());
 
+        // Update UI options in HQ dialog controller
         addUiOptions();
     }
 
     @Override
     public void onVideoLoaded(Video item) {
+        // Save playback state and attempt to apply AFR after a short delay
         savePlayback();
 
         // Sometimes AFR is not working on activity startup. Trying to fix with delay.
@@ -85,7 +111,7 @@ public class AutoFrameRateController extends BasePlayerController implements Aut
             return;
         }
 
-        // Ugoos already displays this message on each mode switch
+        // Build a user-readable message for logging (Ugoos device already shows mode change)
         @SuppressLint("StringFormatMatches")
         String message = getContext().getString(
                 R.string.auto_frame_rate_applying,
@@ -93,7 +119,7 @@ public class AutoFrameRateController extends BasePlayerController implements Aut
                 newMode.getPhysicalHeight(),
                 newMode.getRefreshRate());
         Log.d(TAG, message);
-        //MessageHelpers.showLongMessage(getActivity(), message);
+        // Pause playback if configured — switching modes may cause visible glitches
         maybePausePlayback();
         getPlayerData().setAfrSwitchTimeMs(System.currentTimeMillis());
     }
@@ -104,7 +130,7 @@ public class AutoFrameRateController extends BasePlayerController implements Aut
             return;
         }
 
-        // This error could appear even on success.
+        // Log user-visible message and fall back to alternate approach (TvQuickActions)
         String msg = getContext().getString(R.string.msg_mode_switch_error, newMode != null ? UhdHelper.toResolution(newMode) : null);
         Log.e(TAG, msg);
 
@@ -115,11 +141,13 @@ public class AutoFrameRateController extends BasePlayerController implements Aut
 
     @Override
     public void onModeCancel() {
+        // Restore playback state when mode change was cancelled
         restorePlayback();
     }
 
     @Override
     public void onEngineReleased() {
+        // If player engine is released while AFR enabled — stop AFR after a small delay
         if (getPlayerData().isAfrEnabled()) {
             applyAfrStopDelayed();
         }
@@ -152,6 +180,7 @@ public class AutoFrameRateController extends BasePlayerController implements Aut
 
     private void applyAfrWrapper() {
         if (getPlayerData().isAfrEnabled()) {
+            // Use dialog to show feedback while AFR is applied
             AppDialogPresenter.instance(getContext()).showDialogMessage("Applying AFR...", this::applyAfr, 1_000);
         }
     }
@@ -203,6 +232,7 @@ public class AutoFrameRateController extends BasePlayerController implements Aut
         int delayMs = 5_000;
 
         if (getPlayerData().getAfrPauseMs() > 0) {
+            // Stop playback temporarily while switching display mode to avoid artifacts
             getPlayer().setPlayWhenReady(false);
             delayMs = getPlayerData().getAfrPauseMs();
         }
@@ -212,9 +242,11 @@ public class AutoFrameRateController extends BasePlayerController implements Aut
 
     private void savePlayback() {
         if (!skipAfr() && mAutoFrameRateHelper.isSupported() && getPlayerData().isAfrEnabled() && getPlayerData().getAfrPauseMs() > 0) {
+            // Block play control while AFR is about to be applied
             mStateController.blockPlay(true);
         }
 
+        // Preserve current play state so it can be restored later
         mIsPlay = mStateController.getPlayEnabled();
     }
 
@@ -367,6 +399,7 @@ public class AutoFrameRateController extends BasePlayerController implements Aut
     }
 
     private boolean isSkipShortsPrefs() {
+        // Skip AFR for short videos when user enabled skip-shorts preference
         return getPlayerData().isSkipShortsEnabled() && (getPlayer().getVideo().isShorts || getPlayer().getDurationMs() <= SHORTS_DURATION_MAX_MS);
     }
 }

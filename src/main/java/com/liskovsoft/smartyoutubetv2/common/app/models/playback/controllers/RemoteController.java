@@ -26,21 +26,38 @@ import io.reactivex.disposables.Disposable;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Controller that manages remote control integration: listening to remote commands,
+ * posting player state back to remote server and mapping remote commands to local actions.
+ *
+ * - Registers/unregisters observers for volume changes
+ * - Handles commands like open/seek/play/pause/next/previous/volume and DPAD actions
+ * - Safely disposes Rx subscriptions when disabled
+ */
 public class RemoteController extends BasePlayerController implements OnDataChange {
     private static final String TAG = RemoteController.class.getSimpleName();
     private static final long APP_INIT_DELAY_MS = 10_000;
     private final Runnable mStartListeningInt = this::startListeningInt;
     private final RemoteControlService mRemoteControlService;
     private final RemoteControlData mRemoteControlData;
+
+    // Rx disposables used to send/receive remote-related state
     private Disposable mListeningAction;
     private Disposable mPostStartPlayAction;
     private Disposable mPostStateAction;
     private Disposable mPostVolumeAction;
+
+    // Connection state and temporary data
     private boolean mConnected;
     private long mNewVideoPositionMs;
+
+    // Disposable/timeouts for simulated key events
     private Disposable mActionDown;
     private Disposable mActionUp;
+
+    // ContentObserver for system volume changes
     private ContentObserver mVolumeObserver;
+    // Timestamp to ignore our own volume changes
     private long mVolumeSelfChangeMs;
 
     public RemoteController(Context context) {
@@ -243,6 +260,18 @@ public class RemoteController extends BasePlayerController implements OnDataChan
         Utils.removeCallbacks(mStartListeningInt);
     }
 
+    /**
+     * Process received remote command and map it to local actions.
+     *
+     * - Updates connection state (mConnected) based on command type
+     * - Opens new video or updates existing video state
+     * - Seeks to specific position
+     * - Plays or pauses video
+     * - Changes volume
+     * - Handles DPAD and voice commands
+     *
+     * @param command Received remote command
+     */
     private void processCommand(Command command) {
         switch (command.getType()) {
             case Command.TYPE_IDLE:
@@ -519,6 +548,7 @@ public class RemoteController extends BasePlayerController implements OnDataChan
         mVolumeObserver = new ContentObserver(Utils.sHandler) {
             @Override
             public void onChange(boolean selfChange) {
+                // Ignore our own volume change events for a short window
                 if (System.currentTimeMillis() - mVolumeSelfChangeMs > 1_000) {
                     postVolumeChange(Utils.getVolume(getContext(), getPlayer()));
                 }
@@ -526,6 +556,7 @@ public class RemoteController extends BasePlayerController implements OnDataChan
         };
         Utils.registerAudioObserver(getContext(), mVolumeObserver);
 
+        // Post initial volume to remote
         postVolumeChange(Utils.getVolume(getContext(), getPlayer()));
     }
 

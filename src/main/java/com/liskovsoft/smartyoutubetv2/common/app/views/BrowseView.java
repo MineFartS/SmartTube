@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.app.views;
 
+/**
+ * View contract for the main browse screen.
+ * Implementations show/remove sections and update video groups for a given section.
+ */
+
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.SettingsGroup;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import com.liskovsoft.smartyoutubetv2.common.app.models.errors.ErrorFragmentData;

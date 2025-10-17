@@ -10,10 +10,11 @@
 
 ### Adblocking
 
-- SmartTube does not show any ad banners, preroll ads, or ad intermissions. It doesn't skip them, but it is **incapable** of displaying ads.
+- SmartTube does not show any ad banners, preroll ads, or ad intermissions. It doesn't skip them,
+  but it is **incapable** of displaying ads.
 - Some YouTube
-channels include sponsored messages in their videos, these can also be skipped,
-see [SponsorBlock](#SponsorBlock) below.
+  channels include sponsored messages in their videos, these can also be skipped,
+  see [SponsorBlock](#SponsorBlock) below.
 
 ### SponsorBlock
 
@@ -34,18 +35,3 @@ database, sometimes the SponsorBlock servers are offline/overloaded.
 
 You can adjust the playback speed pressing the speed-indicator icon (gauge) in the top row of the
 player. This is remembered across videos. Some speeds may case frame drops, this is a known issue.
-
-<hr>
-
-## Build
-
-**NOTE: OpenJDK 14 or older (!) is required. Newer JDK could cause app crash!**  
-To build and install debug version, run these commands:
-
-```
-git clone https://github.com/yuliskov/SmartTube.git
-cd SmartTube
-git submodule update --init
-adb connect <device_ip_address>
-gradlew clean installStorigDebug
-```

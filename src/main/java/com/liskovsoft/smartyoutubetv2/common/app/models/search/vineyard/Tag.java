@@ -1,5 +1,7 @@
 package com.liskovsoft.smartyoutubetv2.common.app.models.search.vineyard;
 
+/** Simple Tag model used by search providers and UI. */
+
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.NonNull;

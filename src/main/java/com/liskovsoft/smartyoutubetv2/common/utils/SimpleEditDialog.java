@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.utils;
 
+/**
+ * Utility to show simple editable dialogs (text input/password) and return the result via callback.
+ * Keeps dialog creation code DRY across presenters.
+ */
+
 import android.content.Context;
 import android.text.InputType;
 import android.view.LayoutInflater;

@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.prefs;
 
+/** Stores account-related small preferences like saved passwords and boot selection toggles. */
 import android.annotation.SuppressLint;
 import android.content.Context;
 import androidx.annotation.NonNull;

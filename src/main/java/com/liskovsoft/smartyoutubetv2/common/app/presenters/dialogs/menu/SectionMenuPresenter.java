@@ -1,5 +1,7 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs.menu;
 
+/** Presenter for section-level context menus (pin/unpin, rename, move). */
+
 import android.content.Context;
 
 import androidx.annotation.Nullable;

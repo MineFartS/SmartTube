@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs;
 
+/** Presenter handling ATV Bridge integration (debug/bridge actions and status). */
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;

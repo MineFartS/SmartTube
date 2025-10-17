@@ -1,5 +1,9 @@
 package com.liskovsoft.smartyoutubetv2.common.autoframerate;
 
+/**
+ * Public helper to request/clear auto-frame-rate switching for playback.
+ * Delegates to internal platform-specific implementations; keeps calls testable.
+ */
 import android.app.Activity;
 import android.content.Context;
 import android.util.Pair;

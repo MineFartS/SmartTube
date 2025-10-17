@@ -1,5 +1,31 @@
 package com.liskovsoft.smartyoutubetv2.common.exoplayer.selector;
 
+/**
+ * Track selection utilities used across the ExoPlayer integration.
+ *
+ * Responsibilities:
+ * - Provide deterministic heuristics for selecting default audio/video/subtitle tracks
+ *   (by language, bitrate, resolution, codec preferences and device capabilities).
+ * - Provide matching helpers used by UI format pickers (e.g. isSameLanguage, isSameResolution).
+ * - Encapsulate fallback logic for when preferred tracks are unavailable (e.g. prefer higher
+ *   bitrate up to device limits, fall back to lower resolution rather than failing).
+ *
+ * Threading and usage notes:
+ * - Pure utility — no internal state. Safe to call from any thread but prefer main thread
+ *   when used to update UI selection.
+ * - Keep expensive computations out of these helpers; they should be fast predicates or small
+ *   score calculators consumed by TrackSelectorManager.
+ *
+ * Integration:
+ * - TrackSelectorManager calls these methods when converting ExoPlayer Format structures to
+ *   project FormatItem/ExoFormatItem models and when applying user preferences.
+ *
+ * Common pitfalls:
+ * - Do not rely on Format.width/height when they are unknown (<= 0); treat as unknown and
+ *   prefer language/codec heuristics instead.
+ * - Be conservative with codec/bitrate filtering to avoid inadvertently hiding playable streams.
+ */
+
 import android.text.TextUtils;
 import android.util.Pair;
 import com.google.android.exoplayer2.Format;

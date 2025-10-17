@@ -1,5 +1,9 @@
 package com.liskovsoft.smartyoutubetv2.common.utils;
 
+/**
+ * Copy-on-write list keyed by hash, preserving insertion order.
+ * Intended for small collections where iterations are frequent and modifications rare.
+ */
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CopyOnWriteHashList<T> extends CopyOnWriteArrayList<T> {

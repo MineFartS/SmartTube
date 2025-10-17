@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.utils;
 
+/*
+ * Utility helpers for UI/threading and device helpers used across the app.
+ * Contains safe post/remove Runnable helpers and lightweight device checks.
+ */
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;

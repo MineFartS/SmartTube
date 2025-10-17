@@ -25,6 +25,10 @@ import okhttp3.Response;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Dialog UI to configure and test web proxy settings.
+ * Uses ProxyManager to persist and apply system proxy settings. Requires API 19+ for full behavior.
+ */
 public class WebProxyDialog {
     public static final String TAG = WebProxyDialog.class.getSimpleName();
     private final Context mContext;

@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.utils;
 
+/**
+ * Factory helpers to create OptionCategory/OptionItem structures for common player dialogs
+ * (subtitle styles, speed lists, zoom, audio shift, pitch, etc.).
+ */
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;

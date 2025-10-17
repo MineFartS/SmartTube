@@ -1,5 +1,7 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters.settings;
 
+/** Presenter to display and manage account-related settings (login, passwords). */
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import com.liskovsoft.mediaserviceinterfaces.oauth.Account;

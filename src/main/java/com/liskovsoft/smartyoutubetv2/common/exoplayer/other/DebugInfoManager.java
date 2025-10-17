@@ -1,5 +1,24 @@
 package com.liskovsoft.smartyoutubetv2.common.exoplayer.other;
 
+/**
+ * Periodically collects and displays debug information about the ExoPlayer instance and device.
+ *
+ * Displayed data typically includes:
+ * - Video/audio formats and bitrates, decoder name and HW acceleration flag.
+ * - Buffering, dropped/rendered frame counters and buffer size (in seconds).
+ * - Display resolution and refresh rate, current display mode ID and supported modes count.
+ * - ExoPlayer version, data source in use (OkHttp/Cronet), app version and video info version.
+ *
+ * Usage notes:
+ * - Intended for development and advanced diagnostics; keep disabled in production builds unless
+ *   explicitly requested by the user via debug toggle.
+ * - Updates are throttled (REFRESH_INTERVAL_MS) to avoid UI churn and excessive computation.
+ *
+ * Threading:
+ * - Runs on the UI/main thread when updating the view; collection of some info (e.g. heavy codec
+ *   probing) is delegated to utility helpers.
+ */
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;

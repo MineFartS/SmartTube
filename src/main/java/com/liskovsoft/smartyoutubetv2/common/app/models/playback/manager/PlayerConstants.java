@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.app.models.playback.manager;
 
+/** Common constants used across player manager/engine/UI layers. */
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 
 public interface PlayerConstants {

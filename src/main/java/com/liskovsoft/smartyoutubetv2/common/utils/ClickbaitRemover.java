@@ -1,5 +1,9 @@
 package com.liskovsoft.smartyoutubetv2.common.utils;
 
+/**
+ * Utility used to sanitize/replace thumbnail and title content to remove clickbait artifacts.
+ */
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 

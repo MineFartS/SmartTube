@@ -1,5 +1,17 @@
 package com.liskovsoft.smartyoutubetv2.common.exoplayer.other;
 
+/**
+ * Applies software gain using LoudnessEnhancer to increase perceived volume when needed.
+ *
+ * Constraints:
+ * - Only available on API >= 19 and when the audio session supports LoudnessEnhancer.
+ * - Avoid boosting multi-channel (5.1+) audio because some devices/drivers will throw "format not supported".
+ * - Use conservative gain calculations to reduce clipping risk.
+ *
+ * Integration:
+ * - Registered as an AudioListener on SimpleExoPlayer and created only when user requests higher-than-normal volume.
+ */
+
 import android.media.audiofx.LoudnessEnhancer;
 import android.os.Build.VERSION;
 

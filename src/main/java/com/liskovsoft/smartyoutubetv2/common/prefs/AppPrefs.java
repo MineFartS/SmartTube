@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.prefs;
 
+/**
+ * Centralized wrapper around SharedPreferences supporting multi-profile keys,
+ * listeners for profile changes and helper accessors for common profile keys.
+ */
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;

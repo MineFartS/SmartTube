@@ -28,16 +28,34 @@ import io.reactivex.disposables.Disposable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Presenter for the SearchView.
+ *
+ * Responsibilities:
+ * - Manage search lifecycle (launching searches, voice search, settings).
+ * - Translate ContentService results (MediaGroup -> VideoGroup) and forward to the view.
+ * - Support pagination (continuation) for result groups.
+ * - Provide search settings UI and persist selected filters in local presenter state.
+ *
+ * Uses BrowseProcessorManager to post-process VideoGroup objects before rendering.
+ */
 public class SearchPresenter extends BasePresenter<SearchView> implements VideoGroupPresenter {
     private static final String TAG = SearchPresenter.class.getSimpleName();
+
     @SuppressLint("StaticFieldLeak")
     private static SearchPresenter sInstance;
+
+    // Processor used to sanitize/annotate VideoGroup objects before updating the view.
     private final BrowseProcessorManager mBrowseProcessor;
+
+    // Rx disposables for the main search load and continuation (scroll) load.
     private Disposable mScrollAction;
     private Disposable mLoadAction;
+
+    // Current search parameters / UI state.
     private String mSearchText;
-    private boolean mIsVoice;
-    private boolean mStartPlay;
+    private boolean mIsVoice;    // whether current search was triggered by voice
+    private boolean mStartPlay;  // whether to auto-start playback of first result
     private int mUploadDateOptions;
     private int mDurationOptions;
     private int mTypeOptions;
@@ -46,9 +64,13 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
 
     private SearchPresenter(Context context) {
         super(context);
+        // Processor will call syncItem for each Video it processes.
         mBrowseProcessor = new BrowseProcessorManager(getContext(), this::syncItem);
     }
 
+    /**
+     * Singleton accessor -- keeps presenter tied to application context.
+     */
     public static SearchPresenter instance(Context context) {
         if (sInstance == null) {
             sInstance = new SearchPresenter(context);
@@ -61,13 +83,16 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
 
     @Override
     public void onViewInitialized() {
+        // If password protection is enabled and not accepted, close the view.
         if (!AccountsData.instance(getContext()).isPasswordAccepted()) {
             getView().finishReally();
             return;
         }
 
+        // Provide suggestions/tags provider to the view (reads search history unless disabled).
         getView().setTagsProvider(new MediaServiceSearchTagProvider(getSearchData().isSearchHistoryDisabled()));
 
+        // Start the search flow (may trigger voice or a text search).
         startSearchInt();
     }
 
@@ -81,6 +106,7 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
     public void onFinish() {
         super.onFinish();
 
+        // Reset transient search state when presenter lifecycle finishes.
         mSearchText = null;
         mUploadDateOptions = 0;
         mDurationOptions = 0;
@@ -92,7 +118,7 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
 
     @Override
     public void onVideoItemSelected(Video item) {
-        // NOP
+        // No-op for search presenter (selection handled elsewhere)
     }
 
     @Override
@@ -101,6 +127,7 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
             return;
         }
 
+        // Delegate standard video action (play / open details) to the action presenter.
         VideoActionPresenter.instance(getContext()).apply(item);
     }
 
@@ -110,9 +137,13 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
             return;
         }
 
+        // Show contextual video menu on long click.
         VideoMenuPresenter.instance(getContext()).showMenu(item);
     }
 
+    /**
+     * Called when a search tag is long-pressed in the UI (offers to clear history).
+     */
     public void onTagLongClicked(Tag item) {
         if (getView() == null) {
             return;
@@ -132,11 +163,15 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
         return RxHelper.isAnyActionRunning(mLoadAction, mScrollAction);
     }
 
+    /**
+     * Entry point invoked by the UI when user performs a search.
+     * Keeps last search text in presenter to allow retry if view gets recreated.
+     */
     public void onSearch(String searchText) {
-        // Restore the search in case the view unloaded from the memory
         mSearchText = searchText;
 
         if (getView() == null) {
+            // View may have been destroyed by OS; still trigger the search logic to warm caches.
             Log.e(TAG, "Search view has been unloaded from the memory. Low RAM?");
             startSearch(searchText);
             return;
@@ -145,6 +180,9 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
         loadSearchResult(searchText);
     }
 
+    /**
+     * Perform the search request against ContentService and stream results to the view.
+     */
     private void loadSearchResult(String searchText) {
         Log.d(TAG, "Start search for '%s'", searchText);
 
@@ -153,18 +191,21 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
 
         ContentService contentService = getContentService();
 
+        // Clear previous results in the UI.
         getView().clearSearch();
 
+        // Combine all option bits into a single mask for the ContentService call.
         mLoadAction = contentService.getSearchObserve(searchText,
                 mUploadDateOptions | mDurationOptions | mTypeOptions | mFeatureOptions | mSortingOptions)
                 .subscribe(
                         mediaGroups -> {
                             Log.d(TAG, "Receiving results for '%s'", searchText);
                             for (MediaGroup mediaGroup : mediaGroups) {
+                                // Convert MediaGroup -> VideoGroup and update the view.
                                 VideoGroup group = VideoGroup.from(mediaGroup);
-                                startPlayFirstVideo(group);
+                                startPlayFirstVideo(group); // optionally auto-play first item
                                 getView().updateSearch(group);
-                                mBrowseProcessor.process(group);
+                                mBrowseProcessor.process(group); // post-process group before final render
                             }
                         },
                         error -> {
@@ -181,6 +222,9 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
                 );
     }
 
+    /**
+     * Request continuation (pagination) for a given result group.
+     */
     private void continueGroup(VideoGroup group) {
         if (RxHelper.isAnyActionRunning(mScrollAction)) {
             return;
@@ -201,6 +245,7 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
         mScrollAction = contentService.continueGroupObserve(mediaGroup)
                 .subscribe(
                         continueMediaGroup -> {
+                            // Merge continuation into existing group and update UI.
                             VideoGroup newGroup = VideoGroup.from(group, continueMediaGroup);
                             getView().updateSearch(newGroup);
                             mBrowseProcessor.process(newGroup);
@@ -238,6 +283,8 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
         continueGroup(group);
     }
 
+    // Public helpers to start different flavors of search --------------------------------
+
     public void startVoice() {
         startSearch(null, true, false);
     }
@@ -250,6 +297,13 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
         startSearch(searchText, false, true);
     }
 
+    /**
+     * Configure presenter to open SearchView and remember parameters to start search there.
+     *
+     * @param searchText initial text (may be null for voice)
+     * @param isVoice whether voice recognition should be used
+     * @param startPlay whether to auto-play first found video
+     */
     private void startSearch(String searchText, boolean isVoice, boolean startPlay) {
         mSearchText = searchText;
         mIsVoice = isVoice;
@@ -259,6 +313,10 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
         startSearchInt();
     }
 
+    /**
+     * Internal start routine executed when the view is available.
+     * Triggers voice recognition or starts search with saved text.
+     */
     private void startSearchInt() {
         if (getView() == null) {
             return;
@@ -279,6 +337,10 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
         showSettingsDialog();
     }
 
+    /**
+     * Dispose running Rx actions and cleanup resources.
+     * Also hides progress bar and clears search history if that feature is disabled.
+     */
     public void disposeActions() {
         RxHelper.disposeActions(mLoadAction, mScrollAction);
         if (getView() != null) {
@@ -289,6 +351,8 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
         }
         mBrowseProcessor.dispose();
     }
+
+    // Dialog builders for search filters -----------------------------------------
 
     private void showSettingsDialog() {
         AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
@@ -371,6 +435,7 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
                 {R.string.video_feature_hdr, SearchOptions.FEATURE_HDR}}) {
             options.add(UiOptionItem.from(getContext().getString(pair[0]),
                     optionItem -> {
+                        // Toggle bit in feature mask and reload results
                         mFeatureOptions = optionItem.isSelected() ? mFeatureOptions | pair[1] : mFeatureOptions & ~pair[1];
                         loadSearchResult();
                     },
@@ -405,6 +470,9 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
         }
     }
 
+    /**
+     * If configured to auto-play the first found video, start playback.
+     */
     private void startPlayFirstVideo(VideoGroup group) {
         if (!mStartPlay || group == null || group.isEmpty()) {
             return;
@@ -420,6 +488,9 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
         }
     }
 
+    /**
+     * Pull current search text from the view and reload results.
+     */
     private void loadSearchResult() {
         if (getView() == null) {
             return;

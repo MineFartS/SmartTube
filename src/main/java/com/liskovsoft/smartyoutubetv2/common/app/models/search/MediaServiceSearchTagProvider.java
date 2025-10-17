@@ -10,6 +10,7 @@ import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
 import io.reactivex.disposables.Disposable;
 
+/** Tag provider that queries the content service for dynamic search tags. */
 public class MediaServiceSearchTagProvider implements SearchTagsProvider {
     private static final String TAG = MediaServiceSearchTagProvider.class.getSimpleName();
     private final ContentService mContentService;

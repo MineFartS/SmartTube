@@ -1,5 +1,31 @@
 package com.liskovsoft.smartyoutubetv2.common.exoplayer.selector;
 
+/**
+ * Manages mapping between ExoPlayer track groups/formats and the app's MediaTrack/FormatItem models,
+ * keeps the currently selected track for each renderer and applies user selections back to ExoPlayer.
+ *
+ * Responsibilities:
+ * - Build renderer-specific MediaTrack lists from ExoPlayer's MappedTrackInfo / TrackGroupArray.
+ * - Maintain a stable selection model (selectedTrack + isDisabled) per renderer and convert it to
+ *   DefaultTrackSelector overrides when applying user choices.
+ * - Expose available tracks (audio/video/subtitle) to the UI and provide methods to select tracks.
+ *
+ * Threading / lifecycle:
+ * - The TrackSelectorManager is driven by ExoPlayer callbacks and by UI actions. Access should
+ *   generally be performed on the main/player thread. Avoid heavy or blocking work here.
+ * - Keep mappings ephemeral: when the player or track selector changes, call invalidate() to clear
+ *   internal caches and rebuild on demand.
+ *
+ * Integration:
+ * - Uses TrackSelectorUtil for heuristics (HDR detection, resolution labels, codec short names).
+ * - Cooperates with RestoreTrackSelector to persist/restore user track choices across sessions.
+ *
+ * Notes and pitfalls:
+ * - Do not hold references to ExoPlayer internal structures beyond their lifecycle.
+ * - Be conservative when filtering tracks (e.g. removing HLS incomplete formats) to avoid hiding
+ *   playable streams on some devices.
+ */
+
 import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;

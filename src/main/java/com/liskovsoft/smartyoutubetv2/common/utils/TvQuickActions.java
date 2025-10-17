@@ -1,5 +1,9 @@
 package com.liskovsoft.smartyoutubetv2.common.utils;
 
+/**
+ * Thin wrapper to send intents/commands to the TvQuickActions helper app.
+ * Used to start/stop external AFR daemon and similar quick actions.
+ */
 import android.content.Context;
 import android.content.Intent;
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem;

@@ -1,20 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.misc;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.Service;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
-import android.os.IBinder;
-import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
-
 /**
- * This service isn't used at all! It can be safely removed in the future.
+ * Foreground service used to keep playback alive while the app is backgrounded (notification handling).
+ * <p>
+ * Foreground/background service that keeps player alive when app is in background.
+ * Handles notifications and remote-control integration lifecycle.
  */
 public class BackgroundPlaybackService extends Service {
     private static final String TAG = BackgroundPlaybackService.class.getSimpleName();

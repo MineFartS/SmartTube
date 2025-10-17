@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs;
 
+/** Presenter for Android TV Bridge-specific actions (linking, intent handling). */
 import android.content.Context;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 

@@ -1,7 +1,8 @@
 package com.liskovsoft.smartyoutubetv2.common.app.views;
 
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
-
+/**
+ * View for channel page: shows channel rows, playlists and supports continuation/loading events.
+ */
 public interface ChannelView {
     void update(VideoGroup videoGroup);
     void setPosition(int index);

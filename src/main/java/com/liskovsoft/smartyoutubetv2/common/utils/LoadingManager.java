@@ -1,5 +1,9 @@
 package com.liskovsoft.smartyoutubetv2.common.utils;
 
+/**
+ * Lightweight centralized loading indicator manager used by presenters to show/hide a global loading UI.
+ */
+
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.BrowsePresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.ChannelPresenter;

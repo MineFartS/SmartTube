@@ -1,10 +1,15 @@
 package com.liskovsoft.smartyoutubetv2.common.exoplayer.other;
 
-import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
-import com.google.android.exoplayer2.ui.PlayerView;
-
 /**
- * <a href="Zoom to fit video: https://stackoverflow.com/questions/33608746/in-android-using-exoplayer-how-to-fill-surfaceview-with-a-video-that-does-not">More info</a>
+ * Video zoom & aspect ratio manager.
+ *
+ * Responsibilities:
+ * - Translate user zoom percentage into player resizeMode/transform or ExoPlayer UI calls.
+ * - Handle "fit to dialog" behaviour and restore previous zoom after dialog dismissal.
+ * - Respect device safe-areas / overscan settings and allow persistent user overrides.
+ *
+ * Threading:
+ * - Called from UI thread when user interacts with zoom controls.
  */
 public class VideoZoomManager {
     public static final int MODE_DEFAULT = AspectRatioFrameLayout.RESIZE_MODE_FIT;

@@ -1,17 +1,17 @@
 package com.liskovsoft.smartyoutubetv2.common.exoplayer.selector;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.util.MimeTypes;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.track.MediaTrack;
-import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.track.SubtitleTrack;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
+/**
+ * ExoPlayer-backed FormatItem that wraps an ExoPlayer Format and selection metadata.
+ *
+ * Characteristics:
+ * - Acts as a snapshot of a track's properties (codec, resolution, bitrate, language) at the time
+ *   the track list is built.
+ * - Holds renderer index/group/track metadata via MediaTrack to map UI selections back to ExoPlayer.
+ *
+ * Best practices:
+ * - Treat ExoFormatItem instances as ephemeral snapshots. Rebuild lists when track info changes.
+ * - Avoid storing references to live ExoPlayer objects beyond the moment of mapping.
+ */
 public class ExoFormatItem implements FormatItem {
     public static final int RESOLUTION_FHD = 3;
     public static final int RESOLUTION_HD = 2;

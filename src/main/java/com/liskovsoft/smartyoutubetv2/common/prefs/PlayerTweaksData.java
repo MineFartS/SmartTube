@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.prefs;
 
+/**
+ * Device / player tweak preferences. Controls many low-level flags affecting playback and UI.
+ * Implements ProfileChangeListener to reload values when active profile changes.
+ */
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 

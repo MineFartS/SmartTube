@@ -1,14 +1,16 @@
 package com.liskovsoft.smartyoutubetv2.common.exoplayer.errors;
 
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.ParserException;
-import com.google.android.exoplayer2.upstream.DefaultLoadErrorHandlingPolicy;
-import com.google.android.exoplayer2.upstream.HttpDataSource.InvalidResponseCodeException;
-import com.google.android.exoplayer2.upstream.Loader.UnexpectedLoaderException;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
+/**
+ * Customized LoadErrorHandlingPolicy for DASH/HLS loads.
+ *
+ * Purpose:
+ * - Tune retry/backoff behavior for manifest/segment requests to avoid long stalls for live streams.
+ * - Map HTTP error codes to retry/no-retry decisions and provide sensible retry delays.
+ *
+ * Notes:
+ * - Keep conservative retry policy for live streams to avoid reloading outdated manifests too often.
+ * - Ensure that backoff respects ExoPlayer threading model and uses provided clocks.
+ */
 public class DashDefaultLoadErrorHandlingPolicy extends DefaultLoadErrorHandlingPolicy {
     /**
      * Copied from the parent class!

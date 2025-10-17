@@ -1,5 +1,16 @@
 package com.liskovsoft.smartyoutubetv2.common.misc;
 
+/**
+ * Manager that composes multiple BrowseProcessor implementations and applies them
+ * to VideoGroup instances. Keeps processors in a list and forwards process/dispose calls.
+ */
+
+/**
+ * Coordinates background processing of browse rows (VideoGroup).
+ * Responsible for scheduling lightweight post-processing (e.g. enriching items,
+ * prefetching thumbnails, applying local filters) to avoid blocking UI updates.
+ */
+
 import android.content.Context;
 
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;

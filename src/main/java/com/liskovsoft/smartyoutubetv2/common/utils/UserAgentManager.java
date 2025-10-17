@@ -1,5 +1,9 @@
 package com.liskovsoft.smartyoutubetv2.common.utils;
 
+/**
+ * Helper to manage and provide User-Agent strings for network components.
+ * Allows centralized UA tuning per device and preserves compatibility workarounds.
+ */
 import java.util.Random;
 
 public class UserAgentManager {

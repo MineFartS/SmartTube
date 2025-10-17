@@ -1,5 +1,9 @@
 package com.liskovsoft.smartyoutubetv2.common.prefs;
 
+/**
+ * Stores user preferences for search behaviour (voice type, instant voice, trending, history).
+ */
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import com.liskovsoft.sharedutils.helpers.Helpers;

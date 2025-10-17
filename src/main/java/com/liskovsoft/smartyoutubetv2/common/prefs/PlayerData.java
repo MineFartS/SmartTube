@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.prefs;
 
+/**
+ * Per-profile persisted player settings (formats, volumes, speeds, subtitles).
+ * Changes are debounced and written to AppPrefs.
+ */
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;

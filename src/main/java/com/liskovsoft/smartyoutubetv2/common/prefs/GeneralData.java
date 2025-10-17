@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.prefs;
 
+/**
+ * Global app preferences (exit shortcuts, screensaver settings, global remappings).
+ * Designed to be profile-aware and thread-safe on restore/persist.
+ */
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 

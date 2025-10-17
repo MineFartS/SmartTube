@@ -45,24 +45,43 @@ import io.reactivex.disposables.Disposable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller responsible for mapping UI interactions (keys/buttons) to player actions,
+ * managing auto-hide timers, suggestion reset timers and providing access to various
+ * player-related dialogs (subtitles, playlists, share, etc.).
+ *
+ * It coordinates between player view, preferences and other controllers to update
+ * button states and to present dialogs.
+ */
 public class PlayerUIController extends BasePlayerController {
     private static final String TAG = PlayerUIController.class.getSimpleName();
+    // Timeout used to reset suggested position after interaction (ms)
     private static final long SUGGESTIONS_RESET_TIMEOUT_MS = 500;
+
+    // Handler on main thread used to schedule UI timeouts
     private final Handler mHandler;
     private final MediaItemService mMediaItemService;
+
+    // Controller references and cached state
     private SuggestionsController mSuggestionsController;
     private List<PlaylistInfo> mPlaylistInfos;
+    // Audio format used to remember previous audio when mute is toggled
     private FormatItem mAudioFormat = FormatItem.AUDIO_HQ_MP4A;
     private boolean mEngineReady;
     private boolean mDebugViewEnabled;
     private boolean mIsMetadataLoaded;
+    // Timestamp to avoid immediate back action after overlay hide
     private long mOverlayHideTimeMs;
+
+    // Runnable resets suggested position after short delay
     private final Runnable mSuggestionsResetHandler = () -> {
         if (getPlayer() == null) {
             return;
         }
         getPlayer().resetSuggestedPosition();
     };
+
+    // Auto-hide runnable: hides overlay when playing and no dialog is shown
     private final Runnable mUiAutoHideHandler = () -> {
         if (getPlayer() == null) {
             return;
@@ -75,10 +94,12 @@ public class PlayerUIController extends BasePlayerController {
                 mOverlayHideTimeMs = System.currentTimeMillis();
             }
         } else {
-            // in seeking state? doing recheck...
+            // in seeking state? recheck later
             enableUiAutoHideTimeout();
         }
     };
+
+    // Helper runnables to update specific button states asynchronously
     private final Runnable mSetSubtitleButtonState = this::setSubtitleButtonState;
     private final Runnable mSetPlaylistAddButtonState = this::setPlaylistAddButtonState;
 
@@ -94,7 +115,7 @@ public class PlayerUIController extends BasePlayerController {
         mSuggestionsController = getController(SuggestionsController.class);
 
         if (getPlayer() != null) {
-            // Could be set once per activity creation (view layout stuff)
+            // Initialize view with persisted transforms/zoom values
             getPlayer().setResizeMode(getPlayerData().getResizeMode());
             getPlayer().setZoomPercents(getPlayerData().getZoomPercents());
             getPlayer().setAspectRatio(getPlayerData().getAspectRatio());
@@ -597,6 +618,9 @@ public class PlayerUIController extends BasePlayerController {
         mHandler.removeCallbacks(mUiAutoHideHandler);
     }
 
+    /**
+     * Start auto-hide ui timer based on engine readiness and user-configured timeout.
+     */
     private void enableUiAutoHideTimeout() {
         Log.d(TAG, "Starting auto hide ui timer...");
         disableUiAutoHideTimeout();
@@ -675,6 +699,10 @@ public class PlayerUIController extends BasePlayerController {
         return false;
     }
 
+    /**
+     * Handle confirm key behavior according to user preference:
+     * - show UI only, pause, or toggle play/pause.
+     */
     private boolean handleConfirmKey(int keyCode) {
         boolean controlsShown = getPlayer().isOverlayShown();
 
@@ -684,7 +712,7 @@ public class PlayerUIController extends BasePlayerController {
                     getPlayer().showOverlay(true);
                     return true; // don't show ui
                 case PlayerData.UI_AND_PAUSE:
-                    // NOP
+                    // NOP: fallthrough to default pause behavior
                     break;
                 case PlayerData.ONLY_PAUSE:
                     getPlayer().setPlayWhenReady(!getPlayer().getPlayWhenReady());

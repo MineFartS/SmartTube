@@ -1,45 +1,29 @@
 package com.liskovsoft.smartyoutubetv2.common.exoplayer.controller;
 
-import android.content.Context;
-import android.os.Build;
-import android.os.Build.VERSION;
-
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.PlaybackParameters;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.MergingMediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv2.common.BuildConfig;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
-import com.liskovsoft.smartyoutubetv2.common.app.models.playback.listener.PlayerEventListener;
-import com.liskovsoft.smartyoutubetv2.common.exoplayer.ExoMediaSourceFactory;
-import com.liskovsoft.smartyoutubetv2.common.exoplayer.errors.TrackErrorFixer;
-import com.liskovsoft.smartyoutubetv2.common.exoplayer.other.VolumeBooster;
-import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.ExoFormatItem;
-import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem;
-import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.TrackInfoFormatter2;
-import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.TrackSelectorManager;
-import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.TrackSelectorUtil;
-import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.track.MediaTrack;
-import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.track.VideoTrack;
-import com.liskovsoft.smartyoutubetv2.common.exoplayer.versions.ExoUtils;
-import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
-import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerTweaksData;
-
-import java.io.InputStream;
-import java.lang.ref.WeakReference;
-import java.util.List;
-
+/**
+ * Central glue between the ExoPlayer engine and higher-level app components (presenters, UI).
+ *
+ * Responsibilities:
+ * - Prepare and control playback via ExoMediaSourceFactory and SimpleExoPlayer instance.
+ * - Listen to ExoPlayer events and translate them into PlayerEventListener callbacks
+ *   (play/pause/buffering/errors/track changes).
+ * - Coordinate track selection with TrackSelectorManager and expose format lists to UI dialogs.
+ * - Apply user-side playback controls (seek, speed, pitch, volume, formats) and persist temporary
+ *   choices when needed.
+ *
+ * Lifecycle and threading:
+ * - Player lifecycle operations (prepare, release, setSurface) must run on appropriate threads;
+ *   event callbacks generally arrive on the player/main thread. Avoid blocking in callbacks.
+ * - When switching media sources / videos use resetPlayerState() to avoid artifacts and races.
+ *
+ * Error handling:
+ * - Delegates heuristics to TrackErrorFixer and applies restart/reload strategies before surfacing
+ *   errors to the user. Prefer soft recovery (switching track, disabling subs) over full restarts.
+ *
+ * Performance:
+ * - Keep UI formatting (TrackInfoFormatter2) and heavy constructions out of tight event paths;
+ *   cache labels if displayed frequently.
+ */
 public class ExoPlayerController implements Player.EventListener {
     private static final String TAG = ExoPlayerController.class.getSimpleName();
     private final Context mContext;

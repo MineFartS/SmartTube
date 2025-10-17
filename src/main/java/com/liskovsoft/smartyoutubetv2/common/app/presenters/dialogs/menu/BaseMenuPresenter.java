@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs.menu;
 
+/**
+ * Base helper for building context menus for videos/sections.
+ * Provides common dialog actions (pin/unpin, save/remove playlist, account selection, update check).
+ */
+
 import android.content.Context;
 import com.liskovsoft.mediaserviceinterfaces.MediaItemService;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;

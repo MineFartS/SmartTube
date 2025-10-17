@@ -1,9 +1,18 @@
 package com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.track;
 
-import com.google.android.exoplayer2.Format;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.TrackSelectorUtil;
-
+/**
+ * Video-specific MediaTrack with detailed comparison and bounds logic.
+ *
+ * Behavior:
+ * - Implements heuristics to decide whether a candidate format is "in bounds" relative to
+ *   a preferred format (resolution, fps, bitrate, HDR considerations).
+ * - Handles "preset" synthetic formats (used by UI presets) and multi-fps formats (e.g. 25/50).
+ * - Provides size/fps equality helpers with thresholds to avoid tiny differences causing churn.
+ *
+ * Caution:
+ * - Comparison logic is subtle and tuned to match the official app behavior; modify carefully
+ *   and run on-device tests across device families (TV boxes, Shield, Amazon, etc).
+ */
 public class VideoTrack extends MediaTrack {
     private static final float LOW_FPS_THRESHOLD = 10;
     private static final int SIZE_EQUITY_THRESHOLD_PERCENT = 5; // was 15 before

@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.app.models.playback.listener;
 
+/** Engine-level events (playback state, buffering, errors) and error/renderer constants. */
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem;

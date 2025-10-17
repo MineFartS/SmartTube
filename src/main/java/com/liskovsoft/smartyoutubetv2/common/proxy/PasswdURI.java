@@ -1,9 +1,9 @@
 package com.liskovsoft.smartyoutubetv2.common.proxy;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
 /**
+ * Simple URI parser that extracts username/password from authority section if present.
+ * Used to parse proxy URIs like: http://user:pass@host:port
+ *
  * http_proxy=http://USERNAME:PASSWORD@PROXYIP:PROXYPORT
  */
 public class PasswdURI {

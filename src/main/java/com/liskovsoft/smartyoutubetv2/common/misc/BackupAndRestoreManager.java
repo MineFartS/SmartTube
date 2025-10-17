@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.misc;
 
+/**
+ * Coordinates backup and restore flows for app data (shared_prefs and other small dirs).
+ * Handles permission checks, copy/restore operations and filename migrations; non-functional doc only.
+ */
+
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Environment;

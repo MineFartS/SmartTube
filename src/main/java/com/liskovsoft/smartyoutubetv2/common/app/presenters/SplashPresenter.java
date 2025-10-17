@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters;
 
+/**
+ * Entrypoint presenter responsible for app initialization sequence, background tasks,
+ * intent routing and initial UI decisions (account selection, master password).
+ */
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;

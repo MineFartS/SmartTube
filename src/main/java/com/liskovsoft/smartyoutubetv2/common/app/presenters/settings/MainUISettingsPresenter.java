@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters.settings;
 
+/** Presenter for main UI settings (menu items, sidebar, sections). */
 import android.content.Context;
 import android.os.Build;
 import com.liskovsoft.sharedutils.helpers.Helpers;

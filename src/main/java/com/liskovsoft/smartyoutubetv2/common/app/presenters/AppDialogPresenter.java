@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters;
 
+/**
+ * Presenter that builds and controls in-app option dialogs.
+ * Manages categories, timeout, show/close flow and simple backstack backup for overlapping dialogs.
+ */
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;

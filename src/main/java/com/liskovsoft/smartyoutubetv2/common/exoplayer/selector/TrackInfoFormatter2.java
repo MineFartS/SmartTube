@@ -1,7 +1,16 @@
 package com.liskovsoft.smartyoutubetv2.common.exoplayer.selector;
 
-import com.google.android.exoplayer2.Format;
-
+/**
+ * Builds concise human-friendly track labels used by UI dialogs and overlays.
+ *
+ * Examples of output:
+ * - "1080p/60fps/VP9/4.50Mb/HDR"
+ * - "en/5.1/DRC"
+ *
+ * Notes:
+ * - Keep the output short and consistent across places (format selection dialog, debug view).
+ * - Avoid locale-specific formatting for technical labels; use resources for UI strings when needed.
+ */
 public class TrackInfoFormatter2 {
     private String mResolutionStr;
     private String mFpsStr;

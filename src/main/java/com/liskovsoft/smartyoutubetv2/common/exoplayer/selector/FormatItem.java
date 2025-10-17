@@ -1,5 +1,20 @@
 package com.liskovsoft.smartyoutubetv2.common.exoplayer.selector;
 
+/**
+ * Domain model representing a selectable media track/format exposed to the UI.
+ *
+ * Fields typically include:
+ * - type (video/audio/subtitle), language, codec, bitrate, resolution, isDefault, isSelected, title
+ *
+ * Responsibilities:
+ * - Carry enough metadata for the UI to present options and for TrackSelectorManager to apply
+ *   user choices to the player.
+ * - Provide light helper methods like getTitle(), isPreset(), isDefault() to keep UI code simple.
+ *
+ * Serialization/compatibility:
+ * - Keep stable equals/hashCode semantics so selections persist across small rebinds.
+ * - Avoid embedding ExoPlayer Format objects directly if they are not Parcelable.
+ */
 import androidx.annotation.NonNull;
 
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.track.MediaTrack;

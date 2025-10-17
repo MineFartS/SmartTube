@@ -1,10 +1,9 @@
 package com.liskovsoft.smartyoutubetv2.common.autoframerate;
 
-import android.app.Activity;
-import android.os.Handler;
-import android.os.Looper;
-import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem;
-
+/**
+ * Coordinates application-requested auto-frame-rate (AFR) modes and notifies registered listeners.
+ * Keeps desired AFR mode centralized and dispatches changes to platform helpers.
+ */
 public class ModeSyncManager {
     private static ModeSyncManager sInstance;
     private FormatItem mFormatItem;

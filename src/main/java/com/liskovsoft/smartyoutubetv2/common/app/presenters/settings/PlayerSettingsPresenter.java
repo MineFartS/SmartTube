@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters.settings;
 
+/** Presenter for player-related settings (buffering, decoding, quality defaults). */
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Pair;

@@ -1,5 +1,18 @@
 package com.liskovsoft.smartyoutubetv2.common.exoplayer.other;
 
+/**
+ * Manages subtitle styling and delivery to ExoPlayer SubtitleView.
+ *
+ * Responsibilities:
+ * - Map app-level subtitle style preferences (color, background, size, scale) to CaptionStyleCompat.
+ * - Optionally apply system captioning style when user chooses "system" style (API >= 19).
+ * - Normalize cues to center alignment and deduplicate repeated auto-generated subtitle lines.
+ *
+ * Performance:
+ * - Avoid heavy text measurement/layout on the playback critical path.
+ * - Apply styling operations only when preferences change (observes PlayerData).
+ */
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;

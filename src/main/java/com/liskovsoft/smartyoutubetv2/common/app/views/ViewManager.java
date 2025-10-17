@@ -1,5 +1,10 @@
 package com.liskovsoft.smartyoutubetv2.common.app.views;
 
+/**
+ * Central manager responsible for navigating and controlling top-level views.
+ * Manages starting/stopping views and player foreground/background transitions.
+ */
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;

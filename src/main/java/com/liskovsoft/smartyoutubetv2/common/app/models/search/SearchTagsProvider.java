@@ -4,6 +4,7 @@ import com.liskovsoft.smartyoutubetv2.common.app.models.search.vineyard.Tag;
 
 import java.util.List;
 
+/** Provider interface to return tag suggestions for search (async callback). */
 public interface SearchTagsProvider {
     interface ResultsCallback {
         void onResults(List<Tag> results);

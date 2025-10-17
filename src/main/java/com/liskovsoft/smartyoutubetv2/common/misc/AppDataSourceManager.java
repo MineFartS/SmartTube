@@ -23,8 +23,19 @@ import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem.Video
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Central factory for app-level data sources used by settings UI and other presenters.
+ *
+ * Responsibilities:
+ * - Provide a list of SettingsItem objects used to build the Settings screen.
+ * - Expose a curated list of VideoPreset instances used by the player UI.
+ *
+ * Implemented as a simple singleton since the data is static and stateless.
+ */
 public class AppDataSourceManager {
     private static AppDataSourceManager sInstance;
+
+    // Known package names for builds that should show the full About dialog vs simple one.
     private static final String[] KNOWN_PACKAGES = {
             "com.liskovsoft.smarttubetv.beta",
             "com.teamsmart.videomanager.tv"
@@ -33,6 +44,11 @@ public class AppDataSourceManager {
     private AppDataSourceManager() {
     }
 
+    /**
+     * Singleton accessor.
+     *
+     * @return shared AppDataSourceManager instance
+     */
     public static AppDataSourceManager instance() {
         if (sInstance == null) {
             sInstance = new AppDataSourceManager();
@@ -41,6 +57,17 @@ public class AppDataSourceManager {
         return sInstance;
     }
 
+    /**
+     * Build the list of settings entries shown in the Settings screen.
+     *
+     * Each SettingsItem contains a localized title, an onClick callback that opens the
+     * corresponding settings presenter, and an icon resource id.
+     *
+     * Some entries are conditional on the current package (e.g. full About vs simple About).
+     *
+     * @param context application context for resolving strings and resources
+     * @return ordered list of SettingsItem instances
+     */
     public List<SettingsItem> getSettingItems(Context context) {
         List<SettingsItem> settingItems = new ArrayList<>();
 
@@ -56,8 +83,7 @@ public class AppDataSourceManager {
                 context.getString(R.string.settings_main_ui), () -> MainUISettingsPresenter.instance(context).show(), R.drawable.settings_main_ui));
         settingItems.add(new SettingsItem(
                 context.getString(R.string.settings_player), () -> PlayerSettingsPresenter.instance(context).show(), R.drawable.settings_player));
-        // Don't add afr support check here.
-        // Users want even fake afr settings.
+        // Auto-FR entry is shown regardless of device AFR support — allows user to see/modify fake settings.
         settingItems.add(new SettingsItem(
                 context.getString(R.string.auto_frame_rate), () -> AutoFrameRateSettingsPresenter.instance(context).show(), R.drawable.settings_afr));
         settingItems.add(new SettingsItem(
@@ -71,6 +97,7 @@ public class AppDataSourceManager {
         settingItems.add(new SettingsItem(
                 context.getString(R.string.app_backup_restore), () -> BackupSettingsPresenter.instance(context).show(), R.drawable.settings_backup));
 
+        // Show different About presenter depending on package (full vs simple about).
         if (Helpers.equalsAny(context.getPackageName(), KNOWN_PACKAGES)) {
             settingItems.add(new SettingsItem(
                     context.getString(R.string.settings_about), () -> AboutSettingsPresenter.instance(context).show(), R.drawable.settings_about));
@@ -82,6 +109,14 @@ public class AppDataSourceManager {
         return settingItems;
     }
 
+    /**
+     * Returns a curated array of VideoPreset entries used in the player UI for manual selection.
+     *
+     * Each VideoPreset contains a human-readable label and an internal spec string describing
+     * resolution, framerate and codec to match available formats.
+     *
+     * @return array of VideoPreset
+     */
     public VideoPreset[] getVideoPresets() {
         VideoPreset[] presets = {
                 new VideoPreset("144p     30fps    avc", "256,144,30,avc"),
