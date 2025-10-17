@@ -1,37 +1,15 @@
 package com.liskovsoft.smartyoutubetv2.common.misc;
 
-import android.content.Context;
-import android.net.Uri;
-import android.os.Build.VERSION;
-
-import androidx.annotation.NonNull;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
-import androidx.work.Worker;
-import androidx.work.WorkerParameters;
-
-import com.liskovsoft.googleapi.service.DriveService;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.rx.RxHelper;
-import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
-import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
-
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-
 /**
- * Work to synchronize the TV provider database with the desired list of channels and
- * programs. This sample app runs this once at install time to publish an initial set of channels
- * and programs, however in a real-world setting this might be run at other times to synchronize
- * a server's database with the TV provider database.
- * This code will ensure that the channels from "SampleClipApi.getDesiredPublishedChannelSet()"
- * appear in the TV provider database, and that these and all other programs are synchronized with
- * TV provider database.
+ * Worker that performs Google Drive backups (uploading backup archives to GDrive).
+ *
+ * Responsibilities:
+ * - Authenticate (via service), upload backup files, handle resumable uploads and retry logic.
+ * - Report progress and final status back to BackupManager/UI.
+ *
+ * Security/permissions:
+ * - Use Android recommended sign-in/auth flows; do not store plain tokens.
+ * - Run long uploads via WorkManager to survive process restarts.
  */
 public class GDriveBackupWorker extends Worker {
     private static final String TAG = GDriveBackupWorker.class.getSimpleName();

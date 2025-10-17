@@ -1,25 +1,17 @@
 package com.liskovsoft.smartyoutubetv2.common.misc;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
-import com.liskovsoft.sharedutils.mylogger.Log;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.Map;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
+/**
+ * Lightweight helper wrapper around SharedPreferences with common patterns used across the app.
+ *
+ * Features:
+ * - Typed getters/setters with default values and optional commit/apply semantics.
+ * - Helpers for reading/writing JSON blobs and compact serialized settings.
+ * - Utilities to migrate keys between app versions and manage multi-profile preferences.
+ *
+ * Thread-safety:
+ * - SharedPreferences is thread-safe for reads; writes via edit().apply() are asynchronous.
+ * - For critical writes that must be persisted immediately, use commit() explicitly.
+ */
 public class SharedPreferencesHelper {
     private static final String TAG = SharedPreferencesHelper.class.getSimpleName();
 

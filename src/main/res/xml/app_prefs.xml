@@ -1,3 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+		<!--
+				app_prefs.xml
+
+				Purpose:
+				- Declares application preferences for the root preference screen. This
+					file is intentionally empty in the common source set; flavor or build-type
+					specific preference entries may be added in variant-specific resources.
+
+				Usage notes:
+				- Inflate this preference resource in a PreferenceFragmentCompat or similar
+					settings screen. Use `PreferenceScreen` children (PreferenceCategory,
+					EditTextPreference, SwitchPreferenceCompat, etc.) to build the UI.
+		-->
+
 </PreferenceScreen>

@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+        <!--
+                supported_languages
+
+                Purpose & format:
+                - A string-array of supported app languages in the format "Display Name|CODE".
+                - Codes are typically language or locale identifiers (e.g., `en_US`, `pt_BR`).
+
+                Usage notes:
+                - UI code should split each item on `|` to obtain the display label and
+                    the internal locale code used for language switching.
+                - Keep this list synchronized with the actual translations available in
+                    the `res/values-<lang>` folders to avoid selecting languages with
+                    incomplete translations.
+        -->
     <string-array name="supported_languages">
         <item>English|en_US</item>
         <item>Croatian|hr</item>

@@ -1,5 +1,18 @@
 package com.liskovsoft.smartyoutubetv2.common.misc;
 
+/**
+ * Manager that controls the app screensaver behavior.
+ *
+ * Responsibilities:
+ * - Enable/disable system screensaver or app-specific dimming while playback is active.
+ * - Coordinate with Player controllers to defer/enable screensaver based on playback state and user interaction.
+ * - Offer short-term disables (e.g. during dialogs) and durable checks (user preferences).
+ *
+ * Notes:
+ * - Interacts with Activity and Window flags; operations affecting UI must run on main thread.
+ * - Avoid aggressive use: always restore previous screensaver state to avoid surprising the user.
+ */
+
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -115,7 +128,7 @@ public class ScreensaverManager {
 
         disable();
         int delayMs = getGeneralData().getScreensaverTimeoutMs() == GeneralData.SCREENSAVER_TIMEOUT_NEVER ?
-                10_000 :
+//                10_000 :
                 getGeneralData().getScreensaverTimeoutMs();
         Utils.postDelayed(mDimScreen, delayMs);
     }

@@ -1,26 +1,17 @@
 package com.liskovsoft.smartyoutubetv2.common.misc;
 
-import android.content.Context;
-import com.liskovsoft.mediaserviceinterfaces.MediaItemService;
-import com.liskovsoft.mediaserviceinterfaces.ServiceManager;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.rx.RxHelper;
-import com.liskovsoft.smartyoutubetv2.common.R;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Playlist;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.PlaybackPresenter;
-import com.liskovsoft.smartyoutubetv2.common.app.views.ViewManager;
-import com.liskovsoft.smartyoutubetv2.common.misc.TickleManager.TickleListener;
-import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
-import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
-import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
-
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * Service responsible for managing stream reminders (schedule notifications for upcoming live streams).
+ *
+ * Responsibilities:
+ * - Schedule/cancel reminders for upcoming streams using AlarmManager/WorkManager as appropriate.
+ * - Persist reminder metadata and provide APIs to query scheduled reminders.
+ * - Handle device reboots (re-schedule reminders on BOOT_COMPLETED).
+ *
+ * Permissions & lifecycle:
+ * - Should run as a foreground/background worker depending on platform; avoid long-running tasks on main thread.
+ * - Respect Doze/standby and use recommended scheduling APIs (WorkManager) for reliability.
+ */
 public class StreamReminderService implements TickleListener {
     private static final String TAG = StreamReminderService.class.getSimpleName();
     private static StreamReminderService sInstance;

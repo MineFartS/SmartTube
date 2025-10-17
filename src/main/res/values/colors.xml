@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+        <!--
+                colors.xml
+
+                Purpose:
+                - Central place for app color definitions. Use resource names rather than
+                    hard-coded hex values in layouts and styles so theming and maintenance
+                    are easier.
+
+                Naming conventions:
+                - Use descriptive names (e.g., `dialog_text_color`) for semantic colors when
+                    possible. This file contains a mix of semantic and literal color names.
+                - Suffixes like `_50`, `_70` indicate alpha/transparency levels (e.g. white_50).
+
+                Usage tips:
+                - Prefer semantic names in layouts and styles; keep literal names for
+                    quick reference or backwards compatibility.
+                - When adding new theme-aware colors, consider creating `colors.xml` in
+                    `values-night` or other qualifiers for dark mode.
+        -->
     <color name="white">#FFFFFF</color>
     <color name="white_20">#33FFFFFF</color>
     <color name="white_50">#80FFFFFF</color>

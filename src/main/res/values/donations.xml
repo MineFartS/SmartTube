@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+        <!--
+                donations
+
+                Purpose & format:
+                - A list of donation options presented to users. Each `item` follows the
+                    pattern "Label|Value" where `Value` can be a URL or account/address string.
+
+                Security & privacy:
+                - These items may contain email addresses or cryptocurrency keys. They are
+                    presented as informational links and must not be treated as executable
+                    code. Keep sensitive data out of logs.
+        -->
     <string-array name="donations">
         <item>Patreon (Visa, Mastercard, PayPal)|https://www.patreon.com/smarttube</item>
         <!--<item>BountySource (Visa, Mastercard, PayPal)|https://salt.bountysource.com/checkout/amount?team=smarttube</item>-->

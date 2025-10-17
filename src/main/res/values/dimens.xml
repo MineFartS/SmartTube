@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--
+        dimens.xml
+
+        Purpose:
+        - Centralized dimension values used across layouts and styles. Keep UI spacing
+          and sizes consistent by referencing these resources instead of magic numbers.
+
+        Units & conventions:
+        - Use `dp` for layout sizes and `sp` for text sizes to respect user font scaling.
+        - Name dimensions clearly to indicate where they are used (e.g., `player_top_bar_text_size`).
+
+        Best practices:
+        - Reuse existing dimensions where appropriate to maintain consistency.
+        - Add new entries when you need repeatable values; avoid one-off additions.
+    -->
     <dimen name="exo_media_button_height">60dp</dimen>
     <dimen name="exo_media_button_width">60dp</dimen>
     <dimen name="exo_media_button_margin">8dp</dimen>

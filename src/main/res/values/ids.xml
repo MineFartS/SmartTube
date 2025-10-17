@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+        <!--
+                ids.xml
+
+                Purpose:
+                - Declares common ID resources used across layouts or created dynamically
+                    at runtime. Centralizing IDs like this makes it easier to reference them
+                    from code and avoid accidental collisions.
+
+                Usage:
+                - Use `@id/<name>` to reference these IDs in layouts or `findViewById` in code.
+                - Reserve a consistent prefix for dynamic IDs if needed. Keep names short and
+                    descriptive enough to identify the action or UI element.
+        -->
     <item name="action_thumbs_up" type="id"/>
     <item name="action_thumbs_down" type="id"/>
     <item name="action_subscribe" type="id"/>

@@ -1,11 +1,15 @@
 package com.liskovsoft.smartyoutubetv2.common.misc;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
-
+/**
+ * BroadcastReceiver that listens to system/boot events relevant to remote-control and background services.
+ *
+ * Responsibilities:
+ * - React to BOOT_COMPLETED, TIMEZONE_CHANGED and other system broadcasts to re-schedule RemoteControl/Reminders.
+ * - Keep handling minimal: start services or schedule WorkManager jobs rather than performing heavy work here.
+ *
+ * Security:
+ * - Only receive/export the intents that are necessary; be conservative with exported receivers.
+ */
 public class RemoteControlReceiver extends BroadcastReceiver {
     private static final String TAG = RemoteControlReceiver.class.getSimpleName();
 

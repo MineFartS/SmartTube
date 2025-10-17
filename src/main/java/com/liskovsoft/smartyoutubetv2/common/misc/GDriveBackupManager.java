@@ -1,5 +1,16 @@
 package com.liskovsoft.smartyoutubetv2.common.misc;
 
+/**
+ * Coordinator for backup operations to Google Drive.
+ *
+ * Responsibilities:
+ * - Start backup work (local pack -> enqueue GDriveBackupWorker), manage schedule and auto-backups.
+ * - Provide status queries and cancellation of pending backup tasks.
+ *
+ * Notes:
+ * - Use WorkManager for background reliability and to handle network constraints.
+ */
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;

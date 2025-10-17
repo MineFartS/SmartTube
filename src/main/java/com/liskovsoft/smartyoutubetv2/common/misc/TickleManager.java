@@ -1,9 +1,17 @@
 package com.liskovsoft.smartyoutubetv2.common.misc;
 
-import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
-import com.liskovsoft.sharedutils.misc.WeakHashSet;
-
+/**
+ * Periodic tickle dispatcher used to run periodic maintenance tasks.
+ *
+ * Responsibilities:
+ * - Post regular "tickle" callbacks to registered listeners (for autosave, UI refresh, keepalive).
+ * - Debounce and coalesce frequent events into periodic ticks.
+ * - Manage lifecycle so listeners are removed on app shutdown to prevent leaks.
+ *
+ * Threading:
+ * - Posts callbacks on the main/UI thread by default; if background execution is required, callers
+ *   must offload heavy work themselves.
+ */
 public class TickleManager {
     private static final String TAG = TickleManager.class.getSimpleName();
     private static TickleManager sInstance;

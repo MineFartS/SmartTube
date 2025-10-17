@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Other fullscreen params are set here: leanback-1.0.0\src\main\res\values-v19\values-v19.xml:3 -->
-    <style name="FitSystemWindows" parent="TransparentStatus">
+        <!--
+                styles.xml
+
+                Purpose:
+                - Defines a few shared styles used to control window/system UI behaviour
+                    (status and navigation bar translucency, fitsSystemWindows, etc.).
+
+                Notes:
+                - The `tools:targetApi` attribute is used to suppress lint warnings for
+                    attributes that are only available on certain API levels.
+                - If you need alternate behaviour on specific API levels, prefer using
+                    resource qualifiers (values-v19, values-v21) rather than runtime checks.
+        -->
+        <!-- Other fullscreen params are set here: leanback-1.0.0\src\main\res\values-v19\values-v19.xml:3 -->
+        <style name="FitSystemWindows" parent="TransparentStatus">
         <item name="android:fitsSystemWindows">true</item>
         <item name="android:windowFullscreen">false</item>
     </style>

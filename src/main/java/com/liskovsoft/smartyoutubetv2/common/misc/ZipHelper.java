@@ -1,17 +1,21 @@
 package com.liskovsoft.smartyoutubetv2.common.misc;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
-
+/**
+ * Utility for zip archive operations used by backup/restore and import/export features.
+ *
+ * Responsibilities:
+ * - Pack directories/files into zip archives and extract zip archives to target folders.
+ * - Preserve file metadata when possible (timestamps, relative paths).
+ * - Provide streaming-friendly APIs to avoid loading entire archives into memory.
+ *
+ * Concurrency and I/O notes:
+ * - All operations are blocking and perform file I/O. Callers must run heavy operations on a background thread.
+ * - Use buffered streams and proper resource closing (try-with-resources) to avoid file descriptor leaks.
+ *
+ * Error handling:
+ * - Surface IOExceptions to callers; callers should present user-friendly messages and retry logic.
+ * - Avoid automatic overwrite without explicit confirmation from caller.
+ */
 public class ZipHelper {
     public static boolean zipFolder(File sourceFolder, File zipFile, String[] backupPatterns) {
         try (ZipOutputStream zipOut = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(zipFile)))) {

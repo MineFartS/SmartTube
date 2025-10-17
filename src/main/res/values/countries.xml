@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+        <!--
+                supported_countries
+
+                Purpose & format:
+                - This `string-array` lists supported countries in the format "Display Name|CODE".
+                - The code may be an ISO country code or a region-specific code (e.g., GB-SCT).
+
+                Usage notes:
+                - The consuming code should split each item on the `|` character to obtain
+                    the display name and the code.
+                - Keep entries localized where needed. The display names can be in native
+                    scripts (e.g., Русский) as shown.
+        -->
     <string-array name="supported_countries">
         <item>United States|US</item>
         <item>Great Britain|GB</item>

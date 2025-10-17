@@ -1,5 +1,17 @@
 package com.liskovsoft.smartyoutubetv2.common.misc;
 
+/**
+ * Local service exposing RemoteControl APIs to the rest of the app.
+ *
+ * Responsibilities:
+ * - Start/stop background remote-control connection and bind to UI components when needed.
+ * - Provide a stable API for posting remote state and receiving commands (wrapping network/service layers).
+ *
+ * Lifecycle:
+ * - Designed to be started/stopped by presenters; must unregister listeners and dispose Rx subscriptions when stopped.
+ * - If running as an Android Service, ensure to manage foreground notification when required by the platform.
+ */
+
 import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;

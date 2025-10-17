@@ -8,6 +8,35 @@
     android:orientation="vertical"
     android:padding="10sp">
 
+        <!--
+                Simple edit dialog layout
+
+                Purpose:
+                - Provides a compact dialog containing a single EditText for simple user
+                    input like a short string, URL, or a name. Used where a larger form is
+                    unnecessary.
+
+                Important attributes:
+                - `android:inputType` is set to `textUri|textPersonName` which hints at the
+                    expected content and influences the soft keyboard layout on devices that
+                    show one. It allows both URI-like and person-name inputs.
+                - `android:imeOptions="actionNext"` helps with keyboard action handling when
+                    multiple inputs are present. For single-field dialogs you may prefer
+                    `actionDone` depending on desired UX.
+
+                Accessibility & localization:
+                - The EditText has a `hint` referencing `@string/simple_edit_value_hint` to
+                    provide context for screen reader users. Keep that string concise.
+                - `android:textColor` and tint attributes reference dialog theme colors so
+                    text remains readable in different themes. Avoid hard-coded colors here.
+
+                Runtime notes:
+                - Access the input value via `findViewById(R.id.simple_edit_value)` and
+                    call `getText().toString()` when the dialog is confirmed.
+                - Consider adding input validation for URLs or restricted formats before
+                    accepting the input.
+        -->
+
     <EditText
         android:id="@+id/simple_edit_value"
         android:layout_width="match_parent"

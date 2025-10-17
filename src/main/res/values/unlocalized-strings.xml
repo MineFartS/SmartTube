@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+        <!--
+                unlocalized-strings.xml
+
+                Purpose:
+                - Holds strings that should not be translated (translatable="false"). Typical
+                    examples: external URLs, provider names, status endpoints and other constants
+                    that must remain identical across locales.
+
+                Usage notes:
+                - Keep only truly non-localizable content here. Items with user-visible text
+                    that should be translated must remain in `strings.xml` or appropriate
+                    localized resource files.
+        -->
     <string name="releases_url" translatable="false">https://t.me/SmartTubeNewsEN</string>
     <string name="sources_url" translatable="false">https://github.com/yuliskov/SmartTubeNext</string>
     <string name="web_site_url" translatable="false">https://smarttubeapp.github.io</string>

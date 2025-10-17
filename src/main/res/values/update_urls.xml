@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--
+        update_urls
+
+        Purpose:
+        - Placeholder list for update JSON endpoints. Actual values are provided
+          per-flavor in the flavor-specific `values` folders (see flavors like
+          `staptoide`, `stbeta`, etc.).
+
+        Usage:
+        - The app reads these URLs at runtime to check for updates. Keep flavor-specific
+          values in the flavor folders to avoid exposing staging/production URLs
+          in the common source set.
+    -->
     <string-array name="update_urls">
         <!-- NOTE: Real urls moved to the flavor's folder -->
         <!--<item>https://github.com/yuliskov/SmartTubeNext/releases/download/latest/smarttube_beta.json</item>-->

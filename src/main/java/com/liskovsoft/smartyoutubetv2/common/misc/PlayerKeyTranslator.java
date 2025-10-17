@@ -1,5 +1,17 @@
 package com.liskovsoft.smartyoutubetv2.common.misc;
 
+/**
+ * Translates platform-specific key codes to internal player actions.
+ *
+ * Responsibilities:
+ * - Map hardware/remote key codes (DPAD, media keys, numbers) to player-specific actions like seek, toggle play.
+ * - Support device-specific remappings and user-customizable key bindings (via AppPrefs).
+ *
+ * Notes:
+ * - Keep mapping logic deterministic and document any device-specific quirks in comments.
+ * - Avoid UI changes here; return action enums/ids and let controllers perform the UI updates.
+ */
+
 import android.content.Context;
 import android.view.KeyEvent;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;

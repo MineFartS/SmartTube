@@ -3,4 +3,26 @@
              android:id="@+id/dim_container"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:visibility="gone"/>
+                         android:visibility="gone">
+        <!--
+                Dim container
+
+                Purpose:
+                - A full-screen overlay used to dim the app content when dialogs, popups or
+                    transient UI elements are shown. The container is initially `gone` to
+                    avoid intercepting touch events or drawing when unused.
+
+                Usage notes:
+                - Toggle the container's visibility at runtime (VISIBLE/GONE) when showing
+                    or hiding an overlay. Use `match_parent` so it covers the whole screen.
+                - You can add a semi-transparent View inside this FrameLayout or set a
+                    background color programmatically to create the dimming effect. Example:
+                        dimContainer.setBackgroundColor(ContextCompat.getColor(ctx, R.color.dimming));
+
+                Accessibility & touch handling:
+                - When visible, this container may need to intercept touches to prevent
+                    interaction with underlying content. Ensure any clickable child views
+                    are focusable for accessibility.
+        -->
+    
+</FrameLayout>

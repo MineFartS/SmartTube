@@ -3,18 +3,41 @@
               android:orientation="horizontal"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content">
+        <!--
+                Debug view container
+
+                Purpose:
+                - Hosts debug UI components in two columns. Used by developer/debug builds or
+                    by any runtime debug overlay code that inflates this layout.
+
+                Layout notes:
+                - The root LinearLayout is horizontal and contains three child LinearLayouts:
+                    1) `debug_view_column1` (vertical) - typically for labels or left-side values.
+                    2) `divider` - a narrow vertical spacer between columns.
+                    3) `debug_view_column2` (vertical) - typically for values or controls on the right.
+
+                Accessibility & performance:
+                - IDs are provided so individual debug views can be found and updated at runtime.
+                - Keep this layout small and lightweight. When not used, do not inflate it to
+                    avoid unnecessary view hierarchy overhead.
+
+                Styling:
+                - Width/height are `wrap_content` to allow content-driven sizing in most debug UIs.
+                - If you need full-width debug overlays, consider changing the root to
+                    `match_parent` and use appropriate gravity/padding.
+        -->
     <LinearLayout android:id="@+id/debug_view_column1"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:orientation="vertical"
                   android:gravity="end">
-        <!-- content goes here -->
+                <!-- Column 1: place debug labels or left-aligned controls here. -->
     </LinearLayout>
     <LinearLayout android:orientation="vertical" android:id="@+id/divider" android:layout_width="5dp" android:layout_height="match_parent"/>
     <LinearLayout android:id="@+id/debug_view_column2"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:orientation="vertical">
-        <!-- content goes here -->
+                <!-- Column 2: place debug values, dynamic text, or buttons here. -->
     </LinearLayout>
 </LinearLayout>

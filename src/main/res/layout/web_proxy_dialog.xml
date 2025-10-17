@@ -8,6 +8,7 @@
     android:orientation="vertical"
     android:padding="10sp">
 
+    <!-- EditText for entering the proxy host -->
     <EditText
         android:id="@+id/proxy_host"
         android:layout_width="match_parent"
@@ -22,6 +23,7 @@
         android:backgroundTint="@color/dialog_text_color"
         android:textColorHint="@color/white_50" />
 
+    <!-- EditText for entering the proxy port -->
     <EditText
         android:id="@+id/proxy_port"
         android:layout_width="match_parent"
@@ -36,6 +38,7 @@
         android:backgroundTint="@color/dialog_text_color"
         android:textColorHint="@color/white_50" />
 
+    <!-- EditText for entering the proxy username -->
     <EditText
         android:id="@+id/proxy_username"
         android:layout_width="match_parent"
@@ -50,6 +53,7 @@
         android:backgroundTint="@color/dialog_text_color"
         android:textColorHint="@color/white_50" />
 
+    <!-- EditText for entering the proxy password -->
     <EditText
         android:id="@+id/proxy_password"
         android:layout_width="match_parent"
@@ -64,6 +68,7 @@
         android:backgroundTint="@color/dialog_text_color"
         android:textColorHint="@color/white_50" />
 
+    <!-- Label for the proxy type selection -->
     <TextView
         android:id="@+id/proxy_type_label"
         android:layout_width="match_parent"
@@ -74,12 +79,14 @@
         android:textSize="18sp"
         android:padding="5dp" />
 
+    <!-- RadioGroup for selecting the proxy type (HTTP(S) or SOCKS) -->
     <RadioGroup
         android:id="@+id/proxy_type"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
+        <!-- RadioButton for HTTP(S) proxy type -->
         <RadioButton
             android:id="@+id/proxy_type_http"
             android:layout_width="wrap_content"
@@ -88,6 +95,7 @@
             android:textColor="@color/dialog_text_color"
             android:buttonTint="@color/dialog_text_color" />
 
+        <!-- RadioButton for SOCKS proxy type -->
         <RadioButton
             android:id="@+id/proxy_type_socks"
             android:layout_width="wrap_content"
@@ -97,6 +105,7 @@
             android:buttonTint="@color/dialog_text_color" />
     </RadioGroup>
 
+    <!-- TextView for displaying proxy configuration messages -->
     <TextView
         android:id="@+id/proxy_config_message"
         android:layout_width="match_parent"

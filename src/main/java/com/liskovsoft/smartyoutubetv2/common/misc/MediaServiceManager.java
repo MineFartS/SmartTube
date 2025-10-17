@@ -1,5 +1,17 @@
 package com.liskovsoft.smartyoutubetv2.common.misc;
 
+/**
+ * High-level manager that wraps interactions with the remote media/content services.
+ *
+ * Responsibilities:
+ * - Provide safe single-entry methods to call ContentService/MediaItemService/CommentsService.
+ * - Aggregate/simplify continuation logic for groups and handle common retries/backoff.
+ * - Centralize error handling for media service calls and provide convenience helpers for presenters.
+ *
+ * Concurrency:
+ * - Dispose/track ongoing Rx subscriptions so that presenter lifecycle can cancel requests on view destroy.
+ */
+
 import android.content.Context;
 import android.util.Pair;
 

@@ -1,5 +1,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.liskovsoft.smartyoutubetv2.common">
+        <!--
+                AndroidManifest.xml (common)
+
+                Purpose:
+                - Declares permissions and application-level components required by the
+                    common module. Flavor- or app-specific manifests may merge additional
+                    settings at build time.
+
+                Important permissions:
+                - FOREGROUND_SERVICE: required to start foreground services for playback
+                    controls and notifications.
+                - RECEIVE_BOOT_COMPLETED, QUICKBOOT_POWERON: used to restore background
+                    services on device reboot or special vendor power-on events.
+                - READ/WRITE_EXTERNAL_STORAGE: used for accessing media on older Android
+                    versions. Note: newer Android versions require scoped storage and may
+                    ignore these permissions.
+                - SYSTEM_ALERT_WINDOW/ACTION_MANAGE_OVERLAY_PERMISSION: used for overlay
+                    features (draw over other apps). These are special permissions and
+                    typically require user action in Settings to grant.
+        -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.QUICKBOOT_POWERON" />

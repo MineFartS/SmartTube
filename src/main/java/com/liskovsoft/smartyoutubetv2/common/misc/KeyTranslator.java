@@ -1,16 +1,12 @@
 package com.liskovsoft.smartyoutubetv2.common.misc;
 
-import android.view.KeyEvent;
-
-import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.rx.RxHelper;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.AppDialogPresenter;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.PlaybackPresenter;
-import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
-
-import java.util.HashMap;
-import java.util.Map;
-
+/**
+ * Generic key translator used to map input key events to semantic actions across the app.
+ *
+ * Differences from PlayerKeyTranslator:
+ * - KeyTranslator is a more general translator used by UI/presenters outside the player context.
+ * - Supports hierarchical remapping (global -> view-specific -> user overrides).
+ */
 public abstract class KeyTranslator {
     private static final String TAG = KeyTranslator.class.getSimpleName();
     private final Map<Integer, Integer> mKeyMapping = new HashMap<>();

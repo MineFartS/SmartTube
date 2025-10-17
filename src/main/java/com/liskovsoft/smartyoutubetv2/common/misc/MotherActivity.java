@@ -1,5 +1,17 @@
 package com.liskovsoft.smartyoutubetv2.common.misc;
 
+/**
+ * Base Activity used across the app that provides application-level utilities to child Activities.
+ *
+ * Typical responsibilities:
+ * - Expose a ScreensaverManager instance and shared helpers for child activities.
+ * - Provide centralized handling for common lifecycle behaviors and debugging hooks.
+ *
+ * Caution:
+ * - Keep UI-specific behavior minimal in the base activity to avoid complicated inheritance issues.
+ * - Use composition (helpers/managers) when possible rather than large base-class responsibilities.
+ */
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;

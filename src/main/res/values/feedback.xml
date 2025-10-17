@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--
+        feedback
+
+        Purpose:
+        - Provides a list of contact endpoints where users can provide feedback.
+
+        Format:
+        - Each item is "Label|URL". The UI should split on `|` and present the label
+          with an appropriate click action for the URL.
+    -->
     <string-array name="feedback">
         <item>Telegram|https://t.me/SmartTubeEN</item>
         <item>Discord|https://discord.gg/Wt8HDDej5z</item>

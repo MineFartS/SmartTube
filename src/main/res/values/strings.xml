@@ -1,712 +1,1235 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Header for the home section -->
     <string name="header_home">Home</string>
+    <!-- Title for the search feature -->
     <string name="title_search">Search</string>
+    <!-- Header for subscriptions section -->
     <string name="header_subscriptions">Subscriptions</string>
+    <!-- Header for history section -->
     <string name="header_history">History</string>
+    <!-- Header for music section -->
     <string name="header_music">Music</string>
+    <!-- Header for news section -->
     <string name="header_news">News</string>
+    <!-- Header for gaming section -->
     <string name="header_gaming">Gaming</string>
+    <!-- Header for playlists section -->
     <string name="header_playlists">Playlists</string>
+    <!-- Header for settings section -->
     <string name="header_settings">Settings</string>
+    <!-- Header for channels section -->
     <string name="header_channels">Channels</string>
+    <!-- Title for signed in subscriptions -->
     <string name="subscriptions_signin_title">See the latest from channels you love</string>
+    <!-- Subtitle for signed in subscriptions -->
     <string name="subscriptions_signin_subtitle">Sign in to see your subscriptions</string>
+    <!-- Button text for signing in -->
     <string name="subscriptions_signin_button_text">SIGN IN</string>
+    <!-- Message to sign in to view library -->
     <string name="library_signin_to_show_more">Watch videos you liked, saved, or subscribed</string>
+    <!-- Subtitle for library sign in -->
     <string name="library_signin_subtitle">Sign in to see your library</string>
+    <!-- Action button text for signing in -->
     <string name="action_signin">SIGN IN</string>
+    <!-- Title for video formats settings -->
     <string name="title_video_formats">Video formats</string>
+    <!-- Title for audio formats settings -->
     <string name="title_audio_formats">Audio formats</string>
+    <!-- Subtitle for category title -->
     <string name="subtitle_category_title">Subtitles</string>
+    <!-- Title for playback queue category -->
     <string name="playback_queue_category_title">Playback queue</string>
+    <!-- Max quality setting for video -->
     <string name="video_max_quality">Auto (max quality)</string>
+    <!-- Max quality setting for audio -->
     <string name="audio_max_quality">Auto (max quality)</string>
+    <!-- Message indicating subtitles are disabled -->
     <string name="subtitles_disabled">Subtitles disabled</string>
+    <!-- Setting for auto frame rate -->
     <string name="auto_frame_rate">Auto Frame Rate</string>
+    <!-- Frame rate correction message -->
     <string name="frame_rate_correction">Fix fps:\n%s</string>
+    <!-- Category for background playback settings -->
     <string name="category_background_playback">Background playback</string>
+    <!-- Message indicating feature is not implemented -->
     <string name="not_implemented">Not implemented</string>
+    <!-- Message indicating device does not support feature -->
     <string name="not_supported_by_device">The device does not support this feature</string>
+    <!-- Option for disabling background playback -->
     <string name="option_background_playback_off">Disabled</string>
+    <!-- Option for picture in picture background playback -->
     <string name="option_background_playback_pip">Picture in picture</string>
+    <!-- Option for only audio background playback -->
     <string name="option_background_playback_only_audio">Only audio</string>
+    <!-- Title for playback quality settings -->
     <string name="playback_settings">Playback quality settings</string>
+    <!-- Setting for video speed -->
     <string name="video_speed">Video speed</string>
+    <!-- Setting for switching resolution -->
     <string name="resolution_switch">Switch resolution</string>
+    <!-- Setting for video buffer -->
     <string name="video_buffer">Video buffer</string>
+    <!-- Option for no video buffer -->
     <string name="video_buffer_size_none">None</string>
+    <!-- Option for lowest video buffer size -->
     <string name="video_buffer_size_lowest">Lowest</string>
+    <!-- Option for low video buffer size -->
     <string name="video_buffer_size_low">Low</string>
+    <!-- Option for medium video buffer size -->
     <string name="video_buffer_size_med">Medium</string>
+    <!-- Option for high video buffer size -->
     <string name="video_buffer_size_high">High</string>
+    <!-- Option for highest video buffer size -->
     <string name="video_buffer_size_highest">Highest</string>
+    <!-- Title for changelog section -->
     <string name="update_changelog">Changelog</string>
+    <!-- Button text for installing update -->
     <string name="install_update">Install update</string>
+    <!-- Message indicating section is empty -->
     <string name="section_is_empty">Oops! There is nothing in here</string>
+    <!-- Title for add to playlist dialog -->
     <string name="dialog_add_to_playlist">Add/Remove from playlist</string>
+    <!-- Message indicating feature is for signed users only -->
     <string name="msg_signed_users_only">Signed users only</string>
+    <!-- Error message for content loading issues -->
     <string name="msg_cant_load_content">Can\'t load content.\n1) Turn on watch history.\n2) Check date and time on the device.\n3) Check network connection.\n4) Check your proxy settings.\n5) Try to sign in to your account.\n6) Maybe there is nothing in here.</string>
+    <!-- Title for video presets settings -->
     <string name="title_video_presets">Video presets</string>
+    <!-- Title for accounts settings -->
     <string name="settings_accounts">Accounts</string>
+    <!-- Title for editing categories in left panel -->
     <string name="settings_left_panel">Edit categories</string>
+    <!-- Title for themes settings -->
     <string name="settings_themes">Themes</string>
+    <!-- Title for other settings -->
     <string name="settings_other">Other</string>
+    <!-- Title for player settings -->
     <string name="settings_player">Player</string>
+    <!-- Title for language settings -->
     <string name="settings_language">Language</string>
+    <!-- Title for linked devices settings -->
     <string name="settings_linked_devices">Linked devices</string>
+    <!-- Title for about section -->
     <string name="settings_about">About</string>
+    <!-- Title for account selection dialog -->
     <string name="dialog_account_list">Select account</string>
+    <!-- Option for no account in dialog -->
     <string name="dialog_account_none">None</string>
+    <!-- Button text for signing out in dialog -->
     <string name="dialog_remove_account">Sign out</string>
+    <!-- Button text for signing in in dialog -->
     <string name="dialog_add_account">Sign in</string>
+    <!-- Option for default language -->
     <string name="default_lang">Default</string>
+    <!-- Option for original language -->
     <string name="original_lang">Original</string>
+    <!-- Title for language selection dialog -->
     <string name="dialog_select_language">Language</string>
+    <!-- Option for default subtitle -->
     <string name="subtitle_default">Default</string>
+    <!-- Option for white semi-transparent subtitle -->
     <string name="subtitle_white_semi_transparent">White on semitransparent background</string>
+    <!-- Title for subtitle style settings -->
     <string name="subtitle_style">Subtitle style</string>
+    <!-- Title for subtitle language settings -->
     <string name="subtitle_language">Subtitle language</string>
+    <!-- Action button text for search -->
     <string name="action_search">Search</string>
+    <!-- Title for main UI settings -->
     <string name="settings_main_ui">User interface</string>
+    <!-- Title for main UI dialog -->
     <string name="dialog_main_ui">User interface</string>
+    <!-- Title for animated previews card -->
     <string name="card_animated_previews">Animated previews</string>
+    <!-- Title for website settings -->
     <string name="web_site">Web site</string>
+    <!-- Title for donation settings -->
     <string name="donation">Donation</string>
+    <!-- Title for about dialog -->
     <string name="dialog_about">About</string>
+    <!-- Title for video player dialog -->
     <string name="dialog_player_ui">Video player</string>
+    <!-- Setting to show UI on pause -->
     <string name="player_show_ui_on_pause">Show UI on pause</string>
+    <!-- Setting to pause playback with OK key -->
     <string name="player_pause_on_ok">OK key pauses playback</string>
+    <!-- Setting for OK button behavior -->
     <string name="player_ok_button_behavior">OK button behavior</string>
+    <!-- Option for player UI only -->
     <string name="player_only_ui">Only UI</string>
+    <!-- Option for UI and pause -->
     <string name="player_ui_and_pause">UI and pause</string>
+    <!-- Option for only pause -->
     <string name="player_only_pause">Only pause</string>
+    <!-- Title for checking updates -->
     <string name="check_for_updates">Check for updates</string>
+    <!-- Message indicating latest version is being used -->
     <string name="update_not_found">You\'re using the latest version</string>
+    <!-- Message indicating update is in progress -->
     <string name="update_in_progress">Wait…</string>
+    <!-- Setting for auto-hiding UI -->
     <string name="player_ui_hide_behavior">Auto-hide UI</string>
+    <!-- Option for never hiding UI -->
     <string name="option_never">Never</string>
+    <!-- Title for setting up side panel sections -->
     <string name="side_panel_sections">Set-up sections</string>
+    <!-- Title for boot to section setting -->
     <string name="boot_to_section">Boot to section</string>
+    <!-- Option for large UI -->
     <string name="large_ui">Large UI</string>
+    <!-- Setting for video grid scale -->
     <string name="video_grid_scale">Video grid scale</string>
+    <!-- Setting for UI scale -->
     <string name="scale_ui">UI scale</string>
+    <!-- Title for color scheme settings -->
     <string name="color_scheme">Color scheme</string>
+    <!-- Option for default color scheme -->
     <string name="color_scheme_default">Default</string>
+    <!-- Option for red-grey color scheme -->
     <string name="color_scheme_red_grey">Red-grey</string>
+    <!-- Option for red color scheme -->
     <string name="color_scheme_red">Red</string>
+    <!-- Option for dark grey color scheme -->
     <string name="color_scheme_dark_grey">Dark Grey</string>
+    <!-- Option for disabling update check -->
     <string name="disable_update_check">Disable update check</string>
+    <!-- Option for showing update notification again -->
     <string name="show_again">Show again</string>
+    <!-- Option for automatic update notifications -->
     <string name="check_updates_auto">Notify about updates</string>
+    <!-- Option for showing account selection on boot -->
     <string name="select_account_on_boot">Show account selection on boot</string>
+    <!-- Title for miscellaneous player settings -->
     <string name="player_other">Misc</string>
+    <!-- Setting to show precise date in description -->
     <string name="player_full_date">Precise date in description</string>
+    <!-- Title for opening channel -->
     <string name="open_channel">Open channel</string>
+    <!-- Title for opening playlist -->
     <string name="open_playlist">Open playlist</string>
+    <!-- Option for not interested -->
     <string name="not_interested">Not interested</string>
+    <!-- Option for not recommending channel -->
     <string name="not_recommend_channel">Don\'t recommend channel</string>
+    <!-- Message indicating video has been removed from recommended -->
     <string name="you_wont_see_this_video">Video has been removed from recommended</string>
+    <!-- Message indicating channel won't be seen in recommendations -->
     <string name="you_wont_see_this_channel">You won\'t see this channel in recommendations</string>
+    <!-- Title for search settings -->
     <string name="settings_search">Search</string>
+    <!-- Title for search dialog -->
     <string name="dialog_search">Search</string>
+    <!-- Title for instant voice search -->
     <string name="instant_voice_search">Instant voice search</string>
+    <!-- Option for playing behind in background playback -->
     <string name="option_background_playback_behind">Play behind</string>
+    <!-- Message indicating next video info is not loaded yet -->
     <string name="next_video_info_is_not_loaded_yet">Next video info is not loaded yet</string>
+    <!-- Title for multiline card -->
     <string name="card_multiline_title">Multiline titles</string>
+    <!-- Title for cards style settings -->
     <string name="cards_style">Cards style</string>
+    <!-- Option for continuous video playback -->
     <string name="repeat_mode_all">Play videos continuously</string>
+    <!-- Option for repeating current video -->
     <string name="repeat_mode_one">Repeat current video</string>
+    <!-- Option for pausing playback after each video -->
     <string name="repeat_mode_pause">Pause playback after each video</string>
+    <!-- Option for playing only playlist videos continuously -->
     <string name="repeat_mode_pause_alt">Play only playlist videos continuously</string>
+    <!-- Option for stopping playback after one video -->
     <string name="repeat_mode_none">Stop playback after one video</string>
+    <!-- Message indicating subscription status -->
     <string name="subscribed_to_channel">Subscribed</string>
     <string name="unsubscribed_from_channel">Unsubscribed</string>
+    <!-- Option for yellow transparent subtitle -->
     <string name="subtitle_yellow_transparent">Yellow on transparent background</string>
+    <!-- Option for white transparent subtitle -->
     <string name="subtitle_white_transparent">White on transparent background</string>
+    <!-- Option for white black subtitle -->
     <string name="subtitle_white_black">White on black background</string>
+    <!-- Setting for preview while seeking -->
     <string name="player_seek_preview">Preview while seeking</string>
+    <!-- Option for dark grey OLED color scheme -->
     <string name="color_scheme_dark_grey_oled">Dark Grey (OLED)</string>
+    <!-- Title for channels section sorting -->
     <string name="channels_section_sorting">Channels section sorting</string>
+    <!-- Option for sorting by new content -->
     <string name="sorting_by_new_content">New content</string>
+    <!-- Option for sorting alphabetically -->
     <string name="sorting_alphabetically">Alphabetically</string>
+    <!-- Option for sorting by last viewed -->
     <string name="sorting_last_viewed">Last viewed</string>
+    <!-- Setting to pause when seeking -->
     <string name="player_pause_when_seek">Pause when seeking</string>
+    <!-- Title for playlists style settings -->
     <string name="playlists_style">Playlists section style</string>
+    <!-- Option for grid style playlists -->
     <string name="playlists_style_grid">Grid</string>
+    <!-- Option for rows style playlists -->
     <string name="playlists_style_rows">Rows</string>
+    <!-- Setting to show clock in controls bar -->
     <string name="player_show_clock">Show clock in controls bar</string>
+    <!-- Setting to show remaining time in controls bar -->
     <string name="player_show_remaining_time">Show remaining time in controls bar</string>
+    <!-- Setting to show ending time in controls bar -->
     <string name="player_show_ending_time">Show ending time in controls bar</string>
+    <!-- Title for opening channel uploads -->
     <string name="open_channel_uploads">Open channel uploads</string>
+    <!-- Shortcut action for exiting the app -->
     <string name="app_exit_shortcut">Exit from the app</string>
+    <!-- Shortcut action for exiting the player -->
     <string name="player_exit_shortcut">Exit from the player</string>
+    <!-- Shortcut action for exiting the search -->
     <string name="search_exit_shortcut">Exit from the search</string>
+    <!-- Option for not exiting the app -->
     <string name="app_exit_none">Don\'t exit</string>
+    <!-- Option for double back exit -->
     <string name="app_double_back_exit">Double back</string>
+    <!-- Option for single back exit -->
     <string name="app_single_back_exit">Single back</string>
+    <!-- Action button text for video zoom -->
     <string name="action_video_zoom">Video zoom</string>
+    <!-- Title for video zoom settings -->
     <string name="video_zoom">Video zoom</string>
+    <!-- Default option for video zoom -->
     <string name="video_zoom_default">Default</string>
+    <!-- Option for fitting video to width -->
     <string name="video_zoom_fit_width">Fit width</string>
+    <!-- Option for fitting video to height -->
     <string name="video_zoom_fit_height">Fit height</string>
+    <!-- Option for fitting video to both width and height -->
     <string name="video_zoom_fit_both">Fit either width or height</string>
+    <!-- Option for stretching video -->
     <string name="video_zoom_stretch">Stretch</string>
+    <!-- Option for teal color scheme -->
     <string name="color_scheme_teal">Teal</string>
+    <!-- Option for teal OLED color scheme -->
     <string name="color_scheme_teal_oled">Teal (OLED)</string>
+    <!-- Option for disabling seek preview -->
     <string name="player_seek_preview_none">Disabled</string>
+    <!-- Option for single frame seek preview -->
     <string name="player_seek_preview_single">Single frame</string>
+    <!-- Option for carousel seek preview -->
     <string name="player_seek_preview_carousel">Carousel</string>
+    <!-- Option for slow carousel seek preview -->
     <string name="player_seek_preview_carousel_slow">Carousel (slow, by keyframes)</string>
+    <!-- Option for fast carousel seek preview -->
     <string name="player_seek_preview_carousel_fast">Carousel (fast, not precise preview)</string>
+    <!-- Title for unsubscribing from channel -->
     <string name="unsubscribe_from_channel">Unsubscribe from the channel</string>
+    <!-- Title for card title lines number setting -->
     <string name="card_title_lines_num">Card title lines num</string>
+    <!-- Title for auto-scrolling cropped title -->
     <string name="card_auto_scrolled_title">Auto-scroll cropped title</string>
+    <!-- Title for share link -->
     <string name="share_link">Share link</string>
+    <!-- Title for share link QR code -->
     <string name="share_qr_link">Share link (QR code)</string>
+    <!-- Title for subscribing to channel -->
     <string name="subscribe_to_channel">Subscribe to the channel</string>
+    <!-- Message to wait while data is loading -->
     <string name="wait_data_loading">Please wait while data is loading…</string>
+    <!-- Setting for auto frame rate pause -->
     <string name="auto_frame_rate_pause">Auto Frame Rate (pause when switching)</string>
+    <!-- Message for applying auto frame rate -->
     <string name="auto_frame_rate_applying">Applying auto frame rate %sx%s\@%s</string>
+    <!-- Setting for audio shift -->
     <string name="audio_shift">Audio shift</string>
+    <!-- Setting to remember speed -->
     <string name="player_remember_speed">Remember speed</string>
+    <!-- Title for marking channel as watched -->
     <string name="mark_channel_as_watched">Mark as watched</string>
+    <!-- Message indicating channel has been marked as watched -->
     <string name="channel_marked_as_watched">Channel has been marked as watched</string>
+    <!-- Title for adding device dialog -->
     <string name="dialog_add_device">Add device</string>
+    <!-- Title for removing all devices dialog -->
     <string name="dialog_remove_all_devices">Remove all devices</string>
+    <!-- Status for link enabled -->
     <string name="device_link_enabled">Link enabled</string>
+    <!-- Message indicating device has been connected -->
     <string name="device_connected">Device \"%s\" has been connected</string>
+    <!-- Message indicating device has been disconnected -->
     <string name="device_disconnected">Device \"%s\" has been disconnected</string>
+    <!-- Title for UI scale settings -->
     <string name="settings_ui_scale">UI scale</string>
+    <!-- Message to restart app for applying settings -->
     <string name="msg_restart_app">Please restart the app to apply these settings</string>
+    <!-- Title for content blocking settings -->
     <string name="settings_block">Content blocking</string>
+    <!-- Message indicating applying settings -->
     <string name="msg_applying">Applying %s…</string>
+    <!-- Message indicating done -->
     <string name="msg_done">Done</string>
+    <!-- Title for general settings -->
     <string name="settings_general">General</string>
+    <!-- Title for video settings -->
     <string name="settings_video">Video</string>
+    <!-- Setting for confirm on skip -->
     <string name="content_block_confirm_skip">Confirm on skip</string>
+    <!-- Title for skip segments categories -->
     <string name="content_block_categories">Skip segments</string>
+    <!-- Title for sponsor content blocking -->
     <string name="content_block_sponsor">Sponsor</string>
+    <!-- Title for intermission/intro animation blocking -->
     <string name="content_block_intro">Intermission/intro animation</string>
+    <!-- Title for endcards/credits blocking -->
     <string name="content_block_outro">Endcards/credits</string>
+    <!-- Title for interaction reminder blocking -->
     <string name="content_block_interaction">Interaction reminder (subscribe)</string>
+    <!-- Title for unpaid/self promotion blocking -->
     <string name="content_block_self_promo">Unpaid/self promotion</string>
+    <!-- Title for non-music section of clip blocking -->
     <string name="content_block_music_off_topic">Non-music section of clip</string>
+    <!-- Confirmation message for skipping segment -->
     <string name="confirm_segment_skip">Skip segment \"%s\"\?</string>
+    <!-- Cancellation message for segment skip -->
     <string name="cancel_segment_skip">Cancel segment skip</string>
+    <!-- Message indicating skipping segment -->
     <string name="msg_skipping_segment">Skipping segment \"%s\"…</string>
+    <!-- Title for notification type settings -->
     <string name="content_block_notification_type">Notification type</string>
+    <!-- Option for no notification -->
     <string name="content_block_notify_none">Without notification</string>
+    <!-- Option for toast notification -->
     <string name="content_block_notify_toast">Toast</string>
+    <!-- Option for confirmation dialog notification -->
     <string name="content_block_notify_dialog">Confirmation dialog</string>
+    <!-- Title for returning to launcher -->
     <string name="return_to_launcher">Return to the launcher from ATV channels/search</string>
+    <!-- Option for force exit if video opened from external source -->
     <string name="intent_force_close">Force exit if video has been opened from external source</string>
+    <!-- Button text for confirm action -->
     <string name="btn_confirm">Confirm</string>
+    <!-- Setting for low video quality -->
     <string name="player_low_video_quality">Low video quality</string>
+    <!-- Message indicating remote session has been closed -->
     <string name="remote_session_closed">Remote session has been closed</string>
+    <!-- Error message for mode switch -->
     <string name="msg_mode_switch_error">Can\'t switch display mode to \"%s\"</string>
+    <!-- Error message for player error -->
     <string name="msg_player_error">Player error occurred %s. Restarting playback…</string>
+    <!-- Option for no video preset -->
     <string name="video_preset_disabled">Without preset</string>
+    <!-- Option for enabling video preset -->
     <string name="video_preset_enabled">Format of the next video will be set according to preset</string>
+    <!-- Title for sleep timer settings -->
     <string name="player_sleep_timer">Sleep timer</string>
+    <!-- Setting to show quality info in controls bar -->
     <string name="player_show_quality_info">Show quality info in the controls bar</string>
+    <!-- Setting to remember each video speed -->
     <string name="player_remember_each_speed">Remember each video speed</string>
+    <!-- Option for no speed remembering -->
     <string name="player_remember_speed_none">None</string>
+    <!-- Option for same speed on all videos -->
     <string name="player_remember_speed_all">Same on all videos</string>
+    <!-- Option for per each video speed remembering -->
     <string name="player_remember_speed_each">Per each video</string>
+    <!-- Error message for player error source -->
     <string name="msg_player_error_source">Can\'t download the video</string>
+    <!-- Error message for renderer issues -->
     <string name="msg_player_error_renderer">Selected format isn\'t supported.\nTry to select another one.\nIf this won\'t help try to reboot the device.</string>
+    <!-- Error message for video renderer issues -->
     <string name="msg_player_error_video_renderer">Selected VIDEO format isn\'t supported.\nTry to select another one by pressing HQ button in the player.\nIf this won\'t help try to reboot the device.</string>
+    <!-- Error message for audio renderer issues -->
     <string name="msg_player_error_audio_renderer">Selected AUDIO format isn\'t supported.\nTry to select another one by pressing HQ button in the player.\nIf this won\'t help try to reboot the device.</string>
+    <!-- Error message for subtitle renderer issues -->
     <string name="msg_player_error_subtitle_renderer">Selected SUBTITLE format isn\'t supported.\nTry to select another one by long pressing CC button in the player.\nIf this won\'t help try to reboot the device.</string>
+    <!-- Error message for unexpected player errors -->
     <string name="msg_player_error_unexpected">Unknown video decoder error</string>
+    <!-- Title for aspect ratio settings -->
     <string name="video_aspect">Aspect ratio</string>
+    <!-- Title for developer options -->
     <string name="player_tweaks">Developer options</string>
+    <!-- Header for uploads section -->
     <string name="header_uploads">Uploads</string>
+    <!-- Setting to show always-on-screen clock -->
     <string name="player_show_global_clock">Show always-on-screen clock</string>
+    <!-- Setting to show always-on-screen ending time -->
     <string name="player_show_global_ending_time">Show always-on-screen ending time</string>
+    <!-- Setting for home top right corner clock -->
     <string name="app_corner_clock">Home: top right corner clock</string>
+    <!-- Setting for player top right corner clock -->
     <string name="player_corner_clock">Player: top right corner clock</string>
+    <!-- Setting for player top right corner ending time -->
     <string name="player_corner_ending_time">Player: top right corner ending time</string>
+    <!-- Option for reverting old look of Uploads section -->
     <string name="uploads_old_look">Revert old look of Uploads section</string>
+    <!-- Title for background playback activation settings -->
     <string name="background_playback_activation">Background playback (activation)</string>
+    <!-- Option for old look of Channels section -->
     <string name="channels_old_look">Old look of Channels section</string>
+    <!-- Option for auto loading Channels section content -->
     <string name="channels_auto_load">Auto load Channels section content</string>
+    <!-- Title for returning to video running in background -->
     <string name="return_to_background_video">Return to video running in background</string>
+    <!-- Title for pinning/unpinning from sidebar -->
     <string name="pin_unpin_from_sidebar">Add/Remove from the sidebar</string>
+    <!-- Title for pinning/unpinning playlist from sidebar -->
     <string name="pin_unpin_playlist">Add/Remove playlist from the sidebar</string>
+    <!-- Title for pinning/unpinning channel from sidebar -->
     <string name="pin_unpin_channel">Add/Remove channel from the sidebar</string>
+    <!-- Title for pinning playlist to sidebar -->
     <string name="pin_playlist">Add playlist to the sidebar</string>
+    <!-- Title for pinning channel to sidebar -->
     <string name="pin_channel">Add channel to the sidebar</string>
+    <!-- Message indicating added to sidebar -->
     <string name="pinned_to_sidebar">Added to the sidebar</string>
+    <!-- Message indicating removal from sidebar -->
     <string name="unpin_from_sidebar">Remove from the sidebar</string>
+    <!-- Message indicating removal of subscription group -->
     <string name="unpin_group_from_sidebar">Remove the subscription group</string>
+    <!-- Message indicating removed from sidebar -->
     <string name="unpinned_from_sidebar">Removed from the sidebar</string>
+    <!-- Title for country selection dialog -->
     <string name="dialog_select_country">Country</string>
+    <!-- Title for language/country settings -->
     <string name="settings_language_country">Language/Country</string>
+    <!-- Title for share embed link -->
     <string name="share_embed_link">Share embed link</string>
+    <!-- Title for card text scroll speed settings -->
     <string name="card_text_scroll_factor">Card text scroll speed</string>
+    <!-- Title for preferred update source selection -->
     <string name="preferred_update_source">Select update source</string>
+    <!-- Option for hiding shorts from Subscriptions -->
     <string name="hide_shorts">Hide shorts from Subscriptions</string>
+    <!-- Option for hiding shorts from a channel -->
     <string name="hide_shorts_channel">Hide shorts from a channel</string>
+    <!-- Title for key remapping settings -->
     <string name="key_remapping">Key remapping</string>
+    <!-- Title for screen dimming settings -->
     <string name="screen_dimming">Screen dimming</string>
+    <!-- Message indicating removal from playback queue -->
     <string name="removed_from_playback_queue">Removed from playback queue</string>
+    <!-- Message indicating addition to playback queue -->
     <string name="added_to_playback_queue">Added to playback queue</string>
+    <!-- Title for add/remove from playback queue action -->
     <string name="add_remove_from_playback_queue">Add/Remove from playback queue</string>
+    <!-- Title for adding to playback queue action -->
     <string name="add_to_playback_queue">Add to playback queue</string>
+    <!-- Title for removing from playback queue action -->
     <string name="remove_from_playback_queue">Remove from playback queue</string>
+    <!-- Status for proxy enabled -->
     <string name="proxy_enabled">Proxy enabled</string>
+    <!-- Status for proxy disabled -->
     <string name="proxy_disabled">Proxy disabled</string>
+    <!-- Row name for uploads section -->
     <string name="uploads_row_name">Uploads</string>
+    <!-- Row name for created playlists section -->
     <string name="playlists_row_name">Created playlists</string>
+    <!-- Row name for popular uploads section -->
     <string name="popular_uploads_row_name">Popular uploads</string>
+    <!-- Row name for news section -->
     <string name="news_row_name">News</string>
+    <!-- Row name for breaking news section -->
     <string name="breaking_news_row_name">Breaking news</string>
+    <!-- Row name for COVID-19 news section -->
     <string name="covid_news_row_name">COVID-19 news</string>
+    <!-- Option for enabling global search -->
     <string name="enable_voice_search">Enable global search (firmware support needed)</string>
+    <!-- Title for subscribe/unsubscribe from channel action -->
     <string name="subscribe_unsubscribe_from_channel">Subscribe/Unsubscribe from the channel</string>
+    <!-- Title for backup/restore settings -->
     <string name="app_backup_restore">Backup/Restore</string>
+    <!-- Title for backing up app data -->
     <string name="app_backup">Backup app data</string>
+    <!-- Title for restoring app data -->
     <string name="app_restore">Restore app data</string>
+    <!-- Option for not skipping segments again -->
     <string name="skip_each_segment_once">Don\'t skip segments again</string>
+    <!-- Option for disabling OK button long press -->
     <string name="disable_ok_long_press">Disable OK button long press</string>
+    <!-- Description for disabling OK button long press -->
     <string name="disable_ok_long_press_desc">Intended for buggy controllers where OK button does not function properly</string>
+    <!-- Setting for showing time with speed correction -->
     <string name="player_time_correction">Show the time with speed correction</string>
+    <!-- Setting for color markers on progress bar -->
     <string name="sponsor_color_markers">Color markers on progress bar</string>
+    <!-- Title for refreshing section -->
     <string name="refresh_section">Refresh section</string>
+    <!-- Option for disabled -->
     <string name="option_disabled">Disabled</string>
+    <!-- Row name for live now section -->
     <string name="live_now_row_name">Live now</string>
+    <!-- Setting for background playback -->
     <string name="run_in_background">Background playback</string>
+    <!-- Title for remote control settings -->
     <string name="settings_remote_control">Remote control</string>
+    <!-- Message indicating background service has started -->
     <string name="background_service_started">Background service started</string>
+    <!-- Title for add to %s dialog -->
     <string name="dialog_add_to">Add to %s</string>
+    <!-- Title for remove from %s dialog -->
     <string name="dialog_remove_from">Remove from %s</string>
+    <!-- Message indicating addition to %s -->
     <string name="added_to">Added to %s</string>
+    <!-- Message indicating removal from %s -->
     <string name="removed_from">Removed from %s</string>
+    <!-- Title for adaptive video preset -->
     <string name="video_preset_adaptive">Adaptive</string>
+    <!-- Title for content block preview or recap -->
     <string name="content_block_preview_recap">Preview or recap of the video</string>
+    <!-- Title for content block highlight -->
     <string name="content_block_highlight">Interesting point (bookmark)</string>
+    <!-- Message indicating video has been removed from history -->
     <string name="removed_from_history">Video has been removed from history</string>
+    <!-- Title for removing from history action -->
     <string name="remove_from_history">Remove from history</string>
+    <!-- Title for upload date settings -->
     <string name="upload_date">Upload date</string>
+    <!-- Option for all time in upload date settings -->
     <string name="upload_date_any">All time</string>
+    <!-- Option for today in upload date settings -->
     <string name="upload_date_today">Today</string>
+    <!-- Option for this week in upload date settings -->
     <string name="upload_date_this_week">This week</string>
+    <!-- Option for this month in upload date settings -->
     <string name="upload_date_this_month">This month</string>
+    <!-- Option for this year in upload date settings -->
     <string name="upload_date_this_year">This year</string>
-    <string name="double_refresh_rate">Double refresh rate</string>
+    <!-- Option for last hour in upload date settings -->
     <string name="upload_date_last_hour">Last hour</string>
-    <string name="focus_on_search_results">Autofocus on search results</string>
-    <string name="context_menu">Context menu</string>
-    <string name="context_menu_sorting">Context menu sorting</string>
-    <string name="add_remove_from_recent_playlist">Add/Remove from recent playlist</string>
-    <string name="hide_settings_section">Hide Settings section (dangerous!)</string>
-    <string name="volume">Volume %s%%</string>
+    <!-- Title for double refresh rate setting -->
+    <string name="double_refresh_rate">Double refresh rate</string>
+    <!-- Setting for auto frame rate in seconds -->
     <string name="auto_frame_rate_sec">%s sec</string>
+    <!-- Setting for audio shift in seconds -->
     <string name="audio_shift_sec">%s sec</string>
+    <!-- Setting for UI hide timeout in seconds -->
     <string name="ui_hide_timeout_sec">%s sec</string>
+    <!-- Setting for screen dimming timeout in minutes -->
     <string name="screen_dimming_timeout_min">%s min</string>
+    <!-- Title for marking all channels as watched -->
     <string name="mark_all_channels_watched">Mark all channels as watched</string>
+    <!-- Title for moving section up -->
     <string name="move_section_up">Move section up</string>
+    <!-- Title for moving section down -->
     <string name="move_section_down">Move section down</string>
+    <!-- Title for setting up player buttons -->
     <string name="player_buttons">Setup player buttons</string>
+    <!-- Action button text for adding to playlist -->
     <string name="action_playlist_add">Add to playlist</string>
+    <!-- Action button text for video stats -->
     <string name="action_video_stats">Video stats</string>
+    <!-- Action button text for subscribing -->
     <string name="action_subscribe">Subscribe</string>
+    <!-- Action button text for opening channel -->
     <string name="action_channel">Open channel</string>
+    <!-- Action button text for PIP -->
     <string name="action_pip">PIP</string>
+    <!-- Action button text for video description -->
     <string name="action_video_info">Video description</string>
+    <!-- Action button text for turning screen off -->
     <string name="action_screen_off">Screen off</string>
+    <!-- Action button text for turning sound off -->
     <string name="action_sound_off">Sound off</string>
+    <!-- Action button text for playback queue -->
     <string name="action_playback_queue">Playback queue</string>
+    <!-- Action button text for video speed -->
     <string name="action_video_speed">Video speed</string>
+    <!-- Action button text for subtitles -->
     <string name="action_subtitles">Subtitles</string>
+    <!-- Action button text for liking video -->
     <string name="action_like">Like</string>
+    <!-- Action button text for disliking video -->
     <string name="action_dislike">Dislike</string>
+    <!-- Action button text for play/pause -->
     <string name="action_play_pause">Play/Pause</string>
+    <!-- Action button text for playback mode -->
     <string name="action_repeat_mode">Playback mode</string>
+    <!-- Action button text for next video -->
     <string name="action_next">Next video</string>
+    <!-- Action button text for previous video -->
     <string name="action_previous">Previous video</string>
+    <!-- Action button text for video quality -->
     <string name="action_high_quality">Video quality</string>
+    <!-- Title for no-skipping mode -->
     <string name="content_block_no_skipping_mode">No-skipping mode</string>
+    <!-- Title for choosing action in content block -->
     <string name="content_block_action_type">Choose action</string>
+    <!-- Option for doing nothing in content block -->
     <string name="content_block_action_none">Do nothing</string>
+    <!-- Option for only skipping in content block -->
     <string name="content_block_action_only_skip">Only skip</string>
+    <!-- Option for skipping with notification in content block -->
     <string name="content_block_action_toast">Skip with notification</string>
+    <!-- Option for showing confirmation dialog in content block -->
     <string name="content_block_action_dialog">Show confirmation dialog</string>
+    <!-- Title for off-topic (filler) content block -->
     <string name="content_block_filler">Off-topic (filler)</string>
+    <!-- Option for automatically showing keyboard -->
     <string name="keyboard_auto_show">Show keyboard automatically</string>
+    <!-- Button text for cancel action -->
     <string name="cancel_dialog">Cancel</string>
+    <!-- Error message for player error source (alternative) -->
     <string name="msg_player_error_source2">URL isn\'t working or incorrect device time.\nUsually, it\'s a bug in the app.</string>
+    <!-- Error message for video source issues -->
     <string name="msg_player_error_video_source">VIDEO URL isn\'t working or incorrect device time.\nUsually, it\'s a bug in the app.</string>
+    <!-- Error message for audio source issues -->
     <string name="msg_player_error_audio_source">AUDIO URL isn\'t working or incorrect device time.\nUsually, it\'s a bug in the app.</string>
+    <!-- Error message for subtitle source issues -->
     <string name="msg_player_error_subtitle_source">SUBTITLE URL isn\'t working or incorrect device time.\nUsually, it\'s a bug in the app.</string>
+    <!-- Option for hiding upcoming content from Subscriptions -->
     <string name="hide_upcoming">Hide upcoming from Subscriptions</string>
+    <!-- Option for hiding upcoming content from Channel -->
     <string name="hide_upcoming_channel">Hide upcoming from Channel</string>
+    <!-- Option for hiding upcoming content from Home -->
     <string name="hide_upcoming_home">Hide upcoming from Home</string>
+    <!-- Option for background play while searching/browsing a channel -->
     <string name="search_background_playback">Background play while searching/browsing a channel</string>
+    <!-- Row name for trending section -->
     <string name="trending_row_name">Trending</string>
+    <!-- Title for seek behavior settings -->
     <string name="player_seek_type">Seek behavior</string>
+    <!-- Option for regular seek behavior -->
     <string name="player_seek_regular">Regular</string>
+    <!-- Option for seek behavior with confirmation (pause while seeking) -->
     <string name="player_seek_confirmation_pause">With confirmation (pause while seeking)</string>
+    <!-- Option for seek behavior with confirmation (play while seeking) -->
     <string name="player_seek_confirmation_play">With confirmation (play while seeking)</string>
+    <!-- Option for hiding shorts from Home -->
     <string name="hide_shorts_from_home">Hide shorts from Home</string>
+    <!-- Option for closing the app after disconnecting the phone/tablet -->
     <string name="finish_on_disconnect">Close the app after disconnecting the phone/tablet</string>
+    <!-- Title for update error -->
     <string name="update_error">Update error</string>
+    <!-- Option for hiding shorts from search result -->
     <string name="hide_shorts_from_search">Hide shorts from the search result</string>
+    <!-- Option for hiding shorts from history -->
     <string name="hide_shorts_from_history">Hide shorts from History</string>
+    <!-- Option for hiding shorts from trending -->
     <string name="hide_shorts_from_trending">Hide shorts from Trending</string>
+    <!-- Option for disabling screensaver -->
     <string name="disable_screensaver">Disable screensaver</string>
+    <!-- Message for description not found -->
     <string name="description_not_found">Description not found</string>
+    <!-- Hint for proxy port -->
     <string name="proxy_port_hint">Proxy port</string>
+    <!-- Hint for proxy hostname or IP -->
     <string name="proxy_host_hint">Proxy hostname or IP</string>
+    <!-- Hint for proxy username -->
     <string name="proxy_username_hint">Proxy username</string>
+    <!-- Hint for proxy password -->
     <string name="proxy_password_hint">Proxy password</string>
+    <!-- Title for proxy type settings -->
     <string name="proxy_type">Proxy Type</string>
+    <!-- Option for using web proxy -->
     <string name="enable_web_proxy">Use Web Proxy</string>
+    <!-- Message indicating web proxy needs Android 4.4+ -->
     <string name="proxy_not_supported">Use Web Proxy (Needs Android 4.4+)</string>
+    <!-- Title for proxy test button -->
     <string name="proxy_test_btn">Test</string>
+    <!-- Title for proxy server settings -->
     <string name="proxy_settings_title">Proxy Server Settings</string>
+    <!-- URLs for proxy test -->
     <string name="proxy_test_urls">https://www.youtube.com\nhttps://www.google.com</string>
+    <!-- Message indicating proxy test was cancelled -->
     <string name="proxy_test_cancelled">Test #%d: cancelled.</string>
+    <!-- Error message for invalid proxy type -->
     <string name="proxy_type_invalid">Proxy type not set.</string>
+    <!-- Error message for invalid proxy host -->
     <string name="proxy_host_invalid">Proxy host not set.</string>
+    <!-- Error message for invalid proxy port -->
     <string name="proxy_port_invalid">Invalid proxy port, must &gt; 0.</string>
+    <!-- Error message for invalid proxy credentials -->
     <string name="proxy_credentials_invalid">Invalid username or password.</string>
+    <!-- Error message for aborted proxy test -->
     <string name="proxy_test_aborted">Test aborted, please fix proxy settings first.</string>
+    <!-- Error message for aborted proxy application -->
     <string name="proxy_application_aborted">Please correct proxy settings first.</string>
+    <!-- Message indicating proxy test is starting -->
     <string name="proxy_test_start">Test #%d: %s …</string>
+    <!-- Error message for proxy test error -->
     <string name="proxy_test_error">Error #%d: %s</string>
+    <!-- Status message for proxy test -->
     <string name="proxy_test_status">Status #%d: %s %d %s</string>
+    <!-- Hint for OpenVPN config file address -->
     <string name="openvpn_config_address_hint">Config file address (*.ovpn)</string>
+    <!-- Option for using OpenVPN -->
     <string name="enable_openvpn">Use OpenVPN</string>
+    <!-- Title for OpenVPN settings -->
     <string name="openvpn_settings_title">OpenVPN Settings</string>
+    <!-- Error message for aborted OpenVPN application -->
     <string name="openvpn_application_aborted">Please correct OpenVPN settings first.</string>
+    <!-- Error message for aborted OpenVPN test -->
     <string name="openvpn_test_aborted">Test aborted, please fix OpenVPN settings first.</string>
+    <!-- Error message for invalid OpenVPN address -->
     <string name="openvpn_address_invalid">OpenVPN config address not set.</string>
+    <!-- Title for internet censorship settings -->
     <string name="internet_censorship">Internet Censorship</string>
+    <!-- Title for renaming section -->
     <string name="rename_section">Rename this section</string>
+    <!-- Hint for simple edit value -->
     <string name="simple_edit_value_hint">Enter value</string>
+    <!-- Title for seek interval settings -->
     <string name="seek_interval">Seek interval</string>
+    <!-- Setting for seek interval in seconds -->
     <string name="seek_interval_sec">%s sec</string>
+    <!-- Title for system style subtitle settings -->
     <string name="subtitle_system">System style (Android settings &gt; Accessibility)</string>
+    <!-- Title for subtitle scale settings -->
     <string name="subtitle_scale">Subtitle scale</string>
+    <!-- Description for audio sync fix -->
     <string name="audio_sync_fix_desc">An alternative way to synchronize audio/video. It\'s considered obsolete, but in some cases, may help.</string>
+    <!-- Title for audio sync fix -->
     <string name="audio_sync_fix">Audio sync fix</string>
+    <!-- Description for ambilight ratio fix -->
     <string name="ambilight_ratio_fix_desc">Fixes absent bias lighting. Fixes incorrect aspect ratio or video scale. Fixes blank screenshots. Affects performance!</string>
+    <!-- Title for ambilight/aspect ratio/video scale/screenshots fix -->
     <string name="ambilight_ratio_fix">Ambilight/Aspect ratio/Video scale/Screenshots fix</string>
+    <!-- Description for force legacy codecs -->
     <string name="force_legacy_codecs_desc">Significantly improves performance on low-end devices. Maximum resolution is 720p.</string>
+    <!-- Title for force legacy codecs -->
     <string name="force_legacy_codecs">Force legacy codecs (720p)</string>
+    <!-- Description for live stream fix -->
     <string name="live_stream_fix_desc">Warn, this tweak disables the rewinding of streams. Significantly improves live stream performance on low-end devices. Maximum resolution is 1080p.</string>
+    <!-- Description for live stream fix 4K -->
     <string name="live_stream_fix_4k_desc">Warn, this tweak disables the rewinding of streams. Significantly improves live stream performance. Maximum resolution is 4K.</string>
+    <!-- Title for live stream fix (1080p) -->
     <string name="live_stream_fix">Live stream fix (1080p)</string>
+    <!-- Title for live stream fix (4K) -->
     <string name="live_stream_fix_4k">Live stream fix (4K)</string>
+    <!-- Description for disabling playback notifications -->
     <string name="playback_notifications_fix_desc">Hides track change notifications. Could be useful on AOSP-based firmware.</string>
+    <!-- Title for disabling playback notifications -->
     <string name="playback_notifications_fix">Disable playback notifications</string>
+    <!-- Description for Amlogic fix -->
     <string name="amlogic_fix_desc">Frame drop fix on Amlogic-based devices.</string>
+    <!-- Title for Amlogic 1080p@60fps fix -->
     <string name="amlogic_fix">Amlogic 1080p\@60fps fix</string>
+    <!-- Description for tunneled video playback -->
     <string name="tunneled_video_playback_desc">NOTE: pause may not work properly! Tunneled video playback promises benefits such as better audio/video synchronization (AV sync) and smoother playback. Required Android 5+</string>
+    <!-- Title for tunneled video playback (Android 5+) -->
     <string name="tunneled_video_playback">Tunneled video playback (Android 5+)</string>
+    <!-- Title for master volume settings -->
     <string name="master_volume">Master volume</string>
+    <!-- Title for volume limit settings -->
     <string name="volume_limit">Volume limit</string>
+    <!-- Title for volume settings -->
     <string name="player_volume">Volume</string>
+    <!-- Action button text for play -->
     <string name="play_video">Play</string>
+    <!-- Option for remembering position of short videos -->
     <string name="remember_position_of_short_videos">Remember position of short videos (less than 5 min)</string>
+    <!-- Option for remembering live stream position -->
     <string name="remember_position_of_live_videos">Remember live stream position</string>
+    <!-- Option for showing button tooltips -->
     <string name="player_show_tooltips">Show button tooltips</string>
+    <!-- Action button text for removing like -->
     <string name="action_like_unset">removed like</string>
+    <!-- Action button text for removing dislike -->
     <string name="action_dislike_unset">removed dislike</string>
+    <!-- Title for various buttons at the top of the main window -->
     <string name="various_buttons">Buttons at the top of the main window</string>
+    <!-- Message indicating selected option isn't compatible with something -->
     <string name="not_compatible_with">Selected option isn\'t compatible with</string>
+    <!-- Title for subtitle bottom shift settings -->
     <string name="subtitle_position">Subtitle bottom shift</string>
+    <!-- Option for pressing home to exit -->
     <string name="pressing_home">by pressing HOME</string>
+    <!-- Option for pressing home or back to exit -->
     <string name="pressing_home_back">by pressing HOME or BACK</string>
+    <!-- Option for pressing back to exit -->
     <string name="pressing_back">by pressing BACK</string>
+    <!-- Title for seek with number keys setting -->
     <string name="player_number_key_seek">Seek with number keys</string>
+    <!-- Title for add/remove playlist from Playlists section -->
     <string name="save_remove_playlist">Add/Remove playlist from Playlists section</string>
+    <!-- Title for adding playlist to Playlists section -->
     <string name="save_playlist">Add playlist to Playlists section</string>
+    <!-- Title for removing playlist from Playlists section permanently -->
     <string name="remove_playlist">Remove playlist from Playlists section permanently</string>
+    <!-- Confirmation message for removing %s permanently -->
     <string name="remove_playlist_fmt">Remove %s permanently?</string>
+    <!-- Message indicating removed from Playlists section -->
     <string name="removed_from_playlists">Removed from Playlists section</string>
+    <!-- Message indicating added to Playlists section -->
     <string name="saved_to_playlists">Added to Playlists section</string>
+    <!-- Title for creating playlist -->
     <string name="create_playlist">Create playlist</string>
+    <!-- Title for adding to new playlist -->
     <string name="add_video_to_new_playlist">Add to new playlist</string>
+    <!-- Error message for deleting empty playlist -->
     <string name="cant_delete_empty_playlist">Can\'t delete empty playlist</string>
+    <!-- Title for playlist settings -->
     <string name="playlist">Playlist</string>
+    <!-- Title for renaming playlist -->
     <string name="rename_playlist">Rename playlist</string>
+    <!-- Error message for renaming empty playlist -->
     <string name="cant_rename_empty_playlist">Can\'t rename empty playlist</string>
+    <!-- Error message for renaming foreign playlist -->
     <string name="cant_rename_foreign_playlist">Can\'t rename foreign playlist</string>
+    <!-- Error message for saving playlist -->
     <string name="cant_save_playlist">This playlist cannot be added</string>
+    <!-- Hint for entering any non-empty value -->
     <string name="enter_value">Enter any non-empty value</string>
+    <!-- Title for add/remove from %s dialog -->
     <string name="dialog_add_remove_from">Add/Remove from %s</string>
+    <!-- Title for skipping next in playback controls -->
     <string name="lb_playback_controls_skip_next">Skip Next</string>
+    <!-- Title for skipping previous or rewinding to start position in playback controls -->
     <string name="lb_playback_controls_skip_previous">Skip Previous/Rewind to start position</string>
+    <!-- Title for alt presets behavior (limit bandwidth) -->
     <string name="alt_presets_behavior">Alt presets behavior (limit bandwidth)</string>
+    <!-- Description for alt presets behavior -->
     <string name="alt_presets_behavior_desc">The app will try to maintain bandwidth corresponding to selected preset instead of matching between resolution, fps and codec.</string>
+    <!-- Title for sleep timer (if remote isn't used for one hour) -->
     <string name="sleep_timer">Sleep timer (if remote isn\'t used for one hour)</string>
+    <!-- Description for sleep timer -->
     <string name="sleep_timer_desc">Pause the playback if user didn\'t use the remote for one hour</string>
+    <!-- Option for disabling snap to vsync -->
     <string name="disable_vsync">Disable snap to vsync</string>
+    <!-- Description for disabling snap to vsync -->
     <string name="disable_vsync_desc">This option disables aligning frames with the display\'s vertical sync signal. This could improve performance on low-end devices by releasing CPU resources.</string>
+    <!-- Option for skipping codec profile level check -->
     <string name="skip_codec_profile_check">Skip codec profile level check</string>
+    <!-- Description for skipping codec profile level check -->
     <string name="skip_codec_profile_check_desc">Don\'t check codec support when starting a video. Could be helpful on buggy firmware.</string>
+    <!-- Option for forcing SW video decoder -->
     <string name="force_sw_codec">Force SW video decoder</string>
+    <!-- Description for forcing SW video decoder -->
     <string name="force_sw_codec_desc">Could play almost any video, but performance is very poor.</string>
+    <!-- Title for sorting playlist settings -->
     <string name="playlist_order">Sort playlist</string>
+    <!-- Option for sorting by added date (newer first) -->
     <string name="playlist_order_added_date_newer_first">Added date (newer first)</string>
+    <!-- Option for sorting by added date (older first) -->
     <string name="playlist_order_added_date_older_first">Added date (older first)</string>
+    <!-- Option for sorting by published date (newer first) -->
     <string name="playlist_order_published_date_newer_first">Published date (newer first)</string>
+    <!-- Option for sorting by published date (older first) -->
     <string name="playlist_order_published_date_older_first">Published date (older first)</string>
+    <!-- Option for sorting by popularity -->
     <string name="playlist_order_popularity">Popularity</string>
+    <!-- Error message for foreign playlist actions -->
     <string name="cant_do_this_for_foreign_playlist">Can\'t do this for foreign playlist</string>
+    <!-- Error message for owned playlists action -->
     <string name="owned_playlist_warning">Error: This action can be applied only for owned playlists</string>
+    <!-- Title for alternative server usage in content blocking -->
     <string name="content_block_alt_server">Use alternative server</string>
+    <!-- Description for alternative server usage in content blocking -->
     <string name="content_block_alt_server_desc">Enable this option if SponsorBlock refusing to work by different reasons.</string>
+    <!-- Title for unsetting stream reminder -->
     <string name="unset_stream_reminder">Unset stream reminder</string>
+    <!-- Title for setting stream reminder -->
     <string name="set_stream_reminder">Set stream reminder</string>
+    <!-- Message indicating playback will start shortly -->
     <string name="playback_starts_shortly">Playback will start automatically when the stream will be ready</string>
+    <!-- Message indicating starting the stream -->
     <string name="starting_stream">Starting the stream…</string>
+    <!-- Action button text for removing from playlist -->
     <string name="action_playlist_remove">Remove from playlist</string>
+    <!-- Title for user code loading view -->
     <string name="signin_view_title">User Code is loading…</string>
+    <!-- Description for signing in with user code -->
     <string name="signin_view_description">To sign-in enter this code on page %s\nNOTE. Works only with Firefox or Chrome browsers.</string>
+    <!-- Button text for done action in sign-in view -->
     <string name="signin_view_action_text">Done</string>
+    <!-- Requirement message for certain features -->
     <string name="require_checked">Requires \"%s\"</string>
+    <!-- Message to press again to exit -->
     <string name="msg_press_again_to_exit">Press again to exit</string>
+    <!-- Setting for remaining time in player -->
     <string name="player_remaining_time">Remaining: %s</string>
+    <!-- Setting for ending time in player -->
     <string name="player_ending_time">Ends at %s</string>
+    <!-- Badge for new content -->
     <string name="badge_new_content">NEW CONTENT</string>
+    <!-- Badge for live content -->
     <string name="badge_live">LIVE</string>
+    <!-- Description for linking device -->
     <string name="add_device_view_description">To link the device enter this code on your phone\'s YouTube app in section Settings/Watch on TV\nNOTE: This only works with the Gboard keyboard!</string>
+    <!-- Title for repeat pause in playback controls -->
     <string name="playback_controls_repeat_pause">Repeat Pause</string>
+    <!-- Title for repeat list in playback controls -->
     <string name="playback_controls_repeat_list">Repeat List</string>
+    <!-- Action button text for subscribe off -->
     <string name="action_subscribe_off">Subscribe Off</string>
+    <!-- Action button text for subscribe on -->
     <string name="action_subscribe_on">Subscribe On</string>
+    <!-- Option for skipping 24fps formats (real cinema mode fix?) -->
     <string name="skip_24_rate">Skip 24fps formats (real cinema mode fix\?)</string>
+    <!-- Option for skipping Shorts -->
     <string name="skip_shorts">Skip Shorts</string>
+    <!-- Option for disabling suggestions in player -->
     <string name="player_disable_suggestions">Disable suggestions</string>
+    <!-- Title for suggestions settings -->
     <string name="suggestions">Suggestions</string>
+    <!-- Title for feedback settings -->
     <string name="feedback">Feedback</string>
+    <!-- Title for sources settings -->
     <string name="sources">Sources</string>
+    <!-- Title for releases settings -->
     <string name="releases">Releases</string>
+    <!-- Codec selection preference: prefer avc over vp9 -->
     <string name="prefer_avc_over_vp9">Codec selection: prefer avc over vp9</string>
+    <!-- Title for chat/comments -->
     <string name="open_chat">Chat/Comments</string>
+    <!-- Title for opening comments -->
     <string name="open_comments">Open comments</string>
+    <!-- Option for placing chat to the left -->
     <string name="place_chat_left">Place chat to the left</string>
+    <!-- Option for placing comments to the left -->
     <string name="place_comments_left">Place comments to the left</string>
+    <!-- Option for using alt speech recognizer -->
     <string name="use_alt_speech_recognizer">Alt speech recognizer</string>
+    <!-- Title for time format settings -->
     <string name="time_format">Time format</string>
+    <!-- Option for 24 hours time format -->
     <string name="time_format_24">24 hours</string>
+    <!-- Option for 12 hours time format (AM/PM) -->
     <string name="time_format_12">12 hours (AM/PM)</string>
+    <!-- Description for using alt speech recognizer -->
     <string name="use_alt_speech_recognizer_desc">Seriously bugged. Use it only if you have trouble with the default recognizer.</string>
+    <!-- Title for speech recognizer settings -->
     <string name="speech_recognizer">Speech recognizer</string>
+    <!-- Title for voice search engine settings -->
     <string name="speech_engine">Voice search engine</string>
+    <!-- Option for system (preferred) speech recognizer -->
     <string name="speech_recognizer_system">System (preferred)</string>
+    <!-- Option for external 1 speech recognizer (seriously bugged, requires disabling microphone access) -->
     <string name="speech_recognizer_external_1">External 1 (seriously bugged, in order to work you need to disable access to the microphone)</string>
+    <!-- Option for external 2 speech recognizer (seriously bugged) -->
     <string name="speech_recognizer_external_2">External 2 (seriously bugged)</string>
+    <!-- Option for showing icon on the channel button -->
     <string name="real_channel_icon">Show icon on the channel button</string>
+    <!-- Option for yellow semi-transparent subtitle -->
     <string name="subtitle_yellow_semi_transparent">Yellow on semitransparent background</string>
+    <!-- Option for yellow black subtitle -->
     <string name="subtitle_yellow_black">Yellow on black background</string>
+    <!-- Title for pixel ratio settings -->
     <string name="player_pixel_ratio">Pixel ratio</string>
+    <!-- Option for dark grey monochrome color scheme -->
     <string name="color_scheme_dark_grey_monochrome">Dark Grey (monochrome)</string>
+    <!-- Message for disabling microphone access -->
     <string name="disable_mic_permission">Please disable microphone access for the app in order for this recognizer to work properly.</string>
+    <!-- Title for shuffle any playlist option -->
     <string name="repeat_mode_shuffle">Shuffle any playlist</string>
+    <!-- Option for chat to the left -->
     <string name="chat_left">Left</string>
+    <!-- Option for chat to the right -->
     <string name="chat_right">Right</string>
+    <!-- Title for replacing thumbnails with a frame from the video -->
     <string name="card_real_thumbnails">Replace thumbnails with a frame from the video</string>
+    <!-- Title for where to grab card thumbnails -->
     <string name="card_content">Where to grab card thumbnails</string>
+    <!-- Option for default thumbnail quality -->
     <string name="thumb_quality_default">Default</string>
+    <!-- Option for thumbnail quality at the start of the video -->
     <string name="thumb_quality_start">Start of the video</string>
+    <!-- Option for thumbnail quality in the middle of the video -->
     <string name="thumb_quality_middle">Middle of the video</string>
+    <!-- Option for thumbnail quality at the end of the video -->
     <string name="thumb_quality_end">End of the video</string>
+    <!-- Title for checking SponsorBlock server status -->
     <string name="content_block_status">Check SponsorBlock server status</string>
+    <!-- Title for checking DeArrow server status -->
     <string name="dearrow_status">Check DeArrow server status</string>
+    <!-- Option for adding bitrate into the quality info -->
     <string name="player_show_quality_info_bitrate">Add bitrate into the quality info</string>
+    <!-- Option for reverting old behavior of the speed button -->
     <string name="player_speed_button_old_behavior">Revert old behavior of the speed button</string>
+    <!-- Title for protecting all settings with password -->
     <string name="protect_settings_with_password">Protect all settings with password</string>
+    <!-- Hint for entering settings password -->
     <string name="enter_settings_password">Enter settings password</string>
+    <!-- Title for child mode settings -->
     <string name="child_mode">Child mode</string>
+    <!-- Description for child mode -->
     <string name="child_mode_desc">In this mode, the user can\'t use search or see any suggested content. The settings page will be password protected.</string>
+    <!-- Warning message for lost setting -->
     <string name="lost_setting_warning">The app settings will be changed. Make sure that you created a backup of the settings.</string>
+    <!-- Title for long press button options -->
     <string name="player_button_long_click">Long press this button for additional options</string>
+    <!-- Title for pause history -->
     <string name="pause_history">Pause history</string>
+    <!-- Title for resume history -->
     <string name="resume_history">Resume history</string>
+    <!-- Title for disabling history -->
     <string name="disable_history">Disable history</string>
+    <!-- Title for enabling history -->
     <string name="enable_history">Enable history</string>
+    <!-- Title for clearing history -->
     <string name="clear_history">Clear history</string>
+    <!-- Title for chapters -->
     <string name="chapters">Chapters</string>
+    <!-- Title for multiline subtitles -->
     <string name="card_multiline_subtitle">Multiline subtitles</string>
+    <!-- Title for supported modes in auto frame rate -->
     <string name="auto_frame_rate_modes">Supported modes</string>
+    <!-- Title for loading -->
     <string name="loading">Loading…</string>
+    <!-- Option for hiding streams from Subscriptions -->
     <string name="hide_streams">Hide streams from Subscriptions</string>
+    <!-- Title for video rotation -->
     <string name="video_rotate">Rotate</string>
+    <!-- Title for video flip (mirror) -->
     <string name="video_flip">Flip (mirror)</string>
+    <!-- Title for trending searches -->
     <string name="trending_searches">Trending searches</string>
-    <string name="video_duration_any">Any</string>
+    <!-- Title for video duration settings -->
     <string name="video_duration">Duration</string>
+    <!-- Option for any duration in video settings -->
+    <string name="video_duration_any">Any</string>
+    <!-- Option for under 4 minutes in video duration settings -->
     <string name="video_duration_under_4">Under 4 minutes</string>
+    <!-- Option for 4–20 minutes in video duration settings -->
     <string name="video_duration_between_4_20">4–20 minutes</string>
+    <!-- Option for over 20 minutes in video duration settings -->
     <string name="video_duration_over_20">Over 20 minutes</string>
+    <!-- Title for content type settings -->
     <string name="content_type">Type</string>
+    <!-- Option for any content type -->
     <string name="content_type_any">Any</string>
+    <!-- Option for video content type -->
     <string name="content_type_video">Video</string>
+    <!-- Option for channel content type -->
     <string name="content_type_channel">Channel</string>
+    <!-- Option for playlist content type -->
     <string name="content_type_playlist">Playlist</string>
+    <!-- Option for movie content type -->
     <string name="content_type_movie">Movie</string>
+    <!-- Title for video features settings -->
     <string name="video_features">Features</string>
+    <!-- Option for any video feature -->
     <string name="video_feature_any">Any</string>
+    <!-- Option for live video feature -->
     <string name="video_feature_live">Live</string>
+    <!-- Option for 4K video feature -->
     <string name="video_feature_4k">4K</string>
+    <!-- Option for HDR video feature -->
     <string name="video_feature_hdr">HDR</string>
+    <!-- Title for search sorting settings -->
     <string name="search_sorting">Sort by</string>
+    <!-- Option for sorting by relevance -->
     <string name="sort_by_relevance">Relevance</string>
+    <!-- Option for sorting by view count -->
     <string name="sort_by_views">View count</string>
+    <!-- Option for sorting by upload date -->
     <string name="sort_by_date">Upload date</string>
+    <!-- Option for sorting by rating -->
     <string name="sort_by_rating">Rating</string>
+    <!-- Title for clearing search history -->
     <string name="clear_search_history">Clear search history</string>
+    <!-- Title for hiding from subscriptions -->
     <string name="remove_from_subscriptions">Hide</string>
+    <!-- Title for long speed list in player settings -->
     <string name="player_long_speed_list">Long speed list</string>
+    <!-- Title for extra long speed list in player settings -->
     <string name="player_extra_long_speed_list">Extra long speed list</string>
+    <!-- Title for alternative app icon -->
     <string name="alt_app_icon">Alternative app icon (needs reboot)</string>
+    <!-- Network stack preference message -->
     <string name="network_stack">Prefer %s network stack</string>
+    <!-- Title for network engine settings -->
     <string name="player_network_stack">Network engine</string>
+    <!-- Description for Cronet network stack -->
     <string name="cronet_desc">Cronet is the Chromium network stack. Cronet can reduce the latency and increase networking performance, which can help with buffering issues.</string>
+    <!-- Option for unlocking all video formats -->
     <string name="unlock_all_formats">Unlock all video formats</string>
+    <!-- Description for unlocking all video formats -->
     <string name="unlock_all_formats_desc">On some devices the firmware incorrectly reports some formats as unsupported, even if they are.\n(e.g. 1080p smart TVs tend to report 4k as not supported).</string>
+    <!-- Description for okhttp network engine -->
     <string name="okhttp_desc">This network engine is the slowest one but has good stability.</string>
+    <!-- Title for selecting channel section on app launch from ATV Channels -->
     <string name="select_channel_section">Open corresponding section when the app launched from ATV Channels</string>
+    <!-- Description for enabling voice search -->
     <string name="enable_voice_search_desc">The official app will be replaced with a so-called \"bridge\". A bridge helps to transfer global search requests to our app.</string>
+    <!-- Title for enabling master password -->
     <string name="enable_master_password">Enable master password</string>
+    <!-- Hint for entering master password -->
     <string name="enter_master_password">Enter master password</string>
+    <!-- Title for disabling stream buffer -->
     <string name="disable_stream_buffer">Disable buffer on streams</string>
+    <!-- Description for disabling stream buffer -->
     <string name="disable_stream_buffer_desc">Fix for situations when the stream too far behind. Note: the stream may start to lag.</string>
+    <!-- Title for frame drop fix #1 -->
     <string name="sony_frame_drop_fix">Frame drop fix #1</string>
+    <!-- Description for frame drop fix #1 -->
     <string name="sony_frame_drop_fix_desc">Fix lags on Sony TV and some other devices. Note: possible problems with audio synchronization.</string>
+    <!-- Title for audio language settings -->
     <string name="audio_language">Audio language</string>
+    <!-- Option for old look of the Home section -->
     <string name="old_home_look">Old look of the Home section</string>
+    <!-- Option for old look of the Channel page -->
     <string name="old_channel_look">Old look of the Channel page</string>
+    <!-- Option for hiding shorts everywhere -->
     <string name="hide_shorts_everywhere">Hide shorts everywhere</string>
+    <!-- Title for update found -->
     <string name="update_found">Update</string>
+    <!-- Warning message for volume boost settings -->
     <string name="volume_boost_warning">Any settings over the limit can potentially damage speakers</string>
+    <!-- Option for playing video incognito -->
     <string name="play_video_incognito">Play incognito</string>
+    <!-- Header for kids section -->
     <string name="header_kids_home">Kids</string>
+    <!-- Title for using current section contents as a playlist -->
     <string name="player_section_playlist">Use current section contents as a playlist</string>
+    <!-- Header for trending section -->
     <string name="header_trending">Trending</string>
+    <!-- Title for screensaver settings -->
     <string name="screensaver">Screensaver</string>
+    <!-- Title for screen off timeout settings -->
     <string name="player_screen_off_timeout">Screen off timeout</string>
+    <!-- Option for old look of the update notifications -->
     <string name="old_update_notifications">Old look of the update notifications</string>
+    <!-- Title for dialog notification settings -->
     <string name="dialog_notification">Notify about updates with a pop-up dialog</string>
+    <!-- Title for marking as watched -->
     <string name="mark_as_watched">Mark as watched</string>
+    <!-- Title for enabling player UI animations -->
     <string name="player_ui_animations">Enable player UI animations</string>
+    <!-- Title for showing likes/dislikes count -->
     <string name="player_likes_count">Show likes/dislikes count</string>
+    <!-- Title for fast, animated previews sorting -->
     <string name="sorting_alphabetically2">Alphabetically (fast, animated previews)</string>
+    <!-- Title for default, fast, animated previews sorting -->
     <string name="sorting_default">Default (fast, animated previews)</string>
+    <!-- Title for excluding this channel from SponsorBlock -->
     <string name="content_block_exclude_channel">Exclude this channel from SponsorBlock</string>
+    <!-- Title for stopping excluding this channel from SponsorBlock -->
     <string name="content_block_stop_excluding_channel">Stop excluding this channel from SponsorBlock</string>
+    <!-- Title for quick advance through the chapters using the popup notification -->
     <string name="player_chapter_notification">Quick advance through the chapters using the popup notification</string>
+    <!-- Title for switching to the next chapter by clicking on the notification -->
     <string name="player_chapter_notification2">Switch to the next chapter by clicking on the notification</string>
+    <!-- Title for enabling subtitles only on the current channel -->
     <string name="subtitle_remember">Enable subtitles only on the current channel</string>
+    <!-- Title for frame drop fix #2 -->
     <string name="amazon_frame_drop_fix">Frame drop fix #2</string>
+    <!-- Description for frame drop fix #2 -->
     <string name="amazon_frame_drop_fix_desc">Intended for Amazon Stick devices. May work on other devices too.</string>
+    <!-- Description for default network engine -->
     <string name="default_stack_desc">Built-in network engine. This engine may have better stability in certain situations.</string>
+    <!-- Title for position of settings -->
     <string name="item_postion">Position of</string>
+    <!-- Title for screen off dimming amount settings -->
     <string name="player_screen_off_dimming">Screen off dimming amount</string>
+    <!-- Title for screensaver timeout settings -->
     <string name="screensaver_timout">Screensaver timeout</string>
+    <!-- Title for screensaver dimming amount settings -->
     <string name="screensaver_dimming">Screensaver dimming amount</string>
+    <!-- Title for showing player UI when switching to the next video -->
     <string name="player_ui_on_next">Show player UI when switching to the next video</string>
+    <!-- Autogenerated string -->
     <string name="autogenerated">autogenerated</string>
+    <!-- Title for auto volume adjustment -->
     <string name="player_auto_volume">Auto volume adjustment</string>
+    <!-- Header for shorts section -->
     <string name="header_shorts">Shorts</string>
+    <!-- Title for seamless navigation between player button rows -->
     <string name="player_global_focus">Seamless navigation between player button rows</string>
+    <!-- Option for auto history (use account settings) -->
     <string name="auto_history">Auto (use account settings)</string>
+    <!-- Option for remembering last viewed position in Subscriptions -->
     <string name="remember_position_subscriptions">Remember last viewed position in Subscriptions</string>
+    <!-- Option for remembering last viewed position in the pinned playlists -->
     <string name="remember_position_pinned">Remember last viewed position in the pinned playlists</string>
+    <!-- Message for unknown player error -->
     <string name="msg_player_unknown_error">Unknown error</string>
+    <!-- Message for unknown source error -->
     <string name="unknown_source_error">Unknown source error</string>
-    <string name="unknown_renderer_error">Unknown renderer error</string>
-    <string name="header_notifications">Notifications</string>
-    <string name="disable_search_history">Disable search history</string>
-    <string name="unlock_high_bitrate_formats">Unlock high bitrate 1080p vp9 formats</string>
-    <string name="unlock_high_bitrate_audio_formats">Unlock high bitrate mp4a formats</string>
-    <string name="color_scheme_blue">Blue</string>
-    <string name="color_scheme_dark_blue">Dark Blue</string>
-    <string name="player_speed_per_channel">Per each channel</string>
-    <string name="disable_popular_searches">Disable popular search queries</string>
-    <string name="multi_profiles">Use separate settings per each account</string>
-    <string name="protect_account_with_password">Protect this account with password</string>
-    <string name="enter_account_password">Enter account password</string>
-    <string name="show_connect_messages">Show connect messages</string>
-    <string name="prefer_avc_over_vp9_desc">WARN: 1080p maximum</string>
-    <string name="play_next">Play next</string>
-    <string name="hide_watched_from_subscriptions">Hide watched videos from Subscriptions</string>
-    <string name="hide_watched_from_notifications">Hide watched videos from Notifications</string>
-    <string name="hide_unwanted_content">Hide videos</string>
-    <string name="hide_watched_from_home">Hide watched videos from Home</string>
-    <string name="hide_watched_from_watch_later">Hide watched videos from Watch later playlist</string>
-    <string name="remote_control_permission">Background Remote control requires Overlay permission</string>
-    <string name="login_from_browser">Login from browser</string>
-    <string name="disable_remote_history">Disable history when using remote control</string>
-    <string name="keyboard_fix">Prevent OK button from opening the keyboard (G20s and others)</string>
-    <string name="nothing_found">Nothing found</string>
-    <string name="auto_frame_rate_desc">This option removes jittering on scenes where the camera moves fast, e.g. sports streaming</string>
-    <string name="channel_filter_hint">Filter channels</string>
-    <string name="player_loop_shorts">Loop Shorts</string>
-    <string name="player_quick_shorts_skip">Skip Shorts with left/right buttons</string>
-    <string name="player_quick_skip_videos">Skip regular videos with left/right buttons</string>
-    <string name="channels_filter">Show Filter channels field inside Channels section</string>
-    <string name="channel_search_bar">Search bar inside the Channel page</string>
-    <string name="header_sports">Sports</string>
-    <string name="keep_finished_activities">Keep finished activities</string>
-    <string name="disable_channels_service">Disable Channels service</string>
-    <string name="replace_titles">Replace titles</string>
-    <string name="enable">Enable</string>
-    <string name="more_info">More info</string>
-    <string name="about_sponsorblock">About SponsorBlock</string>
-    <string name="about_dearrow">About DeArrow</string>
-    <string name="replace_thumbnails">Replace thumbnails</string>
-    <string name="crowdsourced_thumbnails">Crowdsourced thumbnails</string>
-    <string name="crowdsoursed_titles">Crowdsourced titles</string>
-    <string name="dearrow_not_submitted_thumbs">Thumbnail source (if there\'s no DeArrow submission)</string>
-    <string name="pitch_effect">Pitch effect</string>
-    <string name="fullscreen_mode">Fullscreen mode (without system bars)</string>
-    <string name="player_only_mode">Show only the player if the video is opened outside of the app</string>
-    <string name="pinned_channel_rows">Show pinned channel as rows</string>
-    <string name="prefer_ipv4">Prefer IPv4 DNS</string>
-    <string name="prefer_ipv4_desc">Could fix situations when the app isn\'t working at all.\nNote. May cause hangs and crashes (especially on Android 8 devices or Dune HD)</string>
-    <string name="long_press_for_settings">LONG PRESS FOR SETTINGS</string>
-    <string name="long_press_for_options">LONG PRESS FOR OPTIONS</string>
-    <string name="device_specific_backup">Backup for this device only</string>
-    <string name="local_backup">Local backup</string>
-    <string name="auto_backup">Auto backup (once a day)</string>
-    <string name="repeat_mode_reverse_list">Play the playlist or channel videos in reverse order</string>
-    <string name="calm_msg">We are fixing the issue. Check for updates from time to time</string>
-    <string name="without_picture">Without picture</string>
-    <string name="video_disabled">Video disabled</string>
-    <string name="applying_fix">Don\'t close the player. Applying the fix…</string>
-    <string name="hide_mixes">Hide Mixes</string>
-    <string name="player_global_focus_desc">This feature affects which player button will receive focus when navigating between player button rows</string>
-    <string name="disable_network_error_fixing">Disable automatic network error fixing</string>
-    <string name="disable_network_error_fixing_desc">You probably need to enable this option if you\'re using a VPN</string>
-    <string name="recommended">Recommended</string>
-    <string name="add_to_subscriptions_group">Add/Remove from subscription group</string>
-    <string name="new_subscriptions_group">New group</string>
-    <string name="rename_group">Rename the subscription group</string>
-    <string name="screen_dimming_amount">Screen dimming amount</string>
-    <string name="screen_dimming_timeout">Screen dimming timeout</string>
-    <string name="playlists_rows">Show Playlists section as rows</string>
-    <string name="import_subscriptions_group">Import</string>
-    <string name="lb_playback_controls_closed_captioning_disable">Disable Closed Captioning</string>
-    <string name="lb_playback_controls_closed_captioning_enable">Enable Closed Captioning</string>
-    <string name="my_videos">My videos</string>
-    <string name="player_audio_focus">Audio focus (pause if other players detected)</string>
-    <string name="paid_content_notification">Paid content notification</string>
-    <string name="you_liked">you liked</string>
-    <string name="premium_users_only">Premium users only. Fix for incomplete video format list</string>
-    <string name="playback_buffering_fix">Playback buffering fix</string>
-    <string name="oculus_quest_fix">Oculus Quest fix</string>
-    <string name="card_preview_muted">Video without sound</string>
-    <string name="card_preview_full">Video with sound</string>
-    <string name="card_preview">Card preview</string>
-    <string name="card_unlocalized_titles">Unlocalized video titles</string>
-    <string name="dont_resize_video_to_fit_dialog">Don\'t resize video to fit dialog</string>
-    <string name="typing_corrections">Disable auto-correction while typing text</string>
-</resources>
+    <!-- Message for unknown renderer error -->
+    <string name="unknown_renderer_error">

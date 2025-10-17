@@ -1,5 +1,16 @@
 package com.liskovsoft.smartyoutubetv2.common.misc;
 
+/**
+ * Singleton that holds global key mapping state and user-configured remaps.
+ *
+ * Responsibilities:
+ * - Provide a single lookup point for key remaps used by the entire app.
+ * - Persist user mappings via AppPrefs and expose an API to import/export remaps.
+ *
+ * Threading:
+ * - Lightweight operations; reads are thread-safe. Writes should be done on a worker thread if persisted.
+ */
+
 import android.content.Context;
 import android.view.KeyEvent;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.PlaybackPresenter;
