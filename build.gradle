@@ -1,72 +1,116 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
 apply from: gradle.ext.sharedModulesConstants
-apply from: 'custom-repos.gradle'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.android.library'
 
-// NOT working
-// Running 'gradle wrapper' will generate gradlew
-wrapper {
-    gradleVersion = gradleVersion
-    distributionType = Wrapper.DistributionType.BIN
-}
-
-buildscript {
-    apply from: gradle.ext.sharedModulesConstants
-
-    repositories {
-        google()
-        mavenCentral()
-        // IntelliJ 'Read timed out' (error 403)
-        // https://stackoverflow.com/questions/74258160/is-jcenter-down-permanently-31-oct
-        //jcenter()
+android {
+    // FIX: Default interface methods are only supported starting with Android N (--min-api 24)
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:' + androidGradleVersion
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:' + kotlinVersion
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+    compileSdkVersion project.properties.compileSdkVersion
+    buildToolsVersion project.properties.buildToolsVersion
+    testOptions.unitTests.includeAndroidResources = true
+
+    defaultConfig {
+        minSdkVersion project.properties.minSdkVersion
+        targetSdkVersion project.properties.targetSdkVersion
+        versionCode 10
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+
+        // More info: http://myhexaville.com/2017/03/10/android-multidex/
+        // Additionally, you should extend your application from MultiDexApplication
+        multiDexEnabled = true
     }
-}
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        maven { url 'https://jitpack.io' }
-        //flatDir { dirs 'libs' } // include duktape-my to all subprojects
-        // IntelliJ 'Read timed out' (error 403)
-        // https://stackoverflow.com/questions/74258160/is-jcenter-down-permanently-31-oct
-        //jcenter()
-        customRepoBlock(delegate)
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
     }
-    configurations.all {
-        // WorkManager conflict resolution
-        resolutionStrategy.force 'androidx.lifecycle:lifecycle-livedata-core:' + liveDataVersion
-        resolutionStrategy.force 'androidx.lifecycle:lifecycle-livedata:' + liveDataVersion
-        resolutionStrategy.force 'androidx.lifecycle:lifecycle-runtime:' + liveDataVersion
-        // Force Android 4 compatible okHttp version
-        resolutionStrategy.force 'com.squareup.okhttp3:okhttp:' + okhttpVersion
-        // Downgrade kotlin version for WorkManager
-        resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:' + kotlinVersion
-        resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:' + kotlinVersion
-        resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib:' + kotlinVersion
-        resolutionStrategy.force 'org.jetbrains.kotlinx:kotlinx-coroutines-android:' + kotlinxVersion
-        resolutionStrategy.force 'androidx.core:core-ktx:' + kotlinCoreXVersion
-        resolutionStrategy.force 'androidx.core:core:' + coreXLibraryVersion
-        resolutionStrategy.force 'androidx.annotation:annotation:' + annotationXLibraryVersion
-        // Downgrade Cronet version for cronet-okhttp
-        resolutionStrategy.force 'org.chromium.net:cronet-api:' + cronetApiVersion
-        resolutionStrategy.force 'androidx.multidex:multidex:' + multiDexVersion
 
-        // Replace with modded library (leanback-1.0.0)
-        exclude group: 'androidx.leanback', module: 'leanback'
-        // Replace with modded library (fragment-1.1.0)
-        exclude group: 'androidx.fragment', module: 'fragment'
+    // gradle 4.6 migration: disable dimensions mechanism
+    // more: https://proandroiddev.com/advanced-android-flavors-part-4-a-new-version-fc2ad80c01bb
+    flavorDimensions "default"
 
-        // Don't work! Replace with modded library (leanback-1.0.0)
-        // resolutionStrategy.dependencySubstitution {
-        //     // substitute remote dependency with local module
-        //     substitute module('androidx.leanback:leanback') using project(':leanback-1.0.0')
-        // }
+    productFlavors {
+        stbeta {}
+        ststable {}
+        storig {}
+        strtarmenia {}
+        stbolshoetv {}
+        stredboxtv {}
+        stsibsetru {}
+        stamazon {}
+        staptoide {}
     }
 }
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'androidx.appcompat:appcompat:' + appCompatXLibraryVersion
+    testImplementation 'junit:junit:' + junitVersion
+    testImplementation 'org.robolectric:robolectric:' + robolectricVersion
+
+    implementation project(':sharedutils')
+    implementation project(':fragment-1.1.0')
+    implementation project(':mediaserviceinterfaces')
+    implementation project(':youtubeapi')
+    implementation project(':filepicker-lib')
+
+    implementation 'io.reactivex.rxjava2:rxandroid:' + rxAndroidVersion
+    implementation 'io.reactivex.rxjava2:rxjava:' + rxJavaVersion
+
+    //////// BEGIN EXOPLAYER /////////
+
+    implementation project(':exoplayer-library')
+    implementation project(':exoplayer-extension-okhttp')
+    implementation project(':exoplayer-extension-cronet')
+
+    // implementation 'com.amazon.android:exoplayer:' + amazonExoplayerVersion
+    // implementation 'com.amazon.android:extension-okhttp:' + amazonExoplayerVersion
+
+    // implementation 'com.google.android.exoplayer:exoplayer:' + exoplayerVersion
+    // implementation 'com.google.android.exoplayer:extension-okhttp:' + exoplayerVersion
+
+    // implementation 'com.github.amzn:exoplayer-amazon-port:' + amazonExoplayerJitpackVersion
+
+    //////// END EXOPLAYER //////////
+
+    implementation 'androidx.media:media:' + mediaXLibraryVersion // exoplayer fix
+
+    implementation 'com.github.bumptech.glide:glide:' + glideVersion
+
+    implementation 'androidx.work:work-runtime:' + workVersion
+    implementation 'com.google.guava:guava:' + guavaVersion // Work library deps
+
+    implementation 'androidx.browser:browser:' + browserXVersion
+
+    implementation 'androidx.core:core-ktx:' + kotlinCoreXVersion
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:' + kotlinVersion
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:' + kotlinxVersion
+
+    implementation 'com.jakewharton:process-phoenix:' + phoenixVersion
+
+    stbetaImplementation project(':leanbackassistant')
+    ststableImplementation project(':leanbackassistant')
+    storigImplementation project(':leanbackassistant')
+    staptoideImplementation project(':leanbackassistant')
+
+    stbetaImplementation project(':appupdatechecker2')
+    ststableImplementation project(':appupdatechecker2')
+    storigImplementation project(':appupdatechecker2')
+    strtarmeniaImplementation project(':appupdatechecker2')
+    stredboxtvImplementation project(':appupdatechecker2')
+    stsibsetruImplementation project(':appupdatechecker2')
+    stamazonImplementation project(':appupdatechecker2')
+    staptoideImplementation project(':appupdatechecker2')
+}
+
+apply from: 'custom-deps.gradle'
