@@ -12,4 +12,4 @@ $Path += ";C:\Program Files\Java\jdk-14\bin"
 [Environment]::SetEnvironmentVariable("Path", $Path, "Machine")
 
 # Set the 'JAVA_HOME' variable
-[Environment]::SetEnvironmentVariable("JAVA_HOME", ";C:\Program Files\Java\jdk-14", "Machine")
+[Environment]::SetEnvironmentVariable("JAVA_HOME", "C:\Program Files\Java\jdk-14", "Machine")
