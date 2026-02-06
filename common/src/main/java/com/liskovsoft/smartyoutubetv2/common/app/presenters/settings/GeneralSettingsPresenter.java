@@ -108,10 +108,16 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
             options.add(
                 UiOptionItem.from(
+                
                     getContext().getString(sectionResId), optionItem -> {
-                        BrowsePresenter.instance(getContext()).enableSection(sectionId, optionItem.isSelected());
+                        BrowsePresenter.instance(getContext()).enableSection(
+                            sectionId,
+                            optionItem.isSelected()
+                        );
                     }, 
+
                     mSidebarService.isSectionPinned(sectionId)
+                
                 )
             );
         
