@@ -25,5 +25,16 @@ foreach ($dir in $dirs) {
 Write-Host 'Saving Updated Path'
 [Environment]::SetEnvironmentVariable("Path", $Path, "User")
 
-Write-Host 'Updating JAVE_HOME'
-[Environment]::SetEnvironmentVariable("JAVA_HOME", "C:\Program Files\Java\jdk-14\", "User")
+Write-Host 'Updating ANDROID_SDK_ROOT'
+[Environment]::SetEnvironmentVariable(
+    "ANDROID_SDK_ROOT", 
+    "C:\Users\$env:Username\AppData\Local\android\Sdk\",
+    "User"
+)
+
+Write-Host 'Updating JAVA_HOME'
+[Environment]::SetEnvironmentVariable(
+    "JAVA_HOME", 
+    "C:\Program Files\Java\jdk-14\", 
+    "User"
+)
