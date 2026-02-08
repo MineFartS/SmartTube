@@ -77,7 +77,7 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
 
         GeneralData generalData = GeneralData.instance(getContext());
 
-        generalData.setOldUpdateNotificationsEnabled(true)
+        generalData.setOldUpdateNotificationsEnabled(true);
         
         settingsPresenter.appendSingleSwitch(
             UiOptionItem.from(

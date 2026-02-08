@@ -134,14 +134,14 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
         
         List<OptionItem> options = new ArrayList<>();
 
-        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_MIXES, true)
-        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_WATCHED_HOME, true)
-        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_CHANNEL, true)
-        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_HISTORY, true)
-        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_HOME, true)
-        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_SEARCH, true)
-        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS, true)
-        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_TRENDING, true)
+        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_MIXES, true);
+        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_WATCHED_HOME, true);
+        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_CHANNEL, true);
+        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_HISTORY, true);
+        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_HOME, true);
+        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_SEARCH, true);
+        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS, true);
+        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_TRENDING, true);
 
         options.add(
             UiOptionItem.from(
