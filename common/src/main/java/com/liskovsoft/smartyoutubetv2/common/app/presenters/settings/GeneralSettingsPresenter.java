@@ -134,6 +134,15 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
         
         List<OptionItem> options = new ArrayList<>();
 
+        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_MIXES, true)
+        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_WATCHED_HOME, true)
+        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_CHANNEL, true)
+        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_HISTORY, true)
+        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_HOME, true)
+        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_SEARCH, true)
+        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS, true)
+        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_TRENDING, true)
+
         options.add(
             UiOptionItem.from(
                 getContext().getString(R.string.hide_mixes),
@@ -302,22 +311,32 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendContextMenuSortingCategory(AppDialogPresenter settingsPresenter) {
+        
         List<OptionItem> options = new ArrayList<>();
 
         Map<Long, Integer> menuNames = getMenuNames();
 
         for (Long menuItem : mMainUIData.getMenuItemsOrdered()) {
+            
             Integer nameResId = menuNames.get(menuItem);
 
             if (nameResId == null || !mMainUIData.isMenuItemEnabled(menuItem)) {
                 continue;
             }
 
-            options.add(UiOptionItem.from(getContext().getString(nameResId), optionItem ->
-                    showMenuItemOrderDialog(menuItem), false));
+            options.add(
+                UiOptionItem.from(
+                    getContext().getString(nameResId), optionItem -> showMenuItemOrderDialog(menuItem), false
+                )
+            );
+
         }
 
-        settingsPresenter.appendRadioCategory(getContext().getString(R.string.context_menu_sorting), options);
+        settingsPresenter.appendRadioCategory(
+            getContext().getString(R.string.context_menu_sorting), 
+            options
+        );
+    
     }
 
     private void showMenuItemOrderDialog(Long menuItem) {
