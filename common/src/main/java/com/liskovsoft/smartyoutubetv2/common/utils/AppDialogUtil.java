@@ -312,11 +312,15 @@ public class AppDialogUtil {
     }
 
     private static void setFormat(FormatItem formatItem, PlayerData playerData, Runnable onFormatSelected) {
+        
         if (playerData.isLegacyCodecsForced()) {
             playerData.setLegacyCodecsForced(false);
         }
+        
         playerData.setFormat(formatItem);
+    
         onFormatSelected.run();
+    
     }
 
     public static OptionCategory createVideoBufferCategory(Context context, Runnable onBufferSelected) {
