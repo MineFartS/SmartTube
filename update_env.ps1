@@ -1,17 +1,29 @@
 
-# Get the current Path
 $Path = [Environment]::GetEnvironmentVariable("Path", "User")
 
-$Dir = "C:\Users\$env:Username\AppData\Local\android\Sdk\platform-tools"
+$dirs = @(
+    "C:\Users\$env:Username\AppData\Local\android\Sdk\platform-tools",
+    "C:\Program Files\Java\jdk-14\bin"
+)
 
-if ($Path.Contains($Dir)) {
+foreach ($dir in $dirs) {
 
-    Write-Host 'Android Platform Tools already in Path'
+    if ($Path.Contains($dir)) {
 
-} else {
+        Write-Host "Already in Path: $dir"
 
-    [Environment]::SetEnvironmentVariable("Path", "$Path;$Dir", "User")
+    } else {
 
-    Write-Host 'Android Platform Tools added to Path'
+        $Path += ";$dir"
+
+        Write-Host "Added to Path: $dir"
+
+    }
 
 }
+
+Write-Host 'Saving Updated Path'
+[Environment]::SetEnvironmentVariable("Path", $Path, "User")
+
+Write-Host 'Updating JAVE_HOME'
+[Environment]::SetEnvironmentVariable("JAVA_HOME", "C:\Program Files\Java\jdk-14\", "User")
