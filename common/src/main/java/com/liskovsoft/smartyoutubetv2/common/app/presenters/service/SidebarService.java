@@ -17,22 +17,36 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.liskovsoft.smartyoutubetv2.common.app.OverrideSettings;
+
 public class SidebarService implements ProfileChangeListener {
+
     @SuppressLint("StaticFieldLeak")
     private static SidebarService sInstance;
+
     private final Context mContext;
+
     private List<Video> mPinnedItems;
+
     private final Map<Integer, Integer> mDefaultSections = new LinkedHashMap<>();
+
     private final AppPrefs mPrefs;
+
     private boolean mIsSettingsSectionEnabled;
+
     private int mBootSectionId;
 
     private SidebarService(Context context) {
+
+        OverrideSettings(context);
+
         mContext = context.getApplicationContext();
         mPrefs = AppPrefs.instance(context);
         mPrefs.addListener(this);
+        
         initSections();
         restoreState();
+
     }
 
     public static SidebarService instance(Context context) {
@@ -62,17 +76,12 @@ public class SidebarService implements ProfileChangeListener {
     }
 
     public void enableSection(int sectionId, boolean enabled) {
+        
         if (enabled) {
+
             if (sectionId == MediaGroup.TYPE_SETTINGS) {
                 mIsSettingsSectionEnabled = true; // prevent Settings lock
             }
-
-            //Video item = new Video();
-            //item.sectionId = sectionId;
-            //
-            //if (mPinnedItems.contains(item)) { // don't reorder if item already exists
-            //    return;
-            //}
 
             Video section = Helpers.findFirst(mPinnedItems, item -> item != null && item.sectionId == sectionId);
 
@@ -90,6 +99,7 @@ public class SidebarService implements ProfileChangeListener {
             } else {
                 mPinnedItems.add(index, item);
             }
+
         } else {
             Helpers.removeIf(mPinnedItems, item -> item == null || item.sectionId == sectionId);
         }
@@ -312,7 +322,7 @@ public class SidebarService implements ProfileChangeListener {
             R.string.header_settings, 
             MediaGroup.TYPE_SETTINGS
         );
-        
+
     }
 
     private void initPinnedItems() {

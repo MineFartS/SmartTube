@@ -18,63 +18,117 @@ import java.util.Collections;
 import java.util.List;
 
 public class MainUIData extends DataChangeBase implements ProfileChangeListener {
+
     private static final String MAIN_UI_DATA = "main_ui_data2";
+    
     public static final int CARD_PREVIEW_DISABLED = 0;
+    
     public static final int CARD_PREVIEW_MUTED = 1;
+    
     public static final int CARD_PREVIEW_FULL = 2;
+    
     public static final int CHANNEL_SORTING_NEW_CONTENT = 0;
+    
     public static final int CHANNEL_SORTING_NAME = 1;
+    
     public static final int CHANNEL_SORTING_DEFAULT = 2;
+    
     public static final int CHANNEL_SORTING_LAST_VIEWED = 3;
+    
     public static final int CHANNEL_SORTING_NAME2 = 4;
+    
     public static final int PLAYLISTS_STYLE_GRID = 0;
+    
     public static final int PLAYLISTS_STYLE_ROWS = 1;
+    
     public static final long MENU_ITEM_RECENT_PLAYLIST = 1;
+    
     public static final long MENU_ITEM_ADD_TO_QUEUE = 1 << 1;
+   
     public static final long MENU_ITEM_PIN_TO_SIDEBAR = 1 << 2;
+   
     public static final long MENU_ITEM_SHARE_LINK = 1 << 3;
+   
     public static final long MENU_ITEM_SELECT_ACCOUNT = 1 << 4;
+   
     public static final long MENU_ITEM_NOT_INTERESTED = 1 << 5;
+   
     public static final long MENU_ITEM_REMOVE_FROM_HISTORY = 1 << 6;
+   
     public static final long MENU_ITEM_MOVE_SECTION_UP = 1 << 7;
+   
     public static final long MENU_ITEM_MOVE_SECTION_DOWN = 1 << 8;
+   
     public static final long MENU_ITEM_OPEN_DESCRIPTION = 1 << 9;
+   
     public static final long MENU_ITEM_RENAME_SECTION = 1 << 10;
+   
     public static final long MENU_ITEM_PLAY_VIDEO = 1 << 11;
+   
     public static final long MENU_ITEM_SAVE_REMOVE_PLAYLIST = 1 << 12;
+   
     public static final long MENU_ITEM_ADD_TO_PLAYLIST = 1 << 13;
+   
     public static final long MENU_ITEM_SUBSCRIBE = 1 << 14;
+   
     public static final long MENU_ITEM_CREATE_PLAYLIST = 1 << 15;
+   
     public static final long MENU_ITEM_STREAM_REMINDER = 1 << 16;
+   
     public static final long MENU_ITEM_ADD_TO_NEW_PLAYLIST = 1 << 17;
+   
     public static final long MENU_ITEM_SHARE_EMBED_LINK = 1 << 18;
+   
     public static final long MENU_ITEM_SHOW_QUEUE = 1 << 19;
+   
     public static final long MENU_ITEM_PLAYLIST_ORDER = 1 << 20;
+   
     public static final long MENU_ITEM_TOGGLE_HISTORY = 1 << 21;
+   
     public static final long MENU_ITEM_CLEAR_HISTORY = 1 << 22;
+   
     public static final long MENU_ITEM_UPDATE_CHECK = 1 << 23;
+   
     public static final long MENU_ITEM_OPEN_CHANNEL = 1 << 24;
+   
     public static final long MENU_ITEM_REMOVE_FROM_SUBSCRIPTIONS = 1 << 25;
+   
     public static final long MENU_ITEM_PLAY_VIDEO_INCOGNITO = 1 << 26;
+   
     public static final long MENU_ITEM_MARK_AS_WATCHED = 1 << 27;
+   
     public static final long MENU_ITEM_EXCLUDE_FROM_CONTENT_BLOCK = 1 << 28;
+   
     public static final long MENU_ITEM_OPEN_PLAYLIST = 1 << 29;
+   
     public static final long MENU_ITEM_EXIT_FROM_PIP = 1 << 30;
+   
     public static final long MENU_ITEM_OPEN_COMMENTS = 1L << 31;
+   
     public static final long MENU_ITEM_SHARE_QR_LINK = 1L << 32;
+   
     public static final long MENU_ITEM_PLAY_NEXT = 1L << 33;
+   
     public static final long MENU_ITEM_RENAME_PLAYLIST = 1L << 34;
+   
     public static final long MENU_ITEM_NOT_RECOMMEND_CHANNEL = 1L << 35;
+   
     public static final long MENU_ITEM_PLAY_FROM_START = 1L << 36;
+   
     public static final int TOP_BUTTON_BROWSE_ACCOUNTS = 1;
+   
     public static final int TOP_BUTTON_CHANGE_LANGUAGE = 1 << 1;
+   
     public static final int TOP_BUTTON_SEARCH = 1 << 2;
+   
     public static final int TOP_BUTTON_DEFAULT = TOP_BUTTON_SEARCH | TOP_BUTTON_BROWSE_ACCOUNTS;
+   
     public static final long MENU_ITEM_DEFAULT = MENU_ITEM_PIN_TO_SIDEBAR | MENU_ITEM_NOT_INTERESTED | MENU_ITEM_NOT_RECOMMEND_CHANNEL |
             MENU_ITEM_REMOVE_FROM_HISTORY | MENU_ITEM_MOVE_SECTION_UP | MENU_ITEM_MOVE_SECTION_DOWN | MENU_ITEM_RENAME_SECTION |
             MENU_ITEM_SAVE_REMOVE_PLAYLIST | MENU_ITEM_ADD_TO_PLAYLIST | MENU_ITEM_CREATE_PLAYLIST | MENU_ITEM_RENAME_PLAYLIST |
             MENU_ITEM_ADD_TO_NEW_PLAYLIST | MENU_ITEM_STREAM_REMINDER | MENU_ITEM_PLAYLIST_ORDER | MENU_ITEM_OPEN_CHANNEL |
             MENU_ITEM_REMOVE_FROM_SUBSCRIPTIONS | MENU_ITEM_PLAY_NEXT | MENU_ITEM_OPEN_PLAYLIST | MENU_ITEM_SUBSCRIBE | MENU_ITEM_CLEAR_HISTORY;
+    
     private static final Long[] MENU_ITEM_DEFAULT_ORDER = {
             MENU_ITEM_EXIT_FROM_PIP, MENU_ITEM_PLAY_VIDEO, MENU_ITEM_PLAY_VIDEO_INCOGNITO, MENU_ITEM_PLAY_FROM_START, MENU_ITEM_REMOVE_FROM_HISTORY,
             MENU_ITEM_STREAM_REMINDER, MENU_ITEM_RECENT_PLAYLIST, MENU_ITEM_ADD_TO_PLAYLIST, MENU_ITEM_CREATE_PLAYLIST, MENU_ITEM_RENAME_PLAYLIST,
@@ -85,48 +139,78 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
             MENU_ITEM_SELECT_ACCOUNT, MENU_ITEM_TOGGLE_HISTORY, MENU_ITEM_CLEAR_HISTORY, MENU_ITEM_MOVE_SECTION_UP, MENU_ITEM_MOVE_SECTION_DOWN,
             MENU_ITEM_UPDATE_CHECK
     };
+
     @SuppressLint("StaticFieldLeak")
     private static MainUIData sInstance;
+    
     private final Context mContext;
+    
     private final AppPrefs mPrefs;
+    
     private boolean mIsCardMultilineTitleEnabled;
+    
     private boolean mIsCardMultilineSubtitleEnabled;
+    
     private boolean mIsCardTextAutoScrollEnabled;
+    
     private int mCardTitleLinesNum;
+    
     private float mUIScale;
+    
     private float mVideoGridScale;
+    
     private final List<ColorScheme> mColorSchemes = new ArrayList<>();
+    
     private int mColorSchemeIndex;
+    
     private int mChannelCategorySorting;
+    
     private int mPlaylistsStyle;
+    
     private boolean mIsUploadsOldLookEnabled;
+    
     private boolean mIsUploadsAutoLoadEnabled;
+    
     private float mCardTextScrollSpeed;
+    
     private long mMenuItems;
+    
     private int mTopButtons;
+    
     private int mThumbQuality;
+    
     private List<Long> mMenuItemsOrdered;
+    
     private boolean mIsChannelsFilterEnabled;
+    
     private boolean mIsChannelSearchBarEnabled;
+    
     private boolean mIsPinnedChannelRowsEnabled;
+    
     private int mCardPreviewType;
+    
     private final Runnable mPersistStateInt = this::persistStateInt;
+    
     private boolean mIsUnlocalizedTitlesEnabled;
 
     private MainUIData(Context context) {
+
         mContext = context;
         mPrefs = AppPrefs.instance(context);
         mPrefs.addListener(this);
         initColorSchemes();
         restoreState();
+
     }
 
     public static MainUIData instance(Context context) {
+
         if (sInstance == null) {
             sInstance = new MainUIData(context.getApplicationContext());
         }
 
         return sInstance;
+
     }
 
     public boolean isCardMultilineTitleEnabled() {
@@ -134,8 +218,10 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     }
 
     public void setCardMultilineTitleEnabled(boolean enable) {
+        
         mIsCardMultilineTitleEnabled = enable;
         persistState();
+    
     }
 
     public boolean isCardMultilineSubtitleEnabled() {
@@ -143,8 +229,10 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     }
 
     public void setCardMultilineSubtitleEnabled(boolean enable) {
+        
         mIsCardMultilineSubtitleEnabled = enable;
         persistState();
+
     }
 
     public boolean isCardTextAutoScrollEnabled() {
@@ -152,8 +240,10 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     }
 
     public void setCardTextAutoScrollEnabled(boolean enable) {
+        
         mIsCardTextAutoScrollEnabled = enable;
         persistState();
+
     }
 
     public int getCardTitleLinesNum() {
@@ -161,8 +251,10 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     }
 
     public void setCartTitleLinesNum(int lines) {
+        
         mCardTitleLinesNum = lines;
         persistState();
+
     }
 
     public int getThumbQuality() {
@@ -170,8 +262,10 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     }
 
     public void setThumbQuality(int quality) {
+        
         mThumbQuality = quality;
         persistState();
+
     }
 
     public float getVideoGridScale() {
@@ -180,9 +274,10 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     }
 
     public void setVideoGridScale(float scale) {
+        
         mVideoGridScale = scale;
-
         persistState();
+
     }
 
     public float getUIScale() {
@@ -190,9 +285,10 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     }
 
     public void setUIScale(float scale) {
+        
         mUIScale = scale;
-
         persistState();
+    
     }
 
     public List<ColorScheme> getColorSchemes() {
@@ -204,8 +300,10 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     }
 
     public void setColorScheme(ColorScheme scheme) {
+        
         mColorSchemeIndex = mColorSchemes.indexOf(scheme);
         persistState();
+    
     }
 
     public int getChannelCategorySorting() {
@@ -213,8 +311,10 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     }
 
     public void setChannelCategorySorting(int type) {
+        
         mChannelCategorySorting = type;
         persistState();
+    
     }
 
     public int getPlaylistsStyle() {
@@ -222,8 +322,10 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     }
 
     public void setPlaylistsStyle(int type) {
+        
         mPlaylistsStyle = type;
         persistState();
+    
     }
 
     public boolean isUploadsOldLookEnabled() {

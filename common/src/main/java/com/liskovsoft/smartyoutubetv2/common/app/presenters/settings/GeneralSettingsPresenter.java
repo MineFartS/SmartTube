@@ -40,28 +40,52 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class GeneralSettingsPresenter extends BasePresenter<Void> {
+
     private final GeneralData mGeneralData;
+
     private final PlayerData mPlayerData;
+
     private final PlayerTweaksData mPlayerTweaksData;
+
     private final MainUIData mMainUIData;
+
     private final MediaServiceData mMediaServiceData;
+
     private final SidebarService mSidebarService;
+
     private boolean mRestartApp;
+
     private final Runnable mOnFinish = () -> {
+        
         if (mRestartApp) {
+            
             mRestartApp = false;
-            MessageHelpers.showLongMessage(getContext(), R.string.msg_restart_app);
+            
+            MessageHelpers.showLongMessage(
+                getContext(), 
+                R.string.msg_restart_app
+            );
+        
         }
+
     };
 
     private GeneralSettingsPresenter(Context context) {
+
         super(context);
+        
         mGeneralData = GeneralData.instance(context);
+        
         mPlayerData = PlayerData.instance(context);
+        
         mPlayerTweaksData = PlayerTweaksData.instance(context);
+        
         mMainUIData = MainUIData.instance(context);
+        
         mMediaServiceData = MediaServiceData.instance();
+        
         mSidebarService = SidebarService.instance(context);
+
     }
 
     public static GeneralSettingsPresenter instance(Context context) {
@@ -97,61 +121,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
         Map<Integer, Integer> sections = mSidebarService.getDefaultSections();
 
-        BrowsePresenter.instance(getContext()).enableSection(
-            MediaGroup.TYPE_SHORTS,
-            false
-        );
-
-        BrowsePresenter.instance(getContext()).enableSection(
-            MediaGroup.TYPE_TRENDING,
-            false
-        );
-
-        BrowsePresenter.instance(getContext()).enableSection(
-            MediaGroup.TYPE_KIDS_HOME,
-            false
-        );
-
-        BrowsePresenter.instance(getContext()).enableSection(
-            MediaGroup.TYPE_SPORTS,
-            false
-        );
-
-        BrowsePresenter.instance(getContext()).enableSection(
-            MediaGroup.TYPE_LIVE,
-            false
-        );
-
-        BrowsePresenter.instance(getContext()).enableSection(
-            MediaGroup.TYPE_GAMING,
-            false
-        );
-
-        BrowsePresenter.instance(getContext()).enableSection(
-            MediaGroup.TYPE_NEWS,
-            false
-        );
-
-        BrowsePresenter.instance(getContext()).enableSection(
-            MediaGroup.TYPE_MUSIC,
-            false
-        );
-
-        BrowsePresenter.instance(getContext()).enableSection(
-            MediaGroup.TYPE_CHANNEL_UPLOADS,
-            false
-        );
-
-        BrowsePresenter.instance(getContext()).enableSection(
-            MediaGroup.TYPE_MY_VIDEOS,
-            false
-        );
-
-        BrowsePresenter.instance(getContext()).enableSection(
-            MediaGroup.TYPE_PLAYBACK_QUEUE,
-            false
-        );
-
         for (Entry<Integer, Integer> section : sections.entrySet()) {
         
             int sectionResId = section.getKey();
@@ -186,15 +155,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
     private void appendHideVideos(AppDialogPresenter settingsPresenter) {
         
         List<OptionItem> options = new ArrayList<>();
-
-        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_MIXES, true);
-        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_WATCHED_HOME, true);
-        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_CHANNEL, true);
-        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_HISTORY, true);
-        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_HOME, true);
-        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_SEARCH, true);
-        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS, true);
-        mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_TRENDING, true);
 
         options.add(
             UiOptionItem.from(
@@ -353,7 +313,7 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
                     mMainUIData.isMenuItemEnabled(menuItem)
                 )
             );
-            
+
         }
 
         settingsPresenter.appendCheckedCategory(
@@ -393,6 +353,7 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void showMenuItemOrderDialog(Long menuItem) {
+        
         AppDialogPresenter dialog = AppDialogPresenter.instance(getContext());
 
         List<OptionItem> options = new ArrayList<>();
@@ -406,11 +367,13 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
         }
 
         List<Long> menuItemsOrdered = mMainUIData.getMenuItemsOrdered();
+
         int size = menuItemsOrdered.size();
         int currentIndex = mMainUIData.getMenuItemIndex(menuItem);
         int counter = 0;
 
         for (int i = 0; i < size; i++) {
+
             Long item = menuItemsOrdered.get(i);
             Integer nameResId = menuNames.get(item);
 
@@ -419,74 +382,126 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
             }
 
             final int index = i;
-            options.add(UiOptionItem.from((counter + 1) + " " + getContext().getString(nameResId), optionItem -> {
-                if (optionItem.isSelected()) {
-                    mMainUIData.setMenuItemIndex(index, menuItem);
-                    dialog.goBack();
-                }
-            }, currentIndex == i));
+            options.add(
+                UiOptionItem.from(
+                    (counter + 1) + " " + getContext().getString(nameResId), 
+                    optionItem -> {
+                        if (optionItem.isSelected()) {
+                            mMainUIData.setMenuItemIndex(index, menuItem);
+                            dialog.goBack();
+                        }
+                    },
+                    currentIndex == i
+                )
+            );
+            
             counter++;
+        
         }
 
         String itemName = getContext().getString(currentNameResId);
-        dialog.appendRadioCategory(getContext().getString(R.string.item_postion) + " " + itemName, options);
+        
+        dialog.appendRadioCategory(
+            getContext().getString(R.string.item_postion) + " " + itemName,
+            options
+        );
 
         dialog.showDialog();
+
     }
 
     private void appendBootToSection(AppDialogPresenter settingsPresenter) {
+
         List<OptionItem> options = new ArrayList<>();
 
         Map<Integer, Integer> sections = mSidebarService.getDefaultSections();
 
         for (Entry<Integer, Integer> section : sections.entrySet()) {
             options.add(
-                    UiOptionItem.from(
-                            getContext().getString(section.getKey()),
-                            optionItem -> mSidebarService.setBootSectionId(section.getValue()),
-                            section.getValue().equals(mSidebarService.getBootSectionId())
-                    )
+                UiOptionItem.from(
+                    getContext().getString(section.getKey()),
+                    optionItem -> mSidebarService.setBootSectionId(section.getValue()),
+                    section.getValue().equals(mSidebarService.getBootSectionId())
+                )
             );
         }
 
         Collection<Video> pinnedItems = mSidebarService.getPinnedItems();
 
         for (Video item : pinnedItems) {
+
             if (item != null && item.getTitle() != null) {
+
                 options.add(
-                        UiOptionItem.from(
-                                item.getTitle(),
-                                optionItem -> mSidebarService.setBootSectionId(item.getId()),
-                                item.hashCode() == mSidebarService.getBootSectionId()
-                        )
+                    UiOptionItem.from(
+                        item.getTitle(),
+                        optionItem -> mSidebarService.setBootSectionId(item.getId()),
+                        item.hashCode() == mSidebarService.getBootSectionId()
+                    )
                 );
+
             }
+
         }
 
-        settingsPresenter.appendRadioCategory(getContext().getString(R.string.boot_to_section), options);
+        settingsPresenter.appendRadioCategory(
+            getContext().getString(R.string.boot_to_section),
+            options
+        );
+
     }
 
     private void appendAppExitCategory(AppDialogPresenter settingsPresenter) {
+
         List<OptionItem> options = new ArrayList<>();
 
         for (int[] pair : new int[][] {
-                {R.string.app_exit_none, GeneralData.EXIT_NONE},
-                {R.string.app_double_back_exit, GeneralData.EXIT_DOUBLE_BACK},
-                {R.string.app_single_back_exit, GeneralData.EXIT_SINGLE_BACK}}) {
-            options.add(UiOptionItem.from(getContext().getString(pair[0]),
+            {
+                R.string.app_exit_none, 
+                GeneralData.EXIT_NONE
+            },
+            {
+                R.string.app_double_back_exit, 
+                GeneralData.EXIT_DOUBLE_BACK
+            },
+            {
+                R.string.app_single_back_exit, 
+                GeneralData.EXIT_SINGLE_BACK
+            }
+        }) {
+            options.add(
+                UiOptionItem.from(
+                    getContext().getString(pair[0]),
                     optionItem -> mGeneralData.setAppExitShortcut(pair[1]),
-                    mGeneralData.getAppExitShortcut() == pair[1]));
+                    mGeneralData.getAppExitShortcut() == pair[1]
+                )
+            );
         }
 
-        settingsPresenter.appendRadioCategory(getContext().getString(R.string.app_exit_shortcut), options);
+        settingsPresenter.appendRadioCategory(
+            getContext().getString(R.string.app_exit_shortcut),
+            options
+        );
+
     }
 
     private void appendBackgroundPlaybackCategory(AppDialogPresenter settingsPresenter) {
-        OptionCategory category = AppDialogUtil.createBackgroundPlaybackCategory(getContext(), mPlayerData, mGeneralData);
-        settingsPresenter.appendRadioCategory(category.title, category.options);
+        
+        OptionCategory category = AppDialogUtil.createBackgroundPlaybackCategory(
+            getContext(), 
+            mPlayerData, 
+            mGeneralData
+        );
+        
+        settingsPresenter.appendRadioCategory(
+            category.title, 
+            category.options
+        );
+    
     }
 
     private void appendKeyRemappingCategory(AppDialogPresenter settingsPresenter) {
+        
         List<OptionItem> options = new ArrayList<>();
 
         options.add(UiOptionItem.from(getContext().getString(R.string.player_quick_shorts_skip),
@@ -561,115 +576,164 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
                 option -> mGeneralData.setRemapChannelUpToLikeEnabled(option.isSelected()),
                 mGeneralData.isRemapChannelUpToLikeEnabled()));
 
-        options.add(UiOptionItem.from("Channel Up/Down -> Speed Up/Down",
+        options.add(
+            UiOptionItem.from("Channel Up/Down -> Speed Up/Down",
                 option -> mGeneralData.setRemapChannelUpToSpeedEnabled(option.isSelected()),
-                mGeneralData.isRemapChannelUpToSpeedEnabled()));
+                mGeneralData.isRemapChannelUpToSpeedEnabled()
+            )
+        );
 
-        options.add(UiOptionItem.from("Channel Up/Down -> Search",
+        options.add(
+            UiOptionItem.from(
+                "Channel Up/Down -> Search",
                 option -> mGeneralData.setRemapChannelUpToSearchEnabled(option.isSelected()),
-                mGeneralData.isRemapChannelUpToSearchEnabled()));
+                mGeneralData.isRemapChannelUpToSearchEnabled()
+            )
+        );
 
-        settingsPresenter.appendCheckedCategory(getContext().getString(R.string.key_remapping), options);
+        settingsPresenter.appendCheckedCategory(
+            getContext().getString(R.string.key_remapping),
+            options
+        );
+
     }
 
     private void appendScreenDimmingCategory(AppDialogPresenter settingsPresenter) {
-        settingsPresenter.appendSingleButton(UiOptionItem.from(getContext().getString(R.string.screen_dimming), optionItem -> {
-            AppDialogPresenter presenter = AppDialogPresenter.instance(getContext());
-            appendScreenDimmingAmountCategory(presenter);
-            appendScreenDimmingTimeoutCategory(presenter);
-            presenter.showDialog(getContext().getString(R.string.screen_dimming));
-        }));
+        
+        settingsPresenter.appendSingleButton(
+            UiOptionItem.from(
+                getContext().getString(R.string.screen_dimming), 
+                optionItem -> {
+                    AppDialogPresenter presenter = AppDialogPresenter.instance(getContext());
+                    appendScreenDimmingAmountCategory(presenter);
+                    appendScreenDimmingTimeoutCategory(presenter);
+                    presenter.showDialog(getContext().getString(R.string.screen_dimming));
+                }
+            )
+        );
+
     }
 
     private void appendScreenDimmingAmountCategory(AppDialogPresenter settingsPresenter) {
+
         List<OptionItem> options = new ArrayList<>();
 
         int activeMode = mGeneralData.getScreensaverDimmingPercents();
 
         for (int dimPercents : Helpers.range(10, 100, 10)) {
-            options.add(UiOptionItem.from(
+            options.add(
+                UiOptionItem.from(
                     dimPercents + "%",
                     option -> mGeneralData.setScreensaverDimmingPercents(dimPercents),
-                    activeMode == dimPercents));
+                    activeMode == dimPercents
+                )
+            );
         }
 
-        settingsPresenter.appendRadioCategory(getContext().getString(R.string.screen_dimming_amount), options);
+        settingsPresenter.appendRadioCategory(
+            getContext().getString(R.string.screen_dimming_amount),
+            options
+        );
+    
     }
 
     @SuppressLint("StringFormatMatches")
     private void appendScreenDimmingTimeoutCategory(AppDialogPresenter settingsPresenter) {
+        
         List<OptionItem> options = new ArrayList<>();
 
         int screensaverTimeoutMs = mGeneralData.getScreensaverTimeoutMs();
 
-        options.add(UiOptionItem.from(
+        options.add(
+            UiOptionItem.from(
                 getContext().getString(R.string.option_never),
                 option -> mGeneralData.setScreensaverTimeoutMs(GeneralData.SCREENSAVER_TIMEOUT_NEVER),
-                screensaverTimeoutMs == GeneralData.SCREENSAVER_TIMEOUT_NEVER));
+                screensaverTimeoutMs == GeneralData.SCREENSAVER_TIMEOUT_NEVER
+            )
+        );
 
         for (int timeoutSec : new int[] {5, 15, 30}) {
+
             int timeoutMs = timeoutSec * 1_000;
-            options.add(UiOptionItem.from(
+            
+            options.add(
+                UiOptionItem.from(
                     getContext().getString(R.string.ui_hide_timeout_sec, timeoutSec),
                     option -> mGeneralData.setScreensaverTimeoutMs(timeoutMs),
-                    screensaverTimeoutMs == timeoutMs));
+                    screensaverTimeoutMs == timeoutMs
+                )
+            );
+        
         }
 
         for (int i = 1; i <= 15; i++) {
+            
             int timeoutMs = i * 60 * 1_000;
-            options.add(UiOptionItem.from(
+            
+            options.add(
+                UiOptionItem.from(
                     getContext().getString(R.string.screen_dimming_timeout_min, i),
                     option -> mGeneralData.setScreensaverTimeoutMs(timeoutMs),
-                    screensaverTimeoutMs == timeoutMs));
+                    screensaverTimeoutMs == timeoutMs
+                )
+            );
         }
 
-        settingsPresenter.appendRadioCategory(getContext().getString(R.string.screen_dimming_timeout), options);
+        settingsPresenter.appendRadioCategory(
+            getContext().getString(R.string.screen_dimming_timeout), 
+            options
+        );
+    
     }
 
-    //private void appendTimeFormatCategory(AppDialogPresenter settingsPresenter) {
-    //    List<OptionItem> options = new ArrayList<>();
-    //
-    //    options.add(UiOptionItem.from(
-    //            getContext().getString(R.string.time_format_24),
-    //            option -> {
-    //                mGeneralData.setTimeFormat(GeneralData.TIME_FORMAT_24);
-    //                mRestartApp = true;
-    //            },
-    //            mGeneralData.getTimeFormat() == GeneralData.TIME_FORMAT_24));
-    //
-    //    options.add(UiOptionItem.from(
-    //            getContext().getString(R.string.time_format_12),
-    //            option -> {
-    //                mGeneralData.setTimeFormat(GeneralData.TIME_FORMAT_12);
-    //                mRestartApp = true;
-    //            },
-    //            mGeneralData.getTimeFormat() == GeneralData.TIME_FORMAT_12));
-    //
-    //    settingsPresenter.appendRadioCategory(getContext().getString(R.string.time_format), options);
-    //}
-
     private void appendHistoryCategory(AppDialogPresenter settingsPresenter) {
+        
         List<OptionItem> options = new ArrayList<>();
 
-        for (int[] pair : new int[][] {
-                {R.string.auto_history, GeneralData.HISTORY_AUTO},
-                {R.string.enable_history, GeneralData.HISTORY_ENABLED},
-                {R.string.disable_history, GeneralData.HISTORY_DISABLED}}) {
-            options.add(UiOptionItem.from(getContext().getString(pair[0]), optionItem -> {
-                mGeneralData.setHistoryState(pair[1]);
-                MediaServiceManager.instance().enableHistory(pair[1] == GeneralData.HISTORY_AUTO || pair[1] == GeneralData.HISTORY_ENABLED);
-            }, mGeneralData.getHistoryState() == pair[1]));
+        for (int[] pair : new int[][] {  
+            {
+                R.string.auto_history, 
+                GeneralData.HISTORY_AUTO
+            },
+            {
+                R.string.enable_history, 
+                GeneralData.HISTORY_ENABLED
+            },
+            {
+                R.string.disable_history,
+                GeneralData.HISTORY_DISABLED
+            }
+        }) {
+            options.add(
+                UiOptionItem.from(
+                    getContext().getString(pair[0]),
+                    optionItem -> {
+                        mGeneralData.setHistoryState(pair[1]);
+                        MediaServiceManager.instance().enableHistory(pair[1] == GeneralData.HISTORY_AUTO || pair[1] == GeneralData.HISTORY_ENABLED);
+                    }, 
+                    mGeneralData.getHistoryState() == pair[1]
+                )
+            );
         }
 
-        settingsPresenter.appendRadioCategory(getContext().getString(R.string.header_history), options);
+        settingsPresenter.appendRadioCategory(
+            getContext().getString(R.string.header_history), 
+            options
+        );
+    
     }
 
     private void appendMiscCategory(AppDialogPresenter settingsPresenter) {
+        
         List<OptionItem> options = new ArrayList<>();
 
-        options.add(UiOptionItem.from( getContext().getString(R.string.player_exit_shortcut) + ": " + getContext().getString(R.string.app_double_back_exit),
+        options.add(
+            UiOptionItem.from(
+                getContext().getString(R.string.player_exit_shortcut) + ": " + getContext().getString(R.string.app_double_back_exit),
                 option -> mGeneralData.setPlayerExitShortcut(option.isSelected() ? GeneralData.EXIT_DOUBLE_BACK : GeneralData.EXIT_SINGLE_BACK),
-                mGeneralData.getPlayerExitShortcut() == GeneralData.EXIT_DOUBLE_BACK));
+                mGeneralData.getPlayerExitShortcut() == GeneralData.EXIT_DOUBLE_BACK
+            )
+        );
 
         options.add(UiOptionItem.from(getContext().getString(R.string.search_exit_shortcut) + ": " + getContext().getString(R.string.app_double_back_exit),
                 option -> mGeneralData.setSearchExitShortcut(option.isSelected() ? GeneralData.EXIT_DOUBLE_BACK : GeneralData.EXIT_SINGLE_BACK),
@@ -679,29 +743,45 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
                 option -> mGeneralData.setReturnToLauncherEnabled(option.isSelected()),
                 mGeneralData.isReturnToLauncherEnabled()));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.multi_profiles),
+        options.add(
+            UiOptionItem.from(
+                getContext().getString(R.string.multi_profiles),
                 option -> {
                     AppPrefs.instance(getContext()).enableMultiProfiles(option.isSelected());
                     BrowsePresenter.instance(getContext()).updateSections();
                 },
-                AppPrefs.instance(getContext()).isMultiProfilesEnabled()));
+                AppPrefs.instance(getContext()).isMultiProfilesEnabled()
+            )
+        );
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.child_mode),
+        options.add(
+            UiOptionItem.from(
+                getContext().getString(R.string.child_mode),
                 getContext().getString(R.string.child_mode_desc),
                 option -> {
                     if (option.isSelected()) {
-                        AppDialogUtil.showConfirmationDialog(getContext(), getContext().getString(R.string.lost_setting_warning),
-                                () -> showPasswordDialog(settingsPresenter, () -> enableChildMode(option.isSelected())),
-                                settingsPresenter::closeDialog);
+                        AppDialogUtil.showConfirmationDialog(
+                            getContext(), 
+                            getContext().getString(R.string.lost_setting_warning),
+                            () -> showPasswordDialog(
+                                settingsPresenter, 
+                                () -> enableChildMode(option.isSelected())
+                            ),
+                            settingsPresenter::closeDialog
+                        );
                     } else {
                         mGeneralData.setSettingsPassword(null);
                         enableChildMode(option.isSelected());
                         settingsPresenter.closeDialog();
                     }
                 },
-                mGeneralData.isChildModeEnabled()));
+                mGeneralData.isChildModeEnabled()
+            )
+        );
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.protect_settings_with_password),
+        options.add(
+            UiOptionItem.from(
+                getContext().getString(R.string.protect_settings_with_password),
                 option -> {
                     if (option.isSelected()) {
                         showPasswordDialog(settingsPresenter, null);
@@ -709,9 +789,13 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
                         mGeneralData.setSettingsPassword(null);
                     }
                 },
-                mGeneralData.getSettingsPassword() != null));
+                mGeneralData.getSettingsPassword() != null
+            )
+        );
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.enable_master_password),
+        options.add(
+            UiOptionItem.from(
+                getContext().getString(R.string.enable_master_password),
                 option -> {
                     if (option.isSelected()) {
                         showMasterPasswordDialog(settingsPresenter, null);
@@ -719,73 +803,47 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
                         mGeneralData.setMasterPassword(null);
                     }
                 },
-                mGeneralData.getMasterPassword() != null));
+                mGeneralData.getMasterPassword() != null
+            )
+        );
 
-        //options.add(UiOptionItem.from(getContext().getString(R.string.app_corner_clock),
-        //        option -> {
-        //            mGeneralData.enableGlobalClock(option.isSelected());
-        //            mRestartApp = true;
-        //        },
-        //        mGeneralData.isGlobalClockEnabled()));
-        //
-        //options.add(UiOptionItem.from(getContext().getString(R.string.player_corner_clock),
-        //        option -> mPlayerData.enableGlobalClock(option.isSelected()),
-        //        mPlayerData.isGlobalClockEnabled()));
-        //
-        //options.add(UiOptionItem.from(getContext().getString(R.string.player_corner_ending_time),
-        //        option -> mPlayerData.enableGlobalEndingTime(option.isSelected()),
-        //        mPlayerData.isGlobalEndingTimeEnabled()));
-        //
-        //options.add(UiOptionItem.from(getContext().getString(R.string.old_home_look),
-        //        option -> {
-        //            mGeneralData.enableOldHomeLook(option.isSelected());
-        //            mRestartApp = true;
-        //        },
-        //        mGeneralData.isOldHomeLookEnabled()));
-        //
-        //options.add(UiOptionItem.from(getContext().getString(R.string.old_channel_look),
-        //        option -> {
-        //            mGeneralData.enableOldChannelLook(option.isSelected());
-        //            mMainUIData.enableChannelSearchBar(!option.isSelected());
-        //        },
-        //        mGeneralData.isOldChannelLookEnabled()));
-        //
-        //options.add(UiOptionItem.from(getContext().getString(R.string.fullscreen_mode),
-        //        option -> {
-        //            mGeneralData.enableFullscreenMode(option.isSelected());
-        //            mRestartApp = true;
-        //        },
-        //        mGeneralData.isFullscreenModeEnabled()));
-
-        options.add(UiOptionItem.from(getContext().getString(R.string.remember_position_subscriptions),
+        options.add(
+            UiOptionItem.from(
+                getContext().getString(R.string.remember_position_subscriptions),
                 option -> mGeneralData.setRememberSubscriptionsPositionEnabled(option.isSelected()),
-                mGeneralData.isRememberSubscriptionsPositionEnabled()));
+                mGeneralData.isRememberSubscriptionsPositionEnabled()
+            )
+        );
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.remember_position_pinned),
+        options.add(
+            UiOptionItem.from(
+                getContext().getString(R.string.remember_position_pinned),
                 option -> mGeneralData.setRememberPinnedPositionEnabled(option.isSelected()),
-                mGeneralData.isRememberPinnedPositionEnabled()));
+                mGeneralData.isRememberPinnedPositionEnabled()
+            )
+        );
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.disable_screensaver),
+        options.add(
+            UiOptionItem.from(
+                getContext().getString(R.string.disable_screensaver),
                 option -> mGeneralData.setScreensaverDisabled(option.isSelected()),
-                mGeneralData.isScreensaverDisabled()));
+                mGeneralData.isScreensaverDisabled()
+            )
+        );
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.select_channel_section),
+        options.add(
+            UiOptionItem.from(
+                getContext().getString(R.string.select_channel_section),
                 option -> mGeneralData.setSelectChannelSectionEnabled(option.isSelected()),
-                mGeneralData.isSelectChannelSectionEnabled()));
+                mGeneralData.isSelectChannelSectionEnabled()
+            )
+        );
 
-        //options.add(UiOptionItem.from(getContext().getString(R.string.player_show_tooltips) + ": " + getContext().getString(R.string.long_press_for_options),
-        //        option -> {
-        //            mGeneralData.enableFirstUseTooltip(option.isSelected());
-        //            mRestartApp = true;
-        //        },
-        //        mGeneralData.isFirstUseTooltipEnabled()));
-
-        //// Disable long press on buggy controllers.
-        //options.add(UiOptionItem.from(getContext().getString(R.string.disable_ok_long_press),
-        //        option -> mGeneralData.disableOkButtonLongPress(option.isSelected()),
-        //        mGeneralData.isOkButtonLongPressDisabled()));
-
-        settingsPresenter.appendCheckedCategory(getContext().getString(R.string.player_other), options);
+        settingsPresenter.appendCheckedCategory(
+            getContext().getString(R.string.player_other), 
+            options
+        );
+    
     }
 
     private void appendInternetCensorship(AppDialogPresenter settingsPresenter) {

@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class AboutSettingsPresenter extends BasePresenter<Void> {
+
     private final AppUpdateChecker mUpdateChecker;
 
     public AboutSettingsPresenter(Context context) {
@@ -36,9 +37,12 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
     }
 
     public void show() {
-        String mainTitle = String.format("%s %s",
-                getContext().getString(R.string.app_name),
-                AppInfoHelpers.getAppVersionName(getContext()));
+
+        String mainTitle = String.format(
+            "%s %s",
+            getContext().getString(R.string.app_name),
+            AppInfoHelpers.getAppVersionName(getContext())
+        );
 
         AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
 
@@ -62,28 +66,27 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
             appendLinks(settingsPresenter);
         }
 
-        //appendDumpDebugInfo(settingsPresenter);
-
         settingsPresenter.showDialog(mainTitle);
     }
 
     private void appendAutoUpdateSwitch(AppDialogPresenter settingsPresenter) {
-        settingsPresenter.appendSingleSwitch(UiOptionItem.from(getContext().getString(R.string.check_updates_auto), optionItem -> {
-            mUpdateChecker.enableUpdateCheck(optionItem.isSelected());
-        }, mUpdateChecker.isUpdateCheckEnabled()));
+        settingsPresenter.appendSingleSwitch(
+            UiOptionItem.from(
+                getContext().getString(R.string.check_updates_auto), 
+                optionItem -> {
+                    mUpdateChecker.enableUpdateCheck(optionItem.isSelected());
+                }, 
+                mUpdateChecker.isUpdateCheckEnabled()
+            )
+        );
     }
 
     private void appendOldUpdateNotificationSwitch(AppDialogPresenter settingsPresenter) {
-
-        GeneralData generalData = GeneralData.instance(getContext());
-
-        generalData.setOldUpdateNotificationsEnabled(true);
         
         settingsPresenter.appendSingleSwitch(
             UiOptionItem.from(
-                getContext().getString(R.string.dialog_notification), optionItem -> {
-                    generalData.setOldUpdateNotificationsEnabled(optionItem.isSelected());
-                }, 
+                getContext().getString(R.string.dialog_notification),
+                optionItem -> generalData.setOldUpdateNotificationsEnabled(optionItem.isSelected()), 
                 generalData.isOldUpdateNotificationsEnabled()
             )
         );

@@ -358,8 +358,6 @@ public class AppDialogUtil {
             )
         );
 
-        playerData.setVideoBufferType(PlayerData.BUFFER_HIGHEST);
-
         optionItems.add(
             createVideoBufferOption(
                 context, playerData, 
