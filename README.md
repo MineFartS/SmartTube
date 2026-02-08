@@ -236,7 +236,7 @@ git clone https://github.com/yuliskov/SmartTube.git
 cd SmartTube
 git submodule update --init
 adb connect <device_ip_address>
-gradlew clean installStstableDebug
+./gradlew.bat clean installStstableDebug
 ```
 
 
