@@ -306,8 +306,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     }
 
     public void setMenuItemIndex(int index, Long menuItem) {
-        //int currentIndex = getMenuItemIndex(menuItem);
-        //index = currentIndex < index ? index - 1 : index;
 
         mMenuItemsOrdered.remove(menuItem);
 
@@ -318,6 +316,7 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         }
 
         persistState();
+
     }
 
     public boolean isTopButtonEnabled(int button) {
@@ -353,56 +352,85 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     }
 
     private void initColorSchemes() {
-        mColorSchemes.add(new ColorScheme(
+        
+        mColorSchemes.add(
+            new ColorScheme(
                 R.string.color_scheme_teal,
                 null,
                 null,
                 null,
-                mContext));
-        mColorSchemes.add(new ColorScheme(
+                mContext
+            )
+        );
+
+        mColorSchemes.add(
+            new ColorScheme(
                 R.string.color_scheme_dark_grey,
                 "App.Theme.DarkGrey.Player",
                 "App.Theme.DarkGrey.Browse",
                 "App.Theme.DarkGrey.Preferences",
-                mContext));
-        mColorSchemes.add(new ColorScheme(
+                mContext
+            )
+        );
+
+        mColorSchemes.add(
+            new ColorScheme(
                 R.string.color_scheme_red,
                 "App.Theme.Red.Player",
                 "App.Theme.Red.Browse",
                 "App.Theme.Red.Preferences",
-                mContext));
-        mColorSchemes.add(new ColorScheme(
+                mContext
+            )
+        );
+
+        mColorSchemes.add(
+            new ColorScheme(
                 R.string.color_scheme_dark_grey_oled,
                 "App.Theme.DarkGrey.OLED.Player",
                 "App.Theme.DarkGrey.OLED.Browse",
                 "App.Theme.DarkGrey.Preferences",
-                mContext));
-        mColorSchemes.add(new ColorScheme(
+                mContext
+            )
+        );
+
+        mColorSchemes.add(
+            new ColorScheme(
                 R.string.color_scheme_teal_oled,
                 "App.Theme.Leanback.OLED.Player",
                 "App.Theme.Leanback.OLED.Browse",
                 null,
-                mContext));
-        mColorSchemes.add(new ColorScheme(
+                mContext
+            )
+        );
+
+        mColorSchemes.add(
+            new ColorScheme(
                 R.string.color_scheme_dark_grey_monochrome,
                 "App.Theme.DarkGrey2.OLED.Player",
                 "App.Theme.DarkGrey2.OLED.Browse",
                 "App.Theme.DarkGrey.Preferences",
-                mContext));
-        mColorSchemes.add(new ColorScheme(
+                mContext
+            )
+        );
+
+        mColorSchemes.add(
+            new ColorScheme(
                 R.string.color_scheme_dark_blue,
                 "App.Theme.Leanback.Blue.Player",
                 "App.Theme.Leanback.Blue.Browse",
                 "App.Theme.Leanback.Blue.Preferences",
-                mContext));
+                mContext
+            )
+        );
+
     }
 
     private void restoreState() {
+        
         String data = mPrefs.getProfileData(MAIN_UI_DATA);
 
         String[] split = Helpers.splitData(data);
 
-        //mIsCardAnimatedPreviewsEnabled = Helpers.parseBoolean(split, 0, true);
         mVideoGridScale = Helpers.parseFloat(split, 1, 1.0f); // 4 cards in a row
         mUIScale = Helpers.parseFloat(split, 2, 1.0f);
         mColorSchemeIndex = Helpers.parseInt(split, 3, 1);
@@ -428,8 +456,11 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
 
         int idx = -1;
         for (Long menuItem : MENU_ITEM_DEFAULT_ORDER) {
+            
             idx++;
+            
             if (!mMenuItemsOrdered.contains(menuItem)) {
+            
                 if (idx < mMenuItemsOrdered.size()) {
                     mMenuItemsOrdered.add(idx, menuItem);
                 } else {
@@ -437,59 +468,96 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
                 }
 
                 boolean isEnabled = (MENU_ITEM_DEFAULT & menuItem) == menuItem;
+
                 if (isEnabled) {
                     mMenuItems |= menuItem;
                 }
+
             }
+
         }
 
         for (ContextMenuProvider provider : new ContextMenuManager(mContext).getProviders()) {
+            
             if (!mMenuItemsOrdered.contains(provider.getId())) {
                 mMenuItemsOrdered.add(provider.getId());
             }
+
         }
         
         updateDefaultValues();
+    
     }
 
     public void persistNow() {
+
         Utils.post(mPersistStateInt);
+    
     }
 
     private void persistState() {
+    
         onDataChange();
         Utils.postDelayed(mPersistStateInt, 10_000);
+    
     }
 
     private void persistStateInt() {
-        mPrefs.setProfileData(MAIN_UI_DATA, Helpers.mergeData(null,
-                mVideoGridScale, mUIScale, mColorSchemeIndex, mIsCardMultilineTitleEnabled,
-                mChannelCategorySorting, mPlaylistsStyle, mCardTitleLinesNum, mIsCardTextAutoScrollEnabled,
-                mIsUploadsOldLookEnabled, mIsUploadsAutoLoadEnabled, mCardTextScrollSpeed, mMenuItems, mTopButtons,
-                null, mThumbQuality, mIsCardMultilineSubtitleEnabled, Helpers.mergeList(mMenuItemsOrdered),
-                mIsChannelsFilterEnabled, mIsChannelSearchBarEnabled, mIsPinnedChannelRowsEnabled, mCardPreviewType,
-                mIsUnlocalizedTitlesEnabled));
+
+        mPrefs.setProfileData(
+            MAIN_UI_DATA,
+            Helpers.mergeData(
+                null,
+                mVideoGridScale, 
+                mUIScale, 
+                mColorSchemeIndex, 
+                mIsCardMultilineTitleEnabled,
+                mChannelCategorySorting, 
+                mPlaylistsStyle, 
+                mCardTitleLinesNum, 
+                mIsCardTextAutoScrollEnabled,
+                mIsUploadsOldLookEnabled, 
+                mIsUploadsAutoLoadEnabled, 
+                mCardTextScrollSpeed, 
+                mMenuItems, 
+                mTopButtons,
+                null, 
+                mThumbQuality, 
+                mIsCardMultilineSubtitleEnabled, 
+                Helpers.mergeList(mMenuItemsOrdered),
+                mIsChannelsFilterEnabled, 
+                mIsChannelSearchBarEnabled, 
+                mIsPinnedChannelRowsEnabled, 
+                mCardPreviewType,
+                mIsUnlocalizedTitlesEnabled
+            )
+        );
     }
 
     public static class ColorScheme {
+
         public final int nameResId;
         public final int playerThemeResId;
         public final int browseThemeResId;
         public final int settingsThemeResId;
 
-        public ColorScheme(int nameResId,
-                           String playerTheme,
-                           String browseTheme,
-                           String settingsTheme,
-                           Context context) {
+        public ColorScheme(
+            int nameResId,
+            String playerTheme,
+            String browseTheme,
+            String settingsTheme,
+            Context context
+        ) {
             this.nameResId = nameResId;
             this.playerThemeResId = Helpers.getResourceId(playerTheme, "style", context);
             this.browseThemeResId = Helpers.getResourceId(browseTheme, "style", context);
             this.settingsThemeResId = Helpers.getResourceId(settingsTheme, "style", context);
         }
+
     }
 
     private void updateDefaultValues() {
+
         // Enable only certain items (not all, like it was)
         if (mMenuItems >>> 30 == 0b1) { // check leftmost bit (old format)
             int bits = 32 - 27;
@@ -503,11 +571,15 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         if (mChannelCategorySorting == CHANNEL_SORTING_DEFAULT) {
             mChannelCategorySorting = CHANNEL_SORTING_LAST_VIEWED;
         }
+
     }
 
     @Override
     public void onProfileChanged() {
+
         restoreState();
         onDataChange();
+
     }
+
 }
