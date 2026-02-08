@@ -97,6 +97,61 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
         Map<Integer, Integer> sections = mSidebarService.getDefaultSections();
 
+        BrowsePresenter.instance(getContext()).enableSection(
+            MediaGroup.TYPE_SHORTS,
+            false
+        );
+
+        BrowsePresenter.instance(getContext()).enableSection(
+            MediaGroup.TYPE_TRENDING,
+            false
+        );
+
+        BrowsePresenter.instance(getContext()).enableSection(
+            MediaGroup.TYPE_KIDS_HOME,
+            false
+        );
+
+        BrowsePresenter.instance(getContext()).enableSection(
+            MediaGroup.TYPE_SPORTS,
+            false
+        );
+
+        BrowsePresenter.instance(getContext()).enableSection(
+            MediaGroup.TYPE_LIVE,
+            false
+        );
+
+        BrowsePresenter.instance(getContext()).enableSection(
+            MediaGroup.TYPE_GAMING,
+            false
+        );
+
+        BrowsePresenter.instance(getContext()).enableSection(
+            MediaGroup.TYPE_NEWS,
+            false
+        );
+
+        BrowsePresenter.instance(getContext()).enableSection(
+            MediaGroup.TYPE_MUSIC,
+            false
+        );
+
+        BrowsePresenter.instance(getContext()).enableSection(
+            MediaGroup.TYPE_CHANNEL_UPLOADS,
+            false
+        );
+
+        BrowsePresenter.instance(getContext()).enableSection(
+            MediaGroup.TYPE_MY_VIDEOS,
+            false
+        );
+
+        BrowsePresenter.instance(getContext()).enableSection(
+            MediaGroup.TYPE_PLAYBACK_QUEUE,
+            false
+        );
+
         for (Entry<Integer, Integer> section : sections.entrySet()) {
         
             int sectionResId = section.getKey();
@@ -108,16 +163,14 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
             options.add(
                 UiOptionItem.from(
-                
-                    getContext().getString(sectionResId), optionItem -> {
+                    getContext().getString(sectionResId), 
+                    optionItem -> {
                         BrowsePresenter.instance(getContext()).enableSection(
                             sectionId,
                             optionItem.isSelected()
                         );
                     }, 
-
                     mSidebarService.isSectionPinned(sectionId)
-                
                 )
             );
         
@@ -284,23 +337,23 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
                 continue;
             }
 
-            options.add(UiOptionItem.from(
-                
-                getContext().getString(nameResId), optionItem -> {
-                    if (optionItem.isSelected()) {
-                    
-                        mMainUIData.setMenuItemEnabled(menuItem);
-                        showMenuItemOrderDialog(menuItem);
-                    
-                    } else {
-                        mMainUIData.setMenuItemDisabled(menuItem);
-                    }
-            },
-
-            mMainUIData.isMenuItemEnabled(menuItem)
-        
-        ));
-
+            options.add(
+                UiOptionItem.from(
+                    getContext().getString(nameResId),
+                    optionItem -> {
+                        if (optionItem.isSelected()) {
+                        
+                            mMainUIData.setMenuItemEnabled(menuItem);
+                            showMenuItemOrderDialog(menuItem);
+                        
+                        } else {
+                            mMainUIData.setMenuItemDisabled(menuItem);
+                        }
+                    },
+                    mMainUIData.isMenuItemEnabled(menuItem)
+                )
+            );
+            
         }
 
         settingsPresenter.appendCheckedCategory(
