@@ -159,18 +159,32 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
     private void appendMiscSection(AppDialogPresenter settingsPresenter) {
         List<OptionItem> options = new ArrayList<>();
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.paid_content_notification),
+        options.add(
+            UiOptionItem.from(
+                getContext().getString(R.string.paid_content_notification),
                 optionItem -> mContentBlockData.enablePaidContentNotification(optionItem.isSelected()),
-                mContentBlockData.isPaidContentNotificationEnabled()));
+                mContentBlockData.isPaidContentNotificationEnabled()
+            )
+        );
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.skip_each_segment_once),
+        mContentBlockData.enableDontSkipSegmentAgain(true);
+
+        options.add(
+            UiOptionItem.from(
+                getContext().getString(R.string.skip_each_segment_once),
                 optionItem -> mContentBlockData.enableDontSkipSegmentAgain(optionItem.isSelected()),
-                mContentBlockData.isDontSkipSegmentAgainEnabled()));
+                mContentBlockData.isDontSkipSegmentAgainEnabled()
+            )
+        );
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.content_block_alt_server),
+        options.add(
+            UiOptionItem.from(
+                getContext().getString(R.string.content_block_alt_server),
                 getContext().getString(R.string.content_block_alt_server_desc),
                 optionItem -> mContentBlockData.enableAltServer(optionItem.isSelected()),
-                mContentBlockData.isAltServerEnabled()));
+                mContentBlockData.isAltServerEnabled()
+            )
+        );
 
         settingsPresenter.appendCheckedCategory(getContext().getString(R.string.player_other), options);
     }
