@@ -17,6 +17,8 @@ import com.liskovsoft.smartyoutubetv2.common.prefs.ContentBlockData;
 import com.liskovsoft.smartyoutubetv2.common.utils.AppDialogUtil;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 
+import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -107,10 +109,23 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendColorMarkersSection(AppDialogPresenter settingsPresenter) {
+
         List<OptionItem> options = new ArrayList<>();
 
         for (String segmentCategory : mContentBlockData.getAllCategories()) {
-            options.add(UiOptionItem.from(getColoredString(mContentBlockData.getLocalizedRes(segmentCategory), mContentBlockData.getColorRes(segmentCategory)),
+
+            mContentBlockData.disableColorMarker(segmentCategory);
+        }
+
+        mContentBlockData.enableColorMarker(SponsorSegment.CATEGORY_SPONSOR);
+
+        for (String segmentCategory : mContentBlockData.getAllCategories()) {
+            options.add(
+                UiOptionItem.from(
+                    getColoredString(
+                        mContentBlockData.getLocalizedRes(segmentCategory),
+                        mContentBlockData.getColorRes(segmentCategory)
+                    ),
                     optionItem -> {
                         if (optionItem.isSelected()) {
                             mContentBlockData.enableColorMarker(segmentCategory);
@@ -118,10 +133,16 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
                             mContentBlockData.disableColorMarker(segmentCategory);
                         }
                     },
-                    mContentBlockData.isColorMarkerEnabled(segmentCategory)));
+                    mContentBlockData.isColorMarkerEnabled(segmentCategory)
+                )
+            );
         }
 
-        settingsPresenter.appendCheckedCategory(getContext().getString(R.string.sponsor_color_markers), options);
+        settingsPresenter.appendCheckedCategory(
+            getContext().getString(R.string.sponsor_color_markers), 
+            options
+        );
+
     }
 
     private void appendLinks(AppDialogPresenter settingsPresenter) {
