@@ -339,7 +339,9 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
             options.add(
                 UiOptionItem.from(
-                    getContext().getString(nameResId), optionItem -> showMenuItemOrderDialog(menuItem), false
+                    getContext().getString(nameResId), 
+                    optionItem -> showMenuItemOrderDialog(menuItem), 
+                    false
                 )
             );
 
@@ -881,13 +883,30 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
         mGeneralData.setChildModeEnabled(enable);
 
         int topButtons = MainUIData.TOP_BUTTON_BROWSE_ACCOUNTS;
-        int playerButtons = PlayerTweaksData.PLAYER_BUTTON_PLAY_PAUSE | PlayerTweaksData.PLAYER_BUTTON_NEXT | PlayerTweaksData.PLAYER_BUTTON_PREVIOUS |
-                    PlayerTweaksData.PLAYER_BUTTON_DISLIKE | PlayerTweaksData.PLAYER_BUTTON_LIKE | PlayerTweaksData.PLAYER_BUTTON_SCREEN_DIMMING |
-                    PlayerTweaksData.PLAYER_BUTTON_SEEK_INTERVAL | PlayerTweaksData.PLAYER_BUTTON_PLAYBACK_QUEUE | PlayerTweaksData.PLAYER_BUTTON_OPEN_CHANNEL |
-                    PlayerTweaksData.PLAYER_BUTTON_PIP | PlayerTweaksData.PLAYER_BUTTON_VIDEO_SPEED | PlayerTweaksData.PLAYER_BUTTON_SUBTITLES |
-                    PlayerTweaksData.PLAYER_BUTTON_VIDEO_ZOOM | PlayerTweaksData.PLAYER_BUTTON_ADD_TO_PLAYLIST;
-        long menuItems = MainUIData.MENU_ITEM_SHOW_QUEUE | MainUIData.MENU_ITEM_ADD_TO_QUEUE | MainUIData.MENU_ITEM_PLAY_NEXT |
-                    MainUIData.MENU_ITEM_SELECT_ACCOUNT | MainUIData.MENU_ITEM_STREAM_REMINDER | MainUIData.MENU_ITEM_SAVE_REMOVE_PLAYLIST;
+        
+        int playerButtons = 
+            PlayerTweaksData.PLAYER_BUTTON_PLAY_PAUSE | 
+            PlayerTweaksData.PLAYER_BUTTON_NEXT | 
+            PlayerTweaksData.PLAYER_BUTTON_PREVIOUS |
+            PlayerTweaksData.PLAYER_BUTTON_DISLIKE | 
+            PlayerTweaksData.PLAYER_BUTTON_LIKE | 
+            PlayerTweaksData.PLAYER_BUTTON_SCREEN_DIMMING |
+            PlayerTweaksData.PLAYER_BUTTON_SEEK_INTERVAL | 
+            PlayerTweaksData.PLAYER_BUTTON_PLAYBACK_QUEUE | 
+            PlayerTweaksData.PLAYER_BUTTON_OPEN_CHANNEL |
+            PlayerTweaksData.PLAYER_BUTTON_PIP | 
+            PlayerTweaksData.PLAYER_BUTTON_VIDEO_SPEED | 
+            PlayerTweaksData.PLAYER_BUTTON_SUBTITLES |
+            PlayerTweaksData.PLAYER_BUTTON_VIDEO_ZOOM | 
+            PlayerTweaksData.PLAYER_BUTTON_ADD_TO_PLAYLIST;
+
+        long menuItems = 
+            MainUIData.MENU_ITEM_SHOW_QUEUE | 
+            MainUIData.MENU_ITEM_ADD_TO_QUEUE | 
+            MainUIData.MENU_ITEM_PLAY_NEXT |
+            MainUIData.MENU_ITEM_SELECT_ACCOUNT | 
+            MainUIData.MENU_ITEM_STREAM_REMINDER | 
+            MainUIData.MENU_ITEM_SAVE_REMOVE_PLAYLIST;
 
         PlayerTweaksData tweaksData = PlayerTweaksData.instance(getContext());
         SearchData searchData = SearchData.instance(getContext());
@@ -966,9 +985,19 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
     }
 
     private Map<Long, Integer> getMenuNames() {
+
         Map<Long, Integer> menuNames = new HashMap<>();
-        menuNames.put(MainUIData.MENU_ITEM_EXIT_FROM_PIP, R.string.return_to_background_video);
-        menuNames.put(MainUIData.MENU_ITEM_EXCLUDE_FROM_CONTENT_BLOCK, R.string.content_block_exclude_channel);
+        
+        menuNames.put(
+            MainUIData.MENU_ITEM_EXIT_FROM_PIP, 
+            R.string.return_to_background_video
+        );
+
+        menuNames.put(
+            MainUIData.MENU_ITEM_EXCLUDE_FROM_CONTENT_BLOCK, 
+            R.string.content_block_exclude_channel
+        );
+        
         menuNames.put(MainUIData.MENU_ITEM_MARK_AS_WATCHED, R.string.mark_as_watched);
         menuNames.put(MainUIData.MENU_ITEM_OPEN_CHANNEL, R.string.open_channel);
         menuNames.put(MainUIData.MENU_ITEM_UPDATE_CHECK, R.string.check_for_updates);
@@ -1006,7 +1035,10 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
         menuNames.put(MainUIData.MENU_ITEM_OPEN_PLAYLIST, R.string.open_playlist);
 
         for (ContextMenuProvider provider : new ContextMenuManager(getContext()).getProviders()) {
-            menuNames.put(provider.getId(), provider.getTitleResId());
+            menuNames.put(
+                provider.getId(), 
+                provider.getTitleResId()
+            );
         }
 
         return menuNames;
