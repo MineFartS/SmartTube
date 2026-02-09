@@ -306,7 +306,8 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         }) {
             options.add(
                 UiOptionItem.from(
-                    getContext().getString(pair[0]), optionItem -> {
+                    getContext().getString(pair[0]), 
+                    optionItem -> {
                         if (optionItem.isSelected()) {
                             mPlayerTweaksData.setPlayerButtonEnabled(pair[1]);
                         } else {
@@ -779,9 +780,13 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 option -> mPlayerTweaksData.setSyncRowButtonIndexEnabled(option.isSelected()),
                 mPlayerTweaksData.isSyncRowButtonIndexEnabled()));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.player_ui_on_next),
+        options.add(
+            UiOptionItem.from(
+                getContext().getString(R.string.player_ui_on_next),
                 option -> mPlayerTweaksData.setPlayerUiOnNextEnabled(option.isSelected()),
-                mPlayerTweaksData.isPlayerUiOnNextEnabled()));
+                mPlayerTweaksData.isPlayerUiOnNextEnabled()
+            )
+        );
 
         options.add(UiOptionItem.from(getContext().getString(R.string.player_ui_animations),
                 option -> mPlayerTweaksData.setUIAnimationsEnabled(option.isSelected()),
