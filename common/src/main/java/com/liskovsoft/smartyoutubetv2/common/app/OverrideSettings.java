@@ -1,148 +1,112 @@
 
 import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.BrowsePresenter;
+import com.liskovsoft.smartyoutubetv2.common.misc.MediaServiceManager;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
 
 import android.content.Context;
 
+import java.util.LinkedList;
+import java.lang.Integer;
+
 public class OverrideSettings {
 
-    private MediaServiceData mediaServiceData;
-    private BrowsePresenter browsePresenter;
-    private GeneralData generalData;
-    private PlayerData playerData;
+    public void Run(Context context) {
 
-    public void OverrideSettings(Context context) {
+        Update_Notifications(context);
 
-        this.mediaServiceData = MediaServiceData.instance(context);
+        Hide_Content(context);
 
-        this.browsePresenter = BrowsePresenter.instance(context);
+        Hide_Sidebar_Tabs(context);
 
-        this.generalData = GeneralData.instance(context);
-
-        this.playerData = PlayerData.instance(context);
-
-        Update_Notifications();
-
-        Hide_Content();
-
-        Hide_Sidebar_Tabs();
-
-        Highest_Buffer();
+        Highest_Buffer(context);
 
     }
 
-    private void Update_Notifications() {
-        generalData.setOldUpdateNotificationsEnabled(true);
-    }
+    private void Update_Notifications(Context context) {
 
-    private void Hide_Content() {
+        GeneralData GD = GeneralData.instance(context);
 
-        mMediaServiceData.setContentHidden(
-            MediaServiceData.CONTENT_MIXES, 
-            true
-        );
-        
-        mMediaServiceData.setContentHidden(
-            MediaServiceData.CONTENT_WATCHED_HOME, 
-            true
-        );
-        
-        mMediaServiceData.setContentHidden(
-            MediaServiceData.CONTENT_SHORTS_CHANNEL, 
-            true
-        );
-
-        mMediaServiceData.setContentHidden(
-            MediaServiceData.CONTENT_SHORTS_HISTORY, 
-            true
-        );
-
-        mMediaServiceData.setContentHidden(
-            MediaServiceData.CONTENT_SHORTS_HOME, 
-            true
-        );
-
-        mMediaServiceData.setContentHidden(
-            MediaServiceData.CONTENT_SHORTS_SEARCH, 
-            true
-        );
-
-        mMediaServiceData.setContentHidden(
-            MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS, 
-            true
-        );
-
-        mMediaServiceData.setContentHidden(
-            MediaServiceData.CONTENT_SHORTS_TRENDING, 
-            true
-        );
+        GD.setOldUpdateNotificationsEnabled(true);
     
     }
 
-    private void Hide_Sidebar_Tabs() {
+    private void Hide_Content(Context context) {
 
-        browsePresenter.enableSection(
-            MediaGroup.TYPE_SHORTS,
-            false
-        );
+        MediaServiceData MSD = MediaServiceData.instance();
 
-        browsePresenter.enableSection(
-            MediaGroup.TYPE_TRENDING,
-            false
-        );
+        LinkedList<Integer> content_types = new LinkedList<Integer>();
 
-        browsePresenter.enableSection(
-            MediaGroup.TYPE_KIDS_HOME,
-            false
-        );
+        content_types.add(MediaServiceData.CONTENT_MIXES);
 
-        browsePresenter.enableSection(
-            MediaGroup.TYPE_SPORTS,
-            false
-        );
+        content_types.add(MediaServiceData.CONTENT_WATCHED_HOME);
 
-        browsePresenter.enableSection(
-            MediaGroup.TYPE_LIVE,
-            false
-        );
+        content_types.add(MediaServiceData.CONTENT_SHORTS_CHANNEL);
 
-        browsePresenter.enableSection(
-            MediaGroup.TYPE_GAMING,
-            false
-        );
+        content_types.add(MediaServiceData.CONTENT_SHORTS_HISTORY);
 
-        browsePresenter.enableSection(
-            MediaGroup.TYPE_NEWS,
-            false
-        );
+        content_types.add(MediaServiceData.CONTENT_SHORTS_HOME);
 
-        browsePresenter.enableSection(
-            MediaGroup.TYPE_MUSIC,
-            false
-        );
+        content_types.add(MediaServiceData.CONTENT_SHORTS_SEARCH);
 
-        browsePresenter.enableSection(
-            MediaGroup.TYPE_CHANNEL_UPLOADS,
-            false
-        );
+        content_types.add(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS);
 
-        browsePresenter.enableSection(
-            MediaGroup.TYPE_MY_VIDEOS,
-            false
-        );
+        content_types.add(MediaServiceData.CONTENT_SHORTS_TRENDING);
 
-        browsePresenter.enableSection(
-            MediaGroup.TYPE_PLAYBACK_QUEUE,
-            false
-        );
+        for (int type : content_types) {
+
+            MSD.setContentHidden(type, true);
+
+        }
+    
+    }
+
+    private void Hide_Sidebar_Tabs(Context context) {
+
+        BrowsePresenter BP = BrowsePresenter.instance(context);
+
+        LinkedList<Integer> sections = new LinkedList<Integer>();
+
+        sections.add(MediaGroup.TYPE_SHORTS);
+
+        sections.add(MediaGroup.TYPE_TRENDING);
+
+        sections.add(MediaGroup.TYPE_KIDS_HOME);
+
+        sections.add(MediaGroup.TYPE_SPORTS);
+
+        sections.add(MediaGroup.TYPE_LIVE);
+
+        sections.add(MediaGroup.TYPE_GAMING);
+
+        sections.add(MediaGroup.TYPE_NEWS);
+
+        sections.add(MediaGroup.TYPE_MUSIC);
+
+        sections.add(MediaGroup.TYPE_CHANNEL_UPLOADS);
+
+        sections.add(MediaGroup.TYPE_MY_VIDEOS);
+
+        sections.add(MediaGroup.TYPE_PLAYBACK_QUEUE);
+
+        //sections.add(MediaGroup.TYPE_SETTINGS);
+
+        for (Integer section : sections) {
+
+            BP.enableSection(0, false);
+
+        }
 
     }
 
-    private void Highest_Buffer() {
-        playerData.setVideoBufferType(PlayerData.BUFFER_HIGHEST);
+    private void Highest_Buffer(Context context) {
+
+        PlayerData PD = PlayerData.instance(context);
+
+        PD.setVideoBufferType(PlayerData.BUFFER_HIGHEST);
+    
     }
 
 }
