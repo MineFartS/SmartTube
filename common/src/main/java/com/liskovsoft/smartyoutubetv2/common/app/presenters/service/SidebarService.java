@@ -38,9 +38,11 @@ public class SidebarService implements ProfileChangeListener {
 
     private SidebarService(Context context) {
 
-        OverrideSettings(context);
-
         mContext = context.getApplicationContext();
+
+        OverrideSettings OR = new OverrideSettings();
+        OR.Run(context);
+
         mPrefs = AppPrefs.instance(context);
         mPrefs.addListener(this);
         
@@ -50,11 +52,13 @@ public class SidebarService implements ProfileChangeListener {
     }
 
     public static SidebarService instance(Context context) {
+
         if (sInstance == null && context != null) {
             sInstance = new SidebarService(context.getApplicationContext());
         }
 
         return sInstance;
+    
     }
 
     public Collection<Video> getPinnedItems() {
@@ -62,12 +66,14 @@ public class SidebarService implements ProfileChangeListener {
     }
 
     public void addPinnedItem(Video item) {
-        if (mPinnedItems.contains(item)) {
-            return;
-        }
+        
+        if (!mPinnedItems.contains(item)) {
 
-        mPinnedItems.add(item);
-        persistState();
+            mPinnedItems.add(item);
+            persistState();
+
+        }
+    
     }
 
     public void removePinnedItem(Video item) {
@@ -83,28 +89,35 @@ public class SidebarService implements ProfileChangeListener {
                 mIsSettingsSectionEnabled = true; // prevent Settings lock
             }
 
-            Video section = Helpers.findFirst(mPinnedItems, item -> item != null && item.sectionId == sectionId);
+            Video section = Helpers.findFirst(
+                mPinnedItems, 
+                item -> item != null && item.sectionId == sectionId
+            );
 
-            if (section != null) { // don't reorder if item already exists
-                return;
-            }
+            if (section == null) { // don't reorder if item already exists
 
-            Video item = new Video();
-            item.sectionId = sectionId;
+                Video item = new Video();
+                item.sectionId = sectionId;
 
-            int index = getDefaultSectionIndex(sectionId);
+                int index = getDefaultSectionIndex(sectionId);
 
-            if (index == -1 || index > mPinnedItems.size()) {
-                mPinnedItems.add(item);
-            } else {
-                mPinnedItems.add(index, item);
+                if (index == -1 || index > mPinnedItems.size()) {
+                    mPinnedItems.add(item);
+                } else {
+                    mPinnedItems.add(index, item);
+                }
+
             }
 
         } else {
-            Helpers.removeIf(mPinnedItems, item -> item == null || item.sectionId == sectionId);
+            Helpers.removeIf(
+                mPinnedItems, 
+                item -> item == null || item.sectionId == sectionId
+            );
         }
 
         persistState();
+
     }
 
     public Map<Integer, Integer> getDefaultSections() {
@@ -112,26 +125,37 @@ public class SidebarService implements ProfileChangeListener {
     }
 
     private int getDefaultSectionIndex(int sectionId) {
+        
         int index = -1;
 
         Collection<Integer> values = mDefaultSections.values();
 
         for (int item : values) {
+            
             index++;
+            
             if (item == sectionId) {
                 break;
             }
+
         }
 
         return index;
+    
     }
 
     /**
      * Contains sections and pinned items!
      */
     public boolean isSectionPinned(int sectionId) {
-        Video section = Helpers.findFirst(mPinnedItems, item -> getSectionId(item) == sectionId);
+        
+        Video section = Helpers.findFirst(
+            mPinnedItems, 
+            item -> getSectionId(item) == sectionId
+        );
+
         return section != null; // by default enable all pinned items
+    
     }
 
     public int getSectionIndex(int sectionId) {
@@ -144,12 +168,15 @@ public class SidebarService implements ProfileChangeListener {
     }
 
     public void renameSection(int sectionId, String newTitle) {
+        
         int index = findPinnedItemIndex(sectionId);
+        
         if (index != -1) {
             Video video = mPinnedItems.get(index);
             video.title = newTitle;
             persistState();
         }
+
     }
 
     public void moveSectionUp(int sectionId) {
@@ -169,32 +196,37 @@ public class SidebarService implements ProfileChangeListener {
     }
 
     private boolean canShiftSection(int sectionId, int shift) {
+        
         int index = findPinnedItemIndex(sectionId);
 
         if (index != -1) {
-            return  index + shift >= 0 && index + shift < mPinnedItems.size();
+            return index + shift >= 0 && index + shift < mPinnedItems.size();
+        } else {
+            return false;
         }
 
-        return false;
     }
 
     private void shiftSection(int sectionId, int shift) {
-        if (!canShiftSection(sectionId, shift)) {
-            return;
+
+        if (canShiftSection(sectionId, shift)) {
+
+            int index = findPinnedItemIndex(sectionId);
+
+            if (index != -1) {
+                Video current = mPinnedItems.get(index);
+                mPinnedItems.remove(current);
+
+                mPinnedItems.add(index + shift, current);
+                persistState();
+            }
+
         }
 
-        int index = findPinnedItemIndex(sectionId);
-
-        if (index != -1) {
-            Video current = mPinnedItems.get(index);
-            mPinnedItems.remove(current);
-
-            mPinnedItems.add(index + shift, current);
-            persistState();
-        }
     }
 
     private int findPinnedItemIndex(int sectionId) {
+
         int index = -1;
 
         for (Video item : mPinnedItems) {
@@ -206,11 +238,11 @@ public class SidebarService implements ProfileChangeListener {
         }
 
         return index;
+    
     }
 
     public void setBootSectionId(int sectionId) {
         mBootSectionId = sectionId;
-
         persistState();
     }
 
@@ -220,7 +252,6 @@ public class SidebarService implements ProfileChangeListener {
 
     public void enableSettingsSection(boolean enabled) {
         mIsSettingsSectionEnabled = enabled;
-
         persistState();
     }
 
@@ -229,11 +260,13 @@ public class SidebarService implements ProfileChangeListener {
     }
 
     private int getSectionId(Video item) {
+
         if (item == null) {
             return -1;
+        } else {
+            return item.sectionId == -1 ? item.getId() : item.sectionId;
         }
 
-        return item.sectionId == -1 ? item.getId() : item.sectionId;
     }
 
     private void initSections() {
@@ -343,25 +376,32 @@ public class SidebarService implements ProfileChangeListener {
     }
 
     private void cleanupPinnedItems() {
+
         Helpers.removeDuplicates(mPinnedItems);
 
-        Helpers.removeIf(mPinnedItems, item -> {
-            if (item == null) {
-                return true;
+        Helpers.removeIf(
+            mPinnedItems, 
+            item -> {
+
+                if (item == null) {
+                    return true;
+                }
+
+                item.videoId = null;
+
+                // Fix id collision between pinned and default sections
+                if (item.getId() < 100 && item.getId() >= -1 && item.sectionId == -1) {
+                    return true;
+                }
+
+                return !item.hasPlaylist() && item.channelId == null && item.sectionId == -1 && item.channelGroupId == null && !item.hasReloadPageKey();
+            
             }
-
-            item.videoId = null;
-
-            // Fix id collision between pinned and default sections
-            if (item.getId() < 100 && item.getId() >= -1 && item.sectionId == -1) {
-                return true;
-            }
-
-            return !item.hasPlaylist() && item.channelId == null && item.sectionId == -1 && item.channelGroupId == null && !item.hasReloadPageKey();
-        });
+        );
     }
 
     private void restoreState() {
+
         String data = mPrefs.getSidebarData();
 
         String[] split = Helpers.splitData(data);
@@ -380,9 +420,11 @@ public class SidebarService implements ProfileChangeListener {
         enableSection(MediaGroup.TYPE_SETTINGS, true);
 
         cleanupPinnedItems();
+
     }
 
     private void transferOldPinnedItems() {
+
         if (mPinnedItems != null && !mPinnedItems.isEmpty()) {
             return;
         }
@@ -392,14 +434,22 @@ public class SidebarService implements ProfileChangeListener {
         if (oldPinnedItems != null && !oldPinnedItems.isEmpty()) {
             mPinnedItems = oldPinnedItems;
         }
+
     }
 
     public void persistState() {
-        mPrefs.setSidebarData(Helpers.mergeData(mPinnedItems, mBootSectionId, mIsSettingsSectionEnabled));
+        mPrefs.setSidebarData(
+            Helpers.mergeData(
+                mPinnedItems, 
+                mBootSectionId, 
+                mIsSettingsSectionEnabled
+            )
+        );
     }
 
     @Override
     public void onProfileChanged() {
         restoreState();
     }
+    
 }
