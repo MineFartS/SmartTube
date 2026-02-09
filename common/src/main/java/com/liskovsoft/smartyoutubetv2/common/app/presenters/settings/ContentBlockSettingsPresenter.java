@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
+    
     private final ContentBlockData mContentBlockData;
 
     public ContentBlockSettingsPresenter(Context context) {
@@ -36,6 +37,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
     }
 
     public void show(Runnable onFinish) {
+        
         AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
 
         appendSponsorBlockSwitch(settingsPresenter);
@@ -45,7 +47,11 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
         appendMiscSection(settingsPresenter);
         appendLinks(settingsPresenter);
 
-        settingsPresenter.showDialog(getContext().getString(R.string.content_block_provider), onFinish);
+        settingsPresenter.showDialog(
+            getContext().getString(R.string.content_block_provider), 
+            onFinish
+        );
+
     }
 
     public void show() {
@@ -53,6 +59,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendSponsorBlockSwitch(AppDialogPresenter settingsPresenter) {
+        
         Video video = null;
 
         if (getViewManager().getTopView() == PlaybackView.class) {
@@ -60,34 +67,48 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
         }
 
         final String channelId = video != null ? video.channelId : null;
+
         boolean isChannelExcluded = ContentBlockData.instance(getContext()).isChannelExcluded(channelId);
 
         OptionItem sponsorBlockOption = UiOptionItem.from(getContext().getString(R.string.enable),
-                option -> {
-                    mContentBlockData.enableSponsorBlock(option.isSelected());
-                    ContentBlockData.instance(getContext()).stopExcludingChannel(channelId);
-                },
-                !isChannelExcluded && mContentBlockData.isSponsorBlockEnabled()
+            option -> {
+                mContentBlockData.enableSponsorBlock(option.isSelected());
+                ContentBlockData.instance(getContext()).stopExcludingChannel(channelId);
+            },
+            !isChannelExcluded && mContentBlockData.isSponsorBlockEnabled()
         );
 
         settingsPresenter.appendSingleSwitch(sponsorBlockOption);
+
     }
 
     private void appendActionsSection(AppDialogPresenter settingsPresenter) {
+
         List<OptionItem> options = new ArrayList<>();
 
         Set<SegmentAction> actions = mContentBlockData.getActions();
 
         for (SegmentAction action : actions) {
-            options.add(UiOptionItem.from(
-                    getColoredString(mContentBlockData.getLocalizedRes(action.segmentCategory), mContentBlockData.getColorRes(action.segmentCategory)),
+            options.add(
+                UiOptionItem.from(
+                    getColoredString(
+                        mContentBlockData.getLocalizedRes(action.segmentCategory), 
+                        mContentBlockData.getColorRes(action.segmentCategory)
+                    ),
                     optionItem -> {
+                    
                         AppDialogPresenter dialogPresenter = AppDialogPresenter.instance(getContext());
 
                         List<OptionItem> nestedOptions = new ArrayList<>();
-                        nestedOptions.add(UiOptionItem.from(getContext().getString(R.string.content_block_action_none),
+                        
+                        nestedOptions.add(
+                            UiOptionItem.from(
+                                getContext().getString(R.string.content_block_action_none),
                                 optionItem1 -> action.actionType = ContentBlockData.ACTION_DO_NOTHING,
-                                action.actionType == ContentBlockData.ACTION_DO_NOTHING));
+                                action.actionType == ContentBlockData.ACTION_DO_NOTHING
+                            )
+                        );
+
                         nestedOptions.add(UiOptionItem.from(getContext().getString(R.string.content_block_action_only_skip),
                                 optionItem1 -> action.actionType = ContentBlockData.ACTION_SKIP_ONLY,
                                 action.actionType == ContentBlockData.ACTION_SKIP_ONLY));
@@ -111,13 +132,6 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
     private void appendColorMarkersSection(AppDialogPresenter settingsPresenter) {
 
         List<OptionItem> options = new ArrayList<>();
-
-        for (String segmentCategory : mContentBlockData.getAllCategories()) {
-
-            mContentBlockData.disableColorMarker(segmentCategory);
-        }
-
-        mContentBlockData.enableColorMarker(SponsorSegment.CATEGORY_SPONSOR);
 
         for (String segmentCategory : mContentBlockData.getAllCategories()) {
             options.add(
@@ -157,6 +171,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendMiscSection(AppDialogPresenter settingsPresenter) {
+        
         List<OptionItem> options = new ArrayList<>();
 
         options.add(
@@ -166,8 +181,6 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
                 mContentBlockData.isPaidContentNotificationEnabled()
             )
         );
-
-        mContentBlockData.enableDontSkipSegmentAgain(true);
 
         options.add(
             UiOptionItem.from(
