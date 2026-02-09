@@ -87,23 +87,37 @@ public class AppUpdatePresenter extends BasePresenter<Void> implements AppUpdate
     }
 
     private void showUpdateDialog(String versionName, List<String> changelog, String apkPath) {
+        
         // Don't show update dialog if the player opened or the app is collapsed
         if (getContext() == null || getViewManager().isPlayerInForeground() || !Utils.isAppInForegroundFixed()) {
             return;
         }
 
         mSettingsPresenter.appendSingleButton(
-                UiOptionItem.from(getContext().getString(R.string.install_update), optionItem -> {
+            UiOptionItem.from(
+                getContext().getString(R.string.install_update), 
+                optionItem -> {
                     GeneralData.instance(getContext()).setChangelog(changelog);
                     mUpdateChecker.installUpdate();
-                }, false));
-        mSettingsPresenter.appendStringsCategory(getContext().getString(R.string.update_changelog), createChangelogOptions(changelog));
-        //mSettingsPresenter.appendSingleSwitch(UiOptionItem.from(getContext().getString(R.string.show_again), optionItem -> {
-        //    mUpdateChecker.enableUpdateCheck(optionItem.isSelected());
-        //}, mUpdateChecker.isUpdateCheckEnabled()));
+                }, 
+                false
+            )
+        );
 
-        //mSettingsPresenter.setOnFinish(getOnFinish());
-        mSettingsPresenter.showDialog(String.format("%s %s", getContext().getString(R.string.app_name), versionName), AppUpdatePresenter::unhold);
+        mSettingsPresenter.appendStringsCategory(
+            getContext().getString(R.string.update_changelog), 
+            createChangelogOptions(changelog)
+        );
+
+        mSettingsPresenter.showDialog(
+            String.format(
+                "%s %s", 
+                getContext().getString(R.string.app_name), 
+                versionName
+            ), 
+            AppUpdatePresenter::unhold
+        );
+        
     }
 
     private void pinUpdateSection(String versionName, List<String> changelog, String apkPath) {
