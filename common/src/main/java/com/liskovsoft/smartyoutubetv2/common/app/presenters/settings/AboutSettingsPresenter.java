@@ -82,6 +82,8 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendOldUpdateNotificationSwitch(AppDialogPresenter settingsPresenter) {
+
+        GeneralData generalData = GeneralData.instance(getContext());
         
         settingsPresenter.appendSingleSwitch(
             UiOptionItem.from(
@@ -102,6 +104,7 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendUpdateChangelogButton(AppDialogPresenter settingsPresenter) {
+        
         List<String> changes = GeneralData.instance(getContext()).getChangelog();
 
         if (changes == null || changes.isEmpty()) {
@@ -114,45 +117,67 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
             changelog.add(UiOptionItem.from(change));
         }
 
-        String title = String.format("%s %s",
-                getContext().getString(R.string.update_changelog),
-                AppInfoHelpers.getAppVersionName(getContext()));
+        String title = String.format(
+            "%s %s",
+            getContext().getString(R.string.update_changelog),
+            AppInfoHelpers.getAppVersionName(getContext())
+        );
 
         settingsPresenter.appendStringsCategory(title, changelog);
+
     }
 
     private void appendLinks(AppDialogPresenter settingsPresenter) {
-        OptionItem releasesOption = UiOptionItem.from(getContext().getString(R.string.releases),
-                option -> Utils.openLink(getContext(), Utils.toQrCodeLink(getContext().getString(R.string.releases_url))));
+        OptionItem releasesOption = UiOptionItem.from(
+            getContext().getString(R.string.releases),
+            option -> Utils.openLink(
+                getContext(), 
+                Utils.toQrCodeLink(getContext().getString(R.string.releases_url))
+            )
+        );
 
-        OptionItem sourcesOption = UiOptionItem.from(getContext().getString(R.string.sources),
-                option -> Utils.openLink(getContext(), Utils.toQrCodeLink(getContext().getString(R.string.sources_url))));
-
-        //OptionItem webSiteOption = UiOptionItem.from(getContext().getString(R.string.web_site),
-        //        option -> Utils.openLink(getContext(), Utils.toQrCodeLink(getContext().getString(R.string.web_site_url))));
+        OptionItem sourcesOption = UiOptionItem.from(
+            getContext().getString(R.string.sources),
+            option -> Utils.openLink(
+                getContext(), 
+                Utils.toQrCodeLink(getContext().getString(R.string.sources_url))
+            )
+        );
 
         settingsPresenter.appendSingleButton(releasesOption);
         settingsPresenter.appendSingleButton(sourcesOption);
-        //settingsPresenter.appendSingleButton(webSiteOption);
+        
     }
 
     private void appendDonation(AppDialogPresenter settingsPresenter) {
+
         List<OptionItem> donateOptions = new ArrayList<>();
 
         Map<String, String> donations = Helpers.getMap(getContext(), R.array.donations);
 
         for (Entry<String, String> entry : donations.entrySet()) {
-            donateOptions.add(UiOptionItem.from(
+            donateOptions.add(
+                UiOptionItem.from(
                     entry.getKey(),
-                    option -> Utils.openLink(getContext(), Utils.toQrCodeLink(entry.getValue()))));
+                    option -> Utils.openLink(
+                        getContext(), 
+                        Utils.toQrCodeLink(entry.getValue())
+                    )
+                )
+            );
         }
 
         if (!donateOptions.isEmpty()) {
-            settingsPresenter.appendStringsCategory(getContext().getString(R.string.donation), donateOptions);
+            settingsPresenter.appendStringsCategory(
+                getContext().getString(R.string.donation), 
+                donateOptions
+            );
         }
+    
     }
 
     private void appendUpdateSource(AppDialogPresenter settingsPresenter) {
+        
         List<OptionItem> options = new ArrayList<>();
 
         String[] updateUrls = getContext().getResources().getStringArray(R.array.update_urls);
@@ -166,42 +191,76 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
         }
 
         for (String url : updateUrls) {
+
             String hostName = Helpers.getHost(url);
-            options.add(UiOptionItem.from(hostName,
+            
+            options.add(
+                UiOptionItem.from(
+                    hostName,
                     optionItem -> mUpdateChecker.setPreferredHost(hostName),
-                    Helpers.equals(hostName, mUpdateChecker.getPreferredHost())));
+                    Helpers.equals(
+                        hostName, 
+                        mUpdateChecker.getPreferredHost()
+                    )
+                )
+            );
+        
         }
 
-        settingsPresenter.appendRadioCategory(getContext().getString(R.string.preferred_update_source), options);
+        settingsPresenter.appendRadioCategory(
+            getContext().getString(R.string.preferred_update_source), 
+            options
+        );
+
     }
 
     private void appendFeedback(AppDialogPresenter settingsPresenter) {
+        
         List<OptionItem> feedbackOptions = new ArrayList<>();
 
-        Map<String, String> feedback = Helpers.getMap(getContext(), R.array.feedback);
+        Map<String, String> feedback = Helpers.getMap(
+            getContext(), 
+            R.array.feedback
+        );
 
         for (Entry<String, String> entry : feedback.entrySet()) {
-            feedbackOptions.add(UiOptionItem.from(
+            
+            feedbackOptions.add(
+                UiOptionItem.from(
                     entry.getKey(),
-                    option -> Utils.openLink(getContext(), Utils.toQrCodeLink(entry.getValue()))));
+                    option -> Utils.openLink(
+                        getContext(), 
+                        Utils.toQrCodeLink(entry.getValue())
+                    )
+                )
+            );
         }
 
         if (!feedbackOptions.isEmpty()) {
-            settingsPresenter.appendStringsCategory(getContext().getString(R.string.feedback), feedbackOptions);
+            settingsPresenter.appendStringsCategory(
+                getContext().getString(R.string.feedback), 
+                feedbackOptions
+            );
         }
     }
 
     private void appendInstallBridge(AppDialogPresenter settingsPresenter) {
+        
         OptionItem installBridgeOption = UiOptionItem.from(
-                //getContext().getString(R.string.enable_voice_search),
-                "Install ATV/Amazon bridge",
-                option -> startBridgePresenter());
+            "Install ATV/Amazon bridge",
+            option -> startBridgePresenter()
+        );
 
         settingsPresenter.appendSingleButton(installBridgeOption);
+    
     }
 
     private void startBridgePresenter() {
-        MessageHelpers.showLongMessage(getContext(), R.string.enable_voice_search_desc);
+        
+        MessageHelpers.showLongMessage(
+            getContext(), 
+            R.string.enable_voice_search_desc
+        );
 
         ATVBridgePresenter atvPresenter = ATVBridgePresenter.instance(getContext());
         atvPresenter.runBridgeInstaller(true);
@@ -210,5 +269,7 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
         AmazonBridgePresenter amazonPresenter = AmazonBridgePresenter.instance(getContext());
         amazonPresenter.runBridgeInstaller(true);
         amazonPresenter.unhold();
+    
     }
+
 }
