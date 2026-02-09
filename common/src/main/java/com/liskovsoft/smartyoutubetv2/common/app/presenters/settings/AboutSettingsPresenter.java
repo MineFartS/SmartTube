@@ -14,6 +14,7 @@ import com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs.ATVBridgePre
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs.AmazonBridgePresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs.AppUpdatePresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.base.BasePresenter;
+import com.liskovsoft.smartyoutubetv2.common.prefs.ContentBlockData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 
@@ -21,9 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.LinkedList;
-import java.lang.Integer;
 
+import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
 import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.BrowsePresenter;
@@ -34,9 +34,11 @@ class SettingsOverride {
 
     public void Run(Context context) {
 
+        Config_ContentBlock(context);
+
         Update_Notifications(context);
 
-        Hide_Content(context);
+        Hide_Content();
 
         Hide_Sidebar_Tabs(context);
 
@@ -44,41 +46,54 @@ class SettingsOverride {
 
     }
 
+    private void Config_ContentBlock(Context context) {
+
+        ContentBlockData CBD = ContentBlockData.instance(context);
+
+        // Don't Skip Segments Again
+        CBD.enableDontSkipSegmentAgain(true);
+
+
+        // Disable all ContentBlock Color Markers
+        for (String category : CBD.getAllCategories()) {
+            CBD.disableColorMarker(category);
+        }
+
+        // ReEnable ContentBlock Color Marker for Sponsors
+        CBD.enableColorMarker(SponsorSegment.CATEGORY_SPONSOR);
+
+    }
+
     private void Update_Notifications(Context context) {
 
         GeneralData GD = GeneralData.instance(context);
 
+        // Enable Update Notification
         GD.setOldUpdateNotificationsEnabled(true);
 
     }
 
-    private void Hide_Content(Context context) {
+    private void Hide_Content() {
 
         MediaServiceData MSD = MediaServiceData.instance();
 
-        LinkedList<Integer> content_types = new LinkedList<Integer>();
+        // Hide Content Mixes
+        MSD.setContentHidden(MediaServiceData.CONTENT_MIXES, true);
 
-        content_types.add(MediaServiceData.CONTENT_MIXES);
+        // Hide Watched Videos from Home
+        MSD.setContentHidden(MediaServiceData.CONTENT_WATCHED_HOME, true);
 
-        content_types.add(MediaServiceData.CONTENT_WATCHED_HOME);
+        // Hide Shorts from Channels
+        MSD.setContentHidden(MediaServiceData.CONTENT_SHORTS_CHANNEL, true);
 
-        content_types.add(MediaServiceData.CONTENT_SHORTS_CHANNEL);
+        // Hide Shorts from Home
+        MSD.setContentHidden(MediaServiceData.CONTENT_SHORTS_HOME, true);
 
-        content_types.add(MediaServiceData.CONTENT_SHORTS_HISTORY);
+        // Hide Shorts from Search Results
+        MSD.setContentHidden(MediaServiceData.CONTENT_SHORTS_SEARCH, true);
 
-        content_types.add(MediaServiceData.CONTENT_SHORTS_HOME);
-
-        content_types.add(MediaServiceData.CONTENT_SHORTS_SEARCH);
-
-        content_types.add(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS);
-
-        content_types.add(MediaServiceData.CONTENT_SHORTS_TRENDING);
-
-        for (int type : content_types) {
-
-            MSD.setContentHidden(type, true);
-
-        }
+        // Hide Shorts from Subscriptions
+        MSD.setContentHidden(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS, true);
 
     }
 
@@ -86,37 +101,38 @@ class SettingsOverride {
 
         BrowsePresenter BP = BrowsePresenter.instance(context);
 
-        LinkedList<Integer> sections = new LinkedList<Integer>();
+        // Remove Shorts Section
+        BP.enableSection(MediaGroup.TYPE_SHORTS, false);
 
-        sections.add(MediaGroup.TYPE_SHORTS);
+        // Remove Trending Section
+        BP.enableSection(MediaGroup.TYPE_TRENDING, false);
 
-        sections.add(MediaGroup.TYPE_TRENDING);
+        // Remove Kids Section
+        BP.enableSection(MediaGroup.TYPE_KIDS_HOME, false);
 
-        sections.add(MediaGroup.TYPE_KIDS_HOME);
+        // Remove Sports Section
+        BP.enableSection(MediaGroup.TYPE_SPORTS, false);
 
-        sections.add(MediaGroup.TYPE_SPORTS);
+        // Remove Live Section
+        BP.enableSection(MediaGroup.TYPE_LIVE, false);
 
-        sections.add(MediaGroup.TYPE_LIVE);
+        // Remove Gaming Section
+        BP.enableSection(MediaGroup.TYPE_GAMING, false);
 
-        sections.add(MediaGroup.TYPE_GAMING);
+        // Remove News Section
+        BP.enableSection(MediaGroup.TYPE_NEWS, false);
 
-        sections.add(MediaGroup.TYPE_NEWS);
+        // Remove Music Section
+        BP.enableSection(MediaGroup.TYPE_MUSIC, false);
 
-        sections.add(MediaGroup.TYPE_MUSIC);
+        // Remove Channel Uploads Section
+        BP.enableSection(MediaGroup.TYPE_CHANNEL_UPLOADS, false);
 
-        sections.add(MediaGroup.TYPE_CHANNEL_UPLOADS);
+        // Remove My Videos Section
+        BP.enableSection(MediaGroup.TYPE_MY_VIDEOS, false);
 
-        sections.add(MediaGroup.TYPE_MY_VIDEOS);
-
-        sections.add(MediaGroup.TYPE_PLAYBACK_QUEUE);
-
-        //sections.add(MediaGroup.TYPE_SETTINGS);
-
-        for (Integer section : sections) {
-
-            BP.enableSection(0, false);
-
-        }
+        // Remove Playback Queue Section
+        BP.enableSection(MediaGroup.TYPE_PLAYBACK_QUEUE, false);
 
     }
 
@@ -124,6 +140,7 @@ class SettingsOverride {
 
         PlayerData PD = PlayerData.instance(context);
 
+        // Raise Video Buffer to Maximum
         PD.setVideoBufferType(PlayerData.BUFFER_HIGHEST);
 
     }
