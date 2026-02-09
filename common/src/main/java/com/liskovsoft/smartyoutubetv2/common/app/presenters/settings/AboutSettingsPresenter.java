@@ -29,24 +29,35 @@ import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.BrowsePresenter;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
+import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
+import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerTweaksData;
 
 class SettingsOverride {
 
-    public void Run(Context context) {
+    public void Run(
+        Context context, 
+        AppDialogPresenter settingsPresenter
+    ) {
 
-        Config_ContentBlock(context);
+        ContentBlock(context);
 
-        Update_Notifications(context);
+        Misc(context);
 
-        Hide_Content();
+        HideContent();
 
-        Hide_Sidebar_Tabs(context);
+        Sidebar(context);
 
-        Highest_Buffer(context);
+        Buffer(context);
+
+        ContextMenu(context);
+
+        PlayerButtons(context);
+
+        settingsPresenter.closeDialog();
 
     }
 
-    private void Config_ContentBlock(Context context) {
+    private void ContentBlock(Context context) {
 
         ContentBlockData CBD = ContentBlockData.instance(context);
 
@@ -64,16 +75,19 @@ class SettingsOverride {
 
     }
 
-    private void Update_Notifications(Context context) {
+    private void Misc(Context context) {
 
         GeneralData GD = GeneralData.instance(context);
 
         // Enable Update Notification
         GD.setOldUpdateNotificationsEnabled(true);
 
+        // Use 24-hour time
+        GD.set24HourLocaleEnabled(true);
+
     }
 
-    private void Hide_Content() {
+    private void HideContent() {
 
         MediaServiceData MSD = MediaServiceData.instance();
 
@@ -97,7 +111,7 @@ class SettingsOverride {
 
     }
 
-    private void Hide_Sidebar_Tabs(Context context) {
+    private void Sidebar(Context context) {
 
         BrowsePresenter BP = BrowsePresenter.instance(context);
 
@@ -125,9 +139,6 @@ class SettingsOverride {
         // Remove Music Section
         BP.enableSection(MediaGroup.TYPE_MUSIC, false);
 
-        // Remove Channel Uploads Section
-        BP.enableSection(MediaGroup.TYPE_CHANNEL_UPLOADS, false);
-
         // Remove My Videos Section
         BP.enableSection(MediaGroup.TYPE_MY_VIDEOS, false);
 
@@ -136,12 +147,112 @@ class SettingsOverride {
 
     }
 
-    private void Highest_Buffer(Context context) {
+    private void Buffer(Context context) {
 
         PlayerData PD = PlayerData.instance(context);
 
         // Raise Video Buffer to Maximum
         PD.setVideoBufferType(PlayerData.BUFFER_HIGHEST);
+
+    }
+
+    private void ContextMenu(Context context) {
+
+        MainUIData MUID = MainUIData.instance(context);
+
+        // Hide 'Stream Reminder'
+        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_STREAM_REMINDER);
+
+        // Hide 'Create Playlist'
+        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_CREATE_PLAYLIST);
+
+        // Hide 'Rename Playlist'
+        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_RENAME_PLAYLIST);
+
+        // Hide 'Add to new Playlist'
+        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_ADD_TO_NEW_PLAYLIST);
+
+        // Hide 'Hide'
+        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_REMOVE_FROM_SUBSCRIPTIONS);
+
+        // Hide 'Sort Playlist'
+        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_PLAYLIST_ORDER);
+
+        // Hide 'Add Item to Sidebar'
+        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_PIN_TO_SIDEBAR);
+
+        // Hide 'Removed Saved Playlist'
+        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_SAVE_REMOVE_PLAYLIST);
+
+        // Hide 'Move Section Up'
+        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_MOVE_SECTION_UP);
+
+        // Hide 'Move section down'
+        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_MOVE_SECTION_DOWN);
+
+        // Hide 'Play Next'
+        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_PLAY_NEXT);
+
+        // Hide 'Clear History'
+        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_CLEAR_HISTORY);
+
+        // Show 'Mark as Watched'
+        MUID.setMenuItemEnabled(MainUIData.MENU_ITEM_MARK_AS_WATCHED);
+
+        // ============================================================
+
+        // Move 'Mark as Watched' to Index 0
+        MUID.setMenuItemIndex(0, MainUIData.MENU_ITEM_MARK_AS_WATCHED);
+
+        // Move 'Not Interested' to Index 1
+        MUID.setMenuItemIndex(1, MainUIData.MENU_ITEM_NOT_INTERESTED);
+
+        // Move 'Don't Recommend Channel' to Index 2
+        MUID.setMenuItemIndex(2, MainUIData.MENU_ITEM_NOT_RECOMMEND_CHANNEL);
+
+        // Move 'Open Playlist' to Index 3
+        MUID.setMenuItemIndex(3, MainUIData.MENU_ITEM_OPEN_PLAYLIST);
+
+        // Move 'Open Channel' to Index 4
+        MUID.setMenuItemIndex(4, MainUIData.MENU_ITEM_OPEN_CHANNEL);
+
+        // Move 'Add/Remove to Playlist' to Index 5
+        MUID.setMenuItemIndex(5, MainUIData.MENU_ITEM_ADD_TO_PLAYLIST);
+
+        // Move 'Subscribe' to Index 6
+        MUID.setMenuItemIndex(6, MainUIData.MENU_ITEM_SUBSCRIBE);
+
+        // Move 'Remove from History' to Index 7
+        MUID.setMenuItemIndex(7, MainUIData.MENU_ITEM_REMOVE_FROM_HISTORY);
+
+    }
+
+    private void PlayerButtons(Context context) {
+
+        PlayerTweaksData PTD = PlayerTweaksData.instance(context);
+
+        // Show Player UI when switching to the next video
+        PTD.setPlayerUiOnNextEnabled(true);
+
+        // ============================================================
+
+        // Hide 'Video Stats'
+        PTD.setPlayerButtonDisabled(PlayerTweaksData.PLAYER_BUTTON_VIDEO_STATS);
+
+        // Hide 'Screen Dimming'
+        PTD.setPlayerButtonDisabled(PlayerTweaksData.PLAYER_BUTTON_SCREEN_DIMMING);
+
+        // Hide 'Search'
+        PTD.setPlayerButtonDisabled(PlayerTweaksData.PLAYER_BUTTON_SEARCH);
+
+        // Hide 'Picture in picture'
+        PTD.setPlayerButtonDisabled(PlayerTweaksData.PLAYER_BUTTON_PIP);
+
+        // Hide 'Add to playlist'
+        PTD.setPlayerButtonDisabled(PlayerTweaksData.PLAYER_BUTTON_ADD_TO_PLAYLIST);
+
+        // Hide 'Playback quality'
+        PTD.setPlayerButtonDisabled(PlayerTweaksData.PLAYER_BUTTON_HIGH_QUALITY);
 
     }
 
@@ -187,13 +298,8 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
 
         appendOldUpdateNotificationSwitch(settingsPresenter);
 
-        if (!Helpers.equalsAny(country, "RU", "UA")) {
-            appendDonation(settingsPresenter);
-            appendFeedback(settingsPresenter);
-            appendLinks(settingsPresenter);
-        }
-
         settingsPresenter.showDialog(mainTitle);
+
     }
 
     private void appendAutoUpdateSwitch(AppDialogPresenter settingsPresenter) {
@@ -235,8 +341,11 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
         SettingsOverride SO = new SettingsOverride();
 
         OptionItem button = UiOptionItem.from(
-                "Override Settings",
-                option -> SO.Run(getContext())
+            "Use Phil's Presets",
+            option -> SO.Run(
+                getContext(), 
+                settingsPresenter
+            )
         );
 
         settingsPresenter.appendSingleButton(button);
