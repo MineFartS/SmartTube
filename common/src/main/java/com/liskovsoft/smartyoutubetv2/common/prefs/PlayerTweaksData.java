@@ -10,14 +10,15 @@ import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
 public class PlayerTweaksData implements ProfileChangeListener {
+
     private static final String VIDEO_PLAYER_TWEAKS_DATA = "video_player_tweaks_data";
+    
     public static final int PLAYER_DATA_SOURCE_DEFAULT = 0;
     public static final int PLAYER_DATA_SOURCE_OKHTTP = 1;
     public static final int PLAYER_DATA_SOURCE_CRONET = 2;
     public static final int PLAYER_BUTTON_VIDEO_ZOOM = 1;
     public static final int PLAYER_BUTTON_SEARCH = 1 << 1;
     public static final int PLAYER_BUTTON_PIP = 1 << 2;
-    //public static final int PLAYER_BUTTON_SCREEN_OFF = 1 << 3;
     public static final int PLAYER_BUTTON_PLAYBACK_QUEUE = 1 << 4;
     public static final int PLAYER_BUTTON_VIDEO_SPEED = 1 << 5;
     public static final int PLAYER_BUTTON_VIDEO_STATS = 1 << 6;
@@ -42,11 +43,27 @@ public class PlayerTweaksData implements ProfileChangeListener {
     public static final int PLAYER_BUTTON_SOUND_OFF = 1 << 25;
     public static final int PLAYER_BUTTON_AFR = 1 << 26;
     public static final int PLAYER_BUTTON_VIDEO_FLIP = 1 << 27;
-    public static final int PLAYER_BUTTON_DEFAULT = PLAYER_BUTTON_SEARCH | PLAYER_BUTTON_PIP | PLAYER_BUTTON_SCREEN_DIMMING | PLAYER_BUTTON_VIDEO_SPEED |
-            PLAYER_BUTTON_VIDEO_STATS | PLAYER_BUTTON_OPEN_CHANNEL | PLAYER_BUTTON_SUBTITLES | PLAYER_BUTTON_SUBSCRIBE |
-            PLAYER_BUTTON_LIKE | PLAYER_BUTTON_DISLIKE | PLAYER_BUTTON_ADD_TO_PLAYLIST | PLAYER_BUTTON_PLAY_PAUSE |
-            PLAYER_BUTTON_REPEAT_MODE | PLAYER_BUTTON_NEXT | PLAYER_BUTTON_PREVIOUS | PLAYER_BUTTON_HIGH_QUALITY |
-            PLAYER_BUTTON_VIDEO_INFO | PLAYER_BUTTON_CHAT;
+    
+    public static final int PLAYER_BUTTON_DEFAULT = 
+        PLAYER_BUTTON_SEARCH | 
+        PLAYER_BUTTON_PIP | 
+        PLAYER_BUTTON_SCREEN_DIMMING | 
+        PLAYER_BUTTON_VIDEO_SPEED |
+        PLAYER_BUTTON_VIDEO_STATS | 
+        PLAYER_BUTTON_OPEN_CHANNEL | 
+        PLAYER_BUTTON_SUBTITLES | 
+        PLAYER_BUTTON_SUBSCRIBE |
+        PLAYER_BUTTON_LIKE | 
+        PLAYER_BUTTON_DISLIKE | 
+        PLAYER_BUTTON_ADD_TO_PLAYLIST | 
+        PLAYER_BUTTON_PLAY_PAUSE |
+        PLAYER_BUTTON_REPEAT_MODE | 
+        PLAYER_BUTTON_NEXT | 
+        PLAYER_BUTTON_PREVIOUS | 
+        PLAYER_BUTTON_HIGH_QUALITY |
+        PLAYER_BUTTON_VIDEO_INFO | 
+        PLAYER_BUTTON_CHAT;
+
     @SuppressLint("StaticFieldLeak")
     private static PlayerTweaksData sInstance;
     private final AppPrefs mPrefs;
