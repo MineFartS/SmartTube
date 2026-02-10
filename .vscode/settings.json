@@ -1,0 +1,15 @@
+{
+    "search.exclude": {
+        ".gradle": true,
+        "build": true,
+        "chatkit": true,
+        "exoplayer-amzn-2.10.6": true,
+        "filepicker-lib": true,
+        "fragment-1.1.0": true,
+        "images": true,
+        "leanback-1.0.0": true,
+        "leanbackassistant": true,
+        "MediaServiceCore": true,
+        "SharedModules": true
+    }
+}
