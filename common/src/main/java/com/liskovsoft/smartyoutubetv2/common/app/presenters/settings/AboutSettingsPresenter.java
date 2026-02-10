@@ -125,7 +125,7 @@ class SettingsOverride {
         BP.enableSection(MediaGroup.TYPE_KIDS_HOME, false);
 
         // Remove Sports Section
-        BP.enableSection(MediaGroup.TYPE_SPORTS, false);
+        //BP.enableSection(MediaGroup.TYPE_SPORTS, false);
 
         // Remove Live Section
         BP.enableSection(MediaGroup.TYPE_LIVE, false);

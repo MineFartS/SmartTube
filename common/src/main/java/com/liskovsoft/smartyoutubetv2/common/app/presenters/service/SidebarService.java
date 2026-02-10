@@ -286,12 +286,7 @@ public class SidebarService implements ProfileChangeListener {
             R.string.header_kids_home, 
             MediaGroup.TYPE_KIDS_HOME
         );
-        
-        mDefaultSections.put(
-            R.string.header_sports, 
-            MediaGroup.TYPE_SPORTS
-        );
-        
+                
         mDefaultSections.put(
             R.string.badge_live, 
             MediaGroup.TYPE_LIVE
