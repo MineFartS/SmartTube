@@ -238,14 +238,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.hide_shorts_from_trending),
-                option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_TRENDING, option.isSelected()),
-                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_SHORTS_TRENDING)
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
                 getContext().getString(R.string.hide_streams),
                 option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_STREAMS_SUBSCRIPTIONS, option.isSelected()),
                 mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_STREAMS_SUBSCRIPTIONS)

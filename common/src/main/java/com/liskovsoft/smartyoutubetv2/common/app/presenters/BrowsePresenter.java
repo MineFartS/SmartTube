@@ -186,7 +186,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
 
         mSectionsMapping.put(MediaGroup.TYPE_HOME, new BrowseSection(MediaGroup.TYPE_HOME, getContext().getString(R.string.header_home), BrowseSection.TYPE_ROW, R.drawable.icon_home, false));
         mSectionsMapping.put(MediaGroup.TYPE_SHORTS, new BrowseSection(MediaGroup.TYPE_SHORTS, getContext().getString(R.string.header_shorts), BrowseSection.TYPE_SHORTS_GRID, R.drawable.icon_shorts));
-        mSectionsMapping.put(MediaGroup.TYPE_TRENDING, new BrowseSection(MediaGroup.TYPE_TRENDING, getContext().getString(R.string.header_trending), BrowseSection.TYPE_ROW, R.drawable.icon_trending));
         mSectionsMapping.put(MediaGroup.TYPE_KIDS_HOME, new BrowseSection(MediaGroup.TYPE_KIDS_HOME, getContext().getString(R.string.header_kids_home), BrowseSection.TYPE_ROW, R.drawable.icon_kids_home));
         mSectionsMapping.put(MediaGroup.TYPE_SPORTS, new BrowseSection(MediaGroup.TYPE_SPORTS, getContext().getString(R.string.header_sports), BrowseSection.TYPE_ROW, R.drawable.icon_sports));
         mSectionsMapping.put(MediaGroup.TYPE_LIVE, new BrowseSection(MediaGroup.TYPE_LIVE, getContext().getString(R.string.badge_live), BrowseSection.TYPE_ROW, R.drawable.icon_live));
@@ -210,7 +209,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
 
     private void initRowAndGridMapping() {
         mRowMapping.put(MediaGroup.TYPE_HOME, getContentService().getHomeObserve());
-        mRowMapping.put(MediaGroup.TYPE_TRENDING, getContentService().getTrendingObserve());
         mRowMapping.put(MediaGroup.TYPE_KIDS_HOME, getContentService().getKidsHomeObserve());
         mRowMapping.put(MediaGroup.TYPE_SPORTS, getContentService().getSportsObserve());
         mRowMapping.put(MediaGroup.TYPE_LIVE, getContentService().getLiveObserve());
@@ -528,7 +526,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         enableSection(MediaGroup.TYPE_MUSIC, enable);
         enableSection(MediaGroup.TYPE_NEWS, enable);
         enableSection(MediaGroup.TYPE_HOME, enable);
-        enableSection(MediaGroup.TYPE_TRENDING, enable);
         enableSection(MediaGroup.TYPE_SHORTS, enable);
     }
 
@@ -1018,7 +1015,10 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
             return -1;
         }
 
-        return Helpers.equalsAny(mediaGroup.getTitle(), getContext().getString(R.string.trending_row_name)) ? 0 : -1;
+        return Helpers.equalsAny(
+            mediaGroup.getTitle(), 
+            getContext().getString(R.string.trending_row_name)
+        ) ? 0 : -1;
     }
 
     private Observable<MediaGroup> createPinnedGridAction(Video item) {

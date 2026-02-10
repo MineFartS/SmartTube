@@ -119,7 +119,7 @@ class SettingsOverride {
         BP.enableSection(MediaGroup.TYPE_SHORTS, false);
 
         // Remove Trending Section
-        BP.enableSection(MediaGroup.TYPE_TRENDING, false);
+        //BP.enableSection(MediaGroup.TYPE_TRENDING, false);
 
         // Remove Kids Section
         BP.enableSection(MediaGroup.TYPE_KIDS_HOME, false);

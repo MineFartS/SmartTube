@@ -283,11 +283,6 @@ public class SidebarService implements ProfileChangeListener {
         );
 
         mDefaultSections.put(
-            R.string.header_trending, 
-            MediaGroup.TYPE_TRENDING
-        );
-
-        mDefaultSections.put(
             R.string.header_kids_home, 
             MediaGroup.TYPE_KIDS_HOME
         );
@@ -363,8 +358,7 @@ public class SidebarService implements ProfileChangeListener {
                     sectionId, 
                     new int[]{
                         MediaGroup.TYPE_NOTIFICATIONS,
-                        MediaGroup.TYPE_PLAYBACK_QUEUE,
-                        MediaGroup.TYPE_TRENDING
+                        MediaGroup.TYPE_PLAYBACK_QUEUE
                     }
                 )
             );
