@@ -1,6 +1,10 @@
+
 [submodule "SharedModules"]
 	path = SharedModules
 	url = https://github.com/yuliskov/SharedModules
+    ignore = all
+
 [submodule "MediaServiceCore"]
 	path = MediaServiceCore
 	url = https://github.com/yuliskov/MediaServiceCore
+    ignore = all
