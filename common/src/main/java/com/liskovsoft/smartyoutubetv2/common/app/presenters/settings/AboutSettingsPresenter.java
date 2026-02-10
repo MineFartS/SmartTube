@@ -398,33 +398,6 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
         
     }
 
-    private void appendDonation(AppDialogPresenter settingsPresenter) {
-
-        List<OptionItem> donateOptions = new ArrayList<>();
-
-        Map<String, String> donations = Helpers.getMap(getContext(), R.array.donations);
-
-        for (Entry<String, String> entry : donations.entrySet()) {
-            donateOptions.add(
-                UiOptionItem.from(
-                    entry.getKey(),
-                    option -> Utils.openLink(
-                        getContext(), 
-                        Utils.toQrCodeLink(entry.getValue())
-                    )
-                )
-            );
-        }
-
-        if (!donateOptions.isEmpty()) {
-            settingsPresenter.appendStringsCategory(
-                getContext().getString(R.string.donation), 
-                donateOptions
-            );
-        }
-    
-    }
-
     private void appendUpdateSource(AppDialogPresenter settingsPresenter) {
         
         List<OptionItem> options = new ArrayList<>();

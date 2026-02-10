@@ -338,12 +338,15 @@ public class VideoLoaderController extends BasePlayerController {
 
         ServiceManager service = YouTubeServiceManager.instance();
         MediaItemService mediaItemManager = service.getMediaItemService();
+        
         mFormatInfoAction = mediaItemManager.getFormatInfoObserve(video.videoId)
-                .subscribe(this::processFormatInfo,
-                           error -> {
-                               getPlayer().showProgressBar(false);
-                               runFormatErrorAction(error);
-                           });
+            .subscribe(
+                this::processFormatInfo,
+                error -> {
+                    getPlayer().showProgressBar(false);
+                    runFormatErrorAction(error);
+                }
+            );
     }
 
     private void processFormatInfo(MediaItemFormatInfo formatInfo) {
