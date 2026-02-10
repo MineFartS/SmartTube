@@ -234,9 +234,7 @@ To build and install debug version, run these commands:
 ```
 git clone https://github.com/yuliskov/SmartTube.git
 cd SmartTube
-git submodule update --init
-adb connect <device_ip_address>
-./gradlew.bat clean installStstableDebug
+./build.ps1
 ```
 
 
