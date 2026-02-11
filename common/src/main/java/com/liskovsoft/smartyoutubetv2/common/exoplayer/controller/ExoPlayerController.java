@@ -70,7 +70,7 @@ public class ExoPlayerController implements Player.EventListener {
         
         applyShield720pFix();
         VideoTrack.sIsNoFpsPresetsEnabled = playerTweaksData.isNoFpsPresetsEnabled();
-        MediaTrack.preferAvcOverVp9(playerTweaksData.isAvcOverVp9Preferred());
+        
     }
 
     private void applyShield720pFix() {

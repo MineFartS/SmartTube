@@ -388,15 +388,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.prefer_avc_over_vp9),
-                getContext().getString(R.string.prefer_avc_over_vp9_desc),
-                option -> mPlayerTweaksData.setAvcOverVp9Preferred(option.isSelected()),
-                mPlayerTweaksData.isAvcOverVp9Preferred()
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
                 getContext().getString(R.string.amlogic_fix),
                 getContext().getString(R.string.amlogic_fix_desc),
                 option -> mPlayerTweaksData.setAmlogicFixEnabled(option.isSelected()),

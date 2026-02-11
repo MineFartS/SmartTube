@@ -481,7 +481,7 @@
     <string name="feedback">Feedback</string>
     <string name="sources">Sources</string>
     <string name="releases">Releases</string>
-    <string name="prefer_avc_over_vp9">Codec selection: prefer avc over vp9</string>
+
     <string name="open_chat">Chat/Comments</string>
     <string name="open_comments">Open comments</string>
     <string name="place_chat_left">Place chat to the left</string>
@@ -628,7 +628,7 @@
     <string name="protect_account_with_password">Protect this account with password</string>
     <string name="enter_account_password">Enter account password</string>
     <string name="show_connect_messages">Show connect messages</string>
-    <string name="prefer_avc_over_vp9_desc">WARN: 1080p maximum</string>
+
     <string name="play_next">Play next</string>
     <string name="hide_watched_from_subscriptions">Hide watched videos from Subscriptions</string>
     <string name="hide_watched_from_notifications">Hide watched videos from Notifications</string>

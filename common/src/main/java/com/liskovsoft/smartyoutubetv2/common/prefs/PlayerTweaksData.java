@@ -86,7 +86,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsRememberPositionOfShortVideosEnabled;
     private boolean mIsRememberPositionOfLiveVideosEnabled;
     private boolean mIsSuggestionsDisabled;
-    private boolean mIsAvcOverVp9Preferred;
+
     private boolean mIsChatPlacedLeft;
     private boolean mIsCommentsPlacedLeft;
     private boolean mIsRealChannelIconEnabled;
@@ -311,15 +311,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     public void setNoFpsPresetsEnabled(boolean enable) {
         mIsNoFpsPresetsEnabled = enable;
-        persistData();
-    }
-
-    public boolean isAvcOverVp9Preferred() {
-        return mIsAvcOverVp9Preferred;
-    }
-
-    public void setAvcOverVp9Preferred(boolean prefer) {
-        mIsAvcOverVp9Preferred = prefer;
         persistData();
     }
 
@@ -629,7 +620,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsNoFpsPresetsEnabled = Helpers.parseBoolean(split, 15, false);
         mIsRememberPositionOfShortVideosEnabled = Helpers.parseBoolean(split, 16, false);
         mIsSuggestionsDisabled = Helpers.parseBoolean(split, 17, false);
-        mIsAvcOverVp9Preferred = Helpers.parseBoolean(split, 18, false);
+        
         mIsChatPlacedLeft = Helpers.parseBoolean(split, 19, false);
         mIsRealChannelIconEnabled = Helpers.parseBoolean(split, 20, true);
         mPixelRatio = Helpers.parseFloat(split, 21, 1.0f);
@@ -637,7 +628,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsSpeedButtonOldBehaviorEnabled = Helpers.parseBoolean(split, 23, false);
         mIsButtonLongClickEnabled = Helpers.parseBoolean(split, 24, true);
         mIsLongSpeedListEnabled = Helpers.parseBoolean(split, 25, true);
-        //mPlayerDataSource = Helpers.parseInt(split, 26, Utils.skipCronet() ? PLAYER_DATA_SOURCE_DEFAULT : PLAYER_DATA_SOURCE_CRONET);
+        
         mPlayerDataSource = Helpers.parseInt(split, 26, PLAYER_DATA_SOURCE_DEFAULT);
         mUnlockAllFormats = Helpers.parseBoolean(split, 27, false);
         mIsDashUrlStreamsForced = Helpers.parseBoolean(split, 28, false);
@@ -703,7 +694,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mIsNoFpsPresetsEnabled, 
                 mIsRememberPositionOfShortVideosEnabled, 
                 mIsSuggestionsDisabled,
-                mIsAvcOverVp9Preferred, 
                 mIsChatPlacedLeft, 
                 mIsRealChannelIconEnabled, 
                 mPixelRatio, 

@@ -148,11 +148,6 @@ public abstract class MediaTrack {
         return getCodecWeight(prevTrack) - getCodecWeight(nextTrack) > 0;
     }
 
-    public static void preferAvcOverVp9(boolean prefer) {
-        sAVCWeight = prefer ? VP9_WEIGHT : AVC_WEIGHT;
-        sVP9Weight = prefer ? AVC_WEIGHT : VP9_WEIGHT;
-    }
-
     public static boolean preferByDrc(MediaTrack origin, MediaTrack prevTrack, MediaTrack nextTrack) {
         if (!(origin instanceof AudioTrack)) {
             return true;
