@@ -1,15 +1,19 @@
 {
     "search.exclude": {
-        ".gradle": true,
-        "build": true,
-        "chatkit": true,
-        "exoplayer-amzn-2.10.6": true,
-        "filepicker-lib": true,
-        "fragment-1.1.0": true,
-        "images": true,
-        "leanback-1.0.0": true,
-        "leanbackassistant": true,
-        "MediaServiceCore": true,
-        "SharedModules": true
-    }
+        "/.gradle/": true,
+        "/build/": true,
+        "/smarttubetv/build/": true,
+        "/MediaServiceCore/": true,
+        "/SharedModules/": true
+    },
+    "deadCodeDetector.exclude": [
+        ".gradle",
+        "build",
+        "smarttubetv/build",
+        "MediaServiceCore",
+        "SharedModules"
+    ],
+    "deadCodeDetector.analyzeOnSave": false,
+    "deadCodeDetector.confidenceThreshold": "high",
+    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx4G -Xms100m -Xlog:disable"
 }
