@@ -116,7 +116,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsQuickSkipVideosEnabled;
     private boolean mIsOculusQuestFixEnabled;
     private boolean mIsAudioFocusEnabled;
-    private boolean mIsNetworkErrorFixingDisabled;
+
     private boolean mIsDontResizeVideoToFitDialogEnabled;
     private boolean mIsSuggestionsHorizontallyScrolled;
     private final Runnable mPersistDataInt = this::persistDataInt;
@@ -612,15 +612,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         GlobalPreferences.instance(mPrefs.getContext()).setIPv4DnsPreferred(prefer);
     }
 
-    public boolean isNetworkErrorFixingDisabled() {
-        return mIsNetworkErrorFixingDisabled;
-    }
-
-    public void setNetworkErrorFixingDisabled(boolean disabled) {
-        mIsNetworkErrorFixingDisabled = disabled;
-        persistData();
-    }
-
     public boolean isDontResizeVideoToFitDialogEnabled() {
         return mIsDontResizeVideoToFitDialogEnabled;
     }
@@ -690,19 +681,19 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsPlayerAutoVolumeEnabled = Helpers.parseBoolean(split, 40, true);
         mIsSyncRowButtonIndexEnabled = Helpers.parseBoolean(split, 41, true);
         mIsUnsafeAudioFormatsEnabled = Helpers.parseBoolean(split, 42, true);
-        //mIsHighBitrateFormatsEnabled = Helpers.parseBoolean(split, 43, false);
+
         mIsLoopShortsEnabled = Helpers.parseBoolean(split, 44, true);
         mIsQuickSkipShortsEnabled = Helpers.parseBoolean(split, 45, true);
         mIsRememberPositionOfLiveVideosEnabled = Helpers.parseBoolean(split, 46, true);
         mIsOculusQuestFixEnabled = Helpers.parseBoolean(split, 47, Utils.isOculusQuest());
         // mPlayerDataSource was here
         // Cronet is buffering too, unfortunately, so leave the default as a safest method (e.g. for "strtarmenia")
-        // mPlayerDataSource = Helpers.parseInt(split, 48, PLAYER_DATA_SOURCE_DEFAULT);
+
         mIsExtraLongSpeedListEnabled = Helpers.parseBoolean(split, 49, false);
         mIsQuickSkipVideosEnabled = Helpers.parseBoolean(split, 50, false);
-        mIsNetworkErrorFixingDisabled = Helpers.parseBoolean(split, 51, false);
+
         mIsCommentsPlacedLeft = Helpers.parseBoolean(split, 52, false);
-        //mIsPersistentAntiBotFixEnabled = Helpers.parseBoolean(split, 53, false);
+
         mIsAudioFocusEnabled = Helpers.parseBoolean(split, 54, true);
         mIsDontResizeVideoToFitDialogEnabled = Helpers.parseBoolean(split, 55, false);
         mIsSuggestionsHorizontallyScrolled = Helpers.parseBoolean(split, 56, false);
@@ -720,19 +711,62 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     private void persistDataInt() {
         mPrefs.setProfileData(VIDEO_PLAYER_TWEAKS_DATA, Helpers.mergeData(
-                mIsAmlogicFixEnabled, mIsAmazonFrameDropFixEnabled, mIsSnapToVsyncDisabled,
-                mIsProfileLevelCheckSkipped, mIsSWDecoderForced, mIsTextureViewEnabled,
-                null, mIsSetOutputSurfaceWorkaroundEnabled, mIsAudioSyncFixEnabled, mIsKeepFinishedActivityEnabled, mIsHlsStreamsForced,
-                mIsPlaybackNotificationsDisabled, mIsTunneledPlaybackEnabled, mPlayerButtons,
-                null, mIsNoFpsPresetsEnabled, mIsRememberPositionOfShortVideosEnabled, mIsSuggestionsDisabled,
-                mIsAvcOverVp9Preferred, mIsChatPlacedLeft, mIsRealChannelIconEnabled, mPixelRatio, mIsQualityInfoBitrateEnabled,
-                mIsSpeedButtonOldBehaviorEnabled, mIsButtonLongClickEnabled, mIsLongSpeedListEnabled, mPlayerDataSource, mUnlockAllFormats,
-                mIsDashUrlStreamsForced, mIsSonyFrameDropFixEnabled, mIsBufferOnStreamsDisabled, mIsSectionPlaylistEnabled,
-                mIsScreenOffTimeoutEnabled, mScreenOffTimeoutSec, mIsUIAnimationsEnabled, mIsLikesCounterEnabled, mIsChapterNotificationEnabled,
-                mScreenOffDimmingPercents, mIsBootScreenOffEnabled, mIsPlayerUiOnNextEnabled, mIsPlayerAutoVolumeEnabled, mIsSyncRowButtonIndexEnabled,
-                mIsUnsafeAudioFormatsEnabled, null, mIsLoopShortsEnabled, mIsQuickSkipShortsEnabled, mIsRememberPositionOfLiveVideosEnabled,
-                mIsOculusQuestFixEnabled, null, mIsExtraLongSpeedListEnabled, mIsQuickSkipVideosEnabled, mIsNetworkErrorFixingDisabled, mIsCommentsPlacedLeft,
-                null, mIsAudioFocusEnabled, mIsDontResizeVideoToFitDialogEnabled, mIsSuggestionsHorizontallyScrolled
+                mIsAmlogicFixEnabled, 
+                mIsAmazonFrameDropFixEnabled, 
+                mIsSnapToVsyncDisabled,
+                mIsProfileLevelCheckSkipped, 
+                mIsSWDecoderForced, 
+                mIsTextureViewEnabled,
+                null, 
+                mIsSetOutputSurfaceWorkaroundEnabled, 
+                mIsAudioSyncFixEnabled, 
+                mIsKeepFinishedActivityEnabled, 
+                mIsHlsStreamsForced,
+                mIsPlaybackNotificationsDisabled, 
+                mIsTunneledPlaybackEnabled, 
+                mPlayerButtons,
+                null, 
+                mIsNoFpsPresetsEnabled, 
+                mIsRememberPositionOfShortVideosEnabled, 
+                mIsSuggestionsDisabled,
+                mIsAvcOverVp9Preferred, 
+                mIsChatPlacedLeft, 
+                mIsRealChannelIconEnabled, 
+                mPixelRatio, 
+                mIsQualityInfoBitrateEnabled,
+                mIsSpeedButtonOldBehaviorEnabled, 
+                mIsButtonLongClickEnabled, 
+                mIsLongSpeedListEnabled, 
+                mPlayerDataSource, 
+                mUnlockAllFormats,
+                mIsDashUrlStreamsForced, 
+                mIsSonyFrameDropFixEnabled, 
+                mIsBufferOnStreamsDisabled, 
+                mIsSectionPlaylistEnabled,
+                mIsScreenOffTimeoutEnabled, 
+                mScreenOffTimeoutSec, 
+                mIsUIAnimationsEnabled, 
+                mIsLikesCounterEnabled, 
+                mIsChapterNotificationEnabled,
+                mScreenOffDimmingPercents, 
+                mIsBootScreenOffEnabled, 
+                mIsPlayerUiOnNextEnabled, 
+                mIsPlayerAutoVolumeEnabled, 
+                mIsSyncRowButtonIndexEnabled,
+                mIsUnsafeAudioFormatsEnabled, 
+                null, 
+                mIsLoopShortsEnabled, 
+                mIsQuickSkipShortsEnabled, 
+                mIsRememberPositionOfLiveVideosEnabled,
+                mIsOculusQuestFixEnabled, 
+                null, 
+                mIsExtraLongSpeedListEnabled, 
+                mIsQuickSkipVideosEnabled, 
+                mIsCommentsPlacedLeft,
+                null,
+                mIsAudioFocusEnabled, 
+                mIsDontResizeVideoToFitDialogEnabled, 
+                mIsSuggestionsHorizontallyScrolled
                 ));
     }
 

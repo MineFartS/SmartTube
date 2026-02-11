@@ -131,7 +131,7 @@ public class VideoLoaderController extends BasePlayerController {
         } else if ((!getVideo().isLive || getVideo().isLiveEnd)
                 && getPlayer().getDurationMs() - getPlayer().getPositionMs() < STREAM_END_THRESHOLD_MS) {
             getMainController().onPlayEnd();
-        } else if (!getVideo().isLive && !getVideo().isLiveEnd && !getPlayerTweaksData().isNetworkErrorFixingDisabled()) {
+        } else if (!getVideo().isLive && !getVideo().isLiveEnd) {
             MessageHelpers.showLongMessage(getContext(), R.string.playback_buffering_fix);
             YouTubeServiceManager.instance().invalidateCache();
             // Faster source is different among devices. Try them one by one.
@@ -555,7 +555,7 @@ public class VideoLoaderController extends BasePlayerController {
                 getPlayerTweaksData().setSectionPlaylistEnabled(false);
                 restartEngine = false;
             }
-        } else if (Helpers.containsAny(errorContent, "Exception in CronetUrlRequest", "Response code: 503") && !getPlayerTweaksData().isNetworkErrorFixingDisabled()) {
+        } else if (Helpers.containsAny(errorContent, "Exception in CronetUrlRequest", "Response code: 503")) {
             if (getVideo() != null && !getVideo().isLive) { // Finished live stream may provoke errors in Cronet
                 getPlayerTweaksData().setPlayerDataSource(PlayerTweaksData.PLAYER_DATA_SOURCE_DEFAULT);
             } else {
