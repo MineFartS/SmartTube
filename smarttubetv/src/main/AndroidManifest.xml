@@ -212,16 +212,6 @@
             android:screenOrientation="unspecified"/>
 
         <activity
-            android:name="com.liskovsoft.smartyoutubetv2.tv.launchers.NewsLauncherActivity"
-            android:logo="@drawable/icon_news"
-            android:icon="@drawable/icon_news"
-            android:label="@string/header_news"
-            android:exported="true"
-            android:launchMode="singleInstance"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|layoutDirection"
-            android:screenOrientation="unspecified"/>
-
-        <activity
             android:name="com.liskovsoft.smartyoutubetv2.tv.launchers.MusicLauncherActivity"
             android:logo="@drawable/icon_music"
             android:icon="@drawable/icon_music"

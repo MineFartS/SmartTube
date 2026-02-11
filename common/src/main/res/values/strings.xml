@@ -5,7 +5,6 @@
     <string name="header_subscriptions">Subscriptions</string>
     <string name="header_history">History</string>
     <string name="header_music">Music</string>
-    <string name="header_news">News</string>
     <string name="header_gaming">Gaming</string>
     <string name="header_playlists">Playlists</string>
     <string name="header_settings">Settings</string>
@@ -260,9 +259,6 @@
     <string name="uploads_row_name">Uploads</string>
     <string name="playlists_row_name">Created playlists</string>
     <string name="popular_uploads_row_name">Popular uploads</string>
-    <string name="news_row_name">News</string>
-    <string name="breaking_news_row_name">Breaking news</string>
-    <string name="covid_news_row_name">COVID-19 news</string>
     <string name="enable_voice_search">Enable global search (firmware support needed)</string>
     <string name="subscribe_unsubscribe_from_channel">Subscribe/Unsubscribe from the channel</string>
     <string name="app_backup_restore">Backup/Restore</string>

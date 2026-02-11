@@ -190,9 +190,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         mSectionsMapping.put(MediaGroup.TYPE_LIVE, new BrowseSection(MediaGroup.TYPE_LIVE, getContext().getString(R.string.badge_live), BrowseSection.TYPE_ROW, R.drawable.icon_live));
         mSectionsMapping.put(MediaGroup.TYPE_MY_VIDEOS, new BrowseSection(MediaGroup.TYPE_MY_VIDEOS, getContext().getString(R.string.my_videos), BrowseSection.TYPE_GRID, R.drawable.icon_playlist));
         mSectionsMapping.put(MediaGroup.TYPE_GAMING, new BrowseSection(MediaGroup.TYPE_GAMING, getContext().getString(R.string.header_gaming), BrowseSection.TYPE_ROW, R.drawable.icon_gaming));
-        if (!Helpers.equalsAny(country, "RU", "BY")) {
-            mSectionsMapping.put(MediaGroup.TYPE_NEWS, new BrowseSection(MediaGroup.TYPE_NEWS, getContext().getString(R.string.header_news), BrowseSection.TYPE_ROW, R.drawable.icon_news));
-        }
+
         mSectionsMapping.put(MediaGroup.TYPE_MUSIC, new BrowseSection(MediaGroup.TYPE_MUSIC, getContext().getString(R.string.header_music), BrowseSection.TYPE_ROW, R.drawable.icon_music));
         mSectionsMapping.put(MediaGroup.TYPE_CHANNEL_UPLOADS, new BrowseSection(MediaGroup.TYPE_CHANNEL_UPLOADS, getContext().getString(R.string.header_channels), uploadsType, R.drawable.icon_channels, false));
         mSectionsMapping.put(MediaGroup.TYPE_SUBSCRIPTIONS, new BrowseSection(MediaGroup.TYPE_SUBSCRIPTIONS, getContext().getString(R.string.header_subscriptions), BrowseSection.TYPE_GRID, R.drawable.icon_subscriptions, false));
@@ -210,7 +208,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         mRowMapping.put(MediaGroup.TYPE_HOME, getContentService().getHomeObserve());
         mRowMapping.put(MediaGroup.TYPE_KIDS_HOME, getContentService().getKidsHomeObserve());
         mRowMapping.put(MediaGroup.TYPE_LIVE, getContentService().getLiveObserve());
-        mRowMapping.put(MediaGroup.TYPE_NEWS, getContentService().getNewsObserve());
         mRowMapping.put(MediaGroup.TYPE_MUSIC, getContentService().getMusicObserve());
         mRowMapping.put(MediaGroup.TYPE_GAMING, getContentService().getGamingObserve());
         mRowMapping.put(MediaGroup.TYPE_USER_PLAYLISTS, getContentService().getPlaylistRowsObserve());
@@ -522,7 +519,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         enableSection(MediaGroup.TYPE_CHANNEL_UPLOADS, enable);
         enableSection(MediaGroup.TYPE_GAMING, enable);
         enableSection(MediaGroup.TYPE_MUSIC, enable);
-        enableSection(MediaGroup.TYPE_NEWS, enable);
+
         enableSection(MediaGroup.TYPE_HOME, enable);
         enableSection(MediaGroup.TYPE_SHORTS, enable);
     }
@@ -989,23 +986,23 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
     }
 
     private void filterHomeIfNeeded(List<MediaGroup> mediaGroups) {
+        
         if (mediaGroups == null || !isHomeSection()) {
             return;
         }
 
-        Helpers.removeIf(mediaGroups, value -> Helpers.containsAny(
+        Helpers.removeIf(
+            mediaGroups, 
+            value -> Helpers.containsAny(
                 value.getTitle(),
                 "Primetime", // Free movies and shows row
                 "News", // Top news
                 "news", // Top news
                 "NBA TV", // Sports
                 "The Life of a Showgirl"
-        ) || Helpers.equalsAny(
-                value.getTitle(),
-                //getContext().getString(R.string.news_row_name),
-                getContext().getString(R.string.breaking_news_row_name),
-                getContext().getString(R.string.covid_news_row_name)
-        ));
+            )
+        );
+        
     }
 
     private int moveToTopIfNeeded(MediaGroup mediaGroup) {

@@ -118,23 +118,14 @@ class SettingsOverride {
         // Remove Shorts Section
         BP.enableSection(MediaGroup.TYPE_SHORTS, false);
 
-        // Remove Trending Section
-        //BP.enableSection(MediaGroup.TYPE_TRENDING, false);
-
         // Remove Kids Section
         BP.enableSection(MediaGroup.TYPE_KIDS_HOME, false);
-
-        // Remove Sports Section
-        //BP.enableSection(MediaGroup.TYPE_SPORTS, false);
 
         // Remove Live Section
         BP.enableSection(MediaGroup.TYPE_LIVE, false);
 
         // Remove Gaming Section
         BP.enableSection(MediaGroup.TYPE_GAMING, false);
-
-        // Remove News Section
-        BP.enableSection(MediaGroup.TYPE_NEWS, false);
 
         // Remove Music Section
         BP.enableSection(MediaGroup.TYPE_MUSIC, false);
