@@ -344,7 +344,7 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
             return;
         }
 
-        if ((!mVideo.belongsToHome() && !mVideo.belongsToShorts()) || !mIsNotInterestedButtonEnabled) {
+        if (!mVideo.belongsToHome() || !mIsNotInterestedButtonEnabled) {
             return;
         }
 
@@ -373,7 +373,7 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
             return;
         }
 
-        if ((!mVideo.belongsToHome() && !mVideo.belongsToShorts()) || !mIsNotRecommendChannelEnabled) {
+        if (!mVideo.belongsToHome() || !mIsNotRecommendChannelEnabled) {
             return;
         }
 

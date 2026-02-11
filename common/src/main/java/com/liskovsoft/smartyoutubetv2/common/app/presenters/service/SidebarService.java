@@ -303,11 +303,6 @@ public class SidebarService implements ProfileChangeListener {
         );
 
         mDefaultSections.put(
-            R.string.my_videos, 
-            MediaGroup.TYPE_MY_VIDEOS
-        );
-
-        mDefaultSections.put(
             R.string.playback_queue_category_title, 
             MediaGroup.TYPE_PLAYBACK_QUEUE
         );

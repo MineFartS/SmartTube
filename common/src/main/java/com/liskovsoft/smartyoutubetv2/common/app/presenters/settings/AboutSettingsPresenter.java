@@ -112,14 +112,8 @@ class SettingsOverride {
 
         BrowsePresenter BP = BrowsePresenter.instance(context);
 
-        // Remove Shorts Section
-        BP.enableSection(MediaGroup.TYPE_SHORTS, false);
-
-        // Remove Kids Section
-        BP.enableSection(MediaGroup.TYPE_KIDS_HOME, false);
-
-        // Remove My Videos Section
-        BP.enableSection(MediaGroup.TYPE_MY_VIDEOS, false);
+        // Remove Notifications Section
+        BP.enableSection(MediaGroup.TYPE_NOTIFICATIONS, false);
 
         // Remove Playback Queue Section
         BP.enableSection(MediaGroup.TYPE_PLAYBACK_QUEUE, false);
