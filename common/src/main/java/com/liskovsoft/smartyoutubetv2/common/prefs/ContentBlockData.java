@@ -31,7 +31,7 @@ public class ContentBlockData {
     private final Set<String> mColorCategories = new LinkedHashSet<>();
     private final Set<SegmentAction> mActions = new LinkedHashSet<>();
     private final Set<String> mExcludedChannels = new LinkedHashSet<>();
-    private boolean mIsDontSkipSegmentAgainEnabled;
+
     private Map<String, Integer> mSegmentLocalizedMapping;
     private Map<String, Integer> mSegmentColorMapping;
     private Set<String> mAllCategories;
@@ -198,15 +198,6 @@ public class ContentBlockData {
         return false;
     }
 
-    public boolean isDontSkipSegmentAgainEnabled() {
-        return mIsDontSkipSegmentAgainEnabled;
-    }
-
-    public void enableDontSkipSegmentAgain(boolean enabled) {
-        mIsDontSkipSegmentAgainEnabled = enabled;
-        persistState();
-    }
-
     public boolean isAltServerEnabled() {
         return GlobalPreferences.instance(mAppPrefs.getContext()).isContentBlockAltServerEnabled();
     }
@@ -226,7 +217,7 @@ public class ContentBlockData {
         // colorMarkers: index 4
         String actions = Helpers.parseStr(split, 6);
         String colorCategories = Helpers.parseStr(split, 7);
-        mIsDontSkipSegmentAgainEnabled = Helpers.parseBoolean(split, 8, false);
+
         String excludedChannels = Helpers.parseStr(split, 9);
 
         if (colorCategories != null) {
@@ -277,17 +268,20 @@ public class ContentBlockData {
     }
 
     private void persistState() {
+        
         String colorCategories = Helpers.mergeArray(mColorCategories.toArray());
         String actions = Helpers.mergeArray(mActions.toArray());
         String excludedChannels = Helpers.mergeArray(mExcludedChannels.toArray());
 
-        mAppPrefs.setData(CONTENT_BLOCK_DATA, Helpers.mergeData(
+        mAppPrefs.setData(
+            CONTENT_BLOCK_DATA, 
+            Helpers.mergeData(
                 mIsSponsorBlockEnabled, 
                 null, null, null, null, null, 
                 actions, 
                 colorCategories, 
-                mIsDontSkipSegmentAgainEnabled,
                 excludedChannels
-        ));
+            )
+        );
     }
 }

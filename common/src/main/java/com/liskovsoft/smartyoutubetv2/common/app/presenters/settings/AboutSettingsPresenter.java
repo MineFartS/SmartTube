@@ -61,9 +61,6 @@ class SettingsOverride {
 
         ContentBlockData CBD = ContentBlockData.instance(context);
 
-        // Don't Skip Segments Again
-        CBD.enableDontSkipSegmentAgain(true);
-
 
         // Disable all ContentBlock Color Markers
         for (String category : CBD.getAllCategories()) {

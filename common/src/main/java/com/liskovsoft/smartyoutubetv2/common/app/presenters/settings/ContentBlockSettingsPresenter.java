@@ -176,14 +176,6 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.skip_each_segment_once),
-                optionItem -> mContentBlockData.enableDontSkipSegmentAgain(optionItem.isSelected()),
-                mContentBlockData.isDontSkipSegmentAgainEnabled()
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
                 getContext().getString(R.string.content_block_alt_server),
                 getContext().getString(R.string.content_block_alt_server_desc),
                 optionItem -> mContentBlockData.enableAltServer(optionItem.isSelected()),

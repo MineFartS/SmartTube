@@ -228,7 +228,7 @@ public class ContentBlockController extends BasePlayerController {
         applyActions(foundSegments);
 
         // Skip each segment only once
-        if (foundSegments != null && getContentBlockData().isDontSkipSegmentAgainEnabled()) {
+        if (foundSegments != null) {
             mActiveSegments.removeAll(foundSegments);
         }
     }
