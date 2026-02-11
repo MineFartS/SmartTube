@@ -211,8 +211,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     
     private int mPlaylistsStyle;
     
-    private boolean mIsUploadsOldLookEnabled;
-    
     private boolean mIsUploadsAutoLoadEnabled;
     
     private float mCardTextScrollSpeed;
@@ -370,15 +368,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         mPlaylistsStyle = type;
         persistState();
     
-    }
-
-    public boolean isUploadsOldLookEnabled() {
-        return mIsUploadsOldLookEnabled;
-    }
-
-    public void setUploadsOldLookEnabled(boolean enable) {
-        mIsUploadsOldLookEnabled = enable;
-        persistState();
     }
 
     public boolean isChannelsFilterEnabled() {
@@ -585,7 +574,7 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         mPlaylistsStyle = Helpers.parseInt(split, 6, PLAYLISTS_STYLE_GRID);
         mCardTitleLinesNum = Helpers.parseInt(split, 7, 1);
         mIsCardTextAutoScrollEnabled = Helpers.parseBoolean(split, 8, true);
-        mIsUploadsOldLookEnabled = Helpers.parseBoolean(split, 9, false);
+
         mIsUploadsAutoLoadEnabled = Helpers.parseBoolean(split, 10, true);
         mCardTextScrollSpeed = Helpers.parseFloat(split, 11, 2);
         mMenuItems = Helpers.parseLong(split, 12, MENU_ITEM_DEFAULT);
@@ -662,7 +651,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
                 mPlaylistsStyle, 
                 mCardTitleLinesNum, 
                 mIsCardTextAutoScrollEnabled,
-                mIsUploadsOldLookEnabled, 
                 mIsUploadsAutoLoadEnabled, 
                 mCardTextScrollSpeed, 
                 mMenuItems, 

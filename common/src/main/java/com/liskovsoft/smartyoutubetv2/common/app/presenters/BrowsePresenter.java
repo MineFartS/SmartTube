@@ -181,19 +181,76 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
     }
 
     private void initSectionMapping() {
-        String country = LocaleUtility.getCurrentLocale(getContext()).getCountry();
-        int uploadsType = getMainUIData().isUploadsOldLookEnabled() ? BrowseSection.TYPE_GRID : BrowseSection.TYPE_MULTI_GRID;
 
-        mSectionsMapping.put(MediaGroup.TYPE_HOME, new BrowseSection(MediaGroup.TYPE_HOME, getContext().getString(R.string.header_home), BrowseSection.TYPE_ROW, R.drawable.icon_home, false));
+        String country = LocaleUtility.getCurrentLocale(getContext()).getCountry();
+
+        mSectionsMapping.put(
+            MediaGroup.TYPE_HOME, 
+            new BrowseSection(
+                MediaGroup.TYPE_HOME, 
+                getContext().getString(R.string.header_home), 
+                BrowseSection.TYPE_ROW, 
+                R.drawable.icon_home, 
+                false
+            )
+        );
         
-        mSectionsMapping.put(MediaGroup.TYPE_CHANNEL_UPLOADS, new BrowseSection(MediaGroup.TYPE_CHANNEL_UPLOADS, getContext().getString(R.string.header_channels), uploadsType, R.drawable.icon_channels, false));
-        mSectionsMapping.put(MediaGroup.TYPE_SUBSCRIPTIONS, new BrowseSection(MediaGroup.TYPE_SUBSCRIPTIONS, getContext().getString(R.string.header_subscriptions), BrowseSection.TYPE_GRID, R.drawable.icon_subscriptions, false));
-        mSectionsMapping.put(MediaGroup.TYPE_HISTORY, new BrowseSection(MediaGroup.TYPE_HISTORY, getContext().getString(R.string.header_history), BrowseSection.TYPE_GRID, R.drawable.icon_history, true));
-        mSectionsMapping.put(MediaGroup.TYPE_USER_PLAYLISTS, new BrowseSection(MediaGroup.TYPE_USER_PLAYLISTS, getContext().getString(R.string.header_playlists), BrowseSection.TYPE_ROW, R.drawable.icon_playlist, false));
+        mSectionsMapping.put(
+            MediaGroup.TYPE_CHANNEL_UPLOADS, 
+            new BrowseSection(
+                MediaGroup.TYPE_CHANNEL_UPLOADS, 
+                getContext().getString(R.string.header_channels), 
+                BrowseSection.TYPE_MULTI_GRID,
+                R.drawable.icon_channels, 
+                false
+            )
+        );
+
+        mSectionsMapping.put(
+            MediaGroup.TYPE_SUBSCRIPTIONS, 
+            new BrowseSection(
+                MediaGroup.TYPE_SUBSCRIPTIONS, 
+                getContext().getString(R.string.header_subscriptions), 
+                BrowseSection.TYPE_GRID, 
+                R.drawable.icon_subscriptions, 
+                false
+            )
+        );
+
+        mSectionsMapping.put(
+            MediaGroup.TYPE_HISTORY, 
+            new BrowseSection(
+                MediaGroup.TYPE_HISTORY, 
+                getContext().getString(R.string.header_history), 
+                BrowseSection.TYPE_GRID, 
+                R.drawable.icon_history, 
+                true
+            )
+        );
+
+        mSectionsMapping.put(
+            MediaGroup.TYPE_USER_PLAYLISTS, 
+            new BrowseSection(
+                MediaGroup.TYPE_USER_PLAYLISTS, 
+                getContext().getString(R.string.header_playlists), 
+                BrowseSection.TYPE_ROW, 
+                R.drawable.icon_playlist, 
+                false
+            )
+        );
+
         mSectionsMapping.put(MediaGroup.TYPE_NOTIFICATIONS, new BrowseSection(MediaGroup.TYPE_NOTIFICATIONS, getContext().getString(R.string.header_notifications), BrowseSection.TYPE_GRID, R.drawable.icon_notification, false));
         mSectionsMapping.put(MediaGroup.TYPE_PLAYBACK_QUEUE, new BrowseSection(MediaGroup.TYPE_PLAYBACK_QUEUE, getContext().getString(R.string.playback_queue_category_title), BrowseSection.TYPE_GRID, R.drawable.icon_queue, false));
 
-        mSectionsMapping.put(MediaGroup.TYPE_SETTINGS, new BrowseSection(MediaGroup.TYPE_SETTINGS, getContext().getString(R.string.header_settings), BrowseSection.TYPE_SETTINGS_GRID, R.drawable.icon_settings));
+        mSectionsMapping.put(
+            MediaGroup.TYPE_SETTINGS, 
+            new BrowseSection(
+                MediaGroup.TYPE_SETTINGS, 
+                getContext().getString(R.string.header_settings), 
+                BrowseSection.TYPE_SETTINGS_GRID, 
+                R.drawable.icon_settings
+            )
+        );
         
     }
 

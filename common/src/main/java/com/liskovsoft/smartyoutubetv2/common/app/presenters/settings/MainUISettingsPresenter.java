@@ -306,27 +306,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
                 option -> mPlayerData.setGlobalEndingTimeEnabled(option.isSelected()),
                 mPlayerData.isGlobalEndingTimeEnabled()));
 
-        //options.add(UiOptionItem.from(getContext().getString(R.string.old_home_look),
-        //        option -> {
-        //            mGeneralData.enableOldHomeLook(option.isSelected());
-        //            mRestartApp = true;
-        //        },
-        //        mGeneralData.isOldHomeLookEnabled()));
-
-        //options.add(UiOptionItem.from(getContext().getString(R.string.old_channel_look),
-        //        option -> {
-        //            mGeneralData.enableOldChannelLook(option.isSelected());
-        //            mMainUIData.enableChannelSearchBar(!option.isSelected());
-        //        },
-        //        mGeneralData.isOldChannelLookEnabled()));
-
-        options.add(UiOptionItem.from(getContext().getString(R.string.channels_old_look),
-                optionItem -> {
-                    mMainUIData.setUploadsOldLookEnabled(optionItem.isSelected());
-                    mRestartApp = true;
-                },
-                mMainUIData.isUploadsOldLookEnabled()));
-
         options.add(UiOptionItem.from(getContext().getString(R.string.fullscreen_mode),
                 option -> {
                     mGeneralData.setFullscreenModeEnabled(option.isSelected());
