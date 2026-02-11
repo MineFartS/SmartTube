@@ -227,7 +227,7 @@ public class SearchSupportFragment extends Fragment {
     private Drawable mBadgeDrawable;
     private ExternalQuery mExternalQuery;
     private boolean mIsKeyboardAutoShowEnabled;
-    private boolean mIsKeyboardFixEnabled;
+    
     private boolean mIsTypingCorrectionDisabled;
 
     private SpeechRecognizer mSpeechRecognizer;
@@ -369,14 +369,10 @@ public class SearchSupportFragment extends Fragment {
                 Utils.enableScreensaver(getActivity(), true);
             }
         });
-        if (mIsKeyboardFixEnabled) {
-            KeyHelpers.fixEnterKey(mSearchTextEditor);
-        }
+
         if (mIsTypingCorrectionDisabled) {
             mSearchTextEditor.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
         }
-        // BUGFIX: focus lost with keyboard???
-        //mSearchTextEditor.setOnKeyboardDismissListener(this::focusOnSearchField);
 
         // MOD: commit search button
         mSearchOrbView = mSearchBar.findViewById(com.liskovsoft.smartyoutubetv2.tv.R.id.lb_search_bar_search_orb);
@@ -806,10 +802,6 @@ public class SearchSupportFragment extends Fragment {
             getActivity().getWindow().setSoftInputMode(enable ? WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED : WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         }
         mIsKeyboardAutoShowEnabled = enable;
-    }
-
-    protected void setKeyboardFixEnabled(boolean enable) {
-        mIsKeyboardFixEnabled = enable;
     }
 
     protected void setTypingCorrectionDisabled(boolean disable) {

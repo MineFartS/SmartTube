@@ -49,7 +49,7 @@ public class ChannelHeaderPresenter extends RowPresenter {
     private static final int RESULTS_CHANGED = 0x1;
     private static final int QUERY_COMPLETE = 0x2;
     private boolean mIsKeyboardAutoShowEnabled;
-    private boolean mIsKeyboardFixEnabled;
+
     private Drawable mBadgeDrawable;
     private int mStatus;
     private String mTitle;
@@ -98,7 +98,7 @@ public class ChannelHeaderPresenter extends RowPresenter {
         Context context = header.getContext();
         SearchData searchData = SearchData.instance(context);
         mIsKeyboardAutoShowEnabled = searchData.isKeyboardAutoShowEnabled();
-        mIsKeyboardFixEnabled = searchData.isKeyboardFixEnabled();
+        
         SearchBar searchBar = header.findViewById(R.id.lb_search_bar);
         SearchOrbView searchOrbView = searchBar.findViewById(R.id.lb_search_bar_search_orb);
         SpeechOrbView speechOrbView = searchBar.findViewById(R.id.lb_search_bar_speech_orb);
@@ -118,10 +118,6 @@ public class ChannelHeaderPresenter extends RowPresenter {
                 Helpers.showKeyboardAlt(v.getContext(), v);
             }
         });
-
-        if (mIsKeyboardFixEnabled) {
-            KeyHelpers.fixEnterKey(searchTextEditor);
-        }
 
         searchOrbView.setOnFocusChangeListener((v, focused) -> {
             if (focused) {

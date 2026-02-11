@@ -22,7 +22,7 @@ public class SearchData {
     private boolean mIsTrendingSearchesEnabled;
     private boolean mIsSearchHistoryDisabled;
     private boolean mIsPopularSearchesDisabled;
-    private boolean mIsKeyboardFixEnabled;
+
     private boolean mIsTypingCorrectionDisabled;
 
     private SearchData(Context context) {
@@ -71,15 +71,6 @@ public class SearchData {
 
     public void setKeyboardAutoShowEnabled(boolean enabled) {
         mIsKeyboardAutoShowEnabled = enabled;
-        persistData();
-    }
-
-    public boolean isKeyboardFixEnabled() {
-        return mIsKeyboardFixEnabled;
-    }
-
-    public void setKeyboardFixEnabled(boolean enabled) {
-        mIsKeyboardFixEnabled = enabled;
         persistData();
     }
 
@@ -160,15 +151,26 @@ public class SearchData {
         mIsTrendingSearchesEnabled = Helpers.parseBoolean(split, 7, true);
         mIsSearchHistoryDisabled = Helpers.parseBoolean(split, 8, false);
         mIsPopularSearchesDisabled = Helpers.parseBoolean(split, 9, false);
-        mIsKeyboardFixEnabled = Helpers.parseBoolean(split, 10, false);
+        
         mIsTypingCorrectionDisabled = Helpers.parseBoolean(split, 11, false);
     }
 
     private void persistData() {
-        mAppPrefs.setData(SEARCH_DATA,
-                Helpers.mergeData(mIsInstantVoiceSearchEnabled, mSearchOptions, mIsFocusOnResultsEnabled,
-                        mIsKeyboardAutoShowEnabled, mIsTempBackgroundModeEnabled, null, mSpeechRecognizerType,
-                        mIsTrendingSearchesEnabled, mIsSearchHistoryDisabled, mIsPopularSearchesDisabled,
-                        mIsKeyboardFixEnabled, mIsTypingCorrectionDisabled));
+        mAppPrefs.setData(
+            SEARCH_DATA,
+            Helpers.mergeData(
+                mIsInstantVoiceSearchEnabled, 
+                mSearchOptions, 
+                mIsFocusOnResultsEnabled,
+                mIsKeyboardAutoShowEnabled, 
+                mIsTempBackgroundModeEnabled, 
+                null, 
+                mSpeechRecognizerType,
+                mIsTrendingSearchesEnabled, 
+                mIsSearchHistoryDisabled, 
+                mIsPopularSearchesDisabled,
+                mIsTypingCorrectionDisabled
+            )
+        );
     }
 }

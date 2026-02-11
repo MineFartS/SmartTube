@@ -90,10 +90,6 @@ public class SearchSettingsPresenter extends BasePresenter<Void> {
                 option -> mSearchData.setKeyboardAutoShowEnabled(option.isSelected()),
                 mSearchData.isKeyboardAutoShowEnabled()));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.keyboard_fix),
-                option -> mSearchData.setKeyboardFixEnabled(option.isSelected()),
-                mSearchData.isKeyboardFixEnabled()));
-
         settingsPresenter.appendCheckedCategory(getContext().getString(R.string.player_other), options);
     }
 }
