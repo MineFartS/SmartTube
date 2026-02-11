@@ -51,10 +51,8 @@ public class HQDialogController extends BasePlayerController {
         addPresetsCategory();
         addVideoZoomCategory();
         addNetworkEngine();
-        addVideoBufferCategory();
         addAudioDelayCategory();
         addPitchEffectCategory();
-        //addBackgroundPlaybackCategory();
 
         appendOptions(mCategoriesInt);
         appendOptions(mCategories);
@@ -111,11 +109,6 @@ public class HQDialogController extends BasePlayerController {
         } else {
             getPlayerData().setFormat(formatItem);
         }
-    }
-
-    private void addVideoBufferCategory() {
-        addCategoryInt(AppDialogUtil.createVideoBufferCategory(getContext(),
-                () -> getPlayer().restartEngine()));
     }
 
     private void addAudioDelayCategory() {

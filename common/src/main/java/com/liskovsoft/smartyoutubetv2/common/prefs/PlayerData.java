@@ -51,7 +51,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private FormatItem mTempVideoFormat;
     private FormatItem mAudioFormat;
     private FormatItem mSubtitleFormat;
-    private int mVideoBufferType;
     private final List<SubtitleStyle> mSubtitleStyles = new ArrayList<>();
     private final Map<String, FormatItem> mDefaultVideoFormats = new HashMap<>();
     private int mSubtitleStyleIndex;
@@ -451,15 +450,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         persistState();
     }
 
-    public void setVideoBufferType(int type) {
-        mVideoBufferType = type;
-        persistState();
-    }
-
-    public int getVideoBufferType() {
-        return mVideoBufferType;
-    }
-
     public List<SubtitleStyle> getSubtitleStyles() {
         return mSubtitleStyles;
     }
@@ -785,7 +775,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         mVideoFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 9)), getDefaultVideoFormat());
         mAudioFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 10)), getDefaultAudioFormat());
         mSubtitleFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 11)), getDefaultSubtitleFormat());
-        mVideoBufferType = Helpers.parseInt(split, 12, PlayerEngine.BUFFER_MEDIUM);
+        
         mSubtitleStyleIndex = Helpers.parseInt(split, 13, 4); // yellow on semi bg
         mResizeMode = Helpers.parseInt(split, 14, PlayerEngine.RESIZE_MODE_DEFAULT);
         mSpeed = Helpers.parseFloat(split, 15, 1.0f);
@@ -853,19 +843,72 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     }
 
     private void persistStateInt() {
-        mPrefs.setProfileData(VIDEO_PLAYER_DATA, Helpers.mergeData(mOKButtonBehavior, mUiHideTimeoutSec, null,
-                mSeekPreviewMode, mIsSeekConfirmPauseEnabled,
-                mIsClockEnabled, mIsRemainingTimeEnabled, mBackgroundMode, null, // afrData was there
-                mVideoFormat, mAudioFormat, mSubtitleFormat,
-                mVideoBufferType, mSubtitleStyleIndex, mResizeMode, mSpeed,
-                mIsAfrEnabled, mIsAfrFpsCorrectionEnabled, mIsAfrResSwitchEnabled, null, mAudioDelayMs, mIsAllSpeedEnabled, null, null,
-                mIsLegacyCodecsForced, mIsSleepTimerEnabled, null, null, // old player tweaks
-                mIsQualityInfoEnabled, mIsSpeedPerVideoEnabled, mAspectRatio, mIsGlobalClockEnabled, mIsTimeCorrectionEnabled,
-                mIsGlobalEndingTimeEnabled, mIsEndingTimeEnabled, mIsDoubleRefreshRateEnabled, mIsSeekConfirmPlayEnabled,
-                mStartSeekIncrementMs, null, mSubtitleScale, mPlayerVolume, mIsTooltipsEnabled, mSubtitlePosition, mIsNumberKeySeekEnabled,
-                mIsSkip24RateEnabled, mAfrPauseMs, mIsLiveChatEnabled, mLastSubtitleFormats, mLastSpeed, mRotationAngle, mZoomPercents, mPlaybackMode, mAudioLanguage, mSubtitleLanguage, mEnabledSubtitlesPerChannel, mIsSubtitlesPerChannelEnabled,
-                mIsSpeedPerChannelEnabled, Helpers.mergeArray(mSpeeds.values().toArray()), mPitch, mIsSkipShortsEnabled, mLastAudioLanguages, mIsVideoFlipEnabled
-        ));
+        mPrefs.setProfileData(
+            VIDEO_PLAYER_DATA, 
+            Helpers.mergeData(
+                mOKButtonBehavior, 
+                mUiHideTimeoutSec, 
+                null,
+                mSeekPreviewMode, 
+                mIsSeekConfirmPauseEnabled,
+                mIsClockEnabled, 
+                mIsRemainingTimeEnabled, 
+                mBackgroundMode, 
+                null,
+                mVideoFormat, 
+                mAudioFormat, 
+                mSubtitleFormat,
+                mSubtitleStyleIndex, 
+                mResizeMode, 
+                mSpeed,
+                mIsAfrEnabled, 
+                mIsAfrFpsCorrectionEnabled, 
+                mIsAfrResSwitchEnabled, 
+                null, 
+                mAudioDelayMs, 
+                mIsAllSpeedEnabled, 
+                null, 
+                null,
+                mIsLegacyCodecsForced, 
+                mIsSleepTimerEnabled, 
+                null, 
+                null, // old player tweaks
+                mIsQualityInfoEnabled, 
+                mIsSpeedPerVideoEnabled, 
+                mAspectRatio, 
+                mIsGlobalClockEnabled, 
+                mIsTimeCorrectionEnabled,
+                mIsGlobalEndingTimeEnabled, 
+                mIsEndingTimeEnabled, 
+                mIsDoubleRefreshRateEnabled, 
+                mIsSeekConfirmPlayEnabled,
+                mStartSeekIncrementMs, 
+                null, 
+                mSubtitleScale, 
+                mPlayerVolume, 
+                mIsTooltipsEnabled, 
+                mSubtitlePosition, 
+                mIsNumberKeySeekEnabled,
+                mIsSkip24RateEnabled, 
+                mAfrPauseMs, 
+                mIsLiveChatEnabled, 
+                mLastSubtitleFormats, 
+                mLastSpeed, 
+                mRotationAngle, 
+                mZoomPercents, 
+                mPlaybackMode, 
+                mAudioLanguage, 
+                mSubtitleLanguage,
+                mEnabledSubtitlesPerChannel, 
+                mIsSubtitlesPerChannelEnabled,
+                mIsSpeedPerChannelEnabled, 
+                Helpers.mergeArray(mSpeeds.values().toArray()), 
+                mPitch, 
+                mIsSkipShortsEnabled, 
+                mLastAudioLanguages, 
+                mIsVideoFlipEnabled
+            )
+        );
     }
 
     @Override

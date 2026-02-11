@@ -60,7 +60,7 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         appendVideoPresetsCategory(settingsPresenter);
         appendPlayerButtonsCategory(settingsPresenter);
         appendNetworkEngineCategory(settingsPresenter);
-        appendVideoBufferCategory(settingsPresenter);
+
         appendVideoZoomCategory(settingsPresenter);
         appendVideoSpeedCategory(settingsPresenter);
         appendAudioLanguageCategory(settingsPresenter);
@@ -71,11 +71,10 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         appendSeekTypeCategory(settingsPresenter);
         appendSeekingPreviewCategory(settingsPresenter);
         AppDialogUtil.appendSeekIntervalDialogItems(getContext(), settingsPresenter, mPlayerData, false);
-        //appendRememberSpeedCategory(settingsPresenter);
-        //appendScreenOffTimeoutCategory(settingsPresenter);
+
         appendEndingTimeCategory(settingsPresenter);
         appendPixelRatioCategory(settingsPresenter);
-        //appendPlayerExitCategory(settingsPresenter);
+
         appendMiscCategory(settingsPresenter);
         appendDeveloperCategory(settingsPresenter);
 
@@ -121,11 +120,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         }
 
         settingsPresenter.appendRadioCategory(getContext().getString(R.string.player_ui_hide_behavior), options);
-    }
-
-    private void appendVideoBufferCategory(AppDialogPresenter settingsPresenter) {
-        OptionCategory category = AppDialogUtil.createVideoBufferCategory(getContext());
-        settingsPresenter.appendCategory(category);
     }
 
     private void appendVideoPresetsCategory(AppDialogPresenter settingsPresenter) {

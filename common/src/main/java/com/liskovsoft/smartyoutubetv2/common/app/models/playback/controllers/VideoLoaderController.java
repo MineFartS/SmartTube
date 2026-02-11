@@ -555,8 +555,6 @@ public class VideoLoaderController extends BasePlayerController {
             if (getPlayerTweaksData().getPlayerDataSource() == PlayerTweaksData.PLAYER_DATA_SOURCE_OKHTTP) {
                 // OkHttp has memory leak problems
                 enableFasterDataSource();
-            } else if (getPlayerData().getVideoBufferType() == PlayerData.BUFFER_HIGH || getPlayerData().getVideoBufferType() == PlayerData.BUFFER_HIGHEST) {
-                getPlayerData().setVideoBufferType(PlayerData.BUFFER_MEDIUM);
             } else {
                 getPlayerTweaksData().setSectionPlaylistEnabled(false);
                 restartEngine = false;
@@ -791,8 +789,6 @@ public class VideoLoaderController extends BasePlayerController {
             return false;
         }
 
-        // Live dash url doesn't work with None buffer
-        //if (formatInfo.isLive() && (getPlayerTweaksData().isDashUrlStreamsForced() || getPlayerData().getVideoBufferType() == PlayerData.BUFFER_NONE)) {
         if (formatInfo.isLive() && getPlayerTweaksData().isDashUrlStreamsForced() && formatInfo.containsDashUrl()) {
             return false;
         }

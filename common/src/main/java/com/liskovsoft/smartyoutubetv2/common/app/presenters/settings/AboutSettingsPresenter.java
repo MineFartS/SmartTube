@@ -133,9 +133,6 @@ class SettingsOverride {
 
         PlayerData PD = PlayerData.instance(context);
 
-        // Raise Video Buffer to Maximum
-        PD.setVideoBufferType(PlayerData.BUFFER_HIGHEST);
-
     }
 
     private void ContextMenu(Context context) {

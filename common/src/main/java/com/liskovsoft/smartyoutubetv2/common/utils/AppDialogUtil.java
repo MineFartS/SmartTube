@@ -307,10 +307,6 @@ public class AppDialogUtil {
         return result;
     }
 
-    public static OptionCategory createVideoBufferCategory(Context context) {
-        return createVideoBufferCategory(context, () -> {});
-    }
-
     private static void setFormat(FormatItem formatItem, PlayerData playerData, Runnable onFormatSelected) {
         
         if (playerData.isLegacyCodecsForced()) {
@@ -321,70 +317,6 @@ public class AppDialogUtil {
     
         onFormatSelected.run();
     
-    }
-
-    public static OptionCategory createVideoBufferCategory(Context context, Runnable onBufferSelected) {
-        
-        PlayerData playerData = PlayerData.instance(context);
-        
-        String videoBufferTitle = context.getString(R.string.video_buffer);
-        
-        List<OptionItem> optionItems = new ArrayList<>();
-        
-        optionItems.add(
-            createVideoBufferOption(
-                context, playerData, 
-                R.string.video_buffer_size_low,
-                PlayerData.BUFFER_LOW,
-                onBufferSelected
-            )
-        );
-
-        optionItems.add(
-            createVideoBufferOption(
-                context, playerData, 
-                R.string.video_buffer_size_med,
-                PlayerData.BUFFER_MEDIUM,
-                onBufferSelected
-            )
-        );
-
-        optionItems.add(
-            createVideoBufferOption(
-                context, playerData, 
-                R.string.video_buffer_size_high,
-                PlayerData.BUFFER_HIGH,
-                onBufferSelected
-            )
-        );
-
-        optionItems.add(
-            createVideoBufferOption(
-                context, playerData, 
-                R.string.video_buffer_size_highest,
-                PlayerData.BUFFER_HIGHEST,
-                onBufferSelected
-            )
-        );
-        
-        return OptionCategory.from(
-            VIDEO_BUFFER_ID,
-            OptionCategory.TYPE_RADIO_LIST,
-            videoBufferTitle,
-            optionItems
-        );
-    
-    }
-
-    private static OptionItem createVideoBufferOption(Context context, PlayerData playerData, int titleResId, int type, Runnable onBufferSelected) {
-        return UiOptionItem.from(
-            context.getString(titleResId),
-            optionItem -> {
-                playerData.setVideoBufferType(type);
-                onBufferSelected.run();
-            },
-            playerData.getVideoBufferType() == type
-        );
     }
 
     public static OptionCategory createAudioLanguageCategory(Context context) {
