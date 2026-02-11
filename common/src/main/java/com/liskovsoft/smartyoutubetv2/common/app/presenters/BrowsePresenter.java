@@ -266,7 +266,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         // clean up (profile changed etc)
         getView().removeAllSections();
 
-        int bootSectionId = getSidebarService().getBootSectionId();
         int index = 0;
 
         for (BrowseSection section : mErrorSections) {
@@ -279,7 +278,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
             }
 
             if (section.isEnabled()) {
-                if (section.getId() == bootSectionId) {
+                if (section.getId() == MediaGroup.TYPE_HOME) {
                     mBootSectionIndex = index;
                 }
                 getView().addSection(index++, section);

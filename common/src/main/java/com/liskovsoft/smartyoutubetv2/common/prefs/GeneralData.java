@@ -689,30 +689,24 @@ public class GeneralData implements ProfileChangeListener {
         persistState();
     }
 
-    /**
-     * Fixed ConcurrentModificationException after onProfileChanged()<br/>
-     * Happened inside cleanupPinnedItems()
-     */
     private synchronized void restoreState() {
+        
         String data = mPrefs.getProfileData(GENERAL_DATA);
 
         String[] split = Helpers.splitData(data);
 
-        // Zero index is skipped. Selected sections were there.
-        //mBootSectionId = Helpers.parseInt(split, 1, MediaGroup.TYPE_HOME);
-        //mIsSettingsSectionEnabled = Helpers.parseBoolean(split, 2, true);
         mAppExitShortcut = Helpers.parseInt(split, 3, EXIT_DOUBLE_BACK);
         mIsReturnToLauncherEnabled = Helpers.parseBoolean(split, 4, false);
         mBackgroundShortcut = Helpers.parseInt(split, 5, BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK);
         mOldPinnedItems = Helpers.parseList(split, 6, Video::fromString);
         mIsHideShortsFromSubscriptionsEnabled = Helpers.parseBoolean(split, 7, false);
         mIsRemapFastForwardToNextEnabled = Helpers.parseBoolean(split, 8, false);
-        //mScreenDimmingTimeoutMs = Helpers.parseInt(split, 9, 1);
+
         mIsProxyEnabled = Helpers.parseBoolean(split, 10, false);
         mIsBridgeCheckEnabled = Helpers.parseBoolean(split, 11, true);
         mIsOkButtonLongPressDisabled = Helpers.parseBoolean(split, 12, false);
         mLastPlaylistId = Helpers.parseStr(split, 13);
-        //String selectedSections = Helpers.parseStr(split, 14);
+
         mIsHideUpcomingEnabled = Helpers.parseBoolean(split, 15, false);
         mIsRemapPageUpToNextEnabled = Helpers.parseBoolean(split, 16, false);
         mIsRemapPageUpToLikeEnabled = Helpers.parseBoolean(split, 17, false);
@@ -728,28 +722,27 @@ public class GeneralData implements ProfileChangeListener {
         mIsVPNEnabled = Helpers.parseBoolean(split, 27, false);
         mLastPlaylistTitle = Helpers.parseStr(split, 28);
         mPlaylistOrder = Helpers.parseMap(split, 29, Helpers::parseStr, Helpers::parseInt);
-        //String pendingStreams = Helpers.parseStr(split, 30);
+
         mPendingStreams = Helpers.parseList(split, 30, Video::fromString);
         mIsGlobalClockEnabled = Helpers.parseBoolean(split, 31, true);
-        //mTimeFormat = Helpers.parseInt(split, 32, -1);
+
         mSettingsPassword = Helpers.parseStr(split, 33);
         mIsChildModeEnabled = Helpers.parseBoolean(split, 34, false);
         mIsHistoryEnabled = Helpers.parseBoolean(split, 35, true);
         mScreensaverTimeoutMs = Helpers.parseInt(split, 36, 60 * 1_000);
-        // ScreensaverMode was here
+
         mIsAltAppIconEnabled = Helpers.parseBoolean(split, 38, false);
         mVersionCode = Helpers.parseInt(split, 39, -1);
         mIsSelectChannelSectionEnabled = Helpers.parseBoolean(split, 40, true);
         mMasterPassword = Helpers.parseStr(split, 41);
-        // StackOverflow on old devices?
-        //mIsOldHomeLookEnabled = Helpers.parseBoolean(split, 42, Build.VERSION.SDK_INT <= 19);
+
         mIsOldUpdateNotificationsEnabled = Helpers.parseBoolean(split, 43, false);
         mScreensaverDimmingPercents = Helpers.parseInt(split, 44, 80);
         mIsRemapNextToSpeedEnabled = Helpers.parseBoolean(split, 45, false);
         mIsRemapPlayToOKEnabled = Helpers.parseBoolean(split, 46, false);
         mHistoryState = Helpers.parseInt(split, 47, HISTORY_AUTO);
         mIsRememberSubscriptionsPositionEnabled = Helpers.parseBoolean(split, 48, false);
-        // mSelectedSubscriptionsItem was here
+
         mIsRemapNumbersToSpeedEnabled = Helpers.parseBoolean(split, 50, false);
         mIsRemapDpadUpToSpeedEnabled = Helpers.parseBoolean(split, 51, false);
         mIsRemapChannelUpToVolumeEnabled = Helpers.parseBoolean(split, 52, false);
@@ -759,19 +752,19 @@ public class GeneralData implements ProfileChangeListener {
         mIsHideWatchedFromNotificationsEnabled = Helpers.parseBoolean(split, 56, false);
         mChangelog = Helpers.parseStrList(split, 57);
         mPlayerExitShortcut = Helpers.parseInt(split, 58, EXIT_SINGLE_BACK);
-        // StackOverflow on old devices?
-        //mIsOldChannelLookEnabled = Helpers.parseBoolean(split, 59, Build.VERSION.SDK_INT <= 19);
+
         mIsFullscreenModeEnabled = Helpers.parseBoolean(split, 60, true);
-        //mIsHideWatchedFromWatchLaterEnabled = Helpers.parseBoolean(split, 61, false);
+
         mIsRememberPinnedPositionEnabled = Helpers.parseBoolean(split, 62, false);
         mSelectedItems = Helpers.parseMap(split, 63, Helpers::parseInt, Video::fromString);
         mIsFirstUseTooltipEnabled = Helpers.parseBoolean(split, 64, true);
         mIsDeviceSpecificBackupEnabled = Helpers.parseBoolean(split, 65, false);
-        //mIsAutoBackupEnabled = Helpers.parseBoolean(split, 66, false);
+
         mIsRemapPageDownToSpeedEnabled = Helpers.parseBoolean(split, 67, false);
         mSearchExitShortcut = Helpers.parseInt(split, 68, EXIT_SINGLE_BACK);
         mGDriveBackupFreqDays = Helpers.parseInt(split, 69, -1);
         mLocalDriveBackupFreqDays = Helpers.parseInt(split, 70, -1);
+
     }
 
     public void persistNow() {

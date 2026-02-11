@@ -35,8 +35,6 @@ public class SidebarService implements ProfileChangeListener {
 
     private boolean mIsSettingsSectionEnabled;
 
-    private int mBootSectionId;
-
     private SidebarService(Context context) {
 
         mContext = context.getApplicationContext();
@@ -237,15 +235,6 @@ public class SidebarService implements ProfileChangeListener {
     
     }
 
-    public void setBootSectionId(int sectionId) {
-        mBootSectionId = sectionId;
-        persistState();
-    }
-
-    public int getBootSectionId() {
-        return mBootSectionId;
-    }
-
     public void enableSettingsSection(boolean enabled) {
         mIsSettingsSectionEnabled = enabled;
         persistState();
@@ -362,7 +351,7 @@ public class SidebarService implements ProfileChangeListener {
         String[] split = Helpers.splitData(data);
 
         mPinnedItems = Helpers.parseList(split, 0, Video::fromString);
-        mBootSectionId = Helpers.parseInt(split, 1, MediaGroup.TYPE_HOME);
+
         mIsSettingsSectionEnabled = Helpers.parseBoolean(split, 2, true);
 
         transferOldPinnedItems();
@@ -396,7 +385,7 @@ public class SidebarService implements ProfileChangeListener {
         mPrefs.setSidebarData(
             Helpers.mergeData(
                 mPinnedItems, 
-                mBootSectionId, 
+
                 mIsSettingsSectionEnabled
             )
         );

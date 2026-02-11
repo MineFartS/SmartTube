@@ -96,7 +96,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
         AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
 
-        appendBootToSection(settingsPresenter);
         appendEnabledSections(settingsPresenter);
         appendContextMenuItemsCategory(settingsPresenter);
         appendHideVideos(settingsPresenter);
@@ -401,47 +400,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
         );
 
         dialog.showDialog();
-
-    }
-
-    private void appendBootToSection(AppDialogPresenter settingsPresenter) {
-
-        List<OptionItem> options = new ArrayList<>();
-
-        Map<Integer, Integer> sections = mSidebarService.getDefaultSections();
-
-        for (Entry<Integer, Integer> section : sections.entrySet()) {
-            options.add(
-                UiOptionItem.from(
-                    getContext().getString(section.getKey()),
-                    optionItem -> mSidebarService.setBootSectionId(section.getValue()),
-                    section.getValue().equals(mSidebarService.getBootSectionId())
-                )
-            );
-        }
-
-        Collection<Video> pinnedItems = mSidebarService.getPinnedItems();
-
-        for (Video item : pinnedItems) {
-
-            if (item != null && item.getTitle() != null) {
-
-                options.add(
-                    UiOptionItem.from(
-                        item.getTitle(),
-                        optionItem -> mSidebarService.setBootSectionId(item.getId()),
-                        item.hashCode() == mSidebarService.getBootSectionId()
-                    )
-                );
-
-            }
-
-        }
-
-        settingsPresenter.appendRadioCategory(
-            getContext().getString(R.string.boot_to_section),
-            options
-        );
 
     }
 
