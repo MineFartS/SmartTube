@@ -685,23 +685,17 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private boolean handleConfirmKey(int keyCode) {
-        boolean controlsShown = getPlayer().isOverlayShown();
+        
+        boolean isConfirmKey = KeyHelpers.isConfirmKey(keyCode);
+        boolean controlsHidden = !getPlayer().isOverlayShown();
 
-        if (KeyHelpers.isConfirmKey(keyCode) && !controlsShown) {
-            switch (getPlayerData().getOKButtonBehavior()) {
-                case PlayerData.ONLY_UI:
-                    getPlayer().showOverlay(true);
-                    return true; // don't show ui
-                case PlayerData.UI_AND_PAUSE:
-                    // NOP
-                    break;
-                case PlayerData.ONLY_PAUSE:
-                    getPlayer().setPlayWhenReady(!getPlayer().getPlayWhenReady());
-                    return true; // don't show ui
-            }
+        if (isConfirmKey && controlsHidden) {
+            getPlayer().showOverlay(true);
+            return true; // don't show ui
         }
 
         return false;
+
     }
 
     private boolean handleStopKey(int keyCode) {

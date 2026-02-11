@@ -40,7 +40,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     @SuppressLint("StaticFieldLeak")
     private static PlayerData sInstance;
     private final AppPrefs mPrefs;
-    private int mOKButtonBehavior;
+
     private int mUiHideTimeoutSec;
     private boolean mIsSeekConfirmPauseEnabled;
     private boolean mIsClockEnabled;
@@ -139,15 +139,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         }
 
         return sInstance;
-    }
-
-    public int getOKButtonBehavior() {
-        return mOKButtonBehavior;
-    }
-
-    public void setOKButtonBehavior(int option) {
-        mOKButtonBehavior = option;
-        persistState();
     }
 
     public int getUiHideTimeoutSec() {
@@ -763,7 +754,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
 
         String[] split = Helpers.splitData(data);
 
-        mOKButtonBehavior = Helpers.parseInt(split, 0, ONLY_UI);
         mUiHideTimeoutSec = Helpers.parseInt(split, 1, 3);
         // mIsAbsoluteDateEnabled
         mSeekPreviewMode = Helpers.parseInt(split, 3, SEEK_PREVIEW_SINGLE);
@@ -846,7 +836,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         mPrefs.setProfileData(
             VIDEO_PLAYER_DATA, 
             Helpers.mergeData(
-                mOKButtonBehavior, 
                 mUiHideTimeoutSec, 
                 null,
                 mSeekPreviewMode, 
@@ -907,8 +896,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
                 mIsSkipShortsEnabled, 
                 mLastAudioLanguages, 
                 mIsVideoFlipEnabled
-            )
-        );
+        ));
     }
 
     @Override

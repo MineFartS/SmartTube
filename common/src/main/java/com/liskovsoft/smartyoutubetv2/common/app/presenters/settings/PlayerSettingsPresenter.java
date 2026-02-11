@@ -66,7 +66,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         appendAudioLanguageCategory(settingsPresenter);
         appendAudioShiftCategory(settingsPresenter);
         appendMasterVolumeCategory(settingsPresenter);
-        appendOKButtonCategory(settingsPresenter);
         appendUIAutoHideCategory(settingsPresenter);
         appendSeekTypeCategory(settingsPresenter);
         appendSeekingPreviewCategory(settingsPresenter);
@@ -80,28 +79,7 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
         settingsPresenter.showDialog(getContext().getString(R.string.settings_player), mOnFinish);
     }
-
-    private void appendOKButtonCategory(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
-
-        options.add(UiOptionItem.from(
-                getContext().getString(R.string.player_only_ui),
-                option -> mPlayerData.setOKButtonBehavior(PlayerData.ONLY_UI),
-                mPlayerData.getOKButtonBehavior() == PlayerData.ONLY_UI));
-
-        options.add(UiOptionItem.from(
-                getContext().getString(R.string.player_ui_and_pause),
-                option -> mPlayerData.setOKButtonBehavior(PlayerData.UI_AND_PAUSE),
-                mPlayerData.getOKButtonBehavior() == PlayerData.UI_AND_PAUSE));
-
-        options.add(UiOptionItem.from(
-                getContext().getString(R.string.player_only_pause),
-                option -> mPlayerData.setOKButtonBehavior(PlayerData.ONLY_PAUSE),
-                mPlayerData.getOKButtonBehavior() == PlayerData.ONLY_PAUSE));
-
-        settingsPresenter.appendRadioCategory(getContext().getString(R.string.player_ok_button_behavior), options);
-    }
-
+    
     @SuppressLint("StringFormatMatches")
     private void appendUIAutoHideCategory(AppDialogPresenter settingsPresenter) {
         List<OptionItem> options = new ArrayList<>();
