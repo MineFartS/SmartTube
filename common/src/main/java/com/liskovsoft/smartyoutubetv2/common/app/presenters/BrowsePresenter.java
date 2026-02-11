@@ -187,10 +187,8 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         mSectionsMapping.put(MediaGroup.TYPE_HOME, new BrowseSection(MediaGroup.TYPE_HOME, getContext().getString(R.string.header_home), BrowseSection.TYPE_ROW, R.drawable.icon_home, false));
         mSectionsMapping.put(MediaGroup.TYPE_SHORTS, new BrowseSection(MediaGroup.TYPE_SHORTS, getContext().getString(R.string.header_shorts), BrowseSection.TYPE_SHORTS_GRID, R.drawable.icon_shorts));
         mSectionsMapping.put(MediaGroup.TYPE_KIDS_HOME, new BrowseSection(MediaGroup.TYPE_KIDS_HOME, getContext().getString(R.string.header_kids_home), BrowseSection.TYPE_ROW, R.drawable.icon_kids_home));
-        mSectionsMapping.put(MediaGroup.TYPE_LIVE, new BrowseSection(MediaGroup.TYPE_LIVE, getContext().getString(R.string.badge_live), BrowseSection.TYPE_ROW, R.drawable.icon_live));
         mSectionsMapping.put(MediaGroup.TYPE_MY_VIDEOS, new BrowseSection(MediaGroup.TYPE_MY_VIDEOS, getContext().getString(R.string.my_videos), BrowseSection.TYPE_GRID, R.drawable.icon_playlist));
         
-        mSectionsMapping.put(MediaGroup.TYPE_MUSIC, new BrowseSection(MediaGroup.TYPE_MUSIC, getContext().getString(R.string.header_music), BrowseSection.TYPE_ROW, R.drawable.icon_music));
         mSectionsMapping.put(MediaGroup.TYPE_CHANNEL_UPLOADS, new BrowseSection(MediaGroup.TYPE_CHANNEL_UPLOADS, getContext().getString(R.string.header_channels), uploadsType, R.drawable.icon_channels, false));
         mSectionsMapping.put(MediaGroup.TYPE_SUBSCRIPTIONS, new BrowseSection(MediaGroup.TYPE_SUBSCRIPTIONS, getContext().getString(R.string.header_subscriptions), BrowseSection.TYPE_GRID, R.drawable.icon_subscriptions, false));
         mSectionsMapping.put(MediaGroup.TYPE_HISTORY, new BrowseSection(MediaGroup.TYPE_HISTORY, getContext().getString(R.string.header_history), BrowseSection.TYPE_GRID, R.drawable.icon_history, true));
@@ -206,8 +204,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
     private void initRowAndGridMapping() {
         mRowMapping.put(MediaGroup.TYPE_HOME, getContentService().getHomeObserve());
         mRowMapping.put(MediaGroup.TYPE_KIDS_HOME, getContentService().getKidsHomeObserve());
-        mRowMapping.put(MediaGroup.TYPE_LIVE, getContentService().getLiveObserve());
-        mRowMapping.put(MediaGroup.TYPE_MUSIC, getContentService().getMusicObserve());
         mRowMapping.put(MediaGroup.TYPE_USER_PLAYLISTS, getContentService().getPlaylistRowsObserve());
 
         mGridMapping.put(MediaGroup.TYPE_SHORTS, getContentService().getShortsObserve());
@@ -276,12 +272,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         getView().removeAllSections();
 
         int bootSectionId = getSidebarService().getBootSectionId();
-
-        // Empty Home on first run fix. Switch to something non-empty.
-        if (!getSignInService().isSigned() && VideoStateService.instance(getContext()).isEmpty()) {
-            bootSectionId = MediaGroup.TYPE_MUSIC;
-        }
-
         int index = 0;
 
         for (BrowseSection section : mErrorSections) {
@@ -516,7 +506,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         enableSection(MediaGroup.TYPE_SUBSCRIPTIONS, enable);
         enableSection(MediaGroup.TYPE_CHANNEL_UPLOADS, enable);
         
-        enableSection(MediaGroup.TYPE_MUSIC, enable);
 
         enableSection(MediaGroup.TYPE_HOME, enable);
         enableSection(MediaGroup.TYPE_SHORTS, enable);

@@ -559,7 +559,7 @@ public class VideoStateController extends BasePlayerController {
         }
 
         // Speed
-        if (liveEnd || isMusicVideo()) {
+        if (liveEnd) {
             getPlayer().setSpeed(1.0f);
         } else {
             State state = getStateService().getByVideoId(item.videoId);
@@ -632,18 +632,6 @@ public class VideoStateController extends BasePlayerController {
             screensaverManager.disableChecked();
         }
     }
-
-    private boolean isMusicVideo() {
-        Video item = getVideo();
-        return item.belongsToMusic();
-    }
-
-    //private void setPositionMs(long positionMs) {
-    //    boolean samePositions = Math.abs(positionMs - getPlayer().getPositionMs()) < BEGIN_THRESHOLD_MS;
-    //    if (!samePositions) {
-    //        getPlayer().setPositionMs(positionMs);
-    //    }
-    //}
 
     private boolean isStateOutdated(State state, Video item) {
         if (state == null) {

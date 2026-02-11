@@ -646,10 +646,6 @@ public final class Video {
         return belongsToGroup(MediaGroup.TYPE_HISTORY);
     }
 
-    public boolean belongsToMusic() {
-        return belongsToGroup(MediaGroup.TYPE_MUSIC);
-    }
-
     public boolean belongsToShorts() {
         return belongsToGroup(MediaGroup.TYPE_SHORTS);
     }
@@ -876,16 +872,6 @@ public final class Video {
             percentWatched = state.positionMs / (state.durationMs / 100f);
         }
     }
-
-    ///**
-    // * The section playlist intended (as a backup replacement) for cases when regular playlist not available
-    // */
-    //public boolean isSectionPlaylistEnabled(Context context) {
-    //    return PlayerTweaksData.instance(context).isSectionPlaylistEnabled() && !belongsToSuggestions()
-    //            && (!checkAllVideosHasPlaylist() || PLAYLIST_LIKED_MUSIC.equals(playlistId) || nextMediaItem == null
-    //                   || (!isMix() && !belongsToSamePlaylistGroup())) // skip hidden playlists (music videos usually)
-    //            && (!isRemote || remotePlaylistId == null);
-    //}
 
     /**
      * The section playlist intended (as a backup replacement) for cases when regular playlist not available

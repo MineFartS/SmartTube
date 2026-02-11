@@ -121,12 +121,6 @@ class SettingsOverride {
         // Remove Kids Section
         BP.enableSection(MediaGroup.TYPE_KIDS_HOME, false);
 
-        // Remove Live Section
-        BP.enableSection(MediaGroup.TYPE_LIVE, false);
-
-        // Remove Music Section
-        BP.enableSection(MediaGroup.TYPE_MUSIC, false);
-
         // Remove My Videos Section
         BP.enableSection(MediaGroup.TYPE_MY_VIDEOS, false);
 

@@ -34,11 +34,7 @@ public class VideoActionPresenter extends BasePresenter<Void> {
         } else if (item.hasChannel() || item.belongsToChannelUploads()) {
             MediaServiceManager.chooseChannelPresenter(getContext(), item);
         } else if (item.hasPlaylist() || item.hasNestedItems()) {
-            if (item.belongsToMusic()) {
-                startFistPlaylistItem(item);
-            } else {
-                ChannelUploadsPresenter.instance(getContext()).openChannel(item);
-            }
+            ChannelUploadsPresenter.instance(getContext()).openChannel(item);
         } else if (item.isChapter) {
             PlaybackPresenter.instance(getContext()).setPosition(item.startTimeMs);
         } else if (item.searchQuery != null ) {
