@@ -97,7 +97,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private long mAfrSwitchTimeMs;
     private List<String> mLastAudioLanguages;
     private final Runnable mPersistStateInt = this::persistStateInt;
-    private boolean mIsLegacyCodecsForced;
 
     private static class SpeedItem {
         public String channelId;
@@ -268,15 +267,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         mIsSpeedPerVideoEnabled = enable;
         mIsAllSpeedEnabled = false;
         mIsSpeedPerChannelEnabled = false;
-        persistState();
-    }
-
-    public boolean isLegacyCodecsForced() {
-        return mIsLegacyCodecsForced;
-    }
-
-    public void setLegacyCodecsForced(boolean forced) {
-        mIsLegacyCodecsForced = forced;
         persistState();
     }
 
@@ -777,7 +767,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         mIsAllSpeedEnabled = Helpers.parseBoolean(split, 21, false);
         // repeat mode was here
         // didn't remember what was there
-        mIsLegacyCodecsForced = Helpers.parseBoolean(split, 24, false);
+
         mIsSleepTimerEnabled = Helpers.parseBoolean(split, 25, false);
         // old player tweaks
         mIsQualityInfoEnabled = Helpers.parseBoolean(split, 28, true);
@@ -858,7 +848,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
                 mIsAllSpeedEnabled, 
                 null, 
                 null,
-                mIsLegacyCodecsForced, 
                 mIsSleepTimerEnabled, 
                 null, 
                 null, // old player tweaks

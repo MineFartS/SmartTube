@@ -339,15 +339,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.force_legacy_codecs),
-                getContext().getString(R.string.force_legacy_codecs_desc),
-                option -> mPlayerData.setLegacyCodecsForced(option.isSelected()),
-                mPlayerData.isLegacyCodecsForced()
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
                 getContext().getString(R.string.live_stream_fix),
                 getContext().getString(R.string.live_stream_fix_desc),
                 option -> {

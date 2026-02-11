@@ -764,9 +764,6 @@ public class VideoLoaderController extends BasePlayerController {
     }
 
     private boolean acceptAdaptiveFormats(MediaItemFormatInfo formatInfo) {
-        if (getPlayerData().isLegacyCodecsForced() && formatInfo.containsUrlFormats()) {
-            return false;
-        }
 
         if (getPlayerTweaksData().isHlsStreamsForced() && formatInfo.isLive() && formatInfo.containsHlsUrl()) {
             return false;
