@@ -1135,7 +1135,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         getView().showProgressBar(false);
 
         if (getView().isEmpty() || error != null) {
+
             ErrorFragmentData errorFragmentData;
+
             if (error != null && !Helpers.containsAny(error.getMessage(), "fromNullable result is null")) {
                 errorFragmentData = new CategoryEmptyError(getContext(), error);
             } else if (getSignInService().isSigned()) {
@@ -1144,19 +1146,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
                 errorFragmentData = new SignInError(getContext());
             }
 
-            // TODO: should we find a better place e.g. RetrofitHelper
-            // java.net.UnknownHostException: Unable to resolve host "www.youtube.com": No address associated with hostname
-            if (error != null && Helpers.contains(error.getMessage(), "No address associated with hostname")) {
-                PlayerTweaksData playerTweaksData = PlayerTweaksData.instance(getContext());
-                if (!playerTweaksData.isIPv4DnsPreferred()) {
-                    playerTweaksData.setIPv4DnsPreferred(true);
-                    // Restart app to reinit okhttp internal objects
-                    Utils.restartTheApp(getContext());
-                }
-            }
-
             getView().showError(errorFragmentData);
             Utils.postDelayed(mRefreshSection, 30_000);
+            
         }
     }
 

@@ -301,18 +301,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
     private void appendDeveloperCategory(AppDialogPresenter settingsPresenter) {
         List<OptionItem> options = new ArrayList<>();
         
-        options.add(
-            UiOptionItem.from(
-                getContext().getString(R.string.prefer_ipv4),
-                getContext().getString(R.string.prefer_ipv4_desc),
-                option -> {
-                    mPlayerTweaksData.setIPv4DnsPreferred(option.isSelected());
-                    mRestartApp = true;
-                },
-                mPlayerTweaksData.isIPv4DnsPreferred()
-            )
-        );
-
         // Disable long press on buggy controllers.
         options.add(
             UiOptionItem.from(
@@ -679,21 +667,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 option -> mPlayerData.setNumberKeySeekEnabled(option.isSelected()),
                 mPlayerData.isNumberKeySeekEnabled()));
 
-        //options.add(UiOptionItem.from(getContext().getString(R.string.app_corner_clock),
-        //        option -> {
-        //            mGeneralData.enableGlobalClock(option.isSelected());
-        //            mRestartApp = true;
-        //        },
-        //        mGeneralData.isGlobalClockEnabled()));
-        //
-        //options.add(UiOptionItem.from(getContext().getString(R.string.player_corner_clock),
-        //        option -> mPlayerData.enableGlobalClock(option.isSelected()),
-        //        mPlayerData.isGlobalClockEnabled()));
-        //
-        //options.add(UiOptionItem.from(getContext().getString(R.string.player_corner_ending_time),
-        //        option -> mPlayerData.enableGlobalEndingTime(option.isSelected()),
-        //        mPlayerData.isGlobalEndingTimeEnabled()));
-
         options.add(UiOptionItem.from(getContext().getString(R.string.remember_position_of_live_videos),
                 option -> mPlayerTweaksData.setRememberPositionOfLiveVideosEnabled(option.isSelected()),
                 mPlayerTweaksData.isRememberPositionOfLiveVideosEnabled()));
@@ -742,14 +715,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         options.add(UiOptionItem.from(getContext().getString(R.string.player_show_tooltips),
                 option -> mPlayerData.setTooltipsEnabled(option.isSelected()),
                 mPlayerData.isTooltipsEnabled()));
-
-        // See: Utils.updateTooltip
-        //options.add(UiOptionItem.from(getContext().getString(R.string.player_show_tooltips) + ": " + getContext().getString(R.string.long_press_for_options),
-        //        option -> {
-        //            mGeneralData.enableFirstUseTooltip(option.isSelected());
-        //            mRestartApp = true;
-        //        },
-        //        mGeneralData.isFirstUseTooltipEnabled()));
 
         options.add(UiOptionItem.from(getContext().getString(R.string.player_button_long_click),
                 option -> mPlayerTweaksData.setButtonLongClickEnabled(option.isSelected()),

@@ -587,14 +587,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         persistData();
     }
 
-    public boolean isIPv4DnsPreferred() {
-        return GlobalPreferences.instance(mPrefs.getContext()).isIPv4DnsPreferred();
-    }
-
-    public void setIPv4DnsPreferred(boolean prefer) {
-        GlobalPreferences.instance(mPrefs.getContext()).setIPv4DnsPreferred(prefer);
-    }
-
     public boolean isDontResizeVideoToFitDialogEnabled() {
         return mIsDontResizeVideoToFitDialogEnabled;
     }
