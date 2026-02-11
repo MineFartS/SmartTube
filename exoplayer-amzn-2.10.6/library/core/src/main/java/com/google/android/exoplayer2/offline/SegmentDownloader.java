@@ -73,8 +73,6 @@ public abstract class SegmentDownloader<M extends FilterableManifest<M>> impleme
     }
   }
 
-  private static final long MAX_MERGED_SEGMENT_START_TIME_DIFF_US = 20 * C.MICROS_PER_SECOND;
-
   private final DataSpec manifestDataSpec;
   private final Cache cache;
   private final CacheDataSource offlineDataSource;
@@ -268,16 +266,6 @@ public abstract class SegmentDownloader<M extends FilterableManifest<M>> impleme
         /* length= */ C.LENGTH_UNSET,
         /* key= */ null,
         /* flags= */ DataSpec.FLAG_ALLOW_GZIP);
-  }
-
-  private static boolean canMergeSegments(DataSpec dataSpec1, DataSpec dataSpec2) {
-    return dataSpec1.uri.equals(dataSpec2.uri)
-        && dataSpec1.length != C.LENGTH_UNSET
-        && (dataSpec1.absoluteStreamPosition + dataSpec1.length == dataSpec2.absoluteStreamPosition)
-        && Util.areEqual(dataSpec1.key, dataSpec2.key)
-        && dataSpec1.flags == dataSpec2.flags
-        && dataSpec1.httpMethod == dataSpec2.httpMethod
-        && dataSpec1.httpRequestHeaders.equals(dataSpec2.httpRequestHeaders);
   }
 
   private void reassignCacheKey(List<Segment> segments) {

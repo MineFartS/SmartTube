@@ -14,8 +14,7 @@ import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.track.MediaTrack
 
 public class RestoreTrackSelector extends DefaultTrackSelector {
     private static final String TAG = RestoreTrackSelector.class.getSimpleName();
-    private static final int FORMAT_NOT_SUPPORTED = 19;
-    private static final int FORMAT_FORCE_SUPPORT = 52;
+
     private TrackSelectorCallback mCallback;
 
     public interface TrackSelectorCallback {
@@ -29,96 +28,11 @@ public class RestoreTrackSelector extends DefaultTrackSelector {
 
     public RestoreTrackSelector(Factory trackSelectionFactory) {
         super(trackSelectionFactory);
-        // Could help with Shield resolution bug?
-        //setParameters(buildUponParameters().setForceHighestSupportedBitrate(true));
     }
 
     public void setOnTrackSelectCallback(TrackSelectorCallback callback) {
         mCallback = callback;
     }
-
-    // Exo 2.9
-    //@Nullable
-    //@Override
-    //protected TrackSelection selectVideoTrack(TrackGroupArray groups, int[][] formatSupports, int mixedMimeTypeAdaptationSupports,
-    //                                          Parameters params, @Nullable Factory adaptiveTrackSelectionFactory) throws ExoPlaybackException {
-    //    if (mCallback != null) {
-    //        Pair<Definition, MediaTrack> resultPair = mCallback.onSelectVideoTrack(groups, params);
-    //
-    //        if (resultPair != null) {
-    //            Log.d(TAG, "selectVideoTrack: choose custom video processing");
-    //            return resultPair.first.toSelection();
-    //        }
-    //    }
-    //
-    //    Log.d(TAG, "selectVideoTrack: choose default video processing");
-    //
-    //    TrackSelection trackSelection = super.selectVideoTrack(groups, formatSupports, mixedMimeTypeAdaptationSupports, params, adaptiveTrackSelectionFactory);
-    //
-    //    // Don't invoke if track already has been selected by the app
-    //    if (mCallback != null && trackSelection != null && !params.hasSelectionOverride(TrackSelectorManager.RENDERER_INDEX_VIDEO, groups)) {
-    //        mCallback.updateVideoTrackSelection(groups, params, Definition.from(trackSelection));
-    //    }
-    //
-    //    return trackSelection;
-    //}
-
-    // Exo 2.9
-    //@Nullable
-    //@Override
-    //protected Pair<TrackSelection, AudioTrackScore> selectAudioTrack(TrackGroupArray groups, int[][] formatSupports,
-    //                                                                 int mixedMimeTypeAdaptationSupports, Parameters params,
-    //                                                                 @Nullable Factory adaptiveTrackSelectionFactory) throws ExoPlaybackException {
-    //    if (mCallback != null) {
-    //        Pair<Definition, MediaTrack> resultPair = mCallback.onSelectAudioTrack(groups, params);
-    //        if (resultPair != null) {
-    //            Log.d(TAG, "selectVideoTrack: choose custom audio processing");
-    //            return new Pair<>(resultPair.first.toSelection(), new AudioTrackScore(resultPair.second.format, params, RendererCapabilities.FORMAT_HANDLED));
-    //        }
-    //    }
-    //
-    //    Log.d(TAG, "selectAudioTrack: choose default audio processing");
-    //
-    //    Pair<TrackSelection, AudioTrackScore> selectionPair =
-    //            super.selectAudioTrack(groups, formatSupports, mixedMimeTypeAdaptationSupports, params, adaptiveTrackSelectionFactory);
-    //
-    //    // Don't invoke if track already has been selected by the app
-    //    if (mCallback != null && selectionPair != null && !params.hasSelectionOverride(TrackSelectorManager.RENDERER_INDEX_AUDIO, groups)) {
-    //        mCallback.updateAudioTrackSelection(groups, params, Definition.from(selectionPair.first));
-    //    }
-    //
-    //    return selectionPair;
-    //}
-
-    // Exo 2.9
-    //@Nullable
-    //@Override
-    //protected Pair<TrackSelection, Integer> selectTextTrack(TrackGroupArray groups, int[][] formatSupport, Parameters params) throws ExoPlaybackException {
-    //    if (mCallback != null) {
-    //        Pair<Definition, MediaTrack> resultPair = mCallback.onSelectSubtitleTrack(groups, params);
-    //        if (resultPair != null) {
-    //            Log.d(TAG, "selectTextTrack: choose custom text processing");
-    //            return new Pair<>(resultPair.first.toSelection(), 10);
-    //        }
-    //    }
-    //
-    //    Log.d(TAG, "selectTextTrack: choose default text processing");
-    //
-    //    Pair<TrackSelection, Integer> selectionPair = super.selectTextTrack(groups, formatSupport, params);
-    //
-    //    // Don't invoke if track already has been selected by the app
-    //    if (mCallback != null && selectionPair != null && !params.hasSelectionOverride(TrackSelectorManager.RENDERER_INDEX_SUBTITLE, groups)) {
-    //        mCallback.updateSubtitleTrackSelection(groups, params, Definition.from(selectionPair.first));
-    //    }
-    //
-    //    return selectionPair;
-    //}
-
-    //@Override
-    //public void setParameters(Parameters parameters) {
-    //    // Fix dropping to 144p by disabling any overrides.
-    //    invalidate();
-    //}
 
     // Exo 2.10 and up
     @Nullable

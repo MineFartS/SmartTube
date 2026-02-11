@@ -460,16 +460,6 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         }
     }
 
-    private void addAction(Action action, int position, ArrayObjectAdapter adapter) {
-        if (adapter != null) {
-            int index = adapter.indexOf(action);
-            if (index == -1) {
-                int size = adapter.size();
-                adapter.add(Math.min(position, size), action);
-            }
-        }
-    }
-
     private Action findAction(int keyCode) {
         Action action = null;
         PlaybackControlsRow controlsRow = getControlsRow();

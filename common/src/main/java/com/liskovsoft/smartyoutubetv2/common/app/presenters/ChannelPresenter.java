@@ -274,20 +274,6 @@ public class ChannelPresenter extends BasePresenter<ChannelView> implements Vide
                 );
     }
 
-    private void moveToTop(List<MediaGroup> mediaGroups, int rowNameResId) {
-        if (rowNameResId <= 0) {
-            return;
-        }
-
-        String rowName = getContext().getString(rowNameResId);
-
-        List<MediaGroup> group = Helpers.removeIf(mediaGroups, value -> rowName.equals(value.getTitle()));
-
-        if (group != null) {
-            mediaGroups.addAll(0, group);
-        }
-    }
-
     public void clear() {
         if (getView() != null) {
             getView().clear();

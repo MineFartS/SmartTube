@@ -180,11 +180,6 @@ public class SabrExtractor implements Extractor {
     private final ParsableByteArray encryptionInitializationVector;
     private final ParsableByteArray encryptionSubsampleData;
 
-
-    private long segmentContentSize;
-    private long segmentContentPosition = C.POSITION_UNSET;
-    private long timecodeScale = C.TIME_UNSET;
-
     private long durationUs = C.TIME_UNSET;
 
     // The track corresponding to the current TrackEntry element, or null.
@@ -198,12 +193,9 @@ public class SabrExtractor implements Extractor {
     private long cuesContentPosition = C.POSITION_UNSET;
     private long seekPositionAfterBuildingCues = C.POSITION_UNSET;
     private long clusterTimecodeUs = C.TIME_UNSET;
-    private LongArray cueTimesUs;
-    private LongArray cueClusterPositions;
 
     // Block reading state.
     private int blockState;
-    private long blockDurationUs;
 
     private int blockTrackNumber;
 
@@ -409,23 +401,6 @@ public class SabrExtractor implements Extractor {
         sampleStrippedBytes.reset();
     }
 
-    /**
-     * Ensures {@link #scratch} contains at least {@code requiredLength} bytes of data, reading from
-     * the extractor input if necessary.
-     */
-    private void readScratch(ExtractorInput input, int requiredLength)
-            throws IOException, InterruptedException {
-        if (scratch.limit() >= requiredLength) {
-            return;
-        }
-        if (scratch.capacity() < requiredLength) {
-            scratch.reset(Arrays.copyOf(scratch.data, Math.max(scratch.data.length * 2, requiredLength)),
-                    scratch.limit());
-        }
-        input.readFully(scratch.data, scratch.limit(), requiredLength - scratch.limit());
-        scratch.setLimit(requiredLength);
-    }
-
     private void writeSampleData(ExtractorInput input, Track track, int size)
             throws IOException, InterruptedException {
         if (CODEC_ID_SUBRIP.equals(track.codecId)) {
@@ -524,36 +499,6 @@ public class SabrExtractor implements Extractor {
         // the correct end timecode, which we might not have yet.
     }
 
-    private void commitSubtitleSample(Track track, String timecodeFormat, int endTimecodeOffset,
-                                      long lastTimecodeValueScalingFactor, byte[] emptyTimecode) {
-        setSampleDuration(subtitleSample.data, blockDurationUs, timecodeFormat, endTimecodeOffset,
-                lastTimecodeValueScalingFactor, emptyTimecode);
-        // Note: If we ever want to support DRM protected subtitles then we'll need to output the
-        // appropriate encryption data here.
-        track.output.sampleData(subtitleSample, subtitleSample.limit());
-        sampleBytesWritten += subtitleSample.limit();
-    }
-
-    private static void setSampleDuration(byte[] subripSampleData, long durationUs,
-                                          String timecodeFormat, int endTimecodeOffset, long lastTimecodeValueScalingFactor,
-                                          byte[] emptyTimecode) {
-        byte[] timeCodeData;
-        if (durationUs == C.TIME_UNSET) {
-            timeCodeData = emptyTimecode;
-        } else {
-            int hours = (int) (durationUs / (3600 * C.MICROS_PER_SECOND));
-            durationUs -= (hours * 3600 * C.MICROS_PER_SECOND);
-            int minutes = (int) (durationUs / (60 * C.MICROS_PER_SECOND));
-            durationUs -= (minutes * 60 * C.MICROS_PER_SECOND);
-            int seconds = (int) (durationUs / C.MICROS_PER_SECOND);
-            durationUs -= (seconds * C.MICROS_PER_SECOND);
-            int lastValue = (int) (durationUs / lastTimecodeValueScalingFactor);
-            timeCodeData = Util.getUtf8Bytes(String.format(Locale.US, timecodeFormat, hours, minutes,
-                    seconds, lastValue));
-        }
-        System.arraycopy(timeCodeData, 0, subripSampleData, endTimecodeOffset, emptyTimecode.length);
-    }
-
     /**
      * Writes {@code length} bytes of sample data into {@code target} at {@code offset}, consisting of
      * pending {@link #sampleStrippedBytes} and any remaining data read from {@code input}.
@@ -585,42 +530,6 @@ public class SabrExtractor implements Extractor {
         sampleBytesRead += bytesRead;
         sampleBytesWritten += bytesRead;
         return bytesRead;
-    }
-
-    /**
-     * Builds a {@link SeekMap} from the recently gathered Cues information.
-     *
-     * @return The built {@link SeekMap}. The returned {@link SeekMap} may be unseekable if cues
-     *     information was missing or incomplete.
-     */
-    private SeekMap buildSeekMap() {
-        if (segmentContentPosition == C.POSITION_UNSET || durationUs == C.TIME_UNSET
-                || cueTimesUs == null || cueTimesUs.size() == 0
-                || cueClusterPositions == null || cueClusterPositions.size() != cueTimesUs.size()) {
-            // Cues information is missing or incomplete.
-            cueTimesUs = null;
-            cueClusterPositions = null;
-            return new SeekMap.Unseekable(durationUs);
-        }
-        int cuePointsSize = cueTimesUs.size();
-        int[] sizes = new int[cuePointsSize];
-        long[] offsets = new long[cuePointsSize];
-        long[] durationsUs = new long[cuePointsSize];
-        long[] timesUs = new long[cuePointsSize];
-        for (int i = 0; i < cuePointsSize; i++) {
-            timesUs[i] = cueTimesUs.get(i);
-            offsets[i] = segmentContentPosition + cueClusterPositions.get(i);
-        }
-        for (int i = 0; i < cuePointsSize - 1; i++) {
-            sizes[i] = (int) (offsets[i + 1] - offsets[i]);
-            durationsUs[i] = timesUs[i + 1] - timesUs[i];
-        }
-        sizes[cuePointsSize - 1] =
-                (int) (segmentContentPosition + segmentContentSize - offsets[cuePointsSize - 1]);
-        durationsUs[cuePointsSize - 1] = durationUs - timesUs[cuePointsSize - 1];
-        cueTimesUs = null;
-        cueClusterPositions = null;
-        return new ChunkIndex(sizes, offsets, durationsUs, timesUs);
     }
 
     /**

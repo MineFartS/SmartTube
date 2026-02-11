@@ -9,7 +9,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv2.tv.R;
 
 public class DoubleBackManager {
-    private static final String TAG = DoubleBackManager.class.getSimpleName();
+
     private static final int DEFAULT_REPEAT_COUNT = 2;
     private final Handler mHandler;
     private final Activity mContext;

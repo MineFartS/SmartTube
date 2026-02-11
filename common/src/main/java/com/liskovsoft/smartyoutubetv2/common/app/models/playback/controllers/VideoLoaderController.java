@@ -432,14 +432,6 @@ public class VideoLoaderController extends BasePlayerController {
         }
     }
 
-    private void scheduleRebootAppTimer(int delayMs) {
-        if (getPlayer() != null) {
-            Log.d(TAG, "Rebooting the app...");
-            getPlayer().showOverlay(true);
-            Utils.postDelayed(mRebootApp, delayMs);
-        }
-    }
-
     private void scheduleRestartEngineTimer(int delayMs) {
         if (getPlayer() != null) {
             Log.d(TAG, "Restarting the engine...");
@@ -459,7 +451,7 @@ public class VideoLoaderController extends BasePlayerController {
             // NOTE: Next clicked: instant playback even a mix
             // NOTE: Bypass PIP fullscreen on next caused by startView
             getMainController().onNewVideo(item);
-            //getPlayer().showOverlay(true);
+
         } else {
             VideoActionPresenter.instance(getContext()).apply(item);
         }

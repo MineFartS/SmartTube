@@ -26,7 +26,7 @@ public class TrackErrorFixer extends DefaultMediaSourceEventListener {
     private static final String TAG = TrackErrorFixer.class.getSimpleName();
     private final TrackSelectorManager mTrackSelectorManager;
     private long mSelectionTimeMs;
-    private final Map<MediaTrack, Long> mBlacklistedTracks = new HashMap<>();
+
     private InvalidResponseCodeException mLastEx;
 
     public TrackErrorFixer(TrackSelectorManager trackSelectorManager) {

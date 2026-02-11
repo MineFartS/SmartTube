@@ -23,7 +23,6 @@ import com.liskovsoft.smartyoutubetv2.tv.R;
 public class EndingTimeView extends TextView implements TickleListener, OnDataChange {
     private TickleManager mTickleManager;
     private PlayerData mPlayerData;
-    private boolean mIconIsSet;
 
     public EndingTimeView(Context context) {
         super(context);

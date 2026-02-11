@@ -52,7 +52,7 @@ public class ExoPlayerController implements Player.EventListener {
     private final PlayerEventListener mEventListener;
     private SimpleExoPlayer mPlayer;
     private PlayerView mPlayerView;
-    private VolumeBooster mVolumeBooster;
+
     private boolean mIsEnded;
     private Runnable mOnVideoLoaded;
 
@@ -438,20 +438,6 @@ public class ExoPlayerController implements Player.EventListener {
         if (mPlayerView != null && qualityInfoStr != null) {
             mPlayerView.setQualityInfo(qualityInfoStr);
         }
-    }
-
-    private boolean contains51Audio() {
-        if (mTrackSelectorManager == null || mTrackSelectorManager.getAudioTracks() == null) {
-            return false;
-        }
-
-        for (MediaTrack track : mTrackSelectorManager.getAudioTracks()) {
-            if (TrackSelectorUtil.is51Audio(track.format)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private void releasePlayer() {

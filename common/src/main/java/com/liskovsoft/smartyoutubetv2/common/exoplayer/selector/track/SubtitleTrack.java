@@ -6,7 +6,7 @@ import com.liskovsoft.youtubeapi.videoinfo.models.TranslatedCaptionTrack;
 import java.util.regex.Pattern;
 
 public class SubtitleTrack extends MediaTrack {
-    private static final Pattern AUTO_PATTERN = Pattern.compile(" \\(.*\\)$"); // May have mismatches e.g. 'English (United Kingdom)'
+
     private static final Pattern TRIM_PATTERN1 = Pattern.compile(" \\(.*\\) - .*");
     private static final Pattern TRIM_PATTERN2 = Pattern.compile(" - .*");
     private static final Pattern MARKER_PATTERN = Pattern.compile(".$");
