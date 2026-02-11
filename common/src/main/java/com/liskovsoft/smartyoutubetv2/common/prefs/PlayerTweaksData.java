@@ -114,7 +114,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsLoopShortsEnabled;
     private boolean mIsQuickSkipShortsEnabled;
     private boolean mIsQuickSkipVideosEnabled;
-    private boolean mIsOculusQuestFixEnabled;
+
     private boolean mIsAudioFocusEnabled;
 
     private boolean mIsDontResizeVideoToFitDialogEnabled;
@@ -404,15 +404,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         persistData();
     }
 
-    public boolean isOculusQuestFixEnabled() {
-        return mIsOculusQuestFixEnabled;
-    }
-
-    public void setOculusQuestFixEnabled(boolean enable) {
-        mIsOculusQuestFixEnabled = enable;
-        persistData();
-    }
-
     public boolean isButtonLongClickEnabled() {
         return mIsButtonLongClickEnabled;
     }
@@ -685,9 +676,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsLoopShortsEnabled = Helpers.parseBoolean(split, 44, true);
         mIsQuickSkipShortsEnabled = Helpers.parseBoolean(split, 45, true);
         mIsRememberPositionOfLiveVideosEnabled = Helpers.parseBoolean(split, 46, true);
-        mIsOculusQuestFixEnabled = Helpers.parseBoolean(split, 47, Utils.isOculusQuest());
-        // mPlayerDataSource was here
-        // Cronet is buffering too, unfortunately, so leave the default as a safest method (e.g. for "strtarmenia")
 
         mIsExtraLongSpeedListEnabled = Helpers.parseBoolean(split, 49, false);
         mIsQuickSkipVideosEnabled = Helpers.parseBoolean(split, 50, false);
@@ -710,7 +698,9 @@ public class PlayerTweaksData implements ProfileChangeListener {
     }
 
     private void persistDataInt() {
-        mPrefs.setProfileData(VIDEO_PLAYER_TWEAKS_DATA, Helpers.mergeData(
+        mPrefs.setProfileData(
+            VIDEO_PLAYER_TWEAKS_DATA, 
+            Helpers.mergeData(
                 mIsAmlogicFixEnabled, 
                 mIsAmazonFrameDropFixEnabled, 
                 mIsSnapToVsyncDisabled,
@@ -758,7 +748,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mIsLoopShortsEnabled, 
                 mIsQuickSkipShortsEnabled, 
                 mIsRememberPositionOfLiveVideosEnabled,
-                mIsOculusQuestFixEnabled, 
                 null, 
                 mIsExtraLongSpeedListEnabled, 
                 mIsQuickSkipVideosEnabled, 
@@ -767,7 +756,8 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mIsAudioFocusEnabled, 
                 mIsDontResizeVideoToFitDialogEnabled, 
                 mIsSuggestionsHorizontallyScrolled
-                ));
+            )
+        );
     }
 
     private void updateDefaultValues() {

@@ -47,8 +47,6 @@ class SettingsOverride {
 
         Sidebar(context);
 
-        Buffer(context);
-
         ContextMenu(context);
 
         PlayerButtons(context);
@@ -117,12 +115,6 @@ class SettingsOverride {
 
         // Remove Playback Queue Section
         BP.enableSection(MediaGroup.TYPE_PLAYBACK_QUEUE, false);
-
-    }
-
-    private void Buffer(Context context) {
-
-        PlayerData PD = PlayerData.instance(context);
 
     }
 

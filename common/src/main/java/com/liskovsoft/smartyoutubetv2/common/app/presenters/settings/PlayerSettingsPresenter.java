@@ -323,18 +323,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
     private void appendDeveloperCategory(AppDialogPresenter settingsPresenter) {
         List<OptionItem> options = new ArrayList<>();
         
-        // Oculus Quest fix: back button not closing the activity
-        options.add(
-            UiOptionItem.from(
-                getContext().getString(R.string.oculus_quest_fix),
-                option -> {
-                    mPlayerTweaksData.setOculusQuestFixEnabled(option.isSelected());
-                    mRestartApp = true;
-                },
-                mPlayerTweaksData.isOculusQuestFixEnabled()
-            )
-        );
-
         options.add(
             UiOptionItem.from(
                 getContext().getString(R.string.prefer_ipv4),
