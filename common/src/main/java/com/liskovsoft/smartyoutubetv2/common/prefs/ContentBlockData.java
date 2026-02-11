@@ -32,7 +32,6 @@ public class ContentBlockData {
     private final Set<SegmentAction> mActions = new LinkedHashSet<>();
     private final Set<String> mExcludedChannels = new LinkedHashSet<>();
     private boolean mIsDontSkipSegmentAgainEnabled;
-    private boolean mIsPaidContentNotificationEnabled;
     private Map<String, Integer> mSegmentLocalizedMapping;
     private Map<String, Integer> mSegmentColorMapping;
     private Set<String> mAllCategories;
@@ -208,15 +207,6 @@ public class ContentBlockData {
         persistState();
     }
 
-    public boolean isPaidContentNotificationEnabled() {
-        return mIsPaidContentNotificationEnabled;
-    }
-
-    public void enablePaidContentNotification(boolean enabled) {
-        mIsPaidContentNotificationEnabled = enabled;
-        persistState();
-    }
-
     public boolean isAltServerEnabled() {
         return GlobalPreferences.instance(mAppPrefs.getContext()).isContentBlockAltServerEnabled();
     }
@@ -238,7 +228,6 @@ public class ContentBlockData {
         String colorCategories = Helpers.parseStr(split, 7);
         mIsDontSkipSegmentAgainEnabled = Helpers.parseBoolean(split, 8, false);
         String excludedChannels = Helpers.parseStr(split, 9);
-        mIsPaidContentNotificationEnabled = Helpers.parseBoolean(split, 10, false);
 
         if (colorCategories != null) {
             String[] categoriesArr = Helpers.splitArray(colorCategories);
@@ -293,9 +282,12 @@ public class ContentBlockData {
         String excludedChannels = Helpers.mergeArray(mExcludedChannels.toArray());
 
         mAppPrefs.setData(CONTENT_BLOCK_DATA, Helpers.mergeData(
-                mIsSponsorBlockEnabled, null, null, null,
-                null, null, actions, colorCategories, mIsDontSkipSegmentAgainEnabled,
-                excludedChannels, mIsPaidContentNotificationEnabled
+                mIsSponsorBlockEnabled, 
+                null, null, null, null, null, 
+                actions, 
+                colorCategories, 
+                mIsDontSkipSegmentAgainEnabled,
+                excludedChannels
         ));
     }
 }
