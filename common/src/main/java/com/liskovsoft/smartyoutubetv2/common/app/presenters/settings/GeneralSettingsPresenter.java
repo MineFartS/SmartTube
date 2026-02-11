@@ -99,7 +99,7 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
         appendEnabledSections(settingsPresenter);
         appendContextMenuItemsCategory(settingsPresenter);
         appendHideVideos(settingsPresenter);
-        appendAppExitCategory(settingsPresenter);
+
         appendBackgroundPlaybackCategory(settingsPresenter);
         appendScreenDimmingCategory(settingsPresenter);
         appendKeyRemappingCategory(settingsPresenter);
@@ -400,40 +400,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
         );
 
         dialog.showDialog();
-
-    }
-
-    private void appendAppExitCategory(AppDialogPresenter settingsPresenter) {
-
-        List<OptionItem> options = new ArrayList<>();
-
-        for (int[] pair : new int[][] {
-            {
-                R.string.app_exit_none, 
-                GeneralData.EXIT_NONE
-            },
-            {
-                R.string.app_double_back_exit, 
-                GeneralData.EXIT_DOUBLE_BACK
-            },
-            {
-                R.string.app_single_back_exit, 
-                GeneralData.EXIT_SINGLE_BACK
-            }
-        }) {
-            options.add(
-                UiOptionItem.from(
-                    getContext().getString(pair[0]),
-                    optionItem -> mGeneralData.setAppExitShortcut(pair[1]),
-                    mGeneralData.getAppExitShortcut() == pair[1]
-                )
-            );
-        }
-
-        settingsPresenter.appendRadioCategory(
-            getContext().getString(R.string.app_exit_shortcut),
-            options
-        );
 
     }
 

@@ -95,14 +95,9 @@ public abstract class LeanbackActivity extends MotherActivity {
     public void finish() {
         // user pressed back key
         if (!getViewManager().hasParentView(this)) {
-            switch (getGeneralData().getAppExitShortcut()) {
-                case GeneralData.EXIT_DOUBLE_BACK:
-                    mDoubleBackManager.enableDoubleBackExit(this::finishTheApp);
-                    break;
-                case GeneralData.EXIT_SINGLE_BACK:
-                    finishTheApp();
-                    break;
-            }
+            
+            mDoubleBackManager.enableDoubleBackExit(this::finishTheApp);
+
         } else if (this instanceof PlaybackActivity) {
             switch (getGeneralData().getPlayerExitShortcut()) {
                 case GeneralData.EXIT_DOUBLE_BACK:

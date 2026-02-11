@@ -29,7 +29,7 @@ public class GeneralData implements ProfileChangeListener {
     private static GeneralData sInstance;
     private final Context mContext;
     private final AppPrefs mPrefs;
-    private int mAppExitShortcut;
+
     private int mPlayerExitShortcut;
     private int mSearchExitShortcut;
     private boolean mIsReturnToLauncherEnabled;
@@ -103,15 +103,6 @@ public class GeneralData implements ProfileChangeListener {
         }
 
         return sInstance;
-    }
-
-    public int getAppExitShortcut() {
-        return mAppExitShortcut;
-    }
-
-    public void setAppExitShortcut(int type) {
-        mAppExitShortcut = type;
-        persistState();
     }
 
     public int getPlayerExitShortcut() {
@@ -695,7 +686,6 @@ public class GeneralData implements ProfileChangeListener {
 
         String[] split = Helpers.splitData(data);
 
-        mAppExitShortcut = Helpers.parseInt(split, 3, EXIT_DOUBLE_BACK);
         mIsReturnToLauncherEnabled = Helpers.parseBoolean(split, 4, false);
         mBackgroundShortcut = Helpers.parseInt(split, 5, BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK);
         mOldPinnedItems = Helpers.parseList(split, 6, Video::fromString);
@@ -777,21 +767,79 @@ public class GeneralData implements ProfileChangeListener {
 
     private void persistStateInt() {
         // Zero index is skipped. Selected sections were there.
-        mPrefs.setProfileData(GENERAL_DATA, Helpers.mergeData(null, null, null, mAppExitShortcut, mIsReturnToLauncherEnabled,
-                mBackgroundShortcut, mOldPinnedItems, mIsHideShortsFromSubscriptionsEnabled,
-                mIsRemapFastForwardToNextEnabled, null, mIsProxyEnabled, mIsBridgeCheckEnabled, mIsOkButtonLongPressDisabled, mLastPlaylistId,
-                null, mIsHideUpcomingEnabled, mIsRemapPageUpToNextEnabled, mIsRemapPageUpToLikeEnabled,
-                mIsRemapChannelUpToNextEnabled, mIsRemapChannelUpToLikeEnabled, mIsRemapPageUpToSpeedEnabled,
-                mIsRemapChannelUpToSpeedEnabled, mIsRemapFastForwardToSpeedEnabled, mIsRemapChannelUpToSearchEnabled,
-                mIsHideShortsFromHomeEnabled, mIsHideShortsFromHistoryEnabled, mIsScreensaverDisabled, mIsVPNEnabled, mLastPlaylistTitle,
-                mPlaylistOrder, mPendingStreams, mIsGlobalClockEnabled, null, mSettingsPassword, mIsChildModeEnabled, mIsHistoryEnabled,
-                mScreensaverTimeoutMs, null, mIsAltAppIconEnabled, mVersionCode, mIsSelectChannelSectionEnabled, mMasterPassword,
-                null, mIsOldUpdateNotificationsEnabled, mScreensaverDimmingPercents, mIsRemapNextToSpeedEnabled, mIsRemapPlayToOKEnabled,
-                mHistoryState, mIsRememberSubscriptionsPositionEnabled, null, mIsRemapNumbersToSpeedEnabled, mIsRemapDpadUpToSpeedEnabled,
-                mIsRemapChannelUpToVolumeEnabled, mIsRemapDpadUpToVolumeEnabled, mIsRemapDpadLeftToVolumeEnabled, mIsRemapNextToFastForwardEnabled,
-                mIsHideWatchedFromNotificationsEnabled, mChangelog, mPlayerExitShortcut, null, mIsFullscreenModeEnabled, null,
-                mIsRememberPinnedPositionEnabled, mSelectedItems, mIsFirstUseTooltipEnabled, mIsDeviceSpecificBackupEnabled, null,
-                mIsRemapPageDownToSpeedEnabled, mSearchExitShortcut, mGDriveBackupFreqDays, mLocalDriveBackupFreqDays));
+        mPrefs.setProfileData(
+            GENERAL_DATA, 
+            Helpers.mergeData(
+                null, null, null, 
+                mIsReturnToLauncherEnabled,
+                mBackgroundShortcut, 
+                mOldPinnedItems, 
+                mIsHideShortsFromSubscriptionsEnabled,
+                mIsRemapFastForwardToNextEnabled, 
+                null, 
+                mIsProxyEnabled, 
+                mIsBridgeCheckEnabled, 
+                mIsOkButtonLongPressDisabled, 
+                mLastPlaylistId,
+                null, 
+                mIsHideUpcomingEnabled, 
+                mIsRemapPageUpToNextEnabled, 
+                mIsRemapPageUpToLikeEnabled,
+                mIsRemapChannelUpToNextEnabled, 
+                mIsRemapChannelUpToLikeEnabled, 
+                mIsRemapPageUpToSpeedEnabled,
+                mIsRemapChannelUpToSpeedEnabled, 
+                mIsRemapFastForwardToSpeedEnabled, 
+                mIsRemapChannelUpToSearchEnabled,
+                mIsHideShortsFromHomeEnabled, 
+                mIsHideShortsFromHistoryEnabled, 
+                mIsScreensaverDisabled, 
+                mIsVPNEnabled, 
+                mLastPlaylistTitle,
+                mPlaylistOrder, 
+                mPendingStreams, 
+                mIsGlobalClockEnabled, 
+                null, 
+                mSettingsPassword, 
+                mIsChildModeEnabled, 
+                mIsHistoryEnabled,
+                mScreensaverTimeoutMs, 
+                null, 
+                mIsAltAppIconEnabled, 
+                mVersionCode, 
+                mIsSelectChannelSectionEnabled, 
+                mMasterPassword,
+                null, 
+                mIsOldUpdateNotificationsEnabled, 
+                mScreensaverDimmingPercents, 
+                mIsRemapNextToSpeedEnabled, 
+                mIsRemapPlayToOKEnabled,
+                mHistoryState, 
+                mIsRememberSubscriptionsPositionEnabled, 
+                null, 
+                mIsRemapNumbersToSpeedEnabled, 
+                mIsRemapDpadUpToSpeedEnabled,
+                mIsRemapChannelUpToVolumeEnabled, 
+                mIsRemapDpadUpToVolumeEnabled, 
+                mIsRemapDpadLeftToVolumeEnabled, 
+                mIsRemapNextToFastForwardEnabled,
+                mIsHideWatchedFromNotificationsEnabled, 
+                mChangelog, 
+                mPlayerExitShortcut, 
+                null, 
+                mIsFullscreenModeEnabled, 
+                null,
+                mIsRememberPinnedPositionEnabled, 
+                mSelectedItems, 
+                mIsFirstUseTooltipEnabled, 
+                mIsDeviceSpecificBackupEnabled, 
+                null,
+                mIsRemapPageDownToSpeedEnabled, 
+                mSearchExitShortcut, 
+                mGDriveBackupFreqDays, 
+                mLocalDriveBackupFreqDays
+            )
+        );
     }
 
     @Override
