@@ -587,14 +587,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         persistData();
     }
 
-    public boolean isHighBitrateFormatsEnabled() {
-        return MediaServiceData.instance().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS);
-    }
-
-    public void setHighBitrateFormatsEnabled(boolean enable) {
-        MediaServiceData.instance().setFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS, enable);
-    }
-
     public boolean isIPv4DnsPreferred() {
         return GlobalPreferences.instance(mPrefs.getContext()).isIPv4DnsPreferred();
     }

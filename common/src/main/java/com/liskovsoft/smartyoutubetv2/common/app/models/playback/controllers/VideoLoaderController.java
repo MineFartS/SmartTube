@@ -125,10 +125,7 @@ public class VideoLoaderController extends BasePlayerController {
         }
 
         // Stream end check (hangs on buffering)
-        if (getPlayerTweaksData().isHighBitrateFormatsEnabled()) {
-            getPlayerTweaksData().setHighBitrateFormatsEnabled(false); // Response code: 429
-            reloadVideo();
-        } else if ((!getVideo().isLive || getVideo().isLiveEnd)
+        if ((!getVideo().isLive || getVideo().isLiveEnd)
                 && getPlayer().getDurationMs() - getPlayer().getPositionMs() < STREAM_END_THRESHOLD_MS) {
             getMainController().onPlayEnd();
         } else if (!getVideo().isLive && !getVideo().isLiveEnd) {
@@ -385,11 +382,8 @@ public class VideoLoaderController extends BasePlayerController {
         } else if (acceptAdaptiveFormats(formatInfo) && formatInfo.containsDashFormats()) {
             Log.d(TAG, "Loading regular video in dash format...");
 
-            if (getPlayerTweaksData().isHighBitrateFormatsEnabled() && formatInfo.hasExtendedHlsFormats()) {
-                player.openMerged(formatInfo, formatInfo.getHlsManifestUrl());
-            } else {
                 player.openDash(formatInfo);
-            }
+            
         } else if (acceptAdaptiveFormats(formatInfo) && formatInfo.containsSabrFormats()) {
             Log.d(TAG, "Loading video in sabr format...");
             player.openSabr(formatInfo);
@@ -579,8 +573,6 @@ public class VideoLoaderController extends BasePlayerController {
                 YouTubeServiceManager.instance().applyNoPlaybackFix();
             } else if (getPlayer() != null && !FormatItem.SUBTITLE_NONE.equals(getPlayer().getSubtitleFormat())) {
                 disableSubtitles(); // Response code: 429
-            } else if (getPlayerTweaksData().isHighBitrateFormatsEnabled()) {
-                getPlayerTweaksData().setHighBitrateFormatsEnabled(false); // Response code: 429
             } else {
                 YouTubeServiceManager.instance().applyNoPlaybackFix(); // Response code: 403
             }
