@@ -289,7 +289,7 @@ public class SplashPresenter extends BasePresenter<SplashView> {
             }
 
             if (sectionId != -1) {
-                getViewManager().startDefaultView(); // Nvidia Shield fix
+
                 BrowsePresenter.instance(getContext()).selectSection(sectionId);
 
                 return true;

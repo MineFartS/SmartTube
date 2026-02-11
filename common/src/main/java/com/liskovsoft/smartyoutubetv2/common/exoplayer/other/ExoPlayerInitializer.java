@@ -137,12 +137,6 @@ public class ExoPlayerInitializer {
     }
 
     private void applyPlaybackFixes(SimpleExoPlayer player) {
-        // Try to fix decoder error on Nvidia Shield 2019.
-        // Init resources as early as possible.
-        //player.setForegroundMode(true);
-        // NOTE: Avoid using seekParameters. ContentBlock hangs because of constant skipping to the segment start.
-        // ContentBlock hangs on the last segment: https://www.youtube.com/watch?v=pYymRbfjKv8
-
         // Fix seeking on TextureView (some devices only)
         if (mPlayerTweaksData.isTextureViewEnabled()) {
             // Also, live stream (dash) seeking fix

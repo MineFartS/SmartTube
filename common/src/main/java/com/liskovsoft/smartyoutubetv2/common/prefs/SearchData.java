@@ -150,15 +150,12 @@ public class SearchData {
 
         String[] split = Helpers.splitData(data);
 
-        // WARN: Don't enable Instant Voice Search
-        // Serious bug on Nvidia Shield. Can't type anything with soft keyboard.
-        // Other devices probably affected too.
         mIsInstantVoiceSearchEnabled = Helpers.parseBoolean(split, 0, false);
         mSearchOptions = Helpers.parseInt(split, 1, 0);
         mIsFocusOnResultsEnabled = Helpers.parseBoolean(split, 2, true);
         mIsKeyboardAutoShowEnabled = Helpers.parseBoolean(split, 3, false);
         mIsTempBackgroundModeEnabled = Helpers.parseBoolean(split, 4, false);
-        //mIsAltSpeechRecognizerEnabled
+
         mSpeechRecognizerType = Helpers.parseInt(split, 6, SPEECH_RECOGNIZER_SYSTEM);
         mIsTrendingSearchesEnabled = Helpers.parseBoolean(split, 7, true);
         mIsSearchHistoryDisabled = Helpers.parseBoolean(split, 8, false);
