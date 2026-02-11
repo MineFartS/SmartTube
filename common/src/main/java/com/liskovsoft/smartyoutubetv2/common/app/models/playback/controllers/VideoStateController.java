@@ -287,7 +287,7 @@ public class VideoStateController extends BasePlayerController {
             getStateService().save(new State(state.video, state.positionMs, state.durationMs, enabled ? 1.0f : lastSpeed));
         }
 
-        if (Helpers.floatEquals(lastSpeed, 1.0f) || getPlayerTweaksData().isSpeedButtonOldBehaviorEnabled()) {
+        if (Helpers.floatEquals(lastSpeed, 1.0f)) {
             onSpeedLongClicked(enabled);
         } else {
             getPlayer().setSpeed(enabled ? 1.0f : lastSpeed);
@@ -299,8 +299,6 @@ public class VideoStateController extends BasePlayerController {
 
         AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
 
-        // suppose live stream if buffering near the end
-        // boolean isStream = Math.abs(player.getDuration() - player.getCurrentPosition()) < 10_000;
         settingsPresenter.appendCategory(AppDialogUtil.createSpeedListCategory(getContext(), getPlayer()));
 
         settingsPresenter.showDialog(getContext().getString(R.string.video_speed), () -> {

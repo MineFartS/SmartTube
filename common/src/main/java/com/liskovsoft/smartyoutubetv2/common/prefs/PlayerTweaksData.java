@@ -92,7 +92,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsRealChannelIconEnabled;
     private float mPixelRatio;
     private boolean mIsQualityInfoBitrateEnabled;
-    private boolean mIsSpeedButtonOldBehaviorEnabled;
+
     private boolean mIsButtonLongClickEnabled;
     private boolean mIsLongSpeedListEnabled;
     private boolean mIsExtraLongSpeedListEnabled;
@@ -386,15 +386,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         persistData();
     }
 
-    public boolean isSpeedButtonOldBehaviorEnabled() {
-        return mIsSpeedButtonOldBehaviorEnabled;
-    }
-
-    public void setSpeedButtonOldBehaviorEnabled(boolean enable) {
-        mIsSpeedButtonOldBehaviorEnabled = enable;
-        persistData();
-    }
-
     public boolean isButtonLongClickEnabled() {
         return mIsButtonLongClickEnabled;
     }
@@ -625,7 +616,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsRealChannelIconEnabled = Helpers.parseBoolean(split, 20, true);
         mPixelRatio = Helpers.parseFloat(split, 21, 1.0f);
         mIsQualityInfoBitrateEnabled = Helpers.parseBoolean(split, 22, false);
-        mIsSpeedButtonOldBehaviorEnabled = Helpers.parseBoolean(split, 23, false);
+
         mIsButtonLongClickEnabled = Helpers.parseBoolean(split, 24, true);
         mIsLongSpeedListEnabled = Helpers.parseBoolean(split, 25, true);
         
@@ -698,7 +689,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mIsRealChannelIconEnabled, 
                 mPixelRatio, 
                 mIsQualityInfoBitrateEnabled,
-                mIsSpeedButtonOldBehaviorEnabled, 
+
                 mIsButtonLongClickEnabled, 
                 mIsLongSpeedListEnabled, 
                 mPlayerDataSource, 

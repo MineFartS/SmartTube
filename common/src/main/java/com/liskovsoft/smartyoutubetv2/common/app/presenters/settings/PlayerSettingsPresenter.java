@@ -646,10 +646,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 option -> mPlayerTweaksData.setRememberPositionOfShortVideosEnabled(option.isSelected()),
                 mPlayerTweaksData.isRememberPositionOfShortVideosEnabled()));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.player_speed_button_old_behavior),
-                option -> mPlayerTweaksData.setSpeedButtonOldBehaviorEnabled(option.isSelected()),
-                mPlayerTweaksData.isSpeedButtonOldBehaviorEnabled()));
-
         options.add(UiOptionItem.from(getContext().getString(R.string.player_show_clock),
                 option -> mPlayerData.setClockEnabled(option.isSelected()),
                 mPlayerData.isClockEnabled()));
