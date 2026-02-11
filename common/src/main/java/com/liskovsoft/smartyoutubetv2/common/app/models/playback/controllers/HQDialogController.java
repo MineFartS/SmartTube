@@ -50,7 +50,7 @@ public class HQDialogController extends BasePlayerController {
         addAudioLanguage();
         addPresetsCategory();
         addVideoZoomCategory();
-        addNetworkEngine();
+
         addAudioDelayCategory();
         addPitchEffectCategory();
 
@@ -125,11 +125,6 @@ public class HQDialogController extends BasePlayerController {
                 () -> getPlayer().restartEngine()));
     }
 
-    private void addNetworkEngine() {
-        addCategoryInt(AppDialogUtil.createNetworkEngineCategory(getContext(),
-                () -> getPlayer().restartEngine()));
-    }
-
     private void onDialogHide() {
         //updateBackgroundPlayback();
 
@@ -137,21 +132,6 @@ public class HQDialogController extends BasePlayerController {
             listener.run();
         }
     }
-
-    //private void updateBackgroundPlayback() {
-    //    ViewManager.instance(getContext()).blockTop(null);
-    //
-    //    if (getPlayer() != null) {
-    //        getPlayer().setBackgroundMode(getPlayerData().getBackgroundMode());
-    //    }
-    //}
-
-    //private void addBackgroundPlaybackCategory() {
-    //    OptionCategory category =
-    //            AppDialogUtil.createBackgroundPlaybackCategory(getContext(), getPlayerData(), GeneralData.instance(getContext()), this::updateBackgroundPlayback);
-    //
-    //    addCategoryInt(category);
-    //}
 
     private void addPresetsCategory() {
         addCategoryInt(AppDialogUtil.createVideoPresetsCategory(

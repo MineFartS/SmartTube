@@ -59,7 +59,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         appendPlaybackModeCategory(settingsPresenter);
         appendVideoPresetsCategory(settingsPresenter);
         appendPlayerButtonsCategory(settingsPresenter);
-        appendNetworkEngineCategory(settingsPresenter);
 
         appendVideoZoomCategory(settingsPresenter);
         appendVideoSpeedCategory(settingsPresenter);
@@ -594,11 +593,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
     private void appendPlaybackModeCategory(AppDialogPresenter settingsPresenter) {
         OptionCategory category = AppDialogUtil.createPlaybackModeCategory(getContext());
-        settingsPresenter.appendCategory(category);
-    }
-
-    private void appendNetworkEngineCategory(AppDialogPresenter settingsPresenter) {
-        OptionCategory category = AppDialogUtil.createNetworkEngineCategory(getContext());
         settingsPresenter.appendCategory(category);
     }
 

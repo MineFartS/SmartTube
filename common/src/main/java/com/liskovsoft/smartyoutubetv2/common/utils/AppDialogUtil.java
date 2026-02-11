@@ -773,46 +773,6 @@ public class AppDialogUtil {
         );
     }
 
-    public static OptionCategory createNetworkEngineCategory(Context context) {
-        return createNetworkEngineCategory(context, () -> {});
-    }
-
-    public static OptionCategory createNetworkEngineCategory(Context context, Runnable onModeSelected) {
-        PlayerTweaksData playerTweaksData = PlayerTweaksData.instance(context);
-        List<OptionItem> options = new ArrayList<>();
-
-        options.add(UiOptionItem.from(context.getString(R.string.default_lang),
-                context.getString(R.string.default_stack_desc),
-                option -> {
-                    playerTweaksData.setPlayerDataSource(PlayerTweaksData.PLAYER_DATA_SOURCE_DEFAULT);
-                    onModeSelected.run();
-                },
-                playerTweaksData.getPlayerDataSource() == PlayerTweaksData.PLAYER_DATA_SOURCE_DEFAULT));
-
-        options.add(UiOptionItem.from("Cronet",
-                context.getString(R.string.cronet_desc),
-                option -> {
-                    playerTweaksData.setPlayerDataSource(PlayerTweaksData.PLAYER_DATA_SOURCE_CRONET);
-                    onModeSelected.run();
-                },
-                playerTweaksData.getPlayerDataSource() == PlayerTweaksData.PLAYER_DATA_SOURCE_CRONET));
-
-        options.add(UiOptionItem.from("OkHttp",
-                context.getString(R.string.okhttp_desc),
-                option -> {
-                    playerTweaksData.setPlayerDataSource(PlayerTweaksData.PLAYER_DATA_SOURCE_OKHTTP);
-                    onModeSelected.run();
-                },
-                playerTweaksData.getPlayerDataSource() == PlayerTweaksData.PLAYER_DATA_SOURCE_OKHTTP));
-
-        return OptionCategory.from(
-                PLAYER_ENGINE_ID,
-                OptionCategory.TYPE_RADIO_LIST,
-                context.getString(R.string.player_network_stack),
-                options
-        );
-    }
-
     public static OptionItem createSubscriptionsBackupButton(Context context) {
         AppDialogPresenter dialogPresenter = AppDialogPresenter.instance(context);
         List<OptionItem> options = new ArrayList<>();
