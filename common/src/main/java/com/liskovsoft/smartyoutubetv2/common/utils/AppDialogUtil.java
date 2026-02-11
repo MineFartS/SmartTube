@@ -66,7 +66,7 @@ import io.reactivex.disposables.Disposable;
 
 public class AppDialogUtil {
     private static final String TAG = AppDialogUtil.class.getSimpleName();
-    private static final int VIDEO_BUFFER_ID = 134;
+    
     private static final int BACKGROUND_PLAYBACK_ID = 135;
     private static final int VIDEO_PRESETS_ID = 136;
     private static final int AUDIO_DELAY_ID = 137;
@@ -77,9 +77,9 @@ public class AppDialogUtil {
     private static final int PLAYER_REMEMBER_SPEED_ID = 142;
     private static final int PLAYER_SPEED_MISC_ID = 143;
     private static final int PITCH_EFFECT_ID = 144;
-    private static final int AUDIO_VOLUME_ID = 145;
+    
     private static final int PLAYER_REPEAT_ID = 146;
-    private static final int PLAYER_ENGINE_ID = 147;
+    
     private static final int SUBTITLE_STYLES_ID = 45;
     private static final int SUBTITLE_SIZE_ID = 46;
     private static final int SUBTITLE_POSITION_ID = 47;

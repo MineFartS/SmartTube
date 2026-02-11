@@ -180,22 +180,6 @@ public class VideoContentProvider extends ContentProvider {
         }
     }
 
-    private SchedulerProvider getSchedulerProvider() {
-        if (mSchedulerProvider == null) {
-            mSchedulerProvider = new AppSchedulerProvider();
-        }
-
-        return mSchedulerProvider;
-    }
-
-    private CompositeDisposable getCompositeDisposable() {
-        if (mDisposable == null) {
-            mDisposable = new CompositeDisposable();
-        }
-
-        return mDisposable;
-    }
-
     private Object[] convertVideoIntoRow(MediaItem mediaItem) {
         return new Object[] {
             mediaItem.getId(),

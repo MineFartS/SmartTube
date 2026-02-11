@@ -475,29 +475,6 @@ public class ChannelsProvider {
         return builder;
     }
 
-    /**
-     * Not robust way because its behavior depends on current locale
-     */
-    private static long findChannelByName(Context context, String name) {
-        final AtomicLong channelId = new AtomicLong(-1);
-
-        visitChannels(context, (Channel channel) -> {
-            if (name.equals(channel.getDisplayName())) {
-                if (channelId.get() == -1) {
-                    Log.d(TAG, "Channel found. DisplayName: " + name);
-                    channelId.set(channel.getId());
-                } else {
-                    Log.d(TAG, "Duplicate channel deleted. DisplayName: " + name);
-                    deleteChannel(context, channel.getId());
-                }
-            }
-
-            return true; // continue visiting
-        });
-
-        return channelId.get();
-    }
-
     private static Channel findChannelByProviderId(Context context, String providerId) {
         final AtomicReference<Channel> myChannel = new AtomicReference<>(null);
 
@@ -518,25 +495,7 @@ public class ChannelsProvider {
         return myChannel.get();
     }
 
-    private static long findChannelByChannelKey(Context context, String channelKey) {
-        final AtomicLong channelId = new AtomicLong(-1);
 
-        visitChannels(context, (Channel channel) -> {
-            if (channelKey.equals(channel.getSystemChannelKey())) {
-                if (channelId.get() == -1) {
-                    Log.d(TAG, "Channel found. ProviderId: " + channelKey);
-                    channelId.set(channel.getId());
-                } else {
-                    Log.d(TAG, "Duplicate channel deleted. ProviderId: " + channelKey);
-                    deleteChannel(context, channel.getId());
-                }
-            }
-
-            return true; // continue visiting
-        });
-
-        return channelId.get();
-    }
 
     private interface ChannelVisitor {
         boolean onChannel(Channel channel);

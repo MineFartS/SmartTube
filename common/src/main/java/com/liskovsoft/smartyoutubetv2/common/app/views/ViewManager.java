@@ -194,15 +194,6 @@ public class ViewManager {
         safeStartActivity(mContext, intent);
     }
 
-    private boolean doThrottle() {
-        long currentTimeMS = System.currentTimeMillis();
-        boolean skipEvent = currentTimeMS - mPrevThrottleTimeMS < 1_000;
-
-        mPrevThrottleTimeMS = currentTimeMS;
-
-        return skipEvent;
-    }
-
     public void addTop(Activity activity) {
         if (checkMoveViewsToBack(activity)) {
             // NOTE: Unknown purpose of commented code!
@@ -335,16 +326,6 @@ public class ViewManager {
                 mIsMoveToBackEnabled = false;
             }, 1_000);
         }
-    }
-
-    /**
-     * SecurityException: requires android.permission.BIND_ACCESSIBILITY_SERVICE
-     */
-    private void exitToHomeScreen() {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        safeStartActivity(mContext, intent);
     }
 
     public Class<?> getTopView() {

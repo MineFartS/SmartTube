@@ -207,8 +207,8 @@ public class PlaybackSupportFragment extends Fragment {
     private static final int START_FADE_OUT = 1;
 
     // Fading status
-    private static final int IDLE = 0;
-    private static final int ANIMATING = 1;
+
+    
 
     int mPaddingBottom;
     int mOtherRowsCenterToBottom;

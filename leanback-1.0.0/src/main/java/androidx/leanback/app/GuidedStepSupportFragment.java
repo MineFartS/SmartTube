@@ -1392,15 +1392,6 @@ public class GuidedStepSupportFragment extends Fragment implements GuidedActionA
         }
     }
 
-    private int getFirstCheckedAction() {
-        for (int i = 0, size = mActions.size(); i < size; i++) {
-            if (mActions.get(i).isChecked()) {
-                return i;
-            }
-        }
-        return 0;
-    }
-
     void runImeAnimations(boolean entering) {
         ArrayList<Animator> animators = new ArrayList<Animator>();
         if (entering) {

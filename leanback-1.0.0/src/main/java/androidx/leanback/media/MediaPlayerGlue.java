@@ -66,7 +66,7 @@ public class MediaPlayerGlue extends PlaybackControlGlue implements
 
     public static final int FAST_FORWARD_REWIND_STEP = 10 * 1000; // in milliseconds
     public static final int FAST_FORWARD_REWIND_REPEAT_DELAY = 200; // in milliseconds
-    private static final String TAG = "MediaPlayerGlue";
+
     protected final PlaybackControlsRow.ThumbsDownAction mThumbsDownAction;
     protected final PlaybackControlsRow.ThumbsUpAction mThumbsUpAction;
     MediaPlayer mPlayer = new MediaPlayer();

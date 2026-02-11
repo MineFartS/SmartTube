@@ -165,67 +165,6 @@ public class LiveDashManifestParser extends DashManifestParser {
                 oldSegmentTimeline.add(new SegmentTimelineElement(lastTimelineStartTime + (lastTimelineDuration * i), lastTimelineDuration));
             }
 
-            //oldSegmentTimeline.addAll(
-            //        newSegmentList.segmentTimeline.subList(newSegmentList.segmentTimeline.size() - (int) segmentNumShift - 1, newSegmentList.segmentTimeline.size()));
-        }
-    }
-
-    private static void recreateMissingSegments(DashManifest manifest) {
-        if (manifest == null) {
-            return;
-        }
-
-        long minUpdatePeriodMs = (long) Helpers.getField(manifest, "minUpdatePeriodMs");
-        long timeShiftBufferDepthMs = (long) Helpers.getField(manifest, "timeShiftBufferDepthMs"); // active live stream
-        long durationMs = (long) Helpers.getField(manifest, "durationMs"); // past live stream
-        long firstSegmentNum = getFirstSegmentNum(manifest);
-        long firstSegmentDurationMs = getFirstSegmentDurationMs(manifest);
-        long currentSegmentCount = getSegmentCount(manifest);
-        if (minUpdatePeriodMs <= 0) { // past live stream
-            // May has different length 5_000 (4hrs) or 2_000 (2hrs)
-            minUpdatePeriodMs = durationMs / (currentSegmentCount - 1) / 10 * 10; // Round ending digits
-        }
-
-        if (minUpdatePeriodMs != firstSegmentDurationMs) { // variable segment timeline (unpredictable)
-            return;
-        }
-
-        boolean isNewStream = firstSegmentNum < 10_000 && currentSegmentCount > 3;
-        boolean isPastStream = durationMs > 0 && currentSegmentCount > 3;
-        long maxSegmentsCount = (isPastStream ? MAX_PAST_STREAM_LENGTH_MS :
-                                    isNewStream ? MAX_NEW_STREAM_LENGTH_MS : MAX_LIVE_STREAM_LENGTH_MS) / minUpdatePeriodMs;
-        long recreateSegmentCount = Math.min(firstSegmentNum, maxSegmentsCount - currentSegmentCount);
-
-        if (recreateSegmentCount <= 0) {
-            return;
-        }
-
-        // 2_000 Ms streams has variable limit values in url (that is unpredictable)
-        if (minUpdatePeriodMs <= 2_000) {
-            return; // url won't work on small (2_000Ms) segments
-        }
-
-        // Skip past streams that are truncated (truncated streams have a problems)
-        if ((isNewStream || isPastStream) && firstSegmentNum > recreateSegmentCount) {
-            return;
-        }
-
-        if (timeShiftBufferDepthMs > 0) { // active live stream
-            Helpers.setField(manifest, "timeShiftBufferDepthMs", timeShiftBufferDepthMs + (recreateSegmentCount * minUpdatePeriodMs));
-        } else { // past live stream
-            Helpers.setField(manifest, "durationMs", durationMs + (recreateSegmentCount * minUpdatePeriodMs));
-        }
-
-        Period oldPeriod = manifest.getPeriod(0);
-
-        for (int i = 0; i < oldPeriod.adaptationSets.size(); i++) {
-            AdaptationSet adaptationSet = oldPeriod.adaptationSets.get(i);
-            lazyRecreateRepresentations(adaptationSet, recreateSegmentCount, minUpdatePeriodMs);
-            //List<Representation> representations = adaptationSet.representations;
-            //for (int j = 0; j < representations.size(); j++) {
-            //    Representation oldRepresentation = representations.get(j);
-            //    recreateRepresentation(oldRepresentation, recreateSegmentCount, minUpdatePeriodMs);
-            //}
         }
     }
 

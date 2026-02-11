@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 public class IntentExtractor {
     public static final String RESTART_INTENT = "RESTART_INTENT";
     public static final String INCOGNITO_INTENT = "INCOGNITO_INTENT";
-    private static final String TAG = IntentExtractor.class.getSimpleName();
+    
     /**
      * Browser: https://www.youtube.com/results?search_query=twice<br/>
      * Amazon: youtube://search?query=linkin+park&isVoice=true
@@ -29,7 +29,7 @@ public class IntentExtractor {
      */
     private static final String CHANNEL_KEY = "channel";
     private static final String CHANNEL_ALT_KEY = "c";
-    private static final String USER_URL = "/user/";
+    
     private static final String SUBSCRIPTIONS_URL = "https://www.youtube.com/tv#/zylon-surface?c=FEsubscriptions"; // last 'resume' param isn't parsed by intent and should be removed
     private static final String HISTORY_URL = "https://www.youtube.com/tv#/zylon-surface?c=FEmy_youtube"; // last 'resume' param isn't parsed by intent and should be removed
     private static final String RECOMMENDED_URL = "https://www.youtube.com/tv#/zylon-surface?c=default"; // last 'resume' param isn't parsed by intent and should be removed

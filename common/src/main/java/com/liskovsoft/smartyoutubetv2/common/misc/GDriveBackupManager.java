@@ -128,30 +128,6 @@ public class GDriveBackupManager {
         startBackup(backupDir, mDataDir);
     }
 
-    private void startBackupOld(String backupDir, String dataDir) {
-        Collection<File> files = FileHelpers.listFileTree(new File(dataDir));
-
-        Consumer<File> backupConsumer = file -> {
-            if (file.isFile()) {
-                if (checkFileName(file.getName())) {
-                    if (!mIsBlocking) MessageHelpers.showLongMessage(mContext, mContext.getString(R.string.app_backup) + "\n" + file.getName());
-
-                    RxHelper.runBlocking(DriveService.uploadFile(file, Uri.parse(String.format("%s%s", backupDir, file.getAbsolutePath().replace(dataDir, "")))));
-                }
-            }
-        };
-
-        if (mIsBlocking) {
-            Observable.fromIterable(files)
-                    .blockingSubscribe(backupConsumer);
-        } else {
-            mBackupAction = Observable.fromIterable(files)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(Schedulers.io()) // run subscribe on separate thread
-                    .subscribe(backupConsumer, error -> MessageHelpers.showLongMessage(mContext, error.getMessage()));
-        }
-    }
-
     private void startBackup(String backupDir, String dataDir) {
         File source = new File(dataDir);
         File zipFile = new File(mContext.getCacheDir(), BACKUP_NAME);
@@ -180,15 +156,7 @@ public class GDriveBackupManager {
     }
 
     private void startRestoreConfirm() {
-        //AppDialogUtil.showConfirmationDialog(mContext, mContext.getString(R.string.app_restore), this::startRestoreWrapper);
         showRestoreChooserDialog();
-    }
-
-    private void startRestoreWrapper() {
-        startRestore(getBackupDir(), mDataDir,
-                () -> startRestore(getAltBackupDir(), mDataDir,
-                        () -> startRestoreOld(getBackupDir(), mDataDir,
-                                () -> startRestoreOld(getAltBackupDir(), mDataDir, null))));
     }
 
     private void startRestoreOld(String backupDir, String dataDir, Runnable onError) {

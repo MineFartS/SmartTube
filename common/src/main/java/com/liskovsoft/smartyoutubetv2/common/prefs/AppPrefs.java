@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AppPrefs extends SharedPreferencesBase implements AccountChangeListener {
-    private static final String TAG = AppPrefs.class.getSimpleName();
+    
     @SuppressLint("StaticFieldLeak")
     private static AppPrefs sInstance;
     private static final String ANONYMOUS_PROFILE_NAME = "anonymous";
@@ -23,7 +23,7 @@ public class AppPrefs extends SharedPreferencesBase implements AccountChangeList
     private static final String STATE_UPDATER_DATA = "state_updater_data";
     private static final String CHANNEL_GROUP_DATA = "channel_group_data";
     private static final String SIDEBAR_DATA = "sidebar_data";
-    private static final String VIEW_MANAGER_DATA = "view_manager_data";
+
     private static final String WEB_PROXY_URI = "web_proxy_uri";
     private static final String WEB_PROXY_ENABLED = "web_proxy_enabled";
     private static final String LAST_PROFILE_NAME = "last_profile_name";

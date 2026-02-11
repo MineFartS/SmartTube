@@ -678,14 +678,6 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
         } else return false;
     }
 
-    @SuppressWarnings("unchecked")
-    private boolean isPreviousSameAuthor(String id, int position) {
-        int prevPosition = position + 1;
-        if (items.size() <= prevPosition) return false;
-        else return items.get(prevPosition).item instanceof IMessage
-                && ((MESSAGE) items.get(prevPosition).item).getUser().getId().contentEquals(id);
-    }
-
     private void incrementSelectedItemsCount() {
         selectedItemsCount++;
         notifySelectionChanged();

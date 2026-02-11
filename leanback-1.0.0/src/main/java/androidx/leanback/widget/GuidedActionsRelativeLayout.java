@@ -37,14 +37,6 @@ class GuidedActionsRelativeLayout extends RelativeLayout {
         mKeyLinePercent = GuidanceStylingRelativeLayout.getKeyLinePercent(context);
     }
 
-    private void init() {
-        TypedArray ta = getContext().getTheme().obtainStyledAttributes(
-                R.styleable.LeanbackGuidedStepTheme);
-        mKeyLinePercent = ta.getFloat(R.styleable.LeanbackGuidedStepTheme_guidedStepKeyline,
-                40);
-        ta.recycle();
-    }
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         final int heightSize = MeasureSpec.getSize(heightMeasureSpec);

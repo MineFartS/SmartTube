@@ -368,13 +368,6 @@ public class SearchSupportFragment extends Fragment {
         return root;
     }
 
-    private void resultsAvailable() {
-        if ((mStatus & QUERY_COMPLETE) != 0) {
-            focusOnResults();
-        }
-        updateSearchBarNextFocusId();
-    }
-
     @Override
     public void onStart() {
         super.onStart();
