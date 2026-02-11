@@ -65,7 +65,7 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         appendVideoSpeedCategory(settingsPresenter);
         appendAudioLanguageCategory(settingsPresenter);
         appendAudioShiftCategory(settingsPresenter);
-        appendMasterVolumeCategory(settingsPresenter);
+
         appendUIAutoHideCategory(settingsPresenter);
         appendSeekTypeCategory(settingsPresenter);
         appendSeekingPreviewCategory(settingsPresenter);
@@ -117,11 +117,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
     private void appendAudioShiftCategory(AppDialogPresenter settingsPresenter) {
         OptionCategory category = AppDialogUtil.createAudioShiftCategory(getContext());
-        settingsPresenter.appendCategory(category);
-    }
-
-    private void appendMasterVolumeCategory(AppDialogPresenter settingsPresenter) {
-        OptionCategory category = AppDialogUtil.createAudioVolumeCategory(getContext());
         settingsPresenter.appendCategory(category);
     }
 

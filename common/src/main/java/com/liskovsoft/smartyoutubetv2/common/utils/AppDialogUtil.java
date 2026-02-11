@@ -401,50 +401,10 @@ public class AppDialogUtil {
         return OptionCategory.from(AUDIO_DELAY_ID, OptionCategory.TYPE_RADIO_LIST, title, options);
     }
 
-    public static OptionCategory createAudioVolumeCategory(Context context) {
-        return createAudioVolumeCategory(context, () -> {});
-    }
-
-    public static OptionCategory createAudioVolumeCategory(Context context, Runnable onSetCallback) {
-        PlayerData playerData = PlayerData.instance(context);
-        PlayerTweaksData playerTweaksData = PlayerTweaksData.instance(context);
-        String title = context.getString(R.string.player_volume);
-
-        List<OptionItem> options = new ArrayList<>();
-
-        for (int scalePercent : Helpers.range(0, 300, 5)) {
-            float scale = scalePercent / 100f;
-            options.add(UiOptionItem.from(String.format("%s%%", scalePercent),
-                    optionItem -> {
-                        playerData.setPlayerVolume(scale);
-                        playerTweaksData.setPlayerAutoVolumeEnabled(scalePercent == 100);
-
-                        if (scalePercent > 100) {
-                            MessageHelpers.showLongMessage(context, R.string.volume_boost_warning);
-                        }
-
-                        onSetCallback.run();
-                    },
-                    Helpers.floatEquals(scale, playerData.getPlayerVolume())));
-        }
-
-        return OptionCategory.from(AUDIO_VOLUME_ID, OptionCategory.TYPE_RADIO_LIST, title, options);
-    }
-
     public static OptionCategory createPitchEffectCategory(Context context) {
         String title = context.getString(R.string.pitch_effect);
 
         List<OptionItem> options = new ArrayList<>();
-
-        //for (int pitchRaw : Helpers.range(1, 20 * 4, 1)) {
-        //    float pitch = pitchRaw / (10f * 4);
-        //    options.add(UiOptionItem.from(Helpers.toString(pitch),
-        //            optionItem -> {
-        //                playerManager.setPitch(pitch);
-        //                playerData.setPitch(pitch);
-        //            },
-        //            Helpers.floatEquals(pitch, playerManager.getPitch())));
-        //}
 
         addPitches(context, options, Helpers.range(0.025f, 0.975f, 0.025f));
         addPitches(context, options, new float[]{ 0.985f, 0.990f, 0.995f }); // Custom pitches
