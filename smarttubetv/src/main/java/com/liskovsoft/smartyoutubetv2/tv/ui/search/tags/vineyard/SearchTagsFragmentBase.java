@@ -206,23 +206,7 @@ public abstract class SearchTagsFragmentBase extends SearchSupportFragment
         mSearchTagsProvider.search(query, results -> {
             adapter.addAllItems(results);
             attachAdapter(0, adapter);
-            // Same suggestions in the keyboard
-            //displayCompletions(toCompletions(results));
         });
-    }
-
-    private List<String> toCompletions(List<Tag> results) {
-        List<String> result = null;
-
-        if (results != null) {
-            result = new ArrayList<>();
-
-            for (Tag tag : results) {
-                result.add(tag.tag);
-            }
-        }
-
-        return result;
     }
 
     /**

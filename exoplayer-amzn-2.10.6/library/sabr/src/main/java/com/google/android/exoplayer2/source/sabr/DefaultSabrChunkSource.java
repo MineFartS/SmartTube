@@ -852,11 +852,6 @@ public class DefaultSabrChunkSource implements SabrChunkSource {
             return getFirstSegmentNum() + availableSegmentCount - 1;
         }
 
-        private static boolean mimeTypeIsWebm(String mimeType) {
-            return mimeType.startsWith(MimeTypes.VIDEO_WEBM) || mimeType.startsWith(MimeTypes.AUDIO_WEBM)
-                    || mimeType.startsWith(MimeTypes.APPLICATION_WEBM);
-        }
-
         private static boolean mimeTypeIsRawText(String mimeType) {
             return MimeTypes.isText(mimeType) || MimeTypes.APPLICATION_TTML.equals(mimeType);
         }

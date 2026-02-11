@@ -47,22 +47,13 @@ public abstract class MaxControlsVideoPlayerGlue<T extends PlayerAdapter>
                         mDescriptionViewHolder = new WeakReference<>(viewHolder);
 
                         fixClippedTitle(viewHolder);
-                        //fixOverlappedTitle(viewHolder);
+
                         fixThumbOverlapping(viewHolder);
 
                         PlaybackBaseControlGlue<?> glue = (PlaybackBaseControlGlue<?>) obj;
                         viewHolder.getTitle().setText(glue.getTitle());
                         viewHolder.getSubtitle().setText(glue.getSubtitle());
-                        // MOD: add extra title line
-                        //viewHolder.getBody().setText(glue.getBody());
-                    }
 
-                    private void fixOverlappedTitle(ViewHolder viewHolder) {
-                        // Fix overlapped title on big size fonts
-                        Integer titleLineSpacing = (Integer) Helpers.getField(viewHolder, "mTitleLineSpacing");
-                        if (titleLineSpacing != null) {
-                            Helpers.setField(viewHolder, "mTitleLineSpacing", titleLineSpacing * 1.2);
-                        }
                     }
 
                     private void fixClippedTitle(ViewHolder viewHolder) {

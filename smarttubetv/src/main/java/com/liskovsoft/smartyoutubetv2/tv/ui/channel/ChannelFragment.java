@@ -16,7 +16,7 @@ import com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.misc.ProgressBarManager
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
 
 public class ChannelFragment extends MultipleRowsFragment implements ChannelView {
-    private static final String TAG = ChannelFragment.class.getSimpleName();
+    
     private static final String SELECTED_ITEM_INDEX = "SelectedItemIndex";
     private ChannelPresenter mChannelPresenter;
     private ProgressBarManager mProgressBarManager;

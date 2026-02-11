@@ -56,7 +56,7 @@ import java.util.Locale;
  * a {@link SimpleExoPlayer}.
  */
 public final class DebugInfoManager implements Runnable, Player.EventListener {
-    private static final String TAG = DebugInfoManager.class.getSimpleName();
+    
     private static final int REFRESH_INTERVAL_MS = 1000;
     private static final String NOT_AVAILABLE = "none";
     private final float mTextSize;
@@ -335,10 +335,6 @@ public final class DebugInfoManager implements Runnable, Player.EventListener {
         mDisplayInfo.add(new Pair<>("Display DPI", String.valueOf(Helpers.getDeviceDpi(mContext))));
     }
 
-    private void appendPlayerWindowIndex() {
-        appendRow("Window index", mPlayer.getCurrentWindowIndex());
-    }
-
     private void appendVersion() {
         appendRow("ExoPlayer version", ExoPlayerLibraryInfo.VERSION);
         appendRow("ExoPlayer engine",
@@ -346,7 +342,7 @@ public final class DebugInfoManager implements Runnable, Player.EventListener {
                         PlayerTweaksData.instance(mContext).getPlayerDataSource() == PlayerTweaksData.PLAYER_DATA_SOURCE_CRONET ? "Cronet" :
                         "Default");
         appendRow("Cronet version", ApiVersion.getCronetVersion());
-        //appendRow("OkHttp version", Version.userAgent());
+        
         appendRow(mAppVersion, AppInfoHelpers.getAppVersionName(mContext));
     }
 
@@ -462,39 +458,8 @@ public final class DebugInfoManager implements Runnable, Player.EventListener {
         return result;
     }
 
-    // NOTE: Be aware. This info isn't real! It's like caps or something like that. To get real info use method below.
-    private String getVideoDecoderNameV1(Format format) {
-        if (format == null) {
-            return null;
-        }
-
-        MediaCodecInfo info = ExoUtils.getCapsDecoderInfo(format.sampleMimeType);
-
-        return info != null ? info.name : null;
-    }
-
     private String getVideoDecoderNameV2() {
         return ExoUtils.getVideoDecoderName();
     }
 
-    private String getRawDisplayResolution() {
-        Display display = mContext.getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getRealSize(size);
-        float refreshRate = display.getRefreshRate();
-
-        return String.format("%sx%s@%s", size.x, size.y, refreshRate);
-    }
-
-    /**
-     * Override to hardcoded physical resolution
-     */
-    private String overrideResolution(String resolution) {
-        switch (Helpers.getDeviceName()) {
-            case "BRAVIA 4K UR3 (BRAVIA_UR3_EU)":
-                return "3840x2160@120";
-        }
-
-        return resolution;
-    }
 }

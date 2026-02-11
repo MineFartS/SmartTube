@@ -338,28 +338,6 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
 
     }
 
-    private void appendLinks(AppDialogPresenter settingsPresenter) {
-        OptionItem releasesOption = UiOptionItem.from(
-            getContext().getString(R.string.releases),
-            option -> Utils.openLink(
-                getContext(), 
-                Utils.toQrCodeLink(getContext().getString(R.string.releases_url))
-            )
-        );
-
-        OptionItem sourcesOption = UiOptionItem.from(
-            getContext().getString(R.string.sources),
-            option -> Utils.openLink(
-                getContext(), 
-                Utils.toQrCodeLink(getContext().getString(R.string.sources_url))
-            )
-        );
-
-        settingsPresenter.appendSingleButton(releasesOption);
-        settingsPresenter.appendSingleButton(sourcesOption);
-        
-    }
-
     private void appendUpdateSource(AppDialogPresenter settingsPresenter) {
         
         List<OptionItem> options = new ArrayList<>();
@@ -396,36 +374,6 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
             options
         );
 
-    }
-
-    private void appendFeedback(AppDialogPresenter settingsPresenter) {
-        
-        List<OptionItem> feedbackOptions = new ArrayList<>();
-
-        Map<String, String> feedback = Helpers.getMap(
-            getContext(), 
-            R.array.feedback
-        );
-
-        for (Entry<String, String> entry : feedback.entrySet()) {
-            
-            feedbackOptions.add(
-                UiOptionItem.from(
-                    entry.getKey(),
-                    option -> Utils.openLink(
-                        getContext(), 
-                        Utils.toQrCodeLink(entry.getValue())
-                    )
-                )
-            );
-        }
-
-        if (!feedbackOptions.isEmpty()) {
-            settingsPresenter.appendStringsCategory(
-                getContext().getString(R.string.feedback), 
-                feedbackOptions
-            );
-        }
     }
 
     private void appendInstallBridge(AppDialogPresenter settingsPresenter) {

@@ -201,13 +201,4 @@ public class RestoreTrackSelector extends DefaultTrackSelector {
         return definitionPair;
     }
 
-    private void unlockAllVideoFormats(int[][] formatSupports) {
-        final int videoTrackIndex = 0;
-
-        for (int j = 0; j < formatSupports[videoTrackIndex].length; j++) {
-            if (formatSupports[videoTrackIndex][j] == FORMAT_NOT_SUPPORTED) { // video format not supported by system decoders
-                formatSupports[videoTrackIndex][j] = FORMAT_FORCE_SUPPORT; // force support of video format
-            }
-        }
-    }
 }

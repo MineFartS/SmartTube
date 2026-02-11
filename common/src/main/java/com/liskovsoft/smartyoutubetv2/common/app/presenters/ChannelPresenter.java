@@ -274,16 +274,6 @@ public class ChannelPresenter extends BasePresenter<ChannelView> implements Vide
                 );
     }
 
-    /**
-     * Sort channel content: move Uploads on top.
-     */
-    private void moveToTopIfNeeded(List<MediaGroup> mediaGroups) {
-        moveToTop(mediaGroups, R.string.playlists_row_name);
-        moveToTop(mediaGroups, R.string.popular_uploads_row_name);
-        moveToTop(mediaGroups, R.string.uploads_row_name);
-        moveToTop(mediaGroups, R.string.live_now_row_name);
-    }
-
     private void moveToTop(List<MediaGroup> mediaGroups, int rowNameResId) {
         if (rowNameResId <= 0) {
             return;

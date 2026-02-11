@@ -25,7 +25,7 @@ public final class AmazonQuirks {
     private static final String FIRETV_GEN1_DEVICE_MODEL       = "AFTB";
     private static final String FIRETV_GEN2_DEVICE_MODEL       = "AFTS";
     private static final String FIRETV_STICK_DEVICE_MODEL      = "AFTM";
-    private static final String FIRETV_STICK_GEN2_DEVICE_MODEL = "AFTT";
+    
     private static final String KINDLE_TABLET_DEVICE_MODEL     = "KF";
     private static final String FIRE_PHONE_DEVICE_MODEL        = "SD";
     private static final String AMAZON                         = "Amazon";

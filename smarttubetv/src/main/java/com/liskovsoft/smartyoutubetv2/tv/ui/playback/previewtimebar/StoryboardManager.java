@@ -98,10 +98,6 @@ public class StoryboardManager {
         }
     }
 
-    private long getFrameDurationMs() {
-        return FRAME_DURATION_MS;
-    }
-
     private long getFrameDurationMsAlt() {
         if (mStoryboard == null) {
             return -1;

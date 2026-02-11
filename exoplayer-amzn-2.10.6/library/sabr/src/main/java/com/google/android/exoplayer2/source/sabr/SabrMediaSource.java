@@ -32,12 +32,7 @@ import com.google.android.exoplayer2.util.Assertions;
 import java.io.IOException;
 
 public final class SabrMediaSource extends BaseMediaSource {
-    /**
-     * The interval in milliseconds between invocations of {@link
-     * SourceInfoRefreshListener#onSourceInfoRefreshed(MediaSource, Timeline, Object)} when the
-     * source's {@link Timeline} is changing dynamically (for example, for incomplete live streams).
-     */
-    private static final int NOTIFY_MANIFEST_INTERVAL_MS = 5000;
+
     /**
      * The minimum default start position for live streams, relative to the start of the live window.
      */

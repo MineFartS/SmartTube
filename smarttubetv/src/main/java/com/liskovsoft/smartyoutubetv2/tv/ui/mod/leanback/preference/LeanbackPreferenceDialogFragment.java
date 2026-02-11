@@ -26,37 +26,11 @@ public class LeanbackPreferenceDialogFragment extends Fragment {
 
     public static final String ARG_KEY = "key";
 
-    private DialogPreference mPreference;
-
     public LeanbackPreferenceDialogFragment() {
         if (Build.VERSION.SDK_INT >= 21) {
             LeanbackPreferenceFragmentTransitionHelperApi21.addTransitions(this);
         }
     }
-
-    // MODIFIED: Fix Android 9 error by allowing null fragments
-    // Target fragment doesn't belongs to this fragment manager
-    //@Override
-    //public void onCreate(Bundle savedInstanceState) {
-    //    super.onCreate(savedInstanceState);
-    //
-    //    final Fragment rawFragment = getTargetFragment();
-    //    if (!(rawFragment instanceof DialogPreference.TargetFragment)) {
-    //        throw new IllegalStateException("Target fragment " + rawFragment
-    //                + " must implement TargetFragment interface");
-    //    }
-    //}
-
-    // MODIFIED: Android 9 error fix: Target fragment doesn't belongs to this fragment manager
-    //public DialogPreference getPreference() {
-    //    if (mPreference == null) {
-    //        final String key = getArguments().getString(ARG_KEY);
-    //        final DialogPreference.TargetFragment fragment =
-    //                (DialogPreference.TargetFragment) getTargetFragment();
-    //        mPreference = (DialogPreference) fragment.findPreference(key);
-    //    }
-    //    return mPreference;
-    //}
 
     // MODIFIED: Fix Android 9 error by allowing null fragments
     // Target fragment doesn't belongs to this fragment manager

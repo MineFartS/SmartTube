@@ -293,7 +293,7 @@ public final class DefaultAudioSink implements AudioSink {
   // AMZN_CHANGE_BEGIN
   private final Logger log = new Logger(Logger.Module.Audio, TAG);
   private final boolean DBG = log.allowDebug();
-  private final boolean VDBG = log.allowVerbose();
+  
   private static final boolean isLatencyQuirkEnabled = AmazonQuirks.isLatencyQuirkEnabled();
   private static final boolean isLegacyPassthroughQuirkEnabled = AmazonQuirks.isDolbyPassthroughQuirkEnabled();
   // AMZN_CHANGE_END

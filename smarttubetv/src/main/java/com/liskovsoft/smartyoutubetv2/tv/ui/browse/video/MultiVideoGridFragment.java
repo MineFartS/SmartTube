@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MultiVideoGridFragment extends MultiGridFragment implements VideoSection {
-    private static final String TAG = MultiVideoGridFragment.class.getSimpleName();
+
     private HeaderVideoGroupObjectAdapter mGridAdapter1;
     private VideoGroupObjectAdapter mGridAdapter2;
     private final List<VideoGroup> mPendingUpdates1 = new ArrayList<>();
@@ -50,7 +50,7 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
     private LongClickPresenter mCardPresenter1;
     private LongClickPresenter mCardPresenter2;
     private int mSelectedItemIndex1 = -1;
-    private int mSelectedItemIndex2 = -1;
+
     private Video mSelectedItem1;
     private float mVideoGridScale;
     private final Runnable mRestore1Task = this::restorePosition1;

@@ -35,7 +35,7 @@ import java.nio.ByteBuffer;
   public static final int OUTPUT_MODE_SURFACE_YUV = 1;
 
   private static final int NO_ERROR = 0;
-  private static final int DECODE_ERROR = 1;
+
   private static final int DRM_ERROR = 2;
 
   private final ExoMediaCrypto exoMediaCrypto;

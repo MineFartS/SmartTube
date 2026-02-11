@@ -216,32 +216,7 @@ public class LeanbackListPreferenceDialogFragment extends LeanbackPreferenceDial
         return view;
     }
 
-    /**
-     * Make link open in browser. Not working.
-     */
-    private CharSequence toSpannableString(CharSequence message) {
-        SpannableStringBuilder builder = SpannableStringBuilder.valueOf(message);
-        URLSpan[] spans = builder.getSpans(0, builder.length(), URLSpan.class);
-
-        for (URLSpan span : spans) {
-           builder.setSpan(new ClickableSpan() {
-                   @Override
-                   public void onClick(@NonNull View widget) {
-                       MessageHelpers.showMessage(getContext(), "On link clicked " + span.getURL());
-                   }
-               },
-               builder.getSpanStart(span),
-               builder.getSpanEnd(span),
-               Spanned.SPAN_INCLUSIVE_EXCLUSIVE
-           );
-           builder.removeSpan(span);
-        }
-
-        return builder;
-    }
-
     public RecyclerView.Adapter onCreateAdapter() {
-        //final DialogPreference preference = getPreference();
         if (mMulti) {
             return new AdapterMulti(mEntries, mEntryValues, mInitialSelections);
         } else {

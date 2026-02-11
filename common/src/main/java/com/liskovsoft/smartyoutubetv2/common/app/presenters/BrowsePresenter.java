@@ -355,13 +355,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         initPasswordSection();
     }
 
-    private void sortSections() {
-        // NOTE: Comparator.comparingInt API >= 24
-        Collections.sort(mSections, (o1, o2) -> {
-            return getSidebarService().getSectionIndex(o1.getId()) - getSidebarService().getSectionIndex(o2.getId());
-        });
-    }
-
     public void updateChannelSorting() {
         int sortingType = getMainUIData().getChannelCategorySorting();
 
@@ -1041,17 +1034,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
             )
         );
         
-    }
-
-    private int moveToTopIfNeeded(MediaGroup mediaGroup) {
-        if (mediaGroup == null) {
-            return -1;
-        }
-
-        return Helpers.equalsAny(
-            mediaGroup.getTitle(), 
-            getContext().getString(R.string.trending_row_name)
-        ) ? 0 : -1;
     }
 
     private Observable<MediaGroup> createPinnedGridAction(Video item) {

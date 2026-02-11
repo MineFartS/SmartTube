@@ -43,7 +43,7 @@ public class ViewManager {
     private final Stack<Class<? extends Activity>> mActivityStack;
     private Class<? extends Activity> mRootActivity;
     private Class<? extends Activity> mDefaultTop;
-    private long mPrevThrottleTimeMS;
+
     private boolean mIsMoveToBackEnabled;
     private boolean mIsFinished;
     private boolean mIsPlayerOnlyModeEnabled;

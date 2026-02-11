@@ -48,7 +48,7 @@ import java.util.Map;
  * Main class to show BrowseFragment with header and rows of videos
  */
 public class BrowseFragment extends BrowseSupportFragment implements BrowseView {
-    private static final String TAG = BrowseFragment.class.getSimpleName();
+    
     private static final String SELECTED_HEADER_INDEX = "SelectedHeaderIndex";
     private static final String SELECTED_VIDEO = "SelectedVideo";
     private static final String IS_PLAYER_IN_FOREGROUND = "IsPlayerInForeground";

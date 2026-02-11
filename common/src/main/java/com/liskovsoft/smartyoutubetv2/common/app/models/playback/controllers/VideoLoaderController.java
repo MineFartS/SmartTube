@@ -664,10 +664,6 @@ public class VideoLoaderController extends BasePlayerController {
         scheduleReloadVideoTimer(1_000);
     }
 
-    private void rebootApp() {
-        scheduleRebootAppTimer(1_000);
-    }
-
     private List<String> applyFix(List<String> urlList) {
         // Sometimes top url cannot be played
         if (mLastErrorType == PlayerEventListener.ERROR_TYPE_SOURCE) {
@@ -843,17 +839,6 @@ public class VideoLoaderController extends BasePlayerController {
         }
     }
 
-    private void loadRandomNext2() {
-        if (getPlayer() == null || getPlayerData() == null || getVideo() == null || getVideo().isShuffled ||
-                getVideo().shuffleMediaItem == null || getPlayerData().getPlaybackMode() != PlayerConstants.PLAYBACK_MODE_SHUFFLE) {
-            return;
-        }
-
-        getVideo().isShuffled = true;
-        getVideo().playlistParams = getVideo().shuffleMediaItem.getParams();
-        getController(SuggestionsController.class).loadSuggestions(getVideo());
-    }
-
     private void updateBufferingCountIfNeeded() {
         updateBufferingCount();
         if (isBufferingRecurrent()) {
@@ -957,21 +942,7 @@ public class VideoLoaderController extends BasePlayerController {
         }
     }
 
-    private void preloadNextVideoIfNeeded() {
-        if (isEmbedPlayer() || getPlayer() == null || getVideo() == null || getVideo().isLive) {
-            return;
-        }
-
-        if (getPlayer().getDurationMs() - getPlayer().getPositionMs() < 50_000) {
-            MediaServiceManager.instance().loadFormatInfo(mSuggestionsController.getNext(), formatInfo -> {});
-        }
-    }
-
     private void disableSubtitles() {
-        //if (getVideo() != null) {
-        //    getPlayerData().disableSubtitlesPerChannel(getVideo().channelId);
-        //}
-        //getPlayerData().setSubtitlesPerChannelEnabled(false);
         getPlayerData().setFormat(FormatItem.SUBTITLE_NONE);
     }
 }

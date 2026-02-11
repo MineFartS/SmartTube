@@ -35,7 +35,7 @@ public class DashManifestParser2 {
     private static final String TAG = DashManifestParser2.class.getSimpleName();
     private int mId;
     private static final String NULL_INDEX_RANGE = "0-0";
-    private static final String NULL_CONTENT_LENGTH = "0";
+
     private static final int MAX_DURATION_SEC = 48 * 60 * 60;
     private MediaItemFormatInfo mFormatInfo;
     private Set<MediaFormat> mMP4Videos;

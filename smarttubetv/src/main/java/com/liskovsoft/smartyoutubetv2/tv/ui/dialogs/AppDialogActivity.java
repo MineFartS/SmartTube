@@ -44,23 +44,8 @@ public class AppDialogActivity extends MotherActivity {
         }
     }
 
-    private void setupActivity() {
-        // Fix crash in AppSettingsActivity: "Only fullscreen opaque activities can request orientation"
-        // Error happen only on Android O (api 26) when you set "portrait" orientation in manifest
-        // So, to fix the problem, set orientation here instead of manifest
-        // More info: https://stackoverflow.com/questions/48072438/java-lang-illegalstateexception-only-fullscreen-opaque-activities-can-request-o
-        if (VERSION.SDK_INT != 26) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-    }
-
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        //if (KeyHelpers.isConfirmKey(event.getKeyCode()) && !event.isLongPress()) {
-        //    return true;
-        //}
-
-        //return mGlobalKeyTranslator.translate(event) || super.dispatchKeyEvent(event);
         KeyEvent newEvent = mGlobalKeyTranslator.translate(event);
         return handleNavigation(newEvent) || super.dispatchKeyEvent(newEvent);
     }

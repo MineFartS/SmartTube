@@ -13,7 +13,7 @@ public class DoubleBackManager {
     private static final int DEFAULT_REPEAT_COUNT = 2;
     private final Handler mHandler;
     private final Activity mContext;
-    private static final long BACK_PRESS_DURATION_MS = 1_000;
+
     private boolean mEnableDoubleBackExit;
     private boolean mDownPressed;
     private boolean mIsDoubleBackPressed;
@@ -27,23 +27,6 @@ public class DoubleBackManager {
         mContext = ctx;
     }
 
-    private void checkLongPressExit(KeyEvent event) {
-        boolean isBack =
-                event.getKeyCode() == KeyEvent.KEYCODE_BACK ||
-                        event.getKeyCode() == KeyEvent.KEYCODE_ESCAPE ||
-                        event.getKeyCode() == KeyEvent.KEYCODE_B;
-
-        if (event.getAction() == KeyEvent.ACTION_DOWN && isBack) {
-            if (event.getRepeatCount() == 3) { // same event fires multiple times
-                mIsDoubleBackPressed = true;
-            }
-        }
-
-        if (!isBack) {
-            resetBackPressed();
-        }
-    }
-    
     public void checkDoubleBack(KeyEvent event) {
         // Reset if the user didn't do second press within interval
         if (System.currentTimeMillis() - mMsgShownTimeMs > 5_000) {
@@ -51,16 +34,12 @@ public class DoubleBackManager {
         }
 
         if (ignoreEvent(event)) {
-            Log.d(TAG, "Oops. Seems phantom key received. Ignoring... " + event);
             resetBackPressed();
-            //return false;
             return;
         }
 
         if (isReservedKey(event)) {
-            Log.d(TAG, "Found globally reserved key. Ignoring..." + event);
             resetBackPressed();
-            //return false;
             return;
         }
 
@@ -70,7 +49,6 @@ public class DoubleBackManager {
             mOnDoubleBack.run();
         }
 
-        //return mIsDoubleBackPressed;
     }
 
     public void enableDoubleBackExit(Runnable onDoubleBack) {

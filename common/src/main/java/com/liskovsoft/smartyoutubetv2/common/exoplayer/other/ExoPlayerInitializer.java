@@ -144,46 +144,4 @@ public class ExoPlayerInitializer {
         }
     }
 
-    private DrmSessionManager<FrameworkMediaCrypto> createDrmManager() {
-        try {
-            return DefaultDrmSessionManager.newWidevineInstance(new MediaDrmCallback() {
-                @Override
-                public byte[] executeProvisionRequest(UUID uuid, ProvisionRequest request) {
-                    return new byte[0];
-                }
-
-                @Override
-                public byte[] executeKeyRequest(UUID uuid, KeyRequest request) {
-                    return new byte[0];
-                }
-            }, null);
-        } catch (UnsupportedDrmException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    private static final class DummyBandwidthMeter implements BandwidthMeter {
-        @Override
-        public long getBitrateEstimate() {
-            return 0;
-        }
-
-        @Nullable
-        @Override
-        public TransferListener getTransferListener() {
-            return null;
-        }
-
-        @Override
-        public void addEventListener(Handler eventHandler, EventListener eventListener) {
-            // Do nothing.
-        }
-
-        @Override
-        public void removeEventListener(EventListener eventListener) {
-            // Do nothing.
-        }
-    }
 }

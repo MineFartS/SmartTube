@@ -75,8 +75,6 @@ public class SabrExtractor implements Extractor {
     private static final int TRACK_TYPE_AUDIO = 2;
 
     private static final int BLOCK_STATE_START = 0;
-    private static final int BLOCK_STATE_HEADER = 1;
-    private static final int BLOCK_STATE_DATA = 2;
 
     private static final String CODEC_ID_VP8 = "V_VP8";
     private static final String CODEC_ID_VP9 = "V_VP9";
@@ -126,23 +124,6 @@ public class SabrExtractor implements Extractor {
      * The byte offset of the end timecode in {@link #SUBRIP_PREFIX}.
      */
     private static final int SUBRIP_PREFIX_END_TIMECODE_OFFSET = 19;
-    /**
-     * A special end timecode indicating that a subrip subtitle should be displayed until the next
-     * subtitle, or until the end of the media in the case of the last subtitle.
-     * <p>
-     * Equivalent to the UTF-8 string: "            ".
-     */
-    private static final byte[] SUBRIP_TIMECODE_EMPTY =
-            new byte[] {32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32};
-    /**
-     * The value by which to divide a time in microseconds to convert it to the unit of the last value
-     * in a subrip timecode (milliseconds).
-     */
-    private static final long SUBRIP_TIMECODE_LAST_VALUE_SCALING_FACTOR = 1000;
-    /**
-     * The format of a subrip timecode.
-     */
-    private static final String SUBRIP_TIMECODE_FORMAT = "%02d:%02d:%02d,%03d";
 
     /**
      * Matroska specific format line for SSA subtitles.
@@ -162,23 +143,6 @@ public class SabrExtractor implements Extractor {
      * The byte offset of the end timecode in {@link #SSA_PREFIX}.
      */
     private static final int SSA_PREFIX_END_TIMECODE_OFFSET = 21;
-    /**
-     * The value by which to divide a time in microseconds to convert it to the unit of the last value
-     * in an SSA timecode (1/100ths of a second).
-     */
-    private static final long SSA_TIMECODE_LAST_VALUE_SCALING_FACTOR = 10000;
-    /**
-     * A special end timecode indicating that an SSA subtitle should be displayed until the next
-     * subtitle, or until the end of the media in the case of the last subtitle.
-     * <p>
-     * Equivalent to the UTF-8 string: "          ".
-     */
-    private static final byte[] SSA_TIMECODE_EMPTY =
-            new byte[] {32, 32, 32, 32, 32, 32, 32, 32, 32, 32};
-    /**
-     * The format of an SSA timecode.
-     */
-    private static final String SSA_TIMECODE_FORMAT = "%01d:%02d:%02d:%02d";
 
     /**
      * The length in bytes of a WAVEFORMATEX structure.
@@ -215,12 +179,12 @@ public class SabrExtractor implements Extractor {
     private final ParsableByteArray subtitleSample;
     private final ParsableByteArray encryptionInitializationVector;
     private final ParsableByteArray encryptionSubsampleData;
-    private ByteBuffer encryptionSubsampleDataBuffer;
+
 
     private long segmentContentSize;
     private long segmentContentPosition = C.POSITION_UNSET;
     private long timecodeScale = C.TIME_UNSET;
-    private long durationTimecode = C.TIME_UNSET;
+
     private long durationUs = C.TIME_UNSET;
 
     // The track corresponding to the current TrackEntry element, or null.
@@ -229,10 +193,6 @@ public class SabrExtractor implements Extractor {
     // Whether a seek map has been sent to the output.
     private boolean sentSeekMap;
 
-    // Master seek entry related elements.
-    private int seekEntryId;
-    private long seekEntryPosition;
-
     // Cue related elements.
     private boolean seekForCues;
     private long cuesContentPosition = C.POSITION_UNSET;
@@ -240,17 +200,13 @@ public class SabrExtractor implements Extractor {
     private long clusterTimecodeUs = C.TIME_UNSET;
     private LongArray cueTimesUs;
     private LongArray cueClusterPositions;
-    private boolean seenClusterPositionForCurrentCuePoint;
 
     // Block reading state.
     private int blockState;
-    private long blockTimeUs;
     private long blockDurationUs;
-    private int blockLacingSampleIndex;
-    private int blockLacingSampleCount;
-    private int[] blockLacingSampleSizes;
+
     private int blockTrackNumber;
-    private int blockTrackNumberLength;
+
     @C.BufferFlags
     private int blockFlags;
 
@@ -265,7 +221,7 @@ public class SabrExtractor implements Extractor {
     private int sampleCurrentNalBytesRemaining;
     private int sampleBytesWritten;
     private boolean sampleRead;
-    private boolean sampleSeenReferenceBlock;
+
 
     // Extractor outputs.
     private ExtractorOutput extractorOutput;
@@ -693,13 +649,6 @@ public class SabrExtractor implements Extractor {
         return false;
     }
 
-    private long scaleTimecodeToUs(long unscaledTimecode) throws ParserException {
-        if (timecodeScale == C.TIME_UNSET) {
-            throw new ParserException("Can't scale timecode prior to timecodeScale being set.");
-        }
-        return Util.scaleLargeTimestamp(unscaledTimecode, timecodeScale, 1000);
-    }
-
     private static boolean isCodecSupported(String codecId) {
         return CODEC_ID_VP8.equals(codecId)
                 || CODEC_ID_VP9.equals(codecId)
@@ -731,21 +680,6 @@ public class SabrExtractor implements Extractor {
                 || CODEC_ID_VOBSUB.equals(codecId)
                 || CODEC_ID_PGS.equals(codecId)
                 || CODEC_ID_DVBSUB.equals(codecId);
-    }
-
-    /**
-     * Returns an array that can store (at least) {@code length} elements, which will be either a new
-     * array or {@code array} if it's not null and large enough.
-     */
-    private static int[] ensureArrayCapacity(int[] array, int length) {
-        if (array == null) {
-            return new int[length];
-        } else if (array.length >= length) {
-            return array;
-        } else {
-            // Double the size to avoid allocating constantly if the required length increases gradually.
-            return new int[Math.max(array.length * 2, length)];
-        }
     }
 
     private static final class Track {

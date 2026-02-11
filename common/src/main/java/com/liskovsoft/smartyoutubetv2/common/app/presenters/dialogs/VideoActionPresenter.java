@@ -13,7 +13,7 @@ import com.liskovsoft.smartyoutubetv2.common.misc.MediaServiceManager;
 import com.liskovsoft.smartyoutubetv2.common.utils.LoadingManager;
 
 public class VideoActionPresenter extends BasePresenter<Void> {
-    private static final String TAG = VideoActionPresenter.class.getSimpleName();
+
 
     private VideoActionPresenter(Context context) {
         super(context);
@@ -44,13 +44,4 @@ public class VideoActionPresenter extends BasePresenter<Void> {
         }
     }
 
-    private void startFistPlaylistItem(Video item) {
-        LoadingManager.showLoading(getContext(), true);
-        ChannelUploadsPresenter.instance(getContext()).obtainGroup(item, mediaGroup -> {
-            LoadingManager.showLoading(getContext(), false);
-            if (!mediaGroup.isEmpty()) {
-                PlaybackPresenter.instance(getContext()).openVideo(Video.from(mediaGroup.getMediaItems().get(0)));
-            }
-        });
-    }
 }

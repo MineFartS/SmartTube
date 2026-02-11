@@ -195,10 +195,6 @@ public class RemoteController extends BasePlayerController implements OnDataChan
         postState(positionMs, getPlayer().getDurationMs(), getPlayer().isPlaying());
     }
 
-    private void postIdle() {
-        postState(-1, -1, false);
-    }
-
     private void tryListening() {
         if (mRemoteControlData.isDeviceLinkEnabled()) {
             startListening();

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AccountSettingsPresenter extends BasePresenter<Void> {
-    private static final String TAG = AccountSettingsPresenter.class.getSimpleName();
+
     @SuppressLint("StaticFieldLeak")
     private static AccountSettingsPresenter sInstance;
     private final MediaServiceManager mMediaServiceManager;

@@ -79,9 +79,4 @@ public class SubtitleSettingsPresenter extends BasePresenter<Void> {
         settingsPresenter.appendRadioCategory(category.title, category.options);
     }
 
-    private void appendMoreSubtitlesSwitch(AppDialogPresenter settingsPresenter) {
-        settingsPresenter.appendSingleSwitch(UiOptionItem.from("Unlock more subtitles",
-                option -> MediaServiceData.instance().setMoreSubtitlesUnlocked(option.isSelected()),
-                MediaServiceData.instance().isMoreSubtitlesUnlocked()));
-    }
 }

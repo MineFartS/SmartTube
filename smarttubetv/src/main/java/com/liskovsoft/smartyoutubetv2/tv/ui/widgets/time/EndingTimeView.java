@@ -46,15 +46,6 @@ public class EndingTimeView extends TextView implements TickleListener, OnDataCh
         updateListener();
     }
 
-    private void setIcon() {
-        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.icon_hourglass_bottom);
-        if (drawable != null) {
-            drawable.setBounds(3, 3, getLineHeight(), getLineHeight()); // add bounds to align vertically
-            setCompoundDrawables(drawable, null, null, null);
-            mIconIsSet = true;
-        }
-    }
-
     private void updateListener() {
         if (getVisibility() == View.VISIBLE) {
             mTickleManager.addListener(this);

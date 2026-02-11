@@ -270,34 +270,6 @@ public abstract class SegmentDownloader<M extends FilterableManifest<M>> impleme
         /* flags= */ DataSpec.FLAG_ALLOW_GZIP);
   }
 
-  private static void mergeSegments(List<Segment> segments, CacheKeyFactory keyFactory) {
-    HashMap<String, Integer> lastIndexByCacheKey = new HashMap<>();
-    int nextOutIndex = 0;
-    for (int i = 0; i < segments.size(); i++) {
-      Segment segment = segments.get(i);
-      String cacheKey = keyFactory.buildCacheKey(segment.dataSpec);
-      @Nullable Integer lastIndex = lastIndexByCacheKey.get(cacheKey);
-      @Nullable Segment lastSegment = lastIndex == null ? null : segments.get(lastIndex);
-      if (lastSegment == null
-          || segment.startTimeUs > lastSegment.startTimeUs + MAX_MERGED_SEGMENT_START_TIME_DIFF_US
-          || !canMergeSegments(lastSegment.dataSpec, segment.dataSpec)) {
-        lastIndexByCacheKey.put(cacheKey, nextOutIndex);
-        segments.set(nextOutIndex, segment);
-        nextOutIndex++;
-      } else {
-        long mergedLength =
-            segment.dataSpec.length == C.LENGTH_UNSET
-                ? C.LENGTH_UNSET
-                : lastSegment.dataSpec.length + segment.dataSpec.length;
-        DataSpec mergedDataSpec = lastSegment.dataSpec.subrange(/* offset= */ 0, mergedLength);
-        segments.set(
-            Assertions.checkNotNull(lastIndex),
-            new Segment(lastSegment.startTimeUs, mergedDataSpec));
-      }
-    }
-    Util.removeRange(segments, /* fromIndex= */ nextOutIndex, /* toIndex= */ segments.size());
-  }
-
   private static boolean canMergeSegments(DataSpec dataSpec1, DataSpec dataSpec2) {
     return dataSpec1.uri.equals(dataSpec2.uri)
         && dataSpec1.length != C.LENGTH_UNSET

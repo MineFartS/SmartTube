@@ -82,15 +82,6 @@ public class ChannelUploadsMenuPresenter extends BaseMenuPresenter {
         mDialogPresenter.showDialog(mVideo.getTitle());
     }
 
-    private void appendOpenChannelUploadsButton() {
-        if (mVideo == null) {
-            return;
-        }
-
-        mDialogPresenter.appendSingleButton(
-                UiOptionItem.from(getContext().getString(R.string.open_channel_uploads), optionItem -> ChannelUploadsPresenter.instance(getContext()).openChannel(mVideo)));
-    }
-
     private void appendOpenChannelButton() {
         if (!ChannelPresenter.canOpenChannel(mVideo)) {
             return;

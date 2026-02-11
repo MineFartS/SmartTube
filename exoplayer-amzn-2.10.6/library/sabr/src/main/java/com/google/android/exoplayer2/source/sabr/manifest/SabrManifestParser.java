@@ -34,10 +34,10 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class SabrManifestParser {
-    private static final String TAG = SabrManifestParser.class.getSimpleName();
+
     private int mId;
     private static final String NULL_INDEX_RANGE = "0-0";
-    private static final String NULL_CONTENT_LENGTH = "0";
+
     private static final int MAX_DURATION_SEC = 48 * 60 * 60;
     private MediaItemFormatInfo mFormatInfo;
     private Set<MediaFormat> mMP4Videos;

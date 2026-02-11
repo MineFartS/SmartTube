@@ -31,12 +31,7 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class LiveDashManifestParser extends DashManifestParser {
     private static final String TAG = LiveDashManifestParser.class.getSimpleName();
-    // Should be close to zero but not zero to increase buffer size to 30 sec (Radio Record).
-    // Higher values may produce 'url not working' error.
-    private static final long MAX_LIVE_STREAM_LENGTH_MS = 30 * 1_000;
-    // Usually gaming streams. 10 hrs max.
-    private static final long MAX_PAST_STREAM_LENGTH_MS = 12 * 60 * 60 * 1_000;
-    private static final long MAX_NEW_STREAM_LENGTH_MS = 30 * 1_000;
+
     private DashManifest mOldManifest;
     private long mOldSegmentNum;
 
@@ -44,11 +39,7 @@ public class LiveDashManifestParser extends DashManifestParser {
     public DashManifest parse(Uri uri, InputStream inputStream) throws IOException {
         DashManifest manifest = super.parse(uri, inputStream);
 
-        //Log.d(TAG, "Parse start: " + System.currentTimeMillis());
-
         appendManifest(manifest);
-
-        //Log.d(TAG, "Parse end: " + System.currentTimeMillis());
 
         return mOldManifest;
     }
@@ -222,17 +213,6 @@ public class LiveDashManifestParser extends DashManifestParser {
         Log.d(TAG, "Recreate representation: done");
     }
 
-    private static void lazyRecreateRepresentations(AdaptationSet adaptationSet, long segmentCount, long minUpdatePeriodMs) {
-        List<Representation> representations = adaptationSet.representations;
-        List<Representation> newRepresentations = new ArrayList<>();
-        for (int j = 0; j < representations.size(); j++) {
-            Representation oldRepresentation = representations.get(j);
-            newRepresentations.add(new MultiSegmentRepresentationWrapper((MultiSegmentRepresentation) oldRepresentation, segmentCount, minUpdatePeriodMs));
-        }
-
-        Helpers.setField(adaptationSet, "representations", newRepresentations);
-    }
-
     private static long getFirstSegmentNum(DashManifest manifest) {
         DashSegmentIndex dashSegmentIndex = manifest.getPeriod(0).adaptationSets.get(0).representations.get(0).getIndex();
         return dashSegmentIndex.getFirstSegmentNum();
@@ -245,11 +225,6 @@ public class LiveDashManifestParser extends DashManifestParser {
 
     private static long getSegmentCount(DashManifest manifest) {
         return manifest.getPeriod(0).adaptationSets.get(0).representations.get(0).getIndex().getSegmentCount(C.TIME_UNSET);
-    }
-
-    private static long getFirstSegmentDurationMs(DashManifest manifest) {
-        DashSegmentIndex dashSegmentIndex = manifest.getPeriod(0).adaptationSets.get(0).representations.get(0).getIndex();
-        return dashSegmentIndex.getDurationUs(getFirstSegmentNum(manifest), C.TIME_UNSET) / 1_000;
     }
 
     private static class MultiSegmentRepresentationWrapper extends MultiSegmentRepresentation {

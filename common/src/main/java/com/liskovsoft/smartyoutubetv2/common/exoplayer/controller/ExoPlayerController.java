@@ -440,24 +440,6 @@ public class ExoPlayerController implements Player.EventListener {
         }
     }
 
-    private void applyVolumeBoost(float volume) {
-        if (mPlayer == null) {
-            return;
-        }
-
-        if (mVolumeBooster != null) {
-            mPlayer.removeAudioListener(mVolumeBooster);
-            mVolumeBooster = null;
-        }
-
-        // 5.1 audio cannot be boosted (format isn't supported error)
-        // also, other 2.0 tracks in 5.1 group is already too loud. so cancel them too.
-        if (volume > 1f && !contains51Audio() && Build.VERSION.SDK_INT >= 19) {
-            mVolumeBooster = new VolumeBooster(true, volume, null);
-            mPlayer.addAudioListener(mVolumeBooster);
-        }
-    }
-    
     private boolean contains51Audio() {
         if (mTrackSelectorManager == null || mTrackSelectorManager.getAudioTracks() == null) {
             return false;

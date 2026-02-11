@@ -5,7 +5,7 @@ import com.liskovsoft.smartyoutubetv2.tv.R;
 import com.liskovsoft.smartyoutubetv2.tv.ui.common.LeanbackActivity;
 
 public class ChannelUploadsActivity extends LeanbackActivity {
-    private static final String TAG = ChannelUploadsActivity.class.getSimpleName();
+    
     private ChannelUploadsFragment mFragment;
 
     @Override
@@ -21,4 +21,5 @@ public class ChannelUploadsActivity extends LeanbackActivity {
 
         mFragment.onFinish();
     }
+    
 }

@@ -21,7 +21,7 @@ public class DisplaySyncHelper implements UhdHelperListener {
     private static final String TAG = DisplaySyncHelper.class.getSimpleName();
     private static final int STATE_ORIGINAL = 1;
     private static final int HD = 1200;
-    private static final int FHD = 1900;
+
     protected Context mContext;
     private boolean mDisplaySyncInProgress = false;
     private UhdHelper mUhdHelper;
@@ -77,32 +77,6 @@ public class DisplaySyncHelper implements UhdHelperListener {
     }
 
     /**
-     * Filter all modes except one that match by width.
-     */
-    private ArrayList<Mode> filterModesByWidthOrigin(Mode[] allModes, int videoWidth) {
-        ArrayList<Mode> newModes = new ArrayList<>();
-
-        if (videoWidth == -1) {
-            return newModes;
-        }
-
-        for (Mode mode : allModes) {
-            int width = mode.getPhysicalWidth();
-            if (width >= (videoWidth - 100) && width <= (videoWidth + 100)) {
-                newModes.add(mode);
-            }
-        }
-
-        if (newModes.isEmpty()) {
-            Log.i(TAG, "MODE CANDIDATES NOT FOUND!! Old modes: " + Arrays.asList(allModes));
-        } else {
-            Log.i(TAG, "FOUND MODE CANDIDATES! New modes: " + newModes);
-        }
-
-        return newModes;
-    }
-
-    /**
      * Filter out modes that has same width.<br/>
      * Reverse order is important because of later mapping by fps in other method.
      */
@@ -137,32 +111,6 @@ public class DisplaySyncHelper implements UhdHelperListener {
 
         if (newModes.isEmpty()) {
             Log.i(TAG, "MODE CANDIDATES NOT FOUND!! Old modes: " + Arrays.asList(allModes));
-        } else {
-            Log.i(TAG, "FOUND MODE CANDIDATES! New modes: " + newModes);
-        }
-
-        return newModes;
-    }
-
-    private ArrayList<Mode> filterModes(Mode[] oldModes, int minHeight, int maxHeight) {
-        ArrayList<Mode> newModes = new ArrayList<>();
-
-        if (minHeight == -1 || maxHeight == -1) {
-            return newModes;
-        }
-
-        int modesNum = oldModes.length;
-
-        for (int i = 0; i < modesNum; ++i) {
-            Mode mode = oldModes[i];
-            int height = mode.getPhysicalHeight();
-            if (height >= minHeight && height <= maxHeight) {
-                newModes.add(mode);
-            }
-        }
-
-        if (newModes.isEmpty()) {
-            Log.i(TAG, "MODE CANDIDATES NOT FOUND!! Old modes: " + Arrays.asList(oldModes));
         } else {
             Log.i(TAG, "FOUND MODE CANDIDATES! New modes: " + newModes);
         }
@@ -249,16 +197,6 @@ public class DisplaySyncHelper implements UhdHelperListener {
         relatedRates.put(5994, new int[]{5994, 6000, 2997, 3000});
         relatedRates.put(6000, new int[]{6000, 3000});
         return relatedRates;
-    }
-
-    private HashMap<Integer, int[]> apply24RateSkip(HashMap<Integer, int[]> rateMapping) {
-        if (mIsSkip24RateEnabled) {
-            rateMapping.remove(2397);
-            rateMapping.remove(2400);
-            rateMapping.remove(2497);
-        }
-
-        return rateMapping;
     }
 
     /**
@@ -348,11 +286,6 @@ public class DisplaySyncHelper implements UhdHelperListener {
                 Log.d(TAG, "Mode changed successfully");
             }
         }
-    }
-
-    // switch frame rate only
-    private boolean getNeedDisplaySync() {
-        return true;
     }
 
     public boolean syncDisplayMode(Window window, int videoWidth, float videoFramerate) {

@@ -69,20 +69,12 @@ public class VideoTrack extends MediaTrack {
     }
 
     private static boolean fpsLess(float fps1, float fps2) {
-        // NOTE: commented out after no fps fix option
-        //if (fps1 == -1 || fps2 == -1) {
-        //    return true; // probably LIVE translation
-        //}
 
         if (fps1 == -1 && fps2 == -1) {
             return false;
         }
         
         return !fpsEquals(fps1, fps2) && fps1 < fps2;
-    }
-
-    private boolean isLive(MediaTrack track) {
-        return track.format.frameRate == -1;
     }
 
     @Override

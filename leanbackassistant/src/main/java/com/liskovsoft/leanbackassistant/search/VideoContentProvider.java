@@ -57,8 +57,7 @@ public class VideoContentProvider extends ContentProvider {
                 MockDatabase.KEY_ACTION,
                 SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID
     };
-    private CompositeDisposable mDisposable;
-    private SchedulerProvider mSchedulerProvider;
+
     private static List<MediaItem> sCachedMediaItems = new ArrayList<>();
     private MediaGroup mSearch;
 

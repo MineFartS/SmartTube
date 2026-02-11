@@ -241,16 +241,4 @@ public class VideoCardPresenter extends LongClickPresenter {
         }
     };
 
-    private final RequestListener<Bitmap> mErrorListener2 = new RequestListener<Bitmap>() {
-        @Override
-        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
-            Log.e(TAG, "Glide load failed: " + e);
-            return false;
-        }
-
-        @Override
-        public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
-            return false;
-        }
-    };
 }
