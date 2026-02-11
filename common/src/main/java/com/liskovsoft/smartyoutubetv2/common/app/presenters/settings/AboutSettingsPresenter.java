@@ -124,9 +124,6 @@ class SettingsOverride {
         // Remove Live Section
         BP.enableSection(MediaGroup.TYPE_LIVE, false);
 
-        // Remove Gaming Section
-        BP.enableSection(MediaGroup.TYPE_GAMING, false);
-
         // Remove Music Section
         BP.enableSection(MediaGroup.TYPE_MUSIC, false);
 
