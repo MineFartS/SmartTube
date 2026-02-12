@@ -210,7 +210,10 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
         mPipTitle = findViewById(R.id.pip_title);
         mExitPip.setOnOrbClickedListener(v -> ViewManager.instance(getContext()).startView(PlaybackView.class));
         ViewUtil.enableMarquee(mPipTitle);
-        ViewUtil.setTextScrollSpeed(mPipTitle, mainUIData.getCardTextScrollSpeed());
+        ViewUtil.setTextScrollSpeed(
+            mPipTitle, 
+            2.5f
+        );
         TooltipCompatHandler.setTooltipText(mExitPip, getContext().getString(R.string.return_to_background_video));
 
         mGlobalClock = findViewById(R.id.global_time);

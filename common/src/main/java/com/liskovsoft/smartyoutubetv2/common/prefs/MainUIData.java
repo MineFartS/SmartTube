@@ -190,9 +190,7 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     private final Context mContext;
     
     private final AppPrefs mPrefs;
-            
-    private boolean mIsCardTextAutoScrollEnabled;
-    
+                
     private int mCardTitleLinesNum;
     
     private float mUIScale;
@@ -206,9 +204,7 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     private int mPlaylistsStyle;
     
     private boolean mIsUploadsAutoLoadEnabled;
-    
-    private float mCardTextScrollSpeed;
-    
+        
     private long mMenuItems;
     
     private int mTopButtons;
@@ -244,17 +240,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         }
 
         return sInstance;
-
-    }
-
-    public boolean isCardTextAutoScrollEnabled() {
-        return mIsCardTextAutoScrollEnabled;
-    }
-
-    public void setCardTextAutoScrollEnabled(boolean enable) {
-        
-        mIsCardTextAutoScrollEnabled = enable;
-        persistState();
 
     }
 
@@ -361,18 +346,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
 
     public void setUploadsAutoLoadEnabled(boolean enable) {
         mIsUploadsAutoLoadEnabled = enable;
-        persistState();
-    }
-
-    public float getCardTextScrollSpeed() {
-        return mCardTextScrollSpeed;
-    }
-
-    public void setCardTextScrollSpeed(float factor) {
-        mCardTextScrollSpeed = factor;
-
-        setCardTextAutoScrollEnabled(true);
-
         persistState();
     }
 
@@ -520,10 +493,10 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         mChannelCategorySorting = Helpers.parseInt(split, 5, CHANNEL_SORTING_LAST_VIEWED);
         mPlaylistsStyle = Helpers.parseInt(split, 6, PLAYLISTS_STYLE_GRID);
         mCardTitleLinesNum = Helpers.parseInt(split, 7, 1);
-        mIsCardTextAutoScrollEnabled = Helpers.parseBoolean(split, 8, true);
+
 
         mIsUploadsAutoLoadEnabled = Helpers.parseBoolean(split, 10, true);
-        mCardTextScrollSpeed = Helpers.parseFloat(split, 11, 2);
+
         mMenuItems = Helpers.parseLong(split, 12, MENU_ITEM_DEFAULT);
         mTopButtons = Helpers.parseInt(split, 13, TOP_BUTTON_DEFAULT);
         // 14
@@ -594,9 +567,8 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
                 mChannelCategorySorting, 
                 mPlaylistsStyle, 
                 mCardTitleLinesNum, 
-                mIsCardTextAutoScrollEnabled,
                 mIsUploadsAutoLoadEnabled, 
-                mCardTextScrollSpeed, 
+
                 mMenuItems, 
                 mTopButtons,
                 null, 

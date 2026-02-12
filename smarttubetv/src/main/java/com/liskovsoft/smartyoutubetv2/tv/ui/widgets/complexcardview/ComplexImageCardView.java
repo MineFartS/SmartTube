@@ -15,7 +15,7 @@ import com.liskovsoft.smartyoutubetv2.tv.util.ViewUtil;
 public class ComplexImageCardView extends ImageCardView {
     private ComplexImageView mComplexImageView;
     private Handler mHandler;
-    private boolean mIsCardTextAutoScrollEnabled;
+
     private boolean mIsBadgeEnabled;
 
     public ComplexImageCardView(Context context) {
@@ -92,14 +92,14 @@ public class ComplexImageCardView extends ImageCardView {
 
     @Override
     public void setSelected(boolean selected) {
+        
         super.setSelected(selected);
 
-        if (mIsCardTextAutoScrollEnabled) {
-            enableTitleAnimation(selected);
-            enableContentAnimation(selected);
-        }
+        enableTitleAnimation(selected);
+        enableContentAnimation(selected);
 
         enableVideoPreview(selected);
+
     }
 
     @Override
@@ -156,10 +156,6 @@ public class ComplexImageCardView extends ImageCardView {
 
     public void enableBadge(boolean enabled) {
         mIsBadgeEnabled = enabled;
-    }
-
-    public void enableTextAutoScroll(boolean enabled) {
-        mIsCardTextAutoScrollEnabled = enabled;
     }
 
     public void setTextScrollSpeed(float speed) {

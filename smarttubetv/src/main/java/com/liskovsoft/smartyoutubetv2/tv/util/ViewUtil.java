@@ -123,10 +123,6 @@ public class ViewUtil {
     }
 
     public static void setTextScrollSpeed(TextView textView, float speed) {
-        if (VERSION.SDK_INT <= 19) { // Android 4: Broken grid layout fix
-            return;
-        }
-
         if (textView instanceof MarqueeTextView) {
             ((MarqueeTextView) textView).setMarqueeSpeedFactor(speed);
         } else if (textView instanceof SpeedMarquee) {

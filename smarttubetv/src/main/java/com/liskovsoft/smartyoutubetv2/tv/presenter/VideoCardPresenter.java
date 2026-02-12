@@ -60,10 +60,6 @@ public class VideoCardPresenter extends LongClickPresenter {
         mCardPreviewType = getCardPreviewType(context);
         mThumbQuality = getThumbQuality(context);
 
-
-        boolean isCardTextAutoScrollEnabled = isCardTextAutoScrollEnabled(context);
-        float cardTextScrollSpeed = getCardTextScrollSpeed(context);
-
         updateDimensions(context);
 
         ComplexImageCardView cardView = new ComplexImageCardView(context) {
@@ -77,8 +73,7 @@ public class VideoCardPresenter extends LongClickPresenter {
         cardView.setTitleLinesNum(2);
         cardView.setContentLinesNum(2);
 
-        cardView.enableTextAutoScroll(isCardTextAutoScrollEnabled);
-        cardView.setTextScrollSpeed(cardTextScrollSpeed);
+        cardView.setTextScrollSpeed(2.5f);
         cardView.setFocusable(true);
         cardView.setFocusableInTouchMode(true);
         cardView.enableBadge(isBadgeEnabled());
@@ -197,16 +192,8 @@ public class VideoCardPresenter extends LongClickPresenter {
         );
     }
 
-    protected boolean isCardTextAutoScrollEnabled(Context context) {
-        return MainUIData.instance(context).isCardTextAutoScrollEnabled();
-    }
-
     protected int getCardPreviewType(Context context) {
         return MainUIData.instance(context).getCardPreviewType();
-    }
-
-    protected float getCardTextScrollSpeed(Context context) {
-        return MainUIData.instance(context).getCardTextScrollSpeed();
     }
 
     protected int getThumbQuality(Context context) {

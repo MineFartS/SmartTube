@@ -51,12 +51,9 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
         appendTopButtonsCategory(settingsPresenter);
         appendColorScheme(settingsPresenter);
         appendCardPreviews(settingsPresenter);
-        appendCardStyle(settingsPresenter);
+
         appendThumbSource(settingsPresenter);
 
-        if (Build.VERSION.SDK_INT > 19) {
-            appendCardTextScrollSpeed(settingsPresenter);
-        }
         appendChannelSortingCategory(settingsPresenter);
 
         appendMiscCategory(settingsPresenter);
@@ -120,20 +117,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
         settingsPresenter.appendRadioCategory(getContext().getString(R.string.card_preview), options);
     }
 
-    private void appendCardStyle(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
-
-        OptionItem autoScrolledTitle = UiOptionItem.from(getContext().getString(R.string.card_auto_scrolled_title),
-                option -> mMainUIData.setCardTextAutoScrollEnabled(option.isSelected()), mMainUIData.isCardTextAutoScrollEnabled());
-        
-        if (Build.VERSION.SDK_INT > 19) {
-            options.add(autoScrolledTitle);
-        }
-        
-
-        settingsPresenter.appendCheckedCategory(getContext().getString(R.string.cards_style), options);
-    }
-
     private void appendThumbSource(AppDialogPresenter settingsPresenter) {
         List<OptionItem> options = new ArrayList<>();
 
@@ -165,18 +148,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
         }
 
         settingsPresenter.appendRadioCategory(getContext().getString(R.string.channels_section_sorting), options);
-    }
-
-    private void appendCardTextScrollSpeed(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
-
-        for (float factor : new float[] {1, 1.5f, 2, 2.5f, 3, 3.5f, 4, 4.5f, 5, 5.5f, 6, 6.5f, 7, 7.5f, 8}) {
-            options.add(UiOptionItem.from(String.format("%sx", Helpers.formatFloat(factor)),
-                    optionItem -> mMainUIData.setCardTextScrollSpeed(factor),
-                    Helpers.floatEquals(factor, mMainUIData.getCardTextScrollSpeed())));
-        }
-
-        settingsPresenter.appendRadioCategory(getContext().getString(R.string.card_text_scroll_factor), options);
     }
 
     private void appendMiscCategory(AppDialogPresenter settingsPresenter) {

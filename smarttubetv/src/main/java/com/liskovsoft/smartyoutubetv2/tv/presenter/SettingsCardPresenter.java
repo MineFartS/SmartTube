@@ -49,7 +49,10 @@ public class SettingsCardPresenter extends Presenter {
 
             if (hasFocus) {
                 ViewUtil.enableMarquee(textView);
-                ViewUtil.setTextScrollSpeed(textView, MainUIData.instance(context).getCardTextScrollSpeed());
+                ViewUtil.setTextScrollSpeed(
+                    textView, 
+                    2.5f    
+                );
             } else {
                 ViewUtil.disableMarquee(textView);
             }
