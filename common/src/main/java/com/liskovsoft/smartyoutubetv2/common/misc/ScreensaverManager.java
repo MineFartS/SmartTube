@@ -133,10 +133,6 @@ public class ScreensaverManager {
     }
 
     public void doScreenOff() {
-        //if (mIsScreenOff) {
-        //    return;
-        //}
-
         disable();
         mMode = MODE_SCREEN_OFF;
         Utils.postDelayed(mDimScreen, 0);

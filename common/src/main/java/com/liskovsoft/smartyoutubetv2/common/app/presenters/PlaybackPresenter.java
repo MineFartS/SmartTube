@@ -160,10 +160,6 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
         return getView() != null && getView().isEngineInitialized();
     }
 
-    //public int getBackgroundMode() {
-    //    return getView() != null ? getView().getBackgroundMode() : -1;
-    //}
-
     public void forceFinish() {
         if (getView() != null) {
             getView().finishReally();
@@ -175,8 +171,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
     }
 
     public void setPosition(long positionMs) {
-        // Check that the user isn't open context menu on suggestion item
-        // if (Utils.isPlayerInForeground(getContext()) && getView() != null && !getView().getController().isSuggestionsShown()) {
+
         if (getViewManager().isPlayerInForeground() && getView() != null) {
             getView().setPositionMs(positionMs);
             getView().setPlayWhenReady(true);

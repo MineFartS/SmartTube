@@ -140,10 +140,6 @@ public class AutoFrameRateHelper {
         syncMode(activity, width, frameRate, force);
     }
 
-    //private void syncMode(int width, float frameRate) {
-    //    syncMode(width, frameRate, false);
-    //}
-
     private void syncMode(Activity activity, int width, float frameRate, boolean force) {
         if (activity == null) {
             Log.e(TAG, "Activity in null. exiting...");
@@ -212,21 +208,6 @@ public class AutoFrameRateHelper {
 
         return frameRate;
     }
-
-    ///**
-    // * UGOOS mode change fix. DEPRECATED!
-    // */
-    //private void applyModeChangeFix() {
-    //    if (!isSupported()) {
-    //        return;
-    //    }
-    //
-    //    mSyncHelper.applyModeChangeFix(mActivity.getWindow());
-    //}
-
-    //private void resetState() {
-    //    mSyncHelper.resetMode(mActivity.getWindow());
-    //}
 
     private void setContext(Context activity) {
         mSyncHelper.setContext(activity);

@@ -242,11 +242,6 @@ public class MultiGridFragment extends Fragment implements BrowseSupportFragment
         // TODO: set value depending on card size. Current settings for small cards.
         mMainFragmentAdapter.getFragmentHost().showTitleView(mSelectedPosition1 < 4);
 
-        //if (!mGridViewHolder1.getGridView().hasPreviousViewInSameRow(mSelectedPosition1)) {
-        //    mMainFragmentAdapter.getFragmentHost().showTitleView(true);
-        //} else {
-        //    mMainFragmentAdapter.getFragmentHost().showTitleView(false);
-        //}
     }
 
     private void showOrHideTitle2() {

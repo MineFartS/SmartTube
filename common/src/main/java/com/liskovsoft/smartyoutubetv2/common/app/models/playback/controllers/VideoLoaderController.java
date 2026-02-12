@@ -374,11 +374,6 @@ public class VideoLoaderController extends BasePlayerController {
             // 18+ video or the video is hidden/removed
             scheduleNextVideoTimer(5_000);
 
-            //if (formatInfo.isUnknownError()) { // the bot error or the video not available
-            //    scheduleRebootAppTimer(5_000);
-            //} else { // 18+ video or the video is hidden/removed
-            //    scheduleNextVideoTimer(5_000);
-            //}
         } else if (acceptAdaptiveFormats(formatInfo) && formatInfo.containsDashFormats()) {
             Log.d(TAG, "Loading regular video in dash format...");
 

@@ -596,13 +596,7 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
     if (!"https".equals(protocol) && !"http".equals(protocol)) {
       throw new ProtocolException("Unsupported protocol redirect: " + protocol);
     }
-    // Currently this method is only called if allowCrossProtocolRedirects is true, and so the code
-    // below isn't required. If we ever decide to handle redirects ourselves when cross-protocol
-    // redirects are disabled, we'll need to uncomment this block of code.
-    // if (!allowCrossProtocolRedirects && !protocol.equals(originalUrl.getProtocol())) {
-    //   throw new ProtocolException("Disallowed cross-protocol redirect ("
-    //       + originalUrl.getProtocol() + " to " + protocol + ")");
-    // }
+
     return url;
   }
 

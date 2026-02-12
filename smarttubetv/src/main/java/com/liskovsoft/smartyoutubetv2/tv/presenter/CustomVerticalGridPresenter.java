@@ -36,15 +36,6 @@ public class CustomVerticalGridPresenter extends VerticalGridPresenter {
 
         ViewHolder viewHolder = super.createGridViewHolder(parent);
 
-        // Not working!!!
-        // Tweaking grid to fix broken UI layout on some devices like Shield
-        //if (viewHolder.getGridView() != null) {
-        //    viewHolder.getGridView().setGravity(Gravity.TOP | Gravity.START);
-        //    viewHolder.getGridView().setItemViewCacheSize(0);
-        //    //viewHolder.getGridView().setItemAlignmentOffsetPercent(0);
-        //    //viewHolder.getGridView().setItemAlignmentOffsetWithPadding(true);
-        //}
-
         return viewHolder;
     }
 }

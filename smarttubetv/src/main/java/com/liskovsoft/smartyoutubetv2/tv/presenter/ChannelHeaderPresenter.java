@@ -431,10 +431,5 @@ public class ChannelHeaderPresenter extends RowPresenter {
         if (speechOrbView != null) {
             speechOrbView.showNotListening();
         }
-
-        //if (mSearchTextEditor != null) {
-        //    // Hide "Speak to search" when not listening
-        //    mSearchTextEditor.setHint("");
-        //}
     }
 }

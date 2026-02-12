@@ -395,22 +395,9 @@ public class RemoteController extends BasePlayerController implements OnDataChan
                 if (getPlayer() != null) {
                     getPlayer().finish();
                 }
-                //// Finish the app
-                //if (getActivity() != null) {
-                //    ViewManager.instance(getActivity()).properlyFinishTheApp(getActivity());
-                //}
+
                 break;
             case Command.TYPE_CONNECTED:
-                //movePlayerToForeground();
-                // NOTE: there are possible false calls when mobile client unloaded from the memory.
-                //if (getActivity() != null && mRemoteControlData.isFinishOnDisconnectEnabled()) {
-                //    // NOTE: It's not a good idea to remember connection state (mConnected) at this point.
-                //    Utils.moveAppToForeground(getActivity());
-                //    MessageHelpers.showLongMessage(getActivity(), getActivity().getString(R.string.device_connected, command.getDeviceName()));
-                //}
-                //if (mRemoteControlData.isConnectMessagesEnabled()) {
-                //    MessageHelpers.showLongMessage(getActivity(), getActivity().getString(R.string.device_connected, command.getDeviceName()));
-                //}
                 registerVolumeObserver();
                 mRemoteControlData.setConnectedBefore(true);
                 break;
@@ -421,9 +408,7 @@ public class RemoteController extends BasePlayerController implements OnDataChan
                     MessageHelpers.showLongMessage(getContext(), getContext().getString(R.string.device_disconnected, command.getDeviceName()));
                     Utils.properlyFinishTheApp(getContext());
                 }
-                //if (mRemoteControlData.isConnectMessagesEnabled()) {
-                //    MessageHelpers.showLongMessage(getContext(), getContext().getString(R.string.device_disconnected, command.getDeviceName()));
-                //}
+
                 unregisterVolumeObserver();
                 mRemoteControlData.setConnectedBefore(false);
                 break;

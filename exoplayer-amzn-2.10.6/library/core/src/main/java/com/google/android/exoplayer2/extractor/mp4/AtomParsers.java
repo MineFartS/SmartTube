@@ -857,10 +857,6 @@ import java.util.List;
       }
       parent.setPosition(childPosition);
     }
-    // TODO: Uncomment when [Internal: b/63092960] is fixed.
-    // else {
-    //   drmInitData = null;
-    // }
 
     List<byte[]> initializationData = null;
     String mimeType = null;
@@ -1062,10 +1058,6 @@ import java.util.List;
       }
       parent.setPosition(childPosition);
     }
-    // TODO: Uncomment when [Internal: b/63092960] is fixed.
-    // else {
-    //   drmInitData = null;
-    // }
 
     // If the atom type determines a MIME type, set it immediately.
     String mimeType = null;

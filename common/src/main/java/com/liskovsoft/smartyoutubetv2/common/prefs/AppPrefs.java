@@ -201,15 +201,6 @@ public class AppPrefs extends SharedPreferencesBase implements AccountChangeList
         return true;
     }
 
-    //private String getProfileKey(String key) {
-    //    String profileName = getProfileName();
-    //    if (!TextUtils.isEmpty(profileName)) {
-    //        key = profileName + "_" + key;
-    //    }
-    //
-    //    return key;
-    //}
-
     private String getProfileKey(String key, boolean isMultiProfilesEnabled) {
         String profileName = getProfileName();
         if (!TextUtils.isEmpty(profileName) && isMultiProfilesEnabled) {

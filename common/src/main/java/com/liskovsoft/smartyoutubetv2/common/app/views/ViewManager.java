@@ -110,11 +110,6 @@ public class ViewManager {
 
         mIsMoveToBackEnabled = false; // Essential part or new view will be pause immediately
 
-        //if (!forceStart && doThrottle()) {
-        //    Log.d(TAG, "Too many events. Skipping startView...");
-        //    return;
-        //}
-
         Class<?> activityClass = mViewMapping.get(viewClass);
 
         if (activityClass != null) {
@@ -391,10 +386,6 @@ public class ViewManager {
     public boolean isFinished() {
         return mIsFinished;
     }
-
-    //public void enableMoveToBack(boolean enable) {
-    //    mIsMoveToBackEnabled = enable;
-    //}
 
     public boolean isNewViewPending() {
         return System.currentTimeMillis() - mPendingActivityMs < 1_000;

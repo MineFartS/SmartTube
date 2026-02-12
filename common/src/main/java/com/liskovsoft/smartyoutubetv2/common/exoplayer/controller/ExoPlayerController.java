@@ -204,11 +204,6 @@ public class ExoPlayerController implements Player.EventListener {
         mPlayer = player;
         player.addListener(this);
     }
-
-    //@Override
-    //public void setEventListener(PlayerEventListener eventListener) {
-    //    mEventListener = eventListener;
-    //}
     
     public void setPlayerView(PlayerView playerView) {
         mPlayerView = playerView;

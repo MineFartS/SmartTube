@@ -196,10 +196,7 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
             f.setPreference(pref);
             startPreferenceFragment(f);
         }
-        // TODO
-        // else if (pref instanceof EditTextPreference) {
-        //
-        //        }
+
         else {
             // Single button item. Imitate click on it (expandable = true).
             if (pref.getOnPreferenceClickListener() != null) {
@@ -209,9 +206,6 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
             return false;
         }
 
-        // NOTE: Transparent CheckedList should be placed here (just in case you'll need it).
-
-        //return super.onPreferenceDisplayDialog(caller, pref);
         return true;
     }
 

@@ -9,18 +9,6 @@ public class AudioTrack extends MediaTrack {
         super(rendererIndex);
     }
 
-    //@Override
-    //public int inBounds(MediaTrack track2) {
-    //    int result = compare(track2);
-    //
-    //    // Select at least something.
-    //    if (result == -1 && track2 != null && track2.format != null) {
-    //        result = 1;
-    //    }
-    //
-    //    return result;
-    //}
-
     @Override
     public int inBounds(MediaTrack track2) {
         if (format == null) {

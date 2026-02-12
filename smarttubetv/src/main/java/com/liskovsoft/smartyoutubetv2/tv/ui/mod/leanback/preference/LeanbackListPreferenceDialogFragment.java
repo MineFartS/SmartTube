@@ -175,11 +175,6 @@ public class LeanbackListPreferenceDialogFragment extends LeanbackPreferenceDial
         if (!TextUtils.isEmpty(message)) {
             final TextView messageView = (TextView) view.findViewById(android.R.id.message);
 
-            // Modified. Make textView focusable and clickable.
-            //messageView.setAutoLinkMask(Linkify.WEB_URLS);
-            //messageView.setMovementMethod(LinkMovementMethod.getInstance()); // allow to move if no links in desc
-            //messageView.setLinksClickable(true); // NOTE: don't prevent click actions
-
             messageView.setFocusable(true);
             messageView.setVisibility(View.VISIBLE);
             messageView.setText(message);
@@ -189,16 +184,6 @@ public class LeanbackListPreferenceDialogFragment extends LeanbackPreferenceDial
 
                 @Override
                 public void onUrlClick(String link) {
-                    // Can't handle all intents internally (e.g. channel url)
-                    //Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
-                    //intent.setClass(context, SplashActivity.class);
-                    //
-                    //if (intent.resolveActivity(context.getPackageManager()) != null) {
-                    //    context.startActivity(intent);
-                    //} else {
-                    //    Utils.showMultiChooser(context, Uri.parse(link));
-                    //}
-
                     Utils.openUrlInternally(context, Uri.parse(link));
                 }
 

@@ -605,10 +605,6 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
 
                 updatePlayerBackground();
 
-                // Don't select the pending item here because multiple items will be focused.
-                //if (selected) {
-                //    focusPendingSuggestedItem();
-                //}
             }
         };
 

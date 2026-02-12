@@ -119,10 +119,6 @@ public class GridFragment extends Fragment implements BrowseSupportFragment.Main
     public void setOnItemViewSelectedListener(OnItemViewSelectedListener listener) {
         mOnItemViewSelectedListener = listener;
 
-        // Don't do that. We have hook here for show/hide title view.
-        //if (mGridPresenter != null) {
-        //    mGridPresenter.setOnItemViewSelectedListener(mOnItemViewSelectedListener);
-        //}
     }
 
     private void gridOnItemSelected(int position) {

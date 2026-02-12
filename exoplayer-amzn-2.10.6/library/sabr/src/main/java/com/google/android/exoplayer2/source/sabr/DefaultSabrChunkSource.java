@@ -868,22 +868,6 @@ public class DefaultSabrChunkSource implements SabrChunkSource {
                 return null;
             }
 
-            // MOD: replaced with SabrExtractor
-            //Extractor extractor;
-            //if (MimeTypes.APPLICATION_RAWCC.equals(containerMimeType)) {
-            //    extractor = new RawCcExtractor(representation.format);
-            //} else if (mimeTypeIsWebm(containerMimeType)) {
-            //    extractor = new MatroskaExtractor(MatroskaExtractor.FLAG_DISABLE_SEEK_FOR_CUES);
-            //} else {
-            //    int flags = 0;
-            //    if (enableEventMessageTrack) {
-            //        flags |= FragmentedMp4Extractor.FLAG_ENABLE_EMSG_TRACK;
-            //    }
-            //    extractor =
-            //            new FragmentedMp4Extractor(
-            //                    flags, null, null, null, closedCaptionFormats, playerEmsgTrackOutput);
-            //}
-
             Extractor extractor = new SabrExtractor(trackType, representation.format, sabrStream);
 
             // Prefer drmInitData obtained from the manifest over drmInitData obtained from the stream,

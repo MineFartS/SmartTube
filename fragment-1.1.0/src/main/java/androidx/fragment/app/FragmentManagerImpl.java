@@ -681,7 +681,6 @@ final class FragmentManagerImpl extends FragmentManager implements LayoutInflate
                 return makeFadeAnimation(1, 0);
         }
 
-        // TODO: remove or fix transitionStyle -- it apparently never worked.
         if (transitionStyle == 0 && mHost.onHasWindowAnimations()) {
             transitionStyle = mHost.onGetWindowAnimations();
         }
@@ -689,16 +688,6 @@ final class FragmentManagerImpl extends FragmentManager implements LayoutInflate
             return null;
         }
 
-        //TypedArray attrs = mActivity.obtainStyledAttributes(transitionStyle,
-        //        com.android.internal.R.styleable.FragmentAnimation);
-        //int anim = attrs.getResourceId(styleIndex, 0);
-        //attrs.recycle();
-
-        //if (anim == 0) {
-        //    return null;
-        //}
-
-        //return AnimatorInflater.loadAnimator(mActivity, anim);
         return null;
     }
 

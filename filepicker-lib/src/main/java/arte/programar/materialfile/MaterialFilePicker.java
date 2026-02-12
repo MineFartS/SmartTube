@@ -76,11 +76,6 @@ public class MaterialFilePicker {
         return this;
     }
 
-    //public MaterialFilePicker withActivityResultApi(ActivityResultLauncher<Intent> startForResultFiles) {
-    //    mStartForResultFiles = startForResultFiles;
-    //    return this;
-    //}
-
     /**
      * Hides files that matched by specified regular expression.
      * Use {@link MaterialFilePicker#withFilterDirectories withFilterDirectories} method
@@ -188,7 +183,6 @@ public class MaterialFilePicker {
     private Activity getActivity() {
         Activity activity = null;
 
-        //if (mActivity == null && mFragment == null && mSupportFragment == null && mStartForResultFiles == null) {
         if (mActivity == null && mFragment == null && mSupportFragment == null) {
             throw new RuntimeException(
                     "You must pass Activity/Fragment by calling " +

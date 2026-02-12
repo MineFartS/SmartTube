@@ -44,7 +44,6 @@ public class VideoStateController extends BasePlayerController {
     public void onNewVideo(Video item) {
         // Ensure that we aren't running on presenter init stage
         if (getPlayer() != null && getPlayer().containsMedia()) {
-            //if (!item.equals(getVideo())) { // a video might be opened twice (when remote connection enabled). Fix for that.
 
             // NOTE: even for the same videos it's good to save state (switch from embed, video reload etc)
             // Reset auto-save history timer
@@ -204,24 +203,6 @@ public class VideoStateController extends BasePlayerController {
 
     @Override
     public void onTrackSelected(FormatItem track) {
-        //if (!getPlayer().isInPIPMode()) {
-        //    if (track.getType() == FormatItem.TYPE_VIDEO) {
-        //        if (getPlayerData().getFormat(FormatItem.TYPE_VIDEO).isPreset()) {
-        //            mTempVideoFormat = track;
-        //        } else {
-        //            mTempVideoFormat = null;
-        //            getPlayerData().setFormat(track);
-        //        }
-        //    } else {
-        //        getPlayerData().setFormat(track);
-        //    }
-        //}
-
-        //if (!getPlayer().isInPIPMode()) {
-        //    if (track.getType() == FormatItem.TYPE_VIDEO) {
-        //        mTempVideoFormat = getPlayerData().getFormat(FormatItem.TYPE_VIDEO).isPreset() ? track : null;
-        //    }
-        //}
     }
 
     @Override
@@ -434,21 +415,10 @@ public class VideoStateController extends BasePlayerController {
 
         restorePosition();
         restorePendingPosition();
-        // Player thinks that subs not enabled if I enable it too early (e.g. on source change event).
-        //restoreSubtitleFormat();
 
         restoreVolume();
         restorePitch();
     }
-
-    //private void persistState() {
-    //    // Skip mini player, but don't save for the previews (mute enabled)
-    //    if (isMutedEmbed() || isBeginEmbed()) {
-    //        return;
-    //    }
-    //
-    //    getStateService().persistState();
-    //}
 
     private void savePosition() {
         Video video = getVideo();

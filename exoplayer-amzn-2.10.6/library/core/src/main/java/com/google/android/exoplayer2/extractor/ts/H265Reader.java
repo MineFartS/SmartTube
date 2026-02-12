@@ -278,7 +278,7 @@ public final class H265Reader implements ElementaryStreamReader {
     bitArray.readUnsignedExpGolombCodedInt(); // log2_diff_max_min_luma_transform_block_size
     bitArray.readUnsignedExpGolombCodedInt(); // max_transform_hierarchy_depth_inter
     bitArray.readUnsignedExpGolombCodedInt(); // max_transform_hierarchy_depth_intra
-    // if (scaling_list_enabled_flag) { if (sps_scaling_list_data_present_flag) {...}}
+    
     boolean scalingListEnabled = bitArray.readBit();
     if (scalingListEnabled && bitArray.readBit()) {
       skipScalingList(bitArray);

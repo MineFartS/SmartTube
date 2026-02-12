@@ -811,11 +811,6 @@ public class SearchSupportFragment extends Fragment {
         if (mSpeechOrbView != null) {
             mSpeechOrbView.showNotListening();
         }
-
-        //if (mSearchTextEditor != null) {
-        //    // Hide "Speak to search" when not listening
-        //    mSearchTextEditor.setHint("");
-        //}
     }
 
     private void onSetSearchResultProvider() {

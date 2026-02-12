@@ -527,12 +527,7 @@ public class SearchBar extends RelativeLayout {
     private void updateHint() {
         String title = getResources().getString(R.string.lb_search_bar_hint);
         if (!TextUtils.isEmpty(mTitle)) {
-            // MOD: hide default search prefix
-            //if (isVoiceMode()) {
-            //    title = getResources().getString(R.string.lb_search_bar_hint_with_title_speech, mTitle);
-            //} else {
-            //    title = getResources().getString(R.string.lb_search_bar_hint_with_title, mTitle);
-            //}
+
             title = mTitle;
         } else if (isVoiceMode()) {
             title = getResources().getString(R.string.lb_search_bar_hint_speech);

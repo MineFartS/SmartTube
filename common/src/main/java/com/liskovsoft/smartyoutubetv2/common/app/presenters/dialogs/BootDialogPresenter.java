@@ -25,35 +25,15 @@ public class BootDialogPresenter extends BasePresenter<Void> {
         return sInstance;
     }
 
-    //public void unhold() {
-    //    sInstance = null;
-    //}
-
     public void start() {
         startUpdatePresenter();
     }
 
     private void startUpdatePresenter() {
         AppUpdatePresenter updatePresenter = AppUpdatePresenter.instance(getContext());
-        //updatePresenter.setOnDone(this::startBridgePresenter);
+
         updatePresenter.start(false);
-        //updatePresenter.unhold();
+
     }
 
-    //private void startBackupPresenter() {
-    //    QuickRestorePresenter quickRestorePresenter = QuickRestorePresenter.instance(getContext());
-    //    quickRestorePresenter.setOnDone(this::startBridgePresenter);
-    //    quickRestorePresenter.start();
-    //    quickRestorePresenter.unhold();
-    //}
-
-    //private void startBridgePresenter() {
-    //    ATVBridgePresenter atvPresenter = ATVBridgePresenter.instance(getContext());
-    //    atvPresenter.start();
-    //    atvPresenter.unhold();
-    //
-    //    AmazonBridgePresenter amazonPresenter = AmazonBridgePresenter.instance(getContext());
-    //    amazonPresenter.start();
-    //    amazonPresenter.unhold();
-    //}
 }

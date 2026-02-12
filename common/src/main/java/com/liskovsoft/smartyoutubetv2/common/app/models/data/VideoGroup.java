@@ -197,10 +197,6 @@ public class VideoGroup {
      */
     public void setTitle(String title) {
         mTitle = title;
-
-        //if (!TextUtils.isEmpty(title) && (mId == 0 || mId == hashCode())) {
-        //    mId = title.hashCode();
-        //}
     }
 
     public int getId() {

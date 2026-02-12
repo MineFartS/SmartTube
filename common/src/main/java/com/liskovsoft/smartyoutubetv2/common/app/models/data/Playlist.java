@@ -111,11 +111,6 @@ public class Playlist {
             return;
         }
 
-        // Skip remove currently playing item
-        //if (video.equals(getCurrent())) {
-        //    return;
-        //}
-
         int index = mPlaylist.indexOf(video);
 
         // If contains
@@ -154,26 +149,6 @@ public class Playlist {
 
         return afterCurrent != null && afterCurrent.contains(video);
     }
-
-    ///**
-    // * Trim playlist if one exceeds needed size or current element not last in the list
-    // */
-    //private void trimPlaylist() {
-    //    int fromIndex = 0;
-    //    int toIndex = mCurrentIndex + 1;
-    //
-    //    boolean isLastElement = mCurrentIndex == (mPlaylist.size() - 1);
-    //    boolean playlistTooBig = mPlaylist.size() > PLAYLIST_MAX_SIZE;
-    //
-    //    if (playlistTooBig) {
-    //        fromIndex = mPlaylist.size() - PLAYLIST_MAX_SIZE;
-    //    }
-    //
-    //    if (!isLastElement || playlistTooBig) {
-    //        mPlaylist = mPlaylist.subList(fromIndex, toIndex);
-    //        mCurrentIndex = mPlaylist.size() - 1;
-    //    }
-    //}
 
     /**
      * Moves to the next video in the playlist. If already at the end of the playlist, null will

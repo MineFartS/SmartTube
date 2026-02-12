@@ -103,10 +103,6 @@ public class DisplaySyncHelper implements UhdHelperListener {
                 newModes.add(mode);
             }
 
-            // Strict match
-            //if (Math.abs(width - videoWidth) < 100) {
-            //    newModes.add(mode);
-            //}
         }
 
         if (newModes.isEmpty()) {

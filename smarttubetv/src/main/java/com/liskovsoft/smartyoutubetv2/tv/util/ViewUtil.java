@@ -102,20 +102,11 @@ public class ViewUtil {
     }
 
     public static void applyMarqueeRtlParams(TextView textView, boolean scroll) {
-        //if (VERSION.SDK_INT <= 17) {
-        //    return;
-        //}
-
-        //if (!BidiFormatter.getInstance().isRtlContext()) {
-        //    return;
-        //}
 
         if (!Helpers.isTextRTL(textView.getText())) {
-            // TextView may be reused from rtl context. Do reset.
-            // NOTE: don't enable commented options because Setting item's text won't be centered.
-            //textView.setTextAlignment(View.TEXT_ALIGNMENT_GRAVITY);
+
             textView.setTextDirection(TextView.TEXT_DIRECTION_FIRST_STRONG);
-            //textView.setGravity(Gravity.TOP | Gravity.START);
+            
             return;
         }
 

@@ -26,7 +26,6 @@ public abstract class LeanbackActivity extends MotherActivity {
     private ModeSyncManager mModeSyncManager;
     private DoubleBackManager2 mDoubleBackManager;
     private GlobalKeyTranslator mGlobalKeyTranslator;
-    private final Runnable sOnFinish = () -> Utils.forceFinishTheApp(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

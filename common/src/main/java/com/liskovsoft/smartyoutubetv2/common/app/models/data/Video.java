@@ -223,14 +223,6 @@ public final class Video {
         video.channelId = channel.getChannelId();
         return video;
     }
-    ///**
-    // * Don't change the logic from equality by reference!<br/>
-    // * Or adapters won't work properly (same video may appear twice).
-    // */
-    //@Override
-    //public boolean equals(@Nullable Object obj) {
-    //    return super.equals(obj);
-    //}
 
     /**
      * Use with caution.<br/>
@@ -497,10 +489,6 @@ public final class Video {
     public boolean hasPlaylist() {
         return playlistId != null;
     }
-
-    //public boolean hasPlaylist() {
-    //    return playlistId != null || (playlistParams != null && !Helpers.containsAny(playlistParams, sNotPlaylistParams));
-    //}
 
     public boolean hasNextPlaylist() {
         return hasNextItem() && getPlaylistId() != null && getPlaylistId().equals(nextMediaItem.getPlaylistId());

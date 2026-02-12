@@ -144,23 +144,11 @@ public abstract class SearchTagsFragmentBase extends SearchSupportFragment
         setOnItemViewClickedListener((itemViewHolder, item, rowViewHolder, row) -> onItemViewClicked(item));
         setOnItemViewSelectedListener((itemViewHolder, item, rowViewHolder, row) -> onItemViewSelected(item));
 
-        // All needed permissions acquired inside SearchBar component.
-        // See: androidx.leanback.widget.SearchBar.startRecognition()
-        //if (SpeechRecognizer.isRecognitionAvailable(getContext())) {
-        //    PermissionHelpers.verifyMicPermissions(getContext());
-        //}
-
         // NOTE: External recognizer makes voice search behave unexpectedly (broken by Google app updates).
         // You should avoid using it till there be a solution.
 
         switch (SearchData.instance(getContext()).getSpeechRecognizerType()) {
             case SearchData.SPEECH_RECOGNIZER_SYSTEM:
-                // Don't uncomment. Sometimes system recognizer works on lower api
-                // Do nothing unless we have old api.
-                // Internal recognizer needs API >= 23. See: androidx.leanback.widget.SearchBar.startRecognition()
-                //if (Build.VERSION.SDK_INT < 23) {
-                //    setSpeechRecognitionCallback(mDefaultCallback);
-                //}
                 break;
             case SearchData.SPEECH_RECOGNIZER_INTENT:
                 setSpeechRecognitionCallback(mDefaultCallback);

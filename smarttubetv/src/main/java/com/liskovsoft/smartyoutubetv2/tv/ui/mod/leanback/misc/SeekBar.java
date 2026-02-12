@@ -436,9 +436,6 @@ public final class SeekBar extends View {
      * ancestors from stealing events in the drag.
      */
     private void attemptClaimDrag() {
-        //if (mParent != null) {
-        //    mParent.requestDisallowInterceptTouchEvent(true);
-        //}
     }
 
     /**

@@ -169,26 +169,6 @@ public class TrackSelectorManager implements TrackSelectorCallback {
         sortedTracks.add(noMediaTrack);
         renderer.selectedTrack = noMediaTrack;
 
-        //if (rendererIndex == RENDERER_INDEX_SUBTITLE) {
-        //    // AUTO OPTION: add disable subs option
-        //    MediaTrack noSubsTrack = MediaTrack.forRendererIndex(rendererIndex);
-        //    // Temporal selection.
-        //    // Real selection will be override later on setSelection() routine.
-        //    noSubsTrack.isSelected = true;
-        //    sortedTracks.add(noSubsTrack);
-        //    renderer.selectedTrack = noSubsTrack;
-        //} else if (rendererIndex == RENDERER_INDEX_AUDIO) {
-        //    MediaTrack noAudioTrack = MediaTrack.forRendererIndex(rendererIndex);
-        //    noAudioTrack.isSelected = true;
-        //    sortedTracks.add(noAudioTrack);
-        //    renderer.selectedTrack = noAudioTrack;
-        //} else if (rendererIndex == RENDERER_INDEX_VIDEO) {
-        //    MediaTrack noVideoTrack = MediaTrack.forRendererIndex(rendererIndex);
-        //    noVideoTrack.isSelected = true;
-        //    sortedTracks.add(noVideoTrack);
-        //    renderer.selectedTrack = noVideoTrack;
-        //}
-
         for (int groupIndex = 0; groupIndex < renderer.trackGroups.length; groupIndex++) {
             TrackGroup group = renderer.trackGroups.get(groupIndex);
             renderer.mediaTracks[groupIndex] = new MediaTrack[group.length];
@@ -499,16 +479,6 @@ public class TrackSelectorManager implements TrackSelectorCallback {
                     if (bounds >= 0) {
                         int compare = mediaTrack.compare(result);
 
-                        //if (compare == 0) {
-                        //    if (MediaTrack.codecEquals(mediaTrack, originTrack)) {
-                        //        result = mediaTrack;
-                        //    }
-                        //} else if (compare > 0) {
-                        //    if (!MediaTrack.preferByCodec(result, mediaTrack)) {
-                        //        result = mediaTrack;
-                        //    }
-                        //}
-
                         if (compare == 0 && MediaTrack.preferByDrc(originTrack, result, mediaTrack)) {
                             if (MediaTrack.codecEquals(mediaTrack, originTrack)) {
                                 result = mediaTrack;
@@ -719,11 +689,6 @@ public class TrackSelectorManager implements TrackSelectorCallback {
         String formatId = format.width + format.height + format.frameRate + format.sampleMimeType + hdrTag + format.language;
 
         Integer bitrate = mBlacklist.get(formatId);
-
-        //if (bitrate == null || (bitrate < format.bitrate || mediaTrack instanceof AudioTrack)) {
-        //  mBlacklist.put(formatId, format.bitrate + 500_000);
-        //  return true;
-        //}
 
         if (bitrate == null || bitrate < format.bitrate || (mediaTrack instanceof AudioTrack && Math.abs(bitrate - format.bitrate) > 10_000)) {
             int diff = mediaTrack instanceof AudioTrack ? 0 : 500_000; // video bitrate min diff

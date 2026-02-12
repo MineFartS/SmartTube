@@ -311,41 +311,7 @@ public class ExoMediaSourceFactory {
     }
 
     private static void addCommonHeaders(BaseFactory dataSourceFactory) {
-        // Doesn't work
-        // Trying to fix 429 error (too many requests)
-        //String authorization = RetrofitOkHttpHelper.getAuthHeaders().get("Authorization");
-        //
-        //if (authorization != null) {
-        //    dataSourceFactory.getDefaultRequestProperties().set("Authorization", authorization);
-        //}
 
-        //HeaderManager headerManager = new HeaderManager(context);
-        //HashMap<String, String> headers = headerManager.getHeaders();
-
-        // NOTE: "Accept-Encoding" should not be set manually (gzip is added by default).
-
-        //for (String header : headers.keySet()) {
-        //    if (EXO_HEADERS.contains(header)) {
-        //        dataSourceFactory.getDefaultRequestProperties().set(header, headers.get(header));
-        //    }
-        //}
-
-        // Emulate browser request
-        //dataSourceFactory.getDefaultRequestProperties().set("accept", "*/*");
-        //dataSourceFactory.getDefaultRequestProperties().set("accept-encoding", "identity"); // Next won't work: gzip, deflate, br
-        //dataSourceFactory.getDefaultRequestProperties().set("accept-language", "en-US,en;q=0.9");
-        //dataSourceFactory.getDefaultRequestProperties().set("dnt", "1");
-        //dataSourceFactory.getDefaultRequestProperties().set("origin", "https://www.youtube.com");
-        //dataSourceFactory.getDefaultRequestProperties().set("referer", "https://www.youtube.com/");
-        //dataSourceFactory.getDefaultRequestProperties().set("sec-fetch-dest", "empty");
-        //dataSourceFactory.getDefaultRequestProperties().set("sec-fetch-mode", "cors");
-        //dataSourceFactory.getDefaultRequestProperties().set("sec-fetch-site", "cross-site");
-
-        // WARN: Compression won't work with legacy streams.
-        // "Accept-Encoding" should not be set manually (gzip is added by default).
-        // Otherwise you should do decompression yourself.
-        // Source: https://stackoverflow.com/questions/18898959/httpurlconnection-not-decompressing-gzip/42346308#42346308
-        //dataSourceFactory.getDefaultRequestProperties().set("Accept-Encoding", AppConstants.ACCEPT_ENCODING_DEFAULT);
     }
 
     public void setTrackErrorFixer(TrackErrorFixer trackErrorFixer) {
@@ -411,37 +377,4 @@ public class ExoMediaSourceFactory {
         }
     }
 
-    // EXO: 2.13
-    //private static class StaticDashManifestParser extends DashManifestParser {
-    //    @Override
-    //    protected DashManifest buildMediaPresentationDescription(
-    //            long availabilityStartTime,
-    //            long durationMs,
-    //            long minBufferTimeMs,
-    //            boolean dynamic,
-    //            long minUpdateTimeMs,
-    //            long timeShiftBufferDepthMs,
-    //            long suggestedPresentationDelayMs,
-    //            long publishTimeMs,
-    //            @Nullable ProgramInformation programInformation,
-    //            @Nullable UtcTimingElement utcTiming,
-    //            @Nullable ServiceDescriptionElement serviceDescription,
-    //            @Nullable Uri location,
-    //            List<Period> periods) {
-    //        return new DashManifest(
-    //                availabilityStartTime,
-    //                durationMs,
-    //                minBufferTimeMs,
-    //                false,
-    //                minUpdateTimeMs,
-    //                timeShiftBufferDepthMs,
-    //                suggestedPresentationDelayMs,
-    //                publishTimeMs,
-    //                programInformation,
-    //                utcTiming,
-    //                serviceDescription,
-    //                location,
-    //                periods);
-    //    }
-    //}
 }

@@ -627,17 +627,11 @@ public class SabrManifestParser {
     }
 
     private void append(MediaFormat mediaItem) {
-        //if (!MediaFormatUtils.checkMediaUrl(mediaItem)) {
-        //    Log.e(TAG, "Media item doesn't contain required url field!");
-        //    return;
-        //}
 
         // NOTE: FORMAT_STREAM_TYPE_OTF not supported
         if (!MediaFormatUtils.isDash(mediaItem)) {
             return;
         }
-
-        //fixOTF(mediaItem);
 
         Set<MediaFormat> placeholder = null;
         String mimeType = MediaFormatUtils.extractMimeType(mediaItem);

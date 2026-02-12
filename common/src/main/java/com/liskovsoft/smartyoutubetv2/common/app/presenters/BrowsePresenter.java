@@ -844,12 +844,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
 
         Observable<MediaGroup> continuation;
 
-        //if (mediaGroup.getType() == MediaGroup.TYPE_SUGGESTIONS) { // Pinned playlist
-        //    continuation = mItemService.continueGroupObserve(mediaGroup);
-        //} else {
-        //    continuation = getContentService().continueGroupObserve(mediaGroup);
-        //}
-
         continuation = getContentService().continueGroupObserve(mediaGroup);
 
         Disposable continueAction = continuation

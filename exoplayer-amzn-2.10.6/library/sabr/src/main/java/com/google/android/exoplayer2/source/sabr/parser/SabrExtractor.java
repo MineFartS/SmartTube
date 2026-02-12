@@ -180,8 +180,6 @@ public class SabrExtractor implements Extractor {
     private final ParsableByteArray encryptionInitializationVector;
     private final ParsableByteArray encryptionSubsampleData;
 
-    private long durationUs = C.TIME_UNSET;
-
     // The track corresponding to the current TrackEntry element, or null.
     private Track currentTrack;
 

@@ -26,43 +26,13 @@ public class SubtitleSettingsPresenter extends BasePresenter<Void> {
         AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
 
         settingsPresenter.appendSingleSwitch(AppDialogUtil.createSubtitleChannelOption(getContext()));
-        // Can't work properly. There is no robust language detection.
-        //appendSubtitleLanguageCategory(settingsPresenter);
-        //appendMoreSubtitlesSwitch(settingsPresenter);
+
         appendSubtitleStyleCategory(settingsPresenter);
         appendSubtitleSizeCategory(settingsPresenter);
         appendSubtitlePositionCategory(settingsPresenter);
 
         settingsPresenter.showDialog(getContext().getString(R.string.subtitle_category_title));
     }
-
-    //private void appendSubtitleLanguageCategory(AppSettingsPresenter settingsPresenter) {
-    //    String subtitleLanguageTitle = getContext().getString(R.string.subtitle_language);
-    //    String subtitlesDisabled = getContext().getString(R.string.subtitles_disabled);
-    //
-    //    LangUpdater langUpdater = new LangUpdater(getContext());
-    //    Map<String, String> locales = langUpdater.getSupportedLocales();
-    //    FormatItem currentFormat = mPlayerData.getFormat(FormatItem.TYPE_SUBTITLE);
-    //
-    //    List<OptionItem> options = new ArrayList<>();
-    //
-    //    options.add(UiOptionItem.from(
-    //            subtitlesDisabled, option -> mPlayerData.setFormat(FormatItem.fromLanguage(null)),
-    //            currentFormat == null || currentFormat.equals(FormatItem.fromLanguage(null))));
-    //
-    //    for (Entry<String, String> entry : locales.entrySet()) {
-    //        if (entry.getValue().isEmpty()) {
-    //            // Remove default language entry
-    //            continue;
-    //        }
-    //
-    //        options.add(UiOptionItem.from(
-    //                entry.getKey(), option -> mPlayerData.setFormat(FormatItem.fromLanguage(entry.getValue())),
-    //                FormatItem.fromLanguage(entry.getValue()).equals(currentFormat)));
-    //    }
-    //
-    //    settingsPresenter.appendRadioCategory(subtitleLanguageTitle, options);
-    //}
 
     private void appendSubtitleStyleCategory(AppDialogPresenter settingsPresenter) {
         OptionCategory category = AppDialogUtil.createSubtitleStylesCategory(getContext());

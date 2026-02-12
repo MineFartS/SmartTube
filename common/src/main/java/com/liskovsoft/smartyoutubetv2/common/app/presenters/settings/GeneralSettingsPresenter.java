@@ -718,8 +718,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
         appendProxyManager(settingsPresenter, options);
 
-        //appendOpenVPNManager(settingsPresenter, options);
-
         settingsPresenter.appendCheckedCategory(getContext().getString(R.string.internet_censorship), options);
     }
 

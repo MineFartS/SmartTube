@@ -268,31 +268,6 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         );
     }
 
-    //private void appendReactiveAddToRecentPlaylistButton(String playlistId, String playlistTitle) {
-    //    mDialogPresenter.appendSingleButton(
-    //            UiOptionItem.from(getContext().getString(
-    //                    R.string.dialog_add_remove_from, playlistTitle),
-    //                    optionItem -> {
-    //                        mPlaylistsInfoAction = mItemManager.getVideoPlaylistsInfoObserve(mVideo.videoId)
-    //                                .subscribe(
-    //                                        videoPlaylistInfos -> {
-    //                                            for (VideoPlaylistInfo playlistInfo : videoPlaylistInfos) {
-    //                                                if (playlistInfo.getPlaylistId().equals(playlistId)) {
-    //                                                    addRemoveFromPlaylist(playlistInfo.getPlaylistId(), playlistInfo.getTitle(), !playlistInfo.isSelected());
-    //                                                    break;
-    //                                                }
-    //                                            }
-    //                                        },
-    //                                        error -> {
-    //                                            // Fallback to something on error
-    //                                            Log.e(TAG, "Add to recent playlist error: %s", error.getMessage());
-    //                                        }
-    //                                );
-    //                    }
-    //            )
-    //    );
-    //}
-
     private void appendOpenChannelButton() {
         if (!mIsOpenChannelButtonEnabled) {
             return;
@@ -792,34 +767,10 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         }
     }
 
-    //private void addRemoveFromPlaylist(String playlistId, String playlistTitle, boolean add) {
-    //    if (add) {
-    //        Observable<Void> editObserve = mItemManager.addToPlaylistObserve(playlistId, mVideo.videoId);
-    //        mAddToPlaylistAction = RxUtils.execute(editObserve);
-    //        mDialogPresenter.closeDialog();
-    //        MessageHelpers.showMessage(getContext(),
-    //                getContext().getString(R.string.added_to, playlistTitle));
-    //    } else {
-    //        AppDialogUtil.showConfirmationDialog(getContext(), () -> {
-    //            // Check that the current video belongs to the right section
-    //            if (mCallback != null && Helpers.equals(mVideo.playlistId, playlistId)) {
-    //                mCallback.onItemAction(mVideo, VideoMenuCallback.ACTION_REMOVE_FROM_PLAYLIST);
-    //            }
-    //            Observable<Void> editObserve = mItemManager.removeFromPlaylistObserve(playlistId, mVideo.videoId);
-    //            mAddToPlaylistAction = RxUtils.execute(editObserve);
-    //            mDialogPresenter.closeDialog();
-    //            MessageHelpers.showMessage(getContext(),
-    //                    getContext().getString(R.string.removed_from, playlistTitle));
-    //        }, getContext().getString(R.string.dialog_remove_from, playlistTitle));
-    //    }
-    //}
-
     private void toggleSubscribe() {
         if (mVideo == null) {
             return;
         }
-
-        //mVideo.isSynced = true; // default to subscribe
 
         // Until synced we won't really know weather we subscribed to a channel.
         // Exclusion: channel item (can't be synced)

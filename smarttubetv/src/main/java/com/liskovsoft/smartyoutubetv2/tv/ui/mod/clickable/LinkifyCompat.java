@@ -153,11 +153,6 @@ public final class LinkifyCompat {
 
         pruneOverlaps(links, text);
 
-        // MODIFIED: force enable scrolling even there's no links in text
-        //if (links.size() == 0 && timeLinks.size() == 0) {
-        //    return false;
-        //}
-
         for (LinkSpec link: links) {
             if (link.frameworkAddedSpan == null) {
                 applyLink(link.url, link.start, link.end, text);

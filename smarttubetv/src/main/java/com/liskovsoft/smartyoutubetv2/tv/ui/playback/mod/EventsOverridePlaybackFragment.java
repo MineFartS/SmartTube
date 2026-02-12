@@ -66,11 +66,6 @@ public class EventsOverridePlaybackFragment extends SurfacePlaybackFragment {
                 // Event may be consumed; regardless, if controls are hidden then these keys will
                 // bring up the controls.
 
-                // MOD: show ui and apply key immediately
-                //if (controlsHidden) {
-                //    consumeEvent = true;
-                //}
-
                 if (keyAction == KeyEvent.ACTION_DOWN) {
                     tickle();
                 }

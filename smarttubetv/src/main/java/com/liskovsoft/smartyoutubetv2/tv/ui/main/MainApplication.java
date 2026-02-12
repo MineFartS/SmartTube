@@ -44,14 +44,6 @@ public class MainApplication extends MultiDexApplication { // fix: Didn't find c
     @Override
     public void onCreate() {
         super.onCreate();
-
-        // Android 4 SponsorBlock fix???
-        // https://android-review.googlesource.com/c/platform/external/conscrypt/+/89408/
-        //if (Build.VERSION.SDK_INT == 19) {
-        //    Security.insertProviderAt(Conscrypt.newProvider(), 1);
-        //}
-
-        //setupGlobalExceptionHandler();
         setupViewManager();
     }
 

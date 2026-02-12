@@ -71,8 +71,7 @@ public class SuggestionsController extends BasePlayerController {
         // Remote control fix. Slow network fix. Suggestions may still be loading.
         // This could lead to changing current video info (title, id etc) to wrong one.
         disposeActions();
-        //mCurrentGroup = video.getGroup(); // disable garbage collected
-        //appendNextSectionVideoIfNeeded(video); // ConcurrentModificationException error
+
     }
 
     /**
@@ -82,12 +81,6 @@ public class SuggestionsController extends BasePlayerController {
     public void onVideoLoaded(Video item) {
         loadSuggestions(item);
     }
-
-    // Could make negative impact on the video load time.
-    //@Override
-    //public void onSourceChanged(Video item) {
-    //    loadSuggestions(item);
-    //}
 
     @Override
     public void onEngineReleased() {
@@ -215,9 +208,6 @@ public class SuggestionsController extends BasePlayerController {
     }
 
     private void syncCurrentVideo(MediaItemMetadata mediaItemMetadata, Video video) {
-        //if (getPlayer().containsMedia()) {
-        //    video.isUpcoming = false; // live stream started
-        //}
 
         // NOTE: Skip upcoming or unplayable (no media) because default title more informative (e.g. has scheduled time).
         // NOTE: Upcoming videos metadata wrongly reported as live

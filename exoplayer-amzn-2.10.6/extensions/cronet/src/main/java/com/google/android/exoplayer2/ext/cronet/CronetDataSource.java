@@ -539,12 +539,7 @@ public class CronetDataSource extends BaseDataSource implements HttpDataSource {
       }
       requestBuilder.addHeader("Range", rangeValue.toString());
     }
-    // TODO: Uncomment when https://bugs.chromium.org/p/chromium/issues/detail?id=767025 is fixed
-    // (adjusting the code as necessary).
-    // Force identity encoding unless gzip is allowed.
-    // if (!dataSpec.isFlagSet(DataSpec.FLAG_ALLOW_GZIP)) {
-    //   requestBuilder.addHeader("Accept-Encoding", "identity");
-    // }
+
     // Set the method and (if non-empty) the body.
     requestBuilder.setHttpMethod(dataSpec.getHttpMethodString());
     if (dataSpec.httpBody != null) {

@@ -117,16 +117,6 @@ public class VideoTrack extends MediaTrack {
         int size1;
         int size2;
 
-        //// Proper non-widescreen (4:3) format handling.
-        //// 4:3 example: https://www.youtube.com/watch?v=m8nsUcAwkj8&t=1042s
-        //if (isWideScreen(format) && isWideScreen(track2.format)) {
-        //    size1 = format.width;
-        //    size2 = track2.format.width;
-        //} else {
-        //    size1 = format.height;
-        //    size2 = track2.format.height;
-        //}
-
         // MOD: Mimic official behavior (handle low res shorts etc)
         size1 = TrackSelectorUtil.isWideScreen(format) || exceedHeightLimit(format) ? format.height : format.width;
         size2 = TrackSelectorUtil.isWideScreen(track2.format) || exceedHeightLimit(track2.format) ? track2.format.height : track2.format.width;
@@ -164,7 +154,7 @@ public class VideoTrack extends MediaTrack {
         // Fix same id between normal videos and shorts
         if (Helpers.equals(id1, id2) && (size1 == size2)) {
             result = 0;
-        //} else if (sizeLessOrEquals(size2, size1) && fpsLessOrEquals(frameRate2, frameRate1) && bitrateLessOrEquals(bitrate2, bitrate1)) {
+
         } else if (sizeLessOrEquals(size2, size1) && fpsLessOrEquals(frameRate2, frameRate1)) { // NOTE: Removed bitrate check to fix shorts?
             if (TrackSelectorUtil.isHdrFormat(id1, codecs1) == TrackSelectorUtil.isHdrFormat(id2, codecs2)) {
                 result = 1;
@@ -197,36 +187,6 @@ public class VideoTrack extends MediaTrack {
         return 1;
     }
 
-    //private int inBoundsPreset(String id1, String id2, int size1, int size2, float frameRate1, float frameRate2, String codecs1, String codecs2) {
-    //    int result = -1;
-    //
-    //    if (Helpers.equals(id1, id2)) {
-    //        result = 0;
-    //    } else if (sizeEquals(size1, size2)) {
-    //        if (fpsEquals(frameRate2, frameRate1)) {
-    //            if (TrackSelectorUtil.isHdrCodec(codecs1) == TrackSelectorUtil.isHdrCodec(codecs2)) {
-    //                result = 0;
-    //            } else if (TrackSelectorUtil.isHdrCodec(codecs1)) {
-    //                result = 1;
-    //            }
-    //        } else if (fpsLessOrEquals(frameRate2, frameRate1)) {
-    //            if (TrackSelectorUtil.isHdrCodec(codecs1) == TrackSelectorUtil.isHdrCodec(codecs2)) {
-    //                result = 1;
-    //            } else if (TrackSelectorUtil.isHdrCodec(codecs1)) {
-    //                result = 1;
-    //            }
-    //        }
-    //    } else if (sizeLessOrEquals(size2, size1) && fpsLessOrEquals(frameRate2, frameRate1)) {
-    //        if (TrackSelectorUtil.isHdrCodec(codecs1) == TrackSelectorUtil.isHdrCodec(codecs2)) {
-    //            result = 1;
-    //        } else if (TrackSelectorUtil.isHdrCodec(codecs1)) {
-    //            result = 1;
-    //        }
-    //    }
-    //
-    //    return result;
-    //}
-
     private int compare(String id1, String id2, int size1, int size2, float frameRate1, float frameRate2, String codecs1, String codecs2, int bitrate1, int bitrate2) {
         if (Helpers.equals(id1, id2)) {
             return 0;
@@ -256,26 +216,6 @@ public class VideoTrack extends MediaTrack {
         int result = leftScore - rightScore;
         return result == 0 && TrackSelectorUtil.codecNameShort(codecs1).equals(TrackSelectorUtil.codecNameShort(codecs2)) ? bitrate1 - bitrate2 : result;
     }
-
-    //private int compare(String id1, String id2, int size1, int size2, float frameRate1, float frameRate2, String codecs1, String codecs2) {
-    //    int result = -1;
-    //
-    //    if (Helpers.equals(id1, id2)) {
-    //        result = 0;
-    //    } else if (sizeLessOrEquals(size2, size1)) {
-    //        if (fpsLessOrEquals(frameRate2, frameRate1)) {
-    //            if (TrackSelectorUtil.isHdrCodec(codecs1) == TrackSelectorUtil.isHdrCodec(codecs2)) {
-    //                result = 0;
-    //            } else if (TrackSelectorUtil.isHdrCodec(codecs2)) {
-    //                result = -1;
-    //            } else {
-    //                result = 1;
-    //            }
-    //        }
-    //    }
-    //
-    //    return result;
-    //}
 
     // Shorts fix
     private boolean exceedHeightLimit(Format format) {

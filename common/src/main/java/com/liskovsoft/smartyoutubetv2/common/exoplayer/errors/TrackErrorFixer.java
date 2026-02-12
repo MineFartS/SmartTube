@@ -60,14 +60,6 @@ public class TrackErrorFixer extends DefaultMediaSourceEventListener {
         return selectDifferentCodec(isAudio(mLastEx));
     }
 
-    //public boolean fixError(ExoPlaybackException error) {
-    //    if (error != null && error.getCause() instanceof DecoderInitializationException) {
-    //        return selectDifferentCodec(MimeTypes.isAudio(((DecoderInitializationException) error.getCause()).mimeType));
-    //    }
-    //
-    //    return false;
-    //}
-
     private boolean selectDifferentCodec(boolean isAudio) {
         if (System.currentTimeMillis() - mSelectionTimeMs < BLACKLIST_CLEAR_MS) {
             return false;
