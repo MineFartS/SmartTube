@@ -50,7 +50,6 @@ public class HQDialogController extends BasePlayerController {
         addAudioLanguage();
         addPresetsCategory();
 
-        addAudioDelayCategory();
         addPitchEffectCategory();
 
         appendOptions(mCategoriesInt);
@@ -110,11 +109,6 @@ public class HQDialogController extends BasePlayerController {
         }
     }
 
-    private void addAudioDelayCategory() {
-        addCategoryInt(AppDialogUtil.createAudioShiftCategory(getContext(),
-                () -> getPlayer().restartEngine()));
-    }
-
     private void addPitchEffectCategory() {
         addCategoryInt(AppDialogUtil.createPitchEffectCategory(getContext()));
     }
@@ -125,8 +119,6 @@ public class HQDialogController extends BasePlayerController {
     }
 
     private void onDialogHide() {
-        //updateBackgroundPlayback();
-
         for (Runnable listener : mHideListeners) {
             listener.run();
         }

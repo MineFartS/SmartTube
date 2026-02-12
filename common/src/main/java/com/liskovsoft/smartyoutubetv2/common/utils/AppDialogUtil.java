@@ -69,7 +69,7 @@ public class AppDialogUtil {
     
     private static final int BACKGROUND_PLAYBACK_ID = 135;
     private static final int VIDEO_PRESETS_ID = 136;
-    private static final int AUDIO_DELAY_ID = 137;
+
     private static final int AUDIO_LANGUAGE_ID = 138;
     private static final int PLAYER_SCREEN_TIMEOUT_ID = 139;
     private static final int PLAYER_SCREEN_DIMMING_ID = 140;
@@ -373,28 +373,6 @@ public class AppDialogUtil {
                 "".equals(playerData.getAudioLanguage())));
 
         return OptionCategory.from(AUDIO_LANGUAGE_ID, OptionCategory.TYPE_RADIO_LIST, title, options);
-    }
-
-    public static OptionCategory createAudioShiftCategory(Context context) {
-        return createAudioShiftCategory(context, () -> {});
-    }
-
-    public static OptionCategory createAudioShiftCategory(Context context, Runnable onSetCallback) {
-        PlayerData playerData = PlayerData.instance(context);
-        String title = context.getString(R.string.audio_shift);
-
-        List<OptionItem> options = new ArrayList<>();
-
-        for (int delayMs : Helpers.range(-8_000, 8_000, 50)) {
-            options.add(UiOptionItem.from(context.getString(R.string.audio_shift_sec, Helpers.toString(delayMs / 1_000f)),
-                    optionItem -> {
-                        playerData.setAudioDelayMs(delayMs);
-                        onSetCallback.run();
-                    },
-                    delayMs == playerData.getAudioDelayMs()));
-        }
-
-        return OptionCategory.from(AUDIO_DELAY_ID, OptionCategory.TYPE_RADIO_LIST, title, options);
     }
 
     public static OptionCategory createPitchEffectCategory(Context context) {
