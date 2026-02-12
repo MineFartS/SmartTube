@@ -160,17 +160,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
                 },
                 mGeneralData.is24HourLocaleEnabled()));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.app_corner_clock),
-                option -> {
-                    mGeneralData.setGlobalClockEnabled(option.isSelected());
-                    mRestartApp = true;
-                },
-                mGeneralData.isGlobalClockEnabled()));
-
-        options.add(UiOptionItem.from(getContext().getString(R.string.player_corner_clock),
-                option -> mPlayerData.setGlobalClockEnabled(option.isSelected()),
-                mPlayerData.isGlobalClockEnabled()));
-
         options.add(UiOptionItem.from(getContext().getString(R.string.player_corner_ending_time),
                 option -> mPlayerData.setGlobalEndingTimeEnabled(option.isSelected()),
                 mPlayerData.isGlobalEndingTimeEnabled()));

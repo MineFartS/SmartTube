@@ -429,8 +429,6 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
 
         initializePlayerRows();
 
-        initializeGlobalClock();
-
         initializeGlobalEndingTime();
 
         initializePixelRatio();
@@ -478,12 +476,6 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
         mDebugInfoManager = new DebugInfoManager(getActivity(), mPlayer, R.id.debug_view_group);
     }
 
-    private void initializeGlobalClock() {
-        DateTimeView clock = getActivity().findViewById(R.id.global_time);
-        clock.showDate(false);
-        clock.setVisibility(PlayerData.instance(getContext()).isGlobalClockEnabled() ? View.VISIBLE : View.GONE);
-    }
-
     private void initializeGlobalEndingTime() {
         EndingTimeView endingTime = getActivity().findViewById(R.id.global_ending_time);
         endingTime.setVisibility(PlayerData.instance(getContext()).isGlobalEndingTimeEnabled() ? View.VISIBLE : View.GONE);
@@ -500,9 +492,9 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
         }
 
         // NOTE: No way to disable only a notifications. We need to disable the media session instead.
-        //boolean disableNotifications = PlayerTweaksData.instance(getContext()).isPlaybackNotificationsDisabled();
+
         mMediaSession = new MediaSessionCompat(getContext(), getContext().getPackageName());
-        //mMediaSession.setActive(!disableNotifications);
+
         mMediaSession.setActive(Helpers.isAndroidTVLauncher(getContext()));
         mMediaSessionConnector = new MediaSessionConnector(mMediaSession);
 

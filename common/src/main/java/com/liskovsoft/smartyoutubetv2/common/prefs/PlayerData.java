@@ -44,7 +44,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private int mUiHideTimeoutSec;
     private boolean mIsSeekConfirmPauseEnabled;
     private boolean mIsClockEnabled;
-    private boolean mIsGlobalClockEnabled;
+
     private boolean mIsRemainingTimeEnabled;
     private int mBackgroundMode;
     private FormatItem mVideoFormat;
@@ -182,15 +182,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
 
     public void setClockEnabled(boolean enable) {
         mIsClockEnabled = enable;
-        persistState();
-    }
-
-    public boolean isGlobalClockEnabled() {
-        return mIsGlobalClockEnabled;
-    }
-
-    public void setGlobalClockEnabled(boolean enable) {
-        mIsGlobalClockEnabled = enable;
         persistState();
     }
 
@@ -773,7 +764,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         mIsQualityInfoEnabled = Helpers.parseBoolean(split, 28, true);
         mIsSpeedPerVideoEnabled = Helpers.parseBoolean(split, 29, false);
         mAspectRatio = Helpers.parseFloat(split, 30, PlayerEngine.ASPECT_RATIO_DEFAULT);
-        mIsGlobalClockEnabled = Helpers.parseBoolean(split, 31, false);
+
         mIsTimeCorrectionEnabled = Helpers.parseBoolean(split, 32, true);
         mIsGlobalEndingTimeEnabled = Helpers.parseBoolean(split, 33, false);
         mIsEndingTimeEnabled = Helpers.parseBoolean(split, 34, false);
@@ -854,7 +845,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
                 mIsQualityInfoEnabled, 
                 mIsSpeedPerVideoEnabled, 
                 mAspectRatio, 
-                mIsGlobalClockEnabled, 
+
                 mIsTimeCorrectionEnabled,
                 mIsGlobalEndingTimeEnabled, 
                 mIsEndingTimeEnabled, 

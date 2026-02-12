@@ -58,7 +58,7 @@ public class GeneralData implements ProfileChangeListener {
     private boolean mIsHideShortsFromHistoryEnabled;
     private boolean mIsScreensaverDisabled;
     private boolean mIsVPNEnabled;
-    private boolean mIsGlobalClockEnabled;
+
     private String mSettingsPassword;
 
     private boolean mIsHistoryEnabled;
@@ -480,15 +480,6 @@ public class GeneralData implements ProfileChangeListener {
         persistState();
     }
 
-    public boolean isGlobalClockEnabled() {
-        return mIsGlobalClockEnabled;
-    }
-
-    public void setGlobalClockEnabled(boolean enable) {
-        mIsGlobalClockEnabled = enable;
-        persistState();
-    }
-
     public String getSettingsPassword() {
         return mSettingsPassword;
     }
@@ -662,7 +653,6 @@ public class GeneralData implements ProfileChangeListener {
         mPlaylistOrder = Helpers.parseMap(split, 29, Helpers::parseStr, Helpers::parseInt);
 
         mPendingStreams = Helpers.parseList(split, 30, Video::fromString);
-        mIsGlobalClockEnabled = Helpers.parseBoolean(split, 31, true);
 
         mSettingsPassword = Helpers.parseStr(split, 33);
 
@@ -743,7 +733,6 @@ public class GeneralData implements ProfileChangeListener {
                 mLastPlaylistTitle,
                 mPlaylistOrder, 
                 mPendingStreams, 
-                mIsGlobalClockEnabled, 
                 null, 
                 mSettingsPassword, 
                 mIsHistoryEnabled,
