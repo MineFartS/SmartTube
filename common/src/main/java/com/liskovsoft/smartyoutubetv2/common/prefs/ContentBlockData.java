@@ -19,9 +19,8 @@ import java.util.Set;
 
 public class ContentBlockData {
     public static final int ACTION_UNDEFINED = -1;
-    public static final int ACTION_SKIP_ONLY = 0;
+
     public static final int ACTION_SKIP_WITH_TOAST = 1;
-    public static final int ACTION_SHOW_DIALOG = 2;
     public static final int ACTION_DO_NOTHING = 3;
     private static final String CONTENT_BLOCK_DATA = "content_block_data";
     @SuppressLint("StaticFieldLeak")

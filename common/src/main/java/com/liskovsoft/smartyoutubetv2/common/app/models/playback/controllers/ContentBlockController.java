@@ -246,15 +246,6 @@ public class ContentBlockController extends BasePlayerController {
         }
     }
 
-    private void simpleSkip(long skipPosMs) {
-        if (mLastSkipPosMs == skipPosMs) {
-            return;
-        }
-
-        setPositionMs(skipPosMs);
-        closeTransparentDialog();
-    }
-
     private void messageSkip(long skipPosMs, String category) {
         if (mLastSkipPosMs == skipPosMs) {
             return;
@@ -345,8 +336,8 @@ public class ContentBlockController extends BasePlayerController {
 
         for (SponsorSegment segment : segments) {
             int action = getContentBlockData().getAction(segment.getCategory());
-            boolean isSkipAction = action == ContentBlockData.ACTION_SKIP_ONLY ||
-                    action == ContentBlockData.ACTION_SKIP_WITH_TOAST;
+            boolean isSkipAction = (action == ContentBlockData.ACTION_SKIP_WITH_TOAST);
+
             if (foundSegment == null) {
                 if (isPositionInsideSegment(positionMs, segment, fullMatch)) {
                     foundSegment = new ArrayList<>();
@@ -387,13 +378,7 @@ public class ContentBlockController extends BasePlayerController {
         boolean stayQuiet = skipDurationMs < 10_000 && PlayerTweaksData.instance(getContext()).isTextureViewEnabled();
 
         if (!stayQuiet) {
-            if (type == ContentBlockData.ACTION_SKIP_ONLY || getPlayer().isInPIPMode() || Utils.isScreenOff(getContext()) || isEmbedPlayer()) {
-                simpleSkip(skipPosMs);
-            } else if (type == ContentBlockData.ACTION_SKIP_WITH_TOAST) {
-                messageSkip(skipPosMs, skipMessage);
-            } else if (type == ContentBlockData.ACTION_SHOW_DIALOG) {
-                confirmSkip(skipPosMs, skipMessage);
-            }
+            messageSkip(skipPosMs, skipMessage);
         }
 
         mLastSkipPosMs = skipPosMs;

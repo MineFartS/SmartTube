@@ -91,10 +91,12 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
         for (SegmentAction action : actions) {
             options.add(
                 UiOptionItem.from(
+
                     getColoredString(
                         mContentBlockData.getLocalizedRes(action.segmentCategory), 
                         mContentBlockData.getColorRes(action.segmentCategory)
                     ),
+                    
                     optionItem -> {
                     
                         AppDialogPresenter dialogPresenter = AppDialogPresenter.instance(getContext());
@@ -109,20 +111,19 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
                             )
                         );
 
-                        nestedOptions.add(UiOptionItem.from(getContext().getString(R.string.content_block_action_only_skip),
-                                optionItem1 -> action.actionType = ContentBlockData.ACTION_SKIP_ONLY,
-                                action.actionType == ContentBlockData.ACTION_SKIP_ONLY));
-                        nestedOptions.add(UiOptionItem.from(getContext().getString(R.string.content_block_action_toast),
+                        nestedOptions.add(
+                            UiOptionItem.from(
+                                getContext().getString(R.string.content_block_action_toast),
                                 optionItem1 -> action.actionType = ContentBlockData.ACTION_SKIP_WITH_TOAST,
-                                action.actionType == ContentBlockData.ACTION_SKIP_WITH_TOAST));
-                        nestedOptions.add(UiOptionItem.from(getContext().getString(R.string.content_block_action_dialog),
-                                optionItem1 -> action.actionType = ContentBlockData.ACTION_SHOW_DIALOG,
-                                action.actionType == ContentBlockData.ACTION_SHOW_DIALOG));
+                                action.actionType == ContentBlockData.ACTION_SKIP_WITH_TOAST
+                            )
+                        );
 
                         String title = getContext().getString(mContentBlockData.getLocalizedRes(action.segmentCategory));
 
                         dialogPresenter.appendRadioCategory(title, nestedOptions);
                         dialogPresenter.showDialog(title, mContentBlockData::persistActions);
+
                     }));
         }
 
