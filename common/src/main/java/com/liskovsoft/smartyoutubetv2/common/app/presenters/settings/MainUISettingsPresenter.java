@@ -189,10 +189,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
                 optionItem -> mMainUIData.setChannelsFilterEnabled(optionItem.isSelected()),
                 mMainUIData.isChannelsFilterEnabled()));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.channel_search_bar),
-                optionItem -> mMainUIData.setChannelSearchBarEnabled(optionItem.isSelected()),
-                mMainUIData.isChannelSearchBarEnabled()));
-
         options.add(UiOptionItem.from(getContext().getString(R.string.channels_auto_load),
                 optionItem -> mMainUIData.setUploadsAutoLoadEnabled(optionItem.isSelected()),
                 mMainUIData.isUploadsAutoLoadEnabled()));

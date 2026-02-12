@@ -189,18 +189,19 @@ public class VideoLoaderController extends BasePlayerController {
     }
 
     public void loadPrevious() {
+        
         if (getPlayer() == null) {
             return;
         }
 
         openVideoInt(mSuggestionsController.getPrevious());
 
-        if (getPlayerTweaksData().isPlayerUiOnNextEnabled()) {
-            getPlayer().showOverlay(true);
-        }
+        getPlayer().showOverlay(true);
+        
     }
 
     public void loadNext() {
+        
         if (getPlayer() == null || getVideo() == null) {
             return;
         }
@@ -214,9 +215,8 @@ public class VideoLoaderController extends BasePlayerController {
             waitMetadataSync(getVideo(), true);
         }
 
-        if (getPlayerTweaksData().isPlayerUiOnNextEnabled()) {
-            getPlayer().showOverlay(true);
-        }
+        getPlayer().showOverlay(true);
+
     }
 
     @Override

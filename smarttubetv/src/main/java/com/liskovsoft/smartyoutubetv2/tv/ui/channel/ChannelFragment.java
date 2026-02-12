@@ -33,8 +33,11 @@ public class ChannelFragment extends MultipleRowsFragment implements ChannelView
         mChannelPresenter.setView(this);
 
         mProgressBarManager = new ProgressBarManager();
-        if (MainUIData.instance(getContext()).isChannelSearchBarEnabled()) {
-            addHeader(new ChannelHeaderCallback() {
+        
+        // Channel Seach Bar
+        addHeader(
+            new ChannelHeaderCallback() {
+            
                 @Override
                 public void onSearchSettingsClicked() {
                     mChannelPresenter.onSearchSettingsClicked();
@@ -47,6 +50,7 @@ public class ChannelFragment extends MultipleRowsFragment implements ChannelView
 
                 @Override
                 public String getChannelTitle() {
+
                     if (mChannelPresenter.getChannel() == null) {
                         return Helpers.startsWith(mChannelPresenter.getChannelId(), "@") ? mChannelPresenter.getChannelId() : null;
                     }
@@ -57,8 +61,10 @@ public class ChannelFragment extends MultipleRowsFragment implements ChannelView
 
                     return Helpers.toString(YouTubeHelper.createInfo(Helpers.firstNonNull(author, title), subs));
                 }
-            });
-        }
+            
+            }
+        );
+
     }
 
     @Override

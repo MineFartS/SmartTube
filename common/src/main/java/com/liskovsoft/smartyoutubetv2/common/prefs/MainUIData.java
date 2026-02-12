@@ -215,8 +215,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     
     private boolean mIsChannelsFilterEnabled;
     
-    private boolean mIsChannelSearchBarEnabled;
-    
     private boolean mIsPinnedChannelRowsEnabled;
     
     private int mCardPreviewType;
@@ -328,15 +326,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
 
     public void setPinnedChannelRowsEnabled(boolean enable) {
         mIsPinnedChannelRowsEnabled = enable;
-        persistState();
-    }
-
-    public boolean isChannelSearchBarEnabled() {
-        return mIsChannelSearchBarEnabled;
-    }
-
-    public void setChannelSearchBarEnabled(boolean enable) {
-        mIsChannelSearchBarEnabled = enable;
         persistState();
     }
 
@@ -504,7 +493,7 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
 
         mMenuItemsOrdered = Helpers.parseLongList(split, 17);
         mIsChannelsFilterEnabled = Helpers.parseBoolean(split, 18, true);
-        mIsChannelSearchBarEnabled = Helpers.parseBoolean(split, 19, true);
+        
         mIsPinnedChannelRowsEnabled = Helpers.parseBoolean(split, 20, true);
         mCardPreviewType = Helpers.parseInt(split, 21, CARD_PREVIEW_DISABLED);
 
@@ -568,14 +557,12 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
                 mPlaylistsStyle, 
                 mCardTitleLinesNum, 
                 mIsUploadsAutoLoadEnabled, 
-
                 mMenuItems, 
                 mTopButtons,
                 null, 
                 mThumbQuality, 
                 Helpers.mergeList(mMenuItemsOrdered),
                 mIsChannelsFilterEnabled, 
-                mIsChannelSearchBarEnabled, 
                 mIsPinnedChannelRowsEnabled, 
                 mCardPreviewType
             )

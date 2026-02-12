@@ -177,11 +177,6 @@ class SettingsOverride {
 
         PlayerTweaksData PTD = PlayerTweaksData.instance(context);
 
-        // Show Player UI when switching to the next video
-        PTD.setPlayerUiOnNextEnabled(true);
-
-        // ============================================================
-
         // Hide 'Video Stats'
         PTD.setPlayerButtonDisabled(PlayerTweaksData.PLAYER_BUTTON_VIDEO_STATS);
 

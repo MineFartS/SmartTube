@@ -106,7 +106,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsUIAnimationsEnabled;
     private boolean mIsLikesCounterEnabled;
     private boolean mIsChapterNotificationEnabled;
-    private boolean mIsPlayerUiOnNextEnabled;
+
     private boolean mIsPlayerAutoVolumeEnabled;
     private boolean mIsSyncRowButtonIndexEnabled;
     private boolean mIsUnsafeAudioFormatsEnabled;
@@ -505,15 +505,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         persistData();
     }
 
-    public boolean isPlayerUiOnNextEnabled() {
-        return mIsPlayerUiOnNextEnabled;
-    }
-
-    public void setPlayerUiOnNextEnabled(boolean enable) {
-        mIsPlayerUiOnNextEnabled = enable;
-        persistData();
-    }
-
     public boolean isPlayerAutoVolumeEnabled() {
         return mIsPlayerAutoVolumeEnabled;
     }
@@ -633,7 +624,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsChapterNotificationEnabled = Helpers.parseBoolean(split, 36, false);
         mScreenOffDimmingPercents = Helpers.parseInt(split, 37, 100);
         mIsBootScreenOffEnabled = Helpers.parseBoolean(split, 38, false);
-        mIsPlayerUiOnNextEnabled = Helpers.parseBoolean(split, 39, false);
+
         mIsPlayerAutoVolumeEnabled = Helpers.parseBoolean(split, 40, true);
         mIsSyncRowButtonIndexEnabled = Helpers.parseBoolean(split, 41, true);
         mIsUnsafeAudioFormatsEnabled = Helpers.parseBoolean(split, 42, true);
@@ -704,7 +695,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mIsChapterNotificationEnabled,
                 mScreenOffDimmingPercents, 
                 mIsBootScreenOffEnabled, 
-                mIsPlayerUiOnNextEnabled, 
+
                 mIsPlayerAutoVolumeEnabled, 
                 mIsSyncRowButtonIndexEnabled,
                 mIsUnsafeAudioFormatsEnabled, 

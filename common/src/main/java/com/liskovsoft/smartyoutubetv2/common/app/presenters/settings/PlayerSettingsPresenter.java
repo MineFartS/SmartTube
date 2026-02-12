@@ -636,14 +636,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 option -> mPlayerTweaksData.setSyncRowButtonIndexEnabled(option.isSelected()),
                 mPlayerTweaksData.isSyncRowButtonIndexEnabled()));
 
-        options.add(
-            UiOptionItem.from(
-                getContext().getString(R.string.player_ui_on_next),
-                option -> mPlayerTweaksData.setPlayerUiOnNextEnabled(option.isSelected()),
-                mPlayerTweaksData.isPlayerUiOnNextEnabled()
-            )
-        );
-
         options.add(UiOptionItem.from(getContext().getString(R.string.player_ui_animations),
                 option -> mPlayerTweaksData.setUIAnimationsEnabled(option.isSelected()),
                 mPlayerTweaksData.isUIAnimationsEnabled()));
