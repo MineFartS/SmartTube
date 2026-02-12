@@ -58,17 +58,9 @@ public class SearchSettingsPresenter extends BasePresenter<Void> {
     private void appendMiscCategory(AppDialogPresenter settingsPresenter) {
         List<OptionItem> options = new ArrayList<>();
 
-        //options.add(UiOptionItem.from(getContext().getString(R.string.disable_popular_searches),
-        //        option -> mSearchData.disablePopularSearches(option.isSelected()),
-        //        mSearchData.isPopularSearchesDisabled()));
-
         options.add(UiOptionItem.from(getContext().getString(R.string.typing_corrections),
                 option -> mSearchData.setTypingCorrectionDisabled(option.isSelected()),
                 mSearchData.isTypingCorrectionDisabled()));
-
-        options.add(UiOptionItem.from(getContext().getString(R.string.search_exit_shortcut) + ": " + getContext().getString(R.string.app_double_back_exit),
-                option -> mGeneralData.setSearchExitShortcut(option.isSelected() ? GeneralData.EXIT_DOUBLE_BACK : GeneralData.EXIT_SINGLE_BACK),
-                mGeneralData.getSearchExitShortcut() == GeneralData.EXIT_DOUBLE_BACK));
 
         options.add(UiOptionItem.from(getContext().getString(R.string.disable_search_history),
                 option -> mSearchData.setSearchHistoryDisabled(option.isSelected()),

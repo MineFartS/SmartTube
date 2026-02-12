@@ -16,9 +16,7 @@ import java.util.Map;
 public class GeneralData implements ProfileChangeListener {
     public static final int SCREENSAVER_TIMEOUT_NEVER = 0;
     private static final String GENERAL_DATA = "general_data";
-    public static final int EXIT_NONE = 0;
-    public static final int EXIT_DOUBLE_BACK = 1;
-    public static final int EXIT_SINGLE_BACK = 2;
+
     public static final int BACKGROUND_PLAYBACK_SHORTCUT_HOME = 0;
     public static final int BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK = 1;
     public static final int BACKGROUND_PLAYBACK_SHORTCUT_BACK = 2;
@@ -30,8 +28,6 @@ public class GeneralData implements ProfileChangeListener {
     private final Context mContext;
     private final AppPrefs mPrefs;
 
-    private int mPlayerExitShortcut;
-    private int mSearchExitShortcut;
     private boolean mIsReturnToLauncherEnabled;
     private int mBackgroundShortcut;
     private boolean mIsHideShortsFromSubscriptionsEnabled;
@@ -103,24 +99,6 @@ public class GeneralData implements ProfileChangeListener {
         }
 
         return sInstance;
-    }
-
-    public int getPlayerExitShortcut() {
-        return mPlayerExitShortcut;
-    }
-
-    public void setPlayerExitShortcut(int type) {
-        mPlayerExitShortcut = type;
-        persistState();
-    }
-
-    public int getSearchExitShortcut() {
-        return mSearchExitShortcut;
-    }
-
-    public void setSearchExitShortcut(int type) {
-        mSearchExitShortcut = type;
-        persistState();
     }
 
     public boolean isReturnToLauncherEnabled() {
@@ -741,7 +719,6 @@ public class GeneralData implements ProfileChangeListener {
         mIsRemapNextToFastForwardEnabled = Helpers.parseBoolean(split, 55, false);
         mIsHideWatchedFromNotificationsEnabled = Helpers.parseBoolean(split, 56, false);
         mChangelog = Helpers.parseStrList(split, 57);
-        mPlayerExitShortcut = Helpers.parseInt(split, 58, EXIT_SINGLE_BACK);
 
         mIsFullscreenModeEnabled = Helpers.parseBoolean(split, 60, true);
 
@@ -751,7 +728,7 @@ public class GeneralData implements ProfileChangeListener {
         mIsDeviceSpecificBackupEnabled = Helpers.parseBoolean(split, 65, false);
 
         mIsRemapPageDownToSpeedEnabled = Helpers.parseBoolean(split, 67, false);
-        mSearchExitShortcut = Helpers.parseInt(split, 68, EXIT_SINGLE_BACK);
+
         mGDriveBackupFreqDays = Helpers.parseInt(split, 69, -1);
         mLocalDriveBackupFreqDays = Helpers.parseInt(split, 70, -1);
 
@@ -825,7 +802,7 @@ public class GeneralData implements ProfileChangeListener {
                 mIsRemapNextToFastForwardEnabled,
                 mIsHideWatchedFromNotificationsEnabled, 
                 mChangelog, 
-                mPlayerExitShortcut, 
+
                 null, 
                 mIsFullscreenModeEnabled, 
                 null,
@@ -835,7 +812,7 @@ public class GeneralData implements ProfileChangeListener {
                 mIsDeviceSpecificBackupEnabled, 
                 null,
                 mIsRemapPageDownToSpeedEnabled, 
-                mSearchExitShortcut, 
+
                 mGDriveBackupFreqDays, 
                 mLocalDriveBackupFreqDays
             )

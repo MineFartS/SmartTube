@@ -91,34 +91,9 @@ public abstract class LeanbackActivity extends MotherActivity {
         mBackgroundManager.onDestroy();
     }
 
-    @Override
+    @Override // user pressed back key
     public void finish() {
-        // user pressed back key
-        if (!getViewManager().hasParentView(this)) {
-            
-            mDoubleBackManager.enableDoubleBackExit(this::finishTheApp);
-
-        } else if (this instanceof PlaybackActivity) {
-            switch (getGeneralData().getPlayerExitShortcut()) {
-                case GeneralData.EXIT_DOUBLE_BACK:
-                    mDoubleBackManager.enableDoubleBackExit(this::finishReally);
-                    break;
-                case GeneralData.EXIT_SINGLE_BACK:
-                    finishReally();
-                    break;
-            }
-        } else if (this instanceof SearchTagsActivity) {
-            switch (getGeneralData().getSearchExitShortcut()) {
-                case GeneralData.EXIT_DOUBLE_BACK:
-                    mDoubleBackManager.enableDoubleBackExit(this::finishReally);
-                    break;
-                case GeneralData.EXIT_SINGLE_BACK:
-                    finishReally();
-                    break;
-            }
-        } else {
-            finishReally();
-        }
+        finishReally();
     }
 
     @Override
@@ -128,11 +103,4 @@ public abstract class LeanbackActivity extends MotherActivity {
         super.finishReally();
     }
 
-    private void finishTheApp() {
-        Utils.properlyFinishTheApp(this);
-
-        if (!RemoteControlData.instance(this).isConnectedBefore()) {
-            getViewManager().addOnFinish(sOnFinish);
-        }
-    }
 }

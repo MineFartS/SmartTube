@@ -594,17 +594,12 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 mPlayerTweaksData.isChapterNotificationEnabled()));
 
         options.add(UiOptionItem.from(getContext().getString(R.string.sleep_timer),
-                //getContext().getString(R.string.sleep_timer_desc),
                 option -> mPlayerData.setSleepTimerEnabled(option.isSelected()),
                 mPlayerData.isSleepTimerEnabled()));
 
         options.add(UiOptionItem.from(getContext().getString(R.string.search_background_playback),
                 option -> mSearchData.setTempBackgroundModeEnabled(option.isSelected()),
                 mSearchData.isTempBackgroundModeEnabled()));
-
-        options.add(UiOptionItem.from(getContext().getString(R.string.player_exit_shortcut) + ": " + getContext().getString(R.string.app_double_back_exit),
-                option -> mGeneralData.setPlayerExitShortcut(option.isSelected() ? GeneralData.EXIT_DOUBLE_BACK : GeneralData.EXIT_SINGLE_BACK),
-                mGeneralData.getPlayerExitShortcut() == GeneralData.EXIT_DOUBLE_BACK));
 
         options.add(UiOptionItem.from(getContext().getString(R.string.player_loop_shorts),
                 option -> mPlayerTweaksData.setLoopShortsEnabled(option.isSelected()),
