@@ -328,7 +328,8 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
     }
 
     private void addSearchHeader() {
-        if (mGridAdapter1 == null || mGridAdapter1.getHeader() != null || !MainUIData.instance(getContext()).isChannelsFilterEnabled()) {
+        
+        if (mGridAdapter1 == null || mGridAdapter1.getHeader() != null) {
             return;
         }
 

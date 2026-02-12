@@ -145,10 +145,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
                 },
                 mMainUIData.getPlaylistsStyle() == MainUIData.PLAYLISTS_STYLE_ROWS));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.channels_filter),
-                optionItem -> mMainUIData.setChannelsFilterEnabled(optionItem.isSelected()),
-                mMainUIData.isChannelsFilterEnabled()));
-
         options.add(UiOptionItem.from(getContext().getString(R.string.channels_auto_load),
                 optionItem -> mMainUIData.setUploadsAutoLoadEnabled(optionItem.isSelected()),
                 mMainUIData.isUploadsAutoLoadEnabled()));
