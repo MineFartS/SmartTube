@@ -59,7 +59,6 @@ class SettingsOverride {
 
         ContentBlockData CBD = ContentBlockData.instance(context);
 
-
         // Disable all ContentBlock Color Markers
         for (String category : CBD.getAllCategories()) {
             CBD.disableColorMarker(category);
@@ -88,18 +87,6 @@ class SettingsOverride {
 
         // Hide Content Mixes
         MSD.setContentHidden(MediaServiceData.CONTENT_MIXES, true);
-
-        // Hide Shorts from Channels
-        MSD.setContentHidden(MediaServiceData.CONTENT_SHORTS_CHANNEL, true);
-
-        // Hide Shorts from Home
-        MSD.setContentHidden(MediaServiceData.CONTENT_SHORTS_HOME, true);
-
-        // Hide Shorts from Search Results
-        MSD.setContentHidden(MediaServiceData.CONTENT_SHORTS_SEARCH, true);
-
-        // Hide Shorts from Subscriptions
-        MSD.setContentHidden(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS, true);
 
     }
 

@@ -157,7 +157,7 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.hide_mixes),
+                "Content Mixes",
                 option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_MIXES, option.isSelected()),
                 mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_MIXES)
             )
@@ -173,41 +173,55 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.hide_shorts),
-                option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS, option.isSelected()),
-                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS)
+                
+                "Shorts",
+                
+                option -> {
+
+                    boolean hide = option.isSelected();
+                    
+                    // Hide all Shorts kinds
+                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_CHANNEL, hide);
+                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_HISTORY, hide);
+                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_HOME, hide);
+                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_SEARCH, hide);
+                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS, hide);
+                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_TRENDING, hide);
+
+                },
+
+                // If all Shorts kinds are hidden
+                mMediaServiceData.isContentHidden(   MediaServiceData.CONTENT_SHORTS_CHANNEL)
+                && mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_SHORTS_HISTORY)
+                && mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_SHORTS_HOME)
+                && mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_SHORTS_SEARCH)
+                && mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS)
+                && mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_SHORTS_TRENDING)
+                            
             )
         );
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.hide_shorts_from_search),
-                option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_SEARCH, option.isSelected()),
-                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_SHORTS_SEARCH)
-            )
-        );
+                
+                "Upcoming Streams",
+                
+                option -> {
 
-        options.add(
-            UiOptionItem.from(
-                getContext().getString(R.string.hide_shorts_from_home),
-                option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_HOME, option.isSelected()),
-                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_SHORTS_HOME)
-            )
-        );
+                    boolean hide = option.isSelected();
+                    
+                    // Hide all Upcoming Streams kinds
+                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_UPCOMING_SUBSCRIPTIONS, hide);
+                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_UPCOMING_HOME, hide);
+                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_UPCOMING_CHANNEL, hide);
+                
+                },
 
-        options.add(
-            UiOptionItem.from(
-                getContext().getString(R.string.hide_shorts_channel),
-                option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_CHANNEL, option.isSelected()),
-                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_SHORTS_CHANNEL)
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
-                getContext().getString(R.string.hide_shorts_from_history),
-                option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_HISTORY, option.isSelected()),
-                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_SHORTS_HISTORY)
+                // If all Upcoming Stream kinds are hidden
+                mMediaServiceData.isContentHidden(   MediaServiceData.CONTENT_UPCOMING_SUBSCRIPTIONS)
+                && mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_UPCOMING_HOME)
+                && mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_UPCOMING_CHANNEL)
+                            
             )
         );
 
@@ -216,30 +230,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
                 getContext().getString(R.string.hide_streams),
                 option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_STREAMS_SUBSCRIPTIONS, option.isSelected()),
                 mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_STREAMS_SUBSCRIPTIONS)
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
-                getContext().getString(R.string.hide_upcoming),
-                option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_UPCOMING_SUBSCRIPTIONS, option.isSelected()),
-                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_UPCOMING_SUBSCRIPTIONS)
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
-                getContext().getString(R.string.hide_upcoming_home),
-                option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_UPCOMING_HOME, option.isSelected()),
-                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_UPCOMING_HOME)
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
-                getContext().getString(R.string.hide_upcoming_channel),
-                option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_UPCOMING_CHANNEL, option.isSelected()),
-                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_UPCOMING_CHANNEL)
             )
         );
 
