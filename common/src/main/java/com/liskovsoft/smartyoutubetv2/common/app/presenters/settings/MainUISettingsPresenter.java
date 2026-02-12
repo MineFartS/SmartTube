@@ -138,13 +138,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
                 },
                 mMainUIData.isPinnedChannelRowsEnabled()));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.playlists_rows),
-                optionItem -> {
-                    mMainUIData.setPlaylistsStyle(optionItem.isSelected() ? MainUIData.PLAYLISTS_STYLE_ROWS : MainUIData.PLAYLISTS_STYLE_GRID);
-                    BrowsePresenter.instance(getContext()).updatePlaylistsStyle();
-                },
-                mMainUIData.getPlaylistsStyle() == MainUIData.PLAYLISTS_STYLE_ROWS));
-
         options.add(UiOptionItem.from(getContext().getString(R.string.channels_auto_load),
                 optionItem -> mMainUIData.setUploadsAutoLoadEnabled(optionItem.isSelected()),
                 mMainUIData.isUploadsAutoLoadEnabled()));

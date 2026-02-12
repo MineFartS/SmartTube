@@ -200,9 +200,7 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     private int mColorSchemeIndex;
     
     private int mChannelCategorySorting;
-    
-    private int mPlaylistsStyle;
-    
+        
     private boolean mIsUploadsAutoLoadEnabled;
         
     private long mMenuItems;
@@ -292,17 +290,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     public void setChannelCategorySorting(int type) {
         
         mChannelCategorySorting = type;
-        persistState();
-    
-    }
-
-    public int getPlaylistsStyle() {
-        return mPlaylistsStyle;
-    }
-
-    public void setPlaylistsStyle(int type) {
-        
-        mPlaylistsStyle = type;
         persistState();
     
     }
@@ -453,7 +440,7 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         mUIScale = Helpers.parseFloat(split, 2, 1.0f);
         mColorSchemeIndex = Helpers.parseInt(split, 3, 1);
         mChannelCategorySorting = Helpers.parseInt(split, 5, CHANNEL_SORTING_LAST_VIEWED);
-        mPlaylistsStyle = Helpers.parseInt(split, 6, PLAYLISTS_STYLE_GRID);
+
         mCardTitleLinesNum = Helpers.parseInt(split, 7, 1);
 
 
@@ -523,7 +510,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
                 mUIScale, 
                 mColorSchemeIndex, 
                 mChannelCategorySorting, 
-                mPlaylistsStyle, 
                 mCardTitleLinesNum, 
                 mIsUploadsAutoLoadEnabled, 
                 mMenuItems, 

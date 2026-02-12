@@ -374,20 +374,11 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
     }
 
     public void updatePlaylistsStyle() {
-        int playlistsStyle = getMainUIData().getPlaylistsStyle();
 
-        switch (playlistsStyle) {
-            case MainUIData.PLAYLISTS_STYLE_GRID:
-                mRowMapping.remove(MediaGroup.TYPE_USER_PLAYLISTS);
-                mGridMapping.put(MediaGroup.TYPE_USER_PLAYLISTS, getContentService().getPlaylistsObserve());
-                updateCategoryType(MediaGroup.TYPE_USER_PLAYLISTS, BrowseSection.TYPE_GRID);
-                break;
-            case MainUIData.PLAYLISTS_STYLE_ROWS:
-                mGridMapping.remove(MediaGroup.TYPE_USER_PLAYLISTS);
-                mRowMapping.put(MediaGroup.TYPE_USER_PLAYLISTS, getContentService().getPlaylistRowsObserve());
-                updateCategoryType(MediaGroup.TYPE_USER_PLAYLISTS, BrowseSection.TYPE_ROW);
-                break;
-        }
+        mRowMapping.remove(MediaGroup.TYPE_USER_PLAYLISTS);
+        mGridMapping.put(MediaGroup.TYPE_USER_PLAYLISTS, getContentService().getPlaylistsObserve());
+        updateCategoryType(MediaGroup.TYPE_USER_PLAYLISTS, BrowseSection.TYPE_GRID);
+        
     }
 
     private void updateCategoryType(int categoryId, int categoryType) {
