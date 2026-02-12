@@ -66,7 +66,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
 
         for (int[] pair : new int[][] {
                 {R.string.settings_search, MainUIData.TOP_BUTTON_SEARCH},
-                {R.string.settings_language_country, MainUIData.TOP_BUTTON_CHANGE_LANGUAGE},
                 {R.string.settings_accounts, MainUIData.TOP_BUTTON_BROWSE_ACCOUNTS}}) {
             options.add(UiOptionItem.from(getContext().getString(pair[0]), optionItem -> {
                 if (optionItem.isSelected()) {

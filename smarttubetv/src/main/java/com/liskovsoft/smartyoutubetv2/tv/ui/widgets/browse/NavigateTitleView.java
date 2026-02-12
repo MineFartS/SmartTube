@@ -24,7 +24,7 @@ import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.PlaybackPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs.AccountSelectionPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.settings.AccountSettingsPresenter;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.settings.LanguageSettingsPresenter;
+
 import com.liskovsoft.smartyoutubetv2.common.app.views.PlaybackView;
 import com.liskovsoft.smartyoutubetv2.common.app.views.ViewManager;
 import com.liskovsoft.smartyoutubetv2.common.misc.MediaServiceManager;
@@ -53,7 +53,7 @@ import static androidx.leanback.widget.TitleViewAdapter.SEARCH_VIEW_VISIBLE;
  */
 public class NavigateTitleView extends TitleView implements OnDataChange, AccountChangeListener {
     private LongClickSearchOrbView mAccountView;
-    private SearchOrbView mLanguageView;
+
     private SearchOrbView mExitPip;
     private TextView mPipTitle;
     private int mSearchVisibility = View.INVISIBLE;
@@ -67,7 +67,6 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
     private int mIconHeight;
     private boolean mIsSearchOrbEnabled;
     private boolean mIsAccountViewEnabled;
-    private boolean mIsLanguageViewEnabled;
 
     public NavigateTitleView(Context context) {
         super(context);
@@ -155,10 +154,6 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
             mAccountView.setVisibility(mSearchVisibility);
         }
 
-        if (mIsLanguageViewEnabled) {
-            mLanguageView.setVisibility(mSearchVisibility);
-        }
-
         if (mExitPip != null && (PlaybackPresenter.instance(getContext()).isRunningInBackground() || mSearchVisibility != View.VISIBLE)) {
             mExitPip.setVisibility(mSearchVisibility);
             mPipTitle.setVisibility(mSearchVisibility);
@@ -197,10 +192,6 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
         });
         TooltipCompatHandler.setTooltipText(mAccountView, getContext().getString(R.string.settings_accounts));
 
-        mLanguageView = findViewById(R.id.language_orb);
-        mLanguageView.setOnOrbClickedListener(v -> LanguageSettingsPresenter.instance(getContext()).show());
-        TooltipCompatHandler.setTooltipText(mLanguageView, getContext().getString(R.string.settings_language_country));
-
         mExitPip = findViewById(R.id.exit_pip);
         mPipTitle = findViewById(R.id.pip_title);
         mExitPip.setOnOrbClickedListener(v -> ViewManager.instance(getContext()).startView(PlaybackView.class));
@@ -226,17 +217,15 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
 
         mIsSearchOrbEnabled = !mainUIData.isTopButtonEnabled(MainUIData.TOP_BUTTON_SEARCH);
         mIsAccountViewEnabled = mainUIData.isTopButtonEnabled(MainUIData.TOP_BUTTON_BROWSE_ACCOUNTS);
-        mIsLanguageViewEnabled = mainUIData.isTopButtonEnabled(MainUIData.TOP_BUTTON_CHANGE_LANGUAGE);
 
         mSearchOrbView.setVisibility(mIsSearchOrbEnabled ? View.VISIBLE : View.GONE);
         mAccountView.setVisibility(mIsAccountViewEnabled ? View.VISIBLE : View.GONE);
-        mLanguageView.setVisibility(mIsLanguageViewEnabled ? View.VISIBLE : View.GONE);
+
         mGlobalClock.setVisibility(View.VISIBLE);
         mGlobalDate.setVisibility(View.VISIBLE);
 
         Utils.postDelayed(this::updateAccountIcon, 1_000); // give a time to engine to fetch an updated icon url
 
-        updateLanguageIcon();
     }
 
     @Override
@@ -293,19 +282,6 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
             mAccountView.setOrbIcon(ContextCompat.getDrawable(getContext(), R.drawable.browse_title_account));
             TooltipCompatHandler.setTooltipText(mAccountView, getContext().getString(R.string.dialog_account_none));
         }
-    }
-
-    private void updateLanguageIcon() {
-        if (!mIsLanguageViewEnabled) {
-            return;
-        }
-
-        // Use delay to fix icon initialization on app boot
-        Utils.postDelayed(() -> {
-            Locale locale = LocaleUtility.getCurrentLocale(getContext());
-            loadIcon(mLanguageView, Utils.getCountryFlagUrl(locale.getCountry()), true); // flag server could be down
-            TooltipCompatHandler.setTooltipText(mLanguageView, String.format("%s (%s)", locale.getDisplayCountry(), locale.getDisplayLanguage()));
-        }, 100);
     }
 
     private void loadIcon(SearchOrbView view, String url, boolean useCache) {
