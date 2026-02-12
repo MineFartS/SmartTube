@@ -154,8 +154,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
             return;
         }
 
-        if ((isSubscriptionsSection() && getGeneralData().isRememberSubscriptionsPositionEnabled()) ||
-                (isPinnedSection() && getGeneralData().isRememberPinnedPositionEnabled())) {
+        if (isSubscriptionsSection() && getGeneralData().isRememberSubscriptionsPositionEnabled()) {
             getGeneralData().setSelectedItem(mCurrentSection.getId(), mCurrentVideo);
         }
     }
@@ -165,8 +164,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
             return;
         }
 
-        if ((isSubscriptionsSection() && getGeneralData().isRememberSubscriptionsPositionEnabled()) ||
-                (isPinnedSection() && getGeneralData().isRememberPinnedPositionEnabled())) {
+        if (isSubscriptionsSection() && getGeneralData().isRememberSubscriptionsPositionEnabled()) {
             getView().selectSectionItem(getGeneralData().getSelectedItem(mCurrentSection.getId()));
         }
     }

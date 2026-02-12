@@ -69,7 +69,7 @@ public class GeneralData implements ProfileChangeListener {
     private boolean mIsSelectChannelSectionEnabled;
     private boolean mIsOldUpdateNotificationsEnabled;
     private boolean mIsRememberSubscriptionsPositionEnabled;
-    private boolean mIsRememberPinnedPositionEnabled;
+
     private boolean mIsRemapDpadUpToSpeedEnabled;
     private boolean mIsRemapDpadUpToVolumeEnabled;
     private boolean mIsRemapDpadLeftToVolumeEnabled;
@@ -129,15 +129,6 @@ public class GeneralData implements ProfileChangeListener {
 
     public void setRememberSubscriptionsPositionEnabled(boolean enable) {
         mIsRememberSubscriptionsPositionEnabled = enable;
-        persistState();
-    }
-
-    public boolean isRememberPinnedPositionEnabled() {
-        return mIsRememberPinnedPositionEnabled;
-    }
-
-    public void setRememberPinnedPositionEnabled(boolean enable) {
-        mIsRememberPinnedPositionEnabled = enable;
         persistState();
     }
 
@@ -712,7 +703,6 @@ public class GeneralData implements ProfileChangeListener {
 
         mIsFullscreenModeEnabled = Helpers.parseBoolean(split, 60, true);
 
-        mIsRememberPinnedPositionEnabled = Helpers.parseBoolean(split, 62, false);
         mSelectedItems = Helpers.parseMap(split, 63, Helpers::parseInt, Video::fromString);
         mIsFirstUseTooltipEnabled = Helpers.parseBoolean(split, 64, true);
         mIsDeviceSpecificBackupEnabled = Helpers.parseBoolean(split, 65, false);
@@ -795,7 +785,7 @@ public class GeneralData implements ProfileChangeListener {
                 null, 
                 mIsFullscreenModeEnabled, 
                 null,
-                mIsRememberPinnedPositionEnabled, 
+
                 mSelectedItems, 
                 mIsFirstUseTooltipEnabled, 
                 mIsDeviceSpecificBackupEnabled, 
