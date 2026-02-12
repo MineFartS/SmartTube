@@ -60,8 +60,7 @@ public class VideoCardPresenter extends LongClickPresenter {
         mCardPreviewType = getCardPreviewType(context);
         mThumbQuality = getThumbQuality(context);
 
-        boolean isCardMultilineTitleEnabled = isCardMultilineTitleEnabled(context);
-        boolean isCardMultilineSubtitleEnabled = isCardMultilineSubtitleEnabled(context);
+
         boolean isCardTextAutoScrollEnabled = isCardTextAutoScrollEnabled(context);
         float cardTextScrollSpeed = getCardTextScrollSpeed(context);
 
@@ -75,8 +74,9 @@ public class VideoCardPresenter extends LongClickPresenter {
             }
         };
 
-        cardView.setTitleLinesNum(isCardMultilineTitleEnabled ? 2 : 1);
-        cardView.setContentLinesNum(isCardMultilineSubtitleEnabled ? 2 : 1);
+        cardView.setTitleLinesNum(2);
+        cardView.setContentLinesNum(2);
+
         cardView.enableTextAutoScroll(isCardTextAutoScrollEnabled);
         cardView.setTextScrollSpeed(cardTextScrollSpeed);
         cardView.setFocusable(true);
@@ -203,14 +203,6 @@ public class VideoCardPresenter extends LongClickPresenter {
 
     protected int getCardPreviewType(Context context) {
         return MainUIData.instance(context).getCardPreviewType();
-    }
-
-    protected boolean isCardMultilineTitleEnabled(Context context) {
-        return MainUIData.instance(context).isCardMultilineTitleEnabled();
-    }
-
-    protected boolean isCardMultilineSubtitleEnabled(Context context) {
-        return MainUIData.instance(context).isCardMultilineSubtitleEnabled();
     }
 
     protected float getCardTextScrollSpeed(Context context) {

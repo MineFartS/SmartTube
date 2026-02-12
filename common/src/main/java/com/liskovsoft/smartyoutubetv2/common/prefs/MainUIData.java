@@ -190,11 +190,7 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     private final Context mContext;
     
     private final AppPrefs mPrefs;
-    
-    private boolean mIsCardMultilineTitleEnabled;
-    
-    private boolean mIsCardMultilineSubtitleEnabled;
-    
+            
     private boolean mIsCardTextAutoScrollEnabled;
     
     private int mCardTitleLinesNum;
@@ -248,28 +244,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         }
 
         return sInstance;
-
-    }
-
-    public boolean isCardMultilineTitleEnabled() {
-        return mIsCardMultilineTitleEnabled;
-    }
-
-    public void setCardMultilineTitleEnabled(boolean enable) {
-        
-        mIsCardMultilineTitleEnabled = enable;
-        persistState();
-    
-    }
-
-    public boolean isCardMultilineSubtitleEnabled() {
-        return mIsCardMultilineSubtitleEnabled;
-    }
-
-    public void setCardMultilineSubtitleEnabled(boolean enable) {
-        
-        mIsCardMultilineSubtitleEnabled = enable;
-        persistState();
 
     }
 
@@ -543,7 +517,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
 
         mUIScale = Helpers.parseFloat(split, 2, 1.0f);
         mColorSchemeIndex = Helpers.parseInt(split, 3, 1);
-        mIsCardMultilineTitleEnabled = Helpers.parseBoolean(split, 4, true);
         mChannelCategorySorting = Helpers.parseInt(split, 5, CHANNEL_SORTING_LAST_VIEWED);
         mPlaylistsStyle = Helpers.parseInt(split, 6, PLAYLISTS_STYLE_GRID);
         mCardTitleLinesNum = Helpers.parseInt(split, 7, 1);
@@ -555,7 +528,7 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         mTopButtons = Helpers.parseInt(split, 13, TOP_BUTTON_DEFAULT);
         // 14
         mThumbQuality = Helpers.parseInt(split, 15, ClickbaitRemover.THUMB_QUALITY_DEFAULT);
-        mIsCardMultilineSubtitleEnabled = Helpers.parseBoolean(split, 16, true);
+
         mMenuItemsOrdered = Helpers.parseLongList(split, 17);
         mIsChannelsFilterEnabled = Helpers.parseBoolean(split, 18, true);
         mIsChannelSearchBarEnabled = Helpers.parseBoolean(split, 19, true);
@@ -618,7 +591,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
                 null,
                 mUIScale, 
                 mColorSchemeIndex, 
-                mIsCardMultilineTitleEnabled,
                 mChannelCategorySorting, 
                 mPlaylistsStyle, 
                 mCardTitleLinesNum, 
@@ -629,7 +601,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
                 mTopButtons,
                 null, 
                 mThumbQuality, 
-                mIsCardMultilineSubtitleEnabled, 
                 Helpers.mergeList(mMenuItemsOrdered),
                 mIsChannelsFilterEnabled, 
                 mIsChannelSearchBarEnabled, 

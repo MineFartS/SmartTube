@@ -123,17 +123,9 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
     private void appendCardStyle(AppDialogPresenter settingsPresenter) {
         List<OptionItem> options = new ArrayList<>();
 
-        OptionItem multilineTitle = UiOptionItem.from(getContext().getString(R.string.card_multiline_title),
-                option -> mMainUIData.setCardMultilineTitleEnabled(option.isSelected()), mMainUIData.isCardMultilineTitleEnabled());
-
-        OptionItem multilineSubtitle = UiOptionItem.from(getContext().getString(R.string.card_multiline_subtitle),
-                option -> mMainUIData.setCardMultilineSubtitleEnabled(option.isSelected()), mMainUIData.isCardMultilineSubtitleEnabled());
-
         OptionItem autoScrolledTitle = UiOptionItem.from(getContext().getString(R.string.card_auto_scrolled_title),
                 option -> mMainUIData.setCardTextAutoScrollEnabled(option.isSelected()), mMainUIData.isCardTextAutoScrollEnabled());
         
-        options.add(multilineTitle);
-        options.add(multilineSubtitle);
         if (Build.VERSION.SDK_INT > 19) {
             options.add(autoScrolledTitle);
         }

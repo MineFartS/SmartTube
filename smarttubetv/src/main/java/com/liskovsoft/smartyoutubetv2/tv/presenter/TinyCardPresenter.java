@@ -18,11 +18,6 @@ public class TinyCardPresenter extends VideoCardPresenter {
     }
 
     @Override
-    protected boolean isCardMultilineTitleEnabled(Context context) {
-        return false;
-    }
-
-    @Override
     protected boolean isContentEnabled() {
         return false;
     }
