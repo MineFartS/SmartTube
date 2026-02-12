@@ -618,19 +618,6 @@ public class VideoStateController extends BasePlayerController {
     }
 
     private void syncWithPlaylists() {
-        Video video = getVideo();
-
-        if (video == null) {
-            return;
-        }
-
-        if (getMediaServiceData().isContentHidden(MediaServiceData.CONTENT_WATCHED_WATCH_LATER) && video.percentWatched > 95) { // remove fully watched
-            MediaServiceManager.instance().removeFromWatchLaterPlaylist(video);
-        }
-
-        if (getGeneralData().isHideWatchedFromNotificationsEnabled()) { // remove any watched length
-            MediaServiceManager.instance().hideNotification(video);
-        }
     }
 
     private boolean isLiveEnd() {
