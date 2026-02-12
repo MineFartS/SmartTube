@@ -3,15 +3,13 @@
         "/.gradle/": true,
         "/build/": true,
         "/smarttubetv/build/": true,
-        "/MediaServiceCore/": true,
-        "/SharedModules/": true
+        "/dependencies/": true
     },
     "deadCodeDetector.exclude": [
         ".gradle",
         "build",
         "smarttubetv/build",
-        "MediaServiceCore",
-        "SharedModules"
+        "dependencies"
     ],
     "deadCodeDetector.analyzeOnSave": false,
     "deadCodeDetector.confidenceThreshold": "high",
