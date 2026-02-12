@@ -207,8 +207,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         
     private long mMenuItems;
     
-    private int mTopButtons;
-    
     private int mThumbQuality;
     
     private List<Long> mMenuItemsOrdered;
@@ -374,20 +372,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
 
     }
 
-    public boolean isTopButtonEnabled(int button) {
-        return (mTopButtons & button) == button;
-    }
-
-    public void setTopButtonEnabled(int button) {
-        mTopButtons |= button;
-        persistState();
-    }
-
-    public void setTopButtonDisabled(int button) {
-        mTopButtons &= ~button;
-        persistState();
-    }
-
     public int getCardPreviewType() {
         return mCardPreviewType;
     }
@@ -487,7 +471,7 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         mIsUploadsAutoLoadEnabled = Helpers.parseBoolean(split, 10, true);
 
         mMenuItems = Helpers.parseLong(split, 12, MENU_ITEM_DEFAULT);
-        mTopButtons = Helpers.parseInt(split, 13, TOP_BUTTON_DEFAULT);
+
         // 14
         mThumbQuality = Helpers.parseInt(split, 15, ClickbaitRemover.THUMB_QUALITY_DEFAULT);
 
@@ -558,7 +542,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
                 mCardTitleLinesNum, 
                 mIsUploadsAutoLoadEnabled, 
                 mMenuItems, 
-                mTopButtons,
                 null, 
                 mThumbQuality, 
                 Helpers.mergeList(mMenuItemsOrdered),

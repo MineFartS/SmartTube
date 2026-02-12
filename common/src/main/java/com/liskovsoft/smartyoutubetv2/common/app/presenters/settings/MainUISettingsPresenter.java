@@ -48,7 +48,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
     public void show() {
         AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
 
-        appendTopButtonsCategory(settingsPresenter);
         appendColorScheme(settingsPresenter);
         appendCardPreviews(settingsPresenter);
 
@@ -59,24 +58,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
         appendMiscCategory(settingsPresenter);
 
         settingsPresenter.showDialog(getContext().getString(R.string.dialog_main_ui), mOnFinish);
-    }
-
-    private void appendTopButtonsCategory(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
-
-        for (int[] pair : new int[][] {
-                {R.string.settings_search, MainUIData.TOP_BUTTON_SEARCH},
-                {R.string.settings_accounts, MainUIData.TOP_BUTTON_BROWSE_ACCOUNTS}}) {
-            options.add(UiOptionItem.from(getContext().getString(pair[0]), optionItem -> {
-                if (optionItem.isSelected()) {
-                    mMainUIData.setTopButtonEnabled(pair[1]);
-                } else {
-                    mMainUIData.setTopButtonDisabled(pair[1]);
-                }
-            }, mMainUIData.isTopButtonEnabled(pair[1])));
-        }
-
-        settingsPresenter.appendCheckedCategory(getContext().getString(R.string.various_buttons), options);
     }
 
     private void appendColorScheme(AppDialogPresenter settingsPresenter) {
