@@ -61,7 +61,7 @@ public class GeneralData implements ProfileChangeListener {
     private boolean mIsGlobalClockEnabled;
     private String mSettingsPassword;
     private String mMasterPassword;
-    private boolean mIsChildModeEnabled;
+
     private boolean mIsHistoryEnabled;
     private int mHistoryState;
     private boolean mIsAltAppIconEnabled;
@@ -519,16 +519,6 @@ public class GeneralData implements ProfileChangeListener {
         persistState();
     }
 
-    public boolean isChildModeEnabled() {
-        return mIsChildModeEnabled;
-    }
-
-    public void setChildModeEnabled(boolean enable) {
-        mIsChildModeEnabled = enable;
-
-        persistState();
-    }
-
     public boolean isHistoryEnabled() {
         return mHistoryState == HISTORY_ENABLED;
     }
@@ -695,7 +685,7 @@ public class GeneralData implements ProfileChangeListener {
         mIsGlobalClockEnabled = Helpers.parseBoolean(split, 31, true);
 
         mSettingsPassword = Helpers.parseStr(split, 33);
-        mIsChildModeEnabled = Helpers.parseBoolean(split, 34, false);
+
         mIsHistoryEnabled = Helpers.parseBoolean(split, 35, true);
         mScreensaverTimeoutMs = Helpers.parseInt(split, 36, 60 * 1_000);
 
@@ -778,7 +768,6 @@ public class GeneralData implements ProfileChangeListener {
                 mIsGlobalClockEnabled, 
                 null, 
                 mSettingsPassword, 
-                mIsChildModeEnabled, 
                 mIsHistoryEnabled,
                 mScreensaverTimeoutMs, 
                 null, 

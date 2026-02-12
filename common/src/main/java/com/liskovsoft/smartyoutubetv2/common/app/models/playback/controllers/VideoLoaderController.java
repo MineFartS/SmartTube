@@ -170,8 +170,7 @@ public class VideoLoaderController extends BasePlayerController {
 
         mLastErrorType = -1;
         getPlayer().setButtonState(R.id.action_repeat, video.finishOnEnded ? PlayerConstants.PLAYBACK_MODE_CLOSE : getPlayerData().getPlaybackMode());
-        // Can't set title at this point
-        //checkSleepTimer();
+
     }
 
     @Override
@@ -183,11 +182,8 @@ public class VideoLoaderController extends BasePlayerController {
 
     @Override
     public boolean onNextClicked() {
-        if (getGeneralData().isChildModeEnabled()) {
-            onPlayEnd();
-        } else {
-            loadNext();
-        }
+
+        loadNext();
 
         return true;
     }

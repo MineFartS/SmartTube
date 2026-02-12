@@ -623,31 +623,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.child_mode),
-                getContext().getString(R.string.child_mode_desc),
-                option -> {
-                    if (option.isSelected()) {
-                        AppDialogUtil.showConfirmationDialog(
-                            getContext(), 
-                            getContext().getString(R.string.lost_setting_warning),
-                            () -> showPasswordDialog(
-                                settingsPresenter, 
-                                () -> enableChildMode(option.isSelected())
-                            ),
-                            settingsPresenter::closeDialog
-                        );
-                    } else {
-                        mGeneralData.setSettingsPassword(null);
-                        enableChildMode(option.isSelected());
-                        settingsPresenter.closeDialog();
-                    }
-                },
-                mGeneralData.isChildModeEnabled()
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
                 getContext().getString(R.string.protect_settings_with_password),
                 option -> {
                     if (option.isSelected()) {
@@ -739,67 +714,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
                         OkHttpManager.unhold();
                     },
                     mGeneralData.isProxyEnabled()));
-        }
-    }
-
-    private void enableChildMode(boolean enable) {
-        mGeneralData.setChildModeEnabled(enable);
-
-        int topButtons = MainUIData.TOP_BUTTON_BROWSE_ACCOUNTS;
-        
-        int playerButtons = 
-            PlayerTweaksData.PLAYER_BUTTON_PLAY_PAUSE | 
-            PlayerTweaksData.PLAYER_BUTTON_NEXT | 
-            PlayerTweaksData.PLAYER_BUTTON_PREVIOUS |
-            PlayerTweaksData.PLAYER_BUTTON_DISLIKE | 
-            PlayerTweaksData.PLAYER_BUTTON_LIKE | 
-            PlayerTweaksData.PLAYER_BUTTON_SCREEN_DIMMING |
-            PlayerTweaksData.PLAYER_BUTTON_SEEK_INTERVAL | 
-            PlayerTweaksData.PLAYER_BUTTON_PLAYBACK_QUEUE | 
-            PlayerTweaksData.PLAYER_BUTTON_OPEN_CHANNEL |
-            PlayerTweaksData.PLAYER_BUTTON_PIP | 
-            PlayerTweaksData.PLAYER_BUTTON_VIDEO_SPEED | 
-            PlayerTweaksData.PLAYER_BUTTON_SUBTITLES |
-            PlayerTweaksData.PLAYER_BUTTON_VIDEO_ZOOM | 
-            PlayerTweaksData.PLAYER_BUTTON_ADD_TO_PLAYLIST;
-
-        long menuItems = 
-            MainUIData.MENU_ITEM_SHOW_QUEUE | 
-            MainUIData.MENU_ITEM_ADD_TO_QUEUE | 
-            MainUIData.MENU_ITEM_PLAY_NEXT |
-            MainUIData.MENU_ITEM_SELECT_ACCOUNT | 
-            MainUIData.MENU_ITEM_STREAM_REMINDER | 
-            MainUIData.MENU_ITEM_SAVE_REMOVE_PLAYLIST;
-
-        PlayerTweaksData tweaksData = PlayerTweaksData.instance(getContext());
-        SearchData searchData = SearchData.instance(getContext());
-
-        // Remove all
-        mMainUIData.setTopButtonDisabled(Integer.MAX_VALUE);
-        tweaksData.setPlayerButtonDisabled(Integer.MAX_VALUE);
-        mMainUIData.setMenuItemDisabled(Integer.MAX_VALUE);
-        BrowsePresenter.instance(getContext()).enableAllSections(false);
-        searchData.setPopularSearchesDisabled(true);
-
-        if (enable) {
-            // apply child tweaks
-            mMainUIData.setTopButtonEnabled(topButtons);
-            tweaksData.setPlayerButtonEnabled(playerButtons);
-            mMainUIData.setMenuItemEnabled(menuItems);
-            mPlayerData.setPlaybackMode(PlayerConstants.PLAYBACK_MODE_LIST);
-            BrowsePresenter.instance(getContext()).enableSection(MediaGroup.TYPE_HISTORY, true);
-            BrowsePresenter.instance(getContext()).enableSection(MediaGroup.TYPE_USER_PLAYLISTS, true);
-            BrowsePresenter.instance(getContext()).enableSection(MediaGroup.TYPE_SUBSCRIPTIONS, true);
-            BrowsePresenter.instance(getContext()).enableSection(MediaGroup.TYPE_CHANNEL_UPLOADS, true);
-        } else {
-            // apply default tweaks
-            mMainUIData.setTopButtonEnabled(MainUIData.TOP_BUTTON_DEFAULT);
-            tweaksData.setPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_DEFAULT);
-            mMainUIData.setMenuItemEnabled(MainUIData.MENU_ITEM_DEFAULT);
-            BrowsePresenter.instance(getContext()).enableAllSections(true);
-            tweaksData.setSuggestionsDisabled(false);
-            mPlayerData.setPlaybackMode(PlayerConstants.PLAYBACK_MODE_ALL);
-            searchData.setPopularSearchesDisabled(false);
         }
     }
 
