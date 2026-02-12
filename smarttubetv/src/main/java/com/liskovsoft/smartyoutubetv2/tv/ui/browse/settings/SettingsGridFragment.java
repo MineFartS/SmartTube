@@ -115,32 +115,21 @@ public class SettingsGridFragment extends GridFragment implements SettingsSectio
     }
 
     private final class ItemViewClickedListener implements OnItemViewClickedListener {
+    
         @Override
-        public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
-                                  RowPresenter.ViewHolder rowViewHolder, Row row) {
+        public void onItemClicked(
+            Presenter.ViewHolder itemViewHolder, 
+            Object item,
+            RowPresenter.ViewHolder rowViewHolder, 
+            Row row
+        ) {
 
             if (item instanceof SettingsItem) {
-                String password = GeneralData.instance(getContext()).getSettingsPassword();
-
-                if (password == null) {
-                    ((SettingsItem) item).onClick.run();
-                } else {
-                    SimpleEditDialog.showPassword(
-                            getContext(),
-                            getContext().getString(R.string.enter_settings_password),
-                            null,
-                            newValue -> {
-                                if (Utils.passwordMatch(password, newValue)) {
-                                    ((SettingsItem) item).onClick.run();
-                                    return true;
-                                }
-                                return false;
-                            });
-                }
-
-            } else {
-                Toast.makeText(getContext(), item.toString(), Toast.LENGTH_SHORT).show();
+                ((SettingsItem) item).onClick.run();
             }
+
         }
+    
     }
+
 }
