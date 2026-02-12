@@ -11,6 +11,29 @@ function Test-ADBConnection {
     
 }
 
+function Clear-Cache {
+
+    Write-Host 'Clearing Cache ...'
+
+    $Dirs = @(
+        ".gradle",
+        "build",
+        "smarttubetv\build",
+        "common\build"
+    )
+
+    foreach ($Dir in $Dirs) {
+
+        Remove-Item `
+            -Path $Dir `
+            -Force `
+            -Recurse `
+            -ErrorAction SilentlyContinue `
+            | Out-Null
+    }
+
+}
+
 #==========================================================================
 # ENVIRONMENT
 
@@ -80,8 +103,7 @@ if (-not (Test-ADBConnection)) {
 #==========================================================================
 # GRADLE
 
-# Cleanup cache (fix build errors)
-Remove-Item ".gradle" -Recurse
+Clear-Cache
 
 # Execute Gradle
 & "$env:JAVA_HOME/bin/java.exe" `
@@ -90,5 +112,7 @@ Remove-Item ".gradle" -Recurse
     "clean" "installStstableDebug" `
     "--warning-mode" "all" `
     @args
+
+Clear-Cache
 
 #==========================================================================
