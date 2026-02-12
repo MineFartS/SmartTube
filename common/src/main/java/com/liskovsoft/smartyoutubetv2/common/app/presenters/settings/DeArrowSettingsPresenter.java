@@ -63,17 +63,10 @@ public class DeArrowSettingsPresenter extends BasePresenter<Void> {
     private void appendSwitches(AppDialogPresenter settingsPresenter) {
         List<OptionItem> options = new ArrayList<>();
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.card_unlocalized_titles),
-                option -> {
-                    mMainUIData.setUnlocalizedTitlesEnabled(option.isSelected());
-                    mDeArrowData.setReplaceTitlesEnabled(false);
-                },
-                mMainUIData.isUnlocalizedTitlesEnabled()));
-
         options.add(UiOptionItem.from(getContext().getString(R.string.crowdsoursed_titles),
                 optionItem -> {
                     mDeArrowData.setReplaceTitlesEnabled(optionItem.isSelected());
-                    mMainUIData.setUnlocalizedTitlesEnabled(false);
+
                 },
                 mDeArrowData.isReplaceTitlesEnabled()));
 

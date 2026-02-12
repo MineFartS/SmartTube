@@ -60,7 +60,6 @@ public class GeneralData implements ProfileChangeListener {
     private boolean mIsVPNEnabled;
     private boolean mIsGlobalClockEnabled;
     private String mSettingsPassword;
-    private String mMasterPassword;
 
     private boolean mIsHistoryEnabled;
     private int mHistoryState;
@@ -500,16 +499,6 @@ public class GeneralData implements ProfileChangeListener {
         persistState();
     }
 
-    public String getMasterPassword() {
-        return mMasterPassword;
-    }
-
-    public void setMasterPassword(String password) {
-        mMasterPassword = password;
-
-        persistState();
-    }
-
     public boolean isHistoryEnabled() {
         return mHistoryState == HISTORY_ENABLED;
     }
@@ -683,7 +672,6 @@ public class GeneralData implements ProfileChangeListener {
         mIsAltAppIconEnabled = Helpers.parseBoolean(split, 38, false);
         mVersionCode = Helpers.parseInt(split, 39, -1);
         mIsSelectChannelSectionEnabled = Helpers.parseBoolean(split, 40, true);
-        mMasterPassword = Helpers.parseStr(split, 41);
 
         mIsOldUpdateNotificationsEnabled = Helpers.parseBoolean(split, 43, false);
         mScreensaverDimmingPercents = Helpers.parseInt(split, 44, 80);
@@ -764,7 +752,7 @@ public class GeneralData implements ProfileChangeListener {
                 mIsAltAppIconEnabled, 
                 mVersionCode, 
                 mIsSelectChannelSectionEnabled, 
-                mMasterPassword,
+
                 null, 
                 mIsOldUpdateNotificationsEnabled, 
                 mScreensaverDimmingPercents, 

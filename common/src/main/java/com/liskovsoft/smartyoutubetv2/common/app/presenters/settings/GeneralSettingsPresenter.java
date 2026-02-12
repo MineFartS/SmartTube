@@ -621,20 +621,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.enable_master_password),
-                option -> {
-                    if (option.isSelected()) {
-                        showMasterPasswordDialog(settingsPresenter, null);
-                    } else {
-                        mGeneralData.setMasterPassword(null);
-                    }
-                },
-                mGeneralData.getMasterPassword() != null
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
                 getContext().getString(R.string.remember_position_subscriptions),
                 option -> mGeneralData.setRememberSubscriptionsPositionEnabled(option.isSelected()),
                 mGeneralData.isRememberSubscriptionsPositionEnabled()
@@ -708,28 +694,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
                 null,
                 newValue -> {
                     mGeneralData.setSettingsPassword(newValue);
-                    if (onSuccess != null) {
-                        onSuccess.run();
-                    }
-                    return true;
-                });
-    }
-
-    private void showMasterPasswordDialog(AppDialogPresenter settingsPresenter, Runnable onSuccess) {
-        if (mGeneralData.getMasterPassword() != null) {
-            if (onSuccess != null) {
-                onSuccess.run();
-            }
-            return;
-        }
-
-        settingsPresenter.closeDialog();
-        SimpleEditDialog.showPassword(
-                getContext(),
-                getContext().getString(R.string.enable_master_password),
-                null,
-                newValue -> {
-                    mGeneralData.setMasterPassword(newValue);
                     if (onSuccess != null) {
                         onSuccess.run();
                     }

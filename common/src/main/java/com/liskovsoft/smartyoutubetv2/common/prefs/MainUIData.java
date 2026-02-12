@@ -231,8 +231,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     
     private final Runnable mPersistStateInt = this::persistStateInt;
     
-    private boolean mIsUnlocalizedTitlesEnabled;
-
     private MainUIData(Context context) {
 
         mContext = context;
@@ -463,15 +461,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         persistState();
     }
 
-    public boolean isUnlocalizedTitlesEnabled() {
-        return mIsUnlocalizedTitlesEnabled;
-    }
-
-    public void setUnlocalizedTitlesEnabled(boolean enabled) {
-        mIsUnlocalizedTitlesEnabled = enabled;
-        persistState();
-    }
-
     private void initColorSchemes() {
         
         mColorSchemes.add(
@@ -572,7 +561,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         mIsChannelSearchBarEnabled = Helpers.parseBoolean(split, 19, true);
         mIsPinnedChannelRowsEnabled = Helpers.parseBoolean(split, 20, true);
         mCardPreviewType = Helpers.parseInt(split, 21, CARD_PREVIEW_DISABLED);
-        mIsUnlocalizedTitlesEnabled = Helpers.parseBoolean(split, 22, false);
 
         int idx = -1;
         for (Long menuItem : MENU_ITEM_DEFAULT_ORDER) {
@@ -646,8 +634,7 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
                 mIsChannelsFilterEnabled, 
                 mIsChannelSearchBarEnabled, 
                 mIsPinnedChannelRowsEnabled, 
-                mCardPreviewType,
-                mIsUnlocalizedTitlesEnabled
+                mCardPreviewType
             )
         );
     }

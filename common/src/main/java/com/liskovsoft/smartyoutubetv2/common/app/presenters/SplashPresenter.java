@@ -107,7 +107,7 @@ public class SplashPresenter extends BasePresenter<SplashView> {
         Utils.postDelayed(mCheckForUpdates, APP_INIT_DELAY_MS);
         Utils.updateRemoteControlService(getContext());
 
-        checkMasterPassword(() -> applyNewIntent(getView().getNewIntent()));
+        applyNewIntent(getView().getNewIntent());
 
         showAccountSelectionIfNeeded(); // should be placed after Intent chain
         checkAccountPassword();
@@ -321,31 +321,6 @@ public class SplashPresenter extends BasePresenter<SplashView> {
             if (processor.process(intent)) {
                 break;
             }
-        }
-    }
-
-    private void checkMasterPassword(Runnable onSuccess) {
-        String password = GeneralData.instance(getContext()).getMasterPassword();
-
-        // No passwd or the app already started
-        if (password == null || getViewManager().getTopView() != null) {
-            onSuccess.run();
-            getView().finishView(); // critical part, fix black screen on app exit
-        } else {
-            SimpleEditDialog.showPassword(
-                    getContext(),
-                    getContext().getString(R.string.enter_master_password),
-                    null,
-                    newValue -> {
-                        if (Utils.passwordMatch(password, newValue)) {
-                            onSuccess.run();
-                            return true;
-                        }
-
-                        return false;
-                    },
-                    () -> getView().finishView() // critical part, fix black screen on app exit
-            );
         }
     }
 

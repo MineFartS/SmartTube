@@ -565,8 +565,7 @@
     
     <string name="select_channel_section">Open corresponding section when the app launched from ATV Channels</string>
     <string name="enable_voice_search_desc">The official app will be replaced with a so-called \"bridge\". A bridge helps to transfer global search requests to our app.</string>
-    <string name="enable_master_password">Enable master password</string>
-    <string name="enter_master_password">Enter master password</string>
+
     <string name="disable_stream_buffer">Disable buffer on streams</string>
     <string name="disable_stream_buffer_desc">Fix for situations when the stream too far behind. Note: the stream may start to lag.</string>
     <string name="sony_frame_drop_fix">Frame drop fix #1</string>
@@ -695,7 +694,7 @@
     <string name="card_preview_muted">Video without sound</string>
     <string name="card_preview_full">Video with sound</string>
     <string name="card_preview">Card preview</string>
-    <string name="card_unlocalized_titles">Unlocalized video titles</string>
+
     <string name="dont_resize_video_to_fit_dialog">Don\'t resize video to fit dialog</string>
     <string name="typing_corrections">Disable auto-correction while typing text</string>
     <string name="suggestions_horizontally_scrolled">Horizontally scrolled Suggestions</string>
