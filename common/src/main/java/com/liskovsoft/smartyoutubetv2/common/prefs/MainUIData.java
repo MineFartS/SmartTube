@@ -201,8 +201,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     
     private float mUIScale;
     
-    private float mVideoGridScale;
-    
     private final List<ColorScheme> mColorSchemes = new ArrayList<>();
     
     private int mColorSchemeIndex;
@@ -306,18 +304,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     public void setThumbQuality(int quality) {
         
         mThumbQuality = quality;
-        persistState();
-
-    }
-
-    public float getVideoGridScale() {
-        // Fixing the bug with chaotic cards positioning on Android 4.4 devices.
-        return Build.VERSION.SDK_INT <= 19 ? 1.2f : mVideoGridScale;
-    }
-
-    public void setVideoGridScale(float scale) {
-        
-        mVideoGridScale = scale;
         persistState();
 
     }
@@ -566,7 +552,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
 
         String[] split = Helpers.splitData(data);
 
-        mVideoGridScale = Helpers.parseFloat(split, 1, 1.0f); // 4 cards in a row
         mUIScale = Helpers.parseFloat(split, 2, 1.0f);
         mColorSchemeIndex = Helpers.parseInt(split, 3, 1);
         mIsCardMultilineTitleEnabled = Helpers.parseBoolean(split, 4, true);
@@ -643,7 +628,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
             MAIN_UI_DATA,
             Helpers.mergeData(
                 null,
-                mVideoGridScale, 
                 mUIScale, 
                 mColorSchemeIndex, 
                 mIsCardMultilineTitleEnabled,

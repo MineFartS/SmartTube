@@ -189,7 +189,12 @@ public class VideoCardPresenter extends LongClickPresenter {
     }
     
     protected Pair<Integer, Integer> getCardDimensPx(Context context) {
-        return GridFragmentHelper.getCardDimensPx(context, R.dimen.card_width, R.dimen.card_height, MainUIData.instance(context).getVideoGridScale());
+        return GridFragmentHelper.getCardDimensPx(
+            context, 
+            R.dimen.card_width, 
+            R.dimen.card_height, 
+            1.0f //Scale
+        );
     }
 
     protected boolean isCardTextAutoScrollEnabled(Context context) {

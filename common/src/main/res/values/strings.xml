@@ -85,8 +85,7 @@
     <string name="side_panel_sections">Set-up sections</string>
 
     <string name="large_ui">Large UI</string>
-    <string name="video_grid_scale">Video grid scale</string>
-    <string name="scale_ui">UI scale</string>
+
     <string name="color_scheme">Color scheme</string>
     <string name="color_scheme_default">Default</string>
     <string name="color_scheme_red_grey">Red-grey</string>

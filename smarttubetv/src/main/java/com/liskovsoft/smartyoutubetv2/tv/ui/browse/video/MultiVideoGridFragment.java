@@ -52,7 +52,6 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
     private int mSelectedItemIndex1 = -1;
 
     private Video mSelectedItem1;
-    private float mVideoGridScale;
     private final Runnable mRestore1Task = this::restorePosition1;
 
     @Override
@@ -63,7 +62,6 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
         mCardPresenter1 = new ChannelCardPresenter();
         mCardPresenter2 = new VideoCardPresenter();
         mBackgroundManager = ((LeanbackActivity) getActivity()).getBackgroundManager();
-        mVideoGridScale = MainUIData.instance(getActivity()).getVideoGridScale();
 
         setupAdapter();
         setupEventListeners();
@@ -212,7 +210,13 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
 
         // Right grid of channel's content
         VerticalGridPresenter presenter2 = new CustomVerticalGridPresenter(R.layout.lb_vertical_grid2, R.id.browse_grid2);
-        int maxColsNum = GridFragmentHelper.getMaxColsNum(getContext(), R.dimen.card_width, mVideoGridScale);
+        
+        int maxColsNum = GridFragmentHelper.getMaxColsNum(
+            getContext(), 
+            R.dimen.card_width, 
+            1.0f // Scale
+        );
+        
         presenter2.setNumberOfColumns(Math.max(maxColsNum, 1) - 1);
 
         setGridPresenter1(presenter1);

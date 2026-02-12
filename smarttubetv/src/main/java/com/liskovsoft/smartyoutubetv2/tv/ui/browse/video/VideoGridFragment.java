@@ -42,7 +42,6 @@ public class VideoGridFragment extends GridFragment implements VideoSection {
     private VideoCardPresenter mCardPresenter;
     private int mSelectedItemIndex = -1;
     private Video mSelectedItem;
-    private float mVideoGridScale;
     private final Runnable mRestoreTask = this::restorePosition;
 
     @Override
@@ -52,7 +51,6 @@ public class VideoGridFragment extends GridFragment implements VideoSection {
         mMainPresenter = getMainPresenter();
         mCardPresenter = isShorts() ? new ShortsCardPresenter() : new VideoCardPresenter();
         mBackgroundManager = ((LeanbackActivity) getActivity()).getBackgroundManager();
-        mVideoGridScale = MainUIData.instance(getActivity()).getVideoGridScale();
 
         setupAdapter();
         setupEventListeners();
@@ -87,7 +85,11 @@ public class VideoGridFragment extends GridFragment implements VideoSection {
     private void setupAdapter() {
         VerticalGridPresenter presenter = new CustomVerticalGridPresenter();
         presenter.setNumberOfColumns(
-                GridFragmentHelper.getMaxColsNum(getContext(), isShorts() ? R.dimen.shorts_card_width : R.dimen.card_width, mVideoGridScale)
+                GridFragmentHelper.getMaxColsNum(
+                    getContext(), 
+                    isShorts() ? R.dimen.shorts_card_width : R.dimen.card_width, 
+                    1.0f // Scale
+                )
         );
         setGridPresenter(presenter);
 

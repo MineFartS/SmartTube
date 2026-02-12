@@ -57,8 +57,7 @@ public class MediaServiceManager implements OnAccountChange {
     private Disposable mHistoryAction;
     private static final int MIN_GRID_GROUP_SIZE = 13;
     private static final int MIN_ROW_GROUP_SIZE = 5;
-    private static final int MIN_SCALED_GRID_GROUP_SIZE = 35;
-    private static final int MIN_SCALED_ROW_GROUP_SIZE = 10;
+
     private final Map<Integer, Pair<Integer, Long>> mContinuations = new HashMap<>();
     private final List<AccountChangeListener> mAccountListeners = new CopyOnWriteArrayList<>();
 
@@ -353,10 +352,9 @@ public class MediaServiceManager implements OnAccountChange {
 
         MainUIData mainUIData = MainUIData.instance(context);
 
-        boolean isScaledUIEnabled = mainUIData.getUIScale() < 0.8f || mainUIData.getVideoGridScale() < 0.8f;
-        int minScaledSize = isGrid ? MIN_SCALED_GRID_GROUP_SIZE : MIN_SCALED_ROW_GROUP_SIZE;
         int minSize = isGrid ? MIN_GRID_GROUP_SIZE : MIN_ROW_GROUP_SIZE;
-        boolean groupTooSmall = isScaledUIEnabled ? totalSize < minScaledSize : totalSize < minSize;
+        
+        boolean groupTooSmall = totalSize < minSize;
 
         mContinuations.put(group.getId(), new Pair<>(groupTooSmall ? totalSize : 0, currentTimeMillis));
 

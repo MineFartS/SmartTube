@@ -100,7 +100,7 @@ public class ChannelCardPresenter extends LongClickPresenter {
                 .load(video.cardImageUrl)
                 .apply(ViewUtil.glideOptions())
                 .listener(mErrorListener)
-                //.error(R.drawable.card_placeholder) // R.color.lb_grey
+
                 .into(imageView);
     }
 
@@ -120,10 +120,12 @@ public class ChannelCardPresenter extends LongClickPresenter {
 
     protected Pair<Integer, Integer> getCardDimensPx(Context context) {
         return GridFragmentHelper.getCardDimensPx(
-                context, R.dimen.channel_card_width,
+                context,
+                R.dimen.channel_card_width,
                 R.dimen.channel_card_height,
-                MainUIData.instance(context).getVideoGridScale(),
-                true);
+                1.0f, // Scale
+                true
+            );
     }
 
     private final RequestListener<Drawable> mErrorListener = new RequestListener<Drawable>() {

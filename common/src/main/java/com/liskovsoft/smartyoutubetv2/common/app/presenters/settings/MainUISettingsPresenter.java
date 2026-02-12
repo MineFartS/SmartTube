@@ -53,17 +53,12 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
         appendCardPreviews(settingsPresenter);
         appendCardStyle(settingsPresenter);
         appendThumbSource(settingsPresenter);
-        //appendCardTitleLines(settingsPresenter);
+
         if (Build.VERSION.SDK_INT > 19) {
             appendCardTextScrollSpeed(settingsPresenter);
         }
         appendChannelSortingCategory(settingsPresenter);
-        //appendPlaylistsCategoryStyle(settingsPresenter);
-        appendScaleUI(settingsPresenter);
-        if (Build.VERSION.SDK_INT > 19) {
-            appendVideoGridScale(settingsPresenter);
-        }
-        //appendTimeFormatCategory(settingsPresenter);
+
         appendMiscCategory(settingsPresenter);
 
         settingsPresenter.showDialog(getContext().getString(R.string.dialog_main_ui), mOnFinish);
@@ -183,21 +178,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
         settingsPresenter.appendRadioCategory(getContext().getString(R.string.channels_section_sorting), options);
     }
 
-    private void appendScaleUI(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
-
-        for (float scale : new float[] {0.4f, 0.5f, 0.6f, 0.65f, 0.7f, 0.75f, 0.8f, 0.85f, 0.9f, 0.95f, 1.0f, 1.05f, 1.1f, 1.15f, 1.2f, 1.25f, 1.3f, 1.35f, 1.4f}) {
-            options.add(UiOptionItem.from(String.format("%sx", scale),
-                    optionItem -> {
-                        mMainUIData.setUIScale(scale);
-                        mRestartApp = true;
-                    },
-                    Helpers.floatEquals(scale, mMainUIData.getUIScale())));
-        }
-
-        settingsPresenter.appendRadioCategory(getContext().getString(R.string.scale_ui), options);
-    }
-
     private void appendCardTextScrollSpeed(AppDialogPresenter settingsPresenter) {
         List<OptionItem> options = new ArrayList<>();
 
@@ -208,21 +188,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
         }
 
         settingsPresenter.appendRadioCategory(getContext().getString(R.string.card_text_scroll_factor), options);
-    }
-
-    private void appendVideoGridScale(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
-
-        for (float scale : new float[] {0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f, 1.1f, 1.2f, 1.25f, 1.3f, 1.35f, 1.4f, 1.5f}) {
-            options.add(UiOptionItem.from(String.format("%sx", scale),
-                    optionItem -> {
-                        mMainUIData.setVideoGridScale(scale);
-                        mRestartApp = true;
-                    },
-                    Helpers.floatEquals(scale, mMainUIData.getVideoGridScale())));
-        }
-
-        settingsPresenter.appendRadioCategory(getContext().getString(R.string.video_grid_scale), options);
     }
 
     private void appendMiscCategory(AppDialogPresenter settingsPresenter) {
