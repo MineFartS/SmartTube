@@ -89,9 +89,6 @@ class SettingsOverride {
         // Hide Content Mixes
         MSD.setContentHidden(MediaServiceData.CONTENT_MIXES, true);
 
-        // Hide Watched Videos from Home
-        MSD.setContentHidden(MediaServiceData.CONTENT_WATCHED_HOME, true);
-
         // Hide Shorts from Channels
         MSD.setContentHidden(MediaServiceData.CONTENT_SHORTS_CHANNEL, true);
 

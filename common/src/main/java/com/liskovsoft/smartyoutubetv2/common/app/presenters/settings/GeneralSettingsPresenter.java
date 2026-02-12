@@ -165,22 +165,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.hide_watched_from_watch_later),
-                option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_WATCHED_WATCH_LATER, option.isSelected()),
-                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_WATCHED_WATCH_LATER)
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
-                getContext().getString(R.string.hide_watched_from_home),
-                option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_WATCHED_HOME, option.isSelected()),
-                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_WATCHED_HOME)
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
                 getContext().getString(R.string.hide_watched_from_subscriptions),
                 option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_WATCHED_SUBSCRIPTIONS, option.isSelected()),
                 mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_WATCHED_SUBSCRIPTIONS)
