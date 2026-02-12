@@ -10,7 +10,7 @@ import com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs.menu.provide
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs.menu.providers.ContextMenuProvider;
 import com.liskovsoft.smartyoutubetv2.common.prefs.AppPrefs.ProfileChangeListener;
 import com.liskovsoft.smartyoutubetv2.common.prefs.common.DataChangeBase;
-import com.liskovsoft.smartyoutubetv2.common.utils.ClickbaitRemover;
+
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 
 import java.util.ArrayList;
@@ -471,9 +471,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         mIsUploadsAutoLoadEnabled = Helpers.parseBoolean(split, 10, true);
 
         mMenuItems = Helpers.parseLong(split, 12, MENU_ITEM_DEFAULT);
-
-        // 14
-        mThumbQuality = Helpers.parseInt(split, 15, ClickbaitRemover.THUMB_QUALITY_DEFAULT);
 
         mMenuItemsOrdered = Helpers.parseLongList(split, 17);
         mIsChannelsFilterEnabled = Helpers.parseBoolean(split, 18, true);

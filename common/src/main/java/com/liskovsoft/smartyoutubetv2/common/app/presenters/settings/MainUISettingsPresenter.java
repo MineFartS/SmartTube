@@ -10,12 +10,11 @@ import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.UiOptionItem
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.AppDialogPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.BrowsePresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.base.BasePresenter;
-import com.liskovsoft.smartyoutubetv2.common.prefs.DeArrowData;
+
 import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData.ColorScheme;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
-import com.liskovsoft.smartyoutubetv2.common.utils.ClickbaitRemover;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
     private final MainUIData mMainUIData;
     private final GeneralData mGeneralData;
     private final PlayerData mPlayerData;
-    private final DeArrowData mDeArrowData;
+
     private boolean mRestartApp;
     private final Runnable mOnFinish = () -> {
         if (mRestartApp) {
@@ -38,7 +37,7 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
         mMainUIData = MainUIData.instance(context);
         mGeneralData = GeneralData.instance(context);
         mPlayerData = PlayerData.instance(context);
-        mDeArrowData = DeArrowData.instance(context);
+
     }
 
     public static MainUISettingsPresenter instance(Context context) {
@@ -50,8 +49,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
 
         appendColorScheme(settingsPresenter);
         appendCardPreviews(settingsPresenter);
-
-        appendThumbSource(settingsPresenter);
 
         appendChannelSortingCategory(settingsPresenter);
 
@@ -95,23 +92,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
         }
 
         settingsPresenter.appendRadioCategory(getContext().getString(R.string.card_preview), options);
-    }
-
-    private void appendThumbSource(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
-
-        for (int[] pair : new int[][] {
-                {R.string.thumb_quality_default, ClickbaitRemover.THUMB_QUALITY_DEFAULT},
-                {R.string.thumb_quality_start, ClickbaitRemover.THUMB_QUALITY_START},
-                {R.string.thumb_quality_middle, ClickbaitRemover.THUMB_QUALITY_MIDDLE},
-                {R.string.thumb_quality_end, ClickbaitRemover.THUMB_QUALITY_END}}) {
-            options.add(UiOptionItem.from(getContext().getString(pair[0]),
-                    optionItem -> mMainUIData.setThumbQuality(pair[1]),
-                    mMainUIData.getThumbQuality() == pair[1]
-                    ));
-        }
-
-        settingsPresenter.appendRadioCategory(getContext().getString(R.string.card_content), options);
     }
 
     private void appendChannelSortingCategory(AppDialogPresenter settingsPresenter) {

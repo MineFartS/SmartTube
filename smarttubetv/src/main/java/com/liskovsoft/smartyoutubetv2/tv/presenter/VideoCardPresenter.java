@@ -22,12 +22,14 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
-import com.liskovsoft.smartyoutubetv2.common.utils.ClickbaitRemover;
+
 import com.liskovsoft.smartyoutubetv2.tv.R;
 import com.liskovsoft.smartyoutubetv2.tv.presenter.base.LongClickPresenter;
 import com.liskovsoft.smartyoutubetv2.tv.ui.browse.video.GridFragmentHelper;
 import com.liskovsoft.smartyoutubetv2.tv.ui.widgets.complexcardview.ComplexImageCardView;
 import com.liskovsoft.smartyoutubetv2.tv.util.ViewUtil;
+
+import java.util.regex.Pattern;
 
 /*
  * A CardPresenter is used to generate Views and bind Objects to them on demand.
@@ -135,32 +137,19 @@ public class VideoCardPresenter extends LongClickPresenter {
         cardView.setMainImageDimensions(mWidth, mHeight);
 
         if (context instanceof Activity && ((Activity) context).isDestroyed()) {
-            // Glide.with(context): IllegalArgumentException: You cannot start a load for a destroyed activity
             return;
         }
 
         Glide.with(context)
-                //.asBitmap() // disable animation (webp, gif)
-                .load(ClickbaitRemover.updateThumbnail(video, mThumbQuality))
-                //.placeholder(mDefaultCardImage)
-                .apply(ViewUtil.glideOptions())
-                // improve image compression on low end devices
-                .override(mWidth, mHeight)
-                // com.liskovsoft.smartyoutubetv2.tv.util.CacheGlideModule
-                // Cache makes app crashing on old android versions
-                .diskCacheStrategy(VERSION.SDK_INT > 21 ? DiskCacheStrategy.ALL : DiskCacheStrategy.NONE)
-                .listener(mErrorListener)
-                .error(
-                    // Updated thumbnail url not found
-                    Glide.with(context)
-                        .load(video.cardImageUrl) // always working
-                        //.placeholder(mDefaultCardImage)
-                        .apply(ViewUtil.glideOptions())
-                        .listener(mErrorListener)
-                        .error(R.drawable.card_placeholder) // R.color.lb_grey
-                )
-                .into(cardView.getMainImageView());
-    }
+            .load(video.getCardImageUrl())
+            .apply(ViewUtil.glideOptions())
+            .override(mWidth, mHeight) // improve image compression on low end devices
+            .diskCacheStrategy(VERSION.SDK_INT > 21 ? DiskCacheStrategy.ALL : DiskCacheStrategy.NONE)
+            .listener(mErrorListener)
+            .error(R.drawable.card_placeholder) // R.color.lb_grey
+            .into(cardView.getMainImageView());
+    
+        }
 
     @Override
     public void onUnbindViewHolder(Presenter.ViewHolder viewHolder) {
