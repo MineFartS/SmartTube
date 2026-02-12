@@ -49,7 +49,6 @@ public class HQDialogController extends BasePlayerController {
         addQualityCategories();
         addAudioLanguage();
         addPresetsCategory();
-        addVideoZoomCategory();
 
         addAudioDelayCategory();
         addPitchEffectCategory();
@@ -151,17 +150,6 @@ public class HQDialogController extends BasePlayerController {
                     getPlayer().showOverlay(false);
                 }
         ));
-    }
-
-    private void addVideoZoomCategory() {
-        addCategoryInt(AppDialogUtil.createVideoZoomCategory(
-                getContext(), () -> {
-                    getPlayer().setResizeMode(getPlayerData().getResizeMode());
-                    getPlayer().setZoomPercents(getPlayerData().getZoomPercents());
-
-                    // Make result easily be spotted by the user
-                    getPlayer().showOverlay(false);
-                }));
     }
 
     private void addCategoryInt(OptionCategory category) {

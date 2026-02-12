@@ -60,7 +60,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         appendVideoPresetsCategory(settingsPresenter);
         appendPlayerButtonsCategory(settingsPresenter);
 
-        appendVideoZoomCategory(settingsPresenter);
         appendVideoSpeedCategory(settingsPresenter);
         appendAudioLanguageCategory(settingsPresenter);
         appendAudioShiftCategory(settingsPresenter);
@@ -101,11 +100,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
     private void appendVideoPresetsCategory(AppDialogPresenter settingsPresenter) {
         OptionCategory category = AppDialogUtil.createVideoPresetsCategory(getContext());
-        settingsPresenter.appendCategory(category);
-    }
-
-    private void appendVideoZoomCategory(AppDialogPresenter settingsPresenter) {
-        OptionCategory category = AppDialogUtil.createVideoZoomCategory(getContext());
         settingsPresenter.appendCategory(category);
     }
 
@@ -196,10 +190,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
             {
                 R.string.screen_dimming, 
                 PlayerTweaksData.PLAYER_BUTTON_SCREEN_DIMMING
-            },
-            {
-                R.string.action_video_zoom, 
-                PlayerTweaksData.PLAYER_BUTTON_VIDEO_ZOOM
             },
             {
                 R.string.action_channel, 

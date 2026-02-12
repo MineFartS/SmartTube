@@ -510,27 +510,6 @@ public class PlayerUIController extends BasePlayerController {
         SearchPresenter.instance(getContext()).startSearch(null);
     }
     
-    private void onVideoZoom() {
-        OptionCategory videoZoomCategory = AppDialogUtil.createVideoZoomCategory(
-                getContext(), () -> {
-                    getPlayer().setResizeMode(getPlayerData().getResizeMode());
-                    getPlayer().setZoomPercents(getPlayerData().getZoomPercents());
-                    getPlayer().showControls(false);
-                });
-
-        OptionCategory videoAspectCategory = AppDialogUtil.createVideoAspectCategory(
-                getContext(), getPlayerData(), () -> getPlayer().setAspectRatio(getPlayerData().getAspectRatio()));
-
-        OptionCategory videoRotateCategory = AppDialogUtil.createVideoRotateCategory(
-                getContext(), getPlayerData(), () -> getPlayer().setRotationAngle(getPlayerData().getRotationAngle()));
-
-        AppDialogPresenter settingsPresenter = getAppDialogPresenter();
-        settingsPresenter.appendRadioCategory(videoAspectCategory.title, videoAspectCategory.options);
-        settingsPresenter.appendRadioCategory(videoZoomCategory.title, videoZoomCategory.options);
-        settingsPresenter.appendRadioCategory(videoRotateCategory.title, videoRotateCategory.options);
-        settingsPresenter.showDialog(getContext().getString(R.string.video_aspect));
-    }
-
     private void onPipClicked() {
         getPlayer().showOverlay(false);
         getPlayer().blockEngine(true);
@@ -559,8 +538,6 @@ public class PlayerUIController extends BasePlayerController {
             openChannel();
         } else if (buttonId == R.id.action_playback_queue) {
             AppDialogUtil.showPlaybackQueueDialog(getContext(), item -> getMainController().onNewVideo(item));
-        } else if (buttonId == R.id.action_video_zoom) {
-            onVideoZoom();
         } else if (buttonId == R.id.action_seek_interval) {
             onSeekInterval();
         } else if (buttonId == R.id.action_share) {
