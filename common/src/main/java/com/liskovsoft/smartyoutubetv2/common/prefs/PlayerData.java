@@ -41,7 +41,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private static PlayerData sInstance;
     private final AppPrefs mPrefs;
 
-    private int mUiHideTimeoutSec;
+
     private boolean mIsSeekConfirmPauseEnabled;
     private boolean mIsClockEnabled;
 
@@ -139,16 +139,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
 
         return sInstance;
     }
-
-    public int getUiHideTimeoutSec() {
-        return mUiHideTimeoutSec;
-    }
-
-    public void setUiHideTimeoutSec(int timeoutSec) {
-        mUiHideTimeoutSec = timeoutSec;
-        persistState();
-    }
-
     public int getSeekPreviewMode() {
         return mSeekPreviewMode;
     }
@@ -735,8 +725,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
 
         String[] split = Helpers.splitData(data);
 
-        mUiHideTimeoutSec = Helpers.parseInt(split, 1, 3);
-        // mIsAbsoluteDateEnabled
         mSeekPreviewMode = Helpers.parseInt(split, 3, SEEK_PREVIEW_SINGLE);
         mIsSeekConfirmPauseEnabled = Helpers.parseBoolean(split, 4, false);
         mIsClockEnabled = Helpers.parseBoolean(split, 5, true);
@@ -817,7 +805,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         mPrefs.setProfileData(
             VIDEO_PLAYER_DATA, 
             Helpers.mergeData(
-                mUiHideTimeoutSec, 
                 null,
                 mSeekPreviewMode, 
                 mIsSeekConfirmPauseEnabled,

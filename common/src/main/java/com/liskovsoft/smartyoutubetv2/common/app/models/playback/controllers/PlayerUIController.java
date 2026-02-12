@@ -586,8 +586,8 @@ public class PlayerUIController extends BasePlayerController {
     private void enableUiAutoHideTimeout() {
         Log.d(TAG, "Starting auto hide ui timer...");
         disableUiAutoHideTimeout();
-        if (mEngineReady && getPlayerData().getUiHideTimeoutSec() > 0) {
-            mHandler.postDelayed(mUiAutoHideHandler, getPlayerData().getUiHideTimeoutSec() * 1_000L);
+        if (mEngineReady) {
+            mHandler.postDelayed(mUiAutoHideHandler, 3_000L);
         }
     }
 

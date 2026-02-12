@@ -63,7 +63,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         appendVideoSpeedCategory(settingsPresenter);
         appendAudioLanguageCategory(settingsPresenter);
 
-        appendUIAutoHideCategory(settingsPresenter);
         appendSeekTypeCategory(settingsPresenter);
         appendSeekingPreviewCategory(settingsPresenter);
         AppDialogUtil.appendSeekIntervalDialogItems(getContext(), settingsPresenter, mPlayerData, false);
@@ -77,26 +76,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         settingsPresenter.showDialog(getContext().getString(R.string.settings_player), mOnFinish);
     }
     
-    @SuppressLint("StringFormatMatches")
-    private void appendUIAutoHideCategory(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
-
-        options.add(UiOptionItem.from(
-                getContext().getString(R.string.option_never),
-                option -> mPlayerData.setUiHideTimeoutSec(PlayerData.AUTO_HIDE_NEVER),
-                mPlayerData.getUiHideTimeoutSec() == PlayerData.AUTO_HIDE_NEVER));
-
-        for (int i = 1; i <= 15; i++) {
-            int timeoutSec = i;
-            options.add(UiOptionItem.from(
-                    getContext().getString(R.string.ui_hide_timeout_sec, i),
-                    option -> mPlayerData.setUiHideTimeoutSec(timeoutSec),
-                    mPlayerData.getUiHideTimeoutSec() == i));
-        }
-
-        settingsPresenter.appendRadioCategory(getContext().getString(R.string.player_ui_hide_behavior), options);
-    }
-
     private void appendVideoPresetsCategory(AppDialogPresenter settingsPresenter) {
         OptionCategory category = AppDialogUtil.createVideoPresetsCategory(getContext());
         settingsPresenter.appendCategory(category);
