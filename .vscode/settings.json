@@ -9,7 +9,8 @@
         ".gradle",
         "build",
         "smarttubetv/build",
-        "dependencies"
+        "dependencies/MediaServiceCore",
+        "dependencies/SharedModules"
     ],
     "deadCodeDetector.analyzeOnSave": false,
     "deadCodeDetector.confidenceThreshold": "high",
