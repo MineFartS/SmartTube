@@ -407,14 +407,6 @@ public class AppDialogUtil {
         return OptionCategory.from(SUBTITLE_STYLES_ID, OptionCategory.TYPE_RADIO_LIST, subtitleStyleTitle, createSubtitleStyles(context));
     }
 
-    public static OptionItem createSubtitleChannelOption(Context context) {
-        PlayerData playerData = PlayerData.instance(context);
-        return UiOptionItem.from(context.getString(R.string.subtitle_remember),
-                optionItem -> playerData.setSubtitlesPerChannelEnabled(optionItem.isSelected()),
-                playerData.isSubtitlesPerChannelEnabled()
-        );
-    }
-
     @TargetApi(19)
     private static List<OptionItem> createSubtitleStyles(Context context) {
         PlayerData playerData = PlayerData.instance(context);

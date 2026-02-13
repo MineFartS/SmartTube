@@ -89,8 +89,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private boolean mIsSkipShortsEnabled;
     private boolean mIsLiveChatEnabled;
     private List<FormatItem> mLastSubtitleFormats;
-    private List<String> mEnabledSubtitlesPerChannel;
-    private boolean mIsSubtitlesPerChannelEnabled;
+
     private boolean mIsSpeedPerChannelEnabled;
     private final Map<String, SpeedItem> mSpeeds = new HashMap<>();
     private float mPitch;
@@ -383,33 +382,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
             mLastSubtitleFormats.remove(mSubtitleFormat);
             mLastSubtitleFormats.add(0, mSubtitleFormat);
         }
-    }
-
-    public void enableSubtitlesPerChannel(String channelId) {
-        mEnabledSubtitlesPerChannel.add(channelId);
-        persistState();
-    }
-
-    public void disableSubtitlesPerChannel(String channelId) {
-        mEnabledSubtitlesPerChannel.remove(channelId);
-        persistState();
-    }
-
-    public boolean isSubtitlesPerChannelEnabled(String channelId) {
-        if (channelId == null) {
-            return false;
-        }
-
-        return mEnabledSubtitlesPerChannel.contains(channelId);
-    }
-
-    public boolean isSubtitlesPerChannelEnabled() {
-        return mIsSubtitlesPerChannelEnabled;
-    }
-
-    public void setSubtitlesPerChannelEnabled(boolean enable) {
-        mIsSubtitlesPerChannelEnabled = enable;
-        persistState();
     }
 
     public List<SubtitleStyle> getSubtitleStyles() {
@@ -775,8 +747,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         mPlaybackMode = Helpers.parseInt(split, 51, PlayerConstants.PLAYBACK_MODE_ALL);
         mAudioLanguage = Helpers.parseStr(split, 52, LocaleUtility.getCurrentLanguage(mPrefs.getContext()));
         mSubtitleLanguage = Helpers.parseStr(split, 53, LocaleUtility.getCurrentLanguage(mPrefs.getContext()));
-        mEnabledSubtitlesPerChannel = Helpers.parseStrList(split, 54);
-        mIsSubtitlesPerChannelEnabled = Helpers.parseBoolean(split, 55, true);
+
         mIsSpeedPerChannelEnabled = Helpers.parseBoolean(split, 56, true);
         String[] speeds = Helpers.parseArray(split, 57);
         mPitch = Helpers.parseFloat(split, 58, 1.0f);
@@ -855,8 +826,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
                 mPlaybackMode, 
                 mAudioLanguage, 
                 mSubtitleLanguage,
-                mEnabledSubtitlesPerChannel, 
-                mIsSubtitlesPerChannelEnabled,
+
                 mIsSpeedPerChannelEnabled, 
                 Helpers.mergeArray(mSpeeds.values().toArray()), 
                 mPitch, 

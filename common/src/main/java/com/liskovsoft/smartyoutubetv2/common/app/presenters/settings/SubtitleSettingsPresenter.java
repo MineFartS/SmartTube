@@ -25,8 +25,6 @@ public class SubtitleSettingsPresenter extends BasePresenter<Void> {
     public void show() {
         AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
 
-        settingsPresenter.appendSingleSwitch(AppDialogUtil.createSubtitleChannelOption(getContext()));
-
         appendSubtitleStyleCategory(settingsPresenter);
         appendSubtitleSizeCategory(settingsPresenter);
         appendSubtitlePositionCategory(settingsPresenter);

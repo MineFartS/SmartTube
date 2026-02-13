@@ -173,7 +173,6 @@ public class PlayerUIController extends BasePlayerController {
             getPlayer().setFormat(format);
             getPlayerData().setFormat(format);
             getPlayer().setButtonState(R.id.lb_control_closed_captioning, !FormatItem.SUBTITLE_NONE.equals(matchedFormat) && !enabled ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
-            enableSubtitleForChannel(!enabled);
         } else {
             // Match not found
             onSubtitleLongClicked();
@@ -201,7 +200,7 @@ public class PlayerUIController extends BasePlayerController {
                     UiOptionItem.from(subtitleOrigFormats,
                             option -> {
                                 FormatItem format = UiOptionItem.toFormat(option);
-                                enableSubtitleForChannel(!format.isDefault());
+
                                 getPlayer().setFormat(format);
                                 getPlayerData().setFormat(format);
                             },
@@ -218,15 +217,13 @@ public class PlayerUIController extends BasePlayerController {
                     UiOptionItem.from(subtitleAutoFormats,
                             option -> {
                                 FormatItem format = UiOptionItem.toFormat(option);
-                                enableSubtitleForChannel(!format.isDefault());
+
                                 getPlayer().setFormat(format);
                                 getPlayerData().setFormat(format);
                             },
                             getContext().getString(R.string.subtitles_disabled)));
             settingsPresenter.showDialog();
         }));
-
-        settingsPresenter.appendSingleSwitch(AppDialogUtil.createSubtitleChannelOption(getContext()));
 
         OptionCategory stylesCategory = AppDialogUtil.createSubtitleStylesCategory(getContext());
         settingsPresenter.appendRadioCategory(stylesCategory.title, stylesCategory.options);
@@ -764,11 +761,16 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private void setSubtitleButtonState() {
-        if (getPlayer() == null) {
-            return;
+        
+        if (getPlayer() != null) {
+
+            getPlayer().setButtonState(
+                R.id.lb_control_closed_captioning, 
+                isSubtitleSelected() ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF
+            );
+
         }
 
-        getPlayer().setButtonState(R.id.lb_control_closed_captioning, isSubtitleEnabled() && isSubtitleSelected() ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
     }
 
     private void startTempBackgroundMode(Class<?> clazz) {
@@ -800,27 +802,6 @@ public class PlayerUIController extends BasePlayerController {
         }
 
         return isSelected;
-    }
-
-    private boolean isSubtitleEnabled() {
-        return !getPlayerData().isSubtitlesPerChannelEnabled() || getPlayerData().isSubtitlesPerChannelEnabled(getChannelId());
-    }
-
-    private void enableSubtitleForChannel(boolean enable) {
-        if (getPlayer() == null || !getPlayerData().isSubtitlesPerChannelEnabled()) {
-            return;
-        }
-
-        String channelId = getChannelId();
-        if (enable) {
-            getPlayerData().enableSubtitlesPerChannel(channelId);
-        } else {
-            getPlayerData().disableSubtitlesPerChannel(channelId);
-        }
-    }
-
-    private String getChannelId() {
-        return getVideo() != null ? getVideo().channelId : null;
     }
 
     private void applyScreenOff(int buttonState) {
