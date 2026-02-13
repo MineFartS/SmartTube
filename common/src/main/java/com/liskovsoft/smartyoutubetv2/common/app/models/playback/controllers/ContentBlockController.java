@@ -151,7 +151,7 @@ public class ContentBlockController extends BasePlayerController {
     }
 
     private boolean checkVideo(Video video) {
-        //return video != null && !video.isLive && !video.isUpcoming;
+
         return video != null;
     }
 
@@ -203,9 +203,6 @@ public class ContentBlockController extends BasePlayerController {
     private void disposeActions() {
         RxHelper.disposeActions(mSegmentsAction);
 
-        // Note, removes all segments at once
-        //getPlayer().setSeekBarSegments(null); // reset colors
-
         // Reset previously found segment (fix no dialog popup)
         mLastSkipPosMs = 0;
     }
@@ -234,9 +231,6 @@ public class ContentBlockController extends BasePlayerController {
     }
 
     private boolean isPositionInsideSegment(long positionMs, SponsorSegment segment, boolean fullMatch) {
-        // NOTE: in case of using Player.setSeekParameters (inaccurate seeking) increase sponsor segment window
-        // int seekShift = 1_000;
-        // return positionMs >= (segment.getStartMs() - seekShift) && positionMs <= (segment.getEndMs() + seekShift);
 
         if (fullMatch) {
             return positionMs >= segment.getStartMs() && positionMs <= segment.getEndMs();
@@ -255,39 +249,6 @@ public class ContentBlockController extends BasePlayerController {
                 String.format("%s: %s", getContext().getString(R.string.content_block_provider), getContext().getString(R.string.msg_skipping_segment, category)));
         setPositionMs(skipPosMs);
         closeTransparentDialog();
-    }
-
-    private void confirmSkip(long skipPosMs, String category) {
-        if (mLastSkipPosMs == skipPosMs) {
-            return;
-        }
-
-        AppDialogPresenter dialogPresenter = AppDialogPresenter.instance(getContext());
-
-        if (dialogPresenter.isDialogShown() || getPlayer().isSuggestionsShown()) {
-            // Another dialog is opened. Don't distract a user.
-            return;
-        }
-
-        getPlayer().showControls(false);
-
-        OptionItem acceptOption = UiOptionItem.from(
-                getContext().getString(R.string.confirm_segment_skip, category),
-                option -> {
-                    // return to previous dialog or close if no other dialogs in stack
-                    dialogPresenter.goBack();
-                    setPositionMs(skipPosMs);
-                }
-        );
-
-        dialogPresenter.appendSingleButton(acceptOption);
-        dialogPresenter.setCloseTimeoutMs((long) ((skipPosMs - getPlayer().getPositionMs()) * getPlayer().getSpeed()));
-
-        dialogPresenter.enableTransparent(true);
-        dialogPresenter.enableOverlay(true);
-        dialogPresenter.enableExpandable(false);
-        dialogPresenter.setId(CONTENT_BLOCK_ID);
-        dialogPresenter.showDialog(getContext().getString(R.string.content_block_provider));
     }
 
     private List<SeekBarSegment> toSeekBarSegments(List<SponsorSegment> segments) {
