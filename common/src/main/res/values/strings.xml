@@ -316,7 +316,7 @@
     <string name="content_block_action_toast">Skip with notification</string>
     <string name="content_block_action_dialog">Show confirmation dialog</string>
     <string name="content_block_filler">Off-topic (filler)</string>
-    <string name="keyboard_auto_show">Show keyboard automatically</string>
+
     <string name="cancel_dialog">Cancel</string>
     <string name="msg_player_error_source2">URL isn\'t working or incorrect device time.\nUsually, it\'s a bug in the app.</string>
     <string name="msg_player_error_video_source">VIDEO URL isn\'t working or incorrect device time.\nUsually, it\'s a bug in the app.</string>

@@ -48,7 +48,7 @@ public class ChannelHeaderPresenter extends RowPresenter {
     private static final int REQUEST_SPEECH = 0x00000010;
 
     private static final int QUERY_COMPLETE = 0x2;
-    private boolean mIsKeyboardAutoShowEnabled;
+
 
     private Drawable mBadgeDrawable;
     private int mStatus;
@@ -95,15 +95,16 @@ public class ChannelHeaderPresenter extends RowPresenter {
     }
 
     private void init(View header) {
+
         Context context = header.getContext();
         SearchData searchData = SearchData.instance(context);
-        mIsKeyboardAutoShowEnabled = searchData.isKeyboardAutoShowEnabled();
         
         SearchBar searchBar = header.findViewById(R.id.lb_search_bar);
         SearchOrbView searchOrbView = searchBar.findViewById(R.id.lb_search_bar_search_orb);
         SpeechOrbView speechOrbView = searchBar.findViewById(R.id.lb_search_bar_speech_orb);
         SearchEditText searchTextEditor = searchBar.findViewById(R.id.lb_search_text_editor);
         SearchOrbView searchSettingsOrbView = searchBar.findViewById(R.id.search_settings_orb);
+        
         // Default recognizer. Used when there's no speech callbacks specified.
         searchBar.setSpeechRecognizer(SpeechRecognizer.createSpeechRecognizer(context));
         searchBar.setOnFocusChangeListener((v, focused) -> {
@@ -114,9 +115,6 @@ public class ChannelHeaderPresenter extends RowPresenter {
         searchTextEditor.setOnFocusChangeListener((v, focused) -> {
             Log.d(TAG, "on search field focused");
 
-            if (mIsKeyboardAutoShowEnabled && focused) {
-                Helpers.showKeyboardAlt(v.getContext(), v);
-            }
         });
 
         searchOrbView.setOnFocusChangeListener((v, focused) -> {

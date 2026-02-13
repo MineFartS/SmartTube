@@ -78,10 +78,6 @@ public class SearchSettingsPresenter extends BasePresenter<Void> {
                 option -> mSearchData.setFocusOnResultsEnabled(option.isSelected()),
                 mSearchData.isFocusOnResultsEnabled()));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.keyboard_auto_show),
-                option -> mSearchData.setKeyboardAutoShowEnabled(option.isSelected()),
-                mSearchData.isKeyboardAutoShowEnabled()));
-
         settingsPresenter.appendCheckedCategory(getContext().getString(R.string.player_other), options);
     }
 }

@@ -15,7 +15,7 @@ public class SearchData {
     private boolean mIsInstantVoiceSearchEnabled;
     private int mSearchOptions;
     private boolean mIsFocusOnResultsEnabled;
-    private boolean mIsKeyboardAutoShowEnabled;
+
     private boolean mIsTempBackgroundModeEnabled;
     private int mSpeechRecognizerType;
     private Class<?> mTempBackgroundModeClass;
@@ -62,15 +62,6 @@ public class SearchData {
 
     public void setSearchOptions(int searchOptions) {
         mSearchOptions = searchOptions;
-        persistData();
-    }
-
-    public boolean isKeyboardAutoShowEnabled() {
-        return mIsKeyboardAutoShowEnabled;
-    }
-
-    public void setKeyboardAutoShowEnabled(boolean enabled) {
-        mIsKeyboardAutoShowEnabled = enabled;
         persistData();
     }
 
@@ -144,7 +135,7 @@ public class SearchData {
         mIsInstantVoiceSearchEnabled = Helpers.parseBoolean(split, 0, false);
         mSearchOptions = Helpers.parseInt(split, 1, 0);
         mIsFocusOnResultsEnabled = Helpers.parseBoolean(split, 2, true);
-        mIsKeyboardAutoShowEnabled = Helpers.parseBoolean(split, 3, false);
+
         mIsTempBackgroundModeEnabled = Helpers.parseBoolean(split, 4, false);
 
         mSpeechRecognizerType = Helpers.parseInt(split, 6, SPEECH_RECOGNIZER_SYSTEM);
@@ -162,7 +153,7 @@ public class SearchData {
                 mIsInstantVoiceSearchEnabled, 
                 mSearchOptions, 
                 mIsFocusOnResultsEnabled,
-                mIsKeyboardAutoShowEnabled, 
+
                 mIsTempBackgroundModeEnabled, 
                 null, 
                 mSpeechRecognizerType,

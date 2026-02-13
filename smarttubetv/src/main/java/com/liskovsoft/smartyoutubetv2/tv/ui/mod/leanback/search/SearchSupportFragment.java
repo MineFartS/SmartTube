@@ -226,7 +226,7 @@ public class SearchSupportFragment extends Fragment {
     private String mTitle;
     private Drawable mBadgeDrawable;
     private ExternalQuery mExternalQuery;
-    private boolean mIsKeyboardAutoShowEnabled;
+
     
     private boolean mIsTypingCorrectionDisabled;
 
@@ -349,9 +349,6 @@ public class SearchSupportFragment extends Fragment {
                 SearchPresenter.instance(v.getContext()).disposeActions();
             }
 
-            if (mIsKeyboardAutoShowEnabled && focused) {
-                Helpers.showKeyboardAlt(v.getContext(), v);
-            }
         });
         mSearchTextEditor.addTextChangedListener(new TextWatcher() {
             @Override
@@ -786,15 +783,6 @@ public class SearchSupportFragment extends Fragment {
         if (mSearchTextEditor != null) {
             mSearchTextEditor.selectAll();
         }
-    }
-
-    protected void setKeyboardAutoShowEnabled(boolean enable) {
-        // Show/Hide kbd on activity first launch
-        if (getActivity() != null) {
-            // NOTE: You should set 'unspecified' instead of 'visible' to fix 'keyboard popup in the player' bug.
-            getActivity().getWindow().setSoftInputMode(enable ? WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED : WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        }
-        mIsKeyboardAutoShowEnabled = enable;
     }
 
     protected void setTypingCorrectionDisabled(boolean disable) {
