@@ -240,8 +240,7 @@
     <string name="add_remove_from_playback_queue">Add/Remove from playback queue</string>
     <string name="add_to_playback_queue">Add to playback queue</string>
     <string name="remove_from_playback_queue">Remove from playback queue</string>
-    <string name="proxy_enabled">Proxy enabled</string>
-    <string name="proxy_disabled">Proxy disabled</string>
+
     <string name="uploads_row_name">Uploads</string>
     <string name="playlists_row_name">Created playlists</string>
     <string name="popular_uploads_row_name">Popular uploads</string>
@@ -340,33 +339,14 @@
     <string name="hide_shorts_from_trending">Hide shorts from Trending</string>
     <string name="disable_screensaver">Disable screensaver</string>
     <string name="description_not_found">Description not found</string>
-    <string name="proxy_port_hint">Proxy port</string>
-    <string name="proxy_host_hint">Proxy hostname or IP</string>
-    <string name="proxy_username_hint">Proxy username</string>
-    <string name="proxy_password_hint">Proxy password</string>
-    <string name="proxy_type">Proxy Type</string>
-    <string name="enable_web_proxy">Use Web Proxy</string>
-    <string name="proxy_not_supported">Use Web Proxy (Needs Android 4.4+)</string>
-    <string name="proxy_test_btn">Test</string>
-    <string name="proxy_settings_title">Proxy Server Settings</string>
-    <string name="proxy_test_urls">https://www.youtube.com\nhttps://www.google.com</string>
-    <string name="proxy_test_cancelled">Test #%d: cancelled.</string>
-    <string name="proxy_type_invalid">Proxy type not set.</string>
-    <string name="proxy_host_invalid">Proxy host not set.</string>
-    <string name="proxy_port_invalid">Invalid proxy port, must &gt; 0.</string>
-    <string name="proxy_credentials_invalid">Invalid username or password.</string>
-    <string name="proxy_test_aborted">Test aborted, please fix proxy settings first.</string>
-    <string name="proxy_application_aborted">Please correct proxy settings first.</string>
-    <string name="proxy_test_start">Test #%d: %s …</string>
-    <string name="proxy_test_error">Error #%d: %s</string>
-    <string name="proxy_test_status">Status #%d: %s %d %s</string>
+
     <string name="openvpn_config_address_hint">Config file address (*.ovpn)</string>
     <string name="enable_openvpn">Use OpenVPN</string>
     <string name="openvpn_settings_title">OpenVPN Settings</string>
     <string name="openvpn_application_aborted">Please correct OpenVPN settings first.</string>
     <string name="openvpn_test_aborted">Test aborted, please fix OpenVPN settings first.</string>
     <string name="openvpn_address_invalid">OpenVPN config address not set.</string>
-    <string name="internet_censorship">Internet Censorship</string>
+
     <string name="rename_section">Rename this section</string>
     <string name="simple_edit_value_hint">Enter value</string>
     <string name="seek_interval">Seek interval</string>

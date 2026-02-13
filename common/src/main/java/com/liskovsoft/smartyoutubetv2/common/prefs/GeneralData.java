@@ -35,7 +35,7 @@ public class GeneralData implements ProfileChangeListener {
     private boolean mIsRemapFastForwardToNextEnabled;
     private int mScreensaverTimeoutMs;
     private int mScreensaverDimmingPercents;
-    private boolean mIsProxyEnabled;
+
     private boolean mIsBridgeCheckEnabled;
     private boolean mIsOkButtonLongPressDisabled;
     private String mLastPlaylistId;
@@ -382,15 +382,6 @@ public class GeneralData implements ProfileChangeListener {
         GlobalPreferences.sInstance.set24HourLocaleEnabled(enable);
     }
 
-    public boolean isProxyEnabled() {
-        return mIsProxyEnabled;
-    }
-
-    public void setProxyEnabled(boolean enable) {
-        mIsProxyEnabled = enable;
-        persistState();
-    }
-
     public boolean isVPNEnabled() {
         return mIsVPNEnabled;
     }
@@ -631,7 +622,7 @@ public class GeneralData implements ProfileChangeListener {
         mIsHideShortsFromSubscriptionsEnabled = Helpers.parseBoolean(split, 7, false);
         mIsRemapFastForwardToNextEnabled = Helpers.parseBoolean(split, 8, false);
 
-        mIsProxyEnabled = Helpers.parseBoolean(split, 10, false);
+
         mIsBridgeCheckEnabled = Helpers.parseBoolean(split, 11, true);
         mIsOkButtonLongPressDisabled = Helpers.parseBoolean(split, 12, false);
         mLastPlaylistId = Helpers.parseStr(split, 13);
@@ -712,7 +703,7 @@ public class GeneralData implements ProfileChangeListener {
                 mIsHideShortsFromSubscriptionsEnabled,
                 mIsRemapFastForwardToNextEnabled, 
                 null, 
-                mIsProxyEnabled, 
+
                 mIsBridgeCheckEnabled, 
                 mIsOkButtonLongPressDisabled, 
                 mLastPlaylistId,

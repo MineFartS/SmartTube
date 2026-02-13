@@ -26,8 +26,6 @@ import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerTweaksData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.SearchData;
-import com.liskovsoft.smartyoutubetv2.common.proxy.ProxyManager;
-import com.liskovsoft.smartyoutubetv2.common.proxy.WebProxyDialog;
 import com.liskovsoft.smartyoutubetv2.common.utils.AppDialogUtil;
 import com.liskovsoft.smartyoutubetv2.common.utils.SimpleEditDialog;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
@@ -103,7 +101,7 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
         appendBackgroundPlaybackCategory(settingsPresenter);
         appendScreenDimmingCategory(settingsPresenter);
         appendKeyRemappingCategory(settingsPresenter);
-        appendInternetCensorship(settingsPresenter);
+
         appendHistoryCategory(settingsPresenter);
         appendMiscCategory(settingsPresenter);
 
@@ -638,35 +636,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
             options
         );
     
-    }
-
-    private void appendInternetCensorship(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
-
-        appendProxyManager(settingsPresenter, options);
-
-        settingsPresenter.appendCheckedCategory(getContext().getString(R.string.internet_censorship), options);
-    }
-
-    private void appendProxyManager(AppDialogPresenter settingsPresenter, List<OptionItem> options) {
-        ProxyManager proxyManager = new ProxyManager(getContext());
-
-        if (proxyManager.isProxySupported()) {
-            options.add(UiOptionItem.from(getContext().getString(R.string.enable_web_proxy),
-                    option -> {
-                        // Proxy with authentication supported only by OkHttp
-                        mPlayerTweaksData.setPlayerDataSource(
-                                option.isSelected() ? PlayerTweaksData.PLAYER_DATA_SOURCE_OKHTTP : PlayerTweaksData.PLAYER_DATA_SOURCE_CRONET);
-                        mGeneralData.setProxyEnabled(option.isSelected());
-                        new WebProxyDialog(getContext()).enable(option.isSelected());
-                        if (option.isSelected()) {
-                            settingsPresenter.closeDialog();
-                        }
-                        
-                        OkHttpManager.unhold();
-                    },
-                    mGeneralData.isProxyEnabled()));
-        }
     }
 
     private void showPasswordDialog(AppDialogPresenter settingsPresenter, Runnable onSuccess) {

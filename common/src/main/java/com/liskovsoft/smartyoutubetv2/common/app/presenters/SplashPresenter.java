@@ -25,7 +25,7 @@ import com.liskovsoft.smartyoutubetv2.common.misc.MediaServiceManager;
 import com.liskovsoft.smartyoutubetv2.common.misc.StreamReminderService;
 import com.liskovsoft.smartyoutubetv2.common.prefs.AccountsData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
-import com.liskovsoft.smartyoutubetv2.common.proxy.ProxyManager;
+
 import com.liskovsoft.smartyoutubetv2.common.utils.IntentExtractor;
 import com.liskovsoft.smartyoutubetv2.common.utils.SimpleEditDialog;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
@@ -89,7 +89,6 @@ public class SplashPresenter extends BasePresenter<SplashView> {
             sRunOnce = true;
             RxHelper.setupGlobalErrorHandler();
             initGlobalPrefs();
-            initProxy();
             initVideoStateService();
             initStreamReminderService();
         }
@@ -164,15 +163,6 @@ public class SplashPresenter extends BasePresenter<SplashView> {
             // 1) Auth token storage init
             // 2) Media service language setup (I assume that context has proper language)
             GlobalPreferences.instance(getContext());
-        }
-    }
-
-    private void initProxy() {
-        if (getContext() != null) {
-            // Apply proxy config after global prefs but before starting networking.
-            if (GeneralData.instance(getContext()).isProxyEnabled()) {
-                new ProxyManager(getContext()).configureSystemProxy();
-            }
         }
     }
 
