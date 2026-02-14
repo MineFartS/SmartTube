@@ -114,7 +114,6 @@ public class SplashPresenter extends BasePresenter<SplashView> {
 
     private void runBackgroundTasks() {
         YouTubeServiceManager.instance().refreshCacheIfNeeded(); // warm up player engine
-        enableHistoryIfNeeded();
         Utils.updateChannels(getContext());
         GDriveBackupWorker.schedule(getContext());
         LocalDriveBackupWorker.schedule(getContext());
@@ -163,14 +162,6 @@ public class SplashPresenter extends BasePresenter<SplashView> {
             // 1) Auth token storage init
             // 2) Media service language setup (I assume that context has proper language)
             GlobalPreferences.instance(getContext());
-        }
-    }
-
-    private void enableHistoryIfNeeded() {
-        // Account history might be turned off (common issue).
-        GeneralData generalData = GeneralData.instance(getContext());
-        if (generalData.getHistoryState() != GeneralData.HISTORY_AUTO) {
-            MediaServiceManager.instance().enableHistory(generalData.isHistoryEnabled());
         }
     }
 

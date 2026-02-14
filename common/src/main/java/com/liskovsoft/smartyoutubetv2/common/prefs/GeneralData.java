@@ -20,9 +20,7 @@ public class GeneralData implements ProfileChangeListener {
     public static final int BACKGROUND_PLAYBACK_SHORTCUT_HOME = 0;
     public static final int BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK = 1;
     public static final int BACKGROUND_PLAYBACK_SHORTCUT_BACK = 2;
-    public static final int HISTORY_AUTO = 0;
-    public static final int HISTORY_ENABLED = 1;
-    public static final int HISTORY_DISABLED = 2;
+
     @SuppressLint("StaticFieldLeak")
     private static GeneralData sInstance;
     private final Context mContext;
@@ -61,8 +59,6 @@ public class GeneralData implements ProfileChangeListener {
 
     private String mSettingsPassword;
 
-    private boolean mIsHistoryEnabled;
-    private int mHistoryState;
     private boolean mIsAltAppIconEnabled;
     private int mVersionCode;
     private boolean mIsSelectChannelSectionEnabled;
@@ -481,24 +477,6 @@ public class GeneralData implements ProfileChangeListener {
         persistState();
     }
 
-    public boolean isHistoryEnabled() {
-        return mHistoryState == HISTORY_ENABLED;
-    }
-
-    public void setHistoryEnabled(boolean enabled) {
-        setHistoryState(enabled ? HISTORY_ENABLED : HISTORY_AUTO);
-    }
-
-    public int getHistoryState() {
-        return mHistoryState;
-    }
-
-    public void setHistoryState(int historyState) {
-        mHistoryState = historyState;
-
-        persistState();
-    }
-
     public boolean isAltAppIconEnabled() {
         return mIsAltAppIconEnabled;
     }
@@ -638,7 +616,6 @@ public class GeneralData implements ProfileChangeListener {
 
         mSettingsPassword = Helpers.parseStr(split, 33);
 
-        mIsHistoryEnabled = Helpers.parseBoolean(split, 35, true);
         mScreensaverTimeoutMs = Helpers.parseInt(split, 36, 60 * 1_000);
 
         mIsAltAppIconEnabled = Helpers.parseBoolean(split, 38, false);
@@ -649,7 +626,7 @@ public class GeneralData implements ProfileChangeListener {
         mScreensaverDimmingPercents = Helpers.parseInt(split, 44, 80);
         mIsRemapNextToSpeedEnabled = Helpers.parseBoolean(split, 45, false);
         mIsRemapPlayToOKEnabled = Helpers.parseBoolean(split, 46, false);
-        mHistoryState = Helpers.parseInt(split, 47, HISTORY_AUTO);
+
         mIsRememberSubscriptionsPositionEnabled = Helpers.parseBoolean(split, 48, false);
 
         mIsRemapNumbersToSpeedEnabled = Helpers.parseBoolean(split, 50, false);
@@ -715,19 +692,16 @@ public class GeneralData implements ProfileChangeListener {
                 mPendingStreams, 
                 null, 
                 mSettingsPassword, 
-                mIsHistoryEnabled,
                 mScreensaverTimeoutMs, 
                 null, 
                 mIsAltAppIconEnabled, 
                 mVersionCode, 
                 mIsSelectChannelSectionEnabled, 
-
                 null, 
                 mIsOldUpdateNotificationsEnabled, 
                 mScreensaverDimmingPercents, 
                 mIsRemapNextToSpeedEnabled, 
                 mIsRemapPlayToOKEnabled,
-                mHistoryState, 
                 mIsRememberSubscriptionsPositionEnabled, 
                 null, 
                 mIsRemapNumbersToSpeedEnabled, 

@@ -35,7 +35,7 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
     private boolean mIsCreatePlaylistEnabled;
     private boolean mIsAccountSelectionEnabled;
     private boolean mIsAddToNewPlaylistEnabled;
-    private boolean mIsToggleHistoryEnabled;
+
     private boolean mIsClearHistoryEnabled;
     private boolean mIsUpdateCheckEnabled;
     private boolean mIsExcludeFromContentBlockEnabled;
@@ -451,33 +451,6 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
                 });
     }
 
-    protected void appendToggleHistoryButton() {
-        if (!mIsToggleHistoryEnabled) {
-            return;
-        }
-
-        Video original = getVideo();
-
-        if (original != null && original.isChapter) {
-            return;
-        }
-
-        if (getSection() != null && getSection().getId() != MediaGroup.TYPE_HISTORY) {
-            return;
-        }
-
-        GeneralData generalData = GeneralData.instance(getContext());
-        boolean enabled = generalData.isHistoryEnabled();
-
-        getDialogPresenter().appendSingleButton(
-                UiOptionItem.from(getContext().getString(enabled ? R.string.pause_history : R.string.resume_history),
-                        optionItem -> {
-                            mServiceManager.enableHistory(!enabled);
-                            generalData.setHistoryEnabled(!enabled);
-                            getDialogPresenter().closeDialog();
-                        }));
-    }
-
     protected void appendClearHistoryButton() {
         if (!mIsClearHistoryEnabled) {
             return;
@@ -533,7 +506,7 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
         mIsRenamePlaylistEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_RENAME_PLAYLIST);
         mIsAccountSelectionEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_SELECT_ACCOUNT);
         mIsAddToNewPlaylistEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_ADD_TO_NEW_PLAYLIST);
-        mIsToggleHistoryEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_TOGGLE_HISTORY);
+
         mIsClearHistoryEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_CLEAR_HISTORY);
         mIsUpdateCheckEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_UPDATE_CHECK);
         mIsExcludeFromContentBlockEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_EXCLUDE_FROM_CONTENT_BLOCK);

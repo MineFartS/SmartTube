@@ -102,7 +102,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
         appendScreenDimmingCategory(settingsPresenter);
         appendKeyRemappingCategory(settingsPresenter);
 
-        appendHistoryCategory(settingsPresenter);
         appendMiscCategory(settingsPresenter);
 
         settingsPresenter.showDialog(
@@ -532,43 +531,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
         settingsPresenter.appendRadioCategory(
             getContext().getString(R.string.screen_dimming_timeout), 
-            options
-        );
-    
-    }
-
-    private void appendHistoryCategory(AppDialogPresenter settingsPresenter) {
-        
-        List<OptionItem> options = new ArrayList<>();
-
-        for (int[] pair : new int[][] {  
-            {
-                R.string.auto_history, 
-                GeneralData.HISTORY_AUTO
-            },
-            {
-                R.string.enable_history, 
-                GeneralData.HISTORY_ENABLED
-            },
-            {
-                R.string.disable_history,
-                GeneralData.HISTORY_DISABLED
-            }
-        }) {
-            options.add(
-                UiOptionItem.from(
-                    getContext().getString(pair[0]),
-                    optionItem -> {
-                        mGeneralData.setHistoryState(pair[1]);
-                        MediaServiceManager.instance().enableHistory(pair[1] == GeneralData.HISTORY_AUTO || pair[1] == GeneralData.HISTORY_ENABLED);
-                    }, 
-                    mGeneralData.getHistoryState() == pair[1]
-                )
-            );
-        }
-
-        settingsPresenter.appendRadioCategory(
-            getContext().getString(R.string.header_history), 
             options
         );
     

@@ -489,8 +489,7 @@
     <string name="player_button_long_click">Long press this button for additional options</string>
     <string name="pause_history">Pause history</string>
     <string name="resume_history">Resume history</string>
-    <string name="disable_history">Disable history</string>
-    <string name="enable_history">Enable history</string>
+
     <string name="clear_history">Clear history</string>
     <string name="chapters">Chapters</string>
     <string name="card_multiline_subtitle">Multiline subtitles</string>
@@ -574,7 +573,7 @@
     <string name="player_auto_volume">Auto volume adjustment</string>
     <string name="header_shorts">Shorts</string>
     <string name="player_global_focus">Sync focus between player button rows</string>
-    <string name="auto_history">Auto (use account settings)</string>
+
     <string name="remember_position_subscriptions">Remember last viewed position in Subscriptions</string>
 
     <string name="msg_player_unknown_error">Unknown error</string>

@@ -469,9 +469,12 @@ public class VideoStateController extends BasePlayerController {
     private void updateHistory() {
         Video video = getVideo();
 
-        if (video == null || getPlayer() == null || !getPlayer().containsMedia()
-                || (video.isRemote && getRemoteControlData().isRemoteHistoryDisabled())
-                || getGeneralData().getHistoryState() == GeneralData.HISTORY_DISABLED) {
+        if (
+            video == null 
+            || getPlayer() == null 
+            || !getPlayer().containsMedia()
+            || (video.isRemote && getRemoteControlData().isRemoteHistoryDisabled())
+        ) {
             return;
         }
 
