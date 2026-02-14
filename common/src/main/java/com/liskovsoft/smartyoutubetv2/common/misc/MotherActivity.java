@@ -44,7 +44,6 @@ public class MotherActivity extends FragmentActivity {
     private static List<OnResult> mOnResults;
     private long mLastKeyDownTime;
     private boolean mEnableThrottleKeyDown;
-    private boolean mIsFullscreenModeEnabled;
 
     public interface OnPermissions {
         void onPermissions(int requestCode, String[] permissions, int[] grantResults);
@@ -61,16 +60,8 @@ public class MotherActivity extends FragmentActivity {
 
         Log.d(TAG, "Starting %s...", this.getClass().getSimpleName());
 
-        mIsFullscreenModeEnabled = GeneralData.instance(this).isFullscreenModeEnabled();
-
         initDpi();
         initTheme();
-
-        // Search Fullscreen routine inside onPause() method
-        if (!mIsFullscreenModeEnabled) {
-            // There's no way to do this programmatically!
-            setTheme(R.style.FitSystemWindows);
-        }
 
         mScreensaverManager = new ScreensaverManager(this); // moved below the theme to fix side effects
 
@@ -250,11 +241,9 @@ public class MotherActivity extends FragmentActivity {
     }
 
     private void applyFullscreenModeIfNeeded() {
-        if (mIsFullscreenModeEnabled) {
-            // Most of the fullscreen tweaks could be performed in styles but not all.
-            // E.g. Hide bottom navigation bar (couldn't be done in styles).
-            Helpers.makeActivityFullscreen2(this);
-        }
+        // Most of the fullscreen tweaks could be performed in styles but not all.
+        // E.g. Hide bottom navigation bar (couldn't be done in styles).
+        Helpers.makeActivityFullscreen2(this);
     }
 
     @Override
@@ -338,16 +327,6 @@ public class MotherActivity extends FragmentActivity {
     public void enableThrottleKeyDown(boolean enable) {
         mEnableThrottleKeyDown = enable;
     }
-
-    //@Override
-    //public void setTheme(int resid) {
-    //    super.setTheme(resid);
-    //
-    //    // No way to do this programmatically!
-    //    if (!GeneralData.instance(this).isFullscreenModeEnabled()) {
-    //        super.setTheme(R.style.FitSystemWindows);
-    //    }
-    //}
 
     protected ViewManager getViewManager() {
         return ViewManager.instance(this);

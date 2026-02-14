@@ -124,13 +124,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
                 option -> mPlayerData.setGlobalEndingTimeEnabled(option.isSelected()),
                 mPlayerData.isGlobalEndingTimeEnabled()));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.fullscreen_mode),
-                option -> {
-                    mGeneralData.setFullscreenModeEnabled(option.isSelected());
-                    mRestartApp = true;
-                },
-                mGeneralData.isFullscreenModeEnabled()));
-
         options.add(UiOptionItem.from(getContext().getString(R.string.pinned_channel_rows),
                 optionItem -> {
                     mMainUIData.setPinnedChannelRowsEnabled(optionItem.isSelected());

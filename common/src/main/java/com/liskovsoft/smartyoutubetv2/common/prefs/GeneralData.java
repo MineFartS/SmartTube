@@ -76,7 +76,7 @@ public class GeneralData implements ProfileChangeListener {
     private List<String> mChangelog;
     private Map<String, Integer> mPlaylistOrder;
     private List<Video> mPendingStreams;
-    private boolean mIsFullscreenModeEnabled;
+
     private Map<Integer, Video> mSelectedItems;
     private boolean mIsFirstUseTooltipEnabled;
     private boolean mIsDeviceSpecificBackupEnabled;
@@ -538,15 +538,6 @@ public class GeneralData implements ProfileChangeListener {
         persistState();
     }
 
-    public boolean isFullscreenModeEnabled() {
-        return mIsFullscreenModeEnabled;
-    }
-
-    public void setFullscreenModeEnabled(boolean enable) {
-        mIsFullscreenModeEnabled = enable;
-        persistState();
-    }
-
     public Video getSelectedItem(int sectionId) {
         return mSelectedItems.get(sectionId);
     }
@@ -670,8 +661,6 @@ public class GeneralData implements ProfileChangeListener {
         mIsHideWatchedFromNotificationsEnabled = Helpers.parseBoolean(split, 56, false);
         mChangelog = Helpers.parseStrList(split, 57);
 
-        mIsFullscreenModeEnabled = Helpers.parseBoolean(split, 60, true);
-
         mSelectedItems = Helpers.parseMap(split, 63, Helpers::parseInt, Video::fromString);
         mIsFirstUseTooltipEnabled = Helpers.parseBoolean(split, 64, true);
         mIsDeviceSpecificBackupEnabled = Helpers.parseBoolean(split, 65, false);
@@ -750,9 +739,7 @@ public class GeneralData implements ProfileChangeListener {
                 mIsHideWatchedFromNotificationsEnabled, 
                 mChangelog, 
 
-                null, 
-                mIsFullscreenModeEnabled, 
-                null,
+                null, null,
 
                 mSelectedItems, 
                 mIsFirstUseTooltipEnabled, 
