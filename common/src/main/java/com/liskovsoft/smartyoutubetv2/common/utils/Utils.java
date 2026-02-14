@@ -931,7 +931,7 @@ public class Utils {
                     Class.forName(BOOTSTRAP_ACTIVITY_CLASS_NAME)
             );
             intent.putExtra(IntentExtractor.RESTART_INTENT, true);
-            intent.putExtra(IntentExtractor.INCOGNITO_INTENT, video.incognito);
+            
             ProcessPhoenix.triggerRebirth(context, intent);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

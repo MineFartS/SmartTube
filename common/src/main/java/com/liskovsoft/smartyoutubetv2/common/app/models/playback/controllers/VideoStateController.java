@@ -32,7 +32,7 @@ public class VideoStateController extends BasePlayerController {
     private boolean mIsPlayEnabled;
     private boolean mIsPlayBlocked;
     private int mTickleLeft;
-    private boolean mIncognito;
+
     private final Runnable mUpdateHistory = this::saveState;
     private long mNewVideoTimeMs;
 
@@ -60,8 +60,6 @@ public class VideoStateController extends BasePlayerController {
         setPlayEnabled(true); // video just added
 
         getPlayerData().setTempVideoFormat(null);
-
-        enableIncognitoIfNeeded(item);
 
         // Don't do reset on videoLoaded state because this will influences minimized music videos.
         resetPositionIfNeeded(item);
@@ -292,7 +290,6 @@ public class VideoStateController extends BasePlayerController {
 
     @Override
     public void onFinish() {
-        mIncognito = false;
     }
 
     private void clearStateOfNextVideo() {
@@ -352,19 +349,6 @@ public class VideoStateController extends BasePlayerController {
             } else {
                 getStateService().removeByVideoId(video.videoId);
             }
-        }
-    }
-
-    private void enableIncognitoIfNeeded(Video item) {
-        if (item == null) {
-            return;
-        }
-
-        // Enable incognito per session
-        // Reset to default when player finished
-        if (item.incognito) {
-            mIncognito = true;
-            item.incognito = false;
         }
     }
 
@@ -485,7 +469,7 @@ public class VideoStateController extends BasePlayerController {
     private void updateHistory() {
         Video video = getVideo();
 
-        if (video == null || mIncognito || getPlayer() == null || !getPlayer().containsMedia()
+        if (video == null || getPlayer() == null || !getPlayer().containsMedia()
                 || (video.isRemote && getRemoteControlData().isRemoteHistoryDisabled())
                 || getGeneralData().getHistoryState() == GeneralData.HISTORY_DISABLED) {
             return;

@@ -93,8 +93,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
    
     public static final long MENU_ITEM_REMOVE_FROM_SUBSCRIPTIONS = 1 << 25;
    
-    public static final long MENU_ITEM_PLAY_VIDEO_INCOGNITO = 1 << 26;
-   
     public static final long MENU_ITEM_MARK_AS_WATCHED = 1 << 27;
    
     public static final long MENU_ITEM_EXCLUDE_FROM_CONTENT_BLOCK = 1 << 28;
@@ -147,8 +145,7 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     
     private static final Long[] MENU_ITEM_DEFAULT_ORDER = {
         MENU_ITEM_EXIT_FROM_PIP, 
-        MENU_ITEM_PLAY_VIDEO, 
-        MENU_ITEM_PLAY_VIDEO_INCOGNITO, 
+        MENU_ITEM_PLAY_VIDEO,  
         MENU_ITEM_PLAY_FROM_START, 
         MENU_ITEM_REMOVE_FROM_HISTORY,
         MENU_ITEM_STREAM_REMINDER, 

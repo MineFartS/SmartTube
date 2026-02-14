@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 
 public class IntentExtractor {
     public static final String RESTART_INTENT = "RESTART_INTENT";
-    public static final String INCOGNITO_INTENT = "INCOGNITO_INTENT";
     
     /**
      * Browser: https://www.youtube.com/results?search_query=twice<br/>
@@ -328,10 +327,6 @@ public class IntentExtractor {
 
     public static boolean isRestartIntent(Intent intent) {
         return intent != null && intent.getBooleanExtra(RESTART_INTENT, false);
-    }
-
-    public static boolean isIncognitoIntent(Intent intent) {
-        return intent != null && intent.getBooleanExtra(INCOGNITO_INTENT, false);
     }
 
     public static boolean isATVIntent(Intent intent) {

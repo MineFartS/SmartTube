@@ -250,8 +250,8 @@ public class SplashPresenter extends BasePresenter<SplashView> {
                 long timeMs = IntentExtractor.extractVideoTimeMs(intent);
                 PlaybackPresenter playbackPresenter = PlaybackPresenter.instance(getContext());
                 boolean finishOnEnded = IntentExtractor.hasFinishOnEndedFlag(intent);
-                boolean incognito = IntentExtractor.isIncognitoIntent(intent);
-                playbackPresenter.openVideo(videoId, finishOnEnded, timeMs, incognito);
+
+                playbackPresenter.openVideo(videoId, finishOnEnded, timeMs);
 
                 enablePlayerOnlyModeIfNeeded(intent);
 
