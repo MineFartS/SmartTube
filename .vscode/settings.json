@@ -1,18 +1,15 @@
 {
-    "search.exclude": {
-        "/.gradle/": true,
-        "/build/": true,
-        "/smarttubetv/build/": true,
-        "/dependencies/": true
-    },
     "deadCodeDetector.exclude": [
         ".gradle",
-        "build",
-        "smarttubetv/build",
-        "dependencies/MediaServiceCore",
-        "dependencies/SharedModules"
+        "**/build",
+        "dependencies"
     ],
     "deadCodeDetector.analyzeOnSave": false,
     "deadCodeDetector.confidenceThreshold": "high",
-    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx4G -Xms100m -Xlog:disable"
+    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx4G -Xms100m -Xlog:disable",
+    "files.exclude": {
+        ".gradle": true,
+        "**/build": true,
+        ".vscode": true
+    }
 }
