@@ -86,9 +86,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
 
         List<OptionItem> options = new ArrayList<>();
 
-        Set<SegmentAction> actions = mContentBlockData.getActions();
-
-        for (SegmentAction action : actions) {
+        for (SegmentAction action : mContentBlockData.getActions()) {
             options.add(
                 UiOptionItem.from(
 
@@ -122,12 +120,22 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
                         String title = getContext().getString(mContentBlockData.getLocalizedRes(action.segmentCategory));
 
                         dialogPresenter.appendRadioCategory(title, nestedOptions);
-                        dialogPresenter.showDialog(title, mContentBlockData::persistActions);
+                        
+                        dialogPresenter.showDialog(
+                            title, 
+                            mContentBlockData::persistActions
+                        );
 
-                    }));
+                    }
+                )
+            );
         }
 
-        settingsPresenter.appendStringsCategory(getContext().getString(R.string.content_block_action_type), options);
+        settingsPresenter.appendStringsCategory(
+            getContext().getString(R.string.content_block_action_type), 
+            options
+        );
+
     }
 
     private void appendColorMarkersSection(AppDialogPresenter settingsPresenter) {
