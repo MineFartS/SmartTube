@@ -36,6 +36,6 @@ public interface PlayerUI {
     void setTitle(String title);
     void showProgressBar(boolean show);
     void setSeekBarSegments(List<SeekBarSegment> segments);
-    void updateEndingTime();
+
     void setChatReceiver(ChatReceiver chatReceiver);
 }

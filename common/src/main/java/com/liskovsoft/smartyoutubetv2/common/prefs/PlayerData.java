@@ -75,7 +75,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private boolean mIsQualityInfoEnabled;
     private boolean mIsSpeedPerVideoEnabled;
     private boolean mIsTimeCorrectionEnabled;
-    private boolean mIsGlobalEndingTimeEnabled;
+
     private boolean mIsEndingTimeEnabled;
     private boolean mIsDoubleRefreshRateEnabled;
     private boolean mIsSeekConfirmPlayEnabled;
@@ -171,15 +171,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
 
     public void setClockEnabled(boolean enable) {
         mIsClockEnabled = enable;
-        persistState();
-    }
-
-    public boolean isGlobalEndingTimeEnabled() {
-        return mIsGlobalEndingTimeEnabled;
-    }
-
-    public void setGlobalEndingTimeEnabled(boolean enable) {
-        mIsGlobalEndingTimeEnabled = enable;
         persistState();
     }
 
@@ -726,7 +717,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         mAspectRatio = Helpers.parseFloat(split, 30, PlayerEngine.ASPECT_RATIO_DEFAULT);
 
         mIsTimeCorrectionEnabled = Helpers.parseBoolean(split, 32, true);
-        mIsGlobalEndingTimeEnabled = Helpers.parseBoolean(split, 33, false);
+
         mIsEndingTimeEnabled = Helpers.parseBoolean(split, 34, false);
         mIsDoubleRefreshRateEnabled = Helpers.parseBoolean(split, 35, true);
         mIsSeekConfirmPlayEnabled = Helpers.parseBoolean(split, 36, false);
@@ -795,17 +786,14 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
                 null, 
                 mAudioDelayMs, 
                 mIsAllSpeedEnabled, 
-                null, 
-                null,
+                null, null,
                 mIsSleepTimerEnabled, 
-                null, 
-                null, // old player tweaks
+                null, null, // old player tweaks
                 mIsQualityInfoEnabled, 
                 mIsSpeedPerVideoEnabled, 
                 mAspectRatio, 
 
                 mIsTimeCorrectionEnabled,
-                mIsGlobalEndingTimeEnabled, 
                 mIsEndingTimeEnabled, 
                 mIsDoubleRefreshRateEnabled, 
                 mIsSeekConfirmPlayEnabled,

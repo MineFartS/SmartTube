@@ -197,11 +197,6 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public void updateEndingTime() {
-
-    }
-
-    @Override
     public void setChatReceiver(ChatReceiver chatReceiver) {
 
     }

@@ -120,10 +120,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
                 },
                 mGeneralData.is24HourLocaleEnabled()));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.player_corner_ending_time),
-                option -> mPlayerData.setGlobalEndingTimeEnabled(option.isSelected()),
-                mPlayerData.isGlobalEndingTimeEnabled()));
-
         options.add(UiOptionItem.from(getContext().getString(R.string.pinned_channel_rows),
                 optionItem -> {
                     mMainUIData.setPinnedChannelRowsEnabled(optionItem.isSelected());

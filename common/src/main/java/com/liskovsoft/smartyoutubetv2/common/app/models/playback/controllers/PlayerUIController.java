@@ -282,8 +282,6 @@ public class PlayerUIController extends BasePlayerController {
         if (getPlayer() == null) {
             return;
         }
-
-        getPlayer().updateEndingTime();
         applySoundOffButtonState();
     }
 
@@ -292,8 +290,6 @@ public class PlayerUIController extends BasePlayerController {
         if (getPlayer() == null) {
             return;
         }
-
-        getPlayer().updateEndingTime();
     }
 
     @Override

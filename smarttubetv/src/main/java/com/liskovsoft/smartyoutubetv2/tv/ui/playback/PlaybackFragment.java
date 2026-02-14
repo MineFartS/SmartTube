@@ -79,7 +79,6 @@ import com.liskovsoft.smartyoutubetv2.tv.ui.playback.other.VideoPlayerGlue.OnAct
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.previewtimebar.StoryboardSeekDataProvider;
 import com.liskovsoft.smartyoutubetv2.tv.ui.widgets.chat.LiveChatView;
 import com.liskovsoft.smartyoutubetv2.tv.ui.widgets.time.DateTimeView;
-import com.liskovsoft.smartyoutubetv2.tv.ui.widgets.time.EndingTimeView;
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
 
 import java.io.InputStream;
@@ -429,8 +428,6 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
 
         initializePlayerRows();
 
-        initializeGlobalEndingTime();
-
         initializePixelRatio();
     }
 
@@ -474,11 +471,6 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
 
     private void createDebugManager() {
         mDebugInfoManager = new DebugInfoManager(getActivity(), mPlayer, R.id.debug_view_group);
-    }
-
-    private void initializeGlobalEndingTime() {
-        EndingTimeView endingTime = getActivity().findViewById(R.id.global_ending_time);
-        endingTime.setVisibility(PlayerData.instance(getContext()).isGlobalEndingTimeEnabled() ? View.VISIBLE : View.GONE);
     }
 
     private void initializePixelRatio() {
@@ -801,14 +793,6 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     public void setSeekBarSegments(List<SeekBarSegment> segments) {
         if (mPlayerGlue != null) {
             mPlayerGlue.setSeekBarSegments(segments);
-        }
-    }
-
-    @Override
-    public void updateEndingTime() {
-        if (getActivity() != null) {
-            EndingTimeView endingTime = getActivity().findViewById(R.id.global_ending_time);
-            endingTime.update();
         }
     }
 
