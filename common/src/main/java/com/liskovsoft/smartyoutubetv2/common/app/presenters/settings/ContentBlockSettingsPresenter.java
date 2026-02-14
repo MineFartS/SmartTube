@@ -44,7 +44,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
         appendExcludeChannelButton(settingsPresenter);
         appendActionsSection(settingsPresenter);
         appendColorMarkersSection(settingsPresenter);
-        appendMiscSection(settingsPresenter);
+
         appendLinks(settingsPresenter);
 
         settingsPresenter.showDialog(
@@ -169,22 +169,6 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
 
         settingsPresenter.appendSingleButton(statsCheckOption);
         settingsPresenter.appendSingleButton(webSiteOption);
-    }
-
-    private void appendMiscSection(AppDialogPresenter settingsPresenter) {
-        
-        List<OptionItem> options = new ArrayList<>();
-
-        options.add(
-            UiOptionItem.from(
-                getContext().getString(R.string.content_block_alt_server),
-                getContext().getString(R.string.content_block_alt_server_desc),
-                optionItem -> mContentBlockData.enableAltServer(optionItem.isSelected()),
-                mContentBlockData.isAltServerEnabled()
-            )
-        );
-
-        settingsPresenter.appendCheckedCategory(getContext().getString(R.string.player_other), options);
     }
 
     private void appendExcludeChannelButton(AppDialogPresenter settingsPresenter) {
