@@ -67,8 +67,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private static PlayerTweaksData sInstance;
     private final AppPrefs mPrefs;
 
-    private boolean mIsAmazonFrameDropFixEnabled;
-
     private boolean mIsSnapToVsyncDisabled;
     private boolean mIsProfileLevelCheckSkipped;
     private boolean mIsSWDecoderForced;
@@ -130,15 +128,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         }
 
         return sInstance;
-    }
-
-    public boolean isAmazonFrameDropFixEnabled() {
-        return mIsAmazonFrameDropFixEnabled;
-    }
-
-    public void setAmazonFrameDropFixEnabled(boolean enable) {
-        mIsAmazonFrameDropFixEnabled = enable;
-        persistData();
     }
 
     public boolean isSnappingToVsyncDisabled() {
@@ -526,7 +515,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
         String[] split = Helpers.splitData(data);
 
-        mIsAmazonFrameDropFixEnabled = Helpers.parseBoolean(split, 1, false);
         mIsSnapToVsyncDisabled = Helpers.parseBoolean(split, 2, false);
         mIsProfileLevelCheckSkipped = Helpers.parseBoolean(split, 3, false);
         mIsSWDecoderForced = Helpers.parseBoolean(split, 4, false);
@@ -596,7 +584,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mPrefs.setProfileData(
             VIDEO_PLAYER_TWEAKS_DATA, 
             Helpers.mergeData(
-                mIsAmazonFrameDropFixEnabled, 
+
                 mIsSnapToVsyncDisabled,
                 mIsProfileLevelCheckSkipped, 
                 mIsSWDecoderForced, 

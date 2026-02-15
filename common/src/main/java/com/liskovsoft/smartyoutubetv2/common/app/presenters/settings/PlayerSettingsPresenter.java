@@ -363,15 +363,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.amazon_frame_drop_fix),
-                getContext().getString(R.string.amazon_frame_drop_fix_desc),
-                option -> mPlayerTweaksData.setAmazonFrameDropFixEnabled(option.isSelected()),
-                mPlayerTweaksData.isAmazonFrameDropFixEnabled()
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
                 getContext().getString(R.string.keep_finished_activities),
                 option -> mPlayerTweaksData.setKeepFinishedActivityEnabled(option.isSelected()),
                 mPlayerTweaksData.isKeepFinishedActivityEnabled()

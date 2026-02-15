@@ -555,8 +555,6 @@
     <string name="player_chapter_notification">Quick advance through the chapters using the popup notification</string>
     <string name="player_chapter_notification2">Switch to the next chapter by clicking on the notification</string>
 
-    <string name="amazon_frame_drop_fix">Frame drop fix #2</string>
-    <string name="amazon_frame_drop_fix_desc">Intended for Amazon Stick devices. May work on other devices too.</string>
     <string name="item_postion">Position of</string>
     <string name="player_screen_off_dimming">Screen off dimming amount</string>
     <string name="screensaver_timout">Screensaver timeout</string>

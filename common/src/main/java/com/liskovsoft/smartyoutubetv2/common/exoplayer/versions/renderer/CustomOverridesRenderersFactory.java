@@ -71,37 +71,48 @@ public class CustomOverridesRenderersFactory extends CustomRenderersFactoryBase 
 
     // 2.10, 2.11
     @Override
-    protected void buildVideoRenderers(Context context, int extensionRendererMode, MediaCodecSelector mediaCodecSelector,
-                                       @Nullable DrmSessionManager<FrameworkMediaCrypto> drmSessionManager, boolean playClearSamplesWithoutKeys,
-                                       boolean enableDecoderFallback, Handler eventHandler, VideoRendererEventListener eventListener,
-                                       long allowedVideoJoiningTimeMs, ArrayList<Renderer> out) {
-        super.buildVideoRenderers(context, extensionRendererMode, mediaCodecSelector, drmSessionManager, playClearSamplesWithoutKeys,
-                enableDecoderFallback, eventHandler, eventListener, allowedVideoJoiningTimeMs, out);
+    protected void buildVideoRenderers(
+        Context context, 
+        int extensionRendererMode, 
+        MediaCodecSelector mediaCodecSelector,
+        @Nullable DrmSessionManager<FrameworkMediaCrypto> drmSessionManager, 
+        boolean playClearSamplesWithoutKeys,
+        boolean enableDecoderFallback, 
+        Handler eventHandler, 
+        VideoRendererEventListener eventListener,
+        long allowedVideoJoiningTimeMs, 
+        ArrayList<Renderer> out
+    ) {
         
-        if (!mPlayerTweaksData.isAmazonFrameDropFixEnabled()) {
-            // Improve performance a bit by eliminating some if conditions presented in tweaks.
-            // But we need to obtain codec real name somehow. So use interceptor below.
-
-            DebugInfoMediaCodecVideoRenderer videoRenderer =
-                    new DebugInfoMediaCodecVideoRenderer(context, mediaCodecSelector, allowedVideoJoiningTimeMs, drmSessionManager,
-                        playClearSamplesWithoutKeys, enableDecoderFallback, eventHandler, eventListener, MAX_DROPPED_VIDEO_FRAME_COUNT_TO_NOTIFY);
-
-            videoRenderer.enableSetOutputSurfaceWorkaround(true); // Force enable?
-
-            replaceVideoRenderer(out, videoRenderer);
-
-            return;
-        }
-
-        TweaksMediaCodecVideoRenderer videoRenderer =
-                new TweaksMediaCodecVideoRenderer(context, mediaCodecSelector, allowedVideoJoiningTimeMs, drmSessionManager,
-                        playClearSamplesWithoutKeys, enableDecoderFallback, eventHandler, eventListener, MAX_DROPPED_VIDEO_FRAME_COUNT_TO_NOTIFY);
-
-        videoRenderer.enableFrameDropFix(mPlayerTweaksData.isAmazonFrameDropFixEnabled());
+        super.buildVideoRenderers(
+            context, 
+            extensionRendererMode, 
+            mediaCodecSelector, 
+            drmSessionManager, 
+            playClearSamplesWithoutKeys,
+            enableDecoderFallback, 
+            eventHandler, 
+            eventListener, 
+            allowedVideoJoiningTimeMs, 
+            out
+        );
+        
+        DebugInfoMediaCodecVideoRenderer videoRenderer = new DebugInfoMediaCodecVideoRenderer(
+            context, 
+            mediaCodecSelector, 
+            allowedVideoJoiningTimeMs, 
+            drmSessionManager,
+            playClearSamplesWithoutKeys, 
+            enableDecoderFallback, 
+            eventHandler, 
+            eventListener, 
+            MAX_DROPPED_VIDEO_FRAME_COUNT_TO_NOTIFY
+        );
 
         videoRenderer.enableSetOutputSurfaceWorkaround(true); // Force enable?
 
         replaceVideoRenderer(out, videoRenderer);
+
     }
 
 }
