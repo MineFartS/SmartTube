@@ -86,7 +86,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsRememberPositionOfLiveVideosEnabled;
     private boolean mIsSuggestionsDisabled;
 
-    private boolean mIsCommentsPlacedLeft;
     private boolean mIsRealChannelIconEnabled;
     private float mPixelRatio;
     private boolean mIsQualityInfoBitrateEnabled;
@@ -336,15 +335,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     public void setSuggestionsDisabled(boolean disable) {
         mIsSuggestionsDisabled = disable;
-        persistData();
-    }
-
-    public boolean isCommentsPlacedLeft() {
-        return mIsCommentsPlacedLeft;
-    }
-
-    public void setCommentsPlacedLeft(boolean left) {
-        mIsCommentsPlacedLeft = left;
         persistData();
     }
 
@@ -625,8 +615,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsExtraLongSpeedListEnabled = Helpers.parseBoolean(split, 49, false);
         mIsQuickSkipVideosEnabled = Helpers.parseBoolean(split, 50, false);
 
-        mIsCommentsPlacedLeft = Helpers.parseBoolean(split, 52, false);
-
         mIsAudioFocusEnabled = Helpers.parseBoolean(split, 54, true);
         mIsDontResizeVideoToFitDialogEnabled = Helpers.parseBoolean(split, 55, false);
         mIsSuggestionsHorizontallyScrolled = Helpers.parseBoolean(split, 56, false);
@@ -695,7 +683,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 null, 
                 mIsExtraLongSpeedListEnabled, 
                 mIsQuickSkipVideosEnabled, 
-                mIsCommentsPlacedLeft,
+
                 null,
                 mIsAudioFocusEnabled, 
                 mIsDontResizeVideoToFitDialogEnabled, 

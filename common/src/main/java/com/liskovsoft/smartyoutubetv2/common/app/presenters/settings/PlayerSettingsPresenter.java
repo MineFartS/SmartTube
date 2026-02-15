@@ -540,10 +540,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 option -> mPlayerTweaksData.setLoopShortsEnabled(option.isSelected()),
                 mPlayerTweaksData.isLoopShortsEnabled()));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.place_comments_left),
-                option -> mPlayerTweaksData.setCommentsPlacedLeft(option.isSelected()),
-                mPlayerTweaksData.isCommentsPlacedLeft()));
-
         options.add(UiOptionItem.from(getContext().getString(R.string.player_disable_suggestions),
                 option -> mPlayerTweaksData.setSuggestionsDisabled(option.isSelected()),
                 mPlayerTweaksData.isSuggestionsDisabled()));

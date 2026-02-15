@@ -39,17 +39,25 @@ import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 public abstract class BasePlayerController implements PlayerEventListener {
     private PlaybackPresenter mMainController;
     private Context mContext;
+    
     private final Runnable mFitVideoStart = () -> {
+        
         AppDialogPresenter settingsPresenter = getAppDialogPresenter();
+        
         if (getPlayer() == null || settingsPresenter.isOverlay() || getPlayerTweaksData().isDontResizeVideoToFitDialogEnabled()) {
             return;
         }
+        
         FormatItem videoFormat = getPlayer().getVideoFormat();
+        
         Format format = videoFormat != null && videoFormat.getTrack() != null ? videoFormat.getTrack().format : null;
+        
         if (format == null) {
             return;
         }
+        
         getPlayer().showControls(false);
+        
         // Dialog takes up 37% of the screen space
         float dialogWidth = 37 * getMainUIData().getUIScale();
         float initialZoom = 100;
@@ -57,15 +65,21 @@ public abstract class BasePlayerController implements PlayerEventListener {
         float ratio = format.width / (float) format.height;
         float targetRatio = 16/9f;
         float multiplier = targetRatio / ratio;
+        
         if (multiplier > 1) { // skip cinema ratio
             totalZoom *= multiplier;
         }
+        
         if (totalZoom > 130) {
             return; // shorts overzoom fix
         }
+        
         getPlayer().setZoomPercents(Math.round(totalZoom));
-        getPlayer().setVideoGravity(settingsPresenter.isComments() && getPlayerTweaksData().isCommentsPlacedLeft() ?
-                Gravity.END | Gravity.CENTER_VERTICAL : Gravity.START | Gravity.CENTER_VERTICAL);
+        
+        getPlayer().setVideoGravity(
+            Gravity.START | Gravity.CENTER_VERTICAL
+        );
+
     };
     private final Runnable mFitVideoFinish = () -> {
         if (getPlayer() == null || getPlayerTweaksData().isDontResizeVideoToFitDialogEnabled()) {
