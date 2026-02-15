@@ -68,7 +68,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private final AppPrefs mPrefs;
 
     private boolean mIsAmazonFrameDropFixEnabled;
-    private boolean mIsSonyFrameDropFixEnabled;
+
     private boolean mIsSnapToVsyncDisabled;
     private boolean mIsProfileLevelCheckSkipped;
     private boolean mIsSWDecoderForced;
@@ -138,15 +138,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     public void setAmazonFrameDropFixEnabled(boolean enable) {
         mIsAmazonFrameDropFixEnabled = enable;
-        persistData();
-    }
-
-    public boolean isSonyFrameDropFixEnabled() {
-        return mIsSonyFrameDropFixEnabled;
-    }
-
-    public void setSonyFrameDropFixEnabled(boolean enable) {
-        mIsSonyFrameDropFixEnabled = enable;
         persistData();
     }
 
@@ -564,7 +555,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mPlayerDataSource = Helpers.parseInt(split, 26, PLAYER_DATA_SOURCE_DEFAULT);
 
         mIsDashUrlStreamsForced = Helpers.parseBoolean(split, 28, false);
-        mIsSonyFrameDropFixEnabled = Helpers.parseBoolean(split, 29, false);
+
         mIsBufferOnStreamsDisabled = Helpers.parseBoolean(split, 30, false);
         // Cause severe garbage collector stuttering
         mIsSectionPlaylistEnabled = Helpers.parseBoolean(split, 31, Utils.isEnoughRam());
@@ -631,7 +622,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mIsLongSpeedListEnabled, 
                 mPlayerDataSource, 
                 mIsDashUrlStreamsForced, 
-                mIsSonyFrameDropFixEnabled, 
+
                 mIsBufferOnStreamsDisabled, 
                 mIsSectionPlaylistEnabled,
                 mIsScreenOffTimeoutEnabled, 

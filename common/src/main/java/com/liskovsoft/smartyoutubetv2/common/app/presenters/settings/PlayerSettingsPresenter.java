@@ -363,15 +363,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.sony_frame_drop_fix),
-                getContext().getString(R.string.sony_frame_drop_fix_desc),
-                option -> mPlayerTweaksData.setSonyFrameDropFixEnabled(option.isSelected()),
-                mPlayerTweaksData.isSonyFrameDropFixEnabled()
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
                 getContext().getString(R.string.amazon_frame_drop_fix),
                 getContext().getString(R.string.amazon_frame_drop_fix_desc),
                 option -> mPlayerTweaksData.setAmazonFrameDropFixEnabled(option.isSelected()),
