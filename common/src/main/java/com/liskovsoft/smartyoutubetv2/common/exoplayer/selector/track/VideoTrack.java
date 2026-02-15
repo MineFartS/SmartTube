@@ -12,7 +12,6 @@ public class VideoTrack extends MediaTrack {
     private static final int COMPARE_TYPE_IN_BOUNDS_PRESET = 1;
     private static final int COMPARE_TYPE_IN_BOUNDS_PRESET_NO_FPS = 3;
     private static final int COMPARE_TYPE_NORMAL = 2;
-    public static boolean sIsNoFpsPresetsEnabled;
 
     public VideoTrack(int rendererIndex) {
         super(rendererIndex);
@@ -90,14 +89,27 @@ public class VideoTrack extends MediaTrack {
         boolean isPreset = format.id == null;
 
         if (isPreset) {
+
             // Overcome non-standard aspect ratio by getting resolution label
-            boolean respectPresetsFps = !sIsNoFpsPresetsEnabled ||
-                    sizeEquals(format.height, TrackSelectorUtil.getOriginHeight(track2.format.height));
-            //return compare(track2, COMPARE_TYPE_IN_BOUNDS_PRESET) : // EXPERIMENT: replaced multi fps with strict fps in presets
-            return compare(track2, isMultiFpsFormat || respectPresetsFps ? COMPARE_TYPE_IN_BOUNDS_PRESET : COMPARE_TYPE_IN_BOUNDS_PRESET_NO_FPS);
+            boolean respectPresetsFps = sizeEquals(
+                format.height, 
+                TrackSelectorUtil.getOriginHeight(track2.format.height)
+            );
+
+            return compare(
+                track2, 
+                (isMultiFpsFormat || respectPresetsFps) ? COMPARE_TYPE_IN_BOUNDS_PRESET : COMPARE_TYPE_IN_BOUNDS_PRESET_NO_FPS
+            );
+
         } else {
-            return compare(track2, isMultiFpsFormat ? COMPARE_TYPE_IN_BOUNDS : COMPARE_TYPE_IN_BOUNDS_NO_FPS);
+            
+            return compare(
+                track2, 
+                isMultiFpsFormat ? COMPARE_TYPE_IN_BOUNDS : COMPARE_TYPE_IN_BOUNDS_NO_FPS
+            );
+
         }
+
     }
 
     @Override

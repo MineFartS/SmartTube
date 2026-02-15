@@ -78,7 +78,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsPlaybackNotificationsDisabled;
     private boolean mIsTunneledPlaybackEnabled;
     private int mPlayerButtons;
-    private boolean mIsNoFpsPresetsEnabled;
+
     private boolean mIsRememberPositionOfShortVideosEnabled;
     private boolean mIsRememberPositionOfLiveVideosEnabled;
     private boolean mIsSuggestionsDisabled;
@@ -240,15 +240,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     public void setPlayerDataSource(int dataSource) {
         mPlayerDataSource = dataSource;
-        persistData();
-    }
-
-    public boolean isNoFpsPresetsEnabled() {
-        return mIsNoFpsPresetsEnabled;
-    }
-
-    public void setNoFpsPresetsEnabled(boolean enable) {
-        mIsNoFpsPresetsEnabled = enable;
         persistData();
     }
 
@@ -507,8 +498,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsPlaybackNotificationsDisabled = Helpers.parseBoolean(split, 11, !Helpers.isAndroidTVLauncher(mPrefs.getContext()));
         mIsTunneledPlaybackEnabled = Helpers.parseBoolean(split, 12, false);
         mPlayerButtons = Helpers.parseInt(split, 13, PLAYER_BUTTON_DEFAULT);
-        // Buffering fix was there.
-        mIsNoFpsPresetsEnabled = Helpers.parseBoolean(split, 15, false);
+
         mIsRememberPositionOfShortVideosEnabled = Helpers.parseBoolean(split, 16, false);
         mIsSuggestionsDisabled = Helpers.parseBoolean(split, 17, false);
         
@@ -575,7 +565,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mIsTunneledPlaybackEnabled, 
                 mPlayerButtons,
                 null, 
-                mIsNoFpsPresetsEnabled, 
+
                 mIsRememberPositionOfShortVideosEnabled, 
                 mIsSuggestionsDisabled,
 

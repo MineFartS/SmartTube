@@ -290,15 +290,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.alt_presets_behavior),
-                getContext().getString(R.string.alt_presets_behavior_desc),
-                option -> mPlayerTweaksData.setNoFpsPresetsEnabled(option.isSelected()),
-                mPlayerTweaksData.isNoFpsPresetsEnabled()
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
                 getContext().getString(R.string.tunneled_video_playback),
                 getContext().getString(R.string.tunneled_video_playback_desc),
                 option -> {

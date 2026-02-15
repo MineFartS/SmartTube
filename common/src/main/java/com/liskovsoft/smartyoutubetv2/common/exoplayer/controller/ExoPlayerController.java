@@ -69,7 +69,6 @@ public class ExoPlayerController implements Player.EventListener {
         mEventListener = eventListener;
         
         applyShield720pFix();
-        VideoTrack.sIsNoFpsPresetsEnabled = playerTweaksData.isNoFpsPresetsEnabled();
         
     }
 

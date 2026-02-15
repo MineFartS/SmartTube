@@ -396,8 +396,7 @@
     <string name="dialog_add_remove_from">Add/Remove from %s</string>
     <string name="lb_playback_controls_skip_next">Skip Next</string>
     <string name="lb_playback_controls_skip_previous">Skip Previous/Rewind to start position</string>
-    <string name="alt_presets_behavior">Alt presets behavior (limit bandwidth)</string>
-    <string name="alt_presets_behavior_desc">The app will try to maintain bandwidth corresponding to selected preset instead of matching between resolution, fps and codec.</string>
+    
     <string name="sleep_timer">Sleep timer (if remote isn\'t used for one hour)</string>
     <string name="sleep_timer_desc">Pause the playback if user didn\'t use the remote for one hour</string>
     <string name="disable_vsync">Disable snap to vsync</string>
