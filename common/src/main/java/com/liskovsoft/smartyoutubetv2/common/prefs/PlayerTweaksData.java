@@ -86,7 +86,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsRememberPositionOfLiveVideosEnabled;
     private boolean mIsSuggestionsDisabled;
 
-    private boolean mIsChatPlacedLeft;
     private boolean mIsCommentsPlacedLeft;
     private boolean mIsRealChannelIconEnabled;
     private float mPixelRatio;
@@ -337,15 +336,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     public void setSuggestionsDisabled(boolean disable) {
         mIsSuggestionsDisabled = disable;
-        persistData();
-    }
-
-    public boolean isChatPlacedLeft() {
-        return mIsChatPlacedLeft;
-    }
-
-    public void setChatPlacedLeft(boolean left) {
-        mIsChatPlacedLeft = left;
         persistData();
     }
 
@@ -602,7 +592,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsRememberPositionOfShortVideosEnabled = Helpers.parseBoolean(split, 16, false);
         mIsSuggestionsDisabled = Helpers.parseBoolean(split, 17, false);
         
-        mIsChatPlacedLeft = Helpers.parseBoolean(split, 19, false);
         mIsRealChannelIconEnabled = Helpers.parseBoolean(split, 20, true);
         mPixelRatio = Helpers.parseFloat(split, 21, 1.0f);
         mIsQualityInfoBitrateEnabled = Helpers.parseBoolean(split, 22, false);
@@ -675,7 +664,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mIsNoFpsPresetsEnabled, 
                 mIsRememberPositionOfShortVideosEnabled, 
                 mIsSuggestionsDisabled,
-                mIsChatPlacedLeft, 
+
                 mIsRealChannelIconEnabled, 
                 mPixelRatio, 
                 mIsQualityInfoBitrateEnabled,

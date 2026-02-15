@@ -98,21 +98,12 @@ public class ChatController extends BasePlayerController {
                     },
                     !getPlayerData().isLiveChatEnabled()));
 
-            options.add(UiOptionItem.from(getContext().getString(R.string.chat_left),
-                    optionItem -> {
-                        placeChatLeft(true);
-                        enableLiveChat(true);
-                        settingsPresenter.closeDialog();
-                    },
-                    getPlayerData().isLiveChatEnabled() && isChatPlacedLeft()));
-
             options.add(UiOptionItem.from(getContext().getString(R.string.chat_right),
                     optionItem -> {
-                        placeChatLeft(false);
                         enableLiveChat(true);
                         settingsPresenter.closeDialog();
                     },
-                    getPlayerData().isLiveChatEnabled() && !isChatPlacedLeft()));
+                    getPlayerData().isLiveChatEnabled()));
 
             settingsPresenter.appendRadioCategory(chatCategoryTitle, options);
 
@@ -154,27 +145,22 @@ public class ChatController extends BasePlayerController {
     }
 
     private void enableLiveChat(boolean enabled) {
+        
         if (enabled) {
             openLiveChat();
         } else {
             disposeActions();
         }
+        
         getPlayerData().setLiveChatEnabled(enabled);
 
         if (mLiveChatKey != null) {
-            getPlayer().setButtonState(R.id.action_chat, enabled ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
+            getPlayer().setButtonState(
+                R.id.action_chat, 
+                enabled ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF
+            );
         }
+
     }
 
-    private void placeChatLeft(boolean left) {
-        if (mLiveChatKey != null) {
-            getPlayerTweaksData().setChatPlacedLeft(left);
-        } else {
-            getPlayerTweaksData().setCommentsPlacedLeft(left);
-        }
-    }
-
-    private boolean isChatPlacedLeft() {
-        return mLiveChatKey != null ? getPlayerTweaksData().isChatPlacedLeft() : getPlayerTweaksData().isCommentsPlacedLeft();
-    }
 }
