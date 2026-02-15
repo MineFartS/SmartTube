@@ -90,7 +90,7 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
         final ViewGroup mSecondaryControlsDock;
         final TextView mTotalTime;
         final TextView mCurrentTime;
-        final TextView mEndingTime;
+
         final TextView mQualityInfo;
         final TextView mDateTime;
         final ViewGroup mAdditionalInfo;
@@ -101,7 +101,7 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
         final TextView mThumbsBarTitle;
         final ViewGroup mThumbsBarWrapper;
         final String mRemainingTimeFormat;
-        final String mEndingTimeFormat;
+
         long mTotalTimeInMs = Long.MIN_VALUE;
         long mCurrentTimeInMs = Long.MIN_VALUE;
         long mRemainingTimeInMs = Long.MIN_VALUE;
@@ -134,7 +134,7 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
             @Override
             public void onCurrentPositionChanged(PlaybackControlsRow row, long ms) {
                 setCurrentPosition(ms);
-                setEndingTime(ms);
+
                 updateTotalTime();
             }
 
@@ -437,8 +437,7 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
             mTotalTime = (TextView) rootView.findViewById(R.id.total_time);
             mQualityInfo = (TextView) rootView.findViewById(com.liskovsoft.smartyoutubetv2.tv.R.id.quality_info);
             mDateTime = (TextView) rootView.findViewById(com.liskovsoft.smartyoutubetv2.tv.R.id.date_time);
-            mEndingTime = (TextView) rootView.findViewById(com.liskovsoft.smartyoutubetv2.tv.R.id.ending_time);
-            mEndingTimeFormat = rootView.getContext().getString(com.liskovsoft.smartyoutubetv2.tv.R.string.player_ending_time);
+
             mRemainingTimeFormat = rootView.getContext().getString(com.liskovsoft.smartyoutubetv2.tv.R.string.player_remaining_time);
             mAdditionalInfo = (ViewGroup) rootView.findViewById(com.liskovsoft.smartyoutubetv2.tv.R.id.additional_info);
             mTimeInfo = (ViewGroup) rootView.findViewById(com.liskovsoft.smartyoutubetv2.tv.R.id.time_info);
@@ -752,33 +751,6 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
             double ratio = (double) progressMs / mTotalTimeInMs;           // Range: [0, 1]
             double progressRatio = ratio * Integer.MAX_VALUE;   // Could safely cast to int
             mProgressBar.setSecondaryProgress((int) progressRatio);
-        }
-
-        void setEndingTime(long currentTimeMs) {
-            long remainingTimeMs = mTotalTimeInMs - currentTimeMs;
-
-            if (mRemainingTimeInMs != remainingTimeMs) {
-                mRemainingTimeInMs = remainingTimeMs;
-                onSetEndingTimeLabel(remainingTimeMs);
-            }
-        }
-
-        protected void onSetEndingTimeLabel(long remainingTimeMs) {
-            remainingTimeMs = applySpeedCorrection(remainingTimeMs);
-
-            if (mEndingTime != null) {
-                if (mPlayerData.isRemainingTimeEnabled()) {
-                    formatTime(remainingTimeMs, mTempBuilder);
-                    mEndingTime.setText(String.format(mRemainingTimeFormat, mTempBuilder.toString()));
-                    mEndingTime.setVisibility(View.VISIBLE);
-                } else if (mPlayerData.isEndingTimeEnabled()) {
-                    mEndingTime.setText(String.format(mEndingTimeFormat,
-                            DateHelper.toShortTime(System.currentTimeMillis() + remainingTimeMs)));
-                    mEndingTime.setVisibility(View.VISIBLE);
-                } else {
-                    mEndingTime.setVisibility(View.GONE);
-                }
-            }
         }
 
         void setQualityInfo(String content) {

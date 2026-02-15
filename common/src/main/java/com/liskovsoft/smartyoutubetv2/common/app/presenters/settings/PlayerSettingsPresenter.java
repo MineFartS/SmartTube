@@ -67,7 +67,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         appendSeekingPreviewCategory(settingsPresenter);
         AppDialogUtil.appendSeekIntervalDialogItems(getContext(), settingsPresenter, mPlayerData, false);
 
-        appendEndingTimeCategory(settingsPresenter);
         appendPixelRatioCategory(settingsPresenter);
 
         appendMiscCategory(settingsPresenter);
@@ -473,33 +472,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 mPlayerData.isSeekConfirmPlayEnabled()));
 
         settingsPresenter.appendRadioCategory(getContext().getString(R.string.player_seek_type), options);
-    }
-
-    private void appendEndingTimeCategory(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
-
-        options.add(UiOptionItem.from(getContext().getString(R.string.option_disabled),
-                option -> {
-                    mPlayerData.setRemainingTimeEnabled(false);
-                    mPlayerData.setEndingTimeEnabled(false);
-                },
-                !mPlayerData.isRemainingTimeEnabled() && !mPlayerData.isEndingTimeEnabled()));
-
-        options.add(UiOptionItem.from(getContext().getString(R.string.player_show_remaining_time),
-                option -> {
-                    mPlayerData.setRemainingTimeEnabled(true);
-                    mPlayerData.setEndingTimeEnabled(false);
-                },
-                mPlayerData.isRemainingTimeEnabled()));
-
-        options.add(UiOptionItem.from(getContext().getString(R.string.player_show_ending_time),
-                option -> {
-                    mPlayerData.setEndingTimeEnabled(true);
-                    mPlayerData.setRemainingTimeEnabled(false);
-                },
-                mPlayerData.isEndingTimeEnabled()));
-
-        settingsPresenter.appendRadioCategory(getContext().getString(R.string.player_show_ending_time), options);
     }
 
     private void appendPixelRatioCategory(AppDialogPresenter settingsPresenter) {

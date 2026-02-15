@@ -45,7 +45,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private boolean mIsSeekConfirmPauseEnabled;
     private boolean mIsClockEnabled;
 
-    private boolean mIsRemainingTimeEnabled;
     private int mBackgroundMode;
     private FormatItem mVideoFormat;
     private FormatItem mTempVideoFormat;
@@ -76,7 +75,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private boolean mIsSpeedPerVideoEnabled;
     private boolean mIsTimeCorrectionEnabled;
 
-    private boolean mIsEndingTimeEnabled;
+
     private boolean mIsDoubleRefreshRateEnabled;
     private boolean mIsSeekConfirmPlayEnabled;
     private int mStartSeekIncrementMs;
@@ -171,24 +170,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
 
     public void setClockEnabled(boolean enable) {
         mIsClockEnabled = enable;
-        persistState();
-    }
-
-    public boolean isRemainingTimeEnabled() {
-        return mIsRemainingTimeEnabled;
-    }
-
-    public void setRemainingTimeEnabled(boolean enable) {
-        mIsRemainingTimeEnabled = enable;
-        persistState();
-    }
-
-    public boolean isEndingTimeEnabled() {
-        return mIsEndingTimeEnabled;
-    }
-
-    public void setEndingTimeEnabled(boolean enable) {
-        mIsEndingTimeEnabled = enable;
         persistState();
     }
 
@@ -691,7 +672,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         mSeekPreviewMode = Helpers.parseInt(split, 3, SEEK_PREVIEW_SINGLE);
         mIsSeekConfirmPauseEnabled = Helpers.parseBoolean(split, 4, false);
         mIsClockEnabled = Helpers.parseBoolean(split, 5, true);
-        mIsRemainingTimeEnabled = Helpers.parseBoolean(split, 6, true);
+
         mBackgroundMode = Helpers.parseInt(split, 7, PlayerEngine.BACKGROUND_MODE_DEFAULT);
         // afrData was there
         mVideoFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 9)), getDefaultVideoFormat());
@@ -718,7 +699,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
 
         mIsTimeCorrectionEnabled = Helpers.parseBoolean(split, 32, true);
 
-        mIsEndingTimeEnabled = Helpers.parseBoolean(split, 34, false);
         mIsDoubleRefreshRateEnabled = Helpers.parseBoolean(split, 35, true);
         mIsSeekConfirmPlayEnabled = Helpers.parseBoolean(split, 36, false);
         mStartSeekIncrementMs = Helpers.parseInt(split, 37, 10_000);
@@ -771,7 +751,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
                 mSeekPreviewMode, 
                 mIsSeekConfirmPauseEnabled,
                 mIsClockEnabled, 
-                mIsRemainingTimeEnabled, 
+
                 mBackgroundMode, 
                 null,
                 mVideoFormat, 
@@ -794,7 +774,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
                 mAspectRatio, 
 
                 mIsTimeCorrectionEnabled,
-                mIsEndingTimeEnabled, 
+
                 mIsDoubleRefreshRateEnabled, 
                 mIsSeekConfirmPlayEnabled,
                 mStartSeekIncrementMs, 

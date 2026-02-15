@@ -131,8 +131,7 @@
     <string name="playlists_style_grid">Grid</string>
     <string name="playlists_style_rows">Rows</string>
     <string name="player_show_clock">Show clock in controls bar</string>
-    <string name="player_show_remaining_time">Show remaining time in controls bar</string>
-    <string name="player_show_ending_time">Show ending time in controls bar</string>
+
     <string name="open_channel_uploads">Open channel uploads</string>
 
     <string name="player_exit_shortcut">Exit from the player</string>

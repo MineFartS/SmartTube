@@ -146,19 +146,11 @@ public abstract class MaxControlsVideoPlayerGlue<T extends PlayerAdapter>
     @Override
     protected void onUpdateControlsVisibility() {
         super.onUpdateControlsVisibility();
-
-        if (isControlsVisible()) {
-            updateLiveEndingTime();
-        }
     }
 
     @Override
     protected void onUpdateProgress() {
         super.onUpdateProgress();
-
-        if (isControlsVisible()) {
-            updateLiveEndingTime();
-        }
     }
 
     public void setSeekPreviewTitle(String title) {
@@ -174,31 +166,6 @@ public abstract class MaxControlsVideoPlayerGlue<T extends PlayerAdapter>
     public void setSeekBarSegments(List<SeekBarSegment> segments) {
         if (getTransportViewHolder() != null) {
             getTransportViewHolder().setSeekBarSegments(segments);
-        }
-    }
-
-    private void updateLiveEndingTime() {
-        if (mVideo == null) {
-            return;
-        }
-
-        long liveDurationMs = mVideo.getLiveDurationMs();
-
-        if (liveDurationMs == 0) {
-            return;
-        }
-
-        PlaybackControlsRow controlsRow = getControlsRow();
-        PlayerAdapter playerAdapter = getPlayerAdapter();
-
-        if (controlsRow == null || playerAdapter == null) {
-            return;
-        }
-
-        // Apply duration on videos with uncommon length.
-        if (playerAdapter.getDuration() > Video.MAX_LIVE_DURATION_MS) {
-            controlsRow.setDuration(
-                    playerAdapter.isPrepared() ? liveDurationMs : -1);
         }
     }
 
