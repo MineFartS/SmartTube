@@ -107,7 +107,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     private boolean mIsPlayerAutoVolumeEnabled;
     private boolean mIsSyncRowButtonIndexEnabled;
-    private boolean mIsUnsafeAudioFormatsEnabled;
+
     private boolean mIsLoopShortsEnabled;
     private boolean mIsQuickSkipShortsEnabled;
     private boolean mIsQuickSkipVideosEnabled;
@@ -267,15 +267,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     public void setTunneledPlaybackEnabled(boolean enable) {
         mIsTunneledPlaybackEnabled = enable;
-        persistData();
-    }
-
-    public boolean isUnsafeAudioFormatsEnabled() {
-        return mIsUnsafeAudioFormatsEnabled;
-    }
-
-    public void setUnsafeAudioFormatsEnabled(boolean enable) {
-        mIsUnsafeAudioFormatsEnabled = enable;
         persistData();
     }
 
@@ -597,7 +588,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
         mIsPlayerAutoVolumeEnabled = Helpers.parseBoolean(split, 40, true);
         mIsSyncRowButtonIndexEnabled = Helpers.parseBoolean(split, 41, true);
-        mIsUnsafeAudioFormatsEnabled = Helpers.parseBoolean(split, 42, true);
 
         mIsLoopShortsEnabled = Helpers.parseBoolean(split, 44, true);
         mIsQuickSkipShortsEnabled = Helpers.parseBoolean(split, 45, true);
@@ -665,7 +655,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
                 mIsPlayerAutoVolumeEnabled, 
                 mIsSyncRowButtonIndexEnabled,
-                mIsUnsafeAudioFormatsEnabled, 
                 null, 
                 mIsLoopShortsEnabled, 
                 mIsQuickSkipShortsEnabled, 

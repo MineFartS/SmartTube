@@ -525,7 +525,7 @@
     <string name="player_extra_long_speed_list">Extra long speed list</string>
     <string name="alt_app_icon">Alternative app icon (needs reboot)</string>
     <string name="network_stack">Prefer %s network stack</string>
-    
+
     <string name="select_channel_section">Open corresponding section when the app launched from ATV Channels</string>
     <string name="enable_voice_search_desc">The official app will be replaced with a so-called \"bridge\". A bridge helps to transfer global search requests to our app.</string>
 
@@ -577,7 +577,6 @@
     <string name="header_notifications">Notifications</string>
     <string name="disable_search_history">Disable search history</string>
 
-    <string name="unlock_high_bitrate_audio_formats">Unlock high bitrate mp4a formats</string>
     <string name="color_scheme_blue">Blue</string>
     <string name="color_scheme_dark_blue">Dark Blue</string>
     <string name="player_speed_per_channel">Per each channel</string>

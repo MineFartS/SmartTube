@@ -281,14 +281,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.unlock_high_bitrate_audio_formats),
-                option -> mPlayerTweaksData.setUnsafeAudioFormatsEnabled(option.isSelected()),
-                mPlayerTweaksData.isUnsafeAudioFormatsEnabled()
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
                 getContext().getString(R.string.live_stream_fix),
                 getContext().getString(R.string.live_stream_fix_desc),
                 option -> {

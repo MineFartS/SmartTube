@@ -704,20 +704,13 @@ public class TrackSelectorManager implements TrackSelectorCallback {
      *  By removing mp4a tracks with high bitrate.
      */
     private boolean isErrorInAudio(MediaTrack mediaTrack) {
+        
         if (mediaTrack == null || mediaTrack.format == null) {
             return false;
         }
 
-        if (!PlayerTweaksData.instance(mContext).isUnsafeAudioFormatsEnabled()) {
-            return isUnsafeFormat(mediaTrack);
-        }
+        return isUnsafeFormat(mediaTrack);
 
-        switch (Build.MODEL) {
-            case "Smart TV Pro": // Smart TV Pro (G03_4K_GB) - TCL
-                return isUnsafeFormat(mediaTrack);
-        }
-
-        return false;
     }
 
     private boolean isUnsafeFormat(MediaTrack mediaTrack) {
