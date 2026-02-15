@@ -744,31 +744,14 @@ public class VideoLoaderController extends BasePlayerController {
 
     private boolean acceptAdaptiveFormats(MediaItemFormatInfo formatInfo) {
 
-        if (getPlayerTweaksData().isHlsStreamsForced() && formatInfo.isLive() && formatInfo.containsHlsUrl()) {
-            return false;
-        }
+        boolean isLive = formatInfo.isLive();
 
-        // Not enough info for full length live streams
-        if (formatInfo.isLive() && formatInfo.getStartTimeMs() == 0) {
-            return false;
-        }
+        boolean atStart = (formatInfo.getStartTimeMs() == 0);
 
-        if (formatInfo.isLive() && getPlayerTweaksData().isDashUrlStreamsForced() && formatInfo.containsDashUrl()) {
-            return false;
-        }
-
-        if (formatInfo.isLive() && getPlayerTweaksData().isHlsStreamsForced() && formatInfo.containsHlsUrl()) {
-            return false;
-        }
-
-        return true;
+        return !(isLive && atStart);
     }
 
     private boolean acceptDashLive(MediaItemFormatInfo formatInfo) {
-        if (getPlayerTweaksData().isHlsStreamsForced() && formatInfo.isLive() && formatInfo.containsHlsUrl()) {
-            return false;
-        }
-
         return formatInfo.isLive() && formatInfo.containsDashUrl();
     }
 

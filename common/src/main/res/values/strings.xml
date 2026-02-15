@@ -356,10 +356,6 @@
     <string name="ambilight_ratio_fix_desc">Fixes absent bias lighting. Fixes incorrect aspect ratio or video scale. Fixes blank screenshots. Affects performance!</string>
     <string name="ambilight_ratio_fix">Ambilight/Aspect ratio/Video scale/Screenshots fix</string>
     
-    <string name="live_stream_fix_desc">Warn, this tweak disables the rewinding of streams. Significantly improves live stream performance on low-end devices. Maximum resolution is 1080p.</string>
-    <string name="live_stream_fix_4k_desc">Warn, this tweak disables the rewinding of streams. Significantly improves live stream performance. Maximum resolution is 4K.</string>
-    <string name="live_stream_fix">Live stream fix (1080p)</string>
-    <string name="live_stream_fix_4k">Live stream fix (4K)</string>
     <string name="playback_notifications_fix_desc">Hides track change notifications. Could be useful on AOSP-based firmware.</string>
     <string name="playback_notifications_fix">Disable playback notifications</string>
 

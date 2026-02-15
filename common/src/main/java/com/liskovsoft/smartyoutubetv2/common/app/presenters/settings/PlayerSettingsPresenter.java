@@ -281,28 +281,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.live_stream_fix),
-                getContext().getString(R.string.live_stream_fix_desc),
-                option -> {
-                    mPlayerTweaksData.setHlsStreamsForced(option.isSelected());
-                },
-                mPlayerTweaksData.isHlsStreamsForced()
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
-                getContext().getString(R.string.live_stream_fix_4k),
-                getContext().getString(R.string.live_stream_fix_4k_desc),
-                option -> {
-                    mPlayerTweaksData.setDashUrlStreamsForced(option.isSelected());
-                },
-                mPlayerTweaksData.isDashUrlStreamsForced()
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
                 getContext().getString(R.string.disable_stream_buffer),
                 getContext().getString(R.string.disable_stream_buffer_desc),
                 option -> mPlayerTweaksData.setBufferOnStreamsDisabled(option.isSelected()),

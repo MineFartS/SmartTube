@@ -74,8 +74,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsSetOutputSurfaceWorkaroundEnabled;
     private boolean mIsAudioSyncFixEnabled;
     private boolean mIsKeepFinishedActivityEnabled;
-    private boolean mIsHlsStreamsForced;
-    private boolean mIsDashUrlStreamsForced;
+
     private boolean mIsPlaybackNotificationsDisabled;
     private boolean mIsTunneledPlaybackEnabled;
     private int mPlayerButtons;
@@ -200,26 +199,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
      */
     public void setKeepFinishedActivityEnabled(boolean enable) {
         mIsKeepFinishedActivityEnabled = enable;
-        persistData();
-    }
-
-    public boolean isHlsStreamsForced() {
-        return mIsHlsStreamsForced;
-    }
-
-    public void setHlsStreamsForced(boolean enable) {
-        mIsHlsStreamsForced = enable;
-        mIsDashUrlStreamsForced = false;
-        persistData();
-    }
-
-    public boolean isDashUrlStreamsForced() {
-        return mIsDashUrlStreamsForced;
-    }
-
-    public void setDashUrlStreamsForced(boolean enable) {
-        mIsDashUrlStreamsForced = enable;
-        mIsHlsStreamsForced = false;
         persistData();
     }
 
@@ -524,7 +503,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsSetOutputSurfaceWorkaroundEnabled = Helpers.parseBoolean(split, 7, true);
         mIsAudioSyncFixEnabled = Helpers.parseBoolean(split, 8, false);
         mIsKeepFinishedActivityEnabled = Helpers.parseBoolean(split, 9, false);
-        mIsHlsStreamsForced = Helpers.parseBoolean(split, 10, false);
+
         mIsPlaybackNotificationsDisabled = Helpers.parseBoolean(split, 11, !Helpers.isAndroidTVLauncher(mPrefs.getContext()));
         mIsTunneledPlaybackEnabled = Helpers.parseBoolean(split, 12, false);
         mPlayerButtons = Helpers.parseInt(split, 13, PLAYER_BUTTON_DEFAULT);
@@ -541,8 +520,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsLongSpeedListEnabled = Helpers.parseBoolean(split, 25, true);
         
         mPlayerDataSource = Helpers.parseInt(split, 26, PLAYER_DATA_SOURCE_DEFAULT);
-
-        mIsDashUrlStreamsForced = Helpers.parseBoolean(split, 28, false);
 
         mIsBufferOnStreamsDisabled = Helpers.parseBoolean(split, 30, false);
         // Cause severe garbage collector stuttering
@@ -593,7 +570,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mIsSetOutputSurfaceWorkaroundEnabled, 
                 mIsAudioSyncFixEnabled, 
                 mIsKeepFinishedActivityEnabled, 
-                mIsHlsStreamsForced,
+
                 mIsPlaybackNotificationsDisabled, 
                 mIsTunneledPlaybackEnabled, 
                 mPlayerButtons,
@@ -609,7 +586,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mIsButtonLongClickEnabled, 
                 mIsLongSpeedListEnabled, 
                 mPlayerDataSource, 
-                mIsDashUrlStreamsForced, 
 
                 mIsBufferOnStreamsDisabled, 
                 mIsSectionPlaylistEnabled,
