@@ -17,7 +17,6 @@ public class TweaksMediaCodecVideoRenderer extends DebugInfoMediaCodecVideoRende
     private static final String TAG = TweaksMediaCodecVideoRenderer.class.getSimpleName();
     private boolean mIsFrameDropFixEnabled;
     private boolean mIsFrameDropSonyFixEnabled;
-    private boolean mIsAmlogicFixEnabled;
 
     // Exo 2.10, 2.11
     public TweaksMediaCodecVideoRenderer(Context context, MediaCodecSelector mediaCodecSelector, long allowedJoiningTimeMs,
@@ -37,21 +36,13 @@ public class TweaksMediaCodecVideoRenderer extends DebugInfoMediaCodecVideoRende
 
     @Override
     protected CodecMaxValues getCodecMaxValues(
-            MediaCodecInfo codecInfo, Format format, Format[] streamFormats) {
-        CodecMaxValues maxValues =
-                super.getCodecMaxValues(codecInfo, format, streamFormats);
+        MediaCodecInfo codecInfo, 
+        Format format, 
+        Format[] streamFormats
+    ) {
 
-        if (mIsAmlogicFixEnabled) {
-            if (maxValues.width < 1920 || maxValues.height < 1089) {
-                Log.d(TAG, "Applying Amlogic fix...");
-                return new CodecMaxValues(
-                        Math.max(maxValues.width, 1920),
-                        Math.max(maxValues.height, 1089),
-                        maxValues.inputSize);
-            }
-        }
+        return super.getCodecMaxValues(codecInfo, format, streamFormats);
 
-        return maxValues;
     }
 
     /**
@@ -88,7 +79,4 @@ public class TweaksMediaCodecVideoRenderer extends DebugInfoMediaCodecVideoRende
         mIsFrameDropSonyFixEnabled = enabled;
     }
 
-    public void enableAmlogicFix(boolean enabled) {
-        mIsAmlogicFixEnabled = enabled;
-    }
 }

@@ -321,15 +321,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.amlogic_fix),
-                getContext().getString(R.string.amlogic_fix_desc),
-                option -> mPlayerTweaksData.setAmlogicFixEnabled(option.isSelected()),
-                mPlayerTweaksData.isAmlogicFixEnabled()
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
                 getContext().getString(R.string.tunneled_video_playback),
                 getContext().getString(R.string.tunneled_video_playback_desc),
                 option -> {

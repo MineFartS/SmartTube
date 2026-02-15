@@ -78,7 +78,7 @@ public class CustomOverridesRenderersFactory extends CustomRenderersFactoryBase 
         super.buildVideoRenderers(context, extensionRendererMode, mediaCodecSelector, drmSessionManager, playClearSamplesWithoutKeys,
                 enableDecoderFallback, eventHandler, eventListener, allowedVideoJoiningTimeMs, out);
         
-        if (!mPlayerTweaksData.isAmazonFrameDropFixEnabled() && !mPlayerTweaksData.isSonyFrameDropFixEnabled() && !mPlayerTweaksData.isAmlogicFixEnabled()) {
+        if (!mPlayerTweaksData.isAmazonFrameDropFixEnabled() && !mPlayerTweaksData.isSonyFrameDropFixEnabled()) {
             // Improve performance a bit by eliminating some if conditions presented in tweaks.
             // But we need to obtain codec real name somehow. So use interceptor below.
 
@@ -99,7 +99,7 @@ public class CustomOverridesRenderersFactory extends CustomRenderersFactoryBase 
 
         videoRenderer.enableFrameDropFix(mPlayerTweaksData.isAmazonFrameDropFixEnabled());
         videoRenderer.enableFrameDropSonyFix(mPlayerTweaksData.isSonyFrameDropFixEnabled());
-        videoRenderer.enableAmlogicFix(mPlayerTweaksData.isAmlogicFixEnabled());
+
         videoRenderer.enableSetOutputSurfaceWorkaround(true); // Force enable?
 
         replaceVideoRenderer(out, videoRenderer);

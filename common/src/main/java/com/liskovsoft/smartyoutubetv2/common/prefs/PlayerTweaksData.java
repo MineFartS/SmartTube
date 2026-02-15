@@ -66,7 +66,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
     @SuppressLint("StaticFieldLeak")
     private static PlayerTweaksData sInstance;
     private final AppPrefs mPrefs;
-    private boolean mIsAmlogicFixEnabled;
+
     private boolean mIsAmazonFrameDropFixEnabled;
     private boolean mIsSonyFrameDropFixEnabled;
     private boolean mIsSnapToVsyncDisabled;
@@ -130,15 +130,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         }
 
         return sInstance;
-    }
-
-    public boolean isAmlogicFixEnabled() {
-        return mIsAmlogicFixEnabled;
-    }
-
-    public void setAmlogicFixEnabled(boolean enable) {
-        mIsAmlogicFixEnabled = enable;
-        persistData();
     }
 
     public boolean isAmazonFrameDropFixEnabled() {
@@ -544,7 +535,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
         String[] split = Helpers.splitData(data);
 
-        mIsAmlogicFixEnabled = Helpers.parseBoolean(split, 0, false);
         mIsAmazonFrameDropFixEnabled = Helpers.parseBoolean(split, 1, false);
         mIsSnapToVsyncDisabled = Helpers.parseBoolean(split, 2, false);
         mIsProfileLevelCheckSkipped = Helpers.parseBoolean(split, 3, false);
@@ -615,7 +605,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mPrefs.setProfileData(
             VIDEO_PLAYER_TWEAKS_DATA, 
             Helpers.mergeData(
-                mIsAmlogicFixEnabled, 
                 mIsAmazonFrameDropFixEnabled, 
                 mIsSnapToVsyncDisabled,
                 mIsProfileLevelCheckSkipped, 
