@@ -397,17 +397,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.hide_settings_section),
-                option -> {
-                    mSidebarService.enableSettingsSection(!option.isSelected());
-                    mRestartApp = true;
-                },
-                !mSidebarService.isSettingsSectionEnabled()
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
                 "Fix empty Subscriptions and Channels",
                 option -> mMediaServiceData.setLegacyUIEnabled(option.isSelected()),
                 mMediaServiceData.isLegacyUIEnabled()
