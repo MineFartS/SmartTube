@@ -39,7 +39,7 @@ public class UpdateChannelsWorker extends Worker {
     }
 
     public static void schedule(Context context) {
-        if (VERSION.SDK_INT >= 23 && GlobalPreferences.instance(context).isChannelsServiceEnabled()) {
+        if (VERSION.SDK_INT >= 23) {
             WorkManager workManager = WorkManager.getInstance(context);
 
             // https://stackoverflow.com/questions/50943056/avoiding-duplicating-periodicworkrequest-from-workmanager
@@ -55,7 +55,7 @@ public class UpdateChannelsWorker extends Worker {
     }
 
     public static void cancel(Context context) {
-        if (VERSION.SDK_INT >= 23 && GlobalPreferences.instance(context).isChannelsServiceEnabled()) {
+        if (VERSION.SDK_INT >= 23) {
             Log.d(TAG, "Unregistering Channels update job...");
 
             WorkManager workManager = WorkManager.getInstance(context);

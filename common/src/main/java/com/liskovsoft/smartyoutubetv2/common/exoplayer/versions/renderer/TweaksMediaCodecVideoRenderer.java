@@ -14,7 +14,7 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import com.liskovsoft.sharedutils.mylogger.Log;
 
 public class TweaksMediaCodecVideoRenderer extends DebugInfoMediaCodecVideoRenderer {
-    private static final String TAG = TweaksMediaCodecVideoRenderer.class.getSimpleName();
+
     private boolean mIsFrameDropFixEnabled;
     private boolean mIsFrameDropSonyFixEnabled;
 

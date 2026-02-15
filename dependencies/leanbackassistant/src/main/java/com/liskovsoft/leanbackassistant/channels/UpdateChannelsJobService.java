@@ -33,7 +33,7 @@ public class UpdateChannelsJobService extends JobService {
     private SynchronizeDatabaseTask mSynchronizeDatabaseTask;
 
     public static void schedule(Context context) {
-        if (VERSION.SDK_INT >= 23 && GlobalPreferences.instance(context).isChannelsServiceEnabled()) {
+        if (VERSION.SDK_INT >= 23) {
             Log.d(TAG, "Registering Channels update job...");
             JobScheduler scheduler = context.getSystemService(JobScheduler.class);
 
@@ -50,7 +50,7 @@ public class UpdateChannelsJobService extends JobService {
     }
 
     public static void cancel(Context context) {
-        if (VERSION.SDK_INT >= 23 && GlobalPreferences.instance(context).isChannelsServiceEnabled()) {
+        if (VERSION.SDK_INT >= 23) {
             Log.d(TAG, "Registering Channels update job...");
             JobScheduler scheduler = context.getSystemService(JobScheduler.class);
 
