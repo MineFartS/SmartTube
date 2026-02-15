@@ -189,7 +189,7 @@ public class TrackSelectorManager implements TrackSelectorCallback {
                     continue;
                 }
 
-                if (!PlayerTweaksData.instance(mContext).isAllFormatsUnlocked() && !Utils.isFormatSupported(mediaTrack)) {
+                if (!Utils.isFormatSupported(mediaTrack)) {
                     continue;
                 }
 

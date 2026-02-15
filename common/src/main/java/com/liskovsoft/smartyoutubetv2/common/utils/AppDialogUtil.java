@@ -280,10 +280,9 @@ public class AppDialogUtil {
         PlayerTweaksData playerTweaksData = PlayerTweaksData.instance(context);
         FormatItem selectedFormat = playerData.getFormat(FormatItem.TYPE_VIDEO);
         boolean isPresetSelection = selectedFormat != null && selectedFormat.isPreset();
-        boolean isAllFormatsUnlocked = playerTweaksData.isAllFormatsUnlocked();
 
         for (VideoPreset preset : presets) {
-            if (!isAllFormatsUnlocked && !Utils.isPresetSupported(preset)) {
+            if (!Utils.isPresetSupported(preset)) {
                 continue;
             }
 

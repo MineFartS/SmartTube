@@ -320,15 +320,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.unlock_all_formats),
-                getContext().getString(R.string.unlock_all_formats_desc),
-                option -> mPlayerTweaksData.setAllFormatsUnlocked(option.isSelected()),
-                mPlayerTweaksData.isAllFormatsUnlocked()
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
                 getContext().getString(R.string.alt_presets_behavior),
                 getContext().getString(R.string.alt_presets_behavior_desc),
                 option -> mPlayerTweaksData.setNoFpsPresetsEnabled(option.isSelected()),

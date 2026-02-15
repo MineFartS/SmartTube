@@ -94,7 +94,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsLongSpeedListEnabled;
     private boolean mIsExtraLongSpeedListEnabled;
     private int mPlayerDataSource;
-    private boolean mUnlockAllFormats;
+
     private boolean mIsBufferOnStreamsDisabled;
     private boolean mIsSectionPlaylistEnabled;
     private boolean mIsScreenOffTimeoutEnabled;
@@ -394,15 +394,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         persistData();
     }
 
-    public boolean isAllFormatsUnlocked() {
-        return mUnlockAllFormats;
-    }
-
-    public void setAllFormatsUnlocked(boolean unlock) {
-        mUnlockAllFormats = unlock;
-        persistData();
-    }
-
     public boolean isBufferOnStreamsDisabled() {
         return mIsBufferOnStreamsDisabled;
     }
@@ -590,7 +581,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsLongSpeedListEnabled = Helpers.parseBoolean(split, 25, true);
         
         mPlayerDataSource = Helpers.parseInt(split, 26, PLAYER_DATA_SOURCE_DEFAULT);
-        mUnlockAllFormats = Helpers.parseBoolean(split, 27, false);
+
         mIsDashUrlStreamsForced = Helpers.parseBoolean(split, 28, false);
         mIsSonyFrameDropFixEnabled = Helpers.parseBoolean(split, 29, false);
         mIsBufferOnStreamsDisabled = Helpers.parseBoolean(split, 30, false);
@@ -660,7 +651,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mIsButtonLongClickEnabled, 
                 mIsLongSpeedListEnabled, 
                 mPlayerDataSource, 
-                mUnlockAllFormats,
                 mIsDashUrlStreamsForced, 
                 mIsSonyFrameDropFixEnabled, 
                 mIsBufferOnStreamsDisabled, 
