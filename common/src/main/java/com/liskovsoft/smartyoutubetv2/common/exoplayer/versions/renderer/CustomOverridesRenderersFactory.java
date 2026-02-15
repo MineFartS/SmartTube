@@ -40,7 +40,6 @@ public class CustomOverridesRenderersFactory extends CustomRenderersFactoryBase 
             setMediaCodecSelector(new BlacklistMediaCodecSelector());
         }
 
-        AmazonQuirks.disableSnappingToVsync(mPlayerTweaksData.isSnappingToVsyncDisabled());
         AmazonQuirks.skipProfileLevelCheck(mPlayerTweaksData.isProfileLevelCheckSkipped());
     }
 

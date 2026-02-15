@@ -305,15 +305,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.disable_vsync),
-                getContext().getString(R.string.disable_vsync_desc),
-                option -> mPlayerTweaksData.setSnappingToVsyncDisabled(option.isSelected()),
-                mPlayerTweaksData.isSnappingToVsyncDisabled()
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
                 getContext().getString(R.string.skip_codec_profile_check),
                 getContext().getString(R.string.skip_codec_profile_check_desc),
                 option -> mPlayerTweaksData.setProfileLevelCheckSkipped(option.isSelected()),

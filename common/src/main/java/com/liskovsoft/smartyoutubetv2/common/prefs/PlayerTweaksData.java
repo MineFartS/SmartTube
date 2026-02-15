@@ -129,15 +129,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         return sInstance;
     }
 
-    public boolean isSnappingToVsyncDisabled() {
-        return mIsSnapToVsyncDisabled;
-    }
-
-    public void setSnappingToVsyncDisabled(boolean disable) {
-        mIsSnapToVsyncDisabled = disable;
-        persistData();
-    }
-
     public boolean isProfileLevelCheckSkipped() {
         return mIsProfileLevelCheckSkipped;
     }

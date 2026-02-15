@@ -43,7 +43,6 @@ public final class AmazonQuirks {
     private static final boolean isKindleTablet;
     private static final boolean isFirePhone;
 
-    private static boolean isSnappingToVsyncDisabled;
     private static boolean skipProfileLevelCheck;
 
     // This static block must be the last
@@ -145,17 +144,6 @@ public final class AmazonQuirks {
              return null;
          }
      }
-    /*
-     * To disable snapping the frame release times to VSYNC call this function with true
-     * By default, snapping to VSYNC is enabled if this function is not called.
-     */
-    public static void disableSnappingToVsync(boolean disable) {
-         isSnappingToVsyncDisabled = disable;
-    }
-
-    public static boolean isSnappingToVsyncDisabled() {
-         return isSnappingToVsyncDisabled;
-    }
 
     /**
      * Called to set quirk which determines if codec profile checks should be

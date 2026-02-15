@@ -276,12 +276,10 @@ public class MediaCodecVideoRenderer extends MediaCodecRenderer {
     this.allowedJoiningTimeMs = allowedJoiningTimeMs;
     this.maxDroppedFramesToNotify = maxDroppedFramesToNotify;
     this.context = context.getApplicationContext();
+    
     // AMZN_CHANGE_BEGIN
-    if (AmazonQuirks.isSnappingToVsyncDisabled()) {
-      frameReleaseTimeHelper = new VideoFrameReleaseTimeHelper();
-    } else {
-      frameReleaseTimeHelper = new VideoFrameReleaseTimeHelper(this.context);
-    }
+    frameReleaseTimeHelper = new VideoFrameReleaseTimeHelper(this.context);
+
     // AMZN_CHANGE_END
     eventDispatcher = new EventDispatcher(eventHandler, eventListener);
     deviceNeedsNoPostProcessWorkaround = deviceNeedsNoPostProcessWorkaround();
