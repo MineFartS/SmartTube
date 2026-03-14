@@ -61,9 +61,16 @@ public class AppDataSourceManager {
         // Users want even fake afr settings.
         settingItems.add(new SettingsItem(
                 context.getString(R.string.auto_frame_rate), () -> AutoFrameRateSettingsPresenter.instance(context).show(), R.drawable.settings_afr));
-        settingItems.add(new SettingsItem(
-                context.getString(R.string.subtitle_category_title), () -> SubtitleSettingsPresenter.instance(context).show(), R.drawable.settings_subtitles));
-        settingItems.add(new SettingsItem(
+        
+        settingItems.add(
+            new SettingsItem(
+                "Subtitles", 
+                () -> SubtitleSettingsPresenter.instance(context).show(),
+                R.drawable.settings_subtitles
+            )
+        );
+        
+                settingItems.add(new SettingsItem(
                 context.getString(R.string.settings_search), () -> SearchSettingsPresenter.instance(context).show(), R.drawable.settings_search));
         settingItems.add(new SettingsItem(
                 context.getString(R.string.content_block_provider), () -> ContentBlockSettingsPresenter.instance(context).show(), R.drawable.settings_block));

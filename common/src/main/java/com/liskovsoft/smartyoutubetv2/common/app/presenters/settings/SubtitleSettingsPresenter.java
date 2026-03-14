@@ -29,7 +29,7 @@ public class SubtitleSettingsPresenter extends BasePresenter<Void> {
         appendSubtitleSizeCategory(settingsPresenter);
         appendSubtitlePositionCategory(settingsPresenter);
 
-        settingsPresenter.showDialog(getContext().getString(R.string.subtitle_category_title));
+        settingsPresenter.showDialog("Subtitles");
     }
 
     private void appendSubtitleStyleCategory(AppDialogPresenter settingsPresenter) {
