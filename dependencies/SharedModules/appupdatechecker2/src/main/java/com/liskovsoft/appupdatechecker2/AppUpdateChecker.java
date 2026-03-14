@@ -75,14 +75,6 @@ public class AppUpdateChecker implements AppVersionCheckerListener, AppDownloade
         }
     }
 
-    public void forceCheckForUpdates(String updateManifestUrl) {
-        forceCheckForUpdates(new String[]{updateManifestUrl});
-    }
-
-    public void forceCheckForUpdates(String[] updateManifestUrls) {
-        checkForUpdatesInt(updateManifestUrls);
-    }
-
     private void checkForUpdatesInt(String[] updateManifestUrls) {
         if (!checkPostponed()) {
             Uri[] uris = new Uri[updateManifestUrls.length];

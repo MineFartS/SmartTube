@@ -49,14 +49,7 @@ public class AppUpdatePresenter extends BasePresenter<Void> implements AppUpdate
     }
 
     public void start(boolean forceCheck) {
-        mIsForceCheck = forceCheck;
-
-        if (forceCheck) {
-            LoadingManager.showLoading(getContext(), true);
-            mUpdateChecker.forceCheckForUpdates(mUpdateManifestUrls);
-        } else {
-            mUpdateChecker.checkForUpdates(mUpdateManifestUrls);
-        }
+        mUpdateChecker.checkForUpdates(mUpdateManifestUrls);
     }
 
     @Override
