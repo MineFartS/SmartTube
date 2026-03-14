@@ -1,8 +1,7 @@
 {
     "deadCodeDetector.exclude": [
         ".gradle",
-        "**/build",
-        "dependencies"
+        "**/build"
     ],
     "deadCodeDetector.analyzeOnSave": false,
     "deadCodeDetector.confidenceThreshold": "high",
