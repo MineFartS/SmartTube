@@ -170,37 +170,17 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                
                 "Shorts",
-                
                 option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS, option.isSelected()),
-
                 mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_SHORTS)
-                            
             )
         );
 
         options.add(
             UiOptionItem.from(
-                
                 "Upcoming Streams",
-                
-                option -> {
-
-                    boolean hide = option.isSelected();
-                    
-                    // Hide all Upcoming Streams kinds
-                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_UPCOMING_SUBSCRIPTIONS, hide);
-                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_UPCOMING_HOME, hide);
-                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_UPCOMING_CHANNEL, hide);
-                
-                },
-
-                // If all Upcoming Stream kinds are hidden
-                mMediaServiceData.isContentHidden(   MediaServiceData.CONTENT_UPCOMING_SUBSCRIPTIONS)
-                && mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_UPCOMING_HOME)
-                && mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_UPCOMING_CHANNEL)
-                            
+                option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_UPCOMING, option.isSelected()),
+                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_UPCOMING)
             )
         );
 

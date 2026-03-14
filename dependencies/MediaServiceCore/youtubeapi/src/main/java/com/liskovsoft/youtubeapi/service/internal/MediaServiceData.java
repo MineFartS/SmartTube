@@ -41,10 +41,8 @@ public class MediaServiceData {
 
     public static final int CONTENT_WATCHED_WATCH_LATER = 1 << 5;
 
-    public static final int CONTENT_UPCOMING_CHANNEL = 1 << 8;
-    public static final int CONTENT_UPCOMING_HOME = 1 << 9;
+    public static final int CONTENT_UPCOMING = 1 << 8;
 
-    public static final int CONTENT_UPCOMING_SUBSCRIPTIONS = 1 << 11;
     public static final int CONTENT_STREAMS_SUBSCRIPTIONS = 1 << 12;
 
     private static MediaServiceData sInstance;
@@ -299,10 +297,10 @@ public class MediaServiceData {
         // null for ScreenItem
         mScreenId = Helpers.parseStr(split, 1);
         mDeviceId = Helpers.parseStr(split, 2);
-        //String lastPlayerUrl = AppConstants.playerUrls.get(0); // fallback url for nfunc extractor
+        
         mOldAppVersion = Helpers.parseStr(split, 3);
         mVideoInfoType = Helpers.parseInt(split, 4, -1);
-        //mSkipAuth = Helpers.parseBoolean(split, 5);
+        
         // entries here moved to the cache
         mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_DASH | FORMATS_URL);
         // null
@@ -310,10 +308,11 @@ public class MediaServiceData {
         mAppInfo = Helpers.parseItem(split, 15, AppInfoCached::fromString);
         mPlayerData = Helpers.parseItem(split, 16, PlayerDataCached::fromString);
         mClientData = Helpers.parseItem(split, 17, ClientDataCached::fromString);
-        mHiddenContent = Helpers.parseInt(split, 18,
-                CONTENT_SHORTS | CONTENT_UPCOMING_CHANNEL | CONTENT_UPCOMING_HOME | CONTENT_UPCOMING_SUBSCRIPTIONS);
+        
+        mHiddenContent = Helpers.parseInt(split, 18, CONTENT_SHORTS|CONTENT_UPCOMING);
+
         mIsMoreSubtitlesUnlocked = Helpers.parseBoolean(split, 19);
-        //mIsPremiumFixEnabled = Helpers.parseBoolean(split, 20);
+        
         mVisitorCookie = Helpers.parseStr(split, 21);
         mIsLegacyUIEnabled = Helpers.parseBoolean(split, 23);
         mFailedAppInfo = Helpers.parseItem(split, 24, AppInfoCached::fromString);

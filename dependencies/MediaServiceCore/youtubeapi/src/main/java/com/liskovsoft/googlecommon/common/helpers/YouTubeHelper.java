@@ -105,9 +105,10 @@ public final class YouTubeHelper {
 
             boolean isHideShortsEnabled = data.isContentHidden(MediaServiceData.CONTENT_SHORTS);
 
-            boolean isHideUpcomingEnabled = (data.isContentHidden(MediaServiceData.CONTENT_UPCOMING_SUBSCRIPTIONS) && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS) ||
-                    (data.isContentHidden(MediaServiceData.CONTENT_UPCOMING_CHANNEL) && mediaGroup.getType() == MediaGroup.TYPE_CHANNEL_UPLOADS);
+            boolean isHideUpcomingEnabled = data.isContentHidden(MediaServiceData.CONTENT_UPCOMING);
+
             boolean isHideStreamsEnabled = (data.isContentHidden(MediaServiceData.CONTENT_STREAMS_SUBSCRIPTIONS) && mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS);
+            
             boolean isHideMixesEnabled = data.isContentHidden(MediaServiceData.CONTENT_MIXES);
 
             if (isHideShortsEnabled || isHideUpcomingEnabled || isHideStreamsEnabled || isHideMixesEnabled) {
