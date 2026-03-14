@@ -517,18 +517,5 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
         return result;
     }
 
-    /**
-     * Apply the fix right after creation of a MediaFormat
-     */
-    private void fixOTF(YouTubeMediaFormat mediaItem) {
-        if (mediaItem.isOtf()) {
-            if (mediaItem.getUrl() != null) {
-                // exo: fix 404 code
-                mediaItem.setUrl(mediaItem.getUrl() + "&sq=7");
-                //mediaItem.setInit("0-740");
-                //mediaItem.setIndex("741-2296");
-                //mediaItem.setClen("105557711");
-            }
-        }
-    }
+
 }

@@ -13,7 +13,7 @@ import java.util.List;
 public class VideoItem {
     private static final String BADGE_STYLE_LIVE = "LIVE";
     private static final String BADGE_STYLE_UPCOMING = "UPCOMING";
-    private static final String BADGE_STYLE_DEFAULT = "DEFAULT";
+
     private static final String BADGE_STYLE_MOVIE = "BADGE_STYLE_TYPE_YPC";
     @JsonPath("$.videoId")
     private String mVideoId;

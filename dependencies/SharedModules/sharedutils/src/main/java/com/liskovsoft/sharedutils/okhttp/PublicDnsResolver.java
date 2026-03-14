@@ -68,18 +68,6 @@ public class PublicDnsResolver implements Dns {
         return false;
     }
 
-    private List<InetAddress> getReachable(List<InetAddress> addresses) {
-        List<InetAddress> reachable = new ArrayList<>();
-        for (InetAddress address : addresses) {
-            try {
-                if (address.isReachable(500)) {
-                    reachable.add(address);
-                }
-            } catch (IOException ignored) {}
-        }
-        return reachable;
-    }
-
     private List<InetAddress> queryWithFallback(String hostname, int type) {
         List<InetAddress> addresses = query(hostname, type, primaryResolver);
         if (addresses.isEmpty()) {

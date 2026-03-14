@@ -150,10 +150,6 @@ public class TrackingService {
         return containsRecord(videoId) ? mPosition.second : positionSec < START_THRESHOLD_SEC ? 0 : positionSec;
     }
 
-    private boolean previouslyAlmostWatched(String videoId, float lengthSec) {
-        return containsRecord(videoId) && lengthSec - mPosition.second < getEndThresholdSec(lengthSec);
-    }
-
     private boolean containsRecord(String videoId) {
         return mPosition != null && Helpers.equals(mPosition.first, videoId);
     }

@@ -115,27 +115,6 @@ final class OkHttpCommons {
         okBuilder.connectionSpecs(Arrays.asList(cs, ConnectionSpec.CLEARTEXT));
     }
 
-    /**
-     * Fixing SSL handshake timed out (probably provider issues in some countries)
-     */
-    private static void setupConnectionFixOrigin(OkHttpClient.Builder okBuilder) {
-        // TLS 1.2 not supported on pre Lollipop (fallback to TLS 1.0)
-        // Note, TLS 1.0 doesn't have SNI support. So, fix should work.
-        if (VERSION.SDK_INT <= 19) {
-            return;
-        }
-
-        ConnectionSpec cs = new ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS)
-                .tlsVersions(TlsVersion.TLS_1_2)
-                .cipherSuites(
-                        CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
-                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
-                        CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256
-                )
-                .build();
-        okBuilder.connectionSpecs(Collections.singletonList(cs));
-    }
-
     private static OkHttpClient.Builder enableTls12OnPreLollipop(OkHttpClient.Builder builder) {
         //if (Build.VERSION.SDK_INT >= 16 && Build.VERSION.SDK_INT < 22) {
         //    return custom builder;
@@ -289,12 +268,6 @@ final class OkHttpCommons {
         return okBuilder;
     }
 
-    private static void disableCache(OkHttpClient.Builder okBuilder) {
-        // Disable cache (could help with dlfree error on Eltex)
-        // Spoiler: no this won't help with dlfree error on Eltex
-        okBuilder.cache(null);
-    }
-
     /**
      * Checks that response is compressed and do uncompress if needed.
      */
@@ -302,10 +275,6 @@ final class OkHttpCommons {
         // Add gzip/deflate/br support
         //builder.addInterceptor(BrotliInterceptor.INSTANCE);
         builder.addInterceptor(new UnzippingInterceptor());
-    }
-
-    private static void enableRateLimiter(OkHttpClient.Builder builder) {
-        builder.addInterceptor(new RateLimitInterceptor());
     }
 
     private static void debugSetup(OkHttpClient.Builder okBuilder) {
@@ -330,31 +299,8 @@ final class OkHttpCommons {
         okBuilder.addInterceptor(logging);
     }
 
-    private static void preferIPv4Dns(OkHttpClient.Builder okBuilder) {
-        okBuilder.dns(new OkHttpDNSSelector(OkHttpDNSSelector.IPvMode.IPV4_FIRST));
-        //okBuilder.dns(new PreferIpv4Dns());
-    }
-
-    private static void forceIPv4Dns(OkHttpClient.Builder okBuilder) {
-        okBuilder.dns(hostname -> {
-            List<InetAddress> lookup = Dns.SYSTEM.lookup(hostname);
-            List<InetAddress> filter = Helpers.filter(
-                lookup, value -> value instanceof Inet4Address
-            );
-            return filter != null ? filter : lookup;
-        });
-    }
-
     private static void forceGoogleDns(OkHttpClient.Builder okBuilder) {
         okBuilder.dns(PublicDnsResolver.google());
-    }
-
-    /**
-     * Usage: `OkHttpClient newClient = wrapDns(client)`<br></br>
-     * https://github.com/square/okhttp/blob/master/okhttp-dnsoverhttps/src/test/java/okhttp3/dnsoverhttps/DohProviders.java
-     */
-    private static OkHttpClient wrapDnsOverHttps(OkHttpClient client) {
-        return client.newBuilder().dns(DohProviders.buildGoogle(client)).build();
     }
 
     private static void setupProxy(OkHttpClient.Builder builder) {

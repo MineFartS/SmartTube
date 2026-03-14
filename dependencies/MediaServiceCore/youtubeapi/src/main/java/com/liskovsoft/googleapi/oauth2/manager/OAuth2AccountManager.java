@@ -271,20 +271,6 @@ public class OAuth2AccountManager extends OAuth2AccountManagerBase {
         mOnChange = onChange;
     }
 
-    /**
-     * Fix situations when there is no selected account<br/>
-     * Mark first one as selected.
-     */
-    private void fixSelectedAccount() {
-        if (mAccounts.isEmpty()) {
-            return;
-        }
-
-        if (getSelectedAccount() == null) {
-            selectAccount(mAccounts.get(0));
-        }
-    }
-
     @Override
     protected AccessToken obtainAccessToken(String refreshToken) {
         // We don't have context, so can't create instance here.

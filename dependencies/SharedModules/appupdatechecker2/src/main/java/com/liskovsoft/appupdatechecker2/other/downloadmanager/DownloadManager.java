@@ -93,56 +93,6 @@ public final class DownloadManager {
         }
     }
 
-    //private void doDownload() {
-    //    if (!isNetworkAvailable()) {
-    //        MessageHelpers.showMessage(mContext, "Internet connection not available!");
-    //    }
-    //
-    //    String url = mRequest.mDownloadUri.toString();
-    //
-    //    Response response = OkHttpHelpers.doOkHttpRequest(url, mClient);
-    //
-    //    if (response == null || response.body() == null) {
-    //        throw new IllegalStateException("Error: bad response");
-    //    }
-    //
-    //    try {
-    //        // NOTE: actual downloading is going here (while reading a stream)
-    //        mResponseStream = new ByteArrayInputStream(response.body().bytes());
-    //    } catch (IOException ex) {
-    //        throw new IllegalStateException(ex);
-    //    }
-    //}
-
-    private void doDownload2() {
-        if (!isNetworkAvailable()) {
-            MessageHelpers.showMessage(mContext, "Internet connection not available!");
-        }
-
-        String url = mRequest.mDownloadUri.toString();
-
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        for (int tries = NUM_TRIES; tries > 0; tries--) {
-            try {
-                Response response = mClient.newCall(request).execute();
-                if (!response.isSuccessful()) throw new IllegalStateException("Unexpected code " + response);
-
-                // NOTE: actual downloading is going here (while reading a stream)
-                mResponseStream = new ByteArrayInputStream(response.body().bytes());
-                break; // no exception is thrown - job is done
-            } catch (SocketTimeoutException | UnknownHostException ex) {
-                if (tries == 1) // swallow num times
-                    throw new IllegalStateException(ex);
-            } catch (IOException | RuntimeException ex) {
-                throw new IllegalStateException(ex);
-            }
-        }
-
-    }
-
     private OkHttpClient createOkHttpClient() {
         Interceptor intercept = new Interceptor() {
             @Override
@@ -151,11 +101,6 @@ public final class DownloadManager {
                 return originalResponse.newBuilder().body(new ProgressResponseBody(originalResponse.body(), mRequest.mProgressListener)).build();
             }
         };
-
-        //Builder builder = new OkHttpClient.Builder()
-        //        .addNetworkInterceptor(intercept);
-        //
-        //OkHttpCommons.setupBuilder(builder);
 
         Builder builder = OkHttpManager.instance().getClient().newBuilder()
                 .addNetworkInterceptor(intercept);

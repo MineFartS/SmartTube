@@ -3,7 +3,7 @@ package com.liskovsoft.youtubeapi.playlist.models;
 import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
 
 public class PlaylistInfoItem {
-    private static final String CONTAINS_SELECTED_NONE = "NONE";
+
     private static final String CONTAINS_SELECTED_ALL = "ALL";
 
     @JsonPath("$.playlistId")

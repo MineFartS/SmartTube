@@ -9,7 +9,7 @@ import com.liskovsoft.youtubeapi.service.data.YouTubeCommand;
 import io.reactivex.Observable;
 
 class YouTubeRemoteControlService implements RemoteControlService {
-    private static final String TAG = YouTubeRemoteControlService.class.getSimpleName();
+
     private static YouTubeRemoteControlService sInstance;
     private final LoungeService mLoungeService;
 

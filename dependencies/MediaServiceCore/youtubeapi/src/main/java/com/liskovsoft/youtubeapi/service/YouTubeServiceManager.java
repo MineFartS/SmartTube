@@ -164,8 +164,4 @@ public class YouTubeServiceManager implements ServiceManager {
         return ChannelGroupServiceImpl.INSTANCE;
     }
 
-    @Nullable
-    private static MediaServiceData getMediaServiceData() {
-        return MediaServiceData.instance();
-    }
 }

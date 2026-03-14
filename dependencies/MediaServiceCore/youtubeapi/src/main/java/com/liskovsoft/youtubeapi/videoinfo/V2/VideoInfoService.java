@@ -322,10 +322,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
         return getData().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS) && result.isExtendedHlsFormatsBroken();
     }
 
-    private static boolean shouldUnlockMoreSubtitles(VideoInfo videoInfo) {
-        return videoInfo != null && videoInfo.hasSubtitles() && getData().isMoreSubtitlesUnlocked();
-    }
-
     private static boolean needMoreSubtitles(VideoInfo videoInfo) {
         return videoInfo != null && videoInfo.hasSubtitles() && (videoInfo.getTranslationLanguages() == null || videoInfo.getTranslationLanguages().size() < 100);
     }

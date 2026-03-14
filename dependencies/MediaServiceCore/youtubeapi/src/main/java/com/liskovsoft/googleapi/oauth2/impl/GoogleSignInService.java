@@ -13,7 +13,7 @@ import java.util.List;
 import io.reactivex.Observable;
 
 public class GoogleSignInService implements SignInService {
-    private static final String TAG = GoogleSignInService.class.getSimpleName();
+
     private static GoogleSignInService sInstance;
     private final OAuth2AccountManager mAccountManager;
 

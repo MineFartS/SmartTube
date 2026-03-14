@@ -103,8 +103,4 @@ public class SearchService {
         return AppService.instance();
     }
 
-    @NonNull
-    private static BrowseService getBrowseService() {
-        return BrowseService.instance();
-    }
 }

@@ -58,16 +58,6 @@ class LocaleUpdaterHelper {
         return false;
     }
 
-    private static boolean isChineseLocale(Context context) {
-        String script = LocaleUtility.getScript(Locale.getDefault());
-
-        if (isChineseScript(script)) {
-            return true;
-        }
-
-        return false;
-    }
-
     private static boolean isChineseScript(String script) {
         switch (script) {
             case "Hani":

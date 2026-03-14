@@ -19,11 +19,6 @@ public class DashInfoUrl implements DashInfo {
     @RegExp("startNumber=\"(.*?)\"")
     private String mStartNumber; // usually the same as above but may be different on non-seekable streams
 
-    /**
-     * Period start="PT14185.270S"
-     */
-    //@RegExp("Period start=\"PT(.*?)S\"")
-    private String mPeriodStartSec; // start segment in seconds
 
     /**
      * minimumUpdatePeriod="PT5.000S"
@@ -106,13 +101,6 @@ public class DashInfoUrl implements DashInfo {
         return mAvailabilityStartTimeMs;
     }
 
-    private long getSegmentIngestTimeMs() {
-        if (mSegmentIngestTimeMs == -1) {
-            mSegmentIngestTimeMs = DateHelper.toUnixTimeMs(mSegmentIngestTime);
-        }
-
-        return mSegmentIngestTimeMs;
-    }
 
     private long getPeriodStartTimeMs() {
         if (mPeriodStartTimeMs == -1) {

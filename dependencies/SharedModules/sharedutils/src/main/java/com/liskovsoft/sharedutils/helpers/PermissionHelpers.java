@@ -30,9 +30,6 @@ public class PermissionHelpers {
 
     // Overlay Permissions
     public static final int REQUEST_OVERLAY = 114;
-    private static String[] PERMISSIONS_OVERLAY = {
-            Settings.ACTION_MANAGE_OVERLAY_PERMISSION
-    };
 
     /**
      * Checks if the app has permission to access device storage<br/>

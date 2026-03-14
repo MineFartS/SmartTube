@@ -678,27 +678,6 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         return false;
     }
 
-    /**
-     * TODO: improve segment calculation
-     */
-    private void writeOtfSegmentTemplateOld(MediaFormat item) {
-        //<SegmentTemplate timescale="90000" media="&sq=$Number$" startNumber="0">
-        //  <SegmentTimeline>
-        //    <S t="0" d="180000" r="394"/>
-        //    <S t="71100000" d="46800" r="0"/>
-        //  </SegmentTimeline>
-        //</SegmentTemplate>
-
-        startTag("", "SegmentTemplate");
-
-        attribute("", "timescale", "1000"); // units per second
-        attribute("", "duration", "5100"); // segment duration (units)
-        attribute("", "media", item.getUrl() + "&sq=$Number$");
-        attribute("", "initialization", item.getUrl() + "&sq=0"); // segments list and durations (required for stream switch!!!)
-        attribute("", "startNumber", "1");
-
-        endTag("", "SegmentTemplate");
-    }
 
     private void writeOtfSegmentTemplate(MediaFormat item) {
         //<SegmentTemplate timescale="90000" media="&sq=$Number$" startNumber="0">

@@ -89,8 +89,7 @@ public final class Helpers {
     private static final String ARRAY_DELIM = "%AR%";
     private static final String DATA_DELIM = "%OB%";
     private static final String PAIR_DELIM = "%PR%";
-    private static final String LEGACY_ARRAY_DELIM = "|";
-    private static final String LEGACY_DATA_DELIM = ",";
+
     private static final String OBJ_DELIM = "&vi;";
     private static final Pattern URL_PREFIX = Pattern.compile("^[a-z.]+://.+$");
     private static Random sRandom;
@@ -101,7 +100,7 @@ public final class Helpers {
     public static final String NON_BREAKING_SPACE = "\u00A0";
     public static final String SPEECH = "\uD83D\uDDE8";
     public static final String SPEAKER = "\uD83D\uDD08";
-    //public static final String HOURGLASS = "⌛";
+
     public static final String HOURGLASS = "\u231B";
 
     /**
@@ -378,21 +377,6 @@ public final class Helpers {
         Double val = (double) width / (double) picWidth;
         val = val * 100d;
         return val.intValue();
-    }
-
-    private static boolean isNaN(String num) {
-        return num == null                                      ||
-               num.isEmpty()                                    ||
-               num.contains(" ")                                ||
-               num.contains(";")                                ||
-               num.contains("&")                                ||
-               num.contains(",")                                ||
-               num.contains(".")                                ||
-               num.contains(":")                                ||
-               num.contains("/")                                ||
-               num.contains("\\")                               ||
-               !Character.isDigit(num.charAt(num.length() - 1)) ||
-               !Character.isDigit(num.charAt(0));
     }
 
     /**
@@ -793,11 +777,6 @@ public final class Helpers {
         PackageInfo packageInfo = getPackageInfo(context, pkgName);
 
         return packageInfo != null;
-    }
-
-    private static int getPackageVersionCode(Context context, String pkgName) {
-        PackageInfo packageInfo = getPackageInfo(context, pkgName);
-        return packageInfo != null ? packageInfo.versionCode : -1;
     }
 
     @Nullable

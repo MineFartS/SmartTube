@@ -59,7 +59,7 @@ public class VideoFormat {
     private String mQualityLabel;
     @JsonPath("$.quality")
     private String mQuality;
-    private String mRealSignature;
+
     @JsonPath("$.audioSampleRate")
     private String mAudioSamplingRate;
     private String mSourceURL;

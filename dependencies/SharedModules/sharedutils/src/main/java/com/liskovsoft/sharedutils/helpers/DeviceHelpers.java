@@ -17,12 +17,10 @@ import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 
 public final class DeviceHelpers {
-    private static final String AMAZON_FEATURE_FIRE_TV = "amazon.hardware.fire_tv";
-    private static final boolean SAMSUNG = Build.MANUFACTURER.equals("samsung");
+
     private static final String MIME_VP9 = "video/x-vnd.on2.vp9";
     private static final String MIME_AV1 = "video/av01";
-    private static Boolean isTV = null;
-    private static Boolean isFireTV = null;
+
     private static int sMaxHeapMemoryMB = -1;
     private static Boolean sIsVP9Supported;
     private static Boolean sIsAV1Supported;

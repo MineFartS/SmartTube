@@ -260,16 +260,6 @@ public class LoungeService {
         mLoungeToken = null;
     }
 
-    private void postOnPrevNextChange() {
-        if (!ServiceHelper.checkNonNull(mSessionId, mGSessionId)) {
-            return;
-        }
-
-        Log.d(TAG, "Post onPrevNextChange...");
-
-        postCommand(CommandParams.getOnPrevNextChange());
-    }
-
     private void updateData(CommandItem info) {
         if (info != null && info.getPlaylistParams() != null) {
             PlaylistParams playlistData = info.getPlaylistParams();

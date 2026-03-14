@@ -23,7 +23,7 @@ final public class GlobalPreferences extends SharedPreferencesBase {
     private static final String RECOMMENDED_PLAYLIST_TYPE = "recommended_playlist_type";
     private static final String PREFERRED_LANGUAGE_DATA = "preferred_language_data";
     private static final String PREFERRED_COUNTRY_DATA = "preferred_country_data";
-    private static final String ENABLE_CHANNELS_SERVICE = "enable_channels_service";
+
     private static final String PREFER_IPV_4_DNS = "prefer_ipv4_dns";
     private static final String CONTENT_BLOCK_ALT_SERVER = "content_block_alt_server";
     private static final String IS_24_HOUR_LOCALE_ENABLED = "is_24_hour_locale_enabled";

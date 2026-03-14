@@ -74,27 +74,6 @@ public final class V8Runtime {
     }
 
     /**
-     * Not a thread safe. Possible 'Invalid V8 thread access' errors.
-     */
-    private String evaluateUnsafe(final String source) throws V8ScriptExecutionException {
-        String result = null;
-
-        try {
-            if (mRuntime == null) {
-                mRuntime = V8.createV8Runtime();
-            }
-            mRuntime.getLocker().acquire(); // Possible 'Invalid V8 thread access' errors
-            result = mRuntime.executeStringScript(source);
-        } finally {
-            if (mRuntime != null) {
-                mRuntime.getLocker().release(); // Possible 'Invalid V8 thread access' errors
-            }
-        }
-
-        return result;
-    }
-
-    /**
      * Thread safe solution but performance a bit slow.
      */
     private String evaluateSafe(final String source) throws V8ScriptExecutionException {

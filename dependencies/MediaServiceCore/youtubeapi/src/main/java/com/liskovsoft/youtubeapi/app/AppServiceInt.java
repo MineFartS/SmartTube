@@ -12,7 +12,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class AppServiceInt {
-    private static final String TAG = AppServiceInt.class.getSimpleName();
+
     private final AppApi mAppApi;
 
     public AppServiceInt() {

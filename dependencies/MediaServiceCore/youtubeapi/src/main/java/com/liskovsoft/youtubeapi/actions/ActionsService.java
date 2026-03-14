@@ -95,8 +95,4 @@ public class ActionsService {
         RetrofitHelper.get(wrapper);
     }
 
-    @NonNull
-    private static BrowseService getBrowseService() {
-        return BrowseService.instance();
-    }
 }

@@ -203,43 +203,6 @@ let videoOwnerItem = {
     navigationEndpoint: navigationEndpointItem
 };
 
-let videoMetadataItem = {
-    owner: {
-        videoOwnerRenderer: videoOwnerItem
-    },
-    title: textItem,
-    byline: textItem,
-    albumName: textItem,
-    videoId: "",
-    description: textItem,
-    publishedTimeText: textItem,
-    publishedTime: textItem,
-    dateText: textItem,
-    viewCountText: textItem,
-    shortViewCountText: textItem,
-    viewCount: {
-        videoViewCountRenderer: {
-            viewCount: textItem,
-            shortViewCount: textItem,
-            isLive: false
-        }
-    },
-    likeStatus: "",
-    likeButton: {
-        likeButtonRenderer: {
-            likeStatus: ""
-        }
-    },
-    badges: [{
-        upcomingEventBadge: {
-            label: textItem
-        }
-    }],
-    thumbnailOverlays: [
-        thumbnailOverlayItem
-    ]
-};
-
 let itemWrapper = {
     // TileItem
     tileRenderer: tileItem, // universal items (video, music etc). new api
@@ -334,23 +297,3 @@ let richThumbnailItem = {
     }
 };
 
-let buttonStateItem = {
-    subscribeButton: {
-        toggleButtonRenderer: {
-            isToggled: false
-        }
-    },
-    likeButton: {
-        toggleButtonRenderer: {
-            isToggled: false
-        }
-    },
-    dislikeButton: {
-        toggleButtonRenderer: {
-            isToggled: false
-        }
-    },
-    channelButton: {
-        videoOwnerRenderer: videoOwnerItem
-    }
-};

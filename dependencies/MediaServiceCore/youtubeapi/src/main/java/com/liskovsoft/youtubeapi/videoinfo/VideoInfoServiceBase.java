@@ -209,15 +209,4 @@ public abstract class VideoInfoServiceBase {
         return format;
     }
 
-    private AdaptiveVideoFormat getSmallestVideo(VideoInfo videoInfo) {
-        AdaptiveVideoFormat format = Helpers.findLast(videoInfo.getAdaptiveFormats(),
-                item -> MediaFormatUtils.isVideo(item.getMimeType())); // smallest format
-        return format;
-    }
-    
-    private AdaptiveVideoFormat getLargestVideo(VideoInfo videoInfo) {
-        AdaptiveVideoFormat format = Helpers.findFirst(videoInfo.getAdaptiveFormats(),
-                item -> MediaFormatUtils.isVideo(item.getMimeType())); // first is largest
-        return format;
-    }
 }

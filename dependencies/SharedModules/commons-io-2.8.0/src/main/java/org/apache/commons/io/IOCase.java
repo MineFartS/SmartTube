@@ -99,16 +99,6 @@ public enum IOCase {
         this.sensitive = sensitive;
     }
 
-    /**
-     * Replaces the enumeration from the stream with a real one.
-     * This ensures that the correct flag is set for SYSTEM.
-     *
-     * @return the resolved object
-     */
-    private Object readResolve() {
-        return forName(name);
-    }
-
     //-----------------------------------------------------------------------
     /**
      * Gets the name of the constant.
