@@ -162,9 +162,9 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.hide_watched_from_subscriptions),
-                option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_WATCHED_SUBSCRIPTIONS, option.isSelected()),
-                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_WATCHED_SUBSCRIPTIONS)
+                "Hide watched videos"
+                option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_WATCHED, option.isSelected()),
+                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_WATCHED)
             )
         );
 

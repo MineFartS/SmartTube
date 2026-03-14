@@ -35,11 +35,9 @@ public class MediaServiceData {
     public static final int FORMATS_EXTENDED_HLS = 1 << 2;
     public static final int CONTENT_NONE = 0;
     public static final int CONTENT_MIXES = 1;
-    public static final int CONTENT_WATCHED_HOME = 1 << 1;
-    public static final int CONTENT_WATCHED_SUBSCRIPTIONS = 1 << 2;
-    public static final int CONTENT_SHORTS = 1 << 3;
+    public static final int CONTENT_WATCHED = 1 << 1;
 
-    public static final int CONTENT_WATCHED_WATCH_LATER = 1 << 5;
+    public static final int CONTENT_SHORTS = 1 << 3;
 
     public static final int CONTENT_UPCOMING = 1 << 8;
 
