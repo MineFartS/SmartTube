@@ -37,17 +37,16 @@ public class MediaServiceData {
     public static final int CONTENT_MIXES = 1;
     public static final int CONTENT_WATCHED_HOME = 1 << 1;
     public static final int CONTENT_WATCHED_SUBSCRIPTIONS = 1 << 2;
-    public static final int CONTENT_SHORTS_HOME = 1 << 3;
-    public static final int CONTENT_SHORTS_SEARCH = 1 << 4;
+    public static final int CONTENT_SHORTS = 1 << 3;
+
     public static final int CONTENT_WATCHED_WATCH_LATER = 1 << 5;
-    public static final int CONTENT_SHORTS_SUBSCRIPTIONS = 1 << 6;
-    public static final int CONTENT_SHORTS_HISTORY = 1 << 7;
+
     public static final int CONTENT_UPCOMING_CHANNEL = 1 << 8;
     public static final int CONTENT_UPCOMING_HOME = 1 << 9;
-    public static final int CONTENT_SHORTS_TRENDING = 1 << 10;
+
     public static final int CONTENT_UPCOMING_SUBSCRIPTIONS = 1 << 11;
     public static final int CONTENT_STREAMS_SUBSCRIPTIONS = 1 << 12;
-    public static final int CONTENT_SHORTS_CHANNEL = 1 << 13;
+
     private static MediaServiceData sInstance;
     private String mScreenId;
     private String mDeviceId;
@@ -312,7 +311,7 @@ public class MediaServiceData {
         mPlayerData = Helpers.parseItem(split, 16, PlayerDataCached::fromString);
         mClientData = Helpers.parseItem(split, 17, ClientDataCached::fromString);
         mHiddenContent = Helpers.parseInt(split, 18,
-                CONTENT_SHORTS_SUBSCRIPTIONS | CONTENT_SHORTS_HISTORY | CONTENT_SHORTS_TRENDING | CONTENT_UPCOMING_CHANNEL | CONTENT_UPCOMING_HOME | CONTENT_UPCOMING_SUBSCRIPTIONS);
+                CONTENT_SHORTS | CONTENT_UPCOMING_CHANNEL | CONTENT_UPCOMING_HOME | CONTENT_UPCOMING_SUBSCRIPTIONS);
         mIsMoreSubtitlesUnlocked = Helpers.parseBoolean(split, 19);
         //mIsPremiumFixEnabled = Helpers.parseBoolean(split, 20);
         mVisitorCookie = Helpers.parseStr(split, 21);

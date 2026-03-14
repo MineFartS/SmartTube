@@ -173,27 +173,9 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
                 
                 "Shorts",
                 
-                option -> {
+                option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS, option.isSelected()),
 
-                    boolean hide = option.isSelected();
-                    
-                    // Hide all Shorts kinds
-                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_CHANNEL, hide);
-                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_HISTORY, hide);
-                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_HOME, hide);
-                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_SEARCH, hide);
-                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS, hide);
-                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS_TRENDING, hide);
-
-                },
-
-                // If all Shorts kinds are hidden
-                mMediaServiceData.isContentHidden(   MediaServiceData.CONTENT_SHORTS_CHANNEL)
-                && mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_SHORTS_HISTORY)
-                && mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_SHORTS_HOME)
-                && mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_SHORTS_SEARCH)
-                && mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS)
-                && mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_SHORTS_TRENDING)
+                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_SHORTS)
                             
             )
         );
