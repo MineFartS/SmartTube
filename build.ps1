@@ -2,9 +2,6 @@ param(
     [Switch] $ClearCache
 )
 
-# CD to the root directory
-Set-Location $PSScriptRoot
-
 #==========================================================================
 
 function Test-ADBConnection {
@@ -43,6 +40,15 @@ function Clear-Cache {
     }
 
 }
+
+#==========================================================================
+# INIT
+
+# Clear the Terminal
+Clear-Host
+
+# CD to the root directory
+Set-Location $PSScriptRoot
 
 #==========================================================================
 # GIT
