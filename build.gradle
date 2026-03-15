@@ -14,9 +14,6 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        // IntelliJ 'Read timed out' (error 403)
-        // https://stackoverflow.com/questions/74258160/is-jcenter-down-permanently-31-oct
-        //jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.0+'
@@ -32,10 +29,6 @@ allprojects {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
-        //flatDir { dirs 'libs' } // include duktape-my to all subprojects
-        // IntelliJ 'Read timed out' (error 403)
-        // https://stackoverflow.com/questions/74258160/is-jcenter-down-permanently-31-oct
-        //jcenter()
     }
     configurations.all {
         // WorkManager conflict resolution
