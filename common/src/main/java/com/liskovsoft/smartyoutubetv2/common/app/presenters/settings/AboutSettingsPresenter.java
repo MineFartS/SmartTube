@@ -32,173 +32,6 @@ import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerTweaksData;
 
-class SettingsOverride {
-
-    public void Run(
-        Context context, 
-        AppDialogPresenter settingsPresenter
-    ) {
-
-        ContentBlock(context);
-
-        Misc(context);
-
-        HideContent();
-
-        Sidebar(context);
-
-        ContextMenu(context);
-
-        PlayerButtons(context);
-
-        settingsPresenter.closeDialog();
-
-    }
-
-    private void ContentBlock(Context context) {
-
-        ContentBlockData CBD = ContentBlockData.instance(context);
-
-        // Disable all ContentBlock Color Markers
-        for (String category : CBD.getAllCategories()) {
-            CBD.disableColorMarker(category);
-        }
-
-        // ReEnable ContentBlock Color Marker for Sponsors
-        CBD.enableColorMarker(SponsorSegment.CATEGORY_SPONSOR);
-
-    }
-
-    private void Misc(Context context) {
-
-        GeneralData GD = GeneralData.instance(context);
-
-        // Enable Update Notification
-        GD.setOldUpdateNotificationsEnabled(true);
-
-        // Use 24-hour time
-        GD.set24HourLocaleEnabled(true);
-
-    }
-
-    private void HideContent() {
-
-        MediaServiceData MSD = MediaServiceData.instance();
-
-        // Hide Content Mixes
-        MSD.setContentHidden(MediaServiceData.CONTENT_MIXES, true);
-
-    }
-
-    private void Sidebar(Context context) {
-
-        BrowsePresenter BP = BrowsePresenter.instance(context);
-
-        // Remove Notifications Section
-        BP.enableSection(MediaGroup.TYPE_NOTIFICATIONS, false);
-
-        // Remove Playback Queue Section
-        BP.enableSection(MediaGroup.TYPE_PLAYBACK_QUEUE, false);
-
-    }
-
-    private void ContextMenu(Context context) {
-
-        MainUIData MUID = MainUIData.instance(context);
-
-        // Hide 'Stream Reminder'
-        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_STREAM_REMINDER);
-
-        // Hide 'Create Playlist'
-        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_CREATE_PLAYLIST);
-
-        // Hide 'Rename Playlist'
-        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_RENAME_PLAYLIST);
-
-        // Hide 'Add to new Playlist'
-        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_ADD_TO_NEW_PLAYLIST);
-
-        // Hide 'Hide'
-        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_REMOVE_FROM_SUBSCRIPTIONS);
-
-        // Hide 'Sort Playlist'
-        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_PLAYLIST_ORDER);
-
-        // Hide 'Add Item to Sidebar'
-        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_PIN_TO_SIDEBAR);
-
-        // Hide 'Removed Saved Playlist'
-        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_SAVE_REMOVE_PLAYLIST);
-
-        // Hide 'Move Section Up'
-        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_MOVE_SECTION_UP);
-
-        // Hide 'Move section down'
-        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_MOVE_SECTION_DOWN);
-
-        // Hide 'Play Next'
-        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_PLAY_NEXT);
-
-        // Hide 'Clear History'
-        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_CLEAR_HISTORY);
-
-        // Show 'Mark as Watched'
-        MUID.setMenuItemEnabled(MainUIData.MENU_ITEM_MARK_AS_WATCHED);
-
-        // ============================================================
-
-        // Move 'Mark as Watched' to Index 0
-        MUID.setMenuItemIndex(0, MainUIData.MENU_ITEM_MARK_AS_WATCHED);
-
-        // Move 'Not Interested' to Index 1
-        MUID.setMenuItemIndex(1, MainUIData.MENU_ITEM_NOT_INTERESTED);
-
-        // Move 'Don't Recommend Channel' to Index 2
-        MUID.setMenuItemIndex(2, MainUIData.MENU_ITEM_NOT_RECOMMEND_CHANNEL);
-
-        // Move 'Open Playlist' to Index 3
-        MUID.setMenuItemIndex(3, MainUIData.MENU_ITEM_OPEN_PLAYLIST);
-
-        // Move 'Open Channel' to Index 4
-        MUID.setMenuItemIndex(4, MainUIData.MENU_ITEM_OPEN_CHANNEL);
-
-        // Move 'Add/Remove to Playlist' to Index 5
-        MUID.setMenuItemIndex(5, MainUIData.MENU_ITEM_ADD_TO_PLAYLIST);
-
-        // Move 'Subscribe' to Index 6
-        MUID.setMenuItemIndex(6, MainUIData.MENU_ITEM_SUBSCRIBE);
-
-        // Move 'Remove from History' to Index 7
-        MUID.setMenuItemIndex(7, MainUIData.MENU_ITEM_REMOVE_FROM_HISTORY);
-
-    }
-
-    private void PlayerButtons(Context context) {
-
-        PlayerTweaksData PTD = PlayerTweaksData.instance(context);
-
-        // Hide 'Video Stats'
-        PTD.setPlayerButtonDisabled(PlayerTweaksData.PLAYER_BUTTON_VIDEO_STATS);
-
-        // Hide 'Screen Dimming'
-        PTD.setPlayerButtonDisabled(PlayerTweaksData.PLAYER_BUTTON_SCREEN_DIMMING);
-
-        // Hide 'Search'
-        PTD.setPlayerButtonDisabled(PlayerTweaksData.PLAYER_BUTTON_SEARCH);
-
-        // Hide 'Picture in picture'
-        PTD.setPlayerButtonDisabled(PlayerTweaksData.PLAYER_BUTTON_PIP);
-
-        // Hide 'Add to playlist'
-        PTD.setPlayerButtonDisabled(PlayerTweaksData.PLAYER_BUTTON_ADD_TO_PLAYLIST);
-
-        // Hide 'Playback quality'
-        PTD.setPlayerButtonDisabled(PlayerTweaksData.PLAYER_BUTTON_HIGH_QUALITY);
-
-    }
-
-}
-
 public class AboutSettingsPresenter extends BasePresenter<Void> {
 
     private final AppUpdateChecker mUpdateChecker;
@@ -224,8 +57,6 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
         AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
 
         String country = LocaleUtility.getCurrentLocale(getContext()).getCountry();
-
-        appendSettingsOverrideButton(settingsPresenter);
 
         appendUpdateCheckButton(settingsPresenter);
 
@@ -275,22 +106,6 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
                 option -> AppUpdatePresenter.instance(getContext()).start(true));
 
         settingsPresenter.appendSingleButton(updateCheckOption);
-    }
-
-    private void appendSettingsOverrideButton(AppDialogPresenter settingsPresenter) {
-
-        SettingsOverride SO = new SettingsOverride();
-
-        OptionItem button = UiOptionItem.from(
-            "Use Phil's Presets",
-            option -> SO.Run(
-                getContext(), 
-                settingsPresenter
-            )
-        );
-
-        settingsPresenter.appendSingleButton(button);
-
     }
 
     private void appendUpdateChangelogButton(AppDialogPresenter settingsPresenter) {
