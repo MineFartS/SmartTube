@@ -187,22 +187,6 @@ let playlistItem = {
     title: textItem
 };
 
-let videoOwnerItem = {
-    thumbnail: thumbnailItem,
-    title: textItem,
-    subscribed: false,
-    subscriptionButton: {
-        subscribed: false
-    },
-    subscribeButton: {
-        subscribeButtonRenderer: {
-            subscribed: false,
-            channelId: ""
-        }
-    },
-    navigationEndpoint: navigationEndpointItem
-};
-
 let itemWrapper = {
     // TileItem
     tileRenderer: tileItem, // universal items (video, music etc). new api
@@ -265,19 +249,6 @@ let shelfItem = {
         chipCloudRenderer: {
             chips: [chipItem]
         }
-    }
-};
-
-let nextVideoItem = {
-    item: {
-        previewButtonRenderer: {
-            thumbnail: thumbnailItem,
-            title: textItem,
-            byline: textItem
-        }
-    },
-    endpoint: {
-        watchEndpoint: watchEndpointItem
     }
 };
 

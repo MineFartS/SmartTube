@@ -58,16 +58,6 @@ class LocaleUpdaterHelper {
         return false;
     }
 
-    private static boolean isChineseScript(String script) {
-        switch (script) {
-            case "Hani":
-            case "Hans":
-            case "Hant":
-                return true;
-        }
-        return false;
-    }
-
     // short lang code. ex: "ru"
     public static void forceLocale(Context context, String langCode) {
         if (langCode == null || langCode.isEmpty()) {

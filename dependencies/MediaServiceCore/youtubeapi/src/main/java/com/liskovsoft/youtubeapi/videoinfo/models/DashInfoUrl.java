@@ -44,12 +44,6 @@ public class DashInfoUrl implements DashInfo {
     @RegExp("availabilityStartTime=\"(.*?)\"")
     private String mAvailabilityStartTime; // not useful. truncated to 4hrs.
 
-    /**
-     * yt:segmentIngestTime="2022-09-25T11:40:58.028"
-     */
-    //@RegExp("yt:segmentIngestTime=\"(.*?)\"")
-    private String mSegmentIngestTime; // start of period???
-
     private long mStartTimeMs = -1;
     private int mStartSegmentNum = -1;
     private int mEarliestMediaSequenceNum = -1;
@@ -57,7 +51,7 @@ public class DashInfoUrl implements DashInfo {
     private long mMpdRequestTimeMs = -1;
     private long mPeriodStartTimeMs = -1;
     private long mAvailabilityStartTimeMs = -1;
-    private long mSegmentIngestTimeMs = -1;
+
     private int mMinimumUpdatePeriodMs = -1;
     private int mTimeShiftBufferDepthMs = -1;
 

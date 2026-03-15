@@ -50,7 +50,7 @@ import java.util.Random;
  */
 public final class DownloadManager {
     private static final String TAG = DownloadManager.class.getSimpleName();
-    private static final int NUM_TRIES = 10;
+
     private final Context mContext;
     private final OkHttpClient mClient;
     private MyRequest mRequest;
