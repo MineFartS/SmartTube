@@ -13,7 +13,7 @@ internal abstract class BaseMediaGroup(private val options: MediaGroupOptions): 
         (options.removeShorts && it.isShorts()) ||
         (options.removeLive && it.isLive()) ||
         (options.removeUpcoming && it.isUpcoming()) ||
-        (options.removeWatched && (it.getPercentWatched() ?: 0) > 80 && !it.isLive())
+        (options.removeWatched && (it.getPercentWatched() ?: 0) > 80 && !it.isLive()) // check if fully watched
     }
     private val legacyFilter: ((WrapperMediaItem) -> Boolean) = {
         options.removeShorts && if (options.enableLegacyUI) YouTubeHelper.isShortsLegacy(it) else false
