@@ -231,7 +231,7 @@
     <string name="preferred_update_source">Select update source</string>
     <string name="hide_shorts">Hide shorts from Subscriptions</string>
     <string name="hide_shorts_channel">Hide shorts from a channel</string>
-    <string name="key_remapping">Key remapping</string>
+
     <string name="screen_dimming">Screen dimming</string>
     <string name="removed_from_playback_queue">Removed from playback queue</string>
     <string name="added_to_playback_queue">Added to playback queue</string>

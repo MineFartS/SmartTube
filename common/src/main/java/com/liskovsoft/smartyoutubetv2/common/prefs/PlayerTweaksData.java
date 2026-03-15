@@ -106,8 +106,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsSyncRowButtonIndexEnabled;
 
     private boolean mIsLoopShortsEnabled;
-    private boolean mIsQuickSkipShortsEnabled;
-    private boolean mIsQuickSkipVideosEnabled;
 
     private boolean mIsAudioFocusEnabled;
 
@@ -435,24 +433,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         persistData();
     }
 
-    public boolean isQuickSkipShortsEnabled() {
-        return mIsQuickSkipShortsEnabled;
-    }
-
-    public void setQuickSkipShortsEnabled(boolean enable) {
-        mIsQuickSkipShortsEnabled = enable;
-        persistData();
-    }
-
-    public boolean isQuickSkipVideosEnabled() {
-        return mIsQuickSkipVideosEnabled;
-    }
-
-    public void setQuickSkipVideosEnabled(boolean enable) {
-        mIsQuickSkipVideosEnabled = enable;
-        persistData();
-    }
-
     public boolean isDontResizeVideoToFitDialogEnabled() {
         return mIsDontResizeVideoToFitDialogEnabled;
     }
@@ -517,11 +497,10 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsSyncRowButtonIndexEnabled = Helpers.parseBoolean(split, 41, true);
 
         mIsLoopShortsEnabled = Helpers.parseBoolean(split, 44, true);
-        mIsQuickSkipShortsEnabled = Helpers.parseBoolean(split, 45, true);
+
         mIsRememberPositionOfLiveVideosEnabled = Helpers.parseBoolean(split, 46, true);
 
         mIsExtraLongSpeedListEnabled = Helpers.parseBoolean(split, 49, false);
-        mIsQuickSkipVideosEnabled = Helpers.parseBoolean(split, 50, false);
 
         mIsAudioFocusEnabled = Helpers.parseBoolean(split, 54, true);
         mIsDontResizeVideoToFitDialogEnabled = Helpers.parseBoolean(split, 55, false);
@@ -582,11 +561,11 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mIsSyncRowButtonIndexEnabled,
                 null, 
                 mIsLoopShortsEnabled, 
-                mIsQuickSkipShortsEnabled, 
+
                 mIsRememberPositionOfLiveVideosEnabled,
                 null, 
                 mIsExtraLongSpeedListEnabled, 
-                mIsQuickSkipVideosEnabled, 
+
 
                 null,
                 mIsAudioFocusEnabled, 

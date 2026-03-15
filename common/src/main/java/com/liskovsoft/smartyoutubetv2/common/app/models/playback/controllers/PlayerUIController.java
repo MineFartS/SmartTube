@@ -689,9 +689,8 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private boolean handleLeftRightSkip(int keyCode) {
-        if (getPlayer() == null || getPlayer().isOverlayShown() || getVideo() == null ||
-                (getVideo().belongsToShortsGroup() && !getPlayerTweaksData().isQuickSkipShortsEnabled() ||
-                (!getVideo().belongsToShortsGroup() && !getPlayerTweaksData().isQuickSkipVideosEnabled()))) {
+        
+        if (getPlayer() == null || getPlayer().isOverlayShown() || getVideo() == null) {
             return false;
         }
 

@@ -100,7 +100,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
         appendBackgroundPlaybackCategory(settingsPresenter);
         appendScreenDimmingCategory(settingsPresenter);
-        appendKeyRemappingCategory(settingsPresenter);
 
         appendMiscCategory(settingsPresenter);
 
@@ -310,104 +309,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
             category.options
         );
     
-    }
-
-    private void appendKeyRemappingCategory(AppDialogPresenter settingsPresenter) {
-        
-        List<OptionItem> options = new ArrayList<>();
-
-        options.add(UiOptionItem.from(getContext().getString(R.string.player_quick_shorts_skip),
-                option -> mPlayerTweaksData.setQuickSkipShortsEnabled(option.isSelected()),
-                mPlayerTweaksData.isQuickSkipShortsEnabled()));
-
-        options.add(UiOptionItem.from(getContext().getString(R.string.player_quick_skip_videos),
-                option -> mPlayerTweaksData.setQuickSkipVideosEnabled(option.isSelected()),
-                mPlayerTweaksData.isQuickSkipVideosEnabled()));
-
-        options.add(UiOptionItem.from("Play/Pause -> OK",
-                option -> mGeneralData.setRemapPlayToOKEnabled(option.isSelected()),
-                mGeneralData.isRemapPlayToOKEnabled()));
-
-        options.add(UiOptionItem.from("DPAD RIGHT/LEFT -> Volume Up/Down",
-                option -> mGeneralData.setRemapDpadLeftToVolumeEnabled(option.isSelected()),
-                mGeneralData.isRemapDpadLeftToVolumeEnabled()));
-
-        options.add(UiOptionItem.from("DPAD UP/DOWN -> Volume Up/Down",
-                option -> mGeneralData.setRemapDpadUpToVolumeEnabled(option.isSelected()),
-                mGeneralData.isRemapDpadUpToVolumeEnabled()));
-
-        options.add(UiOptionItem.from("DPAD UP/DOWN -> Speed Up/Down",
-                option -> mGeneralData.setRemapDpadUpDownToSpeedEnabled(option.isSelected()),
-                mGeneralData.isRemapDpadUpToSpeedEnabled()));
-
-        options.add(UiOptionItem.from("Numbers 3/1 -> Speed Up/Down",
-                option -> mGeneralData.setRemapNumbersToSpeedEnabled(option.isSelected()),
-                mGeneralData.isRemapNumbersToSpeedEnabled()));
-
-        options.add(UiOptionItem.from("Next/Previous -> Fast Forward/Rewind",
-                option -> mGeneralData.setRemapNextToFastForwardEnabled(option.isSelected()),
-                mGeneralData.isRemapNextToFastForwardEnabled()));
-
-        options.add(UiOptionItem.from("Next/Previous -> Speed Up/Down",
-                option -> mGeneralData.setRemapNextToSpeedEnabled(option.isSelected()),
-                mGeneralData.isRemapNextToSpeedEnabled()));
-
-        options.add(UiOptionItem.from("Fast Forward/Rewind -> Next/Previous",
-                option -> mGeneralData.setRemapFastForwardToNextEnabled(option.isSelected()),
-                mGeneralData.isRemapFastForwardToNextEnabled()));
-
-        options.add(UiOptionItem.from("Fast Forward/Rewind -> Speed Up/Down",
-                option -> mGeneralData.setRemapFastForwardToSpeedEnabled(option.isSelected()),
-                mGeneralData.isRemapFastForwardToSpeedEnabled()));
-
-        options.add(UiOptionItem.from("Page Up/Down -> Next/Previous",
-                option -> mGeneralData.setRemapPageUpToNextEnabled(option.isSelected()),
-                mGeneralData.isRemapPageUpToNextEnabled()));
-
-        options.add(UiOptionItem.from("Page Up/Down -> Like/Dislike",
-                option -> mGeneralData.setRemapPageUpToLikeEnabled(option.isSelected()),
-                mGeneralData.isRemapPageUpToLikeEnabled()));
-
-        options.add(UiOptionItem.from("Page Up/Down -> Speed Up/Down",
-                option -> mGeneralData.setRemapPageUpToSpeedEnabled(option.isSelected()),
-                mGeneralData.isRemapPageUpToSpeedEnabled()));
-        
-        options.add(UiOptionItem.from("Page Up/Down -> Speed Down/Up",
-                option -> mGeneralData.setRemapPageDownToSpeedEnabled(option.isSelected()),
-                mGeneralData.isRemapPageDownToSpeedEnabled()));
-
-        options.add(UiOptionItem.from("Channel Up/Down -> Volume Up/Down",
-                option -> mGeneralData.setRemapChannelUpToVolumeEnabled(option.isSelected()),
-                mGeneralData.isRemapChannelUpToVolumeEnabled()));
-
-        options.add(UiOptionItem.from("Channel Up/Down -> Next/Previous",
-                option -> mGeneralData.setRemapChannelUpToNextEnabled(option.isSelected()),
-                mGeneralData.isRemapChannelUpToNextEnabled()));
-
-        options.add(UiOptionItem.from("Channel Up/Down -> Like/Dislike",
-                option -> mGeneralData.setRemapChannelUpToLikeEnabled(option.isSelected()),
-                mGeneralData.isRemapChannelUpToLikeEnabled()));
-
-        options.add(
-            UiOptionItem.from("Channel Up/Down -> Speed Up/Down",
-                option -> mGeneralData.setRemapChannelUpToSpeedEnabled(option.isSelected()),
-                mGeneralData.isRemapChannelUpToSpeedEnabled()
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
-                "Channel Up/Down -> Search",
-                option -> mGeneralData.setRemapChannelUpToSearchEnabled(option.isSelected()),
-                mGeneralData.isRemapChannelUpToSearchEnabled()
-            )
-        );
-
-        settingsPresenter.appendCheckedCategory(
-            getContext().getString(R.string.key_remapping),
-            options
-        );
-
     }
 
     private void appendScreenDimmingCategory(AppDialogPresenter settingsPresenter) {
