@@ -14,33 +14,6 @@ function Test-ADBConnection {
     
 }
 
-function Clear-Cache {
-
-    if (!$ClearCache) {
-        return
-    }
-
-    Write-Host 'Clearing Cache ...'
-
-    $Dirs = @(
-        ".gradle",
-        "build",
-        "smarttubetv\build",
-        "common\build"
-    )
-
-    foreach ($Dir in $Dirs) {
-
-        Remove-Item `
-            -Path $Dir `
-            -Force `
-            -Recurse `
-            -ErrorAction SilentlyContinue `
-            | Out-Null
-    }
-
-}
-
 #==========================================================================
 # INIT
 
@@ -49,11 +22,6 @@ Clear-Host
 
 # CD to the root directory
 Set-Location $PSScriptRoot
-
-#==========================================================================
-# GIT
-
-git.exe submodule update --init
 
 #==========================================================================
 # ADB
@@ -76,16 +44,11 @@ if (-not (Test-ADBConnection)) {
 #==========================================================================
 # GRADLE
 
-Clear-Cache
-
 # Execute Gradle
 & "$env:JAVA_HOME/bin/java.exe" `
     '-classpath' ".\gradle\wrapper\gradle-wrapper.jar" `
     'org.gradle.wrapper.GradleWrapperMain' `
     "clean" "installStstableDebug" `
-    "--warning-mode" "all" `
-    @args
-
-Clear-Cache
+    "--warning-mode" "all"
 
 #==========================================================================
