@@ -39,31 +39,6 @@ public class PlayerKeyTranslator extends GlobalKeyTranslator {
 
     }
 
-    private void speedUp(boolean up) {
-        PlayerTweaksData data = PlayerTweaksData.instance(mContext);
-        float[] speedSteps = data.isLongSpeedListEnabled() ? Utils.SPEED_LIST_LONG :
-                data.isExtraLongSpeedListEnabled() ? Utils.SPEED_LIST_EXTRA_LONG : Utils.SPEED_LIST_SHORT;
-
-        PlaybackPresenter playbackPresenter = getPlaybackPresenter();
-
-        if (playbackPresenter != null && playbackPresenter.getView() != null) {
-            float currentSpeed = playbackPresenter.getView().getSpeed();
-            int currentIndex = Arrays.binarySearch(speedSteps, currentSpeed);
-
-            if (currentIndex < 0) {
-                currentIndex = Arrays.binarySearch(speedSteps, 1.0f);
-            }
-
-            int newIndex = up ? currentIndex + 1 : currentIndex - 1;
-
-            float speed = newIndex >= 0 && newIndex < speedSteps.length ? speedSteps[newIndex] : speedSteps[currentIndex];
-
-            PlayerData.instance(mContext).setSpeed(speed);
-            playbackPresenter.getView().setSpeed(speed);
-            MessageHelpers.showMessage(mContext, String.format("%sx", speed));
-        }
-    }
-
     private void volumeUp(boolean up) {
         PlaybackPresenter playbackPresenter = getPlaybackPresenter();
 
@@ -76,7 +51,4 @@ public class PlayerKeyTranslator extends GlobalKeyTranslator {
         return PlaybackPresenter.instance(mContext);
     }
 
-    private Context getContext() {
-        return mContext;
-    }
 }

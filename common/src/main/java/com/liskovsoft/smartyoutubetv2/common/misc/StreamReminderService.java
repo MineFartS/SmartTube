@@ -48,20 +48,6 @@ public class StreamReminderService implements TickleListener {
         return mGeneralData.containsPendingStream(video);
     }
 
-    public void toggleReminder(Video video) {
-        if (video.videoId == null || !video.isUpcoming) {
-            return;
-        }
-
-        if (mGeneralData.containsPendingStream(video)) {
-            mGeneralData.removePendingStream(video);
-        } else {
-            mGeneralData.addPendingStream(video);
-        }
-
-        start();
-    }
-
     public void start() {
         if (mGeneralData.getPendingStreams().isEmpty()) {
             TickleManager.instance().removeListener(this);

@@ -413,8 +413,6 @@
     <string name="cant_do_this_for_foreign_playlist">Can\'t do this for foreign playlist</string>
     <string name="owned_playlist_warning">Error: This action can be applied only for owned playlists</string>
     
-    <string name="unset_stream_reminder">Unset stream reminder</string>
-    <string name="set_stream_reminder">Set stream reminder</string>
     <string name="playback_starts_shortly">Playback will start automatically when the stream will be ready</string>
     <string name="starting_stream">Starting the stream…</string>
     <string name="action_playlist_remove">Remove from playlist</string>
@@ -531,7 +529,6 @@
     <string name="hide_shorts_everywhere">Hide shorts everywhere</string>
     <string name="update_found">Update</string>
 
-    <string name="play_from_start">Play from start</string>
     <string name="header_kids_home">Kids</string>
     <string name="player_section_playlist">Use current section contents as a playlist</string>
     <string name="header_trending">Trending</string>

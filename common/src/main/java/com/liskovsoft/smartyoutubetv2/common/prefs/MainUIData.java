@@ -72,9 +72,7 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     public static final long MENU_ITEM_SUBSCRIBE = 1 << 14;
    
     public static final long MENU_ITEM_CREATE_PLAYLIST = 1 << 15;
-   
-    public static final long MENU_ITEM_STREAM_REMINDER = 1 << 16;
-   
+      
     public static final long MENU_ITEM_ADD_TO_NEW_PLAYLIST = 1 << 17;
    
     public static final long MENU_ITEM_SHARE_EMBED_LINK = 1 << 18;
@@ -111,8 +109,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
    
     public static final long MENU_ITEM_NOT_RECOMMEND_CHANNEL = 1L << 35;
    
-    public static final long MENU_ITEM_PLAY_FROM_START = 1L << 36;
-   
     public static final int TOP_BUTTON_BROWSE_ACCOUNTS = 1;
    
     public static final int TOP_BUTTON_CHANGE_LANGUAGE = 1 << 1;
@@ -134,7 +130,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         MENU_ITEM_CREATE_PLAYLIST | 
         MENU_ITEM_RENAME_PLAYLIST |
         MENU_ITEM_ADD_TO_NEW_PLAYLIST | 
-        MENU_ITEM_STREAM_REMINDER | 
         MENU_ITEM_PLAYLIST_ORDER | 
         MENU_ITEM_OPEN_CHANNEL |
         MENU_ITEM_REMOVE_FROM_SUBSCRIPTIONS | 
@@ -146,9 +141,8 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     private static final Long[] MENU_ITEM_DEFAULT_ORDER = {
         MENU_ITEM_EXIT_FROM_PIP, 
         MENU_ITEM_PLAY_VIDEO,  
-        MENU_ITEM_PLAY_FROM_START, 
+
         MENU_ITEM_REMOVE_FROM_HISTORY,
-        MENU_ITEM_STREAM_REMINDER, 
         MENU_ITEM_RECENT_PLAYLIST, 
         MENU_ITEM_ADD_TO_PLAYLIST, 
         MENU_ITEM_CREATE_PLAYLIST, 

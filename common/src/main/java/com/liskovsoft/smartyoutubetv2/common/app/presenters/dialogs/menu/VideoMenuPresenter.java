@@ -71,9 +71,8 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
     private boolean mIsOpenCommentsButtonEnabled;
     private boolean mIsPlayVideoButtonEnabled;
 
-    private boolean mIsPlayFromStartButtonEnabled;
     private boolean mIsPlaylistOrderButtonEnabled;
-    private boolean mIsStreamReminderButtonEnabled;
+
     private boolean mIsMarkAsWatchedButtonEnabled;
     private VideoMenuCallback mCallback;
     private List<PlaylistInfo> mPlaylistInfos;
@@ -548,22 +547,6 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
                 ));
     }
 
-    private void appendPlayFromStartButton() {
-        if (!mIsPlayFromStartButtonEnabled || mVideo == null || mVideo.videoId == null) {
-            return;
-        }
-
-        mDialogPresenter.appendSingleButton(
-                UiOptionItem.from(getContext().getString(R.string.play_from_start),
-                        optionItem -> {
-                            VideoStateService stateService = VideoStateService.instance(getContext());
-                            stateService.save(new State(mVideo, 0));
-                            PlaybackPresenter.instance(getContext()).openVideo(mVideo);
-                            mDialogPresenter.closeDialog();
-                        }
-                ));
-    }
-
     private void showLongTextDialog(String description) {
         mDialogPresenter.appendLongTextCategory(mVideo.getTitle(), UiOptionItem.from(description));
         mDialogPresenter.showDialog(mVideo.getTitle());
@@ -707,28 +690,6 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
                 ));
     }
 
-    private void appendStreamReminderButton() {
-        if (!mIsStreamReminderButtonEnabled) {
-            return;
-        }
-
-        if (mVideo == null || !mVideo.isUpcoming) {
-            return;
-        }
-
-        StreamReminderService reminderService = StreamReminderService.instance(getContext());
-        boolean reminderSet = reminderService.isReminderSet(mVideo);
-
-        mDialogPresenter.appendSingleButton(
-                UiOptionItem.from(getContext().getString(reminderSet ? R.string.unset_stream_reminder : R.string.set_stream_reminder),
-                        optionItem -> {
-                            reminderService.toggleReminder(mVideo);
-                            closeDialog();
-                            MessageHelpers.showMessage(getContext(), reminderSet ? R.string.msg_done : R.string.playback_starts_shortly);
-                        }
-                ));
-    }
-
     private void addRemoveFromPlaylist(String playlistId, String playlistTitle, boolean add) {
         RxHelper.disposeActions(mAddToPlaylistAction);
         if (add) {
@@ -817,9 +778,8 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         mIsOpenDescriptionButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_OPEN_DESCRIPTION);
         mIsPlayVideoButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_PLAY_VIDEO);
 
-        mIsPlayFromStartButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_PLAY_FROM_START);
         mIsSubscribeButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_SUBSCRIBE);
-        mIsStreamReminderButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_STREAM_REMINDER);
+
         mIsShowPlaybackQueueButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_SHOW_QUEUE);
         mIsPlaylistOrderButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_PLAYLIST_ORDER);
         mIsMarkAsWatchedButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_MARK_AS_WATCHED);
@@ -831,9 +791,8 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
 
         mMenuMapping.put(MainUIData.MENU_ITEM_PLAY_VIDEO, new MenuAction(this::appendPlayVideoButton, false));
 
-        mMenuMapping.put(MainUIData.MENU_ITEM_PLAY_FROM_START, new MenuAction(this::appendPlayFromStartButton, false));
         mMenuMapping.put(MainUIData.MENU_ITEM_REMOVE_FROM_HISTORY, new MenuAction(this::appendRemoveFromHistoryButton, false));
-        mMenuMapping.put(MainUIData.MENU_ITEM_STREAM_REMINDER, new MenuAction(this::appendStreamReminderButton, false));
+
         mMenuMapping.put(MainUIData.MENU_ITEM_RECENT_PLAYLIST, new MenuAction(this::appendAddToRecentPlaylistButton, false));
         mMenuMapping.put(MainUIData.MENU_ITEM_ADD_TO_PLAYLIST, new MenuAction(this::appendAddToPlaylistButton, false));
         mMenuMapping.put(MainUIData.MENU_ITEM_CREATE_PLAYLIST, new MenuAction(this::appendCreatePlaylistButton, false));
