@@ -320,50 +320,38 @@ public class ChannelPresenter extends BasePresenter<ChannelView> implements Vide
     }
 
     public void onSearchSettingsClicked() {
+        Observable<List<MediaGroup>> sorting = getContentService().getChannelSortingObserve(getChannelId());
+        Disposable result = sorting.subscribe(
+                items -> {
+                    AppDialogPresenter dialogPresenter = AppDialogPresenter.instance(getContext());
+                    List<OptionItem> options = new ArrayList<>();
+                    int idx = 0;
+                    for (MediaGroup group : items) {
+                        final int tempIdx = idx;
+                        options.add(UiOptionItem.from(group.getTitle(), item -> {
+                            //dialogPresenter.closeDialog();
+                            Observable<MediaGroup> continuation = getContentService().continueGroupObserve(group);
+                            Disposable result2 = continuation.subscribe(mediaGroup -> {
+                                if (getView() == null) {
+                                    return;
+                                }
 
-        AppDialogPresenter dialogPresenter = AppDialogPresenter.instance(getContext());
-
-        List<OptionItem> options = new ArrayList<>();
-                
-        List<MediaGroup> groups = getContentService().getChannelSorting(getChannelId());
-
-        int idx = 0;
-        for (MediaGroup group : groups) {
-            
-            options.add(UiOptionItem.from(
-                group.getTitle(), 
-                item -> {
-
-                    if (getView() != null) {
-
-                        MediaGroup mediaGroup = getContentService().continueGroup(group);
-
-                        VideoGroup replace = VideoGroup.from(mediaGroup);
-
-                        replace.setId(144);
-                        replace.setPosition(0);
-                        replace.setAction(VideoGroup.ACTION_REPLACE);
-                        getView().update(replace);
-
-                        mSortIdx = idx;
-
+                                VideoGroup replace = VideoGroup.from(mediaGroup);
+                                replace.setId(144);
+                                replace.setPosition(0);
+                                replace.setAction(VideoGroup.ACTION_REPLACE);
+                                getView().update(replace);
+                                //getView().setPosition(1);
+                                mSortIdx = tempIdx;
+                            });
+                        }, mSortIdx == idx));
+                        idx++;
                     }
-
+                    dialogPresenter.appendRadioCategory(getContext().getString(R.string.search_sorting), options);
+                    dialogPresenter.showDialog();
                 },
-                mSortIdx == idx
-            ));
-            
-            idx++;
-        
-        }
-
-        dialogPresenter.appendRadioCategory(
-            getContext().getString(R.string.search_sorting), 
-            options
+                error -> Log.e(TAG, "onSearchSettingsClicked error: %s", error.getMessage())
         );
-
-        dialogPresenter.showDialog();
-    
     }
 
     public boolean onSearchSubmit(String query) {
