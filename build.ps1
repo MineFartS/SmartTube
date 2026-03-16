@@ -6,6 +6,11 @@ Connect-ADB
 
 Clear-Host
 
+#
+(Get-Content "$PSScriptRoot\smarttubetv\build.gradle") `
+    -Replace 'versionName\s+".*"', "versionName `"$(Get-Date -Format "yy.MM.dd")`"" `
+    | Set-Content "$PSScriptRoot\smarttubetv\build.gradle"
+
 # Execute Gradle
 & "$env:JAVA_HOME/bin/java.exe" `
     '-classpath' ".\gradle\wrapper\gradle-wrapper.jar" `
