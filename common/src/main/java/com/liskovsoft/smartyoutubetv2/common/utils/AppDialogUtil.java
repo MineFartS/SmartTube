@@ -758,26 +758,6 @@ public class AppDialogUtil {
         settingsPresenter.showDialog(title);
     }
 
-    public static void appendSeekIntervalDialogItems(Context context, AppDialogPresenter dialogPresenter, PlayerData playerData, boolean closeOnSelect) {
-        List<OptionItem> options = new ArrayList<>();
-
-        for (int intervalMs : new int[] {1_000, 2_000, 3_000, 5_000, 7_000, 10_000, 15_000, 20_000, 30_000, 60_000}) {
-            options.add(UiOptionItem.from(context.getString(R.string.seek_interval_sec, Helpers.toString(intervalMs / 1_000f)),
-                    optionItem -> {
-                        playerData.setStartSeekIncrementMs(intervalMs);
-                        if (playerData.getSeekPreviewMode() == PlayerData.SEEK_PREVIEW_CAROUSEL_SLOW) {
-                            Utils.showNotCompatibleMessage(context, R.string.player_seek_preview_carousel_slow);
-                        }
-                        if (closeOnSelect) {
-                            dialogPresenter.closeDialog();
-                        }
-                    },
-                    intervalMs == playerData.getStartSeekIncrementMs()));
-        }
-
-        dialogPresenter.appendRadioCategory(context.getString(R.string.seek_interval), options);
-    }
-
     public static void showAddToPlaylistDialog(Context context, Video video, VideoMenuCallback callback) {
 
         if (video == null) {

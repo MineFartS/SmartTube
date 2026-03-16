@@ -65,7 +65,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
         appendSeekTypeCategory(settingsPresenter);
         appendSeekingPreviewCategory(settingsPresenter);
-        AppDialogUtil.appendSeekIntervalDialogItems(getContext(), settingsPresenter, mPlayerData, false);
 
         appendPixelRatioCategory(settingsPresenter);
 
@@ -139,10 +138,7 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 R.string.content_block_provider,
                 PlayerTweaksData.PLAYER_BUTTON_CONTENT_BLOCK
             },
-            {
-                R.string.seek_interval,
-                PlayerTweaksData.PLAYER_BUTTON_SEEK_INTERVAL
-            },
+
             {
                 R.string.share_link,
                 PlayerTweaksData.PLAYER_BUTTON_SHARE

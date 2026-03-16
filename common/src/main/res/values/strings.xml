@@ -347,8 +347,6 @@
 
     <string name="rename_section">Rename this section</string>
     <string name="simple_edit_value_hint">Enter value</string>
-    <string name="seek_interval">Seek interval</string>
-    <string name="seek_interval_sec">%s sec</string>
     <string name="subtitle_system">System style (Android settings &gt; Accessibility)</string>
     <string name="subtitle_scale">Subtitle scale</string>
     <string name="audio_sync_fix_desc">An alternative way to synchronize audio/video. It\'s considered obsolete, but in some cases, may help.</string>

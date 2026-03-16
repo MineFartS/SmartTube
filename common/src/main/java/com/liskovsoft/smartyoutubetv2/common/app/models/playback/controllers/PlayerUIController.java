@@ -429,16 +429,6 @@ public class PlayerUIController extends BasePlayerController {
         }
     }
 
-    private void onSeekInterval() {
-        fitVideoIntoDialog();
-
-        AppDialogPresenter settingsPresenter = getAppDialogPresenter();
-
-        AppDialogUtil.appendSeekIntervalDialogItems(getContext(), settingsPresenter, getPlayerData(), true);
-
-        settingsPresenter.showDialog();
-    }
-
     private void onVideoInfoClicked() {
         fitVideoIntoDialog();
 
@@ -521,8 +511,7 @@ public class PlayerUIController extends BasePlayerController {
             openChannel();
         } else if (buttonId == R.id.action_playback_queue) {
             AppDialogUtil.showPlaybackQueueDialog(getContext(), item -> getMainController().onNewVideo(item));
-        } else if (buttonId == R.id.action_seek_interval) {
-            onSeekInterval();
+
         } else if (buttonId == R.id.action_share) {
             onShareLink();
         } else if (buttonId == R.id.action_info) {

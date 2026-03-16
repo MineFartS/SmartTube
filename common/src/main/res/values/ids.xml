@@ -15,7 +15,7 @@
     <item name="action_sound_off" type="id"/>
     <item name="action_chat" type="id"/>
     <item name="action_playback_queue" type="id"/>
-    <item name="action_seek_interval" type="id"/>
+
     <item name="action_content_block" type="id"/>
     <item name="action_rotate" type="id"/>
     <item name="action_flip" type="id"/>
