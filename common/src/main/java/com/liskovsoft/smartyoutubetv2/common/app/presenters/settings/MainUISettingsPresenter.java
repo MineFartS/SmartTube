@@ -111,26 +111,22 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendMiscCategory(AppDialogPresenter settingsPresenter) {
+       
         List<OptionItem> options = new ArrayList<>();
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.time_format_24) + " " + getContext().getString(R.string.time_format),
-                option -> {
-                    mGeneralData.set24HourLocaleEnabled(option.isSelected());
-                    mRestartApp = true;
-                },
-                mGeneralData.is24HourLocaleEnabled()));
+        options.add(UiOptionItem.from(
+            getContext().getString(R.string.time_format_24) + " " + getContext().getString(R.string.time_format),
+            option -> {
+                mGeneralData.set24HourLocaleEnabled(option.isSelected());
+                mRestartApp = true;
+            },
+            mGeneralData.is24HourLocaleEnabled()
+        ));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.pinned_channel_rows),
-                optionItem -> {
-                    mMainUIData.setPinnedChannelRowsEnabled(optionItem.isSelected());
-                    mRestartApp = true;
-                },
-                mMainUIData.isPinnedChannelRowsEnabled()));
-
-        options.add(UiOptionItem.from(getContext().getString(R.string.channels_auto_load),
-                optionItem -> mMainUIData.setUploadsAutoLoadEnabled(optionItem.isSelected()),
-                mMainUIData.isUploadsAutoLoadEnabled()));
-
-        settingsPresenter.appendCheckedCategory(getContext().getString(R.string.player_other), options);
+        settingsPresenter.appendCheckedCategory(
+            getContext().getString(R.string.player_other), 
+            options
+        );
+        
     }
 }

@@ -28,16 +28,6 @@ public class LongClickSearchOrbView extends SearchOrbView implements View.OnLong
     }
 
     @Override
-    public void onClick(View view) {
-        // MOD: Disable short click if corresponding option enabled
-        if (!GeneralData.instance(getContext()).isOkButtonLongPressDisabled()) {
-            super.onClick(view);
-        } else if (null != mListener2) {
-            mListener2.onLongClick(view);
-        }
-    }
-
-    @Override
     public boolean onLongClick(View view) {
         if (null != mListener2) {
             return mListener2.onLongClick(view);

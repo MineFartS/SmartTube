@@ -493,7 +493,7 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
      * Long press actions usually more important than short ones. So, try to use it first in case long click is disabled.
      */
     private boolean checkShortActionDisabled(Action action) {
-        if (!mGeneralData.isOkButtonLongPressDisabled() && mPlayerTweaksData.isButtonLongClickEnabled()) {
+        if (mPlayerTweaksData.isButtonLongClickEnabled()) {
             return false;
         }
 
@@ -502,7 +502,7 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
     }
 
     private boolean checkLongActionDisabled(Action action) {
-        if (!mGeneralData.isOkButtonLongPressDisabled() && mPlayerTweaksData.isButtonLongClickEnabled()) {
+        if (mPlayerTweaksData.isButtonLongClickEnabled()) {
             return false;
         }
 

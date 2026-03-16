@@ -414,11 +414,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         }
 
         if (belongsToChannelUploadsMultiGrid(item)) {
-            if (getMainUIData().isUploadsAutoLoadEnabled()) {
-                updateChannelUploadsMultiGrid(item);
-            } else {
-                updateChannelUploadsMultiGrid(null); // clear
-            }
+            updateChannelUploadsMultiGrid(item);
         }
 
         mCurrentVideo = item;
@@ -430,16 +426,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
             return;
         }
 
-        // Check that channels new look enabled and we're on the first columnAdd commentMore actions
-        if (belongsToChannelUploadsMultiGrid(item)) {
-            if (getMainUIData().isUploadsAutoLoadEnabled()) {
-                VideoActionPresenter.instance(getContext()).apply(item);
-            } else {
-                updateChannelUploadsMultiGrid(item);
-            }
-        } else {
-            VideoActionPresenter.instance(getContext()).apply(item);
-        }
+        VideoActionPresenter.instance(getContext()).apply(item);
     }
 
     @Override
@@ -1145,7 +1132,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
     }
 
     private boolean enableRows(Video item) {
-        return getMainUIData().isPinnedChannelRowsEnabled() && item.hasChannel() && !item.isPlaylistAsChannel();
+        return item.hasChannel() && !item.isPlaylistAsChannel();
     }
 
     private void handleLoadError(Throwable error) {

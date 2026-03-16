@@ -225,7 +225,7 @@ public class ScreensaverManager {
 
         // Disable screensaver on certain circumstances
         // Fix screen off before the video started
-        if (show && (isPlaying() || isSigning() || getGeneralData().isScreensaverDisabled() || (mMode == MODE_SCREEN_OFF && getPosition() == 0))) {
+        if (show && (isPlaying() || isSigning() || (mMode == MODE_SCREEN_OFF && getPosition() == 0))) {
             Helpers.disableScreensaver(activity);
             return;
         }

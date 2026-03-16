@@ -241,16 +241,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
     private void appendDeveloperCategory(AppDialogPresenter settingsPresenter) {
         List<OptionItem> options = new ArrayList<>();
         
-        // Disable long press on buggy controllers.
-        options.add(
-            UiOptionItem.from(
-                getContext().getString(R.string.disable_ok_long_press),
-                getContext().getString(R.string.disable_ok_long_press_desc),
-                option -> mGeneralData.setOkButtonLongPressDisabled(option.isSelected()),
-                mGeneralData.isOkButtonLongPressDisabled()
-            )
-        );
-
         options.add(
             UiOptionItem.from(
                 getContext().getString(R.string.audio_sync_fix),

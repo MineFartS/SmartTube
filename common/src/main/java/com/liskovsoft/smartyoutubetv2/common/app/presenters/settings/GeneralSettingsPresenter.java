@@ -403,10 +403,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
         
         List<OptionItem> options = new ArrayList<>();
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.return_to_launcher),
-                option -> mGeneralData.setReturnToLauncherEnabled(option.isSelected()),
-                mGeneralData.isReturnToLauncherEnabled()));
-
         options.add(
             UiOptionItem.from(
                 getContext().getString(R.string.multi_profiles),
@@ -437,22 +433,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
                 getContext().getString(R.string.remember_position_subscriptions),
                 option -> mGeneralData.setRememberSubscriptionsPositionEnabled(option.isSelected()),
                 mGeneralData.isRememberSubscriptionsPositionEnabled()
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
-                getContext().getString(R.string.disable_screensaver),
-                option -> mGeneralData.setScreensaverDisabled(option.isSelected()),
-                mGeneralData.isScreensaverDisabled()
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
-                getContext().getString(R.string.select_channel_section),
-                option -> mGeneralData.setSelectChannelSectionEnabled(option.isSelected()),
-                mGeneralData.isSelectChannelSectionEnabled()
             )
         );
 

@@ -186,15 +186,11 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     
     private int mChannelCategorySorting;
         
-    private boolean mIsUploadsAutoLoadEnabled;
-        
     private long mMenuItems;
     
     private int mThumbQuality;
     
     private List<Long> mMenuItemsOrdered;
-    
-    private boolean mIsPinnedChannelRowsEnabled;
     
     private int mCardPreviewType;
     
@@ -277,24 +273,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         mChannelCategorySorting = type;
         persistState();
     
-    }
-
-    public boolean isPinnedChannelRowsEnabled() {
-        return mIsPinnedChannelRowsEnabled;
-    }
-
-    public void setPinnedChannelRowsEnabled(boolean enable) {
-        mIsPinnedChannelRowsEnabled = enable;
-        persistState();
-    }
-
-    public boolean isUploadsAutoLoadEnabled() {
-        return mIsUploadsAutoLoadEnabled;
-    }
-
-    public void setUploadsAutoLoadEnabled(boolean enable) {
-        mIsUploadsAutoLoadEnabled = enable;
-        persistState();
     }
 
     public boolean isMenuItemEnabled(long menuItems) {
@@ -428,14 +406,10 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
 
         mCardTitleLinesNum = Helpers.parseInt(split, 7, 1);
 
-
-        mIsUploadsAutoLoadEnabled = Helpers.parseBoolean(split, 10, true);
-
         mMenuItems = Helpers.parseLong(split, 12, MENU_ITEM_DEFAULT);
 
         mMenuItemsOrdered = Helpers.parseLongList(split, 17);
         
-        mIsPinnedChannelRowsEnabled = Helpers.parseBoolean(split, 20, true);
         mCardPreviewType = Helpers.parseInt(split, 21, CARD_PREVIEW_DISABLED);
 
         int idx = -1;
@@ -498,12 +472,10 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
                 mColorSchemeIndex, 
                 mChannelCategorySorting, 
                 mCardTitleLinesNum, 
-                mIsUploadsAutoLoadEnabled, 
                 mMenuItems, 
                 null, 
                 mThumbQuality, 
                 Helpers.mergeList(mMenuItemsOrdered),
-                mIsPinnedChannelRowsEnabled, 
                 mCardPreviewType
             )
         );

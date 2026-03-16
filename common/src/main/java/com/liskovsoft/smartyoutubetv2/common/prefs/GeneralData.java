@@ -26,7 +26,6 @@ public class GeneralData implements ProfileChangeListener {
     private final Context mContext;
     private final AppPrefs mPrefs;
 
-    private boolean mIsReturnToLauncherEnabled;
     private int mBackgroundShortcut;
     private boolean mIsHideShortsFromSubscriptionsEnabled;
     private boolean mIsHideUpcomingEnabled;
@@ -35,20 +34,19 @@ public class GeneralData implements ProfileChangeListener {
     private int mScreensaverDimmingPercents;
 
     private boolean mIsBridgeCheckEnabled;
-    private boolean mIsOkButtonLongPressDisabled;
+
     private String mLastPlaylistId;
     private String mLastPlaylistTitle;
 
     private boolean mIsHideShortsFromHomeEnabled;
     private boolean mIsHideShortsFromHistoryEnabled;
-    private boolean mIsScreensaverDisabled;
+
     private boolean mIsVPNEnabled;
 
     private String mSettingsPassword;
 
     private boolean mIsAltAppIconEnabled;
     private int mVersionCode;
-    private boolean mIsSelectChannelSectionEnabled;
     private boolean mIsOldUpdateNotificationsEnabled;
     private boolean mIsRememberSubscriptionsPositionEnabled;
 
@@ -78,15 +76,6 @@ public class GeneralData implements ProfileChangeListener {
         }
 
         return sInstance;
-    }
-
-    public boolean isReturnToLauncherEnabled() {
-        return mIsReturnToLauncherEnabled;
-    }
-
-    public void setReturnToLauncherEnabled(boolean enable) {
-        mIsReturnToLauncherEnabled = enable;
-        persistState();
     }
 
     public int getBackgroundPlaybackShortcut() {
@@ -119,16 +108,6 @@ public class GeneralData implements ProfileChangeListener {
         mIsHideWatchedFromNotificationsEnabled = enable;
         persistState();
     }
-
-    public boolean isScreensaverDisabled() {
-        return mIsScreensaverDisabled;
-    }
-
-    public void setScreensaverDisabled(boolean disable) {
-        mIsScreensaverDisabled = disable;
-        persistState();
-    }
-
 
     public int getScreensaverTimeoutMs() {
         return mScreensaverTimeoutMs;
@@ -171,15 +150,6 @@ public class GeneralData implements ProfileChangeListener {
 
     public void setBridgeCheckEnabled(boolean enable) {
         mIsBridgeCheckEnabled = enable;
-        persistState();
-    }
-
-    public boolean isOkButtonLongPressDisabled() {
-        return mIsOkButtonLongPressDisabled;
-    }
-
-    public void setOkButtonLongPressDisabled(boolean enable) {
-        mIsOkButtonLongPressDisabled = enable;
         persistState();
     }
 
@@ -275,16 +245,6 @@ public class GeneralData implements ProfileChangeListener {
         persistState();
     }
 
-    public boolean isSelectChannelSectionEnabled() {
-        return mIsSelectChannelSectionEnabled;
-    }
-
-    public void setSelectChannelSectionEnabled(boolean enabled) {
-        mIsSelectChannelSectionEnabled = enabled;
-
-        persistState();
-    }
-
     public boolean isOldUpdateNotificationsEnabled() {
         return mIsOldUpdateNotificationsEnabled;
     }
@@ -363,20 +323,19 @@ public class GeneralData implements ProfileChangeListener {
 
         String[] split = Helpers.splitData(data);
 
-        mIsReturnToLauncherEnabled = Helpers.parseBoolean(split, 4, false);
         mBackgroundShortcut = Helpers.parseInt(split, 5, BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK);
         mOldPinnedItems = Helpers.parseList(split, 6, Video::fromString);
         mIsHideShortsFromSubscriptionsEnabled = Helpers.parseBoolean(split, 7, false);
 
         mIsBridgeCheckEnabled = Helpers.parseBoolean(split, 11, true);
-        mIsOkButtonLongPressDisabled = Helpers.parseBoolean(split, 12, false);
+
         mLastPlaylistId = Helpers.parseStr(split, 13);
 
         mIsHideUpcomingEnabled = Helpers.parseBoolean(split, 15, false);
 
         mIsHideShortsFromHomeEnabled = Helpers.parseBoolean(split, 24, false);
         mIsHideShortsFromHistoryEnabled = Helpers.parseBoolean(split, 25, false);
-        mIsScreensaverDisabled = Helpers.parseBoolean(split, 26, true);
+
         mIsVPNEnabled = Helpers.parseBoolean(split, 27, false);
         mLastPlaylistTitle = Helpers.parseStr(split, 28);
         mPlaylistOrder = Helpers.parseMap(split, 29, Helpers::parseStr, Helpers::parseInt);
@@ -389,7 +348,6 @@ public class GeneralData implements ProfileChangeListener {
 
         mIsAltAppIconEnabled = Helpers.parseBoolean(split, 38, false);
         mVersionCode = Helpers.parseInt(split, 39, -1);
-        mIsSelectChannelSectionEnabled = Helpers.parseBoolean(split, 40, true);
 
         mIsOldUpdateNotificationsEnabled = Helpers.parseBoolean(split, 43, false);
         mScreensaverDimmingPercents = Helpers.parseInt(split, 44, 80);
@@ -423,7 +381,6 @@ public class GeneralData implements ProfileChangeListener {
             GENERAL_DATA, 
             Helpers.mergeData(
                 null, null, null, 
-                mIsReturnToLauncherEnabled,
                 mBackgroundShortcut, 
                 mOldPinnedItems, 
                 mIsHideShortsFromSubscriptionsEnabled,
@@ -431,14 +388,14 @@ public class GeneralData implements ProfileChangeListener {
                 null, 
 
                 mIsBridgeCheckEnabled, 
-                mIsOkButtonLongPressDisabled, 
+
                 mLastPlaylistId,
                 null, 
                 mIsHideUpcomingEnabled, 
 
                 mIsHideShortsFromHomeEnabled, 
                 mIsHideShortsFromHistoryEnabled, 
-                mIsScreensaverDisabled, 
+
                 mIsVPNEnabled, 
                 mLastPlaylistTitle,
                 mPlaylistOrder, 
@@ -449,7 +406,6 @@ public class GeneralData implements ProfileChangeListener {
                 null, 
                 mIsAltAppIconEnabled, 
                 mVersionCode, 
-                mIsSelectChannelSectionEnabled, 
                 null, 
                 mIsOldUpdateNotificationsEnabled, 
                 mScreensaverDimmingPercents, 

@@ -254,9 +254,6 @@ public class SplashPresenter extends BasePresenter<SplashView> {
 
         // NOTE: doesn't work very well. E.g. there's problems with focus or conflicts with 'boot to' section option.
         mIntentChain.add(intent -> {
-            if (!GeneralData.instance(getContext()).isSelectChannelSectionEnabled()) {
-                return false;
-            }
 
             int sectionId = -1;
 
@@ -312,6 +309,6 @@ public class SplashPresenter extends BasePresenter<SplashView> {
         boolean isATVIntent = IntentExtractor.isATVIntent(intent);
         boolean isExternalIntent = !isRestartIntent && !isATVIntent && !viewManager.isTopViewVisible();
 
-        viewManager.enablePlayerOnlyMode((isATVIntent && GeneralData.instance(getContext()).isReturnToLauncherEnabled()) || isExternalIntent);
+        viewManager.enablePlayerOnlyMode(isExternalIntent);
     }
 }
