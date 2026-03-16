@@ -14,6 +14,7 @@ import com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs.AmazonBridge
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs.AppUpdatePresenter;
 
 public class AboutSimpleSettingsPresenter extends BasePresenter<Void> {
+
     private final AppUpdateChecker mUpdateChecker;
 
     public AboutSimpleSettingsPresenter(Context context) {
@@ -27,41 +28,38 @@ public class AboutSimpleSettingsPresenter extends BasePresenter<Void> {
     }
 
     public void show() {
-        String mainTitle = String.format("%s %s",
-                getContext().getString(R.string.app_name) + " MOD",
-                AppInfoHelpers.getAppVersionName(getContext()));
 
         AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
 
-        appendAutoUpdateSwitch(settingsPresenter);
+        settingsPresenter.appendSingleSwitch(
+            UiOptionItem.from(
+                getContext().getString(R.string.check_updates_auto), 
+                optionItem -> {
+                    mUpdateChecker.enableUpdateCheck(optionItem.isSelected());
+                }, 
+                mUpdateChecker.isUpdateCheckEnabled()
+            )
+        );
 
-        appendUpdateCheckButton(settingsPresenter);
-
-        appendInstallBridge(settingsPresenter);
-
-        settingsPresenter.showDialog(mainTitle);
-    }
-
-    private void appendAutoUpdateSwitch(AppDialogPresenter settingsPresenter) {
-        settingsPresenter.appendSingleSwitch(UiOptionItem.from(getContext().getString(R.string.check_updates_auto), optionItem -> {
-            mUpdateChecker.enableUpdateCheck(optionItem.isSelected());
-        }, mUpdateChecker.isUpdateCheckEnabled()));
-    }
-
-    private void appendUpdateCheckButton(AppDialogPresenter settingsPresenter) {
-        OptionItem updateCheckOption = UiOptionItem.from(
+        settingsPresenter.appendSingleButton(
+            UiOptionItem.from(
                 getContext().getString(R.string.check_for_updates),
-                option -> AppUpdatePresenter.instance(getContext()).start(true));
+                option -> AppUpdatePresenter.instance(getContext()).start(true)
+            )
+        );
 
-        settingsPresenter.appendSingleButton(updateCheckOption);
-    }
-
-    private void appendInstallBridge(AppDialogPresenter settingsPresenter) {
-        OptionItem installBridgeOption = UiOptionItem.from(
+        settingsPresenter.appendSingleButton(
+            UiOptionItem.from(
                 getContext().getString(R.string.enable_voice_search),
-                option -> startBridgePresenter());
+                option -> startBridgePresenter()
+            )
+        );
 
-        settingsPresenter.appendSingleButton(installBridgeOption);
+        settingsPresenter.showDialog(String.format(
+            "%s %s",
+            getContext().getString(R.string.app_name) + " MOD",
+            AppInfoHelpers.getAppVersionName(getContext())
+        ));
     }
 
     private void startBridgePresenter() {

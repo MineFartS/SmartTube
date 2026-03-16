@@ -20,24 +20,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainUISettingsPresenter extends BasePresenter<Void> {
+    
     private final MainUIData mMainUIData;
+
     private final GeneralData mGeneralData;
+
     private final PlayerData mPlayerData;
 
     private boolean mRestartApp;
-    private final Runnable mOnFinish = () -> {
-        if (mRestartApp) {
-            mRestartApp = false;
-            MessageHelpers.showLongMessage(getContext(), R.string.msg_restart_app);
-        }
-    };
 
     private MainUISettingsPresenter(Context context) {
         super(context);
         mMainUIData = MainUIData.instance(context);
         mGeneralData = GeneralData.instance(context);
         mPlayerData = PlayerData.instance(context);
-
     }
 
     public static MainUISettingsPresenter instance(Context context) {
@@ -45,22 +41,30 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
     }
 
     public void show() {
+
         AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
 
-        appendColorScheme(settingsPresenter);
+        settingsPresenter.appendRadioCategory(
+            getContext().getString(R.string.color_scheme), 
+            fromColorSchemes(mMainUIData.getColorSchemes())
+        );
+
         appendCardPreviews(settingsPresenter);
 
         appendChannelSortingCategory(settingsPresenter);
 
         appendMiscCategory(settingsPresenter);
 
-        settingsPresenter.showDialog(getContext().getString(R.string.dialog_main_ui), mOnFinish);
-    }
+        settingsPresenter.showDialog(
+            getContext().getString(R.string.dialog_main_ui), 
+            () -> {
+                if (mRestartApp) {
+                    mRestartApp = false;
+                    MessageHelpers.showLongMessage(getContext(), R.string.msg_restart_app);
+                }
+            }
+        );
 
-    private void appendColorScheme(AppDialogPresenter settingsPresenter) {
-        List<ColorScheme> colorSchemes = mMainUIData.getColorSchemes();
-
-        settingsPresenter.appendRadioCategory(getContext().getString(R.string.color_scheme), fromColorSchemes(colorSchemes));
     }
 
     private List<OptionItem> fromColorSchemes(List<ColorScheme> colorSchemes) {
@@ -129,4 +133,5 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
         );
         
     }
+
 }

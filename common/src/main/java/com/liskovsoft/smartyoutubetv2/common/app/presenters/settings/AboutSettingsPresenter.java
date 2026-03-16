@@ -48,15 +48,15 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
 
     public void show() {
 
+        AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
+        
+        GeneralData generalData = GeneralData.instance(getContext());
+
         String mainTitle = String.format(
             "%s %s",
             getContext().getString(R.string.app_name),
             AppInfoHelpers.getAppVersionName(getContext())
         );
-
-        AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
-
-        String country = LocaleUtility.getCurrentLocale(getContext()).getCountry();
 
         appendUpdateCheckButton(settingsPresenter);
 
@@ -66,15 +66,6 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
 
         appendInstallBridge(settingsPresenter);
 
-        appendAutoUpdateSwitch(settingsPresenter);
-
-        appendOldUpdateNotificationSwitch(settingsPresenter);
-
-        settingsPresenter.showDialog(mainTitle);
-
-    }
-
-    private void appendAutoUpdateSwitch(AppDialogPresenter settingsPresenter) {
         settingsPresenter.appendSingleSwitch(
             UiOptionItem.from(
                 getContext().getString(R.string.check_updates_auto), 
@@ -84,12 +75,7 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
                 mUpdateChecker.isUpdateCheckEnabled()
             )
         );
-    }
 
-    private void appendOldUpdateNotificationSwitch(AppDialogPresenter settingsPresenter) {
-
-        GeneralData generalData = GeneralData.instance(getContext());
-        
         settingsPresenter.appendSingleSwitch(
             UiOptionItem.from(
                 getContext().getString(R.string.dialog_notification),
@@ -97,13 +83,16 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
                 generalData.isOldUpdateNotificationsEnabled()
             )
         );
-    
+
+        settingsPresenter.showDialog(mainTitle);
+
     }
 
     private void appendUpdateCheckButton(AppDialogPresenter settingsPresenter) {
         OptionItem updateCheckOption = UiOptionItem.from(
-                getContext().getString(R.string.check_for_updates),
-                option -> AppUpdatePresenter.instance(getContext()).start(true));
+            getContext().getString(R.string.check_for_updates),
+            option -> AppUpdatePresenter.instance(getContext()).start(true)
+        );
 
         settingsPresenter.appendSingleButton(updateCheckOption);
     }

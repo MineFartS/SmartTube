@@ -53,21 +53,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
     private boolean mRestartApp;
 
-    private final Runnable mOnFinish = () -> {
-        
-        if (mRestartApp) {
-            
-            mRestartApp = false;
-            
-            MessageHelpers.showLongMessage(
-                getContext(), 
-                R.string.msg_restart_app
-            );
-        
-        }
-
-    };
-
     private GeneralSettingsPresenter(Context context) {
 
         super(context);
@@ -105,7 +90,18 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
         settingsPresenter.showDialog(
             getContext().getString(R.string.settings_general), 
-            mOnFinish
+            () -> {
+                if (mRestartApp) {
+                    
+                    mRestartApp = false;
+                    
+                    MessageHelpers.showLongMessage(
+                        getContext(), 
+                        R.string.msg_restart_app
+                    );
+                
+                }
+            }
         );
 
     }

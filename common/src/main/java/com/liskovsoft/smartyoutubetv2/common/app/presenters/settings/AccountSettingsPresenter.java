@@ -26,6 +26,7 @@ public class AccountSettingsPresenter extends BasePresenter<Void> {
 
     @SuppressLint("StaticFieldLeak")
     private static AccountSettingsPresenter sInstance;
+
     private final MediaServiceManager mMediaServiceManager;
 
     public AccountSettingsPresenter(Context context) {
@@ -52,17 +53,55 @@ public class AccountSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void createAndShowDialog(List<Account> accounts) {
+        
         AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
 
+        AccountsData accountsData = AccountsData.instance(getContext());
+
         appendSelectAccountSection(accounts, settingsPresenter);
-        appendSignInButton(settingsPresenter);
+        
+        settingsPresenter.appendSingleButton(
+            UiOptionItem.from(
+                getContext().getString(R.string.dialog_add_account), 
+                option -> YTSignInPresenter.instance(getContext()).start()
+            )
+        );
+        
         appendSignOutSection(accounts, settingsPresenter);
-        appendProtectAccountWithPassword(settingsPresenter);
+        
+        settingsPresenter.appendSingleSwitch(
+            UiOptionItem.from(
+                getContext().getString(R.string.protect_account_with_password), 
+                optionItem -> {
+                    if (optionItem.isSelected()) {
+                        showAddPasswordDialog(settingsPresenter);
+                    } else {
+                        showRemovePasswordDialog(settingsPresenter);
+                    }
+                }, 
+                accountsData.getAccountPassword() != null
+            )
+        );
+
         appendSeparateSettings(settingsPresenter);
-        appendSelectAccountOnBoot(settingsPresenter);
+        
+        settingsPresenter.appendSingleSwitch(
+            UiOptionItem.from(
+                getContext().getString(R.string.select_account_on_boot), 
+                optionItem -> {
+                    accountsData.selectAccountOnBoot(optionItem.isSelected());
+                }, 
+                accountsData.isSelectAccountOnBootEnabled()
+            )
+        );
 
         Account account = getSignInService().getSelectedAccount();
-        settingsPresenter.showDialog(account != null ? account.getName() : getContext().getString(R.string.settings_accounts), this::unhold);
+
+        settingsPresenter.showDialog(
+            account != null ? account.getName() : getContext().getString(R.string.settings_accounts), 
+            this::unhold
+        );
+    
     }
 
     private void appendSelectAccountSection(List<Account> accounts, AppDialogPresenter settingsPresenter) {
@@ -117,27 +156,6 @@ public class AccountSettingsPresenter extends BasePresenter<Void> {
         }
 
         settingsPresenter.appendStringsCategory(getContext().getString(R.string.dialog_remove_account), optionItems);
-    }
-
-    private void appendSignInButton(AppDialogPresenter settingsPresenter) {
-        settingsPresenter.appendSingleButton(UiOptionItem.from(
-                getContext().getString(R.string.dialog_add_account), option -> YTSignInPresenter.instance(getContext()).start()));
-    }
-
-    private void appendSelectAccountOnBoot(AppDialogPresenter settingsPresenter) {
-        settingsPresenter.appendSingleSwitch(UiOptionItem.from(getContext().getString(R.string.select_account_on_boot), optionItem -> {
-            AccountsData.instance(getContext()).selectAccountOnBoot(optionItem.isSelected());
-        }, AccountsData.instance(getContext()).isSelectAccountOnBootEnabled()));
-    }
-
-    private void appendProtectAccountWithPassword(AppDialogPresenter settingsPresenter) {
-        settingsPresenter.appendSingleSwitch(UiOptionItem.from(getContext().getString(R.string.protect_account_with_password), optionItem -> {
-            if (optionItem.isSelected()) {
-                showAddPasswordDialog(settingsPresenter);
-            } else {
-                showRemovePasswordDialog(settingsPresenter);
-            }
-        }, AccountsData.instance(getContext()).getAccountPassword() != null));
     }
 
     private void appendSeparateSettings(AppDialogPresenter settingsPresenter) {

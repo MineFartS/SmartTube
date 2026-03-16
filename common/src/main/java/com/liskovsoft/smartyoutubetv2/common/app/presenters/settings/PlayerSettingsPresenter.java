@@ -25,19 +25,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerSettingsPresenter extends BasePresenter<Void> {
+    
     private final PlayerData mPlayerData;
+
     private final PlayerTweaksData mPlayerTweaksData;
+
     private final SearchData mSearchData;
+
     private final GeneralData mGeneralData;
+
     private final SidebarService mSidebarService;
+
     private final MediaServiceData mMediaServiceData;
-    private boolean mRestartApp;
-    private final Runnable mOnFinish = () -> {
-        if (mRestartApp) {
-            mRestartApp = false;
-            MessageHelpers.showLongMessage(getContext(), R.string.msg_restart_app);
-        }
-    };
+    
+    private boolean mRestartApp;;
 
     private PlayerSettingsPresenter(Context context) {
         super(context);
@@ -54,14 +55,23 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
     }
 
     public void show() {
+
         AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
 
-        appendPlaybackModeCategory(settingsPresenter);
-        appendVideoPresetsCategory(settingsPresenter);
+        OptionCategory category;
+
+        category = AppDialogUtil.createPlaybackModeCategory(getContext());
+        settingsPresenter.appendCategory(category);
+        
+        category = AppDialogUtil.createVideoPresetsCategory(getContext());
+        settingsPresenter.appendCategory(category);
+        
         appendPlayerButtonsCategory(settingsPresenter);
 
         appendVideoSpeedCategory(settingsPresenter);
-        appendAudioLanguageCategory(settingsPresenter);
+        
+        category = AppDialogUtil.createAudioLanguageCategory(getContext());
+        settingsPresenter.appendCategory(category);
 
         appendSeekTypeCategory(settingsPresenter);
         appendSeekingPreviewCategory(settingsPresenter);
@@ -71,17 +81,16 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         appendMiscCategory(settingsPresenter);
         appendDeveloperCategory(settingsPresenter);
 
-        settingsPresenter.showDialog(getContext().getString(R.string.settings_player), mOnFinish);
-    }
-    
-    private void appendVideoPresetsCategory(AppDialogPresenter settingsPresenter) {
-        OptionCategory category = AppDialogUtil.createVideoPresetsCategory(getContext());
-        settingsPresenter.appendCategory(category);
-    }
+        settingsPresenter.showDialog(
+            getContext().getString(R.string.settings_player),
+            () -> {
+                if (mRestartApp) {
+                    mRestartApp = false;
+                    MessageHelpers.showLongMessage(getContext(), R.string.msg_restart_app);
+                }
+            }
+        );
 
-    private void appendAudioLanguageCategory(AppDialogPresenter settingsPresenter) {
-        OptionCategory category = AppDialogUtil.createAudioLanguageCategory(getContext());
-        settingsPresenter.appendCategory(category);
     }
 
     private void appendSeekingPreviewCategory(AppDialogPresenter settingsPresenter) {
@@ -377,11 +386,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         }
 
         settingsPresenter.appendRadioCategory(getContext().getString(R.string.player_pixel_ratio), options);
-    }
-
-    private void appendPlaybackModeCategory(AppDialogPresenter settingsPresenter) {
-        OptionCategory category = AppDialogUtil.createPlaybackModeCategory(getContext());
-        settingsPresenter.appendCategory(category);
     }
 
     private void appendMiscCategory(AppDialogPresenter settingsPresenter) {
