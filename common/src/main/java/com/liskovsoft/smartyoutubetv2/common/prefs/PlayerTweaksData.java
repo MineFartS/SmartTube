@@ -79,7 +79,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsTunneledPlaybackEnabled;
     private int mPlayerButtons;
 
-    private boolean mIsRememberPositionOfShortVideosEnabled;
     private boolean mIsRememberPositionOfLiveVideosEnabled;
     private boolean mIsSuggestionsDisabled;
 
@@ -229,15 +228,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     public void setPlayerDataSource(int dataSource) {
         mPlayerDataSource = dataSource;
-        persistData();
-    }
-
-    public boolean isRememberPositionOfShortVideosEnabled() {
-        return mIsRememberPositionOfShortVideosEnabled;
-    }
-
-    public void setRememberPositionOfShortVideosEnabled(boolean enable) {
-        mIsRememberPositionOfShortVideosEnabled = enable;
         persistData();
     }
 
@@ -470,7 +460,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsTunneledPlaybackEnabled = Helpers.parseBoolean(split, 12, false);
         mPlayerButtons = Helpers.parseInt(split, 13, PLAYER_BUTTON_DEFAULT);
 
-        mIsRememberPositionOfShortVideosEnabled = Helpers.parseBoolean(split, 16, false);
         mIsSuggestionsDisabled = Helpers.parseBoolean(split, 17, false);
         
         mIsRealChannelIconEnabled = Helpers.parseBoolean(split, 20, true);
@@ -536,7 +525,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mPlayerButtons,
                 null, 
 
-                mIsRememberPositionOfShortVideosEnabled, 
                 mIsSuggestionsDisabled,
 
                 mIsRealChannelIconEnabled, 

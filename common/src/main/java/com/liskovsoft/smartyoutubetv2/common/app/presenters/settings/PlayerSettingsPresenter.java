@@ -449,10 +449,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 option -> mPlayerTweaksData.setRememberPositionOfLiveVideosEnabled(option.isSelected()),
                 mPlayerTweaksData.isRememberPositionOfLiveVideosEnabled()));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.remember_position_of_short_videos),
-                option -> mPlayerTweaksData.setRememberPositionOfShortVideosEnabled(option.isSelected()),
-                mPlayerTweaksData.isRememberPositionOfShortVideosEnabled()));
-
         options.add(UiOptionItem.from(getContext().getString(R.string.player_show_clock),
                 option -> mPlayerData.setClockEnabled(option.isSelected()),
                 mPlayerData.isClockEnabled()));

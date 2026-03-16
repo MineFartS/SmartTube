@@ -308,25 +308,20 @@ public class VideoStateController extends BasePlayerController {
 
         State state = getStateService().getByVideoId(item.videoId);
 
-        // Reset position of music videos
-        boolean isShort = state != null && state.durationMs < MUSIC_VIDEO_MAX_DURATION_MS
-                && !getPlayerTweaksData().isRememberPositionOfShortVideosEnabled();
-        boolean isVideoEnded = state != null && state.durationMs - state.positionMs < 3_000;
+        boolean isVideoEnded = 
+            state != null 
+            && (state.durationMs - state.positionMs) < 3_000;
+
         boolean isLive = item.isLive;
 
         if (getPlayerTweaksData().isRememberPositionOfLiveVideosEnabled() && item.isFullLive()) {
             isLive = false;
         }
 
-        // Don't reset if doing switch from the embed to the fullscreen one
-        boolean sameVideo = item.equals(getVideo());
-        if (sameVideo) {
-            isShort = false;
-        }
-
-        if (isShort || isVideoEnded || isLive) {
+        if (isVideoEnded || isLive) {
             resetPosition(item);
         }
+        
     }
 
     private void resetGlobalSpeedIfNeeded() {
