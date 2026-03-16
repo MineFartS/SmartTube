@@ -315,6 +315,9 @@ public class MediaServiceData {
         mIsLegacyUIEnabled = Helpers.parseBoolean(split, 23);
         mFailedAppInfo = Helpers.parseItem(split, 24, AppInfoCached::fromString);
 
+        // Hide watched content by default
+        setContentHidden(MediaServiceData.CONTENT_WATCHED, true);
+
         boolean isAppUpdated = mOldAppVersion != null && !Helpers.equals(mOldAppVersion, appVersion);
 
         if (isAppUpdated) {
