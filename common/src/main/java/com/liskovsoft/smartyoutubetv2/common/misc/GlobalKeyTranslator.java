@@ -34,24 +34,10 @@ public class GlobalKeyTranslator extends KeyTranslator {
     }
 
     @Override
-    protected void initActionMapping() {
-        addSearchAction();
-    }
-
-    private void addSearchAction() {
-        Runnable searchAction = () -> getSearchPresenter().startSearch(null);
-
-        Map<Integer, Runnable> actionMapping = getActionMapping();
-
-        actionMapping.put(KeyEvent.KEYCODE_AT, searchAction);
-
-    }
+    protected void initActionMapping() {}
 
     private PlaybackPresenter getPlaybackPresenter() {
         return PlaybackPresenter.instance(mContext);
     }
 
-    private SearchPresenter getSearchPresenter() {
-        return SearchPresenter.instance(mContext);
-    }
 }

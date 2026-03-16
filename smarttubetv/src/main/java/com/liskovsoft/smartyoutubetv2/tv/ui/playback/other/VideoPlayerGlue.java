@@ -27,25 +27,18 @@ import com.liskovsoft.smartyoutubetv2.tv.R;
 import com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.playerglue.tweaks.MaxControlsVideoPlayerGlue;
 import com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.playerglue.tweaks.PlaybackTransportRowPresenter;
 import com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.widget.OnActionLongClickedListener;
-import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.AFRAction;
+
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.ActionHelpers;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.ChannelAction;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.ChatAction;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.ClosedCaptioningAction;
-import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.ContentBlockAction;
-import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.FlipAction;
-import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.HighQualityAction;
-import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.RotateAction;
-import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.ScreenDimmingAction;
 
-import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.ShareAction;
-import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.SoundOffAction;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.VideoInfoAction;
-import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.PipAction;
+
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.PlaybackQueueAction;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.PlaylistAddAction;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.PlaybackModeAction;
-import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.SearchAction;
+
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.SubscribeAction;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.TwoStateAction;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.ThumbsDownAction;
@@ -112,7 +105,6 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         putAction(thumbsUpAction);
         putAction(thumbsDownAction);
 
-        putAction(new HighQualityAction(context));
         putAction(new PlaybackModeAction(context));
         putAction(new ChannelAction(context));
         putAction(new ClosedCaptioningAction(context));
@@ -121,18 +113,10 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         putAction(new VideoInfoAction(context));
         putAction(new VideoSpeedAction(context));
         putAction(new VideoStatsAction(context));
-        putAction(new SearchAction(context));
-        putAction(new PipAction(context));
-        putAction(new AFRAction(context));
-        putAction(new ScreenDimmingAction(context));
+
         putAction(new ChatAction(context));
         putAction(new PlaybackQueueAction(context));
-        putAction(new ContentBlockAction(context));
-        putAction(new ShareAction(context));
 
-        putAction(new RotateAction(context));
-        putAction(new FlipAction(context));
-        putAction(new SoundOffAction(context));
     }
 
     @Override
