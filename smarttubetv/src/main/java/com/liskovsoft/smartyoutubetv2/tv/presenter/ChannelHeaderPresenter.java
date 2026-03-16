@@ -109,15 +109,11 @@ public class ChannelHeaderPresenter extends RowPresenter {
         
         // Default recognizer. Used when there's no speech callbacks specified.
         searchBar.setSpeechRecognizer(SpeechRecognizer.createSpeechRecognizer(context));
-        searchBar.setOnFocusChangeListener((v, focused) -> {
-            Log.d(TAG, "search bar focused");
-        });
-        searchBar.setPermissionListener(() -> PermissionHelpers.verifyMicPermissions(context));
-        searchTextEditor.setSelectAllOnFocus(true); // Select all on focus (easy clear previous search)
-        searchTextEditor.setOnFocusChangeListener((v, focused) -> {
-            Log.d(TAG, "on search field focused");
 
-        });
+        searchBar.setPermissionListener(() -> PermissionHelpers.verifyMicPermissions(context));
+
+        // Select all on focus (easy clear previous search)
+        searchTextEditor.setSelectAllOnFocus(true);
 
         searchOrbView.setOnFocusChangeListener((v, focused) -> {
             if (focused) {
