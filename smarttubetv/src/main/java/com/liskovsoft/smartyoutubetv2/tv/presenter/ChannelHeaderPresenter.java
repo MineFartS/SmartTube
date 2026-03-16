@@ -103,7 +103,9 @@ public class ChannelHeaderPresenter extends RowPresenter {
         SearchOrbView searchOrbView = searchBar.findViewById(R.id.lb_search_bar_search_orb);
         SpeechOrbView speechOrbView = searchBar.findViewById(R.id.lb_search_bar_speech_orb);
         SearchEditText searchTextEditor = searchBar.findViewById(R.id.lb_search_text_editor);
-        SearchOrbView searchSettingsOrbView = searchBar.findViewById(R.id.search_settings_orb);
+
+        // Channel view settings icon
+        SearchOrbView searchSettingsOrbView = searchBar.findViewById(R.id.search_settings_orb); 
         
         // Default recognizer. Used when there's no speech callbacks specified.
         searchBar.setSpeechRecognizer(SpeechRecognizer.createSpeechRecognizer(context));
