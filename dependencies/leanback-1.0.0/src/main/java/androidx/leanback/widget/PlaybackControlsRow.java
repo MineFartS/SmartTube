@@ -615,6 +615,66 @@ public class PlaybackControlsRow extends Row {
     }
 
     /**
+     * An action for displaying a HQ (High Quality) icon.
+     */
+    public static class HighQualityAction extends MultiAction {
+        /**
+         * Action index for high quality is off.
+         * @deprecated Use {@link #INDEX_OFF}
+         */
+        @Deprecated
+        public static final int OFF = 0;
+
+        /**
+         * Action index for high quality is on.
+         * @deprecated Use {@link #INDEX_ON}
+         */
+        @Deprecated
+        public static final int ON = 1;
+
+        /**
+         * Action index for high quality is off.
+         */
+        public static final int INDEX_OFF = 0;
+
+        /**
+         * Action index for high quality is on.
+         */
+        public static final int INDEX_ON = 1;
+
+        /**
+         * Constructor
+         * @param context Context used for loading resources.
+         */
+        public HighQualityAction(Context context) {
+            this(context, getIconHighlightColor(context));
+        }
+
+        /**
+         * Constructor
+         * @param context Context used for loading resources.
+         * @param highlightColor Color for the highlighted icon state.
+         */
+        public HighQualityAction(Context context, int highlightColor) {
+            super(R.id.lb_control_high_quality);
+            BitmapDrawable uncoloredDrawable = (BitmapDrawable) getStyledDrawable(context,
+                    R.styleable.lbPlaybackControlsActionIcons_high_quality);
+            Drawable[] drawables = new Drawable[2];
+            drawables[INDEX_OFF] = uncoloredDrawable;
+            drawables[INDEX_ON] = new BitmapDrawable(context.getResources(),
+                    createBitmap(uncoloredDrawable.getBitmap(), highlightColor));
+            setDrawables(drawables);
+
+            String[] labels = new String[drawables.length];
+            labels[INDEX_OFF] = context.getString(
+                    R.string.lb_playback_controls_high_quality_enable);
+            labels[INDEX_ON] = context.getString(
+                    R.string.lb_playback_controls_high_quality_disable);
+            setLabels(labels);
+        }
+    }
+
+    /**
      * An action for displaying a CC (Closed Captioning) icon.
      */
     public static class ClosedCaptioningAction extends MultiAction {
