@@ -1,48 +1,10 @@
-param(
-    [Switch] $ClearCache
-)
+Import-Module "$PSScriptRoot/module.psm1" -Function Connect-ADB
 
-#==========================================================================
-
-function Test-ADBConnection {
-
-    $devices = adb.exe devices `
-        | Select-String -NotMatch "List of devices attached" `
-        | Where-Object { $_.ToString().Trim().Length -gt 0 }
-
-    return $devices.Count -gt 0
-    
-}
-
-#==========================================================================
-# INIT
-
-# Clear the Terminal
-Clear-Host
-
-# CD to the root directory
 Set-Location $PSScriptRoot
 
-#==========================================================================
-# ADB
+Connect-ADB
 
-if (-not (Test-ADBConnection)) {
-
-    Write-Host "No ADB device is connected"
-    $IP = Read-Host 'Target IP Address'
-
-    adb.exe connect $IP
-
-    while (-not (Test-ADBConnection)) {
-
-        Write-Host 'Awaiting Connection ...'
-
-    }
-    
-}
-
-#==========================================================================
-# GRADLE
+Clear-Host
 
 # Execute Gradle
 & "$env:JAVA_HOME/bin/java.exe" `
@@ -50,5 +12,3 @@ if (-not (Test-ADBConnection)) {
     'org.gradle.wrapper.GradleWrapperMain' `
     "clean" "installStstableDebug" `
     "--warning-mode" "all"
-
-#==========================================================================
