@@ -423,8 +423,11 @@ public class PlaybackSupportFragment extends Fragment {
 
     @SuppressWarnings("WeakerAccess") /* synthetic access */
     boolean onInterceptInputEvent(InputEvent event) {
+        
         final boolean controlsHidden = !mControlVisible;
+        
         if (DEBUG) Log.v(TAG, "onInterceptInputEvent hidden " + controlsHidden + " " + event);
+        
         boolean consumeEvent = false;
         int keyCode = KeyEvent.KEYCODE_UNKNOWN;
         int keyAction = 0;
@@ -438,6 +441,7 @@ public class PlaybackSupportFragment extends Fragment {
         }
 
         switch (keyCode) {
+
             case KeyEvent.KEYCODE_DPAD_CENTER:
             case KeyEvent.KEYCODE_DPAD_DOWN:
             case KeyEvent.KEYCODE_DPAD_UP:
@@ -445,19 +449,22 @@ public class PlaybackSupportFragment extends Fragment {
             case KeyEvent.KEYCODE_DPAD_RIGHT:
                 // Event may be consumed; regardless, if controls are hidden then these keys will
                 // bring up the controls.
-                if (controlsHidden) {
+                /*if (controlsHidden) {
                     consumeEvent = true;
-                }
+                }*/
                 if (keyAction == KeyEvent.ACTION_DOWN) {
                     tickle();
                 }
                 break;
+
             case KeyEvent.KEYCODE_BACK:
             case KeyEvent.KEYCODE_ESCAPE:
+
                 if (mInSeek) {
                     // when in seek, the SeekUi will handle the BACK.
                     return false;
                 }
+
                 // If controls are not hidden, back will be consumed to fade
                 // them out (even if the key was consumed by the handler).
                 if (!controlsHidden) {
@@ -468,6 +475,7 @@ public class PlaybackSupportFragment extends Fragment {
                     }
                 }
                 break;
+
             default:
                 if (consumeEvent) {
                     if (keyAction == KeyEvent.ACTION_DOWN) {
@@ -475,7 +483,9 @@ public class PlaybackSupportFragment extends Fragment {
                     }
                 }
         }
+
         return consumeEvent;
+    
     }
 
     @Override

@@ -124,6 +124,7 @@ public class PlayerUIController extends BasePlayerController {
 
     @Override
     public boolean onKeyDown(int keyCode) {
+
         disableUiAutoHideTimeout();
         disableSuggestionsResetTimeout();
 
@@ -131,17 +132,21 @@ public class PlayerUIController extends BasePlayerController {
             return false;
         }
 
-        boolean isHandled = handleBackKey(keyCode) || handleMenuKey(keyCode) ||
-                handleConfirmKey(keyCode) || handleStopKey(keyCode) || handleNumKeys(keyCode) ||
-                handlePlayPauseKey(keyCode) || handleLeftRightSkip(keyCode);
+        boolean isHandled = 
+            handleBackKey(keyCode) 
+            || handleMenuKey(keyCode) 
+            || handleConfirmKey(keyCode) 
+            || handleStopKey(keyCode) 
+            || handleNumKeys(keyCode) 
+            || handlePlayPauseKey(keyCode);
 
         if (isHandled) {
             return true; // don't show UI
+        } else {
+            enableUiAutoHideTimeout();
+            return false;
         }
 
-        enableUiAutoHideTimeout();
-
-        return false;
     }
 
     private void onSubtitleClicked(boolean enabled) {
@@ -672,25 +677,6 @@ public class PlayerUIController extends BasePlayerController {
             getPlayer().setPlayWhenReady(!getPlayer().getPlayWhenReady());
             enableUiAutoHideTimeout(); // TODO: move out somehow
             return true;
-        }
-
-        return false;
-    }
-
-    private boolean handleLeftRightSkip(int keyCode) {
-        
-        if (getPlayer() == null || getPlayer().isOverlayShown() || getVideo() == null) {
-            return false;
-        }
-
-        if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-            getMainController().onNextClicked();
-            return true; // hide ui
-        }
-
-        if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
-            getMainController().onPreviousClicked();
-            return true; // hide ui
         }
 
         return false;
