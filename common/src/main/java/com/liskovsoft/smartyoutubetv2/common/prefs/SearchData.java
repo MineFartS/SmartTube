@@ -5,9 +5,7 @@ import android.content.Context;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 
 public class SearchData {
-    public static final int SPEECH_RECOGNIZER_SYSTEM = 0;
-    public static final int SPEECH_RECOGNIZER_INTENT = 1;
-    public static final int SPEECH_RECOGNIZER_GOTEV = 2;
+
     private static final String SEARCH_DATA = "search_data";
     @SuppressLint("StaticFieldLeak")
     private static SearchData sInstance;
@@ -17,7 +15,7 @@ public class SearchData {
     private boolean mIsFocusOnResultsEnabled;
 
     private boolean mIsTempBackgroundModeEnabled;
-    private int mSpeechRecognizerType;
+
     private Class<?> mTempBackgroundModeClass;
     private boolean mIsTrendingSearchesEnabled;
     private boolean mIsSearchHistoryDisabled;
@@ -100,15 +98,6 @@ public class SearchData {
         mTempBackgroundModeClass = clazz;
     }
 
-    public int getSpeechRecognizerType() {
-        return mSpeechRecognizerType;
-    }
-
-    public void setSpeechRecognizerType(int type) {
-        mSpeechRecognizerType = type;
-        persistData();
-    }
-
     public boolean isSearchHistoryDisabled() {
         return mIsSearchHistoryDisabled;
     }
@@ -138,7 +127,6 @@ public class SearchData {
 
         mIsTempBackgroundModeEnabled = Helpers.parseBoolean(split, 4, false);
 
-        mSpeechRecognizerType = Helpers.parseInt(split, 6, SPEECH_RECOGNIZER_SYSTEM);
         mIsTrendingSearchesEnabled = Helpers.parseBoolean(split, 7, true);
         mIsSearchHistoryDisabled = Helpers.parseBoolean(split, 8, false);
         mIsPopularSearchesDisabled = Helpers.parseBoolean(split, 9, false);
@@ -156,7 +144,6 @@ public class SearchData {
 
                 mIsTempBackgroundModeEnabled, 
                 null, 
-                mSpeechRecognizerType,
                 mIsTrendingSearchesEnabled, 
                 mIsSearchHistoryDisabled, 
                 mIsPopularSearchesDisabled,

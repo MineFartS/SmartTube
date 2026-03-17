@@ -141,38 +141,14 @@ public abstract class SearchTagsFragmentBase extends SearchSupportFragment
 
     @SuppressWarnings("deprecation")
     private void setupListenersAndPermissions() {
+
         setOnItemViewClickedListener((itemViewHolder, item, rowViewHolder, row) -> onItemViewClicked(item));
+        
         setOnItemViewSelectedListener((itemViewHolder, item, rowViewHolder, row) -> onItemViewSelected(item));
-
-        // NOTE: External recognizer makes voice search behave unexpectedly (broken by Google app updates).
-        // You should avoid using it till there be a solution.
-
-        switch (SearchData.instance(getContext()).getSpeechRecognizerType()) {
-            case SearchData.SPEECH_RECOGNIZER_SYSTEM:
-                break;
-            case SearchData.SPEECH_RECOGNIZER_INTENT:
-                setSpeechRecognitionCallback(mDefaultCallback);
-                break;
-            case SearchData.SPEECH_RECOGNIZER_GOTEV:
-                Speech.init(getContext());
-                setSpeechRecognitionCallback(mGotevCallback);
-                break;
-        }
+    
     }
 
-    protected void stopSpeechService() {
-        // Note: Other services don't need to be stopped
-
-        if (SearchData.instance(getContext()).getSpeechRecognizerType() != SearchData.SPEECH_RECOGNIZER_GOTEV) {
-            return;
-        }
-
-        try {
-            Speech.getInstance().stopListening();
-        } catch (IllegalArgumentException | NoSuchMethodError e) { // Speech service not registered/Android 4 (no such method)
-            e.printStackTrace();
-        }
-    }
+    protected void stopSpeechService() {}
 
     protected void loadSearchTags(String searchQuery) {
         searchTaggedPosts(searchQuery);

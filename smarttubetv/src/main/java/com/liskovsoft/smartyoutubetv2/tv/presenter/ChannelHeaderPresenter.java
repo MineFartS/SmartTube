@@ -153,20 +153,7 @@ public class ChannelHeaderPresenter extends RowPresenter {
         SearchOrbView searchSettingsOrbView = searchBar.findViewById(R.id.search_settings_orb);
         String channelName = provider.getChannelTitle();
         searchBar.setTitle(channelName != null ? channelName : context.getString(R.string.content_type_channel));
-        switch (SearchData.instance(context).getSpeechRecognizerType()) {
-            case SearchData.SPEECH_RECOGNIZER_SYSTEM:
-                // NOP
-                break;
-            case SearchData.SPEECH_RECOGNIZER_INTENT:
-                searchBar.setSpeechRecognizer(null);
-                searchBar.setSpeechRecognitionCallback(new RecognizerIntentCallback(context, provider, searchBar));
-                break;
-            case SearchData.SPEECH_RECOGNIZER_GOTEV:
-                searchBar.setSpeechRecognizer(null);
-                Speech.init(context);
-                searchBar.setSpeechRecognitionCallback(new GotevCallback(context, provider, searchBar, speechOrbView));
-                break;
-        }
+        
         searchBar.setSearchBarListener(new SearchBar.SearchBarListener() {
             @Override
             public void onSearchQueryChange(String query) {
@@ -379,19 +366,7 @@ public class ChannelHeaderPresenter extends RowPresenter {
         }
     }
 
-    private void stopSpeechService(Context context) {
-        // Note: Other services don't need to be stopped
-
-        if (SearchData.instance(context).getSpeechRecognizerType() != SearchData.SPEECH_RECOGNIZER_GOTEV) {
-            return;
-        }
-
-        try {
-            Speech.getInstance().stopListening();
-        } catch (IllegalArgumentException | NoSuchMethodError e) { // Speech service not registered/Android 4 (no such method)
-            e.printStackTrace();
-        }
-    }
+    private void stopSpeechService(Context context) {}
 
     private void setTitle(SearchBar searchBar, String title) {
         mTitle = title;
