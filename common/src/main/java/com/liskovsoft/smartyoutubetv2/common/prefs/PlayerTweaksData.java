@@ -88,11 +88,8 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private int mPlayerDataSource;
     private boolean mIsBufferOnStreamsDisabled;
     private boolean mIsSectionPlaylistEnabled;
-
     private boolean mIsBootScreenOffEnabled;
-
     private int mScreenOffDimmingPercents;
-    private boolean mIsUIAnimationsEnabled;
     private boolean mIsLikesCounterEnabled;
     private boolean mIsChapterNotificationEnabled;
     private boolean mIsPlayerAutoVolumeEnabled;
@@ -322,15 +319,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         persistData();
     }
 
-    public boolean isUIAnimationsEnabled() {
-        return mIsUIAnimationsEnabled;
-    }
-
-    public void setUIAnimationsEnabled(boolean enable) {
-        mIsUIAnimationsEnabled = enable;
-        persistData();
-    }
-
     public boolean isLikesCounterEnabled() {
         return mIsLikesCounterEnabled;
     }
@@ -399,40 +387,28 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsSetOutputSurfaceWorkaroundEnabled = Helpers.parseBoolean(split, 7, true);
         mIsAudioSyncFixEnabled = Helpers.parseBoolean(split, 8, false);
         mIsKeepFinishedActivityEnabled = Helpers.parseBoolean(split, 9, false);
-
         mIsPlaybackNotificationsDisabled = Helpers.parseBoolean(split, 11, !Helpers.isAndroidTVLauncher(mPrefs.getContext()));
         mIsTunneledPlaybackEnabled = Helpers.parseBoolean(split, 12, false);
         mPlayerButtons = Helpers.parseInt(split, 13, PLAYER_BUTTON_DEFAULT);
-
         mIsSuggestionsDisabled = Helpers.parseBoolean(split, 17, false);
-        
         mIsRealChannelIconEnabled = Helpers.parseBoolean(split, 20, true);
         mPixelRatio = Helpers.parseFloat(split, 21, 1.0f);
         mIsQualityInfoBitrateEnabled = Helpers.parseBoolean(split, 22, false);
-
         mIsButtonLongClickEnabled = Helpers.parseBoolean(split, 24, true);
         mIsLongSpeedListEnabled = Helpers.parseBoolean(split, 25, true);
-        
         mPlayerDataSource = Helpers.parseInt(split, 26, PLAYER_DATA_SOURCE_DEFAULT);
-
         mIsBufferOnStreamsDisabled = Helpers.parseBoolean(split, 30, false);
         // Cause severe garbage collector stuttering
         mIsSectionPlaylistEnabled = Helpers.parseBoolean(split, 31, Utils.isEnoughRam());
-        mIsUIAnimationsEnabled = Helpers.parseBoolean(split, 34, false);
         mIsLikesCounterEnabled = Helpers.parseBoolean(split, 35, true);
         mIsChapterNotificationEnabled = Helpers.parseBoolean(split, 36, false);
         mScreenOffDimmingPercents = Helpers.parseInt(split, 37, 100);
         mIsBootScreenOffEnabled = Helpers.parseBoolean(split, 38, false);
-
         mIsPlayerAutoVolumeEnabled = Helpers.parseBoolean(split, 40, true);
         mIsSyncRowButtonIndexEnabled = Helpers.parseBoolean(split, 41, true);
-
         mIsLoopShortsEnabled = Helpers.parseBoolean(split, 44, true);
-
         mIsRememberPositionOfLiveVideosEnabled = Helpers.parseBoolean(split, 46, true);
-
         mIsExtraLongSpeedListEnabled = Helpers.parseBoolean(split, 49, false);
-
         mIsSuggestionsHorizontallyScrolled = Helpers.parseBoolean(split, 56, false);
 
         updateDefaultValues();
@@ -471,7 +447,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mPlayerDataSource, 
                 mIsBufferOnStreamsDisabled, 
                 mIsSectionPlaylistEnabled,
-                mIsUIAnimationsEnabled, 
                 mIsLikesCounterEnabled, 
                 mIsChapterNotificationEnabled,
                 mScreenOffDimmingPercents, 
