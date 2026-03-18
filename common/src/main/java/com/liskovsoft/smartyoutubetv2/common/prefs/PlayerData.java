@@ -75,7 +75,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private float mPlayerVolume;
     private boolean mIsTooltipsEnabled;
     private float mSubtitlePosition;
-    private boolean mIsNumberKeySeekEnabled;
     private boolean mIsSkip24RateEnabled;
     private boolean mIsSkipShortsEnabled;
     private boolean mIsLiveChatEnabled;
@@ -239,15 +238,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
 
     public void setTooltipsEnabled(boolean enable) {
         mIsTooltipsEnabled = enable;
-        persistState();
-    }
-
-    public boolean isNumberKeySeekEnabled() {
-        return mIsNumberKeySeekEnabled;
-    }
-
-    public void setNumberKeySeekEnabled(boolean enable) {
-        mIsNumberKeySeekEnabled = enable;
         persistState();
     }
 
@@ -671,7 +661,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         mPlayerVolume = Helpers.parseFloat(split, 40, 1.0f);
         mIsTooltipsEnabled = Helpers.parseBoolean(split, 41, true);
         mSubtitlePosition = Helpers.parseFloat(split, 42, 0.1f);
-        mIsNumberKeySeekEnabled = Helpers.parseBoolean(split, 43, true);
         mIsSkip24RateEnabled = Helpers.parseBoolean(split, 44, false);
         mAfrPauseMs = Helpers.parseInt(split, 45, 0);
         mIsLiveChatEnabled = Helpers.parseBoolean(split, 46, false);
@@ -741,7 +730,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
                 mPlayerVolume, 
                 mIsTooltipsEnabled, 
                 mSubtitlePosition, 
-                mIsNumberKeySeekEnabled,
                 mIsSkip24RateEnabled, 
                 mAfrPauseMs, 
                 mIsLiveChatEnabled, 
@@ -752,7 +740,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
                 mPlaybackMode, 
                 mAudioLanguage, 
                 mSubtitleLanguage,
-
                 mIsSpeedPerChannelEnabled, 
                 Helpers.mergeArray(mSpeeds.values().toArray()), 
                 mPitch, 

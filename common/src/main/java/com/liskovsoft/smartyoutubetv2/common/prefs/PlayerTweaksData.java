@@ -74,23 +74,18 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsSetOutputSurfaceWorkaroundEnabled;
     private boolean mIsAudioSyncFixEnabled;
     private boolean mIsKeepFinishedActivityEnabled;
-
     private boolean mIsPlaybackNotificationsDisabled;
     private boolean mIsTunneledPlaybackEnabled;
     private int mPlayerButtons;
-
     private boolean mIsRememberPositionOfLiveVideosEnabled;
     private boolean mIsSuggestionsDisabled;
-
     private boolean mIsRealChannelIconEnabled;
     private float mPixelRatio;
     private boolean mIsQualityInfoBitrateEnabled;
-
     private boolean mIsButtonLongClickEnabled;
     private boolean mIsLongSpeedListEnabled;
     private boolean mIsExtraLongSpeedListEnabled;
     private int mPlayerDataSource;
-
     private boolean mIsBufferOnStreamsDisabled;
     private boolean mIsSectionPlaylistEnabled;
     private boolean mIsScreenOffTimeoutEnabled;
@@ -100,16 +95,11 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsUIAnimationsEnabled;
     private boolean mIsLikesCounterEnabled;
     private boolean mIsChapterNotificationEnabled;
-
     private boolean mIsPlayerAutoVolumeEnabled;
     private boolean mIsSyncRowButtonIndexEnabled;
-
     private boolean mIsLoopShortsEnabled;
-
-    private boolean mIsAudioFocusEnabled;
-
-    private boolean mIsDontResizeVideoToFitDialogEnabled;
     private boolean mIsSuggestionsHorizontallyScrolled;
+    
     private final Runnable mPersistDataInt = this::persistDataInt;
 
     private PlayerTweaksData(Context context) {
@@ -396,15 +386,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         persistData();
     }
 
-    public boolean isAudioFocusEnabled() {
-        return mIsAudioFocusEnabled;
-    }
-
-    public void setAudioFocusEnabled(boolean enable) {
-        mIsAudioFocusEnabled = enable;
-        persistData();
-    }
-
     public boolean isSyncRowButtonIndexEnabled() {
         return mIsSyncRowButtonIndexEnabled;
     }
@@ -420,15 +401,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     public void setLoopShortsEnabled(boolean enable) {
         mIsLoopShortsEnabled = enable;
-        persistData();
-    }
-
-    public boolean isDontResizeVideoToFitDialogEnabled() {
-        return mIsDontResizeVideoToFitDialogEnabled;
-    }
-
-    public void setDontResizeVideoToFitDialogEnabled(boolean enable) {
-        mIsDontResizeVideoToFitDialogEnabled = enable;
         persistData();
     }
 
@@ -491,8 +463,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
         mIsExtraLongSpeedListEnabled = Helpers.parseBoolean(split, 49, false);
 
-        mIsAudioFocusEnabled = Helpers.parseBoolean(split, 54, true);
-        mIsDontResizeVideoToFitDialogEnabled = Helpers.parseBoolean(split, 55, false);
         mIsSuggestionsHorizontallyScrolled = Helpers.parseBoolean(split, 56, false);
 
         updateDefaultValues();
@@ -510,7 +480,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mPrefs.setProfileData(
             VIDEO_PLAYER_TWEAKS_DATA, 
             Helpers.mergeData(
-
                 mIsSnapToVsyncDisabled,
                 mIsProfileLevelCheckSkipped, 
                 mIsSWDecoderForced, 
@@ -519,22 +488,17 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mIsSetOutputSurfaceWorkaroundEnabled, 
                 mIsAudioSyncFixEnabled, 
                 mIsKeepFinishedActivityEnabled, 
-
                 mIsPlaybackNotificationsDisabled, 
                 mIsTunneledPlaybackEnabled, 
                 mPlayerButtons,
                 null, 
-
                 mIsSuggestionsDisabled,
-
                 mIsRealChannelIconEnabled, 
                 mPixelRatio, 
                 mIsQualityInfoBitrateEnabled,
-
                 mIsButtonLongClickEnabled, 
                 mIsLongSpeedListEnabled, 
                 mPlayerDataSource, 
-
                 mIsBufferOnStreamsDisabled, 
                 mIsSectionPlaylistEnabled,
                 mIsScreenOffTimeoutEnabled, 
@@ -544,20 +508,14 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mIsChapterNotificationEnabled,
                 mScreenOffDimmingPercents, 
                 mIsBootScreenOffEnabled, 
-
                 mIsPlayerAutoVolumeEnabled, 
                 mIsSyncRowButtonIndexEnabled,
                 null, 
                 mIsLoopShortsEnabled, 
-
                 mIsRememberPositionOfLiveVideosEnabled,
                 null, 
                 mIsExtraLongSpeedListEnabled, 
-
-
                 null,
-                mIsAudioFocusEnabled, 
-                mIsDontResizeVideoToFitDialogEnabled, 
                 mIsSuggestionsHorizontallyScrolled
             )
         );

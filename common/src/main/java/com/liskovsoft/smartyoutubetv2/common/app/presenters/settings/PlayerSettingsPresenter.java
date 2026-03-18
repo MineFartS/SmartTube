@@ -348,14 +348,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 option -> mPlayerTweaksData.setSuggestionsHorizontallyScrolled(option.isSelected()),
                 mPlayerTweaksData.isSuggestionsHorizontallyScrolled()));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.dont_resize_video_to_fit_dialog),
-                option -> mPlayerTweaksData.setDontResizeVideoToFitDialogEnabled(option.isSelected()),
-                mPlayerTweaksData.isDontResizeVideoToFitDialogEnabled()));
-
-        options.add(UiOptionItem.from(getContext().getString(R.string.player_audio_focus),
-                option -> mPlayerTweaksData.setAudioFocusEnabled(option.isSelected()),
-                mPlayerTweaksData.isAudioFocusEnabled()));
-
         options.add(UiOptionItem.from(getContext().getString(R.string.player_auto_volume),
                 option -> mPlayerTweaksData.setPlayerAutoVolumeEnabled(option.isSelected()),
                 mPlayerTweaksData.isPlayerAutoVolumeEnabled()));
@@ -383,10 +375,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         options.add(UiOptionItem.from(getContext().getString(R.string.player_disable_suggestions),
                 option -> mPlayerTweaksData.setSuggestionsDisabled(option.isSelected()),
                 mPlayerTweaksData.isSuggestionsDisabled()));
-
-        options.add(UiOptionItem.from(getContext().getString(R.string.player_number_key_seek),
-                option -> mPlayerData.setNumberKeySeekEnabled(option.isSelected()),
-                mPlayerData.isNumberKeySeekEnabled()));
 
         options.add(UiOptionItem.from(getContext().getString(R.string.remember_position_of_live_videos),
                 option -> mPlayerTweaksData.setRememberPositionOfLiveVideosEnabled(option.isSelected()),

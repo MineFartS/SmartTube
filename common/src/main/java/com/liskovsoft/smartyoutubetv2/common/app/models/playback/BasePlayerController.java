@@ -44,7 +44,7 @@ public abstract class BasePlayerController implements PlayerEventListener {
         
         AppDialogPresenter settingsPresenter = getAppDialogPresenter();
         
-        if (getPlayer() == null || settingsPresenter.isOverlay() || getPlayerTweaksData().isDontResizeVideoToFitDialogEnabled()) {
+        if (getPlayer() == null || settingsPresenter.isOverlay()) {
             return;
         }
         
@@ -82,11 +82,10 @@ public abstract class BasePlayerController implements PlayerEventListener {
 
     };
     private final Runnable mFitVideoFinish = () -> {
-        if (getPlayer() == null || getPlayerTweaksData().isDontResizeVideoToFitDialogEnabled()) {
-            return;
-        }
-        getPlayer().setZoomPercents(getPlayerData().getZoomPercents());
-        getPlayer().setVideoGravity(Gravity.CENTER);
+        if (getPlayer() != null) {
+            getPlayer().setZoomPercents(getPlayerData().getZoomPercents());
+            getPlayer().setVideoGravity(Gravity.CENTER);
+        };
     };
 
     public void setMainController(PlaybackPresenter mainController) {

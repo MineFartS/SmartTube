@@ -364,7 +364,7 @@
     <string name="pressing_home">by pressing HOME</string>
     <string name="pressing_home_back">by pressing HOME or BACK</string>
     <string name="pressing_back">by pressing BACK</string>
-    <string name="player_number_key_seek">Seek with number keys</string>
+
     <string name="save_remove_playlist">Add/Remove playlist from Playlists section</string>
     <string name="save_playlist">Add playlist to Playlists section</string>
     <string name="remove_playlist">Remove playlist from Playlists section permanently</string>
@@ -615,7 +615,7 @@
     <string name="lb_playback_controls_closed_captioning_disable">Disable Closed Captioning</string>
     <string name="lb_playback_controls_closed_captioning_enable">Enable Closed Captioning</string>
     <string name="my_videos">My videos</string>
-    <string name="player_audio_focus">Audio focus (pause if other players detected)</string>
+
     <string name="paid_content_notification">Paid content notification</string>
     <string name="you_liked">you liked</string>
     <string name="premium_users_only">Premium users only. Fix for incomplete video format list</string>
@@ -625,7 +625,6 @@
     <string name="card_preview_full">Video with sound</string>
     <string name="card_preview">Card preview</string>
 
-    <string name="dont_resize_video_to_fit_dialog">Don\'t resize video to fit dialog</string>
     <string name="typing_corrections">Disable auto-correction while typing text</string>
     <string name="suggestions_horizontally_scrolled">Horizontally scrolled Suggestions</string>
     <string name="stable_restore">Restore the stable build (all data will be lost)</string>

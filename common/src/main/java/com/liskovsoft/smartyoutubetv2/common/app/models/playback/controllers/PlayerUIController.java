@@ -662,7 +662,7 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private boolean handleNumKeys(int keyCode) {
-        if (getPlayerData().isNumberKeySeekEnabled() && keyCode >= KeyEvent.KEYCODE_0 && keyCode <= KeyEvent.KEYCODE_9) {
+        if (keyCode >= KeyEvent.KEYCODE_0 && keyCode <= KeyEvent.KEYCODE_9) {
             if (getPlayer() != null && getPlayer().getDurationMs() > 0) {
                 float seekPercent = (keyCode - KeyEvent.KEYCODE_0) / 10f;
                 getPlayer().setPositionMs((long)(getPlayer().getDurationMs() * seekPercent));

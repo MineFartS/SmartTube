@@ -127,7 +127,7 @@ public class ExoPlayerInitializer {
      * Manage audio focus. E.g. use Spotify when audio is disabled.
      */
     private void setupAudioFocus(SimpleExoPlayer player) {
-        if (player != null && mPlayerTweaksData.isAudioFocusEnabled()) {
+        if (player != null) {
             try {
                 player.setAudioAttributes(getAudioAttributes(), true);
             } catch (SecurityException e) { // uid 10390 not allowed to perform TAKE_AUDIO_FOCUS
