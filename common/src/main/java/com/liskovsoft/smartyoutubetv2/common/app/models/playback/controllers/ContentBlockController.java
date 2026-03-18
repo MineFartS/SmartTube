@@ -334,11 +334,13 @@ public class ContentBlockController extends BasePlayerController {
         int type = getContentBlockData().getAction(lastSegment.getCategory());
 
         long skipPosMs = lastSegment.getEndMs();
-        
         // Fix infinite skip loop by ignoring short segments. TextureView has a seek bug.
         long skipDurationMs = Math.min(skipPosMs, getPlayer().getDurationMs()) - getPlayer().getPositionMs();
+        boolean stayQuiet = skipDurationMs < 10_000 && PlayerTweaksData.instance(getContext()).isTextureViewEnabled();
 
-        messageSkip(skipPosMs, skipMessage);
+        if (!stayQuiet) {
+            messageSkip(skipPosMs, skipMessage);
+        }
 
         mLastSkipPosMs = skipPosMs;
     }

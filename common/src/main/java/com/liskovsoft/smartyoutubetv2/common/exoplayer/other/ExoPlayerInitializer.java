@@ -136,6 +136,12 @@ public class ExoPlayerInitializer {
         }
     }
 
-    private void applyPlaybackFixes(SimpleExoPlayer player) {}
+    private void applyPlaybackFixes(SimpleExoPlayer player) {
+        // Fix seeking on TextureView (some devices only)
+        if (mPlayerTweaksData.isTextureViewEnabled()) {
+            // Also, live stream (dash) seeking fix
+            player.setSeekParameters(SeekParameters.CLOSEST_SYNC);
+        }
+    }
 
 }

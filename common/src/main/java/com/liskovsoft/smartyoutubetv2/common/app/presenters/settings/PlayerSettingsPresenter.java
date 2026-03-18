@@ -249,6 +249,30 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
     private void appendDeveloperCategory(AppDialogPresenter settingsPresenter) {
         List<OptionItem> options = new ArrayList<>();
+        
+        options.add(
+            UiOptionItem.from(
+                getContext().getString(R.string.audio_sync_fix),
+                getContext().getString(R.string.audio_sync_fix_desc),
+                option -> mPlayerTweaksData.setAudioSyncFixEnabled(option.isSelected()),
+                mPlayerTweaksData.isAudioSyncFixEnabled()
+            )
+        );
+
+        options.add(
+            UiOptionItem.from(
+                getContext().getString(R.string.ambilight_ratio_fix),
+                getContext().getString(R.string.ambilight_ratio_fix_desc),
+                option -> {
+                    mPlayerTweaksData.setTextureViewEnabled(option.isSelected());
+                    if (option.isSelected()) {
+                        // Tunneled playback works only with SurfaceView
+                        mPlayerTweaksData.setTunneledPlaybackEnabled(false);
+                    }
+                },
+                mPlayerTweaksData.isTextureViewEnabled()
+            )
+        );
 
         options.add(
             UiOptionItem.from(
@@ -261,10 +285,34 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
+                getContext().getString(R.string.tunneled_video_playback),
+                getContext().getString(R.string.tunneled_video_playback_desc),
+                option -> {
+                    mPlayerTweaksData.setTunneledPlaybackEnabled(option.isSelected());
+                    if (option.isSelected()) {
+                        // Tunneled playback works only with SurfaceView
+                        mPlayerTweaksData.setTextureViewEnabled(false);
+                    }
+                },
+                mPlayerTweaksData.isTunneledPlaybackEnabled()
+            )
+        );
+
+        options.add(
+            UiOptionItem.from(
                 getContext().getString(R.string.skip_codec_profile_check),
                 getContext().getString(R.string.skip_codec_profile_check_desc),
                 option -> mPlayerTweaksData.setProfileLevelCheckSkipped(option.isSelected()),
                 mPlayerTweaksData.isProfileLevelCheckSkipped()
+            )
+        );
+
+        options.add(
+            UiOptionItem.from(
+                getContext().getString(R.string.force_sw_codec),
+                getContext().getString(R.string.force_sw_codec_desc),
+                option -> mPlayerTweaksData.setSWDecoderForced(option.isSelected()),
+                mPlayerTweaksData.isSWDecoderForced()
             )
         );
 
@@ -343,6 +391,14 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
     private void appendMiscCategory(AppDialogPresenter settingsPresenter) {
         List<OptionItem> options = new ArrayList<>();
 
+        options.add(UiOptionItem.from(getContext().getString(R.string.suggestions_horizontally_scrolled),
+                option -> mPlayerTweaksData.setSuggestionsHorizontallyScrolled(option.isSelected()),
+                mPlayerTweaksData.isSuggestionsHorizontallyScrolled()));
+
+        options.add(UiOptionItem.from(getContext().getString(R.string.dont_resize_video_to_fit_dialog),
+                option -> mPlayerTweaksData.setDontResizeVideoToFitDialogEnabled(option.isSelected()),
+                mPlayerTweaksData.isDontResizeVideoToFitDialogEnabled()));
+
         options.add(UiOptionItem.from(getContext().getString(R.string.player_audio_focus),
                 option -> mPlayerTweaksData.setAudioFocusEnabled(option.isSelected()),
                 mPlayerTweaksData.isAudioFocusEnabled()));
@@ -400,6 +456,10 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 option -> mPlayerTweaksData.setSyncRowButtonIndexEnabled(option.isSelected()),
                 mPlayerTweaksData.isSyncRowButtonIndexEnabled()));
 
+        options.add(UiOptionItem.from(getContext().getString(R.string.player_ui_animations),
+                option -> mPlayerTweaksData.setUIAnimationsEnabled(option.isSelected()),
+                mPlayerTweaksData.isUIAnimationsEnabled()));
+
         options.add(UiOptionItem.from(getContext().getString(R.string.player_likes_count),
                 option -> mPlayerTweaksData.setLikesCounterEnabled(option.isSelected()),
                 mPlayerTweaksData.isLikesCounterEnabled()));
@@ -407,6 +467,10 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         options.add(UiOptionItem.from(getContext().getString(R.string.player_show_tooltips),
                 option -> mPlayerData.setTooltipsEnabled(option.isSelected()),
                 mPlayerData.isTooltipsEnabled()));
+
+        options.add(UiOptionItem.from(getContext().getString(R.string.player_button_long_click),
+                option -> mPlayerTweaksData.setButtonLongClickEnabled(option.isSelected()),
+                mPlayerTweaksData.isButtonLongClickEnabled()));
 
         options.add(UiOptionItem.from(getContext().getString(R.string.real_channel_icon),
                 option -> mPlayerTweaksData.setRealChannelIconEnabled(option.isSelected()),

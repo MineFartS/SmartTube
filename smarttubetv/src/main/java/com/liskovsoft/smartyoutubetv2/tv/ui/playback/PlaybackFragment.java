@@ -109,7 +109,7 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     private DebugInfoManager mDebugInfoManager;
     private UriBackgroundManager mBackgroundManager;
     private RowsSupportFragment mRowsSupportFragment;
-
+    private boolean mIsUIAnimationsEnabled = false;
     private boolean mIsEngineBlocked;
     private MediaSessionCompat mMediaSession;
     private MediaSessionConnector mMediaSessionConnector;
@@ -454,6 +454,8 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
         mPlayerGlue.setControlsOverlayAutoHideEnabled(false); // don't show controls on some player events like play/pause/end
         StoryboardSeekDataProvider.setSeekProvider(mPlayerGlue);
         hideControlsOverlay(true); // fix player ui not synced correctly
+
+        mIsUIAnimationsEnabled = PlayerTweaksData.instance(getContext()).isUIAnimationsEnabled();
 
         mExoPlayerController.setPlayerView(mPlayerGlue);
     }
@@ -1088,8 +1090,7 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
 
     @Override
     public void showControlsOverlay(boolean runAnimation) {
-        
-        super.showControlsOverlay(true); // mIsUIAnimationsEnabled
+        super.showControlsOverlay(mIsUIAnimationsEnabled);
 
         // Do throttle. Called so many times. Rely on boxing because initial state is unknown.
         if (mIsControlsShownPreviously != null && mIsControlsShownPreviously) {
@@ -1111,8 +1112,7 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
 
     @Override
     public void hideControlsOverlay(boolean runAnimation) {
-        
-        super.hideControlsOverlay(true); // mIsUIAnimationsEnabled
+        super.hideControlsOverlay(mIsUIAnimationsEnabled);
 
         // Do throttle. Called so many times. Rely on boxing because initial state is unknown.
         if (mIsControlsShownPreviously != null && !mIsControlsShownPreviously) {

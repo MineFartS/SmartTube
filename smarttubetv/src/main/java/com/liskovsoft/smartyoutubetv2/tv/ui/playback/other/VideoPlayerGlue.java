@@ -369,6 +369,10 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
             return false;
         }
 
+        if (checkShortActionDisabled(action)) {
+            return true;
+        }
+
         boolean handled = false;
 
         // Primary actions are handled manually.
@@ -396,6 +400,10 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
 
     private boolean dispatchLongClickAction(Action action) {
         if (action == null) {
+            return false;
+        }
+
+        if (checkLongActionDisabled(action)) {
             return false;
         }
 
@@ -479,6 +487,26 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         Drawable icon = action.getIcon();
         action.setIcon(ActionHelpers.createDrawable(getContext(), (BitmapDrawable) icon, ActionHelpers.getIconGrayedOutColor(getContext())));
         invalidateUi(action);
+    }
+
+    /**
+     * Long press actions usually more important than short ones. So, try to use it first in case long click is disabled.
+     */
+    private boolean checkShortActionDisabled(Action action) {
+        if (mPlayerTweaksData.isButtonLongClickEnabled()) {
+            return false;
+        }
+
+        return (action == mActions.get(R.id.lb_control_closed_captioning) || action == mActions.get(R.id.action_video_speed)) &&
+                dispatchLongClickAction(action); // replace short with long
+    }
+
+    private boolean checkLongActionDisabled(Action action) {
+        if (mPlayerTweaksData.isButtonLongClickEnabled()) {
+            return false;
+        }
+
+        return action.getId() == R.id.action_chat;
     }
 
     @Override

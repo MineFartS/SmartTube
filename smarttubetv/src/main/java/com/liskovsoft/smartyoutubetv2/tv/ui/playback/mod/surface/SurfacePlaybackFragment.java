@@ -31,22 +31,16 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
 
     @Override
     public View onCreateView(
-        LayoutInflater inflater, 
-        ViewGroup container, 
-        Bundle savedInstanceState
-    ) {
-        
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
-
-        mVideoSurfaceWrapper = PlayerData.instance(getContext()).getRotationAngle() != 0 ? new TextureViewWrapper(getContext(), root) : new SurfaceViewWrapper(getContext(), root);
-
+        mVideoSurfaceWrapper = (PlayerTweaksData.instance(getContext()).isTextureViewEnabled() ||
+                PlayerData.instance(getContext()).getRotationAngle() != 0) ?
+                new TextureViewWrapper(getContext(), root) : new SurfaceViewWrapper(getContext(), root);
         mVideoSurfaceRoot = root.findViewById(com.liskovsoft.smartyoutubetv2.tv.R.id.surface_root);
         mVideoSurfaceRoot.addView(mVideoSurfaceWrapper.getSurfaceView(), 0);
         mVideoSurfaceRoot.setAspectRatioListener((targetAspectRatio, naturalAspectRatio, aspectRatioMismatch) -> scaleIfNeeded());
         setBackgroundType(PlaybackSupportFragment.BG_LIGHT);
-
         return root;
-
     }
 
     /**
