@@ -156,14 +156,22 @@ public class BackupSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendGDriveMiscButtons(AppDialogPresenter settingsPresenter) {
-        settingsPresenter.appendSingleSwitch(UiOptionItem.from(
-                getContext().getString(R.string.device_specific_backup),
-                option2 -> mGeneralData.setDeviceSpecificBackupEnabled(option2.isSelected()),
-                mGeneralData.isDeviceSpecificBackupEnabled()
-        ));
 
-        settingsPresenter.appendSingleButton(UiOptionItem.from(
-                getContext().getString(R.string.dialog_add_account), option2 -> GoogleSignInPresenter.instance(getContext()).start()));
+        settingsPresenter.appendSingleSwitch(
+            UiOptionItem.from(
+                getContext().getString(R.string.device_specific_backup),
+                op -> mGeneralData.setDeviceSpecificBackupEnabled(op.isSelected()),
+                mGeneralData.isDeviceSpecificBackupEnabled()
+            )
+        );
+
+        settingsPresenter.appendSingleButton(
+            UiOptionItem.from(
+                getContext().getString(R.string.dialog_add_account), 
+                op -> GoogleSignInPresenter.instance(getContext()).start()
+            )
+        );
+
     }
 
     private void appendLocalBackupCategory(AppDialogPresenter settingsPresenter) {

@@ -53,7 +53,14 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
 
         appendChannelSortingCategory(settingsPresenter);
 
-        appendMiscCategory(settingsPresenter);
+        settingsPresenter.add(UiOptionItem.from(
+            getContext().getString(R.string.time_format_24) + " " + getContext().getString(R.string.time_format),
+            option -> {
+                mGeneralData.set24HourLocaleEnabled(option.isSelected());
+                mRestartApp = true;
+            },
+            mGeneralData.is24HourLocaleEnabled()
+        ));
 
         settingsPresenter.showDialog(
             getContext().getString(R.string.dialog_main_ui), 
@@ -112,26 +119,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
         }
 
         settingsPresenter.appendRadioCategory(getContext().getString(R.string.channels_section_sorting), options);
-    }
-
-    private void appendMiscCategory(AppDialogPresenter settingsPresenter) {
-       
-        List<OptionItem> options = new ArrayList<>();
-
-        options.add(UiOptionItem.from(
-            getContext().getString(R.string.time_format_24) + " " + getContext().getString(R.string.time_format),
-            option -> {
-                mGeneralData.set24HourLocaleEnabled(option.isSelected());
-                mRestartApp = true;
-            },
-            mGeneralData.is24HourLocaleEnabled()
-        ));
-
-        settingsPresenter.appendCheckedCategory(
-            getContext().getString(R.string.player_other), 
-            options
-        );
-        
     }
 
 }
