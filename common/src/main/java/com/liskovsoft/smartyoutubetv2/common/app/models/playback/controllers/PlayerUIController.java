@@ -343,9 +343,9 @@ public class PlayerUIController extends BasePlayerController {
     @Override
     public void onMetadata(MediaItemMetadata metadata) {
         mIsMetadataLoaded = true;
-        if (getPlayerData().getSeekPreviewMode() != PlayerData.SEEK_PREVIEW_NONE) {
-            getPlayer().loadStoryboard();
-        }
+
+        getPlayer().loadStoryboard();
+        
         getPlayer().setButtonState(R.id.action_thumbs_up, metadata.getLikeStatus() == MediaItemMetadata.LIKE_STATUS_LIKE ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
         getPlayer().setButtonState(R.id.action_thumbs_down, metadata.getLikeStatus() == MediaItemMetadata.LIKE_STATUS_DISLIKE ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
         if (getPlayerTweaksData().isRealChannelIconEnabled()) {

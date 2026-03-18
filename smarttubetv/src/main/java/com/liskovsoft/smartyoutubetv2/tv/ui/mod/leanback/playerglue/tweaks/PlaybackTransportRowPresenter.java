@@ -395,23 +395,9 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
             if (!startSeek()) {
                 return false;
             }
-
-            switch (mPlayerData.getSeekPreviewMode()) {
-                case PlayerData.SEEK_PREVIEW_CAROUSEL_SLOW:
-                    // Calculate thumbs size based on width
-                    mThumbsBar.setNumberOfThumbs(-1);
-                    updateProgressInSeek(forward);
-                    break;
-                case PlayerData.SEEK_PREVIEW_CAROUSEL_FAST:
-                    // Calculate thumbs size based on width
-                    mThumbsBar.setNumberOfThumbs(-1);
-                    updateProgressInSeekMod(forward);
-                    break;
-                default:
-                    mThumbsBar.setNumberOfThumbs(1);
-                    updateProgressInSeekMod(forward);
-                    break;
-            }
+            
+            mThumbsBar.setNumberOfThumbs(1);
+            updateProgressInSeekMod(forward);
 
             mThumbsBar.setThumbsRotation(mPlayerData.getRotationAngle());
 

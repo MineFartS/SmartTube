@@ -73,8 +73,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         category = AppDialogUtil.createAudioLanguageCategory(getContext());
         settingsPresenter.appendCategory(category);
 
-        appendSeekingPreviewCategory(settingsPresenter);
-
         appendPixelRatioCategory(settingsPresenter);
 
         appendMiscCategory(settingsPresenter);
@@ -91,23 +89,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         );
 
     }
-
-    private void appendSeekingPreviewCategory(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
-
-        for (int[] pair : new int[][] {
-                {R.string.player_seek_preview_none, PlayerData.SEEK_PREVIEW_NONE},
-                {R.string.player_seek_preview_single, PlayerData.SEEK_PREVIEW_SINGLE},
-                {R.string.player_seek_preview_carousel_slow, PlayerData.SEEK_PREVIEW_CAROUSEL_SLOW},
-                {R.string.player_seek_preview_carousel_fast, PlayerData.SEEK_PREVIEW_CAROUSEL_FAST}}) {
-            options.add(UiOptionItem.from(getContext().getString(pair[0]),
-                    optionItem -> mPlayerData.setSeekPreviewMode(pair[1]),
-                    mPlayerData.getSeekPreviewMode() == pair[1]));
-        }
-
-        settingsPresenter.appendRadioCategory(getContext().getString(R.string.player_seek_preview), options);
-    }
-
     private void appendVideoSpeedCategory(AppDialogPresenter settingsPresenter) {
         settingsPresenter.appendSingleButton(UiOptionItem.from(getContext().getString(R.string.video_speed), optionItem -> {
             AppDialogPresenter settingsPresenter2 = AppDialogPresenter.instance(getContext());

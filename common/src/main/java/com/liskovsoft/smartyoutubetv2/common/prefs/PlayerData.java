@@ -33,10 +33,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     public static final int UI_AND_PAUSE = 1;
     public static final int ONLY_PAUSE = 2;
     public static final int AUTO_HIDE_NEVER = 0;
-    public static final int SEEK_PREVIEW_NONE = 0;
-    public static final int SEEK_PREVIEW_SINGLE = 1;
-    public static final int SEEK_PREVIEW_CAROUSEL_SLOW = 2;
-    public static final int SEEK_PREVIEW_CAROUSEL_FAST = 3;
+
     @SuppressLint("StaticFieldLeak")
     private static PlayerData sInstance;
     private final AppPrefs mPrefs;
@@ -56,7 +53,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private float mAspectRatio;
     private int mRotationAngle;
     private boolean mIsVideoFlipEnabled;
-    private int mSeekPreviewMode;
+
     private float mSpeed;
     private float mLastSpeed;
     private boolean mIsAfrEnabled;
@@ -131,14 +128,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         }
 
         return sInstance;
-    }
-    public int getSeekPreviewMode() {
-        return mSeekPreviewMode;
-    }
-
-    public void setSeekPreviewMode(int mode) {
-        mSeekPreviewMode = mode;
-        persistState();
     }
 
     public boolean isClockEnabled() {
@@ -646,8 +635,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
 
         String[] split = Helpers.splitData(data);
 
-        mSeekPreviewMode = Helpers.parseInt(split, 3, SEEK_PREVIEW_SINGLE);
-
         mIsClockEnabled = Helpers.parseBoolean(split, 5, true);
 
         mBackgroundMode = Helpers.parseInt(split, 7, PlayerEngine.BACKGROUND_MODE_DEFAULT);
@@ -725,9 +712,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
             VIDEO_PLAYER_DATA, 
             Helpers.mergeData(
                 null,
-                mSeekPreviewMode, 
                 mIsClockEnabled, 
-
                 mBackgroundMode, 
                 null,
                 mVideoFormat, 
