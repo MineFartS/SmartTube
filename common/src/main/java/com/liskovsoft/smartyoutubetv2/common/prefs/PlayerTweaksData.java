@@ -89,6 +89,8 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsBufferOnStreamsDisabled;
     private boolean mIsSectionPlaylistEnabled;
     private boolean mIsBootScreenOffEnabled;
+    private boolean mIsScreenOffTimeoutEnabled;
+    private int mScreenOffTimeoutSec;
     private int mScreenOffDimmingPercents;
     private boolean mIsLikesCounterEnabled;
     private boolean mIsChapterNotificationEnabled;
@@ -310,8 +312,36 @@ public class PlayerTweaksData implements ProfileChangeListener {
         persistData();
     }
 
+    public boolean isScreenOffTimeoutEnabled() {
+        return mIsScreenOffTimeoutEnabled;
+    }
+
+    public void setScreenOffTimeoutEnabled(boolean enable) {
+        mIsScreenOffTimeoutEnabled = enable;
+        persistData();
+    }
+
+    public int getScreenOffTimeoutSec() {
+        return mScreenOffTimeoutSec;
+    }
+
+    public void setScreenOffTimeoutSec(int timeoutSec) {
+        mScreenOffTimeoutSec = timeoutSec;
+        mIsScreenOffTimeoutEnabled = mIsScreenOffTimeoutEnabled && timeoutSec > 0;
+        persistData();
+    }
+
+    public int getScreenOffDimmingPercents() {
+        return mScreenOffDimmingPercents;
+    }
+
+    public void setScreenOffDimmingPercents(int percents) {
+        mScreenOffDimmingPercents = percents;
+        persistData();
+    }
+
     public boolean isBootScreenOffEnabled() {
-        return mIsBootScreenOffEnabled;
+        return mIsBootScreenOffEnabled && !isScreenOffTimeoutEnabled();
     }
 
     public void setBootScreenOffEnabled(boolean enable) {
@@ -400,6 +430,8 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsBufferOnStreamsDisabled = Helpers.parseBoolean(split, 30, false);
         // Cause severe garbage collector stuttering
         mIsSectionPlaylistEnabled = Helpers.parseBoolean(split, 31, Utils.isEnoughRam());
+        mIsScreenOffTimeoutEnabled = Helpers.parseBoolean(split, 32, false);
+        mScreenOffTimeoutSec = Helpers.parseInt(split, 33, 0);
         mIsLikesCounterEnabled = Helpers.parseBoolean(split, 35, true);
         mIsChapterNotificationEnabled = Helpers.parseBoolean(split, 36, false);
         mScreenOffDimmingPercents = Helpers.parseInt(split, 37, 100);
@@ -447,6 +479,8 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mPlayerDataSource, 
                 mIsBufferOnStreamsDisabled, 
                 mIsSectionPlaylistEnabled,
+                mIsScreenOffTimeoutEnabled, 
+                mScreenOffTimeoutSec, 
                 mIsLikesCounterEnabled, 
                 mIsChapterNotificationEnabled,
                 mScreenOffDimmingPercents, 

@@ -892,6 +892,28 @@ public final class Helpers {
         return KeyHelpers.newEvent(origin, newKeyCode);
     }
 
+    public static void enableScreensaver(Activity context) {
+        if (context == null) {
+            return;
+        }
+
+        context.runOnUiThread(() -> context.getWindow().clearFlags(LayoutParams.FLAG_KEEP_SCREEN_ON));
+    }
+
+    public static void disableScreensaver(Activity context) {
+        if (context == null) {
+            return;
+        }
+
+        context.runOnUiThread(() -> {
+            try {
+                context.getWindow().addFlags(LayoutParams.FLAG_KEEP_SCREEN_ON);
+            } catch (ArrayIndexOutOfBoundsException e) { // A rare unknown crash (length=0; index=16)
+                e.printStackTrace();
+            }
+        });
+    }
+
     /**
      * Don't work. Maybe need WRITE_SETTINGS permission?
      */

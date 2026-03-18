@@ -25,6 +25,7 @@ import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem;
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.TrackSelectorUtil;
 import com.liskovsoft.smartyoutubetv2.common.misc.MediaServiceManager;
 import com.liskovsoft.smartyoutubetv2.common.misc.MotherActivity;
+import com.liskovsoft.smartyoutubetv2.common.misc.ScreensaverManager;
 import com.liskovsoft.smartyoutubetv2.common.prefs.ContentBlockData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
@@ -372,6 +373,15 @@ public abstract class BasePlayerController implements PlayerEventListener {
 
     protected boolean isEmbedPlayer() {
         return getPlayer() != null && getPlayer().isEmbed();
+    }
+
+    protected ScreensaverManager getScreensaverManager() {
+        Activity activity = getActivity();
+        if (activity instanceof MotherActivity) {
+            return ((MotherActivity) activity).getScreensaverManager();
+        }
+
+        return null;
     }
 
     protected void fitVideoIntoDialog() {

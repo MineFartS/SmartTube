@@ -362,8 +362,9 @@ public class SearchSupportFragment extends Fragment {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
-            
+            public void afterTextChanged(Editable s) {
+                Utils.enableScreensaver(getActivity(), true);
+            }
         });
 
         if (mIsTypingCorrectionDisabled) {

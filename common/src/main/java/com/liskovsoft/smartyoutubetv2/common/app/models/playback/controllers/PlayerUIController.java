@@ -33,6 +33,7 @@ import com.liskovsoft.smartyoutubetv2.common.app.presenters.settings.AutoFrameRa
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem;
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.track.SubtitleTrack;
 import com.liskovsoft.smartyoutubetv2.common.misc.MediaServiceManager;
+import com.liskovsoft.smartyoutubetv2.common.misc.ScreensaverManager;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.SearchData;
 import com.liskovsoft.smartyoutubetv2.common.utils.AppDialogUtil;
@@ -264,6 +265,11 @@ public class PlayerUIController extends BasePlayerController {
             getPlayer().setButtonState(R.id.action_video_stats, mDebugViewEnabled ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
         }
         
+        if (getPlayerTweaksData().isScreenOffTimeoutEnabled() || getPlayerTweaksData().isBootScreenOffEnabled()) {
+            prepareScreenOff();
+            applyScreenOff(PlayerUI.BUTTON_OFF);
+            applyScreenOffTimeout(PlayerUI.BUTTON_OFF);
+        }
     }
 
     @Override
@@ -494,6 +500,10 @@ public class PlayerUIController extends BasePlayerController {
             onRotate();
         } else if (buttonId == R.id.action_flip) {
             onFlip();
+        } else if (buttonId == R.id.action_screen_dimming) {
+            prepareScreenOff();
+            applyScreenOff(buttonState);
+            applyScreenOffTimeout(buttonState);
         } else if (buttonId == R.id.action_subscribe) {
             onSubscribe(buttonState);
         } else if (buttonId == R.id.action_sound_off) {
@@ -530,7 +540,9 @@ public class PlayerUIController extends BasePlayerController {
 
     @Override
     public void onButtonLongClicked(int buttonId, int buttonState) {
-        if (buttonId == R.id.action_subscribe || buttonId == R.id.action_channel) {
+        if (buttonId == R.id.action_screen_dimming) {
+            showScreenOffDialog();
+        } else if (buttonId == R.id.action_subscribe || buttonId == R.id.action_channel) {
             showNotificationsDialog(buttonState);
         } else if (buttonId == R.id.action_sound_off) {
             showSoundOffDialog();
@@ -752,6 +764,55 @@ public class PlayerUIController extends BasePlayerController {
         return isSelected;
     }
 
+    private void applyScreenOff(int buttonState) {
+        if (getPlayer() == null) {
+            return;
+        }
+
+        ScreensaverManager manager = getScreensaverManager();
+
+        if (manager == null) {
+            return;
+        }
+
+        if (getPlayerTweaksData().getScreenOffTimeoutSec() == 0) {
+            boolean isPartialDimming = getPlayerTweaksData().getScreenOffDimmingPercents() < 100;
+            getPlayerTweaksData().setBootScreenOffEnabled(buttonState == PlayerUI.BUTTON_OFF && isPartialDimming);
+            if (buttonState == PlayerUI.BUTTON_OFF) {
+                manager.doScreenOff();
+                manager.setBlocked(isPartialDimming);
+                getPlayer().setButtonState(R.id.action_screen_dimming, isPartialDimming ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
+            }
+        }
+    }
+
+    private void applyScreenOffTimeout(int buttonState) {
+        if (getPlayer() == null) {
+            return;
+        }
+
+        if (getPlayerTweaksData().getScreenOffTimeoutSec() > 0) {
+            getPlayerTweaksData().setScreenOffTimeoutEnabled(buttonState == PlayerUI.BUTTON_OFF);
+            getPlayer().setButtonState(R.id.action_screen_dimming, buttonState == PlayerUI.BUTTON_OFF ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
+        }
+    }
+
+    private void prepareScreenOff() {
+        if (getPlayer() == null) {
+            return;
+        }
+
+        ScreensaverManager manager = getScreensaverManager();
+
+        if (manager == null) {
+            return;
+        }
+
+        manager.setBlocked(false);
+        manager.disable();
+        getPlayer().setButtonState(R.id.action_screen_dimming, PlayerUI.BUTTON_OFF);
+    }
+
     private void onRotate() {
         if (getPlayer() == null) {
             return;
@@ -889,6 +950,23 @@ public class PlayerUIController extends BasePlayerController {
 
         settingsPresenter.appendRadioCategory(getContext().getString(R.string.header_notifications), items);
         settingsPresenter.showDialog(getContext().getString(R.string.header_notifications));
+    }
+
+    private void showScreenOffDialog() {
+        AppDialogPresenter settingsPresenter = getAppDialogPresenter();
+        OptionCategory dimmingCategory =
+                AppDialogUtil.createPlayerScreenOffDimmingCategory(getContext(), () -> {
+                    prepareScreenOff();
+                    applyScreenOff(PlayerUI.BUTTON_OFF);
+                });
+        OptionCategory category =
+                AppDialogUtil.createPlayerScreenOffTimeoutCategory(getContext(), () -> {
+                    prepareScreenOff();
+                    applyScreenOffTimeout(PlayerUI.BUTTON_OFF);
+                });
+        settingsPresenter.appendRadioCategory(dimmingCategory.title, dimmingCategory.options);
+        settingsPresenter.appendRadioCategory(category.title, category.options);
+        settingsPresenter.showDialog(getContext().getString(R.string.screen_dimming));
     }
 
     private void showSoundOffDialog() {
