@@ -1,35 +1,39 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
 apply from: gradle.ext.sharedModulesConstants
 
-// NOT working
-// Running 'gradle wrapper' will generate gradlew
 wrapper {
     gradleVersion = gradleVersion
     distributionType = Wrapper.DistributionType.BIN
 }
 
 buildscript {
+    
     apply from: gradle.ext.sharedModulesConstants
 
     repositories {
         google()
         mavenCentral()
     }
+    
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.0+'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:' + kotlinVersion
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
+
+}
+
+tasks.withType(JavaCompile) {
+    options.deprecation = true
 }
 
 allprojects {
+
     repositories {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
     }
+    
     configurations.all {
         // WorkManager conflict resolution
         resolutionStrategy.force 'androidx.lifecycle:lifecycle-livedata-core:' + liveDataVersion
@@ -51,13 +55,9 @@ allprojects {
 
         // Replace with modded library (leanback-1.0.0)
         exclude group: 'androidx.leanback', module: 'leanback'
+
         // Replace with modded library (fragment-1.1.0)
         exclude group: 'androidx.fragment', module: 'fragment'
 
-        // Don't work! Replace with modded library (leanback-1.0.0)
-        // resolutionStrategy.dependencySubstitution {
-        //     // substitute remote dependency with local module
-        //     substitute module('androidx.leanback:leanback') using project(':leanback-1.0.0')
-        // }
     }
 }

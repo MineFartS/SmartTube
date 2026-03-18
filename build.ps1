@@ -15,5 +15,4 @@ Clear-Host
 & "$env:JAVA_HOME/bin/java.exe" `
     '-classpath' ".\gradle\wrapper\gradle-wrapper.jar" `
     'org.gradle.wrapper.GradleWrapperMain' `
-    "clean" "installStstableDebug" `
-    "--warning-mode" "all"
+    "clean" "installStstableDebug"
