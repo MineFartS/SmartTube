@@ -210,13 +210,6 @@ public class ExoPlayerController implements Player.EventListener {
     
     public void setTrackSelector(DefaultTrackSelector trackSelector) {
         mTrackSelectorManager.setTrackSelector(trackSelector);
-
-        if (mContext != null && trackSelector != null && PlayerTweaksData.instance(mContext).isTunneledPlaybackEnabled()) {
-            // Enable tunneling if supported by the current media and device configuration.
-            if (VERSION.SDK_INT >= 21) {
-                trackSelector.setParameters(trackSelector.buildUponParameters().setTunnelingAudioSessionId(C.generateAudioSessionIdV21(mContext)));
-            }
-        }
     }
     
     public void setVideo(Video video) {

@@ -36,10 +36,6 @@ public class CustomOverridesRenderersFactory extends CustomRenderersFactoryBase 
 
         setExtensionRendererMode(EXTENSION_RENDERER_MODE_ON);
 
-        if (mPlayerTweaksData.isSWDecoderForced()) {
-            setMediaCodecSelector(new BlacklistMediaCodecSelector());
-        }
-
         AmazonQuirks.skipProfileLevelCheck(mPlayerTweaksData.isProfileLevelCheckSkipped());
     }
 

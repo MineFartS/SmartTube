@@ -7,7 +7,6 @@ import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
 
 public abstract class LongClickPresenter extends Presenter {
     private OnItemLongPressedListener mLongPressedListener;
-    private Boolean mLongPressDisabled;
 
     public void setOnItemViewLongPressedListener(OnItemLongPressedListener listener) {
         mLongPressedListener = listener;
