@@ -323,10 +323,7 @@
     <string name="hide_upcoming_home">Hide upcoming from Home</string>
     <string name="search_background_playback">Background play while searching/browsing a channel</string>
     <string name="trending_row_name">Trending</string>
-    <string name="player_seek_type">Seek behavior</string>
-    <string name="player_seek_regular">Regular</string>
-    <string name="player_seek_confirmation_pause">With confirmation (pause while seeking)</string>
-    <string name="player_seek_confirmation_play">With confirmation (play while seeking)</string>
+
     <string name="hide_shorts_from_home">Hide shorts from Home</string>
     <string name="finish_on_disconnect">Close the app after disconnecting the phone/tablet</string>
     <string name="update_error">Update error</string>

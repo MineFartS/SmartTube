@@ -480,11 +480,6 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
                                 onBackward();
                             } else {
                                 // MOD: resume immediately after seeking
-
-                                if ((mPlayerData.isSeekConfirmPauseEnabled() || mPlayerData.isSeekConfirmPlayEnabled()) && keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
-                                    return true;
-                                }
-
                                 stopSeek(false);
                             }
                             return true;
@@ -495,12 +490,6 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
                                 setControlsMode(CONTROLS_MODE_COMPACT);
                                 onForward();
                             } else {
-                                // MOD: resume immediately after seeking
-
-                                if ((mPlayerData.isSeekConfirmPauseEnabled() || mPlayerData.isSeekConfirmPlayEnabled()) && keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-                                    return true;
-                                }
-
                                 stopSeek(false);
                             }
                             return true;

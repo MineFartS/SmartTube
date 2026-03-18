@@ -73,7 +73,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         category = AppDialogUtil.createAudioLanguageCategory(getContext());
         settingsPresenter.appendCategory(category);
 
-        appendSeekTypeCategory(settingsPresenter);
         appendSeekingPreviewCategory(settingsPresenter);
 
         appendPixelRatioCategory(settingsPresenter);
@@ -337,33 +336,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
             options
         );
         
-    }
-
-    private void appendSeekTypeCategory(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
-
-        options.add(UiOptionItem.from(getContext().getString(R.string.player_seek_regular),
-                option -> {
-                    mPlayerData.setSeekConfirmPauseEnabled(false);
-                    mPlayerData.setSeekConfirmPlayEnabled(false);
-                },
-                !mPlayerData.isSeekConfirmPauseEnabled() && !mPlayerData.isSeekConfirmPlayEnabled()));
-
-        options.add(UiOptionItem.from(getContext().getString(R.string.player_seek_confirmation_pause),
-                option -> {
-                    mPlayerData.setSeekConfirmPauseEnabled(true);
-                    mPlayerData.setSeekConfirmPlayEnabled(false);
-                },
-                mPlayerData.isSeekConfirmPauseEnabled()));
-
-        options.add(UiOptionItem.from(getContext().getString(R.string.player_seek_confirmation_play),
-                option -> {
-                    mPlayerData.setSeekConfirmPauseEnabled(false);
-                    mPlayerData.setSeekConfirmPlayEnabled(true);
-                },
-                mPlayerData.isSeekConfirmPlayEnabled()));
-
-        settingsPresenter.appendRadioCategory(getContext().getString(R.string.player_seek_type), options);
     }
 
     private void appendPixelRatioCategory(AppDialogPresenter settingsPresenter) {

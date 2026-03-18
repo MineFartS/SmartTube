@@ -41,8 +41,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private static PlayerData sInstance;
     private final AppPrefs mPrefs;
 
-
-    private boolean mIsSeekConfirmPauseEnabled;
     private boolean mIsClockEnabled;
 
     private int mBackgroundMode;
@@ -74,10 +72,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private boolean mIsQualityInfoEnabled;
     private boolean mIsSpeedPerVideoEnabled;
     private boolean mIsTimeCorrectionEnabled;
-
-
     private boolean mIsDoubleRefreshRateEnabled;
-    private boolean mIsSeekConfirmPlayEnabled;
     private int mStartSeekIncrementMs;
     private float mSubtitleScale;
     private float mPlayerVolume;
@@ -143,24 +138,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
 
     public void setSeekPreviewMode(int mode) {
         mSeekPreviewMode = mode;
-        persistState();
-    }
-
-    public boolean isSeekConfirmPauseEnabled() {
-        return mIsSeekConfirmPauseEnabled;
-    }
-
-    public void setSeekConfirmPauseEnabled(boolean enable) {
-        mIsSeekConfirmPauseEnabled = enable;
-        persistState();
-    }
-
-    public boolean isSeekConfirmPlayEnabled() {
-        return mIsSeekConfirmPlayEnabled;
-    }
-
-    public void setSeekConfirmPlayEnabled(boolean enable) {
-        mIsSeekConfirmPlayEnabled = enable;
         persistState();
     }
 
@@ -670,7 +647,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         String[] split = Helpers.splitData(data);
 
         mSeekPreviewMode = Helpers.parseInt(split, 3, SEEK_PREVIEW_SINGLE);
-        mIsSeekConfirmPauseEnabled = Helpers.parseBoolean(split, 4, false);
+
         mIsClockEnabled = Helpers.parseBoolean(split, 5, true);
 
         mBackgroundMode = Helpers.parseInt(split, 7, PlayerEngine.BACKGROUND_MODE_DEFAULT);
@@ -700,7 +677,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         mIsTimeCorrectionEnabled = Helpers.parseBoolean(split, 32, true);
 
         mIsDoubleRefreshRateEnabled = Helpers.parseBoolean(split, 35, true);
-        mIsSeekConfirmPlayEnabled = Helpers.parseBoolean(split, 36, false);
+
         mStartSeekIncrementMs = Helpers.parseInt(split, 37, 10_000);
         // old subs size px
         mSubtitleScale = Helpers.parseFloat(split, 39, 1.0f);
@@ -749,7 +726,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
             Helpers.mergeData(
                 null,
                 mSeekPreviewMode, 
-                mIsSeekConfirmPauseEnabled,
                 mIsClockEnabled, 
 
                 mBackgroundMode, 
@@ -772,11 +748,8 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
                 mIsQualityInfoEnabled, 
                 mIsSpeedPerVideoEnabled, 
                 mAspectRatio, 
-
                 mIsTimeCorrectionEnabled,
-
                 mIsDoubleRefreshRateEnabled, 
-                mIsSeekConfirmPlayEnabled,
                 mStartSeekIncrementMs, 
                 null, 
                 mSubtitleScale, 
