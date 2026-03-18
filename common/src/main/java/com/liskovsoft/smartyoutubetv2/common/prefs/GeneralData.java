@@ -29,32 +29,22 @@ public class GeneralData implements ProfileChangeListener {
     private int mBackgroundShortcut;
     private boolean mIsHideShortsFromSubscriptionsEnabled;
     private boolean mIsHideUpcomingEnabled;
-
     private int mScreensaverTimeoutMs;
     private int mScreensaverDimmingPercents;
-
     private boolean mIsBridgeCheckEnabled;
-
     private String mLastPlaylistId;
     private String mLastPlaylistTitle;
-
     private boolean mIsHideShortsFromHomeEnabled;
     private boolean mIsHideShortsFromHistoryEnabled;
-
     private boolean mIsVPNEnabled;
-
-    private String mSettingsPassword;
-
     private boolean mIsAltAppIconEnabled;
     private int mVersionCode;
     private boolean mIsOldUpdateNotificationsEnabled;
     private boolean mIsRememberSubscriptionsPositionEnabled;
-
     private boolean mIsHideWatchedFromNotificationsEnabled;
     private List<String> mChangelog;
     private Map<String, Integer> mPlaylistOrder;
     private List<Video> mPendingStreams;
-
     private Map<Integer, Video> mSelectedItems;
     private boolean mIsFirstUseTooltipEnabled;
     private boolean mIsDeviceSpecificBackupEnabled;
@@ -215,16 +205,6 @@ public class GeneralData implements ProfileChangeListener {
         persistState();
     }
 
-    public String getSettingsPassword() {
-        return mSettingsPassword;
-    }
-
-    public void setSettingsPassword(String password) {
-        mSettingsPassword = password;
-
-        persistState();
-    }
-
     public boolean isAltAppIconEnabled() {
         return mIsAltAppIconEnabled;
     }
@@ -326,42 +306,26 @@ public class GeneralData implements ProfileChangeListener {
         mBackgroundShortcut = Helpers.parseInt(split, 5, BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK);
         mOldPinnedItems = Helpers.parseList(split, 6, Video::fromString);
         mIsHideShortsFromSubscriptionsEnabled = Helpers.parseBoolean(split, 7, false);
-
         mIsBridgeCheckEnabled = Helpers.parseBoolean(split, 11, true);
-
         mLastPlaylistId = Helpers.parseStr(split, 13);
-
         mIsHideUpcomingEnabled = Helpers.parseBoolean(split, 15, false);
-
         mIsHideShortsFromHomeEnabled = Helpers.parseBoolean(split, 24, false);
         mIsHideShortsFromHistoryEnabled = Helpers.parseBoolean(split, 25, false);
-
         mIsVPNEnabled = Helpers.parseBoolean(split, 27, false);
         mLastPlaylistTitle = Helpers.parseStr(split, 28);
         mPlaylistOrder = Helpers.parseMap(split, 29, Helpers::parseStr, Helpers::parseInt);
-
         mPendingStreams = Helpers.parseList(split, 30, Video::fromString);
-
-        mSettingsPassword = Helpers.parseStr(split, 33);
-
         mScreensaverTimeoutMs = Helpers.parseInt(split, 36, 60 * 1_000);
-
         mIsAltAppIconEnabled = Helpers.parseBoolean(split, 38, false);
         mVersionCode = Helpers.parseInt(split, 39, -1);
-
         mIsOldUpdateNotificationsEnabled = Helpers.parseBoolean(split, 43, false);
         mScreensaverDimmingPercents = Helpers.parseInt(split, 44, 80);
-
-
         mIsRememberSubscriptionsPositionEnabled = Helpers.parseBoolean(split, 48, false);
-
         mIsHideWatchedFromNotificationsEnabled = Helpers.parseBoolean(split, 56, false);
         mChangelog = Helpers.parseStrList(split, 57);
-
         mSelectedItems = Helpers.parseMap(split, 63, Helpers::parseInt, Video::fromString);
         mIsFirstUseTooltipEnabled = Helpers.parseBoolean(split, 64, true);
         mIsDeviceSpecificBackupEnabled = Helpers.parseBoolean(split, 65, false);
-
         mGDriveBackupFreqDays = Helpers.parseInt(split, 69, -1);
         mLocalDriveBackupFreqDays = Helpers.parseInt(split, 70, -1);
 
@@ -384,24 +348,18 @@ public class GeneralData implements ProfileChangeListener {
                 mBackgroundShortcut, 
                 mOldPinnedItems, 
                 mIsHideShortsFromSubscriptionsEnabled,
-
                 null, 
-
                 mIsBridgeCheckEnabled, 
-
                 mLastPlaylistId,
                 null, 
                 mIsHideUpcomingEnabled, 
-
                 mIsHideShortsFromHomeEnabled, 
                 mIsHideShortsFromHistoryEnabled, 
-
                 mIsVPNEnabled, 
                 mLastPlaylistTitle,
                 mPlaylistOrder, 
                 mPendingStreams, 
                 null, 
-                mSettingsPassword, 
                 mScreensaverTimeoutMs, 
                 null, 
                 mIsAltAppIconEnabled, 
@@ -409,20 +367,15 @@ public class GeneralData implements ProfileChangeListener {
                 null, 
                 mIsOldUpdateNotificationsEnabled, 
                 mScreensaverDimmingPercents, 
-
                 mIsRememberSubscriptionsPositionEnabled, 
                 null, 
-
                 mIsHideWatchedFromNotificationsEnabled, 
                 mChangelog, 
-
                 null, null,
-
                 mSelectedItems, 
                 mIsFirstUseTooltipEnabled, 
                 mIsDeviceSpecificBackupEnabled, 
                 null,
-
                 mGDriveBackupFreqDays, 
                 mLocalDriveBackupFreqDays
             )

@@ -21,7 +21,6 @@ import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
 import com.liskovsoft.smartyoutubetv2.common.app.models.errors.CategoryEmptyError;
 import com.liskovsoft.smartyoutubetv2.common.app.models.errors.ErrorFragmentData;
-import com.liskovsoft.smartyoutubetv2.common.app.models.errors.PasswordError;
 import com.liskovsoft.smartyoutubetv2.common.app.models.errors.SignInError;
 import com.liskovsoft.smartyoutubetv2.common.app.models.playback.service.VideoStateService;
 import com.liskovsoft.smartyoutubetv2.common.app.models.playback.service.VideoStateService.State;
@@ -253,14 +252,36 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
     }
 
     private void initRowAndGridMapping() {
-        mRowMapping.put(MediaGroup.TYPE_HOME, getContentService().getHomeObserve());
         
-        mRowMapping.put(MediaGroup.TYPE_USER_PLAYLISTS, getContentService().getPlaylistRowsObserve());
+        mRowMapping.put(
+            MediaGroup.TYPE_HOME, 
+            getContentService().getHomeObserve()
+        );
+        
+        mRowMapping.put(
+            MediaGroup.TYPE_USER_PLAYLISTS, 
+            getContentService().getPlaylistRowsObserve()
+        );
 
-        mGridMapping.put(MediaGroup.TYPE_SUBSCRIPTIONS, getContentService().getSubscriptionsObserve());
-        mGridMapping.put(MediaGroup.TYPE_HISTORY, getContentService().getHistoryObserve());
-        mGridMapping.put(MediaGroup.TYPE_CHANNEL_UPLOADS, getContentService().getSubscribedChannelsByNewContentObserve());
-        mGridMapping.put(MediaGroup.TYPE_NOTIFICATIONS, getNotificationsService().getNotificationItemsObserve());
+        mGridMapping.put(
+            MediaGroup.TYPE_SUBSCRIPTIONS, 
+            getContentService().getSubscriptionsObserve()
+        );
+
+        mGridMapping.put(
+            MediaGroup.TYPE_HISTORY, 
+            getContentService().getHistoryObserve()
+        );
+        
+        mGridMapping.put(
+            MediaGroup.TYPE_CHANNEL_UPLOADS, 
+            getContentService().getSubscribedChannelsByNewContentObserve()
+        );
+        
+        mGridMapping.put(
+            MediaGroup.TYPE_NOTIFICATIONS, 
+            getNotificationsService().getNotificationItemsObserve()
+        );
         
     }
 
@@ -296,11 +317,17 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
     }
 
     private void initSettingsGridMapping() {
-        mSettingsGridMapping.put(MediaGroup.TYPE_SETTINGS, () -> mDataSourcePresenter.getSettingItems(getContext()));
+        mSettingsGridMapping.put(
+            MediaGroup.TYPE_SETTINGS, 
+            () -> mDataSourcePresenter.getSettingItems(getContext())
+        );
     }
 
     private void initLocalGridMapping() {
-        mLocalGridMappings.put(MediaGroup.TYPE_PLAYBACK_QUEUE, () -> Playlist.instance().getAll());
+        mLocalGridMappings.put(
+            MediaGroup.TYPE_PLAYBACK_QUEUE, 
+            () -> Playlist.instance().getAll()
+        );
     }
 
     public void updateSections() {
@@ -350,26 +377,41 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
     private void initPinnedData() {
         initPinnedSections();
         initPinnedCallbacks();
-        initPasswordSection();
     }
 
     public void updateChannelSorting() {
-        int sortingType = getMainUIData().getChannelCategorySorting();
 
-        switch (sortingType) {
+        switch (getMainUIData().getChannelCategorySorting()) {
+
             case MainUIData.CHANNEL_SORTING_DEFAULT:
-                mGridMapping.put(MediaGroup.TYPE_CHANNEL_UPLOADS, getContentService().getSubscribedChannelsObserve());
+                mGridMapping.put(
+                    MediaGroup.TYPE_CHANNEL_UPLOADS, 
+                    getContentService().getSubscribedChannelsObserve()
+                );
                 break;
+            
             case MainUIData.CHANNEL_SORTING_NAME2:
             case MainUIData.CHANNEL_SORTING_NAME:
-                mGridMapping.put(MediaGroup.TYPE_CHANNEL_UPLOADS, getContentService().getSubscribedChannelsByNameObserve());
+                mGridMapping.put(
+                    MediaGroup.TYPE_CHANNEL_UPLOADS, 
+                    getContentService().getSubscribedChannelsByNameObserve()
+                );
                 break;
+            
             case MainUIData.CHANNEL_SORTING_NEW_CONTENT:
-                mGridMapping.put(MediaGroup.TYPE_CHANNEL_UPLOADS, getContentService().getSubscribedChannelsByNewContentObserve());
+                mGridMapping.put(
+                    MediaGroup.TYPE_CHANNEL_UPLOADS, 
+                    getContentService().getSubscribedChannelsByNewContentObserve()
+                );
                 break;
+            
             case MainUIData.CHANNEL_SORTING_LAST_VIEWED:
-                mGridMapping.put(MediaGroup.TYPE_CHANNEL_UPLOADS, getContentService().getSubscribedChannelsByLastViewedObserve());
+                mGridMapping.put(
+                    MediaGroup.TYPE_CHANNEL_UPLOADS, 
+                    getContentService().getSubscribedChannelsByLastViewedObserve()
+                );
                 break;
+        
         }
     }
 
@@ -1106,16 +1148,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
 
     public Video getCurrentVideo() {
         return mCurrentVideo;
-    }
-
-    private void initPasswordSection() {
-        AccountsData accountsData = AccountsData.instance(getContext());
-        if (accountsData.getAccountPassword() == null || accountsData.isPasswordAccepted()) {
-            return;
-        }
-
-        mSections.clear();
-        appendToSections(getContext().getString(R.string.header_notifications), R.drawable.icon_notification, new PasswordError(getContext()));
     }
 
     private void createPinnedMapping(Video item) {

@@ -412,20 +412,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.protect_settings_with_password),
-                option -> {
-                    if (option.isSelected()) {
-                        showPasswordDialog(settingsPresenter, null);
-                    } else {
-                        mGeneralData.setSettingsPassword(null);
-                    }
-                },
-                mGeneralData.getSettingsPassword() != null
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
                 getContext().getString(R.string.remember_position_subscriptions),
                 option -> mGeneralData.setRememberSubscriptionsPositionEnabled(option.isSelected()),
                 mGeneralData.isRememberSubscriptionsPositionEnabled()
@@ -437,28 +423,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
             options
         );
     
-    }
-
-    private void showPasswordDialog(AppDialogPresenter settingsPresenter, Runnable onSuccess) {
-        if (mGeneralData.getSettingsPassword() != null) {
-            if (onSuccess != null) {
-                onSuccess.run();
-            }
-            return;
-        }
-
-        settingsPresenter.closeDialog();
-        SimpleEditDialog.showPassword(
-                getContext(),
-                getContext().getString(R.string.protect_settings_with_password),
-                null,
-                newValue -> {
-                    mGeneralData.setSettingsPassword(newValue);
-                    if (onSuccess != null) {
-                        onSuccess.run();
-                    }
-                    return true;
-                });
     }
 
     private Map<Long, Integer> getMenuNames() {
