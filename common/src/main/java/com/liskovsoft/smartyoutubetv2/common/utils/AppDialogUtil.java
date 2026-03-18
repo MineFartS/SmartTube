@@ -475,60 +475,6 @@ public class AppDialogUtil {
         return OptionCategory.from(SUBTITLE_STYLES_ID, OptionCategory.TYPE_RADIO_LIST, videoRotateTitle, options);
     }
 
-    public static OptionCategory createPlayerScreenOffDimmingCategory(Context context, Runnable onApply) {
-        PlayerTweaksData playerTweaksData = PlayerTweaksData.instance(context);
-        List<OptionItem> options = new ArrayList<>();
-
-        for (int dimPercents : Helpers.range(10, 100, 10)) {
-            options.add(UiOptionItem.from(dimPercents + "%",
-                    optionItem -> {
-                        playerTweaksData.setScreenOffDimmingPercents(dimPercents);
-                        if (onApply != null) {
-                            onApply.run();
-                        }
-                    },
-                    playerTweaksData.getScreenOffDimmingPercents() == dimPercents));
-        }
-
-        String title = context.getString(R.string.screen_dimming_amount);
-
-        return OptionCategory.from(PLAYER_SCREEN_DIMMING_ID, OptionCategory.TYPE_RADIO_LIST, title, options);
-    }
-
-    @SuppressLint("StringFormatMatches")
-    public static OptionCategory createPlayerScreenOffTimeoutCategory(Context context, Runnable onApply) {
-        PlayerTweaksData playerTweaksData = PlayerTweaksData.instance(context);
-        List<OptionItem> options = new ArrayList<>();
-
-        for (int timeoutSec : Helpers.range(0, 10, 1)) {
-            options.add(UiOptionItem.from(timeoutSec == 0 ? context.getString(R.string.option_never) : context.getString(R.string.ui_hide_timeout_sec, timeoutSec),
-                    optionItem -> {
-                        playerTweaksData.setScreenOffTimeoutSec(timeoutSec);
-                        if (onApply != null) {
-                            onApply.run();
-                        }
-                    },
-                    playerTweaksData.getScreenOffTimeoutSec() == timeoutSec));
-        }
-
-        for (int min : Helpers.range(30, 180, 30)) {
-            int timeoutSec = min * 60;
-            options.add(UiOptionItem.from(
-                    context.getString(R.string.screen_dimming_timeout_min, min),
-                    option -> {
-                        playerTweaksData.setScreenOffTimeoutSec(timeoutSec);
-                        if (onApply != null) {
-                            onApply.run();
-                        }
-                    },
-                    playerTweaksData.getScreenOffTimeoutSec() == timeoutSec));
-        }
-
-        String title = context.getString(R.string.screen_dimming_timeout);
-
-        return OptionCategory.from(PLAYER_SCREEN_TIMEOUT_ID, OptionCategory.TYPE_RADIO_LIST, title, options);
-    }
-
     public static OptionItem createExcludeFromContentBlockButton(
             Context context,  Video video, MediaServiceManager serviceManager, Runnable onClose) {
         return UiOptionItem.from(

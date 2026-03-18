@@ -274,7 +274,6 @@ public class VideoLoaderController extends BasePlayerController {
             getPlayer().setPlayWhenReady(false);
             getPlayer().setTitle(getContext().getString(R.string.sleep_timer));
             getPlayer().showOverlay(true);
-            Helpers.enableScreensaver(getActivity());
         }
     }
 

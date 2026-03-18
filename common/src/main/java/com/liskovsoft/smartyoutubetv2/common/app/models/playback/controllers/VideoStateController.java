@@ -12,7 +12,6 @@ import com.liskovsoft.smartyoutubetv2.common.app.models.playback.service.VideoSt
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.AppDialogPresenter;
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem;
 import com.liskovsoft.smartyoutubetv2.common.misc.MediaServiceManager;
-import com.liskovsoft.smartyoutubetv2.common.misc.ScreensaverManager;
 import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
 import com.liskovsoft.smartyoutubetv2.common.utils.AppDialogUtil;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
@@ -186,7 +185,6 @@ public class VideoStateController extends BasePlayerController {
     @Override
     public void onPlay() {
         setPlayEnabled(true);
-        showHideScreensaver(false);
         // throttle seeking calls
         Utils.removeCallbacks(mUpdateHistory);
     }
@@ -194,7 +192,6 @@ public class VideoStateController extends BasePlayerController {
     @Override
     public void onPause() {
         setPlayEnabled(false);
-        showHideScreensaver(true);
         // throttle seeking calls
         Utils.postDelayed(mUpdateHistory, 10_000);
     }
@@ -206,18 +203,12 @@ public class VideoStateController extends BasePlayerController {
     @Override
     public void onPlayEnd() {
         saveState();
-
-        // Don't enable screensaver here or you'll broke 'screen off' logic.
-        showHideScreensaver(true);
     }
 
     @Override
     public void onBuffering() {
         // Restore speed on LIVE end or after seek
         restoreSpeedAndPositionIfNeeded();
-
-        // Live stream starts to buffer after the end
-        showHideScreensaver(true);
     }
 
     @Override
@@ -565,20 +556,6 @@ public class VideoStateController extends BasePlayerController {
         // We don't know yet do we really need a subs.
         // NOTE: Some subs can hang the app.
         restoreSubtitleFormat();
-    }
-
-    private void showHideScreensaver(boolean show) {
-        ScreensaverManager screensaverManager = getScreensaverManager();
-
-        if (screensaverManager == null) {
-            return;
-        }
-
-        if (show) {
-            screensaverManager.enableChecked();
-        } else {
-            screensaverManager.disableChecked();
-        }
     }
 
     private boolean isStateOutdated(State state, Video item) {

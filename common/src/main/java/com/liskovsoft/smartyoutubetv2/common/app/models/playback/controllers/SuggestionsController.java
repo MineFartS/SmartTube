@@ -739,8 +739,7 @@ public class SuggestionsController extends BasePlayerController {
 
         dialogPresenter.closeDialog(); // remove previous dialog
 
-        if (chapter == null || getPlayer() == null || getPlayer().isOverlayShown() || getPlayer().isInPIPMode() ||
-                Utils.isScreenOff(getContext())) {
+        if (chapter == null || getPlayer() == null || getPlayer().isOverlayShown() || getPlayer().isInPIPMode()) {
             return;
         }
 

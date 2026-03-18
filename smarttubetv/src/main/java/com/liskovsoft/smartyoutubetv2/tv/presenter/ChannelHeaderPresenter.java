@@ -189,9 +189,8 @@ public class ChannelHeaderPresenter extends RowPresenter {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-                //Utils.enableScreensaver(getActivity(), true);
-            }
+            public void afterTextChanged(Editable s) {}
+            
         });
         searchOrbView.setOnOrbClickedListener(v -> submitQuery(provider, getSearchBarText(searchTextEditor)));
         searchSettingsOrbView.setOnOrbClickedListener(v -> provider.onSearchSettingsClicked());
