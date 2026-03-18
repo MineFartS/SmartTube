@@ -39,7 +39,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     public static final int PLAYER_BUTTON_CHAT = 1 << 22;
     public static final int PLAYER_BUTTON_VIDEO_ROTATE = 1 << 23;
     public static final int PLAYER_BUTTON_SCREEN_DIMMING = 1 << 24;
-    public static final int PLAYER_BUTTON_SOUND_OFF = 1 << 25;
     public static final int PLAYER_BUTTON_AFR = 1 << 26;
     public static final int PLAYER_BUTTON_VIDEO_FLIP = 1 << 27;
     

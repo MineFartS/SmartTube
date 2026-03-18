@@ -37,9 +37,7 @@ import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.FlipAction;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.HighQualityAction;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.RotateAction;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.ScreenDimmingAction;
-
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.ShareAction;
-import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.SoundOffAction;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.VideoInfoAction;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.PipAction;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.PlaybackQueueAction;
@@ -111,7 +109,6 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         thumbsDownAction.setBoundAction(thumbsUpAction);
         putAction(thumbsUpAction);
         putAction(thumbsDownAction);
-
         putAction(new HighQualityAction(context));
         putAction(new PlaybackModeAction(context));
         putAction(new ChannelAction(context));
@@ -129,10 +126,8 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         putAction(new PlaybackQueueAction(context));
         putAction(new ContentBlockAction(context));
         putAction(new ShareAction(context));
-
         putAction(new RotateAction(context));
         putAction(new FlipAction(context));
-        putAction(new SoundOffAction(context));
     }
 
     @Override
@@ -179,9 +174,6 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         }
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_VIDEO_FLIP)) {
             adapter.add(mActions.get(R.id.action_flip));
-        }
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_SOUND_OFF)) {
-            adapter.add(mActions.get(R.id.action_sound_off));
         }
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_AFR)) {
             adapter.add(mActions.get(R.id.action_afr));

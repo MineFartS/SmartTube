@@ -53,7 +53,7 @@ public class PlayerUIController extends BasePlayerController {
     private final MediaItemService mMediaItemService;
     private SuggestionsController mSuggestionsController;
     private List<PlaylistInfo> mPlaylistInfos;
-    private FormatItem mAudioFormat = FormatItem.AUDIO_HQ_MP4A;
+
     private boolean mEngineReady;
     private boolean mDebugViewEnabled;
     private boolean mIsMetadataLoaded;
@@ -273,14 +273,6 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     @Override
-    public void onVideoLoaded(Video item) {
-        if (getPlayer() == null) {
-            return;
-        }
-        applySoundOffButtonState();
-    }
-
-    @Override
     public void onSeekEnd() {
         if (getPlayer() == null) {
             return;
@@ -303,7 +295,6 @@ public class PlayerUIController extends BasePlayerController {
 
         // Maybe dialog just closed. Reset timeout just in case.
         enableUiAutoHideTimeout();
-        applySoundOffButtonState();
     }
 
     @Override
@@ -506,8 +497,6 @@ public class PlayerUIController extends BasePlayerController {
             applyScreenOffTimeout(buttonState);
         } else if (buttonId == R.id.action_subscribe) {
             onSubscribe(buttonState);
-        } else if (buttonId == R.id.action_sound_off) {
-            applySoundOff(buttonState);
         } else if (buttonId == R.id.action_afr) {
             applyAfr(buttonState);
         } else if (buttonId == R.id.action_repeat) {
@@ -544,8 +533,6 @@ public class PlayerUIController extends BasePlayerController {
             showScreenOffDialog();
         } else if (buttonId == R.id.action_subscribe || buttonId == R.id.action_channel) {
             showNotificationsDialog(buttonState);
-        } else if (buttonId == R.id.action_sound_off) {
-            showSoundOffDialog();
         } else if (buttonId == R.id.action_afr) {
             AutoFrameRateSettingsPresenter.instance(getContext()).show(() -> applyAfr(getPlayerData().isAfrEnabled() ? PlayerUI.BUTTON_OFF : PlayerUI.BUTTON_ON));
         } else if (buttonId == R.id.action_repeat) {
@@ -857,24 +844,6 @@ public class PlayerUIController extends BasePlayerController {
         getPlayer().setButtonState(R.id.action_subscribe, buttonState == PlayerUI.BUTTON_OFF ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
     }
 
-    private void applySoundOff(int buttonState) {
-        if (buttonState == PlayerUI.BUTTON_OFF) {
-            mAudioFormat = getPlayer().getAudioFormat();
-            getPlayer().setFormat(FormatItem.NO_AUDIO);
-        } else {
-            getPlayer().setFormat(mAudioFormat);
-        }
-
-        getPlayer().setButtonState(R.id.action_sound_off, buttonState == PlayerUI.BUTTON_OFF ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
-    }
-
-    private void applySoundOffButtonState() {
-        if (getPlayer() != null && getPlayer().getAudioFormat() != null) {
-            getPlayer().setButtonState(R.id.action_sound_off,
-                    (getPlayer().getAudioFormat().isDefault() || getPlayerData().getPlayerVolume() == 0) ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
-        }
-    }
-
     private void applyAfr(int buttonState) {
         getPlayerData().setAfrEnabled(buttonState == PlayerUI.BUTTON_OFF);
         getController(AutoFrameRateController.class).applyAfr();
@@ -953,28 +922,37 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private void showScreenOffDialog() {
-        AppDialogPresenter settingsPresenter = getAppDialogPresenter();
-        OptionCategory dimmingCategory =
-                AppDialogUtil.createPlayerScreenOffDimmingCategory(getContext(), () -> {
-                    prepareScreenOff();
-                    applyScreenOff(PlayerUI.BUTTON_OFF);
-                });
-        OptionCategory category =
-                AppDialogUtil.createPlayerScreenOffTimeoutCategory(getContext(), () -> {
-                    prepareScreenOff();
-                    applyScreenOffTimeout(PlayerUI.BUTTON_OFF);
-                });
-        settingsPresenter.appendRadioCategory(dimmingCategory.title, dimmingCategory.options);
-        settingsPresenter.appendRadioCategory(category.title, category.options);
-        settingsPresenter.showDialog(getContext().getString(R.string.screen_dimming));
-    }
 
-    private void showSoundOffDialog() {
         AppDialogPresenter settingsPresenter = getAppDialogPresenter();
         
-        OptionCategory pitchEffectCategory = AppDialogUtil.createPitchEffectCategory(getContext());
-        settingsPresenter.appendCategory(pitchEffectCategory);
-        settingsPresenter.showDialog(getContext().getString(R.string.player_volume));
+        OptionCategory dimmingCategory = AppDialogUtil.createPlayerScreenOffDimmingCategory(
+            getContext(), 
+            () -> {
+                prepareScreenOff();
+                applyScreenOff(PlayerUI.BUTTON_OFF);
+            }
+        );
+
+        OptionCategory category = AppDialogUtil.createPlayerScreenOffTimeoutCategory(
+            getContext(), 
+            () -> {
+                prepareScreenOff();
+                applyScreenOffTimeout(PlayerUI.BUTTON_OFF);
+            }
+        );
+
+        settingsPresenter.appendRadioCategory(
+            dimmingCategory.title, 
+            dimmingCategory.options
+        );
+        
+        settingsPresenter.appendRadioCategory(
+            category.title, 
+            category.options
+        );
+
+        settingsPresenter.showDialog(getContext().getString(R.string.screen_dimming));
+    
     }
 
     private void openChannel() {

@@ -611,12 +611,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         getView().addSection(0, newSection);
     }
 
-    private void appendToSections(String title, int resId, ErrorFragmentData data) {
-        int id = title.hashCode();
-        Helpers.removeIf(mSections, section -> section.getId() == id);
-        mSections.add(new BrowseSection(id, title, BrowseSection.TYPE_ERROR, resId, false, data));
-    }
-
     public void unpinItem(Video item) {
         getSidebarService().removePinnedItem(item);
         getGeneralData().removeSelectedItem(item.getId());

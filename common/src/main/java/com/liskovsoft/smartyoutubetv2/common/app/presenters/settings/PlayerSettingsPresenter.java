@@ -108,10 +108,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 PlayerTweaksData.PLAYER_BUTTON_AFR
             },
             {
-                R.string.action_sound_off,
-                PlayerTweaksData.PLAYER_BUTTON_SOUND_OFF
-            },
-            {
                 R.string.video_rotate,
                 PlayerTweaksData.PLAYER_BUTTON_VIDEO_ROTATE
             },
