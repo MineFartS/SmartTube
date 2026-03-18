@@ -10,14 +10,10 @@ import com.liskovsoft.sharedutils.rx.RxHelper;
 import io.reactivex.disposables.Disposable;
 
 public class GoogleSignInPresenter extends SignInPresenter {
-    
     private static final String TAG = GoogleSignInPresenter.class.getSimpleName();
-    
     @SuppressLint("StaticFieldLeak")
     private static GoogleSignInPresenter sInstance;
-    
     private final GoogleSignInService mSignInService;
-    
     private Disposable mSignInAction;
     private Runnable mCallback;
 
