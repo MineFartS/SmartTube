@@ -375,71 +375,116 @@ public class AppDialogUtil {
     }
 
     public static OptionCategory createPitchEffectCategory(Context context) {
-        String title = context.getString(R.string.pitch_effect);
 
         List<OptionItem> options = new ArrayList<>();
 
-        addPitches(context, options, Helpers.range(0.025f, 0.975f, 0.025f));
-        addPitches(context, options, new float[]{ 0.985f, 0.990f, 0.995f }); // Custom pitches
-        addPitches(context, options, Helpers.range(1f, 2f, 0.025f));
+        addPitches(
+            context, options, 
+            Helpers.range(0.025f, 0.975f, 0.025f)
+        );
+        
+        addPitches(
+            context, options, 
+            new float[]{ 0.985f, 0.990f, 0.995f }
+        ); // Custom pitches
+        
+        addPitches(
+            context, options, 
+            Helpers.range(1f, 2f, 0.025f)
+        );
 
-        return OptionCategory.from(PITCH_EFFECT_ID, OptionCategory.TYPE_RADIO_LIST, title, options);
+        return OptionCategory.from(
+            PITCH_EFFECT_ID, 
+            OptionCategory.TYPE_RADIO_LIST, 
+            context.getString(R.string.pitch_effect), 
+            options
+        );
+    
     }
 
     private static void addPitches(Context context, List<OptionItem> options, float[] pitchList) {
+        
         PlayerManager playerManager = PlaybackPresenter.instance(context).getPlayer();
+        
         PlayerData playerData = PlayerData.instance(context);
 
         for (float pitch : pitchList) {
-            options.add(UiOptionItem.from(Helpers.toString(pitch),
-                    optionItem -> {
-                        playerManager.setPitch(pitch);
-                        playerData.setPitch(pitch);
-                    },
-                    Helpers.floatEquals(pitch, playerManager.getPitch())));
+            options.add(UiOptionItem.from(
+                Helpers.toString(pitch),
+                optionItem -> {
+                    playerManager.setPitch(pitch);
+                    playerData.setPitch(pitch);
+                },
+                Helpers.floatEquals(pitch, playerManager.getPitch())
+            ));
         }
+
     }
 
     public static OptionCategory createSubtitleStylesCategory(Context context) {
+
         String subtitleStyleTitle = context.getString(R.string.subtitle_style);
 
-        return OptionCategory.from(SUBTITLE_STYLES_ID, OptionCategory.TYPE_RADIO_LIST, subtitleStyleTitle, createSubtitleStyles(context));
+        return OptionCategory.from(
+            SUBTITLE_STYLES_ID, 
+            OptionCategory.TYPE_RADIO_LIST, 
+            subtitleStyleTitle, 
+            createSubtitleStyles(context)
+        );
+    
     }
 
     @TargetApi(19)
     private static List<OptionItem> createSubtitleStyles(Context context) {
+
         PlayerData playerData = PlayerData.instance(context);
+        
         List<SubtitleStyle> subtitleStyles = playerData.getSubtitleStyles();
+        
         List<OptionItem> styleOptions = new ArrayList<>();
 
         for (SubtitleStyle subtitleStyle : subtitleStyles) {
+        
             styleOptions.add(UiOptionItem.from(
-                    context.getString(subtitleStyle.nameResId),
-                    option -> {
-                        playerData.setSubtitleStyle(subtitleStyle);
-                        Utils.showPlayerControls(context, false);
-                    },
-                    subtitleStyle.equals(playerData.getSubtitleStyle())));
+                context.getString(subtitleStyle.nameResId),
+                option -> {
+                    playerData.setSubtitleStyle(subtitleStyle);
+                    Utils.showPlayerControls(context, false);
+                },
+                subtitleStyle.equals(playerData.getSubtitleStyle())
+            ));
+        
         }
 
         return styleOptions;
     }
 
     public static OptionCategory createSubtitleSizeCategory(Context context) {
+        
         PlayerData playerData = PlayerData.instance(context);
+        
         List<OptionItem> options = new ArrayList<>();
 
-        for (int scalePercent : Helpers.range(10, 200, 10)) {
-            float scale = scalePercent / 100f;
-            options.add(UiOptionItem.from(String.format("%sx", scale),
-                    optionItem -> {
-                        playerData.setSubtitleScale(scale);
-                        Utils.showPlayerControls(context, false);
-                    },
-                    Helpers.floatEquals(scale, playerData.getSubtitleScale())));
+        for (float scale : new float[]{.8f, .9f, 1.0f}) {
+            
+            options.add(UiOptionItem.from(
+                String.format("%sx", scale),
+                optionItem -> {
+                    playerData.setSubtitleScale(scale);
+                    Utils.showPlayerControls(context, false);
+                },
+                Helpers.floatEquals(scale, playerData.getSubtitleScale())
+            ));
+
         }
 
-        return OptionCategory.from(SUBTITLE_SIZE_ID, OptionCategory.TYPE_RADIO_LIST, context.getString(R.string.subtitle_scale), options);
+        return OptionCategory.from(
+            SUBTITLE_SIZE_ID, 
+            OptionCategory.TYPE_RADIO_LIST, 
+            context.getString(R.string.subtitle_scale), 
+            options
+        );
+
     }
 
     public static OptionCategory createSubtitlePositionCategory(Context context) {
