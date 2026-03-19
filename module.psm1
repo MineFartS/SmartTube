@@ -32,6 +32,16 @@ function Connect-ADB {
 
 }
 
+function Set-SDK {
+
+    param ([String]$Path)
+
+    $Path = $Path.Replace('\', '\\')
+
+    "sdk.dir = $Path" ` | Set-Content "$PSScriptRoot\local.properties"
+
+}
+
 Export-ModuleMember `
     -Function * `
     -Variable *

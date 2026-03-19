@@ -7,8 +7,7 @@ Connect-ADB
 Clear-Host
 
 # Set Android SDK Path
-"sdk.dir = C:\\Users\\$env:USERNAME\\AppData\\Local\\Android\\sdk" `
-| Set-Content "$PSScriptRoot\local.properties"
+Set-SDK "C:\Users\$env:USERNAME\AppData\Local\Android\sdk\"
 
 # Update Version Name
 (Get-Content "$PSScriptRoot\smarttubetv\build.gradle") `
