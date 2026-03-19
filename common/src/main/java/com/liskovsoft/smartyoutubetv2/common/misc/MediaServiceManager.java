@@ -54,7 +54,6 @@ public class MediaServiceManager implements OnAccountChange {
     private Disposable mFormatInfoAction;
     private Disposable mPlaylistGroupAction;
     private Disposable mPlaylistInfosAction;
-    private Disposable mHistoryAction;
     private static final int MIN_GRID_GROUP_SIZE = 13;
     private static final int MIN_ROW_GROUP_SIZE = 5;
 
@@ -376,22 +375,37 @@ public class MediaServiceManager implements OnAccountChange {
         RxHelper.runAsyncUser(mContentService::clearSearchHistory);
     }
 
-    public void updateHistory(Video video, long positionMs) {
-        if (video == null || RxHelper.isAnyActionRunning(mHistoryAction)) {
+    public void updateHistory(
+        Video video, 
+        long positionMs
+    ) {
+
+        if (video == null) {
             return;
         }
 
-        RxHelper.disposeActions(mHistoryAction);
-
         Observable<Void> historyObservable;
 
+        positionMs /= 1_000f;
+
         if (video.mediaItem != null) {
-            historyObservable = mItemService.updateHistoryPositionObserve(video.mediaItem, positionMs / 1_000f);
+            
+            historyObservable = mItemService.updateHistoryPositionObserve(
+                video.mediaItem, 
+                positionMs
+            );
+
         } else { // video launched form ATV channels
-            historyObservable = mItemService.updateHistoryPositionObserve(video.videoId, positionMs / 1_000f);
+            
+            historyObservable = mItemService.updateHistoryPositionObserve(
+                video.videoId, 
+                positionMs
+            );
+        
         }
 
-        mHistoryAction = RxHelper.execute(historyObservable, error -> setHistoryBroken(true), () -> setHistoryBroken(false));
+        RxHelper.execute(historyObservable);
+
     }
 
     public void hideNotification(Video item) {
