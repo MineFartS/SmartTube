@@ -1,7 +1,11 @@
 
+$ADB = "C:\Users\$env:USERNAME\AppData\Local\Android\Sdk\platform-tools\adb.exe"
+
+$JAVA = "C:\Program Files\Java\jdk-14\bin\java.exe"
+
 function Test-ADBConnection {
 
-    $devices = adb.exe devices `
+    $devices = & $ADB devices `
         | Select-String -NotMatch "List of devices attached" `
         | Where-Object { $_.ToString().Trim().Length -gt 0 }
 
@@ -16,7 +20,7 @@ function Connect-ADB {
         Write-Host "No ADB device is connected"
         $IP = Read-Host 'Target IP Address'
 
-        adb.exe connect $IP
+        & $ADB connect $IP
 
         while (-not (Test-ADBConnection)) {
 
@@ -28,4 +32,6 @@ function Connect-ADB {
 
 }
 
-Export-ModuleMember -Function Connect-ADB
+Export-ModuleMember `
+    -Function * `
+    -Variable *

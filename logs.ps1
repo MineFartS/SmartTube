@@ -1,11 +1,11 @@
-Import-Module "$PSScriptRoot/module.psm1" -Function Connect-ADB
+Import-Module "$PSScriptRoot/module.psm1" -Force
 
 Connect-ADB
 
 Clear-Host
 
-$_pid = adb.exe shell pidof org.smarttube.stable
+$_pid = & $ADB shell pidof org.smarttube.stable
 
-adb.exe logcat `
+& $ADB logcat `
     "--pid=$_pid" `
     -v color 
