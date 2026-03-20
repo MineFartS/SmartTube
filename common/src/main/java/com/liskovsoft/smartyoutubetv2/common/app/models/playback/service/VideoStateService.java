@@ -90,6 +90,12 @@ public class VideoStateService implements ProfileChangeListener {
     }
 
     public boolean isHistoryBroken() {
+
+        android.util.Log.v(
+            "VideoStateService", 
+            "mIsHistoryBroken=" + mIsHistoryBroken
+        );
+
         return mIsHistoryBroken;
     }
 
@@ -104,8 +110,13 @@ public class VideoStateService implements ProfileChangeListener {
     }
 
     private void persistStateInt() {
-        if (mIsHistoryBroken) {
-            mPrefs.setStateUpdaterData(Helpers.mergeData(getStateData(), mIsHistoryBroken));
+        if (isHistoryBroken()) {
+            mPrefs.setStateUpdaterData(
+                Helpers.mergeData(
+                    getStateData(), 
+                    mIsHistoryBroken
+                )
+            );
         } else {
             // Eliminate additional string creation with the merge
             mPrefs.setStateUpdaterData(getStateData());
