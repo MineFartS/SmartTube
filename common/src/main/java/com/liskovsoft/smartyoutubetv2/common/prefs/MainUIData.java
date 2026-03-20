@@ -457,8 +457,10 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
 
     private void persistState() {
     
-        onDataChange();
-        Utils.postDelayed(mPersistStateInt, 10_000);
+        //onDataChange();
+        //Utils.postDelayed(mPersistStateInt, 10_000);
+
+        persistNow();
     
     }
 

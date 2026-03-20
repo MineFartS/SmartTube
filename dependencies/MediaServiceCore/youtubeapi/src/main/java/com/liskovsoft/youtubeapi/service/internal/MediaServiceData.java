@@ -368,10 +368,11 @@ public class MediaServiceData {
     }
 
     private void persistData() {
-        RxHelper.disposeActions(mPersistAction);
+        //RxHelper.disposeActions(mPersistAction);
 
         // Improve memory usage by merging multiple persist requests
-        mPersistAction = RxHelper.runAsync(() -> { persistDataInt(); persistCachedDataInt(); }, 5_000);
+        //mPersistAction = RxHelper.runAsync(() -> { persistDataInt(); persistCachedDataInt(); }, 5_000);
+        persistNow();
     }
 
     private void resetSensitiveData() {

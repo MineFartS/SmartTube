@@ -336,7 +336,8 @@ public class GeneralData implements ProfileChangeListener {
     }
 
     private void persistState() {
-        Utils.postDelayed(mPersistStateInt, 10_000);
+        //Utils.postDelayed(mPersistStateInt, 10_000);
+        persistNow();
     }
 
     private void persistStateInt() {
