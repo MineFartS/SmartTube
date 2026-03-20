@@ -523,4 +523,11 @@ public class MediaServiceManager implements OnAccountChange {
         }, error -> LoadingManager.showLoading(context, false));
     }
 
+    private void setHistoryBroken(boolean isBroken) {
+        VideoStateService stateService = VideoStateService.instance(null);
+
+        if (stateService != null) {
+            stateService.setHistoryBroken(isBroken);
+        }
+    }
 }

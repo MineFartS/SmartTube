@@ -445,8 +445,12 @@ public class PlayerTweaksData implements ProfileChangeListener {
         updateDefaultValues();
     }
 
-    private void persistData() {
+    public void persistNow() {
         Utils.post(mPersistDataInt);
+    }
+
+    private void persistData() {
+        Utils.postDelayed(mPersistDataInt, 10_000);
     }
 
     private void persistDataInt() {

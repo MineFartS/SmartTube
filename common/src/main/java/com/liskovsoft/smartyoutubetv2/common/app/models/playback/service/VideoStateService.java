@@ -25,6 +25,7 @@ public class VideoStateService implements ProfileChangeListener {
     private final List<State> mStates;
     private final AppPrefs mPrefs;
     private static final String DELIM = "&si;";
+    private boolean mIsHistoryBroken;
     private final Runnable mPersistStateInt = this::persistStateInt;
 
     private VideoStateService(Context context) {
@@ -84,6 +85,14 @@ public class VideoStateService implements ProfileChangeListener {
         persistState();
     }
 
+    public void setHistoryBroken(boolean isBroken) {
+        mIsHistoryBroken = isBroken;
+    }
+
+    public boolean isHistoryBroken() {
+        return mIsHistoryBroken;
+    }
+
     private void restoreState() {
         mStates.clear();
         String data = mPrefs.getStateUpdaterData();
@@ -91,15 +100,25 @@ public class VideoStateService implements ProfileChangeListener {
         String[] split = Helpers.splitData(data);
 
         setStateData(Helpers.parseStr(split, 0));
+        mIsHistoryBroken = Helpers.parseBoolean(split, 1);
     }
 
     private void persistStateInt() {
-        // Eliminate additional string creation with the merge
-        mPrefs.setStateUpdaterData(getStateData());
+        if (mIsHistoryBroken) {
+            mPrefs.setStateUpdaterData(Helpers.mergeData(getStateData(), mIsHistoryBroken));
+        } else {
+            // Eliminate additional string creation with the merge
+            mPrefs.setStateUpdaterData(getStateData());
+        }
+    }
+
+    public void persistNow() {
+        Utils.post(mPersistStateInt);
     }
 
     private void persistState() {
-        Utils.post(mPersistStateInt);
+        // Improve memory and disc usage
+        Utils.postDelayed(mPersistStateInt, PERSIST_DELAY_MS);
     }
 
     public static class State {
