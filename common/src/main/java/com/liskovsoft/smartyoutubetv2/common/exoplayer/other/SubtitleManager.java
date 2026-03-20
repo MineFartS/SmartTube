@@ -140,7 +140,7 @@ public class SubtitleManager implements TextOutput, OnDataChange {
                 applyStyle(subtitleStyle);
             }
 
-            mSubtitleView.setBottomPaddingFraction(mPlayerData.getSubtitlePosition());
+            mSubtitleView.setBottomPaddingFraction(.05f);
         }
     }
 
@@ -181,7 +181,10 @@ public class SubtitleManager implements TextOutput, OnDataChange {
     }
 
     private float getTextSizePx() {
+        
         float textSizePx = mSubtitleView.getContext().getResources().getDimension(R.dimen.subtitle_text_size);
-        return textSizePx * mPlayerData.getSubtitleScale();
+        
+        return textSizePx * 0.8f;
+    
     }
 }
