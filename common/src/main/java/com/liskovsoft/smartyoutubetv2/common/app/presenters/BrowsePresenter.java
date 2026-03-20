@@ -1187,13 +1187,14 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
     }
 
     private void appendLocalHistory(VideoGroup videoGroup) {
+
         if (!isHistorySection()) {
             return;
         }
 
         VideoStateService stateService = VideoStateService.instance(getContext());
 
-        if (stateService.isEmpty() || (!stateService.isHistoryBroken() && !videoGroup.isEmpty())) {
+        if (stateService.isEmpty() || !videoGroup.isEmpty()) {
             return;
         }
 
@@ -1207,5 +1208,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         for (State state : stateService.getStates()) {
             videoGroup.add(0, state.video);
         }
+        
     }
 }

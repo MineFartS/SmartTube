@@ -1164,13 +1164,22 @@ public class Utils {
     }
 
     private static void persistData(Context context) {
-        VideoStateService.instance(context).persistNow();
-        PlayerTweaksData.instance(context).persistNow();
-        MainUIData.instance(context).persistNow();
-        GeneralData.instance(context).persistNow();
-        MediaServiceData mediaServiceData = MediaServiceData.instance();
-        if (mediaServiceData != null) {
-            mediaServiceData.persistNow();
+
+        MediaServiceData mediaData = MediaServiceData.instance();
+        VideoStateService videoState = VideoStateService.instance(context);
+        PlayerTweaksData playerTweaks = PlayerTweaksData.instance(context);
+        MainUIData mainUI = MainUIData.instance(context);
+        GeneralData generalData = GeneralData.instance(context);
+
+        videoState.persistState();
+        playerTweaks.persistData();
+        mainUI.persistState();
+        generalData.persistState();
+        
+        if (mediaData != null) {
+            mediaData.persistData();
         }
+
     }
+
 }

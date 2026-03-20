@@ -442,18 +442,28 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
     }
 
     private void appendMarkAsWatchedButton() {
+
         if (mVideo == null || !mVideo.hasVideo() || !mIsMarkAsWatchedButtonEnabled) {
             return;
         }
 
-        mDialogPresenter.appendSingleButton(
-                UiOptionItem.from(getContext().getString(R.string.mark_as_watched), optionItem -> {
-                    MediaServiceManager.instance().updateHistory(mVideo, 0);
-                    mVideo.markFullyViewed();
-                    VideoStateService.instance(getContext()).save(new State(mVideo, mVideo.getDurationMs()));
-                    Playlist.instance().sync(mVideo);
-                    mDialogPresenter.closeDialog();
-                }));
+        VideoStateService videoState = VideoStateService.instance(getContext());
+
+        MediaServiceManager mediaService = MediaServiceManager.instance();
+
+        Playlist playlist = Playlist.instance();
+
+        mDialogPresenter.appendSingleButton(UiOptionItem.from(
+            getContext().getString(R.string.mark_as_watched), 
+            optionItem -> {
+                mediaService.updateHistory(mVideo, 0);
+                mVideo.markFullyViewed();
+                videoState.save(new State(mVideo, mVideo.getDurationMs()));
+                playlist.sync(mVideo);
+                mDialogPresenter.closeDialog();
+            }
+        ));
+
     }
 
     private void appendShareLinkButton() {
