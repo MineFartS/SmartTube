@@ -26,24 +26,12 @@ public class SubtitleSettingsPresenter extends BasePresenter<Void> {
         AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
 
         appendSubtitleStyleCategory(settingsPresenter);
-        appendSubtitleSizeCategory(settingsPresenter);
-        appendSubtitlePositionCategory(settingsPresenter);
 
         settingsPresenter.showDialog("Subtitles");
     }
 
     private void appendSubtitleStyleCategory(AppDialogPresenter settingsPresenter) {
         OptionCategory category = AppDialogUtil.createSubtitleStylesCategory(getContext());
-        settingsPresenter.appendRadioCategory(category.title, category.options);
-    }
-
-    private void appendSubtitleSizeCategory(AppDialogPresenter settingsPresenter) {
-        OptionCategory category = AppDialogUtil.createSubtitleSizeCategory(getContext());
-        settingsPresenter.appendRadioCategory(category.title, category.options);
-    }
-
-    private void appendSubtitlePositionCategory(AppDialogPresenter settingsPresenter) {
-        OptionCategory category = AppDialogUtil.createSubtitlePositionCategory(getContext());
         settingsPresenter.appendRadioCategory(category.title, category.options);
     }
 

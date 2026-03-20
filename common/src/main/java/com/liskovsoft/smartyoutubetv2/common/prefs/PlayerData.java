@@ -39,7 +39,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private final AppPrefs mPrefs;
 
     private boolean mIsClockEnabled;
-
     private int mBackgroundMode;
     private FormatItem mVideoFormat;
     private FormatItem mTempVideoFormat;
@@ -53,7 +52,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private float mAspectRatio;
     private int mRotationAngle;
     private boolean mIsVideoFlipEnabled;
-
     private float mSpeed;
     private float mLastSpeed;
     private boolean mIsAfrEnabled;
@@ -78,7 +76,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private boolean mIsSkipShortsEnabled;
     private boolean mIsLiveChatEnabled;
     private List<FormatItem> mLastSubtitleFormats;
-
     private boolean mIsSpeedPerChannelEnabled;
     private final Map<String, SpeedItem> mSpeeds = new HashMap<>();
     private float mPitch;
@@ -330,15 +327,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
 
     public void setSubtitleScale(float scale) {
         mSubtitleScale = scale;
-        persistState();
-    }
-
-    public float getSubtitlePosition() {
-        return mSubtitlePosition;
-    }
-
-    public void setSubtitlePosition(float position) {
-        mSubtitlePosition = position;
         persistState();
     }
 
