@@ -223,12 +223,6 @@ public class PlayerUIController extends BasePlayerController {
         OptionCategory stylesCategory = AppDialogUtil.createSubtitleStylesCategory(getContext());
         settingsPresenter.appendRadioCategory(stylesCategory.title, stylesCategory.options);
 
-        OptionCategory sizeCategory = AppDialogUtil.createSubtitleSizeCategory(getContext());
-        settingsPresenter.appendRadioCategory(sizeCategory.title, sizeCategory.options);
-
-        OptionCategory positionCategory = AppDialogUtil.createSubtitlePositionCategory(getContext());
-        settingsPresenter.appendRadioCategory(positionCategory.title, positionCategory.options);
-
         settingsPresenter.showDialog("Subtitles", mSetSubtitleButtonState);
     }
 

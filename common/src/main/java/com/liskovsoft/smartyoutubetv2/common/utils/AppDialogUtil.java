@@ -65,11 +65,11 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
 public class AppDialogUtil {
+    
     private static final String TAG = AppDialogUtil.class.getSimpleName();
     
     private static final int BACKGROUND_PLAYBACK_ID = 135;
     private static final int VIDEO_PRESETS_ID = 136;
-
     private static final int AUDIO_LANGUAGE_ID = 138;
     private static final int PLAYER_SCREEN_TIMEOUT_ID = 139;
     private static final int PLAYER_SCREEN_DIMMING_ID = 140;
@@ -77,12 +77,8 @@ public class AppDialogUtil {
     private static final int PLAYER_REMEMBER_SPEED_ID = 142;
     private static final int PLAYER_SPEED_MISC_ID = 143;
     private static final int PITCH_EFFECT_ID = 144;
-    
     private static final int PLAYER_REPEAT_ID = 146;
-    
     private static final int SUBTITLE_STYLES_ID = 45;
-    private static final int SUBTITLE_SIZE_ID = 46;
-    private static final int SUBTITLE_POSITION_ID = 47;
     private static final int FILE_PICKER_REQUEST_CODE = 205;
 
     /**
@@ -457,51 +453,6 @@ public class AppDialogUtil {
         }
 
         return styleOptions;
-    }
-
-    public static OptionCategory createSubtitleSizeCategory(Context context) {
-        
-        PlayerData playerData = PlayerData.instance(context);
-        
-        List<OptionItem> options = new ArrayList<>();
-
-        for (float scale : new float[]{.8f, .9f, 1.0f}) {
-            
-            options.add(UiOptionItem.from(
-                String.format("%sx", scale),
-                optionItem -> {
-                    playerData.setSubtitleScale(scale);
-                    Utils.showPlayerControls(context, false);
-                },
-                Helpers.floatEquals(scale, playerData.getSubtitleScale())
-            ));
-
-        }
-
-        return OptionCategory.from(
-            SUBTITLE_SIZE_ID, 
-            OptionCategory.TYPE_RADIO_LIST, 
-            context.getString(R.string.subtitle_scale), 
-            options
-        );
-
-    }
-
-    public static OptionCategory createSubtitlePositionCategory(Context context) {
-        PlayerData playerData = PlayerData.instance(context);
-        List<OptionItem> options = new ArrayList<>();
-
-        for (int positionPercent : Helpers.range(0, 100, 5)) {
-            float position = positionPercent / 100f;
-            options.add(UiOptionItem.from(String.format("%s%%", positionPercent),
-                    optionItem -> {
-                        playerData.setSubtitlePosition(position);
-                        Utils.showPlayerControls(context, false);
-                    },
-                    Helpers.floatEquals(position, playerData.getSubtitlePosition())));
-        }
-
-        return OptionCategory.from(SUBTITLE_POSITION_ID, OptionCategory.TYPE_RADIO_LIST, context.getString(R.string.subtitle_position), options);
     }
 
     public static OptionCategory createVideoRotateCategory(Context context, PlayerData playerData, Runnable onRotate) {
