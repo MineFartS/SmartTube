@@ -11,5 +11,6 @@
         ".gradle": true,
         "**/build": true,
         ".vscode": true
-    }
+    },
+    "java.configuration.updateBuildConfiguration": "automatic"
 }
