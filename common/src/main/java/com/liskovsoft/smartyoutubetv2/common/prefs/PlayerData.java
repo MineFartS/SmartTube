@@ -65,7 +65,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private String mSubtitleLanguage;
     private boolean mIsAllSpeedEnabled;
     private int mPlaybackMode;
-    private boolean mIsSleepTimerEnabled;
     private boolean mIsQualityInfoEnabled;
     private boolean mIsSpeedPerVideoEnabled;
     private boolean mIsTimeCorrectionEnabled;
@@ -506,15 +505,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         persistState();
     }
 
-    public boolean isSleepTimerEnabled() {
-        return mIsSleepTimerEnabled;
-    }
-
-    public void setSleepTimerEnabled(boolean enable) {
-        mIsSleepTimerEnabled = enable;
-        persistState();
-    }
-
     public boolean isTimeCorrectionEnabled() {
         return mIsTimeCorrectionEnabled;
     }
@@ -632,31 +622,20 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         mVideoFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 9)), getDefaultVideoFormat());
         mAudioFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 10)), getDefaultAudioFormat());
         mSubtitleFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 11)), getDefaultSubtitleFormat());
-        
         mSubtitleStyleIndex = Helpers.parseInt(split, 13, 4); // yellow on semi bg
         mResizeMode = Helpers.parseInt(split, 14, PlayerEngine.RESIZE_MODE_DEFAULT);
         mSpeed = Helpers.parseFloat(split, 15, 1.0f);
         mIsAfrEnabled = Helpers.parseBoolean(split, 16, false);
         mIsAfrFpsCorrectionEnabled = Helpers.parseBoolean(split, 17, true);
         mIsAfrResSwitchEnabled = Helpers.parseBoolean(split, 18, false);
-        // old afr delay sec was there
         mAudioDelayMs = Helpers.parseInt(split, 20, 0);
         mIsAllSpeedEnabled = Helpers.parseBoolean(split, 21, false);
-        // repeat mode was here
-        // didn't remember what was there
-
-        mIsSleepTimerEnabled = Helpers.parseBoolean(split, 25, false);
-        // old player tweaks
         mIsQualityInfoEnabled = Helpers.parseBoolean(split, 28, true);
         mIsSpeedPerVideoEnabled = Helpers.parseBoolean(split, 29, false);
         mAspectRatio = Helpers.parseFloat(split, 30, PlayerEngine.ASPECT_RATIO_DEFAULT);
-
         mIsTimeCorrectionEnabled = Helpers.parseBoolean(split, 32, true);
-
         mIsDoubleRefreshRateEnabled = Helpers.parseBoolean(split, 35, true);
-
         mStartSeekIncrementMs = Helpers.parseInt(split, 37, 10_000);
-        // old subs size px
         mSubtitleScale = Helpers.parseFloat(split, 39, .7f);
         mPlayerVolume = Helpers.parseFloat(split, 40, 1.0f);
         mIsTooltipsEnabled = Helpers.parseBoolean(split, 41, true);
@@ -671,7 +650,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         mPlaybackMode = Helpers.parseInt(split, 51, PlayerConstants.PLAYBACK_MODE_ALL);
         mAudioLanguage = Helpers.parseStr(split, 52, LocaleUtility.getCurrentLanguage(mPrefs.getContext()));
         mSubtitleLanguage = Helpers.parseStr(split, 53, LocaleUtility.getCurrentLanguage(mPrefs.getContext()));
-
         mIsSpeedPerChannelEnabled = Helpers.parseBoolean(split, 56, true);
         String[] speeds = Helpers.parseArray(split, 57);
         mPitch = Helpers.parseFloat(split, 58, 1.0f);
@@ -716,9 +694,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
                 null, 
                 mAudioDelayMs, 
                 mIsAllSpeedEnabled, 
-                null, null,
-                mIsSleepTimerEnabled, 
-                null, null, // old player tweaks
+                null, null, null, null,
                 mIsQualityInfoEnabled, 
                 mIsSpeedPerVideoEnabled, 
                 mAspectRatio, 

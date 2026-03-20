@@ -46,7 +46,6 @@ public class VideoLoaderController extends BasePlayerController {
     private Video mPendingVideo;
     private int mLastErrorType = -1;
     private SuggestionsController mSuggestionsController;
-    private long mSleepTimerStartMs;
     private Disposable mFormatInfoAction;
     private Disposable mMpdStreamAction;
     private final Runnable mReloadVideo = () -> {
@@ -85,7 +84,6 @@ public class VideoLoaderController extends BasePlayerController {
     @Override
     public void onInit() {
         mSuggestionsController = getController(SuggestionsController.class);
-        mSleepTimerStartMs = System.currentTimeMillis();
     }
 
     @Override
@@ -139,14 +137,15 @@ public class VideoLoaderController extends BasePlayerController {
 
     @Override
     public void onEngineInitialized() {
+        
         if (getPlayer() == null) {
             return;
         }
         
         loadVideo(Helpers.firstNonNull(mPendingVideo, getVideo()));
         getPlayer().setButtonState(R.id.action_repeat, getPlayerData().getPlaybackMode());
-        mSleepTimerStartMs = System.currentTimeMillis();
         mPendingVideo = null;
+
     }
 
     @Override
@@ -248,34 +247,9 @@ public class VideoLoaderController extends BasePlayerController {
             return false;
         }
 
-        mSleepTimerStartMs = System.currentTimeMillis();
-
-        // Remove error msg if needed
-        if (getPlayerData().isSleepTimerEnabled()) {
-            getPlayer().setVideo(getVideo());
-        }
-
         Utils.removeCallbacks(mRestartEngine, mRebootApp);
 
         return false;
-    }
-
-    @Override
-    public void onTickle() {
-        checkSleepTimer();
-    }
-
-    private void checkSleepTimer() {
-        if (getPlayer() == null) {
-            return;
-        }
-
-        if (getPlayerData().isSleepTimerEnabled() && System.currentTimeMillis() - mSleepTimerStartMs > 2 * 60 * 60 * 1_000) {
-            getPlayer().setPlayWhenReady(false);
-            getPlayer().setTitle(getContext().getString(R.string.sleep_timer));
-            getPlayer().showOverlay(true);
-            Helpers.enableScreensaver(getActivity());
-        }
     }
 
     /**
