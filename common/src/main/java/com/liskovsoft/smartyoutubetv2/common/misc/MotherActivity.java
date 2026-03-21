@@ -11,6 +11,7 @@ import android.util.DisplayMetrics;
 import android.view.KeyCharacterMap.UnavailableException;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -62,6 +63,9 @@ public class MotherActivity extends FragmentActivity {
 
         initDpi();
         initTheme();
+
+        // This keeps the screen on and prevents screensaver
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
     }
 
