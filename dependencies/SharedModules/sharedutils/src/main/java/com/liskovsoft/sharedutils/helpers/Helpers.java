@@ -892,43 +892,6 @@ public final class Helpers {
         return KeyHelpers.newEvent(origin, newKeyCode);
     }
 
-    public static void enableScreensaver(Activity context) {
-        if (context == null) {
-            return;
-        }
-
-        context.runOnUiThread(() -> context.getWindow().clearFlags(LayoutParams.FLAG_KEEP_SCREEN_ON));
-    }
-
-    public static void disableScreensaver(Activity context) {
-        if (context == null) {
-            return;
-        }
-
-        context.runOnUiThread(() -> {
-            try {
-                context.getWindow().addFlags(LayoutParams.FLAG_KEEP_SCREEN_ON);
-            } catch (ArrayIndexOutOfBoundsException e) { // A rare unknown crash (length=0; index=16)
-                e.printStackTrace();
-            }
-        });
-    }
-
-    /**
-     * Don't work. Maybe need WRITE_SETTINGS permission?
-     */
-    public static void setBrightness(Activity context, float level) {
-        if (context == null) {
-            return;
-        }
-
-        context.runOnUiThread(() -> {
-            LayoutParams layoutParams = context.getWindow().getAttributes();
-            layoutParams.screenBrightness = level;
-            context.getWindow().setAttributes(layoutParams);
-        });
-    }
-
     /**
      * Utility method to check if device is Amazon Fire TV device
      * @return {@code true} true if device is Amazon Fire TV device.

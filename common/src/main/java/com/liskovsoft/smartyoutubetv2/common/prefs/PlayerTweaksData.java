@@ -34,18 +34,15 @@ public class PlayerTweaksData implements ProfileChangeListener {
     public static final int PLAYER_BUTTON_HIGH_QUALITY = 1 << 17;
     public static final int PLAYER_BUTTON_VIDEO_INFO = 1 << 18;
     public static final int PLAYER_BUTTON_SHARE = 1 << 19;
-
     public static final int PLAYER_BUTTON_CONTENT_BLOCK = 1 << 21;
     public static final int PLAYER_BUTTON_CHAT = 1 << 22;
     public static final int PLAYER_BUTTON_VIDEO_ROTATE = 1 << 23;
-    public static final int PLAYER_BUTTON_SCREEN_DIMMING = 1 << 24;
     public static final int PLAYER_BUTTON_AFR = 1 << 26;
     public static final int PLAYER_BUTTON_VIDEO_FLIP = 1 << 27;
     
     public static final int PLAYER_BUTTON_DEFAULT = 
         PLAYER_BUTTON_SEARCH | 
         PLAYER_BUTTON_PIP | 
-        PLAYER_BUTTON_SCREEN_DIMMING | 
         PLAYER_BUTTON_VIDEO_SPEED |
         PLAYER_BUTTON_VIDEO_STATS | 
         PLAYER_BUTTON_OPEN_CHANNEL | 
@@ -87,10 +84,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private int mPlayerDataSource;
     private boolean mIsBufferOnStreamsDisabled;
     private boolean mIsSectionPlaylistEnabled;
-    private boolean mIsBootScreenOffEnabled;
-    private boolean mIsScreenOffTimeoutEnabled;
-    private int mScreenOffTimeoutSec;
-    private int mScreenOffDimmingPercents;
     private boolean mIsLikesCounterEnabled;
     private boolean mIsChapterNotificationEnabled;
     private boolean mIsPlayerAutoVolumeEnabled;
@@ -311,43 +304,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         persistData();
     }
 
-    public boolean isScreenOffTimeoutEnabled() {
-        return mIsScreenOffTimeoutEnabled;
-    }
-
-    public void setScreenOffTimeoutEnabled(boolean enable) {
-        mIsScreenOffTimeoutEnabled = enable;
-        persistData();
-    }
-
-    public int getScreenOffTimeoutSec() {
-        return mScreenOffTimeoutSec;
-    }
-
-    public void setScreenOffTimeoutSec(int timeoutSec) {
-        mScreenOffTimeoutSec = timeoutSec;
-        mIsScreenOffTimeoutEnabled = mIsScreenOffTimeoutEnabled && timeoutSec > 0;
-        persistData();
-    }
-
-    public int getScreenOffDimmingPercents() {
-        return mScreenOffDimmingPercents;
-    }
-
-    public void setScreenOffDimmingPercents(int percents) {
-        mScreenOffDimmingPercents = percents;
-        persistData();
-    }
-
-    public boolean isBootScreenOffEnabled() {
-        return mIsBootScreenOffEnabled && !isScreenOffTimeoutEnabled();
-    }
-
-    public void setBootScreenOffEnabled(boolean enable) {
-        mIsBootScreenOffEnabled = enable;
-        persistData();
-    }
-
     public boolean isLikesCounterEnabled() {
         return mIsLikesCounterEnabled;
     }
@@ -429,12 +385,8 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsBufferOnStreamsDisabled = Helpers.parseBoolean(split, 30, false);
         // Cause severe garbage collector stuttering
         mIsSectionPlaylistEnabled = Helpers.parseBoolean(split, 31, Utils.isEnoughRam());
-        mIsScreenOffTimeoutEnabled = Helpers.parseBoolean(split, 32, false);
-        mScreenOffTimeoutSec = Helpers.parseInt(split, 33, 0);
         mIsLikesCounterEnabled = Helpers.parseBoolean(split, 35, true);
         mIsChapterNotificationEnabled = Helpers.parseBoolean(split, 36, false);
-        mScreenOffDimmingPercents = Helpers.parseInt(split, 37, 100);
-        mIsBootScreenOffEnabled = Helpers.parseBoolean(split, 38, false);
         mIsPlayerAutoVolumeEnabled = Helpers.parseBoolean(split, 40, true);
         mIsSyncRowButtonIndexEnabled = Helpers.parseBoolean(split, 41, true);
         mIsLoopShortsEnabled = Helpers.parseBoolean(split, 44, true);
@@ -479,12 +431,8 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mPlayerDataSource, 
                 mIsBufferOnStreamsDisabled, 
                 mIsSectionPlaylistEnabled,
-                mIsScreenOffTimeoutEnabled, 
-                mScreenOffTimeoutSec, 
                 mIsLikesCounterEnabled, 
                 mIsChapterNotificationEnabled,
-                mScreenOffDimmingPercents, 
-                mIsBootScreenOffEnabled, 
                 mIsPlayerAutoVolumeEnabled, 
                 mIsSyncRowButtonIndexEnabled,
                 null, 

@@ -141,10 +141,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 PlayerTweaksData.PLAYER_BUTTON_PLAYBACK_QUEUE
             },
             {
-                R.string.screen_dimming, 
-                PlayerTweaksData.PLAYER_BUTTON_SCREEN_DIMMING
-            },
-            {
                 R.string.action_channel, 
                 PlayerTweaksData.PLAYER_BUTTON_OPEN_CHANNEL
             },

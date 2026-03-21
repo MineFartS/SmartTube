@@ -76,7 +76,6 @@ import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.track.MediaTrack
 import com.liskovsoft.smartyoutubetv2.common.misc.MotherActivity;
 import com.liskovsoft.smartyoutubetv2.common.misc.RemoteControlService;
 import com.liskovsoft.smartyoutubetv2.common.misc.RemoteControlWorker;
-import com.liskovsoft.smartyoutubetv2.common.misc.ScreensaverManager;
 import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.HiddenPrefs;
 import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
@@ -795,41 +794,6 @@ public class Utils {
         }
 
         return true;
-    }
-
-    public static void enableScreensaver(Context activity, boolean enable) {
-        if (activity instanceof MotherActivity) {
-            ScreensaverManager screensaver = ((MotherActivity) activity).getScreensaverManager();
-            if (enable) {
-                screensaver.enable();
-            } else {
-                screensaver.disable();
-            }
-        }
-    }
-
-    public static boolean isScreenOff(Context activity) {
-        if (activity instanceof MotherActivity) {
-            ScreensaverManager manager = ((MotherActivity) activity).getScreensaverManager();
-
-            return manager != null && manager.isScreenOff();
-        }
-
-        return false;
-    }
-
-    public static boolean isHardScreenOff(Context context) {
-        if (context == null) {
-            return false;
-        }
-
-        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        
-        if (Build.VERSION.SDK_INT < 20) {
-            return !pm.isScreenOn();
-        } else {
-            return !pm.isInteractive();
-        }
     }
 
     public static int getColor(Context context, int colorResId, int dimPercents) {

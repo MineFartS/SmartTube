@@ -82,10 +82,7 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
         appendEnabledSections(settingsPresenter);
         appendContextMenuItemsCategory(settingsPresenter);
         appendHideVideos(settingsPresenter);
-
         appendBackgroundPlaybackCategory(settingsPresenter);
-        appendScreenDimmingCategory(settingsPresenter);
-
         appendMiscCategory(settingsPresenter);
 
         settingsPresenter.showDialog(
@@ -303,94 +300,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
         settingsPresenter.appendRadioCategory(
             category.title, 
             category.options
-        );
-    
-    }
-
-    private void appendScreenDimmingCategory(AppDialogPresenter settingsPresenter) {
-        
-        settingsPresenter.appendSingleButton(
-            UiOptionItem.from(
-                getContext().getString(R.string.screen_dimming), 
-                optionItem -> {
-                    AppDialogPresenter presenter = AppDialogPresenter.instance(getContext());
-                    appendScreenDimmingAmountCategory(presenter);
-                    appendScreenDimmingTimeoutCategory(presenter);
-                    presenter.showDialog(getContext().getString(R.string.screen_dimming));
-                }
-            )
-        );
-
-    }
-
-    private void appendScreenDimmingAmountCategory(AppDialogPresenter settingsPresenter) {
-
-        List<OptionItem> options = new ArrayList<>();
-
-        int activeMode = mGeneralData.getScreensaverDimmingPercents();
-
-        for (int dimPercents : Helpers.range(10, 100, 10)) {
-            options.add(
-                UiOptionItem.from(
-                    dimPercents + "%",
-                    option -> mGeneralData.setScreensaverDimmingPercents(dimPercents),
-                    activeMode == dimPercents
-                )
-            );
-        }
-
-        settingsPresenter.appendRadioCategory(
-            getContext().getString(R.string.screen_dimming_amount),
-            options
-        );
-    
-    }
-
-    @SuppressLint("StringFormatMatches")
-    private void appendScreenDimmingTimeoutCategory(AppDialogPresenter settingsPresenter) {
-        
-        List<OptionItem> options = new ArrayList<>();
-
-        int screensaverTimeoutMs = mGeneralData.getScreensaverTimeoutMs();
-
-        options.add(
-            UiOptionItem.from(
-                getContext().getString(R.string.option_never),
-                option -> mGeneralData.setScreensaverTimeoutMs(GeneralData.SCREENSAVER_TIMEOUT_NEVER),
-                screensaverTimeoutMs == GeneralData.SCREENSAVER_TIMEOUT_NEVER
-            )
-        );
-
-        for (int timeoutSec : new int[] {5, 15, 30}) {
-
-            int timeoutMs = timeoutSec * 1_000;
-            
-            options.add(
-                UiOptionItem.from(
-                    getContext().getString(R.string.ui_hide_timeout_sec, timeoutSec),
-                    option -> mGeneralData.setScreensaverTimeoutMs(timeoutMs),
-                    screensaverTimeoutMs == timeoutMs
-                )
-            );
-        
-        }
-
-        for (int i = 1; i <= 15; i++) {
-            
-            int timeoutMs = i * 60 * 1_000;
-            
-            options.add(
-                UiOptionItem.from(
-                    getContext().getString(R.string.screen_dimming_timeout_min, i),
-                    option -> mGeneralData.setScreensaverTimeoutMs(timeoutMs),
-                    screensaverTimeoutMs == timeoutMs
-                )
-            );
-        }
-
-        settingsPresenter.appendRadioCategory(
-            getContext().getString(R.string.screen_dimming_timeout), 
-            options
         );
     
     }

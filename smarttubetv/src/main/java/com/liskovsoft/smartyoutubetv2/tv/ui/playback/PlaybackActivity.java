@@ -196,19 +196,6 @@ public class PlaybackActivity extends LeanbackActivity {
     }
 
     @Override
-    protected void onPause() {
-        boolean hasDialogBug = AppDialogPresenter.instance(this).isDialogShown() && Build.VERSION.SDK_INT <= 23;
-        boolean isScreenOff = getPlayerData().getBackgroundMode() != PlayerData.BACKGROUND_MODE_DEFAULT && Utils.isHardScreenOff(this);
-
-        if (hasDialogBug || isScreenOff) {
-            mPlaybackFragment.blockEngine(true);
-        }
-
-        // Run the code before the contained fragment
-        super.onPause();
-    }
-
-    @Override
     public void onBackPressed() {
         mIsBackPressed = true;
         super.onBackPressed();

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GeneralData implements ProfileChangeListener {
-    public static final int SCREENSAVER_TIMEOUT_NEVER = 0;
+
     private static final String GENERAL_DATA = "general_data";
 
     public static final int BACKGROUND_PLAYBACK_SHORTCUT_HOME = 0;
@@ -29,8 +29,6 @@ public class GeneralData implements ProfileChangeListener {
     private int mBackgroundShortcut;
     private boolean mIsHideShortsFromSubscriptionsEnabled;
     private boolean mIsHideUpcomingEnabled;
-    private int mScreensaverTimeoutMs;
-    private int mScreensaverDimmingPercents;
     private boolean mIsBridgeCheckEnabled;
     private String mLastPlaylistId;
     private String mLastPlaylistTitle;
@@ -96,24 +94,6 @@ public class GeneralData implements ProfileChangeListener {
 
     public void setHideWatchedFromNotificationsEnabled(boolean enable) {
         mIsHideWatchedFromNotificationsEnabled = enable;
-        persistState();
-    }
-
-    public int getScreensaverTimeoutMs() {
-        return mScreensaverTimeoutMs;
-    }
-
-    public void setScreensaverTimeoutMs(int timeoutMs) {
-        mScreensaverTimeoutMs = timeoutMs;
-        persistState();
-    }
-
-    public int getScreensaverDimmingPercents() {
-        return mScreensaverDimmingPercents;
-    }
-
-    public void setScreensaverDimmingPercents(int percents) {
-        mScreensaverDimmingPercents = percents;
         persistState();
     }
 
@@ -315,11 +295,9 @@ public class GeneralData implements ProfileChangeListener {
         mLastPlaylistTitle = Helpers.parseStr(split, 28);
         mPlaylistOrder = Helpers.parseMap(split, 29, Helpers::parseStr, Helpers::parseInt);
         mPendingStreams = Helpers.parseList(split, 30, Video::fromString);
-        mScreensaverTimeoutMs = Helpers.parseInt(split, 36, 60 * 1_000);
         mIsAltAppIconEnabled = Helpers.parseBoolean(split, 38, false);
         mVersionCode = Helpers.parseInt(split, 39, -1);
         mIsOldUpdateNotificationsEnabled = Helpers.parseBoolean(split, 43, false);
-        mScreensaverDimmingPercents = Helpers.parseInt(split, 44, 80);
         mIsRememberSubscriptionsPositionEnabled = Helpers.parseBoolean(split, 48, false);
         mIsHideWatchedFromNotificationsEnabled = Helpers.parseBoolean(split, 56, false);
         mChangelog = Helpers.parseStrList(split, 57);
@@ -360,14 +338,11 @@ public class GeneralData implements ProfileChangeListener {
                 mLastPlaylistTitle,
                 mPlaylistOrder, 
                 mPendingStreams, 
-                null, 
-                mScreensaverTimeoutMs, 
-                null, 
+                null, null, 
                 mIsAltAppIconEnabled, 
                 mVersionCode, 
                 null, 
-                mIsOldUpdateNotificationsEnabled, 
-                mScreensaverDimmingPercents, 
+                mIsOldUpdateNotificationsEnabled,
                 mIsRememberSubscriptionsPositionEnabled, 
                 null, 
                 mIsHideWatchedFromNotificationsEnabled, 

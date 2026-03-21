@@ -38,7 +38,7 @@ public class MotherActivity extends FragmentActivity {
     private static final float DEFAULT_WIDTH = 1920f; // xhdpi
     private static DisplayMetrics sCachedDisplayMetrics;
     protected static boolean sIsInPipMode;
-    private ScreensaverManager mScreensaverManager;
+
     // Make static in case Don't keep activities enabled in Developer settings
     private static List<OnPermissions> mOnPermissions;
     private static List<OnResult> mOnResults;
@@ -63,25 +63,10 @@ public class MotherActivity extends FragmentActivity {
         initDpi();
         initTheme();
 
-        mScreensaverManager = new ScreensaverManager(this); // moved below the theme to fix side effects
-
-    }
-
-    @Override
-    public boolean dispatchGenericMotionEvent(MotionEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            mScreensaverManager.enable();
-        }
-
-        return super.dispatchGenericMotionEvent(event);
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            mScreensaverManager.enable();
-        }
-
         try {
             return super.dispatchTouchEvent(event);
         } catch (NullPointerException | SecurityException | IllegalStateException | ArrayIndexOutOfBoundsException e) {
@@ -98,14 +83,6 @@ public class MotherActivity extends FragmentActivity {
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event == null) { // handled
             return true;
-        }
-
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            boolean isKeepScreenOff = mScreensaverManager.isScreenOff() && Helpers.equalsAny(event.getKeyCode(),
-                    new int[]{KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_DPAD_RIGHT, KeyEvent.KEYCODE_VOLUME_UP, KeyEvent.KEYCODE_VOLUME_DOWN});
-            if (!isKeepScreenOff) {
-                mScreensaverManager.enable();
-            }
         }
 
         try {
@@ -172,18 +149,6 @@ public class MotherActivity extends FragmentActivity {
 
         applyFullscreenModeIfNeeded();
 
-        // Remove screensaver from the previous activity when closing current one.
-        // Called on player's next track. Reason unknown.
-        mScreensaverManager.enable();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        // Remove screensaver from the previous activity when closing current one.
-        // Called on player's next track. Reason unknown.
-        mScreensaverManager.disable();
     }
 
     @Override
@@ -191,10 +156,6 @@ public class MotherActivity extends FragmentActivity {
         super.onConfigurationChanged(newConfig);
 
         applyCustomConfig();
-    }
-
-    public ScreensaverManager getScreensaverManager() {
-        return mScreensaverManager;
     }
 
     protected void initTheme() {
