@@ -148,11 +148,23 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private void onSubtitleClicked(boolean enabled) {
-        fitVideoIntoDialog();
 
         // First run
-        if (FormatItem.SUBTITLE_NONE.equals(getPlayerData().getLastSubtitleFormat())) {
+        if (FormatItem.SUBTITLE_NONE == getPlayerData().getLastSubtitleFormat()) {
+
+            for (FormatItem format : getPlayer().getSubtitleFormats()) {
+
+                String lang = format.getLanguage();
+
+                if (lang != null && lang.contains("english")) {
+                    setSubtitleFormat(format);
+                    return;
+                }
+
+            }
+            
             onSubtitleLongClicked();
+            
             return;
         }
 
@@ -172,14 +184,24 @@ public class PlayerUIController extends BasePlayerController {
 
         // Match found
         if (matchedFormat != null) {
+            
             FormatItem format = enabled ? FormatItem.SUBTITLE_NONE : matchedFormat;
-            getPlayer().setFormat(format);
-            getPlayerData().setFormat(format);
-            getPlayer().setButtonState(R.id.lb_control_closed_captioning, !FormatItem.SUBTITLE_NONE.equals(matchedFormat) && !enabled ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
+            setSubtitleFormat(format);
+
+            getPlayer().setButtonState(
+                R.id.lb_control_closed_captioning, 
+                !FormatItem.SUBTITLE_NONE.equals(matchedFormat) && !enabled ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF
+            );
+
         } else {
             // Match not found
             onSubtitleLongClicked();
         }
+    }
+
+    private void setSubtitleFormat(FormatItem format) {
+        getPlayer().setFormat(format);
+        getPlayerData().setFormat(format);
     }
 
     private void onSubtitleLongClicked() {
@@ -206,9 +228,7 @@ public class PlayerUIController extends BasePlayerController {
                             subtitleFormats,
                             option -> {
                                 FormatItem format = UiOptionItem.toFormat(option);
-
-                                getPlayer().setFormat(format);
-                                getPlayerData().setFormat(format);
+                                setSubtitleFormat(format);
                             },
                             getContext().getString(R.string.subtitles_disabled)
                         )
