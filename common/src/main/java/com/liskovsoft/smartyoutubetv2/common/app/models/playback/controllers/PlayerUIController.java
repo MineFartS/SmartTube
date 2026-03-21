@@ -149,6 +149,13 @@ public class PlayerUIController extends BasePlayerController {
 
     private void onSubtitleClicked(boolean enabled) {
 
+        // Only default in the list
+        if (getPlayer().getSubtitleFormats() == null || getPlayer().getSubtitleFormats().size() == 1) {
+            return;
+        }
+
+        FormatItem matchedFormat = null;
+
         // First run
         if (FormatItem.SUBTITLE_NONE == getPlayerData().getLastSubtitleFormat()) {
 
@@ -157,29 +164,21 @@ public class PlayerUIController extends BasePlayerController {
                 String lang = format.getLanguage();
 
                 if (lang != null && lang.contains("english")) {
-                    setSubtitleFormat(format);
-                    return;
+                    matchedFormat = format;
+                    break;
                 }
 
             }
-            
-            onSubtitleLongClicked();
-            
-            return;
-        }
 
-        // Only default in the list
-        if (getPlayer().getSubtitleFormats() == null || getPlayer().getSubtitleFormats().size() == 1) {
-            return;
-        }
+        } else {
 
-        FormatItem matchedFormat = null;
-
-        for (FormatItem item : getPlayerData().getLastSubtitleFormats()) {
-            if (getPlayer().getSubtitleFormats().contains(item)) {
-                matchedFormat = item;
-                break;
+            for (FormatItem item : getPlayerData().getLastSubtitleFormats()) {
+                if (getPlayer().getSubtitleFormats().contains(item)) {
+                    matchedFormat = item;
+                    break;
+                }
             }
+
         }
 
         // Match found
