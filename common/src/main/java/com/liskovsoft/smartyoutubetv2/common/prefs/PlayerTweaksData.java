@@ -76,7 +76,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsRememberPositionOfLiveVideosEnabled;
     private boolean mIsSuggestionsDisabled;
     private boolean mIsRealChannelIconEnabled;
-    private float mPixelRatio;
     private boolean mIsQualityInfoBitrateEnabled;
     private boolean mIsButtonLongClickEnabled;
     private boolean mIsLongSpeedListEnabled;
@@ -239,15 +238,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         persistData();
     }
 
-    public float getPixelRatio() {
-        return mPixelRatio;
-    }
-
-    public void setPixelRatio(float pixelRatio) {
-        mPixelRatio = pixelRatio;
-        persistData();
-    }
-
     public boolean isQualityInfoBitrateEnabled() {
         return mIsQualityInfoBitrateEnabled;
     }
@@ -377,7 +367,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mPlayerButtons = Helpers.parseInt(split, 13, PLAYER_BUTTON_DEFAULT);
         mIsSuggestionsDisabled = Helpers.parseBoolean(split, 17, false);
         mIsRealChannelIconEnabled = Helpers.parseBoolean(split, 20, true);
-        mPixelRatio = Helpers.parseFloat(split, 21, 1.0f);
         mIsQualityInfoBitrateEnabled = Helpers.parseBoolean(split, 22, false);
         mIsButtonLongClickEnabled = Helpers.parseBoolean(split, 24, true);
         mIsLongSpeedListEnabled = Helpers.parseBoolean(split, 25, true);
@@ -423,8 +412,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mPlayerButtons,
                 null, 
                 mIsSuggestionsDisabled,
-                mIsRealChannelIconEnabled, 
-                mPixelRatio, 
+                mIsRealChannelIconEnabled,
                 mIsQualityInfoBitrateEnabled,
                 mIsButtonLongClickEnabled, 
                 mIsLongSpeedListEnabled, 

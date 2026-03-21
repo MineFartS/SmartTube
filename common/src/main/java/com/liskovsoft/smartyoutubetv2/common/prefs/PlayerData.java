@@ -49,7 +49,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private int mSubtitleStyleIndex;
     private int mResizeMode;
     private int mZoomPercents;
-    private float mAspectRatio;
     private int mRotationAngle;
     private boolean mIsVideoFlipEnabled;
     private float mSpeed;
@@ -357,15 +356,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         persistState();
     }
 
-    public float getAspectRatio() {
-        return mAspectRatio;
-    }
-
-    public void setAspectRatio(float ratio) {
-        mAspectRatio = ratio;
-        persistState();
-    }
-
     public int getRotationAngle() {
         return mRotationAngle;
     }
@@ -604,9 +594,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         String[] split = Helpers.splitData(data);
 
         mIsClockEnabled = Helpers.parseBoolean(split, 5, true);
-
         mBackgroundMode = Helpers.parseInt(split, 7, PlayerEngine.BACKGROUND_MODE_DEFAULT);
-        // afrData was there
         mVideoFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 9)), getDefaultVideoFormat());
         mAudioFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 10)), getDefaultAudioFormat());
         mSubtitleFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 11)), getDefaultSubtitleFormat());
@@ -620,7 +608,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         mIsAllSpeedEnabled = Helpers.parseBoolean(split, 21, false);
         mIsQualityInfoEnabled = Helpers.parseBoolean(split, 28, true);
         mIsSpeedPerVideoEnabled = Helpers.parseBoolean(split, 29, false);
-        mAspectRatio = Helpers.parseFloat(split, 30, PlayerEngine.ASPECT_RATIO_DEFAULT);
         mIsTimeCorrectionEnabled = Helpers.parseBoolean(split, 32, true);
         mIsDoubleRefreshRateEnabled = Helpers.parseBoolean(split, 35, true);
         mStartSeekIncrementMs = Helpers.parseInt(split, 37, 10_000);
@@ -684,8 +671,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
                 mIsAllSpeedEnabled, 
                 null, null, null, null,
                 mIsQualityInfoEnabled, 
-                mIsSpeedPerVideoEnabled, 
-                mAspectRatio, 
+                mIsSpeedPerVideoEnabled,
                 mIsTimeCorrectionEnabled,
                 mIsDoubleRefreshRateEnabled, 
                 mStartSeekIncrementMs, 

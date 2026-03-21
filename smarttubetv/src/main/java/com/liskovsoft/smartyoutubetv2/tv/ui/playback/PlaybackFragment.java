@@ -427,7 +427,6 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
 
         initializePlayerRows();
 
-        initializePixelRatio();
     }
 
     private void createPlayer() {
@@ -468,10 +467,6 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
 
     private void createDebugManager() {
         mDebugInfoManager = new DebugInfoManager(getActivity(), mPlayer, R.id.debug_view_group);
-    }
-
-    private void initializePixelRatio() {
-        setPixelRatio(PlayerTweaksData.instance(getContext()).getPixelRatio());
     }
 
     private void createMediaSession() {
@@ -1001,11 +996,6 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     @Override
     public void setZoomPercents(int percents) {
         setZoom(percents);
-    }
-
-    @Override
-    public void setAspectRatio(float ratio) {
-        setAspect(ratio);
     }
 
     @Override

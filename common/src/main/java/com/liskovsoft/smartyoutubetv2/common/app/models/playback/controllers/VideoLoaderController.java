@@ -327,9 +327,6 @@ public class VideoLoaderController extends BasePlayerController {
 
         getVideo().sync(formatInfo);
 
-        // Fix stretched video for a couple milliseconds (before the onVideoSizeChanged gets called)
-        applyAspectRatio(formatInfo);
-
         if (formatInfo.isUnplayable()) {
             if (isEmbedPlayer()) {
                 player.finish();
@@ -858,28 +855,6 @@ public class VideoLoaderController extends BasePlayerController {
             playbackMode = PlayerConstants.PLAYBACK_MODE_ONE;
         }
         return playbackMode;
-    }
-
-    /**
-     * Fix stretched video for a couple milliseconds (before the onVideoSizeChanged gets called)
-     */
-    private void applyAspectRatio(MediaItemFormatInfo formatInfo) {
-        if (getPlayer() == null) {
-            return;
-        }
-
-        // Fix stretched video for a couple milliseconds (before the onVideoSizeChanged gets called)
-        if (formatInfo.containsDashFormats()) {
-            MediaFormat format = formatInfo.getAdaptiveFormats().get(0);
-            int width = format.getWidth();
-            int height = format.getHeight();
-            boolean isShorts = width < height;
-            if (width > 0 && height > 0 && (getPlayerData().getAspectRatio() == PlayerData.ASPECT_RATIO_DEFAULT || isShorts)) {
-                getPlayer().setAspectRatio((float) width / height);
-            } else {
-                getPlayer().setAspectRatio(getPlayerData().getAspectRatio());
-            }
-        }
     }
 
     private void disableSubtitles() {

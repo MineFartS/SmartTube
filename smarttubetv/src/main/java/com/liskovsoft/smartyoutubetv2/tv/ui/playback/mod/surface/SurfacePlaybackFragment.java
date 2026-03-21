@@ -25,22 +25,29 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
     private SurfaceWrapper mVideoSurfaceWrapper;
     private AspectRatioFrameLayout mVideoSurfaceRoot;
     private int mBackgroundResId;
-    private float mAspectRatio;
-    private float mPixelRatio = 1.0f;
-    private float mVideoAspectRatio;
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        LayoutInflater inflater, 
+        ViewGroup container, 
+        Bundle savedInstanceState
+    ) {
+    
         ViewGroup root = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
-        mVideoSurfaceWrapper = (PlayerTweaksData.instance(getContext()).isTextureViewEnabled() ||
+        
+        mVideoSurfaceWrapper = (
+            PlayerTweaksData.instance(getContext()).isTextureViewEnabled() ||
                 PlayerData.instance(getContext()).getRotationAngle() != 0) ?
                 new TextureViewWrapper(getContext(), root) : new SurfaceViewWrapper(getContext(), root);
+        
         mVideoSurfaceRoot = root.findViewById(com.liskovsoft.smartyoutubetv2.tv.R.id.surface_root);
         mVideoSurfaceRoot.addView(mVideoSurfaceWrapper.getSurfaceView(), 0);
         mVideoSurfaceRoot.setAspectRatioListener((targetAspectRatio, naturalAspectRatio, aspectRatioMismatch) -> scaleIfNeeded());
+        
         setBackgroundType(PlaybackSupportFragment.BG_LIGHT);
+        
         return root;
+    
     }
 
     /**
@@ -50,12 +57,6 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
         if (mVideoSurfaceWrapper != null) {
             mVideoSurfaceWrapper.setSurfaceHolderCallback(callback);
         }
-    }
-
-    @Override
-    protected void onVideoSizeChanged(int width, int height) {
-        mVideoAspectRatio = ((float) width) / height;
-        mVideoSurfaceRoot.setAspectRatio(calculateAspectRatio());
     }
 
     /**
@@ -87,11 +88,6 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
 
     protected void setZoom(int percents) {
         mVideoSurfaceRoot.setZoom(percents);
-    }
-
-    protected void setAspect(float aspectRatio) {
-        mAspectRatio = aspectRatio;
-        mVideoSurfaceRoot.setAspectRatio(calculateAspectRatio());
     }
 
     protected void setRotation(int angle) {
@@ -162,10 +158,6 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
         textureView.setLayoutParams(params);
     }
 
-    protected void setPixelRatio(float pixelRatio) {
-        mPixelRatio = pixelRatio;
-    }
-
     /**
      * Setup player's background used when controls are showed.
      * @param resId background
@@ -187,7 +179,4 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
         ViewUtil.setGravity(mVideoSurfaceRoot, gravity);
     }
 
-    private float calculateAspectRatio() {
-        return (mAspectRatio == 0 ? mVideoAspectRatio : mAspectRatio) * mPixelRatio;
-    }
 }

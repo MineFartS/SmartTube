@@ -456,16 +456,6 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public int getResizeMode() {
-        return super.getResizeMode();
-    }
-
-    @Override
-    public void setAspectRatio(float ratio) {
-
-    }
-
-    @Override
     public void setRotationAngle(int angle) {
 
     }

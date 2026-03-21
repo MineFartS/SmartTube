@@ -67,13 +67,10 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         settingsPresenter.appendCategory(category);
         
         appendPlayerButtonsCategory(settingsPresenter);
-
         appendVideoSpeedCategory(settingsPresenter);
         
         category = AppDialogUtil.createAudioLanguageCategory(getContext());
         settingsPresenter.appendCategory(category);
-
-        appendPixelRatioCategory(settingsPresenter);
 
         appendMiscCategory(settingsPresenter);
         appendDeveloperCategory(settingsPresenter);
@@ -89,6 +86,7 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         );
 
     }
+
     private void appendVideoSpeedCategory(AppDialogPresenter settingsPresenter) {
         settingsPresenter.appendSingleButton(UiOptionItem.from(getContext().getString(R.string.video_speed), optionItem -> {
             AppDialogPresenter settingsPresenter2 = AppDialogPresenter.instance(getContext());
@@ -309,28 +307,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
             options
         );
         
-    }
-
-    private void appendPixelRatioCategory(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
-
-        ArrayList<Pair<String, Float>> pairs = new ArrayList<>();
-        pairs.add(new Pair<>("1:1 (16:9 display)", 1.0f));
-        pairs.add(new Pair<>("1.11111:1 (16:10 display)", 1.11111f));
-        pairs.add(new Pair<>("1.3333:1 (4:3 display)", 1.3333f));
-        // There is no display with exact 21:9 proportion???
-        //pairs.add(new Pair<>("0.7619:1 (21:9 display)", 0.7619f));
-        pairs.add(new Pair<>("0.75:1 (64:27 display)", 0.75f));
-        pairs.add(new Pair<>("0.7442:1 (43:18 display)", 0.7442f));
-        pairs.add(new Pair<>("0.7407:1 (12:5 display)", 0.7407f));
-
-        for (Pair<String, Float> pair : pairs) {
-            options.add(UiOptionItem.from(pair.first,
-                    optionItem -> mPlayerTweaksData.setPixelRatio(pair.second),
-                    Helpers.floatEquals(mPlayerTweaksData.getPixelRatio(), pair.second)));
-        }
-
-        settingsPresenter.appendRadioCategory(getContext().getString(R.string.player_pixel_ratio), options);
     }
 
     private void appendMiscCategory(AppDialogPresenter settingsPresenter) {
