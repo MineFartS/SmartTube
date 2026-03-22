@@ -42,6 +42,38 @@ function Set-SDK {
 
 }
 
+# Function to highlight specific keywords
+function Start-ColorProcess {
+    param(
+        [System.Collections.ArrayList] $Arguments,
+        $ColorMap
+    )
+
+    $_cmd = $Arguments[0]
+    $_args = $Arguments | Select-Object -Skip 1
+
+    & $_cmd @_args | ForEach-Object { 
+    
+        $Line = $_
+    
+        # Simple regex replace to wrap keywords in a delimiter, then split
+        $pattern = "(" + (($ColorMap.Keys | ForEach-Object { [regex]::Escape($_) }) -join "|") + ")"
+        $parts = [regex]::Split($Line, $pattern)
+        
+        foreach ($part in $parts) {
+            if ($ColorMap.ContainsKey($part)) {
+                Write-Host $part -NoNewline -ForegroundColor $ColorMap[$part]
+            } else {
+                Write-Host $part -NoNewline -ForegroundColor White
+            }
+        }
+
+        Write-Host # Newline
+
+    }
+
+}
+
 Export-ModuleMember `
     -Function * `
     -Variable *
