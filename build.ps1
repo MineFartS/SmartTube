@@ -14,16 +14,8 @@ Set-SDK "C:\Users\$env:USERNAME\AppData\Local\Android\sdk\"
     -Replace 'versionName\s+".*"', "versionName `"$(Get-Date -Format "yy.MM.dd")`"" `
     | Set-Content "$PSScriptRoot\smarttubetv\build.gradle"
 
-Start-ColorProcess `
-`
-    -ColorMap @{
-        "error"="Red"
-        "warning"="Yellow"
-    } `
-`
-    -Arguments @(
-        $JAVA,
-        '-classpath', ".\gradle\wrapper\gradle-wrapper.jar",
-        'org.gradle.wrapper.GradleWrapperMain',
-        "clean", "installStstableDebug"
-    )
+# Execute Gradle
+& $JAVA `
+    '-classpath' ".\gradle\wrapper\gradle-wrapper.jar" `
+    'org.gradle.wrapper.GradleWrapperMain' `
+    "clean" "installStstableDebug"
