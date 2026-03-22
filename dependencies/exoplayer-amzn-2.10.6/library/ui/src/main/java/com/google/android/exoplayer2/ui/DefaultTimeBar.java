@@ -546,29 +546,35 @@ public class DefaultTimeBar extends View implements TimeBar {
 
   @Override
   public boolean onKeyDown(int keyCode, KeyEvent event) {
-    if (isEnabled()) {
-      long positionIncrement = getPositionIncrement();
-      switch (keyCode) {
-        case KeyEvent.KEYCODE_DPAD_LEFT:
-          positionIncrement = -positionIncrement;
-          // Fall through.
-        case KeyEvent.KEYCODE_DPAD_RIGHT:
-          if (scrubIncrementally(positionIncrement)) {
-            removeCallbacks(stopScrubbingRunnable);
-            postDelayed(stopScrubbingRunnable, STOP_SCRUBBING_TIMEOUT_MS);
-            return true;
-          }
-          break;
-        case KeyEvent.KEYCODE_DPAD_CENTER:
-        case KeyEvent.KEYCODE_ENTER:
-          if (scrubbing) {
-            stopScrubbing(/* canceled= */ false);
-            return true;
-          }
-          break;
-        default:
-          // Do nothing.
-      }
+        if (isEnabled()) {
+
+        long positionIncrement = getPositionIncrement();
+        
+        switch (keyCode) {
+            
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+            positionIncrement *= -1;
+            // Fall through.
+            
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+            if (scrubIncrementally(positionIncrement)) {
+                removeCallbacks(stopScrubbingRunnable);
+                postDelayed(stopScrubbingRunnable, STOP_SCRUBBING_TIMEOUT_MS);
+                return true;
+            }
+            break;
+
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+            case KeyEvent.KEYCODE_ENTER:
+            if (scrubbing) {
+                stopScrubbing(/* canceled= */ false);
+                return true;
+            }
+            break;
+            
+            default: // Do nothing.
+      
+        }
     }
     return super.onKeyDown(keyCode, event);
   }

@@ -292,7 +292,7 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
         long calculateSeekIncrement() {
             if (mSeekIncrementMs == -1) {
                 mSeekStartTimeMs = System.currentTimeMillis();
-                mSeekIncrementMs = mPlayerData.getStartSeekIncrementMs();
+                mSeekIncrementMs = 10_000; // 10 seconds
             } else {
                 // increase seek speed by 1.5 every 1 second
                 long timePassed = System.currentTimeMillis() - mSeekStartTimeMs;

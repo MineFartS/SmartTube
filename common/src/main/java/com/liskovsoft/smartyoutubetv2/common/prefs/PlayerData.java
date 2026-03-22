@@ -66,7 +66,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private boolean mIsSpeedPerVideoEnabled;
     private boolean mIsTimeCorrectionEnabled;
     private boolean mIsDoubleRefreshRateEnabled;
-    private int mStartSeekIncrementMs;
     private float mSubtitleScale;
     private float mPlayerVolume;
     private boolean mIsTooltipsEnabled;
@@ -548,15 +547,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         return FormatItem.SUBTITLE_NONE;
     }
 
-    public int getStartSeekIncrementMs() {
-        return mStartSeekIncrementMs;
-    }
-
-    public void setStartSeekIncrementMs(int startSeekIncrementMs) {
-        mStartSeekIncrementMs = startSeekIncrementMs;
-        persistState();
-    }
-
     public void setAfrSwitchTimeMs(long timeMillis) {
         mAfrSwitchTimeMs = timeMillis;
     }
@@ -610,7 +600,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         mIsSpeedPerVideoEnabled = Helpers.parseBoolean(split, 29, false);
         mIsTimeCorrectionEnabled = Helpers.parseBoolean(split, 32, true);
         mIsDoubleRefreshRateEnabled = Helpers.parseBoolean(split, 35, true);
-        mStartSeekIncrementMs = Helpers.parseInt(split, 37, 10_000);
         mSubtitleScale = Helpers.parseFloat(split, 39, .7f);
         mPlayerVolume = Helpers.parseFloat(split, 40, 1.0f);
         mIsTooltipsEnabled = Helpers.parseBoolean(split, 41, true);
@@ -674,7 +663,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
                 mIsSpeedPerVideoEnabled,
                 mIsTimeCorrectionEnabled,
                 mIsDoubleRefreshRateEnabled, 
-                mStartSeekIncrementMs, 
                 null, 
                 mSubtitleScale, 
                 mPlayerVolume, 
