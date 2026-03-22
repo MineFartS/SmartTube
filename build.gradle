@@ -22,11 +22,11 @@ buildscript {
 
 }
 
-tasks.withType(JavaCompile) {
-    options.deprecation = true
-}
-
 allprojects {
+
+    tasks.withType(JavaCompile) {
+        options.deprecation = true
+    } // Show traceback for deprecation warnings
 
     repositories {
         google()
