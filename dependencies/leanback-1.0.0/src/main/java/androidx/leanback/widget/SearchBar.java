@@ -47,6 +47,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.leanback.R;
 
 import java.util.ArrayList;
@@ -176,14 +177,14 @@ public class SearchBar extends RelativeLayout {
         mInputMethodManager =
                 (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        mTextColorSpeechMode = r.getColor(R.color.lb_search_bar_text_speech_mode);
-        mTextColor = r.getColor(R.color.lb_search_bar_text);
+        mTextColorSpeechMode = ContextCompat.getColor(getContext(), R.color.lb_search_bar_text_speech_mode);
+        mTextColor = ContextCompat.getColor(getContext(), R.color.lb_search_bar_text);
 
         mBackgroundSpeechAlpha = r.getInteger(R.integer.lb_search_bar_speech_mode_background_alpha);
         mBackgroundAlpha = r.getInteger(R.integer.lb_search_bar_text_mode_background_alpha);
 
-        mTextHintColorSpeechMode = r.getColor(R.color.lb_search_bar_hint_speech_mode);
-        mTextHintColor = r.getColor(R.color.lb_search_bar_hint);
+        mTextHintColorSpeechMode = ContextCompat.getColor(getContext(), R.color.lb_search_bar_hint_speech_mode);
+        mTextHintColor = ContextCompat.getColor(getContext(), R.color.lb_search_bar_hint);
 
         mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
     }

@@ -122,6 +122,7 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void show(List<OptionCategory> categories, String title, boolean isExpandable, boolean isTransparent, boolean isOverlay, int id) {
         if (!Utils.checkActivity(getActivity())) {
             return;
@@ -211,7 +212,7 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
     /**
      * Fix possible state loss!!!
      */
-    @Override
+    @SuppressWarnings("deprecation")
     public void startPreferenceFragment(@NonNull Fragment fragment) {
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         final Fragment prevFragment =
@@ -238,6 +239,7 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void goBack() {
         if (getChildFragmentManager() != null && getChildFragmentManager().getBackStackEntryCount() > 0) {
             getChildFragmentManager().popBackStack();

@@ -96,7 +96,7 @@ abstract class BridgePresenter extends BasePresenter<Void> implements MotherActi
     private boolean isOldApkInstalled() {
         PackageInfo info = getPackageSignature(getPackageName());
 
-        return info != null && !Helpers.equalsAny(info.signatures[0].hashCode(), getPackageSignatureHash());
+        return info != null && !Helpers.equalsAny(info.signingInfo.getApkContentsSigners()[0].hashCode(), getPackageSignatureHash());
     }
 
     private PackageInfo getPackageSignature(String pkgName) {
@@ -104,7 +104,7 @@ abstract class BridgePresenter extends BasePresenter<Void> implements MotherActi
         PackageInfo packageInfo = null;
 
         try {
-            packageInfo = manager.getPackageInfo(pkgName, PackageManager.GET_SIGNATURES);
+            packageInfo = manager.getPackageInfo(pkgName, PackageManager.GET_SIGNING_CERTIFICATES);
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }
