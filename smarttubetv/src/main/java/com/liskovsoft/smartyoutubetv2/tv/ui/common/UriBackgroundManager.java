@@ -4,16 +4,20 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowMetrics;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.leanback.app.BackgroundManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import android.graphics.Rect;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import com.liskovsoft.smartyoutubetv2.tv.R;
@@ -33,7 +37,11 @@ public class UriBackgroundManager {
 
     public UriBackgroundManager(Activity activity) {
         mActivity = activity;
-        mHandler = new Handler();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            mHandler = new Handler(Looper.getMainLooper());
+        } else {
+            mHandler = new Handler();
+        }
         prepareBackgroundManager();
         setDefaultBackground();
     }
@@ -44,7 +52,14 @@ public class UriBackgroundManager {
         mDefaultBackground = ContextCompat.getDrawable(mActivity, Helpers.getThemeAttr(mActivity, R.attr.shelfBackground));
         mBackgroundTask = new UpdateBackgroundTask();
         mMetrics = new DisplayMetrics();
-        mActivity.getWindowManager().getDefaultDisplay().getMetrics(mMetrics);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            WindowMetrics windowMetrics = mActivity.getWindowManager().getCurrentWindowMetrics();
+            Rect bounds = windowMetrics.getBounds();
+            mMetrics.widthPixels = bounds.width();
+            mMetrics.heightPixels = bounds.height();
+        } else {
+            mActivity.getWindowManager().getDefaultDisplay().getMetrics(mMetrics);
+        }
     }
 
     private void startBackgroundTimer(Uri backgroundURI) {
@@ -131,12 +146,17 @@ public class UriBackgroundManager {
                 .asBitmap()
                 .load(uri)
                 .apply(options)
-                .into(new SimpleTarget<Bitmap>(width, height) {
+                .into(new CustomTarget<Bitmap>(width, height) {
                     @Override
                     public void onResourceReady(
                             @NonNull Bitmap resource,
                             Transition<? super Bitmap> transition) {
                         mBackgroundManager.setBitmap(resource);
+                    }
+                    
+                    @Override
+                    public void onLoadCleared(Drawable placeholder) {
+                        // NOP
                     }
                 });
     }

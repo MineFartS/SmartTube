@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.media.MediaMetadataRetriever;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
+import android.view.WindowMetrics;
 import android.widget.FrameLayout;
 import android.widget.VideoView;
 
@@ -34,14 +36,16 @@ public class DisplayUtils {
      */
     public static Point getDisplaySize(Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-
-        // You can get the height & width like such:
-        // int width = size.x;
-        // int height = size.y;
-        return size;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            WindowMetrics windowMetrics = wm.getCurrentWindowMetrics();
+            Rect bounds = windowMetrics.getBounds();
+            return new Point(bounds.width(), bounds.height());
+        } else {
+            Display display = wm.getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            return size;
+        }
     }
 
     public static int convertDpToPixel(Context ctx, int dp) {
@@ -58,14 +62,25 @@ public class DisplayUtils {
      * using the Leanback support library.
      */
     public void overScan(Activity activity, VideoView videoView) {
-        DisplayMetrics metrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        int w = (int) (metrics.widthPixels * MediaDimensions.MEDIA_WIDTH);
-        int h = (int) (metrics.heightPixels * MediaDimensions.MEDIA_HEIGHT);
-        int marginLeft = (int) (metrics.widthPixels * MediaDimensions.MEDIA_LEFT_MARGIN);
-        int marginTop = (int) (metrics.heightPixels * MediaDimensions.MEDIA_TOP_MARGIN);
-        int marginRight = (int) (metrics.widthPixels * MediaDimensions.MEDIA_RIGHT_MARGIN);
-        int marginBottom = (int) (metrics.heightPixels * MediaDimensions.MEDIA_BOTTOM_MARGIN);
+        WindowManager wm = activity.getWindowManager();
+        int widthPixels, heightPixels;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            WindowMetrics windowMetrics = wm.getCurrentWindowMetrics();
+            Rect bounds = windowMetrics.getBounds();
+            widthPixels = bounds.width();
+            heightPixels = bounds.height();
+        } else {
+            DisplayMetrics metrics = new DisplayMetrics();
+            activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            widthPixels = metrics.widthPixels;
+            heightPixels = metrics.heightPixels;
+        }
+        int w = (int) (widthPixels * MediaDimensions.MEDIA_WIDTH);
+        int h = (int) (heightPixels * MediaDimensions.MEDIA_HEIGHT);
+        int marginLeft = (int) (widthPixels * MediaDimensions.MEDIA_LEFT_MARGIN);
+        int marginTop = (int) (heightPixels * MediaDimensions.MEDIA_TOP_MARGIN);
+        int marginRight = (int) (widthPixels * MediaDimensions.MEDIA_RIGHT_MARGIN);
+        int marginBottom = (int) (heightPixels * MediaDimensions.MEDIA_BOTTOM_MARGIN);
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(w, h);
         lp.setMargins(marginLeft, marginTop, marginRight, marginBottom);
         videoView.setLayoutParams(lp);
