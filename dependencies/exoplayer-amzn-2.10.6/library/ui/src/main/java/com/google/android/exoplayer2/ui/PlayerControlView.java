@@ -15,6 +15,7 @@
  */
 package com.google.android.exoplayer2.ui;
 
+import androidx.core.content.ContextCompat;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
@@ -412,25 +413,22 @@ public class PlayerControlView extends FrameLayout {
 
     Resources resources = context.getResources();
 
-    buttonAlphaEnabled =
-        (float) resources.getInteger(R.integer.exo_media_button_opacity_percentage_enabled) / 100;
-    buttonAlphaDisabled =
-        (float) resources.getInteger(R.integer.exo_media_button_opacity_percentage_disabled) / 100;
+    buttonAlphaEnabled = (float) resources.getInteger(R.integer.exo_media_button_opacity_percentage_enabled) / 100;
+    
+    buttonAlphaDisabled = (float) resources.getInteger(R.integer.exo_media_button_opacity_percentage_disabled) / 100;
 
-    repeatOffButtonDrawable = resources.getDrawable(R.drawable.exo_controls_repeat_off);
-    repeatOneButtonDrawable = resources.getDrawable(R.drawable.exo_controls_repeat_one);
-    repeatAllButtonDrawable = resources.getDrawable(R.drawable.exo_controls_repeat_all);
-    shuffleOnButtonDrawable = resources.getDrawable(R.drawable.exo_controls_shuffle_on);
-    shuffleOffButtonDrawable = resources.getDrawable(R.drawable.exo_controls_shuffle_off);
-    repeatOffButtonContentDescription =
-        resources.getString(R.string.exo_controls_repeat_off_description);
-    repeatOneButtonContentDescription =
-        resources.getString(R.string.exo_controls_repeat_one_description);
-    repeatAllButtonContentDescription =
-        resources.getString(R.string.exo_controls_repeat_all_description);
+    repeatOffButtonDrawable = context.getDrawable(R.drawable.exo_controls_repeat_off);
+    repeatOneButtonDrawable = context.getDrawable(R.drawable.exo_controls_repeat_one);
+    repeatAllButtonDrawable = context.getDrawable(R.drawable.exo_controls_repeat_all);
+    shuffleOnButtonDrawable = context.getDrawable(R.drawable.exo_controls_shuffle_on);
+    shuffleOffButtonDrawable= context.getDrawable(R.drawable.exo_controls_shuffle_off);
+    
+    repeatOffButtonContentDescription = resources.getString(R.string.exo_controls_repeat_off_description);
+    repeatOneButtonContentDescription = resources.getString(R.string.exo_controls_repeat_one_description);
+    repeatAllButtonContentDescription = resources.getString(R.string.exo_controls_repeat_all_description);
     shuffleOnContentDescription = resources.getString(R.string.exo_controls_shuffle_on_description);
-    shuffleOffContentDescription =
-        resources.getString(R.string.exo_controls_shuffle_off_description);
+    shuffleOffContentDescription = resources.getString(R.string.exo_controls_shuffle_off_description);
+  
   }
 
   @SuppressWarnings("ResourceType")

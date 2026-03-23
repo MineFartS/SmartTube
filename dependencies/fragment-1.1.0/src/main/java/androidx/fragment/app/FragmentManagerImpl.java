@@ -52,7 +52,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.collection.ArraySet;
 import androidx.core.util.DebugUtils;
-import androidx.core.util.LogWriter;
 import androidx.core.view.OneShotPreDrawListener;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
@@ -68,6 +67,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Logger;
 
 /**
  * Container for fragments associated with an activity.
@@ -152,24 +152,9 @@ final class FragmentManagerImpl extends FragmentManager implements LayoutInflate
     };
 
     private void throwException(RuntimeException ex) {
+
         Log.e(TAG, ex.getMessage());
-        Log.e(TAG, "Activity state:");
-        LogWriter logw = new LogWriter(TAG);
-        PrintWriter pw = new PrintWriter(logw);
-        if (mHost != null) {
-            try {
-                mHost.onDump("  ", null, pw, new String[] { });
-            } catch (Exception e) {
-                Log.e(TAG, "Failed dumping state", e);
-            }
-        } else {
-            try {
-                dump("  ", null, pw, new String[] { });
-            } catch (Exception e) {
-                Log.e(TAG, "Failed dumping state", e);
-            }
-        }
-        throw ex;
+
     }
 
     @NonNull
@@ -2513,12 +2498,9 @@ final class FragmentManagerImpl extends FragmentManager implements LayoutInflate
             for (int i=0; i<fms.mBackStack.length; i++) {
                 BackStackRecord bse = fms.mBackStack[i].instantiate(this);
                 if (DEBUG) {
-                    Log.v(TAG, "restoreAllState: back stack #" + i
-                            + " (index " + bse.mIndex + "): " + bse);
-                    LogWriter logw = new LogWriter(TAG);
-                    PrintWriter pw = new PrintWriter(logw);
-                    bse.dump("  ", pw, false);
-                    pw.close();
+                    Log.v(TAG, 
+                        "restoreAllState: back stack #"+i+" (index "+bse.mIndex+"): "+bse
+                    );
                 }
                 mBackStack.add(bse);
                 if (bse.mIndex >= 0) {

@@ -567,9 +567,12 @@ public class Utils {
     }
 
     public static CharSequence icon(Context context, int resId, int lineHeight) {
+        
         SpannableString spannable = new SpannableString(" ");
-        Drawable drawable = ContextCompat.getDrawable(context, resId);
+        
+        Drawable drawable = context.getDrawable(resId);
         drawable.setBounds(0, 0, lineHeight, lineHeight);
+        
         ImageSpan imageSpan = new ImageSpan(drawable);
         spannable.setSpan(imageSpan, 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
@@ -806,7 +809,12 @@ public class Utils {
     /**
      * https://stackoverflow.com/questions/11288147/get-resources-from-another-apk
      */
-    public static Drawable getDrawable(Context context, String packageName, String drawableName) {
+    public static Drawable getDrawable(
+        Context context, 
+        String packageName, 
+        String drawableName
+    ) {
+        
         if (context == null || packageName == null || drawableName == null) {
             return null;
         }
@@ -814,15 +822,17 @@ public class Utils {
         Drawable result = null;
 
         try {
-            PackageManager manager = context.getPackageManager();
-            Resources resources = manager.getResourcesForApplication(packageName);
+
+            Resources resources = context.getPackageManager().getResourcesForApplication(packageName);
+            
             int drawableResId = resources.getIdentifier(drawableName, "drawable", packageName);
 
             if (drawableResId == 0) {
                 drawableResId = resources.getIdentifier(drawableName, "mipmap", packageName);
             }
 
-            result = resources.getDrawable(drawableResId);
+            result = ContextCompat.getDrawable(context, drawableResId);
+
         } catch (NameNotFoundException | NotFoundException e) {
             e.printStackTrace();
         }

@@ -117,7 +117,9 @@ public class Settings {
             mPreferStaticShadows = false;
             if (customizations != null) {
                 mPreferStaticShadows = customizations.getBoolean(
-                        "leanback_prefer_static_shadows", mPreferStaticShadows);
+                    "leanback_prefer_static_shadows", 
+                    mPreferStaticShadows
+                );
             }
         } else {
             mPreferStaticShadows = true;
@@ -127,7 +129,9 @@ public class Settings {
             mOutlineClippingDisabled = false;
             if (customizations != null) {
                 mOutlineClippingDisabled = customizations.getBoolean(
-                        "leanback_outline_clipping_disabled", mOutlineClippingDisabled);
+                    "leanback_outline_clipping_disabled", 
+                    mOutlineClippingDisabled
+                );
             }
         } else {
             mOutlineClippingDisabled = true;
@@ -147,8 +151,11 @@ public class Settings {
         }
 
         public boolean getBoolean(String resourceName, boolean defaultValue) {
+            
             int resId = mResources.getIdentifier(resourceName, "bool", mPackageName);
+            
             return resId > 0 ? mResources.getBoolean(resId) : defaultValue;
+        
         }
     };
 

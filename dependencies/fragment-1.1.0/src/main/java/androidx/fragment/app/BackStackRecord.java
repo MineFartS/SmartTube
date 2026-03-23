@@ -20,9 +20,9 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.util.LogWriter;
 import androidx.lifecycle.Lifecycle;
 
+import java.util.logging.Logger;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
@@ -300,21 +300,25 @@ final class BackStackRecord extends FragmentTransaction implements
     }
 
     int commitInternal(boolean allowStateLoss) {
+
         if (mCommitted) throw new IllegalStateException("commit already called");
+        
         if (FragmentManagerImpl.DEBUG) {
+
             Log.v(TAG, "Commit: " + this);
-            LogWriter logw = new LogWriter(TAG);
-            PrintWriter pw = new PrintWriter(logw);
-            dump("  ", pw);
-            pw.close();
+        
         }
+
         mCommitted = true;
+        
         if (mAddToBackStack) {
             mIndex = mManager.allocBackStackIndex(this);
         } else {
             mIndex = -1;
         }
+        
         mManager.enqueueAction(this, allowStateLoss);
+        
         return mIndex;
     }
 
