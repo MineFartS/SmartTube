@@ -14,14 +14,13 @@ import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 import java.util.List;
 
 public class VideoStateService implements ProfileChangeListener {
+    
     @SuppressLint("StaticFieldLeak")
     private static VideoStateService sInstance;
+    
     private static final int MIN_PERSISTENT_STATE_SIZE = 50;
     private static final int MAX_PERSISTENT_STATE_SIZE = 300;
-    private static final long PERSIST_DELAY_MS = 10_000;
-    // Don't store state inside Video object.
-    // As one video might correspond to multiple Video objects.
-    //private final Map<String, State> mStates = Helpers.createLRUMap(MAX_PERSISTENT_STATE_SIZE);
+
     private final List<State> mStates;
     private final AppPrefs mPrefs;
     private static final String DELIM = "&si;";

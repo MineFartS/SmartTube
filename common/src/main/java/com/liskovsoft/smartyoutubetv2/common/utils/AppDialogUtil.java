@@ -71,7 +71,6 @@ public class AppDialogUtil {
     private static final int BACKGROUND_PLAYBACK_ID = 135;
     private static final int VIDEO_PRESETS_ID = 136;
     private static final int AUDIO_LANGUAGE_ID = 138;
-    private static final int PLAYER_SCREEN_TIMEOUT_ID = 139;
     private static final int PLAYER_SPEED_LIST_ID = 141;
     private static final int PLAYER_REMEMBER_SPEED_ID = 142;
     private static final int PLAYER_SPEED_MISC_ID = 143;

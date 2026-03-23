@@ -26,6 +26,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import androidx.annotation.ColorInt;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -263,8 +264,7 @@ public class DefaultTimeBar extends View implements TimeBar {
 
     // Calculate the dimensions and paints for drawn elements.
     Resources res = context.getResources();
-    DisplayMetrics displayMetrics = res.getDisplayMetrics();
-    density = displayMetrics.density;
+    density = res.getConfiguration().densityDpi / (float) DisplayMetrics.DENSITY_DEFAULT;
     fineScrubYThreshold = dpToPx(density, FINE_SCRUB_Y_THRESHOLD_DP);
     int defaultBarHeight = dpToPx(density, DEFAULT_BAR_HEIGHT_DP);
     int defaultTouchTargetHeight = dpToPx(density, DEFAULT_TOUCH_TARGET_HEIGHT_DP);
@@ -642,7 +642,7 @@ public class DefaultTimeBar extends View implements TimeBar {
     event.setClassName(ACCESSIBILITY_CLASS_NAME);
   }
 
-  @TargetApi(21)
+  @RequiresApi(21)
   @Override
   public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
     super.onInitializeAccessibilityNodeInfo(info);
@@ -651,13 +651,8 @@ public class DefaultTimeBar extends View implements TimeBar {
     if (duration <= 0) {
       return;
     }
-    if (Util.SDK_INT >= 21) {
-      info.addAction(AccessibilityAction.ACTION_SCROLL_FORWARD);
-      info.addAction(AccessibilityAction.ACTION_SCROLL_BACKWARD);
-    } else {
-      info.addAction(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD);
-      info.addAction(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD);
-    }
+    info.addAction(AccessibilityAction.ACTION_SCROLL_FORWARD);
+    info.addAction(AccessibilityAction.ACTION_SCROLL_BACKWARD);
   }
 
   @Override
@@ -866,6 +861,7 @@ public class DefaultTimeBar extends View implements TimeBar {
     return Util.SDK_INT >= 23 && setDrawableLayoutDirection(drawable, getLayoutDirection());
   }
 
+  @RequiresApi(23)
   private static boolean setDrawableLayoutDirection(Drawable drawable, int layoutDirection) {
     return Util.SDK_INT >= 23 && drawable.setLayoutDirection(layoutDirection);
   }

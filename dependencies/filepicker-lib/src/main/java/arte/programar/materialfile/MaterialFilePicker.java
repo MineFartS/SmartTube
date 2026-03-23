@@ -1,7 +1,6 @@
 package arte.programar.materialfile;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 
 //import androidx.activity.result.ActivityResultLauncher;
@@ -20,7 +19,6 @@ import arte.programar.materialfile.ui.FilePickerActivity;
 public class MaterialFilePicker {
     private Activity mActivity;
 
-    private Fragment mFragment;
     private androidx.fragment.app.Fragment mSupportFragment;
     //private ActivityResultLauncher<Intent> mStartForResultFiles;
 
@@ -42,24 +40,11 @@ public class MaterialFilePicker {
      * start file picker
      */
     public MaterialFilePicker withActivity(Activity activity) {
-        if (mSupportFragment != null || mFragment != null) {
-            throw new RuntimeException("You must pass either Activity, Fragment or SupportFragment");
+        if (mSupportFragment != null) {
+            throw new RuntimeException("You must pass either Activity or SupportFragment");
         }
 
         mActivity = activity;
-        return this;
-    }
-
-    /**
-     * Specifies fragment, which will be used to
-     * start file picker
-     */
-    public MaterialFilePicker withFragment(Fragment fragment) {
-        if (mSupportFragment != null || mActivity != null) {
-            throw new RuntimeException("You must pass either Activity, Fragment or SupportFragment");
-        }
-
-        mFragment = fragment;
         return this;
     }
 
@@ -68,8 +53,8 @@ public class MaterialFilePicker {
      * start file picker
      */
     public MaterialFilePicker withSupportFragment(androidx.fragment.app.Fragment fragment) {
-        if (mActivity != null || mFragment != null) {
-            throw new RuntimeException("You must pass either Activity, Fragment or SupportFragment");
+        if (mActivity != null) {
+            throw new RuntimeException("You must pass either Activity or SupportFragment");
         }
 
         mSupportFragment = fragment;
@@ -146,10 +131,9 @@ public class MaterialFilePicker {
 
     /**
      * Open Material File Picker activity.
-     * You should set Activity or Fragment before calling this method
+     * You should set Activity or SupportFragment before calling this method
      *
      * @see MaterialFilePicker#withActivity(Activity)
-     * @see MaterialFilePicker#withFragment(Fragment)
      * @see MaterialFilePicker#withSupportFragment(androidx.fragment.app.Fragment)
      */
     public void start(int requestCode) {
@@ -183,18 +167,15 @@ public class MaterialFilePicker {
     private Activity getActivity() {
         Activity activity = null;
 
-        if (mActivity == null && mFragment == null && mSupportFragment == null) {
+        if (mActivity == null && mSupportFragment == null) {
             throw new RuntimeException(
-                    "You must pass Activity/Fragment by calling " +
-                            "withActivity/withFragment/withSupportFragment and " +
-                            "withActivityResultApi method"
+                    "You must pass Activity/SupportFragment by calling " +
+                            "withActivity/withSupportFragment method"
             );
         }
 
         if (mActivity != null) {
             activity = mActivity;
-        } else if (mFragment != null) {
-            activity = mFragment.getActivity();
         } else if (mSupportFragment != null) {
             activity = mSupportFragment.getActivity();
         }

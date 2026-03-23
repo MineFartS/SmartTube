@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -220,7 +221,7 @@ public class FilePickerActivity extends AppCompatActivity implements DirectoryFr
 
     @Override
     public void onFileClicked(final File clickedFile) {
-        new Handler().postDelayed(() -> handleFileClicked(clickedFile), HANDLE_CLICK_DELAY);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> handleFileClicked(clickedFile), HANDLE_CLICK_DELAY);
     }
 
     private void handleFileClicked(final File clickedFile) {

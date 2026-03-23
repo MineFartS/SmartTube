@@ -16,6 +16,25 @@ public class TagPresenter extends LongClickPresenter {
     private static int sSelectedBackgroundColor;
     private static int sSelectedTextColor;
 
+    private OnItemClickListener mClickListener;
+    private OnItemSelectedListener mSelectedListener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mClickListener = listener;
+    }
+
+    public void setOnItemSelectedListener(OnItemSelectedListener listener) {
+        mSelectedListener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClicked(Object item);
+    }
+
+    public interface OnItemSelectedListener {
+        void onItemSelected(Object item);
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent) {
         sDefaultBackgroundColor =
@@ -55,6 +74,17 @@ public class TagPresenter extends LongClickPresenter {
     public void onBindViewHolder(ViewHolder viewHolder, Object item) {
         super.onBindViewHolder(viewHolder, item);
 
+        viewHolder.view.setOnClickListener(v -> {
+            if (mClickListener != null) {
+                mClickListener.onItemClicked(item);
+            }
+        });
+        viewHolder.view.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus && mSelectedListener != null) {
+                mSelectedListener.onItemSelected(item);
+            }
+        });
+
         if (item instanceof Tag) {
             Tag post = (Tag) item;
             TagCardView cardView = (TagCardView) viewHolder.view;
@@ -76,7 +106,8 @@ public class TagPresenter extends LongClickPresenter {
 
     @Override
     public void onUnbindViewHolder(ViewHolder viewHolder) {
-
+        viewHolder.view.setOnClickListener(null);
+        viewHolder.view.setOnFocusChangeListener(null);
     }
 
 }

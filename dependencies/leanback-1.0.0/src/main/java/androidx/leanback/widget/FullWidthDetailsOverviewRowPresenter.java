@@ -19,6 +19,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -66,7 +67,7 @@ public class FullWidthDetailsOverviewRowPresenter extends RowPresenter {
     static final String TAG = "FullWidthDetailsRP";
     static final boolean DEBUG = false;
 
-    static final Handler sHandler = new Handler();
+    static final Handler sHandler = new Handler(Looper.getMainLooper());
 
     /**
      * This is the default state corresponding to layout file.  The view takes full width

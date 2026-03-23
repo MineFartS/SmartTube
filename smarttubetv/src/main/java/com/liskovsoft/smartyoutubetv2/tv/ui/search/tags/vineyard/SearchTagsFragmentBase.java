@@ -2,7 +2,7 @@ package com.liskovsoft.smartyoutubetv2.tv.ui.search.tags.vineyard;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,11 +42,8 @@ import java.util.List;
 
 public abstract class SearchTagsFragmentBase extends SearchSupportFragment
         implements SearchSupportFragment.SearchResultProvider, SearchView {
-    private static final String TAG = SearchTagsFragmentBase.class.getSimpleName();
-    private static final int REQUEST_SPEECH = 0x00000010;
 
     private TagAdapter mSearchTagsAdapter;
-    //private ObjectAdapter mItemResultsAdapter;
     private ArrayObjectAdapter mResultsAdapter; // contains tags adapter and results adapter (see attachAdapter method)
     private ListRowPresenter mResultsPresenter;
     private TagPresenter mTagsPresenter;
@@ -63,7 +60,9 @@ public abstract class SearchTagsFragmentBase extends SearchSupportFragment
         mResultsPresenter = new CustomListRowPresenter();
         mResultsAdapter = new ArrayObjectAdapter(mResultsPresenter);
         mTagsPresenter = new TagPresenter();
-        mSearchTagsAdapter = new TagAdapter(getActivity(), mTagsPresenter, "");
+        mTagsPresenter.setOnItemClickListener(this::onItemViewClicked);
+        mTagsPresenter.setOnItemSelectedListener(this::onItemViewSelected);
+        mSearchTagsAdapter = new TagAdapter(requireActivity(), mTagsPresenter, "");
         setSearchResultProvider(this);
         setupListenersAndPermissions();
     }
@@ -89,21 +88,7 @@ public abstract class SearchTagsFragmentBase extends SearchSupportFragment
         mIsStopping = true;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case REQUEST_SPEECH:
-                switch (resultCode) {
-                    case Activity.RESULT_OK:
-                        setSearchQuery(data, true);
-                        break;
-                    case Activity.RESULT_CANCELED:
-                        Log.i(TAG, "Recognizer canceled");
-                        break;
-                }
-                break;
-        }
-    }
+
 
     @Override
     public ObjectAdapter getResultsAdapter() {
@@ -139,7 +124,6 @@ public abstract class SearchTagsFragmentBase extends SearchSupportFragment
         return mResultsAdapter.size() > 0;
     }
 
-    @SuppressWarnings("deprecation")
     private void setupListenersAndPermissions() {
 
         setOnItemViewClickedListener((itemViewHolder, item, rowViewHolder, row) -> onItemViewClicked(item));
