@@ -118,7 +118,7 @@ public final class SubripDecoder extends SimpleSubtitleDecoder {
         currentLine = subripData.readLine();
       }
 
-      Spanned text = Html.fromHtml(textBuilder.toString());
+      Spanned text = Html.fromHtml(textBuilder.toString(), Html.FROM_HTML_MODE_COMPACT);
 
       String alignmentTag = null;
       for (int i = 0; i < tags.size(); i++) {

@@ -17,6 +17,7 @@ package com.google.android.exoplayer2.source.hls.playlist;
 
 import android.net.Uri;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
@@ -117,7 +118,7 @@ public final class DefaultHlsPlaylistTracker
       Uri initialPlaylistUri,
       EventDispatcher eventDispatcher,
       PrimaryPlaylistListener primaryPlaylistListener) {
-    this.playlistRefreshHandler = new Handler();
+    this.playlistRefreshHandler = new Handler(Looper.getMainLooper());
     this.eventDispatcher = eventDispatcher;
     this.primaryPlaylistListener = primaryPlaylistListener;
     ParsingLoadable<HlsPlaylist> masterPlaylistLoadable =

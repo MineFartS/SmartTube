@@ -16,6 +16,7 @@
 package com.google.android.exoplayer2.source;
 
 import android.os.Handler;
+import android.os.Looper;
 import androidx.annotation.CallSuper;
 import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.Timeline;
@@ -46,7 +47,7 @@ public abstract class CompositeMediaSource<T> extends BaseMediaSource {
   @CallSuper
   public void prepareSourceInternal(@Nullable TransferListener mediaTransferListener) {
     this.mediaTransferListener = mediaTransferListener;
-    eventHandler = new Handler();
+    eventHandler = new Handler(Looper.getMainLooper());
   }
 
   @Override

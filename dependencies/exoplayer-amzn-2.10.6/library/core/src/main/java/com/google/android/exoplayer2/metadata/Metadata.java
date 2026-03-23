@@ -73,7 +73,7 @@ public final class Metadata implements Parcelable {
   /* package */ Metadata(Parcel in) {
     entries = new Metadata.Entry[in.readInt()];
     for (int i = 0; i < entries.length; i++) {
-      entries[i] = in.readParcelable(Entry.class.getClassLoader());
+      entries[i] = in.readParcelable(Entry.class.getClassLoader(), Entry.class);
     }
   }
 

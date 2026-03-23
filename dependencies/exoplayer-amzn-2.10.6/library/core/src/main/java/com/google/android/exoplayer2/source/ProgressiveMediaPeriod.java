@@ -17,6 +17,7 @@ package com.google.android.exoplayer2.source;
 
 import android.net.Uri;
 import android.os.Handler;
+import android.os.Looper;
 import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Format;
@@ -175,7 +176,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
                 .onContinueLoadingRequested(ProgressiveMediaPeriod.this);
           }
         };
-    handler = new Handler();
+    handler = new Handler(Looper.getMainLooper());
     sampleQueueTrackIds = new TrackId[0];
     sampleQueues = new SampleQueue[0];
     pendingResetPositionUs = C.TIME_UNSET;

@@ -104,7 +104,7 @@ public final class DownloadRequest implements Parcelable {
     int streamKeyCount = in.readInt();
     ArrayList<StreamKey> mutableStreamKeys = new ArrayList<>(streamKeyCount);
     for (int i = 0; i < streamKeyCount; i++) {
-      mutableStreamKeys.add(in.readParcelable(StreamKey.class.getClassLoader()));
+      mutableStreamKeys.add(in.readParcelable(StreamKey.class.getClassLoader(), StreamKey.class));
     }
     streamKeys = Collections.unmodifiableList(mutableStreamKeys);
     customCacheKey = in.readString();

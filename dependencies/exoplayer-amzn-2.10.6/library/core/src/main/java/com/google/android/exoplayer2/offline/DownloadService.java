@@ -612,7 +612,7 @@ public abstract class DownloadService extends Service {
         // Do nothing.
         break;
       case ACTION_ADD_DOWNLOAD:
-        DownloadRequest downloadRequest = intent.getParcelableExtra(KEY_DOWNLOAD_REQUEST);
+        DownloadRequest downloadRequest = intent.getParcelableExtra(KEY_DOWNLOAD_REQUEST, DownloadRequest.class);
         if (downloadRequest == null) {
           Log.e(TAG, "Ignored ADD_DOWNLOAD: Missing " + KEY_DOWNLOAD_REQUEST + " extra");
         } else {
@@ -645,7 +645,7 @@ public abstract class DownloadService extends Service {
         }
         break;
       case ACTION_SET_REQUIREMENTS:
-        Requirements requirements = intent.getParcelableExtra(KEY_REQUIREMENTS);
+        Requirements requirements = intent.getParcelableExtra(KEY_REQUIREMENTS, Requirements.class);
         if (requirements == null) {
           Log.e(TAG, "Ignored SET_REQUIREMENTS: Missing " + KEY_REQUIREMENTS + " extra");
         } else {

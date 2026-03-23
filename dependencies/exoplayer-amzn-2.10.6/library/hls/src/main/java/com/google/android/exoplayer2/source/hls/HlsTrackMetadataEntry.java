@@ -181,7 +181,7 @@ public final class HlsTrackMetadataEntry implements Metadata.Entry {
     int variantInfoSize = in.readInt();
     ArrayList<VariantInfo> variantInfos = new ArrayList<>(variantInfoSize);
     for (int i = 0; i < variantInfoSize; i++) {
-      variantInfos.add(in.readParcelable(VariantInfo.class.getClassLoader()));
+      variantInfos.add(in.readParcelable(VariantInfo.class.getClassLoader(), VariantInfo.class));
     }
     this.variantInfos = Collections.unmodifiableList(variantInfos);
   }

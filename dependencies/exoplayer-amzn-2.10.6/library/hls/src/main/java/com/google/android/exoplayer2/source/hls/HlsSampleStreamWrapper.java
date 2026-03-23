@@ -17,6 +17,7 @@ package com.google.android.exoplayer2.source.hls;
 
 import android.net.Uri;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.SparseIntArray;
 import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
@@ -204,7 +205,7 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
     hlsSampleStreams = new ArrayList<>();
     maybeFinishPrepareRunnable = this::maybeFinishPrepare;
     onTracksEndedRunnable = this::onTracksEnded;
-    handler = new Handler();
+    handler = new Handler(Looper.getMainLooper());
     lastSeekPositionUs = positionUs;
     pendingResetPositionUs = positionUs;
   }

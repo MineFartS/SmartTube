@@ -17,6 +17,7 @@ package com.google.android.exoplayer2.source.smoothstreaming;
 
 import android.net.Uri;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
@@ -545,7 +546,7 @@ public final class SsMediaSource extends BaseMediaSource
       manifestDataSource = manifestDataSourceFactory.createDataSource();
       manifestLoader = new Loader("Loader:Manifest");
       manifestLoaderErrorThrower = manifestLoader;
-      manifestRefreshHandler = new Handler();
+      manifestRefreshHandler = new Handler(Looper.getMainLooper());
       startLoadingManifest();
     }
   }

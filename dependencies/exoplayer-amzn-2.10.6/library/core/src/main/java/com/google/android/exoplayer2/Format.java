@@ -1118,7 +1118,7 @@ public final class Format implements Parcelable {
     roleFlags = in.readInt();
     bitrate = in.readInt();
     codecs = in.readString();
-    metadata = in.readParcelable(Metadata.class.getClassLoader());
+    metadata = in.readParcelable(Metadata.class.getClassLoader(), Metadata.class);
     // Container specific.
     containerMimeType = in.readString();
     // Elementary stream specific.
@@ -1129,7 +1129,7 @@ public final class Format implements Parcelable {
     for (int i = 0; i < initializationDataSize; i++) {
       initializationData.add(in.createByteArray());
     }
-    drmInitData = in.readParcelable(DrmInitData.class.getClassLoader());
+    drmInitData = in.readParcelable(DrmInitData.class.getClassLoader(), DrmInitData.class);
     subsampleOffsetUs = in.readLong();
     // Video specific.
     width = in.readInt();
@@ -1140,7 +1140,7 @@ public final class Format implements Parcelable {
     boolean hasProjectionData = Util.readBoolean(in);
     projectionData = hasProjectionData ? in.createByteArray() : null;
     stereoMode = in.readInt();
-    colorInfo = in.readParcelable(ColorInfo.class.getClassLoader());
+    colorInfo = in.readParcelable(ColorInfo.class.getClassLoader(), ColorInfo.class);
     // Audio specific.
     channelCount = in.readInt();
     sampleRate = in.readInt();

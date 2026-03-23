@@ -390,7 +390,7 @@ public final class AdsMediaSource extends CompositeMediaSource<MediaPeriodId> {
      * events on the external event listener thread.
      */
     public ComponentListener() {
-      playerHandler = new Handler();
+      playerHandler = new Handler(Looper.getMainLooper());
     }
 
     /** Releases the component listener. */

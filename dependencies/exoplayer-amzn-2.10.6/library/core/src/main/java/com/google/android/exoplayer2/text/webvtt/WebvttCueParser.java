@@ -156,7 +156,7 @@ public final class WebvttCueParser {
   /* package */ static void parseCueText(
       String id, String markup, WebvttCue.Builder builder, List<WebvttCssStyle> styles) {
     // MOD: Fix embedded styles by decoding html entities
-    markup = Html.fromHtml(markup).toString();
+    markup = Html.fromHtml(markup, Html.FROM_HTML_MODE_COMPACT).toString();
 
     SpannableStringBuilder spannedText = new SpannableStringBuilder();
     ArrayDeque<StartTag> startTagStack = new ArrayDeque<>();

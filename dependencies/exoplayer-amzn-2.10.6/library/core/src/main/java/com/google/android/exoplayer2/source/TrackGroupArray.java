@@ -47,7 +47,7 @@ public final class TrackGroupArray implements Parcelable {
     length = in.readInt();
     trackGroups = new TrackGroup[length];
     for (int i = 0; i < length; i++) {
-      trackGroups[i] = in.readParcelable(TrackGroup.class.getClassLoader());
+      trackGroups[i] = in.readParcelable(TrackGroup.class.getClassLoader(), TrackGroup.class);
     }
   }
 

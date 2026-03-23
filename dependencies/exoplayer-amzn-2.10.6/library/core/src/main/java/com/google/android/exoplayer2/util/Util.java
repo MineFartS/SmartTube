@@ -33,6 +33,8 @@ import android.content.res.Resources;
 import android.graphics.Point;
 import android.media.AudioFormat;
 import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
@@ -1697,34 +1699,57 @@ public final class Util {
       // Note: This is for backward compatibility only (context used to be @Nullable).
       return C.NETWORK_TYPE_UNKNOWN;
     }
-    NetworkInfo networkInfo;
     ConnectivityManager connectivityManager =
         (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
     if (connectivityManager == null) {
       return C.NETWORK_TYPE_UNKNOWN;
     }
-    try {
-      networkInfo = connectivityManager.getActiveNetworkInfo();
-    } catch (SecurityException e) {
-      // Expected if permission was revoked.
-      return C.NETWORK_TYPE_UNKNOWN;
-    }
-    if (networkInfo == null || !networkInfo.isConnected()) {
-      return C.NETWORK_TYPE_OFFLINE;
-    }
-    switch (networkInfo.getType()) {
-      case ConnectivityManager.TYPE_WIFI:
+    if (SDK_INT >= 29) {
+      // Use modern NetworkCapabilities API
+      Network activeNetwork = connectivityManager.getActiveNetwork();
+      if (activeNetwork == null) {
+        return C.NETWORK_TYPE_OFFLINE;
+      }
+      NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(activeNetwork);
+      if (capabilities == null || !capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
+        return C.NETWORK_TYPE_OFFLINE;
+      }
+      if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
         return C.NETWORK_TYPE_WIFI;
-      case ConnectivityManager.TYPE_WIMAX:
-        return C.NETWORK_TYPE_4G;
-      case ConnectivityManager.TYPE_MOBILE:
-      case ConnectivityManager.TYPE_MOBILE_DUN:
-      case ConnectivityManager.TYPE_MOBILE_HIPRI:
-        return getMobileNetworkType(networkInfo);
-      case ConnectivityManager.TYPE_ETHERNET:
+      }
+      if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+        return getMobileNetworkType(context);
+      }
+      if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
         return C.NETWORK_TYPE_ETHERNET;
-      default: // VPN, Bluetooth, Dummy.
-        return C.NETWORK_TYPE_OTHER;
+      }
+      return C.NETWORK_TYPE_OTHER;
+    } else {
+      // Fallback to deprecated NetworkInfo API for older Android versions
+      NetworkInfo networkInfo;
+      try {
+        networkInfo = connectivityManager.getActiveNetworkInfo();
+      } catch (SecurityException e) {
+        // Expected if permission was revoked.
+        return C.NETWORK_TYPE_UNKNOWN;
+      }
+      if (networkInfo == null || !networkInfo.isConnected()) {
+        return C.NETWORK_TYPE_OFFLINE;
+      }
+      switch (networkInfo.getType()) {
+        case ConnectivityManager.TYPE_WIFI:
+          return C.NETWORK_TYPE_WIFI;
+        case ConnectivityManager.TYPE_WIMAX:
+          return C.NETWORK_TYPE_4G;
+        case ConnectivityManager.TYPE_MOBILE:
+        case ConnectivityManager.TYPE_MOBILE_DUN:
+        case ConnectivityManager.TYPE_MOBILE_HIPRI:
+          return getMobileNetworkType(context);
+        case ConnectivityManager.TYPE_ETHERNET:
+          return C.NETWORK_TYPE_ETHERNET;
+        default: // VPN, Bluetooth, Dummy.
+          return C.NETWORK_TYPE_OTHER;
+      }
     }
   }
 
@@ -1902,7 +1927,7 @@ public final class Util {
       @Nullable DrmSessionManager<FrameworkMediaCrypto> drmSessionManager) {
     Renderer[] renderers =
         renderersFactory.createRenderers(
-            new Handler(),
+            new Handler(Looper.getMainLooper()),
             new VideoRendererEventListener() {},
             new AudioRendererEventListener() {},
             (cues) -> {},
@@ -1966,8 +1991,14 @@ public final class Util {
     return Locale.forLanguageTag(languageTag).toLanguageTag();
   }
 
-  private static @C.NetworkType int getMobileNetworkType(NetworkInfo networkInfo) {
-    switch (networkInfo.getSubtype()) {
+  private static @C.NetworkType int getMobileNetworkType(Context context) {
+    TelephonyManager telephonyManager =
+        (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+    if (telephonyManager == null) {
+      return C.NETWORK_TYPE_CELLULAR_UNKNOWN;
+    }
+    int networkType = SDK_INT >= 30 ? telephonyManager.getDataNetworkType() : telephonyManager.getNetworkType();
+    switch (networkType) {
       case TelephonyManager.NETWORK_TYPE_EDGE:
       case TelephonyManager.NETWORK_TYPE_GPRS:
         return C.NETWORK_TYPE_2G;

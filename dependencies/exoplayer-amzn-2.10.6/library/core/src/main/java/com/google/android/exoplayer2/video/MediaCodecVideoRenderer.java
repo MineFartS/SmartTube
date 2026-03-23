@@ -24,6 +24,7 @@ import android.media.MediaCodecInfo.CodecCapabilities;
 import android.media.MediaCrypto;
 import android.media.MediaFormat;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Pair;
 import android.view.Surface;
@@ -1672,7 +1673,7 @@ public class MediaCodecVideoRenderer extends MediaCodecRenderer {
   private final class OnFrameRenderedListenerV23 implements MediaCodec.OnFrameRenderedListener {
 
     private OnFrameRenderedListenerV23(MediaCodec codec) {
-      codec.setOnFrameRenderedListener(this, new Handler());
+      codec.setOnFrameRenderedListener(this, new Handler(Looper.getMainLooper()));
     }
 
     @Override

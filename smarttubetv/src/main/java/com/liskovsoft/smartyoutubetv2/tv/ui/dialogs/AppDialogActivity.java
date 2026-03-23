@@ -1,9 +1,9 @@
 package com.liskovsoft.smartyoutubetv2.tv.ui.dialogs;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import androidx.fragment.app.Fragment;
 import com.liskovsoft.sharedutils.helpers.KeyHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.PlaybackPresenter;
@@ -25,8 +25,7 @@ public class AppDialogActivity extends MotherActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.fragment_app_settings);
-    // Can't use getSupportFragmentManager because AppDialogFragment isn't subclass of androidx
-    // fragment
+    // Use getSupportFragmentManager for androidx fragments
     mFragment =
         (AppDialogFragment) getFragmentManager().findFragmentById(R.id.app_settings_fragment);
 

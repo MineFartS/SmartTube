@@ -1211,8 +1211,8 @@ public class DefaultTrackSelector extends MappingTrackSelector {
         int overrideCount = in.readInt();
         Map<TrackGroupArray, SelectionOverride> overrides = new HashMap<>(overrideCount);
         for (int j = 0; j < overrideCount; j++) {
-          TrackGroupArray trackGroups = in.readParcelable(TrackGroupArray.class.getClassLoader());
-          SelectionOverride override = in.readParcelable(SelectionOverride.class.getClassLoader());
+          TrackGroupArray trackGroups = in.readParcelable(TrackGroupArray.class.getClassLoader(), TrackGroupArray.class);
+          SelectionOverride override = in.readParcelable(SelectionOverride.class.getClassLoader(), SelectionOverride.class);
           overrides.put(trackGroups, override);
         }
         selectionOverrides.put(rendererIndex, overrides);

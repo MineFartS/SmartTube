@@ -55,7 +55,7 @@ public final class TrackGroup implements Parcelable {
     length = in.readInt();
     formats = new Format[length];
     for (int i = 0; i < length; i++) {
-      formats[i] = in.readParcelable(Format.class.getClassLoader());
+      formats[i] = in.readParcelable(Format.class.getClassLoader(), Format.class);
     }
   }
 

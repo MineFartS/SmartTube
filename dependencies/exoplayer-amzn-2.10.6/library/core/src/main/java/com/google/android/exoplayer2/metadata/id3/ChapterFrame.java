@@ -66,7 +66,7 @@ public final class ChapterFrame extends Id3Frame {
     int subFrameCount = in.readInt();
     subFrames = new Id3Frame[subFrameCount];
     for (int i = 0; i < subFrameCount; i++) {
-      subFrames[i] = in.readParcelable(Id3Frame.class.getClassLoader());
+      subFrames[i] = in.readParcelable(Id3Frame.class.getClassLoader(), Id3Frame.class);
     }
   }
 

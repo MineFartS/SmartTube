@@ -134,15 +134,30 @@ public final class Requirements implements Parcelable {
 
     ConnectivityManager connectivityManager =
         (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-    NetworkInfo networkInfo = Assertions.checkNotNull(connectivityManager).getActiveNetworkInfo();
-    if (networkInfo == null
-        || !networkInfo.isConnected()
-        || !isInternetConnectivityValidated(connectivityManager)) {
-      return requirements & (NETWORK | NETWORK_UNMETERED);
-    }
-
-    if (isUnmeteredNetworkRequired() && connectivityManager.isActiveNetworkMetered()) {
-      return NETWORK_UNMETERED;
+    if (Util.SDK_INT >= 23) {
+      Network activeNetwork = connectivityManager.getActiveNetwork();
+      if (activeNetwork == null) {
+        return requirements & (NETWORK | NETWORK_UNMETERED);
+      }
+      NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork);
+      if (networkCapabilities == null
+          || !networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+          || !isInternetConnectivityValidated(connectivityManager)) {
+        return requirements & (NETWORK | NETWORK_UNMETERED);
+      }
+      if (isUnmeteredNetworkRequired() && connectivityManager.isActiveNetworkMetered()) {
+        return NETWORK_UNMETERED;
+      }
+    } else {
+      NetworkInfo networkInfo = Assertions.checkNotNull(connectivityManager).getActiveNetworkInfo();
+      if (networkInfo == null
+          || !networkInfo.isConnected()
+          || !isInternetConnectivityValidated(connectivityManager)) {
+        return requirements & (NETWORK | NETWORK_UNMETERED);
+      }
+      if (isUnmeteredNetworkRequired() && connectivityManager.isActiveNetworkMetered()) {
+        return NETWORK_UNMETERED;
+      }
     }
 
     return 0;
