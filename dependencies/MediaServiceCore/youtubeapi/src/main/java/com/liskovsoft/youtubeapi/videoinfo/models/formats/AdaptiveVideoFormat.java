@@ -4,58 +4,61 @@ import androidx.annotation.NonNull;
 import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
 
 public class AdaptiveVideoFormat extends VideoFormat {
-    public static class Range {
-        @JsonPath("$.start")
-        private String start;
-        @JsonPath("$.end")
-        private String end;
+  public static class Range {
+    @JsonPath("$.start")
+    private String start;
 
-        @NonNull
-        public String toString() {
-            if (start == null || end == null) {
-                return "";
-            }
+    @JsonPath("$.end")
+    private String end;
 
-            return String.format("%s-%s", start, end);
-        }
+    @NonNull
+    public String toString() {
+      if (start == null || end == null) {
+        return "";
+      }
+
+      return String.format("%s-%s", start, end);
+    }
+  }
+
+  @JsonPath("$.indexRange")
+  private Range mIndexRange;
+
+  @JsonPath("$.initRange")
+  private Range mInitRange;
+
+  private String mIndex;
+  private String mInit;
+
+  public String getIndex() {
+    if (mIndex == null && mIndexRange != null) {
+      mIndex = mIndexRange.toString();
     }
 
-    @JsonPath("$.indexRange")
-    private Range mIndexRange;
-    @JsonPath("$.initRange")
-    private Range mInitRange;
-    private String mIndex;
-    private String mInit;
+    return mIndex;
+  }
 
-    public String getIndex() {
-        if (mIndex == null && mIndexRange != null) {
-            mIndex = mIndexRange.toString();
-        }
+  public void setIndex(String index) {
+    mIndex = index;
+  }
 
-        return mIndex;
+  public String getInit() {
+    if (mInit == null && mInitRange != null) {
+      mInit = mInitRange.toString();
     }
 
-    public void setIndex(String index) {
-        mIndex = index;
-    }
+    return mInit;
+  }
 
-    public String getInit() {
-        if (mInit == null && mInitRange != null) {
-            mInit = mInitRange.toString();
-        }
+  public void setInit(String init) {
+    mInit = init;
+  }
 
-        return mInit;
-    }
+  public Range getIndexRange() {
+    return mIndexRange;
+  }
 
-    public void setInit(String init) {
-        mInit = init;
-    }
-
-    public Range getIndexRange() {
-        return mIndexRange;
-    }
-
-    public Range getInitRange() {
-        return mInitRange;
-    }
+  public Range getInitRange() {
+    return mInitRange;
+  }
 }

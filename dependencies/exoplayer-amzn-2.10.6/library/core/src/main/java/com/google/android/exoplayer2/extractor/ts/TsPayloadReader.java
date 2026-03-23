@@ -15,8 +15,8 @@
  */
 package com.google.android.exoplayer2.extractor.ts;
 
-import androidx.annotation.IntDef;
 import android.util.SparseArray;
+import androidx.annotation.IntDef;
 import com.google.android.exoplayer2.ParserException;
 import com.google.android.exoplayer2.extractor.ExtractorOutput;
 import com.google.android.exoplayer2.extractor.TrackOutput;
@@ -28,20 +28,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Parses TS packet payload data.
- */
+/** Parses TS packet payload data. */
 public interface TsPayloadReader {
 
-  /**
-   * Factory of {@link TsPayloadReader} instances.
-   */
+  /** Factory of {@link TsPayloadReader} instances. */
   interface Factory {
 
     /**
      * Returns the initial mapping from PIDs to payload readers.
-     * <p>
-     * This method allows the injection of payload readers for reserved PIDs, excluding PID 0.
+     *
+     * <p>This method allows the injection of payload readers for reserved PIDs, excluding PID 0.
      *
      * @return A {@link SparseArray} that maps PIDs to payload readers.
      */
@@ -53,16 +49,13 @@ public interface TsPayloadReader {
      *
      * @param streamType Stream type value as defined in the PMT entry or associated descriptors.
      * @param esInfo Information associated to the elementary stream provided in the PMT.
-     * @return A {@link TsPayloadReader} for the packet stream carried by the provided pid.
-     *     {@code null} if the stream is not supported.
+     * @return A {@link TsPayloadReader} for the packet stream carried by the provided pid. {@code
+     *     null} if the stream is not supported.
      */
     TsPayloadReader createPayloadReader(int streamType, EsInfo esInfo);
-
   }
 
-  /**
-   * Holds information associated with a PMT entry.
-   */
+  /** Holds information associated with a PMT entry. */
   final class EsInfo {
 
     public final int streamType;
@@ -71,13 +64,16 @@ public interface TsPayloadReader {
     public final byte[] descriptorBytes;
 
     /**
-     * @param streamType The type of the stream as defined by the
-     *     {@link TsExtractor}{@code .TS_STREAM_TYPE_*}.
+     * @param streamType The type of the stream as defined by the {@link TsExtractor}{@code
+     *     .TS_STREAM_TYPE_*}.
      * @param language The language of the stream, as defined by ISO/IEC 13818-1, section 2.6.18.
      * @param dvbSubtitleInfos Information about DVB subtitles associated to the stream.
      * @param descriptorBytes The descriptor bytes associated to the stream.
      */
-    public EsInfo(int streamType, String language, List<DvbSubtitleInfo> dvbSubtitleInfos,
+    public EsInfo(
+        int streamType,
+        String language,
+        List<DvbSubtitleInfo> dvbSubtitleInfos,
         byte[] descriptorBytes) {
       this.streamType = streamType;
       this.language = language;
@@ -87,7 +83,6 @@ public interface TsPayloadReader {
               : Collections.unmodifiableList(dvbSubtitleInfos);
       this.descriptorBytes = descriptorBytes;
     }
-
   }
 
   /**
@@ -109,12 +104,9 @@ public interface TsPayloadReader {
       this.type = type;
       this.initializationData = initializationData;
     }
-
   }
 
-  /**
-   * Generates track ids for initializing {@link TsPayloadReader}s' {@link TrackOutput}s.
-   */
+  /** Generates track ids for initializing {@link TsPayloadReader}s' {@link TrackOutput}s. */
   final class TrackIdGenerator {
 
     private static final int ID_UNSET = Integer.MIN_VALUE;
@@ -162,8 +154,7 @@ public interface TsPayloadReader {
      * called after the first {@link #generateNewId()} call.
      *
      * @return The last generated format id, with the format {@code "programNumber/trackId"}. If no
-     *     {@code programNumber} was provided, the {@code trackId} alone is used as
-     *     format id.
+     *     {@code programNumber} was provided, the {@code trackId} alone is used as format id.
      */
     public String getFormatId() {
       maybeThrowUninitializedError();
@@ -175,7 +166,6 @@ public interface TsPayloadReader {
         throw new IllegalStateException("generateNewId() must be called before retrieving ids.");
       }
     }
-
   }
 
   /**
@@ -194,10 +184,12 @@ public interface TsPayloadReader {
 
   /** Indicates the presence of the payload_unit_start_indicator in the TS packet header. */
   int FLAG_PAYLOAD_UNIT_START_INDICATOR = 1;
+
   /**
    * Indicates the presence of the random_access_indicator in the TS packet header adaptation field.
    */
   int FLAG_RANDOM_ACCESS_INDICATOR = 1 << 1;
+
   /** Indicates the presence of the data_alignment_indicator in the PES header. */
   int FLAG_DATA_ALIGNMENT_INDICATOR = 1 << 2;
 
@@ -209,7 +201,9 @@ public interface TsPayloadReader {
    * @param idGenerator A {@link PesReader.TrackIdGenerator} that generates unique track ids for the
    *     {@link TrackOutput}s.
    */
-  void init(TimestampAdjuster timestampAdjuster, ExtractorOutput extractorOutput,
+  void init(
+      TimestampAdjuster timestampAdjuster,
+      ExtractorOutput extractorOutput,
       TrackIdGenerator idGenerator);
 
   /**

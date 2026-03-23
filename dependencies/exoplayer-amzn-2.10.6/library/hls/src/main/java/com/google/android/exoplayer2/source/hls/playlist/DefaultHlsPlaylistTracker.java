@@ -134,9 +134,7 @@ public final class DefaultHlsPlaylistTracker
             this,
             loadErrorHandlingPolicy.getMinimumLoadableRetryCount(masterPlaylistLoadable.type));
     eventDispatcher.loadStarted(
-        masterPlaylistLoadable.dataSpec,
-        masterPlaylistLoadable.type,
-        elapsedRealtime);
+        masterPlaylistLoadable.dataSpec, masterPlaylistLoadable.type, elapsedRealtime);
   }
 
   @Override
@@ -608,9 +606,7 @@ public final class DefaultHlsPlaylistTracker
               this,
               loadErrorHandlingPolicy.getMinimumLoadableRetryCount(mediaPlaylistLoadable.type));
       eventDispatcher.loadStarted(
-          mediaPlaylistLoadable.dataSpec,
-          mediaPlaylistLoadable.type,
-          elapsedRealtime);
+          mediaPlaylistLoadable.dataSpec, mediaPlaylistLoadable.type, elapsedRealtime);
     }
 
     private void processLoadedPlaylist(HlsMediaPlaylist loadedPlaylist, long loadDurationMs) {

@@ -20,9 +20,7 @@ import com.google.android.exoplayer2.extractor.ExtractorInput;
 import java.io.EOFException;
 import java.io.IOException;
 
-/**
- * Reads EBML variable-length integers (varints) from an {@link ExtractorInput}.
- */
+/** Reads EBML variable-length integers (varints) from an {@link ExtractorInput}. */
 /* package */ final class VarintReader {
 
   private static final int STATE_BEGIN_READING = 0;
@@ -34,9 +32,8 @@ import java.io.IOException;
    *
    * <p>{@code 0x80} is a one-byte integer, {@code 0x40} is two bytes, and so on up to eight bytes.
    */
-  private static final long[] VARINT_LENGTH_MASKS = new long[] {
-    0x80L, 0x40L, 0x20L, 0x10L, 0x08L, 0x04L, 0x02L, 0x01L
-  };
+  private static final long[] VARINT_LENGTH_MASKS =
+      new long[] {0x80L, 0x40L, 0x20L, 0x10L, 0x08L, 0x04L, 0x02L, 0x01L};
 
   private final byte[] scratch;
 
@@ -47,22 +44,20 @@ import java.io.IOException;
     scratch = new byte[8];
   }
 
-  /**
-   * Resets the reader to start reading a new variable-length integer.
-   */
+  /** Resets the reader to start reading a new variable-length integer. */
   public void reset() {
     state = STATE_BEGIN_READING;
     length = 0;
   }
 
   /**
-   * Reads an EBML variable-length integer (varint) from an {@link ExtractorInput} such that
-   * reading can be resumed later if an error occurs having read only some of it.
-   * <p>
-   * If an value is successfully read, then the reader will automatically reset itself ready to
+   * Reads an EBML variable-length integer (varint) from an {@link ExtractorInput} such that reading
+   * can be resumed later if an error occurs having read only some of it.
+   *
+   * <p>If an value is successfully read, then the reader will automatically reset itself ready to
    * read another value.
-   * <p>
-   * If an {@link IOException} or {@link InterruptedException} is throw, the read can be resumed
+   *
+   * <p>If an {@link IOException} or {@link InterruptedException} is throw, the read can be resumed
    * later by calling this method again, passing an {@link ExtractorInput} providing data starting
    * where the previous one left off.
    *
@@ -78,8 +73,12 @@ import java.io.IOException;
    * @throws IOException If an error occurs reading from the input.
    * @throws InterruptedException If the thread is interrupted.
    */
-  public long readUnsignedVarint(ExtractorInput input, boolean allowEndOfInput,
-      boolean removeLengthMask, int maximumAllowedLength) throws IOException, InterruptedException {
+  public long readUnsignedVarint(
+      ExtractorInput input,
+      boolean allowEndOfInput,
+      boolean removeLengthMask,
+      int maximumAllowedLength)
+      throws IOException, InterruptedException {
     if (state == STATE_BEGIN_READING) {
       // Read the first byte to establish the length.
       if (!input.readFully(scratch, 0, 1, allowEndOfInput)) {
@@ -107,9 +106,7 @@ import java.io.IOException;
     return assembleVarint(scratch, length, removeLengthMask);
   }
 
-  /**
-   * Returns the number of bytes occupied by the most recently parsed varint.
-   */
+  /** Returns the number of bytes occupied by the most recently parsed varint. */
   public int getLastLength() {
     return length;
   }
@@ -118,8 +115,8 @@ import java.io.IOException;
    * Parses and the length of the varint given the first byte.
    *
    * @param firstByte First byte of the varint.
-   * @return Length of the varint beginning with the given byte if it was valid,
-   *     {@link C#LENGTH_UNSET} otherwise.
+   * @return Length of the varint beginning with the given byte if it was valid, {@link
+   *     C#LENGTH_UNSET} otherwise.
    */
   public static int parseUnsignedVarintLength(int firstByte) {
     int varIntLength = C.LENGTH_UNSET;
@@ -140,8 +137,8 @@ import java.io.IOException;
    * @param removeLengthMask Removes the variable-length integer length mask from the value.
    * @return Parsed and assembled varint.
    */
-  public static long assembleVarint(byte[] varintBytes, int varintLength,
-      boolean removeLengthMask) {
+  public static long assembleVarint(
+      byte[] varintBytes, int varintLength, boolean removeLengthMask) {
     long varint = varintBytes[0] & 0xFFL;
     if (removeLengthMask) {
       varint &= ~VARINT_LENGTH_MASKS[varintLength - 1];
@@ -151,5 +148,4 @@ import java.io.IOException;
     }
     return varint;
   }
-
 }

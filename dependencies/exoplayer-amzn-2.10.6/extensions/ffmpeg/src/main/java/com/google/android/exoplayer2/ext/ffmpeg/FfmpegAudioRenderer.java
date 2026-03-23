@@ -32,13 +32,12 @@ import com.google.android.exoplayer2.util.MimeTypes;
 import java.util.Collections;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 
-/**
- * Decodes and renders audio using FFmpeg.
- */
+/** Decodes and renders audio using FFmpeg. */
 public final class FfmpegAudioRenderer extends SimpleDecoderAudioRenderer {
 
   /** The number of input and output buffers. */
   private static final int NUM_BUFFERS = 16;
+
   /** The default input buffer size. */
   private static final int DEFAULT_INPUT_BUFFER_SIZE = 960 * 6;
 
@@ -92,8 +91,8 @@ public final class FfmpegAudioRenderer extends SimpleDecoderAudioRenderer {
   }
 
   @Override
-  protected int supportsFormatInternal(DrmSessionManager<ExoMediaCrypto> drmSessionManager,
-      Format format) {
+  protected int supportsFormatInternal(
+      DrmSessionManager<ExoMediaCrypto> drmSessionManager, Format format) {
     Assertions.checkNotNull(format.sampleMimeType);
     if (!FfmpegLibrary.isAvailable()) {
       return FORMAT_UNSUPPORTED_TYPE;
@@ -168,5 +167,4 @@ public final class FfmpegAudioRenderer extends SimpleDecoderAudioRenderer {
         return true;
     }
   }
-
 }

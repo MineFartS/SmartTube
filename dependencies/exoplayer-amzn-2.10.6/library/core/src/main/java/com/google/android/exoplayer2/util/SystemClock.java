@@ -20,9 +20,7 @@ import android.os.Handler.Callback;
 import android.os.Looper;
 import androidx.annotation.Nullable;
 
-/**
- * The standard implementation of {@link Clock}.
- */
+/** The standard implementation of {@link Clock}. */
 /* package */ final class SystemClock implements Clock {
 
   @Override

@@ -78,8 +78,8 @@ import java.io.IOException;
 
     int expectedBlockAlignment = numChannels * bitsPerSample / 8;
     if (blockAlignment != expectedBlockAlignment) {
-      throw new ParserException("Expected block alignment: " + expectedBlockAlignment + "; got: "
-          + blockAlignment);
+      throw new ParserException(
+          "Expected block alignment: " + expectedBlockAlignment + "; got: " + blockAlignment);
     }
 
     @C.PcmEncoding int encoding = WavUtil.getEncodingForType(type, bitsPerSample);
@@ -161,6 +161,7 @@ import java.io.IOException;
 
     /** 4-character identifier, stored as an integer, for this chunk. */
     public final int id;
+
     /** Size of this chunk in bytes. */
     public final long size;
 

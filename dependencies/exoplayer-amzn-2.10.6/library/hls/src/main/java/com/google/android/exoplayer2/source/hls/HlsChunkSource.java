@@ -45,42 +45,31 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Source of Hls (possibly adaptive) chunks.
- */
+/** Source of Hls (possibly adaptive) chunks. */
 /* package */ class HlsChunkSource {
 
-  /**
-   * Chunk holder that allows the scheduling of retries.
-   */
+  /** Chunk holder that allows the scheduling of retries. */
   public static final class HlsChunkHolder {
 
     public HlsChunkHolder() {
       clear();
     }
 
-    /**
-     * The chunk to be loaded next.
-     */
+    /** The chunk to be loaded next. */
     public Chunk chunk;
 
-    /**
-     * Indicates that the end of the stream has been reached.
-     */
+    /** Indicates that the end of the stream has been reached. */
     public boolean endOfStream;
 
     /** Indicates that the chunk source is waiting for the referred playlist to be refreshed. */
     public Uri playlistUrl;
 
-    /**
-     * Clears the holder.
-     */
+    /** Clears the holder. */
     public void clear() {
       chunk = null;
       endOfStream = false;
       playlistUrl = null;
     }
-
   }
 
   /**
@@ -175,9 +164,7 @@ import java.util.Map;
     }
   }
 
-  /**
-   * Returns the track group exposed by the source.
-   */
+  /** Returns the track group exposed by the source. */
   public TrackGroup getTrackGroup() {
     return trackGroup;
   }
@@ -196,9 +183,7 @@ import java.util.Map;
     return trackSelection;
   }
 
-  /**
-   * Resets the source.
-   */
+  /** Resets the source. */
   public void reset() {
     fatalError = null;
   }
@@ -277,15 +262,15 @@ import java.util.Map;
         getChunkMediaSequence(
             previous, switchingTrack, mediaPlaylist, startOfPlaylistInPeriodUs, loadPositionUs);
     if (chunkMediaSequence < mediaPlaylist.mediaSequence && previous != null && switchingTrack) {
-        // We try getting the next chunk without adapting in case that's the reason for falling
-        // behind the live window.
-        selectedTrackIndex = oldTrackIndex;
-        selectedPlaylistUrl = playlistUrls[selectedTrackIndex];
-        mediaPlaylist =
-            playlistTracker.getPlaylistSnapshot(selectedPlaylistUrl, /* isForPlayback= */ true);
-        startOfPlaylistInPeriodUs =
-            mediaPlaylist.startTimeUs - playlistTracker.getInitialStartTimeUs();
-        chunkMediaSequence = previous.getNextChunkIndex();
+      // We try getting the next chunk without adapting in case that's the reason for falling
+      // behind the live window.
+      selectedTrackIndex = oldTrackIndex;
+      selectedPlaylistUrl = playlistUrls[selectedTrackIndex];
+      mediaPlaylist =
+          playlistTracker.getPlaylistSnapshot(selectedPlaylistUrl, /* isForPlayback= */ true);
+      startOfPlaylistInPeriodUs =
+          mediaPlaylist.startTimeUs - playlistTracker.getInitialStartTimeUs();
+      chunkMediaSequence = previous.getNextChunkIndex();
     }
 
     if (chunkMediaSequence < mediaPlaylist.mediaSequence) {
@@ -522,9 +507,7 @@ import java.util.Map;
 
   // Private classes.
 
-  /**
-   * A {@link TrackSelection} to use for initialization.
-   */
+  /** A {@link TrackSelection} to use for initialization. */
   private static final class InitializationTrackSelection extends BaseTrackSelection {
 
     private int selectedIndex;
@@ -570,7 +553,6 @@ import java.util.Map;
     public Object getSelectionData() {
       return null;
     }
-
   }
 
   private static final class EncryptionKeyChunk extends DataChunk {
@@ -584,8 +566,14 @@ import java.util.Map;
         int trackSelectionReason,
         Object trackSelectionData,
         byte[] scratchSpace) {
-      super(dataSource, dataSpec, C.DATA_TYPE_DRM, trackFormat, trackSelectionReason,
-          trackSelectionData, scratchSpace);
+      super(
+          dataSource,
+          dataSpec,
+          C.DATA_TYPE_DRM,
+          trackFormat,
+          trackSelectionReason,
+          trackSelectionData,
+          scratchSpace);
     }
 
     @Override
@@ -596,7 +584,6 @@ import java.util.Map;
     public byte[] getResult() {
       return result;
     }
-
   }
 
   /** {@link MediaChunkIterator} wrapping a {@link HlsMediaPlaylist}. */

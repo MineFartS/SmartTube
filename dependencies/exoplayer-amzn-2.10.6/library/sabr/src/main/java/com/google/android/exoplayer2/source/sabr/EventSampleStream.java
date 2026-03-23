@@ -24,12 +24,11 @@ import com.google.android.exoplayer2.metadata.emsg.EventMessageEncoder;
 import com.google.android.exoplayer2.source.SampleStream;
 import com.google.android.exoplayer2.source.sabr.manifest.EventStream;
 import com.google.android.exoplayer2.util.Util;
-
 import java.io.IOException;
 
 /**
- * A {@link SampleStream} consisting of serialized {@link EventMessage}s read from an
- * {@link EventStream}.
+ * A {@link SampleStream} consisting of serialized {@link EventMessage}s read from an {@link
+ * EventStream}.
  */
 /* package */ final class EventSampleStream implements SampleStream {
 
@@ -97,8 +96,8 @@ import java.io.IOException;
   }
 
   @Override
-  public int readData(FormatHolder formatHolder, DecoderInputBuffer buffer,
-      boolean formatRequired) {
+  public int readData(
+      FormatHolder formatHolder, DecoderInputBuffer buffer, boolean formatRequired) {
     if (formatRequired || !isFormatSentDownstream) {
       formatHolder.format = upstreamFormat;
       isFormatSentDownstream = true;
@@ -133,5 +132,4 @@ import java.io.IOException;
     currentIndex = newIndex;
     return skipped;
   }
-
 }

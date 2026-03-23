@@ -49,27 +49,27 @@ import javax.microedition.khronos.opengles.GL10;
 
   private static final String VERTEX_SHADER =
       "varying vec2 interp_tc;\n"
-      + "attribute vec4 in_pos;\n"
-      + "attribute vec2 in_tc;\n"
-      + "void main() {\n"
-      + "  gl_Position = in_pos;\n"
-      + "  interp_tc = in_tc;\n"
-      + "}\n";
+          + "attribute vec4 in_pos;\n"
+          + "attribute vec2 in_tc;\n"
+          + "void main() {\n"
+          + "  gl_Position = in_pos;\n"
+          + "  interp_tc = in_tc;\n"
+          + "}\n";
   private static final String[] TEXTURE_UNIFORMS = {"y_tex", "u_tex", "v_tex"};
   private static final String FRAGMENT_SHADER =
       "precision mediump float;\n"
-      + "varying vec2 interp_tc;\n"
-      + "uniform sampler2D y_tex;\n"
-      + "uniform sampler2D u_tex;\n"
-      + "uniform sampler2D v_tex;\n"
-      + "uniform mat3 mColorConversion;\n"
-      + "void main() {\n"
-      + "  vec3 yuv;\n"
-      + "  yuv.x = texture2D(y_tex, interp_tc).r - 0.0625;\n"
-      + "  yuv.y = texture2D(u_tex, interp_tc).r - 0.5;\n"
-      + "  yuv.z = texture2D(v_tex, interp_tc).r - 0.5;\n"
-      + "  gl_FragColor = vec4(mColorConversion * yuv, 1.0);\n"
-      + "}\n";
+          + "varying vec2 interp_tc;\n"
+          + "uniform sampler2D y_tex;\n"
+          + "uniform sampler2D u_tex;\n"
+          + "uniform sampler2D v_tex;\n"
+          + "uniform mat3 mColorConversion;\n"
+          + "void main() {\n"
+          + "  vec3 yuv;\n"
+          + "  yuv.x = texture2D(y_tex, interp_tc).r - 0.0625;\n"
+          + "  yuv.y = texture2D(u_tex, interp_tc).r - 0.5;\n"
+          + "  yuv.z = texture2D(v_tex, interp_tc).r - 0.5;\n"
+          + "  gl_FragColor = vec4(mColorConversion * yuv, 1.0);\n"
+          + "}\n";
 
   private static final FloatBuffer TEXTURE_VERTICES =
       GlUtil.createBuffer(new float[] {-1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, -1.0f});
@@ -80,6 +80,7 @@ import javax.microedition.khronos.opengles.GL10;
   // glDrawArrays uses it.
   @SuppressWarnings("FieldCanBeLocal")
   private FloatBuffer textureCoords;
+
   private int program;
   private int texLocation;
   private int colorMatrixLocation;
@@ -114,8 +115,7 @@ import javax.microedition.khronos.opengles.GL10;
     GLES20.glUseProgram(program);
     int posLocation = GLES20.glGetAttribLocation(program, "in_pos");
     GLES20.glEnableVertexAttribArray(posLocation);
-    GLES20.glVertexAttribPointer(
-        posLocation, 2, GLES20.GL_FLOAT, false, 0, TEXTURE_VERTICES);
+    GLES20.glVertexAttribPointer(posLocation, 2, GLES20.GL_FLOAT, false, 0, TEXTURE_VERTICES);
     texLocation = GLES20.glGetAttribLocation(program, "in_tc");
     GLES20.glEnableVertexAttribArray(texLocation);
     GlUtil.checkGlError();
@@ -164,8 +164,15 @@ import javax.microedition.khronos.opengles.GL10;
       GLES20.glActiveTexture(GLES20.GL_TEXTURE0 + i);
       GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, yuvTextures[i]);
       GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
-      GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_LUMINANCE,
-          outputBuffer.yuvStrides[i], h, 0, GLES20.GL_LUMINANCE, GLES20.GL_UNSIGNED_BYTE,
+      GLES20.glTexImage2D(
+          GLES20.GL_TEXTURE_2D,
+          0,
+          GLES20.GL_LUMINANCE,
+          outputBuffer.yuvStrides[i],
+          h,
+          0,
+          GLES20.GL_LUMINANCE,
+          GLES20.GL_UNSIGNED_BYTE,
           outputBuffer.yuvPlanes[i]);
     }
     // Set cropping of stride if either width or stride has changed.
@@ -175,8 +182,7 @@ import javax.microedition.khronos.opengles.GL10;
       // rather than a local variable to ensure that it doesn't get garbage collected.
       textureCoords =
           GlUtil.createBuffer(new float[] {0.0f, 0.0f, 0.0f, 1.0f, crop, 0.0f, crop, 1.0f});
-      GLES20.glVertexAttribPointer(
-          texLocation, 2, GLES20.GL_FLOAT, false, 0, textureCoords);
+      GLES20.glVertexAttribPointer(texLocation, 2, GLES20.GL_FLOAT, false, 0, textureCoords);
       previousWidth = outputBuffer.width;
       previousStride = outputBuffer.yuvStrides[0];
     }
@@ -187,18 +193,16 @@ import javax.microedition.khronos.opengles.GL10;
 
   private void setupTextures() {
     GLES20.glGenTextures(3, yuvTextures, 0);
-    for (int i = 0; i < 3; i++)  {
+    for (int i = 0; i < 3; i++) {
       GLES20.glUniform1i(GLES20.glGetUniformLocation(program, TEXTURE_UNIFORMS[i]), i);
       GLES20.glActiveTexture(GLES20.GL_TEXTURE0 + i);
       GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, yuvTextures[i]);
-      GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-          GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
-      GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-          GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
-      GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-          GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
-      GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-          GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
+      GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
+      GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+      GLES20.glTexParameterf(
+          GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
+      GLES20.glTexParameterf(
+          GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
     }
     GlUtil.checkGlError();
   }

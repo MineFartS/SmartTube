@@ -37,26 +37,34 @@ public final class DownloadRequest implements Parcelable {
 
   /** Type for progressive downloads. */
   public static final String TYPE_PROGRESSIVE = "progressive";
+
   /** Type for DASH downloads. */
   public static final String TYPE_DASH = "dash";
+
   /** Type for HLS downloads. */
   public static final String TYPE_HLS = "hls";
+
   /** Type for SmoothStreaming downloads. */
   public static final String TYPE_SS = "ss";
 
   /** The unique content id. */
   public final String id;
+
   /** The type of the request. */
   public final String type;
+
   /** The uri being downloaded. */
   public final Uri uri;
+
   /** Stream keys to be downloaded. If empty, all streams will be downloaded. */
   public final List<StreamKey> streamKeys;
+
   /**
    * Custom key for cache indexing, or null. Must be null for DASH, HLS and SmoothStreaming
    * downloads.
    */
   @Nullable public final String customCacheKey;
+
   /** Application defined data associated with the download. May be empty. */
   public final byte[] data;
 

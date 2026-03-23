@@ -28,8 +28,10 @@ import java.nio.ByteBuffer;
   @Override
   public boolean configure(int sampleRateHz, int channelCount, @C.PcmEncoding int encoding)
       throws UnhandledFormatException {
-    if (encoding != C.ENCODING_PCM_8BIT && encoding != C.ENCODING_PCM_16BIT
-        && encoding != C.ENCODING_PCM_24BIT && encoding != C.ENCODING_PCM_32BIT) {
+    if (encoding != C.ENCODING_PCM_8BIT
+        && encoding != C.ENCODING_PCM_16BIT
+        && encoding != C.ENCODING_PCM_24BIT
+        && encoding != C.ENCODING_PCM_32BIT) {
       throw new UnhandledFormatException(sampleRateHz, channelCount, encoding);
     }
     return setInputFormat(sampleRateHz, channelCount, encoding);
@@ -109,5 +111,4 @@ import java.nio.ByteBuffer;
     inputBuffer.position(inputBuffer.limit());
     buffer.flip();
   }
-
 }

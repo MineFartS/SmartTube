@@ -38,11 +38,13 @@ public interface ExoMediaDrm<T extends ExoMediaCrypto> {
    */
   @SuppressWarnings("InlinedApi")
   int EVENT_KEY_REQUIRED = MediaDrm.EVENT_KEY_REQUIRED;
+
   /**
    * @see MediaDrm#EVENT_KEY_EXPIRED
    */
   @SuppressWarnings("InlinedApi")
   int EVENT_KEY_EXPIRED = MediaDrm.EVENT_KEY_EXPIRED;
+
   /**
    * @see MediaDrm#EVENT_PROVISION_REQUIRED
    */
@@ -54,11 +56,13 @@ public interface ExoMediaDrm<T extends ExoMediaCrypto> {
    */
   @SuppressWarnings("InlinedApi")
   int KEY_TYPE_STREAMING = MediaDrm.KEY_TYPE_STREAMING;
+
   /**
    * @see MediaDrm#KEY_TYPE_OFFLINE
    */
   @SuppressWarnings("InlinedApi")
   int KEY_TYPE_OFFLINE = MediaDrm.KEY_TYPE_OFFLINE;
+
   /**
    * @see MediaDrm#KEY_TYPE_RELEASE
    */
@@ -106,7 +110,9 @@ public interface ExoMediaDrm<T extends ExoMediaCrypto> {
         boolean hasNewUsableKey);
   }
 
-  /** @see android.media.MediaDrm.KeyStatus */
+  /**
+   * @see android.media.MediaDrm.KeyStatus
+   */
   final class KeyStatus {
 
     private final int statusCode;
@@ -124,10 +130,11 @@ public interface ExoMediaDrm<T extends ExoMediaCrypto> {
     public byte[] getKeyId() {
       return keyId;
     }
-
   }
 
-  /** @see android.media.MediaDrm.KeyRequest */
+  /**
+   * @see android.media.MediaDrm.KeyRequest
+   */
   final class KeyRequest {
 
     private final byte[] data;
@@ -145,10 +152,11 @@ public interface ExoMediaDrm<T extends ExoMediaCrypto> {
     public String getLicenseServerUrl() {
       return licenseServerUrl;
     }
-
   }
 
-  /** @see android.media.MediaDrm.ProvisionRequest */
+  /**
+   * @see android.media.MediaDrm.ProvisionRequest
+   */
   final class ProvisionRequest {
 
     private final byte[] data;
@@ -166,7 +174,6 @@ public interface ExoMediaDrm<T extends ExoMediaCrypto> {
     public String getDefaultUrl() {
       return defaultUrl;
     }
-
   }
 
   /**
@@ -214,7 +221,9 @@ public interface ExoMediaDrm<T extends ExoMediaCrypto> {
       @Nullable HashMap<String, String> optionalParameters)
       throws NotProvisionedException;
 
-  /** @see MediaDrm#provideKeyResponse(byte[], byte[]) */
+  /**
+   * @see MediaDrm#provideKeyResponse(byte[], byte[])
+   */
   @Nullable
   byte[] provideKeyResponse(byte[] scope, byte[] response)
       throws NotProvisionedException, DeniedByServerException;

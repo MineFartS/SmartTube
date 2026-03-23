@@ -15,267 +15,281 @@ import com.liskovsoft.smartyoutubetv2.tv.R;
 import com.liskovsoft.smartyoutubetv2.tv.ui.dialogs.other.ChatPreference;
 import com.liskovsoft.smartyoutubetv2.tv.ui.dialogs.other.CommentsPreference;
 import com.liskovsoft.smartyoutubetv2.tv.ui.dialogs.other.StringListPreference;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class AppPreferenceManager {
-    private final Context mContext;
-    private final Runnable mOnChange;
+  private final Context mContext;
+  private final Runnable mOnChange;
 
-    public static class ListPreferenceData {
-        public final CharSequence[] entries;
-        public final CharSequence[] values;
-        public final String defaultValue;
-        public final Set<String> defaultValues;
+  public static class ListPreferenceData {
+    public final CharSequence[] entries;
+    public final CharSequence[] values;
+    public final String defaultValue;
+    public final Set<String> defaultValues;
 
-        public ListPreferenceData(CharSequence[] entries, CharSequence[] values, String defaultValue, Set<String> defaultValues) {
-            this.entries = entries;
-            this.values = values;
-            this.defaultValue = defaultValue;
-            this.defaultValues = defaultValues;
-        }
+    public ListPreferenceData(
+        CharSequence[] entries,
+        CharSequence[] values,
+        String defaultValue,
+        Set<String> defaultValues) {
+      this.entries = entries;
+      this.values = values;
+      this.defaultValue = defaultValue;
+      this.defaultValues = defaultValues;
+    }
+  }
+
+  public AppPreferenceManager(Context context) {
+    this(context, null);
+  }
+
+  public AppPreferenceManager(Context context, Runnable onChange) {
+    mContext = context;
+    mOnChange = onChange;
+  }
+
+  public Preference createPreference(OptionCategory category) {
+    switch (category.type) {
+      case OptionCategory.TYPE_CHECKBOX_LIST:
+        return createCheckedListPreference(category);
+      case OptionCategory.TYPE_RADIO_LIST:
+        return createRadioListPreference(category);
+      case OptionCategory.TYPE_STRING_LIST:
+        return createStringListPreference(category);
+      case OptionCategory.TYPE_SINGLE_SWITCH:
+        return createSwitchPreference(category);
+      case OptionCategory.TYPE_SINGLE_BUTTON:
+        return createButtonPreference(category);
+      case OptionCategory.TYPE_LONG_TEXT:
+        return createLongTextPreference(category);
+      case OptionCategory.TYPE_CHAT:
+        return createChatPreference(category);
+      case OptionCategory.TYPE_COMMENTS:
+        return createCommentsPreference(category);
     }
 
-    public AppPreferenceManager(Context context) {
-        this(context, null);
-    }
+    throw new IllegalStateException("Can't find matched preference for type: " + category.type);
+  }
 
-    public AppPreferenceManager(Context context, Runnable onChange) {
-        mContext = context;
-        mOnChange = onChange;
-    }
+  private Preference createStringListPreference(OptionCategory category) {
+    MultiSelectListPreference pref = new StringListPreference(mContext);
 
-    public Preference createPreference(OptionCategory category) {
-        switch (category.type) {
-            case OptionCategory.TYPE_CHECKBOX_LIST:
-                return createCheckedListPreference(category);
-            case OptionCategory.TYPE_RADIO_LIST:
-                return createRadioListPreference(category);
-            case OptionCategory.TYPE_STRING_LIST:
-                return createStringListPreference(category);
-            case OptionCategory.TYPE_SINGLE_SWITCH:
-                return createSwitchPreference(category);
-            case OptionCategory.TYPE_SINGLE_BUTTON:
-                return createButtonPreference(category);
-            case OptionCategory.TYPE_LONG_TEXT:
-                return createLongTextPreference(category);
-            case OptionCategory.TYPE_CHAT:
-                return createChatPreference(category);
-            case OptionCategory.TYPE_COMMENTS:
-                return createCommentsPreference(category);
-        }
+    initMultiSelectListPreference(category, pref);
 
-        throw  new IllegalStateException("Can't find matched preference for type: " + category.type);
-    }
+    return pref;
+  }
 
-    private Preference createStringListPreference(OptionCategory category) {
-        MultiSelectListPreference pref = new StringListPreference(mContext);
+  private Preference createLongTextPreference(OptionCategory category) {
+    MultiSelectListPreference pref = new StringListPreference(mContext);
 
-        initMultiSelectListPreference(category, pref);
+    pref.setDialogMessage(category.options.get(0).getTitle());
 
-        return pref;
-    }
+    initMultiSelectListPreference(category, pref);
 
-    private Preference createLongTextPreference(OptionCategory category) {
-        MultiSelectListPreference pref = new StringListPreference(mContext);
+    return pref;
+  }
 
-        pref.setDialogMessage(category.options.get(0).getTitle());
+  private Preference createChatPreference(OptionCategory category) {
+    ChatPreference pref = new ChatPreference(mContext);
 
-        initMultiSelectListPreference(category, pref);
+    OptionItem optionItem = category.options.get(0);
+    pref.setChatReceiver(optionItem.getChatReceiver());
 
-        return pref;
-    }
+    initDialogPreference(category, pref);
 
-    private Preference createChatPreference(OptionCategory category) {
-        ChatPreference pref = new ChatPreference(mContext);
+    return pref;
+  }
 
-        OptionItem optionItem = category.options.get(0);
-        pref.setChatReceiver(optionItem.getChatReceiver());
+  private Preference createCommentsPreference(OptionCategory category) {
+    CommentsPreference pref = new CommentsPreference(mContext);
 
-        initDialogPreference(category, pref);
+    OptionItem optionItem = category.options.get(0);
+    pref.setCommentsReceiver(optionItem.getCommentsReceiver());
 
-        return pref;
-    }
+    initDialogPreference(category, pref);
 
-    private Preference createCommentsPreference(OptionCategory category) {
-        CommentsPreference pref = new CommentsPreference(mContext);
+    return pref;
+  }
 
-        OptionItem optionItem = category.options.get(0);
-        pref.setCommentsReceiver(optionItem.getCommentsReceiver());
+  public Preference createButtonPreference(OptionCategory category) {
+    Preference result = null;
 
-        initDialogPreference(category, pref);
-
-        return pref;
-    }
-
-    public Preference createButtonPreference(OptionCategory category) {
-        Preference result = null;
-
-        if (category.options.size() == 1) {
-            OptionItem item = category.options.get(0);
-            Preference preference = new Preference(mContext);
-            preference.setPersistent(false);
-            preference.setTitle(item.getTitle());
-            preference.setOnPreferenceClickListener(pref -> {
-                item.onSelect(true);
-                return true;
-            });
-
-            result = preference;
-        }
-
-        return result;
-    }
-
-    public Preference createSwitchPreference(OptionCategory category) {
-        Preference result = null;
-
-        if (category.options.size() == 1) {
-            OptionItem item = category.options.get(0);
-            Preference preference = new SwitchPreference(mContext);
-            preference.setPersistent(false);
-            preference.setTitle(item.getTitle());
-            preference.setDefaultValue(item.isSelected());
-            preference.setOnPreferenceChangeListener((pref, newValue) -> {
-                item.onSelect((boolean) newValue);
-                return true;
-            });
-
-            result = preference;
-        }
-
-        return result;
-    }
-
-    public Preference createRadioListPreference(OptionCategory category) {
-        ListPreference pref = new ListPreference(mContext);
-
-        initSingleSelectListPreference(category, pref);
-
-        return pref;
-    }
-
-    public Preference createCheckedListPreference(OptionCategory category) {
-        MultiSelectListPreference pref = new MultiSelectListPreference(mContext);
-
-        initMultiSelectListPreference(category, pref);
-
-        return pref;
-    }
-
-    private void initSingleSelectListPreference(OptionCategory category, ListPreference pref) {
-        initDialogPreference(category, pref);
-
-        ListPreferenceData prefData = createListPreferenceData(category.options);
-
-        pref.setEntries(prefData.entries);
-        pref.setEntryValues(prefData.values);
-        pref.setValue(prefData.defaultValue);
-
-        pref.setOnPreferenceChangeListener((preference, newValue) -> {
-            for (OptionItem optionItem : category.options) {
-                if (newValue.equals(optionItem.toString())) {
-                    optionItem.onSelect(true);
-                    break;
-                }
-            }
-
+    if (category.options.size() == 1) {
+      OptionItem item = category.options.get(0);
+      Preference preference = new Preference(mContext);
+      preference.setPersistent(false);
+      preference.setTitle(item.getTitle());
+      preference.setOnPreferenceClickListener(
+          pref -> {
+            item.onSelect(true);
             return true;
-        });
+          });
+
+      result = preference;
     }
 
-    private void initMultiSelectListPreference(OptionCategory category, MultiSelectListPreference pref) {
-        initDialogPreference(category, pref);
+    return result;
+  }
 
-        ListPreferenceData prefData = createListPreferenceData(category.options);
+  public Preference createSwitchPreference(OptionCategory category) {
+    Preference result = null;
 
-        pref.setEntries(prefData.entries);
-        pref.setEntryValues(prefData.values);
-        pref.setValues(prefData.defaultValues);
+    if (category.options.size() == 1) {
+      OptionItem item = category.options.get(0);
+      Preference preference = new SwitchPreference(mContext);
+      preference.setPersistent(false);
+      preference.setTitle(item.getTitle());
+      preference.setDefaultValue(item.isSelected());
+      preference.setOnPreferenceChangeListener(
+          (pref, newValue) -> {
+            item.onSelect((boolean) newValue);
+            return true;
+          });
 
-        pref.setOnPreferenceChangeListener((preference, newValue) -> {
-            if (newValue instanceof Set) {
-                Set<?> values = ((Set<?>) newValue); // All checked items. That don't means that this items is pressed recently.
-                for (OptionItem item : category.options) {
-                    boolean isSelected = false;
-                    for (Object value : values) {
-                        isSelected = value.equals(item.toString());
-                        if (isSelected) {
-                            break;
-                        }
-                    }
+      result = preference;
+    }
 
-                    if (item.isSelected() != isSelected) {
-                        if (isSelected) {
-                            OptionItem[] requiredItems = item.getRequired();
+    return result;
+  }
 
-                            if (requiredItems != null) {
-                                for (OptionItem requiredItem : requiredItems) {
-                                    if (!requiredItem.isSelected()) {
-                                        MessageHelpers.showMessageThrottled(mContext, mContext.getString(R.string.require_checked, requiredItem.getTitle()));
-                                    }
-                                }
-                            }
+  public Preference createRadioListPreference(OptionCategory category) {
+    ListPreference pref = new ListPreference(mContext);
 
-                            OptionItem[] radioItems = item.getRadio();
+    initSingleSelectListPreference(category, pref);
 
-                            if (radioItems != null) {
-                                for (OptionItem radioItem : radioItems) {
-                                    radioItem.onSelect(false);
-                                }
+    return pref;
+  }
 
-                                if (mOnChange != null) {
-                                    mOnChange.run();
-                                }
-                            }
-                        }
+  public Preference createCheckedListPreference(OptionCategory category) {
+    MultiSelectListPreference pref = new MultiSelectListPreference(mContext);
 
-                        item.onSelect(isSelected);
+    initMultiSelectListPreference(category, pref);
 
-                        return true;
-                    }
+    return pref;
+  }
+
+  private void initSingleSelectListPreference(OptionCategory category, ListPreference pref) {
+    initDialogPreference(category, pref);
+
+    ListPreferenceData prefData = createListPreferenceData(category.options);
+
+    pref.setEntries(prefData.entries);
+    pref.setEntryValues(prefData.values);
+    pref.setValue(prefData.defaultValue);
+
+    pref.setOnPreferenceChangeListener(
+        (preference, newValue) -> {
+          for (OptionItem optionItem : category.options) {
+            if (newValue.equals(optionItem.toString())) {
+              optionItem.onSelect(true);
+              break;
+            }
+          }
+
+          return true;
+        });
+  }
+
+  private void initMultiSelectListPreference(
+      OptionCategory category, MultiSelectListPreference pref) {
+    initDialogPreference(category, pref);
+
+    ListPreferenceData prefData = createListPreferenceData(category.options);
+
+    pref.setEntries(prefData.entries);
+    pref.setEntryValues(prefData.values);
+    pref.setValues(prefData.defaultValues);
+
+    pref.setOnPreferenceChangeListener(
+        (preference, newValue) -> {
+          if (newValue instanceof Set) {
+            Set<?> values =
+                ((Set<?>)
+                    newValue); // All checked items. That don't means that this items is pressed
+                               // recently.
+            for (OptionItem item : category.options) {
+              boolean isSelected = false;
+              for (Object value : values) {
+                isSelected = value.equals(item.toString());
+                if (isSelected) {
+                  break;
                 }
-            }
+              }
 
-            return false;
+              if (item.isSelected() != isSelected) {
+                if (isSelected) {
+                  OptionItem[] requiredItems = item.getRequired();
+
+                  if (requiredItems != null) {
+                    for (OptionItem requiredItem : requiredItems) {
+                      if (!requiredItem.isSelected()) {
+                        MessageHelpers.showMessageThrottled(
+                            mContext,
+                            mContext.getString(R.string.require_checked, requiredItem.getTitle()));
+                      }
+                    }
+                  }
+
+                  OptionItem[] radioItems = item.getRadio();
+
+                  if (radioItems != null) {
+                    for (OptionItem radioItem : radioItems) {
+                      radioItem.onSelect(false);
+                    }
+
+                    if (mOnChange != null) {
+                      mOnChange.run();
+                    }
+                  }
+                }
+
+                item.onSelect(isSelected);
+
+                return true;
+              }
+            }
+          }
+
+          return false;
         });
+  }
+
+  public ListPreferenceData createListPreferenceData(List<OptionItem> items) {
+    CharSequence[] titles = new CharSequence[items.size()];
+    CharSequence[] hashes = new CharSequence[items.size()];
+    String defaultValue = null;
+    Set<String> defaultValues = new HashSet<>(); // used in multi set lists
+
+    for (int i = 0; i < items.size(); i++) {
+      OptionItem optionItem = items.get(i);
+
+      CharSequence title = optionItem.getTitle();
+      String value = optionItem.toString();
+
+      // Note, multi lists don't have individual (per item) descriptions. So, append description to
+      // title.
+      if (optionItem.getDescription() != null) {
+        title = TextUtils.concat(title, "\n", Utils.italic(optionItem.getDescription()));
+      }
+
+      titles[i] = title;
+      hashes[i] = value;
+
+      if (optionItem.isSelected()) {
+        defaultValue = value;
+        defaultValues.add(value);
+      }
     }
 
-    public ListPreferenceData createListPreferenceData(List<OptionItem> items) {
-        CharSequence[] titles = new CharSequence[items.size()];
-        CharSequence[] hashes = new CharSequence[items.size()];
-        String defaultValue = null;
-        Set<String> defaultValues = new HashSet<>(); // used in multi set lists
+    return new ListPreferenceData(titles, hashes, defaultValue, defaultValues);
+  }
 
-        for (int i = 0; i < items.size(); i++) {
-            OptionItem optionItem = items.get(i);
-
-            CharSequence title = optionItem.getTitle();
-            String value = optionItem.toString();
-
-            // Note, multi lists don't have individual (per item) descriptions. So, append description to title.
-            if (optionItem.getDescription() != null) {
-                title = TextUtils.concat(title, "\n", Utils.italic(optionItem.getDescription()));
-            }
-
-            titles[i] = title;
-            hashes[i] = value;
-
-            if (optionItem.isSelected()) {
-                defaultValue = value;
-                defaultValues.add(value);
-            }
-        }
-
-        return new ListPreferenceData(titles, hashes, defaultValue, defaultValues);
-    }
-
-    private void initDialogPreference(OptionCategory category, DialogPreference pref) {
-        pref.setPersistent(false);
-        pref.setTitle(category.title);
-        pref.setDialogTitle(category.title);
-        pref.setKey(category.toString());
-    }
+  private void initDialogPreference(OptionCategory category, DialogPreference pref) {
+    pref.setPersistent(false);
+    pref.setTitle(category.title);
+    pref.setDialogTitle(category.title);
+    pref.setKey(category.toString());
+  }
 }

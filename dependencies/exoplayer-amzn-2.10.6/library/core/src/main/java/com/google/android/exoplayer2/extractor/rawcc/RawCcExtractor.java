@@ -28,9 +28,7 @@ import com.google.android.exoplayer2.util.ParsableByteArray;
 import com.google.android.exoplayer2.util.Util;
 import java.io.IOException;
 
-/**
- * Extracts data from the RawCC container format.
- */
+/** Extracts data from the RawCC container format. */
 public final class RawCcExtractor implements Extractor {
 
   private static final int SCRATCH_SIZE = 9;
@@ -131,8 +129,8 @@ public final class RawCcExtractor implements Extractor {
     }
   }
 
-  private boolean parseTimestampAndSampleCount(ExtractorInput input) throws IOException,
-      InterruptedException {
+  private boolean parseTimestampAndSampleCount(ExtractorInput input)
+      throws IOException, InterruptedException {
     dataScratch.reset();
     if (version == 0) {
       if (!input.readFully(dataScratch.data, 0, TIMESTAMP_SIZE_V0 + 1, true)) {
@@ -167,5 +165,4 @@ public final class RawCcExtractor implements Extractor {
       trackOutput.sampleMetadata(timestampUs, C.BUFFER_FLAG_KEY_FRAME, sampleBytesWritten, 0, null);
     }
   }
-
 }

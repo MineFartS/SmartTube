@@ -107,5 +107,4 @@ import java.util.Arrays;
     pendingOutputChannels = null;
     active = false;
   }
-
 }

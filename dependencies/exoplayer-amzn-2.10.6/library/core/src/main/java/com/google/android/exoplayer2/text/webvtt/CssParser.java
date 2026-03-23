@@ -19,8 +19,8 @@ import android.text.TextUtils;
 import com.google.android.exoplayer2.util.ColorParser;
 import com.google.android.exoplayer2.util.ParsableByteArray;
 import com.google.android.exoplayer2.util.Util;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -98,12 +98,12 @@ import java.util.regex.Pattern;
   }
 
   /**
-   * Returns a string containing the selector. The input is expected to have the form
-   * {@code ::cue(tag#id.class1.class2[voice="someone"]}, where every element is optional.
+   * Returns a string containing the selector. The input is expected to have the form {@code
+   * ::cue(tag#id.class1.class2[voice="someone"]}, where every element is optional.
    *
    * @param input From which the selector is obtained.
-   * @return A string containing the target, empty string if the selector is universal
-   *     (targets all cues) or null if an error was encountered.
+   * @return A string containing the target, empty string if the selector is universal (targets all
+   *     cues) or null if an error was encountered.
    */
   private static String parseSelector(ParsableByteArray input, StringBuilder stringBuilder) {
     skipWhitespaceAndComments(input);
@@ -134,9 +134,7 @@ import java.util.regex.Pattern;
     return target;
   }
 
-  /**
-   * Reads the contents of ::cue() and returns it as a string.
-   */
+  /** Reads the contents of ::cue() and returns it as a string. */
   private static String readCueTarget(ParsableByteArray input) {
     int position = input.getPosition();
     int limit = input.limit();
@@ -149,8 +147,8 @@ import java.util.regex.Pattern;
     // --offset to return ')' to the input.
   }
 
-  private static void parseStyleDeclaration(ParsableByteArray input, WebvttCssStyle style,
-      StringBuilder stringBuilder) {
+  private static void parseStyleDeclaration(
+      ParsableByteArray input, WebvttCssStyle style, StringBuilder stringBuilder) {
     skipWhitespaceAndComments(input);
     String property = parseIdentifier(input, stringBuilder);
     if ("".equals(property)) {
@@ -222,7 +220,7 @@ import java.util.regex.Pattern;
   }
 
   private static boolean maybeSkipWhitespace(ParsableByteArray input) {
-    switch(peekCharAtPosition(input, input.getPosition())) {
+    switch (peekCharAtPosition(input, input.getPosition())) {
       case '\t':
       case '\r':
       case '\n':
@@ -297,10 +295,15 @@ import java.util.regex.Pattern;
     int position = input.getPosition();
     int limit = input.limit();
     boolean identifierEndFound = false;
-    while (position  < limit && !identifierEndFound) {
+    while (position < limit && !identifierEndFound) {
       char c = (char) input.data[position];
-      if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '#'
-          || c == '-' || c == '.' || c == '_') {
+      if ((c >= 'A' && c <= 'Z')
+          || (c >= 'a' && c <= 'z')
+          || (c >= '0' && c <= '9')
+          || c == '#'
+          || c == '-'
+          || c == '.'
+          || c == '_') {
         position++;
         stringBuilder.append(c);
       } else {
@@ -312,8 +315,8 @@ import java.util.regex.Pattern;
   }
 
   /**
-   * Sets the target of a {@link WebvttCssStyle} by splitting a selector of the form
-   * {@code ::cue(tag#id.class1.class2[voice="someone"]}, where every element is optional.
+   * Sets the target of a {@link WebvttCssStyle} by splitting a selector of the form {@code
+   * ::cue(tag#id.class1.class2[voice="someone"]}, where every element is optional.
    */
   private void applySelectorToStyle(WebvttCssStyle style, String selector) {
     if ("".equals(selector)) {
@@ -340,5 +343,4 @@ import java.util.regex.Pattern;
       style.setTargetClasses(Arrays.copyOfRange(classDivision, 1, classDivision.length));
     }
   }
-
 }

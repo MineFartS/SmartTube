@@ -13,17 +13,15 @@
  */
 package androidx.leanback.widget;
 
-/**
- * Used to represent content spanning full page.
- */
+/** Used to represent content spanning full page. */
 public class PageRow extends Row {
 
-    public PageRow(HeaderItem headerItem) {
-        super(headerItem);
-    }
+  public PageRow(HeaderItem headerItem) {
+    super(headerItem);
+  }
 
-    @Override
-    final public boolean isRenderedAsRowView() {
-        return false;
-    }
+  @Override
+  public final boolean isRenderedAsRowView() {
+    return false;
+  }
 }

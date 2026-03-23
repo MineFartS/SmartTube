@@ -23,20 +23,15 @@ import com.google.android.exoplayer2.extractor.TrackOutput.CryptoData;
 import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.Util;
 
-/**
- * A queue of metadata describing the contents of a media buffer.
- */
+/** A queue of metadata describing the contents of a media buffer. */
 /* package */ final class SampleMetadataQueue {
 
-  /**
-   * A holder for sample metadata not held by {@link DecoderInputBuffer}.
-   */
+  /** A holder for sample metadata not held by {@link DecoderInputBuffer}. */
   public static final class SampleExtrasHolder {
 
     public int size;
     public long offset;
     public CryptoData cryptoData;
-
   }
 
   private static final int SAMPLE_CAPACITY_INCREMENT = 1000;
@@ -101,9 +96,7 @@ import com.google.android.exoplayer2.util.Util;
     }
   }
 
-  /**
-   * Returns the current absolute write index.
-   */
+  /** Returns the current absolute write index. */
   public int getWriteIndex() {
     return absoluteFirstIndex + length;
   }
@@ -135,16 +128,12 @@ import com.google.android.exoplayer2.util.Util;
 
   // Called by the consuming thread.
 
-  /**
-   * Returns the current absolute start index.
-   */
+  /** Returns the current absolute start index. */
   public int getFirstIndex() {
     return absoluteFirstIndex;
   }
 
-  /**
-   * Returns the current absolute read index.
-   */
+  /** Returns the current absolute read index. */
   public int getReadIndex() {
     return absoluteFirstIndex + readPosition;
   }
@@ -160,25 +149,21 @@ import com.google.android.exoplayer2.util.Util;
     return hasNextSample() ? sourceIds[relativeReadIndex] : upstreamSourceId;
   }
 
-  /**
-   * Returns whether a sample is available to be read.
-   */
+  /** Returns whether a sample is available to be read. */
   public synchronized boolean hasNextSample() {
     return readPosition != length;
   }
 
-  /**
-   * Returns the upstream {@link Format} in which samples are being queued.
-   */
+  /** Returns the upstream {@link Format} in which samples are being queued. */
   public synchronized Format getUpstreamFormat() {
     return upstreamFormatRequired ? null : upstreamFormat;
   }
 
   /**
-   * Returns the largest sample timestamp that has been queued since the last call to
-   * {@link #reset(boolean)}.
-   * <p>
-   * Samples that were discarded by calling {@link #discardUpstreamSamples(int)} are not
+   * Returns the largest sample timestamp that has been queued since the last call to {@link
+   * #reset(boolean)}.
+   *
+   * <p>Samples that were discarded by calling {@link #discardUpstreamSamples(int)} are not
    * considered as having been queued. Samples that were dequeued from the front of the queue are
    * considered as having been queued.
    *
@@ -207,9 +192,7 @@ import com.google.android.exoplayer2.util.Util;
     return length == 0 ? Long.MIN_VALUE : timesUs[relativeFirstIndex];
   }
 
-  /**
-   * Rewinds the read position to the first sample retained in the queue.
-   */
+  /** Rewinds the read position to the first sample retained in the queue. */
   public synchronized void rewind() {
     readPosition = 0;
   }
@@ -249,8 +232,7 @@ import com.google.android.exoplayer2.util.Util;
       if (loadingFinished || isLastSampleQueued) {
         buffer.setFlags(C.BUFFER_FLAG_END_OF_STREAM);
         return C.RESULT_BUFFER_READ;
-      } else if (upstreamFormat != null
-          && (formatRequired || upstreamFormat != downstreamFormat)) {
+      } else if (upstreamFormat != null && (formatRequired || upstreamFormat != downstreamFormat)) {
         formatHolder.format = upstreamFormat;
         return C.RESULT_FORMAT_READ;
       } else {
@@ -292,10 +274,11 @@ import com.google.android.exoplayer2.util.Util;
    *     successful advance is one in which the read position was unchanged or advanced, and is now
    *     at a sample meeting the specified criteria.
    */
-  public synchronized int advanceTo(long timeUs, boolean toKeyframe,
-      boolean allowTimeBeyondBuffer) {
+  public synchronized int advanceTo(
+      long timeUs, boolean toKeyframe, boolean allowTimeBeyondBuffer) {
     int relativeReadIndex = getRelativeIndex(readPosition);
-    if (!hasNextSample() || timeUs < timesUs[relativeReadIndex]
+    if (!hasNextSample()
+        || timeUs < timesUs[relativeReadIndex]
         || (timeUs > largestQueuedTimestampUs && !allowTimeBeyondBuffer)) {
       return SampleQueue.ADVANCE_FAILED;
     }
@@ -343,8 +326,8 @@ import com.google.android.exoplayer2.util.Util;
    * @param stopAtReadPosition If true then samples are only discarded if they're before the read
    *     position. If false then samples at and beyond the read position may be discarded, in which
    *     case the read position is advanced to the first remaining sample.
-   * @return The corresponding offset up to which data should be discarded, or
-   *     {@link C#POSITION_UNSET} if no discarding of data is necessary.
+   * @return The corresponding offset up to which data should be discarded, or {@link
+   *     C#POSITION_UNSET} if no discarding of data is necessary.
    */
   public synchronized long discardTo(long timeUs, boolean toKeyframe, boolean stopAtReadPosition) {
     if (length == 0 || timeUs < timesUs[relativeFirstIndex]) {
@@ -361,8 +344,8 @@ import com.google.android.exoplayer2.util.Util;
   /**
    * Discards samples up to but not including the read position.
    *
-   * @return The corresponding offset up to which data should be discarded, or
-   *     {@link C#POSITION_UNSET} if no discarding of data is necessary.
+   * @return The corresponding offset up to which data should be discarded, or {@link
+   *     C#POSITION_UNSET} if no discarding of data is necessary.
    */
   public synchronized long discardToRead() {
     if (readPosition == 0) {
@@ -374,8 +357,8 @@ import com.google.android.exoplayer2.util.Util;
   /**
    * Discards all samples in the queue. The read position is also advanced.
    *
-   * @return The corresponding offset up to which data should be discarded, or
-   *     {@link C#POSITION_UNSET} if no discarding of data is necessary.
+   * @return The corresponding offset up to which data should be discarded, or {@link
+   *     C#POSITION_UNSET} if no discarding of data is necessary.
    */
   public synchronized long discardToEnd() {
     if (length == 0) {
@@ -401,8 +384,8 @@ import com.google.android.exoplayer2.util.Util;
     }
   }
 
-  public synchronized void commitSample(long timeUs, @C.BufferFlags int sampleFlags, long offset,
-      int size, CryptoData cryptoData) {
+  public synchronized void commitSample(
+      long timeUs, @C.BufferFlags int sampleFlags, long offset, int size, CryptoData cryptoData) {
     if (upstreamKeyframeRequired) {
       if ((sampleFlags & C.BUFFER_FLAG_KEY_FRAME) == 0) {
         return;
@@ -474,8 +457,8 @@ import com.google.android.exoplayer2.util.Util;
     if (length == 0) {
       return timeUs > largestDiscardedTimestampUs;
     }
-    long largestReadTimestampUs = Math.max(largestDiscardedTimestampUs,
-        getLargestTimestamp(readPosition));
+    long largestReadTimestampUs =
+        Math.max(largestDiscardedTimestampUs, getLargestTimestamp(readPosition));
     if (largestReadTimestampUs >= timeUs) {
       return false;
     }
@@ -495,8 +478,8 @@ import com.google.android.exoplayer2.util.Util;
   // Internal methods.
 
   /**
-   * Finds the sample in the specified range that's before or at the specified time. If
-   * {@code keyframe} is {@code true} then the sample is additionally required to be a keyframe.
+   * Finds the sample in the specified range that's before or at the specified time. If {@code
+   * keyframe} is {@code true} then the sample is additionally required to be a keyframe.
    *
    * @param relativeStartIndex The relative index from which to start searching.
    * @param length The length of the range being searched.
@@ -531,8 +514,8 @@ import com.google.android.exoplayer2.util.Util;
    * @return The corresponding offset up to which data should be discarded.
    */
   private long discardSamples(int discardCount) {
-    largestDiscardedTimestampUs = Math.max(largestDiscardedTimestampUs,
-        getLargestTimestamp(discardCount));
+    largestDiscardedTimestampUs =
+        Math.max(largestDiscardedTimestampUs, getLargestTimestamp(discardCount));
     length -= discardCount;
     absoluteFirstIndex += discardCount;
     relativeFirstIndex += discardCount;
@@ -578,14 +561,13 @@ import com.google.android.exoplayer2.util.Util;
     return largestTimestampUs;
   }
 
-   /**
-    * Returns the relative index for a given offset from the start of the queue.
-    *
-    * @param offset The offset, which must be in the range [0, length].
-    */
+  /**
+   * Returns the relative index for a given offset from the start of the queue.
+   *
+   * @param offset The offset, which must be in the range [0, length].
+   */
   private int getRelativeIndex(int offset) {
     int relativeIndex = relativeFirstIndex + offset;
     return relativeIndex < capacity ? relativeIndex : relativeIndex - capacity;
   }
-
 }

@@ -64,15 +64,17 @@ import java.util.Set;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 
 /**
- * Loads {@link HlsMediaChunk}s obtained from a {@link HlsChunkSource}, and provides
- * {@link SampleStream}s from which the loaded media can be consumed.
+ * Loads {@link HlsMediaChunk}s obtained from a {@link HlsChunkSource}, and provides {@link
+ * SampleStream}s from which the loaded media can be consumed.
  */
-/* package */ final class HlsSampleStreamWrapper implements Loader.Callback<Chunk>,
-    Loader.ReleaseCallback, SequenceableLoader, ExtractorOutput, UpstreamFormatChangedListener {
+/* package */ final class HlsSampleStreamWrapper
+    implements Loader.Callback<Chunk>,
+        Loader.ReleaseCallback,
+        SequenceableLoader,
+        ExtractorOutput,
+        UpstreamFormatChangedListener {
 
-  /**
-   * A callback to be notified of events.
-   */
+  /** A callback to be notified of events. */
   public interface Callback extends SequenceableLoader.Callback<HlsSampleStreamWrapper> {
 
     /**
@@ -282,8 +284,13 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
    * @return Whether this wrapper requires the parent {@link HlsMediaPeriod} to perform a seek as
    *     part of the track selection.
    */
-  public boolean selectTracks(TrackSelection[] selections, boolean[] mayRetainStreamFlags,
-      SampleStream[] streams, boolean[] streamResetFlags, long positionUs, boolean forceReset) {
+  public boolean selectTracks(
+      TrackSelection[] selections,
+      boolean[] mayRetainStreamFlags,
+      SampleStream[] streams,
+      boolean[] streamResetFlags,
+      long positionUs,
+      boolean forceReset) {
     Assertions.checkState(prepared);
     int oldEnabledTrackGroupCount = enabledTrackGroupCount;
     // Deselect old tracks.
@@ -332,8 +339,9 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
           // sample queue, or if we haven't read anything from the queue since the previous seek
           // (this case is common for sparse tracks such as metadata tracks). In all other cases a
           // seek is required.
-          seekRequired = sampleQueue.advanceTo(positionUs, true, true) == SampleQueue.ADVANCE_FAILED
-              && sampleQueue.getReadIndex() != 0;
+          seekRequired =
+              sampleQueue.advanceTo(positionUs, true, true) == SampleQueue.ADVANCE_FAILED
+                  && sampleQueue.getReadIndex() != 0;
         }
       }
     }
@@ -485,7 +493,10 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
     chunkSource.maybeThrowError();
   }
 
-  public int readData(int sampleQueueIndex, FormatHolder formatHolder, DecoderInputBuffer buffer,
+  public int readData(
+      int sampleQueueIndex,
+      FormatHolder formatHolder,
+      DecoderInputBuffer buffer,
       boolean requireFormat) {
     if (isPendingReset()) {
       return C.RESULT_NOTHING_READ;
@@ -502,8 +513,11 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
       HlsMediaChunk currentChunk = mediaChunks.get(0);
       Format trackFormat = currentChunk.trackFormat;
       if (!trackFormat.equals(downstreamTrackFormat)) {
-        eventDispatcher.downstreamFormatChanged(trackType, trackFormat,
-            currentChunk.trackSelectionReason, currentChunk.trackSelectionData,
+        eventDispatcher.downstreamFormatChanged(
+            trackType,
+            trackFormat,
+            currentChunk.trackSelectionReason,
+            currentChunk.trackSelectionData,
             currentChunk.startTimeUs);
       }
       downstreamTrackFormat = trackFormat;
@@ -563,8 +577,10 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
     } else {
       long bufferedPositionUs = lastSeekPositionUs;
       HlsMediaChunk lastMediaChunk = getLastMediaChunk();
-      HlsMediaChunk lastCompletedMediaChunk = lastMediaChunk.isLoadCompleted() ? lastMediaChunk
-          : mediaChunks.size() > 1 ? mediaChunks.get(mediaChunks.size() - 2) : null;
+      HlsMediaChunk lastCompletedMediaChunk =
+          lastMediaChunk.isLoadCompleted()
+              ? lastMediaChunk
+              : mediaChunks.size() > 1 ? mediaChunks.get(mediaChunks.size() - 2) : null;
       if (lastCompletedMediaChunk != null) {
         bufferedPositionUs = Math.max(bufferedPositionUs, lastCompletedMediaChunk.endTimeUs);
       }
@@ -680,8 +696,8 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
   }
 
   @Override
-  public void onLoadCanceled(Chunk loadable, long elapsedRealtimeMs, long loadDurationMs,
-      boolean released) {
+  public void onLoadCanceled(
+      Chunk loadable, long elapsedRealtimeMs, long loadDurationMs, boolean released) {
     eventDispatcher.loadCanceled(
         loadable.dataSpec,
         loadable.getUri(),
@@ -1103,8 +1119,8 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
     for (int i = 0; i < sampleQueueCount; i++) {
       SampleQueue sampleQueue = sampleQueues[i];
       sampleQueue.rewind();
-      boolean seekInsideQueue = sampleQueue.advanceTo(positionUs, true, false)
-          != SampleQueue.ADVANCE_FAILED;
+      boolean seekInsideQueue =
+          sampleQueue.advanceTo(positionUs, true, false) != SampleQueue.ADVANCE_FAILED;
       // If we have AV tracks then an in-queue seek is successful if the seek into every AV queue
       // is successful. We ignore whether seeks within non-AV queues are successful in this case, as
       // they may be sparse or poorly interleaved. If we only have non-AV tracks then a seek is

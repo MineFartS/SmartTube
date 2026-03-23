@@ -30,9 +30,7 @@ import com.google.android.exoplayer2.util.ParsableByteArray;
 import com.google.android.exoplayer2.util.TimestampAdjuster;
 import java.io.IOException;
 
-/**
- * Extracts data from the MPEG-2 PS container format.
- */
+/** Extracts data from the MPEG-2 PS container format. */
 public final class PsExtractor implements Extractor {
 
   /** Factory for {@link PsExtractor} instances. */
@@ -90,8 +88,11 @@ public final class PsExtractor implements Extractor {
     input.peekFully(scratch, 0, 14);
 
     // Verify the PACK_START_CODE for the first 4 bytes
-    if (PACK_START_CODE != (((scratch[0] & 0xFF) << 24) | ((scratch[1] & 0xFF) << 16)
-        | ((scratch[2] & 0xFF) << 8) | (scratch[3] & 0xFF))) {
+    if (PACK_START_CODE
+        != (((scratch[0] & 0xFF) << 24)
+            | ((scratch[1] & 0xFF) << 16)
+            | ((scratch[2] & 0xFF) << 8)
+            | (scratch[3] & 0xFF))) {
       return false;
     }
     // Verify the 01xxx1xx marker on the 5th byte
@@ -119,8 +120,8 @@ public final class PsExtractor implements Extractor {
     input.advancePeekPosition(packStuffingLength);
     // Now check that the next 3 bytes are the beginning of an MPEG start code
     input.peekFully(scratch, 0, 3);
-    return (PACKET_START_CODE_PREFIX == (((scratch[0] & 0xFF) << 16) | ((scratch[1] & 0xFF) << 8)
-        | (scratch[2] & 0xFF)));
+    return (PACKET_START_CODE_PREFIX
+        == (((scratch[0] & 0xFF) << 16) | ((scratch[1] & 0xFF) << 8) | (scratch[2] & 0xFF)));
   }
 
   @Override
@@ -210,7 +211,7 @@ public final class PsExtractor implements Extractor {
       input.skipFully(systemHeaderLength + 6);
       return RESULT_CONTINUE;
     } else if (((nextStartCode & 0xFFFFFF00) >> 8) != PACKET_START_CODE_PREFIX) {
-      input.skipFully(1);  // Skip bytes until we see a valid start code again.
+      input.skipFully(1); // Skip bytes until we see a valid start code again.
       return RESULT_CONTINUE;
     }
 
@@ -295,9 +296,7 @@ public final class PsExtractor implements Extractor {
     }
   }
 
-  /**
-   * Parses PES packet data and extracts samples.
-   */
+  /** Parses PES packet data and extracts samples. */
   private static final class PesReader {
 
     private static final int PES_SCRATCH_SIZE = 64;
@@ -320,10 +319,10 @@ public final class PsExtractor implements Extractor {
 
     /**
      * Notifies the reader that a seek has occurred.
-     * <p>
-     * Following a call to this method, the data passed to the next invocation of
-     * {@link #consume(ParsableByteArray)} will not be a continuation of the data that was
-     * previously passed. Hence the reader should reset any internal state.
+     *
+     * <p>Following a call to this method, the data passed to the next invocation of {@link
+     * #consume(ParsableByteArray)} will not be a continuation of the data that was previously
+     * passed. Hence the reader should reset any internal state.
      */
     public void seek() {
       seenFirstDts = false;
@@ -392,7 +391,5 @@ public final class PsExtractor implements Extractor {
         timeUs = timestampAdjuster.adjustTsTimestamp(pts);
       }
     }
-
   }
-
 }

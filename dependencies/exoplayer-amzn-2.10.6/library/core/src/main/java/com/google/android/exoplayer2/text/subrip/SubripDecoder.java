@@ -15,10 +15,10 @@
  */
 package com.google.android.exoplayer2.text.subrip;
 
-import androidx.annotation.Nullable;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.text.Cue;
 import com.google.android.exoplayer2.text.SimpleSubtitleDecoder;
 import com.google.android.exoplayer2.util.Log;
@@ -28,9 +28,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * A {@link SimpleSubtitleDecoder} for SubRip.
- */
+/** A {@link SimpleSubtitleDecoder} for SubRip. */
 public final class SubripDecoder extends SimpleSubtitleDecoder {
 
   // Fractional positions for use when alignment tags are present.

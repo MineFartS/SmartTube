@@ -28,9 +28,7 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.util.Clock;
 import com.google.android.exoplayer2.util.Util;
 
-/**
- * A factory for {@link ExoPlayer} instances.
- */
+/** A factory for {@link ExoPlayer} instances. */
 public final class ExoPlayerFactory {
 
   private static @Nullable BandwidthMeter singletonBandwidthMeter;

@@ -25,1945 +25,1956 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import com.eclipsesource.v8.utils.V8Map;
+import com.eclipsesource.v8.utils.V8Runnable;
 import java.util.Arrays;
 import java.util.List;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.eclipsesource.v8.utils.V8Map;
-import com.eclipsesource.v8.utils.V8Runnable;
-
 public class V8Test {
 
-    private V8 v8;
+  private V8 v8;
 
-    @Before
-    public void seutp() {
-        v8 = V8.createV8Runtime();
-    }
+  @Before
+  public void seutp() {
+    v8 = V8.createV8Runtime();
+  }
 
-    @After
-    public void tearDown() {
-        try {
-            if (v8 != null) {
-                v8.close();
-            }
-            if (V8.getActiveRuntimes() != 0) {
-                throw new IllegalStateException("V8Runtimes not properly released");
-            }
-        } catch (IllegalStateException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    @Test
-    public void testGetVersion() {
-        String v8version = V8.getV8Version();
-
-        assertNotNull(v8version);
-    }
-
-    @Test
-    public void testLowMemoryNotification() {
-        v8.lowMemoryNotification();
-    }
-
-    @Test
-    public void testGetVersion_StartsWith9() {
-        String v8version = V8.getV8Version();
-
-        assertTrue(v8version.startsWith("9."));
-    }
-
-    @Test
-    public void testV8Setup() {
-        assertNotNull(v8);
-    }
-
-    @SuppressWarnings("resource")
-    @Test
-    public void testReleaseRuntimeReportsMemoryLeaks() {
-        V8 localV8 = V8.createV8Runtime();
-        new V8Object(localV8);
-        try {
-            localV8.release(true);
-        } catch (IllegalStateException ise) {
-            String message = ise.getMessage();
-            assertEquals("1 Object(s) still exist in runtime", message);
-            return;
-        }
-        fail("Exception should have been thrown");
-    }
-
-    @SuppressWarnings("resource")
-    @Test
-    public void testReleaseRuntimeWithWeakReferencesReportsCorrectMemoryLeaks() {
-        V8 localV8 = V8.createV8Runtime();
-        new V8Object(localV8);
-        new V8Object(localV8).setWeak();
-        try {
-            localV8.release(true);
-        } catch (IllegalStateException ise) {
-            String message = ise.getMessage();
-            assertEquals("1 Object(s) still exist in runtime", message);
-            return;
-        }
-        fail("Exception should have been thrown");
-    }
-
-    @Test
-    public void testObjectReferenceZero() {
-        long objectReferenceCount = v8.getObjectReferenceCount();
-
-        assertEquals(0, objectReferenceCount);
-    }
-
-    @Test
-    public void testObjectReferenceCountOne() {
-        V8Object object = new V8Object(v8);
-
-        long objectReferenceCount = v8.getObjectReferenceCount();
-
-        assertEquals(1, objectReferenceCount);
-        object.close();
-    }
-
-    @Test
-    public void testObjectReferenceCountReleased() {
-        V8Object object = new V8Object(v8);
-        object.close();
-
-        long objectReferenceCount = v8.getObjectReferenceCount();
-
-        assertEquals(0, objectReferenceCount);
-    }
-
-    @Test(expected = Error.class)
-    public void testCannotAccessDisposedIsolateVoid() {
+  @After
+  public void tearDown() {
+    try {
+      if (v8 != null) {
         v8.close();
-        v8.executeVoidScript("");
+      }
+      if (V8.getActiveRuntimes() != 0) {
+        throw new IllegalStateException("V8Runtimes not properly released");
+      }
+    } catch (IllegalStateException e) {
+      System.out.println(e.getMessage());
     }
+  }
 
-    @Test(expected = Error.class)
-    public void testCannotAccessDisposedIsolateInt() {
-        v8.close();
-        v8.executeIntegerScript("7");
+  @Test
+  public void testGetVersion() {
+    String v8version = V8.getV8Version();
+
+    assertNotNull(v8version);
+  }
+
+  @Test
+  public void testLowMemoryNotification() {
+    v8.lowMemoryNotification();
+  }
+
+  @Test
+  public void testGetVersion_StartsWith9() {
+    String v8version = V8.getV8Version();
+
+    assertTrue(v8version.startsWith("9."));
+  }
+
+  @Test
+  public void testV8Setup() {
+    assertNotNull(v8);
+  }
+
+  @SuppressWarnings("resource")
+  @Test
+  public void testReleaseRuntimeReportsMemoryLeaks() {
+    V8 localV8 = V8.createV8Runtime();
+    new V8Object(localV8);
+    try {
+      localV8.release(true);
+    } catch (IllegalStateException ise) {
+      String message = ise.getMessage();
+      assertEquals("1 Object(s) still exist in runtime", message);
+      return;
     }
+    fail("Exception should have been thrown");
+  }
 
-    @Test(expected = Error.class)
-    public void testCannotAccessDisposedIsolateString() {
-        v8.close();
-        v8.executeStringScript("'foo'");
+  @SuppressWarnings("resource")
+  @Test
+  public void testReleaseRuntimeWithWeakReferencesReportsCorrectMemoryLeaks() {
+    V8 localV8 = V8.createV8Runtime();
+    new V8Object(localV8);
+    new V8Object(localV8).setWeak();
+    try {
+      localV8.release(true);
+    } catch (IllegalStateException ise) {
+      String message = ise.getMessage();
+      assertEquals("1 Object(s) still exist in runtime", message);
+      return;
     }
+    fail("Exception should have been thrown");
+  }
 
-    @Test(expected = Error.class)
-    public void testCannotAccessDisposedIsolateBoolean() {
-        v8.close();
-        v8.executeBooleanScript("true");
-    }
+  @Test
+  public void testObjectReferenceZero() {
+    long objectReferenceCount = v8.getObjectReferenceCount();
 
-    @Test
-    public void testSingleThreadAccess() throws InterruptedException {
-        final boolean[] result = new boolean[] { false };
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
+    assertEquals(0, objectReferenceCount);
+  }
+
+  @Test
+  public void testObjectReferenceCountOne() {
+    V8Object object = new V8Object(v8);
+
+    long objectReferenceCount = v8.getObjectReferenceCount();
+
+    assertEquals(1, objectReferenceCount);
+    object.close();
+  }
+
+  @Test
+  public void testObjectReferenceCountReleased() {
+    V8Object object = new V8Object(v8);
+    object.close();
+
+    long objectReferenceCount = v8.getObjectReferenceCount();
+
+    assertEquals(0, objectReferenceCount);
+  }
+
+  @Test(expected = Error.class)
+  public void testCannotAccessDisposedIsolateVoid() {
+    v8.close();
+    v8.executeVoidScript("");
+  }
+
+  @Test(expected = Error.class)
+  public void testCannotAccessDisposedIsolateInt() {
+    v8.close();
+    v8.executeIntegerScript("7");
+  }
+
+  @Test(expected = Error.class)
+  public void testCannotAccessDisposedIsolateString() {
+    v8.close();
+    v8.executeStringScript("'foo'");
+  }
+
+  @Test(expected = Error.class)
+  public void testCannotAccessDisposedIsolateBoolean() {
+    v8.close();
+    v8.executeBooleanScript("true");
+  }
+
+  @Test
+  public void testSingleThreadAccess() throws InterruptedException {
+    final boolean[] result = new boolean[] {false};
+    Thread t =
+        new Thread(
+            new Runnable() {
+              @Override
+              public void run() {
                 try {
-                    v8.executeVoidScript("");
+                  v8.executeVoidScript("");
                 } catch (Error e) {
-                    result[0] = e.getMessage().contains("Invalid V8 thread access");
+                  result[0] = e.getMessage().contains("Invalid V8 thread access");
                 }
-            }
-        });
-        t.start();
-        t.join();
+              }
+            });
+    t.start();
+    t.join();
 
-        assertTrue(result[0]);
-    }
+    assertTrue(result[0]);
+  }
 
-    @Test
-    public void testMultiThreadAccess() throws InterruptedException {
-        v8.add("foo", "bar");
-        v8.getLocker().release();
-        Thread t = new Thread(new Runnable() {
+  @Test
+  public void testMultiThreadAccess() throws InterruptedException {
+    v8.add("foo", "bar");
+    v8.getLocker().release();
+    Thread t =
+        new Thread(
+            new Runnable() {
 
-            @Override
-            public void run() {
+              @Override
+              public void run() {
                 v8.getLocker().acquire();
                 v8.add("foo", "baz");
                 v8.getLocker().release();
-            }
-        });
-        t.start();
-        t.join();
-        v8.getLocker().acquire();
-
-        assertEquals("baz", v8.getString("foo"));
-    }
-
-    @SuppressWarnings("resource")
-    @Test
-    public void testISENotThrownOnShutdown() {
-        V8 v8_ = V8.createV8Runtime();
-
-        new V8Object(v8_);
-        v8_.release(false);
-    }
-
-    @SuppressWarnings("resource")
-    @Test(expected = IllegalStateException.class)
-    public void testISEThrownOnShutdown() {
-        V8 v8_ = V8.createV8Runtime();
-
-        new V8Object(v8_);
-        v8_.release(true);
-    }
-
-    @Test
-    public void testReleaseAttachedObjects() {
-        V8 runtime = V8.createV8Runtime();
-        V8Object v8Object = new V8Object(v8);
-        runtime.registerResource(v8Object);
-
-        runtime.release(true);
-    }
-
-    @Test
-    public void testReleaseSeveralAttachedObjects() {
-        V8 runtime = V8.createV8Runtime();
-        runtime.registerResource(new V8Object(runtime));
-        runtime.registerResource(new V8Object(runtime));
-        runtime.registerResource(new V8Object(runtime));
-
-        runtime.release(true);
-    }
-
-    @Test
-    public void testReleaseAttachedMap() {
-        V8 runtime = V8.createV8Runtime();
-        V8Map<String> v8Map = new V8Map<String>();
-        V8Object v8Object = new V8Object(runtime);
-        v8Map.put(v8Object, "foo");
-        v8Object.close();
-        runtime.registerResource(v8Map);
-
-        runtime.release(true);
-    }
-
-    /*** Void Script ***/
-    @Test
-    public void testSimpleVoidScript() {
-        v8.executeVoidScript("function foo() {return 1+1}");
-
-        int result = v8.executeIntegerFunction("foo", null);
-
-        assertEquals(2, result);
-    }
-
-    @Test
-    public void testMultipleScriptCallsPermitted() {
-        v8.executeVoidScript("function foo() {return 1+1}");
-        v8.executeVoidScript("function bar() {return foo() + 1}");
-
-        int foo = v8.executeIntegerFunction("foo", null);
-        int bar = v8.executeIntegerFunction("bar", null);
-
-        assertEquals(2, foo);
-        assertEquals(3, bar);
-    }
-
-    @Test(expected = V8ScriptCompilationException.class)
-    public void testSyntaxErrorInVoidScript() {
-        v8.executeVoidScript("'a");
-    }
-
-    @Test
-    public void testSyntaxErrorMissingParam() {
-        try {
-            v8.executeScript("foo());");
-        } catch (V8ScriptCompilationException e) {
-            String string = e.toString();
-            assertNotNull(string);
-            return;
-        }
-        fail("Exception expected.");
-    }
-
-    @Test
-    public void testVoidScriptWithName() {
-        v8.executeVoidScript("function foo() {return 1+1}", "name", 1);
-
-        int result = v8.executeIntegerFunction("foo", null);
-
-        assertEquals(2, result);
-    }
-
-    /*** Int Script ***/
-    @Test
-    public void testSimpleIntScript() {
-        int result = v8.executeIntegerScript("1+2;");
-
-        assertEquals(3, result);
-    }
+              }
+            });
+    t.start();
+    t.join();
+    v8.getLocker().acquire();
+
+    assertEquals("baz", v8.getString("foo"));
+  }
+
+  @SuppressWarnings("resource")
+  @Test
+  public void testISENotThrownOnShutdown() {
+    V8 v8_ = V8.createV8Runtime();
+
+    new V8Object(v8_);
+    v8_.release(false);
+  }
+
+  @SuppressWarnings("resource")
+  @Test(expected = IllegalStateException.class)
+  public void testISEThrownOnShutdown() {
+    V8 v8_ = V8.createV8Runtime();
+
+    new V8Object(v8_);
+    v8_.release(true);
+  }
+
+  @Test
+  public void testReleaseAttachedObjects() {
+    V8 runtime = V8.createV8Runtime();
+    V8Object v8Object = new V8Object(v8);
+    runtime.registerResource(v8Object);
+
+    runtime.release(true);
+  }
+
+  @Test
+  public void testReleaseSeveralAttachedObjects() {
+    V8 runtime = V8.createV8Runtime();
+    runtime.registerResource(new V8Object(runtime));
+    runtime.registerResource(new V8Object(runtime));
+    runtime.registerResource(new V8Object(runtime));
+
+    runtime.release(true);
+  }
+
+  @Test
+  public void testReleaseAttachedMap() {
+    V8 runtime = V8.createV8Runtime();
+    V8Map<String> v8Map = new V8Map<String>();
+    V8Object v8Object = new V8Object(runtime);
+    v8Map.put(v8Object, "foo");
+    v8Object.close();
+    runtime.registerResource(v8Map);
+
+    runtime.release(true);
+  }
+
+  /*** Void Script ***/
+  @Test
+  public void testSimpleVoidScript() {
+    v8.executeVoidScript("function foo() {return 1+1}");
+
+    int result = v8.executeIntegerFunction("foo", null);
+
+    assertEquals(2, result);
+  }
+
+  @Test
+  public void testMultipleScriptCallsPermitted() {
+    v8.executeVoidScript("function foo() {return 1+1}");
+    v8.executeVoidScript("function bar() {return foo() + 1}");
+
+    int foo = v8.executeIntegerFunction("foo", null);
+    int bar = v8.executeIntegerFunction("bar", null);
+
+    assertEquals(2, foo);
+    assertEquals(3, bar);
+  }
+
+  @Test(expected = V8ScriptCompilationException.class)
+  public void testSyntaxErrorInVoidScript() {
+    v8.executeVoidScript("'a");
+  }
+
+  @Test
+  public void testSyntaxErrorMissingParam() {
+    try {
+      v8.executeScript("foo());");
+    } catch (V8ScriptCompilationException e) {
+      String string = e.toString();
+      assertNotNull(string);
+      return;
+    }
+    fail("Exception expected.");
+  }
+
+  @Test
+  public void testVoidScriptWithName() {
+    v8.executeVoidScript("function foo() {return 1+1}", "name", 1);
+
+    int result = v8.executeIntegerFunction("foo", null);
 
-    @Test
-    public void testIntScriptWithDouble() {
-        int result = v8.executeIntegerScript("1.9+2.9;");
-
-        assertEquals(4, result);
-    }
+    assertEquals(2, result);
+  }
 
-    @Test(expected = V8ScriptCompilationException.class)
-    public void testSimpleSyntaxError() {
-        v8.executeIntegerScript("return 1+2");
-    }
+  /*** Int Script ***/
+  @Test
+  public void testSimpleIntScript() {
+    int result = v8.executeIntegerScript("1+2;");
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testResultUndefinedExceptionIntScript() {
-        v8.executeIntegerScript("");
-    }
+    assertEquals(3, result);
+  }
+
+  @Test
+  public void testIntScriptWithDouble() {
+    int result = v8.executeIntegerScript("1.9+2.9;");
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testResultUndefinedExceptionForWrongReturnTypeIntScript() {
-        v8.executeIntegerScript("'test'");
-    }
+    assertEquals(4, result);
+  }
 
-    @Test
-    public void testIntScriptWithName() {
-        int result = v8.executeIntegerScript("1+2;", "name", 2);
+  @Test(expected = V8ScriptCompilationException.class)
+  public void testSimpleSyntaxError() {
+    v8.executeIntegerScript("return 1+2");
+  }
 
-        assertEquals(3, result);
-    }
+  @Test(expected = V8ResultUndefined.class)
+  public void testResultUndefinedExceptionIntScript() {
+    v8.executeIntegerScript("");
+  }
 
-    /*** Double Script ***/
-    @Test
-    public void testSimpleDoubleScript() {
-        double result = v8.executeDoubleScript("3.14159;");
+  @Test(expected = V8ResultUndefined.class)
+  public void testResultUndefinedExceptionForWrongReturnTypeIntScript() {
+    v8.executeIntegerScript("'test'");
+  }
 
-        assertEquals(3.14159, result, 0.00001);
-    }
+  @Test
+  public void testIntScriptWithName() {
+    int result = v8.executeIntegerScript("1+2;", "name", 2);
+
+    assertEquals(3, result);
+  }
+
+  /*** Double Script ***/
+  @Test
+  public void testSimpleDoubleScript() {
+    double result = v8.executeDoubleScript("3.14159;");
 
-    @Test
-    public void testDoubleScriptWithInt() {
-        double result = v8.executeDoubleScript("1");
+    assertEquals(3.14159, result, 0.00001);
+  }
+
+  @Test
+  public void testDoubleScriptWithInt() {
+    double result = v8.executeDoubleScript("1");
+
+    assertEquals(1.0, result, 0.00001);
+  }
+
+  @Test(expected = V8ScriptCompilationException.class)
+  public void testSimpleSyntaxErrorInDoubleScript() {
+    v8.executeDoubleScript("return 1+2");
+  }
 
-        assertEquals(1.0, result, 0.00001);
-    }
+  @Test(expected = V8ResultUndefined.class)
+  public void testResultUndefinedExceptionDoubleScript() {
+    v8.executeDoubleScript("");
+  }
 
-    @Test(expected = V8ScriptCompilationException.class)
-    public void testSimpleSyntaxErrorInDoubleScript() {
-        v8.executeDoubleScript("return 1+2");
-    }
+  @Test(expected = V8ResultUndefined.class)
+  public void testResultUndefinedExceptionForWrongReturnTypeDoubleScript() {
+    v8.executeDoubleScript("'test'");
+  }
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testResultUndefinedExceptionDoubleScript() {
-        v8.executeDoubleScript("");
-    }
+  @Test
+  public void testDoubleScriptHandlesInts() {
+    int result = (int) v8.executeDoubleScript("1");
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testResultUndefinedExceptionForWrongReturnTypeDoubleScript() {
-        v8.executeDoubleScript("'test'");
-    }
+    assertEquals(1, result);
+  }
 
-    @Test
-    public void testDoubleScriptHandlesInts() {
-        int result = (int) v8.executeDoubleScript("1");
+  @Test
+  public void testDoubleScriptWithName() {
+    double result = v8.executeDoubleScript("3.14159;", "name", 3);
 
-        assertEquals(1, result);
-    }
+    assertEquals(3.14159, result, 0.00001);
+  }
 
-    @Test
-    public void testDoubleScriptWithName() {
-        double result = v8.executeDoubleScript("3.14159;", "name", 3);
+  /*** Boolean Script ***/
+  @Test
+  public void testSimpleBooleanScript() {
+    boolean result = v8.executeBooleanScript("true");
 
-        assertEquals(3.14159, result, 0.00001);
-    }
+    assertTrue(result);
+  }
 
-    /*** Boolean Script ***/
-    @Test
-    public void testSimpleBooleanScript() {
-        boolean result = v8.executeBooleanScript("true");
+  @Test(expected = V8ScriptCompilationException.class)
+  public void testSimpleSyntaxErrorInBooleanScript() {
+    v8.executeBooleanScript("return 1+2");
+  }
 
-        assertTrue(result);
-    }
+  @Test(expected = V8ResultUndefined.class)
+  public void testResultUndefinedExceptionBooleanScript() {
+    v8.executeBooleanScript("");
+  }
 
-    @Test(expected = V8ScriptCompilationException.class)
-    public void testSimpleSyntaxErrorInBooleanScript() {
-        v8.executeBooleanScript("return 1+2");
-    }
+  @Test(expected = V8ResultUndefined.class)
+  public void testResultUndefinedExceptionForWrongReturnTypeBooleanScript() {
+    v8.executeBooleanScript("'test'");
+  }
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testResultUndefinedExceptionBooleanScript() {
-        v8.executeBooleanScript("");
-    }
+  @Test
+  public void testBooleanScriptWithName() {
+    boolean result = v8.executeBooleanScript("true", "name", 4);
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testResultUndefinedExceptionForWrongReturnTypeBooleanScript() {
-        v8.executeBooleanScript("'test'");
-    }
+    assertTrue(result);
+  }
 
-    @Test
-    public void testBooleanScriptWithName() {
-        boolean result = v8.executeBooleanScript("true", "name", 4);
+  /*** String Script ***/
+  @Test
+  public void testSimpleStringScript() {
+    String result = v8.executeStringScript("'hello, world'");
 
-        assertTrue(result);
-    }
+    assertEquals("hello, world", result);
+  }
 
-    /*** String Script ***/
-    @Test
-    public void testSimpleStringScript() {
-        String result = v8.executeStringScript("'hello, world'");
+  @Test(expected = V8ScriptCompilationException.class)
+  public void testSimpleSyntaxErrorStringScript() {
+    v8.executeStringScript("'a");
+  }
 
-        assertEquals("hello, world", result);
-    }
+  @Test(expected = V8ResultUndefined.class)
+  public void testResultUndefinedExceptionStringScript() {
+    v8.executeIntegerScript("");
+  }
 
-    @Test(expected = V8ScriptCompilationException.class)
-    public void testSimpleSyntaxErrorStringScript() {
-        v8.executeStringScript("'a");
-    }
+  @Test(expected = V8ResultUndefined.class)
+  public void testResultUndefinedExceptionForWrongReturnTypeStringScript() {
+    v8.executeStringScript("42");
+  }
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testResultUndefinedExceptionStringScript() {
-        v8.executeIntegerScript("");
-    }
+  @Test
+  public void testStringScriptWithName() {
+    String result = v8.executeStringScript("'hello, world'", "name", 5);
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testResultUndefinedExceptionForWrongReturnTypeStringScript() {
-        v8.executeStringScript("42");
-    }
+    assertEquals("hello, world", result);
+  }
+
+  /*** Unknown Script ***/
+  @Test
+  public void testAnyScriptReturnedNothing() {
+    V8Value result = (V8Value) v8.executeScript("");
 
-    @Test
-    public void testStringScriptWithName() {
-        String result = v8.executeStringScript("'hello, world'", "name", 5);
+    assertTrue(result.isUndefined());
+  }
+
+  @Test
+  public void testAnyScriptReturnedNull() {
+    Object result = v8.executeScript("null;");
+
+    assertNull(result);
+  }
+
+  @Test
+  public void testAnyScriptReturnedUndefined() {
+    V8Value result = (V8Value) v8.executeScript("undefined;");
+
+    assertTrue(result.isUndefined());
+  }
+
+  @Test
+  public void testAnyScriptReturnInt() {
+    Object result = v8.executeScript("1;");
+
+    assertEquals(1, result);
+  }
+
+  @Test
+  public void testAnyScriptReturnDouble() {
+    Object result = v8.executeScript("1.1;");
+
+    assertEquals(1.1, (Double) result, 0.000001);
+  }
+
+  @Test
+  public void testAnyScriptReturnString() {
+    Object result = v8.executeScript("'foo';");
+
+    assertEquals("foo", result);
+  }
+
+  @Test
+  public void testAnyScriptReturnBoolean() {
+    Object result = v8.executeScript("false;");
+
+    assertFalse((Boolean) result);
+  }
+
+  @Test
+  public void testAnyScriptReturnsV8Object() {
+    V8Object result = (V8Object) v8.executeScript("foo = {hello:'world'}; foo;");
+
+    assertEquals("world", result.getString("hello"));
+    result.close();
+  }
+
+  @Test
+  public void testAnyScriptReturnsV8Array() {
+    V8Array result = (V8Array) v8.executeScript("[1,2,3];");
+
+    assertEquals(3, result.length());
+    assertEquals(1, result.get(0));
+    assertEquals(2, result.get(1));
+    assertEquals(3, result.get(2));
+    result.close();
+  }
+
+  @Test(expected = V8ScriptCompilationException.class)
+  public void testSimpleSyntaxErrorAnytScript() {
+    v8.executeScript("'a");
+  }
+
+  @Test
+  public void testAnyScriptWithName() {
+    V8Object result = (V8Object) v8.executeScript("foo = {hello:'world'}; foo;", "name", 6);
+
+    assertEquals("world", result.getString("hello"));
+    result.close();
+  }
+
+  /*** Object Script ***/
+  @Test
+  public void testSimpleObjectScript() {
+    V8Object result = v8.executeObjectScript("foo = {hello:'world'}; foo;");
+
+    assertEquals("world", result.getString("hello"));
+    result.close();
+  }
+
+  @Test(expected = V8ScriptCompilationException.class)
+  public void testSimpleSyntaxErrorObjectScript() {
+    v8.executeObjectScript("'a");
+  }
 
-        assertEquals("hello, world", result);
-    }
+  @Test
+  public void testResultUndefinedExceptionObjectScript() {
+    V8Object result = v8.executeObjectScript("");
 
-    /*** Unknown Script ***/
-    @Test
-    public void testAnyScriptReturnedNothing() {
-        V8Value result = (V8Value) v8.executeScript("");
+    assertTrue(result.isUndefined());
+  }
 
-        assertTrue(result.isUndefined());
-    }
+  @Test(expected = V8ResultUndefined.class)
+  public void testResultUndefinedExceptionForWrongReturnTypeObjectScript() {
+    v8.executeObjectScript("42");
+  }
 
-    @Test
-    public void testAnyScriptReturnedNull() {
-        Object result = v8.executeScript("null;");
+  @Test
+  public void testNestedObjectScript() {
+    V8Object result =
+        v8.executeObjectScript("person = {name : {first : 'john', last:'smith'} }; person;");
 
-        assertNull(result);
-    }
+    V8Object name = result.getObject("name");
+    assertEquals("john", name.getString("first"));
+    assertEquals("smith", name.getString("last"));
+    result.close();
+    name.close();
+  }
 
-    @Test
-    public void testAnyScriptReturnedUndefined() {
-        V8Value result = (V8Value) v8.executeScript("undefined;");
+  @Test
+  public void testObjectScriptWithName() {
+    V8Object result = v8.executeObjectScript("foo = {hello:'world'}; foo;", "name", 6);
 
-        assertTrue(result.isUndefined());
-    }
+    assertEquals("world", result.getString("hello"));
+    result.close();
+  }
 
-    @Test
-    public void testAnyScriptReturnInt() {
-        Object result = v8.executeScript("1;");
+  /*** Array Script ***/
+  @Test
+  public void testSimpleArrayScript() {
+    V8Array result = v8.executeArrayScript("foo = [1,2,3]; foo;");
 
-        assertEquals(1, result);
-    }
+    assertNotNull(result);
+    result.close();
+  }
 
-    @Test
-    public void testAnyScriptReturnDouble() {
-        Object result = v8.executeScript("1.1;");
+  @Test(expected = V8ScriptCompilationException.class)
+  public void testSimpleSyntaxErrorArrayScript() {
+    v8.executeArrayScript("'a");
+  }
 
-        assertEquals(1.1, (Double) result, 0.000001);
-    }
+  @Test(expected = V8ResultUndefined.class)
+  public void testResultUndefinedExceptionArrayScript() {
+    v8.executeArrayScript("");
+  }
 
-    @Test
-    public void testAnyScriptReturnString() {
-        Object result = v8.executeScript("'foo';");
+  @Test(expected = V8ResultUndefined.class)
+  public void testResultUndefinedExceptionForWrongReturnTypeArrayScript() {
+    v8.executeArrayScript("42");
+  }
 
-        assertEquals("foo", result);
-    }
+  @Test
+  public void testArrayScriptWithName() {
+    V8Array result = v8.executeArrayScript("foo = [1,2,3]; foo;", "name", 7);
 
-    @Test
-    public void testAnyScriptReturnBoolean() {
-        Object result = v8.executeScript("false;");
+    assertNotNull(result);
+    result.close();
+  }
 
-        assertFalse((Boolean) result);
-    }
+  /*** Int Function ***/
+  @Test
+  public void testSimpleIntFunction() {
+    v8.executeIntegerScript("function foo() {return 1+2;}; 42");
 
-    @Test
-    public void testAnyScriptReturnsV8Object() {
-        V8Object result = (V8Object) v8.executeScript("foo = {hello:'world'}; foo;");
+    int result = v8.executeIntegerFunction("foo", null);
 
-        assertEquals("world", result.getString("hello"));
-        result.close();
-    }
+    assertEquals(3, result);
+  }
 
-    @Test
-    public void testAnyScriptReturnsV8Array() {
-        V8Array result = (V8Array) v8.executeScript("[1,2,3];");
-
-        assertEquals(3, result.length());
-        assertEquals(1, result.get(0));
-        assertEquals(2, result.get(1));
-        assertEquals(3, result.get(2));
-        result.close();
-    }
+  @Test
+  public void testSimpleIntFunctionWithDouble() {
+    v8.executeVoidScript("function foo() {return 1.2+2.9;};");
 
-    @Test(expected = V8ScriptCompilationException.class)
-    public void testSimpleSyntaxErrorAnytScript() {
-        v8.executeScript("'a");
-    }
+    int result = v8.executeIntegerFunction("foo", null);
 
-    @Test
-    public void testAnyScriptWithName() {
-        V8Object result = (V8Object) v8.executeScript("foo = {hello:'world'}; foo;", "name", 6);
+    assertEquals(4, result);
+  }
 
-        assertEquals("world", result.getString("hello"));
-        result.close();
-    }
+  @Test(expected = V8ResultUndefined.class)
+  public void testResultUndefinedForWrongReturnTypeOfIntFunction() {
+    v8.executeIntegerScript("function foo() {return 'test';}; 42");
 
-    /*** Object Script ***/
-    @Test
-    public void testSimpleObjectScript() {
-        V8Object result = v8.executeObjectScript("foo = {hello:'world'}; foo;");
+    int result = v8.executeIntegerFunction("foo", null);
 
-        assertEquals("world", result.getString("hello"));
-        result.close();
-    }
+    assertEquals(3, result);
+  }
 
-    @Test(expected = V8ScriptCompilationException.class)
-    public void testSimpleSyntaxErrorObjectScript() {
-        v8.executeObjectScript("'a");
-    }
+  @Test(expected = V8ResultUndefined.class)
+  public void testResultUndefinedForNoReturnInIntFunction() {
+    v8.executeIntegerScript("function foo() {}; 42");
 
-    @Test
-    public void testResultUndefinedExceptionObjectScript() {
-        V8Object result = v8.executeObjectScript("");
+    int result = v8.executeIntegerFunction("foo", null);
 
-        assertTrue(result.isUndefined());
-    }
+    assertEquals(3, result);
+  }
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testResultUndefinedExceptionForWrongReturnTypeObjectScript() {
-        v8.executeObjectScript("42");
-    }
+  /*** String Function ***/
+  @Test
+  public void testSimpleStringFunction() {
+    v8.executeVoidScript("function foo() {return 'hello';}");
 
-    @Test
-    public void testNestedObjectScript() {
-        V8Object result = v8.executeObjectScript("person = {name : {first : 'john', last:'smith'} }; person;");
-
-        V8Object name = result.getObject("name");
-        assertEquals("john", name.getString("first"));
-        assertEquals("smith", name.getString("last"));
-        result.close();
-        name.close();
-    }
+    String result = v8.executeStringFunction("foo", null);
 
-    @Test
-    public void testObjectScriptWithName() {
-        V8Object result = v8.executeObjectScript("foo = {hello:'world'}; foo;", "name", 6);
+    assertEquals("hello", result);
+  }
 
-        assertEquals("world", result.getString("hello"));
-        result.close();
-    }
+  @Test(expected = V8ResultUndefined.class)
+  public void testResultUndefinedForWrongReturnTypeOfStringFunction() {
+    v8.executeVoidScript("function foo() {return 42;}");
 
-    /*** Array Script ***/
-    @Test
-    public void testSimpleArrayScript() {
-        V8Array result = v8.executeArrayScript("foo = [1,2,3]; foo;");
+    v8.executeStringFunction("foo", null);
+  }
 
-        assertNotNull(result);
-        result.close();
-    }
+  @Test(expected = V8ResultUndefined.class)
+  public void testResultUndefinedForNoReturnInStringFunction() {
+    v8.executeVoidScript("function foo() {};");
 
-    @Test(expected = V8ScriptCompilationException.class)
-    public void testSimpleSyntaxErrorArrayScript() {
-        v8.executeArrayScript("'a");
-    }
+    v8.executeStringFunction("foo", null);
+  }
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testResultUndefinedExceptionArrayScript() {
-        v8.executeArrayScript("");
-    }
+  /*** Double Function ***/
+  @Test
+  public void testSimpleDoubleFunction() {
+    v8.executeVoidScript("function foo() {return 3.14 + 1;}");
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testResultUndefinedExceptionForWrongReturnTypeArrayScript() {
-        v8.executeArrayScript("42");
-    }
+    double result = v8.executeDoubleFunction("foo", null);
 
-    @Test
-    public void testArrayScriptWithName() {
-        V8Array result = v8.executeArrayScript("foo = [1,2,3]; foo;", "name", 7);
+    assertEquals(4.14, result, 0.000001);
+  }
 
-        assertNotNull(result);
-        result.close();
-    }
+  @Test(expected = V8ResultUndefined.class)
+  public void testResultUndefinedForWrongReturnTypeOfDoubleFunction() {
+    v8.executeVoidScript("function foo() {return 'foo';}");
 
-    /*** Int Function ***/
-    @Test
-    public void testSimpleIntFunction() {
-        v8.executeIntegerScript("function foo() {return 1+2;}; 42");
+    v8.executeDoubleFunction("foo", null);
+  }
 
-        int result = v8.executeIntegerFunction("foo", null);
+  @Test(expected = V8ResultUndefined.class)
+  public void testResultUndefinedForNoReturnInDoubleFunction() {
+    v8.executeVoidScript("function foo() {};");
 
-        assertEquals(3, result);
-    }
+    v8.executeDoubleFunction("foo", null);
+  }
 
-    @Test
-    public void testSimpleIntFunctionWithDouble() {
-        v8.executeVoidScript("function foo() {return 1.2+2.9;};");
+  /*** Boolean Function ***/
+  @Test
+  public void testSimpleBooleanFunction() {
+    v8.executeVoidScript("function foo() {return true;}");
 
-        int result = v8.executeIntegerFunction("foo", null);
+    boolean result = v8.executeBooleanFunction("foo", null);
 
-        assertEquals(4, result);
-    }
+    assertTrue(result);
+  }
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testResultUndefinedForWrongReturnTypeOfIntFunction() {
-        v8.executeIntegerScript("function foo() {return 'test';}; 42");
+  @Test(expected = V8ResultUndefined.class)
+  public void testResultUndefinedForWrongReturnTypeOfBooleanFunction() {
+    v8.executeVoidScript("function foo() {return 'foo';}");
 
-        int result = v8.executeIntegerFunction("foo", null);
+    v8.executeBooleanFunction("foo", null);
+  }
 
-        assertEquals(3, result);
-    }
+  @Test(expected = V8ResultUndefined.class)
+  public void testResultUndefinedForNoReturnInBooleanFunction() {
+    v8.executeVoidScript("function foo() {};");
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testResultUndefinedForNoReturnInIntFunction() {
-        v8.executeIntegerScript("function foo() {}; 42");
+    v8.executeBooleanFunction("foo", null);
+  }
 
-        int result = v8.executeIntegerFunction("foo", null);
+  /*** Object Function ***/
+  @Test
+  public void testSimpleObjectFunction() {
+    v8.executeVoidScript("function foo() {return {foo:true};}");
 
-        assertEquals(3, result);
-    }
+    V8Object result = v8.executeObjectFunction("foo", null);
 
-    /*** String Function ***/
-    @Test
-    public void testSimpleStringFunction() {
-        v8.executeVoidScript("function foo() {return 'hello';}");
+    assertTrue(result.getBoolean("foo"));
+    result.close();
+  }
 
-        String result = v8.executeStringFunction("foo", null);
+  @Test(expected = V8ResultUndefined.class)
+  public void testResultUndefinedForWrongReturnTypeOfObjectFunction() {
+    v8.executeVoidScript("function foo() {return 'foo';}");
 
-        assertEquals("hello", result);
-    }
+    v8.executeObjectFunction("foo", null);
+  }
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testResultUndefinedForWrongReturnTypeOfStringFunction() {
-        v8.executeVoidScript("function foo() {return 42;}");
+  @Test
+  public void testResultUndefinedForNoReturnInobjectFunction() {
+    v8.executeVoidScript("function foo() {};");
 
-        v8.executeStringFunction("foo", null);
-    }
+    V8Object result = v8.executeObjectFunction("foo", null);
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testResultUndefinedForNoReturnInStringFunction() {
-        v8.executeVoidScript("function foo() {};");
+    assertTrue(result.isUndefined());
+  }
 
-        v8.executeStringFunction("foo", null);
-    }
+  /*** Array Function ***/
+  @Test
+  public void testSimpleArrayFunction() {
+    v8.executeVoidScript("function foo() {return [1,2,3];}");
 
-    /*** Double Function ***/
-    @Test
-    public void testSimpleDoubleFunction() {
-        v8.executeVoidScript("function foo() {return 3.14 + 1;}");
+    V8Array result = v8.executeArrayFunction("foo", null);
 
-        double result = v8.executeDoubleFunction("foo", null);
+    assertEquals(3, result.length());
+    result.close();
+  }
 
-        assertEquals(4.14, result, 0.000001);
-    }
+  @Test(expected = V8ResultUndefined.class)
+  public void testResultUndefinedForWrongReturnTypeOfArrayFunction() {
+    v8.executeVoidScript("function foo() {return 'foo';}");
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testResultUndefinedForWrongReturnTypeOfDoubleFunction() {
-        v8.executeVoidScript("function foo() {return 'foo';}");
+    v8.executeArrayFunction("foo", null);
+  }
 
-        v8.executeDoubleFunction("foo", null);
-    }
+  @Test
+  public void testResultUndefinedForNoReturnInArrayFunction() {
+    v8.executeVoidScript("function foo() {};");
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testResultUndefinedForNoReturnInDoubleFunction() {
-        v8.executeVoidScript("function foo() {};");
+    V8Array result = v8.executeArrayFunction("foo", null);
 
-        v8.executeDoubleFunction("foo", null);
-    }
+    assertTrue(result.isUndefined());
+  }
 
-    /*** Boolean Function ***/
-    @Test
-    public void testSimpleBooleanFunction() {
-        v8.executeVoidScript("function foo() {return true;}");
+  /*** Void Function ***/
+  @Test
+  public void testSimpleVoidFunction() {
+    v8.executeVoidScript("function foo() {x=1}");
 
-        boolean result = v8.executeBooleanFunction("foo", null);
+    v8.executeVoidFunction("foo", null);
 
-        assertTrue(result);
-    }
+    assertEquals(1, v8.getInteger("x"));
+  }
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testResultUndefinedForWrongReturnTypeOfBooleanFunction() {
-        v8.executeVoidScript("function foo() {return 'foo';}");
+  /*** Add Int ***/
+  @Test
+  public void testAddInt() {
+    v8.add("foo", 42);
 
-        v8.executeBooleanFunction("foo", null);
-    }
+    int result = v8.executeIntegerScript("foo");
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testResultUndefinedForNoReturnInBooleanFunction() {
-        v8.executeVoidScript("function foo() {};");
+    assertEquals(42, result);
+  }
 
-        v8.executeBooleanFunction("foo", null);
-    }
+  @Test
+  public void testAddIntReplaceValue() {
+    v8.add("foo", 42);
+    v8.add("foo", 43);
 
-    /*** Object Function ***/
-    @Test
-    public void testSimpleObjectFunction() {
-        v8.executeVoidScript("function foo() {return {foo:true};}");
+    int result = v8.executeIntegerScript("foo");
 
-        V8Object result = v8.executeObjectFunction("foo", null);
+    assertEquals(43, result);
+  }
 
-        assertTrue(result.getBoolean("foo"));
-        result.close();
-    }
+  /*** Add Double ***/
+  @Test
+  public void testAddDouble() {
+    v8.add("foo", 3.14159);
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testResultUndefinedForWrongReturnTypeOfObjectFunction() {
-        v8.executeVoidScript("function foo() {return 'foo';}");
+    double result = v8.executeDoubleScript("foo");
 
-        v8.executeObjectFunction("foo", null);
-    }
+    assertEquals(3.14159, result, 0.000001);
+  }
 
-    @Test
-    public void testResultUndefinedForNoReturnInobjectFunction() {
-        v8.executeVoidScript("function foo() {};");
+  @Test
+  public void testAddDoubleReplaceValue() {
+    v8.add("foo", 42.1);
+    v8.add("foo", 43.1);
 
-        V8Object result = v8.executeObjectFunction("foo", null);
+    double result = v8.executeDoubleScript("foo");
 
-        assertTrue(result.isUndefined());
-    }
+    assertEquals(43.1, result, 0.000001);
+  }
 
-    /*** Array Function ***/
-    @Test
-    public void testSimpleArrayFunction() {
-        v8.executeVoidScript("function foo() {return [1,2,3];}");
+  /*** Add String ***/
+  @Test
+  public void testAddString() {
+    v8.add("foo", "hello, world!");
 
-        V8Array result = v8.executeArrayFunction("foo", null);
+    String result = v8.executeStringScript("foo");
 
-        assertEquals(3, result.length());
-        result.close();
-    }
+    assertEquals("hello, world!", result);
+  }
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testResultUndefinedForWrongReturnTypeOfArrayFunction() {
-        v8.executeVoidScript("function foo() {return 'foo';}");
+  @Test
+  public void testAddStringReplaceValue() {
+    v8.add("foo", "hello");
+    v8.add("foo", "world");
 
-        v8.executeArrayFunction("foo", null);
-    }
+    String result = v8.executeStringScript("foo");
 
-    @Test
-    public void testResultUndefinedForNoReturnInArrayFunction() {
-        v8.executeVoidScript("function foo() {};");
+    assertEquals("world", result);
+  }
 
-        V8Array result = v8.executeArrayFunction("foo", null);
+  /*** Add Boolean ***/
+  @Test
+  public void testAddBoolean() {
+    v8.add("foo", true);
 
-        assertTrue(result.isUndefined());
-    }
+    boolean result = v8.executeBooleanScript("foo");
 
-    /*** Void Function ***/
-    @Test
-    public void testSimpleVoidFunction() {
-        v8.executeVoidScript("function foo() {x=1}");
+    assertTrue(result);
+  }
 
-        v8.executeVoidFunction("foo", null);
+  @Test
+  public void testAddBooleanReplaceValue() {
+    v8.add("foo", true);
+    v8.add("foo", false);
 
-        assertEquals(1, v8.getInteger("x"));
-    }
+    boolean result = v8.executeBooleanScript("foo");
 
-    /*** Add Int ***/
-    @Test
-    public void testAddInt() {
-        v8.add("foo", 42);
+    assertFalse(result);
+  }
 
-        int result = v8.executeIntegerScript("foo");
+  @Test
+  public void testAddReplaceValue() {
+    v8.add("foo", true);
+    v8.add("foo", "test");
 
-        assertEquals(42, result);
-    }
+    String result = v8.executeStringScript("foo");
 
-    @Test
-    public void testAddIntReplaceValue() {
-        v8.add("foo", 42);
-        v8.add("foo", 43);
+    assertEquals("test", result);
+  }
 
-        int result = v8.executeIntegerScript("foo");
+  /*** Add Object ***/
+  @Test
+  public void testAddObject() {
+    V8Object v8Object = new V8Object(v8);
+    v8.add("foo", v8Object);
 
-        assertEquals(43, result);
-    }
+    V8Object result = v8.executeObjectScript("foo");
 
-    /*** Add Double ***/
-    @Test
-    public void testAddDouble() {
-        v8.add("foo", 3.14159);
+    assertNotNull(result);
+    result.close();
+    v8Object.close();
+  }
 
-        double result = v8.executeDoubleScript("foo");
+  @Test
+  public void testAddObjectReplaceValue() {
+    V8Object v8ObjectFoo1 = new V8Object(v8);
+    v8ObjectFoo1.add("test", true);
+    V8Object v8ObjectFoo2 = new V8Object(v8);
+    v8ObjectFoo2.add("test", false);
 
-        assertEquals(3.14159, result, 0.000001);
-    }
+    v8.add("foo", v8ObjectFoo1);
+    v8.add("foo", v8ObjectFoo2);
 
-    @Test
-    public void testAddDoubleReplaceValue() {
-        v8.add("foo", 42.1);
-        v8.add("foo", 43.1);
+    boolean result = v8.executeBooleanScript("foo.test");
 
-        double result = v8.executeDoubleScript("foo");
+    assertFalse(result);
+    v8ObjectFoo1.close();
+    v8ObjectFoo2.close();
+  }
 
-        assertEquals(43.1, result, 0.000001);
-    }
+  /*** Add Array ***/
+  @Test
+  public void testAddArray() {
+    V8Array array = new V8Array(v8);
+    v8.add("foo", array);
 
-    /*** Add String ***/
-    @Test
-    public void testAddString() {
-        v8.add("foo", "hello, world!");
+    V8Array result = v8.executeArrayScript("foo");
 
-        String result = v8.executeStringScript("foo");
+    assertNotNull(result);
+    array.close();
+    result.close();
+  }
 
-        assertEquals("hello, world!", result);
-    }
+  /*** Get Int ***/
+  @Test
+  public void testGetInt() {
+    v8.executeVoidScript("x = 7");
 
-    @Test
-    public void testAddStringReplaceValue() {
-        v8.add("foo", "hello");
-        v8.add("foo", "world");
+    int result = v8.getInteger("x");
 
-        String result = v8.executeStringScript("foo");
+    assertEquals(7, result);
+  }
 
-        assertEquals("world", result);
-    }
+  @Test
+  public void testGetIntFromDouble() {
+    v8.executeVoidScript("x = 7.7");
 
-    /*** Add Boolean ***/
-    @Test
-    public void testAddBoolean() {
-        v8.add("foo", true);
+    int result = v8.getInteger("x");
 
-        boolean result = v8.executeBooleanScript("foo");
+    assertEquals(7, result);
+  }
 
-        assertTrue(result);
-    }
+  @Test
+  public void testGetIntReplaceValue() {
+    v8.executeVoidScript("x = 7; x = 8");
 
-    @Test
-    public void testAddBooleanReplaceValue() {
-        v8.add("foo", true);
-        v8.add("foo", false);
+    int result = v8.getInteger("x");
 
-        boolean result = v8.executeBooleanScript("foo");
+    assertEquals(8, result);
+  }
 
-        assertFalse(result);
-    }
+  @Test(expected = V8ResultUndefined.class)
+  public void testGetIntWrongType() {
+    v8.executeVoidScript("x = 'foo'");
 
-    @Test
-    public void testAddReplaceValue() {
-        v8.add("foo", true);
-        v8.add("foo", "test");
+    v8.getInteger("x");
+  }
 
-        String result = v8.executeStringScript("foo");
+  @Test(expected = V8ResultUndefined.class)
+  public void testGetIntDoesNotExist() {
+    v8.executeVoidScript("");
 
-        assertEquals("test", result);
-    }
+    v8.getInteger("x");
+  }
 
-    /*** Add Object ***/
-    @Test
-    public void testAddObject() {
-        V8Object v8Object = new V8Object(v8);
-        v8.add("foo", v8Object);
+  /*** Get Double ***/
+  @Test
+  public void testGetDouble() {
+    v8.executeVoidScript("x = 3.14159");
 
-        V8Object result = v8.executeObjectScript("foo");
+    double result = v8.getDouble("x");
 
-        assertNotNull(result);
-        result.close();
-        v8Object.close();
-    }
+    assertEquals(3.14159, result, 0.00001);
+  }
 
-    @Test
-    public void testAddObjectReplaceValue() {
-        V8Object v8ObjectFoo1 = new V8Object(v8);
-        v8ObjectFoo1.add("test", true);
-        V8Object v8ObjectFoo2 = new V8Object(v8);
-        v8ObjectFoo2.add("test", false);
+  @Test
+  public void testGetDoubleReplaceValue() {
+    v8.executeVoidScript("x = 7.1; x = 8.1");
 
-        v8.add("foo", v8ObjectFoo1);
-        v8.add("foo", v8ObjectFoo2);
+    double result = v8.getDouble("x");
 
-        boolean result = v8.executeBooleanScript("foo.test");
+    assertEquals(8.1, result, 0.00001);
+  }
 
-        assertFalse(result);
-        v8ObjectFoo1.close();
-        v8ObjectFoo2.close();
-    }
+  @Test(expected = V8ResultUndefined.class)
+  public void testGetDoubleWrongType() {
+    v8.executeVoidScript("x = 'foo'");
 
-    /*** Add Array ***/
-    @Test
-    public void testAddArray() {
-        V8Array array = new V8Array(v8);
-        v8.add("foo", array);
+    v8.getDouble("x");
+  }
 
-        V8Array result = v8.executeArrayScript("foo");
+  @Test(expected = V8ResultUndefined.class)
+  public void testGetDoubleDoesNotExist() {
+    v8.executeVoidScript("");
 
-        assertNotNull(result);
-        array.close();
-        result.close();
-    }
+    v8.getDouble("x");
+  }
 
-    /*** Get Int ***/
-    @Test
-    public void testGetInt() {
-        v8.executeVoidScript("x = 7");
+  /*** Get String ***/
+  @Test
+  public void testGetString() {
+    v8.executeVoidScript("x = 'hello'");
 
-        int result = v8.getInteger("x");
+    String result = v8.getString("x");
 
-        assertEquals(7, result);
-    }
+    assertEquals("hello", result);
+  }
 
-    @Test
-    public void testGetIntFromDouble() {
-        v8.executeVoidScript("x = 7.7");
+  @Test
+  public void testGetStringReplaceValue() {
+    v8.executeVoidScript("x = 'hello'; x = 'world'");
 
-        int result = v8.getInteger("x");
+    String result = v8.getString("x");
 
-        assertEquals(7, result);
-    }
+    assertEquals("world", result);
+  }
 
-    @Test
-    public void testGetIntReplaceValue() {
-        v8.executeVoidScript("x = 7; x = 8");
+  @Test(expected = V8ResultUndefined.class)
+  public void testGetStringeWrongType() {
+    v8.executeVoidScript("x = 42");
 
-        int result = v8.getInteger("x");
+    v8.getString("x");
+  }
 
-        assertEquals(8, result);
-    }
+  @Test(expected = V8ResultUndefined.class)
+  public void testGetStringDoesNotExist() {
+    v8.executeVoidScript("");
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testGetIntWrongType() {
-        v8.executeVoidScript("x = 'foo'");
+    v8.getString("x");
+  }
 
-        v8.getInteger("x");
-    }
+  /*** Get Boolean ***/
+  @Test
+  public void testGetBoolean() {
+    v8.executeVoidScript("x = true");
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testGetIntDoesNotExist() {
-        v8.executeVoidScript("");
+    boolean result = v8.getBoolean("x");
 
-        v8.getInteger("x");
-    }
+    assertTrue(result);
+  }
 
-    /*** Get Double ***/
-    @Test
-    public void testGetDouble() {
-        v8.executeVoidScript("x = 3.14159");
+  @Test
+  public void testGetBooleanReplaceValue() {
+    v8.executeVoidScript("x = true; x = false");
 
-        double result = v8.getDouble("x");
+    boolean result = v8.getBoolean("x");
 
-        assertEquals(3.14159, result, 0.00001);
-    }
+    assertFalse(result);
+  }
 
-    @Test
-    public void testGetDoubleReplaceValue() {
-        v8.executeVoidScript("x = 7.1; x = 8.1");
+  @Test(expected = V8ResultUndefined.class)
+  public void testGetBooleanWrongType() {
+    v8.executeVoidScript("x = 42");
 
-        double result = v8.getDouble("x");
+    v8.getBoolean("x");
+  }
 
-        assertEquals(8.1, result, 0.00001);
-    }
+  @Test(expected = V8ResultUndefined.class)
+  public void testGetBooleanDoesNotExist() {
+    v8.executeVoidScript("");
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testGetDoubleWrongType() {
-        v8.executeVoidScript("x = 'foo'");
+    v8.getBoolean("x");
+  }
 
-        v8.getDouble("x");
-    }
+  @Test
+  public void testAddGet() {
+    v8.add("string", "string");
+    v8.add("int", 7);
+    v8.add("double", 3.1);
+    v8.add("boolean", true);
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testGetDoubleDoesNotExist() {
-        v8.executeVoidScript("");
+    assertEquals("string", v8.getString("string"));
+    assertEquals(7, v8.getInteger("int"));
+    assertEquals(3.1, v8.getDouble("double"), 0.00001);
+    assertTrue(v8.getBoolean("boolean"));
+  }
 
-        v8.getDouble("x");
-    }
+  /*** Get Array ***/
+  @Test
+  public void testGetV8Array() {
+    v8.executeVoidScript("foo = [1,2,3]");
 
-    /*** Get String ***/
-    @Test
-    public void testGetString() {
-        v8.executeVoidScript("x = 'hello'");
+    V8Array array = v8.getArray("foo");
 
-        String result = v8.getString("x");
+    assertEquals(3, array.length());
+    assertEquals(1, array.getInteger(0));
+    assertEquals(2, array.getInteger(1));
+    assertEquals(3, array.getInteger(2));
+    array.close();
+  }
 
-        assertEquals("hello", result);
-    }
+  @Test
+  public void testGetMultipleV8Arrays() {
+    v8.executeVoidScript("foo = [1,2,3]; " + "bar=['first', 'second']");
 
-    @Test
-    public void testGetStringReplaceValue() {
-        v8.executeVoidScript("x = 'hello'; x = 'world'");
+    V8Array fooArray = v8.getArray("foo");
+    V8Array barArray = v8.getArray("bar");
 
-        String result = v8.getString("x");
+    assertEquals(3, fooArray.length());
+    assertEquals(2, barArray.length());
 
-        assertEquals("world", result);
-    }
+    fooArray.close();
+    barArray.close();
+  }
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testGetStringeWrongType() {
-        v8.executeVoidScript("x = 42");
+  @Test
+  public void testGetNestedV8Array() {
+    v8.executeVoidScript("foo = [[1,2]]");
 
-        v8.getString("x");
-    }
+    for (int i = 0; i < 1000; i++) {
+      V8Array fooArray = v8.getArray("foo");
+      V8Array nested = fooArray.getArray(0);
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testGetStringDoesNotExist() {
-        v8.executeVoidScript("");
+      assertEquals(1, fooArray.length());
+      assertEquals(2, nested.length());
 
-        v8.getString("x");
+      fooArray.close();
+      nested.close();
     }
-
-    /*** Get Boolean ***/
-    @Test
-    public void testGetBoolean() {
-        v8.executeVoidScript("x = true");
+  }
 
-        boolean result = v8.getBoolean("x");
+  @Test(expected = V8ResultUndefined.class)
+  public void testGetArrayWrongType() {
+    v8.executeVoidScript("foo = 42");
 
-        assertTrue(result);
-    }
+    v8.getArray("foo");
+  }
 
-    @Test
-    public void testGetBooleanReplaceValue() {
-        v8.executeVoidScript("x = true; x = false");
+  @Test()
+  public void testGetArrayDoesNotExist() {
+    v8.executeVoidScript("foo = 42");
 
-        boolean result = v8.getBoolean("x");
+    V8Array result = v8.getArray("bar");
 
-        assertFalse(result);
-    }
+    assertTrue(result.isUndefined());
+  }
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testGetBooleanWrongType() {
-        v8.executeVoidScript("x = 42");
+  /*** Contains ***/
+  @Test
+  public void testContainsKey() {
+    v8.add("foo", true);
 
-        v8.getBoolean("x");
-    }
+    boolean result = v8.contains("foo");
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testGetBooleanDoesNotExist() {
-        v8.executeVoidScript("");
+    assertTrue(result);
+  }
 
-        v8.getBoolean("x");
-    }
+  @Test
+  public void testContainsKeyFromScript() {
+    v8.executeVoidScript("bar = 3");
 
-    @Test
-    public void testAddGet() {
-        v8.add("string", "string");
-        v8.add("int", 7);
-        v8.add("double", 3.1);
-        v8.add("boolean", true);
-
-        assertEquals("string", v8.getString("string"));
-        assertEquals(7, v8.getInteger("int"));
-        assertEquals(3.1, v8.getDouble("double"), 0.00001);
-        assertTrue(v8.getBoolean("boolean"));
-    }
+    assertTrue(v8.contains("bar"));
+  }
 
-    /*** Get Array ***/
-    @Test
-    public void testGetV8Array() {
-        v8.executeVoidScript("foo = [1,2,3]");
-
-        V8Array array = v8.getArray("foo");
-
-        assertEquals(3, array.length());
-        assertEquals(1, array.getInteger(0));
-        assertEquals(2, array.getInteger(1));
-        assertEquals(3, array.getInteger(2));
-        array.close();
-    }
+  @Test
+  public void testContainsMultipleKeys() {
+    v8.add("true", true);
+    v8.add("test", "test");
+    v8.add("one", 1);
+    v8.add("pi", 3.14);
 
-    @Test
-    public void testGetMultipleV8Arrays() {
-        v8.executeVoidScript("foo = [1,2,3]; " + "bar=['first', 'second']");
+    assertTrue(v8.contains("true"));
+    assertTrue(v8.contains("test"));
+    assertTrue(v8.contains("one"));
+    assertTrue(v8.contains("pi"));
+    assertFalse(v8.contains("bar"));
+  }
 
-        V8Array fooArray = v8.getArray("foo");
-        V8Array barArray = v8.getArray("bar");
+  @Test
+  public void testDoesNotContainsKey() {
+    v8.add("foo", true);
 
-        assertEquals(3, fooArray.length());
-        assertEquals(2, barArray.length());
+    boolean result = v8.contains("bar");
 
-        fooArray.close();
-        barArray.close();
-    }
+    assertFalse(result);
+  }
 
-    @Test
-    public void testGetNestedV8Array() {
-        v8.executeVoidScript("foo = [[1,2]]");
+  /*** GetKeys ***/
+  @Test
+  public void testZeroKeys() {
+    assertEquals(0, v8.getKeys().length);
+  }
 
-        for (int i = 0; i < 1000; i++) {
-            V8Array fooArray = v8.getArray("foo");
-            V8Array nested = fooArray.getArray(0);
+  @Test
+  public void testGetKeys() {
+    v8.add("true", true);
+    v8.add("test", "test");
+    v8.add("one", 1);
+    v8.add("pi", 3.14);
 
-            assertEquals(1, fooArray.length());
-            assertEquals(2, nested.length());
+    assertEquals(4, v8.getKeys().length);
+    assertTrue(arrayContains(v8.getKeys(), "true", "test", "one", "pi"));
+  }
 
-            fooArray.close();
-            nested.close();
-        }
+  static boolean arrayContains(final String[] keys, final String... strings) {
+    List<String> keyList = Arrays.asList(keys);
+    for (String s : strings) {
+      if (!keyList.contains(s)) {
+        return false;
+      }
     }
+    return true;
+  }
 
-    @Test(expected = V8ResultUndefined.class)
-    public void testGetArrayWrongType() {
-        v8.executeVoidScript("foo = 42");
-
-        v8.getArray("foo");
-    }
+  @Test
+  public void testReplacedKey() {
+    v8.add("test", true);
+    v8.add("test", "test");
+    v8.add("test", 1);
+    v8.add("test", 3.14);
 
-    @Test()
-    public void testGetArrayDoesNotExist() {
-        v8.executeVoidScript("foo = 42");
+    assertEquals(1, v8.getKeys().length);
+    assertEquals("test", v8.getKeys()[0]);
+  }
 
-        V8Array result = v8.getArray("bar");
+  @Test
+  public void testGetKeysSetFromScript() {
+    v8.executeVoidScript("var foo=37");
 
-        assertTrue(result.isUndefined());
-    }
+    assertEquals(1, v8.getKeys().length);
+    assertEquals("foo", v8.getKeys()[0]);
+  }
 
-    /*** Contains ***/
-    @Test
-    public void testContainsKey() {
-        v8.add("foo", true);
+  /*** Global Object Prototype Manipulation ***/
+  private void setupWindowAlias() {
+    v8.close();
+    v8 = V8.createV8Runtime("window");
+    v8.executeVoidScript("function Window(){};");
+    V8Object prototype = v8.executeObjectScript("Window.prototype");
+    v8.setPrototype(prototype);
+    prototype.close();
+  }
 
-        boolean result = v8.contains("foo");
+  @Test
+  public void testAccessWindowObjectInStrictMode() {
+    setupWindowAlias();
+    String script = "'use strict';\n" + "window.foo = 7;\n" + "true\n";
 
-        assertTrue(result);
-    }
+    boolean result = v8.executeBooleanScript(script);
 
-    @Test
-    public void testContainsKeyFromScript() {
-        v8.executeVoidScript("bar = 3");
+    assertTrue(result);
+    assertEquals(7, v8.executeIntegerScript("window.foo"));
+  }
 
-        assertTrue(v8.contains("bar"));
-    }
+  @Test
+  public void testWindowWindowWindowWindow() {
+    setupWindowAlias();
 
-    @Test
-    public void testContainsMultipleKeys() {
-        v8.add("true", true);
-        v8.add("test", "test");
-        v8.add("one", 1);
-        v8.add("pi", 3.14);
-
-        assertTrue(v8.contains("true"));
-        assertTrue(v8.contains("test"));
-        assertTrue(v8.contains("one"));
-        assertTrue(v8.contains("pi"));
-        assertFalse(v8.contains("bar"));
-    }
+    assertTrue(v8.executeBooleanScript("window.window.window === window"));
+  }
 
-    @Test
-    public void testDoesNotContainsKey() {
-        v8.add("foo", true);
+  @Test
+  public void testGlobalIsWindow() {
+    setupWindowAlias();
+    v8.executeVoidScript("var global = Function('return this')();");
 
-        boolean result = v8.contains("bar");
+    assertTrue(v8.executeBooleanScript("global === window"));
+  }
 
-        assertFalse(result);
-    }
+  @Test
+  public void testWindowIsGlobal() {
+    setupWindowAlias();
+    v8.executeVoidScript("var global = Function('return this')();");
 
-    /*** GetKeys ***/
-    @Test
-    public void testZeroKeys() {
-        assertEquals(0, v8.getKeys().length);
-    }
+    assertTrue(v8.executeBooleanScript("window === global"));
+  }
 
-    @Test
-    public void testGetKeys() {
-        v8.add("true", true);
-        v8.add("test", "test");
-        v8.add("one", 1);
-        v8.add("pi", 3.14);
-
-        assertEquals(4, v8.getKeys().length);
-        assertTrue(arrayContains(v8.getKeys(), "true", "test", "one", "pi"));
-    }
+  @Test
+  public void testV8IsGlobalStrictEquals() {
+    setupWindowAlias();
+    v8.executeVoidScript("var global = Function('return this')();");
 
-    static boolean arrayContains(final String[] keys, final String... strings) {
-        List<String> keyList = Arrays.asList(keys);
-        for (String s : strings) {
-            if (!keyList.contains(s)) {
-                return false;
-            }
-        }
-        return true;
-    }
+    V8Object global = v8.executeObjectScript("global");
 
-    @Test
-    public void testReplacedKey() {
-        v8.add("test", true);
-        v8.add("test", "test");
-        v8.add("test", 1);
-        v8.add("test", 3.14);
-
-        assertEquals(1, v8.getKeys().length);
-        assertEquals("test", v8.getKeys()[0]);
-    }
+    assertTrue(v8.strictEquals(global));
+    assertTrue(global.strictEquals(v8));
+    global.close();
+  }
 
-    @Test
-    public void testGetKeysSetFromScript() {
-        v8.executeVoidScript("var foo=37");
+  @Test
+  public void testV8IsGlobalEquals() {
+    setupWindowAlias();
+    v8.executeVoidScript("var global = Function('return this')();");
 
-        assertEquals(1, v8.getKeys().length);
-        assertEquals("foo", v8.getKeys()[0]);
-    }
+    V8Object global = v8.executeObjectScript("global");
 
-    /*** Global Object Prototype Manipulation ***/
-    private void setupWindowAlias() {
-        v8.close();
-        v8 = V8.createV8Runtime("window");
-        v8.executeVoidScript("function Window(){};");
-        V8Object prototype = v8.executeObjectScript("Window.prototype");
-        v8.setPrototype(prototype);
-        prototype.close();
-    }
+    assertTrue(v8.equals(global));
+    assertTrue(global.equals(v8));
+    global.close();
+  }
 
-    @Test
-    public void testAccessWindowObjectInStrictMode() {
-        setupWindowAlias();
-        String script = "'use strict';\n"
-                + "window.foo = 7;\n"
-                + "true\n";
+  @Test
+  public void testV8EqualsGlobalHash() {
+    setupWindowAlias();
+    v8.executeVoidScript("var global = Function('return this')();");
 
-        boolean result = v8.executeBooleanScript(script);
+    V8Object global = v8.executeObjectScript("global");
 
-        assertTrue(result);
-        assertEquals(7, v8.executeIntegerScript("window.foo"));
-    }
+    assertEquals(v8.hashCode(), global.hashCode());
+    global.close();
+  }
 
-    @Test
-    public void testWindowWindowWindowWindow() {
-        setupWindowAlias();
+  @Test
+  public void testV8IsThis() {
+    setupWindowAlias();
+    v8.executeVoidScript("var global = Function('return this')();");
 
-        assertTrue(v8.executeBooleanScript("window.window.window === window"));
-    }
+    V8Object _this = v8.executeObjectScript("this;");
 
-    @Test
-    public void testGlobalIsWindow() {
-        setupWindowAlias();
-        v8.executeVoidScript("var global = Function('return this')();");
+    assertEquals(v8, _this);
+    assertEquals(_this, v8);
+    _this.close();
+  }
 
-        assertTrue(v8.executeBooleanScript("global === window"));
-    }
+  @Test
+  public void testWindowIsGlobal2() {
+    setupWindowAlias();
+    v8.executeVoidScript("var global = Function('return this')();");
 
-    @Test
-    public void testWindowIsGlobal() {
-        setupWindowAlias();
-        v8.executeVoidScript("var global = Function('return this')();");
+    assertTrue(v8.executeBooleanScript("window === global"));
+  }
 
-        assertTrue(v8.executeBooleanScript("window === global"));
-    }
+  @Test
+  public void testAlternateGlobalAlias() {
+    v8.close();
+    v8 = V8.createV8Runtime("document");
+    v8.executeVoidScript("var global = Function('return this')();");
 
-    @Test
-    public void testV8IsGlobalStrictEquals() {
-        setupWindowAlias();
-        v8.executeVoidScript("var global = Function('return this')();");
+    assertTrue(v8.executeBooleanScript("global === document"));
+  }
 
-        V8Object global = v8.executeObjectScript("global");
+  @Test
+  public void testAccessGlobalViaWindow() {
+    setupWindowAlias();
+    String script = "var global = {data: 0};\n" + "global === window.global";
 
-        assertTrue(v8.strictEquals(global));
-        assertTrue(global.strictEquals(v8));
-        global.close();
-    }
+    assertTrue(v8.executeBooleanScript(script));
+  }
 
-    @Test
-    public void testV8IsGlobalEquals() {
-        setupWindowAlias();
-        v8.executeVoidScript("var global = Function('return this')();");
+  @Test
+  public void testwindowIsInstanceOfWindow() {
+    setupWindowAlias();
 
-        V8Object global = v8.executeObjectScript("global");
+    assertTrue(v8.executeBooleanScript("window instanceof Window"));
+  }
 
-        assertTrue(v8.equals(global));
-        assertTrue(global.equals(v8));
-        global.close();
-    }
+  @Test
+  public void testChangeToWindowPrototypeAppearsInGlobalScope() {
+    setupWindowAlias();
+    V8Object prototype = v8.executeObjectScript("Window.prototype");
 
-    @Test
-    public void testV8EqualsGlobalHash() {
-        setupWindowAlias();
-        v8.executeVoidScript("var global = Function('return this')();");
+    prototype.add("foo", "bar");
+    v8.executeVoidScript("delete window.foo");
 
-        V8Object global = v8.executeObjectScript("global");
+    assertEquals("bar", v8.getString("foo"));
+    assertEquals("bar", v8.executeStringScript("window.foo;"));
+    prototype.close();
+  }
 
-        assertEquals(v8.hashCode(), global.hashCode());
-        global.close();
-    }
+  @Test
+  public void testWindowAliasForGlobalScope() {
+    setupWindowAlias();
 
-    @Test
-    public void testV8IsThis() {
-        setupWindowAlias();
-        v8.executeVoidScript("var global = Function('return this')();");
+    v8.executeVoidScript("a = 1; window.b = 2;");
 
-        V8Object _this = v8.executeObjectScript("this;");
+    assertEquals(1, v8.executeIntegerScript("window.a;"));
+    assertEquals(2, v8.executeIntegerScript("b;"));
+    assertTrue(v8.executeBooleanScript("window.hasOwnProperty( \"Object\" )"));
+  }
 
-        assertEquals(v8, _this);
-        assertEquals(_this, v8);
-        _this.close();
-    }
+  @Test
+  public void testExecuteUnicodeScript() {
+    String result = v8.executeStringScript("var ಠ_ಠ = function() { return '🌞' + '💐'; }; ಠ_ಠ();");
 
-    @Test
-    public void testWindowIsGlobal2() {
-        setupWindowAlias();
-        v8.executeVoidScript("var global = Function('return this')();");
+    assertEquals("🌞💐", result);
+  }
 
-        assertTrue(v8.executeBooleanScript("window === global"));
-    }
+  @Test
+  public void testExecuteUnicodeFunction() {
+    v8.executeVoidScript("var ಠ_ಠ = function() { return '🌞' + '💐'; }; ");
 
-    @Test
-    public void testAlternateGlobalAlias() {
-        v8.close();
-        v8 = V8.createV8Runtime("document");
-        v8.executeVoidScript("var global = Function('return this')();");
+    assertEquals("🌞💐", v8.executeStringFunction("ಠ_ಠ", null));
+  }
 
-        assertTrue(v8.executeBooleanScript("global === document"));
+  @Test
+  public void testCompileErrowWithUnicode() {
+    try {
+      v8.executeVoidScript("🌞");
+    } catch (V8ScriptCompilationException e) {
+      assertTrue(e.toString().contains("🌞"));
+      return;
     }
 
-    @Test
-    public void testAccessGlobalViaWindow() {
-        setupWindowAlias();
-        String script = "var global = {data: 0};\n" + "global === window.global";
+    fail("Exception should have been thrown.");
+  }
 
-        assertTrue(v8.executeBooleanScript(script));
+  @Test
+  public void testExecutionExceptionWithUnicode() {
+    try {
+      v8.executeVoidScript("throw('🌞')");
+    } catch (V8RuntimeException e) {
+      assertTrue(e.toString().contains("throw('🌞"));
     }
+  }
 
-    @Test
-    public void testwindowIsInstanceOfWindow() {
-        setupWindowAlias();
+  @Test(expected = V8ScriptCompilationException.class)
+  public void testInvalidJSScript() {
+    String script =
+        "x = [1,2,3];\n"
+            + "y = 0;\n"
+            + "\n"
+            + "//A JS Script that has a compile error, int should be var\n"
+            + "for (int i = 0; i < x.length; i++) {\n"
+            + "  y = y + x[i];\n"
+            + "}";
 
-        assertTrue(v8.executeBooleanScript("window instanceof Window"));
-    }
+    v8.executeVoidScript(script, "example.js", 0);
+  }
 
-    @Test
-    public void testChangeToWindowPrototypeAppearsInGlobalScope() {
-        setupWindowAlias();
-        V8Object prototype = v8.executeObjectScript("Window.prototype");
+  @Test
+  public void testV8HandleCreated_V8Object() {
+    ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
+    v8.addReferenceHandler(referenceHandler);
 
-        prototype.add("foo", "bar");
-        v8.executeVoidScript("delete window.foo");
+    V8Object object = new V8Object(v8);
 
-        assertEquals("bar", v8.getString("foo"));
-        assertEquals("bar", v8.executeStringScript("window.foo;"));
-        prototype.close();
-    }
+    verify(referenceHandler, times(1)).v8HandleCreated(object);
+    object.close();
+  }
 
-    @Test
-    public void testWindowAliasForGlobalScope() {
-        setupWindowAlias();
+  @Test
+  public void testV8HandleCreated_AccessedObject() {
+    ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
+    v8.addReferenceHandler(referenceHandler);
 
-        v8.executeVoidScript("a = 1; window.b = 2;");
+    V8Object object = v8.executeObjectScript("foo = {}; foo;");
 
-        assertEquals(1, v8.executeIntegerScript("window.a;"));
-        assertEquals(2, v8.executeIntegerScript("b;"));
-        assertTrue(v8.executeBooleanScript("window.hasOwnProperty( \"Object\" )"));
-    }
+    verify(referenceHandler, times(1)).v8HandleCreated(object);
+    object.close();
+  }
 
-    @Test
-    public void testExecuteUnicodeScript() {
-        String result = v8.executeStringScript("var ಠ_ಠ = function() { return '🌞' + '💐'; }; ಠ_ಠ();");
+  @Test
+  public void testV8HandleCreated_AccessedArray() {
+    ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
+    v8.addReferenceHandler(referenceHandler);
 
-        assertEquals("🌞💐", result);
-    }
+    V8Array object = (V8Array) v8.executeScript("[1,2,3];");
 
-    @Test
-    public void testExecuteUnicodeFunction() {
-        v8.executeVoidScript("var ಠ_ಠ = function() { return '🌞' + '💐'; }; ");
+    verify(referenceHandler, times(1)).v8HandleCreated(object);
+    object.close();
+  }
 
-        assertEquals("🌞💐", v8.executeStringFunction("ಠ_ಠ", null));
-    }
+  @Test
+  public void testV8ReferenceHandleRemoved() {
+    ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
+    v8.addReferenceHandler(referenceHandler);
+    v8.removeReferenceHandler(referenceHandler);
 
-    @Test
-    public void testCompileErrowWithUnicode() {
-        try {
-            v8.executeVoidScript("🌞");
-        } catch (V8ScriptCompilationException e) {
-            assertTrue(e.toString().contains("🌞"));
-            return;
-        }
-
-        fail("Exception should have been thrown.");
-    }
+    V8Object object = new V8Object(v8);
 
-    @Test
-    public void testExecutionExceptionWithUnicode() {
-        try {
-            v8.executeVoidScript("throw('🌞')");
-        } catch (V8RuntimeException e) {
-            assertTrue(e.toString().contains("throw('🌞"));
-        }
-    }
+    verify(referenceHandler, never()).v8HandleCreated(object);
+    object.close();
+  }
 
-    @Test(expected = V8ScriptCompilationException.class)
-    public void testInvalidJSScript() {
-        String script = "x = [1,2,3];\n"
-                + "y = 0;\n"
-                + "\n"
-                + "//A JS Script that has a compile error, int should be var\n"
-                + "for (int i = 0; i < x.length; i++) {\n"
-                + "  y = y + x[i];\n"
-                + "}";
-
-        v8.executeVoidScript(script, "example.js", 0);
-    }
+  @Test
+  public void testV8UnknownReferenceHandleRemoved() {
+    ReferenceHandler referenceHandler1 = mock(ReferenceHandler.class);
+    ReferenceHandler referenceHandler2 = mock(ReferenceHandler.class);
+    v8.addReferenceHandler(referenceHandler1);
+    v8.removeReferenceHandler(referenceHandler2);
 
-    @Test
-    public void testV8HandleCreated_V8Object() {
-        ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
-        v8.addReferenceHandler(referenceHandler);
+    V8Object object = new V8Object(v8);
 
-        V8Object object = new V8Object(v8);
+    verify(referenceHandler1, times(1)).v8HandleCreated(object);
+    object.close();
+  }
 
-        verify(referenceHandler, times(1)).v8HandleCreated(object);
-        object.close();
-    }
+  @Test
+  public void testV8MultipleReferenceHandlers() {
+    ReferenceHandler referenceHandler1 = mock(ReferenceHandler.class);
+    ReferenceHandler referenceHandler2 = mock(ReferenceHandler.class);
+    v8.addReferenceHandler(referenceHandler1);
+    v8.addReferenceHandler(referenceHandler2);
 
-    @Test
-    public void testV8HandleCreated_AccessedObject() {
-        ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
-        v8.addReferenceHandler(referenceHandler);
+    V8Object object = new V8Object(v8);
 
-        V8Object object = v8.executeObjectScript("foo = {}; foo;");
+    verify(referenceHandler1, times(1)).v8HandleCreated(object);
+    verify(referenceHandler2, times(1)).v8HandleCreated(object);
+    object.close();
+  }
 
-        verify(referenceHandler, times(1)).v8HandleCreated(object);
-        object.close();
-    }
+  @Test
+  public void testV8ReleaseHandleRemoved() {
+    V8 testV8 = V8.createV8Runtime();
+    V8Runnable releaseHandler = mock(V8Runnable.class);
+    testV8.addReleaseHandler(releaseHandler);
+    testV8.removeReleaseHandler(releaseHandler);
 
-    @Test
-    public void testV8HandleCreated_AccessedArray() {
-        ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
-        v8.addReferenceHandler(referenceHandler);
+    testV8.close();
 
-        V8Array object = (V8Array) v8.executeScript("[1,2,3];");
+    verify(releaseHandler, never()).run(testV8);
+  }
 
-        verify(referenceHandler, times(1)).v8HandleCreated(object);
-        object.close();
-    }
+  @Test
+  public void testV8UnknownReleaseHandleRemoved() {
+    V8 testV8 = V8.createV8Runtime();
+    V8Runnable releaseHandler1 = mock(V8Runnable.class);
+    V8Runnable releaseHandler2 = mock(V8Runnable.class);
+    testV8.addReleaseHandler(releaseHandler1);
+    testV8.removeReleaseHandler(releaseHandler2);
 
-    @Test
-    public void testV8ReferenceHandleRemoved() {
-        ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
-        v8.addReferenceHandler(referenceHandler);
-        v8.removeReferenceHandler(referenceHandler);
+    testV8.close();
 
-        V8Object object = new V8Object(v8);
+    verify(releaseHandler1, times(1))
+        .run(any(V8.class)); // cannot check against the real v8 because it's released.
+  }
 
-        verify(referenceHandler, never()).v8HandleCreated(object);
-        object.close();
-    }
+  @Test
+  public void testV8MultipleReleaseHandlers() {
+    V8 testV8 = V8.createV8Runtime();
+    V8Runnable releaseHandler1 = mock(V8Runnable.class);
+    V8Runnable releaseHandler2 = mock(V8Runnable.class);
+    testV8.addReleaseHandler(releaseHandler1);
+    testV8.addReleaseHandler(releaseHandler2);
 
-    @Test
-    public void testV8UnknownReferenceHandleRemoved() {
-        ReferenceHandler referenceHandler1 = mock(ReferenceHandler.class);
-        ReferenceHandler referenceHandler2 = mock(ReferenceHandler.class);
-        v8.addReferenceHandler(referenceHandler1);
-        v8.removeReferenceHandler(referenceHandler2);
+    testV8.close();
 
-        V8Object object = new V8Object(v8);
+    verify(releaseHandler1, times(1))
+        .run(any(V8.class)); // cannot check against the real v8 because it's released.
+    verify(releaseHandler2, times(1))
+        .run(any(V8.class)); // cannot check against the real v8 because it's released.
+  }
 
-        verify(referenceHandler1, times(1)).v8HandleCreated(object);
-        object.close();
-    }
+  @Test
+  public void testExceptionInReleaseHandlerStillReleasesV8() {
+    V8 testV8 = V8.createV8Runtime();
+    V8Runnable releaseHandler = mock(V8Runnable.class);
+    doThrow(new RuntimeException()).when(releaseHandler).run(any(V8.class));
+    testV8.addReleaseHandler(releaseHandler);
 
-    @Test
-    public void testV8MultipleReferenceHandlers() {
-        ReferenceHandler referenceHandler1 = mock(ReferenceHandler.class);
-        ReferenceHandler referenceHandler2 = mock(ReferenceHandler.class);
-        v8.addReferenceHandler(referenceHandler1);
-        v8.addReferenceHandler(referenceHandler2);
-
-        V8Object object = new V8Object(v8);
-
-        verify(referenceHandler1, times(1)).v8HandleCreated(object);
-        verify(referenceHandler2, times(1)).v8HandleCreated(object);
-        object.close();
+    try {
+      testV8.close();
+    } catch (Exception e) {
+      assertTrue(testV8.isReleased());
+      return;
     }
 
-    @Test
-    public void testV8ReleaseHandleRemoved() {
-        V8 testV8 = V8.createV8Runtime();
-        V8Runnable releaseHandler = mock(V8Runnable.class);
-        testV8.addReleaseHandler(releaseHandler);
-        testV8.removeReleaseHandler(releaseHandler);
+    fail("Exception should have been caught.");
+  }
 
-        testV8.close();
+  @Test
+  public void testV8HandleCreated_V8Array() {
+    ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
+    v8.addReferenceHandler(referenceHandler);
 
-        verify(releaseHandler, never()).run(testV8);
-    }
+    V8Array object = new V8Array(v8);
 
-    @Test
-    public void testV8UnknownReleaseHandleRemoved() {
-        V8 testV8 = V8.createV8Runtime();
-        V8Runnable releaseHandler1 = mock(V8Runnable.class);
-        V8Runnable releaseHandler2 = mock(V8Runnable.class);
-        testV8.addReleaseHandler(releaseHandler1);
-        testV8.removeReleaseHandler(releaseHandler2);
+    verify(referenceHandler, times(1)).v8HandleCreated(object);
+    object.close();
+  }
 
-        testV8.close();
+  @Test
+  public void testV8HandleCreated_V8Function() {
+    ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
+    v8.addReferenceHandler(referenceHandler);
 
-        verify(releaseHandler1, times(1)).run(any(V8.class)); // cannot check against the real v8 because it's released.
-    }
+    V8Function object = new V8Function(v8);
 
-    @Test
-    public void testV8MultipleReleaseHandlers() {
-        V8 testV8 = V8.createV8Runtime();
-        V8Runnable releaseHandler1 = mock(V8Runnable.class);
-        V8Runnable releaseHandler2 = mock(V8Runnable.class);
-        testV8.addReleaseHandler(releaseHandler1);
-        testV8.addReleaseHandler(releaseHandler2);
-
-        testV8.close();
-
-        verify(releaseHandler1, times(1)).run(any(V8.class)); // cannot check against the real v8 because it's released.
-        verify(releaseHandler2, times(1)).run(any(V8.class)); // cannot check against the real v8 because it's released.
-    }
+    verify(referenceHandler, times(1)).v8HandleCreated(object);
+    object.close();
+  }
 
-    @Test
-    public void testExceptionInReleaseHandlerStillReleasesV8() {
-        V8 testV8 = V8.createV8Runtime();
-        V8Runnable releaseHandler = mock(V8Runnable.class);
-        doThrow(new RuntimeException()).when(releaseHandler).run(any(V8.class));
-        testV8.addReleaseHandler(releaseHandler);
-
-        try {
-            testV8.close();
-        } catch (Exception e) {
-            assertTrue(testV8.isReleased());
-            return;
-        }
-
-        fail("Exception should have been caught.");
-    }
+  @Test
+  public void testV8HandleCreated_V8ArrayBuffer() {
+    ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
+    v8.addReferenceHandler(referenceHandler);
 
-    @Test
-    public void testV8HandleCreated_V8Array() {
-        ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
-        v8.addReferenceHandler(referenceHandler);
+    V8ArrayBuffer object = new V8ArrayBuffer(v8, 100);
 
-        V8Array object = new V8Array(v8);
+    verify(referenceHandler, times(1)).v8HandleCreated(object);
+    object.close();
+  }
 
-        verify(referenceHandler, times(1)).v8HandleCreated(object);
-        object.close();
-    }
+  @Test
+  public void testV8HandleCreated_V8TypedArray() {
+    ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
+    v8.addReferenceHandler(referenceHandler);
 
-    @Test
-    public void testV8HandleCreated_V8Function() {
-        ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
-        v8.addReferenceHandler(referenceHandler);
+    V8ArrayBuffer buffer = new V8ArrayBuffer(v8, 100);
+    V8TypedArray object = new V8TypedArray(v8, buffer, V8Value.INT_16_ARRAY, 0, 50);
 
-        V8Function object = new V8Function(v8);
+    verify(referenceHandler, times(1)).v8HandleCreated(buffer);
+    verify(referenceHandler, times(1)).v8HandleCreated(object);
+    buffer.close();
+    object.close();
+  }
 
-        verify(referenceHandler, times(1)).v8HandleCreated(object);
-        object.close();
-    }
+  @Test
+  public void testV8HandleDisposed() {
+    ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
+    v8.addReferenceHandler(referenceHandler);
 
-    @Test
-    public void testV8HandleCreated_V8ArrayBuffer() {
-        ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
-        v8.addReferenceHandler(referenceHandler);
+    V8Object object = new V8Object(v8);
+    object.close();
 
-        V8ArrayBuffer object = new V8ArrayBuffer(v8, 100);
+    verify(referenceHandler, times(1))
+        .v8HandleDisposed(any(V8Object.class)); // Can't test the actual one because it's disposed
+  }
 
-        verify(referenceHandler, times(1)).v8HandleCreated(object);
-        object.close();
-    }
+  @SuppressWarnings("resource")
+  @Test
+  public void testV8ObjectHandlerExceptionDuringCreation() {
+    ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
+    doThrow(new RuntimeException()).when(referenceHandler).v8HandleCreated(any(V8Object.class));
+    v8.addReferenceHandler(referenceHandler);
 
-    @Test
-    public void testV8HandleCreated_V8TypedArray() {
-        ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
-        v8.addReferenceHandler(referenceHandler);
-
-        V8ArrayBuffer buffer = new V8ArrayBuffer(v8, 100);
-        V8TypedArray object = new V8TypedArray(v8, buffer, V8Value.INT_16_ARRAY, 0, 50);
-
-        verify(referenceHandler, times(1)).v8HandleCreated(buffer);
-        verify(referenceHandler, times(1)).v8HandleCreated(object);
-        buffer.close();
-        object.close();
+    try {
+      new V8Object(v8);
+    } catch (Exception e) {
+      assertEquals(0, v8.getObjectReferenceCount());
+      return;
     }
-
-    @Test
-    public void testV8HandleDisposed() {
-        ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
-        v8.addReferenceHandler(referenceHandler);
 
-        V8Object object = new V8Object(v8);
-        object.close();
+    fail("Exception should have been caught.");
+  }
 
-        verify(referenceHandler, times(1)).v8HandleDisposed(any(V8Object.class)); // Can't test the actual one because it's disposed
-    }
+  @SuppressWarnings("resource")
+  @Test
+  public void testV8ArrayHandlerExceptionDuringCreation() {
+    ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
+    doThrow(new RuntimeException()).when(referenceHandler).v8HandleCreated(any(V8Object.class));
+    v8.addReferenceHandler(referenceHandler);
 
-    @SuppressWarnings("resource")
-    @Test
-    public void testV8ObjectHandlerExceptionDuringCreation() {
-        ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
-        doThrow(new RuntimeException()).when(referenceHandler).v8HandleCreated(any(V8Object.class));
-        v8.addReferenceHandler(referenceHandler);
-
-        try {
-            new V8Object(v8);
-        } catch (Exception e) {
-            assertEquals(0, v8.getObjectReferenceCount());
-            return;
-        }
-
-        fail("Exception should have been caught.");
+    try {
+      new V8Array(v8);
+    } catch (Exception e) {
+      assertEquals(0, v8.getObjectReferenceCount());
+      return;
     }
 
-    @SuppressWarnings("resource")
-    @Test
-    public void testV8ArrayHandlerExceptionDuringCreation() {
-        ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
-        doThrow(new RuntimeException()).when(referenceHandler).v8HandleCreated(any(V8Object.class));
-        v8.addReferenceHandler(referenceHandler);
-
-        try {
-            new V8Array(v8);
-        } catch (Exception e) {
-            assertEquals(0, v8.getObjectReferenceCount());
-            return;
-        }
-
-        fail("Exception should have been caught.");
-    }
+    fail("Exception should have been caught.");
+  }
 
-    @SuppressWarnings("resource")
-    @Test
-    public void testV8ArrayBufferHandlerExceptionDuringCreation() {
-        ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
-        doThrow(new RuntimeException()).when(referenceHandler).v8HandleCreated(any(V8Value.class));
-        v8.addReferenceHandler(referenceHandler);
-
-        try {
-            new V8ArrayBuffer(v8, 100);
-        } catch (Exception e) {
-            assertEquals(0, v8.getObjectReferenceCount());
-            return;
-        }
-
-        fail("Exception should have been caught.");
-    }
+  @SuppressWarnings("resource")
+  @Test
+  public void testV8ArrayBufferHandlerExceptionDuringCreation() {
+    ReferenceHandler referenceHandler = mock(ReferenceHandler.class);
+    doThrow(new RuntimeException()).when(referenceHandler).v8HandleCreated(any(V8Value.class));
+    v8.addReferenceHandler(referenceHandler);
 
-    @Test(expected = Error.class)
-    public void testSharingObjectsShouldNotCrashVM() {
-        V8 engine = null;
-        V8 engine2 = null;
-        try {
-            engine = V8.createV8Runtime();
-            engine2 = V8.createV8Runtime();
-
-            engine.executeScript("b = { 'c': 'c' }");
-            engine2.executeScript("a = { 'd': 'd' };");
-
-            V8Object a = (V8Object) engine2.get("a");
-            V8Object b = (V8Object) engine.get("b");
-            b.add("data", a);
-        } finally {
-            engine.release(false);
-            engine2.release(false);
-        }
+    try {
+      new V8ArrayBuffer(v8, 100);
+    } catch (Exception e) {
+      assertEquals(0, v8.getObjectReferenceCount());
+      return;
     }
 
-    @Test(expected = Error.class)
-    public void testSharingObjectsInArrayShouldNotCrashVM() {
-        V8 engine = null;
-        V8 engine2 = null;
-        try {
-            engine = V8.createV8Runtime();
-            engine2 = V8.createV8Runtime();
-
-            engine.executeScript("b = [];");
-            engine2.executeScript("a = [];");
-
-            V8Array a = (V8Array) engine2.get("a");
-            V8Array b = (V8Array) engine.get("b");
-            b.push(a);
-        } finally {
-            engine.release(false);
-            engine2.release(false);
-        }
-    }
+    fail("Exception should have been caught.");
+  }
 
-    @Test(expected = Error.class)
-    public void testSharingObjectsAsFunctionCallParameters_ArrayFunction() {
-        V8 engine = null;
-        V8 engine2 = null;
-        try {
-            engine = V8.createV8Runtime();
-            engine2 = V8.createV8Runtime();
-
-            engine.executeScript("b = function(param){return param;}");
-            engine2.executeScript("a = [[1,2,3]];");
-
-            V8Array a = (V8Array) engine2.get("a");
-            engine.executeArrayFunction("b", a);
-        } finally {
-            engine.release(false);
-            engine2.release(false);
-        }
-    }
+  @Test(expected = Error.class)
+  public void testSharingObjectsShouldNotCrashVM() {
+    V8 engine = null;
+    V8 engine2 = null;
+    try {
+      engine = V8.createV8Runtime();
+      engine2 = V8.createV8Runtime();
 
-    @Test(expected = Error.class)
-    public void testSharingObjectsAsFunctionCallParameters_ObjectFunction() {
-        V8 engine = null;
-        V8 engine2 = null;
-        try {
-            engine = V8.createV8Runtime();
-            engine2 = V8.createV8Runtime();
-
-            engine.executeScript("b = function(param){return param;}");
-            engine2.executeScript("a = [{name: 'joe'}];");
-
-            V8Array a = (V8Array) engine2.get("a");
-            engine.executeObjectFunction("b", a);
-        } finally {
-            engine.release(false);
-            engine2.release(false);
-        }
-    }
+      engine.executeScript("b = { 'c': 'c' }");
+      engine2.executeScript("a = { 'd': 'd' };");
 
-    @Test(expected = Error.class)
-    public void testSharingObjectsAsFunctionCallParameters_ExecuteFunction() {
-        V8 engine = null;
-        V8 engine2 = null;
-        try {
-            engine = V8.createV8Runtime();
-            engine2 = V8.createV8Runtime();
-
-            engine.executeScript("b = function(param){return param;}");
-            engine2.executeScript("a = [{name: 'joe'}];");
-
-            V8Array a = (V8Array) engine2.get("a");
-            engine.executeFunction("b", a);
-        } finally {
-            engine.release(false);
-            engine2.release(false);
-        }
+      V8Object a = (V8Object) engine2.get("a");
+      V8Object b = (V8Object) engine.get("b");
+      b.add("data", a);
+    } finally {
+      engine.release(false);
+      engine2.release(false);
     }
+  }
 
-    @Test(expected = Error.class)
-    public void testSharingObjectsAsFunctionCallParameters_BooleanFunction() {
-        V8 engine = null;
-        V8 engine2 = null;
-        try {
-            engine = V8.createV8Runtime();
-            engine2 = V8.createV8Runtime();
-
-            engine.executeScript("b = function(param){return param;}");
-            engine2.executeScript("a = [false];");
-
-            V8Array a = (V8Array) engine2.get("a");
-            engine.executeBooleanFunction("b", a);
-        } finally {
-            engine.release(false);
-            engine2.release(false);
-        }
-    }
+  @Test(expected = Error.class)
+  public void testSharingObjectsInArrayShouldNotCrashVM() {
+    V8 engine = null;
+    V8 engine2 = null;
+    try {
+      engine = V8.createV8Runtime();
+      engine2 = V8.createV8Runtime();
 
-    @Test(expected = Error.class)
-    public void testSharingObjectsAsFunctionCallParameters_StringFunction() {
-        V8 engine = null;
-        V8 engine2 = null;
-        try {
-            engine = V8.createV8Runtime();
-            engine2 = V8.createV8Runtime();
-
-            engine.executeScript("b = function(param){return param;}");
-            engine2.executeScript("a = ['foo'];");
-
-            V8Array a = (V8Array) engine2.get("a");
-            engine.executeStringFunction("b", a);
-        } finally {
-            engine.release(false);
-            engine2.release(false);
-        }
-    }
+      engine.executeScript("b = [];");
+      engine2.executeScript("a = [];");
 
-    @Test(expected = Error.class)
-    public void testSharingObjectsAsFunctionCallParameters_IntegerFunction() {
-        V8 engine = null;
-        V8 engine2 = null;
-        try {
-            engine = V8.createV8Runtime();
-            engine2 = V8.createV8Runtime();
-
-            engine.executeScript("b = function(param){return param;}");
-            engine2.executeScript("a = [7];");
-
-            V8Array a = (V8Array) engine2.get("a");
-            engine.executeIntegerFunction("b", a);
-        } finally {
-            engine.release(false);
-            engine2.release(false);
-        }
+      V8Array a = (V8Array) engine2.get("a");
+      V8Array b = (V8Array) engine.get("b");
+      b.push(a);
+    } finally {
+      engine.release(false);
+      engine2.release(false);
     }
+  }
 
-    @Test(expected = Error.class)
-    public void testSharingObjectsAsFunctionCallParameters_DoubleFunction() {
-        V8 engine = null;
-        V8 engine2 = null;
-        try {
-            engine = V8.createV8Runtime();
-            engine2 = V8.createV8Runtime();
-
-            engine.executeScript("b = function(param){return param;}");
-            engine2.executeScript("a = [3.14];");
-
-            V8Array a = (V8Array) engine2.get("a");
-            engine.executeDoubleFunction("b", a);
-        } finally {
-            engine.release(false);
-            engine2.release(false);
-        }
-    }
+  @Test(expected = Error.class)
+  public void testSharingObjectsAsFunctionCallParameters_ArrayFunction() {
+    V8 engine = null;
+    V8 engine2 = null;
+    try {
+      engine = V8.createV8Runtime();
+      engine2 = V8.createV8Runtime();
 
-    @Test(expected = Error.class)
-    public void testSharingObjectsAsFunctionCallParameters_VoidFunction() {
-        V8 engine = null;
-        V8 engine2 = null;
-        try {
-            engine = V8.createV8Runtime();
-            engine2 = V8.createV8Runtime();
-
-            engine.executeScript("b = function(param1, param2){ param1 + param2;}");
-            engine2.executeScript("a = [3, 4];");
-
-            V8Array a = (V8Array) engine2.get("a");
-            engine.executeVoidFunction("b", a);
-        } finally {
-            engine.release(false);
-            engine2.release(false);
-        }
-    }
+      engine.executeScript("b = function(param){return param;}");
+      engine2.executeScript("a = [[1,2,3]];");
 
-    @Test(expected = Error.class)
-    public void testSharingObjectsAsFunctionCallParameters_JSFunction() {
-        V8 engine = null;
-        V8 engine2 = null;
-        try {
-            engine = V8.createV8Runtime();
-            engine2 = V8.createV8Runtime();
-
-            engine.executeScript("b = function(param){ param[0] + param[1];}");
-            engine2.executeScript("a = [3, 4];");
-
-            V8Array a = (V8Array) engine2.get("a");
-            engine.executeJSFunction("b", a);
-        } finally {
-            engine.release(false);
-            engine2.release(false);
-        }
+      V8Array a = (V8Array) engine2.get("a");
+      engine.executeArrayFunction("b", a);
+    } finally {
+      engine.release(false);
+      engine2.release(false);
     }
+  }
 
-    @Test
-    public void testGetData() {
-        Object value = new Object();
-        v8.setData("foo", value);
+  @Test(expected = Error.class)
+  public void testSharingObjectsAsFunctionCallParameters_ObjectFunction() {
+    V8 engine = null;
+    V8 engine2 = null;
+    try {
+      engine = V8.createV8Runtime();
+      engine2 = V8.createV8Runtime();
 
-        Object result = v8.getData("foo");
+      engine.executeScript("b = function(param){return param;}");
+      engine2.executeScript("a = [{name: 'joe'}];");
 
-        assertSame(value, result);
+      V8Array a = (V8Array) engine2.get("a");
+      engine.executeObjectFunction("b", a);
+    } finally {
+      engine.release(false);
+      engine2.release(false);
     }
+  }
 
-    @Test
-    public void testReplaceValue() {
-        Object value = new Object();
-        v8.setData("foo", value);
-        v8.setData("foo", "new value");
+  @Test(expected = Error.class)
+  public void testSharingObjectsAsFunctionCallParameters_ExecuteFunction() {
+    V8 engine = null;
+    V8 engine2 = null;
+    try {
+      engine = V8.createV8Runtime();
+      engine2 = V8.createV8Runtime();
 
-        Object result = v8.getData("foo");
+      engine.executeScript("b = function(param){return param;}");
+      engine2.executeScript("a = [{name: 'joe'}];");
 
-        assertEquals("new value", result);
+      V8Array a = (V8Array) engine2.get("a");
+      engine.executeFunction("b", a);
+    } finally {
+      engine.release(false);
+      engine2.release(false);
     }
+  }
 
-    @Test
-    public void testReplaceWithNull() {
-        Object value = new Object();
-        v8.setData("foo", value);
-        v8.setData("foo", null);
+  @Test(expected = Error.class)
+  public void testSharingObjectsAsFunctionCallParameters_BooleanFunction() {
+    V8 engine = null;
+    V8 engine2 = null;
+    try {
+      engine = V8.createV8Runtime();
+      engine2 = V8.createV8Runtime();
 
-        assertNull(v8.getData("foo"));
-    }
+      engine.executeScript("b = function(param){return param;}");
+      engine2.executeScript("a = [false];");
 
-    @Test
-    public void testGetDataNothingSet() {
-        assertNull(v8.getData("foo"));
+      V8Array a = (V8Array) engine2.get("a");
+      engine.executeBooleanFunction("b", a);
+    } finally {
+      engine.release(false);
+      engine2.release(false);
     }
-
-    @Test
-    public void testGetNotSet() {
-        Object value = new Object();
-        v8.setData("foo", value);
+  }
 
-        assertNull(v8.getData("bar"));
-    }
+  @Test(expected = Error.class)
+  public void testSharingObjectsAsFunctionCallParameters_StringFunction() {
+    V8 engine = null;
+    V8 engine2 = null;
+    try {
+      engine = V8.createV8Runtime();
+      engine2 = V8.createV8Runtime();
 
-    @Test
-    public void testInitEmptyContainerNonNull() {
-        long initEmptyContainer = v8.initEmptyContainer(v8.getV8RuntimePtr());
+      engine.executeScript("b = function(param){return param;}");
+      engine2.executeScript("a = ['foo'];");
 
-        assertNotEquals(0l, initEmptyContainer);
+      V8Array a = (V8Array) engine2.get("a");
+      engine.executeStringFunction("b", a);
+    } finally {
+      engine.release(false);
+      engine2.release(false);
     }
+  }
 
-    @Test
-    public void testSetStackTraceLimit() {
-        v8.executeVoidScript("Error.stackTraceLimit = Infinity");
-        String script = "function a() { dieInHell(); }\n" +
-                "function b() { a(); }\n" +
-                "function c() { b(); }\n" +
-                "function d() { c(); }\n" +
-                "function e() { d(); }\n" +
-                "function f() { e(); }\n" +
-                "function g() { f(); }\n" +
-                "function h() { g(); }\n" +
-                "function i() { h(); }\n" +
-                "function j() { i(); }\n" +
-                "function k() { j(); }\n" +
-                "function l() { k(); }\n" +
-                "function m() { l(); }\n" +
-                "function n() { m(); }\n" +
-                "function o() { n(); }\n" +
-                "function p() { o(); }\n" +
-                "function q() { p(); }\n" +
-                "\n" +
-                "q();";
-        try {
-            v8.executeScript(script);
-        } catch (V8ScriptException e) {
-            int jsStackLength = e.getJSStackTrace().split("\n").length;
-            assertEquals(19, jsStackLength);
-            return;
-        }
-        fail("Exception not thrown");
-    }
+  @Test(expected = Error.class)
+  public void testSharingObjectsAsFunctionCallParameters_IntegerFunction() {
+    V8 engine = null;
+    V8 engine2 = null;
+    try {
+      engine = V8.createV8Runtime();
+      engine2 = V8.createV8Runtime();
 
-    @Test
-    public void testExecuteModuleResult() {
-        Object result = v8.executeModule("var foo = 7;", "(function() {", "});", "index.js");
+      engine.executeScript("b = function(param){return param;}");
+      engine2.executeScript("a = [7];");
 
-        assertTrue(result instanceof V8Function);
-        ((V8Function) result).close();
+      V8Array a = (V8Array) engine2.get("a");
+      engine.executeIntegerFunction("b", a);
+    } finally {
+      engine.release(false);
+      engine2.release(false);
     }
+  }
 
-    @Test
-    public void testExecuteModuleResultExecution() {
-        V8Function function = (V8Function) v8.executeModule("var foo = 7; return foo;", "(function() {", "});", "index.js");
-        V8Array parameters = new V8Array(v8);
+  @Test(expected = Error.class)
+  public void testSharingObjectsAsFunctionCallParameters_DoubleFunction() {
+    V8 engine = null;
+    V8 engine2 = null;
+    try {
+      engine = V8.createV8Runtime();
+      engine2 = V8.createV8Runtime();
 
-        int result = (Integer) function.call(v8, parameters);
+      engine.executeScript("b = function(param){return param;}");
+      engine2.executeScript("a = [3.14];");
 
-        assertEquals(7, result);
-        function.close();
-        parameters.close();
+      V8Array a = (V8Array) engine2.get("a");
+      engine.executeDoubleFunction("b", a);
+    } finally {
+      engine.release(false);
+      engine2.release(false);
     }
+  }
 
-    @Test(expected = V8ScriptExecutionException.class)
-    public void testExecuteModuleException() {
-        V8Function function = (V8Function) v8.executeModule("var foo = 7; return fo;", "(function() {", "});", "module.js");
-        V8Array parameters = new V8Array(v8);
-
-        try {
-            function.call(v8, parameters);
-        } catch (V8ScriptExecutionException ex) {
-            parameters.close();
-            function.close();
-            throw ex;
-        }
-    }
+  @Test(expected = Error.class)
+  public void testSharingObjectsAsFunctionCallParameters_VoidFunction() {
+    V8 engine = null;
+    V8 engine2 = null;
+    try {
+      engine = V8.createV8Runtime();
+      engine2 = V8.createV8Runtime();
+
+      engine.executeScript("b = function(param1, param2){ param1 + param2;}");
+      engine2.executeScript("a = [3, 4];");
+
+      V8Array a = (V8Array) engine2.get("a");
+      engine.executeVoidFunction("b", a);
+    } finally {
+      engine.release(false);
+      engine2.release(false);
+    }
+  }
+
+  @Test(expected = Error.class)
+  public void testSharingObjectsAsFunctionCallParameters_JSFunction() {
+    V8 engine = null;
+    V8 engine2 = null;
+    try {
+      engine = V8.createV8Runtime();
+      engine2 = V8.createV8Runtime();
+
+      engine.executeScript("b = function(param){ param[0] + param[1];}");
+      engine2.executeScript("a = [3, 4];");
+
+      V8Array a = (V8Array) engine2.get("a");
+      engine.executeJSFunction("b", a);
+    } finally {
+      engine.release(false);
+      engine2.release(false);
+    }
+  }
+
+  @Test
+  public void testGetData() {
+    Object value = new Object();
+    v8.setData("foo", value);
+
+    Object result = v8.getData("foo");
+
+    assertSame(value, result);
+  }
+
+  @Test
+  public void testReplaceValue() {
+    Object value = new Object();
+    v8.setData("foo", value);
+    v8.setData("foo", "new value");
+
+    Object result = v8.getData("foo");
+
+    assertEquals("new value", result);
+  }
+
+  @Test
+  public void testReplaceWithNull() {
+    Object value = new Object();
+    v8.setData("foo", value);
+    v8.setData("foo", null);
+
+    assertNull(v8.getData("foo"));
+  }
+
+  @Test
+  public void testGetDataNothingSet() {
+    assertNull(v8.getData("foo"));
+  }
+
+  @Test
+  public void testGetNotSet() {
+    Object value = new Object();
+    v8.setData("foo", value);
+
+    assertNull(v8.getData("bar"));
+  }
+
+  @Test
+  public void testInitEmptyContainerNonNull() {
+    long initEmptyContainer = v8.initEmptyContainer(v8.getV8RuntimePtr());
+
+    assertNotEquals(0l, initEmptyContainer);
+  }
+
+  @Test
+  public void testSetStackTraceLimit() {
+    v8.executeVoidScript("Error.stackTraceLimit = Infinity");
+    String script =
+        "function a() { dieInHell(); }\n"
+            + "function b() { a(); }\n"
+            + "function c() { b(); }\n"
+            + "function d() { c(); }\n"
+            + "function e() { d(); }\n"
+            + "function f() { e(); }\n"
+            + "function g() { f(); }\n"
+            + "function h() { g(); }\n"
+            + "function i() { h(); }\n"
+            + "function j() { i(); }\n"
+            + "function k() { j(); }\n"
+            + "function l() { k(); }\n"
+            + "function m() { l(); }\n"
+            + "function n() { m(); }\n"
+            + "function o() { n(); }\n"
+            + "function p() { o(); }\n"
+            + "function q() { p(); }\n"
+            + "\n"
+            + "q();";
+    try {
+      v8.executeScript(script);
+    } catch (V8ScriptException e) {
+      int jsStackLength = e.getJSStackTrace().split("\n").length;
+      assertEquals(19, jsStackLength);
+      return;
+    }
+    fail("Exception not thrown");
+  }
+
+  @Test
+  public void testExecuteModuleResult() {
+    Object result = v8.executeModule("var foo = 7;", "(function() {", "});", "index.js");
+
+    assertTrue(result instanceof V8Function);
+    ((V8Function) result).close();
+  }
+
+  @Test
+  public void testExecuteModuleResultExecution() {
+    V8Function function =
+        (V8Function)
+            v8.executeModule("var foo = 7; return foo;", "(function() {", "});", "index.js");
+    V8Array parameters = new V8Array(v8);
+
+    int result = (Integer) function.call(v8, parameters);
+
+    assertEquals(7, result);
+    function.close();
+    parameters.close();
+  }
+
+  @Test(expected = V8ScriptExecutionException.class)
+  public void testExecuteModuleException() {
+    V8Function function =
+        (V8Function)
+            v8.executeModule("var foo = 7; return fo;", "(function() {", "});", "module.js");
+    V8Array parameters = new V8Array(v8);
+
+    try {
+      function.call(v8, parameters);
+    } catch (V8ScriptExecutionException ex) {
+      parameters.close();
+      function.close();
+      throw ex;
+    }
+  }
 }

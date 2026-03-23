@@ -28,9 +28,6 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Looper;
-import androidx.annotation.IntDef;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -42,6 +39,9 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.IntDef;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ControlDispatcher;
 import com.google.android.exoplayer2.DefaultControlDispatcher;
@@ -258,18 +258,22 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
   @Retention(RetentionPolicy.SOURCE)
   @IntDef({SHOW_BUFFERING_NEVER, SHOW_BUFFERING_WHEN_PLAYING, SHOW_BUFFERING_ALWAYS})
   public @interface ShowBuffering {}
+
   /** The buffering view is never shown. */
   public static final int SHOW_BUFFERING_NEVER = 0;
+
   /**
    * The buffering view is shown when the player is in the {@link Player#STATE_BUFFERING buffering}
    * state and {@link Player#getPlayWhenReady() playWhenReady} is {@code true}.
    */
   public static final int SHOW_BUFFERING_WHEN_PLAYING = 1;
+
   /**
    * The buffering view is always shown when the player is in the {@link Player#STATE_BUFFERING
    * buffering} state.
    */
   public static final int SHOW_BUFFERING_ALWAYS = 2;
+
   // LINT.ThenChange(../../../../../../res/values/attrs.xml)
 
   // LINT.IfChange
@@ -735,8 +739,8 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
    * buffering spinner is not displayed by default.
    *
    * @param showBuffering The mode that defines when the buffering spinner is displayed. One of
-   *     {@link #SHOW_BUFFERING_NEVER}, {@link #SHOW_BUFFERING_WHEN_PLAYING} and
-   *     {@link #SHOW_BUFFERING_ALWAYS}.
+   *     {@link #SHOW_BUFFERING_NEVER}, {@link #SHOW_BUFFERING_WHEN_PLAYING} and {@link
+   *     #SHOW_BUFFERING_ALWAYS}.
    */
   public void setShowBuffering(@ShowBuffering int showBuffering) {
     if (this.showBuffering != showBuffering) {

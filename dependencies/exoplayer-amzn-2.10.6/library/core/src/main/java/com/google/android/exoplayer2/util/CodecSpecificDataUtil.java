@@ -15,39 +15,33 @@
  */
 package com.google.android.exoplayer2.util;
 
-import androidx.annotation.Nullable;
 import android.util.Pair;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ParserException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Provides static utility methods for manipulating various types of codec specific data.
- */
+/** Provides static utility methods for manipulating various types of codec specific data. */
 public final class CodecSpecificDataUtil {
 
   private static final byte[] NAL_START_CODE = new byte[] {0, 0, 0, 1};
 
   private static final int AUDIO_SPECIFIC_CONFIG_FREQUENCY_INDEX_ARBITRARY = 0xF;
 
-  private static final int[] AUDIO_SPECIFIC_CONFIG_SAMPLING_RATE_TABLE = new int[] {
-    96000, 88200, 64000, 48000, 44100, 32000, 24000, 22050, 16000, 12000, 11025, 8000, 7350
-  };
+  private static final int[] AUDIO_SPECIFIC_CONFIG_SAMPLING_RATE_TABLE =
+      new int[] {
+        96000, 88200, 64000, 48000, 44100, 32000, 24000, 22050, 16000, 12000, 11025, 8000, 7350
+      };
 
   private static final int AUDIO_SPECIFIC_CONFIG_CHANNEL_CONFIGURATION_INVALID = -1;
+
   /**
    * In the channel configurations below, <A> indicates a single channel element; (A, B) indicates a
-   * channel pair element; and [A] indicates a low-frequency effects element.
-   * The speaker mapping short forms used are:
-   * - FC: front center
-   * - BC: back center
-   * - FL/FR: front left/right
-   * - FCL/FCR: front center left/right
-   * - FTL/FTR: front top left/right
-   * - SL/SR: back surround left/right
-   * - BL/BR: back left/right
-   * - LFE: low frequency effects
+   * channel pair element; and [A] indicates a low-frequency effects element. The speaker mapping
+   * short forms used are: - FC: front center - BC: back center - FL/FR: front left/right - FCL/FCR:
+   * front center left/right - FTL/FTR: front top left/right - SL/SR: back surround left/right -
+   * BL/BR: back left/right - LFE: low frequency effects
    */
   private static final int[] AUDIO_SPECIFIC_CONFIG_CHANNEL_COUNT_TABLE =
       new int[] {
@@ -104,8 +98,8 @@ public final class CodecSpecificDataUtil {
    * @return A pair consisting of the sample rate in Hz and the channel count.
    * @throws ParserException If the AudioSpecificConfig cannot be parsed as it's not supported.
    */
-  public static Pair<Integer, Integer> parseAacAudioSpecificConfig(ParsableBitArray bitArray,
-      boolean forceReadToEnd) throws ParserException {
+  public static Pair<Integer, Integer> parseAacAudioSpecificConfig(
+      ParsableBitArray bitArray, boolean forceReadToEnd) throws ParserException {
     int audioObjectType = getAacAudioObjectType(bitArray);
     int sampleRate = getAacSamplingFrequency(bitArray);
     int channelConfiguration = bitArray.readBits(4);
@@ -183,8 +177,8 @@ public final class CodecSpecificDataUtil {
       }
     }
     if (sampleRate == C.INDEX_UNSET || channelConfig == C.INDEX_UNSET) {
-      throw new IllegalArgumentException("Invalid sample rate or number of channels: "
-          + sampleRate + ", " + numChannels);
+      throw new IllegalArgumentException(
+          "Invalid sample rate or number of channels: " + sampleRate + ", " + numChannels);
     }
     return buildAacAudioSpecificConfig(AUDIO_OBJECT_TYPE_AAC_LC, sampleRateIndex, channelConfig);
   }
@@ -197,8 +191,8 @@ public final class CodecSpecificDataUtil {
    * @param channelConfig The channel configuration.
    * @return The AudioSpecificConfig.
    */
-  public static byte[] buildAacAudioSpecificConfig(int audioObjectType, int sampleRateIndex,
-      int channelConfig) {
+  public static byte[] buildAacAudioSpecificConfig(
+      int audioObjectType, int sampleRateIndex, int channelConfig) {
     byte[] specificConfig = new byte[2];
     specificConfig[0] = (byte) (((audioObjectType << 3) & 0xF8) | ((sampleRateIndex >> 1) & 0x07));
     specificConfig[1] = (byte) (((sampleRateIndex << 7) & 0x80) | ((channelConfig << 3) & 0x78));
@@ -337,8 +331,8 @@ public final class CodecSpecificDataUtil {
     return samplingFrequency;
   }
 
-  private static void parseGaSpecificConfig(ParsableBitArray bitArray, int audioObjectType,
-      int channelConfiguration) {
+  private static void parseGaSpecificConfig(
+      ParsableBitArray bitArray, int audioObjectType, int channelConfiguration) {
     bitArray.skipBits(1); // frameLengthFlag.
     boolean dependsOnCoreDecoder = bitArray.readBit();
     if (dependsOnCoreDecoder) {
@@ -355,7 +349,9 @@ public final class CodecSpecificDataUtil {
       if (audioObjectType == 22) {
         bitArray.skipBits(16); // numOfSubFrame (5), layer_length(11).
       }
-      if (audioObjectType == 17 || audioObjectType == 19 || audioObjectType == 20
+      if (audioObjectType == 17
+          || audioObjectType == 19
+          || audioObjectType == 20
           || audioObjectType == 23) {
         // aacSectionDataResilienceFlag, aacScalefactorDataResilienceFlag,
         // aacSpectralDataResilienceFlag.
@@ -364,5 +360,4 @@ public final class CodecSpecificDataUtil {
       bitArray.skipBits(1); // extensionFlag3.
     }
   }
-
 }

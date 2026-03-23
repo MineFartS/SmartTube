@@ -15,14 +15,12 @@
  */
 package com.google.android.exoplayer2.util;
 
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import java.util.ArrayList;
 
-/**
- * Defines common MIME types and helper methods.
- */
+/** Defines common MIME types and helper methods. */
 public final class MimeTypes {
 
   public static final String BASE_TYPE_VIDEO = "video";
@@ -318,12 +316,18 @@ public final class MimeTypes {
       return C.TRACK_TYPE_AUDIO;
     } else if (isVideo(mimeType)) {
       return C.TRACK_TYPE_VIDEO;
-    } else if (isText(mimeType) || APPLICATION_CEA608.equals(mimeType)
-        || APPLICATION_CEA708.equals(mimeType) || APPLICATION_MP4CEA608.equals(mimeType)
-        || APPLICATION_SUBRIP.equals(mimeType) || APPLICATION_TTML.equals(mimeType)
-        || APPLICATION_TX3G.equals(mimeType) || APPLICATION_MP4VTT.equals(mimeType)
-        || APPLICATION_RAWCC.equals(mimeType) || APPLICATION_VOBSUB.equals(mimeType)
-        || APPLICATION_PGS.equals(mimeType) || APPLICATION_DVBSUBS.equals(mimeType)) {
+    } else if (isText(mimeType)
+        || APPLICATION_CEA608.equals(mimeType)
+        || APPLICATION_CEA708.equals(mimeType)
+        || APPLICATION_MP4CEA608.equals(mimeType)
+        || APPLICATION_SUBRIP.equals(mimeType)
+        || APPLICATION_TTML.equals(mimeType)
+        || APPLICATION_TX3G.equals(mimeType)
+        || APPLICATION_MP4VTT.equals(mimeType)
+        || APPLICATION_RAWCC.equals(mimeType)
+        || APPLICATION_VOBSUB.equals(mimeType)
+        || APPLICATION_PGS.equals(mimeType)
+        || APPLICATION_DVBSUBS.equals(mimeType)) {
       return C.TRACK_TYPE_TEXT;
     } else if (APPLICATION_ID3.equals(mimeType)
         || APPLICATION_EMSG.equals(mimeType)
@@ -361,10 +365,10 @@ public final class MimeTypes {
         return C.ENCODING_DTS_HD;
       case MimeTypes.AUDIO_TRUEHD:
         return C.ENCODING_DOLBY_TRUEHD;
-      // AMZN_CHANGE_BEGIN
+        // AMZN_CHANGE_BEGIN
       case MimeTypes.AUDIO_RAW:
         return C.ENCODING_PCM_16BIT;
-      // AMZN_CHANGE_END
+        // AMZN_CHANGE_END
       default:
         return C.ENCODING_INVALID;
     }

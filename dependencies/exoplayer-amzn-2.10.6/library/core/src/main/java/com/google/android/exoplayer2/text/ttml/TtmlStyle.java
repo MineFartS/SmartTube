@@ -16,16 +16,14 @@
 package com.google.android.exoplayer2.text.ttml;
 
 import android.graphics.Typeface;
-import androidx.annotation.IntDef;
 import android.text.Layout;
+import androidx.annotation.IntDef;
 import com.google.android.exoplayer2.util.Assertions;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * Style object of a <code>TtmlNode</code>
- */
+/** Style object of a <code>TtmlNode</code> */
 /* package */ final class TtmlStyle {
 
   public static final int UNSPECIFIED = -1;
@@ -88,12 +86,12 @@ import java.lang.annotation.RetentionPolicy;
    * @return {@link #UNSPECIFIED}, {@link #STYLE_NORMAL}, {@link #STYLE_BOLD}, {@link #STYLE_BOLD}
    *     or {@link #STYLE_BOLD_ITALIC}.
    */
-  @StyleFlags public int getStyle() {
+  @StyleFlags
+  public int getStyle() {
     if (bold == UNSPECIFIED && italic == UNSPECIFIED) {
       return UNSPECIFIED;
     }
-    return (bold == ON ? STYLE_BOLD : STYLE_NORMAL)
-        | (italic == ON ? STYLE_ITALIC : STYLE_NORMAL);
+    return (bold == ON ? STYLE_BOLD : STYLE_NORMAL) | (italic == ON ? STYLE_ITALIC : STYLE_NORMAL);
   }
 
   public boolean isLinethrough() {
@@ -174,9 +172,9 @@ import java.lang.annotation.RetentionPolicy;
   }
 
   /**
-   * Inherits from an ancestor style. Properties like <i>tts:backgroundColor</i> which
-   * are not inheritable are not inherited as well as properties which are already set locally
-   * are never overridden.
+   * Inherits from an ancestor style. Properties like <i>tts:backgroundColor</i> which are not
+   * inheritable are not inherited as well as properties which are already set locally are never
+   * overridden.
    *
    * @param ancestor the ancestor style to inherit from
    */
@@ -185,8 +183,8 @@ import java.lang.annotation.RetentionPolicy;
   }
 
   /**
-   * Chains this style to referential style. Local properties which are already set
-   * are never overridden.
+   * Chains this style to referential style. Local properties which are already set are never
+   * overridden.
    *
    * @param ancestor the referential style to inherit from
    */
@@ -257,12 +255,12 @@ import java.lang.annotation.RetentionPolicy;
     return this;
   }
 
-  @FontSizeUnit public int getFontSizeUnit() {
+  @FontSizeUnit
+  public int getFontSizeUnit() {
     return fontSizeUnit;
   }
 
   public float getFontSize() {
     return fontSize;
   }
-
 }

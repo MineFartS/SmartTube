@@ -17,15 +17,13 @@ package com.google.android.exoplayer2.text;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import androidx.annotation.IntDef;
 import android.text.Layout.Alignment;
+import androidx.annotation.IntDef;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * Contains information about a specific cue, including textual content and formatting data.
- */
+/** Contains information about a specific cue, including textual content and formatting data. */
 public class Cue {
 
   /** The empty cue. */
@@ -43,9 +41,7 @@ public class Cue {
   @IntDef({TYPE_UNSET, ANCHOR_TYPE_START, ANCHOR_TYPE_MIDDLE, ANCHOR_TYPE_END})
   public @interface AnchorType {}
 
-  /**
-   * An unset anchor or line type value.
-   */
+  /** An unset anchor or line type value. */
   public static final int TYPE_UNSET = Integer.MIN_VALUE;
 
   /**
@@ -54,9 +50,7 @@ public class Cue {
    */
   public static final int ANCHOR_TYPE_START = 0;
 
-  /**
-   * Anchors the middle of the cue box.
-   */
+  /** Anchors the middle of the cue box. */
   public static final int ANCHOR_TYPE_MIDDLE = 1;
 
   /**
@@ -74,14 +68,10 @@ public class Cue {
   @IntDef({TYPE_UNSET, LINE_TYPE_FRACTION, LINE_TYPE_NUMBER})
   public @interface LineType {}
 
-  /**
-   * Value for {@link #lineType} when {@link #line} is a fractional position.
-   */
+  /** Value for {@link #lineType} when {@link #line} is a fractional position. */
   public static final int LINE_TYPE_FRACTION = 0;
 
-  /**
-   * Value for {@link #lineType} when {@link #line} is a line number.
-   */
+  /** Value for {@link #lineType} when {@link #line} is a line number. */
   public static final int LINE_TYPE_NUMBER = 1;
 
   /**
@@ -114,22 +104,18 @@ public class Cue {
    */
   public final CharSequence text;
 
-  /**
-   * The alignment of the cue text within the cue box, or null if the alignment is undefined.
-   */
+  /** The alignment of the cue text within the cue box, or null if the alignment is undefined. */
   public final Alignment textAlignment;
 
-  /**
-   * The cue image, or null if this is a text cue.
-   */
+  /** The cue image, or null if this is a text cue. */
   public final Bitmap bitmap;
 
   /**
    * The position of the {@link #lineAnchor} of the cue box within the viewport in the direction
    * orthogonal to the writing direction, or {@link #DIMEN_UNSET}. When set, the interpretation of
    * the value depends on the value of {@link #lineType}.
-   * <p>
-   * For horizontal text and {@link #lineType} equal to {@link #LINE_TYPE_FRACTION}, this is the
+   *
+   * <p>For horizontal text and {@link #lineType} equal to {@link #LINE_TYPE_FRACTION}, this is the
    * fractional vertical position relative to the top of the viewport.
    */
   public final float line;
@@ -173,9 +159,9 @@ public class Cue {
   /**
    * The fractional position of the {@link #positionAnchor} of the cue box within the viewport in
    * the direction orthogonal to {@link #line}, or {@link #DIMEN_UNSET}.
-   * <p>
-   * For horizontal text, this is the horizontal position relative to the left of the viewport. Note
-   * that positioning is relative to the left of the viewport even in the case of right-to-left
+   *
+   * <p>For horizontal text, this is the horizontal position relative to the left of the viewport.
+   * Note that positioning is relative to the left of the viewport even in the case of right-to-left
    * text.
    */
   public final float position;
@@ -203,14 +189,10 @@ public class Cue {
    */
   public final float bitmapHeight;
 
-  /**
-   * Specifies whether or not the {@link #windowColor} property is set.
-   */
+  /** Specifies whether or not the {@link #windowColor} property is set. */
   public final boolean windowColorSet;
 
-  /**
-   * The fill color of the window.
-   */
+  /** The fill color of the window. */
   public final int windowColor;
 
   /**
@@ -433,5 +415,4 @@ public class Cue {
     this.textSizeType = textSizeType;
     this.textSize = textSize;
   }
-
 }

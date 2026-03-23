@@ -17,10 +17,10 @@ package com.google.android.exoplayer2.ext.mediasession;
 
 import android.os.Bundle;
 import android.os.ResultReceiver;
-import androidx.annotation.Nullable;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ControlDispatcher;
 import com.google.android.exoplayer2.Player;
@@ -47,8 +47,8 @@ public abstract class TimelineQueueNavigator implements MediaSessionConnector.Qu
 
   /**
    * Creates an instance for a given {@link MediaSessionCompat}.
-   * <p>
-   * Equivalent to {@code TimelineQueueNavigator(mediaSession, DEFAULT_MAX_QUEUE_SIZE)}.
+   *
+   * <p>Equivalent to {@code TimelineQueueNavigator(mediaSession, DEFAULT_MAX_QUEUE_SIZE)}.
    *
    * @param mediaSession The {@link MediaSessionCompat}.
    */
@@ -58,10 +58,10 @@ public abstract class TimelineQueueNavigator implements MediaSessionConnector.Qu
 
   /**
    * Creates an instance for a given {@link MediaSessionCompat} and maximum queue size.
-   * <p>
-   * If the number of windows in the {@link Player}'s {@link Timeline} exceeds {@code maxQueueSize},
-   * the media session queue will correspond to {@code maxQueueSize} windows centered on the one
-   * currently being played.
+   *
+   * <p>If the number of windows in the {@link Player}'s {@link Timeline} exceeds {@code
+   * maxQueueSize}, the media session queue will correspond to {@code maxQueueSize} windows centered
+   * on the one currently being played.
    *
    * @param mediaSession The {@link MediaSessionCompat}.
    * @param maxQueueSize The maximum queue size.

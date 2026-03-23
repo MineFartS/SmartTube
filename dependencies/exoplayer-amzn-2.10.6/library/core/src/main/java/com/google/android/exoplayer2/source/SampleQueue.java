@@ -33,9 +33,7 @@ import java.nio.ByteBuffer;
 /** A queue of media samples. */
 public class SampleQueue implements TrackOutput {
 
-  /**
-   * A listener for changes to the upstream format.
-   */
+  /** A listener for changes to the upstream format. */
   public interface UpstreamFormatChangedListener {
 
     /**
@@ -44,7 +42,6 @@ public class SampleQueue implements TrackOutput {
      * @param format The new upstream format.
      */
     void onUpstreamFormatChanged(Format format);
-
   }
 
   public static final int ADVANCE_FAILED = -1;
@@ -89,9 +86,7 @@ public class SampleQueue implements TrackOutput {
 
   // Called by the consuming thread, but only when there is no loading thread.
 
-  /**
-   * Resets the output without clearing the upstream format. Equivalent to {@code reset(false)}.
-   */
+  /** Resets the output without clearing the upstream format. Equivalent to {@code reset(false)}. */
   public void reset() {
     reset(false);
   }
@@ -123,16 +118,12 @@ public class SampleQueue implements TrackOutput {
     metadataQueue.sourceId(sourceId);
   }
 
-  /**
-   * Indicates samples that are subsequently queued should be spliced into those already queued.
-   */
+  /** Indicates samples that are subsequently queued should be spliced into those already queued. */
   public void splice() {
     pendingSplice = true;
   }
 
-  /**
-   * Returns the current absolute write index.
-   */
+  /** Returns the current absolute write index. */
   public int getWriteIndex() {
     return metadataQueue.getWriteIndex();
   }
@@ -162,8 +153,8 @@ public class SampleQueue implements TrackOutput {
       // Reset the successor of the last node to be an uninitialized node.
       lastNodeToKeep.next = new AllocationNode(lastNodeToKeep.endPosition, allocationLength);
       // Update writeAllocationNode and readAllocationNode as necessary.
-      writeAllocationNode = totalBytesWritten == lastNodeToKeep.endPosition ? lastNodeToKeep.next
-          : lastNodeToKeep;
+      writeAllocationNode =
+          totalBytesWritten == lastNodeToKeep.endPosition ? lastNodeToKeep.next : lastNodeToKeep;
       if (readAllocationNode == firstNodeToDiscard) {
         readAllocationNode = lastNodeToKeep.next;
       }
@@ -172,23 +163,17 @@ public class SampleQueue implements TrackOutput {
 
   // Called by the consuming thread.
 
-  /**
-   * Returns whether a sample is available to be read.
-   */
+  /** Returns whether a sample is available to be read. */
   public boolean hasNextSample() {
     return metadataQueue.hasNextSample();
   }
 
-  /**
-   * Returns the absolute index of the first sample.
-   */
+  /** Returns the absolute index of the first sample. */
   public int getFirstIndex() {
     return metadataQueue.getFirstIndex();
   }
 
-  /**
-   * Returns the current absolute read index.
-   */
+  /** Returns the current absolute read index. */
   public int getReadIndex() {
     return metadataQueue.getReadIndex();
   }
@@ -203,17 +188,15 @@ public class SampleQueue implements TrackOutput {
     return metadataQueue.peekSourceId();
   }
 
-  /**
-   * Returns the upstream {@link Format} in which samples are being queued.
-   */
+  /** Returns the upstream {@link Format} in which samples are being queued. */
   public Format getUpstreamFormat() {
     return metadataQueue.getUpstreamFormat();
   }
 
   /**
    * Returns the largest sample timestamp that has been queued since the last {@link #reset}.
-   * <p>
-   * Samples that were discarded by calling {@link #discardUpstreamSamples(int)} are not
+   *
+   * <p>Samples that were discarded by calling {@link #discardUpstreamSamples(int)} are not
    * considered as having been queued. Samples that were dequeued from the front of the queue are
    * considered as having been queued.
    *
@@ -238,9 +221,7 @@ public class SampleQueue implements TrackOutput {
     return metadataQueue.getFirstTimestampUs();
   }
 
-  /**
-   * Rewinds the read position to the first sample in the queue.
-   */
+  /** Rewinds the read position to the first sample in the queue. */
   public void rewind() {
     metadataQueue.rewind();
     readAllocationNode = firstAllocationNode;
@@ -252,24 +233,20 @@ public class SampleQueue implements TrackOutput {
    * @param timeUs The time to discard to.
    * @param toKeyframe If true then discards samples up to the keyframe before or at the specified
    *     time, rather than any sample before or at that time.
-   * @param stopAtReadPosition If true then samples are only discarded if they're before the
-   *     read position. If false then samples at and beyond the read position may be discarded, in
-   *     which case the read position is advanced to the first remaining sample.
+   * @param stopAtReadPosition If true then samples are only discarded if they're before the read
+   *     position. If false then samples at and beyond the read position may be discarded, in which
+   *     case the read position is advanced to the first remaining sample.
    */
   public void discardTo(long timeUs, boolean toKeyframe, boolean stopAtReadPosition) {
     discardDownstreamTo(metadataQueue.discardTo(timeUs, toKeyframe, stopAtReadPosition));
   }
 
-  /**
-   * Discards up to but not including the read position.
-   */
+  /** Discards up to but not including the read position. */
   public void discardToRead() {
     discardDownstreamTo(metadataQueue.discardToRead());
   }
 
-  /**
-   * Discards to the end of the queue. The read position is also advanced.
-   */
+  /** Discards to the end of the queue. The read position is also advanced. */
   public void discardToEnd() {
     discardDownstreamTo(metadataQueue.discardToEnd());
   }
@@ -336,8 +313,9 @@ public class SampleQueue implements TrackOutput {
       boolean formatRequired,
       boolean loadingFinished,
       long decodeOnlyUntilUs) {
-    int result = metadataQueue.read(formatHolder, buffer, formatRequired, loadingFinished,
-        downstreamFormat, extrasHolder);
+    int result =
+        metadataQueue.read(
+            formatHolder, buffer, formatRequired, loadingFinished, downstreamFormat, extrasHolder);
     switch (result) {
       case C.RESULT_FORMAT_READ:
         downstreamFormat = formatHolder.format;
@@ -367,10 +345,10 @@ public class SampleQueue implements TrackOutput {
 
   /**
    * Reads encryption data for the current sample.
-   * <p>
-   * The encryption data is written into {@link DecoderInputBuffer#cryptoInfo}, and
-   * {@link SampleExtrasHolder#size} is adjusted to subtract the number of bytes that were read. The
-   * same value is added to {@link SampleExtrasHolder#offset}.
+   *
+   * <p>The encryption data is written into {@link DecoderInputBuffer#cryptoInfo}, and {@link
+   * SampleExtrasHolder#size} is adjusted to subtract the number of bytes that were read. The same
+   * value is added to {@link SampleExtrasHolder#offset}.
    *
    * @param buffer The buffer into which the encryption data should be written.
    * @param extrasHolder The extras holder whose offset should be read and subsequently adjusted.
@@ -430,9 +408,15 @@ public class SampleQueue implements TrackOutput {
 
     // Populate the cryptoInfo.
     CryptoData cryptoData = extrasHolder.cryptoData;
-    buffer.cryptoInfo.set(subsampleCount, clearDataSizes, encryptedDataSizes,
-        cryptoData.encryptionKey, buffer.cryptoInfo.iv, cryptoData.cryptoMode,
-        cryptoData.encryptedBlocks, cryptoData.clearBlocks);
+    buffer.cryptoInfo.set(
+        subsampleCount,
+        clearDataSizes,
+        encryptedDataSizes,
+        cryptoData.encryptionKey,
+        buffer.cryptoInfo.iv,
+        cryptoData.cryptoMode,
+        cryptoData.encryptedBlocks,
+        cryptoData.clearBlocks);
 
     // Adjust the offset and size to take into account the bytes read.
     int bytesRead = (int) (offset - extrasHolder.offset);
@@ -475,8 +459,12 @@ public class SampleQueue implements TrackOutput {
     while (remaining > 0) {
       int toCopy = Math.min(remaining, (int) (readAllocationNode.endPosition - absolutePosition));
       Allocation allocation = readAllocationNode.allocation;
-      System.arraycopy(allocation.data, readAllocationNode.translateOffset(absolutePosition),
-          target, length - remaining, toCopy);
+      System.arraycopy(
+          allocation.data,
+          readAllocationNode.translateOffset(absolutePosition),
+          target,
+          length - remaining,
+          toCopy);
       remaining -= toCopy;
       absolutePosition += toCopy;
       if (absolutePosition == readAllocationNode.endPosition) {
@@ -497,10 +485,10 @@ public class SampleQueue implements TrackOutput {
   }
 
   /**
-   * Advances {@link #firstAllocationNode} to the specified absolute position.
-   * {@link #readAllocationNode} is also advanced if necessary to avoid it falling behind
-   * {@link #firstAllocationNode}. Nodes that have been advanced past are cleared, and their
-   * underlying allocations are returned to the allocator.
+   * Advances {@link #firstAllocationNode} to the specified absolute position. {@link
+   * #readAllocationNode} is also advanced if necessary to avoid it falling behind {@link
+   * #firstAllocationNode}. Nodes that have been advanced past are cleared, and their underlying
+   * allocations are returned to the allocator.
    *
    * @param absolutePosition The position to which {@link #firstAllocationNode} should be advanced.
    *     May be {@link C#POSITION_UNSET}, in which case calling this method is a no-op.
@@ -532,8 +520,8 @@ public class SampleQueue implements TrackOutput {
   }
 
   /**
-   * Sets an offset that will be added to the timestamps (and sub-sample timestamps) of samples
-   * that are subsequently queued.
+   * Sets an offset that will be added to the timestamps (and sub-sample timestamps) of samples that
+   * are subsequently queued.
    *
    * @param sampleOffsetUs The timestamp offset in microseconds.
    */
@@ -559,8 +547,11 @@ public class SampleQueue implements TrackOutput {
   public int sampleData(ExtractorInput input, int length, boolean allowEndOfInput)
       throws IOException, InterruptedException {
     length = preAppend(length);
-    int bytesAppended = input.read(writeAllocationNode.allocation.data,
-        writeAllocationNode.translateOffset(totalBytesWritten), length);
+    int bytesAppended =
+        input.read(
+            writeAllocationNode.allocation.data,
+            writeAllocationNode.translateOffset(totalBytesWritten),
+            length);
     if (bytesAppended == C.RESULT_END_OF_INPUT) {
       if (allowEndOfInput) {
         return C.RESULT_END_OF_INPUT;
@@ -575,8 +566,10 @@ public class SampleQueue implements TrackOutput {
   public void sampleData(ParsableByteArray buffer, int length) {
     while (length > 0) {
       int bytesAppended = preAppend(length);
-      buffer.readBytes(writeAllocationNode.allocation.data,
-          writeAllocationNode.translateOffset(totalBytesWritten), bytesAppended);
+      buffer.readBytes(
+          writeAllocationNode.allocation.data,
+          writeAllocationNode.translateOffset(totalBytesWritten),
+          bytesAppended);
       length -= bytesAppended;
       postAppend(bytesAppended);
     }
@@ -617,8 +610,10 @@ public class SampleQueue implements TrackOutput {
     // Bulk release allocations for performance (it's significantly faster when using
     // DefaultAllocator because the allocator's lock only needs to be acquired and released once)
     // [Internal: See b/29542039].
-    int allocationCount = (writeAllocationNode.wasInitialized ? 1 : 0)
-        + ((int) (writeAllocationNode.startPosition - fromNode.startPosition) / allocationLength);
+    int allocationCount =
+        (writeAllocationNode.wasInitialized ? 1 : 0)
+            + ((int) (writeAllocationNode.startPosition - fromNode.startPosition)
+                / allocationLength);
     Allocation[] allocationsToRelease = new Allocation[allocationCount];
     AllocationNode currentNode = fromNode;
     for (int i = 0; i < allocationsToRelease.length; i++) {
@@ -629,8 +624,8 @@ public class SampleQueue implements TrackOutput {
   }
 
   /**
-   * Called before writing sample data to {@link #writeAllocationNode}. May cause
-   * {@link #writeAllocationNode} to be initialized.
+   * Called before writing sample data to {@link #writeAllocationNode}. May cause {@link
+   * #writeAllocationNode} to be initialized.
    *
    * @param length The number of bytes that the caller wishes to write.
    * @return The number of bytes that the caller is permitted to write, which may be less than
@@ -638,7 +633,8 @@ public class SampleQueue implements TrackOutput {
    */
   private int preAppend(int length) {
     if (!writeAllocationNode.wasInitialized) {
-      writeAllocationNode.initialize(allocator.allocate(),
+      writeAllocationNode.initialize(
+          allocator.allocate(),
           new AllocationNode(writeAllocationNode.endPosition, allocationLength));
     }
     return Math.min(length, (int) (writeAllocationNode.endPosition - totalBytesWritten));
@@ -673,27 +669,21 @@ public class SampleQueue implements TrackOutput {
     return format;
   }
 
-  /**
-   * A node in a linked list of {@link Allocation}s held by the output.
-   */
+  /** A node in a linked list of {@link Allocation}s held by the output. */
   private static final class AllocationNode {
 
-    /**
-     * The absolute position of the start of the data (inclusive).
-     */
+    /** The absolute position of the start of the data (inclusive). */
     public final long startPosition;
-    /**
-     * The absolute position of the end of the data (exclusive).
-     */
+
+    /** The absolute position of the end of the data (exclusive). */
     public final long endPosition;
-    /**
-     * Whether the node has been initialized. Remains true after {@link #clear()}.
-     */
+
+    /** Whether the node has been initialized. Remains true after {@link #clear()}. */
     public boolean wasInitialized;
-    /**
-     * The {@link Allocation}, or {@code null} if the node is not initialized.
-     */
+
+    /** The {@link Allocation}, or {@code null} if the node is not initialized. */
     @Nullable public Allocation allocation;
+
     /**
      * The next {@link AllocationNode} in the list, or {@code null} if the node has not been
      * initialized. Remains set after {@link #clear()}.
@@ -744,7 +734,5 @@ public class SampleQueue implements TrackOutput {
       next = null;
       return temp;
     }
-
   }
-
 }

@@ -18,9 +18,9 @@ package com.google.android.exoplayer2.source.dash;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.SystemClock;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.SparseArray;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerLibraryInfo;
 import com.google.android.exoplayer2.ParserException;
@@ -166,7 +166,9 @@ public final class DashMediaSource extends BaseMediaSource {
       return this;
     }
 
-    /** @deprecated Use {@link #setLivePresentationDelayMs(long, boolean)}. */
+    /**
+     * @deprecated Use {@link #setLivePresentationDelayMs(long, boolean)}.
+     */
     @Deprecated
     @SuppressWarnings("deprecation")
     public Factory setLivePresentationDelayMs(long livePresentationDelayMs) {
@@ -343,11 +345,17 @@ public final class DashMediaSource extends BaseMediaSource {
    * which the default start position precedes the end of the live window.
    */
   public static final long DEFAULT_LIVE_PRESENTATION_DELAY_MS = 30000;
-  /** @deprecated Use {@link #DEFAULT_LIVE_PRESENTATION_DELAY_MS}. */
+
+  /**
+   * @deprecated Use {@link #DEFAULT_LIVE_PRESENTATION_DELAY_MS}.
+   */
   @Deprecated
   public static final long DEFAULT_LIVE_PRESENTATION_DELAY_FIXED_MS =
       DEFAULT_LIVE_PRESENTATION_DELAY_MS;
-  /** @deprecated Use of this parameter is no longer necessary. */
+
+  /**
+   * @deprecated Use of this parameter is no longer necessary.
+   */
   @Deprecated public static final long DEFAULT_LIVE_PRESENTATION_DELAY_PREFER_MANIFEST_MS = -1;
 
   /**
@@ -356,6 +364,7 @@ public final class DashMediaSource extends BaseMediaSource {
    * source's {@link Timeline} is changing dynamically (for example, for incomplete live streams).
    */
   private static final int NOTIFY_MANIFEST_INTERVAL_MS = 5000;
+
   /**
    * The minimum default start position for live streams, relative to the start of the live window.
    */
@@ -724,8 +733,8 @@ public final class DashMediaSource extends BaseMediaSource {
 
   // Loadable callbacks.
 
-  /* package */ void onManifestLoadCompleted(ParsingLoadable<DashManifest> loadable,
-      long elapsedRealtimeMs, long loadDurationMs) {
+  /* package */ void onManifestLoadCompleted(
+      ParsingLoadable<DashManifest> loadable, long elapsedRealtimeMs, long loadDurationMs) {
     manifestEventDispatcher.loadCompleted(
         loadable.dataSpec,
         loadable.getUri(),
@@ -834,8 +843,8 @@ public final class DashMediaSource extends BaseMediaSource {
     return loadErrorAction;
   }
 
-  /* package */ void onUtcTimestampLoadCompleted(ParsingLoadable<Long> loadable,
-      long elapsedRealtimeMs, long loadDurationMs) {
+  /* package */ void onUtcTimestampLoadCompleted(
+      ParsingLoadable<Long> loadable, long elapsedRealtimeMs, long loadDurationMs) {
     manifestEventDispatcher.loadCompleted(
         loadable.dataSpec,
         loadable.getUri(),
@@ -866,8 +875,8 @@ public final class DashMediaSource extends BaseMediaSource {
     return Loader.DONT_RETRY;
   }
 
-  /* package */ void onLoadCanceled(ParsingLoadable<?> loadable, long elapsedRealtimeMs,
-      long loadDurationMs) {
+  /* package */ void onLoadCanceled(
+      ParsingLoadable<?> loadable, long elapsedRealtimeMs, long loadDurationMs) {
     manifestEventDispatcher.loadCanceled(
         loadable.dataSpec,
         loadable.getUri(),
@@ -906,10 +915,13 @@ public final class DashMediaSource extends BaseMediaSource {
     }
   }
 
-  private void resolveUtcTimingElementHttp(UtcTimingElement timingElement,
-      ParsingLoadable.Parser<Long> parser) {
-    startLoading(new ParsingLoadable<>(dataSource, Uri.parse(timingElement.value),
-        C.DATA_TYPE_TIME_SYNCHRONIZATION, parser), new UtcTimestampCallback(), 1);
+  private void resolveUtcTimingElementHttp(
+      UtcTimingElement timingElement, ParsingLoadable.Parser<Long> parser) {
+    startLoading(
+        new ParsingLoadable<>(
+            dataSource, Uri.parse(timingElement.value), C.DATA_TYPE_TIME_SYNCHRONIZATION, parser),
+        new UtcTimestampCallback(),
+        1);
   }
 
   private void onUtcTimestampResolved(long elapsedRealtimeOffsetMs) {
@@ -936,10 +948,11 @@ public final class DashMediaSource extends BaseMediaSource {
     // Update the window.
     boolean windowChangingImplicitly = false;
     int lastPeriodIndex = manifest.getPeriodCount() - 1;
-    PeriodSeekInfo firstPeriodSeekInfo = PeriodSeekInfo.createPeriodSeekInfo(manifest.getPeriod(0),
-        manifest.getPeriodDurationUs(0));
-    PeriodSeekInfo lastPeriodSeekInfo = PeriodSeekInfo.createPeriodSeekInfo(
-        manifest.getPeriod(lastPeriodIndex), manifest.getPeriodDurationUs(lastPeriodIndex));
+    PeriodSeekInfo firstPeriodSeekInfo =
+        PeriodSeekInfo.createPeriodSeekInfo(manifest.getPeriod(0), manifest.getPeriodDurationUs(0));
+    PeriodSeekInfo lastPeriodSeekInfo =
+        PeriodSeekInfo.createPeriodSeekInfo(
+            manifest.getPeriod(lastPeriodIndex), manifest.getPeriodDurationUs(lastPeriodIndex));
     // Get the period-relative start/end times.
     long currentStartTimeUs = firstPeriodSeekInfo.availableStartTimeUs;
     long currentEndTimeUs = lastPeriodSeekInfo.availableEndTimeUs;
@@ -947,8 +960,8 @@ public final class DashMediaSource extends BaseMediaSource {
       // The manifest describes an incomplete live stream. Update the start/end times to reflect the
       // live stream duration and the manifest's time shift buffer depth.
       long liveStreamDurationUs = getNowUnixTimeUs() - C.msToUs(manifest.availabilityStartTimeMs);
-      long liveStreamEndPositionInLastPeriodUs = liveStreamDurationUs
-          - C.msToUs(manifest.getPeriod(lastPeriodIndex).startMs);
+      long liveStreamEndPositionInLastPeriodUs =
+          liveStreamDurationUs - C.msToUs(manifest.getPeriod(lastPeriodIndex).startMs);
       currentEndTimeUs = Math.min(liveStreamEndPositionInLastPeriodUs, currentEndTimeUs);
       if (manifest.timeShiftBufferDepthMs != C.TIME_UNSET) {
         long timeShiftBufferDepthUs = C.msToUs(manifest.timeShiftBufferDepthMs);
@@ -984,12 +997,14 @@ public final class DashMediaSource extends BaseMediaSource {
         // The default start position is too close to the start of the live window. Set it to the
         // minimum default start position provided the window is at least twice as big. Else set
         // it to the middle of the window.
-        windowDefaultStartPositionUs = Math.min(MIN_LIVE_DEFAULT_START_POSITION_US,
-            windowDurationUs / 2);
+        windowDefaultStartPositionUs =
+            Math.min(MIN_LIVE_DEFAULT_START_POSITION_US, windowDurationUs / 2);
       }
     }
-    long windowStartTimeMs = manifest.availabilityStartTimeMs
-        + manifest.getPeriod(0).startMs + C.usToMs(currentStartTimeUs);
+    long windowStartTimeMs =
+        manifest.availabilityStartTimeMs
+            + manifest.getPeriod(0).startMs
+            + C.usToMs(currentStartTimeUs);
     DashTimeline timeline =
         new DashTimeline(
             manifest.availabilityStartTimeMs,
@@ -1059,8 +1074,10 @@ public final class DashMediaSource extends BaseMediaSource {
     return Math.min((staleManifestReloadAttempt - 1) * 1000, 5000);
   }
 
-  private <T> void startLoading(ParsingLoadable<T> loadable,
-      Loader.Callback<ParsingLoadable<T>> callback, int minRetryCount) {
+  private <T> void startLoading(
+      ParsingLoadable<T> loadable,
+      Loader.Callback<ParsingLoadable<T>> callback,
+      int minRetryCount) {
     long elapsedRealtimeMs = loader.startLoading(loadable, callback, minRetryCount);
     manifestEventDispatcher.loadStarted(loadable.dataSpec, loadable.type, elapsedRealtimeMs);
   }
@@ -1116,8 +1133,8 @@ public final class DashMediaSource extends BaseMediaSource {
           availableStartTimeUs = Math.max(availableStartTimeUs, adaptationSetAvailableStartTimeUs);
           if (segmentCount != DashSegmentIndex.INDEX_UNBOUNDED) {
             long lastSegmentNum = firstSegmentNum + segmentCount - 1;
-            long adaptationSetAvailableEndTimeUs = index.getTimeUs(lastSegmentNum)
-                + index.getDurationUs(lastSegmentNum, durationUs);
+            long adaptationSetAvailableEndTimeUs =
+                index.getTimeUs(lastSegmentNum) + index.getDurationUs(lastSegmentNum, durationUs);
             availableEndTimeUs = Math.min(availableEndTimeUs, adaptationSetAvailableEndTimeUs);
           }
         }
@@ -1129,13 +1146,12 @@ public final class DashMediaSource extends BaseMediaSource {
     public final long availableStartTimeUs;
     public final long availableEndTimeUs;
 
-    private PeriodSeekInfo(boolean isIndexExplicit, long availableStartTimeUs,
-        long availableEndTimeUs) {
+    private PeriodSeekInfo(
+        boolean isIndexExplicit, long availableStartTimeUs, long availableEndTimeUs) {
       this.isIndexExplicit = isIndexExplicit;
       this.availableStartTimeUs = availableStartTimeUs;
       this.availableEndTimeUs = availableEndTimeUs;
     }
-
   }
 
   private static final class DashTimeline extends Timeline {
@@ -1179,7 +1195,11 @@ public final class DashMediaSource extends BaseMediaSource {
       Assertions.checkIndex(periodIndex, 0, getPeriodCount());
       Object id = setIdentifiers ? manifest.getPeriod(periodIndex).id : null;
       Object uid = setIdentifiers ? (firstPeriodId + periodIndex) : null;
-      return period.set(id, uid, 0, manifest.getPeriodDurationUs(periodIndex),
+      return period.set(
+          id,
+          uid,
+          0,
+          manifest.getPeriodDurationUs(periodIndex),
           C.msToUs(manifest.getPeriod(periodIndex).startMs - manifest.getPeriod(0).startMs)
               - offsetInFirstPeriodUs);
     }
@@ -1193,8 +1213,8 @@ public final class DashMediaSource extends BaseMediaSource {
     public Window getWindow(
         int windowIndex, Window window, boolean setTag, long defaultPositionProjectionUs) {
       Assertions.checkIndex(windowIndex, 0, 1);
-      long windowDefaultStartPositionUs = getAdjustedWindowDefaultStartPositionUs(
-          defaultPositionProjectionUs);
+      long windowDefaultStartPositionUs =
+          getAdjustedWindowDefaultStartPositionUs(defaultPositionProjectionUs);
       Object tag = setTag ? windowTag : null;
       boolean isDynamic =
           manifest.dynamic
@@ -1254,14 +1274,15 @@ public final class DashMediaSource extends BaseMediaSource {
       }
       // If there are multiple video adaptation sets with unaligned segments, the initial time may
       // not correspond to the start of a segment in both, but this is an edge case.
-      DashSegmentIndex snapIndex = period.adaptationSets.get(videoAdaptationSetIndex)
-          .representations.get(0).getIndex();
+      DashSegmentIndex snapIndex =
+          period.adaptationSets.get(videoAdaptationSetIndex).representations.get(0).getIndex();
       if (snapIndex == null || snapIndex.getSegmentCount(periodDurationUs) == 0) {
         // Video adaptation set does not include a non-empty index for snapping.
         return windowDefaultStartPositionUs;
       }
       long segmentNum = snapIndex.getSegmentNum(defaultStartPositionInPeriodUs, periodDurationUs);
-      return windowDefaultStartPositionUs + snapIndex.getTimeUs(segmentNum)
+      return windowDefaultStartPositionUs
+          + snapIndex.getTimeUs(segmentNum)
           - defaultStartPositionInPeriodUs;
     }
 
@@ -1288,14 +1309,17 @@ public final class DashMediaSource extends BaseMediaSource {
   private final class ManifestCallback implements Loader.Callback<ParsingLoadable<DashManifest>> {
 
     @Override
-    public void onLoadCompleted(ParsingLoadable<DashManifest> loadable,
-        long elapsedRealtimeMs, long loadDurationMs) {
+    public void onLoadCompleted(
+        ParsingLoadable<DashManifest> loadable, long elapsedRealtimeMs, long loadDurationMs) {
       onManifestLoadCompleted(loadable, elapsedRealtimeMs, loadDurationMs);
     }
 
     @Override
-    public void onLoadCanceled(ParsingLoadable<DashManifest> loadable,
-        long elapsedRealtimeMs, long loadDurationMs, boolean released) {
+    public void onLoadCanceled(
+        ParsingLoadable<DashManifest> loadable,
+        long elapsedRealtimeMs,
+        long loadDurationMs,
+        boolean released) {
       DashMediaSource.this.onLoadCanceled(loadable, elapsedRealtimeMs, loadDurationMs);
     }
 
@@ -1308,20 +1332,22 @@ public final class DashMediaSource extends BaseMediaSource {
         int errorCount) {
       return onManifestLoadError(loadable, elapsedRealtimeMs, loadDurationMs, error, errorCount);
     }
-
   }
 
   private final class UtcTimestampCallback implements Loader.Callback<ParsingLoadable<Long>> {
 
     @Override
-    public void onLoadCompleted(ParsingLoadable<Long> loadable, long elapsedRealtimeMs,
-        long loadDurationMs) {
+    public void onLoadCompleted(
+        ParsingLoadable<Long> loadable, long elapsedRealtimeMs, long loadDurationMs) {
       onUtcTimestampLoadCompleted(loadable, elapsedRealtimeMs, loadDurationMs);
     }
 
     @Override
-    public void onLoadCanceled(ParsingLoadable<Long> loadable, long elapsedRealtimeMs,
-        long loadDurationMs, boolean released) {
+    public void onLoadCanceled(
+        ParsingLoadable<Long> loadable,
+        long elapsedRealtimeMs,
+        long loadDurationMs,
+        boolean released) {
       DashMediaSource.this.onLoadCanceled(loadable, elapsedRealtimeMs, loadDurationMs);
     }
 
@@ -1334,7 +1360,6 @@ public final class DashMediaSource extends BaseMediaSource {
         int errorCount) {
       return onUtcTimestampLoadError(loadable, elapsedRealtimeMs, loadDurationMs, error);
     }
-
   }
 
   private static final class XsDateTimeParser implements ParsingLoadable.Parser<Long> {
@@ -1344,7 +1369,6 @@ public final class DashMediaSource extends BaseMediaSource {
       String firstLine = new BufferedReader(new InputStreamReader(inputStream)).readLine();
       return Util.parseXsDateTime(firstLine);
     }
-
   }
 
   /* package */ static final class Iso8601Parser implements ParsingLoadable.Parser<Long> {
@@ -1384,7 +1408,6 @@ public final class DashMediaSource extends BaseMediaSource {
         throw new ParserException(e);
       }
     }
-
   }
 
   /**

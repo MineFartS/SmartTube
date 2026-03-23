@@ -15,9 +15,7 @@
  */
 package com.google.android.exoplayer2.ext.vp9;
 
-/**
- * Renders the {@link VpxOutputBuffer}.
- */
+/** Renders the {@link VpxOutputBuffer}. */
 public interface VpxOutputBufferRenderer {
 
   /**
@@ -26,5 +24,4 @@ public interface VpxOutputBufferRenderer {
    * @param outputBuffer The output buffer to be rendered.
    */
   void setOutputBuffer(VpxOutputBuffer outputBuffer);
-
 }

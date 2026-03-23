@@ -22,7 +22,6 @@ import android.media.AudioTrack;
 import android.os.SystemClock;
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
-import android.util.Log;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.util.AmazonQuirks;
 import com.google.android.exoplayer2.util.Assertions;
@@ -37,12 +36,12 @@ import java.lang.reflect.Method;
  * Wraps an {@link AudioTrack}, exposing a position based on {@link
  * AudioTrack#getPlaybackHeadPosition()} and {@link AudioTrack#getTimestamp(AudioTimestamp)}.
  *
- * <p>Call {@link #setAudioTrack(AudioTrack, int, int, int, boolean)} to set the audio track to wrap. Call
- * {@link #mayHandleBuffer(long)} if there is input data to write to the track. If it returns false,
- * the audio track position is stabilizing and no data may be written. Call {@link #start()}
- * immediately before calling {@link AudioTrack#play()}. Call {@link #pause()} when pausing the
- * track. Call {@link #handleEndOfStream(long)} when no more data will be written to the track. When
- * the audio track will no longer be used, call {@link #reset()}.
+ * <p>Call {@link #setAudioTrack(AudioTrack, int, int, int, boolean)} to set the audio track to
+ * wrap. Call {@link #mayHandleBuffer(long)} if there is input data to write to the track. If it
+ * returns false, the audio track position is stabilizing and no data may be written. Call {@link
+ * #start()} immediately before calling {@link AudioTrack#play()}. Call {@link #pause()} when
+ * pausing the track. Call {@link #handleEndOfStream(long)} when no more data will be written to the
+ * track. When the audio track will no longer be used, call {@link #reset()}.
  */
 /* package */ final class AudioTrackPositionTracker {
 
@@ -99,17 +98,28 @@ import java.lang.reflect.Method;
      */
     void onUnderrun(int bufferSize, long bufferSizeMs);
   }
+
   private static final String TAG = AudioTrackPositionTracker.class.getSimpleName();
+
   /** {@link AudioTrack} playback states. */
   @Documented
   @Retention(RetentionPolicy.SOURCE)
   @IntDef({PLAYSTATE_STOPPED, PLAYSTATE_PAUSED, PLAYSTATE_PLAYING})
   private @interface PlayState {}
-  /** @see AudioTrack#PLAYSTATE_STOPPED */
+
+  /**
+   * @see AudioTrack#PLAYSTATE_STOPPED
+   */
   private static final int PLAYSTATE_STOPPED = AudioTrack.PLAYSTATE_STOPPED;
-  /** @see AudioTrack#PLAYSTATE_PAUSED */
+
+  /**
+   * @see AudioTrack#PLAYSTATE_PAUSED
+   */
   private static final int PLAYSTATE_PAUSED = AudioTrack.PLAYSTATE_PAUSED;
-  /** @see AudioTrack#PLAYSTATE_PLAYING */
+
+  /**
+   * @see AudioTrack#PLAYSTATE_PLAYING
+   */
   private static final int PLAYSTATE_PLAYING = AudioTrack.PLAYSTATE_PLAYING;
 
   /**
@@ -146,7 +156,7 @@ import java.lang.reflect.Method;
   private long resumeSystemTimeUs;
   private final Logger log = new Logger(Logger.Module.Audio, TAG);
   private final boolean DBG = log.allowDebug();
-  private final boolean VDBG = log.allowVerbose(); 
+  private final boolean VDBG = log.allowVerbose();
   // AMZN_CHANGE_END
 
   private @Nullable AudioTimestampPoller audioTimestampPoller;
@@ -178,13 +188,13 @@ import java.lang.reflect.Method;
    *
    * @param listener A listener for position tracking events.
    */
-  public AudioTrackPositionTracker(Listener listener,
-                                   boolean isLatencyQuirkEnabled) { // AMZN_CHANGE_ONELINE
+  public AudioTrackPositionTracker(
+      Listener listener, boolean isLatencyQuirkEnabled) { // AMZN_CHANGE_ONELINE
     this.listener = Assertions.checkNotNull(listener);
     if (Util.SDK_INT >= 18) {
       try {
         getLatencyMethod = AudioTrack.class.getMethod("getLatency", (Class<?>[]) null);
-      } catch (Throwable e) { //AMZN_CHANGE_ONELINE: Some legacy devices throw unexpected errors
+      } catch (Throwable e) { // AMZN_CHANGE_ONELINE: Some legacy devices throw unexpected errors
         // There's no guarantee this method exists. Do nothing.
       }
     }
@@ -230,7 +240,8 @@ import java.lang.reflect.Method;
     // AMZN_CHANGE_BEGIN
     // for dolby passthrough case, we don't need to sync sample
     // params because we don't depend on play head position for timestamp
-    if (Assertions.checkNotNull(this.audioTrack).getPlayState() == PLAYSTATE_PLAYING && !applyDolbyPassThroughQuirk) {
+    if (Assertions.checkNotNull(this.audioTrack).getPlayState() == PLAYSTATE_PLAYING
+        && !applyDolbyPassThroughQuirk) {
       maybeSampleSyncParams();
     }
 
@@ -249,7 +260,7 @@ import java.lang.reflect.Method;
         positionUs = 0;
       }
       if (VDBG) {
-        log.v("getCurrentPositionUs : applyDolbyPassThroughQuirk positionUs = "  + positionUs);
+        log.v("getCurrentPositionUs : applyDolbyPassThroughQuirk positionUs = " + positionUs);
       }
       return positionUs;
     } else if (audioTimestampPoller.hasTimestamp()) { // AMZN_CHANGE_END
@@ -258,21 +269,30 @@ import java.lang.reflect.Method;
       long timestampPositionUs = framesToDurationUs(timestampPositionFrames);
       if (!audioTimestampPoller.isTimestampAdvancing()) {
         if (VDBG) {
-          log.v("getCurrentPositionUs : hasTimestamp: not advancing: positionUs = "  + timestampPositionUs);
+          log.v(
+              "getCurrentPositionUs : hasTimestamp: not advancing: positionUs = "
+                  + timestampPositionUs);
         }
         return timestampPositionUs;
       }
       // AMZN_CHANGE_BEGIN
       long timestampSysTimeUs = audioTimestampPoller.getTimestampSystemTimeUs();
-      long elapsedSinceTimestampUs = systemTimeUs - timestampSysTimeUs ;
+      long elapsedSinceTimestampUs = systemTimeUs - timestampSysTimeUs;
       long positionUs = timestampPositionUs + elapsedSinceTimestampUs;
       if (VDBG) {
-        log.v("getCurrentPositionUs : hasTimestamp: positionUs = "  + positionUs +
-            " timestampPositionFrames = " + timestampPositionFrames +
-            " timestampPositionUs = " + timestampPositionUs +
-            " elapsedSinceTimestampUs = " + elapsedSinceTimestampUs +
-            " systemTimeUs = " + systemTimeUs +
-            " timestampSysTimeUs  = " + timestampSysTimeUs);
+        log.v(
+            "getCurrentPositionUs : hasTimestamp: positionUs = "
+                + positionUs
+                + " timestampPositionFrames = "
+                + timestampPositionFrames
+                + " timestampPositionUs = "
+                + timestampPositionUs
+                + " elapsedSinceTimestampUs = "
+                + elapsedSinceTimestampUs
+                + " systemTimeUs = "
+                + systemTimeUs
+                + " timestampSysTimeUs  = "
+                + timestampSysTimeUs);
       }
       return positionUs;
       // AMZN_CHANGE_END
@@ -282,7 +302,7 @@ import java.lang.reflect.Method;
         // The AudioTrack has started, but we don't have any samples to compute a smoothed position.
         positionUs = getPlaybackHeadPositionUs();
         if (VDBG) {
-          log.v("getCurrentPositionUs : pre-latency adjustment positionUs = "  + positionUs);
+          log.v("getCurrentPositionUs : pre-latency adjustment positionUs = " + positionUs);
         }
       } else {
         // getPlaybackHeadPositionUs() only has a granularity of ~20 ms, so we base the position off
@@ -290,17 +310,24 @@ import java.lang.reflect.Method;
         // prevent jitter in the reported positions.
         positionUs = systemTimeUs + smoothedPlayheadOffsetUs;
         if (VDBG) {
-          log.v("getCurrentPositionUs : pre-latency adjustment positionUs = "  + positionUs +
-              " smoothedPlayheadOffsetUs = " + smoothedPlayheadOffsetUs +
-              " systemTimeUs = " + systemTimeUs);
+          log.v(
+              "getCurrentPositionUs : pre-latency adjustment positionUs = "
+                  + positionUs
+                  + " smoothedPlayheadOffsetUs = "
+                  + smoothedPlayheadOffsetUs
+                  + " systemTimeUs = "
+                  + systemTimeUs);
         }
       }
       if (!sourceEnded) {
         positionUs -= latencyUs;
       }
-      if (VDBG) { 
-        log.v("getCurrentPositionUs : post-latency adjustment positionUs = "  + positionUs +
-            " latencyUs = " + latencyUs);
+      if (VDBG) {
+        log.v(
+            "getCurrentPositionUs : post-latency adjustment positionUs = "
+                + positionUs
+                + " latencyUs = "
+                + latencyUs);
       }
 
       return positionUs;
@@ -309,7 +336,7 @@ import java.lang.reflect.Method;
 
   /** Starts position tracking. Must be called immediately before {@link AudioTrack#play()}. */
   public void start() {
-    if (DBG) { 
+    if (DBG) {
       log.d("start");
     }
     Assertions.checkNotNull(audioTimestampPoller).reset();
@@ -330,7 +357,7 @@ import java.lang.reflect.Method;
    */
   public boolean mayHandleBuffer(long writtenFrames) {
     @PlayState int playState = Assertions.checkNotNull(audioTrack).getPlayState();
-    if (needsPassthroughWorkarounds && !applyDolbyPassThroughQuirk) {// AMZN_CHANGE_ONELINE
+    if (needsPassthroughWorkarounds && !applyDolbyPassThroughQuirk) { // AMZN_CHANGE_ONELINE
       // An AC-3 audio track continues to play data written while it is paused. Stop writing so its
       // buffer empties. See [Internal: b/18899620].
       if (playState == PLAYSTATE_PAUSED) {
@@ -342,7 +369,7 @@ import java.lang.reflect.Method;
       // A new AC-3 audio track's playback position continues to increase from the old track's
       // position for a short time after is has been released. Avoid writing data until the playback
       // head position actually returns to zero.
-      if (playState == PLAYSTATE_STOPPED && getPlaybackHeadPosition() != 0) {// AMZN_CHANGE_ONELINE
+      if (playState == PLAYSTATE_STOPPED && getPlaybackHeadPosition() != 0) { // AMZN_CHANGE_ONELINE
         return false;
       }
     }
@@ -398,7 +425,8 @@ import java.lang.reflect.Method;
    */
   public boolean hasPendingData(long writtenFrames) {
     // AMZN_CHANGE_BEGIN
-    boolean hasPendingData = applyDolbyPassThroughQuirk
+    boolean hasPendingData =
+        applyDolbyPassThroughQuirk
             || writtenFrames > getPlaybackHeadPosition()
             || forceHasPendingData();
     if (VDBG) {
@@ -417,7 +445,7 @@ import java.lang.reflect.Method;
     if (DBG) {
       log.d("pause");
     }
- 
+
     resetSyncParams();
     if (stopTimestampUs == C.TIME_UNSET) {
       // The audio track is going to be paused, so reset the timestamp poller to ensure it doesn't
@@ -552,19 +580,21 @@ import java.lang.reflect.Method;
    */
   private boolean forceHasPendingData() {
     // AMZN_CHANGE_BEGIN
-    boolean hasPendingPassthroughData = needsPassthroughWorkarounds
-        && Assertions.checkNotNull(audioTrack).getPlayState() == AudioTrack.PLAYSTATE_PAUSED
-        && getPlaybackHeadPosition() == 0;
+    boolean hasPendingPassthroughData =
+        needsPassthroughWorkarounds
+            && Assertions.checkNotNull(audioTrack).getPlayState() == AudioTrack.PLAYSTATE_PAUSED
+            && getPlaybackHeadPosition() == 0;
     if (hasPendingPassthroughData) {
       return true;
     }
 
-    boolean hasPendingDataQuirk = AmazonQuirks.isLatencyQuirkEnabled()
-            && ( Assertions.checkNotNull(audioTrack).getPlayState() == AudioTrack.PLAYSTATE_PLAYING )
-            && ( ((System.nanoTime() / 1000) - resumeSystemTimeUs) < C.MICROS_PER_SECOND );
+    boolean hasPendingDataQuirk =
+        AmazonQuirks.isLatencyQuirkEnabled()
+            && (Assertions.checkNotNull(audioTrack).getPlayState() == AudioTrack.PLAYSTATE_PLAYING)
+            && (((System.nanoTime() / 1000) - resumeSystemTimeUs) < C.MICROS_PER_SECOND);
 
     return hasPendingDataQuirk;
-    //AMZN_CHANGE_END
+    // AMZN_CHANGE_END
   }
 
   /**
@@ -607,15 +637,14 @@ import java.lang.reflect.Method;
     if (isLatencyQuirkEnabled) {
       int php = audioTrack.getPlaybackHeadPosition();
       if (VDBG) {
-        log.v("php = " + php );
+        log.v("php = " + php);
       }
 
       // if audio track includes latency while returning play head position
       // we try to compensate it back by adding the latency back to it,
       // if the track is in playing state or if pause state and php is non-zero
       int trackState = audioTrack.getPlayState();
-      if (trackState == PLAYSTATE_PLAYING ||
-              (trackState == PLAYSTATE_PAUSED && php != 0)) {
+      if (trackState == PLAYSTATE_PLAYING || (trackState == PLAYSTATE_PAUSED && php != 0)) {
         php += getAudioSWLatencies();
       }
       if (php < 0 && ((System.nanoTime() / 1000) - resumeSystemTimeUs) < C.MICROS_PER_SECOND) {
@@ -660,8 +689,8 @@ import java.lang.reflect.Method;
 
     // AMZN_CHANGE_BEGIN
     if (lastRawPlaybackHeadPosition > rawPlaybackHeadPosition
-            && lastRawPlaybackHeadPosition > 0x7FFFFFFFL
-            && (lastRawPlaybackHeadPosition - rawPlaybackHeadPosition >= 0x7FFFFFFFL)) {
+        && lastRawPlaybackHeadPosition > 0x7FFFFFFFL
+        && (lastRawPlaybackHeadPosition - rawPlaybackHeadPosition >= 0x7FFFFFFFL)) {
       // The value must have wrapped around.
       log.i("The playback head position wrapped around");
       rawPlaybackHeadWrapCount++;

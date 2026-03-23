@@ -17,9 +17,7 @@ package com.google.android.exoplayer2.source.sabr.manifest;
 
 import com.google.android.exoplayer2.source.sabr.SabrSegmentIndex;
 
-/**
- * A {@link SabrSegmentIndex} that defines a single segment.
- */
+/** A {@link SabrSegmentIndex} that defines a single segment. */
 /* package */ final class SingleSegmentIndex implements SabrSegmentIndex {
 
   private final RangedUri uri;
@@ -65,5 +63,4 @@ import com.google.android.exoplayer2.source.sabr.SabrSegmentIndex;
   public boolean isExplicit() {
     return true;
   }
-
 }

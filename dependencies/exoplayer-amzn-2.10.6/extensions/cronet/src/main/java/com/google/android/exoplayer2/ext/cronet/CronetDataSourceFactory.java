@@ -26,20 +26,14 @@ import com.google.android.exoplayer2.util.Predicate;
 import java.util.concurrent.Executor;
 import org.chromium.net.CronetEngine;
 
-/**
- * A {@link Factory} that produces {@link CronetDataSource}.
- */
+/** A {@link Factory} that produces {@link CronetDataSource}. */
 public final class CronetDataSourceFactory extends BaseFactory {
 
-  /**
-   * The default connection timeout, in milliseconds.
-   */
+  /** The default connection timeout, in milliseconds. */
   public static final int DEFAULT_CONNECT_TIMEOUT_MILLIS =
       CronetDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS;
 
-  /**
-   * The default read timeout, in milliseconds.
-   */
+  /** The default read timeout, in milliseconds. */
   public static final int DEFAULT_READ_TIMEOUT_MILLIS =
       CronetDataSource.DEFAULT_READ_TIMEOUT_MILLIS;
 
@@ -225,8 +219,15 @@ public final class CronetDataSourceFactory extends BaseFactory {
       Predicate<String> contentTypePredicate,
       @Nullable TransferListener transferListener,
       HttpDataSource.Factory fallbackFactory) {
-    this(cronetEngineWrapper, executor, contentTypePredicate, transferListener,
-        DEFAULT_CONNECT_TIMEOUT_MILLIS, DEFAULT_READ_TIMEOUT_MILLIS, false, fallbackFactory);
+    this(
+        cronetEngineWrapper,
+        executor,
+        contentTypePredicate,
+        transferListener,
+        DEFAULT_CONNECT_TIMEOUT_MILLIS,
+        DEFAULT_READ_TIMEOUT_MILLIS,
+        false,
+        fallbackFactory);
   }
 
   /**
@@ -253,10 +254,20 @@ public final class CronetDataSourceFactory extends BaseFactory {
       Predicate<String> contentTypePredicate,
       @Nullable TransferListener transferListener,
       String userAgent) {
-    this(cronetEngineWrapper, executor, contentTypePredicate, transferListener,
-        DEFAULT_CONNECT_TIMEOUT_MILLIS, DEFAULT_READ_TIMEOUT_MILLIS, false,
-        new DefaultHttpDataSourceFactory(userAgent, transferListener,
-            DEFAULT_CONNECT_TIMEOUT_MILLIS, DEFAULT_READ_TIMEOUT_MILLIS, false));
+    this(
+        cronetEngineWrapper,
+        executor,
+        contentTypePredicate,
+        transferListener,
+        DEFAULT_CONNECT_TIMEOUT_MILLIS,
+        DEFAULT_READ_TIMEOUT_MILLIS,
+        false,
+        new DefaultHttpDataSourceFactory(
+            userAgent,
+            transferListener,
+            DEFAULT_CONNECT_TIMEOUT_MILLIS,
+            DEFAULT_READ_TIMEOUT_MILLIS,
+            false));
   }
 
   /**
@@ -285,10 +296,16 @@ public final class CronetDataSourceFactory extends BaseFactory {
       int readTimeoutMs,
       boolean resetTimeoutOnRedirects,
       String userAgent) {
-    this(cronetEngineWrapper, executor, contentTypePredicate, transferListener,
-        DEFAULT_CONNECT_TIMEOUT_MILLIS, DEFAULT_READ_TIMEOUT_MILLIS, resetTimeoutOnRedirects,
-        new DefaultHttpDataSourceFactory(userAgent, transferListener, connectTimeoutMs,
-            readTimeoutMs, resetTimeoutOnRedirects));
+    this(
+        cronetEngineWrapper,
+        executor,
+        contentTypePredicate,
+        transferListener,
+        DEFAULT_CONNECT_TIMEOUT_MILLIS,
+        DEFAULT_READ_TIMEOUT_MILLIS,
+        resetTimeoutOnRedirects,
+        new DefaultHttpDataSourceFactory(
+            userAgent, transferListener, connectTimeoutMs, readTimeoutMs, resetTimeoutOnRedirects));
   }
 
   /**
@@ -329,8 +346,8 @@ public final class CronetDataSourceFactory extends BaseFactory {
   }
 
   @Override
-  protected HttpDataSource createDataSourceInternal(HttpDataSource.RequestProperties
-      defaultRequestProperties) {
+  protected HttpDataSource createDataSourceInternal(
+      HttpDataSource.RequestProperties defaultRequestProperties) {
     CronetEngine cronetEngine = cronetEngineWrapper.getCronetEngine();
     if (cronetEngine == null) {
       return fallbackFactory.createDataSource();
@@ -349,5 +366,4 @@ public final class CronetDataSourceFactory extends BaseFactory {
     }
     return dataSource;
   }
-
 }

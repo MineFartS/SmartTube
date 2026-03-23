@@ -17,9 +17,7 @@ package com.google.android.exoplayer2.upstream;
 
 import java.io.IOException;
 
-/**
- * Used to specify reason of a DataSource error.
- */
+/** Used to specify reason of a DataSource error. */
 public final class DataSourceException extends IOException {
 
   public static final int POSITION_OUT_OF_RANGE = 0;
@@ -37,5 +35,4 @@ public final class DataSourceException extends IOException {
   public DataSourceException(int reason) {
     this.reason = reason;
   }
-
 }

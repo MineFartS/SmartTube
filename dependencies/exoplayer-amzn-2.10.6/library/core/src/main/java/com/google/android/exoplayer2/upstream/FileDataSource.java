@@ -25,15 +25,12 @@ import java.io.RandomAccessFile;
 /** A {@link DataSource} for reading local files. */
 public final class FileDataSource extends BaseDataSource {
 
-  /**
-   * Thrown when IOException is encountered during local file read operation.
-   */
+  /** Thrown when IOException is encountered during local file read operation. */
   public static class FileDataSourceException extends IOException {
 
     public FileDataSourceException(IOException cause) {
       super(cause);
     }
-
   }
 
   private @Nullable RandomAccessFile file;
@@ -64,8 +61,8 @@ public final class FileDataSource extends BaseDataSource {
       transferInitializing(dataSpec);
       file = new RandomAccessFile(dataSpec.uri.getPath(), "r");
       file.seek(dataSpec.position);
-      bytesRemaining = dataSpec.length == C.LENGTH_UNSET ? file.length() - dataSpec.position
-          : dataSpec.length;
+      bytesRemaining =
+          dataSpec.length == C.LENGTH_UNSET ? file.length() - dataSpec.position : dataSpec.length;
       if (bytesRemaining < 0) {
         throw new EOFException();
       }
@@ -124,5 +121,4 @@ public final class FileDataSource extends BaseDataSource {
       }
     }
   }
-
 }

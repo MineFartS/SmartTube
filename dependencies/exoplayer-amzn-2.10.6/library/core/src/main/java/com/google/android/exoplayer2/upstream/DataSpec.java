@@ -21,7 +21,6 @@ import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.util.Assertions;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -30,9 +29,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Defines a region of data.
- */
+/** Defines a region of data. */
 public final class DataSpec {
 
   /**
@@ -51,6 +48,7 @@ public final class DataSpec {
         FLAG_ALLOW_CACHE_FRAGMENTATION
       })
   public @interface Flags {}
+
   /**
    * Allows an underlying network stack to request that the server use gzip compression.
    *
@@ -63,10 +61,13 @@ public final class DataSpec {
    * DataSource#read(byte[], int, int)} will be the decompressed data.
    */
   public static final int FLAG_ALLOW_GZIP = 1;
+
   /** Allows an underlying network stack to request that the stream contain ICY metadata. */
   public static final int FLAG_ALLOW_ICY_METADATA = 1 << 1; // 2
+
   /** Prevents caching if the length cannot be resolved when the {@link DataSource} is opened. */
   public static final int FLAG_DONT_CACHE_IF_LENGTH_UNKNOWN = 1 << 2; // 4
+
   /**
    * Allows fragmentation of this request into multiple cache files, meaning a cache eviction policy
    * will be able to evict individual fragments of the data. Depending on the cache implementation,
@@ -88,9 +89,7 @@ public final class DataSpec {
   public static final int HTTP_METHOD_POST = 2;
   public static final int HTTP_METHOD_HEAD = 3;
 
-  /**
-   * The source from which data should be read.
-   */
+  /** The source from which data should be read. */
   public final Uri uri;
 
   /**
@@ -104,7 +103,9 @@ public final class DataSpec {
    */
   public final @Nullable byte[] httpBody;
 
-  /** @deprecated Use {@link #httpBody} instead. */
+  /**
+   * @deprecated Use {@link #httpBody} instead.
+   */
   @Deprecated public final @Nullable byte[] postBody;
 
   /** Immutable map containing the headers to use in HTTP requests. */
@@ -112,22 +113,24 @@ public final class DataSpec {
 
   /** The absolute position of the data in the full stream. */
   public final long absoluteStreamPosition;
+
   /**
    * The position of the data when read from {@link #uri}.
-   * <p>
-   * Always equal to {@link #absoluteStreamPosition} unless the {@link #uri} defines the location
+   *
+   * <p>Always equal to {@link #absoluteStreamPosition} unless the {@link #uri} defines the location
    * of a subset of the underlying data.
    */
   public final long position;
-  /**
-   * The length of the data, or {@link C#LENGTH_UNSET}.
-   */
+
+  /** The length of the data, or {@link C#LENGTH_UNSET}. */
   public final long length;
+
   /**
    * A key that uniquely identifies the original stream. Used for cache indexing. May be null if the
    * data spec is not intended to be used in conjunction with a cache.
    */
   public final @Nullable String key;
+
   /** Request {@link Flags flags}. */
   public final @Flags int flags;
 
@@ -412,13 +415,14 @@ public final class DataSpec {
   }
 
   /**
-   * MOD: Google throttle fix. Add range param to the video url. Found on googlevideo.com<br/>
-   * Source: https://github.com/yt-dlp/yt-dlp/issues/6369#issuecomment-1447763187<br/>
+   * MOD: Google throttle fix. Add range param to the video url. Found on googlevideo.com<br>
+   * Source: https://github.com/yt-dlp/yt-dlp/issues/6369#issuecomment-1447763187<br>
    * Also see: {@link DefaultHttpDataSource}
    */
   private void applyRangeQuery() {
-    if (uri.getHost() != null && uri.getHost().endsWith(".googlevideo.com")
-            && !(position == 0 && length == C.LENGTH_UNSET)) {
+    if (uri.getHost() != null
+        && uri.getHost().endsWith(".googlevideo.com")
+        && !(position == 0 && length == C.LENGTH_UNSET)) {
       String rangeRequest = "range=" + position + "-";
       if (length != C.LENGTH_UNSET) {
         rangeRequest += (position + length - 1);
@@ -427,7 +431,8 @@ public final class DataSpec {
       String url = uri.toString() + "&" + rangeRequest;
 
       Helpers.setField(this, "uri", Uri.parse(url));
-      // Required to skip Range header processing and bypass skipping when responseCode == 200 (Stream EOF fix)
+      // Required to skip Range header processing and bypass skipping when responseCode == 200
+      // (Stream EOF fix)
       Helpers.setField(this, "position", 0);
       Helpers.setField(this, "length", C.LENGTH_UNSET);
     }

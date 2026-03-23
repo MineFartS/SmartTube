@@ -24,14 +24,10 @@ import java.util.Arrays;
 /** An array of {@link TrackGroup}s exposed by a {@link MediaPeriod}. */
 public final class TrackGroupArray implements Parcelable {
 
-  /**
-   * The empty array.
-   */
+  /** The empty array. */
   public static final TrackGroupArray EMPTY = new TrackGroupArray();
 
-  /**
-   * The number of groups in the array. Greater than or equal to zero.
-   */
+  /** The number of groups in the array. Greater than or equal to zero. */
   public final int length;
 
   private final TrackGroup[] trackGroups;
@@ -83,9 +79,7 @@ public final class TrackGroupArray implements Parcelable {
     return C.INDEX_UNSET;
   }
 
-  /**
-   * Returns whether this track group array is empty.
-   */
+  /** Returns whether this track group array is empty. */
   public boolean isEmpty() {
     return length == 0;
   }

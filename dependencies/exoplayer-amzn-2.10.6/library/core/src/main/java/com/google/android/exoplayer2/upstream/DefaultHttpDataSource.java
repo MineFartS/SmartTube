@@ -16,8 +16,8 @@
 package com.google.android.exoplayer2.upstream;
 
 import android.net.Uri;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.metadata.icy.IcyHeaders;
 import com.google.android.exoplayer2.upstream.DataSpec.HttpMethod;
@@ -25,8 +25,6 @@ import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.Log;
 import com.google.android.exoplayer2.util.Predicate;
 import com.google.android.exoplayer2.util.Util;
-import com.liskovsoft.sharedutils.helpers.NetworkHelpers;
-
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,13 +52,10 @@ import java.util.regex.Pattern;
  */
 public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSource {
 
-  /**
-   * The default connection timeout, in milliseconds.
-   */
+  /** The default connection timeout, in milliseconds. */
   public static final int DEFAULT_CONNECT_TIMEOUT_MILLIS = 8 * 1000;
-  /**
-   * The default read timeout, in milliseconds.
-   */
+
+  /** The default read timeout, in milliseconds. */
   public static final int DEFAULT_READ_TIMEOUT_MILLIS = 8 * 1000;
 
   private static final String TAG = "DefaultHttpDataSource";
@@ -92,7 +87,9 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
   private long bytesSkipped;
   private long bytesRead;
 
-  /** @param userAgent The User-Agent string that should be used. */
+  /**
+   * @param userAgent The User-Agent string that should be used.
+   */
   public DefaultHttpDataSource(String userAgent) {
     this(userAgent, /* contentTypePredicate= */ null);
   }
@@ -182,7 +179,11 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
       String userAgent,
       @Nullable Predicate<String> contentTypePredicate,
       @Nullable TransferListener listener) {
-    this(userAgent, contentTypePredicate, listener, DEFAULT_CONNECT_TIMEOUT_MILLIS,
+    this(
+        userAgent,
+        contentTypePredicate,
+        listener,
+        DEFAULT_CONNECT_TIMEOUT_MILLIS,
         DEFAULT_READ_TIMEOUT_MILLIS);
   }
 
@@ -207,7 +208,13 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
       @Nullable TransferListener listener,
       int connectTimeoutMillis,
       int readTimeoutMillis) {
-    this(userAgent, contentTypePredicate, listener, connectTimeoutMillis, readTimeoutMillis, false,
+    this(
+        userAgent,
+        contentTypePredicate,
+        listener,
+        connectTimeoutMillis,
+        readTimeoutMillis,
+        false,
         null);
   }
 
@@ -292,8 +299,11 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
     try {
       connection = makeConnection(dataSpec);
     } catch (IOException e) {
-      throw new HttpDataSourceException("Unable to connect to " + dataSpec.uri.toString(), e,
-          dataSpec, HttpDataSourceException.TYPE_OPEN);
+      throw new HttpDataSourceException(
+          "Unable to connect to " + dataSpec.uri.toString(),
+          e,
+          dataSpec,
+          HttpDataSourceException.TYPE_OPEN);
     }
 
     String responseMessage;
@@ -302,8 +312,11 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
       responseMessage = connection.getResponseMessage();
     } catch (IOException e) {
       closeConnectionQuietly();
-      throw new HttpDataSourceException("Unable to connect to " + dataSpec.uri.toString(), e,
-          dataSpec, HttpDataSourceException.TYPE_OPEN);
+      throw new HttpDataSourceException(
+          "Unable to connect to " + dataSpec.uri.toString(),
+          e,
+          dataSpec,
+          HttpDataSourceException.TYPE_OPEN);
     }
 
     // Check for a valid response code.
@@ -336,8 +349,8 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
         bytesToRead = dataSpec.length;
       } else {
         long contentLength = getContentLength(connection);
-        bytesToRead = contentLength != C.LENGTH_UNSET ? (contentLength - bytesToSkip)
-            : C.LENGTH_UNSET;
+        bytesToRead =
+            contentLength != C.LENGTH_UNSET ? (contentLength - bytesToSkip) : C.LENGTH_UNSET;
       }
     } else {
       // Gzip is enabled. If the server opts to use gzip then the content length in the response
@@ -401,8 +414,8 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
   }
 
   /**
-   * Returns the number of bytes that have been skipped since the most recent call to
-   * {@link #open(DataSpec)}.
+   * Returns the number of bytes that have been skipped since the most recent call to {@link
+   * #open(DataSpec)}.
    *
    * @return The number of bytes skipped.
    */
@@ -411,8 +424,8 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
   }
 
   /**
-   * Returns the number of bytes that have been read since the most recent call to
-   * {@link #open(DataSpec)}.
+   * Returns the number of bytes that have been read since the most recent call to {@link
+   * #open(DataSpec)}.
    *
    * @return The number of bytes read.
    */
@@ -422,9 +435,9 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
 
   /**
    * Returns the number of bytes that are still to be read for the current {@link DataSpec}.
-   * <p>
-   * If the total length of the data being read is known, then this length minus {@code bytesRead()}
-   * is returned. If the total length is unknown, {@link C#LENGTH_UNSET} is returned.
+   *
+   * <p>If the total length of the data being read is known, then this length minus {@code
+   * bytesRead()} is returned. If the total length is unknown, {@link C#LENGTH_UNSET} is returned.
    *
    * @return The remaining length, or {@link C#LENGTH_UNSET}.
    */
@@ -432,9 +445,7 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
     return bytesToRead == C.LENGTH_UNSET ? bytesToRead : bytesToRead - bytesRead;
   }
 
-  /**
-   * Establishes a connection, following redirects to do so where permitted.
-   */
+  /** Establishes a connection, following redirects to do so where permitted. */
   private HttpURLConnection makeConnection(DataSpec dataSpec) throws IOException {
     URL url = new URL(dataSpec.uri.toString());
     @HttpMethod int httpMethod = dataSpec.httpMethod;
@@ -526,8 +537,9 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
     // MODIFIED: Add modern TLS ciphers to HttpUrlConnection and custom Dns
     // https://stackoverflow.com/questions/16299531/how-to-override-the-cipherlist-sent-to-the-server-by-android-when-using-httpsurl
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-    // TODO: Exceptions on API 34 (maybe lowers too). Enable for old api or at least switch to Cronet on error
-    //HttpURLConnection connection = NetworkHelpers.getHttpsURLConnection(url);
+    // TODO: Exceptions on API 34 (maybe lowers too). Enable for old api or at least switch to
+    // Cronet on error
+    // HttpURLConnection connection = NetworkHelpers.getHttpsURLConnection(url);
     connection.setConnectTimeout(connectTimeoutMillis);
     connection.setReadTimeout(readTimeoutMillis);
     if (defaultRequestProperties != null) {
@@ -632,8 +644,9 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
             // assume the one with the larger value is correct. We have seen cases where carrier
             // change one of them to reduce the size of a request, but it is unlikely anybody would
             // increase it.
-            Log.w(TAG, "Inconsistent headers [" + contentLengthHeader + "] [" + contentRangeHeader
-                + "]");
+            Log.w(
+                TAG,
+                "Inconsistent headers [" + contentLengthHeader + "] [" + contentRangeHeader + "]");
             contentLength = Math.max(contentLength, contentLengthFromRange);
           }
         } catch (NumberFormatException e) {
@@ -646,8 +659,8 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
 
   /**
    * Skips any bytes that need skipping. Else does nothing.
-   * <p>
-   * This implementation is based roughly on {@code libcore.io.Streams.skipByReading()}.
+   *
+   * <p>This implementation is based roughly on {@code libcore.io.Streams.skipByReading()}.
    *
    * @throws InterruptedIOException If the thread is interrupted during the operation.
    * @throws EOFException If the end of the input stream is reached before the bytes are skipped.
@@ -681,11 +694,11 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
   }
 
   /**
-   * Reads up to {@code length} bytes of data and stores them into {@code buffer}, starting at
-   * index {@code offset}.
-   * <p>
-   * This method blocks until at least one byte of data can be read, the end of the opened range is
-   * detected, or an exception is thrown.
+   * Reads up to {@code length} bytes of data and stores them into {@code buffer}, starting at index
+   * {@code offset}.
+   *
+   * <p>This method blocks until at least one byte of data can be read, the end of the opened range
+   * is detected, or an exception is thrown.
    *
    * @param buffer The buffer into which the read data should be stored.
    * @param offset The start offset into {@code buffer} at which data should be written.
@@ -764,10 +777,7 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
     }
   }
 
-
-  /**
-   * Closes the current connection quietly, if there is one.
-   */
+  /** Closes the current connection quietly, if there is one. */
   private void closeConnectionQuietly() {
     if (connection != null) {
       try {
@@ -778,5 +788,4 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
       connection = null;
     }
   }
-
 }

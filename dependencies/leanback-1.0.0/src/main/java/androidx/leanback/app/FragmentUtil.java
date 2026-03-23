@@ -20,13 +20,12 @@ import android.content.Context;
 import android.os.Build;
 
 class FragmentUtil {
-    static Context getContext(Fragment fragment) {
-        if (Build.VERSION.SDK_INT >= 23) {
-            return fragment.getContext();
-        }
-        return fragment.getActivity();
+  static Context getContext(Fragment fragment) {
+    if (Build.VERSION.SDK_INT >= 23) {
+      return fragment.getContext();
     }
+    return fragment.getActivity();
+  }
 
-    private FragmentUtil() {
-    }
+  private FragmentUtil() {}
 }

@@ -234,8 +234,9 @@ import java.io.IOException;
    * @param setupData Setup data to be filled.
    * @return Whether the packet contains header data.
    */
-  protected abstract boolean readHeaders(ParsableByteArray packet, long position,
-      SetupData setupData) throws IOException, InterruptedException;
+  protected abstract boolean readHeaders(
+      ParsableByteArray packet, long position, SetupData setupData)
+      throws IOException, InterruptedException;
 
   /**
    * Called on end of seeking.
@@ -262,7 +263,5 @@ import java.io.IOException;
     public SeekMap createSeekMap() {
       return new SeekMap.Unseekable(C.TIME_UNSET);
     }
-
   }
-
 }

@@ -21,9 +21,9 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
 import android.os.SystemClock;
+import android.util.Pair;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.Pair;
 import com.google.android.exoplayer2.DefaultMediaClock.PlaybackParameterListener;
 import com.google.android.exoplayer2.Player.DiscontinuityReason;
 import com.google.android.exoplayer2.source.MediaPeriod;
@@ -167,8 +167,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
     // Note: The documentation for Process.THREAD_PRIORITY_AUDIO that states "Applications can
     // not normally change to this priority" is incorrect.
-    internalPlaybackThread = new HandlerThread("ExoPlayerImplInternal:Handler",
-        Process.THREAD_PRIORITY_AUDIO);
+    internalPlaybackThread =
+        new HandlerThread("ExoPlayerImplInternal:Handler", Process.THREAD_PRIORITY_AUDIO);
     internalPlaybackThread.start();
     handler = clock.createHandler(internalPlaybackThread.getLooper(), this);
   }
@@ -192,7 +192,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
   }
 
   public void seekTo(Timeline timeline, int windowIndex, long positionUs) {
-    handler.obtainMessage(MSG_SEEK_TO, new SeekPosition(timeline, windowIndex, positionUs))
+    handler
+        .obtainMessage(MSG_SEEK_TO, new SeekPosition(timeline, windowIndex, positionUs))
         .sendToTarget();
   }
 
@@ -268,8 +269,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
   @Override
   public void onSourceInfoRefreshed(MediaSource source, Timeline timeline, Object manifest) {
-    handler.obtainMessage(MSG_REFRESH_SOURCE_INFO,
-        new MediaSourceRefreshInfo(source, timeline, manifest)).sendToTarget();
+    handler
+        .obtainMessage(
+            MSG_REFRESH_SOURCE_INFO, new MediaSourceRefreshInfo(source, timeline, manifest))
+        .sendToTarget();
   }
 
   // MediaPeriod.Callback implementation.
@@ -563,8 +566,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
     updatePlaybackPositions();
     long rendererPositionElapsedRealtimeUs = SystemClock.elapsedRealtime() * 1000;
 
-    playingPeriodHolder.mediaPeriod.discardBuffer(playbackInfo.positionUs - backBufferDurationUs,
-        retainBackBufferFromKeyframe);
+    playingPeriodHolder.mediaPeriod.discardBuffer(
+        playbackInfo.positionUs - backBufferDurationUs, retainBackBufferFromKeyframe);
 
     boolean renderersEnded = true;
     boolean renderersReadyOrEnded = true;
@@ -578,8 +581,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
       // ready if it needs the next sample stream. This is necessary to avoid getting stuck if
       // tracks in the current period have uneven durations. See:
       // https://github.com/google/ExoPlayer/issues/1874
-      boolean rendererReadyOrEnded = renderer.isReady() || renderer.isEnded()
-          || rendererWaitingForNextStream(renderer);
+      boolean rendererReadyOrEnded =
+          renderer.isReady() || renderer.isEnded() || rendererWaitingForNextStream(renderer);
       if (!rendererReadyOrEnded) {
         renderer.maybeThrowStreamError();
       }
@@ -1411,8 +1414,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
     int newPeriodIndex = C.INDEX_UNSET;
     int maxIterations = oldTimeline.getPeriodCount();
     for (int i = 0; i < maxIterations && newPeriodIndex == C.INDEX_UNSET; i++) {
-      oldPeriodIndex = oldTimeline.getNextPeriodIndex(oldPeriodIndex, period, window, repeatMode,
-          shuffleModeEnabled);
+      oldPeriodIndex =
+          oldTimeline.getNextPeriodIndex(
+              oldPeriodIndex, period, window, repeatMode, shuffleModeEnabled);
       if (oldPeriodIndex == C.INDEX_UNSET) {
         // We've reached the end of the old timeline.
         break;
@@ -1449,8 +1453,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
     // Map the SeekPosition to a position in the corresponding timeline.
     Pair<Object, Long> periodPosition;
     try {
-      periodPosition = seekTimeline.getPeriodPosition(window, period, seekPosition.windowIndex,
-          seekPosition.windowPositionUs);
+      periodPosition =
+          seekTimeline.getPeriodPosition(
+              window, period, seekPosition.windowIndex, seekPosition.windowPositionUs);
     } catch (IndexOutOfBoundsException e) {
       // The window index of the seek position was outside the bounds of the timeline.
       return null;
@@ -1549,7 +1554,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
         SampleStream sampleStream = readingPeriodHolder.sampleStreams[i];
         // Defer setting the stream as final until the renderer has actually consumed the whole
         // stream in case of playlist changes that cause the stream to be no longer final.
-        if (sampleStream != null && renderer.getStream() == sampleStream
+        if (sampleStream != null
+            && renderer.getStream() == sampleStream
             && renderer.hasReadStreamToEnd()) {
           renderer.setCurrentStreamFinal();
         }
@@ -1608,7 +1614,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
           // and it will change the provided rendererOffsetUs while the renderer is still
           // rendering from the playing media period.
           Format[] formats = getFormats(newSelection);
-          renderer.replaceStream(formats, readingPeriodHolder.sampleStreams[i],
+          renderer.replaceStream(
+              formats,
+              readingPeriodHolder.sampleStreams[i],
               readingPeriodHolder.getRendererOffset());
         } else {
           // The renderer will be disabled when transitioning to playing the next period, because
@@ -1631,11 +1639,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
       } else {
         MediaPeriod mediaPeriod =
             queue.enqueueNextMediaPeriod(
-                rendererCapabilities,
-                trackSelector,
-                loadControl.getAllocator(),
-                mediaSource,
-                info);
+                rendererCapabilities, trackSelector, loadControl.getAllocator(), mediaSource, info);
         mediaPeriod.prepare(this, info.startPositionUs);
         setIsLoading(true);
         handleLoadingMediaPeriodChanged(/* loadingTrackSelectionChanged= */ false);
@@ -1769,9 +1773,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
       // Consider as joining only if the renderer was previously disabled.
       boolean joining = !wasRendererEnabled && playing;
       // Enable the renderer.
-      renderer.enable(rendererConfiguration, formats,
-          playingPeriodHolder.sampleStreams[rendererIndex], rendererPositionUs,
-          joining, playingPeriodHolder.getRendererOffset());
+      renderer.enable(
+          rendererConfiguration,
+          formats,
+          playingPeriodHolder.sampleStreams[rendererIndex],
+          rendererPositionUs,
+          joining,
+          playingPeriodHolder.getRendererOffset());
       mediaClock.onRendererEnabled(renderer);
       // Start the renderer if playing.
       if (playing) {
@@ -1934,5 +1942,4 @@ import java.util.concurrent.atomic.AtomicBoolean;
       this.discontinuityReason = discontinuityReason;
     }
   }
-
 }

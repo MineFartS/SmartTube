@@ -40,49 +40,75 @@ public final class DashStreamingTest {
 
   private static final String TAG = "DashStreamingTest";
 
-  private static final ActionSchedule SEEKING_SCHEDULE = new ActionSchedule.Builder(TAG)
-      .waitForPlaybackState(Player.STATE_READY)
-      .delay(10000).seekAndWait(15000)
-      .delay(10000).seek(30000).seek(31000).seek(32000).seek(33000).seekAndWait(34000)
-      .delay(1000).pause().delay(1000).play()
-      .delay(1000).pause().seekAndWait(120000).delay(1000).play()
-      .build();
-  private static final ActionSchedule RENDERER_DISABLING_SCHEDULE = new ActionSchedule.Builder(TAG)
-      .waitForPlaybackState(Player.STATE_READY)
-      // Wait 10 seconds, disable the video renderer, wait another 10 seconds and enable it again.
-      .delay(10000).disableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
-      .delay(10000).enableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
-      // Ditto for the audio renderer.
-      .delay(10000).disableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
-      .delay(10000).enableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
-      // Wait 10 seconds, then disable and enable the video renderer 5 times in quick succession.
-      .delay(10000).disableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
-      .enableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
-      .disableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
-      .enableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
-      .disableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
-      .enableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
-      .disableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
-      .enableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
-      .disableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
-      .enableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
-      // Ditto for the audio renderer.
-      .delay(10000).disableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
-      .enableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
-      .disableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
-      .enableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
-      .disableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
-      .enableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
-      .disableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
-      .enableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
-      .disableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
-      .enableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
-      // Wait 10 seconds, detach the surface, wait another 10 seconds and attach it again.
-      .delay(10000).clearVideoSurface()
-      .delay(10000).setVideoSurface()
-      // Wait 10 seconds, then seek to near end.
-      .delay(10000).seek(120000)
-      .build();
+  private static final ActionSchedule SEEKING_SCHEDULE =
+      new ActionSchedule.Builder(TAG)
+          .waitForPlaybackState(Player.STATE_READY)
+          .delay(10000)
+          .seekAndWait(15000)
+          .delay(10000)
+          .seek(30000)
+          .seek(31000)
+          .seek(32000)
+          .seek(33000)
+          .seekAndWait(34000)
+          .delay(1000)
+          .pause()
+          .delay(1000)
+          .play()
+          .delay(1000)
+          .pause()
+          .seekAndWait(120000)
+          .delay(1000)
+          .play()
+          .build();
+  private static final ActionSchedule RENDERER_DISABLING_SCHEDULE =
+      new ActionSchedule.Builder(TAG)
+          .waitForPlaybackState(Player.STATE_READY)
+          // Wait 10 seconds, disable the video renderer, wait another 10 seconds and enable it
+          // again.
+          .delay(10000)
+          .disableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
+          .delay(10000)
+          .enableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
+          // Ditto for the audio renderer.
+          .delay(10000)
+          .disableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
+          .delay(10000)
+          .enableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
+          // Wait 10 seconds, then disable and enable the video renderer 5 times in quick
+          // succession.
+          .delay(10000)
+          .disableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
+          .enableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
+          .disableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
+          .enableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
+          .disableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
+          .enableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
+          .disableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
+          .enableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
+          .disableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
+          .enableRenderer(DashTestRunner.VIDEO_RENDERER_INDEX)
+          // Ditto for the audio renderer.
+          .delay(10000)
+          .disableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
+          .enableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
+          .disableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
+          .enableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
+          .disableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
+          .enableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
+          .disableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
+          .enableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
+          .disableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
+          .enableRenderer(DashTestRunner.AUDIO_RENDERER_INDEX)
+          // Wait 10 seconds, detach the surface, wait another 10 seconds and attach it again.
+          .delay(10000)
+          .clearVideoSurface()
+          .delay(10000)
+          .setVideoSurface()
+          // Wait 10 seconds, then seek to near end.
+          .delay(10000)
+          .seek(120000)
+          .build();
 
   @Rule public ActivityTestRule<HostActivity> testRule = new ActivityTestRule<>(HostActivity.class);
 
@@ -122,8 +148,8 @@ public final class DashStreamingTest {
         .setManifestUrl(DashTestData.H264_MANIFEST)
         .setFullPlaybackNoSeeking(true)
         .setCanIncludeAdditionalVideoFormats(true)
-        .setAudioVideoFormats(DashTestData.AAC_AUDIO_REPRESENTATION_ID,
-            DashTestData.H264_CDD_ADAPTIVE)
+        .setAudioVideoFormats(
+            DashTestData.AAC_AUDIO_REPRESENTATION_ID, DashTestData.H264_CDD_ADAPTIVE)
         .run();
   }
 
@@ -140,8 +166,8 @@ public final class DashStreamingTest {
         .setFullPlaybackNoSeeking(false)
         .setCanIncludeAdditionalVideoFormats(true)
         .setActionSchedule(SEEKING_SCHEDULE)
-        .setAudioVideoFormats(DashTestData.AAC_AUDIO_REPRESENTATION_ID,
-            DashTestData.H264_CDD_ADAPTIVE)
+        .setAudioVideoFormats(
+            DashTestData.AAC_AUDIO_REPRESENTATION_ID, DashTestData.H264_CDD_ADAPTIVE)
         .run();
   }
 
@@ -158,8 +184,8 @@ public final class DashStreamingTest {
         .setFullPlaybackNoSeeking(false)
         .setCanIncludeAdditionalVideoFormats(true)
         .setActionSchedule(RENDERER_DISABLING_SCHEDULE)
-        .setAudioVideoFormats(DashTestData.AAC_AUDIO_REPRESENTATION_ID,
-            DashTestData.H264_CDD_ADAPTIVE)
+        .setAudioVideoFormats(
+            DashTestData.AAC_AUDIO_REPRESENTATION_ID, DashTestData.H264_CDD_ADAPTIVE)
         .run();
   }
 
@@ -191,8 +217,8 @@ public final class DashStreamingTest {
         .setManifestUrl(DashTestData.H265_MANIFEST)
         .setFullPlaybackNoSeeking(true)
         .setCanIncludeAdditionalVideoFormats(true)
-        .setAudioVideoFormats(DashTestData.AAC_AUDIO_REPRESENTATION_ID,
-            DashTestData.H265_CDD_ADAPTIVE)
+        .setAudioVideoFormats(
+            DashTestData.AAC_AUDIO_REPRESENTATION_ID, DashTestData.H265_CDD_ADAPTIVE)
         .run();
   }
 
@@ -208,8 +234,8 @@ public final class DashStreamingTest {
         .setFullPlaybackNoSeeking(false)
         .setCanIncludeAdditionalVideoFormats(true)
         .setActionSchedule(SEEKING_SCHEDULE)
-        .setAudioVideoFormats(DashTestData.AAC_AUDIO_REPRESENTATION_ID,
-            DashTestData.H265_CDD_ADAPTIVE)
+        .setAudioVideoFormats(
+            DashTestData.AAC_AUDIO_REPRESENTATION_ID, DashTestData.H265_CDD_ADAPTIVE)
         .run();
   }
 
@@ -225,8 +251,8 @@ public final class DashStreamingTest {
         .setFullPlaybackNoSeeking(false)
         .setCanIncludeAdditionalVideoFormats(true)
         .setActionSchedule(RENDERER_DISABLING_SCHEDULE)
-        .setAudioVideoFormats(DashTestData.AAC_AUDIO_REPRESENTATION_ID,
-            DashTestData.H265_CDD_ADAPTIVE)
+        .setAudioVideoFormats(
+            DashTestData.AAC_AUDIO_REPRESENTATION_ID, DashTestData.H265_CDD_ADAPTIVE)
         .run();
   }
 
@@ -243,8 +269,8 @@ public final class DashStreamingTest {
         .setManifestUrl(DashTestData.VP9_MANIFEST)
         .setFullPlaybackNoSeeking(true)
         .setCanIncludeAdditionalVideoFormats(false)
-        .setAudioVideoFormats(DashTestData.VP9_VORBIS_AUDIO_REPRESENTATION_ID,
-            DashTestData.VP9_CDD_FIXED)
+        .setAudioVideoFormats(
+            DashTestData.VP9_VORBIS_AUDIO_REPRESENTATION_ID, DashTestData.VP9_CDD_FIXED)
         .run();
   }
 
@@ -259,8 +285,8 @@ public final class DashStreamingTest {
         .setManifestUrl(DashTestData.VP9_MANIFEST)
         .setFullPlaybackNoSeeking(true)
         .setCanIncludeAdditionalVideoFormats(true)
-        .setAudioVideoFormats(DashTestData.VP9_VORBIS_AUDIO_REPRESENTATION_ID,
-            DashTestData.VP9_CDD_ADAPTIVE)
+        .setAudioVideoFormats(
+            DashTestData.VP9_VORBIS_AUDIO_REPRESENTATION_ID, DashTestData.VP9_CDD_ADAPTIVE)
         .run();
   }
 
@@ -276,8 +302,8 @@ public final class DashStreamingTest {
         .setFullPlaybackNoSeeking(false)
         .setCanIncludeAdditionalVideoFormats(true)
         .setActionSchedule(SEEKING_SCHEDULE)
-        .setAudioVideoFormats(DashTestData.VP9_VORBIS_AUDIO_REPRESENTATION_ID,
-            DashTestData.VP9_CDD_ADAPTIVE)
+        .setAudioVideoFormats(
+            DashTestData.VP9_VORBIS_AUDIO_REPRESENTATION_ID, DashTestData.VP9_CDD_ADAPTIVE)
         .run();
   }
 
@@ -293,8 +319,8 @@ public final class DashStreamingTest {
         .setFullPlaybackNoSeeking(false)
         .setCanIncludeAdditionalVideoFormats(true)
         .setActionSchedule(RENDERER_DISABLING_SCHEDULE)
-        .setAudioVideoFormats(DashTestData.VP9_VORBIS_AUDIO_REPRESENTATION_ID,
-            DashTestData.VP9_CDD_ADAPTIVE)
+        .setAudioVideoFormats(
+            DashTestData.VP9_VORBIS_AUDIO_REPRESENTATION_ID, DashTestData.VP9_CDD_ADAPTIVE)
         .run();
   }
 
@@ -312,7 +338,8 @@ public final class DashStreamingTest {
         .setManifestUrl(DashTestData.H264_23_MANIFEST)
         .setFullPlaybackNoSeeking(true)
         .setCanIncludeAdditionalVideoFormats(false)
-        .setAudioVideoFormats(DashTestData.AAC_AUDIO_REPRESENTATION_ID,
+        .setAudioVideoFormats(
+            DashTestData.AAC_AUDIO_REPRESENTATION_ID,
             DashTestData.H264_BASELINE_480P_23FPS_VIDEO_REPRESENTATION_ID)
         .run();
   }
@@ -329,7 +356,8 @@ public final class DashStreamingTest {
         .setManifestUrl(DashTestData.H264_24_MANIFEST)
         .setFullPlaybackNoSeeking(true)
         .setCanIncludeAdditionalVideoFormats(false)
-        .setAudioVideoFormats(DashTestData.AAC_AUDIO_REPRESENTATION_ID,
+        .setAudioVideoFormats(
+            DashTestData.AAC_AUDIO_REPRESENTATION_ID,
             DashTestData.H264_BASELINE_480P_24FPS_VIDEO_REPRESENTATION_ID)
         .run();
   }
@@ -346,7 +374,8 @@ public final class DashStreamingTest {
         .setManifestUrl(DashTestData.H264_29_MANIFEST)
         .setFullPlaybackNoSeeking(true)
         .setCanIncludeAdditionalVideoFormats(false)
-        .setAudioVideoFormats(DashTestData.AAC_AUDIO_REPRESENTATION_ID,
+        .setAudioVideoFormats(
+            DashTestData.AAC_AUDIO_REPRESENTATION_ID,
             DashTestData.H264_BASELINE_480P_29FPS_VIDEO_REPRESENTATION_ID)
         .run();
   }
@@ -366,8 +395,8 @@ public final class DashStreamingTest {
         .setWidevineInfo(MimeTypes.VIDEO_H264, true)
         .setFullPlaybackNoSeeking(true)
         .setCanIncludeAdditionalVideoFormats(false)
-        .setAudioVideoFormats(DashTestData.WIDEVINE_AAC_AUDIO_REPRESENTATION_ID,
-            DashTestData.WIDEVINE_H264_CDD_FIXED)
+        .setAudioVideoFormats(
+            DashTestData.WIDEVINE_AAC_AUDIO_REPRESENTATION_ID, DashTestData.WIDEVINE_H264_CDD_FIXED)
         .run();
   }
 
@@ -383,7 +412,8 @@ public final class DashStreamingTest {
         .setWidevineInfo(MimeTypes.VIDEO_H264, true)
         .setFullPlaybackNoSeeking(true)
         .setCanIncludeAdditionalVideoFormats(true)
-        .setAudioVideoFormats(DashTestData.WIDEVINE_AAC_AUDIO_REPRESENTATION_ID,
+        .setAudioVideoFormats(
+            DashTestData.WIDEVINE_AAC_AUDIO_REPRESENTATION_ID,
             DashTestData.WIDEVINE_H264_CDD_ADAPTIVE)
         .run();
   }
@@ -401,7 +431,8 @@ public final class DashStreamingTest {
         .setFullPlaybackNoSeeking(false)
         .setCanIncludeAdditionalVideoFormats(true)
         .setActionSchedule(SEEKING_SCHEDULE)
-        .setAudioVideoFormats(DashTestData.WIDEVINE_AAC_AUDIO_REPRESENTATION_ID,
+        .setAudioVideoFormats(
+            DashTestData.WIDEVINE_AAC_AUDIO_REPRESENTATION_ID,
             DashTestData.WIDEVINE_H264_CDD_ADAPTIVE)
         .run();
   }
@@ -419,7 +450,8 @@ public final class DashStreamingTest {
         .setFullPlaybackNoSeeking(false)
         .setCanIncludeAdditionalVideoFormats(true)
         .setActionSchedule(RENDERER_DISABLING_SCHEDULE)
-        .setAudioVideoFormats(DashTestData.WIDEVINE_AAC_AUDIO_REPRESENTATION_ID,
+        .setAudioVideoFormats(
+            DashTestData.WIDEVINE_AAC_AUDIO_REPRESENTATION_ID,
             DashTestData.WIDEVINE_H264_CDD_ADAPTIVE)
         .run();
   }
@@ -438,8 +470,8 @@ public final class DashStreamingTest {
         .setWidevineInfo(MimeTypes.VIDEO_H265, true)
         .setFullPlaybackNoSeeking(true)
         .setCanIncludeAdditionalVideoFormats(false)
-        .setAudioVideoFormats(DashTestData.WIDEVINE_AAC_AUDIO_REPRESENTATION_ID,
-            DashTestData.WIDEVINE_H265_CDD_FIXED)
+        .setAudioVideoFormats(
+            DashTestData.WIDEVINE_AAC_AUDIO_REPRESENTATION_ID, DashTestData.WIDEVINE_H265_CDD_FIXED)
         .run();
   }
 
@@ -455,7 +487,8 @@ public final class DashStreamingTest {
         .setWidevineInfo(MimeTypes.VIDEO_H265, true)
         .setFullPlaybackNoSeeking(true)
         .setCanIncludeAdditionalVideoFormats(true)
-        .setAudioVideoFormats(DashTestData.WIDEVINE_AAC_AUDIO_REPRESENTATION_ID,
+        .setAudioVideoFormats(
+            DashTestData.WIDEVINE_AAC_AUDIO_REPRESENTATION_ID,
             DashTestData.WIDEVINE_H265_CDD_ADAPTIVE)
         .run();
   }
@@ -473,7 +506,8 @@ public final class DashStreamingTest {
         .setFullPlaybackNoSeeking(false)
         .setCanIncludeAdditionalVideoFormats(true)
         .setActionSchedule(SEEKING_SCHEDULE)
-        .setAudioVideoFormats(DashTestData.WIDEVINE_AAC_AUDIO_REPRESENTATION_ID,
+        .setAudioVideoFormats(
+            DashTestData.WIDEVINE_AAC_AUDIO_REPRESENTATION_ID,
             DashTestData.WIDEVINE_H265_CDD_ADAPTIVE)
         .run();
   }
@@ -491,7 +525,8 @@ public final class DashStreamingTest {
         .setFullPlaybackNoSeeking(false)
         .setCanIncludeAdditionalVideoFormats(true)
         .setActionSchedule(RENDERER_DISABLING_SCHEDULE)
-        .setAudioVideoFormats(DashTestData.WIDEVINE_AAC_AUDIO_REPRESENTATION_ID,
+        .setAudioVideoFormats(
+            DashTestData.WIDEVINE_AAC_AUDIO_REPRESENTATION_ID,
             DashTestData.WIDEVINE_H265_CDD_ADAPTIVE)
         .run();
   }
@@ -510,7 +545,8 @@ public final class DashStreamingTest {
         .setWidevineInfo(MimeTypes.VIDEO_VP9, true)
         .setFullPlaybackNoSeeking(true)
         .setCanIncludeAdditionalVideoFormats(false)
-        .setAudioVideoFormats(DashTestData.WIDEVINE_VP9_AAC_AUDIO_REPRESENTATION_ID,
+        .setAudioVideoFormats(
+            DashTestData.WIDEVINE_VP9_AAC_AUDIO_REPRESENTATION_ID,
             DashTestData.WIDEVINE_VP9_CDD_FIXED)
         .run();
   }
@@ -527,7 +563,8 @@ public final class DashStreamingTest {
         .setWidevineInfo(MimeTypes.VIDEO_VP9, true)
         .setFullPlaybackNoSeeking(true)
         .setCanIncludeAdditionalVideoFormats(true)
-        .setAudioVideoFormats(DashTestData.WIDEVINE_VP9_AAC_AUDIO_REPRESENTATION_ID,
+        .setAudioVideoFormats(
+            DashTestData.WIDEVINE_VP9_AAC_AUDIO_REPRESENTATION_ID,
             DashTestData.WIDEVINE_VP9_CDD_ADAPTIVE)
         .run();
   }
@@ -545,7 +582,8 @@ public final class DashStreamingTest {
         .setFullPlaybackNoSeeking(false)
         .setCanIncludeAdditionalVideoFormats(true)
         .setActionSchedule(SEEKING_SCHEDULE)
-        .setAudioVideoFormats(DashTestData.WIDEVINE_VP9_AAC_AUDIO_REPRESENTATION_ID,
+        .setAudioVideoFormats(
+            DashTestData.WIDEVINE_VP9_AAC_AUDIO_REPRESENTATION_ID,
             DashTestData.WIDEVINE_VP9_CDD_ADAPTIVE)
         .run();
   }
@@ -563,7 +601,8 @@ public final class DashStreamingTest {
         .setFullPlaybackNoSeeking(false)
         .setCanIncludeAdditionalVideoFormats(true)
         .setActionSchedule(RENDERER_DISABLING_SCHEDULE)
-        .setAudioVideoFormats(DashTestData.WIDEVINE_VP9_AAC_AUDIO_REPRESENTATION_ID,
+        .setAudioVideoFormats(
+            DashTestData.WIDEVINE_VP9_AAC_AUDIO_REPRESENTATION_ID,
             DashTestData.WIDEVINE_VP9_CDD_ADAPTIVE)
         .run();
   }
@@ -583,7 +622,8 @@ public final class DashStreamingTest {
         .setWidevineInfo(MimeTypes.VIDEO_H264, true)
         .setFullPlaybackNoSeeking(true)
         .setCanIncludeAdditionalVideoFormats(false)
-        .setAudioVideoFormats(DashTestData.WIDEVINE_AAC_AUDIO_REPRESENTATION_ID,
+        .setAudioVideoFormats(
+            DashTestData.WIDEVINE_AAC_AUDIO_REPRESENTATION_ID,
             DashTestData.WIDEVINE_H264_BASELINE_480P_23FPS_VIDEO_REPRESENTATION_ID)
         .run();
   }
@@ -601,7 +641,8 @@ public final class DashStreamingTest {
         .setWidevineInfo(MimeTypes.VIDEO_H264, true)
         .setFullPlaybackNoSeeking(true)
         .setCanIncludeAdditionalVideoFormats(false)
-        .setAudioVideoFormats(DashTestData.WIDEVINE_AAC_AUDIO_REPRESENTATION_ID,
+        .setAudioVideoFormats(
+            DashTestData.WIDEVINE_AAC_AUDIO_REPRESENTATION_ID,
             DashTestData.WIDEVINE_H264_BASELINE_480P_24FPS_VIDEO_REPRESENTATION_ID)
         .run();
   }
@@ -619,7 +660,8 @@ public final class DashStreamingTest {
         .setWidevineInfo(MimeTypes.VIDEO_H264, true)
         .setFullPlaybackNoSeeking(true)
         .setCanIncludeAdditionalVideoFormats(false)
-        .setAudioVideoFormats(DashTestData.WIDEVINE_AAC_AUDIO_REPRESENTATION_ID,
+        .setAudioVideoFormats(
+            DashTestData.WIDEVINE_AAC_AUDIO_REPRESENTATION_ID,
             DashTestData.WIDEVINE_H264_BASELINE_480P_29FPS_VIDEO_REPRESENTATION_ID)
         .run();
   }
@@ -668,5 +710,4 @@ public final class DashStreamingTest {
         MediaCodecUtil.getDecoderInfo(mimeType, /* secure= */ false, /* tunneling= */ false);
     return decoderInfo == null || !decoderInfo.adaptive;
   }
-
 }

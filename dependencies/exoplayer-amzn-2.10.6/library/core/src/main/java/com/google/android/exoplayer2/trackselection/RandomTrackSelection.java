@@ -26,14 +26,10 @@ import java.util.List;
 import java.util.Random;
 import org.checkerframework.checker.nullness.compatqual.NullableType;
 
-/**
- * A {@link TrackSelection} whose selected track is updated randomly.
- */
+/** A {@link TrackSelection} whose selected track is updated randomly. */
 public final class RandomTrackSelection extends BaseTrackSelection {
 
-  /**
-   * Factory for {@link RandomTrackSelection} instances.
-   */
+  /** Factory for {@link RandomTrackSelection} instances. */
   public static final class Factory implements TrackSelection.Factory {
 
     private final Random random;
@@ -138,5 +134,4 @@ public final class RandomTrackSelection extends BaseTrackSelection {
   public @Nullable Object getSelectionData() {
     return null;
   }
-
 }

@@ -33,20 +33,24 @@ import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.util.Assertions;
 import java.io.IOException;
 
-/** @deprecated Use {@link ProgressiveMediaSource} instead. */
+/**
+ * @deprecated Use {@link ProgressiveMediaSource} instead.
+ */
 @Deprecated
 @SuppressWarnings("deprecation")
 public final class ExtractorMediaSource extends BaseMediaSource
     implements MediaSource.SourceInfoRefreshListener {
 
-  /** @deprecated Use {@link MediaSourceEventListener} instead. */
+  /**
+   * @deprecated Use {@link MediaSourceEventListener} instead.
+   */
   @Deprecated
   public interface EventListener {
 
     /**
      * Called when an error occurs loading media data.
-     * <p>
-     * This method being called does not indicate that playback has failed, or that it will fail.
+     *
+     * <p>This method being called does not indicate that playback has failed, or that it will fail.
      * The player may be able to recover from the error and continue. Hence applications should
      * <em>not</em> implement this method to display a user visible error or initiate an application
      * level retry ({@link Player.EventListener#onPlayerError} is the appropriate place to implement
@@ -56,7 +60,6 @@ public final class ExtractorMediaSource extends BaseMediaSource
      * @param error The load error.
      */
     void onLoadError(IOException error);
-
   }
 
   /** Use {@link ProgressiveMediaSource.Factory} instead. */

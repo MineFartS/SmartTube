@@ -22,9 +22,7 @@ import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.Util;
 
-/**
- * The default {@link LoadControl} implementation.
- */
+/** The default {@link LoadControl} implementation. */
 public class DefaultLoadControl implements LoadControl {
 
   /**
@@ -256,7 +254,9 @@ public class DefaultLoadControl implements LoadControl {
     this(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE));
   }
 
-  /** @deprecated Use {@link Builder} instead. */
+  /**
+   * @deprecated Use {@link Builder} instead.
+   */
   @Deprecated
   public DefaultLoadControl(DefaultAllocator allocator) {
     this(
@@ -272,7 +272,9 @@ public class DefaultLoadControl implements LoadControl {
         DEFAULT_RETAIN_BACK_BUFFER_FROM_KEYFRAME);
   }
 
-  /** @deprecated Use {@link Builder} instead. */
+  /**
+   * @deprecated Use {@link Builder} instead.
+   */
   @Deprecated
   public DefaultLoadControl(
       DefaultAllocator allocator,
@@ -345,8 +347,8 @@ public class DefaultLoadControl implements LoadControl {
   }
 
   @Override
-  public void onTracksSelected(Renderer[] renderers, TrackGroupArray trackGroups,
-      TrackSelectionArray trackSelections) {
+  public void onTracksSelected(
+      Renderer[] renderers, TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
     hasVideo = hasVideo(renderers, trackSelections);
     targetBufferSize =
         targetBufferBytesOverwrite == C.LENGTH_UNSET

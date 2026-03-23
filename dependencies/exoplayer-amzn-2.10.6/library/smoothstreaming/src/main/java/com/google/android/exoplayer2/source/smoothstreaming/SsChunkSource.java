@@ -22,9 +22,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.upstream.LoaderErrorThrower;
 import com.google.android.exoplayer2.upstream.TransferListener;
 
-/**
- * A {@link ChunkSource} for SmoothStreaming.
- */
+/** A {@link ChunkSource} for SmoothStreaming. */
 public interface SsChunkSource extends ChunkSource {
 
   /** Factory for {@link SsChunkSource}s. */

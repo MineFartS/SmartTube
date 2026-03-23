@@ -20,9 +20,7 @@ import com.google.android.exoplayer2.SeekParameters;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * A provider of {@link Chunk}s for a {@link ChunkSampleStream} to load.
- */
+/** A provider of {@link Chunk}s for a {@link ChunkSampleStream} to load. */
 public interface ChunkSource {
 
   /**
@@ -38,8 +36,8 @@ public interface ChunkSource {
   /**
    * If the source is currently having difficulty providing chunks, then this method throws the
    * underlying error. Otherwise does nothing.
-   * <p>
-   * This method should only be called after the source has been prepared.
+   *
+   * <p>This method should only be called after the source has been prepared.
    *
    * @throws IOException The underlying error.
    */
@@ -47,10 +45,10 @@ public interface ChunkSource {
 
   /**
    * Evaluates whether {@link MediaChunk}s should be removed from the back of the queue.
-   * <p>
-   * Removing {@link MediaChunk}s from the back of the queue can be useful if they could be replaced
-   * with chunks of a significantly higher quality (e.g. because the available bandwidth has
-   * substantially increased).
+   *
+   * <p>Removing {@link MediaChunk}s from the back of the queue can be useful if they could be
+   * replaced with chunks of a significantly higher quality (e.g. because the available bandwidth
+   * has substantially increased).
    *
    * @param playbackPositionUs The current playback position.
    * @param queue The queue of buffered {@link MediaChunk}s.

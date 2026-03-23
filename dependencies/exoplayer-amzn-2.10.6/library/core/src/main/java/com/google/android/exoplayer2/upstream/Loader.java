@@ -33,30 +33,21 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.concurrent.ExecutorService;
 
-/**
- * Manages the background loading of {@link Loadable}s.
- */
+/** Manages the background loading of {@link Loadable}s. */
 public final class Loader implements LoaderErrorThrower {
 
-  /**
-   * Thrown when an unexpected exception or error is encountered during loading.
-   */
+  /** Thrown when an unexpected exception or error is encountered during loading. */
   public static final class UnexpectedLoaderException extends IOException {
 
     public UnexpectedLoaderException(Throwable cause) {
       super("Unexpected " + cause.getClass().getSimpleName() + ": " + cause.getMessage(), cause);
     }
-
   }
 
-  /**
-   * An object that can be loaded using a {@link Loader}.
-   */
+  /** An object that can be loaded using a {@link Loader}. */
   public interface Loadable {
 
-    /**
-     * Cancels the load.
-     */
+    /** Cancels the load. */
     void cancelLoad();
 
     /**
@@ -66,12 +57,9 @@ public final class Loader implements LoaderErrorThrower {
      * @throws InterruptedException If the thread was interrupted.
      */
     void load() throws IOException, InterruptedException;
-
   }
 
-  /**
-   * A callback to be notified of {@link Loader} events.
-   */
+  /** A callback to be notified of {@link Loader} events. */
   public interface Callback<T extends Loadable> {
 
     /**
@@ -124,16 +112,11 @@ public final class Loader implements LoaderErrorThrower {
         T loadable, long elapsedRealtimeMs, long loadDurationMs, IOException error, int errorCount);
   }
 
-  /**
-   * A callback to be notified when a {@link Loader} has finished being released.
-   */
+  /** A callback to be notified when a {@link Loader} has finished being released. */
   public interface ReleaseCallback {
 
-    /**
-     * Called when the {@link Loader} has finished being released.
-     */
+    /** Called when the {@link Loader} has finished being released. */
     void onLoaderReleased();
-
   }
 
   /** Types of action that can be taken in response to a load error. */
@@ -155,12 +138,15 @@ public final class Loader implements LoaderErrorThrower {
   /** Retries the load using the default delay. */
   public static final LoadErrorAction RETRY =
       createRetryAction(/* resetErrorCount= */ false, C.TIME_UNSET);
+
   /** Retries the load using the default delay and resets the error count. */
   public static final LoadErrorAction RETRY_RESET_ERROR_COUNT =
       createRetryAction(/* resetErrorCount= */ true, C.TIME_UNSET);
+
   /** Discards the failed loading task and ignores any errors that have occurred. */
   public static final LoadErrorAction DONT_RETRY =
       new LoadErrorAction(ACTION_TYPE_DONT_RETRY, C.TIME_UNSET);
+
   /**
    * Discards the failed load. The next call to {@link #maybeThrowError()} will throw the last load
    * error.
@@ -250,16 +236,12 @@ public final class Loader implements LoaderErrorThrower {
     return startTimeMs;
   }
 
-  /**
-   * Returns whether the {@link Loader} is currently loading a {@link Loadable}.
-   */
+  /** Returns whether the {@link Loader} is currently loading a {@link Loadable}. */
   public boolean isLoading() {
     return currentTask != null;
   }
 
-  /**
-   * Cancels the current load. This method should only be called when a load is in progress.
-   */
+  /** Cancels the current load. This method should only be called when a load is in progress. */
   public void cancelLoading() {
     currentTask.cancel(false);
   }
@@ -301,8 +283,8 @@ public final class Loader implements LoaderErrorThrower {
     if (fatalError != null) {
       throw fatalError;
     } else if (currentTask != null) {
-      currentTask.maybeThrowError(minRetryCount == Integer.MIN_VALUE
-          ? currentTask.defaultMinRetryCount : minRetryCount);
+      currentTask.maybeThrowError(
+          minRetryCount == Integer.MIN_VALUE ? currentTask.defaultMinRetryCount : minRetryCount);
     }
   }
 
@@ -332,8 +314,12 @@ public final class Loader implements LoaderErrorThrower {
     private volatile boolean canceled;
     private volatile boolean released;
 
-    public LoadTask(Looper looper, T loadable, Loader.Callback<T> callback,
-        int defaultMinRetryCount, long startTimeMs) {
+    public LoadTask(
+        Looper looper,
+        T loadable,
+        Loader.Callback<T> callback,
+        int defaultMinRetryCount,
+        long startTimeMs) {
       super(looper);
       this.loadable = loadable;
       this.callback = callback;
@@ -502,7 +488,6 @@ public final class Loader implements LoaderErrorThrower {
     private long getRetryDelayMillis() {
       return Math.min((errorCount - 1) * 1000, 5000);
     }
-
   }
 
   private static final class ReleaseTask implements Runnable {
@@ -517,7 +502,5 @@ public final class Loader implements LoaderErrorThrower {
     public void run() {
       callback.onLoaderReleased();
     }
-
   }
-
 }

@@ -130,8 +130,7 @@ public abstract class BaseMediaSource implements MediaSource {
 
   @Override
   public final void prepareSource(
-      SourceInfoRefreshListener listener,
-      @Nullable TransferListener mediaTransferListener) {
+      SourceInfoRefreshListener listener, @Nullable TransferListener mediaTransferListener) {
     Looper looper = Looper.myLooper();
     Assertions.checkArgument(this.looper == null || this.looper == looper);
     sourceInfoListeners.add(listener);

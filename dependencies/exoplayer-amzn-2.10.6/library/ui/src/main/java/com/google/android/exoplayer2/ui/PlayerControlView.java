@@ -15,7 +15,6 @@
  */
 package com.google.android.exoplayer2.ui;
 
-import androidx.core.content.ContextCompat;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
@@ -23,7 +22,6 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Looper;
 import android.os.SystemClock;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -33,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerLibraryInfo;
 import com.google.android.exoplayer2.PlaybackPreparer;
@@ -215,19 +214,25 @@ public class PlayerControlView extends FrameLayout {
 
   /** The default fast forward increment, in milliseconds. */
   public static final int DEFAULT_FAST_FORWARD_MS = 15000;
+
   /** The default rewind increment, in milliseconds. */
   public static final int DEFAULT_REWIND_MS = 5000;
+
   /** The default show timeout, in milliseconds. */
   public static final int DEFAULT_SHOW_TIMEOUT_MS = 5000;
+
   /** The default repeat toggle modes. */
   public static final @RepeatModeUtil.RepeatToggleModes int DEFAULT_REPEAT_TOGGLE_MODES =
       RepeatModeUtil.REPEAT_TOGGLE_MODE_NONE;
+
   /** The default minimum interval between time bar position updates. */
   public static final int DEFAULT_TIME_BAR_MIN_UPDATE_INTERVAL_MS = 200;
+
   /** The maximum number of windows that can be shown in a multi-window time bar. */
   public static final int MAX_WINDOWS_FOR_MULTI_WINDOW_TIME_BAR = 100;
 
   private static final long MAX_POSITION_FOR_SEEK_TO_PREVIOUS = 3000;
+
   /** The maximum interval between time bar position updates. */
   private static final int MAX_UPDATE_INTERVAL_MS = 1000;
 
@@ -413,22 +418,27 @@ public class PlayerControlView extends FrameLayout {
 
     Resources resources = context.getResources();
 
-    buttonAlphaEnabled = (float) resources.getInteger(R.integer.exo_media_button_opacity_percentage_enabled) / 100;
-    
-    buttonAlphaDisabled = (float) resources.getInteger(R.integer.exo_media_button_opacity_percentage_disabled) / 100;
+    buttonAlphaEnabled =
+        (float) resources.getInteger(R.integer.exo_media_button_opacity_percentage_enabled) / 100;
+
+    buttonAlphaDisabled =
+        (float) resources.getInteger(R.integer.exo_media_button_opacity_percentage_disabled) / 100;
 
     repeatOffButtonDrawable = context.getDrawable(R.drawable.exo_controls_repeat_off);
     repeatOneButtonDrawable = context.getDrawable(R.drawable.exo_controls_repeat_one);
     repeatAllButtonDrawable = context.getDrawable(R.drawable.exo_controls_repeat_all);
     shuffleOnButtonDrawable = context.getDrawable(R.drawable.exo_controls_shuffle_on);
-    shuffleOffButtonDrawable= context.getDrawable(R.drawable.exo_controls_shuffle_off);
-    
-    repeatOffButtonContentDescription = resources.getString(R.string.exo_controls_repeat_off_description);
-    repeatOneButtonContentDescription = resources.getString(R.string.exo_controls_repeat_one_description);
-    repeatAllButtonContentDescription = resources.getString(R.string.exo_controls_repeat_all_description);
+    shuffleOffButtonDrawable = context.getDrawable(R.drawable.exo_controls_shuffle_off);
+
+    repeatOffButtonContentDescription =
+        resources.getString(R.string.exo_controls_repeat_off_description);
+    repeatOneButtonContentDescription =
+        resources.getString(R.string.exo_controls_repeat_one_description);
+    repeatAllButtonContentDescription =
+        resources.getString(R.string.exo_controls_repeat_all_description);
     shuffleOnContentDescription = resources.getString(R.string.exo_controls_shuffle_on_description);
-    shuffleOffContentDescription = resources.getString(R.string.exo_controls_shuffle_off_description);
-  
+    shuffleOffContentDescription =
+        resources.getString(R.string.exo_controls_shuffle_off_description);
   }
 
   @SuppressWarnings("ResourceType")

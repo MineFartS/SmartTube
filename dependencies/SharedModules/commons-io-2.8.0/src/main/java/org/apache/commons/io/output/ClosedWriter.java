@@ -21,45 +21,43 @@ import java.io.Writer;
 
 /**
  * Throws an exception on all attempts to write with {@link #close()} implemented as a noop.
- * <p>
- * Typically uses of this class include testing for corner cases in methods that accept a writer and acting as a
- * sentinel value instead of a {@code null} writer.
- * </p>
+ *
+ * <p>Typically uses of this class include testing for corner cases in methods that accept a writer
+ * and acting as a sentinel value instead of a {@code null} writer.
  *
  * @since 2.7
  */
 public class ClosedWriter extends Writer {
 
-    /**
-     * A singleton.
-     */
-    public static final ClosedWriter CLOSED_WRITER = new ClosedWriter();
+  /** A singleton. */
+  public static final ClosedWriter CLOSED_WRITER = new ClosedWriter();
 
-    /**
-     * Throws an {@link IOException} to indicate that the writer is closed.
-     *
-     * @param cbuf ignored
-     * @param off ignored
-     * @param len ignored
-     * @throws IOException always thrown
-     */
-    @Override
-    public void write(final char[] cbuf, final int off, final int len) throws IOException {
-        throw new IOException("write(" + new String(cbuf) + ", " + off + ", " + len + ") failed: stream is closed");
-    }
+  /**
+   * Throws an {@link IOException} to indicate that the writer is closed.
+   *
+   * @param cbuf ignored
+   * @param off ignored
+   * @param len ignored
+   * @throws IOException always thrown
+   */
+  @Override
+  public void write(final char[] cbuf, final int off, final int len) throws IOException {
+    throw new IOException(
+        "write(" + new String(cbuf) + ", " + off + ", " + len + ") failed: stream is closed");
+  }
 
-    /**
-     * Throws an {@link IOException} to indicate that the stream is closed.
-     *
-     * @throws IOException always thrown
-     */
-    @Override
-    public void flush() throws IOException {
-        throw new IOException("flush() failed: stream is closed");
-    }
+  /**
+   * Throws an {@link IOException} to indicate that the stream is closed.
+   *
+   * @throws IOException always thrown
+   */
+  @Override
+  public void flush() throws IOException {
+    throw new IOException("flush() failed: stream is closed");
+  }
 
-    @Override
-    public void close() throws IOException {
-        // noop
-    }
+  @Override
+  public void close() throws IOException {
+    // noop
+  }
 }

@@ -63,5 +63,4 @@ public final class SinglePeriodAdTimeline extends ForwardingTimeline {
     }
     return window;
   }
-
 }

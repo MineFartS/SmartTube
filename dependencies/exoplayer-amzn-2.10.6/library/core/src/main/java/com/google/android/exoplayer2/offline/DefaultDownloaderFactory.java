@@ -70,7 +70,9 @@ public class DefaultDownloaderFactory implements DownloaderFactory {
 
   private final DownloaderConstructorHelper downloaderConstructorHelper;
 
-  /** @param downloaderConstructorHelper A helper for instantiating downloaders. */
+  /**
+   * @param downloaderConstructorHelper A helper for instantiating downloaders.
+   */
   public DefaultDownloaderFactory(DownloaderConstructorHelper downloaderConstructorHelper) {
     this.downloaderConstructorHelper = downloaderConstructorHelper;
   }

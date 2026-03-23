@@ -15,16 +15,14 @@
  */
 package com.google.android.exoplayer2.ext.cast;
 
-import androidx.annotation.Nullable;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Timeline;
 import java.util.Arrays;
 
-/**
- * A {@link Timeline} for Cast media queues.
- */
+/** A {@link Timeline} for Cast media queues. */
 /* package */ final class CastTimeline extends Timeline {
 
   /** Holds {@link Timeline} related data for a Cast media item. */
@@ -35,6 +33,7 @@ import java.util.Arrays;
 
     /** The duration of the item in microseconds, or {@link C#TIME_UNSET} if unknown. */
     public final long durationUs;
+
     /**
      * The default start position of the item in microseconds, or {@link C#TIME_UNSET} if unknown.
      */
@@ -171,5 +170,4 @@ import java.util.Arrays;
     result = 31 * result + Arrays.hashCode(defaultPositionsUs);
     return result;
   }
-
 }

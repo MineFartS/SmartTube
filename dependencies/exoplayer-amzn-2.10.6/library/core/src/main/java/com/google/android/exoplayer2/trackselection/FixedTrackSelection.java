@@ -24,9 +24,7 @@ import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import java.util.List;
 import org.checkerframework.checker.nullness.compatqual.NullableType;
 
-/**
- * A {@link TrackSelection} consisting of a single track.
- */
+/** A {@link TrackSelection} consisting of a single track. */
 public final class FixedTrackSelection extends BaseTrackSelection {
 
   /**
@@ -112,5 +110,4 @@ public final class FixedTrackSelection extends BaseTrackSelection {
   public @Nullable Object getSelectionData() {
     return data;
   }
-
 }

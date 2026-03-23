@@ -29,8 +29,8 @@ import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.HandlerThread;
 import android.os.Message;
-import androidx.annotation.Nullable;
 import android.view.Surface;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.EGLSurfaceTexture;
 import com.google.android.exoplayer2.util.EGLSurfaceTexture.SecureMode;
@@ -39,9 +39,7 @@ import com.google.android.exoplayer2.util.Util;
 import javax.microedition.khronos.egl.EGL10;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 
-/**
- * A dummy {@link Surface}.
- */
+/** A dummy {@link Surface}. */
 @TargetApi(17)
 public final class DummySurface extends Surface {
 
@@ -50,9 +48,7 @@ public final class DummySurface extends Surface {
   private static final String EXTENSION_PROTECTED_CONTENT = "EGL_EXT_protected_content";
   private static final String EXTENSION_SURFACELESS_CONTEXT = "EGL_KHR_surfaceless_context";
 
-  /**
-   * Whether the surface is secure.
-   */
+  /** Whether the surface is secure. */
   public final boolean secure;
 
   private static @SecureMode int secureMode;
@@ -78,14 +74,14 @@ public final class DummySurface extends Surface {
   /**
    * Returns a newly created dummy surface. The surface must be released by calling {@link #release}
    * when it's no longer required.
-   * <p>
-   * Must only be called if {@link Util#SDK_INT} is 17 or higher.
+   *
+   * <p>Must only be called if {@link Util#SDK_INT} is 17 or higher.
    *
    * @param context Any {@link Context}.
-   * @param secure Whether a secure surface is required. Must only be requested if
-   *     {@link #isSecureSupported(Context)} returns {@code true}.
-   * @throws IllegalStateException If a secure surface is requested on a device for which
-   *     {@link #isSecureSupported(Context)} returns {@code false}.
+   * @param secure Whether a secure surface is required. Must only be requested if {@link
+   *     #isSecureSupported(Context)} returns {@code true}.
+   * @throws IllegalStateException If a secure surface is requested on a device for which {@link
+   *     #isSecureSupported(Context)} returns {@code false}.
    */
   public static DummySurface newInstanceV17(Context context, boolean secure) {
     assertApiLevel17OrHigher();
@@ -130,8 +126,10 @@ public final class DummySurface extends Surface {
       // https://github.com/google/ExoPlayer/issues/3215.
       return SECURE_MODE_NONE;
     }
-    if (Util.SDK_INT < 26 && !context.getPackageManager().hasSystemFeature(
-        PackageManager.FEATURE_VR_MODE_HIGH_PERFORMANCE)) {
+    if (Util.SDK_INT < 26
+        && !context
+            .getPackageManager()
+            .hasSystemFeature(PackageManager.FEATURE_VR_MODE_HIGH_PERFORMANCE)) {
       // Pre API level 26 devices were not well tested unless they supported VR mode.
       return SECURE_MODE_NONE;
     }
@@ -243,7 +241,5 @@ public final class DummySurface extends Surface {
       Assertions.checkNotNull(eglSurfaceTexture);
       eglSurfaceTexture.release();
     }
-
   }
-
 }

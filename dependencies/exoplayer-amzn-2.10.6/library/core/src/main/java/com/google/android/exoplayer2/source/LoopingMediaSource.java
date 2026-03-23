@@ -41,8 +41,8 @@ public final class LoopingMediaSource extends CompositeMediaSource<Void> {
   private final Map<MediaPeriod, MediaPeriodId> mediaPeriodToChildMediaPeriodId;
 
   /**
-   * Loops the provided source indefinitely. Note that it is usually better to use
-   * {@link ExoPlayer#setRepeatMode(int)}.
+   * Loops the provided source indefinitely. Note that it is usually better to use {@link
+   * ExoPlayer#setRepeatMode(int)}.
    *
    * @param childSource The {@link MediaSource} to loop.
    */
@@ -131,7 +131,8 @@ public final class LoopingMediaSource extends CompositeMediaSource<Void> {
       childWindowCount = childTimeline.getWindowCount();
       this.loopCount = loopCount;
       if (childPeriodCount > 0) {
-        Assertions.checkState(loopCount <= Integer.MAX_VALUE / childPeriodCount,
+        Assertions.checkState(
+            loopCount <= Integer.MAX_VALUE / childPeriodCount,
             "LoopingMediaSource contains too many periods");
       }
     }
@@ -183,7 +184,6 @@ public final class LoopingMediaSource extends CompositeMediaSource<Void> {
     protected Object getChildUidByChildIndex(int childIndex) {
       return childIndex;
     }
-
   }
 
   private static final class InfinitelyLoopingTimeline extends ForwardingTimeline {
@@ -193,23 +193,23 @@ public final class LoopingMediaSource extends CompositeMediaSource<Void> {
     }
 
     @Override
-    public int getNextWindowIndex(int windowIndex, @Player.RepeatMode int repeatMode,
-        boolean shuffleModeEnabled) {
-      int childNextWindowIndex = timeline.getNextWindowIndex(windowIndex, repeatMode,
-          shuffleModeEnabled);
-      return childNextWindowIndex == C.INDEX_UNSET ? getFirstWindowIndex(shuffleModeEnabled)
+    public int getNextWindowIndex(
+        int windowIndex, @Player.RepeatMode int repeatMode, boolean shuffleModeEnabled) {
+      int childNextWindowIndex =
+          timeline.getNextWindowIndex(windowIndex, repeatMode, shuffleModeEnabled);
+      return childNextWindowIndex == C.INDEX_UNSET
+          ? getFirstWindowIndex(shuffleModeEnabled)
           : childNextWindowIndex;
     }
 
     @Override
-    public int getPreviousWindowIndex(int windowIndex, @Player.RepeatMode int repeatMode,
-        boolean shuffleModeEnabled) {
-      int childPreviousWindowIndex = timeline.getPreviousWindowIndex(windowIndex, repeatMode,
-          shuffleModeEnabled);
-      return childPreviousWindowIndex == C.INDEX_UNSET ? getLastWindowIndex(shuffleModeEnabled)
+    public int getPreviousWindowIndex(
+        int windowIndex, @Player.RepeatMode int repeatMode, boolean shuffleModeEnabled) {
+      int childPreviousWindowIndex =
+          timeline.getPreviousWindowIndex(windowIndex, repeatMode, shuffleModeEnabled);
+      return childPreviousWindowIndex == C.INDEX_UNSET
+          ? getLastWindowIndex(shuffleModeEnabled)
           : childPreviousWindowIndex;
     }
-
   }
-
 }

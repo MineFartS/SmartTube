@@ -15,9 +15,7 @@
  */
 package com.google.android.exoplayer2.util;
 
-/**
- * Wraps a byte array, providing methods that allow it to be read as a bitstream.
- */
+/** Wraps a byte array, providing methods that allow it to be read as a bitstream. */
 public final class ParsableBitArray {
 
   public byte[] data;
@@ -86,16 +84,12 @@ public final class ParsableBitArray {
     byteLimit = limit;
   }
 
-  /**
-   * Returns the number of bits yet to be read.
-   */
+  /** Returns the number of bits yet to be read. */
   public int bitsLeft() {
     return (byteLimit - byteOffset) * 8 - bitOffset;
   }
 
-  /**
-   * Returns the current bit offset.
-   */
+  /** Returns the current bit offset. */
   public int getPosition() {
     return byteOffset * 8 + bitOffset;
   }
@@ -121,9 +115,7 @@ public final class ParsableBitArray {
     assertValidOffset();
   }
 
-  /**
-   * Skips a single bit.
-   */
+  /** Skips a single bit. */
   public void skipBit() {
     if (++bitOffset == 8) {
       bitOffset = 0;
@@ -188,9 +180,9 @@ public final class ParsableBitArray {
   /**
    * Reads {@code numBits} bits into {@code buffer}.
    *
-   * @param buffer The array into which the read data should be written. The trailing
-   *     {@code numBits % 8} bits are written into the most significant bits of the last modified
-   *     {@code buffer} byte. The remaining ones are unmodified.
+   * @param buffer The array into which the read data should be written. The trailing {@code numBits
+   *     % 8} bits are written into the most significant bits of the last modified {@code buffer}
+   *     byte. The remaining ones are unmodified.
    * @param offset The offset in {@code buffer} at which the read data should be written.
    * @param numBits The number of bits to read.
    */
@@ -303,8 +295,7 @@ public final class ParsableBitArray {
 
   private void assertValidOffset() {
     // It is fine for position to be at the end of the array, but no further.
-    Assertions.checkState(byteOffset >= 0
-        && (byteOffset < byteLimit || (byteOffset == byteLimit && bitOffset == 0)));
+    Assertions.checkState(
+        byteOffset >= 0 && (byteOffset < byteLimit || (byteOffset == byteLimit && bitOffset == 0)));
   }
-
 }

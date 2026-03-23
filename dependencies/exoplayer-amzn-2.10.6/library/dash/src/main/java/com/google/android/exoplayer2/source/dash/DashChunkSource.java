@@ -26,9 +26,7 @@ import com.google.android.exoplayer2.upstream.LoaderErrorThrower;
 import com.google.android.exoplayer2.upstream.TransferListener;
 import java.util.List;
 
-/**
- * An {@link ChunkSource} for DASH streams.
- */
+/** An {@link ChunkSource} for DASH streams. */
 public interface DashChunkSource extends ChunkSource {
 
   /** Factory for {@link DashChunkSource}s. */

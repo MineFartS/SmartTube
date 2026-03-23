@@ -18,9 +18,7 @@ package com.google.android.exoplayer2;
 import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.drm.DecryptionResource;
 
-/**
- * Holds a {@link Format}.
- */
+/** Holds a {@link Format}. */
 public final class FormatHolder {
 
   /**

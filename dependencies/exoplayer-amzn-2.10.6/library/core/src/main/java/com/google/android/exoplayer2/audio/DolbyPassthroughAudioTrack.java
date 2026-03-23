@@ -16,21 +16,18 @@
 package com.google.android.exoplayer2.audio;
 
 import android.media.*;
-import com.google.android.exoplayer2.util.Logger;
 import android.os.ConditionVariable;
-import android.os.HandlerThread;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.Message;
-
+import com.google.android.exoplayer2.util.Logger;
 import java.util.concurrent.Semaphore;
 
 /**
- * This class extends to an {@link android.media.AudioTrack} and handles
- * asynchronous writes to underlying DirectTrack implementation on Fire TV
- * family of devices to support Dolby Pass through playback.
- * APIs needs to be called from single thread.
+ * This class extends to an {@link android.media.AudioTrack} and handles asynchronous writes to
+ * underlying DirectTrack implementation on Fire TV family of devices to support Dolby Pass through
+ * playback. APIs needs to be called from single thread.
  */
-
 public final class DolbyPassthroughAudioTrack extends android.media.AudioTrack {
 
   private final String TAG = DolbyPassthroughAudioTrack.class.getSimpleName();
@@ -59,104 +56,120 @@ public final class DolbyPassthroughAudioTrack extends android.media.AudioTrack {
   private int nextBufferIndex = 0;
   private final Logger log = new Logger(Logger.Module.Audio, TAG);
 
-  public DolbyPassthroughAudioTrack(android.media.AudioAttributes attributes, AudioFormat format, int bufferSizeInBytes,
-                    int mode, int sessionId) {
+  public DolbyPassthroughAudioTrack(
+      android.media.AudioAttributes attributes,
+      AudioFormat format,
+      int bufferSizeInBytes,
+      int mode,
+      int sessionId) {
     super(attributes, format, bufferSizeInBytes, mode, sessionId);
     initialize();
   }
-  public DolbyPassthroughAudioTrack(int streamType, int sampleRateInHz,
-                                    int channelConfig, int audioFormat,
-                                    int bufferSizeInBytes, int mode)
-          throws IllegalArgumentException {
-    this(streamType, sampleRateInHz, channelConfig, audioFormat,
-            bufferSizeInBytes, mode, 0);
+
+  public DolbyPassthroughAudioTrack(
+      int streamType,
+      int sampleRateInHz,
+      int channelConfig,
+      int audioFormat,
+      int bufferSizeInBytes,
+      int mode)
+      throws IllegalArgumentException {
+    this(streamType, sampleRateInHz, channelConfig, audioFormat, bufferSizeInBytes, mode, 0);
   }
 
-  public DolbyPassthroughAudioTrack(int streamType, int sampleRateInHz,
-                                    int channelConfig, int audioFormat,
-                                    int bufferSizeInBytes, int mode, int sessionId)
-          throws IllegalArgumentException {
-    super(streamType, sampleRateInHz, channelConfig, audioFormat,
-            bufferSizeInBytes, mode, sessionId);
+  public DolbyPassthroughAudioTrack(
+      int streamType,
+      int sampleRateInHz,
+      int channelConfig,
+      int audioFormat,
+      int bufferSizeInBytes,
+      int mode,
+      int sessionId)
+      throws IllegalArgumentException {
+    super(
+        streamType, sampleRateInHz, channelConfig, audioFormat, bufferSizeInBytes, mode, sessionId);
     initialize();
   }
 
   private void initialize() {
-    log.i("initialize" );
+    log.i("initialize");
     trackHandlerGate = new ConditionVariable(true);
     trackHandlerThread = new HandlerThread(TRACK_HANDLER_THREAD_NAME);
     pendingWriteSem = new Semaphore(BUFFER_COUNT);
     audioBuffer = new byte[BUFFER_COUNT][];
 
     trackHandlerThread.start();
-    /**
-     * This handler thread serializes all the base audio track APIs.
-     */
-    trackHandler = new Handler(trackHandlerThread.getLooper()) {
-      public void handleMessage(Message msg) {
-        switch(msg.what) {
-          case MSG_WRITE_TO_TRACK: {
-            int size = msg.arg1;
-            int bufferIndex = msg.arg2;
-            if (log.allowVerbose()) {
-              log.v("writing to track : size = " + size +
-                                         ", bufferIndex = " + bufferIndex);
+    /** This handler thread serializes all the base audio track APIs. */
+    trackHandler =
+        new Handler(trackHandlerThread.getLooper()) {
+          public void handleMessage(Message msg) {
+            switch (msg.what) {
+              case MSG_WRITE_TO_TRACK:
+                {
+                  int size = msg.arg1;
+                  int bufferIndex = msg.arg2;
+                  if (log.allowVerbose()) {
+                    log.v("writing to track : size = " + size + ", bufferIndex = " + bufferIndex);
+                  }
+                  DolbyPassthroughAudioTrack.super.write(audioBuffer[bufferIndex], 0, size);
+                  if (log.allowVerbose()) {
+                    log.v("writing to  track  done");
+                  }
+                  pendingWriteSem.release();
+                  break;
+                }
+              case MSG_PAUSE_TRACK:
+                {
+                  log.i("pausing track");
+                  DolbyPassthroughAudioTrack.super.pause();
+                  trackHandlerGate.open();
+                  break;
+                }
+              case MSG_PLAY_TRACK:
+                {
+                  log.i("playing track");
+                  DolbyPassthroughAudioTrack.super.play();
+                  trackHandlerGate.open();
+                  break;
+                }
+              case MSG_FLUSH_TRACK:
+                {
+                  log.i("flushing track");
+                  DolbyPassthroughAudioTrack.super.flush();
+                  trackHandlerGate.open();
+                  break;
+                }
+              case MSG_STOP_TRACK:
+                {
+                  log.i("stopping track");
+                  DolbyPassthroughAudioTrack.super.stop();
+                  trackHandlerGate.open();
+                  break;
+                }
+              case MSG_RELEASE_TRACK:
+                {
+                  log.i("releasing track");
+                  if (DolbyPassthroughAudioTrack.super.getPlayState() != PLAYSTATE_STOPPED) {
+                    log.i("not in stopped state...stopping");
+                    DolbyPassthroughAudioTrack.super.stop();
+                  }
+                  DolbyPassthroughAudioTrack.super.release();
+                  trackHandlerGate.open();
+                  break;
+                }
+              default:
+                {
+                  log.w("unknown message..ignoring!!!");
+                  break;
+                }
             }
-            DolbyPassthroughAudioTrack.super.write( audioBuffer[ bufferIndex ], 0, size );
-            if (log.allowVerbose()) {
-              log.v("writing to  track  done");
-            }
-            pendingWriteSem.release();
-            break;
           }
-          case MSG_PAUSE_TRACK : {
-            log.i("pausing track");
-            DolbyPassthroughAudioTrack.super.pause();
-            trackHandlerGate.open();
-            break;
-          }
-          case MSG_PLAY_TRACK : {
-            log.i("playing track");
-            DolbyPassthroughAudioTrack.super.play();
-            trackHandlerGate.open();
-            break;
-          }
-          case MSG_FLUSH_TRACK : {
-            log.i("flushing track");
-            DolbyPassthroughAudioTrack.super.flush();
-            trackHandlerGate.open();
-            break;
-          }
-          case MSG_STOP_TRACK : {
-            log.i("stopping track");
-            DolbyPassthroughAudioTrack.super.stop();
-            trackHandlerGate.open();
-            break;
-          }
-          case MSG_RELEASE_TRACK : {
-            log.i("releasing track");
-            if (DolbyPassthroughAudioTrack.super.getPlayState() != PLAYSTATE_STOPPED) {
-              log.i("not in stopped state...stopping");
-              DolbyPassthroughAudioTrack.super.stop();
-            }
-            DolbyPassthroughAudioTrack.super.release();
-            trackHandlerGate.open();
-            break;
-          }
-          default: {
-            log.w("unknown message..ignoring!!!");
-            break;
-          }
-        }
-      }
-    };
+        };
   }
 
   /**
-   * Play will block until previous messages to handler Thread
-   * are executed.
-   * We need to serialize play, write, pause and release because otherwise,
-   * base audio track  will misbehave.
+   * Play will block until previous messages to handler Thread are executed. We need to serialize
+   * play, write, pause and release because otherwise, base audio track will misbehave.
    */
   @Override
   public void play() throws IllegalStateException {
@@ -174,10 +187,8 @@ public final class DolbyPassthroughAudioTrack extends android.media.AudioTrack {
   }
 
   /**
-   * Pause will block until previous (possibly write) messages to handler Thread
-   * are executed.
-   * We need to serialize play, write and pause because otherwise,
-   * base audio track  will misbehave.
+   * Pause will block until previous (possibly write) messages to handler Thread are executed. We
+   * need to serialize play, write and pause because otherwise, base audio track will misbehave.
    */
   @Override
   public void pause() throws IllegalStateException {
@@ -194,13 +205,9 @@ public final class DolbyPassthroughAudioTrack extends android.media.AudioTrack {
     }
   }
 
-  /**
-   * FLush will block until previous (possibly write) messages to handler Thread
-   * are executed.
-   */
+  /** FLush will block until previous (possibly write) messages to handler Thread are executed. */
   @Override
-  public void flush()
-          throws IllegalStateException {
+  public void flush() throws IllegalStateException {
     log.i("flush");
     trackHandlerGate.close();
     Message msg = trackHandler.obtainMessage(MSG_FLUSH_TRACK);
@@ -214,13 +221,9 @@ public final class DolbyPassthroughAudioTrack extends android.media.AudioTrack {
     }
   }
 
-  /**
-   * Stop will block until previous (possibly write) messages to handler Thread
-   * are executed.
-   */
+  /** Stop will block until previous (possibly write) messages to handler Thread are executed. */
   @Override
-  public void stop()
-          throws IllegalStateException {
+  public void stop() throws IllegalStateException {
     log.i("stop");
     if (getPlayState() == PLAYSTATE_STOPPED) {
       log.i("already in stopped state");
@@ -239,31 +242,26 @@ public final class DolbyPassthroughAudioTrack extends android.media.AudioTrack {
   }
 
   /**
-   * Queues up Write messages to the handler thread. The
-   * writes happen only when the base audio track is in playing state.
-   * We also use {@link DolbyPassthroughAudioTrack#BUFFER_COUNT} number
+   * Queues up Write messages to the handler thread. The writes happen only when the base audio
+   * track is in playing state. We also use {@link DolbyPassthroughAudioTrack#BUFFER_COUNT} number
    * of buffers in a cyclic manner.
    */
   @Override
   public int write(byte[] audioData, int offsetInBytes, int sizeInBytes) {
-    if (getPlayState() != android.media.AudioTrack.PLAYSTATE_PLAYING ) {
+    if (getPlayState() != android.media.AudioTrack.PLAYSTATE_PLAYING) {
       return 0;
     }
     if (!pendingWriteSem.tryAcquire()) {
       return 0;
     }
-    if (audioBuffer[nextBufferIndex] == null ||
-            audioBuffer[nextBufferIndex].length < sizeInBytes) {
+    if (audioBuffer[nextBufferIndex] == null || audioBuffer[nextBufferIndex].length < sizeInBytes) {
       if (log.allowVerbose()) {
-        log.v("Allocating buffer index = " + nextBufferIndex +
-                                     ", size = " + sizeInBytes);
+        log.v("Allocating buffer index = " + nextBufferIndex + ", size = " + sizeInBytes);
       }
       audioBuffer[nextBufferIndex] = new byte[sizeInBytes];
     }
-    System.arraycopy(audioData,offsetInBytes,audioBuffer[nextBufferIndex],0,sizeInBytes);
-    Message msg = trackHandler.obtainMessage(MSG_WRITE_TO_TRACK,
-            sizeInBytes,
-            nextBufferIndex);
+    System.arraycopy(audioData, offsetInBytes, audioBuffer[nextBufferIndex], 0, sizeInBytes);
+    Message msg = trackHandler.obtainMessage(MSG_WRITE_TO_TRACK, sizeInBytes, nextBufferIndex);
 
     trackHandler.sendMessage(msg);
     nextBufferIndex = ((nextBufferIndex + 1) % BUFFER_COUNT);
@@ -272,10 +270,8 @@ public final class DolbyPassthroughAudioTrack extends android.media.AudioTrack {
   }
 
   /**
-   * Release will block until previous messages to handler Thread
-   * are executed.
-   * We need to serialize play, write, pause and release because otherwise,
-   * base audio track  will misbehave.
+   * Release will block until previous messages to handler Thread are executed. We need to serialize
+   * play, write, pause and release because otherwise, base audio track will misbehave.
    */
   @Override
   public void release() {

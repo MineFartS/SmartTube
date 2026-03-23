@@ -35,9 +35,7 @@ import java.util.Collections;
  */
 public final class MergingMediaSource extends CompositeMediaSource<Integer> {
 
-  /**
-   * Thrown when a {@link MergingMediaSource} cannot merge its sources.
-   */
+  /** Thrown when a {@link MergingMediaSource} cannot merge its sources. */
   public static final class IllegalMergeException extends IOException {
 
     /** The reason the merge failed. One of {@link #REASON_PERIOD_COUNT_MISMATCH}. */
@@ -45,14 +43,11 @@ public final class MergingMediaSource extends CompositeMediaSource<Integer> {
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({REASON_PERIOD_COUNT_MISMATCH})
     public @interface Reason {}
-    /**
-     * The sources have different period counts.
-     */
+
+    /** The sources have different period counts. */
     public static final int REASON_PERIOD_COUNT_MISMATCH = 0;
 
-    /**
-     * The reason the merge failed.
-     */
+    /** The reason the merge failed. */
     @Reason public final int reason;
 
     /**
@@ -61,7 +56,6 @@ public final class MergingMediaSource extends CompositeMediaSource<Integer> {
     public IllegalMergeException(@Reason int reason) {
       this.reason = reason;
     }
-
   }
 
   private static final int PERIOD_COUNT_UNSET = -1;
@@ -83,12 +77,13 @@ public final class MergingMediaSource extends CompositeMediaSource<Integer> {
   }
 
   /**
-   * @param compositeSequenceableLoaderFactory A factory to create composite
-   *     {@link SequenceableLoader}s for when this media source loads data from multiple streams
-   *     (video, audio etc...).
+   * @param compositeSequenceableLoaderFactory A factory to create composite {@link
+   *     SequenceableLoader}s for when this media source loads data from multiple streams (video,
+   *     audio etc...).
    * @param mediaSources The {@link MediaSource}s to merge.
    */
-  public MergingMediaSource(CompositeSequenceableLoaderFactory compositeSequenceableLoaderFactory,
+  public MergingMediaSource(
+      CompositeSequenceableLoaderFactory compositeSequenceableLoaderFactory,
       MediaSource... mediaSources) {
     this.mediaSources = mediaSources;
     this.compositeSequenceableLoaderFactory = compositeSequenceableLoaderFactory;
@@ -183,5 +178,4 @@ public final class MergingMediaSource extends CompositeMediaSource<Integer> {
     }
     return null;
   }
-
 }

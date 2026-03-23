@@ -91,8 +91,11 @@ import java.io.IOException;
   private static boolean sniffInternal(ExtractorInput input, boolean fragmented)
       throws IOException, InterruptedException {
     long inputLength = input.getLength();
-    int bytesToSearch = (int) (inputLength == C.LENGTH_UNSET || inputLength > SEARCH_LENGTH
-        ? SEARCH_LENGTH : inputLength);
+    int bytesToSearch =
+        (int)
+            (inputLength == C.LENGTH_UNSET || inputLength > SEARCH_LENGTH
+                ? SEARCH_LENGTH
+                : inputLength);
 
     ParsableByteArray buffer = new ParsableByteArray(64);
     int bytesSearched = 0;
@@ -202,5 +205,4 @@ import java.io.IOException;
   private Sniffer() {
     // Prevent instantiation.
   }
-
 }

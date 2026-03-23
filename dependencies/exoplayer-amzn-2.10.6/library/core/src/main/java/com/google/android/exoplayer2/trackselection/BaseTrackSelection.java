@@ -27,31 +27,22 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * An abstract base class suitable for most {@link TrackSelection} implementations.
- */
+/** An abstract base class suitable for most {@link TrackSelection} implementations. */
 public abstract class BaseTrackSelection implements TrackSelection {
 
-  /**
-   * The selected {@link TrackGroup}.
-   */
+  /** The selected {@link TrackGroup}. */
   protected final TrackGroup group;
-  /**
-   * The number of selected tracks within the {@link TrackGroup}. Always greater than zero.
-   */
+
+  /** The number of selected tracks within the {@link TrackGroup}. Always greater than zero. */
   protected final int length;
-  /**
-   * The indices of the selected tracks in {@link #group}, in order of decreasing bandwidth.
-   */
+
+  /** The indices of the selected tracks in {@link #group}, in order of decreasing bandwidth. */
   protected final int[] tracks;
 
-  /**
-   * The {@link Format}s of the selected tracks, in order of decreasing bandwidth.
-   */
+  /** The {@link Format}s of the selected tracks, in order of decreasing bandwidth. */
   private final Format[] formats;
-  /**
-   * Selected track blacklist timestamps, in order of decreasing bandwidth.
-   */
+
+  /** Selected track blacklist timestamps, in order of decreasing bandwidth. */
   private final long[] blacklistUntilTimes;
 
   // Lazily initialized hashcode.
@@ -202,16 +193,12 @@ public abstract class BaseTrackSelection implements TrackSelection {
     return group == other.group && Arrays.equals(tracks, other.tracks);
   }
 
-  /**
-   * Sorts {@link Format} objects in order of decreasing bandwidth.
-   */
+  /** Sorts {@link Format} objects in order of decreasing bandwidth. */
   private static final class DecreasingBandwidthComparator implements Comparator<Format> {
 
     @Override
     public int compare(Format a, Format b) {
       return b.bitrate - a.bitrate;
     }
-
   }
-
 }

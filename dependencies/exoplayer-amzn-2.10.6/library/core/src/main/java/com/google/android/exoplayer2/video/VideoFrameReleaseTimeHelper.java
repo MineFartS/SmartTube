@@ -21,17 +21,15 @@ import android.hardware.display.DisplayManager;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
-import androidx.annotation.Nullable;
 import android.view.Choreographer;
 import android.view.Choreographer.FrameCallback;
 import android.view.Display;
 import android.view.WindowManager;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.util.Util;
 
-/**
- * Makes a best effort to adjust frame release timestamps for a smoother visual result.
- */
+/** Makes a best effort to adjust frame release timestamps for a smoother visual result. */
 public final class VideoFrameReleaseTimeHelper {
 
   private static final long CHOREOGRAPHER_SAMPLE_DELAY_MILLIS = 500;
@@ -57,8 +55,8 @@ public final class VideoFrameReleaseTimeHelper {
   private long frameCount;
 
   /**
-   * Constructs an instance that smooths frame release timestamps but does not align them with
-   * the default display's vsync signal.
+   * Constructs an instance that smooths frame release timestamps but does not align them with the
+   * default display's vsync signal.
    */
   public VideoFrameReleaseTimeHelper() {
     this(null);
@@ -88,9 +86,7 @@ public final class VideoFrameReleaseTimeHelper {
     vsyncOffsetNs = C.TIME_UNSET;
   }
 
-  /**
-   * Enables the helper. Must be called from the playback thread.
-   */
+  /** Enables the helper. Must be called from the playback thread. */
   public void enable() {
     haveSync = false;
     if (windowManager != null) {
@@ -102,9 +98,7 @@ public final class VideoFrameReleaseTimeHelper {
     }
   }
 
-  /**
-   * Disables the helper. Must be called from the playback thread.
-   */
+  /** Disables the helper. Must be called from the playback thread. */
   public void disable() {
     if (windowManager != null) {
       if (displayListener != null) {
@@ -118,8 +112,8 @@ public final class VideoFrameReleaseTimeHelper {
    * Adjusts a frame release timestamp. Must be called from the playback thread.
    *
    * @param framePresentationTimeUs The frame's presentation time, in microseconds.
-   * @param unadjustedReleaseTimeNs The frame's unadjusted release time, in nanoseconds and in
-   *     the same time base as {@link System#nanoTime()}.
+   * @param unadjustedReleaseTimeNs The frame's unadjusted release time, in nanoseconds and in the
+   *     same time base as {@link System#nanoTime()}.
    * @return The adjusted frame release timestamp, in nanoseconds and in the same time base as
    *     {@link System#nanoTime()}.
    */
@@ -141,8 +135,8 @@ public final class VideoFrameReleaseTimeHelper {
         // Calculate the average frame time across all the frames we've seen since the last sync.
         // This will typically give us a frame rate at a finer granularity than the frame times
         // themselves (which often only have millisecond granularity).
-        long averageFrameDurationNs = (framePresentationTimeNs - syncFramePresentationTimeNs)
-            / frameCount;
+        long averageFrameDurationNs =
+            (framePresentationTimeNs - syncFramePresentationTimeNs) / frameCount;
         // Project the adjusted frame time forward using the average.
         long candidateAdjustedFrameTimeNs = adjustedLastFrameTimeNs + averageFrameDurationNs;
 
@@ -150,8 +144,8 @@ public final class VideoFrameReleaseTimeHelper {
           haveSync = false;
         } else {
           adjustedFrameTimeNs = candidateAdjustedFrameTimeNs;
-          adjustedReleaseTimeNs = syncUnadjustedReleaseTimeNs + adjustedFrameTimeNs
-              - syncFramePresentationTimeNs;
+          adjustedReleaseTimeNs =
+              syncUnadjustedReleaseTimeNs + adjustedFrameTimeNs - syncFramePresentationTimeNs;
         }
       } else {
         // We're synced but haven't waited the required number of frames to apply an adjustment.
@@ -265,7 +259,6 @@ public final class VideoFrameReleaseTimeHelper {
         }
       }
     }
-
   }
 
   /**
@@ -301,16 +294,16 @@ public final class VideoFrameReleaseTimeHelper {
     }
 
     /**
-     * Notifies the sampler that a {@link VideoFrameReleaseTimeHelper} is observing
-     * {@link #sampledVsyncTimeNs}, and hence that the value should be periodically updated.
+     * Notifies the sampler that a {@link VideoFrameReleaseTimeHelper} is observing {@link
+     * #sampledVsyncTimeNs}, and hence that the value should be periodically updated.
      */
     public void addObserver() {
       handler.sendEmptyMessage(MSG_ADD_OBSERVER);
     }
 
     /**
-     * Notifies the sampler that a {@link VideoFrameReleaseTimeHelper} is no longer observing
-     * {@link #sampledVsyncTimeNs}.
+     * Notifies the sampler that a {@link VideoFrameReleaseTimeHelper} is no longer observing {@link
+     * #sampledVsyncTimeNs}.
      */
     public void removeObserver() {
       handler.sendEmptyMessage(MSG_REMOVE_OBSERVER);
@@ -325,21 +318,25 @@ public final class VideoFrameReleaseTimeHelper {
     @Override
     public boolean handleMessage(Message message) {
       switch (message.what) {
-        case CREATE_CHOREOGRAPHER: {
-          createChoreographerInstanceInternal();
-          return true;
-        }
-        case MSG_ADD_OBSERVER: {
-          addObserverInternal();
-          return true;
-        }
-        case MSG_REMOVE_OBSERVER: {
-          removeObserverInternal();
-          return true;
-        }
-        default: {
-          return false;
-        }
+        case CREATE_CHOREOGRAPHER:
+          {
+            createChoreographerInstanceInternal();
+            return true;
+          }
+        case MSG_ADD_OBSERVER:
+          {
+            addObserverInternal();
+            return true;
+          }
+        case MSG_REMOVE_OBSERVER:
+          {
+            removeObserverInternal();
+            return true;
+          }
+        default:
+          {
+            return false;
+          }
       }
     }
 
@@ -361,7 +358,5 @@ public final class VideoFrameReleaseTimeHelper {
         sampledVsyncTimeNs = C.TIME_UNSET;
       }
     }
-
   }
-
 }

@@ -20,9 +20,7 @@ import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DataSpec;
 
-/**
- * A base implementation of {@link MediaChunk} that outputs to a {@link BaseMediaChunkOutput}.
- */
+/** A base implementation of {@link MediaChunk} that outputs to a {@link BaseMediaChunkOutput}. */
 public abstract class BaseMediaChunk extends MediaChunk {
 
   /**
@@ -30,6 +28,7 @@ public abstract class BaseMediaChunk extends MediaChunk {
    * start of the chunk.
    */
   public final long clippedStartTimeUs;
+
   /**
    * The time from which output will end, or {@link C#TIME_UNSET} if output will end at the end of
    * the chunk.
@@ -64,8 +63,15 @@ public abstract class BaseMediaChunk extends MediaChunk {
       long clippedStartTimeUs,
       long clippedEndTimeUs,
       long chunkIndex) {
-    super(dataSource, dataSpec, trackFormat, trackSelectionReason, trackSelectionData, startTimeUs,
-        endTimeUs, chunkIndex);
+    super(
+        dataSource,
+        dataSpec,
+        trackFormat,
+        trackSelectionReason,
+        trackSelectionData,
+        startTimeUs,
+        endTimeUs,
+        chunkIndex);
     this.clippedStartTimeUs = clippedStartTimeUs;
     this.clippedEndTimeUs = clippedEndTimeUs;
   }
@@ -89,11 +95,8 @@ public abstract class BaseMediaChunk extends MediaChunk {
     return firstSampleIndices[trackIndex];
   }
 
-  /**
-   * Returns the output most recently passed to {@link #init(BaseMediaChunkOutput)}.
-   */
+  /** Returns the output most recently passed to {@link #init(BaseMediaChunkOutput)}. */
   protected final BaseMediaChunkOutput getOutput() {
     return output;
   }
-
 }

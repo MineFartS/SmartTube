@@ -17,10 +17,10 @@ package com.google.android.exoplayer2.source;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Pair;
 import androidx.annotation.GuardedBy;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.Pair;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource.MediaSourceHolder;
@@ -82,8 +82,8 @@ public class ConcatenatingMediaSource extends CompositeMediaSource<MediaSourceHo
   private int periodCount;
 
   /**
-   * @param mediaSources The {@link MediaSource}s to concatenate. It is valid for the same
-   *     {@link MediaSource} instance to be present more than once in the array.
+   * @param mediaSources The {@link MediaSource}s to concatenate. It is valid for the same {@link
+   *     MediaSource} instance to be present more than once in the array.
    */
   public ConcatenatingMediaSource(MediaSource... mediaSources) {
     this(/* isAtomic= */ false, mediaSources);
@@ -1141,7 +1141,7 @@ public class ConcatenatingMediaSource extends CompositeMediaSource<MediaSourceHo
           /* id= */ 0,
           /* uid= */ DeferredTimeline.DUMMY_ID,
           /* windowIndex= */ 0,
-          /* durationUs = */ C.TIME_UNSET,
+          /* durationUs= */ C.TIME_UNSET,
           /* positionInWindowUs= */ 0);
     }
 
@@ -1206,4 +1206,3 @@ public class ConcatenatingMediaSource extends CompositeMediaSource<MediaSourceHo
     }
   }
 }
-

@@ -5,22 +5,22 @@ import android.content.Intent;
 import android.os.Bundle;
 
 public class BackupReceiverActivity extends Activity {
-    private BackupAndRestoreHelper mRestoreHelper;
+  private BackupAndRestoreHelper mRestoreHelper;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
 
-        mRestoreHelper = new BackupAndRestoreHelper(this);
+    mRestoreHelper = new BackupAndRestoreHelper(this);
 
-        mRestoreHelper.handleIncomingZip(getIntent());
-        finish();
-    }
+    mRestoreHelper.handleIncomingZip(getIntent());
+    finish();
+  }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
+  @Override
+  protected void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
 
-        mRestoreHelper.handleIncomingZip(intent);
-    }
+    mRestoreHelper.handleIncomingZip(intent);
+  }
 }

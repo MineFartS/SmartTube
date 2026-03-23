@@ -44,10 +44,13 @@ public final class AdPlaybackState {
 
     /** The number of ads in the ad group, or {@link C#LENGTH_UNSET} if unknown. */
     public final int count;
+
     /** The URI of each ad in the ad group. */
     public final Uri[] uris;
+
     /** The state of each ad in the ad group. */
     public final @AdState int[] states;
+
     /** The durations of each ad in the ad group, in microseconds. */
     public final long[] durationsUs;
 
@@ -250,14 +253,19 @@ public final class AdPlaybackState {
     AD_STATE_ERROR,
   })
   public @interface AdState {}
+
   /** State for an ad that does not yet have a URL. */
   public static final int AD_STATE_UNAVAILABLE = 0;
+
   /** State for an ad that has a URL but has not yet been played. */
   public static final int AD_STATE_AVAILABLE = 1;
+
   /** State for an ad that was skipped. */
   public static final int AD_STATE_SKIPPED = 2;
+
   /** State for an ad that was played in full. */
   public static final int AD_STATE_PLAYED = 3;
+
   /** State for an ad that could not be loaded. */
   public static final int AD_STATE_ERROR = 4;
 
@@ -266,15 +274,19 @@ public final class AdPlaybackState {
 
   /** The number of ad groups. */
   public final int adGroupCount;
+
   /**
    * The times of ad groups, in microseconds. A final element with the value {@link
    * C#TIME_END_OF_SOURCE} indicates a postroll ad.
    */
   public final long[] adGroupTimesUs;
+
   /** The ad groups. */
   public final AdGroup[] adGroups;
+
   /** The position offset in the first unplayed ad at which to begin playback, in microseconds. */
   public final long adResumePositionUs;
+
   /** The content duration in microseconds, if known. {@link C#TIME_UNSET} otherwise. */
   public final long contentDurationUs;
 

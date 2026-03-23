@@ -16,8 +16,8 @@
 package com.google.android.exoplayer2.source.hls;
 
 import android.net.Uri;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.SeekParameters;
@@ -54,11 +54,11 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * A {@link MediaPeriod} that loads an HLS stream.
- */
-public final class HlsMediaPeriod implements MediaPeriod, HlsSampleStreamWrapper.Callback,
-    HlsPlaylistTracker.PlaylistEventListener {
+/** A {@link MediaPeriod} that loads an HLS stream. */
+public final class HlsMediaPeriod
+    implements MediaPeriod,
+        HlsSampleStreamWrapper.Callback,
+        HlsPlaylistTracker.PlaylistEventListener {
 
   private final HlsExtractorFactory extractorFactory;
   private final HlsPlaylistTracker playlistTracker;
@@ -246,14 +246,18 @@ public final class HlsMediaPeriod implements MediaPeriod, HlsSampleStreamWrapper
   }
 
   @Override
-  public long selectTracks(TrackSelection[] selections, boolean[] mayRetainStreamFlags,
-      SampleStream[] streams, boolean[] streamResetFlags, long positionUs) {
+  public long selectTracks(
+      TrackSelection[] selections,
+      boolean[] mayRetainStreamFlags,
+      SampleStream[] streams,
+      boolean[] streamResetFlags,
+      long positionUs) {
     // Map each selection and stream onto a child period index.
     int[] streamChildIndices = new int[selections.length];
     int[] selectionChildIndices = new int[selections.length];
     for (int i = 0; i < selections.length; i++) {
-      streamChildIndices[i] = streams[i] == null ? C.INDEX_UNSET
-          : streamWrapperIndices.get(streams[i]);
+      streamChildIndices[i] =
+          streams[i] == null ? C.INDEX_UNSET : streamWrapperIndices.get(streams[i]);
       selectionChildIndices[i] = C.INDEX_UNSET;
       if (selections[i] != null) {
         TrackGroup trackGroup = selections[i].getTrackGroup();
@@ -281,8 +285,14 @@ public final class HlsMediaPeriod implements MediaPeriod, HlsSampleStreamWrapper
         childSelections[j] = selectionChildIndices[j] == i ? selections[j] : null;
       }
       HlsSampleStreamWrapper sampleStreamWrapper = sampleStreamWrappers[i];
-      boolean wasReset = sampleStreamWrapper.selectTracks(childSelections, mayRetainStreamFlags,
-          childStreams, streamResetFlags, positionUs, forceReset);
+      boolean wasReset =
+          sampleStreamWrapper.selectTracks(
+              childSelections,
+              mayRetainStreamFlags,
+              childStreams,
+              streamResetFlags,
+              positionUs,
+              forceReset);
       boolean wrapperEnabled = false;
       for (int j = 0; j < selections.length; j++) {
         if (selectionChildIndices[j] == i) {
@@ -302,7 +312,8 @@ public final class HlsMediaPeriod implements MediaPeriod, HlsSampleStreamWrapper
           // The first enabled wrapper is responsible for initializing timestamp adjusters. This
           // way, if enabled, variants are responsible. Else audio renditions. Else text renditions.
           sampleStreamWrapper.setIsTimestampMaster(true);
-          if (wasReset || enabledSampleStreamWrappers.length == 0
+          if (wasReset
+              || enabledSampleStreamWrappers.length == 0
               || sampleStreamWrapper != enabledSampleStreamWrappers[0]) {
             // The wrapper responsible for initializing the timestamp adjusters was reset or
             // changed. We need to reset the timestamp adjuster provider and all other wrappers.
@@ -317,8 +328,8 @@ public final class HlsMediaPeriod implements MediaPeriod, HlsSampleStreamWrapper
     // Copy the new streams back into the streams array.
     System.arraycopy(newStreams, 0, streams, 0, newStreams.length);
     // Update the local state.
-    enabledSampleStreamWrappers = Arrays.copyOf(newEnabledSampleStreamWrappers,
-        newEnabledSampleStreamWrapperCount);
+    enabledSampleStreamWrappers =
+        Arrays.copyOf(newEnabledSampleStreamWrappers, newEnabledSampleStreamWrapperCount);
     compositeSequenceableLoader =
         compositeSequenceableLoaderFactory.createCompositeSequenceableLoader(
             enabledSampleStreamWrappers);
@@ -833,5 +844,4 @@ public final class HlsMediaPeriod implements MediaPeriod, HlsSampleStreamWrapper
         roleFlags,
         language);
   }
-
 }

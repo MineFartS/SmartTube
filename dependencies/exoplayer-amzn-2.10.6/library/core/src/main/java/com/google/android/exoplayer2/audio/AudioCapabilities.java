@@ -40,21 +40,24 @@ public final class AudioCapabilities {
       new AudioCapabilities(new int[] {AudioFormat.ENCODING_PCM_16BIT}, DEFAULT_MAX_CHANNEL_COUNT);
 
   /** Audio capabilities when the device specifies external surround sound. */
-  public static final AudioCapabilities EXTERNAL_SURROUND_SOUND_CAPABILITIES = // AMZN_CHANGE_ONELINE
+  public static final AudioCapabilities
+      EXTERNAL_SURROUND_SOUND_CAPABILITIES = // AMZN_CHANGE_ONELINE
       new AudioCapabilities(
-          new int[] {
-            AudioFormat.ENCODING_PCM_16BIT, AudioFormat.ENCODING_AC3, AudioFormat.ENCODING_E_AC3
-          },
-          DEFAULT_MAX_CHANNEL_COUNT);
+              new int[] {
+                AudioFormat.ENCODING_PCM_16BIT, AudioFormat.ENCODING_AC3, AudioFormat.ENCODING_E_AC3
+              },
+              DEFAULT_MAX_CHANNEL_COUNT);
 
   /** Global settings key for devices that can specify external surround sound. */
   private static final String EXTERNAL_SURROUND_SOUND_KEY = "external_surround_sound_enabled";
+
   // AMZN_CHANGE_BEGIN
-   /** For Optical output, we read this global setting to detect if dolby
-     * output is enabled. If USE_EXTERNAL_SURROUND_SOUND_FLAG is not set, then
-     * we fallback on the HDMI audio intent.
-     */
- public static final String USE_EXTERNAL_SURROUND_SOUND_FLAG = "use_external_surround_sound_flag";
+  /**
+   * For Optical output, we read this global setting to detect if dolby output is enabled. If
+   * USE_EXTERNAL_SURROUND_SOUND_FLAG is not set, then we fallback on the HDMI audio intent.
+   */
+  public static final String USE_EXTERNAL_SURROUND_SOUND_FLAG = "use_external_surround_sound_flag";
+
   // AMZN_CHANGE_END
   /**
    * Returns the current audio capabilities for the device.
@@ -79,16 +82,17 @@ public final class AudioCapabilities {
 
     // read global surround sound amazon specific settings
     if (Util.SDK_INT >= 17) {
-        ContentResolver resolver = context.getContentResolver();
-        useSurroundSoundFlag = useSurroundSoundFlagV17(resolver);
-        isSurroundSoundEnabled = isSurroundSoundEnabledV17(resolver);
+      ContentResolver resolver = context.getContentResolver();
+      useSurroundSoundFlag = useSurroundSoundFlagV17(resolver);
+      isSurroundSoundEnabled = isSurroundSoundEnabledV17(resolver);
     }
     //  If use surround sound enabled flag is set, then ignore the hmdi plug
     //  encodings.  Rely only on EXTERNAL_SURROUND_SOUND_CAPABILITIES to
     //  determine if dolby is supported.
     if (useSurroundSoundFlag) {
-        return isSurroundSoundEnabled ? EXTERNAL_SURROUND_SOUND_CAPABILITIES :
-                DEFAULT_AUDIO_CAPABILITIES;
+      return isSurroundSoundEnabled
+          ? EXTERNAL_SURROUND_SOUND_CAPABILITIES
+          : DEFAULT_AUDIO_CAPABILITIES;
     }
     // AMZN_CHANGE_END
 
@@ -115,16 +119,17 @@ public final class AudioCapabilities {
         ? Global.getUriFor(EXTERNAL_SURROUND_SOUND_KEY)
         : null;
   }
+
   // AMZN_CHANGE_BEGIN
-  public static boolean useSurroundSoundFlagV17(ContentResolver
-        resolver) {
-    return Global.getInt(resolver, USE_EXTERNAL_SURROUND_SOUND_FLAG,
-            0) == 1;
+  public static boolean useSurroundSoundFlagV17(ContentResolver resolver) {
+    return Global.getInt(resolver, USE_EXTERNAL_SURROUND_SOUND_FLAG, 0) == 1;
   }
+
   @TargetApi(17)
   public static boolean isSurroundSoundEnabledV17(ContentResolver resolver) {
     return Global.getInt(resolver, EXTERNAL_SURROUND_SOUND_KEY, 0) == 1;
   }
+
   // AMZN_CHANGE_END
 
   private final int[] supportedEncodings;
@@ -162,9 +167,7 @@ public final class AudioCapabilities {
     return Arrays.binarySearch(supportedEncodings, encoding) >= 0;
   }
 
-  /**
-   * Returns the maximum number of channels the device can play at the same time.
-   */
+  /** Returns the maximum number of channels the device can play at the same time. */
   public int getMaxChannelCount() {
     return maxChannelCount;
   }
@@ -189,8 +192,11 @@ public final class AudioCapabilities {
 
   @Override
   public String toString() {
-    return "AudioCapabilities[maxChannelCount=" + maxChannelCount
-        + ", supportedEncodings=" + Arrays.toString(supportedEncodings) + "]";
+    return "AudioCapabilities[maxChannelCount="
+        + maxChannelCount
+        + ", supportedEncodings="
+        + Arrays.toString(supportedEncodings)
+        + "]";
   }
 
   private static boolean deviceMaySetExternalSurroundSoundGlobalSetting() {

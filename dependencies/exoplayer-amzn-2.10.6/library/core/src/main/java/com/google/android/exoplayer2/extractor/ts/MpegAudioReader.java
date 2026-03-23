@@ -23,9 +23,7 @@ import com.google.android.exoplayer2.extractor.TrackOutput;
 import com.google.android.exoplayer2.extractor.ts.TsPayloadReader.TrackIdGenerator;
 import com.google.android.exoplayer2.util.ParsableByteArray;
 
-/**
- * Parses a continuous MPEG Audio byte stream and extracts individual frames.
- */
+/** Parses a continuous MPEG Audio byte stream and extracts individual frames. */
 public final class MpegAudioReader implements ElementaryStreamReader {
 
   private static final int STATE_FINDING_HEADER = 0;
@@ -113,13 +111,13 @@ public final class MpegAudioReader implements ElementaryStreamReader {
 
   /**
    * Attempts to locate the start of the next frame header.
-   * <p>
-   * If a frame header is located then the state is changed to {@link #STATE_READING_HEADER}, the
+   *
+   * <p>If a frame header is located then the state is changed to {@link #STATE_READING_HEADER}, the
    * first two bytes of the header are written into {@link #headerScratch}, and the position of the
    * source is advanced to the byte that immediately follows these two bytes.
-   * <p>
-   * If a frame header is not located then the position of the source is advanced to the limit, and
-   * the method should be called again with the next source to continue the search.
+   *
+   * <p>If a frame header is not located then the position of the source is advanced to the limit,
+   * and the method should be called again with the next source to continue the search.
    *
    * @param source The source from which to read.
    */
@@ -146,17 +144,17 @@ public final class MpegAudioReader implements ElementaryStreamReader {
 
   /**
    * Attempts to read the remaining two bytes of the frame header.
-   * <p>
-   * If a frame header is read in full then the state is changed to {@link #STATE_READING_FRAME},
+   *
+   * <p>If a frame header is read in full then the state is changed to {@link #STATE_READING_FRAME},
    * the media format is output if this has not previously occurred, the four header bytes are
    * output as sample data, and the position of the source is advanced to the byte that immediately
    * follows the header.
-   * <p>
-   * If a frame header is read in full but cannot be parsed then the state is changed to
-   * {@link #STATE_READING_HEADER}.
-   * <p>
-   * If a frame header is not read in full then the position of the source is advanced to the limit,
-   * and the method should be called again with the next source to continue the read.
+   *
+   * <p>If a frame header is read in full but cannot be parsed then the state is changed to {@link
+   * #STATE_READING_HEADER}.
+   *
+   * <p>If a frame header is not read in full then the position of the source is advanced to the
+   * limit, and the method should be called again with the next source to continue the read.
    *
    * @param source The source from which to read.
    */
@@ -181,9 +179,19 @@ public final class MpegAudioReader implements ElementaryStreamReader {
     frameSize = header.frameSize;
     if (!hasOutputFormat) {
       frameDurationUs = (C.MICROS_PER_SECOND * header.samplesPerFrame) / header.sampleRate;
-      Format format = Format.createAudioSampleFormat(formatId, header.mimeType, null,
-          Format.NO_VALUE, MpegAudioHeader.MAX_FRAME_SIZE_BYTES, header.channels, header.sampleRate,
-          null, null, 0, language);
+      Format format =
+          Format.createAudioSampleFormat(
+              formatId,
+              header.mimeType,
+              null,
+              Format.NO_VALUE,
+              MpegAudioHeader.MAX_FRAME_SIZE_BYTES,
+              header.channels,
+              header.sampleRate,
+              null,
+              null,
+              0,
+              language);
       output.format(format);
       hasOutputFormat = true;
     }
@@ -195,13 +203,13 @@ public final class MpegAudioReader implements ElementaryStreamReader {
 
   /**
    * Attempts to read the remainder of the frame.
-   * <p>
-   * If a frame is read in full then true is returned. The frame will have been output, and the
+   *
+   * <p>If a frame is read in full then true is returned. The frame will have been output, and the
    * position of the source will have been advanced to the byte that immediately follows the end of
    * the frame.
-   * <p>
-   * If a frame is not read in full then the position of the source will have been advanced to the
-   * limit, and the method should be called again with the next source to continue the read.
+   *
+   * <p>If a frame is not read in full then the position of the source will have been advanced to
+   * the limit, and the method should be called again with the next source to continue the read.
    *
    * @param source The source from which to read.
    */
@@ -219,5 +227,4 @@ public final class MpegAudioReader implements ElementaryStreamReader {
     frameBytesRead = 0;
     state = STATE_FINDING_HEADER;
   }
-
 }

@@ -13,16 +13,13 @@
  */
 package androidx.leanback.widget;
 
-/**
- * Used to represent divider in HeadersFragment.
- */
+/** Used to represent divider in HeadersFragment. */
 public class DividerRow extends Row {
 
-    public DividerRow() {
-    }
+  public DividerRow() {}
 
-    @Override
-    final public boolean isRenderedAsRowView() {
-        return false;
-    }
+  @Override
+  public final boolean isRenderedAsRowView() {
+    return false;
+  }
 }

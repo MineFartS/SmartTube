@@ -15,9 +15,9 @@
  */
 package com.google.android.exoplayer2.upstream;
 
+import android.text.TextUtils;
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
-import android.text.TextUtils;
 import com.google.android.exoplayer2.util.Predicate;
 import com.google.android.exoplayer2.util.Util;
 import java.io.IOException;
@@ -29,14 +29,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * An HTTP {@link DataSource}.
- */
+/** An HTTP {@link DataSource}. */
 public interface HttpDataSource extends DataSource {
 
-  /**
-   * A factory for {@link HttpDataSource} instances.
-   */
+  /** A factory for {@link HttpDataSource} instances. */
   interface Factory extends DataSource.Factory {
 
     @Override
@@ -44,8 +40,8 @@ public interface HttpDataSource extends DataSource {
 
     /**
      * Gets the default request properties used by all {@link HttpDataSource}s created by the
-     * factory. Changes to the properties will be reflected in any future requests made by
-     * {@link HttpDataSource}s created by the factory.
+     * factory. Changes to the properties will be reflected in any future requests made by {@link
+     * HttpDataSource}s created by the factory.
      *
      * @return The default request properties of the factory.
      */
@@ -78,13 +74,12 @@ public interface HttpDataSource extends DataSource {
      */
     @Deprecated
     void clearAllDefaultRequestProperties();
-
   }
 
   /**
-   * Stores HTTP request properties (aka HTTP headers) and provides methods to modify the headers
-   * in a thread safe way to avoid the potential of creating snapshots of an inconsistent or
-   * unintended state.
+   * Stores HTTP request properties (aka HTTP headers) and provides methods to modify the headers in
+   * a thread safe way to avoid the potential of creating snapshots of an inconsistent or unintended
+   * state.
    */
   final class RequestProperties {
 
@@ -140,9 +135,7 @@ public interface HttpDataSource extends DataSource {
       requestProperties.remove(name);
     }
 
-    /**
-     * Clears all request properties.
-     */
+    /** Clears all request properties. */
     public synchronized void clear() {
       requestPropertiesSnapshot = null;
       requestProperties.clear();
@@ -159,12 +152,9 @@ public interface HttpDataSource extends DataSource {
       }
       return requestPropertiesSnapshot;
     }
-
   }
 
-  /**
-   * Base implementation of {@link Factory} that sets default request properties.
-   */
+  /** Base implementation of {@link Factory} that sets default request properties. */
   abstract class BaseFactory implements Factory {
 
     private final RequestProperties defaultRequestProperties;
@@ -208,9 +198,8 @@ public interface HttpDataSource extends DataSource {
      *     {@link HttpDataSource} instance.
      * @return A {@link HttpDataSource} instance.
      */
-    protected abstract HttpDataSource createDataSourceInternal(RequestProperties
-        defaultRequestProperties);
-
+    protected abstract HttpDataSource createDataSourceInternal(
+        RequestProperties defaultRequestProperties);
   }
 
   /** A {@link Predicate} that rejects content types often used for pay-walls. */
@@ -223,9 +212,7 @@ public interface HttpDataSource extends DataSource {
             && !contentType.contains("xml");
       };
 
-  /**
-   * Thrown when an error is encountered when trying to read from a {@link HttpDataSource}.
-   */
+  /** Thrown when an error is encountered when trying to read from a {@link HttpDataSource}. */
   class HttpDataSourceException extends IOException {
 
     @Documented
@@ -239,9 +226,7 @@ public interface HttpDataSource extends DataSource {
 
     @Type public final int type;
 
-    /**
-     * The {@link DataSpec} associated with the current connection.
-     */
+    /** The {@link DataSpec} associated with the current connection. */
     public final DataSpec dataSpec;
 
     public HttpDataSourceException(DataSpec dataSpec, @Type int type) {
@@ -262,18 +247,15 @@ public interface HttpDataSource extends DataSource {
       this.type = type;
     }
 
-    public HttpDataSourceException(String message, IOException cause, DataSpec dataSpec,
-        @Type int type) {
+    public HttpDataSourceException(
+        String message, IOException cause, DataSpec dataSpec, @Type int type) {
       super(message, cause);
       this.dataSpec = dataSpec;
       this.type = type;
     }
-
   }
 
-  /**
-   * Thrown when the content type is invalid.
-   */
+  /** Thrown when the content type is invalid. */
   final class InvalidContentTypeException extends HttpDataSourceException {
 
     public final String contentType;
@@ -282,7 +264,6 @@ public interface HttpDataSource extends DataSource {
       super("Invalid content type: " + contentType, dataSpec, TYPE_OPEN);
       this.contentType = contentType;
     }
-
   }
 
   /**
@@ -290,20 +271,18 @@ public interface HttpDataSource extends DataSource {
    */
   final class InvalidResponseCodeException extends HttpDataSourceException {
 
-    /**
-     * The response code that was outside of the 2xx range.
-     */
+    /** The response code that was outside of the 2xx range. */
     public final int responseCode;
 
     /** The http status message. */
     @Nullable public final String responseMessage;
 
-    /**
-     * An unmodifiable map of the response header fields and values.
-     */
+    /** An unmodifiable map of the response header fields and values. */
     public final Map<String, List<String>> headerFields;
 
-    /** @deprecated Use {@link #InvalidResponseCodeException(int, String, Map, DataSpec)}. */
+    /**
+     * @deprecated Use {@link #InvalidResponseCodeException(int, String, Map, DataSpec)}.
+     */
     @Deprecated
     public InvalidResponseCodeException(
         int responseCode, Map<String, List<String>> headerFields, DataSpec dataSpec) {
@@ -320,7 +299,6 @@ public interface HttpDataSource extends DataSource {
       this.responseMessage = responseMessage;
       this.headerFields = headerFields;
     }
-
   }
 
   @Override
@@ -349,9 +327,7 @@ public interface HttpDataSource extends DataSource {
    */
   void clearRequestProperty(String name);
 
-  /**
-   * Clears all request headers that were set by {@link #setRequestProperty(String, String)}.
-   */
+  /** Clears all request headers that were set by {@link #setRequestProperty(String, String)}. */
   void clearAllRequestProperties();
 
   /**

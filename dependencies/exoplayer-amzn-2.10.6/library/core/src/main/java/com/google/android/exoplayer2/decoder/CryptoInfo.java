@@ -19,40 +19,44 @@ import android.annotation.TargetApi;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.util.Util;
 
-/**
- * Compatibility wrapper for {@link android.media.MediaCodec.CryptoInfo}.
- */
+/** Compatibility wrapper for {@link android.media.MediaCodec.CryptoInfo}. */
 public final class CryptoInfo {
 
   /**
    * @see android.media.MediaCodec.CryptoInfo#iv
    */
   public byte[] iv;
+
   /**
    * @see android.media.MediaCodec.CryptoInfo#key
    */
   public byte[] key;
+
   /**
    * @see android.media.MediaCodec.CryptoInfo#mode
    */
-  @C.CryptoMode
-  public int mode;
+  @C.CryptoMode public int mode;
+
   /**
    * @see android.media.MediaCodec.CryptoInfo#numBytesOfClearData
    */
   public int[] numBytesOfClearData;
+
   /**
    * @see android.media.MediaCodec.CryptoInfo#numBytesOfEncryptedData
    */
   public int[] numBytesOfEncryptedData;
+
   /**
    * @see android.media.MediaCodec.CryptoInfo#numSubSamples
    */
   public int numSubSamples;
+
   /**
    * @see android.media.MediaCodec.CryptoInfo.Pattern
    */
   public int encryptedBlocks;
+
   /**
    * @see android.media.MediaCodec.CryptoInfo.Pattern
    */
@@ -69,8 +73,15 @@ public final class CryptoInfo {
   /**
    * @see android.media.MediaCodec.CryptoInfo#set(int, int[], int[], byte[], byte[], int)
    */
-  public void set(int numSubSamples, int[] numBytesOfClearData, int[] numBytesOfEncryptedData,
-      byte[] key, byte[] iv, @C.CryptoMode int mode, int encryptedBlocks, int clearBlocks) {
+  public void set(
+      int numSubSamples,
+      int[] numBytesOfClearData,
+      int[] numBytesOfEncryptedData,
+      byte[] key,
+      byte[] iv,
+      @C.CryptoMode int mode,
+      int encryptedBlocks,
+      int clearBlocks) {
     this.numSubSamples = numSubSamples;
     this.numBytesOfClearData = numBytesOfClearData;
     this.numBytesOfEncryptedData = numBytesOfEncryptedData;
@@ -105,7 +116,9 @@ public final class CryptoInfo {
     return frameworkCryptoInfo;
   }
 
-  /** @deprecated Use {@link #getFrameworkCryptoInfo()}. */
+  /**
+   * @deprecated Use {@link #getFrameworkCryptoInfo()}.
+   */
   @Deprecated
   public android.media.MediaCodec.CryptoInfo getFrameworkCryptoInfoV16() {
     return getFrameworkCryptoInfo();
@@ -126,7 +139,5 @@ public final class CryptoInfo {
       pattern.set(encryptedBlocks, clearBlocks);
       frameworkCryptoInfo.setPattern(pattern);
     }
-
   }
-
 }

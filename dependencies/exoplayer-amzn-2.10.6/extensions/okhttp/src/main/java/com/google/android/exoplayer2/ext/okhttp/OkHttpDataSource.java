@@ -243,8 +243,8 @@ public class OkHttpDataSource extends BaseDataSource implements HttpDataSource {
   }
 
   /**
-   * Returns the number of bytes that have been skipped since the most recent call to
-   * {@link #open(DataSpec)}.
+   * Returns the number of bytes that have been skipped since the most recent call to {@link
+   * #open(DataSpec)}.
    *
    * @return The number of bytes skipped.
    */
@@ -253,8 +253,8 @@ public class OkHttpDataSource extends BaseDataSource implements HttpDataSource {
   }
 
   /**
-   * Returns the number of bytes that have been read since the most recent call to
-   * {@link #open(DataSpec)}.
+   * Returns the number of bytes that have been read since the most recent call to {@link
+   * #open(DataSpec)}.
    *
    * @return The number of bytes read.
    */
@@ -264,9 +264,9 @@ public class OkHttpDataSource extends BaseDataSource implements HttpDataSource {
 
   /**
    * Returns the number of bytes that are still to be read for the current {@link DataSpec}.
-   * <p>
-   * If the total length of the data being read is known, then this length minus {@code bytesRead()}
-   * is returned. If the total length is unknown, {@link C#LENGTH_UNSET} is returned.
+   *
+   * <p>If the total length of the data being read is known, then this length minus {@code
+   * bytesRead()} is returned. If the total length is unknown, {@link C#LENGTH_UNSET} is returned.
    *
    * @return The remaining length, or {@link C#LENGTH_UNSET}.
    */
@@ -334,8 +334,8 @@ public class OkHttpDataSource extends BaseDataSource implements HttpDataSource {
 
   /**
    * Skips any bytes that need skipping. Else does nothing.
-   * <p>
-   * This implementation is based roughly on {@code libcore.io.Streams.skipByReading()}.
+   *
+   * <p>This implementation is based roughly on {@code libcore.io.Streams.skipByReading()}.
    *
    * @throws InterruptedIOException If the thread is interrupted during the operation.
    * @throws EOFException If the end of the input stream is reached before the bytes are skipped.
@@ -360,11 +360,11 @@ public class OkHttpDataSource extends BaseDataSource implements HttpDataSource {
   }
 
   /**
-   * Reads up to {@code length} bytes of data and stores them into {@code buffer}, starting at
-   * index {@code offset}.
-   * <p>
-   * This method blocks until at least one byte of data can be read, the end of the opened range is
-   * detected, or an exception is thrown.
+   * Reads up to {@code length} bytes of data and stores them into {@code buffer}, starting at index
+   * {@code offset}.
+   *
+   * <p>This method blocks until at least one byte of data can be read, the end of the opened range
+   * is detected, or an exception is thrown.
    *
    * @param buffer The buffer into which the read data should be stored.
    * @param offset The start offset into {@code buffer} at which data should be written.
@@ -399,9 +399,7 @@ public class OkHttpDataSource extends BaseDataSource implements HttpDataSource {
     return read;
   }
 
-  /**
-   * Closes the current connection quietly, if there is one.
-   */
+  /** Closes the current connection quietly, if there is one. */
   private void closeConnectionQuietly() {
     if (response != null) {
       Assertions.checkNotNull(response.body()).close();
@@ -409,5 +407,4 @@ public class OkHttpDataSource extends BaseDataSource implements HttpDataSource {
     }
     responseByteStream = null;
   }
-
 }

@@ -32,9 +32,7 @@ import java.io.IOException;
  */
 public final class ClippingMediaPeriod implements MediaPeriod, MediaPeriod.Callback {
 
-  /**
-   * The {@link MediaPeriod} wrapped by this clipping media period.
-   */
+  /** The {@link MediaPeriod} wrapped by this clipping media period. */
   public final MediaPeriod mediaPeriod;
 
   private MediaPeriod.Callback callback;
@@ -95,8 +93,12 @@ public final class ClippingMediaPeriod implements MediaPeriod, MediaPeriod.Callb
   }
 
   @Override
-  public long selectTracks(TrackSelection[] selections, boolean[] mayRetainStreamFlags,
-      SampleStream[] streams, boolean[] streamResetFlags, long positionUs) {
+  public long selectTracks(
+      TrackSelection[] selections,
+      boolean[] mayRetainStreamFlags,
+      SampleStream[] streams,
+      boolean[] streamResetFlags,
+      long positionUs) {
     sampleStreams = new ClippingSampleStream[streams.length];
     SampleStream[] childStreams = new SampleStream[streams.length];
     for (int i = 0; i < streams.length; i++) {
@@ -261,9 +263,7 @@ public final class ClippingMediaPeriod implements MediaPeriod, MediaPeriod.Callb
     return false;
   }
 
-  /**
-   * Wraps a {@link SampleStream} and clips its samples.
-   */
+  /** Wraps a {@link SampleStream} and clips its samples. */
   private final class ClippingSampleStream implements SampleStream {
 
     public final SampleStream childStream;
@@ -289,8 +289,8 @@ public final class ClippingMediaPeriod implements MediaPeriod, MediaPeriod.Callb
     }
 
     @Override
-    public int readData(FormatHolder formatHolder, DecoderInputBuffer buffer,
-        boolean requireFormat) {
+    public int readData(
+        FormatHolder formatHolder, DecoderInputBuffer buffer, boolean requireFormat) {
       if (isPendingInitialDiscontinuity()) {
         return C.RESULT_NOTHING_READ;
       }
@@ -328,7 +328,5 @@ public final class ClippingMediaPeriod implements MediaPeriod, MediaPeriod.Callb
       }
       return childStream.skipData(positionUs);
     }
-
   }
-
 }

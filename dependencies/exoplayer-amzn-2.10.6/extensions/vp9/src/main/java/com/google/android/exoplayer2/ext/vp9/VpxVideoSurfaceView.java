@@ -19,9 +19,7 @@ import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 
-/**
- * A GLSurfaceView extension that scales itself to the given aspect ratio.
- */
+/** A GLSurfaceView extension that scales itself to the given aspect ratio. */
 public class VpxVideoSurfaceView extends GLSurfaceView implements VpxOutputBufferRenderer {
 
   private final VpxRenderer renderer;
@@ -44,5 +42,4 @@ public class VpxVideoSurfaceView extends GLSurfaceView implements VpxOutputBuffe
     renderer.setFrame(outputBuffer);
     requestRender();
   }
-
 }

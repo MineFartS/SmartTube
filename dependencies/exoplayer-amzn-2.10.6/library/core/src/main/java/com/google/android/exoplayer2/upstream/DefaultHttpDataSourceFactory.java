@@ -52,8 +52,12 @@ public final class DefaultHttpDataSourceFactory extends BaseFactory {
    * @see #DefaultHttpDataSourceFactory(String, TransferListener, int, int, boolean)
    */
   public DefaultHttpDataSourceFactory(String userAgent, @Nullable TransferListener listener) {
-    this(userAgent, listener, DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
-        DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS, false);
+    this(
+        userAgent,
+        listener,
+        DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
+        DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
+        false);
   }
 
   /**

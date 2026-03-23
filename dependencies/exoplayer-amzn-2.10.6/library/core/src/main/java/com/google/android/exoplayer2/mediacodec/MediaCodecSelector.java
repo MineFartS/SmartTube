@@ -20,9 +20,7 @@ import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.mediacodec.MediaCodecUtil.DecoderQueryException;
 import java.util.List;
 
-/**
- * Selector of {@link MediaCodec} instances.
- */
+/** Selector of {@link MediaCodec} instances. */
 public interface MediaCodecSelector {
 
   /**

@@ -22,9 +22,7 @@ import com.google.android.exoplayer2.util.ParsableByteArray;
 import java.io.EOFException;
 import java.io.IOException;
 
-/**
- * A dummy {@link TrackOutput} implementation.
- */
+/** A dummy {@link TrackOutput} implementation. */
 public final class DummyTrackOutput implements TrackOutput {
 
   @Override

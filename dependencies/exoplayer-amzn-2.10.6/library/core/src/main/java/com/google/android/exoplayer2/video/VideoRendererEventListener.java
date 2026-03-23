@@ -17,9 +17,9 @@ package com.google.android.exoplayer2.video;
 
 import android.os.Handler;
 import android.os.SystemClock;
-import androidx.annotation.Nullable;
 import android.view.Surface;
 import android.view.TextureView;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.Renderer;
 import com.google.android.exoplayer2.decoder.DecoderCounters;
@@ -105,9 +105,7 @@ public interface VideoRendererEventListener {
    */
   default void onVideoDisabled(DecoderCounters counters) {}
 
-  /**
-   * Dispatches events to a {@link VideoRendererEventListener}.
-   */
+  /** Dispatches events to a {@link VideoRendererEventListener}. */
   final class EventDispatcher {
 
     @Nullable private final Handler handler;
@@ -118,8 +116,8 @@ public interface VideoRendererEventListener {
      * @param listener The listener to which events should be dispatched, or null if creating a
      *     dummy instance.
      */
-    public EventDispatcher(@Nullable Handler handler,
-        @Nullable VideoRendererEventListener listener) {
+    public EventDispatcher(
+        @Nullable Handler handler, @Nullable VideoRendererEventListener listener) {
       this.handler = listener != null ? Assertions.checkNotNull(handler) : null;
       this.listener = listener;
     }
@@ -188,7 +186,5 @@ public interface VideoRendererEventListener {
             });
       }
     }
-
   }
-
 }

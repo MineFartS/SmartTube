@@ -45,10 +45,13 @@ public final class ClippingMediaSource extends CompositeMediaSource<Void> {
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({REASON_INVALID_PERIOD_COUNT, REASON_NOT_SEEKABLE_TO_START, REASON_START_EXCEEDS_END})
     public @interface Reason {}
+
     /** The wrapped source doesn't consist of a single period. */
     public static final int REASON_INVALID_PERIOD_COUNT = 0;
+
     /** The wrapped source is not seekable and a non-zero clipping start position was specified. */
     public static final int REASON_NOT_SEEKABLE_TO_START = 1;
+
     /** The wrapped source ends before the specified clipping start position. */
     public static final int REASON_START_EXCEEDS_END = 2;
 
@@ -295,9 +298,7 @@ public final class ClippingMediaSource extends CompositeMediaSource<Void> {
     return clippedTimeMs;
   }
 
-  /**
-   * Provides a clipped view of a specified timeline.
-   */
+  /** Provides a clipped view of a specified timeline. */
   private static final class ClippingTimeline extends ForwardingTimeline {
 
     private final long startUs;
@@ -353,8 +354,10 @@ public final class ClippingMediaSource extends CompositeMediaSource<Void> {
       window.isDynamic = isDynamic;
       if (window.defaultPositionUs != C.TIME_UNSET) {
         window.defaultPositionUs = Math.max(window.defaultPositionUs, startUs);
-        window.defaultPositionUs = endUs == C.TIME_UNSET ? window.defaultPositionUs
-            : Math.min(window.defaultPositionUs, endUs);
+        window.defaultPositionUs =
+            endUs == C.TIME_UNSET
+                ? window.defaultPositionUs
+                : Math.min(window.defaultPositionUs, endUs);
         window.defaultPositionUs -= startUs;
       }
       long startMs = C.usToMs(startUs);

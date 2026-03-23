@@ -24,9 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 
-/**
- * Merges multiple {@link MediaPeriod}s.
- */
+/** Merges multiple {@link MediaPeriod}s. */
 /* package */ final class MergingMediaPeriod implements MediaPeriod, MediaPeriod.Callback {
 
   public final MediaPeriod[] periods;
@@ -41,7 +39,8 @@ import java.util.IdentityHashMap;
   private MediaPeriod[] enabledPeriods;
   private SequenceableLoader compositeSequenceableLoader;
 
-  public MergingMediaPeriod(CompositeSequenceableLoaderFactory compositeSequenceableLoaderFactory,
+  public MergingMediaPeriod(
+      CompositeSequenceableLoaderFactory compositeSequenceableLoaderFactory,
       MediaPeriod... periods) {
     this.compositeSequenceableLoaderFactory = compositeSequenceableLoaderFactory;
     this.periods = periods;
@@ -73,14 +72,18 @@ import java.util.IdentityHashMap;
   }
 
   @Override
-  public long selectTracks(TrackSelection[] selections, boolean[] mayRetainStreamFlags,
-      SampleStream[] streams, boolean[] streamResetFlags, long positionUs) {
+  public long selectTracks(
+      TrackSelection[] selections,
+      boolean[] mayRetainStreamFlags,
+      SampleStream[] streams,
+      boolean[] streamResetFlags,
+      long positionUs) {
     // Map each selection and stream onto a child period index.
     int[] streamChildIndices = new int[selections.length];
     int[] selectionChildIndices = new int[selections.length];
     for (int i = 0; i < selections.length; i++) {
-      streamChildIndices[i] = streams[i] == null ? C.INDEX_UNSET
-          : streamPeriodIndices.get(streams[i]);
+      streamChildIndices[i] =
+          streams[i] == null ? C.INDEX_UNSET : streamPeriodIndices.get(streams[i]);
       selectionChildIndices[i] = C.INDEX_UNSET;
       if (selections[i] != null) {
         TrackGroup trackGroup = selections[i].getTrackGroup();
@@ -103,8 +106,9 @@ import java.util.IdentityHashMap;
         childStreams[j] = streamChildIndices[j] == i ? streams[j] : null;
         childSelections[j] = selectionChildIndices[j] == i ? selections[j] : null;
       }
-      long selectPositionUs = periods[i].selectTracks(childSelections, mayRetainStreamFlags,
-          childStreams, streamResetFlags, positionUs);
+      long selectPositionUs =
+          periods[i].selectTracks(
+              childSelections, mayRetainStreamFlags, childStreams, streamResetFlags, positionUs);
       if (i == 0) {
         positionUs = selectPositionUs;
       } else if (selectPositionUs != positionUs) {
@@ -180,8 +184,7 @@ import java.util.IdentityHashMap;
     // It must be possible to seek enabled periods to the new position, if there is one.
     if (positionUs != C.TIME_UNSET) {
       for (MediaPeriod enabledPeriod : enabledPeriods) {
-        if (enabledPeriod != periods[0]
-            && enabledPeriod.seekToUs(positionUs) != positionUs) {
+        if (enabledPeriod != periods[0] && enabledPeriod.seekToUs(positionUs) != positionUs) {
           throw new IllegalStateException("Unexpected child seekToUs result.");
         }
       }
@@ -240,5 +243,4 @@ import java.util.IdentityHashMap;
   public void onContinueLoadingRequested(MediaPeriod ignored) {
     callback.onContinueLoadingRequested(this);
   }
-
 }

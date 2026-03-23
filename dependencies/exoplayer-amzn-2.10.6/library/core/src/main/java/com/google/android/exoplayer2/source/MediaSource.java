@@ -18,7 +18,6 @@ package com.google.android.exoplayer2.source;
 import android.os.Handler;
 import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.upstream.Allocator;
 import com.google.android.exoplayer2.upstream.TransferListener;
@@ -51,28 +50,25 @@ public interface MediaSource {
 
     /**
      * Called when manifest and/or timeline has been refreshed.
-     * <p>
-     * Called on the playback thread.
+     *
+     * <p>Called on the playback thread.
      *
      * @param source The {@link MediaSource} whose info has been refreshed.
      * @param timeline The source's timeline.
      * @param manifest The loaded manifest. May be null.
      */
     void onSourceInfoRefreshed(MediaSource source, Timeline timeline, @Nullable Object manifest);
-
   }
 
-  /**
-   * Identifier for a {@link MediaPeriod}.
-   */
+  /** Identifier for a {@link MediaPeriod}. */
   final class MediaPeriodId {
 
     /** The unique id of the timeline period. */
     public final Object periodUid;
 
     /**
-     * If the media period is in an ad group, the index of the ad group in the period.
-     * {@link C#INDEX_UNSET} otherwise.
+     * If the media period is in an ad group, the index of the ad group in the period. {@link
+     * C#INDEX_UNSET} otherwise.
      */
     public final int adGroupIndex;
 
@@ -180,9 +176,7 @@ public interface MediaSource {
               newPeriodUid, adGroupIndex, adIndexInAdGroup, windowSequenceNumber, nextAdGroupIndex);
     }
 
-    /**
-     * Returns whether this period identifier identifies an ad in an ad group in a period.
-     */
+    /** Returns whether this period identifier identifies an ad in an ad group in a period. */
     public boolean isAd() {
       return adGroupIndex != C.INDEX_UNSET;
     }
@@ -261,8 +255,8 @@ public interface MediaSource {
 
   /**
    * Throws any pending error encountered while loading or refreshing source information.
-   * <p>
-   * Should not be called directly from application code.
+   *
+   * <p>Should not be called directly from application code.
    */
   void maybeThrowSourceInfoRefreshError() throws IOException;
 
@@ -281,8 +275,8 @@ public interface MediaSource {
 
   /**
    * Releases the period.
-   * <p>
-   * Should not be called directly from application code.
+   *
+   * <p>Should not be called directly from application code.
    *
    * @param mediaPeriod The period to release.
    */

@@ -30,30 +30,22 @@ import java.nio.ShortBuffer;
  */
 public final class SonicAudioProcessor implements AudioProcessor {
 
-  /**
-   * The maximum allowed playback speed in {@link #setSpeed(float)}.
-   */
+  /** The maximum allowed playback speed in {@link #setSpeed(float)}. */
   public static final float MAXIMUM_SPEED = 8.0f;
-  /**
-   * The minimum allowed playback speed in {@link #setSpeed(float)}.
-   */
+
+  /** The minimum allowed playback speed in {@link #setSpeed(float)}. */
   public static final float MINIMUM_SPEED = 0.1f;
-  /**
-   * The maximum allowed pitch in {@link #setPitch(float)}.
-   */
+
+  /** The maximum allowed pitch in {@link #setPitch(float)}. */
   public static final float MAXIMUM_PITCH = 8.0f;
-  /**
-   * The minimum allowed pitch in {@link #setPitch(float)}.
-   */
+
+  /** The minimum allowed pitch in {@link #setPitch(float)}. */
   public static final float MINIMUM_PITCH = 0.1f;
-  /**
-   * Indicates that the output sample rate should be the same as the input.
-   */
+
+  /** Indicates that the output sample rate should be the same as the input. */
   public static final int SAMPLE_RATE_NO_CHANGE = -1;
 
-  /**
-   * The threshold below which the difference between two pitch/speed factors is negligible.
-   */
+  /** The threshold below which the difference between two pitch/speed factors is negligible. */
   private static final float CLOSE_THRESHOLD = 0.01f;
 
   /**
@@ -78,9 +70,7 @@ public final class SonicAudioProcessor implements AudioProcessor {
   private long outputBytes;
   private boolean inputEnded;
 
-  /**
-   * Creates a new Sonic audio processor.
-   */
+  /** Creates a new Sonic audio processor. */
   public SonicAudioProcessor() {
     speed = 1f;
     pitch = 1f;
@@ -129,8 +119,8 @@ public final class SonicAudioProcessor implements AudioProcessor {
 
   /**
    * Sets the sample rate for output audio, in hertz. Pass {@link #SAMPLE_RATE_NO_CHANGE} to output
-   * audio at the same sample rate as the input. After calling this method, call
-   * {@link #configure(int, int, int)} to start using the new sample rate.
+   * audio at the same sample rate as the input. After calling this method, call {@link
+   * #configure(int, int, int)} to start using the new sample rate.
    *
    * @param sampleRateHz The sample rate for output audio, in hertz.
    * @see #configure(int, int, int)
@@ -144,15 +134,15 @@ public final class SonicAudioProcessor implements AudioProcessor {
    * in the same units as {@code duration}.
    *
    * @param duration The duration to scale taking into account speedup.
-   * @return The specified duration scaled to take into account speedup, in the same units as
-   *     {@code duration}.
+   * @return The specified duration scaled to take into account speedup, in the same units as {@code
+   *     duration}.
    */
   public long scaleDurationForSpeedup(long duration) {
     if (outputBytes >= MIN_BYTES_FOR_SPEEDUP_CALCULATION) {
       return outputSampleRateHz == sampleRateHz
           ? Util.scaleLargeTimestamp(duration, inputBytes, outputBytes)
-          : Util.scaleLargeTimestamp(duration, inputBytes * outputSampleRateHz,
-              outputBytes * sampleRateHz);
+          : Util.scaleLargeTimestamp(
+              duration, inputBytes * outputSampleRateHz, outputBytes * sampleRateHz);
     } else {
       return (long) ((double) speed * duration);
     }
@@ -164,9 +154,12 @@ public final class SonicAudioProcessor implements AudioProcessor {
     if (encoding != C.ENCODING_PCM_16BIT) {
       throw new UnhandledFormatException(sampleRateHz, channelCount, encoding);
     }
-    int outputSampleRateHz = pendingOutputSampleRateHz == SAMPLE_RATE_NO_CHANGE
-        ? sampleRateHz : pendingOutputSampleRateHz;
-    if (this.sampleRateHz == sampleRateHz && this.channelCount == channelCount
+    int outputSampleRateHz =
+        pendingOutputSampleRateHz == SAMPLE_RATE_NO_CHANGE
+            ? sampleRateHz
+            : pendingOutputSampleRateHz;
+    if (this.sampleRateHz == sampleRateHz
+        && this.channelCount == channelCount
         && this.outputSampleRateHz == outputSampleRateHz) {
       return false;
     }
@@ -278,5 +271,4 @@ public final class SonicAudioProcessor implements AudioProcessor {
     outputBytes = 0;
     inputEnded = false;
   }
-
 }

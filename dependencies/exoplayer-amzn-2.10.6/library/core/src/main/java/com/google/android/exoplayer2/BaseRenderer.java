@@ -24,9 +24,7 @@ import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.MediaClock;
 import java.io.IOException;
 
-/**
- * An abstract base class suitable for most {@link Renderer} implementations.
- */
+/** An abstract base class suitable for most {@link Renderer} implementations. */
 public abstract class BaseRenderer implements Renderer, RendererCapabilities {
 
   private final int trackType;
@@ -41,8 +39,8 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
   private boolean streamIsFinal;
 
   /**
-   * @param trackType The track type that the renderer handles. One of the {@link C}
-   * {@code TRACK_TYPE_*} constants.
+   * @param trackType The track type that the renderer handles. One of the {@link C} {@code
+   *     TRACK_TYPE_*} constants.
    */
   public BaseRenderer(int trackType) {
     this.trackType = trackType;
@@ -75,8 +73,13 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
   }
 
   @Override
-  public final void enable(RendererConfiguration configuration, Format[] formats,
-      SampleStream stream, long positionUs, boolean joining, long offsetUs)
+  public final void enable(
+      RendererConfiguration configuration,
+      Format[] formats,
+      SampleStream stream,
+      long positionUs,
+      boolean joining,
+      long offsetUs)
       throws ExoPlaybackException {
     Assertions.checkState(state == STATE_DISABLED);
     this.configuration = configuration;
@@ -182,8 +185,8 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
 
   /**
    * Called when the renderer is enabled.
-   * <p>
-   * The default implementation is a no-op.
+   *
+   * <p>The default implementation is a no-op.
    *
    * @param joining Whether this renderer is being enabled to join an ongoing playback.
    * @throws ExoPlaybackException If an error occurs.
@@ -196,13 +199,13 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
    * Called when the renderer's stream has changed. This occurs when the renderer is enabled after
    * {@link #onEnabled(boolean)} has been called, and also when the stream has been replaced whilst
    * the renderer is enabled or started.
-   * <p>
-   * The default implementation is a no-op.
+   *
+   * <p>The default implementation is a no-op.
    *
    * @param formats The enabled formats.
-   * @param offsetUs The offset that will be added to the timestamps of buffers read via
-   *     {@link #readSource(FormatHolder, DecoderInputBuffer, boolean)} so that decoder input
-   *     buffers have monotonically increasing timestamps.
+   * @param offsetUs The offset that will be added to the timestamps of buffers read via {@link
+   *     #readSource(FormatHolder, DecoderInputBuffer, boolean)} so that decoder input buffers have
+   *     monotonically increasing timestamps.
    * @throws ExoPlaybackException If an error occurs.
    */
   protected void onStreamChanged(Format[] formats, long offsetUs) throws ExoPlaybackException {
@@ -210,14 +213,14 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
   }
 
   /**
-   * Called when the position is reset. This occurs when the renderer is enabled after
-   * {@link #onStreamChanged(Format[], long)} has been called, and also when a position
-   * discontinuity is encountered.
-   * <p>
-   * After a position reset, the renderer's {@link SampleStream} is guaranteed to provide samples
+   * Called when the position is reset. This occurs when the renderer is enabled after {@link
+   * #onStreamChanged(Format[], long)} has been called, and also when a position discontinuity is
+   * encountered.
+   *
+   * <p>After a position reset, the renderer's {@link SampleStream} is guaranteed to provide samples
    * starting from a key frame.
-   * <p>
-   * The default implementation is a no-op.
+   *
+   * <p>The default implementation is a no-op.
    *
    * @param positionUs The new playback position in microseconds.
    * @param joining Whether this renderer is being enabled to join an ongoing playback.
@@ -229,8 +232,8 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
 
   /**
    * Called when the renderer is started.
-   * <p>
-   * The default implementation is a no-op.
+   *
+   * <p>The default implementation is a no-op.
    *
    * @throws ExoPlaybackException If an error occurs.
    */
@@ -240,8 +243,8 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
 
   /**
    * Called when the renderer is stopped.
-   * <p>
-   * The default implementation is a no-op.
+   *
+   * <p>The default implementation is a no-op.
    *
    * @throws ExoPlaybackException If an error occurs.
    */
@@ -251,8 +254,8 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
 
   /**
    * Called when the renderer is disabled.
-   * <p>
-   * The default implementation is a no-op.
+   *
+   * <p>The default implementation is a no-op.
    */
   protected void onDisabled() {
     // Do nothing.
@@ -274,16 +277,12 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
     return streamFormats;
   }
 
-  /**
-   * Returns the configuration set when the renderer was most recently enabled.
-   */
+  /** Returns the configuration set when the renderer was most recently enabled. */
   protected final RendererConfiguration getConfiguration() {
     return configuration;
   }
 
-  /**
-   * Returns the index of the renderer within the player.
-   */
+  /** Returns the index of the renderer within the player. */
   protected final int getIndex() {
     return index;
   }
@@ -295,16 +294,16 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
    *
    * @param formatHolder A {@link FormatHolder} to populate in the case of reading a format.
    * @param buffer A {@link DecoderInputBuffer} to populate in the case of reading a sample or the
-   *     end of the stream. If the end of the stream has been reached, the
-   *     {@link C#BUFFER_FLAG_END_OF_STREAM} flag will be set on the buffer.
+   *     end of the stream. If the end of the stream has been reached, the {@link
+   *     C#BUFFER_FLAG_END_OF_STREAM} flag will be set on the buffer.
    * @param formatRequired Whether the caller requires that the format of the stream be read even if
    *     it's not changing. A sample will never be read if set to true, however it is still possible
    *     for the end of stream or nothing to be read.
    * @return The result, which can be {@link C#RESULT_NOTHING_READ}, {@link C#RESULT_FORMAT_READ} or
    *     {@link C#RESULT_BUFFER_READ}.
    */
-  protected final int readSource(FormatHolder formatHolder, DecoderInputBuffer buffer,
-      boolean formatRequired) {
+  protected final int readSource(
+      FormatHolder formatHolder, DecoderInputBuffer buffer, boolean formatRequired) {
     int result = stream.readData(formatHolder, buffer, formatRequired);
     if (result == C.RESULT_BUFFER_READ) {
       if (buffer.isEndOfStream()) {
@@ -334,9 +333,7 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
     return stream.skipData(positionUs - streamOffsetUs);
   }
 
-  /**
-   * Returns whether the upstream source is ready.
-   */
+  /** Returns whether the upstream source is ready. */
   protected final boolean isSourceReady() {
     return hasReadStreamToEnd() ? streamIsFinal : stream.isReady();
   }
@@ -347,11 +344,11 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
    *
    * @param drmSessionManager The drm session manager.
    * @param drmInitData {@link DrmInitData} of the format to check for support.
-   * @return Whether {@code drmSessionManager} supports the specified {@code drmInitData}, or
-   *     true if {@code drmInitData} is null.
+   * @return Whether {@code drmSessionManager} supports the specified {@code drmInitData}, or true
+   *     if {@code drmInitData} is null.
    */
-  protected static boolean supportsFormatDrm(@Nullable DrmSessionManager<?> drmSessionManager,
-      @Nullable DrmInitData drmInitData) {
+  protected static boolean supportsFormatDrm(
+      @Nullable DrmSessionManager<?> drmSessionManager, @Nullable DrmInitData drmInitData) {
     if (drmInitData == null) {
       // Content is unencrypted.
       return true;
@@ -361,5 +358,4 @@ public abstract class BaseRenderer implements Renderer, RendererCapabilities {
     }
     return drmSessionManager.canAcquireSession(drmInitData);
   }
-
 }

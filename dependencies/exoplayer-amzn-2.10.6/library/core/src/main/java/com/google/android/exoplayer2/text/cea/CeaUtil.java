@@ -42,8 +42,8 @@ public final class CeaUtil {
    * @param seiBuffer The unescaped SEI NAL unit data, excluding the NAL unit start code and type.
    * @param outputs The outputs to which any samples should be written.
    */
-  public static void consume(long presentationTimeUs, ParsableByteArray seiBuffer,
-      TrackOutput[] outputs) {
+  public static void consume(
+      long presentationTimeUs, ParsableByteArray seiBuffer, TrackOutput[] outputs) {
     while (seiBuffer.bytesLeft() > 1 /* last byte will be rbsp_trailing_bits */) {
       int payloadType = readNon255TerminatedValue(seiBuffer);
       int payloadSize = readNon255TerminatedValue(seiBuffer);
@@ -135,5 +135,4 @@ public final class CeaUtil {
   }
 
   private CeaUtil() {}
-
 }

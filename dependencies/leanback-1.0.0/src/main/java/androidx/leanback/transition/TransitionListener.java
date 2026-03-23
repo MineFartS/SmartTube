@@ -19,25 +19,21 @@ import androidx.annotation.RestrictTo;
 
 /**
  * Listeners for transition start and stop.
+ *
  * @hide
  */
 @RestrictTo(LIBRARY_GROUP)
 public class TransitionListener {
 
-    protected Object mImpl;
+  protected Object mImpl;
 
-    public void onTransitionStart(Object transition) {
-    }
+  public void onTransitionStart(Object transition) {}
 
-    public void onTransitionEnd(Object transition) {
-    }
+  public void onTransitionEnd(Object transition) {}
 
-    public void onTransitionCancel(Object transition) {
-    }
+  public void onTransitionCancel(Object transition) {}
 
-    public void onTransitionPause(Object transition) {
-    }
+  public void onTransitionPause(Object transition) {}
 
-    public void onTransitionResume(Object transition) {
-    }
+  public void onTransitionResume(Object transition) {}
 }

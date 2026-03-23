@@ -25,19 +25,25 @@ import com.google.android.exoplayer2.util.Util;
 
   /** Number of audio chanels. */
   private final int numChannels;
+
   /** Sample rate in Hertz. */
   private final int sampleRateHz;
+
   /** Average bytes per second for the sample data. */
   private final int averageBytesPerSecond;
+
   /** Alignment for frames of audio data; should equal {@code numChannels * bitsPerSample / 8}. */
   private final int blockAlignment;
+
   /** Bits per sample for the audio data. */
   private final int bitsPerSample;
+
   /** The PCM encoding. */
   @C.PcmEncoding private final int encoding;
 
   /** Position of the start of the sample data, in bytes. */
   private int dataStartPosition;
+
   /** Position of the end of the sample data (exclusive), in bytes. */
   private long dataEndPosition;
 
@@ -157,9 +163,8 @@ import com.google.android.exoplayer2.util.Util;
     return numChannels;
   }
 
-  /** Returns the PCM encoding. **/
+  /** Returns the PCM encoding. * */
   public @C.PcmEncoding int getEncoding() {
     return encoding;
   }
-
 }

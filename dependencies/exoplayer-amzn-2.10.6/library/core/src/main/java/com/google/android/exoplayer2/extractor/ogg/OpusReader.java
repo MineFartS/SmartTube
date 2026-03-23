@@ -26,16 +26,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * {@link StreamReader} to extract Opus data out of Ogg byte stream.
- */
+/** {@link StreamReader} to extract Opus data out of Ogg byte stream. */
 /* package */ final class OpusReader extends StreamReader {
 
   private static final int DEFAULT_SEEK_PRE_ROLL_SAMPLES = 3840;
 
-  /**
-   * Opus streams are always decoded at 48000 Hz.
-   */
+  /** Opus streams are always decoded at 48000 Hz. */
   private static final int SAMPLE_RATE = 48000;
 
   private static final int OPUS_CODE = Util.getIntegerCodeForString("Opus");
@@ -77,9 +73,19 @@ import java.util.List;
       putNativeOrderLong(initializationData, preskip);
       putNativeOrderLong(initializationData, DEFAULT_SEEK_PRE_ROLL_SAMPLES);
 
-      setupData.format = Format.createAudioSampleFormat(null, MimeTypes.AUDIO_OPUS, null,
-          Format.NO_VALUE, Format.NO_VALUE, channelCount, SAMPLE_RATE, initializationData, null, 0,
-          null);
+      setupData.format =
+          Format.createAudioSampleFormat(
+              null,
+              MimeTypes.AUDIO_OPUS,
+              null,
+              Format.NO_VALUE,
+              Format.NO_VALUE,
+              channelCount,
+              SAMPLE_RATE,
+              initializationData,
+              null,
+              0,
+              null);
       headerRead = true;
     } else {
       boolean headerPacket = packet.readInt() == OPUS_CODE;

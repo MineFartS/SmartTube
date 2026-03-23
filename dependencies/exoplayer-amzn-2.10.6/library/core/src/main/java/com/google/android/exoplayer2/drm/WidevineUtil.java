@@ -15,18 +15,17 @@
  */
 package com.google.android.exoplayer2.drm;
 
-import androidx.annotation.Nullable;
 import android.util.Pair;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import java.util.Map;
 
-/**
- * Utility methods for Widevine.
- */
+/** Utility methods for Widevine. */
 public final class WidevineUtil {
 
   /** Widevine specific key status field name for the remaining license duration, in seconds. */
   public static final String PROPERTY_LICENSE_DURATION_REMAINING = "LicenseDurationRemaining";
+
   /** Widevine specific key status field name for the remaining playback duration, in seconds. */
   public static final String PROPERTY_PLAYBACK_DURATION_REMAINING = "PlaybackDurationRemaining";
 
@@ -45,7 +44,8 @@ public final class WidevineUtil {
     if (keyStatus == null) {
       return null;
     }
-    return new Pair<>(getDurationRemainingSec(keyStatus, PROPERTY_LICENSE_DURATION_REMAINING),
+    return new Pair<>(
+        getDurationRemainingSec(keyStatus, PROPERTY_LICENSE_DURATION_REMAINING),
         getDurationRemainingSec(keyStatus, PROPERTY_PLAYBACK_DURATION_REMAINING));
   }
 
@@ -62,5 +62,4 @@ public final class WidevineUtil {
     }
     return C.TIME_UNSET;
   }
-
 }

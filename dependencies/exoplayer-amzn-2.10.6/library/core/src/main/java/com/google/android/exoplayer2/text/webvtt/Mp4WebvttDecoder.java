@@ -24,9 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * A {@link SimpleSubtitleDecoder} for Webvtt embedded in a Mp4 container file.
- */
+/** A {@link SimpleSubtitleDecoder} for Webvtt embedded in a Mp4 container file. */
 public final class Mp4WebvttDecoder extends SimpleSubtitleDecoder {
 
   private static final int BOX_HEADER_SIZE = 8;
@@ -67,8 +65,9 @@ public final class Mp4WebvttDecoder extends SimpleSubtitleDecoder {
     return new Mp4WebvttSubtitle(resultingCueList);
   }
 
-  private static Cue parseVttCueBox(ParsableByteArray sampleData, WebvttCue.Builder builder,
-        int remainingCueBoxBytes) throws SubtitleDecoderException {
+  private static Cue parseVttCueBox(
+      ParsableByteArray sampleData, WebvttCue.Builder builder, int remainingCueBoxBytes)
+      throws SubtitleDecoderException {
     builder.reset();
     while (remainingCueBoxBytes > 0) {
       if (remainingCueBoxBytes < BOX_HEADER_SIZE) {
@@ -92,5 +91,4 @@ public final class Mp4WebvttDecoder extends SimpleSubtitleDecoder {
     }
     return builder.build();
   }
-
 }

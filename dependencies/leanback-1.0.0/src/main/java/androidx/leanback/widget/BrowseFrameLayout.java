@@ -20,135 +20,120 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
-/**
- * A ViewGroup for managing focus behavior between overlapping views.
- */
+/** A ViewGroup for managing focus behavior between overlapping views. */
 public class BrowseFrameLayout extends FrameLayout {
 
+  /**
+   * Interface for selecting a focused view in a BrowseFrameLayout when the system focus finder
+   * couldn't find a view to focus.
+   */
+  public interface OnFocusSearchListener {
     /**
-     * Interface for selecting a focused view in a BrowseFrameLayout when the system focus finder
-     * couldn't find a view to focus.
+     * Returns the view where focus should be requested given the current focused view and the
+     * direction of focus search.
      */
-    public interface OnFocusSearchListener {
-        /**
-         * Returns the view where focus should be requested given the current focused view and
-         * the direction of focus search.
-         */
-        View onFocusSearch(View focused, int direction);
-    }
+    View onFocusSearch(View focused, int direction);
+  }
 
+  /** Interface for managing child focus in a BrowseFrameLayout. */
+  public interface OnChildFocusListener {
     /**
-     * Interface for managing child focus in a BrowseFrameLayout.
+     * See {@link android.view.ViewGroup#onRequestFocusInDescendants( int, android.graphics.Rect)}.
+     *
+     * @return True if handled by listener, otherwise returns {@link
+     *     android.view.ViewGroup#onRequestFocusInDescendants(int, android.graphics.Rect)}.
      */
-    public interface OnChildFocusListener {
-        /**
-         * See {@link android.view.ViewGroup#onRequestFocusInDescendants(
-         * int, android.graphics.Rect)}.
-         * @return True if handled by listener, otherwise returns {@link
-         * android.view.ViewGroup#onRequestFocusInDescendants(int, android.graphics.Rect)}.
-         */
-        boolean onRequestFocusInDescendants(int direction,
-                Rect previouslyFocusedRect);
-        /**
-         * See {@link android.view.ViewGroup#requestChildFocus(
-         * android.view.View, android.view.View)}.
-         */
-        void onRequestChildFocus(View child, View focused);
-    }
-
-    public BrowseFrameLayout(Context context) {
-        this(context, null, 0);
-    }
-
-    public BrowseFrameLayout(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public BrowseFrameLayout(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-    }
-
-    private OnFocusSearchListener mListener;
-    private OnChildFocusListener mOnChildFocusListener;
-    private OnKeyListener mOnDispatchKeyListener;
+    boolean onRequestFocusInDescendants(int direction, Rect previouslyFocusedRect);
 
     /**
-     * Sets a {@link OnFocusSearchListener}.
+     * See {@link android.view.ViewGroup#requestChildFocus( android.view.View, android.view.View)}.
      */
-    public void setOnFocusSearchListener(OnFocusSearchListener listener) {
-        mListener = listener;
-    }
+    void onRequestChildFocus(View child, View focused);
+  }
 
-    /**
-     * Returns the {@link OnFocusSearchListener}.
-     */
-    public OnFocusSearchListener getOnFocusSearchListener() {
-        return mListener;
-    }
+  public BrowseFrameLayout(Context context) {
+    this(context, null, 0);
+  }
 
-    /**
-     * Sets a {@link OnChildFocusListener}.
-     */
-    public void setOnChildFocusListener(OnChildFocusListener listener) {
-        mOnChildFocusListener = listener;
-    }
+  public BrowseFrameLayout(Context context, AttributeSet attrs) {
+    this(context, attrs, 0);
+  }
 
-    /**
-     * Returns the {@link OnChildFocusListener}.
-     */
-    public OnChildFocusListener getOnChildFocusListener() {
-        return mOnChildFocusListener;
-    }
+  public BrowseFrameLayout(Context context, AttributeSet attrs, int defStyle) {
+    super(context, attrs, defStyle);
+  }
 
-    @Override
-    protected boolean onRequestFocusInDescendants(int direction,
-            Rect previouslyFocusedRect) {
-        if (mOnChildFocusListener != null) {
-            if (mOnChildFocusListener.onRequestFocusInDescendants(direction,
-                    previouslyFocusedRect)) {
-                return true;
-            }
-        }
-        return super.onRequestFocusInDescendants(direction, previouslyFocusedRect);
-    }
+  private OnFocusSearchListener mListener;
+  private OnChildFocusListener mOnChildFocusListener;
+  private OnKeyListener mOnDispatchKeyListener;
 
-    @Override
-    public View focusSearch(View focused, int direction) {
-        if (mListener != null) {
-            View view = mListener.onFocusSearch(focused, direction);
-            if (view != null) {
-                return view;
-            }
-        }
-        return super.focusSearch(focused, direction);
-    }
+  /** Sets a {@link OnFocusSearchListener}. */
+  public void setOnFocusSearchListener(OnFocusSearchListener listener) {
+    mListener = listener;
+  }
 
-    @Override
-    public void requestChildFocus(View child, View focused) {
-        if (mOnChildFocusListener != null) {
-            mOnChildFocusListener.onRequestChildFocus(child, focused);
-        }
-        super.requestChildFocus(child, focused);
-    }
+  /** Returns the {@link OnFocusSearchListener}. */
+  public OnFocusSearchListener getOnFocusSearchListener() {
+    return mListener;
+  }
 
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        boolean consumed = super.dispatchKeyEvent(event);
-        if (mOnDispatchKeyListener != null) {
-            if (!consumed) {
-                return mOnDispatchKeyListener.onKey(getRootView(), event.getKeyCode(), event);
-            }
-        }
-        return consumed;
-    }
+  /** Sets a {@link OnChildFocusListener}. */
+  public void setOnChildFocusListener(OnChildFocusListener listener) {
+    mOnChildFocusListener = listener;
+  }
 
-    /**
-     * Sets the {@link android.view.View.OnKeyListener} on this view. This listener would fire
-     * only for unhandled {@link KeyEvent}s. We need to provide an external key listener to handle
-     * back button clicks when we are in full screen video mode because
-     * {@link View#setOnKeyListener(OnKeyListener)} doesn't fire as the focus is not on this view.
-     */
-    public void setOnDispatchKeyListener(OnKeyListener listener) {
-        this.mOnDispatchKeyListener = listener;
+  /** Returns the {@link OnChildFocusListener}. */
+  public OnChildFocusListener getOnChildFocusListener() {
+    return mOnChildFocusListener;
+  }
+
+  @Override
+  protected boolean onRequestFocusInDescendants(int direction, Rect previouslyFocusedRect) {
+    if (mOnChildFocusListener != null) {
+      if (mOnChildFocusListener.onRequestFocusInDescendants(direction, previouslyFocusedRect)) {
+        return true;
+      }
     }
+    return super.onRequestFocusInDescendants(direction, previouslyFocusedRect);
+  }
+
+  @Override
+  public View focusSearch(View focused, int direction) {
+    if (mListener != null) {
+      View view = mListener.onFocusSearch(focused, direction);
+      if (view != null) {
+        return view;
+      }
+    }
+    return super.focusSearch(focused, direction);
+  }
+
+  @Override
+  public void requestChildFocus(View child, View focused) {
+    if (mOnChildFocusListener != null) {
+      mOnChildFocusListener.onRequestChildFocus(child, focused);
+    }
+    super.requestChildFocus(child, focused);
+  }
+
+  @Override
+  public boolean dispatchKeyEvent(KeyEvent event) {
+    boolean consumed = super.dispatchKeyEvent(event);
+    if (mOnDispatchKeyListener != null) {
+      if (!consumed) {
+        return mOnDispatchKeyListener.onKey(getRootView(), event.getKeyCode(), event);
+      }
+    }
+    return consumed;
+  }
+
+  /**
+   * Sets the {@link android.view.View.OnKeyListener} on this view. This listener would fire only
+   * for unhandled {@link KeyEvent}s. We need to provide an external key listener to handle back
+   * button clicks when we are in full screen video mode because {@link
+   * View#setOnKeyListener(OnKeyListener)} doesn't fire as the focus is not on this view.
+   */
+  public void setOnDispatchKeyListener(OnKeyListener listener) {
+    this.mOnDispatchKeyListener = listener;
+  }
 }

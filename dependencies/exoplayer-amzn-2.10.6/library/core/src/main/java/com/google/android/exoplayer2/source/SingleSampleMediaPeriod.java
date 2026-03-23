@@ -37,15 +37,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * A {@link MediaPeriod} with a single sample.
- */
-/* package */ final class SingleSampleMediaPeriod implements MediaPeriod,
-    Loader.Callback<SingleSampleMediaPeriod.SourceLoadable>  {
+/** A {@link MediaPeriod} with a single sample. */
+/* package */ final class SingleSampleMediaPeriod
+    implements MediaPeriod, Loader.Callback<SingleSampleMediaPeriod.SourceLoadable> {
 
-  /**
-   * The initial size of the allocation used to hold the sample data.
-   */
+  /** The initial size of the allocation used to hold the sample data. */
   private static final int INITIAL_SAMPLE_SIZE = 1024;
 
   private final DataSpec dataSpec;
@@ -112,8 +108,12 @@ import java.util.Arrays;
   }
 
   @Override
-  public long selectTracks(TrackSelection[] selections, boolean[] mayRetainStreamFlags,
-      SampleStream[] streams, boolean[] streamResetFlags, long positionUs) {
+  public long selectTracks(
+      TrackSelection[] selections,
+      boolean[] mayRetainStreamFlags,
+      SampleStream[] streams,
+      boolean[] streamResetFlags,
+      long positionUs) {
     for (int i = 0; i < selections.length; i++) {
       if (streams[i] != null && (selections[i] == null || !mayRetainStreamFlags[i])) {
         sampleStreams.remove(streams[i]);
@@ -201,8 +201,8 @@ import java.util.Arrays;
   // Loader.Callback implementation.
 
   @Override
-  public void onLoadCompleted(SourceLoadable loadable, long elapsedRealtimeMs,
-      long loadDurationMs) {
+  public void onLoadCompleted(
+      SourceLoadable loadable, long elapsedRealtimeMs, long loadDurationMs) {
     sampleSize = (int) loadable.dataSource.getBytesRead();
     sampleData = loadable.sampleData;
     loadingFinished = true;
@@ -224,8 +224,8 @@ import java.util.Arrays;
   }
 
   @Override
-  public void onLoadCanceled(SourceLoadable loadable, long elapsedRealtimeMs, long loadDurationMs,
-      boolean released) {
+  public void onLoadCanceled(
+      SourceLoadable loadable, long elapsedRealtimeMs, long loadDurationMs, boolean released) {
     eventDispatcher.loadCanceled(
         loadable.dataSpec,
         loadable.dataSource.getLastOpenedUri(),
@@ -314,8 +314,8 @@ import java.util.Arrays;
     }
 
     @Override
-    public int readData(FormatHolder formatHolder, DecoderInputBuffer buffer,
-        boolean requireFormat) {
+    public int readData(
+        FormatHolder formatHolder, DecoderInputBuffer buffer, boolean requireFormat) {
       maybeNotifyDownstreamFormat();
       if (streamState == STREAM_STATE_END_OF_STREAM) {
         buffer.addFlag(C.BUFFER_FLAG_END_OF_STREAM);
@@ -405,7 +405,5 @@ import java.util.Arrays;
         Util.closeQuietly(dataSource);
       }
     }
-
   }
-
 }

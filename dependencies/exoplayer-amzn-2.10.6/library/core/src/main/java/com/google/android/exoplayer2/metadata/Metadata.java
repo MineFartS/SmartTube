@@ -24,9 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.checkerframework.checker.nullness.compatqual.NullableType;
 
-/**
- * A collection of metadata entries.
- */
+/** A collection of metadata entries. */
 public final class Metadata implements Parcelable {
 
   /** A metadata entry. */
@@ -79,9 +77,7 @@ public final class Metadata implements Parcelable {
     }
   }
 
-  /**
-   * Returns the number of metadata entries.
-   */
+  /** Returns the number of metadata entries. */
   public int length() {
     return entries.length;
   }

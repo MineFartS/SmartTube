@@ -23,9 +23,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.util.Arrays;
 
-/**
- * An {@link ExtractorInput} that wraps a {@link DataSource}.
- */
+/** An {@link ExtractorInput} that wraps a {@link DataSource}. */
 public final class DefaultExtractorInput implements ExtractorInput {
 
   private static final int PEEK_MIN_FREE_SPACE_AFTER_RESIZE = 64 * 1024;
@@ -132,8 +130,8 @@ public final class DefaultExtractorInput implements ExtractorInput {
     ensureSpaceForPeek(length);
     int bytesPeeked = peekBufferLength - peekBufferPosition;
     while (bytesPeeked < length) {
-      bytesPeeked = readFromDataSource(peekBuffer, peekBufferPosition, length, bytesPeeked,
-          allowEndOfInput);
+      bytesPeeked =
+          readFromDataSource(peekBuffer, peekBufferPosition, length, bytesPeeked, allowEndOfInput);
       if (bytesPeeked == C.RESULT_END_OF_INPUT) {
         return false;
       }
@@ -182,8 +180,11 @@ public final class DefaultExtractorInput implements ExtractorInput {
   private void ensureSpaceForPeek(int length) {
     int requiredLength = peekBufferPosition + length;
     if (requiredLength > peekBuffer.length) {
-      int newPeekCapacity = Util.constrainValue(peekBuffer.length * 2,
-          requiredLength + PEEK_MIN_FREE_SPACE_AFTER_RESIZE, requiredLength + PEEK_MAX_FREE_SPACE);
+      int newPeekCapacity =
+          Util.constrainValue(
+              peekBuffer.length * 2,
+              requiredLength + PEEK_MIN_FREE_SPACE_AFTER_RESIZE,
+              requiredLength + PEEK_MAX_FREE_SPACE);
       peekBuffer = Arrays.copyOf(peekBuffer, newPeekCapacity);
     }
   }
@@ -244,16 +245,17 @@ public final class DefaultExtractorInput implements ExtractorInput {
    * @param allowEndOfInput True if encountering the end of the input having read no data is
    *     allowed, and should result in {@link C#RESULT_END_OF_INPUT} being returned. False if it
    *     should be considered an error, causing an {@link EOFException} to be thrown.
-   * @return The total number of bytes read so far, or {@link C#RESULT_END_OF_INPUT} if
-   *     {@code allowEndOfInput} is true and the input has ended having read no bytes.
+   * @return The total number of bytes read so far, or {@link C#RESULT_END_OF_INPUT} if {@code
+   *     allowEndOfInput} is true and the input has ended having read no bytes.
    * @throws EOFException If the end of input was encountered having partially satisfied the read
    *     (i.e. having read at least one byte, but fewer than {@code length}), or if no bytes were
    *     read and {@code allowEndOfInput} is false.
    * @throws IOException If an error occurs reading from the input.
    * @throws InterruptedException If the thread is interrupted.
    */
-  private int readFromDataSource(byte[] target, int offset, int length, int bytesAlreadyRead,
-      boolean allowEndOfInput) throws InterruptedException, IOException {
+  private int readFromDataSource(
+      byte[] target, int offset, int length, int bytesAlreadyRead, boolean allowEndOfInput)
+      throws InterruptedException, IOException {
     if (Thread.interrupted()) {
       throw new InterruptedException();
     }
@@ -277,5 +279,4 @@ public final class DefaultExtractorInput implements ExtractorInput {
       position += bytesRead;
     }
   }
-
 }

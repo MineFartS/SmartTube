@@ -3,62 +3,62 @@ package com.liskovsoft.googlecommon.common.models.auth;
 import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
 
 /**
- * Manual: https://developers.google.com/identity/protocols/oauth2/limited-input-device#success-response
+ * Manual:
+ * https://developers.google.com/identity/protocols/oauth2/limited-input-device#success-response
  */
 public class UserCode {
-    /**
-     * Example: AH-1Ng1K8lBZcrMezwnEzpZ23VwfE8Hn7HEuNL-GbQIMYrSZhBF1j3KZ-h47-bqBB4rC6-W9xG2WHM67ZGttecz_ALOZ-JoxDQ
-     */
-    @JsonPath("$.device_code")
-    private String mDeviceCode;
+  /**
+   * Example:
+   * AH-1Ng1K8lBZcrMezwnEzpZ23VwfE8Hn7HEuNL-GbQIMYrSZhBF1j3KZ-h47-bqBB4rC6-W9xG2WHM67ZGttecz_ALOZ-JoxDQ
+   */
+  @JsonPath("$.device_code")
+  private String mDeviceCode;
 
-    /**
-     * Code to enter into the browser page at mVerificationUrl<br/>
-     * Example: XWY-QRL-MNH
-     */
-    @JsonPath("$.user_code")
-    private String mUserCode;
+  /**
+   * Code to enter into the browser page at mVerificationUrl<br>
+   * Example: XWY-QRL-MNH
+   */
+  @JsonPath("$.user_code")
+  private String mUserCode;
 
-    @JsonPath("$.expires_in")
-    private int mExpiresIn;
+  @JsonPath("$.expires_in")
+  private int mExpiresIn;
 
-    /**
-     * In seconds to poll the server
-     */
-    @JsonPath("$.interval")
-    private int mInterval;
-    
-    @JsonPath("$.verification_url")
-    private String mVerificationUrl;
+  /** In seconds to poll the server */
+  @JsonPath("$.interval")
+  private int mInterval;
 
-    private String mUserCodePretty;
+  @JsonPath("$.verification_url")
+  private String mVerificationUrl;
 
-    public String getDeviceCode() {
-        return mDeviceCode;
+  private String mUserCodePretty;
+
+  public String getDeviceCode() {
+    return mDeviceCode;
+  }
+
+  public String getUserCode() {
+    if (mUserCode == null) {
+      return null;
     }
 
-    public String getUserCode() {
-        if (mUserCode == null) {
-            return null;
-        }
-
-        // Make code more readable by removing unused characters
-        if (mUserCodePretty == null) {
-            mUserCodePretty = mUserCode.replace("-", " ");
-        }
-
-        return mUserCodePretty;
+    // Make code more readable by removing unused characters
+    if (mUserCodePretty == null) {
+      mUserCodePretty = mUserCode.replace("-", " ");
     }
 
-    public String getVerificationUrl() {
-        return mVerificationUrl;
-    }
+    return mUserCodePretty;
+  }
 
-    public int getInterval() {
-        return mInterval;
-    }
+  public String getVerificationUrl() {
+    return mVerificationUrl;
+  }
 
-    public int getExpiresIn() {
-        return mExpiresIn;
-    }
+  public int getInterval() {
+    return mInterval;
+  }
+
+  public int getExpiresIn() {
+    return mExpiresIn;
+  }
 }

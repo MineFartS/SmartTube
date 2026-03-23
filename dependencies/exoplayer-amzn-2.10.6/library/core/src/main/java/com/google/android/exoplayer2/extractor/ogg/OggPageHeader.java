@@ -23,21 +23,20 @@ import com.google.android.exoplayer2.util.Util;
 import java.io.EOFException;
 import java.io.IOException;
 
-/**
- * Data object to store header information.
- */
-/* package */  final class OggPageHeader {
+/** Data object to store header information. */
+/* package */ final class OggPageHeader {
 
   public static final int EMPTY_PAGE_HEADER_SIZE = 27;
   public static final int MAX_SEGMENT_COUNT = 255;
   public static final int MAX_PAGE_PAYLOAD = 255 * 255;
-  public static final int MAX_PAGE_SIZE = EMPTY_PAGE_HEADER_SIZE + MAX_SEGMENT_COUNT
-      + MAX_PAGE_PAYLOAD;
+  public static final int MAX_PAGE_SIZE =
+      EMPTY_PAGE_HEADER_SIZE + MAX_SEGMENT_COUNT + MAX_PAGE_PAYLOAD;
 
   private static final int TYPE_OGGS = Util.getIntegerCodeForString("OggS");
 
   public int revision;
   public int type;
+
   /**
    * The absolute granule position of the page. This is the total number of samples from the start
    * of the file up to the <em>end</em> of the page. Samples partially in the page that continue on
@@ -51,17 +50,16 @@ import java.io.IOException;
   public int pageSegmentCount;
   public int headerSize;
   public int bodySize;
+
   /**
-   * Be aware that {@code laces.length} is always {@link #MAX_SEGMENT_COUNT}. Instead use
-   * {@link #pageSegmentCount} to iterate.
+   * Be aware that {@code laces.length} is always {@link #MAX_SEGMENT_COUNT}. Instead use {@link
+   * #pageSegmentCount} to iterate.
    */
   public final int[] laces = new int[MAX_SEGMENT_COUNT];
 
   private final ParsableByteArray scratch = new ParsableByteArray(MAX_SEGMENT_COUNT);
 
-  /**
-   * Resets all primitive member fields to zero.
-   */
+  /** Resets all primitive member fields to zero. */
   public void reset() {
     revision = 0;
     type = 0;
@@ -89,8 +87,9 @@ import java.io.IOException;
       throws IOException, InterruptedException {
     scratch.reset();
     reset();
-    boolean hasEnoughBytes = input.getLength() == C.LENGTH_UNSET
-        || input.getLength() - input.getPeekPosition() >= EMPTY_PAGE_HEADER_SIZE;
+    boolean hasEnoughBytes =
+        input.getLength() == C.LENGTH_UNSET
+            || input.getLength() - input.getPeekPosition() >= EMPTY_PAGE_HEADER_SIZE;
     if (!hasEnoughBytes || !input.peekFully(scratch.data, 0, EMPTY_PAGE_HEADER_SIZE, true)) {
       if (quiet) {
         return false;

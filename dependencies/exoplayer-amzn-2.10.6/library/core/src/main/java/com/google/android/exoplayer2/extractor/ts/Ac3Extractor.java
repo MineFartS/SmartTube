@@ -30,9 +30,7 @@ import com.google.android.exoplayer2.util.ParsableByteArray;
 import com.google.android.exoplayer2.util.Util;
 import java.io.IOException;
 
-/**
- * Extracts data from (E-)AC-3 bitstreams.
- */
+/** Extracts data from (E-)AC-3 bitstreams. */
 public final class Ac3Extractor implements Extractor {
 
   /** Factory for {@link Ac3Extractor} instances. */
@@ -43,6 +41,7 @@ public final class Ac3Extractor implements Extractor {
    * up.
    */
   private static final int MAX_SNIFF_BYTES = 8 * 1024;
+
   private static final int AC3_SYNC_WORD = 0x0B77;
   private static final int MAX_SYNC_FRAME_SIZE = 2786;
   private static final int ID3_TAG = Util.getIntegerCodeForString("ID3");
@@ -129,8 +128,8 @@ public final class Ac3Extractor implements Extractor {
   }
 
   @Override
-  public int read(ExtractorInput input, PositionHolder seekPosition) throws IOException,
-      InterruptedException {
+  public int read(ExtractorInput input, PositionHolder seekPosition)
+      throws IOException, InterruptedException {
     int bytesRead = input.read(sampleData.data, 0, MAX_SYNC_FRAME_SIZE);
     if (bytesRead == C.RESULT_END_OF_INPUT) {
       return RESULT_END_OF_INPUT;
@@ -150,5 +149,4 @@ public final class Ac3Extractor implements Extractor {
     reader.consume(sampleData);
     return RESULT_CONTINUE;
   }
-
 }

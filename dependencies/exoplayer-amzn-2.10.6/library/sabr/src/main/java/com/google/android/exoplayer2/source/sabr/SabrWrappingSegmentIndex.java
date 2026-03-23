@@ -19,8 +19,8 @@ import com.google.android.exoplayer2.extractor.ChunkIndex;
 import com.google.android.exoplayer2.source.sabr.manifest.RangedUri;
 
 /**
- * An implementation of {@link SabrSegmentIndex} that wraps a {@link ChunkIndex} parsed from a
- * media stream.
+ * An implementation of {@link SabrSegmentIndex} that wraps a {@link ChunkIndex} parsed from a media
+ * stream.
  */
 public final class SabrWrappingSegmentIndex implements SabrSegmentIndex {
 
@@ -71,5 +71,4 @@ public final class SabrWrappingSegmentIndex implements SabrSegmentIndex {
   public boolean isExplicit() {
     return true;
   }
-
 }

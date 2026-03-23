@@ -19,8 +19,8 @@ import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
 import android.net.Uri;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import java.io.EOFException;
 import java.io.FileInputStream;
@@ -36,9 +36,7 @@ import java.io.InputStream;
  */
 public final class RawResourceDataSource extends BaseDataSource {
 
-  /**
-   * Thrown when an {@link IOException} is encountered reading from a raw resource.
-   */
+  /** Thrown when an {@link IOException} is encountered reading from a raw resource. */
   public static class RawResourceDataSourceException extends IOException {
     public RawResourceDataSourceException(String message) {
       super(message);
@@ -122,8 +120,10 @@ public final class RawResourceDataSource extends BaseDataSource {
       } else {
         long assetFileDescriptorLength = assetFileDescriptor.getLength();
         // If the length is UNKNOWN_LENGTH then the asset extends to the end of the file.
-        bytesRemaining = assetFileDescriptorLength == AssetFileDescriptor.UNKNOWN_LENGTH
-            ? C.LENGTH_UNSET : (assetFileDescriptorLength - dataSpec.position);
+        bytesRemaining =
+            assetFileDescriptorLength == AssetFileDescriptor.UNKNOWN_LENGTH
+                ? C.LENGTH_UNSET
+                : (assetFileDescriptorLength - dataSpec.position);
       }
     } catch (IOException e) {
       throw new RawResourceDataSourceException(e);
@@ -145,8 +145,10 @@ public final class RawResourceDataSource extends BaseDataSource {
 
     int bytesRead;
     try {
-      int bytesToRead = bytesRemaining == C.LENGTH_UNSET ? readLength
-          : (int) Math.min(bytesRemaining, readLength);
+      int bytesToRead =
+          bytesRemaining == C.LENGTH_UNSET
+              ? readLength
+              : (int) Math.min(bytesRemaining, readLength);
       bytesRead = inputStream.read(buffer, offset, bytesToRead);
     } catch (IOException e) {
       throw new RawResourceDataSourceException(e);
@@ -198,5 +200,4 @@ public final class RawResourceDataSource extends BaseDataSource {
       }
     }
   }
-
 }

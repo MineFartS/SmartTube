@@ -29,12 +29,12 @@ import java.util.regex.Pattern;
   /* package */ static final String COMMON_SUFFIX = ".exo";
 
   private static final String SUFFIX = ".v3" + COMMON_SUFFIX;
-  private static final Pattern CACHE_FILE_PATTERN_V1 = Pattern.compile(
-      "^(.+)\\.(\\d+)\\.(\\d+)\\.v1\\.exo$", Pattern.DOTALL);
-  private static final Pattern CACHE_FILE_PATTERN_V2 = Pattern.compile(
-      "^(.+)\\.(\\d+)\\.(\\d+)\\.v2\\.exo$", Pattern.DOTALL);
-  private static final Pattern CACHE_FILE_PATTERN_V3 = Pattern.compile(
-      "^(\\d+)\\.(\\d+)\\.(\\d+)\\.v3\\.exo$", Pattern.DOTALL);
+  private static final Pattern CACHE_FILE_PATTERN_V1 =
+      Pattern.compile("^(.+)\\.(\\d+)\\.(\\d+)\\.v1\\.exo$", Pattern.DOTALL);
+  private static final Pattern CACHE_FILE_PATTERN_V2 =
+      Pattern.compile("^(.+)\\.(\\d+)\\.(\\d+)\\.v2\\.exo$", Pattern.DOTALL);
+  private static final Pattern CACHE_FILE_PATTERN_V3 =
+      Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+)\\.v3\\.exo$", Pattern.DOTALL);
 
   /**
    * Returns a new {@link File} instance from {@code cacheDir}, {@code id}, {@code position}, {@code
@@ -174,8 +174,12 @@ import java.util.regex.Pattern;
       key = matcher.group(1); // Keys were not escaped in version 1.
     }
 
-    File newCacheFile = getCacheFile(file.getParentFile(), index.assignIdForKey(key),
-        Long.parseLong(matcher.group(2)), Long.parseLong(matcher.group(3)));
+    File newCacheFile =
+        getCacheFile(
+            file.getParentFile(),
+            index.assignIdForKey(key),
+            Long.parseLong(matcher.group(2)),
+            Long.parseLong(matcher.group(3)));
     if (!file.renameTo(newCacheFile)) {
       return null;
     }
@@ -208,5 +212,4 @@ import java.util.regex.Pattern;
     Assertions.checkState(isCached);
     return new SimpleCacheSpan(key, position, length, lastTouchTimestamp, file);
   }
-
 }

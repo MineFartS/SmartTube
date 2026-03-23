@@ -60,22 +60,27 @@ public abstract class NoSampleRenderer implements Renderer, RendererCapabilities
 
   /**
    * Replaces the {@link SampleStream} that will be associated with this renderer.
-   * <p>
-   * This method may be called when the renderer is in the following states:
-   * {@link #STATE_DISABLED}.
+   *
+   * <p>This method may be called when the renderer is in the following states: {@link
+   * #STATE_DISABLED}.
    *
    * @param configuration The renderer configuration.
    * @param formats The enabled formats. Should be empty.
    * @param stream The {@link SampleStream} from which the renderer should consume.
    * @param positionUs The player's current position.
    * @param joining Whether this renderer is being enabled to join an ongoing playback.
-   * @param offsetUs The offset that should be subtracted from {@code positionUs}
-   *     to get the playback position with respect to the media.
+   * @param offsetUs The offset that should be subtracted from {@code positionUs} to get the
+   *     playback position with respect to the media.
    * @throws ExoPlaybackException If an error occurs.
    */
   @Override
-  public final void enable(RendererConfiguration configuration, Format[] formats,
-      SampleStream stream, long positionUs, boolean joining, long offsetUs)
+  public final void enable(
+      RendererConfiguration configuration,
+      Format[] formats,
+      SampleStream stream,
+      long positionUs,
+      boolean joining,
+      long offsetUs)
       throws ExoPlaybackException {
     Assertions.checkState(state == STATE_DISABLED);
     this.configuration = configuration;
@@ -94,14 +99,14 @@ public abstract class NoSampleRenderer implements Renderer, RendererCapabilities
 
   /**
    * Replaces the {@link SampleStream} that will be associated with this renderer.
-   * <p>
-   * This method may be called when the renderer is in the following states:
-   * {@link #STATE_ENABLED}, {@link #STATE_STARTED}.
+   *
+   * <p>This method may be called when the renderer is in the following states: {@link
+   * #STATE_ENABLED}, {@link #STATE_STARTED}.
    *
    * @param formats The enabled formats. Should be empty.
    * @param stream The {@link SampleStream} to be associated with this renderer.
-   * @param offsetUs The offset that should be subtracted from {@code positionUs} in
-   *     {@link #render(long, long)} to get the playback position with respect to the media.
+   * @param offsetUs The offset that should be subtracted from {@code positionUs} in {@link
+   *     #render(long, long)} to get the playback position with respect to the media.
    * @throws ExoPlaybackException If an error occurs.
    */
   @Override
@@ -138,8 +143,7 @@ public abstract class NoSampleRenderer implements Renderer, RendererCapabilities
   }
 
   @Override
-  public final void maybeThrowStreamError() throws IOException {
-  }
+  public final void maybeThrowStreamError() throws IOException {}
 
   @Override
   public final void resetPosition(long positionUs) throws ExoPlaybackException {
@@ -202,8 +206,8 @@ public abstract class NoSampleRenderer implements Renderer, RendererCapabilities
 
   /**
    * Called when the renderer is enabled.
-   * <p>
-   * The default implementation is a no-op.
+   *
+   * <p>The default implementation is a no-op.
    *
    * @param joining Whether this renderer is being enabled to join an ongoing playback.
    * @throws ExoPlaybackException If an error occurs.
@@ -214,11 +218,11 @@ public abstract class NoSampleRenderer implements Renderer, RendererCapabilities
 
   /**
    * Called when the renderer's offset has been changed.
-   * <p>
-   * The default implementation is a no-op.
    *
-   * @param offsetUs The offset that should be subtracted from {@code positionUs} in
-   *     {@link #render(long, long)} to get the playback position with respect to the media.
+   * <p>The default implementation is a no-op.
+   *
+   * @param offsetUs The offset that should be subtracted from {@code positionUs} in {@link
+   *     #render(long, long)} to get the playback position with respect to the media.
    * @throws ExoPlaybackException If an error occurs.
    */
   protected void onRendererOffsetChanged(long offsetUs) throws ExoPlaybackException {
@@ -226,11 +230,11 @@ public abstract class NoSampleRenderer implements Renderer, RendererCapabilities
   }
 
   /**
-   * Called when the position is reset. This occurs when the renderer is enabled after
-   * {@link #onRendererOffsetChanged(long)} has been called, and also when a position
-   * discontinuity is encountered.
-   * <p>
-   * The default implementation is a no-op.
+   * Called when the position is reset. This occurs when the renderer is enabled after {@link
+   * #onRendererOffsetChanged(long)} has been called, and also when a position discontinuity is
+   * encountered.
+   *
+   * <p>The default implementation is a no-op.
    *
    * @param positionUs The new playback position in microseconds.
    * @param joining Whether this renderer is being enabled to join an ongoing playback.
@@ -242,8 +246,8 @@ public abstract class NoSampleRenderer implements Renderer, RendererCapabilities
 
   /**
    * Called when the renderer is started.
-   * <p>
-   * The default implementation is a no-op.
+   *
+   * <p>The default implementation is a no-op.
    *
    * @throws ExoPlaybackException If an error occurs.
    */
@@ -253,8 +257,8 @@ public abstract class NoSampleRenderer implements Renderer, RendererCapabilities
 
   /**
    * Called when the renderer is stopped.
-   * <p>
-   * The default implementation is a no-op.
+   *
+   * <p>The default implementation is a no-op.
    *
    * @throws ExoPlaybackException If an error occurs.
    */
@@ -264,8 +268,8 @@ public abstract class NoSampleRenderer implements Renderer, RendererCapabilities
 
   /**
    * Called when the renderer is disabled.
-   * <p>
-   * The default implementation is a no-op.
+   *
+   * <p>The default implementation is a no-op.
    */
   protected void onDisabled() {
     // Do nothing.
@@ -282,18 +286,13 @@ public abstract class NoSampleRenderer implements Renderer, RendererCapabilities
 
   // Methods to be called by subclasses.
 
-  /**
-   * Returns the configuration set when the renderer was most recently enabled.
-   */
+  /** Returns the configuration set when the renderer was most recently enabled. */
   protected final RendererConfiguration getConfiguration() {
     return configuration;
   }
 
-  /**
-   * Returns the index of the renderer within the player.
-   */
+  /** Returns the index of the renderer within the player. */
   protected final int getIndex() {
     return index;
   }
-
 }

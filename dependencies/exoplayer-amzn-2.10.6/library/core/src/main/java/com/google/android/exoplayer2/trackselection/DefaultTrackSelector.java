@@ -19,11 +19,11 @@ import android.content.Context;
 import android.graphics.Point;
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -487,6 +487,7 @@ public class DefaultTrackSelector extends MappingTrackSelector {
       super.setDisabledTextTrackSelectionFlags(disabledTextTrackSelectionFlags);
       return this;
     }
+
     // General
 
     /**
@@ -526,7 +527,9 @@ public class DefaultTrackSelector extends MappingTrackSelector {
       return this;
     }
 
-    /** @deprecated Use {@link #setAllowVideoNonSeamlessAdaptiveness(boolean)} */
+    /**
+     * @deprecated Use {@link #setAllowVideoNonSeamlessAdaptiveness(boolean)}
+     */
     @Deprecated
     public ParametersBuilder setAllowNonSeamlessAdaptiveness(boolean allowNonSeamlessAdaptiveness) {
       return setAllowVideoNonSeamlessAdaptiveness(allowNonSeamlessAdaptiveness);
@@ -681,9 +684,7 @@ public class DefaultTrackSelector extends MappingTrackSelector {
       return this;
     }
 
-    /**
-     * Builds a {@link Parameters} instance with the selected values.
-     */
+    /** Builds a {@link Parameters} instance with the selected values. */
     public Parameters build() {
       return new Parameters(
           // Video
@@ -748,6 +749,7 @@ public class DefaultTrackSelector extends MappingTrackSelector {
      * #viewportHeight} and {@link #viewportOrientationMayChange}) instead.
      */
     public final int maxVideoWidth;
+
     /**
      * Maximum allowed video height in pixels. The default value is {@link Integer#MAX_VALUE} (i.e.
      * no constraint).
@@ -757,22 +759,26 @@ public class DefaultTrackSelector extends MappingTrackSelector {
      * #viewportHeight} and {@link #viewportOrientationMayChange}) instead.
      */
     public final int maxVideoHeight;
+
     /**
      * Maximum allowed video frame rate in hertz. The default value is {@link Integer#MAX_VALUE}
      * (i.e. no constraint).
      */
     public final int maxVideoFrameRate;
+
     /**
      * Maximum allowed video bitrate in bits per second. The default value is {@link
      * Integer#MAX_VALUE} (i.e. no constraint).
      */
     public final int maxVideoBitrate;
+
     /**
      * Whether to exceed the {@link #maxVideoWidth}, {@link #maxVideoHeight} and {@link
      * #maxVideoBitrate} constraints when no selection can be made otherwise. The default value is
      * {@code true}.
      */
     public final boolean exceedVideoConstraintsIfNecessary;
+
     /**
      * Whether to allow adaptive video selections containing mixed MIME types. Adaptations between
      * different MIME types may not be completely seamless, in which case {@link
@@ -780,55 +786,65 @@ public class DefaultTrackSelector extends MappingTrackSelector {
      * selections to be made. The default value is {@code false}.
      */
     public final boolean allowVideoMixedMimeTypeAdaptiveness;
+
     /**
      * Whether to allow adaptive video selections where adaptation may not be completely seamless.
      * The default value is {@code true}.
      */
     public final boolean allowVideoNonSeamlessAdaptiveness;
+
     /**
      * Viewport width in pixels. Constrains video track selections for adaptive content so that only
      * tracks suitable for the viewport are selected. The default value is {@link Integer#MAX_VALUE}
      * (i.e. no constraint).
      */
     public final int viewportWidth;
+
     /**
      * Viewport height in pixels. Constrains video track selections for adaptive content so that
      * only tracks suitable for the viewport are selected. The default value is {@link
      * Integer#MAX_VALUE} (i.e. no constraint).
      */
     public final int viewportHeight;
+
     /**
      * Whether the viewport orientation may change during playback. Constrains video track
      * selections for adaptive content so that only tracks suitable for the viewport are selected.
      * The default value is {@code true}.
      */
     public final boolean viewportOrientationMayChange;
+
     // Audio
     /**
      * Maximum allowed audio channel count. The default value is {@link Integer#MAX_VALUE} (i.e. no
      * constraint).
      */
     public final int maxAudioChannelCount;
+
     /**
      * Maximum allowed audio bitrate in bits per second. The default value is {@link
      * Integer#MAX_VALUE} (i.e. no constraint).
      */
     public final int maxAudioBitrate;
+
     /**
      * Whether to exceed the {@link #maxAudioChannelCount} and {@link #maxAudioBitrate} constraints
      * when no selection can be made otherwise. The default value is {@code true}.
      */
     public final boolean exceedAudioConstraintsIfNecessary;
+
     /**
      * Whether to allow adaptive audio selections containing mixed MIME types. Adaptations between
      * different MIME types may not be completely seamless. The default value is {@code false}.
      */
     public final boolean allowAudioMixedMimeTypeAdaptiveness;
+
     /**
      * Whether to allow adaptive audio selections containing mixed sample rates. Adaptations between
      * different sample rates may not be completely seamless. The default value is {@code false}.
      */
     public final boolean allowAudioMixedSampleRateAdaptiveness;
+
     /**
      * Whether to allow adaptive audio selections containing mixed channel counts. Adaptations
      * between different channel counts may not be completely seamless. The default value is {@code
@@ -842,18 +858,24 @@ public class DefaultTrackSelector extends MappingTrackSelector {
      * with all other constraints. The default value is {@code false}.
      */
     public final boolean forceLowestBitrate;
+
     /**
      * Whether to force selection of the highest bitrate audio and video tracks that comply with all
      * other constraints. The default value is {@code false}.
      */
     public final boolean forceHighestSupportedBitrate;
+
     /**
      * @deprecated Use {@link #allowVideoMixedMimeTypeAdaptiveness} and {@link
      *     #allowAudioMixedMimeTypeAdaptiveness}.
      */
     @Deprecated public final boolean allowMixedMimeAdaptiveness;
-    /** @deprecated Use {@link #allowVideoNonSeamlessAdaptiveness}. */
+
+    /**
+     * @deprecated Use {@link #allowVideoNonSeamlessAdaptiveness}.
+     */
     @Deprecated public final boolean allowNonSeamlessAdaptiveness;
+
     /**
      * Whether to exceed renderer capabilities when no selection can be made otherwise.
      *
@@ -864,6 +886,7 @@ public class DefaultTrackSelector extends MappingTrackSelector {
      * {@code true}.
      */
     public final boolean exceedRendererCapabilitiesIfNecessary;
+
     /**
      * The audio session id to use when tunneling, or {@link C#AUDIO_SESSION_ID_UNSET} if tunneling
      * is disabled. The default value is {@link C#AUDIO_SESSION_ID_UNSET} (i.e. tunneling is
@@ -1374,6 +1397,7 @@ public class DefaultTrackSelector extends MappingTrackSelector {
    * dimension).
    */
   private static final float FRACTION_TO_CONSIDER_FULLSCREEN = 0.98f;
+
   private static final int[] NO_TRACKS = new int[0];
   private static final int WITHIN_RENDERER_CAPABILITIES_BONUS = 1000;
 
@@ -1396,7 +1420,9 @@ public class DefaultTrackSelector extends MappingTrackSelector {
     this(new AdaptiveTrackSelection.Factory(bandwidthMeter));
   }
 
-  /** @param trackSelectionFactory A factory for {@link TrackSelection}s. */
+  /**
+   * @param trackSelectionFactory A factory for {@link TrackSelection}s.
+   */
   public DefaultTrackSelector(TrackSelection.Factory trackSelectionFactory) {
     this.trackSelectionFactory = trackSelectionFactory;
     parametersReference = new AtomicReference<>(Parameters.DEFAULT);
@@ -1437,13 +1463,17 @@ public class DefaultTrackSelector extends MappingTrackSelector {
     return getParameters().buildUpon();
   }
 
-  /** @deprecated Use {@link ParametersBuilder#setRendererDisabled(int, boolean)}. */
+  /**
+   * @deprecated Use {@link ParametersBuilder#setRendererDisabled(int, boolean)}.
+   */
   @Deprecated
   public final void setRendererDisabled(int rendererIndex, boolean disabled) {
     setParameters(buildUponParameters().setRendererDisabled(rendererIndex, disabled));
   }
 
-  /** @deprecated Use {@link Parameters#getRendererDisabled(int)}. * */
+  /**
+   * @deprecated Use {@link Parameters#getRendererDisabled(int)}. *
+   */
   @Deprecated
   public final boolean getRendererDisabled(int rendererIndex) {
     return getParameters().getRendererDisabled(rendererIndex);
@@ -1459,38 +1489,50 @@ public class DefaultTrackSelector extends MappingTrackSelector {
     setParameters(buildUponParameters().setSelectionOverride(rendererIndex, groups, override));
   }
 
-  /** @deprecated Use {@link Parameters#hasSelectionOverride(int, TrackGroupArray)}. * */
+  /**
+   * @deprecated Use {@link Parameters#hasSelectionOverride(int, TrackGroupArray)}. *
+   */
   @Deprecated
   public final boolean hasSelectionOverride(int rendererIndex, TrackGroupArray groups) {
     return getParameters().hasSelectionOverride(rendererIndex, groups);
   }
 
-  /** @deprecated Use {@link Parameters#getSelectionOverride(int, TrackGroupArray)}. */
+  /**
+   * @deprecated Use {@link Parameters#getSelectionOverride(int, TrackGroupArray)}.
+   */
   @Deprecated
   @Nullable
   public final SelectionOverride getSelectionOverride(int rendererIndex, TrackGroupArray groups) {
     return getParameters().getSelectionOverride(rendererIndex, groups);
   }
 
-  /** @deprecated Use {@link ParametersBuilder#clearSelectionOverride(int, TrackGroupArray)}. */
+  /**
+   * @deprecated Use {@link ParametersBuilder#clearSelectionOverride(int, TrackGroupArray)}.
+   */
   @Deprecated
   public final void clearSelectionOverride(int rendererIndex, TrackGroupArray groups) {
     setParameters(buildUponParameters().clearSelectionOverride(rendererIndex, groups));
   }
 
-  /** @deprecated Use {@link ParametersBuilder#clearSelectionOverrides(int)}. */
+  /**
+   * @deprecated Use {@link ParametersBuilder#clearSelectionOverrides(int)}.
+   */
   @Deprecated
   public final void clearSelectionOverrides(int rendererIndex) {
     setParameters(buildUponParameters().clearSelectionOverrides(rendererIndex));
   }
 
-  /** @deprecated Use {@link ParametersBuilder#clearSelectionOverrides()}. */
+  /**
+   * @deprecated Use {@link ParametersBuilder#clearSelectionOverrides()}.
+   */
   @Deprecated
   public final void clearSelectionOverrides() {
     setParameters(buildUponParameters().clearSelectionOverrides());
   }
 
-  /** @deprecated Use {@link ParametersBuilder#setTunnelingAudioSessionId(int)}. */
+  /**
+   * @deprecated Use {@link ParametersBuilder#setTunnelingAudioSessionId(int)}.
+   */
   @Deprecated
   public void setTunnelingAudioSessionId(int tunnelingAudioSessionId) {
     setParameters(buildUponParameters().setTunnelingAudioSessionId(tunnelingAudioSessionId));
@@ -1549,8 +1591,8 @@ public class DefaultTrackSelector extends MappingTrackSelector {
 
     // Initialize the renderer configurations to the default configuration for all renderers with
     // selections, and null otherwise.
-    @NullableType RendererConfiguration[] rendererConfigurations =
-        new RendererConfiguration[rendererCount];
+    @NullableType
+    RendererConfiguration[] rendererConfigurations = new RendererConfiguration[rendererCount];
     for (int i = 0; i < rendererCount; i++) {
       boolean forceRendererDisabled = params.getRendererDisabled(i);
       boolean rendererEnabled =
@@ -1778,8 +1820,9 @@ public class DefaultTrackSelector extends MappingTrackSelector {
       return NO_TRACKS;
     }
 
-    List<Integer> selectedTrackIndices = getViewportFilteredTrackIndices(group, viewportWidth,
-        viewportHeight, viewportOrientationMayChange);
+    List<Integer> selectedTrackIndices =
+        getViewportFilteredTrackIndices(
+            group, viewportWidth, viewportHeight, viewportOrientationMayChange);
     if (selectedTrackIndices.size() < 2) {
       return NO_TRACKS;
     }
@@ -1909,12 +1952,16 @@ public class DefaultTrackSelector extends MappingTrackSelector {
     int selectedPixelCount = Format.NO_VALUE;
     for (int groupIndex = 0; groupIndex < groups.length; groupIndex++) {
       TrackGroup trackGroup = groups.get(groupIndex);
-      List<Integer> selectedTrackIndices = getViewportFilteredTrackIndices(trackGroup,
-          params.viewportWidth, params.viewportHeight, params.viewportOrientationMayChange);
+      List<Integer> selectedTrackIndices =
+          getViewportFilteredTrackIndices(
+              trackGroup,
+              params.viewportWidth,
+              params.viewportHeight,
+              params.viewportOrientationMayChange);
       int[] trackFormatSupport = formatSupports[groupIndex];
       for (int trackIndex = 0; trackIndex < trackGroup.length; trackIndex++) {
-        if (isSupported(trackFormatSupport[trackIndex],
-            params.exceedRendererCapabilitiesIfNecessary)) {
+        if (isSupported(
+            trackFormatSupport[trackIndex], params.exceedRendererCapabilitiesIfNecessary)) {
           Format format = trackGroup.getFormat(trackIndex);
           boolean isWithinConstraints =
               selectedTrackIndices.contains(trackIndex)
@@ -1945,11 +1992,14 @@ public class DefaultTrackSelector extends MappingTrackSelector {
               // lower count (or bitrate). If still tied then prefer the first track (i.e. the one
               // that's already selected).
               int formatPixelCount = format.getPixelCount();
-              int comparisonResult = formatPixelCount != selectedPixelCount
-                  ? compareFormatValues(formatPixelCount, selectedPixelCount)
-                  : compareFormatValues(format.bitrate, selectedBitrate);
-              selectTrack = isWithinCapabilities && isWithinConstraints
-                  ? comparisonResult > 0 : comparisonResult < 0;
+              int comparisonResult =
+                  formatPixelCount != selectedPixelCount
+                      ? compareFormatValues(formatPixelCount, selectedPixelCount)
+                      : compareFormatValues(format.bitrate, selectedBitrate);
+              selectTrack =
+                  isWithinCapabilities && isWithinConstraints
+                      ? comparisonResult > 0
+                      : comparisonResult < 0;
             }
           }
           if (selectTrack) {
@@ -2000,8 +2050,8 @@ public class DefaultTrackSelector extends MappingTrackSelector {
       TrackGroup trackGroup = groups.get(groupIndex);
       int[] trackFormatSupport = formatSupports[groupIndex];
       for (int trackIndex = 0; trackIndex < trackGroup.length; trackIndex++) {
-        if (isSupported(trackFormatSupport[trackIndex],
-            params.exceedRendererCapabilitiesIfNecessary)) {
+        if (isSupported(
+            trackFormatSupport[trackIndex], params.exceedRendererCapabilitiesIfNecessary)) {
           Format format = trackGroup.getFormat(trackIndex);
           AudioTrackScore trackScore =
               new AudioTrackScore(format, params, trackFormatSupport[trackIndex]);
@@ -2178,8 +2228,8 @@ public class DefaultTrackSelector extends MappingTrackSelector {
       TrackGroup trackGroup = groups.get(groupIndex);
       int[] trackFormatSupport = formatSupport[groupIndex];
       for (int trackIndex = 0; trackIndex < trackGroup.length; trackIndex++) {
-        if (isSupported(trackFormatSupport[trackIndex],
-            params.exceedRendererCapabilitiesIfNecessary)) {
+        if (isSupported(
+            trackFormatSupport[trackIndex], params.exceedRendererCapabilitiesIfNecessary)) {
           Format format = trackGroup.getFormat(trackIndex);
           TextTrackScore trackScore =
               new TextTrackScore(
@@ -2225,8 +2275,8 @@ public class DefaultTrackSelector extends MappingTrackSelector {
       TrackGroup trackGroup = groups.get(groupIndex);
       int[] trackFormatSupport = formatSupport[groupIndex];
       for (int trackIndex = 0; trackIndex < trackGroup.length; trackIndex++) {
-        if (isSupported(trackFormatSupport[trackIndex],
-            params.exceedRendererCapabilitiesIfNecessary)) {
+        if (isSupported(
+            trackFormatSupport[trackIndex], params.exceedRendererCapabilitiesIfNecessary)) {
           Format format = trackGroup.getFormat(trackIndex);
           boolean isDefault = (format.selectionFlags & C.SELECTION_FLAG_DEFAULT) != 0;
           int trackScore = isDefault ? 2 : 1;
@@ -2349,22 +2399,23 @@ public class DefaultTrackSelector extends MappingTrackSelector {
   }
 
   /**
-   * Applies the {@link RendererCapabilities#FORMAT_SUPPORT_MASK} to a value obtained from
-   * {@link RendererCapabilities#supportsFormat(Format)}, returning true if the result is
-   * {@link RendererCapabilities#FORMAT_HANDLED} or if {@code allowExceedsCapabilities} is set
-   * and the result is {@link RendererCapabilities#FORMAT_EXCEEDS_CAPABILITIES}.
+   * Applies the {@link RendererCapabilities#FORMAT_SUPPORT_MASK} to a value obtained from {@link
+   * RendererCapabilities#supportsFormat(Format)}, returning true if the result is {@link
+   * RendererCapabilities#FORMAT_HANDLED} or if {@code allowExceedsCapabilities} is set and the
+   * result is {@link RendererCapabilities#FORMAT_EXCEEDS_CAPABILITIES}.
    *
    * @param formatSupport A value obtained from {@link RendererCapabilities#supportsFormat(Format)}.
    * @param allowExceedsCapabilities Whether to return true if the format support component of the
    *     value is {@link RendererCapabilities#FORMAT_EXCEEDS_CAPABILITIES}.
    * @return True if the format support component is {@link RendererCapabilities#FORMAT_HANDLED}, or
-   *     if {@code allowExceedsCapabilities} is set and the format support component is
-   *     {@link RendererCapabilities#FORMAT_EXCEEDS_CAPABILITIES}.
+   *     if {@code allowExceedsCapabilities} is set and the format support component is {@link
+   *     RendererCapabilities#FORMAT_EXCEEDS_CAPABILITIES}.
    */
   protected static boolean isSupported(int formatSupport, boolean allowExceedsCapabilities) {
     int maskedSupport = formatSupport & RendererCapabilities.FORMAT_SUPPORT_MASK;
-    return maskedSupport == RendererCapabilities.FORMAT_HANDLED || (allowExceedsCapabilities
-        && maskedSupport == RendererCapabilities.FORMAT_EXCEEDS_CAPABILITIES);
+    return maskedSupport == RendererCapabilities.FORMAT_HANDLED
+        || (allowExceedsCapabilities
+            && maskedSupport == RendererCapabilities.FORMAT_EXCEEDS_CAPABILITIES);
   }
 
   /**
@@ -2417,8 +2468,8 @@ public class DefaultTrackSelector extends MappingTrackSelector {
     return 0;
   }
 
-  private static List<Integer> getViewportFilteredTrackIndices(TrackGroup group, int viewportWidth,
-      int viewportHeight, boolean orientationMayChange) {
+  private static List<Integer> getViewportFilteredTrackIndices(
+      TrackGroup group, int viewportWidth, int viewportHeight, boolean orientationMayChange) {
     // Initially include all indices.
     ArrayList<Integer> selectedTrackIndices = new ArrayList<>(group.length);
     for (int i = 0; i < group.length; i++) {
@@ -2437,8 +2488,9 @@ public class DefaultTrackSelector extends MappingTrackSelector {
       // smallest to exceed the maximum size at which it can be displayed within the viewport.
       // We'll discard formats of higher resolution.
       if (format.width > 0 && format.height > 0) {
-        Point maxVideoSizeInViewport = getMaxVideoSizeInViewport(orientationMayChange,
-            viewportWidth, viewportHeight, format.width, format.height);
+        Point maxVideoSizeInViewport =
+            getMaxVideoSizeInViewport(
+                orientationMayChange, viewportWidth, viewportHeight, format.width, format.height);
         int videoPixels = format.width * format.height;
         if (format.width >= (int) (maxVideoSizeInViewport.x * FRACTION_TO_CONSIDER_FULLSCREEN)
             && format.height >= (int) (maxVideoSizeInViewport.y * FRACTION_TO_CONSIDER_FULLSCREEN)
@@ -2468,8 +2520,12 @@ public class DefaultTrackSelector extends MappingTrackSelector {
    * Given viewport dimensions and video dimensions, computes the maximum size of the video as it
    * will be rendered to fit inside of the viewport.
    */
-  private static Point getMaxVideoSizeInViewport(boolean orientationMayChange, int viewportWidth,
-      int viewportHeight, int videoWidth, int videoHeight) {
+  private static Point getMaxVideoSizeInViewport(
+      boolean orientationMayChange,
+      int viewportWidth,
+      int viewportHeight,
+      int videoWidth,
+      int videoHeight) {
     if (orientationMayChange && (videoWidth > videoHeight) != (viewportWidth > viewportHeight)) {
       // Rotation is allowed, and the video will be larger in the rotated viewport.
       int tempViewportWidth = viewportWidth;
@@ -2623,7 +2679,8 @@ public class DefaultTrackSelector extends MappingTrackSelector {
         return false;
       }
       AudioConfigurationTuple other = (AudioConfigurationTuple) obj;
-      return channelCount == other.channelCount && sampleRate == other.sampleRate
+      return channelCount == other.channelCount
+          && sampleRate == other.sampleRate
           && TextUtils.equals(mimeType, other.mimeType);
     }
 
@@ -2634,7 +2691,6 @@ public class DefaultTrackSelector extends MappingTrackSelector {
       result = 31 * result + (mimeType != null ? mimeType.hashCode() : 0);
       return result;
     }
-
   }
 
   /** Represents how well a text track matches the selection {@link Parameters}. */

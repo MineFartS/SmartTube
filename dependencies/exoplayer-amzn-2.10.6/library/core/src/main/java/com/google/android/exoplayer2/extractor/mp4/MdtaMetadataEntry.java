@@ -30,10 +30,13 @@ public final class MdtaMetadataEntry implements Metadata.Entry {
 
   /** The metadata key name. */
   public final String key;
+
   /** The payload. The interpretation of the value depends on {@link #typeIndicator}. */
   public final byte[] value;
+
   /** The four byte locale indicator. */
   public final int localeIndicator;
+
   /** The four byte type indicator. */
   public final int typeIndicator;
 

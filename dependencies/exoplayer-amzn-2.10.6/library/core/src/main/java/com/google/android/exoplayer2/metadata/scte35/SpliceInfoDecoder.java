@@ -23,9 +23,7 @@ import com.google.android.exoplayer2.util.ParsableByteArray;
 import com.google.android.exoplayer2.util.TimestampAdjuster;
 import java.nio.ByteBuffer;
 
-/**
- * Decodes splice info sections and produces splice commands.
- */
+/** Decodes splice info sections and produces splice commands. */
 public final class SpliceInfoDecoder implements MetadataDecoder {
 
   private static final int TYPE_SPLICE_NULL = 0x00;
@@ -79,8 +77,8 @@ public final class SpliceInfoDecoder implements MetadataDecoder {
         command = SpliceScheduleCommand.parseFromSection(sectionData);
         break;
       case TYPE_SPLICE_INSERT:
-        command = SpliceInsertCommand.parseFromSection(sectionData, ptsAdjustment,
-            timestampAdjuster);
+        command =
+            SpliceInsertCommand.parseFromSection(sectionData, ptsAdjustment, timestampAdjuster);
         break;
       case TYPE_TIME_SIGNAL:
         command = TimeSignalCommand.parseFromSection(sectionData, ptsAdjustment, timestampAdjuster);
@@ -94,5 +92,4 @@ public final class SpliceInfoDecoder implements MetadataDecoder {
     }
     return command == null ? new Metadata() : new Metadata(command);
   }
-
 }

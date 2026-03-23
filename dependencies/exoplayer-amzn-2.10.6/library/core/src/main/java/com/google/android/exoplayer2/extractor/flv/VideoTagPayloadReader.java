@@ -24,9 +24,7 @@ import com.google.android.exoplayer2.util.NalUnitUtil;
 import com.google.android.exoplayer2.util.ParsableByteArray;
 import com.google.android.exoplayer2.video.AvcConfig;
 
-/**
- * Parses video tags from an FLV stream and extracts H.264 nal units.
- */
+/** Parses video tags from an FLV stream and extracts H.264 nal units. */
 /* package */ final class VideoTagPayloadReader extends TagPayloadReader {
 
   // Video codec.
@@ -90,9 +88,20 @@ import com.google.android.exoplayer2.video.AvcConfig;
       AvcConfig avcConfig = AvcConfig.parse(videoSequence);
       nalUnitLengthFieldLength = avcConfig.nalUnitLengthFieldLength;
       // Construct and output the format.
-      Format format = Format.createVideoSampleFormat(null, MimeTypes.VIDEO_H264, null,
-          Format.NO_VALUE, Format.NO_VALUE, avcConfig.width, avcConfig.height, Format.NO_VALUE,
-          avcConfig.initializationData, Format.NO_VALUE, avcConfig.pixelWidthAspectRatio, null);
+      Format format =
+          Format.createVideoSampleFormat(
+              null,
+              MimeTypes.VIDEO_H264,
+              null,
+              Format.NO_VALUE,
+              Format.NO_VALUE,
+              avcConfig.width,
+              avcConfig.height,
+              Format.NO_VALUE,
+              avcConfig.initializationData,
+              Format.NO_VALUE,
+              avcConfig.pixelWidthAspectRatio,
+              null);
       output.format(format);
       hasOutputFormat = true;
       return false;
@@ -137,5 +146,4 @@ import com.google.android.exoplayer2.video.AvcConfig;
       return false;
     }
   }
-
 }

@@ -19,11 +19,11 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.view.View;
+import android.view.ViewGroup;
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import android.view.View;
-import android.view.ViewGroup;
 import com.google.ads.interactivemedia.v3.api.Ad;
 import com.google.ads.interactivemedia.v3.api.AdDisplayContainer;
 import com.google.ads.interactivemedia.v3.api.AdError;
@@ -272,9 +272,7 @@ public final class ImaAdsLoader
   private static final boolean DEBUG = false;
   private static final String TAG = "ImaAdsLoader";
 
-  /**
-   * Whether to enable preloading of ads in {@link AdsRenderingSettings}.
-   */
+  /** Whether to enable preloading of ads in {@link AdsRenderingSettings}. */
   private static final boolean ENABLE_PRELOADING = true;
 
   private static final String IMA_SDK_SETTINGS_PLAYER_TYPE = "google/exo.ext.ima";
@@ -300,17 +298,14 @@ public final class ImaAdsLoader
   @Retention(RetentionPolicy.SOURCE)
   @IntDef({IMA_AD_STATE_NONE, IMA_AD_STATE_PLAYING, IMA_AD_STATE_PAUSED})
   private @interface ImaAdState {}
-  /**
-   * The ad playback state when IMA is not playing an ad.
-   */
+
+  /** The ad playback state when IMA is not playing an ad. */
   private static final int IMA_AD_STATE_NONE = 0;
-  /**
-   * The ad playback state when IMA has called {@link #playAd()} and not {@link #pauseAd()}.
-   */
+
+  /** The ad playback state when IMA has called {@link #playAd()} and not {@link #pauseAd()}. */
   private static final int IMA_AD_STATE_PLAYING = 1;
-  /**
-   * The ad playback state when IMA has called {@link #pauseAd()} while playing an ad.
-   */
+
+  /** The ad playback state when IMA has called {@link #pauseAd()} while playing an ad. */
   private static final int IMA_AD_STATE_PAUSED = 2;
 
   private final @Nullable Uri adTagUri;
@@ -349,12 +344,16 @@ public final class ImaAdsLoader
 
   /** The expected ad group index that IMA should load next. */
   private int expectedAdGroupIndex;
+
   /** The index of the current ad group that IMA is loading. */
   private int adGroupIndex;
+
   /** Whether IMA has sent an ad event to pause content since the last resume content event. */
   private boolean imaPausedContent;
+
   /** The current ad playback state. */
   private @ImaAdState int imaAdState;
+
   /**
    * Whether {@link com.google.ads.interactivemedia.v3.api.AdsLoader#contentComplete()} has been
    * called since starting ad playback.
@@ -365,29 +364,35 @@ public final class ImaAdsLoader
 
   /** Whether the player is playing an ad. */
   private boolean playingAd;
+
   /**
    * If the player is playing an ad, stores the ad index in its ad group. {@link C#INDEX_UNSET}
    * otherwise.
    */
   private int playingAdIndexInAdGroup;
+
   /**
    * Whether there's a pending ad preparation error which IMA needs to be notified of when it
    * transitions from playing content to playing the ad.
    */
   private boolean shouldNotifyAdPrepareError;
+
   /**
    * If a content period has finished but IMA has not yet called {@link #playAd()}, stores the value
    * of {@link SystemClock#elapsedRealtime()} when the content stopped playing. This can be used to
    * determine a fake, increasing content position. {@link C#TIME_UNSET} otherwise.
    */
   private long fakeContentProgressElapsedRealtimeMs;
+
   /**
    * If {@link #fakeContentProgressElapsedRealtimeMs} is set, stores the offset from which the
    * content progress should increase. {@link C#TIME_UNSET} otherwise.
    */
   private long fakeContentProgressOffsetMs;
+
   /** Stores the pending content position when a seek operation was intercepted to play an ad. */
   private long pendingContentPositionMs;
+
   /** Whether {@link #getContentProgress()} has sent {@link #pendingContentPositionMs} to IMA. */
   private boolean sentPendingContentPositionMs;
 
@@ -489,8 +494,8 @@ public final class ImaAdsLoader
   }
 
   /**
-   * Returns the underlying {@code com.google.ads.interactivemedia.v3.api.AdsLoader} wrapped by
-   * this instance.
+   * Returns the underlying {@code com.google.ads.interactivemedia.v3.api.AdsLoader} wrapped by this
+   * instance.
    */
   public com.google.ads.interactivemedia.v3.api.AdsLoader getAdsLoader() {
     return adsLoader;
@@ -793,7 +798,8 @@ public final class ImaAdsLoader
       return lastAdProgress;
     } else if (imaAdState != IMA_AD_STATE_NONE && playingAd) {
       long adDuration = player.getDuration();
-      return adDuration == C.TIME_UNSET ? VideoProgressUpdate.VIDEO_TIME_NOT_READY
+      return adDuration == C.TIME_UNSET
+          ? VideoProgressUpdate.VIDEO_TIME_NOT_READY
           : new VideoProgressUpdate(player.getCurrentPosition(), adDuration);
     } else {
       return VideoProgressUpdate.VIDEO_TIME_NOT_READY;
@@ -993,7 +999,8 @@ public final class ImaAdsLoader
       return;
     }
 
-    if (imaAdState == IMA_AD_STATE_NONE && playbackState == Player.STATE_BUFFERING
+    if (imaAdState == IMA_AD_STATE_NONE
+        && playbackState == Player.STATE_BUFFERING
         && playWhenReady) {
       checkForContentComplete();
     } else if (imaAdState != IMA_AD_STATE_NONE && playbackState == Player.STATE_ENDED) {
@@ -1302,7 +1309,8 @@ public final class ImaAdsLoader
   }
 
   private void checkForContentComplete() {
-    if (contentDurationMs != C.TIME_UNSET && pendingContentPositionMs == C.TIME_UNSET
+    if (contentDurationMs != C.TIME_UNSET
+        && pendingContentPositionMs == C.TIME_UNSET
         && player.getContentPosition() + END_OF_CONTENT_POSITION_THRESHOLD_MS >= contentDurationMs
         && !sentContentComplete) {
       adsLoader.contentComplete();
@@ -1409,15 +1417,29 @@ public final class ImaAdsLoader
   /** Factory for objects provided by the IMA SDK. */
   @VisibleForTesting
   /* package */ interface ImaFactory {
-    /** @see ImaSdkSettings */
+    /**
+     * @see ImaSdkSettings
+     */
     ImaSdkSettings createImaSdkSettings();
-    /** @see com.google.ads.interactivemedia.v3.api.ImaSdkFactory#createAdsRenderingSettings() */
+
+    /**
+     * @see com.google.ads.interactivemedia.v3.api.ImaSdkFactory#createAdsRenderingSettings()
+     */
     AdsRenderingSettings createAdsRenderingSettings();
-    /** @see com.google.ads.interactivemedia.v3.api.ImaSdkFactory#createAdDisplayContainer() */
+
+    /**
+     * @see com.google.ads.interactivemedia.v3.api.ImaSdkFactory#createAdDisplayContainer()
+     */
     AdDisplayContainer createAdDisplayContainer();
-    /** @see com.google.ads.interactivemedia.v3.api.ImaSdkFactory#createAdsRequest() */
+
+    /**
+     * @see com.google.ads.interactivemedia.v3.api.ImaSdkFactory#createAdsRequest()
+     */
     AdsRequest createAdsRequest();
-    /** @see ImaSdkFactory#createAdsLoader(Context, ImaSdkSettings, AdDisplayContainer) */
+
+    /**
+     * @see ImaSdkFactory#createAdsLoader(Context, ImaSdkSettings, AdDisplayContainer)
+     */
     com.google.ads.interactivemedia.v3.api.AdsLoader createAdsLoader(
         Context context, ImaSdkSettings imaSdkSettings, AdDisplayContainer adDisplayContainer);
   }

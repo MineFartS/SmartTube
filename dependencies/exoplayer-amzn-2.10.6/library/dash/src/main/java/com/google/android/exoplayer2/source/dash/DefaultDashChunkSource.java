@@ -56,9 +56,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A default {@link DashChunkSource} implementation.
- */
+/** A default {@link DashChunkSource} implementation. */
 public class DefaultDashChunkSource implements DashChunkSource {
 
   public static final class Factory implements DashChunkSource.Factory {
@@ -106,7 +104,6 @@ public class DefaultDashChunkSource implements DashChunkSource {
           closedCaptionFormats,
           playerEmsgHandler);
     }
-
   }
 
   private final LoaderErrorThrower manifestLoaderErrorThrower;
@@ -314,9 +311,15 @@ public class DefaultDashChunkSource implements DashChunkSource {
       }
       if (pendingInitializationUri != null || pendingIndexUri != null) {
         // We have initialization and/or index requests to make.
-        out.chunk = newInitializationChunk(representationHolder, dataSource,
-            trackSelection.getSelectedFormat(), trackSelection.getSelectionReason(),
-            trackSelection.getSelectionData(), pendingInitializationUri, pendingIndexUri);
+        out.chunk =
+            newInitializationChunk(
+                representationHolder,
+                dataSource,
+                trackSelection.getSelectedFormat(),
+                trackSelection.getSelectionReason(),
+                trackSelection.getSelectionData(),
+                pendingInitializationUri,
+                pendingIndexUri);
         return;
       }
     }
@@ -425,7 +428,8 @@ public class DefaultDashChunkSource implements DashChunkSource {
       return true;
     }
     // Workaround for missing segment at the end of the period
-    if (!manifest.dynamic && chunk instanceof MediaChunk
+    if (!manifest.dynamic
+        && chunk instanceof MediaChunk
         && e instanceof InvalidResponseCodeException
         && ((InvalidResponseCodeException) e).responseCode == 404) {
       RepresentationHolder representationHolder =
@@ -470,8 +474,10 @@ public class DefaultDashChunkSource implements DashChunkSource {
 
   private void updateLiveEdgeTimeUs(
       RepresentationHolder representationHolder, long lastAvailableSegmentNum) {
-    liveEdgeTimeUs = manifest.dynamic
-        ? representationHolder.getSegmentEndTimeUs(lastAvailableSegmentNum) : C.TIME_UNSET;
+    liveEdgeTimeUs =
+        manifest.dynamic
+            ? representationHolder.getSegmentEndTimeUs(lastAvailableSegmentNum)
+            : C.TIME_UNSET;
   }
 
   private long getNowUnixTimeUs() {
@@ -507,10 +513,19 @@ public class DefaultDashChunkSource implements DashChunkSource {
     } else {
       requestUri = indexUri;
     }
-    DataSpec dataSpec = new DataSpec(requestUri.resolveUri(baseUrl), requestUri.start,
-        requestUri.length, representationHolder.representation.getCacheKey());
-    return new InitializationChunk(dataSource, dataSpec, trackFormat,
-        trackSelectionReason, trackSelectionData, representationHolder.extractorWrapper);
+    DataSpec dataSpec =
+        new DataSpec(
+            requestUri.resolveUri(baseUrl),
+            requestUri.start,
+            requestUri.length,
+            representationHolder.representation.getCacheKey());
+    return new InitializationChunk(
+        dataSource,
+        dataSpec,
+        trackFormat,
+        trackSelectionReason,
+        trackSelectionData,
+        representationHolder.extractorWrapper);
   }
 
   protected Chunk newMediaChunk(
@@ -529,10 +544,23 @@ public class DefaultDashChunkSource implements DashChunkSource {
     String baseUrl = representation.baseUrl;
     if (representationHolder.extractorWrapper == null) {
       long endTimeUs = representationHolder.getSegmentEndTimeUs(firstSegmentNum);
-      DataSpec dataSpec = new DataSpec(segmentUri.resolveUri(baseUrl),
-          segmentUri.start, segmentUri.length, representation.getCacheKey());
-      return new SingleSampleMediaChunk(dataSource, dataSpec, trackFormat, trackSelectionReason,
-          trackSelectionData, startTimeUs, endTimeUs, firstSegmentNum, trackType, trackFormat);
+      DataSpec dataSpec =
+          new DataSpec(
+              segmentUri.resolveUri(baseUrl),
+              segmentUri.start,
+              segmentUri.length,
+              representation.getCacheKey());
+      return new SingleSampleMediaChunk(
+          dataSource,
+          dataSpec,
+          trackFormat,
+          trackSelectionReason,
+          trackSelectionData,
+          startTimeUs,
+          endTimeUs,
+          firstSegmentNum,
+          trackType,
+          trackFormat);
     } else {
       int segmentCount = 1;
       for (int i = 1; i < maxSegmentCount; i++) {
@@ -551,8 +579,12 @@ public class DefaultDashChunkSource implements DashChunkSource {
           periodDurationUs != C.TIME_UNSET && periodDurationUs <= endTimeUs
               ? periodDurationUs
               : C.TIME_UNSET;
-      DataSpec dataSpec = new DataSpec(segmentUri.resolveUri(baseUrl),
-          segmentUri.start, segmentUri.length, representation.getCacheKey());
+      DataSpec dataSpec =
+          new DataSpec(
+              segmentUri.resolveUri(baseUrl),
+              segmentUri.start,
+              segmentUri.length,
+              representation.getCacheKey());
       long sampleOffsetUs = -representation.presentationTimeOffsetUs;
       return new ContainerMediaChunk(
           dataSource,
@@ -782,7 +814,8 @@ public class DefaultDashChunkSource implements DashChunkSource {
     }
 
     private static boolean mimeTypeIsWebm(String mimeType) {
-      return mimeType.startsWith(MimeTypes.VIDEO_WEBM) || mimeType.startsWith(MimeTypes.AUDIO_WEBM)
+      return mimeType.startsWith(MimeTypes.VIDEO_WEBM)
+          || mimeType.startsWith(MimeTypes.AUDIO_WEBM)
           || mimeType.startsWith(MimeTypes.APPLICATION_WEBM);
     }
 

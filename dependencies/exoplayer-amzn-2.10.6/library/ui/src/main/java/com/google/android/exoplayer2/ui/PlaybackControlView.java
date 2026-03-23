@@ -18,11 +18,15 @@ package com.google.android.exoplayer2.ui;
 import android.content.Context;
 import android.util.AttributeSet;
 
-/** @deprecated Use {@link PlayerControlView}. */
+/**
+ * @deprecated Use {@link PlayerControlView}.
+ */
 @Deprecated
 public class PlaybackControlView extends PlayerControlView {
 
-  /** @deprecated Use {@link com.google.android.exoplayer2.ControlDispatcher}. */
+  /**
+   * @deprecated Use {@link com.google.android.exoplayer2.ControlDispatcher}.
+   */
   @Deprecated
   public interface ControlDispatcher extends com.google.android.exoplayer2.ControlDispatcher {}
 
@@ -30,7 +34,10 @@ public class PlaybackControlView extends PlayerControlView {
   @SuppressWarnings("deprecation")
   private static final class DefaultControlDispatcher
       extends com.google.android.exoplayer2.DefaultControlDispatcher implements ControlDispatcher {}
-  /** @deprecated Use {@link com.google.android.exoplayer2.DefaultControlDispatcher}. */
+
+  /**
+   * @deprecated Use {@link com.google.android.exoplayer2.DefaultControlDispatcher}.
+   */
   @Deprecated
   @SuppressWarnings("deprecation")
   public static final ControlDispatcher DEFAULT_CONTROL_DISPATCHER = new DefaultControlDispatcher();

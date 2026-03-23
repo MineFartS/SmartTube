@@ -15,8 +15,8 @@
  */
 package com.google.android.exoplayer2.ext.vp9;
 
-import androidx.annotation.Nullable;
 import android.view.Surface;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.decoder.CryptoInfo;
 import com.google.android.exoplayer2.decoder.SimpleDecoder;
@@ -24,11 +24,9 @@ import com.google.android.exoplayer2.drm.DecryptionException;
 import com.google.android.exoplayer2.drm.ExoMediaCrypto;
 import java.nio.ByteBuffer;
 
-/**
- * Vpx decoder.
- */
-/* package */ final class VpxDecoder extends
-    SimpleDecoder<VpxInputBuffer, VpxOutputBuffer, VpxDecoderException> {
+/** Vpx decoder. */
+/* package */ final class VpxDecoder
+    extends SimpleDecoder<VpxInputBuffer, VpxOutputBuffer, VpxDecoderException> {
 
   public static final int OUTPUT_MODE_NONE = -1;
   public static final int OUTPUT_MODE_YUV = 0;
@@ -127,16 +125,25 @@ import java.nio.ByteBuffer;
     ByteBuffer inputData = inputBuffer.data;
     int inputSize = inputData.limit();
     CryptoInfo cryptoInfo = inputBuffer.cryptoInfo;
-    final long result = inputBuffer.isEncrypted()
-        ? vpxSecureDecode(vpxDecContext, inputData, inputSize, exoMediaCrypto,
-        cryptoInfo.mode, cryptoInfo.key, cryptoInfo.iv, cryptoInfo.numSubSamples,
-        cryptoInfo.numBytesOfClearData, cryptoInfo.numBytesOfEncryptedData)
-        : vpxDecode(vpxDecContext, inputData, inputSize);
+    final long result =
+        inputBuffer.isEncrypted()
+            ? vpxSecureDecode(
+                vpxDecContext,
+                inputData,
+                inputSize,
+                exoMediaCrypto,
+                cryptoInfo.mode,
+                cryptoInfo.key,
+                cryptoInfo.iv,
+                cryptoInfo.numSubSamples,
+                cryptoInfo.numBytesOfClearData,
+                cryptoInfo.numBytesOfEncryptedData)
+            : vpxDecode(vpxDecContext, inputData, inputSize);
     if (result != NO_ERROR) {
       if (result == DRM_ERROR) {
         String message = "Drm error: " + vpxGetErrorMessage(vpxDecContext);
-        DecryptionException cause = new DecryptionException(
-            vpxGetErrorCode(vpxDecContext), message);
+        DecryptionException cause =
+            new DecryptionException(vpxGetErrorCode(vpxDecContext), message);
         return new VpxDecoderException(message, cause);
       } else {
         return new VpxDecoderException("Decode error: " + vpxGetErrorMessage(vpxDecContext));
@@ -175,10 +182,21 @@ import java.nio.ByteBuffer;
       boolean disableLoopFilter, boolean enableRowMultiThreadMode, int threads);
 
   private native long vpxClose(long context);
+
   private native long vpxDecode(long context, ByteBuffer encoded, int length);
-  private native long vpxSecureDecode(long context, ByteBuffer encoded, int length,
-      ExoMediaCrypto mediaCrypto, int inputMode, byte[] key, byte[] iv,
-      int numSubSamples, int[] numBytesOfClearData, int[] numBytesOfEncryptedData);
+
+  private native long vpxSecureDecode(
+      long context,
+      ByteBuffer encoded,
+      int length,
+      ExoMediaCrypto mediaCrypto,
+      int inputMode,
+      byte[] key,
+      byte[] iv,
+      int numSubSamples,
+      int[] numBytesOfClearData,
+      int[] numBytesOfEncryptedData);
+
   private native int vpxGetFrame(long context, VpxOutputBuffer outputBuffer);
 
   /**
@@ -194,6 +212,6 @@ import java.nio.ByteBuffer;
   private native int vpxReleaseFrame(long context, VpxOutputBuffer outputBuffer);
 
   private native int vpxGetErrorCode(long context);
-  private native String vpxGetErrorMessage(long context);
 
+  private native String vpxGetErrorMessage(long context);
 }

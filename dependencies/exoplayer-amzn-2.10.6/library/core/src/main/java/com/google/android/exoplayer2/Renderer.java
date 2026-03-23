@@ -43,12 +43,14 @@ public interface Renderer extends PlayerMessage.Target {
   @Retention(RetentionPolicy.SOURCE)
   @IntDef({STATE_DISABLED, STATE_ENABLED, STATE_STARTED})
   @interface State {}
+
   /**
    * The renderer is disabled. A renderer in this state may hold resources that it requires for
    * rendering (e.g. media decoders), for use if it's subsequently enabled. {@link #reset()} can be
    * called to force the renderer to release these resources.
    */
   int STATE_DISABLED = 0;
+
   /**
    * The renderer is enabled but not started. A renderer in this state may render media at the
    * current position (e.g. an initial video frame), but the position will not advance. A renderer
@@ -56,6 +58,7 @@ public interface Renderer extends PlayerMessage.Target {
    * decoders).
    */
   int STATE_ENABLED = 1;
+
   /**
    * The renderer is started. Calls to {@link #render(long, long)} will cause media to be rendered.
    */
@@ -87,8 +90,8 @@ public interface Renderer extends PlayerMessage.Target {
   /**
    * If the renderer advances its own playback position then this method returns a corresponding
    * {@link MediaClock}. If provided, the player will use the returned {@link MediaClock} as its
-   * source of time during playback. A player may have at most one renderer that returns a
-   * {@link MediaClock} from this method.
+   * source of time during playback. A player may have at most one renderer that returns a {@link
+   * MediaClock} from this method.
    *
    * @return The {@link MediaClock} tracking the playback position of the renderer, or null.
    */
@@ -105,28 +108,34 @@ public interface Renderer extends PlayerMessage.Target {
 
   /**
    * Enables the renderer to consume from the specified {@link SampleStream}.
-   * <p>
-   * This method may be called when the renderer is in the following states:
-   * {@link #STATE_DISABLED}.
+   *
+   * <p>This method may be called when the renderer is in the following states: {@link
+   * #STATE_DISABLED}.
    *
    * @param configuration The renderer configuration.
    * @param formats The enabled formats.
    * @param stream The {@link SampleStream} from which the renderer should consume.
    * @param positionUs The player's current position.
    * @param joining Whether this renderer is being enabled to join an ongoing playback.
-   * @param offsetUs The offset to be added to timestamps of buffers read from {@code stream}
-   *     before they are rendered.
+   * @param offsetUs The offset to be added to timestamps of buffers read from {@code stream} before
+   *     they are rendered.
    * @throws ExoPlaybackException If an error occurs.
    */
-  void enable(RendererConfiguration configuration, Format[] formats, SampleStream stream,
-      long positionUs, boolean joining, long offsetUs) throws ExoPlaybackException;
+  void enable(
+      RendererConfiguration configuration,
+      Format[] formats,
+      SampleStream stream,
+      long positionUs,
+      boolean joining,
+      long offsetUs)
+      throws ExoPlaybackException;
 
   /**
    * Starts the renderer, meaning that calls to {@link #render(long, long)} will cause media to be
    * rendered.
-   * <p>
-   * This method may be called when the renderer is in the following states:
-   * {@link #STATE_ENABLED}.
+   *
+   * <p>This method may be called when the renderer is in the following states: {@link
+   * #STATE_ENABLED}.
    *
    * @throws ExoPlaybackException If an error occurs.
    */
@@ -134,9 +143,9 @@ public interface Renderer extends PlayerMessage.Target {
 
   /**
    * Replaces the {@link SampleStream} from which samples will be consumed.
-   * <p>
-   * This method may be called when the renderer is in the following states:
-   * {@link #STATE_ENABLED}, {@link #STATE_STARTED}.
+   *
+   * <p>This method may be called when the renderer is in the following states: {@link
+   * #STATE_ENABLED}, {@link #STATE_STARTED}.
    *
    * @param formats The enabled formats.
    * @param stream The {@link SampleStream} from which the renderer should consume.
@@ -147,16 +156,14 @@ public interface Renderer extends PlayerMessage.Target {
   void replaceStream(Format[] formats, SampleStream stream, long offsetUs)
       throws ExoPlaybackException;
 
-  /**
-   * Returns the {@link SampleStream} being consumed, or null if the renderer is disabled.
-   */
+  /** Returns the {@link SampleStream} being consumed, or null if the renderer is disabled. */
   SampleStream getStream();
 
   /**
    * Returns whether the renderer has read the current {@link SampleStream} to the end.
-   * <p>
-   * This method may be called when the renderer is in the following states:
-   * {@link #STATE_ENABLED}, {@link #STATE_STARTED}.
+   *
+   * <p>This method may be called when the renderer is in the following states: {@link
+   * #STATE_ENABLED}, {@link #STATE_STARTED}.
    */
   boolean hasReadStreamToEnd();
 
@@ -173,9 +180,9 @@ public interface Renderer extends PlayerMessage.Target {
   /**
    * Signals to the renderer that the current {@link SampleStream} will be the final one supplied
    * before it is next disabled or reset.
-   * <p>
-   * This method may be called when the renderer is in the following states:
-   * {@link #STATE_ENABLED}, {@link #STATE_STARTED}.
+   *
+   * <p>This method may be called when the renderer is in the following states: {@link
+   * #STATE_ENABLED}, {@link #STATE_STARTED}.
    */
   void setCurrentStreamFinal();
 
@@ -188,9 +195,9 @@ public interface Renderer extends PlayerMessage.Target {
   /**
    * Throws an error that's preventing the renderer from reading from its {@link SampleStream}. Does
    * nothing if no such error exists.
-   * <p>
-   * This method may be called when the renderer is in the following states:
-   * {@link #STATE_ENABLED}, {@link #STATE_STARTED}.
+   *
+   * <p>This method may be called when the renderer is in the following states: {@link
+   * #STATE_ENABLED}, {@link #STATE_STARTED}.
    *
    * @throws IOException An error that's preventing the renderer from making progress or buffering
    *     more data.
@@ -199,12 +206,12 @@ public interface Renderer extends PlayerMessage.Target {
 
   /**
    * Signals to the renderer that a position discontinuity has occurred.
-   * <p>
-   * After a position discontinuity, the renderer's {@link SampleStream} is guaranteed to provide
+   *
+   * <p>After a position discontinuity, the renderer's {@link SampleStream} is guaranteed to provide
    * samples starting from a key frame.
-   * <p>
-   * This method may be called when the renderer is in the following states:
-   * {@link #STATE_ENABLED}, {@link #STATE_STARTED}.
+   *
+   * <p>This method may be called when the renderer is in the following states: {@link
+   * #STATE_ENABLED}, {@link #STATE_STARTED}.
    *
    * @param positionUs The new playback position in microseconds.
    * @throws ExoPlaybackException If an error occurs handling the reset.
@@ -225,21 +232,21 @@ public interface Renderer extends PlayerMessage.Target {
 
   /**
    * Incrementally renders the {@link SampleStream}.
-   * <p>
-   * If the renderer is in the {@link #STATE_ENABLED} state then each call to this method will do
+   *
+   * <p>If the renderer is in the {@link #STATE_ENABLED} state then each call to this method will do
    * work toward being ready to render the {@link SampleStream} when the renderer is started. It may
    * also render the very start of the media, for example the first frame of a video stream. If the
    * renderer is in the {@link #STATE_STARTED} state then calls to this method will render the
    * {@link SampleStream} in sync with the specified media positions.
-   * <p>
-   * This method should return quickly, and should not block if the renderer is unable to make
-   * useful progress.
-   * <p>
-   * This method may be called when the renderer is in the following states:
-   * {@link #STATE_ENABLED}, {@link #STATE_STARTED}.
    *
-   * @param positionUs The current media time in microseconds, measured at the start of the
-   *     current iteration of the rendering loop.
+   * <p>This method should return quickly, and should not block if the renderer is unable to make
+   * useful progress.
+   *
+   * <p>This method may be called when the renderer is in the following states: {@link
+   * #STATE_ENABLED}, {@link #STATE_STARTED}.
+   *
+   * @param positionUs The current media time in microseconds, measured at the start of the current
+   *     iteration of the rendering loop.
    * @param elapsedRealtimeUs {@link android.os.SystemClock#elapsedRealtime()} in microseconds,
    *     measured at the start of the current iteration of the rendering loop.
    * @throws ExoPlaybackException If an error occurs.
@@ -248,28 +255,28 @@ public interface Renderer extends PlayerMessage.Target {
 
   /**
    * Whether the renderer is able to immediately render media from the current position.
-   * <p>
-   * If the renderer is in the {@link #STATE_STARTED} state then returning true indicates that the
-   * renderer has everything that it needs to continue playback. Returning false indicates that
+   *
+   * <p>If the renderer is in the {@link #STATE_STARTED} state then returning true indicates that
+   * the renderer has everything that it needs to continue playback. Returning false indicates that
    * the player should pause until the renderer is ready.
-   * <p>
-   * If the renderer is in the {@link #STATE_ENABLED} state then returning true indicates that the
-   * renderer is ready for playback to be started. Returning false indicates that it is not.
-   * <p>
-   * This method may be called when the renderer is in the following states:
-   * {@link #STATE_ENABLED}, {@link #STATE_STARTED}.
+   *
+   * <p>If the renderer is in the {@link #STATE_ENABLED} state then returning true indicates that
+   * the renderer is ready for playback to be started. Returning false indicates that it is not.
+   *
+   * <p>This method may be called when the renderer is in the following states: {@link
+   * #STATE_ENABLED}, {@link #STATE_STARTED}.
    *
    * @return Whether the renderer is ready to render media.
    */
   boolean isReady();
 
   /**
-   * Whether the renderer is ready for the {@link ExoPlayer} instance to transition to
-   * {@link Player#STATE_ENDED}. The player will make this transition as soon as {@code true} is
-   * returned by all of its {@link Renderer}s.
-   * <p>
-   * This method may be called when the renderer is in the following states:
-   * {@link #STATE_ENABLED}, {@link #STATE_STARTED}.
+   * Whether the renderer is ready for the {@link ExoPlayer} instance to transition to {@link
+   * Player#STATE_ENDED}. The player will make this transition as soon as {@code true} is returned
+   * by all of its {@link Renderer}s.
+   *
+   * <p>This method may be called when the renderer is in the following states: {@link
+   * #STATE_ENABLED}, {@link #STATE_STARTED}.
    *
    * @return Whether the renderer is ready for the player to transition to the ended state.
    */
@@ -277,9 +284,9 @@ public interface Renderer extends PlayerMessage.Target {
 
   /**
    * Stops the renderer, transitioning it to the {@link #STATE_ENABLED} state.
-   * <p>
-   * This method may be called when the renderer is in the following states:
-   * {@link #STATE_STARTED}.
+   *
+   * <p>This method may be called when the renderer is in the following states: {@link
+   * #STATE_STARTED}.
    *
    * @throws ExoPlaybackException If an error occurs.
    */
@@ -287,9 +294,9 @@ public interface Renderer extends PlayerMessage.Target {
 
   /**
    * Disable the renderer, transitioning it to the {@link #STATE_DISABLED} state.
-   * <p>
-   * This method may be called when the renderer is in the following states:
-   * {@link #STATE_ENABLED}.
+   *
+   * <p>This method may be called when the renderer is in the following states: {@link
+   * #STATE_ENABLED}.
    */
   void disable();
 

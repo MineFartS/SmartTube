@@ -24,8 +24,8 @@ import java.io.IOException;
 import java.util.Arrays;
 
 /**
- * A base class for {@link Chunk} implementations where the data should be loaded into a
- * {@code byte[]} before being consumed.
+ * A base class for {@link Chunk} implementations where the data should be loaded into a {@code
+ * byte[]} before being consumed.
  */
 public abstract class DataChunk extends Chunk {
 
@@ -44,17 +44,30 @@ public abstract class DataChunk extends Chunk {
    * @param trackSelectionData See {@link #trackSelectionData}.
    * @param data An optional recycled array that can be used as a holder for the data.
    */
-  public DataChunk(DataSource dataSource, DataSpec dataSpec, int type, Format trackFormat,
-      int trackSelectionReason, Object trackSelectionData, byte[] data) {
-    super(dataSource, dataSpec, type, trackFormat, trackSelectionReason, trackSelectionData,
-        C.TIME_UNSET, C.TIME_UNSET);
+  public DataChunk(
+      DataSource dataSource,
+      DataSpec dataSpec,
+      int type,
+      Format trackFormat,
+      int trackSelectionReason,
+      Object trackSelectionData,
+      byte[] data) {
+    super(
+        dataSource,
+        dataSpec,
+        type,
+        trackFormat,
+        trackSelectionReason,
+        trackSelectionData,
+        C.TIME_UNSET,
+        C.TIME_UNSET);
     this.data = data;
   }
 
   /**
    * Returns the array in which the data is held.
-   * <p>
-   * This method should be used for recycling the holder only, and not for reading the data.
+   *
+   * <p>This method should be used for recycling the holder only, and not for reading the data.
    *
    * @return The array in which the data is held.
    */

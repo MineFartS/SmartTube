@@ -23,9 +23,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.ResultReceiver;
 import android.os.SystemClock;
-import androidx.annotation.LongDef;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.RatingCompat;
@@ -33,6 +30,9 @@ import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Pair;
+import androidx.annotation.LongDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ControlDispatcher;
 import com.google.android.exoplayer2.DefaultControlDispatcher;
@@ -128,6 +128,7 @@ public final class MediaSessionConnector {
 
   /** The default fast forward increment, in milliseconds. */
   public static final int DEFAULT_FAST_FORWARD_MS = 15000;
+
   /** The default rewind increment, in milliseconds. */
   public static final int DEFAULT_REWIND_MS = 5000;
 
@@ -136,6 +137,7 @@ public final class MediaSessionConnector {
    * PlaybackParameters#speed}.
    */
   public static final String EXTRAS_SPEED = "EXO_SPEED";
+
   /**
    * The name of the {@link PlaybackStateCompat} float extra with the value of {@link
    * PlaybackParameters#pitch}.
@@ -206,12 +208,14 @@ public final class MediaSessionConnector {
      * @return The bitmask of the supported media actions.
      */
     long getSupportedPrepareActions();
+
     /**
      * See {@link MediaSessionCompat.Callback#onPrepare()}.
      *
      * @param playWhenReady Whether playback should be started after preparation.
      */
     void onPrepare(boolean playWhenReady);
+
     /**
      * See {@link MediaSessionCompat.Callback#onPrepareFromMediaId(String, Bundle)}.
      *
@@ -220,6 +224,7 @@ public final class MediaSessionConnector {
      * @param extras A {@link Bundle} of extras passed by the media controller.
      */
     void onPrepareFromMediaId(String mediaId, boolean playWhenReady, Bundle extras);
+
     /**
      * See {@link MediaSessionCompat.Callback#onPrepareFromSearch(String, Bundle)}.
      *
@@ -228,6 +233,7 @@ public final class MediaSessionConnector {
      * @param extras A {@link Bundle} of extras passed by the media controller.
      */
     void onPrepareFromSearch(String query, boolean playWhenReady, Bundle extras);
+
     /**
      * See {@link MediaSessionCompat.Callback#onPrepareFromUri(Uri, Bundle)}.
      *
@@ -259,18 +265,21 @@ public final class MediaSessionConnector {
      * @return The bitmask of the supported media actions.
      */
     long getSupportedQueueNavigatorActions(Player player);
+
     /**
      * Called when the timeline of the player has changed.
      *
      * @param player The player connected to the media session.
      */
     void onTimelineChanged(Player player);
+
     /**
      * Called when the current window index changed.
      *
      * @param player The player connected to the media session.
      */
     void onCurrentWindowIndexChanged(Player player);
+
     /**
      * Gets the id of the currently active queue item, or {@link
      * MediaSessionCompat.QueueItem#UNKNOWN_ID} if the active item is unknown.
@@ -283,6 +292,7 @@ public final class MediaSessionConnector {
      * @return The id of the active queue item.
      */
     long getActiveQueueItemId(@Nullable Player player);
+
     /**
      * See {@link MediaSessionCompat.Callback#onSkipToPrevious()}.
      *
@@ -291,6 +301,7 @@ public final class MediaSessionConnector {
      *     changes to the player.
      */
     void onSkipToPrevious(Player player, ControlDispatcher controlDispatcher);
+
     /**
      * See {@link MediaSessionCompat.Callback#onSkipToQueueItem(long)}.
      *
@@ -299,6 +310,7 @@ public final class MediaSessionConnector {
      *     changes to the player.
      */
     void onSkipToQueueItem(Player player, ControlDispatcher controlDispatcher, long id);
+
     /**
      * See {@link MediaSessionCompat.Callback#onSkipToNext()}.
      *
@@ -316,11 +328,13 @@ public final class MediaSessionConnector {
      * See {@link MediaSessionCompat.Callback#onAddQueueItem(MediaDescriptionCompat description)}.
      */
     void onAddQueueItem(Player player, MediaDescriptionCompat description);
+
     /**
      * See {@link MediaSessionCompat.Callback#onAddQueueItem(MediaDescriptionCompat description, int
      * index)}.
      */
     void onAddQueueItem(Player player, MediaDescriptionCompat description, int index);
+
     /**
      * See {@link MediaSessionCompat.Callback#onRemoveQueueItem(MediaDescriptionCompat
      * description)}.
@@ -686,7 +700,8 @@ public final class MediaSessionConnector {
         mediaMetadataProvider != null && player != null
             ? mediaMetadataProvider.getMetadata(player)
             : METADATA_EMPTY;
-    // MOD: fix NullPointerException: Attempt to invoke virtual method 'int java.lang.String.length()' on a null object reference
+    // MOD: fix NullPointerException: Attempt to invoke virtual method 'int
+    // java.lang.String.length()' on a null object reference
     try {
       mediaSession.setMetadata(metadata != null ? metadata : METADATA_EMPTY);
     } catch (NullPointerException e) {

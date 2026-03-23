@@ -20,9 +20,7 @@ import com.google.android.exoplayer2.source.dash.DashSegmentIndex;
 import com.google.android.exoplayer2.util.Util;
 import java.util.List;
 
-/**
- * An approximate representation of a SegmentBase manifest element.
- */
+/** An approximate representation of a SegmentBase manifest element. */
 public abstract class SegmentBase {
 
   /* package */ final RangedUri initialization;
@@ -53,16 +51,12 @@ public abstract class SegmentBase {
     return initialization;
   }
 
-  /**
-   * Returns the presentation time offset, in microseconds.
-   */
+  /** Returns the presentation time offset, in microseconds. */
   public long getPresentationTimeOffsetUs() {
     return Util.scaleLargeTimestamp(presentationTimeOffset, C.MICROS_PER_SECOND, timescale);
   }
 
-  /**
-   * A {@link SegmentBase} that defines a single segment.
-   */
+  /** A {@link SegmentBase} that defines a single segment. */
   public static class SingleSegmentBase extends SegmentBase {
 
     /* package */ final long indexStart;
@@ -77,8 +71,12 @@ public abstract class SegmentBase {
      * @param indexStart The byte offset of the index data in the segment.
      * @param indexLength The length of the index data in bytes.
      */
-    public SingleSegmentBase(RangedUri initialization, long timescale, long presentationTimeOffset,
-        long indexStart, long indexLength) {
+    public SingleSegmentBase(
+        RangedUri initialization,
+        long timescale,
+        long presentationTimeOffset,
+        long indexStart,
+        long indexLength) {
       super(initialization, timescale, presentationTimeOffset);
       this.indexStart = indexStart;
       this.indexLength = indexLength;
@@ -91,12 +89,9 @@ public abstract class SegmentBase {
     public RangedUri getIndex() {
       return indexLength <= 0 ? null : new RangedUri(null, indexStart, indexLength);
     }
-
   }
 
-  /**
-   * A {@link SegmentBase} that consists of multiple segments.
-   */
+  /** A {@link SegmentBase} that consists of multiple segments. */
   public abstract static class MultiSegmentBase extends SegmentBase {
 
     /* package */ final long startNumber;
@@ -130,7 +125,9 @@ public abstract class SegmentBase {
       this.segmentTimeline = segmentTimeline;
     }
 
-    /** @see DashSegmentIndex#getSegmentNum(long, long) */
+    /**
+     * @see DashSegmentIndex#getSegmentNum(long, long)
+     */
     public long getSegmentNum(long timeUs, long periodDurationUs) {
       final long firstSegmentNum = getFirstSegmentNum();
       final long segmentCount = getSegmentCount(periodDurationUs);
@@ -142,9 +139,11 @@ public abstract class SegmentBase {
         long durationUs = (duration * C.MICROS_PER_SECOND) / timescale;
         long segmentNum = startNumber + timeUs / durationUs;
         // Ensure we stay within bounds.
-        return segmentNum < firstSegmentNum ? firstSegmentNum
-            : segmentCount == DashSegmentIndex.INDEX_UNBOUNDED ? segmentNum
-            : Math.min(segmentNum, firstSegmentNum + segmentCount - 1);
+        return segmentNum < firstSegmentNum
+            ? firstSegmentNum
+            : segmentCount == DashSegmentIndex.INDEX_UNBOUNDED
+                ? segmentNum
+                : Math.min(segmentNum, firstSegmentNum + segmentCount - 1);
       } else {
         // The index cannot be unbounded. Identify the segment using binary search.
         long lowIndex = firstSegmentNum;
@@ -164,7 +163,9 @@ public abstract class SegmentBase {
       }
     }
 
-    /** @see DashSegmentIndex#getDurationUs(long, long) */
+    /**
+     * @see DashSegmentIndex#getDurationUs(long, long)
+     */
     public final long getSegmentDurationUs(long sequenceNumber, long periodDurationUs) {
       if (segmentTimeline != null) {
         long duration = segmentTimeline.get((int) (sequenceNumber - startNumber)).duration;
@@ -172,13 +173,15 @@ public abstract class SegmentBase {
       } else {
         int segmentCount = getSegmentCount(periodDurationUs);
         return segmentCount != DashSegmentIndex.INDEX_UNBOUNDED
-            && sequenceNumber == (getFirstSegmentNum() + segmentCount - 1)
+                && sequenceNumber == (getFirstSegmentNum() + segmentCount - 1)
             ? (periodDurationUs - getSegmentTimeUs(sequenceNumber))
             : ((duration * C.MICROS_PER_SECOND) / timescale);
       }
     }
 
-    /** @see DashSegmentIndex#getTimeUs(long) */
+    /**
+     * @see DashSegmentIndex#getTimeUs(long)
+     */
     public final long getSegmentTimeUs(long sequenceNumber) {
       long unscaledSegmentTime;
       if (segmentTimeline != null) {
@@ -199,7 +202,9 @@ public abstract class SegmentBase {
      */
     public abstract RangedUri getSegmentUrl(Representation representation, long index);
 
-    /** @see DashSegmentIndex#getFirstSegmentNum() */
+    /**
+     * @see DashSegmentIndex#getFirstSegmentNum()
+     */
     public long getFirstSegmentNum() {
       return startNumber;
     }
@@ -215,12 +220,9 @@ public abstract class SegmentBase {
     public boolean isExplicit() {
       return segmentTimeline != null;
     }
-
   }
 
-  /**
-   * A {@link MultiSegmentBase} that uses a SegmentList to define its segments.
-   */
+  /** A {@link MultiSegmentBase} that uses a SegmentList to define its segments. */
   public static class SegmentList extends MultiSegmentBase {
 
     /* package */ final List<RangedUri> mediaSegments;
@@ -248,7 +250,12 @@ public abstract class SegmentBase {
         long duration,
         List<SegmentTimelineElement> segmentTimeline,
         List<RangedUri> mediaSegments) {
-      super(initialization, timescale, presentationTimeOffset, startNumber, duration,
+      super(
+          initialization,
+          timescale,
+          presentationTimeOffset,
+          startNumber,
+          duration,
           segmentTimeline);
       this.mediaSegments = mediaSegments;
     }
@@ -267,12 +274,9 @@ public abstract class SegmentBase {
     public boolean isExplicit() {
       return true;
     }
-
   }
 
-  /**
-   * A {@link MultiSegmentBase} that uses a SegmentTemplate to define its segments.
-   */
+  /** A {@link MultiSegmentBase} that uses a SegmentTemplate to define its segments. */
   public static class SegmentTemplate extends MultiSegmentBase {
 
     /* package */ final UrlTemplate initializationTemplate;
@@ -326,8 +330,9 @@ public abstract class SegmentBase {
     @Override
     public RangedUri getInitialization(Representation representation) {
       if (initializationTemplate != null) {
-        String urlString = initializationTemplate.buildUri(representation.format.id, 0,
-            representation.format.bitrate, 0);
+        String urlString =
+            initializationTemplate.buildUri(
+                representation.format.id, 0, representation.format.bitrate, 0);
         return new RangedUri(urlString, 0, C.LENGTH_UNSET);
       } else {
         return super.getInitialization(representation);
@@ -342,8 +347,9 @@ public abstract class SegmentBase {
       } else {
         time = (sequenceNumber - startNumber) * duration;
       }
-      String uriString = mediaTemplate.buildUri(representation.format.id, sequenceNumber,
-          representation.format.bitrate, time);
+      String uriString =
+          mediaTemplate.buildUri(
+              representation.format.id, sequenceNumber, representation.format.bitrate, time);
       return new RangedUri(uriString, 0, C.LENGTH_UNSET);
     }
 
@@ -362,9 +368,7 @@ public abstract class SegmentBase {
     }
   }
 
-  /**
-   * Represents a timeline segment from the MPD's SegmentTimeline list.
-   */
+  /** Represents a timeline segment from the MPD's SegmentTimeline list. */
   public static class SegmentTimelineElement {
 
     /* package */ final long startTime;
@@ -380,7 +384,5 @@ public abstract class SegmentBase {
       this.startTime = startTime;
       this.duration = duration;
     }
-
   }
-
 }

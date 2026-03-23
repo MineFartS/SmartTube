@@ -25,9 +25,7 @@ import com.google.android.exoplayer2.drm.DrmSessionManager;
 import com.google.android.exoplayer2.drm.ExoMediaCrypto;
 import com.google.android.exoplayer2.util.MimeTypes;
 
-/**
- * Decodes and renders audio using the native Flac decoder.
- */
+/** Decodes and renders audio using the native Flac decoder. */
 public class LibflacAudioRenderer extends SimpleDecoderAudioRenderer {
 
   private static final int NUM_BUFFERS = 16;
@@ -50,8 +48,8 @@ public class LibflacAudioRenderer extends SimpleDecoderAudioRenderer {
   }
 
   @Override
-  protected int supportsFormatInternal(DrmSessionManager<ExoMediaCrypto> drmSessionManager,
-      Format format) {
+  protected int supportsFormatInternal(
+      DrmSessionManager<ExoMediaCrypto> drmSessionManager, Format format) {
     if (!FlacLibrary.isAvailable()
         || !MimeTypes.AUDIO_FLAC.equalsIgnoreCase(format.sampleMimeType)) {
       return FORMAT_UNSUPPORTED_TYPE;
@@ -70,5 +68,4 @@ public class LibflacAudioRenderer extends SimpleDecoderAudioRenderer {
     return new FlacDecoder(
         NUM_BUFFERS, NUM_BUFFERS, format.maxInputSize, format.initializationData);
   }
-
 }

@@ -60,6 +60,7 @@ public final class CacheDataSource implements DataSource {
         FLAG_IGNORE_CACHE_FOR_UNSET_LENGTH_REQUESTS
       })
   public @interface Flags {}
+
   /**
    * A flag indicating whether we will block reads if the cache key is locked. If unset then data is
    * read from upstream if the cache key is locked, regardless of whether the data is cached.
@@ -67,9 +68,9 @@ public final class CacheDataSource implements DataSource {
   public static final int FLAG_BLOCK_ON_CACHE = 1;
 
   /**
-   * A flag indicating whether the cache is bypassed following any cache related error. If set
-   * then cache related exceptions may be thrown for one cycle of open, read and close calls.
-   * Subsequent cycles of these calls will then bypass the cache.
+   * A flag indicating whether the cache is bypassed following any cache related error. If set then
+   * cache related exceptions may be thrown for one cycle of open, read and close calls. Subsequent
+   * cycles of these calls will then bypass the cache.
    */
   public static final int FLAG_IGNORE_CACHE_ON_ERROR = 1 << 1; // 2
 
@@ -97,9 +98,7 @@ public final class CacheDataSource implements DataSource {
   /** Cache ignored due to a request with an unset length. */
   public static final int CACHE_IGNORED_REASON_UNSET_LENGTH = 1;
 
-  /**
-   * Listener of {@link CacheDataSource} events.
-   */
+  /** Listener of {@link CacheDataSource} events. */
   public interface EventListener {
 
     /**
@@ -547,5 +546,4 @@ public final class CacheDataSource implements DataSource {
       totalCachedBytesRead = 0;
     }
   }
-
 }

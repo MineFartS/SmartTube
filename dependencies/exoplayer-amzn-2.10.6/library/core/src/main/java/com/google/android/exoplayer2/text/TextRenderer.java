@@ -37,10 +37,10 @@ import java.util.List;
 
 /**
  * A renderer for text.
- * <p>
- * {@link Subtitle}s are decoded from sample data using {@link SubtitleDecoder} instances obtained
- * from a {@link SubtitleDecoderFactory}. The actual rendering of the subtitle {@link Cue}s is
- * delegated to a {@link TextOutput}.
+ *
+ * <p>{@link Subtitle}s are decoded from sample data using {@link SubtitleDecoder} instances
+ * obtained from a {@link SubtitleDecoderFactory}. The actual rendering of the subtitle {@link Cue}s
+ * is delegated to a {@link TextOutput}.
  */
 public final class TextRenderer extends BaseRenderer implements Callback {
 
@@ -58,16 +58,17 @@ public final class TextRenderer extends BaseRenderer implements Callback {
     REPLACEMENT_STATE_WAIT_END_OF_STREAM
   })
   private @interface ReplacementState {}
-  /**
-   * The decoder does not need to be replaced.
-   */
+
+  /** The decoder does not need to be replaced. */
   private static final int REPLACEMENT_STATE_NONE = 0;
+
   /**
    * The decoder needs to be replaced, but we haven't yet signaled an end of stream to the existing
    * decoder. We need to do so in order to ensure that it outputs any remaining buffers before we
    * release it.
    */
   private static final int REPLACEMENT_STATE_SIGNAL_END_OF_STREAM = 1;
+
   /**
    * The decoder needs to be replaced, and we've signaled an end of stream to the existing decoder.
    * We're waiting for the decoder to output an end of stream signal to indicate that it has output
@@ -300,8 +301,9 @@ public final class TextRenderer extends BaseRenderer implements Callback {
 
   private long getNextEventTime() {
     return nextSubtitleEventIndex == C.INDEX_UNSET
-        || nextSubtitleEventIndex >= subtitle.getEventTimeCount()
-        ? Long.MAX_VALUE : subtitle.getEventTime(nextSubtitleEventIndex);
+            || nextSubtitleEventIndex >= subtitle.getEventTimeCount()
+        ? Long.MAX_VALUE
+        : subtitle.getEventTime(nextSubtitleEventIndex);
   }
 
   private void updateOutput(List<Cue> cues) {
@@ -331,5 +333,4 @@ public final class TextRenderer extends BaseRenderer implements Callback {
   private void invokeUpdateOutputInternal(List<Cue> cues) {
     output.onCues(cues);
   }
-
 }

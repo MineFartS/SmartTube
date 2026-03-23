@@ -65,9 +65,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
         Loader.ReleaseCallback,
         UpstreamFormatChangedListener {
 
-  /**
-   * Listener for information about the period.
-   */
+  /** Listener for information about the period. */
   interface Listener {
 
     /**
@@ -77,7 +75,6 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
      * @param isSeekable Whether the period is seekable.
      */
     void onSourceInfoRefreshed(long durationUs, boolean isSeekable);
-
   }
 
   /**
@@ -275,8 +272,9 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
           // sample queue, or if we haven't read anything from the queue since the previous seek
           // (this case is common for sparse tracks such as metadata tracks). In all other cases a
           // seek is required.
-          seekRequired = sampleQueue.advanceTo(positionUs, true, true) == SampleQueue.ADVANCE_FAILED
-              && sampleQueue.getReadIndex() != 0;
+          seekRequired =
+              sampleQueue.advanceTo(positionUs, true, true) == SampleQueue.ADVANCE_FAILED
+                  && sampleQueue.getReadIndex() != 0;
         }
       }
     }
@@ -373,15 +371,16 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
       int trackCount = sampleQueues.length;
       for (int i = 0; i < trackCount; i++) {
         if (trackIsAudioVideoFlags[i] && !sampleQueues[i].isLastSampleQueued()) {
-          largestQueuedTimestampUs = Math.min(largestQueuedTimestampUs,
-              sampleQueues[i].getLargestQueuedTimestampUs());
+          largestQueuedTimestampUs =
+              Math.min(largestQueuedTimestampUs, sampleQueues[i].getLargestQueuedTimestampUs());
         }
       }
     }
     if (largestQueuedTimestampUs == Long.MAX_VALUE) {
       largestQueuedTimestampUs = getLargestQueuedTimestampUs();
     }
-    return largestQueuedTimestampUs == Long.MIN_VALUE ? lastSeekPositionUs
+    return largestQueuedTimestampUs == Long.MIN_VALUE
+        ? lastSeekPositionUs
         : largestQueuedTimestampUs;
   }
 
@@ -444,8 +443,8 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
     loader.maybeThrowError(loadErrorHandlingPolicy.getMinimumLoadableRetryCount(dataType));
   }
 
-  /* package */ int readData(int track, FormatHolder formatHolder, DecoderInputBuffer buffer,
-      boolean formatRequired) {
+  /* package */ int readData(
+      int track, FormatHolder formatHolder, DecoderInputBuffer buffer, boolean formatRequired) {
     if (suppressRead()) {
       return C.RESULT_NOTHING_READ;
     }
@@ -520,13 +519,15 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
   // Loader.Callback implementation.
 
   @Override
-  public void onLoadCompleted(ExtractingLoadable loadable, long elapsedRealtimeMs,
-      long loadDurationMs) {
+  public void onLoadCompleted(
+      ExtractingLoadable loadable, long elapsedRealtimeMs, long loadDurationMs) {
     if (durationUs == C.TIME_UNSET && seekMap != null) {
       boolean isSeekable = seekMap.isSeekable();
       long largestQueuedTimestampUs = getLargestQueuedTimestampUs();
-      durationUs = largestQueuedTimestampUs == Long.MIN_VALUE ? 0
-          : largestQueuedTimestampUs + DEFAULT_LAST_SAMPLE_DURATION_US;
+      durationUs =
+          largestQueuedTimestampUs == Long.MIN_VALUE
+              ? 0
+              : largestQueuedTimestampUs + DEFAULT_LAST_SAMPLE_DURATION_US;
       listener.onSourceInfoRefreshed(durationUs, isSeekable);
     }
     eventDispatcher.loadCompleted(
@@ -549,8 +550,8 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
   }
 
   @Override
-  public void onLoadCanceled(ExtractingLoadable loadable, long elapsedRealtimeMs,
-      long loadDurationMs, boolean released) {
+  public void onLoadCanceled(
+      ExtractingLoadable loadable, long elapsedRealtimeMs, long loadDurationMs, boolean released) {
     eventDispatcher.loadCanceled(
         loadable.dataSpec,
         loadable.dataSource.getLastOpenedUri(),
@@ -773,8 +774,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
    *     retry.
    */
   private boolean configureRetry(ExtractingLoadable loadable, int currentExtractedSampleCount) {
-    if (length != C.LENGTH_UNSET
-        || (seekMap != null && seekMap.getDurationUs() != C.TIME_UNSET)) {
+    if (length != C.LENGTH_UNSET || (seekMap != null && seekMap.getDurationUs() != C.TIME_UNSET)) {
       // We're playing an on-demand stream. Resume the current loadable, which will
       // request data starting from the point it left off.
       extractedSamplesCountAtStartOfLoad = currentExtractedSampleCount;
@@ -819,8 +819,8 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
     for (int i = 0; i < trackCount; i++) {
       SampleQueue sampleQueue = sampleQueues[i];
       sampleQueue.rewind();
-      boolean seekInsideQueue = sampleQueue.advanceTo(positionUs, true, false)
-          != SampleQueue.ADVANCE_FAILED;
+      boolean seekInsideQueue =
+          sampleQueue.advanceTo(positionUs, true, false) != SampleQueue.ADVANCE_FAILED;
       // If we have AV tracks then an in-buffer seek is successful if the seek into every AV queue
       // is successful. We ignore whether seeks within non-AV queues are successful in this case, as
       // they may be sparse or poorly interleaved. If we only have non-AV tracks then a seek is
@@ -843,8 +843,8 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
   private long getLargestQueuedTimestampUs() {
     long largestQueuedTimestampUs = Long.MIN_VALUE;
     for (SampleQueue sampleQueue : sampleQueues) {
-      largestQueuedTimestampUs = Math.max(largestQueuedTimestampUs,
-          sampleQueue.getLargestQueuedTimestampUs());
+      largestQueuedTimestampUs =
+          Math.max(largestQueuedTimestampUs, sampleQueue.getLargestQueuedTimestampUs());
     }
     return largestQueuedTimestampUs;
   }
@@ -872,8 +872,8 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
     }
 
     @Override
-    public int readData(FormatHolder formatHolder, DecoderInputBuffer buffer,
-        boolean formatRequired) {
+    public int readData(
+        FormatHolder formatHolder, DecoderInputBuffer buffer, boolean formatRequired) {
       return ProgressiveMediaPeriod.this.readData(track, formatHolder, buffer, formatRequired);
     }
 
@@ -881,7 +881,6 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
     public int skipData(long positionUs) {
       return ProgressiveMediaPeriod.this.skipData(track, positionUs);
     }
-
   }
 
   /** Loads the media stream and extracts sample data from it. */

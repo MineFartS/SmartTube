@@ -39,6 +39,7 @@ public final class CacheDataSink implements DataSink {
 
   /** Default {@code fragmentSize} recommended for caching use cases. */
   public static final long DEFAULT_FRAGMENT_SIZE = 5 * 1024 * 1024;
+
   /** Default buffer size in bytes. */
   public static final int DEFAULT_BUFFER_SIZE = 20 * 1024;
 
@@ -57,15 +58,12 @@ public final class CacheDataSink implements DataSink {
   private long dataSpecBytesWritten;
   private ReusableBufferedOutputStream bufferedOutputStream;
 
-  /**
-   * Thrown when IOException is encountered when writing data into sink.
-   */
+  /** Thrown when IOException is encountered when writing data into sink. */
   public static class CacheDataSinkException extends CacheException {
 
     public CacheDataSinkException(IOException cause) {
       super(cause);
     }
-
   }
 
   /**
@@ -173,8 +171,8 @@ public final class CacheDataSink implements DataSink {
     FileOutputStream underlyingFileOutputStream = new FileOutputStream(file);
     if (bufferSize > 0) {
       if (bufferedOutputStream == null) {
-        bufferedOutputStream = new ReusableBufferedOutputStream(underlyingFileOutputStream,
-            bufferSize);
+        bufferedOutputStream =
+            new ReusableBufferedOutputStream(underlyingFileOutputStream, bufferSize);
       } else {
         bufferedOutputStream.reset(underlyingFileOutputStream);
       }
@@ -207,5 +205,4 @@ public final class CacheDataSink implements DataSink {
       }
     }
   }
-
 }

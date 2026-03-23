@@ -15,9 +15,9 @@
  */
 package com.google.android.exoplayer2.util;
 
+import android.text.TextUtils;
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
-import android.text.TextUtils;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -33,14 +33,19 @@ public final class Log {
   @Retention(RetentionPolicy.SOURCE)
   @IntDef({LOG_LEVEL_ALL, LOG_LEVEL_INFO, LOG_LEVEL_WARNING, LOG_LEVEL_ERROR, LOG_LEVEL_OFF})
   @interface LogLevel {}
+
   /** Log level to log all messages. */
   public static final int LOG_LEVEL_ALL = 0;
+
   /** Log level to only log informative, warning and error messages. */
   public static final int LOG_LEVEL_INFO = 1;
+
   /** Log level to only log warning and error messages. */
   public static final int LOG_LEVEL_WARNING = 2;
+
   /** Log level to only log error messages. */
   public static final int LOG_LEVEL_ERROR = 3;
+
   /** Log level to disable all logging. */
   public static final int LOG_LEVEL_OFF = Integer.MAX_VALUE;
 
@@ -77,14 +82,18 @@ public final class Log {
     Log.logStackTraces = logStackTraces;
   }
 
-  /** @see android.util.Log#d(String, String) */
+  /**
+   * @see android.util.Log#d(String, String)
+   */
   public static void d(String tag, String message) {
     if (logLevel == LOG_LEVEL_ALL) {
       android.util.Log.d(tag, message);
     }
   }
 
-  /** @see android.util.Log#d(String, String, Throwable) */
+  /**
+   * @see android.util.Log#d(String, String, Throwable)
+   */
   public static void d(String tag, String message, @Nullable Throwable throwable) {
     if (!logStackTraces) {
       d(tag, appendThrowableMessage(message, throwable));
@@ -93,14 +102,18 @@ public final class Log {
     }
   }
 
-  /** @see android.util.Log#i(String, String) */
+  /**
+   * @see android.util.Log#i(String, String)
+   */
   public static void i(String tag, String message) {
     if (logLevel <= LOG_LEVEL_INFO) {
       android.util.Log.i(tag, message);
     }
   }
 
-  /** @see android.util.Log#i(String, String, Throwable) */
+  /**
+   * @see android.util.Log#i(String, String, Throwable)
+   */
   public static void i(String tag, String message, @Nullable Throwable throwable) {
     if (!logStackTraces) {
       i(tag, appendThrowableMessage(message, throwable));
@@ -109,14 +122,18 @@ public final class Log {
     }
   }
 
-  /** @see android.util.Log#w(String, String) */
+  /**
+   * @see android.util.Log#w(String, String)
+   */
   public static void w(String tag, String message) {
     if (logLevel <= LOG_LEVEL_WARNING) {
       android.util.Log.w(tag, message);
     }
   }
 
-  /** @see android.util.Log#w(String, String, Throwable) */
+  /**
+   * @see android.util.Log#w(String, String, Throwable)
+   */
   public static void w(String tag, String message, @Nullable Throwable throwable) {
     if (!logStackTraces) {
       w(tag, appendThrowableMessage(message, throwable));
@@ -125,14 +142,18 @@ public final class Log {
     }
   }
 
-  /** @see android.util.Log#e(String, String) */
+  /**
+   * @see android.util.Log#e(String, String)
+   */
   public static void e(String tag, String message) {
     if (logLevel <= LOG_LEVEL_ERROR) {
       android.util.Log.e(tag, message);
     }
   }
 
-  /** @see android.util.Log#e(String, String, Throwable) */
+  /**
+   * @see android.util.Log#e(String, String, Throwable)
+   */
   public static void e(String tag, String message, @Nullable Throwable throwable) {
     if (!logStackTraces) {
       e(tag, appendThrowableMessage(message, throwable));

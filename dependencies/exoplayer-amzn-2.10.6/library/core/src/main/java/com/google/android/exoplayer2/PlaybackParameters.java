@@ -18,9 +18,7 @@ package com.google.android.exoplayer2;
 import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.util.Assertions;
 
-/**
- * The parameters that apply to playback.
- */
+/** The parameters that apply to playback. */
 public final class PlaybackParameters {
 
   /**
@@ -109,5 +107,4 @@ public final class PlaybackParameters {
     result = 31 * result + (skipSilence ? 1 : 0);
     return result;
   }
-
 }

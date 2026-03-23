@@ -29,5 +29,4 @@ public interface Predicate<T> {
    * @return The evaluated result.
    */
   boolean evaluate(T input);
-
 }

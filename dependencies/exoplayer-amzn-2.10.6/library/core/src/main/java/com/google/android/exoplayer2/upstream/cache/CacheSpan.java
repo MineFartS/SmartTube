@@ -20,31 +20,26 @@ import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import java.io.File;
 
-/**
- * Defines a span of data that may or may not be cached (as indicated by {@link #isCached}).
- */
+/** Defines a span of data that may or may not be cached (as indicated by {@link #isCached}). */
 public class CacheSpan implements Comparable<CacheSpan> {
 
-  /**
-   * The cache key that uniquely identifies the original stream.
-   */
+  /** The cache key that uniquely identifies the original stream. */
   public final String key;
-  /**
-   * The position of the {@link CacheSpan} in the original stream.
-   */
+
+  /** The position of the {@link CacheSpan} in the original stream. */
   public final long position;
+
   /**
    * The length of the {@link CacheSpan}, or {@link C#LENGTH_UNSET} if this is an open-ended hole.
    */
   public final long length;
-  /**
-   * Whether the {@link CacheSpan} is cached.
-   */
+
+  /** Whether the {@link CacheSpan} is cached. */
   public final boolean isCached;
-  /**
-   * The file corresponding to this {@link CacheSpan}, or null if {@link #isCached} is false.
-   */
+
+  /** The file corresponding to this {@link CacheSpan}, or null if {@link #isCached} is false. */
   public final @Nullable File file;
+
   /** The last touch timestamp, or {@link C#TIME_UNSET} if {@link #isCached} is false. */
   public final long lastTouchTimestamp;
 
@@ -82,16 +77,12 @@ public class CacheSpan implements Comparable<CacheSpan> {
     this.lastTouchTimestamp = lastTouchTimestamp;
   }
 
-  /**
-   * Returns whether this is an open-ended {@link CacheSpan}.
-   */
+  /** Returns whether this is an open-ended {@link CacheSpan}. */
   public boolean isOpenEnded() {
     return length == C.LENGTH_UNSET;
   }
 
-  /**
-   * Returns whether this is a hole {@link CacheSpan}.
-   */
+  /** Returns whether this is a hole {@link CacheSpan}. */
   public boolean isHoleSpan() {
     return !isCached;
   }
@@ -104,5 +95,4 @@ public class CacheSpan implements Comparable<CacheSpan> {
     long startOffsetDiff = position - another.position;
     return startOffsetDiff == 0 ? 0 : ((startOffsetDiff < 0) ? -1 : 1);
   }
-
 }

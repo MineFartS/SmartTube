@@ -16,8 +16,8 @@
 package com.google.android.exoplayer2.ext.cronet;
 
 import android.net.Uri;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerLibraryInfo;
 import com.google.android.exoplayer2.metadata.icy.IcyHeaders;
@@ -55,9 +55,7 @@ import org.chromium.net.UrlResponseInfo;
  */
 public class CronetDataSource extends BaseDataSource implements HttpDataSource {
 
-  /**
-   * Thrown when an error is encountered when trying to open a {@link CronetDataSource}.
-   */
+  /** Thrown when an error is encountered when trying to open a {@link CronetDataSource}. */
   public static final class OpenException extends HttpDataSourceException {
 
     /**
@@ -75,7 +73,6 @@ public class CronetDataSource extends BaseDataSource implements HttpDataSource {
       super(errorMessage, dataSpec, TYPE_OPEN);
       this.cronetConnectionStatus = cronetConnectionStatus;
     }
-
   }
 
   /** Thrown on catching an InterruptedException. */
@@ -90,13 +87,10 @@ public class CronetDataSource extends BaseDataSource implements HttpDataSource {
     ExoPlayerLibraryInfo.registerModule("goog.exo.cronet");
   }
 
-  /**
-   * The default connection timeout, in milliseconds.
-   */
+  /** The default connection timeout, in milliseconds. */
   public static final int DEFAULT_CONNECT_TIMEOUT_MILLIS = 8 * 1000;
-  /**
-   * The default read timeout, in milliseconds.
-   */
+
+  /** The default read timeout, in milliseconds. */
   public static final int DEFAULT_READ_TIMEOUT_MILLIS = 8 * 1000;
 
   /* package */ final UrlRequest.Callback urlRequestCallback;
@@ -432,8 +426,8 @@ public class CronetDataSource extends BaseDataSource implements HttpDataSource {
       }
 
       if (exception != null) {
-        throw new HttpDataSourceException(exception, currentDataSpec,
-            HttpDataSourceException.TYPE_READ);
+        throw new HttpDataSourceException(
+            exception, currentDataSpec, HttpDataSourceException.TYPE_READ);
       } else if (finished) {
         bytesRemaining = 0;
         return C.RESULT_END_OF_INPUT;
@@ -604,8 +598,9 @@ public class CronetDataSource extends BaseDataSource implements HttpDataSource {
             // assume the one with the larger value is correct. We have seen cases where carrier
             // change one of them to reduce the size of a request, but it is unlikely anybody
             // would increase it.
-            Log.w(TAG, "Inconsistent headers [" + contentLengthHeader + "] [" + contentRangeHeader
-                + "]");
+            Log.w(
+                TAG,
+                "Inconsistent headers [" + contentLengthHeader + "] [" + contentRangeHeader + "]");
             contentLength = Math.max(contentLength, contentLengthFromRange);
           }
         } catch (NumberFormatException e) {
@@ -630,13 +625,14 @@ public class CronetDataSource extends BaseDataSource implements HttpDataSource {
   private static int getStatus(UrlRequest request) throws InterruptedException {
     final ConditionVariable conditionVariable = new ConditionVariable();
     final int[] statusHolder = new int[1];
-    request.getStatus(new UrlRequest.StatusListener() {
-      @Override
-      public void onStatus(int status) {
-        statusHolder[0] = status;
-        conditionVariable.open();
-      }
-    });
+    request.getStatus(
+        new UrlRequest.StatusListener() {
+          @Override
+          public void onStatus(int status) {
+            statusHolder[0] = status;
+            conditionVariable.open();
+          }
+        });
     conditionVariable.block();
     return statusHolder[0];
   }

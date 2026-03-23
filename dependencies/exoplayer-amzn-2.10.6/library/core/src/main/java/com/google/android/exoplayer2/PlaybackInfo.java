@@ -21,9 +21,7 @@ import com.google.android.exoplayer2.source.MediaSource.MediaPeriodId;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.TrackSelectorResult;
 
-/**
- * Information about an ongoing playback.
- */
+/** Information about an ongoing playback. */
 /* package */ final class PlaybackInfo {
 
   /**
@@ -35,16 +33,20 @@ import com.google.android.exoplayer2.trackselection.TrackSelectorResult;
 
   /** The current {@link Timeline}. */
   public final Timeline timeline;
+
   /** The current manifest. */
   public final @Nullable Object manifest;
+
   /** The {@link MediaPeriodId} of the currently playing media period in the {@link #timeline}. */
   public final MediaPeriodId periodId;
+
   /**
    * The start position at which playback started in {@link #periodId} relative to the start of the
    * associated period in the {@link #timeline}, in microseconds. Note that this value changes for
    * each position discontinuity.
    */
   public final long startPositionUs;
+
   /**
    * If {@link #periodId} refers to an ad, the position of the suspended content relative to the
    * start of the associated period in the {@link #timeline}, in microseconds. {@link C#TIME_UNSET}
@@ -52,14 +54,19 @@ import com.google.android.exoplayer2.trackselection.TrackSelectorResult;
    * its default position.
    */
   public final long contentPositionUs;
+
   /** The current playback state. One of the {@link Player}.STATE_ constants. */
   public final int playbackState;
+
   /** Whether the player is currently loading. */
   public final boolean isLoading;
+
   /** The currently available track groups. */
   public final TrackGroupArray trackGroups;
+
   /** The result of the current track selection. */
   public final TrackSelectorResult trackSelectorResult;
+
   /** The {@link MediaPeriodId} of the currently loading media period in the {@link #timeline}. */
   public final MediaPeriodId loadingMediaPeriodId;
 
@@ -68,11 +75,13 @@ import com.google.android.exoplayer2.trackselection.TrackSelectorResult;
    * of the associated period in the {@link #timeline}, in microseconds.
    */
   public volatile long bufferedPositionUs;
+
   /**
    * Total duration of buffered media from {@link #positionUs} to {@link #bufferedPositionUs}
    * including all ads.
    */
   public volatile long totalBufferedDurationUs;
+
   /**
    * Current playback position in {@link #periodId} relative to the start of the associated period
    * in the {@link #timeline}, in microseconds.

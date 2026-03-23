@@ -74,16 +74,17 @@ public abstract class SimpleDecoderAudioRenderer extends BaseRenderer implements
     REINITIALIZATION_STATE_WAIT_END_OF_STREAM
   })
   private @interface ReinitializationState {}
-  /**
-   * The decoder does not need to be re-initialized.
-   */
+
+  /** The decoder does not need to be re-initialized. */
   private static final int REINITIALIZATION_STATE_NONE = 0;
+
   /**
    * The input format has changed in a way that requires the decoder to be re-initialized, but we
    * haven't yet signaled an end of stream to the existing decoder. We need to do so in order to
    * ensure that it outputs any remaining buffers before we release it.
    */
   private static final int REINITIALIZATION_STATE_SIGNAL_END_OF_STREAM = 1;
+
   /**
    * The input format has changed in a way that requires the decoder to be re-initialized, and we've
    * signaled an end of stream to the existing decoder. We're waiting for the decoder to output an
@@ -102,8 +103,9 @@ public abstract class SimpleDecoderAudioRenderer extends BaseRenderer implements
   private Format inputFormat;
   private int encoderDelay;
   private int encoderPadding;
-  private SimpleDecoder<DecoderInputBuffer, ? extends SimpleOutputBuffer,
-        ? extends AudioDecoderException> decoder;
+  private SimpleDecoder<
+          DecoderInputBuffer, ? extends SimpleOutputBuffer, ? extends AudioDecoderException>
+      decoder;
   private DecoderInputBuffer inputBuffer;
   private SimpleOutputBuffer outputBuffer;
   @Nullable private DrmSession<ExoMediaCrypto> decoderDrmSession;
@@ -184,8 +186,12 @@ public abstract class SimpleDecoderAudioRenderer extends BaseRenderer implements
       @Nullable DrmSessionManager<ExoMediaCrypto> drmSessionManager,
       boolean playClearSamplesWithoutKeys,
       AudioProcessor... audioProcessors) {
-    this(eventHandler, eventListener, drmSessionManager,
-        playClearSamplesWithoutKeys, new DefaultAudioSink(audioCapabilities, audioProcessors));
+    this(
+        eventHandler,
+        eventListener,
+        drmSessionManager,
+        playClearSamplesWithoutKeys,
+        new DefaultAudioSink(audioCapabilities, audioProcessors));
   }
 
   /**
@@ -297,8 +303,10 @@ public abstract class SimpleDecoderAudioRenderer extends BaseRenderer implements
         while (drainOutputBuffer()) {}
         while (feedInputBuffer()) {}
         TraceUtil.endSection();
-      } catch (AudioDecoderException | AudioSink.ConfigurationException
-          | AudioSink.InitializationException | AudioSink.WriteException e) {
+      } catch (AudioDecoderException
+          | AudioSink.ConfigurationException
+          | AudioSink.InitializationException
+          | AudioSink.WriteException e) {
         throw ExoPlaybackException.createForRenderer(e, getIndex());
       }
       decoderCounters.ensureUpdated();
@@ -327,8 +335,8 @@ public abstract class SimpleDecoderAudioRenderer extends BaseRenderer implements
   /**
    * @see AudioSink.Listener#onUnderrun(int, long, long)
    */
-  protected void onAudioTrackUnderrun(int bufferSize, long bufferSizeMs,
-      long elapsedSinceLastFeedMs) {
+  protected void onAudioTrackUnderrun(
+      int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
     // Do nothing.
   }
 
@@ -341,26 +349,39 @@ public abstract class SimpleDecoderAudioRenderer extends BaseRenderer implements
    * @return The decoder.
    * @throws AudioDecoderException If an error occurred creating a suitable decoder.
    */
-  protected abstract SimpleDecoder<DecoderInputBuffer, ? extends SimpleOutputBuffer,
-      ? extends AudioDecoderException> createDecoder(Format format, ExoMediaCrypto mediaCrypto)
-      throws AudioDecoderException;
+  protected abstract SimpleDecoder<
+          DecoderInputBuffer, ? extends SimpleOutputBuffer, ? extends AudioDecoderException>
+      createDecoder(Format format, ExoMediaCrypto mediaCrypto) throws AudioDecoderException;
 
   /**
    * Returns the format of audio buffers output by the decoder. Will not be called until the first
    * output buffer has been dequeued, so the decoder may use input data to determine the format.
-   * <p>
-   * The default implementation returns a 16-bit PCM format with the same channel count and sample
-   * rate as the input.
+   *
+   * <p>The default implementation returns a 16-bit PCM format with the same channel count and
+   * sample rate as the input.
    */
   protected Format getOutputFormat() {
-    return Format.createAudioSampleFormat(null, MimeTypes.AUDIO_RAW, null, Format.NO_VALUE,
-        Format.NO_VALUE, inputFormat.channelCount, inputFormat.sampleRate, C.ENCODING_PCM_16BIT,
-        null, null, 0, null);
+    return Format.createAudioSampleFormat(
+        null,
+        MimeTypes.AUDIO_RAW,
+        null,
+        Format.NO_VALUE,
+        Format.NO_VALUE,
+        inputFormat.channelCount,
+        inputFormat.sampleRate,
+        C.ENCODING_PCM_16BIT,
+        null,
+        null,
+        0,
+        null);
   }
 
-  private boolean drainOutputBuffer() throws ExoPlaybackException, AudioDecoderException,
-      AudioSink.ConfigurationException, AudioSink.InitializationException,
-      AudioSink.WriteException {
+  private boolean drainOutputBuffer()
+      throws ExoPlaybackException,
+          AudioDecoderException,
+          AudioSink.ConfigurationException,
+          AudioSink.InitializationException,
+          AudioSink.WriteException {
     if (outputBuffer == null) {
       outputBuffer = decoder.dequeueOutputBuffer();
       if (outputBuffer == null) {
@@ -389,8 +410,14 @@ public abstract class SimpleDecoderAudioRenderer extends BaseRenderer implements
 
     if (audioTrackNeedsConfigure) {
       Format outputFormat = getOutputFormat();
-      audioSink.configure(outputFormat.pcmEncoding, outputFormat.channelCount,
-          outputFormat.sampleRate, 0, null, encoderDelay, encoderPadding);
+      audioSink.configure(
+          outputFormat.pcmEncoding,
+          outputFormat.channelCount,
+          outputFormat.sampleRate,
+          0,
+          null,
+          encoderDelay,
+          encoderPadding);
       audioTrackNeedsConfigure = false;
     }
 
@@ -405,7 +432,8 @@ public abstract class SimpleDecoderAudioRenderer extends BaseRenderer implements
   }
 
   private boolean feedInputBuffer() throws AudioDecoderException, ExoPlaybackException {
-    if (decoder == null || decoderReinitializationState == REINITIALIZATION_STATE_WAIT_END_OF_STREAM
+    if (decoder == null
+        || decoderReinitializationState == REINITIALIZATION_STATE_WAIT_END_OF_STREAM
         || inputStreamEnded) {
       // We need to reinitialize the decoder or the input stream has ended.
       return false;
@@ -624,7 +652,9 @@ public abstract class SimpleDecoderAudioRenderer extends BaseRenderer implements
       decoder = createDecoder(inputFormat, mediaCrypto);
       TraceUtil.endSection();
       long codecInitializedTimestamp = SystemClock.elapsedRealtime();
-      eventDispatcher.decoderInitialized(decoder.getName(), codecInitializedTimestamp,
+      eventDispatcher.decoderInitialized(
+          decoder.getName(),
+          codecInitializedTimestamp,
           codecInitializedTimestamp - codecInitializingTimestamp);
       decoderCounters.decoderInitCount++;
     } catch (AudioDecoderException e) {
@@ -667,8 +697,8 @@ public abstract class SimpleDecoderAudioRenderer extends BaseRenderer implements
     Format oldFormat = inputFormat;
     inputFormat = newFormat;
 
-    boolean drmInitDataChanged = !Util.areEqual(inputFormat.drmInitData, oldFormat == null ? null
-        : oldFormat.drmInitData);
+    boolean drmInitDataChanged =
+        !Util.areEqual(inputFormat.drmInitData, oldFormat == null ? null : oldFormat.drmInitData);
     if (drmInitDataChanged) {
       if (inputFormat.drmInitData != null) {
         if (drmSessionManager == null) {
@@ -747,7 +777,5 @@ public abstract class SimpleDecoderAudioRenderer extends BaseRenderer implements
       eventDispatcher.audioTrackUnderrun(bufferSize, bufferSizeMs, elapsedSinceLastFeedMs);
       onAudioTrackUnderrun(bufferSize, bufferSizeMs, elapsedSinceLastFeedMs);
     }
-
   }
-
 }

@@ -26,12 +26,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * A representation of a WebVTT subtitle.
- */
+/** A representation of a WebVTT subtitle. */
 /* package */ final class WebvttSubtitle implements Subtitle {
 
-  private static final long MAX_CUE_LENGTH_US = 10_000_000; // NOTE: lower values may broke some videos
+  private static final long MAX_CUE_LENGTH_US =
+      10_000_000; // NOTE: lower values may broke some videos
   private final List<WebvttCue> cues;
   private final int numCues;
   private final long[] cueTimesUs;
@@ -52,8 +51,9 @@ import java.util.List;
       long length = endTime - startTime;
       cueTimesUs[arrayIndex] = startTime;
       // MOD: fix long lasting subs
-      //cueTimesUs[arrayIndex + 1] = cue.endTime;
-      cueTimesUs[arrayIndex + 1] = length <= MAX_CUE_LENGTH_US ? endTime : startTime + MAX_CUE_LENGTH_US;
+      // cueTimesUs[arrayIndex + 1] = cue.endTime;
+      cueTimesUs[arrayIndex + 1] =
+          length <= MAX_CUE_LENGTH_US ? endTime : startTime + MAX_CUE_LENGTH_US;
     }
     sortedCueTimesUs = Arrays.copyOf(cueTimesUs, cueTimesUs.length);
     Arrays.sort(sortedCueTimesUs);
@@ -120,5 +120,4 @@ import java.util.List;
       return Collections.emptyList();
     }
   }
-
 }

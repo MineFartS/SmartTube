@@ -28,9 +28,7 @@ import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.MimeTypes;
 import java.io.IOException;
 
-/**
- * Extracts data from WAV byte streams.
- */
+/** Extracts data from WAV byte streams. */
 public final class WavExtractor implements Extractor {
 
   /** Factory for {@link WavExtractor} instances. */
@@ -77,9 +75,20 @@ public final class WavExtractor implements Extractor {
         // Should only happen if the media wasn't sniffed.
         throw new ParserException("Unsupported or unrecognized wav header.");
       }
-      Format format = Format.createAudioSampleFormat(null, MimeTypes.AUDIO_RAW, null,
-          wavHeader.getBitrate(), MAX_INPUT_SIZE, wavHeader.getNumChannels(),
-          wavHeader.getSampleRateHz(), wavHeader.getEncoding(), null, null, 0, null);
+      Format format =
+          Format.createAudioSampleFormat(
+              null,
+              MimeTypes.AUDIO_RAW,
+              null,
+              wavHeader.getBitrate(),
+              MAX_INPUT_SIZE,
+              wavHeader.getNumChannels(),
+              wavHeader.getSampleRateHz(),
+              wavHeader.getEncoding(),
+              null,
+              null,
+              0,
+              null);
       trackOutput.format(format);
       bytesPerFrame = wavHeader.getBytesPerFrame();
     }
@@ -116,5 +125,4 @@ public final class WavExtractor implements Extractor {
 
     return bytesAppended == RESULT_END_OF_INPUT ? RESULT_END_OF_INPUT : RESULT_CONTINUE;
   }
-
 }

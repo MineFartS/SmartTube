@@ -20,9 +20,7 @@ import com.google.android.exoplayer2.upstream.cache.Cache.CacheException;
 import java.util.Comparator;
 import java.util.TreeSet;
 
-/**
- * Evicts least recently used cache files first.
- */
+/** Evicts least recently used cache files first. */
 public final class LeastRecentlyUsedCacheEvictor implements CacheEvictor, Comparator<CacheSpan> {
 
   private final long maxBytes;
@@ -90,5 +88,4 @@ public final class LeastRecentlyUsedCacheEvictor implements CacheEvictor, Compar
       }
     }
   }
-
 }

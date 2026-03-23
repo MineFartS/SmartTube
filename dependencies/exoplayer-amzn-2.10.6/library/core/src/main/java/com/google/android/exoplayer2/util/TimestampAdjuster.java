@@ -53,8 +53,8 @@ public final class TimestampAdjuster {
    * Sets the desired result of the first call to {@link #adjustSampleTimestamp(long)}. Can only be
    * called before any timestamps have been adjusted.
    *
-   * @param firstSampleTimestampUs The first adjusted sample timestamp in microseconds, or
-   *     {@link #DO_NOT_OFFSET} if presentation timestamps should not be offset.
+   * @param firstSampleTimestampUs The first adjusted sample timestamp in microseconds, or {@link
+   *     #DO_NOT_OFFSET} if presentation timestamps should not be offset.
    */
   public synchronized void setFirstSampleTimestampUs(long firstSampleTimestampUs) {
     Assertions.checkState(lastSampleTimestampUs == C.TIME_UNSET);
@@ -79,13 +79,13 @@ public final class TimestampAdjuster {
   }
 
   /**
-   * Returns the offset between the input of {@link #adjustSampleTimestamp(long)} and its output.
-   * If {@link #DO_NOT_OFFSET} was provided to the constructor, 0 is returned. If the timestamp
+   * Returns the offset between the input of {@link #adjustSampleTimestamp(long)} and its output. If
+   * {@link #DO_NOT_OFFSET} was provided to the constructor, 0 is returned. If the timestamp
    * adjuster is yet not initialized, {@link C#TIME_UNSET} is returned.
    *
-   * @return The offset between {@link #adjustSampleTimestamp(long)}'s input and output.
-   *     {@link C#TIME_UNSET} if the adjuster is not yet initialized and 0 if timestamps should not
-   *     be offset.
+   * @return The offset between {@link #adjustSampleTimestamp(long)}'s input and output. {@link
+   *     C#TIME_UNSET} if the adjuster is not yet initialized and 0 if timestamps should not be
+   *     offset.
    */
   public long getTimestampOffsetUs() {
     return firstSampleTimestampUs == DO_NOT_OFFSET
@@ -93,9 +93,7 @@ public final class TimestampAdjuster {
         : lastSampleTimestampUs == C.TIME_UNSET ? C.TIME_UNSET : timestampOffsetUs;
   }
 
-  /**
-   * Resets the instance to its initial state.
-   */
+  /** Resets the instance to its initial state. */
   public void reset() {
     lastSampleTimestampUs = C.TIME_UNSET;
   }
@@ -182,5 +180,4 @@ public final class TimestampAdjuster {
   public static long usToPts(long us) {
     return (us * 90000) / C.MICROS_PER_SECOND;
   }
-
 }

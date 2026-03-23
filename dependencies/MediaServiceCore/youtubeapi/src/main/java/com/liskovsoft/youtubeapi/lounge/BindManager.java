@@ -11,14 +11,15 @@ import retrofit2.http.POST;
 
 @WithRegExp
 public interface BindManager {
-    @GET("https://www.youtube.com/api/lounge/pairing/generate_screen_id")
-    Call<ScreenId> createScreenId();
+  @GET("https://www.youtube.com/api/lounge/pairing/generate_screen_id")
+  Call<ScreenId> createScreenId();
 
-    @FormUrlEncoded
-    @POST("https://www.youtube.com/api/lounge/pairing/get_pairing_code?ctx=pair")
-    Call<PairingCode> getPairingCode(@Field("lounge_token") String loungeToken,
-                                     @Field("screen_id") String screenId,
-                                     @Field("screen_name") String screenName,
-                                     @Field("access_type") String accessType,
-                                     @Field("app") String app);
+  @FormUrlEncoded
+  @POST("https://www.youtube.com/api/lounge/pairing/get_pairing_code?ctx=pair")
+  Call<PairingCode> getPairingCode(
+      @Field("lounge_token") String loungeToken,
+      @Field("screen_id") String screenId,
+      @Field("screen_name") String screenName,
+      @Field("access_type") String accessType,
+      @Field("app") String app);
 }

@@ -46,11 +46,19 @@ public final class ByteArrayDataSource extends BaseDataSource {
     uri = dataSpec.uri;
     transferInitializing(dataSpec);
     readPosition = (int) dataSpec.position;
-    bytesRemaining = (int) ((dataSpec.length == C.LENGTH_UNSET)
-        ? (data.length - dataSpec.position) : dataSpec.length);
+    bytesRemaining =
+        (int)
+            ((dataSpec.length == C.LENGTH_UNSET)
+                ? (data.length - dataSpec.position)
+                : dataSpec.length);
     if (bytesRemaining <= 0 || readPosition + bytesRemaining > data.length) {
-      throw new IOException("Unsatisfiable range: [" + readPosition + ", " + dataSpec.length
-          + "], length: " + data.length);
+      throw new IOException(
+          "Unsatisfiable range: ["
+              + readPosition
+              + ", "
+              + dataSpec.length
+              + "], length: "
+              + data.length);
     }
     opened = true;
     transferStarted(dataSpec);
@@ -86,5 +94,4 @@ public final class ByteArrayDataSource extends BaseDataSource {
     }
     uri = null;
   }
-
 }

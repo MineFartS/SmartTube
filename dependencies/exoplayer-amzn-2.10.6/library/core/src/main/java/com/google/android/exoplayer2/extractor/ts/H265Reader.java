@@ -27,9 +27,7 @@ import com.google.android.exoplayer2.util.ParsableByteArray;
 import com.google.android.exoplayer2.util.ParsableNalUnitBitArray;
 import java.util.Collections;
 
-/**
- * Parses a continuous H.265 byte stream and extracts individual frames.
- */
+/** Parses a continuous H.265 byte stream and extracts individual frames. */
 public final class H265Reader implements ElementaryStreamReader {
 
   private static final String TAG = "H265Reader";
@@ -145,8 +143,11 @@ public final class H265Reader implements ElementaryStreamReader {
         // Indicate the end of the previous NAL unit. If the length to the start of the next unit
         // is negative then we wrote too many bytes to the NAL buffers. Discard the excess bytes
         // when notifying that the unit has ended.
-        endNalUnit(absolutePosition, bytesWrittenPastPosition,
-            lengthToNalUnit < 0 ? -lengthToNalUnit : 0, pesTimeUs);
+        endNalUnit(
+            absolutePosition,
+            bytesWrittenPastPosition,
+            lengthToNalUnit < 0 ? -lengthToNalUnit : 0,
+            pesTimeUs);
         // Indicate the start of the next NAL unit.
         startNalUnit(absolutePosition, bytesWrittenPastPosition, nalUnitType, pesTimeUs);
         // Continue scanning the data.
@@ -214,8 +215,8 @@ public final class H265Reader implements ElementaryStreamReader {
     }
   }
 
-  private static Format parseMediaFormat(String formatId, NalUnitTargetBuffer vps,
-      NalUnitTargetBuffer sps, NalUnitTargetBuffer pps) {
+  private static Format parseMediaFormat(
+      String formatId, NalUnitTargetBuffer vps, NalUnitTargetBuffer sps, NalUnitTargetBuffer pps) {
     // Build codec-specific data.
     byte[] csd = new byte[vps.nalLength + sps.nalLength + pps.nalLength];
     System.arraycopy(vps.nalData, 0, csd, 0, vps.nalLength);
@@ -278,7 +279,7 @@ public final class H265Reader implements ElementaryStreamReader {
     bitArray.readUnsignedExpGolombCodedInt(); // log2_diff_max_min_luma_transform_block_size
     bitArray.readUnsignedExpGolombCodedInt(); // max_transform_hierarchy_depth_inter
     bitArray.readUnsignedExpGolombCodedInt(); // max_transform_hierarchy_depth_intra
-    
+
     boolean scalingListEnabled = bitArray.readBit();
     if (scalingListEnabled && bitArray.readBit()) {
       skipScalingList(bitArray);
@@ -320,14 +321,22 @@ public final class H265Reader implements ElementaryStreamReader {
       }
     }
 
-    return Format.createVideoSampleFormat(formatId, MimeTypes.VIDEO_H265, null, Format.NO_VALUE,
-        Format.NO_VALUE, picWidthInLumaSamples, picHeightInLumaSamples, Format.NO_VALUE,
-        Collections.singletonList(csd), Format.NO_VALUE, pixelWidthHeightRatio, null);
+    return Format.createVideoSampleFormat(
+        formatId,
+        MimeTypes.VIDEO_H265,
+        null,
+        Format.NO_VALUE,
+        Format.NO_VALUE,
+        picWidthInLumaSamples,
+        picHeightInLumaSamples,
+        Format.NO_VALUE,
+        Collections.singletonList(csd),
+        Format.NO_VALUE,
+        pixelWidthHeightRatio,
+        null);
   }
 
-  /**
-   * Skips scaling_list_data(). See H.265/HEVC (2014) 7.3.4.
-   */
+  /** Skips scaling_list_data(). See H.265/HEVC (2014) 7.3.4. */
   private static void skipScalingList(ParsableNalUnitBitArray bitArray) {
     for (int sizeId = 0; sizeId < 4; sizeId++) {
       for (int matrixId = 0; matrixId < 6; matrixId += sizeId == 3 ? 3 : 1) {
@@ -488,7 +497,5 @@ public final class H265Reader implements ElementaryStreamReader {
       int size = (int) (nalUnitStartPosition - samplePosition);
       output.sampleMetadata(sampleTimeUs, flags, size, offset, null);
     }
-
   }
-
 }

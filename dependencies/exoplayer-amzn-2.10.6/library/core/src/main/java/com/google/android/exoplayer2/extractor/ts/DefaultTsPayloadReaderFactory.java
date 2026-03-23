@@ -15,8 +15,8 @@
  */
 package com.google.android.exoplayer2.extractor.ts;
 
-import androidx.annotation.IntDef;
 import android.util.SparseArray;
+import androidx.annotation.IntDef;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.extractor.ts.TsPayloadReader.EsInfo;
 import com.google.android.exoplayer2.text.cea.Cea708InitializationData;
@@ -29,9 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Default {@link TsPayloadReader.Factory} implementation.
- */
+/** Default {@link TsPayloadReader.Factory} implementation. */
 public final class DefaultTsPayloadReaderFactory implements TsPayloadReader.Factory {
 
   /**
@@ -61,26 +59,31 @@ public final class DefaultTsPayloadReaderFactory implements TsPayloadReader.Fact
    * synchronization samples (key-frames).
    */
   public static final int FLAG_ALLOW_NON_IDR_KEYFRAMES = 1;
+
   /**
    * Prevents the creation of {@link AdtsReader} and {@link LatmReader} instances. This flag should
    * be enabled if the transport stream contains no packets for an AAC elementary stream that is
    * declared in the PMT.
    */
   public static final int FLAG_IGNORE_AAC_STREAM = 1 << 1;
+
   /**
    * Prevents the creation of {@link H264Reader} instances. This flag should be enabled if the
    * transport stream contains no packets for an H.264 elementary stream that is declared in the
    * PMT.
    */
   public static final int FLAG_IGNORE_H264_STREAM = 1 << 2;
+
   /**
    * When extracting H.264 samples, whether to split the input stream into access units (samples)
    * based on slice headers. This flag should be disabled if the stream contains access unit
    * delimiters (AUDs).
    */
   public static final int FLAG_DETECT_ACCESS_UNITS = 1 << 3;
+
   /** Prevents the creation of {@link SpliceInfoSectionReader} instances. */
   public static final int FLAG_IGNORE_SPLICE_INFO_STREAM = 1 << 4;
+
   /**
    * Whether the list of {@code closedCaptionFormats} passed to {@link
    * DefaultTsPayloadReaderFactory#DefaultTsPayloadReaderFactory(int, List)} should be used in spite
@@ -88,6 +91,7 @@ public final class DefaultTsPayloadReaderFactory implements TsPayloadReader.Fact
    * closedCaptionFormats} will be ignored if the PMT contains closed captions service descriptors.
    */
   public static final int FLAG_OVERRIDE_CAPTION_DESCRIPTORS = 1 << 5;
+
   /**
    * Sets whether HDMV DTS audio streams will be handled. If this flag is set, SCTE subtitles will
    * not be detected, as they share the same elementary stream type as HDMV DTS.
@@ -118,11 +122,11 @@ public final class DefaultTsPayloadReaderFactory implements TsPayloadReader.Fact
    * @param flags A combination of {@code FLAG_*} values that control the behavior of the created
    *     readers.
    * @param closedCaptionFormats {@link Format}s to be exposed by payload readers for streams with
-   *     embedded closed captions when no caption service descriptors are provided. If
-   *     {@link #FLAG_OVERRIDE_CAPTION_DESCRIPTORS} is set, {@code closedCaptionFormats} overrides
-   *     any descriptor information. If not set, and {@code closedCaptionFormats} is empty, a
-   *     closed caption track with {@link Format#accessibilityChannel} {@link Format#NO_VALUE} will
-   *     be exposed.
+   *     embedded closed captions when no caption service descriptors are provided. If {@link
+   *     #FLAG_OVERRIDE_CAPTION_DESCRIPTORS} is set, {@code closedCaptionFormats} overrides any
+   *     descriptor information. If not set, and {@code closedCaptionFormats} is empty, a closed
+   *     caption track with {@link Format#accessibilityChannel} {@link Format#NO_VALUE} will be
+   *     exposed.
    */
   public DefaultTsPayloadReaderFactory(@Flags int flags, List<Format> closedCaptionFormats) {
     this.flags = flags;
@@ -142,10 +146,12 @@ public final class DefaultTsPayloadReaderFactory implements TsPayloadReader.Fact
         return new PesReader(new MpegAudioReader(esInfo.language));
       case TsExtractor.TS_STREAM_TYPE_AAC_ADTS:
         return isSet(FLAG_IGNORE_AAC_STREAM)
-            ? null : new PesReader(new AdtsReader(false, esInfo.language));
+            ? null
+            : new PesReader(new AdtsReader(false, esInfo.language));
       case TsExtractor.TS_STREAM_TYPE_AAC_LATM:
         return isSet(FLAG_IGNORE_AAC_STREAM)
-            ? null : new PesReader(new LatmReader(esInfo.language));
+            ? null
+            : new PesReader(new LatmReader(esInfo.language));
       case TsExtractor.TS_STREAM_TYPE_AC3:
       case TsExtractor.TS_STREAM_TYPE_E_AC3:
         return new PesReader(new Ac3Reader(esInfo.language));
@@ -161,29 +167,33 @@ public final class DefaultTsPayloadReaderFactory implements TsPayloadReader.Fact
       case TsExtractor.TS_STREAM_TYPE_H262:
         return new PesReader(new H262Reader(buildUserDataReader(esInfo)));
       case TsExtractor.TS_STREAM_TYPE_H264:
-        return isSet(FLAG_IGNORE_H264_STREAM) ? null
-            : new PesReader(new H264Reader(buildSeiReader(esInfo),
-                isSet(FLAG_ALLOW_NON_IDR_KEYFRAMES), isSet(FLAG_DETECT_ACCESS_UNITS)));
+        return isSet(FLAG_IGNORE_H264_STREAM)
+            ? null
+            : new PesReader(
+                new H264Reader(
+                    buildSeiReader(esInfo),
+                    isSet(FLAG_ALLOW_NON_IDR_KEYFRAMES),
+                    isSet(FLAG_DETECT_ACCESS_UNITS)));
       case TsExtractor.TS_STREAM_TYPE_H265:
         return new PesReader(new H265Reader(buildSeiReader(esInfo)));
       case TsExtractor.TS_STREAM_TYPE_SPLICE_INFO:
         return isSet(FLAG_IGNORE_SPLICE_INFO_STREAM)
-            ? null : new SectionReader(new SpliceInfoSectionReader());
+            ? null
+            : new SectionReader(new SpliceInfoSectionReader());
       case TsExtractor.TS_STREAM_TYPE_ID3:
         return new PesReader(new Id3Reader());
       case TsExtractor.TS_STREAM_TYPE_DVBSUBS:
-        return new PesReader(
-            new DvbSubtitleReader(esInfo.dvbSubtitleInfos));
+        return new PesReader(new DvbSubtitleReader(esInfo.dvbSubtitleInfos));
       default:
         return null;
     }
   }
 
   /**
-   * If {@link #FLAG_OVERRIDE_CAPTION_DESCRIPTORS} is set, returns a {@link SeiReader} for
-   * {@link #closedCaptionFormats}. If unset, parses the PMT descriptor information and returns a
-   * {@link SeiReader} for the declared formats, or {@link #closedCaptionFormats} if the descriptor
-   * is not present.
+   * If {@link #FLAG_OVERRIDE_CAPTION_DESCRIPTORS} is set, returns a {@link SeiReader} for {@link
+   * #closedCaptionFormats}. If unset, parses the PMT descriptor information and returns a {@link
+   * SeiReader} for the declared formats, or {@link #closedCaptionFormats} if the descriptor is not
+   * present.
    *
    * @param esInfo The {@link EsInfo} passed to {@link #createPayloadReader(int, EsInfo)}.
    * @return A {@link SeiReader} for closed caption tracks.

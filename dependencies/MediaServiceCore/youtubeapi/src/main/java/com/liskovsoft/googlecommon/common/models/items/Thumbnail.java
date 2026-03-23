@@ -4,29 +4,31 @@ import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
 
 public class Thumbnail {
-    @JsonPath("$.url")
-    private String url;
-    @JsonPath("$.width")
-    private int width;
-    @JsonPath("$.height")
-    private int height;
+  @JsonPath("$.url")
+  private String url;
 
-    public String getUrl() {
-        // Glide: fix urls without prefix
-        if (url != null && url.startsWith("//")) {
-            url = "https:" + url;
-        }
+  @JsonPath("$.width")
+  private int width;
 
-        url = YouTubeHelper.avatarBlockFix(url);
+  @JsonPath("$.height")
+  private int height;
 
-        return url;
+  public String getUrl() {
+    // Glide: fix urls without prefix
+    if (url != null && url.startsWith("//")) {
+      url = "https:" + url;
     }
 
-    public int getWidth() {
-        return width;
-    }
+    url = YouTubeHelper.avatarBlockFix(url);
 
-    public int getHeight() {
-        return height;
-    }
+    return url;
+  }
+
+  public int getWidth() {
+    return width;
+  }
+
+  public int getHeight() {
+    return height;
+  }
 }

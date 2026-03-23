@@ -43,7 +43,9 @@ public final class CacheDataSourceFactory implements DataSource.Factory {
     this(cache, upstreamFactory, /* flags= */ 0);
   }
 
-  /** @see CacheDataSource#CacheDataSource(Cache, DataSource, int) */
+  /**
+   * @see CacheDataSource#CacheDataSource(Cache, DataSource, int)
+   */
   public CacheDataSourceFactory(
       Cache cache, DataSource.Factory upstreamFactory, @CacheDataSource.Flags int flags) {
     this(
@@ -108,5 +110,4 @@ public final class CacheDataSourceFactory implements DataSource.Factory {
         eventListener,
         cacheKeyFactory);
   }
-
 }

@@ -18,18 +18,16 @@ package com.google.android.exoplayer2.drm;
 import android.os.Looper;
 import com.google.android.exoplayer2.drm.DrmInitData.SchemeData;
 
-/**
- * Manages a DRM session.
- */
+/** Manages a DRM session. */
 public interface DrmSessionManager<T extends ExoMediaCrypto> {
 
   /**
-   * Returns whether the manager is capable of acquiring a session for the given
-   * {@link DrmInitData}.
+   * Returns whether the manager is capable of acquiring a session for the given {@link
+   * DrmInitData}.
    *
    * @param drmInitData DRM initialization data.
-   * @return Whether the manager is capable of acquiring a session for the given
-   *     {@link DrmInitData}.
+   * @return Whether the manager is capable of acquiring a session for the given {@link
+   *     DrmInitData}.
    */
   boolean canAcquireSession(DrmInitData drmInitData);
 
@@ -44,9 +42,6 @@ public interface DrmSessionManager<T extends ExoMediaCrypto> {
    */
   DrmSession<T> acquireSession(Looper playbackLooper, DrmInitData drmInitData);
 
-  /**
-   * Releases a {@link DrmSession}.
-   */
+  /** Releases a {@link DrmSession}. */
   void releaseSession(DrmSession<T> drmSession);
-
 }

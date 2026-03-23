@@ -22,8 +22,8 @@ import android.media.MediaCodecInfo.AudioCapabilities;
 import android.media.MediaCodecInfo.CodecCapabilities;
 import android.media.MediaCodecInfo.CodecProfileLevel;
 import android.media.MediaCodecInfo.VideoCapabilities;
-import androidx.annotation.Nullable;
 import android.util.Pair;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.util.AmazonQuirks;
 import com.google.android.exoplayer2.util.Assertions;
@@ -45,8 +45,8 @@ public final class MediaCodecInfo {
 
   /**
    * The name of the decoder.
-   * <p>
-   * May be passed to {@link MediaCodec#createByCodecName(String)} to create an instance of the
+   *
+   * <p>May be passed to {@link MediaCodec#createByCodecName(String)} to create an instance of the
    * decoder.
    */
   public final String name;
@@ -173,7 +173,8 @@ public final class MediaCodecInfo {
    * @return The profile levels supported by the decoder.
    */
   public CodecProfileLevel[] getProfileLevels() {
-    return capabilities == null || capabilities.profileLevels == null ? new CodecProfileLevel[0]
+    return capabilities == null || capabilities.profileLevels == null
+        ? new CodecProfileLevel[0]
         : capabilities.profileLevels;
   }
 
@@ -251,8 +252,9 @@ public final class MediaCodecInfo {
     }
     int profile = codecProfileAndLevel.first;
     int level = codecProfileAndLevel.second;
-    if (AmazonQuirks.shouldSkipProfileLevelCheck() || // AMZN_CHANGE_ONELINE
-            (!isVideo && profile != CodecProfileLevel.AACObjectXHE)) {
+    if (AmazonQuirks.shouldSkipProfileLevelCheck()
+        || // AMZN_CHANGE_ONELINE
+        (!isVideo && profile != CodecProfileLevel.AACObjectXHE)) {
       // Some devices/builds underreport audio capabilities, so assume support except for xHE-AAC
       // which may not be widely supported. See https://github.com/google/ExoPlayer/issues/5145.
       return true;
@@ -330,13 +332,13 @@ public final class MediaCodecInfo {
 
   /**
    * Whether the decoder supports video with a given width, height and frame rate.
-   * <p>
-   * Must not be called if the device SDK version is less than 21.
+   *
+   * <p>Must not be called if the device SDK version is less than 21.
    *
    * @param width Width in pixels.
    * @param height Height in pixels.
-   * @param frameRate Optional frame rate in frames per second. Ignored if set to
-   *     {@link Format#NO_VALUE} or any value less than or equal to 0.
+   * @param frameRate Optional frame rate in frames per second. Ignored if set to {@link
+   *     Format#NO_VALUE} or any value less than or equal to 0.
    * @return Whether the decoder supports video with the given width, height and frame rate.
    */
   @TargetApi(21)
@@ -367,8 +369,8 @@ public final class MediaCodecInfo {
   /**
    * Returns the smallest video size greater than or equal to a specified size that also satisfies
    * the {@link MediaCodec}'s width and height alignment requirements.
-   * <p>
-   * Must not be called if the device SDK version is less than 21.
+   *
+   * <p>Must not be called if the device SDK version is less than 21.
    *
    * @param width Width in pixels.
    * @param height Height in pixels.
@@ -390,8 +392,8 @@ public final class MediaCodecInfo {
 
   /**
    * Whether the decoder supports audio with a given sample rate.
-   * <p>
-   * Must not be called if the device SDK version is less than 21.
+   *
+   * <p>Must not be called if the device SDK version is less than 21.
    *
    * @param sampleRate The sample rate in Hz.
    * @return Whether the decoder supports audio with the given sample rate.
@@ -416,8 +418,8 @@ public final class MediaCodecInfo {
 
   /**
    * Whether the decoder supports audio with a given channel count.
-   * <p>
-   * Must not be called if the device SDK version is less than 21.
+   *
+   * <p>Must not be called if the device SDK version is less than 21.
    *
    * @param channelCount The channel count.
    * @return Whether the decoder supports audio with the given channel count.
@@ -433,8 +435,8 @@ public final class MediaCodecInfo {
       logNoSupport("channelCount.aCaps");
       return false;
     }
-    int maxInputChannelCount = adjustMaxInputChannelCount(name, mimeType,
-        audioCapabilities.getMaxInputChannelCount());
+    int maxInputChannelCount =
+        adjustMaxInputChannelCount(name, mimeType, audioCapabilities.getMaxInputChannelCount());
     if (maxInputChannelCount < channelCount) {
       logNoSupport("channelCount.support, " + channelCount);
       return false;
@@ -443,13 +445,31 @@ public final class MediaCodecInfo {
   }
 
   private void logNoSupport(String message) {
-    Log.d(TAG, "NoSupport [" + message + "] [" + name + ", " + mimeType + "] ["
-        + Util.DEVICE_DEBUG_INFO + "]");
+    Log.d(
+        TAG,
+        "NoSupport ["
+            + message
+            + "] ["
+            + name
+            + ", "
+            + mimeType
+            + "] ["
+            + Util.DEVICE_DEBUG_INFO
+            + "]");
   }
 
   private void logAssumedSupport(String message) {
-    Log.d(TAG, "AssumedSupport [" + message + "] [" + name + ", " + mimeType + "] ["
-        + Util.DEVICE_DEBUG_INFO + "]");
+    Log.d(
+        TAG,
+        "AssumedSupport ["
+            + message
+            + "] ["
+            + name
+            + ", "
+            + mimeType
+            + "] ["
+            + Util.DEVICE_DEBUG_INFO
+            + "]");
   }
 
   private static int adjustMaxInputChannelCount(String name, String mimeType, int maxChannelCount) {
@@ -481,8 +501,15 @@ public final class MediaCodecInfo {
       // Default to the platform limit, which is 30.
       assumedMaxChannelCount = 30;
     }
-    Log.w(TAG, "AssumedMaxChannelAdjustment: " + name + ", [" + maxChannelCount + " to "
-        + assumedMaxChannelCount + "]");
+    Log.w(
+        TAG,
+        "AssumedMaxChannelAdjustment: "
+            + name
+            + ", ["
+            + maxChannelCount
+            + " to "
+            + assumedMaxChannelCount
+            + "]");
     return assumedMaxChannelCount;
   }
 
@@ -514,8 +541,8 @@ public final class MediaCodecInfo {
   }
 
   @TargetApi(21)
-  private static boolean areSizeAndRateSupportedV21(VideoCapabilities capabilities, int width,
-      int height, double frameRate) {
+  private static boolean areSizeAndRateSupportedV21(
+      VideoCapabilities capabilities, int width, int height, double frameRate) {
     // Don't ever fail due to alignment. See: https://github.com/google/ExoPlayer/issues/6551.
     Point alignedSize = alignVideoSizeV21(capabilities, width, height);
     width = alignedSize.x;

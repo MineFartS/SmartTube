@@ -16,8 +16,8 @@
 package com.google.android.exoplayer2.source.hls;
 
 import android.net.Uri;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.drm.DrmInitData;
 import com.google.android.exoplayer2.extractor.Extractor;
@@ -38,9 +38,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Default {@link HlsExtractorFactory} implementation.
- */
+/** Default {@link HlsExtractorFactory} implementation. */
 public final class DefaultHlsExtractorFactory implements HlsExtractorFactory {
 
   public static final String AAC_FILE_EXTENSION = ".aac";

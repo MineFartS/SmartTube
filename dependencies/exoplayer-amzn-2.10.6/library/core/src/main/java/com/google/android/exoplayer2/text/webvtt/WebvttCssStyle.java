@@ -16,8 +16,8 @@
 package com.google.android.exoplayer2.text.webvtt;
 
 import android.graphics.Typeface;
-import androidx.annotation.IntDef;
 import android.text.Layout;
+import androidx.annotation.IntDef;
 import com.google.android.exoplayer2.util.Util;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -114,7 +114,7 @@ public final class WebvttCssStyle {
   }
 
   public void setTargetId(String targetId) {
-    this.targetId  = targetId;
+    this.targetId = targetId;
   }
 
   public void setTargetTagName(String targetTag) {
@@ -133,14 +133,13 @@ public final class WebvttCssStyle {
    * Returns a value in a score system compliant with the CSS Specificity rules.
    *
    * @see <a href="https://www.w3.org/TR/CSS2/cascade.html">CSS Cascading</a>
-   *
-   * The score works as follows:
-   * <ul>
-   * <li> Id match adds 0x40000000 to the score.
-   * <li> Each class and voice match adds 4 to the score.
-   * <li> Tag matching adds 2 to the score.
-   * <li> Universal selector matching scores 1.
-   * </ul>
+   *     <p>The score works as follows:
+   *     <ul>
+   *       <li>Id match adds 0x40000000 to the score.
+   *       <li>Each class and voice match adds 4 to the score.
+   *       <li>Tag matching adds 2 to the score.
+   *       <li>Universal selector matching scores 1.
+   *     </ul>
    *
    * @param id The id of the cue if present, {@code null} otherwise.
    * @param tag Name of the tag, {@code null} if it refers to the entire cue.
@@ -149,7 +148,9 @@ public final class WebvttCssStyle {
    * @return The score of the match, zero if there is no match.
    */
   public int getSpecificityScore(String id, String tag, String[] classes, String voice) {
-    if (targetId.isEmpty() && targetTag.isEmpty() && targetClasses.isEmpty()
+    if (targetId.isEmpty()
+        && targetTag.isEmpty()
+        && targetClasses.isEmpty()
         && targetVoice.isEmpty()) {
       // The selector is universal. It matches with the minimum score if and only if the given
       // element is a whole cue.
@@ -173,12 +174,12 @@ public final class WebvttCssStyle {
    * @return {@link #UNSPECIFIED}, {@link #STYLE_NORMAL}, {@link #STYLE_BOLD}, {@link #STYLE_BOLD}
    *     or {@link #STYLE_BOLD_ITALIC}.
    */
-  @StyleFlags public int getStyle() {
+  @StyleFlags
+  public int getStyle() {
     if (bold == UNSPECIFIED && italic == UNSPECIFIED) {
       return UNSPECIFIED;
     }
-    return (bold == ON ? STYLE_BOLD : STYLE_NORMAL)
-        | (italic == ON ? STYLE_ITALIC : STYLE_NORMAL);
+    return (bold == ON ? STYLE_BOLD : STYLE_NORMAL) | (italic == ON ? STYLE_ITALIC : STYLE_NORMAL);
   }
 
   public boolean isLinethrough() {
@@ -198,6 +199,7 @@ public final class WebvttCssStyle {
     this.underline = underline ? ON : OFF;
     return this;
   }
+
   public WebvttCssStyle setBold(boolean bold) {
     this.bold = bold ? ON : OFF;
     return this;
@@ -270,7 +272,8 @@ public final class WebvttCssStyle {
     return this;
   }
 
-  @FontSizeUnit public int getFontSizeUnit() {
+  @FontSizeUnit
+  public int getFontSizeUnit() {
     return fontSizeUnit;
   }
 
@@ -309,12 +312,11 @@ public final class WebvttCssStyle {
     }
   }
 
-  private static int updateScoreForMatch(int currentScore, String target, String actual,
-      int score) {
+  private static int updateScoreForMatch(
+      int currentScore, String target, String actual, int score) {
     if (target.isEmpty() || currentScore == -1) {
       return currentScore;
     }
     return target.equals(actual) ? currentScore + score : -1;
   }
-
 }

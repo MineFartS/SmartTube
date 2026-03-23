@@ -18,14 +18,10 @@ package com.google.android.exoplayer2.source.dash.manifest;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Represents a set of interchangeable encoded versions of a media content component.
- */
+/** Represents a set of interchangeable encoded versions of a media content component. */
 public class AdaptationSet {
 
-  /**
-   * Value of {@link #id} indicating no value is set.=
-   */
+  /** Value of {@link #id} indicating no value is set.= */
   public static final int ID_UNSET = -1;
 
   /**
@@ -35,24 +31,18 @@ public class AdaptationSet {
   public final int id;
 
   /**
-   * The type of the adaptation set. One of the {@link com.google.android.exoplayer2.C}
-   * {@code TRACK_TYPE_*} constants.
+   * The type of the adaptation set. One of the {@link com.google.android.exoplayer2.C} {@code
+   * TRACK_TYPE_*} constants.
    */
   public final int type;
 
-  /**
-   * {@link Representation}s in the adaptation set.
-   */
+  /** {@link Representation}s in the adaptation set. */
   public final List<Representation> representations;
 
-  /**
-   * Accessibility descriptors in the adaptation set.
-   */
+  /** Accessibility descriptors in the adaptation set. */
   public final List<Descriptor> accessibilityDescriptors;
 
-  /**
-   * Supplemental properties in the adaptation set.
-   */
+  /** Supplemental properties in the adaptation set. */
   public final List<Descriptor> supplementalProperties;
 
   /**
@@ -64,8 +54,12 @@ public class AdaptationSet {
    * @param accessibilityDescriptors Accessibility descriptors in the adaptation set.
    * @param supplementalProperties Supplemental properties in the adaptation set.
    */
-  public AdaptationSet(int id, int type, List<Representation> representations,
-      List<Descriptor> accessibilityDescriptors, List<Descriptor> supplementalProperties) {
+  public AdaptationSet(
+      int id,
+      int type,
+      List<Representation> representations,
+      List<Descriptor> accessibilityDescriptors,
+      List<Descriptor> supplementalProperties) {
     this.id = id;
     this.type = type;
     this.representations = Collections.unmodifiableList(representations);
@@ -78,5 +72,4 @@ public class AdaptationSet {
             ? Collections.emptyList()
             : Collections.unmodifiableList(supplementalProperties);
   }
-
 }

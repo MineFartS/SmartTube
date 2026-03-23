@@ -4,55 +4,55 @@ import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl;
 import com.liskovsoft.youtubeapi.notifications.NotificationStorage;
 
 public class ActionsServiceWrapper extends ActionsService {
-    private static ActionsServiceWrapper sInstance;
+  private static ActionsServiceWrapper sInstance;
 
-    public static ActionsServiceWrapper instance() {
-        if (sInstance == null) {
-            sInstance = new ActionsServiceWrapper();
-        }
-
-        return sInstance;
+  public static ActionsServiceWrapper instance() {
+    if (sInstance == null) {
+      sInstance = new ActionsServiceWrapper();
     }
 
-    @Override
-    public void subscribe(String channelId, String params) {
-        super.subscribe(channelId, params);
+    return sInstance;
+  }
 
-        ChannelGroupServiceImpl.subscribe(true, channelId, null, null); // save locally
-    }
+  @Override
+  public void subscribe(String channelId, String params) {
+    super.subscribe(channelId, params);
 
-    @Override
-    public void unsubscribe(String channelId) {
-        super.unsubscribe(channelId);
+    ChannelGroupServiceImpl.subscribe(true, channelId, null, null); // save locally
+  }
 
-        ChannelGroupServiceImpl.subscribe(false, channelId, null, null); // save locally
-    }
+  @Override
+  public void unsubscribe(String channelId) {
+    super.unsubscribe(channelId);
 
-    @Override
-    public void setLike(String videoId) {
-        super.setLike(videoId);
+    ChannelGroupServiceImpl.subscribe(false, channelId, null, null); // save locally
+  }
 
-        NotificationStorage.setLike(true);
-    }
+  @Override
+  public void setLike(String videoId) {
+    super.setLike(videoId);
 
-    @Override
-    public void removeLike(String videoId) {
-        super.removeLike(videoId);
+    NotificationStorage.setLike(true);
+  }
 
-        NotificationStorage.setLike(false);
-    }
+  @Override
+  public void removeLike(String videoId) {
+    super.removeLike(videoId);
 
-    @Override
-    public void setDislike(String videoId) {
-        super.setDislike(videoId);
+    NotificationStorage.setLike(false);
+  }
 
-        NotificationStorage.setLike(false);
-    }
+  @Override
+  public void setDislike(String videoId) {
+    super.setDislike(videoId);
 
-    @Override
-    public void removeDislike(String videoId) {
-        super.removeDislike(videoId);
+    NotificationStorage.setLike(false);
+  }
 
-        NotificationStorage.setLike(true);
-    }
+  @Override
+  public void removeDislike(String videoId) {
+    super.removeDislike(videoId);
+
+    NotificationStorage.setLike(true);
+  }
 }

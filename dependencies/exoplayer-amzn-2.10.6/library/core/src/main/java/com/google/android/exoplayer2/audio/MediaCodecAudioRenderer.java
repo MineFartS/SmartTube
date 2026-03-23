@@ -40,11 +40,11 @@ import com.google.android.exoplayer2.mediacodec.MediaCodecRenderer;
 import com.google.android.exoplayer2.mediacodec.MediaCodecSelector;
 import com.google.android.exoplayer2.mediacodec.MediaCodecUtil.DecoderQueryException;
 import com.google.android.exoplayer2.mediacodec.MediaFormatUtil;
-import com.google.android.exoplayer2.util.Log;
 import com.google.android.exoplayer2.util.AmazonQuirks;
+import com.google.android.exoplayer2.util.Log;
+import com.google.android.exoplayer2.util.Logger;
 import com.google.android.exoplayer2.util.MediaClock;
 import com.google.android.exoplayer2.util.MimeTypes;
-import com.google.android.exoplayer2.util.Logger;
 import com.google.android.exoplayer2.util.Util;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -304,8 +304,10 @@ public class MediaCodecAudioRenderer extends MediaCodecRenderer implements Media
   }
 
   @Override
-  protected int supportsFormat(MediaCodecSelector mediaCodecSelector,
-      DrmSessionManager<FrameworkMediaCrypto> drmSessionManager, Format format)
+  protected int supportsFormat(
+      MediaCodecSelector mediaCodecSelector,
+      DrmSessionManager<FrameworkMediaCrypto> drmSessionManager,
+      Format format)
       throws DecoderQueryException {
     String mimeType = format.sampleMimeType;
     if (!MimeTypes.isAudio(mimeType)) {
@@ -364,7 +366,7 @@ public class MediaCodecAudioRenderer extends MediaCodecRenderer implements Media
       MediaCodecSelector mediaCodecSelector, Format format, boolean requiresSecureDecoder)
       throws DecoderQueryException {
     if (allowPassthrough(format.channelCount, format.sampleMimeType)
-            && AmazonQuirks.useDefaultPassthroughDecoder()) { // AMZN_CHANGE_ONELINE
+        && AmazonQuirks.useDefaultPassthroughDecoder()) { // AMZN_CHANGE_ONELINE
       MediaCodecInfo passthroughDecoderInfo = mediaCodecSelector.getPassthroughDecoderInfo();
       if (passthroughDecoderInfo != null) {
         return Collections.singletonList(passthroughDecoderInfo);
@@ -468,8 +470,8 @@ public class MediaCodecAudioRenderer extends MediaCodecRenderer implements Media
   }
 
   @Override
-  protected void onCodecInitialized(String name, long initializedTimestampMs,
-      long initializationDurationMs) {
+  protected void onCodecInitialized(
+      String name, long initializedTimestampMs, long initializationDurationMs) {
     eventDispatcher.decoderInitialized(name, initializedTimestampMs, initializationDurationMs);
   }
 
@@ -479,8 +481,10 @@ public class MediaCodecAudioRenderer extends MediaCodecRenderer implements Media
     eventDispatcher.inputFormatChanged(newFormat);
     // If the input format is anything other than PCM then we assume that the audio decoder will
     // output 16-bit PCM.
-    pcmEncoding = MimeTypes.AUDIO_RAW.equals(newFormat.sampleMimeType) ? newFormat.pcmEncoding
-        : C.ENCODING_PCM_16BIT;
+    pcmEncoding =
+        MimeTypes.AUDIO_RAW.equals(newFormat.sampleMimeType)
+            ? newFormat.pcmEncoding
+            : C.ENCODING_PCM_16BIT;
     channelCount = newFormat.channelCount;
     encoderDelay = newFormat.encoderDelay;
     encoderPadding = newFormat.encoderPadding;
@@ -489,8 +493,7 @@ public class MediaCodecAudioRenderer extends MediaCodecRenderer implements Media
   @Override
   protected void onOutputFormatChanged(MediaCodec codec, MediaFormat outputFormat)
       throws ExoPlaybackException {
-    log.i("onOutputFormatChanged: outputFormat:" + outputFormat
-            + ", codec:" + codec);
+    log.i("onOutputFormatChanged: outputFormat:" + outputFormat + ", codec:" + codec);
     @C.Encoding int encoding;
     MediaFormat format;
     if (passthroughMediaFormat != null) {
@@ -506,8 +509,10 @@ public class MediaCodecAudioRenderer extends MediaCodecRenderer implements Media
       // audio capabilities of the connected device and Dolby settings. So, as a general rule, if
       // platform decoder is being used instead of OMX.google.raw.decoder, need to
       // configure audio track based on the output mime type returned by the media codec.
-      encoding = AmazonQuirks.isAmazonDevice() ?
-              MimeTypes.getEncoding(format.getString(MediaFormat.KEY_MIME)) : pcmEncoding;
+      encoding =
+          AmazonQuirks.isAmazonDevice()
+              ? MimeTypes.getEncoding(format.getString(MediaFormat.KEY_MIME))
+              : pcmEncoding;
       // AMZN_CHANGE_END
     }
     int channelCount = format.getInteger(MediaFormat.KEY_CHANNEL_COUNT);
@@ -523,8 +528,8 @@ public class MediaCodecAudioRenderer extends MediaCodecRenderer implements Media
     }
 
     try {
-      audioSink.configure(encoding, channelCount, sampleRate, 0, channelMap, encoderDelay,
-          encoderPadding);
+      audioSink.configure(
+          encoding, channelCount, sampleRate, 0, channelMap, encoderDelay, encoderPadding);
     } catch (AudioSink.ConfigurationException e) {
       throw ExoPlaybackException.createForRenderer(e, getIndex());
     }
@@ -574,8 +579,8 @@ public class MediaCodecAudioRenderer extends MediaCodecRenderer implements Media
   /**
    * @see AudioSink.Listener#onUnderrun(int, long, long)
    */
-  protected void onAudioTrackUnderrun(int bufferSize, long bufferSizeMs,
-      long elapsedSinceLastFeedMs) {
+  protected void onAudioTrackUnderrun(
+      int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
     // Do nothing.
   }
 
@@ -734,12 +739,19 @@ public class MediaCodecAudioRenderer extends MediaCodecRenderer implements Media
 
     // AMZN_CHANGE_BEGIN
     if (log.allowDebug()) {
-      log.d("processOutputBuffer: positionUs = " + positionUs +
-              ", elapsedRealtimeUs =  " + elapsedRealtimeUs +
-              ", bufferIndex = " + bufferIndex +
-              ", isDecodeOnlyBuffer = " + isDecodeOnlyBuffer +
-              ", isLastBuffer = " + isLastBuffer +
-              ", bufferPresentationTimeUs = " + bufferPresentationTimeUs);
+      log.d(
+          "processOutputBuffer: positionUs = "
+              + positionUs
+              + ", elapsedRealtimeUs =  "
+              + elapsedRealtimeUs
+              + ", bufferIndex = "
+              + bufferIndex
+              + ", isDecodeOnlyBuffer = "
+              + isDecodeOnlyBuffer
+              + ", isLastBuffer = "
+              + isLastBuffer
+              + ", bufferPresentationTimeUs = "
+              + bufferPresentationTimeUs);
     }
     // AMZN_CHANGE_END
 
@@ -924,15 +936,17 @@ public class MediaCodecAudioRenderer extends MediaCodecRenderer implements Media
   /**
    * Returns whether the decoder is known to output six audio channels when provided with input with
    * fewer than six channels.
-   * <p>
-   * See [Internal: b/35655036].
+   *
+   * <p>See [Internal: b/35655036].
    */
   private static boolean codecNeedsDiscardChannelsWorkaround(String codecName) {
     // The workaround applies to Samsung Galaxy S6 and Samsung Galaxy S7.
-    return Util.SDK_INT < 24 && "OMX.SEC.aac.dec".equals(codecName)
+    return Util.SDK_INT < 24
+        && "OMX.SEC.aac.dec".equals(codecName)
         && "samsung".equals(Util.MANUFACTURER)
-        && (Util.DEVICE.startsWith("zeroflte") || Util.DEVICE.startsWith("herolte")
-        || Util.DEVICE.startsWith("heroqlte"));
+        && (Util.DEVICE.startsWith("zeroflte")
+            || Util.DEVICE.startsWith("herolte")
+            || Util.DEVICE.startsWith("heroqlte"));
   }
 
   /**
@@ -973,7 +987,5 @@ public class MediaCodecAudioRenderer extends MediaCodecRenderer implements Media
       eventDispatcher.audioTrackUnderrun(bufferSize, bufferSizeMs, elapsedSinceLastFeedMs);
       onAudioTrackUnderrun(bufferSize, bufferSizeMs, elapsedSinceLastFeedMs);
     }
-
   }
-
 }

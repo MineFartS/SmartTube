@@ -61,19 +61,20 @@ public abstract class SimpleDecoder<
     for (int i = 0; i < availableOutputBufferCount; i++) {
       availableOutputBuffers[i] = createOutputBuffer();
     }
-    decodeThread = new Thread() {
-      @Override
-      public void run() {
-        SimpleDecoder.this.run();
-      }
-    };
+    decodeThread =
+        new Thread() {
+          @Override
+          public void run() {
+            SimpleDecoder.this.run();
+          }
+        };
     decodeThread.start();
   }
 
   /**
    * Sets the initial size of each input buffer.
-   * <p>
-   * This method should only be called before the decoder is used (i.e. before the first call to
+   *
+   * <p>This method should only be called before the decoder is used (i.e. before the first call to
    * {@link #dequeueInputBuffer()}.
    *
    * @param size The required input buffer size.
@@ -90,8 +91,10 @@ public abstract class SimpleDecoder<
     synchronized (lock) {
       maybeThrowException();
       Assertions.checkState(dequeuedInputBuffer == null);
-      dequeuedInputBuffer = availableInputBufferCount == 0 ? null
-          : availableInputBuffers[--availableInputBufferCount];
+      dequeuedInputBuffer =
+          availableInputBufferCount == 0
+              ? null
+              : availableInputBuffers[--availableInputBufferCount];
       return dequeuedInputBuffer;
     }
   }
@@ -175,8 +178,8 @@ public abstract class SimpleDecoder<
   /**
    * Notifies the decode loop if there exists a queued input buffer and an available output buffer
    * to decode into.
-   * <p>
-   * Should only be called whilst synchronized on the lock object.
+   *
+   * <p>Should only be called whilst synchronized on the lock object.
    */
   private void maybeNotifyDecodeLoop() {
     if (canDecodeBuffer()) {
@@ -234,7 +237,8 @@ public abstract class SimpleDecoder<
       }
       if (exception != null) {
         // Memory barrier to ensure that the decoder exception is visible from the playback thread.
-        synchronized (lock) {}
+        synchronized (lock) {
+        }
         return false;
       }
     }
@@ -271,14 +275,10 @@ public abstract class SimpleDecoder<
     availableOutputBuffers[availableOutputBufferCount++] = outputBuffer;
   }
 
-  /**
-   * Creates a new input buffer.
-   */
+  /** Creates a new input buffer. */
   protected abstract I createInputBuffer();
 
-  /**
-   * Creates a new output buffer.
-   */
+  /** Creates a new output buffer. */
   protected abstract O createOutputBuffer();
 
   /**

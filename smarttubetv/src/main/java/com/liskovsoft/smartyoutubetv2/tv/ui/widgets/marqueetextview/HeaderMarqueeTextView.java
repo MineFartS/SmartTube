@@ -4,29 +4,27 @@ import android.content.Context;
 import android.util.AttributeSet;
 import com.liskovsoft.smartyoutubetv2.tv.util.ViewUtil;
 
-/**
- * MarqueeTextView used in browse section headers
- */
+/** MarqueeTextView used in browse section headers */
 public class HeaderMarqueeTextView extends MarqueeTextView {
-    public HeaderMarqueeTextView(Context context) {
-        super(context);
+  public HeaderMarqueeTextView(Context context) {
+    super(context);
 
-        init();
-    }
+    init();
+  }
 
-    public HeaderMarqueeTextView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+  public HeaderMarqueeTextView(Context context, AttributeSet attrs) {
+    super(context, attrs);
 
-        init();
-    }
+    init();
+  }
 
-    public HeaderMarqueeTextView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+  public HeaderMarqueeTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+    super(context, attrs, defStyleAttr);
 
-        init();
-    }
+    init();
+  }
 
-    private void init() {
-        ViewUtil.applyMarqueeRtlParams(this, true);
-    }
+  private void init() {
+    ViewUtil.applyMarqueeRtlParams(this, true);
+  }
 }

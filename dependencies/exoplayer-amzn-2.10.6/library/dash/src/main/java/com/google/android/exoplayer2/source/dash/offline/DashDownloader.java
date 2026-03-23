@@ -169,5 +169,4 @@ public final class DashDownloader extends SegmentDownloader<DashManifest> {
         ? null
         : new DashWrappingSegmentIndex(seekMap, representation.presentationTimeOffsetUs);
   }
-
 }

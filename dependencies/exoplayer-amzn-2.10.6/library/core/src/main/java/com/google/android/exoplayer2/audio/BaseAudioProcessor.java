@@ -29,8 +29,10 @@ public abstract class BaseAudioProcessor implements AudioProcessor {
 
   /** The configured input sample rate, in Hertz, or {@link Format#NO_VALUE} if not configured. */
   protected int sampleRateHz;
+
   /** The configured input channel count, or {@link Format#NO_VALUE} if not configured. */
   protected int channelCount;
+
   /** The configured input encoding, or {@link Format#NO_VALUE} if not configured. */
   @C.PcmEncoding protected int encoding;
 

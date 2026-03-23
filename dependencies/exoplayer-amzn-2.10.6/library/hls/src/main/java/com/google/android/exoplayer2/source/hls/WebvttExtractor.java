@@ -110,8 +110,10 @@ public final class WebvttExtractor implements Extractor {
 
     // Increase the size of sampleData if necessary.
     if (sampleSize == sampleData.length) {
-      sampleData = Arrays.copyOf(sampleData,
-          (currentFileSize != C.LENGTH_UNSET ? currentFileSize : sampleData.length) * 3 / 2);
+      sampleData =
+          Arrays.copyOf(
+              sampleData,
+              (currentFileSize != C.LENGTH_UNSET ? currentFileSize : sampleData.length) * 3 / 2);
     }
 
     // Consume to the input.
@@ -164,8 +166,9 @@ public final class WebvttExtractor implements Extractor {
     }
 
     long firstCueTimeUs = WebvttParserUtil.parseTimestampUs(cueHeaderMatcher.group(1));
-    long sampleTimeUs = timestampAdjuster.adjustTsTimestamp(
-        TimestampAdjuster.usToPts(firstCueTimeUs + tsTimestampUs - vttTimestampUs));
+    long sampleTimeUs =
+        timestampAdjuster.adjustTsTimestamp(
+            TimestampAdjuster.usToPts(firstCueTimeUs + tsTimestampUs - vttTimestampUs));
     long subsampleOffsetUs = sampleTimeUs - firstCueTimeUs;
     // Output the track.
     TrackOutput trackOutput = buildTrackOutput(subsampleOffsetUs);
@@ -177,10 +180,10 @@ public final class WebvttExtractor implements Extractor {
 
   private TrackOutput buildTrackOutput(long subsampleOffsetUs) {
     TrackOutput trackOutput = output.track(0, C.TRACK_TYPE_TEXT);
-    trackOutput.format(Format.createTextSampleFormat(null, MimeTypes.TEXT_VTT, null,
-        Format.NO_VALUE, 0, language, null, subsampleOffsetUs));
+    trackOutput.format(
+        Format.createTextSampleFormat(
+            null, MimeTypes.TEXT_VTT, null, Format.NO_VALUE, 0, language, null, subsampleOffsetUs));
     output.endTracks();
     return trackOutput;
   }
-
 }

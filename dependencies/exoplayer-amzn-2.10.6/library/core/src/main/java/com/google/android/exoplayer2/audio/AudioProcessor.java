@@ -39,10 +39,14 @@ public interface AudioProcessor {
 
     public UnhandledFormatException(
         int sampleRateHz, int channelCount, @C.PcmEncoding int encoding) {
-      super("Unhandled format: " + sampleRateHz + " Hz, " + channelCount + " channels in encoding "
-          + encoding);
+      super(
+          "Unhandled format: "
+              + sampleRateHz
+              + " Hz, "
+              + channelCount
+              + " channels in encoding "
+              + encoding);
     }
-
   }
 
   /** An empty, direct {@link ByteBuffer}. */
@@ -103,11 +107,11 @@ public interface AudioProcessor {
   void queueInput(ByteBuffer buffer);
 
   /**
-   * Queues an end of stream signal. After this method has been called,
-   * {@link #queueInput(ByteBuffer)} may not be called until after the next call to
-   * {@link #flush()}. Calling {@link #getOutput()} will return any remaining output data. Multiple
-   * calls may be required to read all of the remaining output data. {@link #isEnded()} will return
-   * {@code true} once all remaining output data has been read.
+   * Queues an end of stream signal. After this method has been called, {@link
+   * #queueInput(ByteBuffer)} may not be called until after the next call to {@link #flush()}.
+   * Calling {@link #getOutput()} will return any remaining output data. Multiple calls may be
+   * required to read all of the remaining output data. {@link #isEnded()} will return {@code true}
+   * once all remaining output data has been read.
    */
   void queueEndOfStream();
 

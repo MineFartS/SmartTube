@@ -90,5 +90,4 @@ public final class RtmpDataSource extends BaseDataSource {
   public Uri getUri() {
     return uri;
   }
-
 }

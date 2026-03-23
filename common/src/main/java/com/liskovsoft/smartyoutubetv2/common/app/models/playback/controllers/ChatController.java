@@ -15,152 +15,157 @@ import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.UiOptionItem
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.AppDialogPresenter;
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
 import io.reactivex.disposables.Disposable;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChatController extends BasePlayerController {
-    private static final String TAG = ChatController.class.getSimpleName();
-    /**
-     * NOTE: Don't remove duplicates! They contain different chars.
-     */
-    private static final String[] BLACK_LIST = {". XYZ", ". ХYZ", "⠄XYZ", "⠄ХYZ", "Ricardo Merlino", "⠄СОM", ".COM", ".СОM", ". COM"};
-    private LiveChatService mChatService;
-    private Disposable mChatAction;
-    private String mLiveChatKey;
+  private static final String TAG = ChatController.class.getSimpleName();
 
-    @Override
-    public void onInit() {
-        mChatService = YouTubeServiceManager.instance().getLiveChatService();
+  /** NOTE: Don't remove duplicates! They contain different chars. */
+  private static final String[] BLACK_LIST = {
+    ". XYZ", ". ХYZ", "⠄XYZ", "⠄ХYZ", "Ricardo Merlino", "⠄СОM", ".COM", ".СОM", ". COM"
+  };
+
+  private LiveChatService mChatService;
+  private Disposable mChatAction;
+  private String mLiveChatKey;
+
+  @Override
+  public void onInit() {
+    mChatService = YouTubeServiceManager.instance().getLiveChatService();
+  }
+
+  @Override
+  public void onMetadata(MediaItemMetadata metadata) {
+    mLiveChatKey = metadata != null ? metadata.getLiveChatKey() : null;
+
+    if (mLiveChatKey != null) {
+      getPlayer()
+          .setButtonState(
+              R.id.action_chat,
+              getPlayerData().isLiveChatEnabled() ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
     }
 
-    @Override
-    public void onMetadata(MediaItemMetadata metadata) {
-        mLiveChatKey = metadata != null ? metadata.getLiveChatKey() : null;
+    if (getPlayerData().isLiveChatEnabled()) {
+      openLiveChat();
+    }
+  }
 
-        if (mLiveChatKey != null) {
-            getPlayer().setButtonState(R.id.action_chat, getPlayerData().isLiveChatEnabled() ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
-        }
+  private void openLiveChat() {
+    disposeActions();
 
-        if (getPlayerData().isLiveChatEnabled()) {
-            openLiveChat();
-        }
+    if (mLiveChatKey == null) {
+      return;
     }
 
-    private void openLiveChat() {
-        disposeActions();
+    ChatReceiver chatReceiver = new ChatReceiverImpl();
+    getPlayer().setChatReceiver(chatReceiver);
 
-        if (mLiveChatKey == null) {
-            return;
-        }
+    mChatAction =
+        mChatService
+            .openLiveChatObserve(mLiveChatKey)
+            .subscribe(
+                chatItem -> {
+                  Log.d(TAG, chatItem.getMessage());
+                  if (checkItem(chatItem)) {
+                    chatReceiver.addChatItem(chatItem);
+                  }
+                },
+                error -> {
+                  Log.e(TAG, error.getMessage());
+                  error.printStackTrace();
+                },
+                () -> Log.e(TAG, "Live chat session has been closed"));
+  }
 
-        ChatReceiver chatReceiver = new ChatReceiverImpl();
-        getPlayer().setChatReceiver(chatReceiver);
+  @Override
+  public void onButtonClicked(int buttonId, int buttonState) {
+    if (buttonId == R.id.action_chat) {
+      if (mLiveChatKey != null) {
+        enableLiveChat(buttonState != PlayerUI.BUTTON_ON);
+      }
+    }
+  }
 
-        mChatAction = mChatService.openLiveChatObserve(mLiveChatKey)
-                .subscribe(
-                        chatItem -> {
-                            Log.d(TAG, chatItem.getMessage());
-                            if (checkItem(chatItem)) {
-                                chatReceiver.addChatItem(chatItem);
-                            }
-                        },
-                        error -> {
-                            Log.e(TAG, error.getMessage());
-                            error.printStackTrace();
-                        },
-                        () -> Log.e(TAG, "Live chat session has been closed")
-                );
+  @Override
+  public void onButtonLongClicked(int buttonId, int buttonState) {
+    if (buttonId == R.id.action_chat) {
+      String chatCategoryTitle = getContext().getString(R.string.open_chat);
+
+      AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
+
+      List<OptionItem> options = new ArrayList<>();
+
+      options.add(
+          UiOptionItem.from(
+              getContext().getString(R.string.option_disabled),
+              optionItem -> {
+                enableLiveChat(false);
+                settingsPresenter.closeDialog();
+              },
+              !getPlayerData().isLiveChatEnabled()));
+
+      options.add(
+          UiOptionItem.from(
+              getContext().getString(R.string.chat_right),
+              optionItem -> {
+                enableLiveChat(true);
+                settingsPresenter.closeDialog();
+              },
+              getPlayerData().isLiveChatEnabled()));
+
+      settingsPresenter.appendRadioCategory(chatCategoryTitle, options);
+
+      settingsPresenter.showDialog(chatCategoryTitle);
+    }
+  }
+
+  @Override
+  public void onEngineReleased() {
+    disposeActions();
+  }
+
+  @Override
+  public void onFinish() {
+    disposeActions();
+  }
+
+  private void disposeActions() {
+    if (RxHelper.isAnyActionRunning(mChatAction)) {
+      RxHelper.disposeActions(mChatAction);
+      getPlayer().setChatReceiver(null);
+    }
+  }
+
+  private boolean checkItem(ChatItem chatItem) {
+    if (chatItem == null || chatItem.getAuthorName() == null) {
+      return false;
     }
 
-    @Override
-    public void onButtonClicked(int buttonId, int buttonState) {
-        if (buttonId == R.id.action_chat) {
-            if (mLiveChatKey != null) {
-                enableLiveChat(buttonState != PlayerUI.BUTTON_ON);
-            }
-        }
+    String authorName = chatItem.getAuthorName();
+
+    for (String spammer : BLACK_LIST) {
+      if (authorName.toLowerCase().contains(spammer.toLowerCase())) {
+        return false;
+      }
     }
 
-    @Override
-    public void onButtonLongClicked(int buttonId, int buttonState) {
-        if (buttonId == R.id.action_chat) {
-            String chatCategoryTitle = getContext().getString(R.string.open_chat);
+    return true;
+  }
 
-            AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
+  private void enableLiveChat(boolean enabled) {
 
-            List<OptionItem> options = new ArrayList<>();
-
-            options.add(UiOptionItem.from(getContext().getString(R.string.option_disabled),
-                    optionItem -> {
-                        enableLiveChat(false);
-                        settingsPresenter.closeDialog();
-                    },
-                    !getPlayerData().isLiveChatEnabled()));
-
-            options.add(UiOptionItem.from(getContext().getString(R.string.chat_right),
-                    optionItem -> {
-                        enableLiveChat(true);
-                        settingsPresenter.closeDialog();
-                    },
-                    getPlayerData().isLiveChatEnabled()));
-
-            settingsPresenter.appendRadioCategory(chatCategoryTitle, options);
-
-            settingsPresenter.showDialog(chatCategoryTitle);
-        }
+    if (enabled) {
+      openLiveChat();
+    } else {
+      disposeActions();
     }
 
-    @Override
-    public void onEngineReleased() {
-        disposeActions();
+    getPlayerData().setLiveChatEnabled(enabled);
+
+    if (mLiveChatKey != null) {
+      getPlayer()
+          .setButtonState(R.id.action_chat, enabled ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
     }
-
-    @Override
-    public void onFinish() {
-        disposeActions();
-    }
-
-    private void disposeActions() {
-        if (RxHelper.isAnyActionRunning(mChatAction)) {
-            RxHelper.disposeActions(mChatAction);
-            getPlayer().setChatReceiver(null);
-        }
-    }
-
-    private boolean checkItem(ChatItem chatItem) {
-        if (chatItem == null || chatItem.getAuthorName() == null) {
-            return false;
-        }
-
-        String authorName = chatItem.getAuthorName();
-
-        for (String spammer : BLACK_LIST) {
-            if (authorName.toLowerCase().contains(spammer.toLowerCase())) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private void enableLiveChat(boolean enabled) {
-        
-        if (enabled) {
-            openLiveChat();
-        } else {
-            disposeActions();
-        }
-        
-        getPlayerData().setLiveChatEnabled(enabled);
-
-        if (mLiveChatKey != null) {
-            getPlayer().setButtonState(
-                R.id.action_chat, 
-                enabled ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF
-            );
-        }
-
-    }
-
+  }
 }

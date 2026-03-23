@@ -17,9 +17,7 @@ package com.google.android.exoplayer2.source;
 
 import com.google.android.exoplayer2.C;
 
-/**
- * A {@link SequenceableLoader} that encapsulates multiple other {@link SequenceableLoader}s.
- */
+/** A {@link SequenceableLoader} that encapsulates multiple other {@link SequenceableLoader}s. */
 public class CompositeSequenceableLoader implements SequenceableLoader {
 
   protected final SequenceableLoader[] loaders;
@@ -82,5 +80,4 @@ public class CompositeSequenceableLoader implements SequenceableLoader {
     } while (madeProgressThisIteration);
     return madeProgress;
   }
-
 }

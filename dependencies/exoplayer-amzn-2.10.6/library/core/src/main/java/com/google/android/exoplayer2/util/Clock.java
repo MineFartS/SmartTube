@@ -25,18 +25,22 @@ import androidx.annotation.Nullable;
  */
 public interface Clock {
 
-  /**
-   * Default {@link Clock} to use for all non-test cases.
-   */
+  /** Default {@link Clock} to use for all non-test cases. */
   Clock DEFAULT = new SystemClock();
 
-  /** @see android.os.SystemClock#elapsedRealtime() */
+  /**
+   * @see android.os.SystemClock#elapsedRealtime()
+   */
   long elapsedRealtime();
 
-  /** @see android.os.SystemClock#uptimeMillis() */
+  /**
+   * @see android.os.SystemClock#uptimeMillis()
+   */
   long uptimeMillis();
 
-  /** @see android.os.SystemClock#sleep(long) */
+  /**
+   * @see android.os.SystemClock#sleep(long)
+   */
   void sleep(long sleepTimeMs);
 
   /**

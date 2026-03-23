@@ -23,9 +23,7 @@ import com.google.android.exoplayer2.util.ParsableBitArray;
 import com.google.android.exoplayer2.util.ParsableByteArray;
 import com.google.android.exoplayer2.util.TimestampAdjuster;
 
-/**
- * Parses PES packet data and extracts samples.
- */
+/** Parses PES packet data and extracts samples. */
 public final class PesReader implements TsPayloadReader {
 
   private static final String TAG = "PesReader";
@@ -61,7 +59,9 @@ public final class PesReader implements TsPayloadReader {
   }
 
   @Override
-  public void init(TimestampAdjuster timestampAdjuster, ExtractorOutput extractorOutput,
+  public void init(
+      TimestampAdjuster timestampAdjuster,
+      ExtractorOutput extractorOutput,
       TrackIdGenerator idGenerator) {
     this.timestampAdjuster = timestampAdjuster;
     reader.createTracks(extractorOutput, idGenerator);
@@ -201,8 +201,11 @@ public final class PesReader implements TsPayloadReader {
     if (packetLength == 0) {
       payloadSize = -1;
     } else {
-      payloadSize = packetLength + 6 /* packetLength does not include the first 6 bytes */
-          - HEADER_SIZE - extendedHeaderLength;
+      payloadSize =
+          packetLength
+              + 6 /* packetLength does not include the first 6 bytes */
+              - HEADER_SIZE
+              - extendedHeaderLength;
     }
     return true;
   }
@@ -237,5 +240,4 @@ public final class PesReader implements TsPayloadReader {
       timeUs = timestampAdjuster.adjustTsTimestamp(pts);
     }
   }
-
 }

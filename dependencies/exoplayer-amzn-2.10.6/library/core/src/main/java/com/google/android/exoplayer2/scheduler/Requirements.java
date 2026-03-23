@@ -49,16 +49,21 @@ public final class Requirements implements Parcelable {
 
   /** Requirement that the device has network connectivity. */
   public static final int NETWORK = 1;
+
   /** Requirement that the device has a network connection that is unmetered. */
   public static final int NETWORK_UNMETERED = 1 << 1;
+
   /** Requirement that the device is idle. */
   public static final int DEVICE_IDLE = 1 << 2;
+
   /** Requirement that the device is charging. */
   public static final int DEVICE_CHARGING = 1 << 3;
 
   @RequirementFlags private final int requirements;
 
-  /** @param requirements A combination of requirement flags. */
+  /**
+   * @param requirements A combination of requirement flags.
+   */
   public Requirements(@RequirementFlags int requirements) {
     if ((requirements & NETWORK_UNMETERED) != 0) {
       // Make sure network requirement flags are consistent.

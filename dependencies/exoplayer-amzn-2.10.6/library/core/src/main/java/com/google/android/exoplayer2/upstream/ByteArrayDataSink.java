@@ -20,9 +20,7 @@ import com.google.android.exoplayer2.util.Assertions;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-/**
- * A {@link DataSink} for writing to a byte array.
- */
+/** A {@link DataSink} for writing to a byte array. */
 public final class ByteArrayDataSink implements DataSink {
 
   private ByteArrayOutputStream stream;
@@ -54,5 +52,4 @@ public final class ByteArrayDataSink implements DataSink {
   public byte[] getData() {
     return stream == null ? null : stream.toByteArray();
   }
-
 }

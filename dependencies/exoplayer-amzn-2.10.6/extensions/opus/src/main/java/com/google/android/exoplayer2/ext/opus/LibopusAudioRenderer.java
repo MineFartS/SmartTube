@@ -25,13 +25,12 @@ import com.google.android.exoplayer2.drm.DrmSessionManager;
 import com.google.android.exoplayer2.drm.ExoMediaCrypto;
 import com.google.android.exoplayer2.util.MimeTypes;
 
-/**
- * Decodes and renders audio using the native Opus decoder.
- */
+/** Decodes and renders audio using the native Opus decoder. */
 public final class LibopusAudioRenderer extends SimpleDecoderAudioRenderer {
 
   /** The number of input and output buffers. */
   private static final int NUM_BUFFERS = 16;
+
   /** The default input buffer size. */
   private static final int DEFAULT_INPUT_BUFFER_SIZE = 960 * 6;
 
@@ -67,16 +66,24 @@ public final class LibopusAudioRenderer extends SimpleDecoderAudioRenderer {
    *     has obtained the keys necessary to decrypt encrypted regions of the media.
    * @param audioProcessors Optional {@link AudioProcessor}s that will process audio before output.
    */
-  public LibopusAudioRenderer(Handler eventHandler, AudioRendererEventListener eventListener,
-      DrmSessionManager<ExoMediaCrypto> drmSessionManager, boolean playClearSamplesWithoutKeys,
+  public LibopusAudioRenderer(
+      Handler eventHandler,
+      AudioRendererEventListener eventListener,
+      DrmSessionManager<ExoMediaCrypto> drmSessionManager,
+      boolean playClearSamplesWithoutKeys,
       AudioProcessor... audioProcessors) {
-    super(eventHandler, eventListener, null, drmSessionManager, playClearSamplesWithoutKeys,
+    super(
+        eventHandler,
+        eventListener,
+        null,
+        drmSessionManager,
+        playClearSamplesWithoutKeys,
         audioProcessors);
   }
 
   @Override
-  protected int supportsFormatInternal(DrmSessionManager<ExoMediaCrypto> drmSessionManager,
-      Format format) {
+  protected int supportsFormatInternal(
+      DrmSessionManager<ExoMediaCrypto> drmSessionManager, Format format) {
     if (!OpusLibrary.isAvailable()
         || !MimeTypes.AUDIO_OPUS.equalsIgnoreCase(format.sampleMimeType)) {
       return FORMAT_UNSUPPORTED_TYPE;
@@ -106,9 +113,18 @@ public final class LibopusAudioRenderer extends SimpleDecoderAudioRenderer {
 
   @Override
   protected Format getOutputFormat() {
-    return Format.createAudioSampleFormat(null, MimeTypes.AUDIO_RAW, null, Format.NO_VALUE,
-        Format.NO_VALUE, decoder.getChannelCount(), decoder.getSampleRate(), C.ENCODING_PCM_16BIT,
-        null, null, 0, null);
+    return Format.createAudioSampleFormat(
+        null,
+        MimeTypes.AUDIO_RAW,
+        null,
+        Format.NO_VALUE,
+        Format.NO_VALUE,
+        decoder.getChannelCount(),
+        decoder.getSampleRate(),
+        C.ENCODING_PCM_16BIT,
+        null,
+        null,
+        0,
+        null);
   }
-
 }

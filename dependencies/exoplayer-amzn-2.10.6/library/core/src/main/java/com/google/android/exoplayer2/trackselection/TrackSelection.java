@@ -41,10 +41,13 @@ public interface TrackSelection {
   final class Definition {
     /** The {@link TrackGroup} which tracks belong to. */
     public final TrackGroup group;
+
     /** The indices of the selected tracks in {@link #group}. */
     public final int[] tracks;
+
     /** The track selection reason. One of the {@link C} SELECTION_REASON_ constants. */
     public final int reason;
+
     /** Optional data associated with this selection of tracks. */
     @Nullable public final Object data;
 
@@ -71,9 +74,7 @@ public interface TrackSelection {
     }
   }
 
-  /**
-   * Factory for {@link TrackSelection} instances.
-   */
+  /** Factory for {@link TrackSelection} instances. */
   interface Factory {
 
     /**
@@ -123,16 +124,12 @@ public interface TrackSelection {
    */
   void disable();
 
-  /**
-   * Returns the {@link TrackGroup} to which the selected tracks belong.
-   */
+  /** Returns the {@link TrackGroup} to which the selected tracks belong. */
   TrackGroup getTrackGroup();
 
   // Static subset of selected tracks.
 
-  /**
-   * Returns the number of tracks in the selection.
-   */
+  /** Returns the number of tracks in the selection. */
   int length();
 
   /**
@@ -173,28 +170,21 @@ public interface TrackSelection {
 
   // Individual selected track.
 
-  /**
-   * Returns the {@link Format} of the individual selected track.
-   */
+  /** Returns the {@link Format} of the individual selected track. */
   Format getSelectedFormat();
 
-  /**
-   * Returns the index in the track group of the individual selected track.
-   */
+  /** Returns the index in the track group of the individual selected track. */
   int getSelectedIndexInTrackGroup();
 
-  /**
-   * Returns the index of the selected track.
-   */
+  /** Returns the index of the selected track. */
   int getSelectedIndex();
 
-  /**
-   * Returns the reason for the current track selection.
-   */
+  /** Returns the reason for the current track selection. */
   int getSelectionReason();
 
   /** Returns optional data associated with the current track selection. */
-  @Nullable Object getSelectionData();
+  @Nullable
+  Object getSelectionData();
 
   // Adaptation.
 
@@ -260,9 +250,9 @@ public interface TrackSelection {
    * May be called periodically by sources that load media in discrete {@link MediaChunk}s and
    * support discarding of buffered chunks in order to re-buffer using a different selected track.
    * Returns the number of chunks that should be retained in the queue.
-   * <p>
-   * To avoid excessive re-buffering, implementations should normally return the size of the queue.
-   * An example of a case where a smaller value may be returned is if network conditions have
+   *
+   * <p>To avoid excessive re-buffering, implementations should normally return the size of the
+   * queue. An example of a case where a smaller value may be returned is if network conditions have
    * improved dramatically, allowing chunks to be discarded and re-buffered in a track of
    * significantly higher quality. Discarding chunks may allow faster switching to a higher quality
    * track in this case. This method may only be called when the selection is enabled.

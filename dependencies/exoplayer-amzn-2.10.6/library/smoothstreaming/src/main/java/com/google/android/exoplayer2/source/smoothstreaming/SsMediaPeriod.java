@@ -115,8 +115,12 @@ import java.util.List;
   }
 
   @Override
-  public long selectTracks(TrackSelection[] selections, boolean[] mayRetainStreamFlags,
-      SampleStream[] streams, boolean[] streamResetFlags, long positionUs) {
+  public long selectTracks(
+      TrackSelection[] selections,
+      boolean[] mayRetainStreamFlags,
+      SampleStream[] streams,
+      boolean[] streamResetFlags,
+      long positionUs) {
     ArrayList<ChunkSampleStream<SsChunkSource>> sampleStreamsList = new ArrayList<>();
     for (int i = 0; i < selections.length; i++) {
       if (streams[i] != null) {
@@ -220,16 +224,12 @@ import java.util.List;
 
   // Private methods.
 
-  private ChunkSampleStream<SsChunkSource> buildSampleStream(TrackSelection selection,
-      long positionUs) {
+  private ChunkSampleStream<SsChunkSource> buildSampleStream(
+      TrackSelection selection, long positionUs) {
     int streamElementIndex = trackGroups.indexOf(selection.getTrackGroup());
     SsChunkSource chunkSource =
         chunkSourceFactory.createChunkSource(
-            manifestLoaderErrorThrower,
-            manifest,
-            streamElementIndex,
-            selection,
-            transferListener);
+            manifestLoaderErrorThrower, manifest, streamElementIndex, selection, transferListener);
     return new ChunkSampleStream<>(
         manifest.streamElements[streamElementIndex].type,
         null,

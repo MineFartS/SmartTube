@@ -27,9 +27,7 @@ import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.Util;
 import java.io.IOException;
 
-/**
- * A {@link BaseMediaChunk} that uses an {@link Extractor} to decode sample data.
- */
+/** A {@link BaseMediaChunk} that uses an {@link Extractor} to decode sample data. */
 public class ContainerMediaChunk extends BaseMediaChunk {
 
   private static final PositionHolder DUMMY_POSITION_HOLDER = new PositionHolder();
@@ -114,8 +112,9 @@ public class ContainerMediaChunk extends BaseMediaChunk {
     DataSpec loadDataSpec = dataSpec.subrange(nextLoadPosition);
     try {
       // Create and open the input.
-      ExtractorInput input = new DefaultExtractorInput(dataSource,
-          loadDataSpec.absoluteStreamPosition, dataSource.open(loadDataSpec));
+      ExtractorInput input =
+          new DefaultExtractorInput(
+              dataSource, loadDataSpec.absoluteStreamPosition, dataSource.open(loadDataSpec));
       if (nextLoadPosition == 0) {
         // Configure the output and set it as the target for the extractor wrapper.
         BaseMediaChunkOutput output = getOutput();

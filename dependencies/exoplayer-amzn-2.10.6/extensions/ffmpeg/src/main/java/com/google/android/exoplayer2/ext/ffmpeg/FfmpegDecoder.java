@@ -27,11 +27,9 @@ import com.google.android.exoplayer2.util.ParsableByteArray;
 import java.nio.ByteBuffer;
 import java.util.List;
 
-/**
- * FFmpeg audio decoder.
- */
-/* package */ final class FfmpegDecoder extends
-    SimpleDecoder<DecoderInputBuffer, SimpleOutputBuffer, FfmpegDecoderException> {
+/** FFmpeg audio decoder. */
+/* package */ final class FfmpegDecoder
+    extends SimpleDecoder<DecoderInputBuffer, SimpleOutputBuffer, FfmpegDecoderException> {
 
   // Output buffer sizes when decoding PCM mu-law streams, which is the maximum FFmpeg outputs.
   private static final int OUTPUT_BUFFER_SIZE_16BIT = 65536;
@@ -144,23 +142,17 @@ import java.util.List;
     nativeContext = 0;
   }
 
-  /**
-   * Returns the channel count of output audio. May only be called after {@link #decode}.
-   */
+  /** Returns the channel count of output audio. May only be called after {@link #decode}. */
   public int getChannelCount() {
     return channelCount;
   }
 
-  /**
-   * Returns the sample rate of output audio. May only be called after {@link #decode}.
-   */
+  /** Returns the sample rate of output audio. May only be called after {@link #decode}. */
   public int getSampleRate() {
     return sampleRate;
   }
 
-  /**
-   * Returns the encoding of output audio.
-   */
+  /** Returns the encoding of output audio. */
   public @C.Encoding int getEncoding() {
     return encoding;
   }
@@ -222,13 +214,14 @@ import java.util.List;
       int rawSampleRate,
       int rawChannelCount);
 
-  private native int ffmpegDecode(long context, ByteBuffer inputData, int inputSize,
-      ByteBuffer outputData, int outputSize);
+  private native int ffmpegDecode(
+      long context, ByteBuffer inputData, int inputSize, ByteBuffer outputData, int outputSize);
+
   private native int ffmpegGetChannelCount(long context);
+
   private native int ffmpegGetSampleRate(long context);
 
   private native long ffmpegReset(long context, @Nullable byte[] extraData);
 
   private native void ffmpegRelease(long context);
-
 }

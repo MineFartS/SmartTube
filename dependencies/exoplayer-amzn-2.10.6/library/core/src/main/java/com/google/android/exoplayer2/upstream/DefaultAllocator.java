@@ -19,9 +19,7 @@ import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.Util;
 import java.util.Arrays;
 
-/**
- * Default implementation of {@link Allocator}.
- */
+/** Default implementation of {@link Allocator}. */
 public final class DefaultAllocator implements Allocator {
 
   private static final int AVAILABLE_EXTRA_CAPACITY = 100;
@@ -49,16 +47,16 @@ public final class DefaultAllocator implements Allocator {
 
   /**
    * Constructs an instance with some {@link Allocation}s created up front.
-   * <p>
-   * Note: {@link Allocation}s created up front will never be discarded by {@link #trim()}.
+   *
+   * <p>Note: {@link Allocation}s created up front will never be discarded by {@link #trim()}.
    *
    * @param trimOnReset Whether memory is freed when the allocator is reset. Should be true unless
    *     the allocator will be re-used by multiple player instances.
    * @param individualAllocationSize The length of each individual {@link Allocation}.
    * @param initialAllocationCount The number of allocations to create up front.
    */
-  public DefaultAllocator(boolean trimOnReset, int individualAllocationSize,
-      int initialAllocationCount) {
+  public DefaultAllocator(
+      boolean trimOnReset, int individualAllocationSize, int initialAllocationCount) {
     Assertions.checkArgument(individualAllocationSize > 0);
     Assertions.checkArgument(initialAllocationCount >= 0);
     this.trimOnReset = trimOnReset;
@@ -113,8 +111,10 @@ public final class DefaultAllocator implements Allocator {
   @Override
   public synchronized void release(Allocation[] allocations) {
     if (availableCount + allocations.length >= availableAllocations.length) {
-      availableAllocations = Arrays.copyOf(availableAllocations,
-          Math.max(availableAllocations.length * 2, availableCount + allocations.length));
+      availableAllocations =
+          Arrays.copyOf(
+              availableAllocations,
+              Math.max(availableAllocations.length * 2, availableCount + allocations.length));
     }
     for (Allocation allocation : allocations) {
       availableAllocations[availableCount++] = allocation;
@@ -175,5 +175,4 @@ public final class DefaultAllocator implements Allocator {
   public int getIndividualAllocationLength() {
     return individualAllocationSize;
   }
-
 }

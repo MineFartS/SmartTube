@@ -15,10 +15,10 @@
  */
 package com.google.android.exoplayer2.source.dash;
 
-import androidx.annotation.IntDef;
-import androidx.annotation.Nullable;
 import android.util.Pair;
 import android.util.SparseIntArray;
+import androidx.annotation.IntDef;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.SeekParameters;
@@ -123,8 +123,8 @@ import java.util.regex.Pattern;
         compositeSequenceableLoaderFactory.createCompositeSequenceableLoader(sampleStreams);
     Period period = manifest.getPeriod(periodIndex);
     eventStreams = period.eventStreams;
-    Pair<TrackGroupArray, TrackGroupInfo[]> result = buildTrackGroups(period.adaptationSets,
-        eventStreams);
+    Pair<TrackGroupArray, TrackGroupInfo[]> result =
+        buildTrackGroups(period.adaptationSets, eventStreams);
     trackGroups = result.first;
     trackGroupInfos = result.second;
     eventDispatcher.mediaPeriodCreated();
@@ -241,8 +241,12 @@ import java.util.regex.Pattern;
   }
 
   @Override
-  public long selectTracks(TrackSelection[] selections, boolean[] mayRetainStreamFlags,
-      SampleStream[] streams, boolean[] streamResetFlags, long positionUs) {
+  public long selectTracks(
+      TrackSelection[] selections,
+      boolean[] mayRetainStreamFlags,
+      SampleStream[] streams,
+      boolean[] streamResetFlags,
+      long positionUs) {
     int[] streamIndexToTrackGroupIndex = getStreamIndexToTrackGroupIndex(selections);
     releaseDisabledStreams(selections, mayRetainStreamFlags, streams);
     releaseOrphanEmbeddedStreams(selections, streams, streamIndexToTrackGroupIndex);
@@ -516,8 +520,8 @@ import java.util.regex.Pattern;
         continue;
       }
       adaptationSetUsedFlags[i] = true;
-      Descriptor adaptationSetSwitchingProperty = findAdaptationSetSwitchingProperty(
-          adaptationSets.get(i).supplementalProperties);
+      Descriptor adaptationSetSwitchingProperty =
+          findAdaptationSetSwitchingProperty(adaptationSets.get(i).supplementalProperties);
       if (adaptationSetSwitchingProperty == null) {
         groupedAdaptationSetIndices[groupCount++] = new int[] {i};
       } else {
@@ -543,7 +547,8 @@ import java.util.regex.Pattern;
     }
 
     return groupCount < adaptationSetCount
-        ? Arrays.copyOf(groupedAdaptationSetIndices, groupCount) : groupedAdaptationSetIndices;
+        ? Arrays.copyOf(groupedAdaptationSetIndices, groupCount)
+        : groupedAdaptationSetIndices;
   }
 
   /**
@@ -616,8 +621,13 @@ import java.util.regex.Pattern;
               eventMessageTrackGroupIndex,
               cea608TrackGroupIndex);
       if (eventMessageTrackGroupIndex != C.INDEX_UNSET) {
-        Format format = Format.createSampleFormat(firstAdaptationSet.id + ":emsg",
-            MimeTypes.APPLICATION_EMSG, null, Format.NO_VALUE, null);
+        Format format =
+            Format.createSampleFormat(
+                firstAdaptationSet.id + ":emsg",
+                MimeTypes.APPLICATION_EMSG,
+                null,
+                Format.NO_VALUE,
+                null);
         trackGroups[eventMessageTrackGroupIndex] = new TrackGroup(format);
         trackGroupInfos[eventMessageTrackGroupIndex] =
             TrackGroupInfo.embeddedEmsgTrack(adaptationSetIndices, primaryTrackGroupIndex);
@@ -631,19 +641,23 @@ import java.util.regex.Pattern;
     return trackGroupCount;
   }
 
-  private static void buildManifestEventTrackGroupInfos(List<EventStream> eventStreams,
-      TrackGroup[] trackGroups, TrackGroupInfo[] trackGroupInfos, int existingTrackGroupCount) {
+  private static void buildManifestEventTrackGroupInfos(
+      List<EventStream> eventStreams,
+      TrackGroup[] trackGroups,
+      TrackGroupInfo[] trackGroupInfos,
+      int existingTrackGroupCount) {
     for (int i = 0; i < eventStreams.size(); i++) {
       EventStream eventStream = eventStreams.get(i);
-      Format format = Format.createSampleFormat(eventStream.id(), MimeTypes.APPLICATION_EMSG, null,
-          Format.NO_VALUE, null);
+      Format format =
+          Format.createSampleFormat(
+              eventStream.id(), MimeTypes.APPLICATION_EMSG, null, Format.NO_VALUE, null);
       trackGroups[existingTrackGroupCount] = new TrackGroup(format);
       trackGroupInfos[existingTrackGroupCount++] = TrackGroupInfo.mpdEventTrack(i);
     }
   }
 
-  private ChunkSampleStream<DashChunkSource> buildSampleStream(TrackGroupInfo trackGroupInfo,
-      TrackSelection selection, long positionUs) {
+  private ChunkSampleStream<DashChunkSource> buildSampleStream(
+      TrackGroupInfo trackGroupInfo, TrackSelection selection, long positionUs) {
     int embeddedTrackCount = 0;
     boolean enableEventMessageTrack =
         trackGroupInfo.embeddedEventMessageTrackGroupIndex != C.INDEX_UNSET;
@@ -723,8 +737,8 @@ import java.util.regex.Pattern;
     return null;
   }
 
-  private static boolean hasEventMessageTrack(List<AdaptationSet> adaptationSets,
-      int[] adaptationSetIndices) {
+  private static boolean hasEventMessageTrack(
+      List<AdaptationSet> adaptationSets, int[] adaptationSetIndices) {
     for (int i : adaptationSetIndices) {
       List<Representation> representations = adaptationSets.get(i).representations;
       for (int j = 0; j < representations.size(); j++) {
@@ -806,8 +820,8 @@ import java.util.regex.Pattern;
     public @interface TrackGroupCategory {}
 
     /**
-     * A normal track group that has its samples drawn from the stream.
-     * For example: a video Track Group or an audio Track Group.
+     * A normal track group that has its samples drawn from the stream. For example: a video Track
+     * Group or an audio Track Group.
      */
     private static final int CATEGORY_PRIMARY = 0;
 
@@ -818,9 +832,8 @@ import java.util.regex.Pattern;
     private static final int CATEGORY_EMBEDDED = 1;
 
     /**
-     * A track group that has its samples listed explicitly in the DASH manifest file.
-     * For example: an EventStream track has its sample (Events) included directly in the DASH
-     * manifest file.
+     * A track group that has its samples listed explicitly in the DASH manifest file. For example:
+     * an EventStream track has its sample (Events) included directly in the DASH manifest file.
      */
     private static final int CATEGORY_MANIFEST_EVENTS = 2;
 
@@ -849,8 +862,8 @@ import java.util.regex.Pattern;
           /* eventStreamGroupIndex= */ -1);
     }
 
-    public static TrackGroupInfo embeddedEmsgTrack(int[] adaptationSetIndices,
-        int primaryTrackGroupIndex) {
+    public static TrackGroupInfo embeddedEmsgTrack(
+        int[] adaptationSetIndices, int primaryTrackGroupIndex) {
       return new TrackGroupInfo(
           C.TRACK_TYPE_METADATA,
           CATEGORY_EMBEDDED,
@@ -861,8 +874,8 @@ import java.util.regex.Pattern;
           /* eventStreamGroupIndex= */ -1);
     }
 
-    public static TrackGroupInfo embeddedCea608Track(int[] adaptationSetIndices,
-        int primaryTrackGroupIndex) {
+    public static TrackGroupInfo embeddedCea608Track(
+        int[] adaptationSetIndices, int primaryTrackGroupIndex) {
       return new TrackGroupInfo(
           C.TRACK_TYPE_TEXT,
           CATEGORY_EMBEDDED,
@@ -901,5 +914,4 @@ import java.util.regex.Pattern;
       this.eventStreamGroupIndex = eventStreamGroupIndex;
     }
   }
-
 }

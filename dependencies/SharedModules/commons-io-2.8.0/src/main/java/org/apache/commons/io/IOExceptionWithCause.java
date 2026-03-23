@@ -28,39 +28,32 @@ import java.io.IOException;
 @Deprecated
 public class IOExceptionWithCause extends IOException {
 
-    /**
-     * Defines the serial version UID.
-     */
-    private static final long serialVersionUID = 1L;
+  /** Defines the serial version UID. */
+  private static final long serialVersionUID = 1L;
 
-    /**
-     * Constructs a new instance with the given message and cause.
-     * <p>
-     * As specified in {@link Throwable}, the message in the given <code>cause</code> is not used in this instance's
-     * message.
-     * </p>
-     *
-     * @param message
-     *            the message (see {@link #getMessage()})
-     * @param cause
-     *            the cause (see {@link #getCause()}). A {@code null} value is allowed.
-     */
-    public IOExceptionWithCause(final String message, final Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   * Constructs a new instance with the given message and cause.
+   *
+   * <p>As specified in {@link Throwable}, the message in the given <code>cause</code> is not used
+   * in this instance's message.
+   *
+   * @param message the message (see {@link #getMessage()})
+   * @param cause the cause (see {@link #getCause()}). A {@code null} value is allowed.
+   */
+  public IOExceptionWithCause(final String message, final Throwable cause) {
+    super(message, cause);
+  }
 
-    /**
-     * Constructs a new instance with the given cause.
-     * <p>
-     * The message is set to <code>cause==null ? null : cause.toString()</code>, which by default contains the class
-     * and message of <code>cause</code>. This constructor is useful for call sites that just wrap another throwable.
-     * </p>
-     *
-     * @param cause
-     *            the cause (see {@link #getCause()}). A {@code null} value is allowed.
-     */
-    public IOExceptionWithCause(final Throwable cause) {
-        super(cause);
-    }
-
+  /**
+   * Constructs a new instance with the given cause.
+   *
+   * <p>The message is set to <code>cause==null ? null : cause.toString()</code>, which by default
+   * contains the class and message of <code>cause</code>. This constructor is useful for call sites
+   * that just wrap another throwable.
+   *
+   * @param cause the cause (see {@link #getCause()}). A {@code null} value is allowed.
+   */
+  public IOExceptionWithCause(final Throwable cause) {
+    super(cause);
+  }
 }

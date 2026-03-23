@@ -20,22 +20,21 @@ import com.google.android.exoplayer2.RendererConfiguration;
 import com.google.android.exoplayer2.util.Util;
 import org.checkerframework.checker.nullness.compatqual.NullableType;
 
-/**
- * The result of a {@link TrackSelector} operation.
- */
+/** The result of a {@link TrackSelector} operation. */
 public final class TrackSelectorResult {
 
   /** The number of selections in the result. Greater than or equal to zero. */
   public final int length;
+
   /**
    * A {@link RendererConfiguration} for each renderer. A null entry indicates the corresponding
    * renderer should be disabled.
    */
   public final @NullableType RendererConfiguration[] rendererConfigurations;
-  /**
-   * A {@link TrackSelectionArray} containing the track selection for each renderer.
-   */
+
+  /** A {@link TrackSelectionArray} containing the track selection for each renderer. */
   public final TrackSelectionArray selections;
+
   /**
    * An opaque object that will be returned to {@link TrackSelector#onSelectionActivated(Object)}
    * should the selections be activated.
@@ -101,5 +100,4 @@ public final class TrackSelectorResult {
     return Util.areEqual(rendererConfigurations[index], other.rendererConfigurations[index])
         && Util.areEqual(selections.get(index), other.selections.get(index));
   }
-
 }

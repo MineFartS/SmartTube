@@ -28,22 +28,22 @@ public final class VpxOutputBuffer extends OutputBuffer {
   public static final int COLORSPACE_BT2020 = 3;
 
   private final VpxDecoder owner;
+
   /** Decoder private data. */
   public int decoderPrivate;
 
   public int mode;
-  /**
-   * RGB buffer for RGB mode.
-   */
+
+  /** RGB buffer for RGB mode. */
   public ByteBuffer data;
+
   public int width;
   public int height;
   public ColorInfo colorInfo;
 
-  /**
-   * YUV planes for YUV mode.
-   */
+  /** YUV planes for YUV mode. */
   public ByteBuffer[] yuvPlanes;
+
   public int[] yuvStrides;
   public int colorspace;
 
@@ -135,5 +135,4 @@ public final class VpxOutputBuffer extends OutputBuffer {
   private boolean isSafeToMultiply(int a, int b) {
     return a >= 0 && b >= 0 && !(b > 0 && a >= Integer.MAX_VALUE / b);
   }
-
 }

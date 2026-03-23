@@ -42,14 +42,10 @@ public class DashManifest implements FilterableManifest<DashManifest> {
    */
   public final long durationMs;
 
-  /**
-   * The {@code minBufferTime} value in milliseconds, or {@link C#TIME_UNSET} if not present.
-   */
+  /** The {@code minBufferTime} value in milliseconds, or {@link C#TIME_UNSET} if not present. */
   public final long minBufferTimeMs;
 
-  /**
-   * Whether the manifest has value "dynamic" for the {@code type} attribute.
-   */
+  /** Whether the manifest has value "dynamic" for the {@code type} attribute. */
   public final boolean dynamic;
 
   /**
@@ -59,8 +55,7 @@ public class DashManifest implements FilterableManifest<DashManifest> {
   public final long minUpdatePeriodMs;
 
   /**
-   * The {@code timeShiftBufferDepth} value in milliseconds, or {@link C#TIME_UNSET} if not
-   * present.
+   * The {@code timeShiftBufferDepth} value in milliseconds, or {@link C#TIME_UNSET} if not present.
    */
   public final long timeShiftBufferDepthMs;
 
@@ -71,8 +66,8 @@ public class DashManifest implements FilterableManifest<DashManifest> {
   public final long suggestedPresentationDelayMs;
 
   /**
-   * The {@code publishTime} value in milliseconds since epoch, or {@link C#TIME_UNSET} if
-   * not present.
+   * The {@code publishTime} value in milliseconds since epoch, or {@link C#TIME_UNSET} if not
+   * present.
    */
   public final long publishTimeMs;
 
@@ -82,9 +77,7 @@ public class DashManifest implements FilterableManifest<DashManifest> {
    */
   public final UtcTimingElement utcTiming;
 
-  /**
-   * The location of this manifest.
-   */
+  /** The location of this manifest. */
   public final Uri location;
 
   /** The {@link ProgramInformation}, or null if not present. */
@@ -188,8 +181,9 @@ public class DashManifest implements FilterableManifest<DashManifest> {
         Period period = getPeriod(periodIndex);
         ArrayList<AdaptationSet> copyAdaptationSets =
             copyAdaptationSets(period.adaptationSets, keys);
-        Period copiedPeriod = new Period(period.id, period.startMs - shiftMs, copyAdaptationSets,
-            period.eventStreams);
+        Period copiedPeriod =
+            new Period(
+                period.id, period.startMs - shiftMs, copyAdaptationSets, period.eventStreams);
         copyPeriods.add(copiedPeriod);
       }
     }
@@ -226,13 +220,16 @@ public class DashManifest implements FilterableManifest<DashManifest> {
         key = keys.poll();
       } while (key.periodIndex == periodIndex && key.groupIndex == adaptationSetIndex);
 
-      copyAdaptationSets.add(new AdaptationSet(adaptationSet.id, adaptationSet.type,
-          copyRepresentations, adaptationSet.accessibilityDescriptors,
-          adaptationSet.supplementalProperties));
-    } while(key.periodIndex == periodIndex);
+      copyAdaptationSets.add(
+          new AdaptationSet(
+              adaptationSet.id,
+              adaptationSet.type,
+              copyRepresentations,
+              adaptationSet.accessibilityDescriptors,
+              adaptationSet.supplementalProperties));
+    } while (key.periodIndex == periodIndex);
     // Add back the last key which doesn't belong to the period being processed
     keys.addFirst(key);
     return copyAdaptationSets;
   }
-
 }

@@ -26,9 +26,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Factory for HLS media chunk extractors.
- */
+/** Factory for HLS media chunk extractors. */
 public interface HlsExtractorFactory {
 
   /** Holds an {@link Extractor} and associated parameters. */
@@ -36,8 +34,10 @@ public interface HlsExtractorFactory {
 
     /** The created extractor; */
     public final Extractor extractor;
+
     /** Whether the segments for which {@link #extractor} is created are packed audio segments. */
     public final boolean isPackedAudioExtractor;
+
     /**
      * Whether {@link #extractor} may be reused for following continuous (no immediately preceding
      * discontinuities) segments of the same variant.

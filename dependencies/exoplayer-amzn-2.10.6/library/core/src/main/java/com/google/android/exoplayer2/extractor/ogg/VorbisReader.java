@@ -24,9 +24,7 @@ import com.google.android.exoplayer2.util.ParsableByteArray;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * {@link StreamReader} to extract Vorbis data out of Ogg byte stream.
- */
+/** {@link StreamReader} to extract Vorbis data out of Ogg byte stream. */
 /* package */ final class VorbisReader extends StreamReader {
 
   private VorbisSetup vorbisSetup;
@@ -74,8 +72,8 @@ import java.util.ArrayList;
     int packetBlockSize = decodeBlockSize(packet.data[0], vorbisSetup);
     // a packet contains samples produced from overlapping the previous and current frame data
     // (https://www.xiph.org/vorbis/doc/Vorbis_I_spec.html#x1-350001.3.2)
-    int samplesInPacket = seenFirstAudioPacket ? (packetBlockSize + previousPacketBlockSize) / 4
-        : 0;
+    int samplesInPacket =
+        seenFirstAudioPacket ? (packetBlockSize + previousPacketBlockSize) / 4 : 0;
     // codec expects the number of samples appended to audio data
     appendNumberOfSamples(packet, samplesInPacket);
 
@@ -101,10 +99,19 @@ import java.util.ArrayList;
     codecInitialisationData.add(vorbisSetup.idHeader.data);
     codecInitialisationData.add(vorbisSetup.setupHeaderData);
 
-    setupData.format = Format.createAudioSampleFormat(null, MimeTypes.AUDIO_VORBIS, null,
-        this.vorbisSetup.idHeader.bitrateNominal, Format.NO_VALUE,
-        this.vorbisSetup.idHeader.channels, (int) this.vorbisSetup.idHeader.sampleRate,
-        codecInitialisationData, null, 0, null);
+    setupData.format =
+        Format.createAudioSampleFormat(
+            null,
+            MimeTypes.AUDIO_VORBIS,
+            null,
+            this.vorbisSetup.idHeader.bitrateNominal,
+            Format.NO_VALUE,
+            this.vorbisSetup.idHeader.channels,
+            (int) this.vorbisSetup.idHeader.sampleRate,
+            codecInitialisationData,
+            null,
+            0,
+            null);
     return true;
   }
 
@@ -172,9 +179,7 @@ import java.util.ArrayList;
     return currentBlockSize;
   }
 
-  /**
-   * Class to hold all data read from Vorbis setup headers.
-   */
+  /** Class to hold all data read from Vorbis setup headers. */
   /* package */ static final class VorbisSetup {
 
     public final VorbisUtil.VorbisIdHeader idHeader;
@@ -183,15 +188,17 @@ import java.util.ArrayList;
     public final Mode[] modes;
     public final int iLogModes;
 
-    public VorbisSetup(VorbisUtil.VorbisIdHeader idHeader, VorbisUtil.CommentHeader
-        commentHeader, byte[] setupHeaderData, Mode[] modes, int iLogModes) {
+    public VorbisSetup(
+        VorbisUtil.VorbisIdHeader idHeader,
+        VorbisUtil.CommentHeader commentHeader,
+        byte[] setupHeaderData,
+        Mode[] modes,
+        int iLogModes) {
       this.idHeader = idHeader;
       this.commentHeader = commentHeader;
       this.setupHeaderData = setupHeaderData;
       this.modes = modes;
       this.iLogModes = iLogModes;
     }
-
   }
-
 }

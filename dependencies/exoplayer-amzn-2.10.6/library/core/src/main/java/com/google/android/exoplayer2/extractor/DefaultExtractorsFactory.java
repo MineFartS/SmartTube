@@ -56,6 +56,7 @@ import java.lang.reflect.Constructor;
 public final class DefaultExtractorsFactory implements ExtractorsFactory {
 
   private static final Constructor<? extends Extractor> FLAC_EXTRACTOR_CONSTRUCTOR;
+
   static {
     Constructor<? extends Extractor> flacExtractorConstructor = null;
     try {
@@ -248,5 +249,4 @@ public final class DefaultExtractorsFactory implements ExtractorsFactory {
     }
     return extractors;
   }
-
 }

@@ -47,5 +47,4 @@ public final class LocalMediaDrmCallback implements MediaDrmCallback {
   public byte[] executeKeyRequest(UUID uuid, KeyRequest request) throws Exception {
     return keyResponse;
   }
-
 }

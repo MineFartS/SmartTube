@@ -16,9 +16,9 @@
 package com.google.android.exoplayer2.source.hls.playlist;
 
 import android.net.Uri;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Base64;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.ParserException;
@@ -54,9 +54,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 
-/**
- * HLS playlists parsing logic.
- */
+/** HLS playlists parsing logic. */
 public final class HlsPlaylistParser implements ParsingLoadable.Parser<HlsPlaylist> {
 
   private static final String PLAYLIST_HEADER = "#EXTM3U";
@@ -116,20 +114,20 @@ public final class HlsPlaylistParser implements ParsingLoadable.Parser<HlsPlayli
   private static final Pattern REGEX_CODECS = Pattern.compile("CODECS=\"(.+?)\"");
   private static final Pattern REGEX_RESOLUTION = Pattern.compile("RESOLUTION=(\\d+x\\d+)");
   private static final Pattern REGEX_FRAME_RATE = Pattern.compile("FRAME-RATE=([\\d\\.]+)\\b");
-  private static final Pattern REGEX_TARGET_DURATION = Pattern.compile(TAG_TARGET_DURATION
-      + ":(\\d+)\\b");
+  private static final Pattern REGEX_TARGET_DURATION =
+      Pattern.compile(TAG_TARGET_DURATION + ":(\\d+)\\b");
   private static final Pattern REGEX_VERSION = Pattern.compile(TAG_VERSION + ":(\\d+)\\b");
-  private static final Pattern REGEX_PLAYLIST_TYPE = Pattern.compile(TAG_PLAYLIST_TYPE
-      + ":(.+)\\b");
-  private static final Pattern REGEX_MEDIA_SEQUENCE = Pattern.compile(TAG_MEDIA_SEQUENCE
-      + ":(\\d+)\\b");
-  private static final Pattern REGEX_MEDIA_DURATION = Pattern.compile(TAG_MEDIA_DURATION
-      + ":([\\d\\.]+)\\b");
+  private static final Pattern REGEX_PLAYLIST_TYPE =
+      Pattern.compile(TAG_PLAYLIST_TYPE + ":(.+)\\b");
+  private static final Pattern REGEX_MEDIA_SEQUENCE =
+      Pattern.compile(TAG_MEDIA_SEQUENCE + ":(\\d+)\\b");
+  private static final Pattern REGEX_MEDIA_DURATION =
+      Pattern.compile(TAG_MEDIA_DURATION + ":([\\d\\.]+)\\b");
   private static final Pattern REGEX_MEDIA_TITLE =
       Pattern.compile(TAG_MEDIA_DURATION + ":[\\d\\.]+\\b,(.+)");
   private static final Pattern REGEX_TIME_OFFSET = Pattern.compile("TIME-OFFSET=(-?[\\d\\.]+)\\b");
-  private static final Pattern REGEX_BYTERANGE = Pattern.compile(TAG_BYTERANGE
-      + ":(\\d+(?:@\\d+)?)\\b");
+  private static final Pattern REGEX_BYTERANGE =
+      Pattern.compile(TAG_BYTERANGE + ":(\\d+(?:@\\d+)?)\\b");
   private static final Pattern REGEX_ATTR_BYTERANGE =
       Pattern.compile("BYTERANGE=\"(\\d+(?:@\\d+)?)\\b\"");
   private static final Pattern REGEX_METHOD =
@@ -151,8 +149,17 @@ public final class HlsPlaylistParser implements ParsingLoadable.Parser<HlsPlayli
       Pattern.compile("KEYFORMATVERSIONS=\"(.+?)\"");
   private static final Pattern REGEX_URI = Pattern.compile("URI=\"(.+?)\"");
   private static final Pattern REGEX_IV = Pattern.compile("IV=([^,.*]+)");
-  private static final Pattern REGEX_TYPE = Pattern.compile("TYPE=(" + TYPE_AUDIO + "|" + TYPE_VIDEO
-      + "|" + TYPE_SUBTITLES + "|" + TYPE_CLOSED_CAPTIONS + ")");
+  private static final Pattern REGEX_TYPE =
+      Pattern.compile(
+          "TYPE=("
+              + TYPE_AUDIO
+              + "|"
+              + TYPE_VIDEO
+              + "|"
+              + TYPE_SUBTITLES
+              + "|"
+              + TYPE_CLOSED_CAPTIONS
+              + ")");
   private static final Pattern REGEX_LANGUAGE = Pattern.compile("LANGUAGE=\"(.+?)\"");
   private static final Pattern REGEX_NAME = Pattern.compile("NAME=\"(.+?)\"");
   private static final Pattern REGEX_GROUP_ID = Pattern.compile("GROUP-ID=\"(.+?)\"");
@@ -194,8 +201,8 @@ public final class HlsPlaylistParser implements ParsingLoadable.Parser<HlsPlayli
     String line;
     try {
       if (!checkPlaylistHeader(reader)) {
-        throw new UnrecognizedInputFormatException("Input does not start with the #EXTM3U header.",
-            uri);
+        throw new UnrecognizedInputFormatException(
+            "Input does not start with the #EXTM3U header.", uri);
       }
       while ((line = reader.readLine()) != null) {
         line = line.trim();
@@ -399,7 +406,7 @@ public final class HlsPlaylistParser implements ParsingLoadable.Parser<HlsPlayli
       @C.RoleFlags int roleFlags = parseRoleFlags(line, variableDefinitions);
       // MOD: Don't add 'Default' to format id
       String formatId = groupId;
-      //String formatId = groupId + ":" + name;
+      // String formatId = groupId + ":" + name;
       Format format;
       Metadata metadata =
           new Metadata(new HlsTrackMetadataEntry(groupId, name, Collections.emptyList()));
@@ -965,7 +972,5 @@ public final class HlsPlaylistParser implements ParsingLoadable.Parser<HlsPlayli
       }
       return result;
     }
-
   }
-
 }

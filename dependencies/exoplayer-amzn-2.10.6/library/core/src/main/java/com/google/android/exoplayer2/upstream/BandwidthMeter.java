@@ -18,14 +18,10 @@ package com.google.android.exoplayer2.upstream;
 import android.os.Handler;
 import androidx.annotation.Nullable;
 
-/**
- * Provides estimates of the currently available bandwidth.
- */
+/** Provides estimates of the currently available bandwidth. */
 public interface BandwidthMeter {
 
-  /**
-   * A listener of {@link BandwidthMeter} events.
-   */
+  /** A listener of {@link BandwidthMeter} events. */
   interface EventListener {
 
     /**

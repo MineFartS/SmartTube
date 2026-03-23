@@ -23,9 +23,7 @@ import com.google.android.exoplayer2.extractor.TrackOutput;
 import com.google.android.exoplayer2.extractor.ts.TsPayloadReader.TrackIdGenerator;
 import com.google.android.exoplayer2.util.ParsableByteArray;
 
-/**
- * Parses a continuous DTS byte stream and extracts individual samples.
- */
+/** Parses a continuous DTS byte stream and extracts individual samples. */
 public final class DtsReader implements ElementaryStreamReader {
 
   private static final int STATE_FINDING_SYNC = 0;
@@ -162,9 +160,7 @@ public final class DtsReader implements ElementaryStreamReader {
     return false;
   }
 
-  /**
-   * Parses the sample header.
-   */
+  /** Parses the sample header. */
   private void parseHeader() {
     byte[] frameData = headerScratchBytes.data;
     if (format == null) {
@@ -174,8 +170,8 @@ public final class DtsReader implements ElementaryStreamReader {
     sampleSize = DtsUtil.getDtsFrameSize(frameData);
     // In this class a sample is an access unit (frame in DTS), but the format's sample rate
     // specifies the number of PCM audio samples per second.
-    sampleDurationUs = (int) (C.MICROS_PER_SECOND
-        * DtsUtil.parseDtsAudioSampleCount(frameData) / format.sampleRate);
+    sampleDurationUs =
+        (int)
+            (C.MICROS_PER_SECOND * DtsUtil.parseDtsAudioSampleCount(frameData) / format.sampleRate);
   }
-
 }

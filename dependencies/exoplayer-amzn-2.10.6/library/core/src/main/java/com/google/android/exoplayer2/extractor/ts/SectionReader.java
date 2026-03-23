@@ -45,7 +45,9 @@ public final class SectionReader implements TsPayloadReader {
   }
 
   @Override
-  public void init(TimestampAdjuster timestampAdjuster, ExtractorOutput extractorOutput,
+  public void init(
+      TimestampAdjuster timestampAdjuster,
+      ExtractorOutput extractorOutput,
       TrackIdGenerator idGenerator) {
     reader.init(timestampAdjuster, extractorOutput, idGenerator);
     waitingForPayloadStart = true;
@@ -130,5 +132,4 @@ public final class SectionReader implements TsPayloadReader {
       }
     }
   }
-
 }

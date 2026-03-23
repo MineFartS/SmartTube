@@ -24,14 +24,10 @@ import com.google.android.exoplayer2.source.dash.manifest.SegmentBase.SingleSegm
 import java.util.Collections;
 import java.util.List;
 
-/**
- * A DASH representation.
- */
+/** A DASH representation. */
 public abstract class Representation {
 
-  /**
-   * A default value for {@link #revisionId}.
-   */
+  /** A default value for {@link #revisionId}. */
   public static final long REVISION_ID_DEFAULT = -1;
 
   /**
@@ -41,21 +37,17 @@ public abstract class Representation {
    * often a suitable.
    */
   public final long revisionId;
-  /**
-   * The format of the representation.
-   */
+
+  /** The format of the representation. */
   public final Format format;
-  /**
-   * The base URL of the representation.
-   */
+
+  /** The base URL of the representation. */
   public final String baseUrl;
-  /**
-   * The offset of the presentation timestamps in the media stream relative to media time.
-   */
+
+  /** The offset of the presentation timestamps in the media stream relative to media time. */
   public final long presentationTimeOffsetUs;
-  /**
-   * The in-band event streams in the representation. Never null, but may be empty.
-   */
+
+  /** The in-band event streams in the representation. Never null, but may be empty. */
   public final List<Descriptor> inbandEventStreams;
 
   private final RangedUri initializationUri;
@@ -125,8 +117,8 @@ public abstract class Representation {
       return new MultiSegmentRepresentation(
           revisionId, format, baseUrl, (MultiSegmentBase) segmentBase, inbandEventStreams);
     } else {
-      throw new IllegalArgumentException("segmentBase must be of type SingleSegmentBase or "
-          + "MultiSegmentBase");
+      throw new IllegalArgumentException(
+          "segmentBase must be of type SingleSegmentBase or " + "MultiSegmentBase");
     }
   }
 
@@ -161,27 +153,19 @@ public abstract class Representation {
    */
   public abstract RangedUri getIndexUri();
 
-  /**
-   * Returns an index if the representation provides one directly, or null otherwise.
-   */
+  /** Returns an index if the representation provides one directly, or null otherwise. */
   public abstract DashSegmentIndex getIndex();
 
   /** Returns a cache key for the representation if set, or null. */
   public abstract String getCacheKey();
 
-  /**
-   * A DASH representation consisting of a single segment.
-   */
+  /** A DASH representation consisting of a single segment. */
   public static class SingleSegmentRepresentation extends Representation {
 
-    /**
-     * The uri of the single segment.
-     */
+    /** The uri of the single segment. */
     public final Uri uri;
 
-    /**
-     * The content length, or {@link C#LENGTH_UNSET} if unknown.
-     */
+    /** The content length, or {@link C#LENGTH_UNSET} if unknown. */
     public final long contentLength;
 
     private final String cacheKey;
@@ -211,10 +195,10 @@ public abstract class Representation {
         List<Descriptor> inbandEventStreams,
         String cacheKey,
         long contentLength) {
-      RangedUri rangedUri = new RangedUri(null, initializationStart,
-          initializationEnd - initializationStart + 1);
-      SingleSegmentBase segmentBase = new SingleSegmentBase(rangedUri, 1, 0, indexStart,
-          indexEnd - indexStart + 1);
+      RangedUri rangedUri =
+          new RangedUri(null, initializationStart, initializationEnd - initializationStart + 1);
+      SingleSegmentBase segmentBase =
+          new SingleSegmentBase(rangedUri, 1, 0, indexStart, indexEnd - indexStart + 1);
       return new SingleSegmentRepresentation(
           revisionId, format, uri, segmentBase, inbandEventStreams, cacheKey, contentLength);
     }
@@ -243,8 +227,8 @@ public abstract class Representation {
       this.contentLength = contentLength;
       // If we have an index uri then the index is defined externally, and we shouldn't return one
       // directly. If we don't, then we can't do better than an index defining a single segment.
-      segmentIndex = indexUri != null ? null
-          : new SingleSegmentIndex(new RangedUri(null, 0, contentLength));
+      segmentIndex =
+          indexUri != null ? null : new SingleSegmentIndex(new RangedUri(null, 0, contentLength));
     }
 
     @Override
@@ -261,12 +245,9 @@ public abstract class Representation {
     public String getCacheKey() {
       return cacheKey;
     }
-
   }
 
-  /**
-   * A DASH representation consisting of multiple segments.
-   */
+  /** A DASH representation consisting of multiple segments. */
   public static class MultiSegmentRepresentation extends Representation
       implements DashSegmentIndex {
 
@@ -340,7 +321,5 @@ public abstract class Representation {
     public boolean isExplicit() {
       return segmentBase.isExplicit();
     }
-
   }
-
 }

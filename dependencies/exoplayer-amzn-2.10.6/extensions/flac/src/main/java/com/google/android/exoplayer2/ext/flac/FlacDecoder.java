@@ -26,11 +26,9 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
 
-/**
- * Flac decoder.
- */
-/* package */ final class FlacDecoder extends
-    SimpleDecoder<DecoderInputBuffer, SimpleOutputBuffer, FlacDecoderException> {
+/** Flac decoder. */
+/* package */ final class FlacDecoder
+    extends SimpleDecoder<DecoderInputBuffer, SimpleOutputBuffer, FlacDecoderException> {
 
   private final int maxOutputBufferSize;
   private final FlacDecoderJni decoderJni;
@@ -119,5 +117,4 @@ import java.util.List;
     super.release();
     decoderJni.release();
   }
-
 }

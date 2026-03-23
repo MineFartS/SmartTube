@@ -42,9 +42,7 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * Extracts data from the MP3 container format.
- */
+/** Extracts data from the MP3 container format. */
 public final class Mp3Extractor implements Extractor {
 
   /** Factory for {@link Mp3Extractor} instances. */
@@ -60,11 +58,13 @@ public final class Mp3Extractor implements Extractor {
       flag = true,
       value = {FLAG_ENABLE_CONSTANT_BITRATE_SEEKING, FLAG_DISABLE_ID3_METADATA})
   public @interface Flags {}
+
   /**
    * Flag to force enable seeking using a constant bitrate assumption in cases where seeking would
    * otherwise not be possible.
    */
   public static final int FLAG_ENABLE_CONSTANT_BITRATE_SEEKING = 1;
+
   /**
    * Flag to disable parsing of ID3 metadata. Can be set to save memory if ID3 metadata is not
    * required.
@@ -77,22 +77,18 @@ public final class Mp3Extractor implements Extractor {
           ((id0 == 'C' && id1 == 'O' && id2 == 'M' && (id3 == 'M' || majorVersion == 2))
               || (id0 == 'M' && id1 == 'L' && id2 == 'L' && (id3 == 'T' || majorVersion == 2)));
 
-  /**
-   * The maximum number of bytes to search when synchronizing, before giving up.
-   */
+  /** The maximum number of bytes to search when synchronizing, before giving up. */
   private static final int MAX_SYNC_BYTES = 128 * 1024;
+
   /**
    * The maximum number of bytes to peek when sniffing, excluding the ID3 header, before giving up.
    */
   private static final int MAX_SNIFF_BYTES = 16 * 1024;
-  /**
-   * Maximum length of data read into {@link #scratch}.
-   */
+
+  /** Maximum length of data read into {@link #scratch}. */
   private static final int SCRATCH_LENGTH = 10;
 
-  /**
-   * Mask that includes the audio header values that must match between frames.
-   */
+  /** Mask that includes the audio header values that must match between frames. */
   private static final int MPEG_AUDIO_HEADER_MASK = 0xFFFE0C00;
 
   private static final int SEEK_HEADER_XING = Util.getIntegerCodeForString("Xing");
@@ -134,8 +130,8 @@ public final class Mp3Extractor implements Extractor {
 
   /**
    * @param flags Flags that control the extractor's behavior.
-   * @param forcedFirstSampleTimestampUs A timestamp to force for the first sample, or
-   *     {@link C#TIME_UNSET} if forcing is not required.
+   * @param forcedFirstSampleTimestampUs A timestamp to force for the first sample, or {@link
+   *     C#TIME_UNSET} if forcing is not required.
    */
   public Mp3Extractor(@Flags int flags, long forcedFirstSampleTimestampUs) {
     this.flags = flags;
@@ -277,8 +273,8 @@ public final class Mp3Extractor implements Extractor {
       return RESULT_CONTINUE;
     }
     long timeUs = basisTimeUs + (samplesRead * C.MICROS_PER_SECOND / synchronizedHeader.sampleRate);
-    trackOutput.sampleMetadata(timeUs, C.BUFFER_FLAG_KEY_FRAME, synchronizedHeader.frameSize, 0,
-        null);
+    trackOutput.sampleMetadata(
+        timeUs, C.BUFFER_FLAG_KEY_FRAME, synchronizedHeader.frameSize, 0, null);
     samplesRead += synchronizedHeader.samplesPerFrame;
     sampleBytesRemaining = 0;
     return RESULT_CONTINUE;
@@ -319,7 +315,7 @@ public final class Mp3Extractor implements Extractor {
       int headerData = scratch.readInt();
       int frameSize;
       if ((candidateSynchronizedHeaderData != 0
-          && !headersMatch(headerData, candidateSynchronizedHeaderData))
+              && !headersMatch(headerData, candidateSynchronizedHeaderData))
           || (frameSize = MpegAudioHeader.getFrameSize(headerData)) == C.LENGTH_UNSET) {
         // The header doesn't match the candidate header or is invalid. Try the next byte offset.
         if (searchedBytes++ == searchLimitBytes) {
@@ -394,9 +390,10 @@ public final class Mp3Extractor implements Extractor {
   private Seeker maybeReadSeekFrame(ExtractorInput input) throws IOException, InterruptedException {
     ParsableByteArray frame = new ParsableByteArray(synchronizedHeader.frameSize);
     input.peekFully(frame.data, 0, synchronizedHeader.frameSize);
-    int xingBase = (synchronizedHeader.version & 1) != 0
-        ? (synchronizedHeader.channels != 1 ? 36 : 21) // MPEG 1
-        : (synchronizedHeader.channels != 1 ? 21 : 13); // MPEG 2 or 2.5
+    int xingBase =
+        (synchronizedHeader.version & 1) != 0
+            ? (synchronizedHeader.channels != 1 ? 36 : 21) // MPEG 1
+            : (synchronizedHeader.channels != 1 ? 21 : 13); // MPEG 2 or 2.5
     int seekHeader = getSeekFrameHeader(frame, xingBase);
     Seeker seeker;
     if (seekHeader == SEEK_HEADER_XING || seekHeader == SEEK_HEADER_INFO) {
@@ -425,9 +422,7 @@ public final class Mp3Extractor implements Extractor {
     return seeker;
   }
 
-  /**
-   * Peeks the next frame and returns a {@link ConstantBitrateSeeker} based on its bitrate.
-   */
+  /** Peeks the next frame and returns a {@link ConstantBitrateSeeker} based on its bitrate. */
   private Seeker getConstantBitrateSeeker(ExtractorInput input)
       throws IOException, InterruptedException {
     input.peekFully(scratch.data, 0, 4);
@@ -436,9 +431,7 @@ public final class Mp3Extractor implements Extractor {
     return new ConstantBitrateSeeker(input.getLength(), input.getPosition(), synchronizedHeader);
   }
 
-  /**
-   * Returns whether the headers match in those bits masked by {@link #MPEG_AUDIO_HEADER_MASK}.
-   */
+  /** Returns whether the headers match in those bits masked by {@link #MPEG_AUDIO_HEADER_MASK}. */
   private static boolean headersMatch(int headerA, long headerB) {
     return (headerA & MPEG_AUDIO_HEADER_MASK) == (headerB & MPEG_AUDIO_HEADER_MASK);
   }
@@ -478,6 +471,4 @@ public final class Mp3Extractor implements Extractor {
     }
     return null;
   }
-
-
 }

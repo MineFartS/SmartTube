@@ -20,13 +20,12 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Serializable;
 import java.util.UUID;
-
 import org.apache.commons.io.TaggedIOException;
 
 /**
- * A reader decorator that tags potential exceptions so that the reader that caused the exception can easily be
- * identified. This is done by using the {@link TaggedIOException} class to wrap all thrown {@link IOException}s. See
- * below for an example of using this class.
+ * A reader decorator that tags potential exceptions so that the reader that caused the exception
+ * can easily be identified. This is done by using the {@link TaggedIOException} class to wrap all
+ * thrown {@link IOException}s. See below for an example of using this class.
  *
  * <pre>
  * TaggedReader reader = new TaggedReader(...);
@@ -43,10 +42,10 @@ import org.apache.commons.io.TaggedIOException;
  *     }
  * }
  * </pre>
- * <p>
- * Alternatively, the {@link #throwIfCauseOf(Throwable)} method can be used to let higher levels of code handle the
- * exception caused by this reader while other processing errors are being taken care of at this lower level.
- * </p>
+ *
+ * <p>Alternatively, the {@link #throwIfCauseOf(Throwable)} method can be used to let higher levels
+ * of code handle the exception caused by this reader while other processing errors are being taken
+ * care of at this lower level.
  *
  * <pre>
  * TaggedReader reader = new TaggedReader(...);
@@ -63,51 +62,49 @@ import org.apache.commons.io.TaggedIOException;
  */
 public class TaggedReader extends ProxyReader {
 
-    /**
-     * The unique tag associated with exceptions from reader.
-     */
-    private final Serializable tag = UUID.randomUUID();
+  /** The unique tag associated with exceptions from reader. */
+  private final Serializable tag = UUID.randomUUID();
 
-    /**
-     * Creates a tagging decorator for the given reader.
-     *
-     * @param proxy reader to be decorated
-     */
-    public TaggedReader(final Reader proxy) {
-        super(proxy);
-    }
+  /**
+   * Creates a tagging decorator for the given reader.
+   *
+   * @param proxy reader to be decorated
+   */
+  public TaggedReader(final Reader proxy) {
+    super(proxy);
+  }
 
-    /**
-     * Tests if the given exception was caused by this reader.
-     *
-     * @param exception an exception
-     * @return {@code true} if the exception was thrown by this reader, {@code false} otherwise
-     */
-    public boolean isCauseOf(final Throwable exception) {
-        return TaggedIOException.isTaggedWith(exception, tag);
-    }
+  /**
+   * Tests if the given exception was caused by this reader.
+   *
+   * @param exception an exception
+   * @return {@code true} if the exception was thrown by this reader, {@code false} otherwise
+   */
+  public boolean isCauseOf(final Throwable exception) {
+    return TaggedIOException.isTaggedWith(exception, tag);
+  }
 
-    /**
-     * Re-throws the original exception thrown by this reader. This method first checks whether the given exception is a
-     * {@link TaggedIOException} wrapper created by this decorator, and then unwraps and throws the original wrapped
-     * exception. Returns normally if the exception was not thrown by this reader.
-     *
-     * @param throwable an exception
-     * @throws IOException original exception, if any, thrown by this reader
-     */
-    public void throwIfCauseOf(final Throwable throwable) throws IOException {
-        TaggedIOException.throwCauseIfTaggedWith(throwable, tag);
-    }
+  /**
+   * Re-throws the original exception thrown by this reader. This method first checks whether the
+   * given exception is a {@link TaggedIOException} wrapper created by this decorator, and then
+   * unwraps and throws the original wrapped exception. Returns normally if the exception was not
+   * thrown by this reader.
+   *
+   * @param throwable an exception
+   * @throws IOException original exception, if any, thrown by this reader
+   */
+  public void throwIfCauseOf(final Throwable throwable) throws IOException {
+    TaggedIOException.throwCauseIfTaggedWith(throwable, tag);
+  }
 
-    /**
-     * Tags any IOExceptions thrown, wrapping and re-throwing.
-     *
-     * @param e The IOException thrown
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void handleIOException(final IOException e) throws IOException {
-        throw new TaggedIOException(e, tag);
-    }
-
+  /**
+   * Tags any IOExceptions thrown, wrapping and re-throwing.
+   *
+   * @param e The IOException thrown
+   * @throws IOException if an I/O error occurs
+   */
+  @Override
+  protected void handleIOException(final IOException e) throws IOException {
+    throw new TaggedIOException(e, tag);
+  }
 }

@@ -17,8 +17,8 @@ package com.google.android.exoplayer2.trackselection;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.util.Util;
 
@@ -144,23 +144,27 @@ public class TrackSelectionParameters implements Parcelable {
    * {@code null}.
    */
   @Nullable public final String preferredAudioLanguage;
+
   // Text
   /**
    * The preferred language for text tracks as an ISO 639-2/T tag. {@code null} selects the default
    * track if there is one, or no track otherwise. The default value is {@code null}.
    */
   @Nullable public final String preferredTextLanguage;
+
   /**
    * The preferred {@link C.RoleFlags} for text tracks. {@code 0} selects the default track if there
    * is one, or no track otherwise. The default value is {@code 0}.
    */
   @C.RoleFlags public final int preferredTextRoleFlags;
+
   /**
    * Whether a text track with undetermined language should be selected if no track with {@link
    * #preferredTextLanguage} is available, or if {@link #preferredTextLanguage} is unset. The
    * default value is {@code false}.
    */
   public final boolean selectUndeterminedTextLanguage;
+
   /**
    * Bitmask of selection flags that are disabled for text track selections. See {@link
    * C.SelectionFlags}. The default value is {@code 0} (i.e. no flags).

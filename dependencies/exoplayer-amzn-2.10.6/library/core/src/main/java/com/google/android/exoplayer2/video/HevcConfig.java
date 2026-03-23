@@ -22,9 +22,7 @@ import com.google.android.exoplayer2.util.ParsableByteArray;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * HEVC configuration data.
- */
+/** HEVC configuration data. */
 public final class HevcConfig {
 
   public final @Nullable List<byte[]> initializationData;
@@ -66,11 +64,14 @@ public final class HevcConfig {
         int numberOfNalUnits = data.readUnsignedShort();
         for (int j = 0; j < numberOfNalUnits; j++) {
           int nalUnitLength = data.readUnsignedShort();
-          System.arraycopy(NalUnitUtil.NAL_START_CODE, 0, buffer, bufferPosition,
+          System.arraycopy(
+              NalUnitUtil.NAL_START_CODE,
+              0,
+              buffer,
+              bufferPosition,
               NalUnitUtil.NAL_START_CODE.length);
           bufferPosition += NalUnitUtil.NAL_START_CODE.length;
-          System
-              .arraycopy(data.data, data.getPosition(), buffer, bufferPosition, nalUnitLength);
+          System.arraycopy(data.data, data.getPosition(), buffer, bufferPosition, nalUnitLength);
           bufferPosition += nalUnitLength;
           data.skipBytes(nalUnitLength);
         }
@@ -87,5 +88,4 @@ public final class HevcConfig {
     this.initializationData = initializationData;
     this.nalUnitLengthFieldLength = nalUnitLengthFieldLength;
   }
-
 }

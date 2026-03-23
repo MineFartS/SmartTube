@@ -56,23 +56,30 @@ import java.lang.annotation.RetentionPolicy;
     STATE_ERROR
   })
   private @interface State {}
+
   /** State when first initializing. */
   private static final int STATE_INITIALIZING = 0;
+
   /** State when we have a timestamp and we don't know if it's advancing. */
   private static final int STATE_TIMESTAMP = 1;
+
   /** State when we have a timestamp and we know it is advancing. */
   private static final int STATE_TIMESTAMP_ADVANCING = 2;
+
   /** State when the no timestamp is available. */
   private static final int STATE_NO_TIMESTAMP = 3;
+
   /** State when the last timestamp was rejected as invalid. */
   private static final int STATE_ERROR = 4;
 
   /** The polling interval for {@link #STATE_INITIALIZING} and {@link #STATE_TIMESTAMP}. */
   private static final int FAST_POLL_INTERVAL_US = 5_000;
+
   /**
    * The polling interval for {@link #STATE_TIMESTAMP_ADVANCING} and {@link #STATE_NO_TIMESTAMP}.
    */
   private static final int SLOW_POLL_INTERVAL_US = 10_000_000;
+
   /** The polling interval for {@link #STATE_ERROR}. */
   private static final int ERROR_POLL_INTERVAL_US = 500_000;
 
@@ -109,6 +116,7 @@ import java.lang.annotation.RetentionPolicy;
   public boolean maybePollTimestamp(long systemTimeUs) {
     return maybePollTimestamp(systemTimeUs, false);
   }
+
   /**
    * Polls the timestamp if required and returns whether it was updated. If {@code true}, the latest
    * timestamp is available via {@link #getTimestampSystemTimeUs()} and {@link
@@ -121,8 +129,8 @@ import java.lang.annotation.RetentionPolicy;
    */
   public boolean maybePollTimestamp(long systemTimeUs, boolean applyDolbyPassthroughQuirk) {
     if (!applyDolbyPassthroughQuirk
-            && (audioTimestamp == null
-                || (systemTimeUs - lastTimestampSampleTimeUs) < sampleIntervalUs)) {
+        && (audioTimestamp == null
+            || (systemTimeUs - lastTimestampSampleTimeUs) < sampleIntervalUs)) {
       return false;
     }
     // AMZN_CHANGE_END
@@ -132,7 +140,7 @@ import java.lang.annotation.RetentionPolicy;
       case STATE_INITIALIZING:
         if (updatedTimestamp) {
           if (audioTimestamp.getTimestampSystemTimeUs() >= initializeSystemTimeUs
-                  || applyDolbyPassthroughQuirk) {// AMZN_CHANGE_ONELINE
+              || applyDolbyPassthroughQuirk) { // AMZN_CHANGE_ONELINE
             // We have an initial timestamp, but don't know if it's advancing yet.
             initialTimestampPositionFrames = audioTimestamp.getTimestampPositionFrames();
             updateState(STATE_TIMESTAMP);

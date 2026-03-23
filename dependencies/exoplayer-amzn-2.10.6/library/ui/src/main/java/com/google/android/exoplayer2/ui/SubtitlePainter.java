@@ -32,7 +32,6 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
-import android.text.style.BackgroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.util.DisplayMetrics;
 import com.google.android.exoplayer2.text.CaptionStyleCompat;
@@ -40,18 +39,13 @@ import com.google.android.exoplayer2.text.Cue;
 import com.google.android.exoplayer2.util.Log;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.sharedutils.misc.PaddingBackgroundColorSpan;
-import com.liskovsoft.sharedutils.misc.RoundedBackgroundSpan;
 
-/**
- * Paints subtitle {@link Cue}s.
- */
+/** Paints subtitle {@link Cue}s. */
 /* package */ final class SubtitlePainter {
 
   private static final String TAG = "SubtitlePainter";
 
-  /**
-   * Ratio of inner padding to font size.
-   */
+  /** Ratio of inner padding to font size. */
   private static final float INNER_PADDING_RATIO = 0.125f;
 
   // Styled dimensions.
@@ -69,13 +63,10 @@ import com.liskovsoft.sharedutils.misc.RoundedBackgroundSpan;
   private Alignment cueTextAlignment;
   private Bitmap cueBitmap;
   private float cueLine;
-  @Cue.LineType
-  private int cueLineType;
-  @Cue.AnchorType
-  private int cueLineAnchor;
+  @Cue.LineType private int cueLineType;
+  @Cue.AnchorType private int cueLineAnchor;
   private float cuePosition;
-  @Cue.AnchorType
-  private int cuePositionAnchor;
+  @Cue.AnchorType private int cuePositionAnchor;
   private float cueSize;
   private float cueBitmapHeight;
   private boolean applyEmbeddedStyles;
@@ -84,8 +75,7 @@ import com.liskovsoft.sharedutils.misc.RoundedBackgroundSpan;
   private int backgroundColor;
   private int windowColor;
   private int edgeColor;
-  @CaptionStyleCompat.EdgeType
-  private int edgeType;
+  @CaptionStyleCompat.EdgeType private int edgeType;
   private float defaultTextSizePx;
   private float cueTextSizePx;
   private float bottomPaddingFraction;
@@ -167,8 +157,8 @@ import com.liskovsoft.sharedutils.misc.RoundedBackgroundSpan;
         // Nothing to draw.
         return;
       }
-      windowColor = (cue.windowColorSet && applyEmbeddedStyles)
-          ? cue.windowColor : style.windowColor;
+      windowColor =
+          (cue.windowColorSet && applyEmbeddedStyles) ? cue.windowColor : style.windowColor;
     }
     if (areCharSequencesEqual(this.cueText, cue.text)
         && Util.areEqual(this.cueTextAlignment, cue.textAlignment)
@@ -284,20 +274,27 @@ import com.liskovsoft.sharedutils.misc.RoundedBackgroundSpan;
     if (Color.alpha(backgroundColor) > 0) {
       SpannableStringBuilder newCueText = new SpannableStringBuilder(cueText);
       // MOD: add subs bg padding
-      //newCueText.setSpan(
-      //    new BackgroundColorSpan(backgroundColor), 0, newCueText.length(), Spanned.SPAN_PRIORITY);
+      // newCueText.setSpan(
+      //    new BackgroundColorSpan(backgroundColor), 0, newCueText.length(),
+      // Spanned.SPAN_PRIORITY);
       newCueText.setSpan(
-              new PaddingBackgroundColorSpan(backgroundColor), 0, newCueText.length(), Spanned.SPAN_PRIORITY);
-      //newCueText.setSpan(
-      //        new RoundedBackgroundSpan(backgroundColor), 0, newCueText.length(), Spanned.SPAN_PRIORITY);
+          new PaddingBackgroundColorSpan(backgroundColor),
+          0,
+          newCueText.length(),
+          Spanned.SPAN_PRIORITY);
+      // newCueText.setSpan(
+      //        new RoundedBackgroundSpan(backgroundColor), 0, newCueText.length(),
+      // Spanned.SPAN_PRIORITY);
       cueText = newCueText;
     }
 
     Alignment textAlignment = cueTextAlignment == null ? Alignment.ALIGN_CENTER : cueTextAlignment;
-    textLayout = new StaticLayout(cueText, textPaint, availableWidth, textAlignment, spacingMult,
-        spacingAdd, true);
+    textLayout =
+        new StaticLayout(
+            cueText, textPaint, availableWidth, textAlignment, spacingMult, spacingAdd, true);
     // MOD: same height for multiline and single line subs (use 3 lines height)
-    //int textHeight = textLayout.getLineBaseline(0) * 3; // base line has same height across single and multi line
+    // int textHeight = textLayout.getLineBaseline(0) * 3; // base line has same height across
+    // single and multi line
     int textHeight = textLayout.getHeight();
     int textWidth = 0;
     int lineCount = textLayout.getLineCount();
@@ -313,9 +310,12 @@ import com.liskovsoft.sharedutils.misc.RoundedBackgroundSpan;
     int textRight;
     if (cuePosition != Cue.DIMEN_UNSET) {
       int anchorPosition = Math.round(parentWidth * cuePosition) + parentLeft;
-      textLeft = cuePositionAnchor == Cue.ANCHOR_TYPE_END ? anchorPosition - textWidth
-          : cuePositionAnchor == Cue.ANCHOR_TYPE_MIDDLE ? (anchorPosition * 2 - textWidth) / 2
-              : anchorPosition;
+      textLeft =
+          cuePositionAnchor == Cue.ANCHOR_TYPE_END
+              ? anchorPosition - textWidth
+              : cuePositionAnchor == Cue.ANCHOR_TYPE_MIDDLE
+                  ? (anchorPosition * 2 - textWidth) / 2
+                  : anchorPosition;
       textLeft = Math.max(textLeft, parentLeft);
       textRight = Math.min(textLeft + textWidth, parentRight);
     } else {
@@ -343,9 +343,12 @@ import com.liskovsoft.sharedutils.misc.RoundedBackgroundSpan;
           anchorPosition = Math.round((cueLine + 1) * firstLineHeight) + parentBottom;
         }
       }
-      textTop = cueLineAnchor == Cue.ANCHOR_TYPE_END ? anchorPosition - textHeight
-          : cueLineAnchor == Cue.ANCHOR_TYPE_MIDDLE ? (anchorPosition * 2 - textHeight) / 2
-              : anchorPosition;
+      textTop =
+          cueLineAnchor == Cue.ANCHOR_TYPE_END
+              ? anchorPosition - textHeight
+              : cueLineAnchor == Cue.ANCHOR_TYPE_MIDDLE
+                  ? (anchorPosition * 2 - textHeight) / 2
+                  : anchorPosition;
       if (textTop + textHeight > parentBottom) {
         textTop = parentBottom - textHeight;
       } else if (textTop < parentTop) {
@@ -356,8 +359,9 @@ import com.liskovsoft.sharedutils.misc.RoundedBackgroundSpan;
     }
 
     // Update the derived drawing variables.
-    this.textLayout = new StaticLayout(cueText, textPaint, textWidth, textAlignment, spacingMult,
-        spacingAdd, true);
+    this.textLayout =
+        new StaticLayout(
+            cueText, textPaint, textWidth, textAlignment, spacingMult, spacingAdd, true);
     this.textLeft = textLeft;
     this.textTop = textTop;
     this.textPaddingX = textPaddingX;
@@ -369,8 +373,10 @@ import com.liskovsoft.sharedutils.misc.RoundedBackgroundSpan;
     float anchorX = parentLeft + (parentWidth * cuePosition);
     float anchorY = parentTop + (parentHeight * cueLine);
     int width = Math.round(parentWidth * cueSize);
-    int height = cueBitmapHeight != Cue.DIMEN_UNSET ? Math.round(parentHeight * cueBitmapHeight)
-        : Math.round(width * ((float) cueBitmap.getHeight() / cueBitmap.getWidth()));
+    int height =
+        cueBitmapHeight != Cue.DIMEN_UNSET
+            ? Math.round(parentHeight * cueBitmapHeight)
+            : Math.round(width * ((float) cueBitmap.getHeight() / cueBitmap.getWidth()));
     int x =
         Math.round(
             cuePositionAnchor == Cue.ANCHOR_TYPE_END
@@ -404,8 +410,8 @@ import com.liskovsoft.sharedutils.misc.RoundedBackgroundSpan;
 
     if (Color.alpha(windowColor) > 0) {
       paint.setColor(windowColor);
-      canvas.drawRect(-textPaddingX, 0, layout.getWidth() + textPaddingX, layout.getHeight(),
-          paint);
+      canvas.drawRect(
+          -textPaddingX, 0, layout.getWidth() + textPaddingX, layout.getHeight(), paint);
     }
 
     if (edgeType == CaptionStyleCompat.EDGE_TYPE_OUTLINE) {
@@ -452,5 +458,4 @@ import com.liskovsoft.sharedutils.misc.RoundedBackgroundSpan;
     // equals methods, so we perform one explicitly here.
     return first == second || (first != null && first.equals(second));
   }
-
 }

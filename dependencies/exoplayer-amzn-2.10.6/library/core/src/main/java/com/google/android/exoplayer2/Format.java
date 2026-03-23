@@ -28,14 +28,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Representation of a media format.
- */
+/** Representation of a media format. */
 public final class Format implements Parcelable {
 
-  /**
-   * A value for various fields to indicate that the field's value is unknown or not applicable.
-   */
+  /** A value for various fields to indicate that the field's value is unknown or not applicable. */
   public static final int NO_VALUE = -1;
 
   /**
@@ -46,18 +42,24 @@ public final class Format implements Parcelable {
 
   /** An identifier for the format, or null if unknown or not applicable. */
   public final @Nullable String id;
+
   /** The human readable label, or null if unknown or not applicable. */
   public final @Nullable String label;
+
   /** Track selection flags. */
   @C.SelectionFlags public final int selectionFlags;
+
   /** Track role flags. */
   @C.RoleFlags public final int roleFlags;
+
   /**
    * The average bandwidth in bits per second, or {@link #NO_VALUE} if unknown or not applicable.
    */
   public final int bitrate;
+
   /** Codecs of the format as described in RFC 6381, or null if unknown or not applicable. */
   public final @Nullable String codecs;
+
   /** Metadata, or null if unknown or not applicable. */
   public final @Nullable Metadata metadata;
 
@@ -73,16 +75,19 @@ public final class Format implements Parcelable {
    * applicable.
    */
   public final @Nullable String sampleMimeType;
+
   /**
    * The maximum size of a buffer of data (typically one sample), or {@link #NO_VALUE} if unknown or
    * not applicable.
    */
   public final int maxInputSize;
+
   /**
-   * Initialization data that must be provided to the decoder. Will not be null, but may be empty
-   * if initialization data is not required.
+   * Initialization data that must be provided to the decoder. Will not be null, but may be empty if
+   * initialization data is not required.
    */
   public final List<byte[]> initializationData;
+
   /** DRM initialization data if the stream is protected, or null otherwise. */
   public final @Nullable DrmInitData drmInitData;
 
@@ -95,47 +100,45 @@ public final class Format implements Parcelable {
 
   // Video specific.
 
-  /**
-   * The width of the video in pixels, or {@link #NO_VALUE} if unknown or not applicable.
-   */
+  /** The width of the video in pixels, or {@link #NO_VALUE} if unknown or not applicable. */
   public final int width;
-  /**
-   * The height of the video in pixels, or {@link #NO_VALUE} if unknown or not applicable.
-   */
+
+  /** The height of the video in pixels, or {@link #NO_VALUE} if unknown or not applicable. */
   public final int height;
-  /**
-   * The frame rate in frames per second, or {@link #NO_VALUE} if unknown or not applicable.
-   */
+
+  /** The frame rate in frames per second, or {@link #NO_VALUE} if unknown or not applicable. */
   public final float frameRate;
+
   /**
    * The clockwise rotation that should be applied to the video for it to be rendered in the correct
    * orientation, or 0 if unknown or not applicable. Only 0, 90, 180 and 270 are supported.
    */
   public final int rotationDegrees;
+
   /** The width to height ratio of pixels in the video, or 1.0 if unknown or not applicable. */
   public final float pixelWidthHeightRatio;
+
   /**
    * The stereo layout for 360/3D/VR video, or {@link #NO_VALUE} if not applicable. Valid stereo
    * modes are {@link C#STEREO_MODE_MONO}, {@link C#STEREO_MODE_TOP_BOTTOM}, {@link
    * C#STEREO_MODE_LEFT_RIGHT}, {@link C#STEREO_MODE_STEREO_MESH}.
    */
-  @C.StereoMode
-  public final int stereoMode;
+  @C.StereoMode public final int stereoMode;
+
   /** The projection data for 360/VR video, or null if not applicable. */
   public final @Nullable byte[] projectionData;
+
   /** The color metadata associated with the video, helps with accurate color reproduction. */
   public final @Nullable ColorInfo colorInfo;
 
   // Audio specific.
 
-  /**
-   * The number of audio channels, or {@link #NO_VALUE} if unknown or not applicable.
-   */
+  /** The number of audio channels, or {@link #NO_VALUE} if unknown or not applicable. */
   public final int channelCount;
-  /**
-   * The audio sampling rate in Hz, or {@link #NO_VALUE} if unknown or not applicable.
-   */
+
+  /** The audio sampling rate in Hz, or {@link #NO_VALUE} if unknown or not applicable. */
   public final int sampleRate;
+
   /**
    * The encoding for PCM audio streams. If {@link #sampleMimeType} is {@link MimeTypes#AUDIO_RAW}
    * then one of {@link C#ENCODING_PCM_8BIT}, {@link C#ENCODING_PCM_16BIT}, {@link
@@ -144,11 +147,13 @@ public final class Format implements Parcelable {
    * media types.
    */
   public final @C.PcmEncoding int pcmEncoding;
+
   /**
    * The number of frames to trim from the start of the decoded audio stream, or 0 if not
    * applicable.
    */
   public final int encoderDelay;
+
   /**
    * The number of frames to trim from the end of the decoded audio stream, or 0 if not applicable.
    */
@@ -158,9 +163,8 @@ public final class Format implements Parcelable {
 
   /** The language as an IETF BCP 47 conformant tag, or null if unknown or not applicable. */
   public final @Nullable String language;
-  /**
-   * The Accessibility channel, or {@link #NO_VALUE} if not known or applicable.
-   */
+
+  /** The Accessibility channel, or {@link #NO_VALUE} if not known or applicable. */
   public final int accessibilityChannel;
 
   // MOD: Sabr specific
@@ -805,7 +809,7 @@ public final class Format implements Parcelable {
         /* roleFlags= */ 0,
         bitrate,
         codecs,
-        /* metadata=*/ null,
+        /* metadata= */ null,
         /* containerMimeType= */ null,
         sampleMimeType,
         /* maxInputSize= */ NO_VALUE,
@@ -998,36 +1002,36 @@ public final class Format implements Parcelable {
       @Nullable String language,
       int accessibilityChannel) {
     this(
-      id,
-      label,
-      selectionFlags,
-      roleFlags,
-      bitrate,
-      codecs,
-      metadata,
-      containerMimeType,
-      sampleMimeType,
-      maxInputSize,
-      initializationData,
-      drmInitData,
-      subsampleOffsetUs,
-      width,
-      height,
-      frameRate,
-      rotationDegrees,
-      pixelWidthHeightRatio,
-      projectionData,
-      stereoMode,
-      colorInfo,
-      channelCount,
-      sampleRate,
-      pcmEncoding,
-      encoderDelay,
-      encoderPadding,
-      language,
-      accessibilityChannel,
-      /* isDrc */ false,
-      /* lastModified */ NO_VALUE);
+        id,
+        label,
+        selectionFlags,
+        roleFlags,
+        bitrate,
+        codecs,
+        metadata,
+        containerMimeType,
+        sampleMimeType,
+        maxInputSize,
+        initializationData,
+        drmInitData,
+        subsampleOffsetUs,
+        width,
+        height,
+        frameRate,
+        rotationDegrees,
+        pixelWidthHeightRatio,
+        projectionData,
+        stereoMode,
+        colorInfo,
+        channelCount,
+        sampleRate,
+        pcmEncoding,
+        encoderDelay,
+        encoderPadding,
+        language,
+        accessibilityChannel,
+        /* isDrc */ false,
+        /* lastModified */ NO_VALUE);
   }
 
   /* package */ Format(
@@ -1800,17 +1804,17 @@ public final class Format implements Parcelable {
     dest.writeLong(lastModified);
   }
 
-  public static final Creator<Format> CREATOR = new Creator<Format>() {
+  public static final Creator<Format> CREATOR =
+      new Creator<Format>() {
 
-    @Override
-    public Format createFromParcel(Parcel in) {
-      return new Format(in);
-    }
+        @Override
+        public Format createFromParcel(Parcel in) {
+          return new Format(in);
+        }
 
-    @Override
-    public Format[] newArray(int size) {
-      return new Format[size];
-    }
-
-  };
+        @Override
+        public Format[] newArray(int size) {
+          return new Format[size];
+        }
+      };
 }

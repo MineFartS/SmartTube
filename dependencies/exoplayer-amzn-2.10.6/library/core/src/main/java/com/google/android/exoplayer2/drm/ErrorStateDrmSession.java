@@ -52,5 +52,4 @@ public final class ErrorStateDrmSession<T extends ExoMediaCrypto> implements Drm
   public @Nullable byte[] getOfflineLicenseKeySetId() {
     return null;
   }
-
 }

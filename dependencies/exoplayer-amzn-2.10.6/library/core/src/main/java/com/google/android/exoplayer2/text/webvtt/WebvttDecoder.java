@@ -25,7 +25,9 @@ import java.util.List;
 
 /**
  * A {@link SimpleSubtitleDecoder} for WebVTT.
+ *
  * <p>
+ *
  * @see <a href="http://dev.w3.org/html5/webvtt">WebVTT specification</a>
  */
 public final class WebvttDecoder extends SimpleSubtitleDecoder {
@@ -120,5 +122,4 @@ public final class WebvttDecoder extends SimpleSubtitleDecoder {
   private static void skipComment(ParsableByteArray parsableWebvttData) {
     while (!TextUtils.isEmpty(parsableWebvttData.readLine())) {}
   }
-
 }

@@ -40,9 +40,7 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * An HLS {@link MediaChunk}.
- */
+/** An HLS {@link MediaChunk}. */
 /* package */ final class HlsMediaChunk extends MediaChunk {
 
   /**
@@ -173,14 +171,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
   private static final AtomicInteger uidSource = new AtomicInteger();
 
-  /**
-   * A unique identifier for the chunk.
-   */
+  /** A unique identifier for the chunk. */
   public final int uid;
 
-  /**
-   * The discontinuity sequence number of the chunk.
-   */
+  /** The discontinuity sequence number of the chunk. */
   public final int discontinuitySequenceNumber;
 
   /** The url of the playlist from which this chunk was obtained. */
@@ -405,9 +399,9 @@ import java.util.concurrent.atomic.AtomicInteger;
   }
 
   /**
-   * Peek the presentation timestamp of the first sample in the chunk from an ID3 PRIV as defined
-   * in the HLS spec, version 20, Section 3.4. Returns {@link C#TIME_UNSET} if the frame is not
-   * found. This method only modifies the peek position.
+   * Peek the presentation timestamp of the first sample in the chunk from an ID3 PRIV as defined in
+   * the HLS spec, version 20, Section 3.4. Returns {@link C#TIME_UNSET} if the frame is not found.
+   * This method only modifies the peek position.
    *
    * @param input The {@link ExtractorInput} to obtain the PRIV frame from.
    * @return The parsed, adjusted timestamp in microseconds
@@ -484,12 +478,11 @@ import java.util.concurrent.atomic.AtomicInteger;
    * If the segment is fully encrypted, returns an {@link Aes128DataSource} that wraps the original
    * in order to decrypt the loaded data. Else returns the original.
    */
-  private static DataSource buildDataSource(DataSource dataSource, byte[] fullSegmentEncryptionKey,
-      byte[] encryptionIv) {
+  private static DataSource buildDataSource(
+      DataSource dataSource, byte[] fullSegmentEncryptionKey, byte[] encryptionIv) {
     if (fullSegmentEncryptionKey != null) {
       return new Aes128DataSource(dataSource, fullSegmentEncryptionKey, encryptionIv);
     }
     return dataSource;
   }
-
 }

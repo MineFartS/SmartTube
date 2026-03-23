@@ -4,28 +4,28 @@ import android.os.SystemClock;
 import android.view.View;
 
 interface OnItemClickListener {
-    void onItemClick(View view, int position);
+  void onItemClick(View view, int position);
 
-    abstract class ThrottleClickListener implements OnItemClickListener {
+  abstract class ThrottleClickListener implements OnItemClickListener {
 
-        private static final long MIN_CLICK_INTERVAL = 600;
+    private static final long MIN_CLICK_INTERVAL = 600;
 
-        private long mLastClickTime;
+    private long mLastClickTime;
 
-        abstract void onItemClickThrottled(View view, int position);
+    abstract void onItemClickThrottled(View view, int position);
 
-        @Override
-        public void onItemClick(View view, int position) {
-            final long currentClickTime = SystemClock.uptimeMillis();
-            final long elapsedTime = currentClickTime - mLastClickTime;
+    @Override
+    public void onItemClick(View view, int position) {
+      final long currentClickTime = SystemClock.uptimeMillis();
+      final long elapsedTime = currentClickTime - mLastClickTime;
 
-            mLastClickTime = currentClickTime;
+      mLastClickTime = currentClickTime;
 
-            if (elapsedTime <= MIN_CLICK_INTERVAL) {
-                return;
-            }
+      if (elapsedTime <= MIN_CLICK_INTERVAL) {
+        return;
+      }
 
-            onItemClickThrottled(view, position);
-        }
+      onItemClickThrottled(view, position);
     }
+  }
 }

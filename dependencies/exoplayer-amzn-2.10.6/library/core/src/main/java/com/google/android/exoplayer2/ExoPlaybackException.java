@@ -24,9 +24,7 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * Thrown when a non-recoverable playback failure occurs.
- */
+/** Thrown when a non-recoverable playback failure occurs. */
 public final class ExoPlaybackException extends Exception {
 
   /**
@@ -38,39 +36,42 @@ public final class ExoPlaybackException extends Exception {
   @Retention(RetentionPolicy.SOURCE)
   @IntDef({TYPE_SOURCE, TYPE_RENDERER, TYPE_UNEXPECTED, TYPE_REMOTE, TYPE_OUT_OF_MEMORY})
   public @interface Type {}
+
   /**
    * The error occurred loading data from a {@link MediaSource}.
-   * <p>
-   * Call {@link #getSourceException()} to retrieve the underlying cause.
+   *
+   * <p>Call {@link #getSourceException()} to retrieve the underlying cause.
    */
   public static final int TYPE_SOURCE = 0;
+
   /**
    * The error occurred in a {@link Renderer}.
-   * <p>
-   * Call {@link #getRendererException()} to retrieve the underlying cause.
+   *
+   * <p>Call {@link #getRendererException()} to retrieve the underlying cause.
    */
   public static final int TYPE_RENDERER = 1;
+
   /**
    * The error was an unexpected {@link RuntimeException}.
-   * <p>
-   * Call {@link #getUnexpectedException()} to retrieve the underlying cause.
+   *
+   * <p>Call {@link #getUnexpectedException()} to retrieve the underlying cause.
    */
   public static final int TYPE_UNEXPECTED = 2;
+
   /**
    * The error occurred in a remote component.
    *
    * <p>Call {@link #getMessage()} to retrieve the message associated with the error.
    */
   public static final int TYPE_REMOTE = 3;
+
   /** The error was an {@link OutOfMemoryError}. */
   public static final int TYPE_OUT_OF_MEMORY = 4;
 
   /** The {@link Type} of the playback failure. */
   @Type public final int type;
 
-  /**
-   * If {@link #type} is {@link #TYPE_RENDERER}, this is the index of the renderer.
-   */
+  /** If {@link #type} is {@link #TYPE_RENDERER}, this is the index of the renderer. */
   public final int rendererIndex;
 
   @Nullable private final Throwable cause;

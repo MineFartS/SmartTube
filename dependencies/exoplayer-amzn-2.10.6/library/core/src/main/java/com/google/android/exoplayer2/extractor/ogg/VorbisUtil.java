@@ -20,9 +20,7 @@ import com.google.android.exoplayer2.util.Log;
 import com.google.android.exoplayer2.util.ParsableByteArray;
 import java.util.Arrays;
 
-/**
- * Utility methods for parsing vorbis streams.
- */
+/** Utility methods for parsing vorbis streams. */
 /* package */ final class VorbisUtil {
 
   private static final String TAG = "VorbisUtil";
@@ -30,8 +28,8 @@ import java.util.Arrays;
   /**
    * Returns ilog(x), which is the index of the highest set bit in {@code x}.
    *
-   * @see <a href="https://www.xiph.org/vorbis/doc/Vorbis_I_spec.html#x1-1190009.2.1">
-   *     Vorbis spec</a>
+   * @see <a href="https://www.xiph.org/vorbis/doc/Vorbis_I_spec.html#x1-1190009.2.1">Vorbis
+   *     spec</a>
    * @param x the value of which the ilog should be calculated.
    * @return ilog(x)
    */
@@ -73,15 +71,24 @@ import java.util.Arrays;
     // raw data of vorbis setup header has to be passed to decoder as CSD buffer #1
     byte[] data = Arrays.copyOf(headerData.data, headerData.limit());
 
-    return new VorbisIdHeader(version, channels, sampleRate, bitrateMax, bitrateNominal, bitrateMin,
-        blockSize0, blockSize1, framingFlag, data);
+    return new VorbisIdHeader(
+        version,
+        channels,
+        sampleRate,
+        bitrateMax,
+        bitrateNominal,
+        bitrateMin,
+        blockSize0,
+        blockSize1,
+        framingFlag,
+        data);
   }
 
   /**
    * Reads a vorbis comment header.
    *
-   * @see <a href="https://www.xiph.org/vorbis/doc/Vorbis_I_spec.html#x1-640004.2.3">
-   *     Vorbis spec/Comment header</a>
+   * @see <a href="https://www.xiph.org/vorbis/doc/Vorbis_I_spec.html#x1-640004.2.3">Vorbis
+   *     spec/Comment header</a>
    * @param headerData a {@link ParsableByteArray} wrapping the header data.
    * @return a {@link VorbisUtil.CommentHeader} with all the comments.
    * @throws ParserException thrown if invalid capture pattern is detected.
@@ -114,8 +121,8 @@ import java.util.Arrays;
   }
 
   /**
-   * Verifies whether the next bytes in {@code header} are a vorbis header of the given
-   * {@code headerType}.
+   * Verifies whether the next bytes in {@code header} are a vorbis header of the given {@code
+   * headerType}.
    *
    * @param headerType the type of the header expected.
    * @param header the alleged header bytes.
@@ -123,9 +130,8 @@ import java.util.Arrays;
    * @return the number of bytes read.
    * @throws ParserException thrown if header type or capture pattern is not as expected.
    */
-  public static boolean verifyVorbisHeaderCapturePattern(int headerType, ParsableByteArray header,
-      boolean quiet)
-      throws ParserException {
+  public static boolean verifyVorbisHeaderCapturePattern(
+      int headerType, ParsableByteArray header, boolean quiet) throws ParserException {
     if (header.bytesLeft() < 7) {
       if (quiet) {
         return false;
@@ -159,11 +165,11 @@ import java.util.Arrays;
 
   /**
    * This method reads the modes which are located at the very end of the vorbis setup header.
-   * That's why we need to partially decode or at least read the entire setup header to know
-   * where to start reading the modes.
+   * That's why we need to partially decode or at least read the entire setup header to know where
+   * to start reading the modes.
    *
-   * @see <a href="https://www.xiph.org/vorbis/doc/Vorbis_I_spec.html#x1-650004.2.4">
-   *     Vorbis spec/Setup header</a>
+   * @see <a href="https://www.xiph.org/vorbis/doc/Vorbis_I_spec.html#x1-650004.2.4">Vorbis
+   *     spec/Setup header</a>
    * @param headerData a {@link ParsableByteArray} containing setup header data.
    * @param channels the number of channels.
    * @return an array of {@link Mode}s.
@@ -176,7 +182,7 @@ import java.util.Arrays;
 
     int numberOfBooks = headerData.readUnsignedByte() + 1;
 
-    VorbisBitArray bitArray  = new VorbisBitArray(headerData.data);
+    VorbisBitArray bitArray = new VorbisBitArray(headerData.data);
     bitArray.skipBits(headerData.getPosition() * 8);
 
     for (int i = 0; i < numberOfBooks; i++) {
@@ -213,8 +219,7 @@ import java.util.Arrays;
     return modes;
   }
 
-  private static void readMappings(int channels, VorbisBitArray bitArray)
-      throws ParserException {
+  private static void readMappings(int channels, VorbisBitArray bitArray) throws ParserException {
     int mappingsCount = bitArray.readBits(6) + 1;
     for (int i = 0; i < mappingsCount; i++) {
       int mappingType = bitArray.readBits(16);
@@ -234,8 +239,8 @@ import java.util.Arrays;
               bitArray.skipBits(iLog(channels - 1)); // angle
             }
           } /*else {
-            couplingSteps = 0;
-          }*/
+              couplingSteps = 0;
+            }*/
           if (bitArray.readBits(2) != 0x00) {
             throw new ParserException("to reserved bits must be zero after mapping coupling steps");
           }
@@ -294,7 +299,7 @@ import java.util.Arrays;
       int floorType = bitArray.readBits(16);
       switch (floorType) {
         case 0:
-          bitArray.skipBits(8); //order
+          bitArray.skipBits(8); // order
           bitArray.skipBits(16); // rate
           bitArray.skipBits(16); // barkMapSize
           bitArray.skipBits(6); // amplitudeBits
@@ -344,8 +349,8 @@ import java.util.Arrays;
 
   private static CodeBook readBook(VorbisBitArray bitArray) throws ParserException {
     if (bitArray.readBits(24) != 0x564342) {
-      throw new ParserException("expected code book to start with [0x56, 0x43, 0x42] at "
-          + bitArray.getPosition());
+      throw new ParserException(
+          "expected code book to start with [0x56, 0x43, 0x42] at " + bitArray.getPosition());
     }
     int dimensions = bitArray.readBits(16);
     int entries = bitArray.readBits(24);
@@ -367,7 +372,7 @@ import java.util.Arrays;
       }
     } else {
       int length = bitArray.readBits(5) + 1;
-      for (int i = 0; i < lengthMap.length;) {
+      for (int i = 0; i < lengthMap.length; ) {
         int num = bitArray.readBits(iLog(entries - i));
         for (int j = 0; j < num && i < lengthMap.length; i++, j++) {
           lengthMap[i] = length;
@@ -419,15 +424,14 @@ import java.util.Arrays;
     public final int lookupType;
     public final boolean isOrdered;
 
-    public CodeBook(int dimensions, int entries, long[] lengthMap, int lookupType,
-        boolean isOrdered) {
+    public CodeBook(
+        int dimensions, int entries, long[] lengthMap, int lookupType, boolean isOrdered) {
       this.dimensions = dimensions;
       this.entries = entries;
       this.lengthMap = lengthMap;
       this.lookupType = lookupType;
       this.isOrdered = isOrdered;
     }
-
   }
 
   public static final class CommentHeader {
@@ -441,7 +445,6 @@ import java.util.Arrays;
       this.comments = comments;
       this.length = length;
     }
-
   }
 
   public static final class VorbisIdHeader {
@@ -457,8 +460,16 @@ import java.util.Arrays;
     public final boolean framingFlag;
     public final byte[] data;
 
-    public VorbisIdHeader(long version, int channels, long sampleRate, int bitrateMax,
-        int bitrateNominal, int bitrateMin, int blockSize0, int blockSize1, boolean framingFlag,
+    public VorbisIdHeader(
+        long version,
+        int channels,
+        long sampleRate,
+        int bitrateMax,
+        int bitrateNominal,
+        int bitrateMin,
+        int blockSize0,
+        int blockSize1,
+        boolean framingFlag,
         byte[] data) {
       this.version = version;
       this.channels = channels;
@@ -475,7 +486,6 @@ import java.util.Arrays;
     public int getApproximateBitrate() {
       return bitrateNominal == 0 ? (bitrateMin + bitrateMax) / 2 : bitrateNominal;
     }
-
   }
 
   public static final class Mode {
@@ -491,7 +501,5 @@ import java.util.Arrays;
       this.transformType = transformType;
       this.mapping = mapping;
     }
-
   }
-
 }

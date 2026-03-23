@@ -7,18 +7,17 @@ import com.liskovsoft.smartyoutubetv2.tv.ui.common.LeanbackActivity;
 
 public class BrowseActivity extends LeanbackActivity {
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_main);
-    }
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.fragment_main);
+  }
 
-    @Override
-    protected void initTheme() {
-        int browseThemeResId = MainUIData.instance(this).getColorScheme().browseThemeResId;
-        if (browseThemeResId > 0) {
-            setTheme(browseThemeResId);
-        }
+  @Override
+  protected void initTheme() {
+    int browseThemeResId = MainUIData.instance(this).getColorScheme().browseThemeResId;
+    if (browseThemeResId > 0) {
+      setTheme(browseThemeResId);
     }
-    
+  }
 }

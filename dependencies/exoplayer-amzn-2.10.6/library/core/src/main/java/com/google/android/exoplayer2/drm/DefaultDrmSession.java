@@ -22,8 +22,8 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
-import androidx.annotation.Nullable;
 import android.util.Pair;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.drm.DrmInitData.SchemeData;
 import com.google.android.exoplayer2.drm.ExoMediaDrm.KeyRequest;
@@ -42,20 +42,16 @@ import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
 
-/**
- * A {@link DrmSession} that supports playbacks using {@link ExoMediaDrm}.
- */
+/** A {@link DrmSession} that supports playbacks using {@link ExoMediaDrm}. */
 @TargetApi(18)
 /* package */ class DefaultDrmSession<T extends ExoMediaCrypto> implements DrmSession<T> {
 
-  /**
-   * Manages provisioning requests.
-   */
+  /** Manages provisioning requests. */
   public interface ProvisioningManager<T extends ExoMediaCrypto> {
 
     /**
-     * Called when a session requires provisioning. The manager <em>may</em> call
-     * {@link #provision()} to have this session perform the provisioning operation. The manager
+     * Called when a session requires provisioning. The manager <em>may</em> call {@link
+     * #provision()} to have this session perform the provisioning operation. The manager
      * <em>will</em> call {@link DefaultDrmSession#onProvisionCompleted()} when provisioning has
      * completed, or {@link DefaultDrmSession#onProvisionError} if provisioning fails.
      *
@@ -70,11 +66,8 @@ import org.checkerframework.checker.nullness.qual.RequiresNonNull;
      */
     void onProvisionError(Exception error);
 
-    /**
-     * Called by a session when it successfully completes a provisioning operation.
-     */
+    /** Called by a session when it successfully completes a provisioning operation. */
     void onProvisionCompleted();
-
   }
 
   private static final String TAG = "DefaultDrmSession";
@@ -178,7 +171,9 @@ import org.checkerframework.checker.nullness.qual.RequiresNonNull;
     }
   }
 
-  /** @return True if the session is closed and cleaned up, false otherwise. */
+  /**
+   * @return True if the session is closed and cleaned up, false otherwise.
+   */
   // Assigning null to various non-null variables for clean-up. Class won't be used after release.
   @SuppressWarnings("assignment.type.incompatible")
   public boolean release() {
@@ -330,8 +325,11 @@ import org.checkerframework.checker.nullness.qual.RequiresNonNull;
           long licenseDurationRemainingSec = getLicenseDurationRemainingSec();
           if (mode == DefaultDrmSessionManager.MODE_PLAYBACK
               && licenseDurationRemainingSec <= MAX_LICENSE_DURATION_TO_RENEW) {
-            Log.d(TAG, "Offline license has expired or will expire soon. "
-                + "Remaining seconds: " + licenseDurationRemainingSec);
+            Log.d(
+                TAG,
+                "Offline license has expired or will expire soon. "
+                    + "Remaining seconds: "
+                    + licenseDurationRemainingSec);
             postKeyRequest(sessionId, ExoMediaDrm.KEY_TYPE_OFFLINE, allowRetry);
           } else if (licenseDurationRemainingSec <= 0) {
             onError(new KeysExpiredException());
@@ -415,8 +413,10 @@ import org.checkerframework.checker.nullness.qual.RequiresNonNull;
       } else {
         byte[] keySetId = mediaDrm.provideKeyResponse(sessionId, responseData);
         if ((mode == DefaultDrmSessionManager.MODE_DOWNLOAD
-            || (mode == DefaultDrmSessionManager.MODE_PLAYBACK && offlineLicenseKeySetId != null))
-            && keySetId != null && keySetId.length != 0) {
+                || (mode == DefaultDrmSessionManager.MODE_PLAYBACK
+                    && offlineLicenseKeySetId != null))
+            && keySetId != null
+            && keySetId.length != 0) {
           offlineLicenseKeySetId = keySetId;
         }
         state = STATE_OPENED_WITH_KEYS;
@@ -480,10 +480,8 @@ import org.checkerframework.checker.nullness.qual.RequiresNonNull;
           break;
         default:
           break;
-
       }
     }
-
   }
 
   @SuppressLint("HandlerLeak")
@@ -542,6 +540,5 @@ import org.checkerframework.checker.nullness.qual.RequiresNonNull;
     private long getRetryDelayMillis(int errorCount) {
       return Math.min((errorCount - 1) * 1000, 5000);
     }
-
   }
 }

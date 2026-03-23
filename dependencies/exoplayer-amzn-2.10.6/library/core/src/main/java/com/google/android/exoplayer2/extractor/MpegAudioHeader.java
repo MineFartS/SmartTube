@@ -18,16 +18,14 @@ package com.google.android.exoplayer2.extractor;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.util.MimeTypes;
 
-/**
- * An MPEG audio frame header.
- */
+/** An MPEG audio frame header. */
 public final class MpegAudioHeader {
 
   /**
    * Theoretical maximum frame size for an MPEG audio stream, which occurs when playing a Layer 2
-   * MPEG 2.5 audio stream at 16 kb/s (with padding). The size is 1152 sample/frame *
-   * 160000 bit/s / (8000 sample/s * 8 bit/byte) + 1 padding byte/frame = 2881 byte/frame.
-   * The next power of two size is 4 KiB.
+   * MPEG 2.5 audio stream at 16 kb/s (with padding). The size is 1152 sample/frame * 160000 bit/s /
+   * (8000 sample/s * 8 bit/byte) + 1 padding byte/frame = 2881 byte/frame. The next power of two
+   * size is 4 KiB.
    */
   public static final int MAX_FRAME_SIZE_BYTES = 4096;
 
@@ -194,16 +192,22 @@ public final class MpegAudioHeader {
 
   /** MPEG audio header version. */
   public int version;
+
   /** The mime type. */
   public String mimeType;
+
   /** Size of the frame associated with this header, in bytes. */
   public int frameSize;
+
   /** Sample rate in samples per second. */
   public int sampleRate;
+
   /** Number of audio channels in the frame. */
   public int channels;
+
   /** Bitrate of the frame in bit/s. */
   public int bitrate;
+
   /** Number of samples stored in the frame. */
   public int samplesPerFrame;
 
@@ -223,5 +227,4 @@ public final class MpegAudioHeader {
     this.bitrate = bitrate;
     this.samplesPerFrame = samplesPerFrame;
   }
-
 }

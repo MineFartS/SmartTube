@@ -21,9 +21,7 @@ import com.google.android.exoplayer2.util.Util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Utility methods for parsing WebVTT data.
- */
+/** Utility methods for parsing WebVTT data. */
 public final class WebvttParserUtil {
 
   private static final Pattern COMMENT = Pattern.compile("^NOTE((\u0020|\u0009).*)?$");
@@ -113,5 +111,4 @@ public final class WebvttParserUtil {
     }
     return null;
   }
-
 }

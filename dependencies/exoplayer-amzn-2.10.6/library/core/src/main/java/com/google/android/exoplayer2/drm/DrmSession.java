@@ -23,20 +23,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Map;
 
-/**
- * A DRM session.
- */
+/** A DRM session. */
 public interface DrmSession<T extends ExoMediaCrypto> {
 
-  /**
-   * Wraps the throwable which is the cause of the error state.
-   */
+  /** Wraps the throwable which is the cause of the error state. */
   class DrmSessionException extends Exception {
 
     public DrmSessionException(Throwable cause) {
       super(cause);
     }
-
   }
 
   /**
@@ -47,33 +42,31 @@ public interface DrmSession<T extends ExoMediaCrypto> {
   @Retention(RetentionPolicy.SOURCE)
   @IntDef({STATE_RELEASED, STATE_ERROR, STATE_OPENING, STATE_OPENED, STATE_OPENED_WITH_KEYS})
   @interface State {}
-  /**
-   * The session has been released.
-   */
+
+  /** The session has been released. */
   int STATE_RELEASED = 0;
+
   /**
    * The session has encountered an error. {@link #getError()} can be used to retrieve the cause.
    */
   int STATE_ERROR = 1;
-  /**
-   * The session is being opened.
-   */
+
+  /** The session is being opened. */
   int STATE_OPENING = 2;
-  /**
-   * The session is open, but does not yet have the keys required for decryption.
-   */
+
+  /** The session is open, but does not yet have the keys required for decryption. */
   int STATE_OPENED = 3;
-  /**
-   * The session is open and has the keys required for decryption.
-   */
+
+  /** The session is open and has the keys required for decryption. */
   int STATE_OPENED_WITH_KEYS = 4;
 
   /**
-   * Returns the current state of the session, which is one of {@link #STATE_ERROR},
-   * {@link #STATE_RELEASED}, {@link #STATE_OPENING}, {@link #STATE_OPENED} and
-   * {@link #STATE_OPENED_WITH_KEYS}.
+   * Returns the current state of the session, which is one of {@link #STATE_ERROR}, {@link
+   * #STATE_RELEASED}, {@link #STATE_OPENING}, {@link #STATE_OPENED} and {@link
+   * #STATE_OPENED_WITH_KEYS}.
    */
-  @State int getState();
+  @State
+  int getState();
 
   /**
    * Returns the cause of the error state, or null if {@link #getState()} is not {@link

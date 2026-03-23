@@ -39,9 +39,7 @@ import com.google.android.exoplayer2.util.MimeTypes;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Utility methods for DASH streams.
- */
+/** Utility methods for DASH streams. */
 public final class DashUtil {
 
   /**
@@ -52,8 +50,7 @@ public final class DashUtil {
    * @return An instance of {@link DashManifest}.
    * @throws IOException Thrown when there is an error while loading.
    */
-  public static DashManifest loadManifest(DataSource dataSource, Uri uri)
-      throws IOException {
+  public static DashManifest loadManifest(DataSource dataSource, Uri uri) throws IOException {
     return ParsingLoadable.load(dataSource, new DashManifestParser(), uri, C.DATA_TYPE_MANIFEST);
   }
 
@@ -98,8 +95,8 @@ public final class DashUtil {
   public static @Nullable Format loadSampleFormat(
       DataSource dataSource, int trackType, Representation representation)
       throws IOException, InterruptedException {
-    ChunkExtractorWrapper extractorWrapper = loadInitializationData(dataSource, trackType,
-        representation, false);
+    ChunkExtractorWrapper extractorWrapper =
+        loadInitializationData(dataSource, trackType, representation, false);
     return extractorWrapper == null ? null : extractorWrapper.getSampleFormats()[0];
   }
 
@@ -119,8 +116,8 @@ public final class DashUtil {
   public static @Nullable ChunkIndex loadChunkIndex(
       DataSource dataSource, int trackType, Representation representation)
       throws IOException, InterruptedException {
-    ChunkExtractorWrapper extractorWrapper = loadInitializationData(dataSource, trackType,
-        representation, true);
+    ChunkExtractorWrapper extractorWrapper =
+        loadInitializationData(dataSource, trackType, representation, true);
     return extractorWrapper == null ? null : (ChunkIndex) extractorWrapper.getSeekMap();
   }
 
@@ -166,14 +163,26 @@ public final class DashUtil {
     return extractorWrapper;
   }
 
-  private static void loadInitializationData(DataSource dataSource,
-      Representation representation, ChunkExtractorWrapper extractorWrapper, RangedUri requestUri)
+  private static void loadInitializationData(
+      DataSource dataSource,
+      Representation representation,
+      ChunkExtractorWrapper extractorWrapper,
+      RangedUri requestUri)
       throws IOException, InterruptedException {
-    DataSpec dataSpec = new DataSpec(requestUri.resolveUri(representation.baseUrl),
-        requestUri.start, requestUri.length, representation.getCacheKey());
-    InitializationChunk initializationChunk = new InitializationChunk(dataSource, dataSpec,
-        representation.format, C.SELECTION_REASON_UNKNOWN, null /* trackSelectionData */,
-        extractorWrapper);
+    DataSpec dataSpec =
+        new DataSpec(
+            requestUri.resolveUri(representation.baseUrl),
+            requestUri.start,
+            requestUri.length,
+            representation.getCacheKey());
+    InitializationChunk initializationChunk =
+        new InitializationChunk(
+            dataSource,
+            dataSpec,
+            representation.format,
+            C.SELECTION_REASON_UNKNOWN,
+            null /* trackSelectionData */,
+            extractorWrapper);
     initializationChunk.load();
   }
 
@@ -197,5 +206,4 @@ public final class DashUtil {
   }
 
   private DashUtil() {}
-
 }

@@ -19,15 +19,13 @@ import com.google.android.exoplayer2.C;
 import java.io.EOFException;
 import java.io.IOException;
 
-/**
- * Provides data to be consumed by an {@link Extractor}.
- */
+/** Provides data to be consumed by an {@link Extractor}. */
 public interface ExtractorInput {
 
   /**
    * Reads up to {@code length} bytes from the input and resets the peek position.
-   * <p>
-   * This method blocks until at least one byte of data can be read, the end of the input is
+   *
+   * <p>This method blocks until at least one byte of data can be read, the end of the input is
    * detected, or an exception is thrown.
    *
    * @param target A target array into which data should be written.
@@ -41,12 +39,12 @@ public interface ExtractorInput {
 
   /**
    * Like {@link #read(byte[], int, int)}, but reads the requested {@code length} in full.
-   * <p>
-   * If the end of the input is found having read no data, then behavior is dependent on
-   * {@code allowEndOfInput}. If {@code allowEndOfInput == true} then {@code false} is returned.
-   * Otherwise an {@link EOFException} is thrown.
-   * <p>
-   * Encountering the end of input having partially satisfied the read is always considered an
+   *
+   * <p>If the end of the input is found having read no data, then behavior is dependent on {@code
+   * allowEndOfInput}. If {@code allowEndOfInput == true} then {@code false} is returned. Otherwise
+   * an {@link EOFException} is thrown.
+   *
+   * <p>Encountering the end of input having partially satisfied the read is always considered an
    * error, and will result in an {@link EOFException} being thrown.
    *
    * @param target A target array into which data should be written.
@@ -107,9 +105,9 @@ public interface ExtractorInput {
 
   /**
    * Like {@link #readFully(byte[], int, int)}, except the data is skipped instead of read.
-   * <p>
-   * Encountering the end of input is always considered an error, and will result in an
-   * {@link EOFException} being thrown.
+   *
+   * <p>Encountering the end of input is always considered an error, and will result in an {@link
+   * EOFException} being thrown.
    *
    * @param length The number of bytes to skip from the input.
    * @throws EOFException If the end of input was encountered.
@@ -121,12 +119,12 @@ public interface ExtractorInput {
   /**
    * Peeks {@code length} bytes from the peek position, writing them into {@code target} at index
    * {@code offset}. The current read position is left unchanged.
-   * <p>
-   * If the end of the input is found having peeked no data, then behavior is dependent on
-   * {@code allowEndOfInput}. If {@code allowEndOfInput == true} then {@code false} is returned.
-   * Otherwise an {@link EOFException} is thrown.
-   * <p>
-   * Calling {@link #resetPeekPosition()} resets the peek position to equal the current read
+   *
+   * <p>If the end of the input is found having peeked no data, then behavior is dependent on {@code
+   * allowEndOfInput}. If {@code allowEndOfInput == true} then {@code false} is returned. Otherwise
+   * an {@link EOFException} is thrown.
+   *
+   * <p>Calling {@link #resetPeekPosition()} resets the peek position to equal the current read
    * position, so the caller can peek the same data again. Reading or skipping also resets the peek
    * position.
    *
@@ -150,8 +148,8 @@ public interface ExtractorInput {
   /**
    * Peeks {@code length} bytes from the peek position, writing them into {@code target} at index
    * {@code offset}. The current read position is left unchanged.
-   * <p>
-   * Calling {@link #resetPeekPosition()} resets the peek position to equal the current read
+   *
+   * <p>Calling {@link #resetPeekPosition()} resets the peek position to equal the current read
    * position, so the caller can peek the same data again. Reading and skipping also reset the peek
    * position.
    *
@@ -166,8 +164,8 @@ public interface ExtractorInput {
 
   /**
    * Advances the peek position by {@code length} bytes.
-   * <p>
-   * If the end of the input is encountered before advancing the peek position, then behavior is
+   *
+   * <p>If the end of the input is encountered before advancing the peek position, then behavior is
    * dependent on {@code allowEndOfInput}. If {@code allowEndOfInput == true} then {@code false} is
    * returned. Otherwise an {@link EOFException} is thrown.
    *
@@ -196,9 +194,7 @@ public interface ExtractorInput {
    */
   void advancePeekPosition(int length) throws IOException, InterruptedException;
 
-  /**
-   * Resets the peek position to equal the current read position.
-   */
+  /** Resets the peek position to equal the current read position. */
   void resetPeekPosition();
 
   /**
@@ -232,5 +228,4 @@ public interface ExtractorInput {
    * @throws E The given {@link Throwable} object.
    */
   <E extends Throwable> void setRetryPosition(long position, E e) throws E;
-
 }

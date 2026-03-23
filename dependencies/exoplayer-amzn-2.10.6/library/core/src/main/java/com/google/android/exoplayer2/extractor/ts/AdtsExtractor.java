@@ -38,9 +38,7 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * Extracts data from AAC bit streams with ADTS framing.
- */
+/** Extracts data from AAC bit streams with ADTS framing. */
 public final class AdtsExtractor implements Extractor {
 
   /** Factory for {@link AdtsExtractor} instances. */
@@ -56,6 +54,7 @@ public final class AdtsExtractor implements Extractor {
       flag = true,
       value = {FLAG_ENABLE_CONSTANT_BITRATE_SEEKING})
   public @interface Flags {}
+
   /**
    * Flag to force enable seeking using a constant bitrate assumption in cases where seeking would
    * otherwise not be possible.
@@ -67,11 +66,13 @@ public final class AdtsExtractor implements Extractor {
 
   private static final int MAX_PACKET_SIZE = 2 * 1024;
   private static final int ID3_TAG = Util.getIntegerCodeForString("ID3");
+
   /**
    * The maximum number of bytes to search when sniffing, excluding the header, before giving up.
    * Frame sizes are represented by 13-bit fields, so expect a valid frame in the first 8192 bytes.
    */
   private static final int MAX_SNIFF_BYTES = 8 * 1024;
+
   /**
    * The maximum number of frames to use when calculating the average frame size for constant
    * bitrate seeking.

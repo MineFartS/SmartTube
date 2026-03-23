@@ -3,15 +3,13 @@ package com.liskovsoft.smartyoutubetv2.common.app.presenters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-
-import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import com.liskovsoft.smartyoutubetv2.common.R;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import com.liskovsoft.smartyoutubetv2.common.app.models.playback.service.VideoStateService;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.base.BasePresenter;
@@ -21,294 +19,301 @@ import com.liskovsoft.smartyoutubetv2.common.app.views.SplashView;
 import com.liskovsoft.smartyoutubetv2.common.app.views.ViewManager;
 import com.liskovsoft.smartyoutubetv2.common.misc.GDriveBackupWorker;
 import com.liskovsoft.smartyoutubetv2.common.misc.LocalDriveBackupWorker;
-import com.liskovsoft.smartyoutubetv2.common.misc.MediaServiceManager;
 import com.liskovsoft.smartyoutubetv2.common.misc.StreamReminderService;
 import com.liskovsoft.smartyoutubetv2.common.prefs.AccountsData;
-import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
-
 import com.liskovsoft.smartyoutubetv2.common.utils.IntentExtractor;
-import com.liskovsoft.smartyoutubetv2.common.utils.SimpleEditDialog;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class SplashPresenter extends BasePresenter<SplashView> {
-    private static final String TAG = SplashPresenter.class.getSimpleName();
-    private static final long APP_INIT_DELAY_MS = 10_000;
-    @SuppressLint("StaticFieldLeak")
-    private static SplashPresenter sInstance;
-    private static boolean sRunOnce;
-    private boolean mRunPerInstance;
-    private final List<IntentProcessor> mIntentChain = new ArrayList<>();
-    private String mBridgePackageName;
-    private final Runnable mRunBackgroundTasks = this::runBackgroundTasks;
-    private final Runnable mCheckForUpdates = this::checkForUpdates;
+  private static final String TAG = SplashPresenter.class.getSimpleName();
+  private static final long APP_INIT_DELAY_MS = 10_000;
 
-    private interface IntentProcessor {
-        boolean process(Intent intent);
+  @SuppressLint("StaticFieldLeak")
+  private static SplashPresenter sInstance;
+
+  private static boolean sRunOnce;
+  private boolean mRunPerInstance;
+  private final List<IntentProcessor> mIntentChain = new ArrayList<>();
+  private String mBridgePackageName;
+  private final Runnable mRunBackgroundTasks = this::runBackgroundTasks;
+  private final Runnable mCheckForUpdates = this::checkForUpdates;
+
+  private interface IntentProcessor {
+    boolean process(Intent intent);
+  }
+
+  private SplashPresenter(Context context) {
+    super(context);
+  }
+
+  public static SplashPresenter instance(Context context) {
+    if (sInstance == null) {
+      sInstance = new SplashPresenter(context);
     }
 
-    private SplashPresenter(Context context) {
-        super(context);
+    sInstance.setContext(context);
+
+    return sInstance;
+  }
+
+  public static void unhold() {
+    if (sInstance != null) {
+      Utils.removeCallbacks(sInstance.mRunBackgroundTasks);
+    }
+    sInstance = null;
+  }
+
+  @Override
+  public void onViewInitialized() {
+    if (getView() == null) {
+      return;
     }
 
-    public static SplashPresenter instance(Context context) {
-        if (sInstance == null) {
-            sInstance = new SplashPresenter(context);
-        }
+    Utils.cancelFinishTheApp(getContext());
 
-        sInstance.setContext(context);
+    runOneTimeTasks();
+    runPerInstanceTasks();
+    runPerViewTasks();
+  }
 
-        return sInstance;
+  private void runOneTimeTasks() {
+    if (!sRunOnce) {
+      sRunOnce = true;
+      RxHelper.setupGlobalErrorHandler();
+      initGlobalPrefs();
+      initVideoStateService();
+      initStreamReminderService();
     }
+  }
 
-    public static void unhold() {
-        if (sInstance != null) {
-            Utils.removeCallbacks(sInstance.mRunBackgroundTasks);
-        }
-        sInstance = null;
+  private void runPerInstanceTasks() {
+    if (!mRunPerInstance) {
+      mRunPerInstance = true;
+      Utils.postDelayed(mRunBackgroundTasks, APP_INIT_DELAY_MS);
+      initIntentChain();
     }
+  }
 
-    @Override
-    public void onViewInitialized() {
-        if (getView() == null) {
-            return;
-        }
+  private void runPerViewTasks() {
+    Utils.postDelayed(mCheckForUpdates, APP_INIT_DELAY_MS);
+    Utils.updateRemoteControlService(getContext());
 
-        Utils.cancelFinishTheApp(getContext());
+    applyNewIntent(getView().getNewIntent());
 
-        runOneTimeTasks();
-        runPerInstanceTasks();
-        runPerViewTasks();
+    showAccountSelectionIfNeeded(); // should be placed after Intent chain
+    checkAccountPassword();
+  }
+
+  private void runBackgroundTasks() {
+    YouTubeServiceManager.instance().refreshCacheIfNeeded(); // warm up player engine
+    Utils.updateChannels(getContext());
+    GDriveBackupWorker.schedule(getContext());
+    LocalDriveBackupWorker.schedule(getContext());
+  }
+
+  private void showAccountSelectionIfNeeded() {
+    AccountSelectionPresenter.instance(getContext()).show();
+  }
+
+  private void checkAccountPassword() {
+    AccountsData data = AccountsData.instance(getContext());
+    // Block even if the password was accepted before
+    if (data.getAccountPassword() != null) {
+      data.setPasswordAccepted(false);
+      PlaybackPresenter.instance(getContext()).forceFinish();
+      BrowsePresenter.instance(getContext()).updateSections();
     }
+  }
 
-    private void runOneTimeTasks() {
-        if (!sRunOnce) {
-            sRunOnce = true;
-            RxHelper.setupGlobalErrorHandler();
-            initGlobalPrefs();
-            initVideoStateService();
-            initStreamReminderService();
-        }
+  private void checkForUpdates() {
+    BootDialogPresenter updatePresenter = BootDialogPresenter.instance(getContext());
+    updatePresenter.start();
+  }
+
+  private void initVideoStateService() {
+    if (getContext() != null) {
+      VideoStateService.instance(getContext());
     }
+  }
 
-    private void runPerInstanceTasks() {
-        if (!mRunPerInstance) {
-            mRunPerInstance = true;
-            Utils.postDelayed(mRunBackgroundTasks, APP_INIT_DELAY_MS);
-            initIntentChain();
-        }
+  private void initStreamReminderService() {
+    if (getContext() != null) {
+      StreamReminderService.instance(getContext()).start();
     }
+  }
 
-    private void runPerViewTasks() {
-        Utils.postDelayed(mCheckForUpdates, APP_INIT_DELAY_MS);
-        Utils.updateRemoteControlService(getContext());
+  /**
+   * Need to be the first line and executed on earliest stage once.<br>
+   * Do init media service language and context.<br>
+   * NOTE: this command should run before using any of the media service api.
+   */
+  private void initGlobalPrefs() {
+    Log.d(TAG, "initGlobalData called...");
 
-        applyNewIntent(getView().getNewIntent());
-
-        showAccountSelectionIfNeeded(); // should be placed after Intent chain
-        checkAccountPassword();
+    if (getContext() != null) {
+      // 1) Auth token storage init
+      // 2) Media service language setup (I assume that context has proper language)
+      GlobalPreferences.instance(getContext());
     }
+  }
 
-    private void runBackgroundTasks() {
-        YouTubeServiceManager.instance().refreshCacheIfNeeded(); // warm up player engine
-        Utils.updateChannels(getContext());
-        GDriveBackupWorker.schedule(getContext());
-        LocalDriveBackupWorker.schedule(getContext());
-    }
+  public String getBridgePackageName() {
+    return mBridgePackageName;
+  }
 
-    private void showAccountSelectionIfNeeded() {
-        AccountSelectionPresenter.instance(getContext()).show();
-    }
+  private void initIntentChain() {
+    mIntentChain.add(
+        intent -> {
+          String accountName = IntentExtractor.extractAccountName(intent);
 
-    private void checkAccountPassword() {
-        AccountsData data = AccountsData.instance(getContext());
-        // Block even if the password was accepted before
-        if (data.getAccountPassword() != null) {
-            data.setPasswordAccepted(false);
-            PlaybackPresenter.instance(getContext()).forceFinish();
-            BrowsePresenter.instance(getContext()).updateSections();
-        }
-    }
-
-    private void checkForUpdates() {
-        BootDialogPresenter updatePresenter = BootDialogPresenter.instance(getContext());
-        updatePresenter.start();
-    }
-
-    private void initVideoStateService() {
-        if (getContext() != null) {
-            VideoStateService.instance(getContext());
-        }
-    }
-
-    private void initStreamReminderService() {
-        if (getContext() != null) {
-            StreamReminderService.instance(getContext()).start();
-        }
-    }
-
-    /**
-     * Need to be the first line and executed on earliest stage once.<br/>
-     * Do init media service language and context.<br/>
-     * NOTE: this command should run before using any of the media service api.
-     */
-    private void initGlobalPrefs() {
-        Log.d(TAG, "initGlobalData called...");
-
-        if (getContext() != null) {
-            // 1) Auth token storage init
-            // 2) Media service language setup (I assume that context has proper language)
-            GlobalPreferences.instance(getContext());
-        }
-    }
-
-    public String getBridgePackageName() {
-        return mBridgePackageName;
-    }
-
-    private void initIntentChain() {
-        mIntentChain.add(intent -> {
-            String accountName = IntentExtractor.extractAccountName(intent);
-
-            if (accountName != null) {
-                List<Account> accounts = getSignInService().getAccounts();
-                for (Account account : accounts) {
-                    if (Helpers.equals(account.getName(), accountName)) {
-                        AccountSelectionPresenter.instance(getContext()).selectAccount(account);
-                        break;
-                    }
-                }
+          if (accountName != null) {
+            List<Account> accounts = getSignInService().getAccounts();
+            for (Account account : accounts) {
+              if (Helpers.equals(account.getName(), accountName)) {
+                AccountSelectionPresenter.instance(getContext()).selectAccount(account);
+                break;
+              }
             }
+          }
 
-            return false;
+          return false;
         });
 
-        mIntentChain.add(intent -> {
-            String searchText = IntentExtractor.extractSearchText(intent);
+    mIntentChain.add(
+        intent -> {
+          String searchText = IntentExtractor.extractSearchText(intent);
 
-            if (searchText != null || IntentExtractor.isStartVoiceCommand(intent)) {
-                SearchPresenter searchPresenter = SearchPresenter.instance(getContext());
-                if (IntentExtractor.isInstantPlayCommand(intent)) {
-                    searchPresenter.startPlay(searchText);
-                } else {
-                    searchPresenter.startSearch(searchText);
-                }
-                return true;
+          if (searchText != null || IntentExtractor.isStartVoiceCommand(intent)) {
+            SearchPresenter searchPresenter = SearchPresenter.instance(getContext());
+            if (IntentExtractor.isInstantPlayCommand(intent)) {
+              searchPresenter.startPlay(searchText);
+            } else {
+              searchPresenter.startSearch(searchText);
             }
+            return true;
+          }
 
-            return false;
+          return false;
         });
 
-        mIntentChain.add(intent -> {
-            String channelId = null;
+    mIntentChain.add(
+        intent -> {
+          String channelId = null;
 
-            try {
-                channelId = IntentExtractor.extractChannelId(intent);
-            } catch (IllegalArgumentException e) {
-                MessageHelpers.showLongMessage(getContext(), e.getMessage());
-            }
+          try {
+            channelId = IntentExtractor.extractChannelId(intent);
+          } catch (IllegalArgumentException e) {
+            MessageHelpers.showLongMessage(getContext(), e.getMessage());
+          }
 
-            if (channelId != null) {
-                ChannelPresenter channelPresenter = ChannelPresenter.instance(getContext());
-                channelPresenter.openChannel(channelId);
-                return true;
-            }
+          if (channelId != null) {
+            ChannelPresenter channelPresenter = ChannelPresenter.instance(getContext());
+            channelPresenter.openChannel(channelId);
+            return true;
+          }
 
-            return false;
+          return false;
         });
 
-        mIntentChain.add(intent -> {
-            String playlistId = IntentExtractor.extractPlaylistId(intent);
+    mIntentChain.add(
+        intent -> {
+          String playlistId = IntentExtractor.extractPlaylistId(intent);
 
-            if (playlistId != null) {
-                Video video = new Video();
-                video.playlistId = playlistId;
-                ChannelUploadsPresenter.instance(getContext()).openChannel(video);
-                return true;
-            }
+          if (playlistId != null) {
+            Video video = new Video();
+            video.playlistId = playlistId;
+            ChannelUploadsPresenter.instance(getContext()).openChannel(video);
+            return true;
+          }
 
-            return false;
+          return false;
         });
 
-        // Should come after playlist
-        mIntentChain.add(intent -> {
-            String videoId = IntentExtractor.extractVideoId(intent);
+    // Should come after playlist
+    mIntentChain.add(
+        intent -> {
+          String videoId = IntentExtractor.extractVideoId(intent);
 
-            if (videoId != null) {
-                long timeMs = IntentExtractor.extractVideoTimeMs(intent);
-                PlaybackPresenter playbackPresenter = PlaybackPresenter.instance(getContext());
-                boolean finishOnEnded = IntentExtractor.hasFinishOnEndedFlag(intent);
+          if (videoId != null) {
+            long timeMs = IntentExtractor.extractVideoTimeMs(intent);
+            PlaybackPresenter playbackPresenter = PlaybackPresenter.instance(getContext());
+            boolean finishOnEnded = IntentExtractor.hasFinishOnEndedFlag(intent);
 
-                playbackPresenter.openVideo(videoId, finishOnEnded, timeMs);
+            playbackPresenter.openVideo(videoId, finishOnEnded, timeMs);
 
-                enablePlayerOnlyModeIfNeeded(intent);
-
-                return true;
-            }
-
-            return false;
-        });
-
-        // NOTE: doesn't work very well. E.g. there's problems with focus or conflicts with 'boot to' section option.
-        mIntentChain.add(intent -> {
-
-            int sectionId = -1;
-
-            // ATV channel icon clicked
-            if (IntentExtractor.isSubscriptionsUrl(intent)) {
-                sectionId = MediaGroup.TYPE_SUBSCRIPTIONS;
-            } else if (IntentExtractor.isHistoryUrl(intent)) {
-                sectionId = MediaGroup.TYPE_HISTORY;
-            } else if (IntentExtractor.isRecommendedUrl(intent)) {
-                sectionId = MediaGroup.TYPE_HOME;
-            }
-
-            if (sectionId != -1) {
-
-                BrowsePresenter.instance(getContext()).selectSection(sectionId);
-
-                return true;
-            }
-
-            return false;
-        });
-
-        // Should come last
-        mIntentChain.add(intent -> {
-            ViewManager viewManager = getViewManager();
-            viewManager.startDefaultView();
-
-            // For debug purpose when using ATV bridge.
-            if (IntentExtractor.hasData(intent) && !IntentExtractor.isATVChannelUrl(intent) && !IntentExtractor.isRootUrl(intent)) {
-                MessageHelpers.showLongMessage(getContext(), String.format("Can't process intent: %s", Helpers.toString(intent)));
-            }
+            enablePlayerOnlyModeIfNeeded(intent);
 
             return true;
+          }
+
+          return false;
         });
+
+    // NOTE: doesn't work very well. E.g. there's problems with focus or conflicts with 'boot to'
+    // section option.
+    mIntentChain.add(
+        intent -> {
+          int sectionId = -1;
+
+          // ATV channel icon clicked
+          if (IntentExtractor.isSubscriptionsUrl(intent)) {
+            sectionId = MediaGroup.TYPE_SUBSCRIPTIONS;
+          } else if (IntentExtractor.isHistoryUrl(intent)) {
+            sectionId = MediaGroup.TYPE_HISTORY;
+          } else if (IntentExtractor.isRecommendedUrl(intent)) {
+            sectionId = MediaGroup.TYPE_HOME;
+          }
+
+          if (sectionId != -1) {
+
+            BrowsePresenter.instance(getContext()).selectSection(sectionId);
+
+            return true;
+          }
+
+          return false;
+        });
+
+    // Should come last
+    mIntentChain.add(
+        intent -> {
+          ViewManager viewManager = getViewManager();
+          viewManager.startDefaultView();
+
+          // For debug purpose when using ATV bridge.
+          if (IntentExtractor.hasData(intent)
+              && !IntentExtractor.isATVChannelUrl(intent)
+              && !IntentExtractor.isRootUrl(intent)) {
+            MessageHelpers.showLongMessage(
+                getContext(), String.format("Can't process intent: %s", Helpers.toString(intent)));
+          }
+
+          return true;
+        });
+  }
+
+  public void applyNewIntent(Intent intent) {
+    if (intent != null) {
+      mBridgePackageName = intent.getStringExtra("bridge_package_name");
     }
 
-    public void applyNewIntent(Intent intent) {
-        if (intent != null) {
-            mBridgePackageName = intent.getStringExtra("bridge_package_name");
-        }
-
-        for (IntentProcessor processor : mIntentChain) {
-            if (processor.process(intent)) {
-                break;
-            }
-        }
+    for (IntentProcessor processor : mIntentChain) {
+      if (processor.process(intent)) {
+        break;
+      }
     }
+  }
 
-    private void enablePlayerOnlyModeIfNeeded(Intent intent) {
-        ViewManager viewManager = getViewManager();
+  private void enablePlayerOnlyModeIfNeeded(Intent intent) {
+    ViewManager viewManager = getViewManager();
 
-        boolean isRestartIntent = IntentExtractor.isRestartIntent(intent);
-        boolean isATVIntent = IntentExtractor.isATVIntent(intent);
-        boolean isExternalIntent = !isRestartIntent && !isATVIntent && !viewManager.isTopViewVisible();
+    boolean isRestartIntent = IntentExtractor.isRestartIntent(intent);
+    boolean isATVIntent = IntentExtractor.isATVIntent(intent);
+    boolean isExternalIntent = !isRestartIntent && !isATVIntent && !viewManager.isTopViewVisible();
 
-        viewManager.enablePlayerOnlyMode(isExternalIntent);
-    }
+    viewManager.enablePlayerOnlyMode(isExternalIntent);
+  }
 }

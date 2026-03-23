@@ -4,75 +4,74 @@ import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistInfoItem;
 import com.liskovsoft.youtubeapi.playlist.models.PlaylistsResult;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class YouTubePlaylistInfo implements PlaylistInfo {
-    private String mTitle;
-    private String mPlaylistId;
-    private boolean mIsSelected;
+  private String mTitle;
+  private String mPlaylistId;
+  private boolean mIsSelected;
 
-    public static List<PlaylistInfo> from(PlaylistsResult info) {
-        if (info == null) {
-            return null;
-        }
-
-        List<PlaylistInfo> result = new ArrayList<>();
-
-        for (PlaylistInfoItem playlist : info.getPlaylists()) {
-            result.add(from(playlist));
-        }
-
-        return result;
+  public static List<PlaylistInfo> from(PlaylistsResult info) {
+    if (info == null) {
+      return null;
     }
 
-    private static YouTubePlaylistInfo from(PlaylistInfoItem playlist) {
-        YouTubePlaylistInfo info = new YouTubePlaylistInfo();
+    List<PlaylistInfo> result = new ArrayList<>();
 
-        info.mTitle = playlist.getTitle();
-        info.mPlaylistId = playlist.getPlaylistId();
-        info.mIsSelected = playlist.isSelected();
-
-        return info;
+    for (PlaylistInfoItem playlist : info.getPlaylists()) {
+      result.add(from(playlist));
     }
 
-    public static YouTubePlaylistInfo from(ItemGroup itemGroup, boolean isSelected) {
-        YouTubePlaylistInfo info = new YouTubePlaylistInfo();
+    return result;
+  }
 
-        info.mTitle = itemGroup.getTitle();
-        info.mPlaylistId = String.valueOf(itemGroup.getId());
-        info.mIsSelected = isSelected;
+  private static YouTubePlaylistInfo from(PlaylistInfoItem playlist) {
+    YouTubePlaylistInfo info = new YouTubePlaylistInfo();
 
-        return info;
-    }
+    info.mTitle = playlist.getTitle();
+    info.mPlaylistId = playlist.getPlaylistId();
+    info.mIsSelected = playlist.isSelected();
 
-    @Override
-    public String getTitle() {
-        return mTitle;
-    }
+    return info;
+  }
 
-    @Override
-    public String getPlaylistId() {
-        return mPlaylistId;
-    }
+  public static YouTubePlaylistInfo from(ItemGroup itemGroup, boolean isSelected) {
+    YouTubePlaylistInfo info = new YouTubePlaylistInfo();
 
-    @Override
-    public boolean isSelected() {
-        return mIsSelected;
-    }
+    info.mTitle = itemGroup.getTitle();
+    info.mPlaylistId = String.valueOf(itemGroup.getId());
+    info.mIsSelected = isSelected;
 
-    @Override
-    public int getSize() {
-        return -1;
-    }
+    return info;
+  }
 
-    @Override
-    public int getCurrentIndex() {
-        return -1;
-    }
+  @Override
+  public String getTitle() {
+    return mTitle;
+  }
 
-    public void setSelected(boolean selected) {
-        mIsSelected = selected;
-    }
+  @Override
+  public String getPlaylistId() {
+    return mPlaylistId;
+  }
+
+  @Override
+  public boolean isSelected() {
+    return mIsSelected;
+  }
+
+  @Override
+  public int getSize() {
+    return -1;
+  }
+
+  @Override
+  public int getCurrentIndex() {
+    return -1;
+  }
+
+  public void setSelected(boolean selected) {
+    mIsSelected = selected;
+  }
 }

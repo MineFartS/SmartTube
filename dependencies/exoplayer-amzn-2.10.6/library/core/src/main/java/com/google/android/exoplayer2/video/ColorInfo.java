@@ -23,32 +23,27 @@ import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.util.Util;
 import java.util.Arrays;
 
-/**
- * Stores color info.
- */
+/** Stores color info. */
 public final class ColorInfo implements Parcelable {
 
   /**
    * The color space of the video. Valid values are {@link C#COLOR_SPACE_BT601}, {@link
    * C#COLOR_SPACE_BT709}, {@link C#COLOR_SPACE_BT2020} or {@link Format#NO_VALUE} if unknown.
    */
-  @C.ColorSpace
-  public final int colorSpace;
+  @C.ColorSpace public final int colorSpace;
 
   /**
    * The color range of the video. Valid values are {@link C#COLOR_RANGE_LIMITED}, {@link
    * C#COLOR_RANGE_FULL} or {@link Format#NO_VALUE} if unknown.
    */
-  @C.ColorRange
-  public final int colorRange;
+  @C.ColorRange public final int colorRange;
 
   /**
    * The color transfer characteristicks of the video. Valid values are {@link
    * C#COLOR_TRANSFER_HLG}, {@link C#COLOR_TRANSFER_ST2084}, {@link C#COLOR_TRANSFER_SDR} or {@link
    * Format#NO_VALUE} if unknown.
    */
-  @C.ColorTransfer
-  public final int colorTransfer;
+  @C.ColorTransfer public final int colorTransfer;
 
   /** HdrStaticInfo as defined in CTA-861.3, or null if none specified. */
   public final @Nullable byte[] hdrStaticInfo;
@@ -102,8 +97,15 @@ public final class ColorInfo implements Parcelable {
 
   @Override
   public String toString() {
-    return "ColorInfo(" + colorSpace + ", " + colorRange + ", " + colorTransfer
-        + ", " + (hdrStaticInfo != null) + ")";
+    return "ColorInfo("
+        + colorSpace
+        + ", "
+        + colorRange
+        + ", "
+        + colorTransfer
+        + ", "
+        + (hdrStaticInfo != null)
+        + ")";
   }
 
   @Override

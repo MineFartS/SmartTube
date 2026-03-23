@@ -26,9 +26,7 @@ import com.google.android.exoplayer2.extractor.TrackOutput;
 import com.google.android.exoplayer2.util.ParsableByteArray;
 import java.io.IOException;
 
-/**
- * Extracts data from the Ogg container format.
- */
+/** Extracts data from the Ogg container format. */
 public class OggExtractor implements Extractor {
 
   /** Factory for {@link OggExtractor} instances. */
@@ -110,5 +108,4 @@ public class OggExtractor implements Extractor {
     scratch.setPosition(0);
     return scratch;
   }
-
 }

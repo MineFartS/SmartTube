@@ -41,18 +41,23 @@ public interface MediaSourceEventListener {
 
     /** Defines the requested data. */
     public final DataSpec dataSpec;
+
     /**
      * The {@link Uri} from which data is being read. The uri will be identical to the one in {@link
      * #dataSpec}.uri unless redirection has occurred. If redirection has occurred, this is the uri
      * after redirection.
      */
     public final Uri uri;
+
     /** The response headers associated with the load, or an empty map if unavailable. */
     public final Map<String, List<String>> responseHeaders;
+
     /** The value of {@link SystemClock#elapsedRealtime} at the time of the load event. */
     public final long elapsedRealtimeMs;
+
     /** The duration of the load up to the event time. */
     public final long loadDurationMs;
+
     /** The number of bytes that were loaded up to the event time. */
     public final long bytesLoaded;
 
@@ -92,31 +97,37 @@ public interface MediaSourceEventListener {
 
     /** One of the {@link C} {@code DATA_TYPE_*} constants defining the type of data. */
     public final int dataType;
+
     /**
      * One of the {@link C} {@code TRACK_TYPE_*} constants if the data corresponds to media of a
      * specific type. {@link C#TRACK_TYPE_UNKNOWN} otherwise.
      */
     public final int trackType;
+
     /**
      * The format of the track to which the data belongs. Null if the data does not belong to a
      * specific track.
      */
     public final @Nullable Format trackFormat;
+
     /**
      * One of the {@link C} {@code SELECTION_REASON_*} constants if the data belongs to a track.
      * {@link C#SELECTION_REASON_UNKNOWN} otherwise.
      */
     public final int trackSelectionReason;
+
     /**
      * Optional data associated with the selection of the track to which the data belongs. Null if
      * the data does not belong to a track.
      */
     public final @Nullable Object trackSelectionData;
+
     /**
      * The start time of the media, or {@link C#TIME_UNSET} if the data does not belong to a
      * specific media period.
      */
     public final long mediaStartTimeMs;
+
     /**
      * The end time of the media, or {@link C#TIME_UNSET} if the data does not belong to a specific
      * media period or the end time is unknown.
@@ -295,6 +306,7 @@ public interface MediaSourceEventListener {
 
     /** The timeline window index reported with the events. */
     public final int windowIndex;
+
     /** The {@link MediaPeriodId} reported with the events. */
     public final @Nullable MediaPeriodId mediaPeriodId;
 

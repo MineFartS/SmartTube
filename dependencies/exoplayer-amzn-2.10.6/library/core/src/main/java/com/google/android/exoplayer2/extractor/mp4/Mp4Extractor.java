@@ -44,9 +44,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Extracts data from the MP4 container format.
- */
+/** Extracts data from the MP4 container format. */
 public final class Mp4Extractor implements Extractor, SeekMap {
 
   /** Factory for {@link Mp4Extractor} instances. */
@@ -62,9 +60,8 @@ public final class Mp4Extractor implements Extractor, SeekMap {
       flag = true,
       value = {FLAG_WORKAROUND_IGNORE_EDIT_LISTS})
   public @interface Flags {}
-  /**
-   * Flag to ignore any edit lists in the stream.
-   */
+
+  /** Flag to ignore any edit lists in the stream. */
   public static final int FLAG_WORKAROUND_IGNORE_EDIT_LISTS = 1;
 
   /** Parser states. */
@@ -121,9 +118,7 @@ public final class Mp4Extractor implements Extractor, SeekMap {
   private long durationUs;
   private boolean isQuickTime;
 
-  /**
-   * Creates a new extractor for unfragmented MP4 streams.
-   */
+  /** Creates a new extractor for unfragmented MP4 streams. */
   public Mp4Extractor() {
     this(0);
   }
@@ -378,9 +373,7 @@ public final class Mp4Extractor implements Extractor, SeekMap {
     }
   }
 
-  /**
-   * Updates the stored track metadata to reflect the contents of the specified moov atom.
-   */
+  /** Updates the stored track metadata to reflect the contents of the specified moov atom. */
   private void processMoovAtom(ContainerAtom moov) throws ParserException {
     int firstVideoTrackIndex = C.INDEX_UNSET;
     long durationUs = C.TIME_UNSET;
@@ -413,8 +406,8 @@ public final class Mp4Extractor implements Extractor, SeekMap {
       long trackDurationUs =
           track.durationUs != C.TIME_UNSET ? track.durationUs : trackSampleTable.durationUs;
       durationUs = Math.max(durationUs, trackDurationUs);
-      Mp4Track mp4Track = new Mp4Track(track, trackSampleTable,
-          extractorOutput.track(i, track.type));
+      Mp4Track mp4Track =
+          new Mp4Track(track, trackSampleTable, extractorOutput.track(i, track.type));
 
       // Each sample has up to three bytes of overhead for the start code that replaces its length.
       // Allow ten source samples per output sample, like the platform extractor.
@@ -480,12 +473,12 @@ public final class Mp4Extractor implements Extractor, SeekMap {
 
   /**
    * Attempts to extract the next sample in the current mdat atom for the specified track.
-   * <p>
-   * Returns {@link #RESULT_SEEK} if the source should be reloaded from the position in
-   * {@code positionHolder}.
-   * <p>
-   * Returns {@link #RESULT_END_OF_INPUT} if no samples are left. Otherwise, returns
-   * {@link #RESULT_CONTINUE}.
+   *
+   * <p>Returns {@link #RESULT_SEEK} if the source should be reloaded from the position in {@code
+   * positionHolder}.
+   *
+   * <p>Returns {@link #RESULT_END_OF_INPUT} if no samples are left. Otherwise, returns {@link
+   * #RESULT_CONTINUE}.
    *
    * @param input The {@link ExtractorInput} from which to read data.
    * @param positionHolder If {@link #RESULT_SEEK} is returned, this holder is updated to hold the
@@ -571,8 +564,12 @@ public final class Mp4Extractor implements Extractor, SeekMap {
         sampleCurrentNalBytesRemaining -= writtenBytes;
       }
     }
-    trackOutput.sampleMetadata(track.sampleTable.timestampsUs[sampleIndex],
-        track.sampleTable.flags[sampleIndex], sampleSize, 0, null);
+    trackOutput.sampleMetadata(
+        track.sampleTable.timestampsUs[sampleIndex],
+        track.sampleTable.flags[sampleIndex],
+        sampleSize,
+        0,
+        null);
     track.sampleIndex++;
     sampleTrackIndex = C.INDEX_UNSET;
     sampleBytesWritten = 0;
@@ -817,7 +814,5 @@ public final class Mp4Extractor implements Extractor, SeekMap {
       this.sampleTable = sampleTable;
       this.trackOutput = trackOutput;
     }
-
   }
-
 }

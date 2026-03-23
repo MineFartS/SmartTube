@@ -55,8 +55,15 @@ public final class InitializationChunk extends Chunk {
       int trackSelectionReason,
       @Nullable Object trackSelectionData,
       ChunkExtractorWrapper extractorWrapper) {
-    super(dataSource, dataSpec, C.DATA_TYPE_MEDIA_INITIALIZATION, trackFormat, trackSelectionReason,
-        trackSelectionData, C.TIME_UNSET, C.TIME_UNSET);
+    super(
+        dataSource,
+        dataSpec,
+        C.DATA_TYPE_MEDIA_INITIALIZATION,
+        trackFormat,
+        trackSelectionReason,
+        trackSelectionData,
+        C.TIME_UNSET,
+        C.TIME_UNSET);
     this.extractorWrapper = extractorWrapper;
   }
 
@@ -73,8 +80,9 @@ public final class InitializationChunk extends Chunk {
     DataSpec loadDataSpec = dataSpec.subrange(nextLoadPosition);
     try {
       // Create and open the input.
-      ExtractorInput input = new DefaultExtractorInput(dataSource,
-          loadDataSpec.absoluteStreamPosition, dataSource.open(loadDataSpec));
+      ExtractorInput input =
+          new DefaultExtractorInput(
+              dataSource, loadDataSpec.absoluteStreamPosition, dataSource.open(loadDataSpec));
       if (nextLoadPosition == 0) {
         extractorWrapper.init(
             /* trackOutputProvider= */ null,
@@ -96,5 +104,4 @@ public final class InitializationChunk extends Chunk {
       Util.closeQuietly(dataSource);
     }
   }
-
 }

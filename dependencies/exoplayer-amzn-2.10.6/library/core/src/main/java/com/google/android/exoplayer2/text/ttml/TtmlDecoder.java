@@ -71,8 +71,9 @@ public final class TtmlDecoder extends SimpleSubtitleDecoder {
   private static final String ATTR_IMAGE = "backgroundImage";
 
   private static final Pattern CLOCK_TIME =
-      Pattern.compile("^([0-9][0-9]+):([0-9][0-9]):([0-9][0-9])"
-          + "(?:(\\.[0-9]+)|:([0-9][0-9])(?:\\.([0-9]+))?)?$");
+      Pattern.compile(
+          "^([0-9][0-9]+):([0-9][0-9]):([0-9][0-9])"
+              + "(?:(\\.[0-9]+)|:([0-9][0-9])(?:\\.([0-9]+))?)?$");
   private static final Pattern OFFSET_TIME =
       Pattern.compile("^([0-9]+(?:\\.[0-9]+)?)(h|m|s|ms|f|t)$");
   private static final Pattern FONT_SIZE = Pattern.compile("^(([0-9]*.)?[0-9]+)(px|em|%)$");
@@ -403,8 +404,8 @@ public final class TtmlDecoder extends SimpleSubtitleDecoder {
     }
 
     @Cue.AnchorType int lineAnchor = Cue.ANCHOR_TYPE_START;
-    String displayAlign = XmlPullParserUtil.getAttributeValue(xmlParser,
-        TtmlNode.ATTR_TTS_DISPLAY_ALIGN);
+    String displayAlign =
+        XmlPullParserUtil.getAttributeValue(xmlParser, TtmlNode.ATTR_TTS_DISPLAY_ALIGN);
     if (displayAlign != null) {
       switch (Util.toLowerInvariant(displayAlign)) {
         case "center":
@@ -477,12 +478,10 @@ public final class TtmlDecoder extends SimpleSubtitleDecoder {
           }
           break;
         case TtmlNode.ATTR_TTS_FONT_WEIGHT:
-          style = createIfNull(style).setBold(
-              TtmlNode.BOLD.equalsIgnoreCase(attributeValue));
+          style = createIfNull(style).setBold(TtmlNode.BOLD.equalsIgnoreCase(attributeValue));
           break;
         case TtmlNode.ATTR_TTS_FONT_STYLE:
-          style = createIfNull(style).setItalic(
-              TtmlNode.ITALIC.equalsIgnoreCase(attributeValue));
+          style = createIfNull(style).setItalic(TtmlNode.ITALIC.equalsIgnoreCase(attributeValue));
           break;
         case TtmlNode.ATTR_TTS_TEXT_ALIGN:
           switch (Util.toLowerInvariant(attributeValue)) {
@@ -531,8 +530,11 @@ public final class TtmlDecoder extends SimpleSubtitleDecoder {
     return style == null ? new TtmlStyle() : style;
   }
 
-  private TtmlNode parseNode(XmlPullParser parser, TtmlNode parent,
-      Map<String, TtmlRegion> regionMap, FrameAndTickRate frameAndTickRate)
+  private TtmlNode parseNode(
+      XmlPullParser parser,
+      TtmlNode parent,
+      Map<String, TtmlRegion> regionMap,
+      FrameAndTickRate frameAndTickRate)
       throws SubtitleDecoderException {
     long duration = C.TIME_UNSET;
     long startTime = C.TIME_UNSET;
@@ -620,19 +622,21 @@ public final class TtmlDecoder extends SimpleSubtitleDecoder {
         || tag.equals(TtmlNode.TAG_INFORMATION);
   }
 
-  private static void parseFontSize(String expression, TtmlStyle out) throws
-      SubtitleDecoderException {
+  private static void parseFontSize(String expression, TtmlStyle out)
+      throws SubtitleDecoderException {
     String[] expressions = Util.split(expression, "\\s+");
     Matcher matcher;
     if (expressions.length == 1) {
       matcher = FONT_SIZE.matcher(expression);
-    } else if (expressions.length == 2){
+    } else if (expressions.length == 2) {
       matcher = FONT_SIZE.matcher(expressions[1]);
-      Log.w(TAG, "Multiple values in fontSize attribute. Picking the second value for vertical font"
-          + " size and ignoring the first.");
+      Log.w(
+          TAG,
+          "Multiple values in fontSize attribute. Picking the second value for vertical font"
+              + " size and ignoring the first.");
     } else {
-      throw new SubtitleDecoderException("Invalid number of entries for fontSize: "
-          + expressions.length + ".");
+      throw new SubtitleDecoderException(
+          "Invalid number of entries for fontSize: " + expressions.length + ".");
     }
 
     if (matcher.matches()) {
@@ -658,9 +662,9 @@ public final class TtmlDecoder extends SimpleSubtitleDecoder {
 
   /**
    * Parses a time expression, returning the parsed timestamp.
-   * <p>
-   * For the format of a time expression, see:
-   * <a href="http://www.w3.org/TR/ttaf1-dfxp/#timing-value-timeExpression">timeExpression</a>
+   *
+   * <p>For the format of a time expression, see: <a
+   * href="http://www.w3.org/TR/ttaf1-dfxp/#timing-value-timeExpression">timeExpression</a>
    *
    * @param time A string that includes the time expression.
    * @param frameAndTickRate The effective frame and tick rates of the stream.
@@ -680,13 +684,15 @@ public final class TtmlDecoder extends SimpleSubtitleDecoder {
       String fraction = matcher.group(4);
       durationSeconds += (fraction != null) ? Double.parseDouble(fraction) : 0;
       String frames = matcher.group(5);
-      durationSeconds += (frames != null)
-          ? Long.parseLong(frames) / frameAndTickRate.effectiveFrameRate : 0;
+      durationSeconds +=
+          (frames != null) ? Long.parseLong(frames) / frameAndTickRate.effectiveFrameRate : 0;
       String subframes = matcher.group(6);
-      durationSeconds += (subframes != null)
-          ? ((double) Long.parseLong(subframes)) / frameAndTickRate.subFrameRate
-              / frameAndTickRate.effectiveFrameRate
-          : 0;
+      durationSeconds +=
+          (subframes != null)
+              ? ((double) Long.parseLong(subframes))
+                  / frameAndTickRate.subFrameRate
+                  / frameAndTickRate.effectiveFrameRate
+              : 0;
       return (long) (durationSeconds * C.MICROS_PER_SECOND);
     }
     matcher = OFFSET_TIME.matcher(time);

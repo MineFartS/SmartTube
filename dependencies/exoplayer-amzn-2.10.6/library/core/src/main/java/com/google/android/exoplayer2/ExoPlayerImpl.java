@@ -19,8 +19,8 @@ import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import androidx.annotation.Nullable;
 import android.util.Pair;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.PlayerMessage.Target;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MediaSource.MediaPeriodId;
@@ -102,8 +102,15 @@ import java.util.concurrent.CopyOnWriteArrayList;
       BandwidthMeter bandwidthMeter,
       Clock clock,
       Looper looper) {
-    Log.i(TAG, "Init " + Integer.toHexString(System.identityHashCode(this)) + " ["
-        + ExoPlayerLibraryInfo.VERSION_SLASHY + "] [" + Util.DEVICE_DEBUG_INFO + "]");
+    Log.i(
+        TAG,
+        "Init "
+            + Integer.toHexString(System.identityHashCode(this))
+            + " ["
+            + ExoPlayerLibraryInfo.VERSION_SLASHY
+            + "] ["
+            + Util.DEVICE_DEBUG_INFO
+            + "]");
     Assertions.checkState(renderers.length > 0);
     this.renderers = Assertions.checkNotNull(renderers);
     this.trackSelector = Assertions.checkNotNull(trackSelector);
@@ -347,8 +354,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
       maskingWindowPositionMs = positionMs == C.TIME_UNSET ? 0 : positionMs;
       maskingPeriodIndex = 0;
     } else {
-      long windowPositionUs = positionMs == C.TIME_UNSET
-          ? timeline.getWindow(windowIndex, window).getDefaultPositionUs() : C.msToUs(positionMs);
+      long windowPositionUs =
+          positionMs == C.TIME_UNSET
+              ? timeline.getWindow(windowIndex, window).getDefaultPositionUs()
+              : C.msToUs(positionMs);
       Pair<Object, Long> periodUidAndPosition =
           timeline.getPeriodPosition(window, period, windowIndex, windowPositionUs);
       maskingWindowPositionMs = C.usToMs(windowPositionUs);
@@ -422,9 +431,17 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
   @Override
   public void release() {
-    Log.i(TAG, "Release " + Integer.toHexString(System.identityHashCode(this)) + " ["
-        + ExoPlayerLibraryInfo.VERSION_SLASHY + "] [" + Util.DEVICE_DEBUG_INFO + "] ["
-        + ExoPlayerLibraryInfo.registeredModules() + "]");
+    Log.i(
+        TAG,
+        "Release "
+            + Integer.toHexString(System.identityHashCode(this))
+            + " ["
+            + ExoPlayerLibraryInfo.VERSION_SLASHY
+            + "] ["
+            + Util.DEVICE_DEBUG_INFO
+            + "] ["
+            + ExoPlayerLibraryInfo.registeredModules()
+            + "]");
     mediaSource = null;
     internalPlayer.release();
     eventHandler.removeCallbacksAndMessages(null);

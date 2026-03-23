@@ -51,9 +51,7 @@ import java.nio.ByteBuffer;
  */
 public interface AudioSink {
 
-  /**
-   * Listener for audio sink events.
-   */
+  /** Listener for audio sink events. */
   interface Listener {
 
     /**
@@ -71,8 +69,8 @@ public interface AudioSink {
 
     /**
      * Called when the audio sink runs out of data.
-     * <p>
-     * An audio sink implementation may never call this method (for example, if audio data is
+     *
+     * <p>An audio sink implementation may never call this method (for example, if audio data is
      * consumed in batches rather than based on the sink's own clock).
      *
      * @param bufferSize The size of the sink's buffer, in bytes.
@@ -82,38 +80,26 @@ public interface AudioSink {
      * @param elapsedSinceLastFeedMs The time since the sink was last fed data, in milliseconds.
      */
     void onUnderrun(int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs);
-
   }
 
-  /**
-   * Thrown when a failure occurs configuring the sink.
-   */
+  /** Thrown when a failure occurs configuring the sink. */
   final class ConfigurationException extends Exception {
 
-    /**
-     * Creates a new configuration exception with the specified {@code cause} and no message.
-     */
+    /** Creates a new configuration exception with the specified {@code cause} and no message. */
     public ConfigurationException(Throwable cause) {
       super(cause);
     }
 
-    /**
-     * Creates a new configuration exception with the specified {@code message} and no cause.
-     */
+    /** Creates a new configuration exception with the specified {@code message} and no cause. */
     public ConfigurationException(String message) {
       super(message);
     }
-
   }
 
-  /**
-   * Thrown when a failure occurs initializing the sink.
-   */
+  /** Thrown when a failure occurs initializing the sink. */
   final class InitializationException extends Exception {
 
-    /**
-     * The underlying {@link AudioTrack}'s state, if applicable.
-     */
+    /** The underlying {@link AudioTrack}'s state, if applicable. */
     public final int audioTrackState;
 
     /**
@@ -122,24 +108,29 @@ public interface AudioSink {
      * @param channelConfig The requested channel configuration.
      * @param bufferSize The requested buffer size in bytes.
      */
-    public InitializationException(int audioTrackState, int sampleRate, int channelConfig,
-        int bufferSize) {
-      super("AudioTrack init failed: " + audioTrackState + ", Config(" + sampleRate + ", "
-          + channelConfig + ", " + bufferSize + ")");
+    public InitializationException(
+        int audioTrackState, int sampleRate, int channelConfig, int bufferSize) {
+      super(
+          "AudioTrack init failed: "
+              + audioTrackState
+              + ", Config("
+              + sampleRate
+              + ", "
+              + channelConfig
+              + ", "
+              + bufferSize
+              + ")");
       this.audioTrackState = audioTrackState;
     }
-
   }
 
-  /**
-   * Thrown when a failure occurs writing to the sink.
-   */
+  /** Thrown when a failure occurs writing to the sink. */
   final class WriteException extends Exception {
 
     /**
      * The error value returned from the sink implementation. If the sink writes to a platform
-     * {@link AudioTrack}, this will be the error value returned from
-     * {@link AudioTrack#write(byte[], int, int)} or {@link AudioTrack#write(ByteBuffer, int, int)}.
+     * {@link AudioTrack}, this will be the error value returned from {@link
+     * AudioTrack#write(byte[], int, int)} or {@link AudioTrack#write(ByteBuffer, int, int)}.
      * Otherwise, the meaning of the error code depends on the sink implementation.
      */
     public final int errorCode;
@@ -151,12 +142,9 @@ public interface AudioSink {
       super("AudioTrack write failed: " + errorCode);
       this.errorCode = errorCode;
     }
-
   }
 
-  /**
-   * Returned by {@link #getCurrentPositionUs(boolean)} when the position is not set.
-   */
+  /** Returned by {@link #getCurrentPositionUs(boolean)} when the position is not set. */
   long CURRENT_POSITION_NOT_SET = Long.MIN_VALUE;
 
   /**
@@ -176,8 +164,8 @@ public interface AudioSink {
   boolean supportsOutput(int channelCount, @C.Encoding int encoding);
 
   /**
-   * Returns the playback position in the stream starting at zero, in microseconds, or
-   * {@link #CURRENT_POSITION_NOT_SET} if it is not yet available.
+   * Returns the playback position in the stream starting at zero, in microseconds, or {@link
+   * #CURRENT_POSITION_NOT_SET} if it is not yet available.
    *
    * @param sourceEnded Specify {@code true} if no more input buffers will be provided.
    * @return The playback position relative to the start of playback, in microseconds.
@@ -213,9 +201,7 @@ public interface AudioSink {
       int trimEndFrames)
       throws ConfigurationException;
 
-  /**
-   * Starts or resumes consuming audio if initialized.
-   */
+  /** Starts or resumes consuming audio if initialized. */
   void play();
 
   /** Signals to the sink that the next buffer may be discontinuous with the previous buffer. */
@@ -253,9 +239,7 @@ public interface AudioSink {
    */
   boolean isEnded();
 
-  /**
-   * Returns whether the sink has data pending that has not been consumed yet.
-   */
+  /** Returns whether the sink has data pending that has not been consumed yet. */
   boolean hasPendingData();
 
   /**
@@ -267,16 +251,14 @@ public interface AudioSink {
    */
   PlaybackParameters setPlaybackParameters(PlaybackParameters playbackParameters);
 
-  /**
-   * Gets the active {@link PlaybackParameters}.
-   */
+  /** Gets the active {@link PlaybackParameters}. */
   PlaybackParameters getPlaybackParameters();
 
   /**
    * Sets attributes for audio playback. If the attributes have changed and if the sink is not
    * configured for use with tunneling, then it is reset and the audio session id is cleared.
-   * <p>
-   * If the sink is configured for use with tunneling then the audio attributes are ignored. The
+   *
+   * <p>If the sink is configured for use with tunneling then the audio attributes are ignored. The
    * sink is not reset and the audio session id is not cleared. The passed attributes will be used
    * if the sink is later re-configured into non-tunneled mode.
    *
@@ -313,9 +295,7 @@ public interface AudioSink {
    */
   void setVolume(float volume);
 
-  /**
-   * Pauses playback.
-   */
+  /** Pauses playback. */
   void pause();
 
   /**

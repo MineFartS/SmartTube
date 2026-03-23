@@ -27,9 +27,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayDeque;
 
-/**
- * Default implementation of {@link EbmlReader}.
- */
+/** Default implementation of {@link EbmlReader}. */
 /* package */ final class DefaultEbmlReader implements EbmlReader {
 
   @Documented
@@ -159,8 +157,8 @@ import java.util.ArrayDeque;
    * @throws IOException If an error occurs reading from the input.
    * @throws InterruptedException If the thread is interrupted.
    */
-  private long maybeResyncToNextLevel1Element(ExtractorInput input) throws IOException,
-      InterruptedException {
+  private long maybeResyncToNextLevel1Element(ExtractorInput input)
+      throws IOException, InterruptedException {
     input.resetPeekPosition();
     while (true) {
       input.peekFully(scratch, 0, MAX_ID_BYTES);
@@ -254,7 +252,5 @@ import java.util.ArrayDeque;
       this.elementId = elementId;
       this.elementEndPosition = elementEndPosition;
     }
-
   }
-
 }

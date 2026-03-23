@@ -30,9 +30,7 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * Extracts data from the FLV container format.
- */
+/** Extracts data from the FLV container format. */
 public final class FlvExtractor implements Extractor {
 
   /** Factory for {@link FlvExtractor} instances. */
@@ -142,8 +140,8 @@ public final class FlvExtractor implements Extractor {
   }
 
   @Override
-  public int read(ExtractorInput input, PositionHolder seekPosition) throws IOException,
-      InterruptedException {
+  public int read(ExtractorInput input, PositionHolder seekPosition)
+      throws IOException, InterruptedException {
     while (true) {
       switch (state) {
         case STATE_READING_FLV_HEADER:
@@ -191,12 +189,12 @@ public final class FlvExtractor implements Extractor {
     boolean hasAudio = (flags & 0x04) != 0;
     boolean hasVideo = (flags & 0x01) != 0;
     if (hasAudio && audioReader == null) {
-      audioReader = new AudioTagPayloadReader(
-          extractorOutput.track(TAG_TYPE_AUDIO, C.TRACK_TYPE_AUDIO));
+      audioReader =
+          new AudioTagPayloadReader(extractorOutput.track(TAG_TYPE_AUDIO, C.TRACK_TYPE_AUDIO));
     }
     if (hasVideo && videoReader == null) {
-      videoReader = new VideoTagPayloadReader(
-          extractorOutput.track(TAG_TYPE_VIDEO, C.TRACK_TYPE_VIDEO));
+      videoReader =
+          new VideoTagPayloadReader(extractorOutput.track(TAG_TYPE_VIDEO, C.TRACK_TYPE_VIDEO));
     }
     extractorOutput.endTracks();
 
@@ -282,8 +280,8 @@ public final class FlvExtractor implements Extractor {
     return wasConsumed;
   }
 
-  private ParsableByteArray prepareTagData(ExtractorInput input) throws IOException,
-      InterruptedException {
+  private ParsableByteArray prepareTagData(ExtractorInput input)
+      throws IOException, InterruptedException {
     if (tagDataSize > tagData.capacity()) {
       tagData.reset(new byte[Math.max(tagData.capacity() * 2, tagDataSize)], 0);
     } else {

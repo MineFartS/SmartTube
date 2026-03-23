@@ -49,7 +49,6 @@ public final class SingleSampleMediaSource extends BaseMediaSource {
      * @param e The cause of the failure.
      */
     void onLoadError(int sourceId, IOException e);
-
   }
 
   /** Factory for {@link SingleSampleMediaSource}. */
@@ -174,7 +173,6 @@ public final class SingleSampleMediaSource extends BaseMediaSource {
       }
       return mediaSource;
     }
-
   }
 
   private final DataSpec dataSpec;

@@ -34,11 +34,13 @@ public final class SilenceSkippingAudioProcessor extends BaseAudioProcessor {
    * that part of audio as silent, in microseconds.
    */
   private static final long MINIMUM_SILENCE_DURATION_US = 150_000;
+
   /**
    * The duration of silence by which to extend non-silent sections, in microseconds. The value must
    * not exceed {@link #MINIMUM_SILENCE_DURATION_US}.
    */
   private static final long PADDING_SILENCE_US = 20_000;
+
   /**
    * The absolute level below which an individual PCM sample is classified as silent. Note: the
    * specified value will be rounded so that the threshold check only depends on the more
@@ -61,10 +63,13 @@ public final class SilenceSkippingAudioProcessor extends BaseAudioProcessor {
     STATE_SILENT,
   })
   private @interface State {}
+
   /** State when the input is not silent. */
   private static final int STATE_NOISY = 0;
+
   /** State when the input may be silent but we haven't read enough yet to know. */
   private static final int STATE_MAYBE_SILENT = 1;
+
   /** State when the input is silent. */
   private static final int STATE_SILENT = 2;
 

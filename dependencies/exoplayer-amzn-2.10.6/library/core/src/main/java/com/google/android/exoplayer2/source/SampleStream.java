@@ -20,17 +20,15 @@ import com.google.android.exoplayer2.FormatHolder;
 import com.google.android.exoplayer2.decoder.DecoderInputBuffer;
 import java.io.IOException;
 
-/**
- * A stream of media samples (and associated format information).
- */
+/** A stream of media samples (and associated format information). */
 public interface SampleStream {
 
   /**
    * Returns whether data is available to be read.
-   * <p>
-   * Note: If the stream has ended then a buffer with the end of stream flag can always be read from
-   * {@link #readData(FormatHolder, DecoderInputBuffer, boolean)}. Hence an ended stream is always
-   * ready.
+   *
+   * <p>Note: If the stream has ended then a buffer with the end of stream flag can always be read
+   * from {@link #readData(FormatHolder, DecoderInputBuffer, boolean)}. Hence an ended stream is
+   * always ready.
    *
    * @return Whether data is available to be read.
    */
@@ -75,5 +73,4 @@ public interface SampleStream {
    * @return The number of samples that were skipped.
    */
   int skipData(long positionUs);
-
 }

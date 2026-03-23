@@ -20,10 +20,10 @@ import static java.lang.Runtime.getRuntime;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.view.Surface;
 import androidx.annotation.CallSuper;
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
-import android.view.Surface;
 import com.google.android.exoplayer2.BaseRenderer;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -73,16 +73,17 @@ public class LibvpxVideoRenderer extends BaseRenderer {
     REINITIALIZATION_STATE_WAIT_END_OF_STREAM
   })
   private @interface ReinitializationState {}
-  /**
-   * The decoder does not need to be re-initialized.
-   */
+
+  /** The decoder does not need to be re-initialized. */
   private static final int REINITIALIZATION_STATE_NONE = 0;
+
   /**
    * The input format has changed in a way that requires the decoder to be re-initialized, but we
    * haven't yet signaled an end of stream to the existing decoder. We need to do so in order to
    * ensure that it outputs any remaining buffers before we release it.
    */
   private static final int REINITIALIZATION_STATE_SIGNAL_END_OF_STREAM = 1;
+
   /**
    * The input format has changed in a way that requires the decoder to be re-initialized, and we've
    * signaled an end of stream to the existing decoder. We're waiting for the decoder to output an
@@ -99,11 +100,13 @@ public class LibvpxVideoRenderer extends BaseRenderer {
 
   /** The number of input buffers. */
   private final int numInputBuffers;
+
   /**
    * The number of output buffers. The renderer may limit the minimum possible value due to
    * requiring multiple output buffers to be dequeued at a time for it to make progress.
    */
   private final int numOutputBuffers;
+
   /** The default input buffer size. */
   private static final int DEFAULT_INPUT_BUFFER_SIZE = 768 * 1024; // Value based on cs/SoftVpx.cpp.
 
@@ -331,7 +334,6 @@ public class LibvpxVideoRenderer extends BaseRenderer {
     }
   }
 
-
   @Override
   public boolean isEnded() {
     return outputStreamEnded;
@@ -342,7 +344,8 @@ public class LibvpxVideoRenderer extends BaseRenderer {
     if (waitingForKeys) {
       return false;
     }
-    if (format != null && (isSourceReady() || outputBuffer != null)
+    if (format != null
+        && (isSourceReady() || outputBuffer != null)
         && (renderedFirstFrame || outputMode == VpxDecoder.OUTPUT_MODE_NONE)) {
       // Ready. If we were joining then we've now joined, so clear the joining deadline.
       joiningDeadlineMs = C.TIME_UNSET;
@@ -502,8 +505,8 @@ public class LibvpxVideoRenderer extends BaseRenderer {
     format = newFormat;
     pendingFormat = newFormat;
 
-    boolean drmInitDataChanged = !Util.areEqual(format.drmInitData, oldFormat == null ? null
-        : oldFormat.drmInitData);
+    boolean drmInitDataChanged =
+        !Util.areEqual(format.drmInitData, oldFormat == null ? null : oldFormat.drmInitData);
     if (drmInitDataChanged) {
       if (format.drmInitData != null) {
         if (drmSessionManager == null) {
@@ -977,8 +980,10 @@ public class LibvpxVideoRenderer extends BaseRenderer {
   }
 
   private void setJoiningDeadlineMs() {
-    joiningDeadlineMs = allowedJoiningTimeMs > 0
-        ? (SystemClock.elapsedRealtime() + allowedJoiningTimeMs) : C.TIME_UNSET;
+    joiningDeadlineMs =
+        allowedJoiningTimeMs > 0
+            ? (SystemClock.elapsedRealtime() + allowedJoiningTimeMs)
+            : C.TIME_UNSET;
   }
 
   private void clearRenderedFirstFrame() {
@@ -1036,5 +1041,4 @@ public class LibvpxVideoRenderer extends BaseRenderer {
     // Class a buffer as very late if it should have been presented more than 500 ms ago.
     return earlyUs < -500000;
   }
-
 }

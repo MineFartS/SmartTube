@@ -17,10 +17,10 @@ package com.google.android.exoplayer2.text.ttml;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import androidx.annotation.Nullable;
 import android.text.SpannableStringBuilder;
 import android.util.Base64;
 import android.util.Pair;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.text.Cue;
 import com.google.android.exoplayer2.util.Assertions;
@@ -32,9 +32,7 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-/**
- * A package internal representation of TTML node.
- */
+/** A package internal representation of TTML node. */
 /* package */ final class TtmlNode {
 
   public static final String TAG_TT = "tt";
@@ -296,8 +294,8 @@ import java.util.TreeSet;
 
       boolean isPNode = TAG_P.equals(tag);
       for (int i = 0; i < getChildCount(); i++) {
-        getChild(i).traverseForText(timeUs, descendsPNode || isPNode, resolvedRegionId,
-            regionOutputs);
+        getChild(i)
+            .traverseForText(timeUs, descendsPNode || isPNode, resolvedRegionId, regionOutputs);
       }
       if (isPNode) {
         TtmlRenderUtil.endParagraph(getRegionOutput(resolvedRegionId, regionOutputs));
@@ -395,5 +393,4 @@ import java.util.TreeSet;
     }
     return builder;
   }
-
 }

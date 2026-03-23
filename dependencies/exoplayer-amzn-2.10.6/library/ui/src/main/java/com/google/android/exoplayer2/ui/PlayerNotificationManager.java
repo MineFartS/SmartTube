@@ -26,6 +26,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.media.session.MediaSessionCompat;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
@@ -33,7 +34,6 @@ import androidx.annotation.StringRes;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.media.app.NotificationCompat.MediaStyle;
-import android.support.v4.media.session.MediaSessionCompat;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ControlDispatcher;
 import com.google.android.exoplayer2.DefaultControlDispatcher;
@@ -284,20 +284,28 @@ public class PlayerNotificationManager {
 
   /** The action which starts playback. */
   public static final String ACTION_PLAY = "com.google.android.exoplayer.play";
+
   /** The action which pauses playback. */
   public static final String ACTION_PAUSE = "com.google.android.exoplayer.pause";
+
   /** The action which skips to the previous window. */
   public static final String ACTION_PREVIOUS = "com.google.android.exoplayer.prev";
+
   /** The action which skips to the next window. */
   public static final String ACTION_NEXT = "com.google.android.exoplayer.next";
+
   /** The action which fast forwards. */
   public static final String ACTION_FAST_FORWARD = "com.google.android.exoplayer.ffwd";
+
   /** The action which rewinds. */
   public static final String ACTION_REWIND = "com.google.android.exoplayer.rewind";
+
   /** The action which stops playback. */
   public static final String ACTION_STOP = "com.google.android.exoplayer.stop";
+
   /** The extra key of the instance id of the player notification manager. */
   public static final String EXTRA_INSTANCE_ID = "INSTANCE_ID";
+
   /**
    * The action which is executed when the notification is dismissed. It cancels the notification
    * and calls {@link NotificationListener#onNotificationCancelled(int, boolean)}.
@@ -337,6 +345,7 @@ public class PlayerNotificationManager {
 
   /** The default fast forward increment, in milliseconds. */
   public static final int DEFAULT_FAST_FORWARD_MS = 15000;
+
   /** The default rewind increment, in milliseconds. */
   public static final int DEFAULT_REWIND_MS = 5000;
 
@@ -1315,11 +1324,11 @@ public class PlayerNotificationManager {
     // MOD: fix crashes on api >= 23
     int flags = PendingIntent.FLAG_UPDATE_CURRENT;
     if (Build.VERSION.SDK_INT >= 23) {
-      // IllegalArgumentException fix: Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE...
+      // IllegalArgumentException fix: Targeting S+ (version 31 and above) requires that one of
+      // FLAG_IMMUTABLE...
       flags |= PendingIntent.FLAG_IMMUTABLE;
     }
-    return PendingIntent.getBroadcast(
-        context, instanceId, intent, flags);
+    return PendingIntent.getBroadcast(context, instanceId, intent, flags);
   }
 
   @SuppressWarnings("nullness:argument.type.incompatible")

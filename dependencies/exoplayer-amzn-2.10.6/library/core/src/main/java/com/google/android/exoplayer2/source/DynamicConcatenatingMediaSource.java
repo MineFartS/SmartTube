@@ -15,7 +15,9 @@
  */
 package com.google.android.exoplayer2.source;
 
-/** @deprecated Use {@link ConcatenatingMediaSource} instead. */
+/**
+ * @deprecated Use {@link ConcatenatingMediaSource} instead.
+ */
 @Deprecated
 public final class DynamicConcatenatingMediaSource extends ConcatenatingMediaSource {
 

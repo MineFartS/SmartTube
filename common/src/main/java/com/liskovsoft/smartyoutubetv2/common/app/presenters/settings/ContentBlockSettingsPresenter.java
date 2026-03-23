@@ -16,182 +16,164 @@ import com.liskovsoft.smartyoutubetv2.common.misc.MediaServiceManager;
 import com.liskovsoft.smartyoutubetv2.common.prefs.ContentBlockData;
 import com.liskovsoft.smartyoutubetv2.common.utils.AppDialogUtil;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
-
-import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
-    
-    private final ContentBlockData mContentBlockData;
 
-    public ContentBlockSettingsPresenter(Context context) {
-        super(context);
-        mContentBlockData = ContentBlockData.instance(context);
+  private final ContentBlockData mContentBlockData;
+
+  public ContentBlockSettingsPresenter(Context context) {
+    super(context);
+    mContentBlockData = ContentBlockData.instance(context);
+  }
+
+  public static ContentBlockSettingsPresenter instance(Context context) {
+    return new ContentBlockSettingsPresenter(context);
+  }
+
+  public void show(Runnable onFinish) {
+
+    AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
+
+    appendSponsorBlockSwitch(settingsPresenter);
+    appendExcludeChannelButton(settingsPresenter);
+    appendActionsSection(settingsPresenter);
+    appendColorMarkersSection(settingsPresenter);
+
+    appendLinks(settingsPresenter);
+
+    settingsPresenter.showDialog(getContext().getString(R.string.content_block_provider), onFinish);
+  }
+
+  public void show() {
+    show(null);
+  }
+
+  private void appendSponsorBlockSwitch(AppDialogPresenter settingsPresenter) {
+
+    Video video = null;
+
+    if (getViewManager().getTopView() == PlaybackView.class) {
+      video = PlaybackPresenter.instance(getContext()).getVideo();
     }
 
-    public static ContentBlockSettingsPresenter instance(Context context) {
-        return new ContentBlockSettingsPresenter(context);
-    }
+    final String channelId = video != null ? video.channelId : null;
 
-    public void show(Runnable onFinish) {
-        
-        AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
+    boolean isChannelExcluded =
+        ContentBlockData.instance(getContext()).isChannelExcluded(channelId);
 
-        appendSponsorBlockSwitch(settingsPresenter);
-        appendExcludeChannelButton(settingsPresenter);
-        appendActionsSection(settingsPresenter);
-        appendColorMarkersSection(settingsPresenter);
-
-        appendLinks(settingsPresenter);
-
-        settingsPresenter.showDialog(
-            getContext().getString(R.string.content_block_provider), 
-            onFinish
-        );
-
-    }
-
-    public void show() {
-        show(null);
-    }
-
-    private void appendSponsorBlockSwitch(AppDialogPresenter settingsPresenter) {
-        
-        Video video = null;
-
-        if (getViewManager().getTopView() == PlaybackView.class) {
-            video = PlaybackPresenter.instance(getContext()).getVideo();
-        }
-
-        final String channelId = video != null ? video.channelId : null;
-
-        boolean isChannelExcluded = ContentBlockData.instance(getContext()).isChannelExcluded(channelId);
-
-        OptionItem sponsorBlockOption = UiOptionItem.from(getContext().getString(R.string.enable),
+    OptionItem sponsorBlockOption =
+        UiOptionItem.from(
+            getContext().getString(R.string.enable),
             option -> {
-                mContentBlockData.enableSponsorBlock(option.isSelected());
-                ContentBlockData.instance(getContext()).stopExcludingChannel(channelId);
+              mContentBlockData.enableSponsorBlock(option.isSelected());
+              ContentBlockData.instance(getContext()).stopExcludingChannel(channelId);
             },
-            !isChannelExcluded && mContentBlockData.isSponsorBlockEnabled()
-        );
+            !isChannelExcluded && mContentBlockData.isSponsorBlockEnabled());
 
-        settingsPresenter.appendSingleSwitch(sponsorBlockOption);
+    settingsPresenter.appendSingleSwitch(sponsorBlockOption);
+  }
 
+  private void appendActionsSection(AppDialogPresenter settingsPresenter) {
+
+    List<OptionItem> options = new ArrayList<>();
+
+    for (SegmentAction action : mContentBlockData.getActions()) {
+      options.add(
+          UiOptionItem.from(
+              getColoredString(
+                  mContentBlockData.getLocalizedRes(action.segmentCategory),
+                  mContentBlockData.getColorRes(action.segmentCategory)),
+              optionItem -> {
+                AppDialogPresenter dialogPresenter = AppDialogPresenter.instance(getContext());
+
+                List<OptionItem> nestedOptions = new ArrayList<>();
+
+                nestedOptions.add(
+                    UiOptionItem.from(
+                        getContext().getString(R.string.content_block_action_none),
+                        optionItem1 -> action.actionType = ContentBlockData.ACTION_DO_NOTHING,
+                        action.actionType == ContentBlockData.ACTION_DO_NOTHING));
+
+                nestedOptions.add(
+                    UiOptionItem.from(
+                        getContext().getString(R.string.content_block_action_toast),
+                        optionItem1 -> action.actionType = ContentBlockData.ACTION_SKIP_WITH_TOAST,
+                        action.actionType == ContentBlockData.ACTION_SKIP_WITH_TOAST));
+
+                String title =
+                    getContext()
+                        .getString(mContentBlockData.getLocalizedRes(action.segmentCategory));
+
+                dialogPresenter.appendRadioCategory(title, nestedOptions);
+
+                dialogPresenter.showDialog(title, mContentBlockData::persistActions);
+              }));
     }
 
-    private void appendActionsSection(AppDialogPresenter settingsPresenter) {
+    settingsPresenter.appendStringsCategory(
+        getContext().getString(R.string.content_block_action_type), options);
+  }
 
-        List<OptionItem> options = new ArrayList<>();
+  private void appendColorMarkersSection(AppDialogPresenter settingsPresenter) {
 
-        for (SegmentAction action : mContentBlockData.getActions()) {
-            options.add(
-                UiOptionItem.from(
+    List<OptionItem> options = new ArrayList<>();
 
-                    getColoredString(
-                        mContentBlockData.getLocalizedRes(action.segmentCategory), 
-                        mContentBlockData.getColorRes(action.segmentCategory)
-                    ),
-                    
-                    optionItem -> {
-                    
-                        AppDialogPresenter dialogPresenter = AppDialogPresenter.instance(getContext());
-
-                        List<OptionItem> nestedOptions = new ArrayList<>();
-                        
-                        nestedOptions.add(
-                            UiOptionItem.from(
-                                getContext().getString(R.string.content_block_action_none),
-                                optionItem1 -> action.actionType = ContentBlockData.ACTION_DO_NOTHING,
-                                action.actionType == ContentBlockData.ACTION_DO_NOTHING
-                            )
-                        );
-
-                        nestedOptions.add(
-                            UiOptionItem.from(
-                                getContext().getString(R.string.content_block_action_toast),
-                                optionItem1 -> action.actionType = ContentBlockData.ACTION_SKIP_WITH_TOAST,
-                                action.actionType == ContentBlockData.ACTION_SKIP_WITH_TOAST
-                            )
-                        );
-
-                        String title = getContext().getString(mContentBlockData.getLocalizedRes(action.segmentCategory));
-
-                        dialogPresenter.appendRadioCategory(title, nestedOptions);
-                        
-                        dialogPresenter.showDialog(
-                            title, 
-                            mContentBlockData::persistActions
-                        );
-
-                    }
-                )
-            );
-        }
-
-        settingsPresenter.appendStringsCategory(
-            getContext().getString(R.string.content_block_action_type), 
-            options
-        );
-
+    for (String segmentCategory : mContentBlockData.getAllCategories()) {
+      options.add(
+          UiOptionItem.from(
+              getColoredString(
+                  mContentBlockData.getLocalizedRes(segmentCategory),
+                  mContentBlockData.getColorRes(segmentCategory)),
+              optionItem -> {
+                if (optionItem.isSelected()) {
+                  mContentBlockData.enableColorMarker(segmentCategory);
+                } else {
+                  mContentBlockData.disableColorMarker(segmentCategory);
+                }
+              },
+              mContentBlockData.isColorMarkerEnabled(segmentCategory)));
     }
 
-    private void appendColorMarkersSection(AppDialogPresenter settingsPresenter) {
+    settingsPresenter.appendCheckedCategory(
+        getContext().getString(R.string.sponsor_color_markers), options);
+  }
 
-        List<OptionItem> options = new ArrayList<>();
+  private void appendLinks(AppDialogPresenter settingsPresenter) {
+    OptionItem statsCheckOption =
+        UiOptionItem.from(
+            getContext().getString(R.string.content_block_status),
+            option ->
+                Utils.openLink(
+                    getContext(), getContext().getString(R.string.content_block_status_url)));
 
-        for (String segmentCategory : mContentBlockData.getAllCategories()) {
-            options.add(
-                UiOptionItem.from(
-                    getColoredString(
-                        mContentBlockData.getLocalizedRes(segmentCategory),
-                        mContentBlockData.getColorRes(segmentCategory)
-                    ),
-                    optionItem -> {
-                        if (optionItem.isSelected()) {
-                            mContentBlockData.enableColorMarker(segmentCategory);
-                        } else {
-                            mContentBlockData.disableColorMarker(segmentCategory);
-                        }
-                    },
-                    mContentBlockData.isColorMarkerEnabled(segmentCategory)
-                )
-            );
-        }
+    OptionItem webSiteOption =
+        UiOptionItem.from(
+            getContext().getString(R.string.about_sponsorblock),
+            option ->
+                Utils.openLink(
+                    getContext(), getContext().getString(R.string.content_block_provider_url)));
 
-        settingsPresenter.appendCheckedCategory(
-            getContext().getString(R.string.sponsor_color_markers), 
-            options
-        );
+    settingsPresenter.appendSingleButton(statsCheckOption);
+    settingsPresenter.appendSingleButton(webSiteOption);
+  }
 
+  private void appendExcludeChannelButton(AppDialogPresenter settingsPresenter) {
+    Video video = PlaybackPresenter.instance(getContext()).getVideo();
+
+    if (video == null || getViewManager().getTopView() != PlaybackView.class) {
+      return;
     }
 
-    private void appendLinks(AppDialogPresenter settingsPresenter) {
-        OptionItem statsCheckOption = UiOptionItem.from(getContext().getString(R.string.content_block_status),
-                option -> Utils.openLink(getContext(), getContext().getString(R.string.content_block_status_url)));
+    settingsPresenter.appendSingleButton(
+        AppDialogUtil.createExcludeFromContentBlockButton(
+            getContext(), video, MediaServiceManager.instance(), settingsPresenter::closeDialog));
+  }
 
-        OptionItem webSiteOption = UiOptionItem.from(getContext().getString(R.string.about_sponsorblock),
-                option -> Utils.openLink(getContext(), getContext().getString(R.string.content_block_provider_url)));
-
-        settingsPresenter.appendSingleButton(statsCheckOption);
-        settingsPresenter.appendSingleButton(webSiteOption);
-    }
-
-    private void appendExcludeChannelButton(AppDialogPresenter settingsPresenter) {
-        Video video = PlaybackPresenter.instance(getContext()).getVideo();
-
-        if (video == null || getViewManager().getTopView() != PlaybackView.class) {
-            return;
-        }
-
-        settingsPresenter.appendSingleButton(AppDialogUtil.createExcludeFromContentBlockButton(getContext(), video, MediaServiceManager.instance(), settingsPresenter::closeDialog));
-    }
-
-    private CharSequence getColoredString(int strResId, int colorResId) {
-        String origin = getContext().getString(strResId);
-        CharSequence colorMark = Utils.color("●", ContextCompat.getColor(getContext(), colorResId));
-        return TextUtils.concat( colorMark, " ", origin);
-    }
+  private CharSequence getColoredString(int strResId, int colorResId) {
+    String origin = getContext().getString(strResId);
+    CharSequence colorMark = Utils.color("●", ContextCompat.getColor(getContext(), colorResId));
+    return TextUtils.concat(colorMark, " ", origin);
+  }
 }

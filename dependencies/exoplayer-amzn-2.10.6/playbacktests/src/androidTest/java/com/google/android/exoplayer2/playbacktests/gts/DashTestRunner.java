@@ -138,8 +138,8 @@ public final class DashTestRunner {
 
   public DashTestRunner setCanIncludeAdditionalVideoFormats(
       boolean canIncludeAdditionalVideoFormats) {
-    this.canIncludeAdditionalVideoFormats = canIncludeAdditionalVideoFormats
-        && ALLOW_ADDITIONAL_VIDEO_FORMATS;
+    this.canIncludeAdditionalVideoFormats =
+        canIncludeAdditionalVideoFormats && ALLOW_ADDITIONAL_VIDEO_FORMATS;
     return this;
   }
 
@@ -166,8 +166,8 @@ public final class DashTestRunner {
 
   public DashTestRunner setWidevineInfo(String mimeType, boolean videoIdRequiredInLicenseUrl) {
     this.useL1Widevine = isL1WidevineAvailable(mimeType);
-    this.widevineLicenseUrl = DashTestData.getWidevineLicenseUrl(videoIdRequiredInLicenseUrl,
-        useL1Widevine);
+    this.widevineLicenseUrl =
+        DashTestData.getWidevineLicenseUrl(videoIdRequiredInLicenseUrl, useL1Widevine);
     return this;
   }
 
@@ -189,15 +189,24 @@ public final class DashTestRunner {
   private DashHostedTest createDashHostedTest(
       boolean canIncludeAdditionalVideoFormats, boolean isCddLimitedRetry) {
     MetricsLogger metricsLogger = MetricsLogger.Factory.createDefault(tag);
-    return new DashHostedTest(tag, streamName, manifestUrl, metricsLogger, fullPlaybackNoSeeking,
-        audioFormat, canIncludeAdditionalVideoFormats, isCddLimitedRetry, actionSchedule,
-        offlineLicenseKeySetId, widevineLicenseUrl, useL1Widevine, dataSourceFactory,
+    return new DashHostedTest(
+        tag,
+        streamName,
+        manifestUrl,
+        metricsLogger,
+        fullPlaybackNoSeeking,
+        audioFormat,
+        canIncludeAdditionalVideoFormats,
+        isCddLimitedRetry,
+        actionSchedule,
+        offlineLicenseKeySetId,
+        widevineLicenseUrl,
+        useL1Widevine,
+        dataSourceFactory,
         videoFormats);
   }
 
-  /**
-   * A {@link HostedTest} for DASH playback tests.
-   */
+  /** A {@link HostedTest} for DASH playback tests. */
   private static final class DashHostedTest extends ExoHostedTest {
 
     private final String streamName;
@@ -231,11 +240,21 @@ public final class DashTestRunner {
      * @param dataSourceFactory If not null, used to load manifest and media.
      * @param videoFormats The video formats.
      */
-    private DashHostedTest(String tag, String streamName, String manifestUrl,
-        MetricsLogger metricsLogger, boolean fullPlaybackNoSeeking, String audioFormat,
-        boolean canIncludeAdditionalVideoFormats, boolean isCddLimitedRetry,
-        ActionSchedule actionSchedule, byte[] offlineLicenseKeySetId, String widevineLicenseUrl,
-        boolean useL1Widevine, DataSource.Factory dataSourceFactory, String... videoFormats) {
+    private DashHostedTest(
+        String tag,
+        String streamName,
+        String manifestUrl,
+        MetricsLogger metricsLogger,
+        boolean fullPlaybackNoSeeking,
+        String audioFormat,
+        boolean canIncludeAdditionalVideoFormats,
+        boolean isCddLimitedRetry,
+        ActionSchedule actionSchedule,
+        byte[] offlineLicenseKeySetId,
+        String widevineLicenseUrl,
+        boolean useL1Widevine,
+        DataSource.Factory dataSourceFactory,
+        String... videoFormats) {
       super(tag, fullPlaybackNoSeeking);
       Assertions.checkArgument(!(isCddLimitedRetry && canIncludeAdditionalVideoFormats));
       this.streamName = streamName;
@@ -247,8 +266,9 @@ public final class DashTestRunner {
       this.widevineLicenseUrl = widevineLicenseUrl;
       this.useL1Widevine = useL1Widevine;
       this.dataSourceFactory = dataSourceFactory;
-      trackSelector = new DashTestTrackSelector(tag, audioFormat, videoFormats,
-          canIncludeAdditionalVideoFormats);
+      trackSelector =
+          new DashTestTrackSelector(
+              tag, audioFormat, videoFormats, canIncludeAdditionalVideoFormats);
       if (actionSchedule != null) {
         setSchedule(actionSchedule);
       }
@@ -266,17 +286,16 @@ public final class DashTestRunner {
         return null;
       }
       try {
-        MediaDrmCallback drmCallback = new HttpMediaDrmCallback(widevineLicenseUrl,
-            new DefaultHttpDataSourceFactory(userAgent));
+        MediaDrmCallback drmCallback =
+            new HttpMediaDrmCallback(
+                widevineLicenseUrl, new DefaultHttpDataSourceFactory(userAgent));
         DefaultDrmSessionManager<FrameworkMediaCrypto> drmSessionManager =
             DefaultDrmSessionManager.newWidevineInstance(drmCallback, null);
         if (!useL1Widevine) {
-          drmSessionManager.setPropertyString(
-              SECURITY_LEVEL_PROPERTY, WIDEVINE_SECURITY_LEVEL_3);
+          drmSessionManager.setPropertyString(SECURITY_LEVEL_PROPERTY, WIDEVINE_SECURITY_LEVEL_3);
         }
         if (offlineLicenseKeySetId != null) {
-          drmSessionManager.setMode(DefaultDrmSessionManager.MODE_PLAYBACK,
-              offlineLicenseKeySetId);
+          drmSessionManager.setMode(DefaultDrmSessionManager.MODE_PLAYBACK, offlineLicenseKeySetId);
         }
         return drmSessionManager;
       } catch (UnsupportedDrmException e) {
@@ -317,39 +336,49 @@ public final class DashTestRunner {
     protected void onTestFinished(DecoderCounters audioCounters, DecoderCounters videoCounters) {
       metricsLogger.logMetric(MetricsLogger.KEY_TEST_NAME, streamName);
       metricsLogger.logMetric(MetricsLogger.KEY_IS_CDD_LIMITED_RETRY, isCddLimitedRetry);
-      metricsLogger.logMetric(MetricsLogger.KEY_FRAMES_DROPPED_COUNT,
-          videoCounters.droppedBufferCount);
-      metricsLogger.logMetric(MetricsLogger.KEY_MAX_CONSECUTIVE_FRAMES_DROPPED_COUNT,
+      metricsLogger.logMetric(
+          MetricsLogger.KEY_FRAMES_DROPPED_COUNT, videoCounters.droppedBufferCount);
+      metricsLogger.logMetric(
+          MetricsLogger.KEY_MAX_CONSECUTIVE_FRAMES_DROPPED_COUNT,
           videoCounters.maxConsecutiveDroppedBufferCount);
-      metricsLogger.logMetric(MetricsLogger.KEY_FRAMES_SKIPPED_COUNT,
-          videoCounters.skippedOutputBufferCount);
-      metricsLogger.logMetric(MetricsLogger.KEY_FRAMES_RENDERED_COUNT,
-          videoCounters.renderedOutputBufferCount);
+      metricsLogger.logMetric(
+          MetricsLogger.KEY_FRAMES_SKIPPED_COUNT, videoCounters.skippedOutputBufferCount);
+      metricsLogger.logMetric(
+          MetricsLogger.KEY_FRAMES_RENDERED_COUNT, videoCounters.renderedOutputBufferCount);
       metricsLogger.close();
 
       if (fullPlaybackNoSeeking) {
         // We shouldn't have skipped any output buffers.
-        DecoderCountersUtil
-            .assertSkippedOutputBufferCount(tag + AUDIO_TAG_SUFFIX, audioCounters, 0);
-        DecoderCountersUtil
-            .assertSkippedOutputBufferCount(tag + VIDEO_TAG_SUFFIX, videoCounters, 0);
+        DecoderCountersUtil.assertSkippedOutputBufferCount(
+            tag + AUDIO_TAG_SUFFIX, audioCounters, 0);
+        DecoderCountersUtil.assertSkippedOutputBufferCount(
+            tag + VIDEO_TAG_SUFFIX, videoCounters, 0);
         // We allow one fewer output buffer due to the way that MediaCodecRenderer and the
         // underlying decoders handle the end of stream. This should be tightened up in the future.
-        DecoderCountersUtil.assertTotalBufferCount(tag + AUDIO_TAG_SUFFIX, audioCounters,
-            audioCounters.inputBufferCount - 1, audioCounters.inputBufferCount);
-        DecoderCountersUtil.assertTotalBufferCount(tag + VIDEO_TAG_SUFFIX, videoCounters,
-            videoCounters.inputBufferCount - 1, videoCounters.inputBufferCount);
+        DecoderCountersUtil.assertTotalBufferCount(
+            tag + AUDIO_TAG_SUFFIX,
+            audioCounters,
+            audioCounters.inputBufferCount - 1,
+            audioCounters.inputBufferCount);
+        DecoderCountersUtil.assertTotalBufferCount(
+            tag + VIDEO_TAG_SUFFIX,
+            videoCounters,
+            videoCounters.inputBufferCount - 1,
+            videoCounters.inputBufferCount);
       }
       try {
-        int droppedFrameLimit = (int) Math.ceil(MAX_DROPPED_VIDEO_FRAME_FRACTION
-            * DecoderCountersUtil.getTotalBufferCount(videoCounters));
+        int droppedFrameLimit =
+            (int)
+                Math.ceil(
+                    MAX_DROPPED_VIDEO_FRAME_FRACTION
+                        * DecoderCountersUtil.getTotalBufferCount(videoCounters));
         // Assert that performance is acceptable.
         // Assert that total dropped frames were within limit.
-        DecoderCountersUtil.assertDroppedBufferLimit(tag + VIDEO_TAG_SUFFIX, videoCounters,
-            droppedFrameLimit);
+        DecoderCountersUtil.assertDroppedBufferLimit(
+            tag + VIDEO_TAG_SUFFIX, videoCounters, droppedFrameLimit);
         // Assert that consecutive dropped frames were within limit.
-        DecoderCountersUtil.assertConsecutiveDroppedBufferLimit(tag + VIDEO_TAG_SUFFIX,
-            videoCounters, MAX_CONSECUTIVE_DROPPED_VIDEO_FRAMES);
+        DecoderCountersUtil.assertConsecutiveDroppedBufferLimit(
+            tag + VIDEO_TAG_SUFFIX, videoCounters, MAX_CONSECUTIVE_DROPPED_VIDEO_FRAMES);
       } catch (AssertionError e) {
         if (trackSelector.includedAdditionalVideoFormats) {
           // Retry limiting to CDD mandated formats (b/28220076).
@@ -371,7 +400,10 @@ public final class DashTestRunner {
 
     public boolean includedAdditionalVideoFormats;
 
-    private DashTestTrackSelector(String tag, String audioFormatId, String[] videoFormatIds,
+    private DashTestTrackSelector(
+        String tag,
+        String audioFormatId,
+        String[] videoFormatIds,
         boolean canIncludeAdditionalVideoFormats) {
       super(new RandomTrackSelection.Factory(/* seed= */ 0));
       this.tag = tag;
@@ -423,8 +455,9 @@ public final class DashTestRunner {
       // Always select explicitly listed representations.
       for (String formatId : formatIds) {
         int trackIndex = getTrackIndex(trackGroup, formatId);
-        Log.d(tag, "Adding base video format: "
-            + Format.toLogString(trackGroup.getFormat(trackIndex)));
+        Log.d(
+            tag,
+            "Adding base video format: " + Format.toLogString(trackGroup.getFormat(trackIndex)));
         trackIndices.add(trackIndex);
       }
 
@@ -432,8 +465,7 @@ public final class DashTestRunner {
       if (canIncludeAdditionalFormats) {
         for (int i = 0; i < trackGroup.length; i++) {
           if (!trackIndices.contains(i) && isFormatHandled(formatSupports[i])) {
-            Log.d(tag, "Adding extra video format: "
-                + Format.toLogString(trackGroup.getFormat(i)));
+            Log.d(tag, "Adding extra video format: " + Format.toLogString(trackGroup.getFormat(i)));
             trackIndices.add(i);
           }
         }
@@ -457,24 +489,21 @@ public final class DashTestRunner {
       return (formatSupport & RendererCapabilities.FORMAT_SUPPORT_MASK)
           == RendererCapabilities.FORMAT_HANDLED;
     }
-
   }
 
   /**
-   * Creates a new {@code MediaDrm} object. The encapsulation ensures that the tests can be
-   * executed for API level < 18.
+   * Creates a new {@code MediaDrm} object. The encapsulation ensures that the tests can be executed
+   * for API level < 18.
    */
   @TargetApi(18)
   private static final class MediaDrmBuilder {
 
-    public static MediaDrm build () {
+    public static MediaDrm build() {
       try {
         return new MediaDrm(WIDEVINE_UUID);
       } catch (UnsupportedSchemeException e) {
         throw new IllegalStateException(e);
       }
     }
-
   }
-
 }

@@ -22,9 +22,7 @@ import android.os.Parcelable;
 import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.util.Util;
 
-/**
- * Text information ID3 frame.
- */
+/** Text information ID3 frame. */
 public final class TextInformationFrame extends Id3Frame {
 
   public final @Nullable String description;
@@ -51,7 +49,8 @@ public final class TextInformationFrame extends Id3Frame {
       return false;
     }
     TextInformationFrame other = (TextInformationFrame) obj;
-    return id.equals(other.id) && Util.areEqual(description, other.description)
+    return id.equals(other.id)
+        && Util.areEqual(description, other.description)
         && Util.areEqual(value, other.value);
   }
 
@@ -90,7 +89,5 @@ public final class TextInformationFrame extends Id3Frame {
         public TextInformationFrame[] newArray(int size) {
           return new TextInformationFrame[size];
         }
-
       };
-
 }

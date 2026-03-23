@@ -15,8 +15,8 @@
  */
 package com.google.android.exoplayer2.source.chunk;
 
-import androidx.annotation.Nullable;
 import android.util.SparseArray;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.extractor.DummyTrackOutput;
@@ -32,28 +32,26 @@ import java.io.IOException;
 /**
  * An {@link Extractor} wrapper for loading chunks that contain a single primary track, and possibly
  * additional embedded tracks.
- * <p>
- * The wrapper allows switching of the {@link TrackOutput}s that receive parsed data.
+ *
+ * <p>The wrapper allows switching of the {@link TrackOutput}s that receive parsed data.
  */
 public final class ChunkExtractorWrapper implements ExtractorOutput {
 
-  /**
-   * Provides {@link TrackOutput} instances to be written to by the wrapper.
-   */
+  /** Provides {@link TrackOutput} instances to be written to by the wrapper. */
   public interface TrackOutputProvider {
 
     /**
      * Called to get the {@link TrackOutput} for a specific track.
-     * <p>
-     * The same {@link TrackOutput} is returned if multiple calls are made with the same {@code id}.
+     *
+     * <p>The same {@link TrackOutput} is returned if multiple calls are made with the same {@code
+     * id}.
      *
      * @param id A track identifier.
-     * @param type The type of the track. Typically one of the
-     *     {@link com.google.android.exoplayer2.C} {@code TRACK_TYPE_*} constants.
+     * @param type The type of the track. Typically one of the {@link
+     *     com.google.android.exoplayer2.C} {@code TRACK_TYPE_*} constants.
      * @return The {@link TrackOutput} for the given track identifier.
      */
     TrackOutput track(int id, int type);
-
   }
 
   public final Extractor extractor;
@@ -70,29 +68,25 @@ public final class ChunkExtractorWrapper implements ExtractorOutput {
 
   /**
    * @param extractor The extractor to wrap.
-   * @param primaryTrackType The type of the primary track. Typically one of the
-   *     {@link com.google.android.exoplayer2.C} {@code TRACK_TYPE_*} constants.
+   * @param primaryTrackType The type of the primary track. Typically one of the {@link
+   *     com.google.android.exoplayer2.C} {@code TRACK_TYPE_*} constants.
    * @param primaryTrackManifestFormat A manifest defined {@link Format} whose data should be merged
    *     into any sample {@link Format} output from the {@link Extractor} for the primary track.
    */
-  public ChunkExtractorWrapper(Extractor extractor, int primaryTrackType,
-      Format primaryTrackManifestFormat) {
+  public ChunkExtractorWrapper(
+      Extractor extractor, int primaryTrackType, Format primaryTrackManifestFormat) {
     this.extractor = extractor;
     this.primaryTrackType = primaryTrackType;
     this.primaryTrackManifestFormat = primaryTrackManifestFormat;
     bindingTrackOutputs = new SparseArray<>();
   }
 
-  /**
-   * Returns the {@link SeekMap} most recently output by the extractor, or null.
-   */
+  /** Returns the {@link SeekMap} most recently output by the extractor, or null. */
   public SeekMap getSeekMap() {
     return seekMap;
   }
 
-  /**
-   * Returns the sample {@link Format}s most recently output by the extractor, or null.
-   */
+  /** Returns the sample {@link Format}s most recently output by the extractor, or null. */
   public Format[] getSampleFormats() {
     return sampleFormats;
   }
@@ -134,8 +128,9 @@ public final class ChunkExtractorWrapper implements ExtractorOutput {
       // Assert that if we're seeing a new track we have not seen endTracks.
       Assertions.checkState(sampleFormats == null);
       // TODO: Manifest formats for embedded tracks should also be passed here.
-      bindingTrackOutput = new BindingTrackOutput(id, type,
-          type == primaryTrackType ? primaryTrackManifestFormat : null);
+      bindingTrackOutput =
+          new BindingTrackOutput(
+              id, type, type == primaryTrackType ? primaryTrackManifestFormat : null);
       bindingTrackOutput.bind(trackOutputProvider, endTimeUs);
       bindingTrackOutputs.put(id, bindingTrackOutput);
     }
@@ -190,8 +185,8 @@ public final class ChunkExtractorWrapper implements ExtractorOutput {
 
     @Override
     public void format(Format format) {
-      sampleFormat = manifestFormat != null ? format.copyWithManifestFormatInfo(manifestFormat)
-          : format;
+      sampleFormat =
+          manifestFormat != null ? format.copyWithManifestFormatInfo(manifestFormat) : format;
       trackOutput.format(sampleFormat);
     }
 
@@ -207,14 +202,12 @@ public final class ChunkExtractorWrapper implements ExtractorOutput {
     }
 
     @Override
-    public void sampleMetadata(long timeUs, @C.BufferFlags int flags, int size, int offset,
-        CryptoData cryptoData) {
+    public void sampleMetadata(
+        long timeUs, @C.BufferFlags int flags, int size, int offset, CryptoData cryptoData) {
       if (endTimeUs != C.TIME_UNSET && timeUs >= endTimeUs) {
         trackOutput = dummyTrackOutput;
       }
       trackOutput.sampleMetadata(timeUs, flags, size, offset, cryptoData);
     }
-
   }
-
 }

@@ -31,9 +31,7 @@ import com.google.android.exoplayer2.util.ParsableByteArray;
 import java.util.Arrays;
 import java.util.Collections;
 
-/**
- * Parses a continuous ADTS byte stream and extracts individual frames.
- */
+/** Parses a continuous ADTS byte stream and extracts individual frames. */
 public final class AdtsReader implements ElementaryStreamReader {
 
   private static final String TAG = "AdtsReader";
@@ -133,8 +131,9 @@ public final class AdtsReader implements ElementaryStreamReader {
     if (exposeId3) {
       idGenerator.generateNewId();
       id3Output = extractorOutput.track(idGenerator.getTrackId(), C.TRACK_TYPE_METADATA);
-      id3Output.format(Format.createSampleFormat(idGenerator.getFormatId(),
-          MimeTypes.APPLICATION_ID3, null, Format.NO_VALUE, null));
+      id3Output.format(
+          Format.createSampleFormat(
+              idGenerator.getFormatId(), MimeTypes.APPLICATION_ID3, null, Format.NO_VALUE, null));
     } else {
       id3Output = new DummyTrackOutput();
     }
@@ -209,9 +208,7 @@ public final class AdtsReader implements ElementaryStreamReader {
     return bytesRead == targetLength;
   }
 
-  /**
-   * Sets the state to STATE_FINDING_SAMPLE.
-   */
+  /** Sets the state to STATE_FINDING_SAMPLE. */
   private void setFindingSampleState() {
     state = STATE_FINDING_SAMPLE;
     bytesRead = 0;
@@ -219,8 +216,8 @@ public final class AdtsReader implements ElementaryStreamReader {
   }
 
   /**
-   * Sets the state to STATE_READING_ID3_HEADER and resets the fields required for
-   * {@link #parseId3Header()}.
+   * Sets the state to STATE_READING_ID3_HEADER and resets the fields required for {@link
+   * #parseId3Header()}.
    */
   private void setReadingId3HeaderState() {
     state = STATE_READING_ID3_HEADER;
@@ -237,8 +234,8 @@ public final class AdtsReader implements ElementaryStreamReader {
    * @param priorReadBytes Size of prior read bytes
    * @param sampleSize Size of the sample
    */
-  private void setReadingSampleState(TrackOutput outputToUse, long currentSampleDuration,
-      int priorReadBytes, int sampleSize) {
+  private void setReadingSampleState(
+      TrackOutput outputToUse, long currentSampleDuration, int priorReadBytes, int sampleSize) {
     state = STATE_READING_SAMPLE;
     bytesRead = priorReadBytes;
     this.currentOutput = outputToUse;
@@ -246,9 +243,7 @@ public final class AdtsReader implements ElementaryStreamReader {
     this.sampleSize = sampleSize;
   }
 
-  /**
-   * Sets the state to STATE_READING_ADTS_HEADER.
-   */
+  /** Sets the state to STATE_READING_ADTS_HEADER. */
   private void setReadingAdtsHeaderState() {
     state = STATE_READING_ADTS_HEADER;
     bytesRead = 0;
@@ -425,19 +420,15 @@ public final class AdtsReader implements ElementaryStreamReader {
     return true;
   }
 
-  /**
-   * Parses the Id3 header.
-   */
+  /** Parses the Id3 header. */
   private void parseId3Header() {
     id3Output.sampleData(id3HeaderBuffer, ID3_HEADER_SIZE);
     id3HeaderBuffer.setPosition(ID3_SIZE_OFFSET);
-    setReadingSampleState(id3Output, 0, ID3_HEADER_SIZE,
-        id3HeaderBuffer.readSynchSafeInt() + ID3_HEADER_SIZE);
+    setReadingSampleState(
+        id3Output, 0, ID3_HEADER_SIZE, id3HeaderBuffer.readSynchSafeInt() + ID3_HEADER_SIZE);
   }
 
-  /**
-   * Parses the sample header.
-   */
+  /** Parses the sample header. */
   private void parseAdtsHeader() throws ParserException {
     adtsScratch.setPosition(0);
 
@@ -463,12 +454,22 @@ public final class AdtsReader implements ElementaryStreamReader {
       byte[] audioSpecificConfig =
           CodecSpecificDataUtil.buildAacAudioSpecificConfig(
               audioObjectType, firstFrameSampleRateIndex, channelConfig);
-      Pair<Integer, Integer> audioParams = CodecSpecificDataUtil.parseAacAudioSpecificConfig(
-          audioSpecificConfig);
+      Pair<Integer, Integer> audioParams =
+          CodecSpecificDataUtil.parseAacAudioSpecificConfig(audioSpecificConfig);
 
-      Format format = Format.createAudioSampleFormat(formatId, MimeTypes.AUDIO_AAC, null,
-          Format.NO_VALUE, Format.NO_VALUE, audioParams.second, audioParams.first,
-          Collections.singletonList(audioSpecificConfig), null, 0, language);
+      Format format =
+          Format.createAudioSampleFormat(
+              formatId,
+              MimeTypes.AUDIO_AAC,
+              null,
+              Format.NO_VALUE,
+              Format.NO_VALUE,
+              audioParams.second,
+              audioParams.first,
+              Collections.singletonList(audioSpecificConfig),
+              null,
+              0,
+              language);
       // In this class a sample is an access unit, but the MediaFormat sample rate specifies the
       // number of PCM audio samples per second.
       sampleDurationUs = (C.MICROS_PER_SECOND * 1024) / format.sampleRate;
@@ -487,9 +488,7 @@ public final class AdtsReader implements ElementaryStreamReader {
     setReadingSampleState(output, sampleDurationUs, 0, sampleSize);
   }
 
-  /**
-   * Reads the rest of the sample
-   */
+  /** Reads the rest of the sample */
   private void readSample(ParsableByteArray data) {
     int bytesToRead = Math.min(data.bytesLeft(), sampleSize - bytesRead);
     currentOutput.sampleData(data, bytesToRead);
@@ -500,5 +499,4 @@ public final class AdtsReader implements ElementaryStreamReader {
       setFindingSampleState();
     }
   }
-
 }

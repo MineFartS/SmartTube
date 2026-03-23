@@ -32,14 +32,14 @@ public final class ColorParser {
   private static final String RGB = "rgb";
   private static final String RGBA = "rgba";
 
-  private static final Pattern RGB_PATTERN = Pattern.compile(
-      "^rgb\\((\\d{1,3}),(\\d{1,3}),(\\d{1,3})\\)$");
+  private static final Pattern RGB_PATTERN =
+      Pattern.compile("^rgb\\((\\d{1,3}),(\\d{1,3}),(\\d{1,3})\\)$");
 
-  private static final Pattern RGBA_PATTERN_INT_ALPHA = Pattern.compile(
-      "^rgba\\((\\d{1,3}),(\\d{1,3}),(\\d{1,3}),(\\d{1,3})\\)$");
+  private static final Pattern RGBA_PATTERN_INT_ALPHA =
+      Pattern.compile("^rgba\\((\\d{1,3}),(\\d{1,3}),(\\d{1,3}),(\\d{1,3})\\)$");
 
-  private static final Pattern RGBA_PATTERN_FLOAT_ALPHA = Pattern.compile(
-      "^rgba\\((\\d{1,3}),(\\d{1,3}),(\\d{1,3}),(\\d*\\.?\\d*?)\\)$");
+  private static final Pattern RGBA_PATTERN_FLOAT_ALPHA =
+      Pattern.compile("^rgba\\((\\d{1,3}),(\\d{1,3}),(\\d{1,3}),(\\d*\\.?\\d*?)\\)$");
 
   private static final Map<String, Integer> COLOR_MAP;
 
@@ -80,25 +80,25 @@ public final class ColorParser {
       }
       return color;
     } else if (colorExpression.startsWith(RGBA)) {
-      Matcher matcher = (alphaHasFloatFormat ? RGBA_PATTERN_FLOAT_ALPHA : RGBA_PATTERN_INT_ALPHA)
-          .matcher(colorExpression);
+      Matcher matcher =
+          (alphaHasFloatFormat ? RGBA_PATTERN_FLOAT_ALPHA : RGBA_PATTERN_INT_ALPHA)
+              .matcher(colorExpression);
       if (matcher.matches()) {
         return argb(
-          alphaHasFloatFormat ? (int) (255 * Float.parseFloat(matcher.group(4)))
-              : Integer.parseInt(matcher.group(4), 10),
-          Integer.parseInt(matcher.group(1), 10),
-          Integer.parseInt(matcher.group(2), 10),
-          Integer.parseInt(matcher.group(3), 10)
-        );
+            alphaHasFloatFormat
+                ? (int) (255 * Float.parseFloat(matcher.group(4)))
+                : Integer.parseInt(matcher.group(4), 10),
+            Integer.parseInt(matcher.group(1), 10),
+            Integer.parseInt(matcher.group(2), 10),
+            Integer.parseInt(matcher.group(3), 10));
       }
     } else if (colorExpression.startsWith(RGB)) {
       Matcher matcher = RGB_PATTERN.matcher(colorExpression);
       if (matcher.matches()) {
         return rgb(
-          Integer.parseInt(matcher.group(1), 10),
-          Integer.parseInt(matcher.group(2), 10),
-          Integer.parseInt(matcher.group(3), 10)
-        );
+            Integer.parseInt(matcher.group(1), 10),
+            Integer.parseInt(matcher.group(2), 10),
+            Integer.parseInt(matcher.group(3), 10));
       }
     } else {
       // we use our own color map

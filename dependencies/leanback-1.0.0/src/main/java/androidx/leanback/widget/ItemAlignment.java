@@ -20,60 +20,55 @@ import static androidx.recyclerview.widget.RecyclerView.VERTICAL;
 import android.view.View;
 
 /**
- * Defines alignment position on two directions of an item view. Typically item
- * view alignment is at the center of the view. The class allows defining
- * alignment at left/right or fixed offset/percentage position; it also allows
- * using descendant view by id match.
+ * Defines alignment position on two directions of an item view. Typically item view alignment is at
+ * the center of the view. The class allows defining alignment at left/right or fixed
+ * offset/percentage position; it also allows using descendant view by id match.
  */
 class ItemAlignment {
 
-    final static class Axis extends ItemAlignmentFacet.ItemAlignmentDef {
-        private int mOrientation;
+  static final class Axis extends ItemAlignmentFacet.ItemAlignmentDef {
+    private int mOrientation;
 
-        Axis(int orientation) {
-            mOrientation = orientation;
-        }
-
-        /**
-         * get alignment position relative to optical left/top of itemView.
-         */
-        public int getAlignmentPosition(View itemView) {
-            return ItemAlignmentFacetHelper.getAlignmentPosition(itemView, this, mOrientation);
-        }
+    Axis(int orientation) {
+      mOrientation = orientation;
     }
 
-    private int mOrientation = HORIZONTAL;
-
-    final public Axis vertical = new Axis(VERTICAL);
-
-    final public Axis horizontal = new Axis(HORIZONTAL);
-
-    private Axis mMainAxis = horizontal;
-
-    private Axis mSecondAxis = vertical;
-
-    final public Axis mainAxis() {
-        return mMainAxis;
+    /** get alignment position relative to optical left/top of itemView. */
+    public int getAlignmentPosition(View itemView) {
+      return ItemAlignmentFacetHelper.getAlignmentPosition(itemView, this, mOrientation);
     }
+  }
 
-    final public Axis secondAxis() {
-        return mSecondAxis;
+  private int mOrientation = HORIZONTAL;
+
+  public final Axis vertical = new Axis(VERTICAL);
+
+  public final Axis horizontal = new Axis(HORIZONTAL);
+
+  private Axis mMainAxis = horizontal;
+
+  private Axis mSecondAxis = vertical;
+
+  public final Axis mainAxis() {
+    return mMainAxis;
+  }
+
+  public final Axis secondAxis() {
+    return mSecondAxis;
+  }
+
+  public final void setOrientation(int orientation) {
+    mOrientation = orientation;
+    if (mOrientation == HORIZONTAL) {
+      mMainAxis = horizontal;
+      mSecondAxis = vertical;
+    } else {
+      mMainAxis = vertical;
+      mSecondAxis = horizontal;
     }
+  }
 
-    final public void setOrientation(int orientation) {
-        mOrientation = orientation;
-        if (mOrientation == HORIZONTAL) {
-            mMainAxis = horizontal;
-            mSecondAxis = vertical;
-        } else {
-            mMainAxis = vertical;
-            mSecondAxis = horizontal;
-        }
-    }
-
-    final public int getOrientation() {
-        return mOrientation;
-    }
-
-
+  public final int getOrientation() {
+    return mOrientation;
+  }
 }

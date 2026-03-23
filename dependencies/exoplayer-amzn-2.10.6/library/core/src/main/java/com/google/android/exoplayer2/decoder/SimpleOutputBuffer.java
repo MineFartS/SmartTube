@@ -18,9 +18,7 @@ package com.google.android.exoplayer2.decoder;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-/**
- * Buffer for {@link SimpleDecoder} output.
- */
+/** Buffer for {@link SimpleDecoder} output. */
 public class SimpleOutputBuffer extends OutputBuffer {
 
   private final SimpleDecoder<?, SimpleOutputBuffer, ?> owner;
@@ -60,5 +58,4 @@ public class SimpleOutputBuffer extends OutputBuffer {
   public void release() {
     owner.releaseOutputBuffer(this);
   }
-
 }

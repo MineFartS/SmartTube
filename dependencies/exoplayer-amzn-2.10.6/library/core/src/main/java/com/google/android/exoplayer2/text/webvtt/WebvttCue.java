@@ -20,9 +20,7 @@ import android.text.SpannableStringBuilder;
 import com.google.android.exoplayer2.text.Cue;
 import com.google.android.exoplayer2.util.Log;
 
-/**
- * A representation of a WebVTT cue.
- */
+/** A representation of a WebVTT cue. */
 public final class WebvttCue extends Cue {
 
   public final long startTime;
@@ -33,21 +31,38 @@ public final class WebvttCue extends Cue {
   }
 
   public WebvttCue(long startTime, long endTime, CharSequence text) {
-    this(startTime, endTime, text, null, Cue.DIMEN_UNSET, Cue.TYPE_UNSET, Cue.TYPE_UNSET,
-        Cue.DIMEN_UNSET, Cue.TYPE_UNSET, Cue.DIMEN_UNSET);
+    this(
+        startTime,
+        endTime,
+        text,
+        null,
+        Cue.DIMEN_UNSET,
+        Cue.TYPE_UNSET,
+        Cue.TYPE_UNSET,
+        Cue.DIMEN_UNSET,
+        Cue.TYPE_UNSET,
+        Cue.DIMEN_UNSET);
   }
 
-  public WebvttCue(long startTime, long endTime, CharSequence text, Alignment textAlignment,
-      float line, @Cue.LineType int lineType, @Cue.AnchorType int lineAnchor, float position,
-      @Cue.AnchorType int positionAnchor, float width) {
+  public WebvttCue(
+      long startTime,
+      long endTime,
+      CharSequence text,
+      Alignment textAlignment,
+      float line,
+      @Cue.LineType int lineType,
+      @Cue.AnchorType int lineAnchor,
+      float position,
+      @Cue.AnchorType int positionAnchor,
+      float width) {
     super(text, textAlignment, line, lineType, lineAnchor, position, positionAnchor, width);
     this.startTime = startTime;
     this.endTime = endTime;
   }
 
   /**
-   * Returns whether or not this cue should be placed in the default position and rolled-up with
-   * the other "normal" cues.
+   * Returns whether or not this cue should be placed in the default position and rolled-up with the
+   * other "normal" cues.
    *
    * @return Whether this cue should be placed in the default position.
    */
@@ -55,9 +70,7 @@ public final class WebvttCue extends Cue {
     return (line == DIMEN_UNSET && position == DIMEN_UNSET);
   }
 
-  /**
-   * Builder for WebVTT cues.
-   */
+  /** Builder for WebVTT cues. */
   @SuppressWarnings("hiding")
   public static class Builder {
 
@@ -99,8 +112,17 @@ public final class WebvttCue extends Cue {
       if (position != Cue.DIMEN_UNSET && positionAnchor == Cue.TYPE_UNSET) {
         derivePositionAnchorFromAlignment();
       }
-      return new WebvttCue(startTime, endTime, text, textAlignment, line, lineType, lineAnchor,
-          position, positionAnchor, width);
+      return new WebvttCue(
+          startTime,
+          endTime,
+          text,
+          textAlignment,
+          line,
+          lineType,
+          lineAnchor,
+          position,
+          positionAnchor,
+          width);
     }
 
     public Builder setStartTime(long time) {
@@ -175,7 +197,5 @@ public final class WebvttCue extends Cue {
       }
       return this;
     }
-
   }
-
 }

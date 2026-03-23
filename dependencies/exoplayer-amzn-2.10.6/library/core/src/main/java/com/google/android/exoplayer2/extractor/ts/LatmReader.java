@@ -15,8 +15,8 @@
  */
 package com.google.android.exoplayer2.extractor.ts;
 
-import androidx.annotation.Nullable;
 import android.util.Pair;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.ParserException;
@@ -29,9 +29,7 @@ import com.google.android.exoplayer2.util.ParsableBitArray;
 import com.google.android.exoplayer2.util.ParsableByteArray;
 import java.util.Collections;
 
-/**
- * Parses and extracts samples from an AAC/LATM elementary stream.
- */
+/** Parses and extracts samples from an AAC/LATM elementary stream. */
 public final class LatmReader implements ElementaryStreamReader {
 
   private static final int STATE_FINDING_SYNC_1 = 0;
@@ -173,9 +171,7 @@ public final class LatmReader implements ElementaryStreamReader {
     }
   }
 
-  /**
-   * Parses a StreamMuxConfig as defined in ISO/IEC 14496-3:2009 Section 1.7.3.1, Table 1.42.
-   */
+  /** Parses a StreamMuxConfig as defined in ISO/IEC 14496-3:2009 Section 1.7.3.1, Table 1.42. */
   private void parseStreamMuxConfig(ParsableBitArray data) throws ParserException {
     int audioMuxVersion = data.readBits(1);
     audioMuxVersionA = audioMuxVersion == 1 ? data.readBits(1) : 0;
@@ -198,9 +194,19 @@ public final class LatmReader implements ElementaryStreamReader {
         data.setPosition(startPosition);
         byte[] initData = new byte[(readBits + 7) / 8];
         data.readBits(initData, 0, readBits);
-        Format format = Format.createAudioSampleFormat(formatId, MimeTypes.AUDIO_AAC, null,
-            Format.NO_VALUE, Format.NO_VALUE, channelCount, sampleRateHz,
-            Collections.singletonList(initData), null, 0, language);
+        Format format =
+            Format.createAudioSampleFormat(
+                formatId,
+                MimeTypes.AUDIO_AAC,
+                null,
+                Format.NO_VALUE,
+                Format.NO_VALUE,
+                channelCount,
+                sampleRateHz,
+                Collections.singletonList(initData),
+                null,
+                0,
+                language);
         if (!format.equals(this.format)) {
           this.format = format;
           sampleDurationUs = (C.MICROS_PER_SECOND * 1024) / format.sampleRate;
@@ -306,5 +312,4 @@ public final class LatmReader implements ElementaryStreamReader {
     int bytesForValue = data.readBits(2);
     return data.readBits((bytesForValue + 1) * 8);
   }
-
 }

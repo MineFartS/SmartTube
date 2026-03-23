@@ -90,12 +90,16 @@ public final class AdsMediaSource extends CompositeMediaSource<MediaPeriodId> {
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({TYPE_AD, TYPE_AD_GROUP, TYPE_ALL_ADS, TYPE_UNEXPECTED})
     public @interface Type {}
+
     /** Type for when an ad failed to load. The ad will be skipped. */
     public static final int TYPE_AD = 0;
+
     /** Type for when an ad group failed to load. The ad group will be skipped. */
     public static final int TYPE_AD_GROUP = 1;
+
     /** Type for when all ad groups failed to load. All ads will be skipped. */
     public static final int TYPE_ALL_ADS = 2;
+
     /** Type for when an unexpected error occurred while loading ads. All ads will be skipped. */
     public static final int TYPE_UNEXPECTED = 3;
 
@@ -332,8 +336,8 @@ public final class AdsMediaSource extends CompositeMediaSource<MediaPeriodId> {
     maybeUpdateSourceInfo();
   }
 
-  private void onAdSourceInfoRefreshed(MediaSource mediaSource, int adGroupIndex,
-      int adIndexInAdGroup, Timeline timeline) {
+  private void onAdSourceInfoRefreshed(
+      MediaSource mediaSource, int adGroupIndex, int adIndexInAdGroup, Timeline timeline) {
     Assertions.checkArgument(timeline.getPeriodCount() == 1);
     adGroupTimelines[adGroupIndex][adIndexInAdGroup] = timeline;
     List<DeferredMediaPeriod> mediaPeriods = deferredMediaPeriodByAdMediaSource.remove(mediaSource);

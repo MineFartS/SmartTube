@@ -18,23 +18,20 @@ package com.stfalcon.chatkit.commons.models;
 
 import java.util.List;
 
-/**
- * For implementing by real dialog model
- */
-
+/** For implementing by real dialog model */
 public interface IDialog<MESSAGE extends IMessage> {
 
-    String getId();
+  String getId();
 
-    String getDialogPhoto();
+  String getDialogPhoto();
 
-    String getDialogName();
+  String getDialogName();
 
-    List<? extends IUser> getUsers();
+  List<? extends IUser> getUsers();
 
-    MESSAGE getLastMessage();
+  MESSAGE getLastMessage();
 
-    void setLastMessage(MESSAGE message);
+  void setLastMessage(MESSAGE message);
 
-    int getUnreadCount();
+  int getUnreadCount();
 }

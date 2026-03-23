@@ -15,8 +15,8 @@
  */
 package com.google.android.exoplayer2.trackselection;
 
-import androidx.annotation.Nullable;
 import android.util.Pair;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.Format;
@@ -244,7 +244,7 @@ public final class BufferSizeAdaptationBuilder {
 
     DefaultLoadControl.Builder loadControlBuilder =
         new DefaultLoadControl.Builder()
-            .setTargetBufferBytes(/* targetBufferBytes = */ Integer.MAX_VALUE)
+            .setTargetBufferBytes(/* targetBufferBytes= */ Integer.MAX_VALUE)
             .setBufferDurationsMs(
                 /* minBufferMs= */ maxBufferMs,
                 maxBufferMs,

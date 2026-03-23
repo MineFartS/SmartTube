@@ -4,36 +4,32 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.base.BasePresenter;
 
-/**
- * Shows boot dialogs one by one.
- */
+/** Shows boot dialogs one by one. */
 public class BootDialogPresenter extends BasePresenter<Void> {
-    @SuppressLint("StaticFieldLeak")
-    private static BootDialogPresenter sInstance;
+  @SuppressLint("StaticFieldLeak")
+  private static BootDialogPresenter sInstance;
 
-    public BootDialogPresenter(Context context) {
-        super(context);
+  public BootDialogPresenter(Context context) {
+    super(context);
+  }
+
+  public static BootDialogPresenter instance(Context context) {
+    if (sInstance == null) {
+      sInstance = new BootDialogPresenter(context);
     }
 
-    public static BootDialogPresenter instance(Context context) {
-        if (sInstance == null) {
-            sInstance = new BootDialogPresenter(context);
-        }
+    sInstance.setContext(context);
 
-        sInstance.setContext(context);
+    return sInstance;
+  }
 
-        return sInstance;
-    }
+  public void start() {
+    startUpdatePresenter();
+  }
 
-    public void start() {
-        startUpdatePresenter();
-    }
+  private void startUpdatePresenter() {
+    AppUpdatePresenter updatePresenter = AppUpdatePresenter.instance(getContext());
 
-    private void startUpdatePresenter() {
-        AppUpdatePresenter updatePresenter = AppUpdatePresenter.instance(getContext());
-
-        updatePresenter.start(false);
-
-    }
-
+    updatePresenter.start(false);
+  }
 }

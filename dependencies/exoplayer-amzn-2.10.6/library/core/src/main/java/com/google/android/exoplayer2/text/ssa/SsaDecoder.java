@@ -15,8 +15,8 @@
  */
 package com.google.android.exoplayer2.text.ssa;
 
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.text.Cue;
 import com.google.android.exoplayer2.text.SimpleSubtitleDecoder;
@@ -30,15 +30,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * A {@link SimpleSubtitleDecoder} for SSA/ASS.
- */
+/** A {@link SimpleSubtitleDecoder} for SSA/ASS. */
 public final class SsaDecoder extends SimpleSubtitleDecoder {
 
   private static final String TAG = "SsaDecoder";
 
-  private static final Pattern SSA_TIMECODE_PATTERN = Pattern.compile(
-      "(?:(\\d+):)?(\\d+):(\\d+)(?::|\\.)(\\d+)");
+  private static final Pattern SSA_TIMECODE_PATTERN =
+      Pattern.compile("(?:(\\d+):)?(\\d+):(\\d+)(?::|\\.)(\\d+)");
   private static final String FORMAT_LINE_PREFIX = "Format: ";
   private static final String DIALOGUE_LINE_PREFIX = "Dialogue: ";
 
@@ -172,8 +170,8 @@ public final class SsaDecoder extends SimpleSubtitleDecoder {
       return;
     }
 
-    String[] lineValues = dialogueLine.substring(DIALOGUE_LINE_PREFIX.length())
-        .split(",", formatKeyCount);
+    String[] lineValues =
+        dialogueLine.substring(DIALOGUE_LINE_PREFIX.length()).split(",", formatKeyCount);
     if (lineValues.length != formatKeyCount) {
       Log.w(TAG, "Skipping dialogue line with fewer columns than format: " + dialogueLine);
       return;
@@ -195,10 +193,11 @@ public final class SsaDecoder extends SimpleSubtitleDecoder {
       }
     }
 
-    String text = lineValues[formatTextIndex]
-        .replaceAll("\\{.*?\\}", "")
-        .replaceAll("\\\\N", "\n")
-        .replaceAll("\\\\n", "\n");
+    String text =
+        lineValues[formatTextIndex]
+            .replaceAll("\\{.*?\\}", "")
+            .replaceAll("\\\\N", "\n")
+            .replaceAll("\\\\n", "\n");
     cues.add(new Cue(text));
     cueTimesUs.add(startTimeUs);
     if (endTimeUs != C.TIME_UNSET) {
@@ -224,5 +223,4 @@ public final class SsaDecoder extends SimpleSubtitleDecoder {
     timestampUs += Long.parseLong(matcher.group(4)) * 10000; // 100ths of a second.
     return timestampUs;
   }
-
 }

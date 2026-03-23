@@ -20,10 +20,10 @@ import android.annotation.TargetApi;
 import android.media.MediaCodecInfo.CodecCapabilities;
 import android.media.MediaCodecInfo.CodecProfileLevel;
 import android.media.MediaCodecList;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.util.SparseIntArray;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.util.Log;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
@@ -36,16 +36,14 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * A utility class for querying the available codecs.
- */
+/** A utility class for querying the available codecs. */
 @SuppressLint("InlinedApi")
 public final class MediaCodecUtil {
 
   /**
    * Thrown when an error occurs querying the device for its underlying media capabilities.
-   * <p>
-   * Such failures are not expected in normal operation and are normally temporary (e.g. if the
+   *
+   * <p>Such failures are not expected in normal operation and are normally temporary (e.g. if the
    * mediaserver process has crashed and is yet to restart).
    */
   public static class DecoderQueryException extends Exception {
@@ -53,7 +51,6 @@ public final class MediaCodecUtil {
     private DecoderQueryException(Throwable cause) {
       super("Failed to query underlying media codecs", cause);
     }
-
   }
 
   private static final String TAG = "MediaCodecUtil";
@@ -168,8 +165,12 @@ public final class MediaCodecUtil {
       mediaCodecList = new MediaCodecListCompatV16();
       decoderInfos = getDecoderInfosInternal(key, mediaCodecList);
       if (!decoderInfos.isEmpty()) {
-        Log.w(TAG, "MediaCodecList API didn't list secure decoder for: " + mimeType
-            + ". Assuming: " + decoderInfos.get(0).name);
+        Log.w(
+            TAG,
+            "MediaCodecList API didn't list secure decoder for: "
+                + mimeType
+                + ". Assuming: "
+                + decoderInfos.get(0).name);
       }
     }
     applyWorkarounds(mimeType, decoderInfos);
@@ -237,16 +238,16 @@ public final class MediaCodecUtil {
   // Internal methods.
 
   /**
-   * Returns {@link MediaCodecInfo}s for the given codec {@code key} in the order given by
-   * {@code mediaCodecList}.
+   * Returns {@link MediaCodecInfo}s for the given codec {@code key} in the order given by {@code
+   * mediaCodecList}.
    *
    * @param key The codec key.
    * @param mediaCodecList The codec list.
    * @return The codec information for usable codecs matching the specified key.
    * @throws DecoderQueryException If there was an error querying the available decoders.
    */
-  private static ArrayList<MediaCodecInfo> getDecoderInfosInternal(CodecKey key,
-      MediaCodecListCompat mediaCodecList) throws DecoderQueryException {
+  private static ArrayList<MediaCodecInfo> getDecoderInfosInternal(
+      CodecKey key, MediaCodecListCompat mediaCodecList) throws DecoderQueryException {
     try {
       ArrayList<MediaCodecInfo> decoderInfos = new ArrayList<>();
       String mimeType = key.mimeType;
@@ -391,11 +392,11 @@ public final class MediaCodecUtil {
     // Work around broken audio decoders.
     if (Util.SDK_INT < 21
         && ("CIPAACDecoder".equals(name)
-        || "CIPMP3Decoder".equals(name)
-        || "CIPVorbisDecoder".equals(name)
-        || "CIPAMRNBDecoder".equals(name)
-        || "AACDecoder".equals(name)
-        || "MP3Decoder".equals(name))) {
+            || "CIPMP3Decoder".equals(name)
+            || "CIPVorbisDecoder".equals(name)
+            || "CIPAMRNBDecoder".equals(name)
+            || "AACDecoder".equals(name)
+            || "MP3Decoder".equals(name))) {
       return false;
     }
 
@@ -404,7 +405,7 @@ public final class MediaCodecUtil {
     if (Util.SDK_INT < 18
         && "OMX.MTK.AUDIO.DECODER.AAC".equals(name)
         && ("a70".equals(Util.DEVICE)
-        || ("Xiaomi".equals(Util.MANUFACTURER) && Util.DEVICE.startsWith("HM")))) {
+            || ("Xiaomi".equals(Util.MANUFACTURER) && Util.DEVICE.startsWith("HM")))) {
       return false;
     }
 
@@ -413,17 +414,17 @@ public final class MediaCodecUtil {
     if (Util.SDK_INT == 16
         && "OMX.qcom.audio.decoder.mp3".equals(name)
         && ("dlxu".equals(Util.DEVICE) // HTC Butterfly
-        || "protou".equals(Util.DEVICE) // HTC Desire X
-        || "ville".equals(Util.DEVICE) // HTC One S
-        || "villeplus".equals(Util.DEVICE)
-        || "villec2".equals(Util.DEVICE)
-        || Util.DEVICE.startsWith("gee") // LGE Optimus G
-        || "C6602".equals(Util.DEVICE) // Sony Xperia Z
-        || "C6603".equals(Util.DEVICE)
-        || "C6606".equals(Util.DEVICE)
-        || "C6616".equals(Util.DEVICE)
-        || "L36h".equals(Util.DEVICE)
-        || "SO-02E".equals(Util.DEVICE))) {
+            || "protou".equals(Util.DEVICE) // HTC Desire X
+            || "ville".equals(Util.DEVICE) // HTC One S
+            || "villeplus".equals(Util.DEVICE)
+            || "villec2".equals(Util.DEVICE)
+            || Util.DEVICE.startsWith("gee") // LGE Optimus G
+            || "C6602".equals(Util.DEVICE) // Sony Xperia Z
+            || "C6603".equals(Util.DEVICE)
+            || "C6606".equals(Util.DEVICE)
+            || "C6616".equals(Util.DEVICE)
+            || "L36h".equals(Util.DEVICE)
+            || "SO-02E".equals(Util.DEVICE))) {
       return false;
     }
 
@@ -431,9 +432,9 @@ public final class MediaCodecUtil {
     if (Util.SDK_INT == 16
         && "OMX.qcom.audio.decoder.aac".equals(name)
         && ("C1504".equals(Util.DEVICE) // Sony Xperia E
-        || "C1505".equals(Util.DEVICE)
-        || "C1604".equals(Util.DEVICE) // Sony Xperia E dual
-        || "C1605".equals(Util.DEVICE))) {
+            || "C1505".equals(Util.DEVICE)
+            || "C1604".equals(Util.DEVICE) // Sony Xperia E dual
+            || "C1605".equals(Util.DEVICE))) {
       return false;
     }
 
@@ -442,13 +443,13 @@ public final class MediaCodecUtil {
         && ("OMX.SEC.aac.dec".equals(name) || "OMX.Exynos.AAC.Decoder".equals(name))
         && "samsung".equals(Util.MANUFACTURER)
         && (Util.DEVICE.startsWith("zeroflte") // Galaxy S6
-        || Util.DEVICE.startsWith("zerolte") // Galaxy S6 Edge
-        || Util.DEVICE.startsWith("zenlte") // Galaxy S6 Edge+
-        || "SC-05G".equals(Util.DEVICE) // Galaxy S6
-        || "marinelteatt".equals(Util.DEVICE) // Galaxy S6 Active
-        || "404SC".equals(Util.DEVICE) // Galaxy S6 Edge
-        || "SC-04G".equals(Util.DEVICE)
-        || "SCV31".equals(Util.DEVICE))) {
+            || Util.DEVICE.startsWith("zerolte") // Galaxy S6 Edge
+            || Util.DEVICE.startsWith("zenlte") // Galaxy S6 Edge+
+            || "SC-05G".equals(Util.DEVICE) // Galaxy S6
+            || "marinelteatt".equals(Util.DEVICE) // Galaxy S6 Active
+            || "404SC".equals(Util.DEVICE) // Galaxy S6 Edge
+            || "SC-04G".equals(Util.DEVICE)
+            || "SCV31".equals(Util.DEVICE))) {
       return false;
     }
 
@@ -458,22 +459,22 @@ public final class MediaCodecUtil {
         && "OMX.SEC.vp8.dec".equals(name)
         && "samsung".equals(Util.MANUFACTURER)
         && (Util.DEVICE.startsWith("d2")
-        || Util.DEVICE.startsWith("serrano")
-        || Util.DEVICE.startsWith("jflte")
-        || Util.DEVICE.startsWith("santos")
-        || Util.DEVICE.startsWith("t0"))) {
+            || Util.DEVICE.startsWith("serrano")
+            || Util.DEVICE.startsWith("jflte")
+            || Util.DEVICE.startsWith("santos")
+            || Util.DEVICE.startsWith("t0"))) {
       return false;
     }
 
     // VP8 decoder on Samsung Galaxy S4 cannot be queried.
-    if (Util.SDK_INT <= 19 && Util.DEVICE.startsWith("jflte")
+    if (Util.SDK_INT <= 19
+        && Util.DEVICE.startsWith("jflte")
         && "OMX.qcom.video.decoder.vp8".equals(name)) {
       return false;
     }
 
     // MTK E-AC3 decoder doesn't support decoding JOC streams in 2-D. See [Internal: b/69400041].
-    if (MimeTypes.AUDIO_E_AC3_JOC.equals(mimeType)
-        && "OMX.MTK.AUDIO.DECODER.DSPAC3".equals(name)) {
+    if (MimeTypes.AUDIO_E_AC3_JOC.equals(mimeType) && "OMX.MTK.AUDIO.DECODER.DSPAC3".equals(name)) {
       return false;
     }
 
@@ -620,8 +621,8 @@ public final class MediaCodecUtil {
    * Conversion values taken from ISO 14496-10 Table A-1.
    *
    * @param avcLevel one of CodecProfileLevel.AVCLevel* constants.
-   * @return maximum frame size that can be decoded by a decoder with the specified avc level
-   *     (or {@code -1} if the level is not recognized)
+   * @return maximum frame size that can be decoded by a decoder with the specified avc level (or
+   *     {@code -1} if the level is not recognized)
    */
   private static int avcLevelToMaxFrameSize(int avcLevel) {
     switch (avcLevel) {
@@ -683,9 +684,7 @@ public final class MediaCodecUtil {
 
   private interface MediaCodecListCompat {
 
-    /**
-     * The number of codecs in the list.
-     */
+    /** The number of codecs in the list. */
     int getCodecCount();
 
     /**
@@ -695,9 +694,7 @@ public final class MediaCodecUtil {
      */
     android.media.MediaCodecInfo getCodecInfoAt(int index);
 
-    /**
-     * Returns whether secure decoders are explicitly listed, if present.
-     */
+    /** Returns whether secure decoders are explicitly listed, if present. */
     boolean secureDecodersExplicit();
 
     /** Whether the specified {@link CodecCapabilities} {@code feature} is supported. */
@@ -755,7 +752,6 @@ public final class MediaCodecUtil {
         mediaCodecInfos = new MediaCodecList(codecKind).getCodecInfos();
       }
     }
-
   }
 
   @SuppressWarnings("deprecation")
@@ -790,7 +786,6 @@ public final class MediaCodecUtil {
         String feature, String mimeType, CodecCapabilities capabilities) {
       return false;
     }
-
   }
 
   private static final class CodecKey {
@@ -828,7 +823,6 @@ public final class MediaCodecUtil {
           && secure == other.secure
           && tunneling == other.tunneling;
     }
-
   }
 
   /**

@@ -42,7 +42,9 @@ public final class DefaultContentMetadata implements ContentMetadata {
     this(Collections.emptyMap());
   }
 
-  /** @param metadata The metadata entries in their raw byte array form. */
+  /**
+   * @param metadata The metadata entries in their raw byte array form.
+   */
   public DefaultContentMetadata(Map<String, byte[]> metadata) {
     this.metadata = Collections.unmodifiableMap(metadata);
   }
@@ -169,5 +171,4 @@ public final class DefaultContentMetadata implements ContentMetadata {
       throw new IllegalArgumentException();
     }
   }
-
 }

@@ -324,7 +324,6 @@ public final class HlsMediaSource extends BaseMediaSource
     public int[] getSupportedTypes() {
       return new int[] {C.TYPE_HLS};
     }
-
   }
 
   private final HlsExtractorFactory extractorFactory;
@@ -411,8 +410,8 @@ public final class HlsMediaSource extends BaseMediaSource
   @Override
   public void onPrimaryPlaylistRefreshed(HlsMediaPlaylist playlist) {
     SinglePeriodTimeline timeline;
-    long windowStartTimeMs = playlist.hasProgramDateTime ? C.usToMs(playlist.startTimeUs)
-        : C.TIME_UNSET;
+    long windowStartTimeMs =
+        playlist.hasProgramDateTime ? C.usToMs(playlist.startTimeUs) : C.TIME_UNSET;
     // For playlist types EVENT and VOD we know segments are never removed, so the presentation
     // started at the same time as the window. Otherwise, we don't know the presentation start time.
     long presentationStartTimeMs =
@@ -428,8 +427,10 @@ public final class HlsMediaSource extends BaseMediaSource
           playlist.hasEndTag ? offsetFromInitialStartTimeUs + playlist.durationUs : C.TIME_UNSET;
       List<HlsMediaPlaylist.Segment> segments = playlist.segments;
       if (windowDefaultStartPositionUs == C.TIME_UNSET) {
-        windowDefaultStartPositionUs = segments.isEmpty() ? 0
-            : segments.get(Math.max(0, segments.size() - 3)).relativeStartTimeUs;
+        windowDefaultStartPositionUs =
+            segments.isEmpty()
+                ? 0
+                : segments.get(Math.max(0, segments.size() - 3)).relativeStartTimeUs;
       }
       timeline =
           new SinglePeriodTimeline(
@@ -460,5 +461,4 @@ public final class HlsMediaSource extends BaseMediaSource
     }
     refreshSourceInfo(timeline, new HlsManifest(playlistTracker.getMasterPlaylist(), playlist));
   }
-
 }

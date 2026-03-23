@@ -30,15 +30,12 @@ import java.nio.channels.FileChannel;
 /** A {@link DataSource} for reading from a content URI. */
 public final class ContentDataSource extends BaseDataSource {
 
-  /**
-   * Thrown when an {@link IOException} is encountered reading from a content URI.
-   */
+  /** Thrown when an {@link IOException} is encountered reading from a content URI. */
   public static class ContentDataSourceException extends IOException {
 
     public ContentDataSourceException(IOException cause) {
       super(cause);
     }
-
   }
 
   private final ContentResolver resolver;
@@ -122,8 +119,10 @@ public final class ContentDataSource extends BaseDataSource {
 
     int bytesRead;
     try {
-      int bytesToRead = bytesRemaining == C.LENGTH_UNSET ? readLength
-          : (int) Math.min(bytesRemaining, readLength);
+      int bytesToRead =
+          bytesRemaining == C.LENGTH_UNSET
+              ? readLength
+              : (int) Math.min(bytesRemaining, readLength);
       bytesRead = inputStream.read(buffer, offset, bytesToRead);
     } catch (IOException e) {
       throw new ContentDataSourceException(e);
@@ -175,5 +174,4 @@ public final class ContentDataSource extends BaseDataSource {
       }
     }
   }
-
 }

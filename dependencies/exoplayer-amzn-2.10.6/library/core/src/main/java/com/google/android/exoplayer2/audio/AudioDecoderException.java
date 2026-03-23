@@ -18,7 +18,9 @@ package com.google.android.exoplayer2.audio;
 /** Thrown when an audio decoder error occurs. */
 public class AudioDecoderException extends Exception {
 
-  /** @param message The detail message for this exception. */
+  /**
+   * @param message The detail message for this exception.
+   */
   public AudioDecoderException(String message) {
     super(message);
   }
@@ -31,5 +33,4 @@ public class AudioDecoderException extends Exception {
   public AudioDecoderException(String message, Throwable cause) {
     super(message, cause);
   }
-
 }

@@ -12,41 +12,38 @@ package com.eclipsesource.v8.debug.mirror;
 
 import com.eclipsesource.v8.V8Object;
 
-/**
- * Represents JavaScript 'Property' Mirrors
- */
+/** Represents JavaScript 'Property' Mirrors */
 public class PropertyMirror extends Mirror {
 
-    PropertyMirror(final V8Object v8Object) {
-        super(v8Object);
-    }
+  PropertyMirror(final V8Object v8Object) {
+    super(v8Object);
+  }
 
-    /**
-     * Returns the name of this property.
-     *
-     * @return The name of this property.
-     */
-    public String getName() {
-        return v8Object.executeStringFunction("name", null);
-    }
+  /**
+   * Returns the name of this property.
+   *
+   * @return The name of this property.
+   */
+  public String getName() {
+    return v8Object.executeStringFunction("name", null);
+  }
 
-    /**
-     * Returns the value of this property.
-     *
-     * @return The value of this property.
-     */
-    public Mirror getValue() {
-        V8Object mirror = v8Object.executeObjectFunction("value", null);
-        try {
-            return createMirror(mirror);
-        } finally {
-            mirror.close();
-        }
+  /**
+   * Returns the value of this property.
+   *
+   * @return The value of this property.
+   */
+  public Mirror getValue() {
+    V8Object mirror = v8Object.executeObjectFunction("value", null);
+    try {
+      return createMirror(mirror);
+    } finally {
+      mirror.close();
     }
+  }
 
-    @Override
-    public boolean isProperty() {
-        return true;
-    }
-
+  @Override
+  public boolean isProperty() {
+    return true;
+  }
 }

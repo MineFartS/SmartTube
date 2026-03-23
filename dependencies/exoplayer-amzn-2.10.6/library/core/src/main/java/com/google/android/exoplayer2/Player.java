@@ -16,12 +16,12 @@
 package com.google.android.exoplayer2;
 
 import android.os.Looper;
-import androidx.annotation.IntDef;
-import androidx.annotation.Nullable;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.TextureView;
+import androidx.annotation.IntDef;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C.VideoScalingMode;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.audio.AudioListener;
@@ -41,20 +41,20 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * A media player interface defining traditional high-level functionality, such as the ability to
  * play, pause, seek and query properties of the currently playing media.
- * <p>
- * Some important properties of media players that implement this interface are:
+ *
+ * <p>Some important properties of media players that implement this interface are:
+ *
  * <ul>
- *     <li>They can provide a {@link Timeline} representing the structure of the media being played,
- *     which can be obtained by calling {@link #getCurrentTimeline()}.</li>
- *     <li>They can provide a {@link TrackGroupArray} defining the currently available tracks,
- *     which can be obtained by calling {@link #getCurrentTrackGroups()}.</li>
- *     <li>They contain a number of renderers, each of which is able to render tracks of a single
- *     type (e.g. audio, video or text). The number of renderers and their respective track types
- *     can be obtained by calling {@link #getRendererCount()} and {@link #getRendererType(int)}.
- *     </li>
- *     <li>They can provide a {@link TrackSelectionArray} defining which of the currently available
- *     tracks are selected to be rendered by each renderer. This can be obtained by calling
- *     {@link #getCurrentTrackSelections()}}.</li>
+ *   <li>They can provide a {@link Timeline} representing the structure of the media being played,
+ *       which can be obtained by calling {@link #getCurrentTimeline()}.
+ *   <li>They can provide a {@link TrackGroupArray} defining the currently available tracks, which
+ *       can be obtained by calling {@link #getCurrentTrackGroups()}.
+ *   <li>They contain a number of renderers, each of which is able to render tracks of a single type
+ *       (e.g. audio, video or text). The number of renderers and their respective track types can
+ *       be obtained by calling {@link #getRendererCount()} and {@link #getRendererType(int)}.
+ *   <li>They can provide a {@link TrackSelectionArray} defining which of the currently available
+ *       tracks are selected to be rendered by each renderer. This can be obtained by calling {@link
+ *       #getCurrentTrackSelections()}}.
  * </ul>
  */
 public interface Player {
@@ -451,30 +451,31 @@ public interface Player {
       onTimelineChanged(timeline, manifest);
     }
 
-    /** @deprecated Use {@link EventListener#onTimelineChanged(Timeline, Object, int)} instead. */
+    /**
+     * @deprecated Use {@link EventListener#onTimelineChanged(Timeline, Object, int)} instead.
+     */
     @Deprecated
     public void onTimelineChanged(Timeline timeline, @Nullable Object manifest) {
       // Do nothing.
     }
   }
 
-  /**
-   * The player does not have any media to play.
-   */
+  /** The player does not have any media to play. */
   int STATE_IDLE = 1;
+
   /**
    * The player is not able to immediately play from its current position. This state typically
    * occurs when more data needs to be loaded.
    */
   int STATE_BUFFERING = 2;
+
   /**
    * The player is able to immediately play from its current position. The player will be playing if
    * {@link #getPlayWhenReady()} is true, and paused otherwise.
    */
   int STATE_READY = 3;
-  /**
-   * The player has finished playing the media.
-   */
+
+  /** The player has finished playing the media. */
   int STATE_ENDED = 4;
 
   /**
@@ -489,8 +490,10 @@ public interface Player {
     PLAYBACK_SUPPRESSION_REASON_TRANSIENT_AUDIO_FOCUS_LOSS
   })
   @interface PlaybackSuppressionReason {}
+
   /** Playback is not suppressed. */
   int PLAYBACK_SUPPRESSION_REASON_NONE = 0;
+
   /** Playback is suppressed due to transient audio focus loss. */
   int PLAYBACK_SUPPRESSION_REASON_TRANSIENT_AUDIO_FOCUS_LOSS = 1;
 
@@ -502,17 +505,14 @@ public interface Player {
   @Retention(RetentionPolicy.SOURCE)
   @IntDef({REPEAT_MODE_OFF, REPEAT_MODE_ONE, REPEAT_MODE_ALL})
   @interface RepeatMode {}
-  /**
-   * Normal playback without repetition.
-   */
+
+  /** Normal playback without repetition. */
   int REPEAT_MODE_OFF = 0;
-  /**
-   * "Repeat One" mode to repeat the currently playing window infinitely.
-   */
+
+  /** "Repeat One" mode to repeat the currently playing window infinitely. */
   int REPEAT_MODE_ONE = 1;
-  /**
-   * "Repeat All" mode to repeat the entire timeline infinitely.
-   */
+
+  /** "Repeat All" mode to repeat the entire timeline infinitely. */
   int REPEAT_MODE_ALL = 2;
 
   /**
@@ -530,20 +530,25 @@ public interface Player {
     DISCONTINUITY_REASON_INTERNAL
   })
   @interface DiscontinuityReason {}
+
   /**
    * Automatic playback transition from one period in the timeline to the next. The period index may
    * be the same as it was before the discontinuity in case the current period is repeated.
    */
   int DISCONTINUITY_REASON_PERIOD_TRANSITION = 0;
+
   /** Seek within the current period or to another period. */
   int DISCONTINUITY_REASON_SEEK = 1;
+
   /**
    * Seek adjustment due to being unable to seek to the requested position or because the seek was
    * permitted to be inexact.
    */
   int DISCONTINUITY_REASON_SEEK_ADJUSTMENT = 2;
+
   /** Discontinuity to or from an ad within one period in the timeline. */
   int DISCONTINUITY_REASON_AD_INSERTION = 3;
+
   /** Discontinuity introduced internally by the source. */
   int DISCONTINUITY_REASON_INTERNAL = 4;
 
@@ -559,14 +564,13 @@ public interface Player {
     TIMELINE_CHANGE_REASON_DYNAMIC
   })
   @interface TimelineChangeReason {}
-  /**
-   * Timeline and manifest changed as a result of a player initialization with new media.
-   */
+
+  /** Timeline and manifest changed as a result of a player initialization with new media. */
   int TIMELINE_CHANGE_REASON_PREPARED = 0;
-  /**
-   * Timeline and manifest changed as a result of a player reset.
-   */
+
+  /** Timeline and manifest changed as a result of a player reset. */
   int TIMELINE_CHANGE_REASON_RESET = 1;
+
   /**
    * Timeline or manifest changed as a result of an dynamic update introduced by the played media.
    */
@@ -659,8 +663,8 @@ public interface Player {
 
   /**
    * Sets whether playback should proceed when {@link #getPlaybackState()} == {@link #STATE_READY}.
-   * <p>
-   * If the player is already in the ready state then this method can be used to pause and resume
+   *
+   * <p>If the player is already in the ready state then this method can be used to pause and resume
    * playback.
    *
    * @param playWhenReady Whether playback should proceed when ready.
@@ -686,7 +690,8 @@ public interface Player {
    *
    * @return The current repeat mode.
    */
-  @RepeatMode int getRepeatMode();
+  @RepeatMode
+  int getRepeatMode();
 
   /**
    * Sets whether shuffling of windows is enabled.
@@ -695,9 +700,7 @@ public interface Player {
    */
   void setShuffleModeEnabled(boolean shuffleModeEnabled);
 
-  /**
-   * Returns whether shuffling of windows is enabled.
-   */
+  /** Returns whether shuffling of windows is enabled. */
   boolean getShuffleModeEnabled();
 
   /**
@@ -772,10 +775,10 @@ public interface Player {
   /**
    * Attempts to set the playback parameters. Passing {@code null} sets the parameters to the
    * default, {@link PlaybackParameters#DEFAULT}, which means there is no speed or pitch adjustment.
-   * <p>
-   * Playback parameters changes may cause the player to buffer.
-   * {@link EventListener#onPlaybackParametersChanged(PlaybackParameters)} will be called whenever
-   * the currently active playback parameters change. When that listener is called, the parameters
+   *
+   * <p>Playback parameters changes may cause the player to buffer. {@link
+   * EventListener#onPlaybackParametersChanged(PlaybackParameters)} will be called whenever the
+   * currently active playback parameters change. When that listener is called, the parameters
    * passed to it may not match {@code playbackParameters}. For example, the chosen speed or pitch
    * may be out of range, in which case they are constrained to a set of permitted values. If it is
    * not possible to change the playback parameters, the listener will not be invoked.
@@ -821,9 +824,7 @@ public interface Player {
    */
   void release();
 
-  /**
-   * Returns the number of renderers.
-   */
+  /** Returns the number of renderers. */
   int getRendererCount();
 
   /**
@@ -835,34 +836,25 @@ public interface Player {
    */
   int getRendererType(int index);
 
-  /**
-   * Returns the available track groups.
-   */
+  /** Returns the available track groups. */
   TrackGroupArray getCurrentTrackGroups();
 
-  /**
-   * Returns the current track selections for each renderer.
-   */
+  /** Returns the current track selections for each renderer. */
   TrackSelectionArray getCurrentTrackSelections();
 
   /**
    * Returns the current manifest. The type depends on the type of media being played. May be null.
    */
-  @Nullable Object getCurrentManifest();
+  @Nullable
+  Object getCurrentManifest();
 
-  /**
-   * Returns the current {@link Timeline}. Never null, but may be empty.
-   */
+  /** Returns the current {@link Timeline}. Never null, but may be empty. */
   Timeline getCurrentTimeline();
 
-  /**
-   * Returns the index of the period currently being played.
-   */
+  /** Returns the index of the period currently being played. */
   int getCurrentPeriodIndex();
 
-  /**
-   * Returns the index of the window currently being played.
-   */
+  /** Returns the index of the window currently being played. */
   int getCurrentWindowIndex();
 
   /**
@@ -883,7 +875,8 @@ public interface Player {
    * Returns the tag of the currently playing window in the timeline. May be null if no tag is set
    * or the timeline is not yet available.
    */
-  @Nullable Object getCurrentTag();
+  @Nullable
+  Object getCurrentTag();
 
   /**
    * Returns the duration of the current content window or ad in milliseconds, or {@link
@@ -928,9 +921,7 @@ public interface Player {
    */
   boolean isCurrentWindowSeekable();
 
-  /**
-   * Returns whether the player is currently playing an ad.
-   */
+  /** Returns whether the player is currently playing an ad. */
   boolean isPlayingAd();
 
   /**

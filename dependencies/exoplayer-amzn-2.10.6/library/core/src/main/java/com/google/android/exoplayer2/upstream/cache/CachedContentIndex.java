@@ -21,10 +21,10 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import com.google.android.exoplayer2.database.DatabaseIOException;
 import com.google.android.exoplayer2.database.DatabaseProvider;
 import com.google.android.exoplayer2.database.VersionTable;
@@ -66,6 +66,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
   private static final int INCREMENTAL_METADATA_READ_LENGTH = 10 * 1024 * 1024;
 
   private final HashMap<String, CachedContent> keyToContent;
+
   /**
    * Maps assigned ids to their corresponding keys. Also contains (id -> null) entries for ids that
    * have been removed from the index since it was last stored. This prevents reuse of these ids,
@@ -84,11 +85,13 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
    * reuse.
    */
   private final SparseArray<@NullableType String> idToKey;
+
   /**
    * Tracks ids for which (id -> null) entries are present in idToKey, so that they can be removed
    * efficiently when the index is next stored.
    */
   private final SparseBooleanArray removedIds;
+
   /** Tracks ids that are new since the index was last stored. */
   private final SparseBooleanArray newIds;
 

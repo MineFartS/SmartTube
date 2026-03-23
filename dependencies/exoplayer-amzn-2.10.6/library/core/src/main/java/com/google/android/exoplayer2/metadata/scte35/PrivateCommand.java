@@ -19,22 +19,16 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.android.exoplayer2.util.ParsableByteArray;
 
-/**
- * Represents a private command as defined in SCTE35, Section 9.3.6.
- */
+/** Represents a private command as defined in SCTE35, Section 9.3.6. */
 public final class PrivateCommand extends SpliceCommand {
 
-  /**
-   * The {@code pts_adjustment} as defined in SCTE35, Section 9.2.
-   */
+  /** The {@code pts_adjustment} as defined in SCTE35, Section 9.2. */
   public final long ptsAdjustment;
-  /**
-   * The identifier as defined in SCTE35, Section 9.3.6.
-   */
+
+  /** The identifier as defined in SCTE35, Section 9.3.6. */
   public final long identifier;
-  /**
-   * The private bytes as defined in SCTE35, Section 9.3.6.
-   */
+
+  /** The private bytes as defined in SCTE35, Section 9.3.6. */
   public final byte[] commandBytes;
 
   private PrivateCommand(long identifier, byte[] commandBytes, long ptsAdjustment) {
@@ -50,8 +44,8 @@ public final class PrivateCommand extends SpliceCommand {
     in.readByteArray(commandBytes);
   }
 
-  /* package */ static PrivateCommand parseFromSection(ParsableByteArray sectionData,
-      int commandLength, long ptsAdjustment) {
+  /* package */ static PrivateCommand parseFromSection(
+      ParsableByteArray sectionData, int commandLength, long ptsAdjustment) {
     long identifier = sectionData.readUnsignedInt();
     byte[] privateBytes = new byte[commandLength - 4 /* identifier size */];
     sectionData.readBytes(privateBytes, 0, privateBytes.length);
@@ -71,16 +65,14 @@ public final class PrivateCommand extends SpliceCommand {
   public static final Parcelable.Creator<PrivateCommand> CREATOR =
       new Parcelable.Creator<PrivateCommand>() {
 
-    @Override
-    public PrivateCommand createFromParcel(Parcel in) {
-      return new PrivateCommand(in);
-    }
+        @Override
+        public PrivateCommand createFromParcel(Parcel in) {
+          return new PrivateCommand(in);
+        }
 
-    @Override
-    public PrivateCommand[] newArray(int size) {
-      return new PrivateCommand[size];
-    }
-
-  };
-
+        @Override
+        public PrivateCommand[] newArray(int size) {
+          return new PrivateCommand[size];
+        }
+      };
 }

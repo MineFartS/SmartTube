@@ -1,172 +1,161 @@
 package com.liskovsoft.youtubeapi.videoinfo.models;
 
+import com.liskovsoft.googlecommon.common.converters.regexp.RegExp;
 import com.liskovsoft.sharedutils.helpers.DateHelper;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.googlecommon.common.converters.regexp.RegExp;
 
 public class DashInfoUrl implements DashInfo {
-    private static final int MAX_DURATION_MS = 24 * 60 * 60 * 1_000;
+  private static final int MAX_DURATION_MS = 24 * 60 * 60 * 1_000;
 
-    /**
-     * yt:earliestMediaSequence="1769487"
-     */
-    @RegExp("yt\\:earliestMediaSequence=\"(.*?)\"")
-    private String mEarliestMediaSequence;
+  /** yt:earliestMediaSequence="1769487" */
+  @RegExp("yt\\:earliestMediaSequence=\"(.*?)\"")
+  private String mEarliestMediaSequence;
 
-    /**
-     * startNumber="122185"
-     */
-    @RegExp("startNumber=\"(.*?)\"")
-    private String mStartNumber; // usually the same as above but may be different on non-seekable streams
+  /** startNumber="122185" */
+  @RegExp("startNumber=\"(.*?)\"")
+  private String
+      mStartNumber; // usually the same as above but may be different on non-seekable streams
 
+  /** minimumUpdatePeriod="PT5.000S" */
+  @RegExp("minimumUpdatePeriod=\"PT(.*?)S\"")
+  private String mMinimumUpdatePeriodSec;
 
-    /**
-     * minimumUpdatePeriod="PT5.000S"
-     */
-    @RegExp("minimumUpdatePeriod=\"PT(.*?)S\"")
-    private String mMinimumUpdatePeriodSec;
+  /** yt:mpdRequestTime="2022-09-16T23:04:59.728" */
+  @RegExp("yt\\:mpdRequestTime=\"(.*?)\"")
+  private String mMpdRequestTime; // use System.currentTime instead?
 
-    /**
-     * yt:mpdRequestTime="2022-09-16T23:04:59.728"
-     */
-    @RegExp("yt\\:mpdRequestTime=\"(.*?)\"")
-    private String mMpdRequestTime; // use System.currentTime instead?
+  /** timeShiftBufferDepth="PT14400.000S" */
+  @RegExp("timeShiftBufferDepth=\"PT(.*?)S\"")
+  private String mTimeShiftBufferDepthSec; // not useful. always 4hrs
 
-    /**
-     * timeShiftBufferDepth="PT14400.000S"
-     */
-    @RegExp("timeShiftBufferDepth=\"PT(.*?)S\"")
-    private String mTimeShiftBufferDepthSec; // not useful. always 4hrs
+  /** availabilityStartTime="2022-09-15T07:31:41" */
+  @RegExp("availabilityStartTime=\"(.*?)\"")
+  private String mAvailabilityStartTime; // not useful. truncated to 4hrs.
 
-    /**
-     * availabilityStartTime="2022-09-15T07:31:41"
-     */
-    @RegExp("availabilityStartTime=\"(.*?)\"")
-    private String mAvailabilityStartTime; // not useful. truncated to 4hrs.
+  private long mStartTimeMs = -1;
+  private int mStartSegmentNum = -1;
+  private int mEarliestMediaSequenceNum = -1;
+  private int mSequenceStartNumber = -1;
+  private long mMpdRequestTimeMs = -1;
+  private long mPeriodStartTimeMs = -1;
+  private long mAvailabilityStartTimeMs = -1;
 
-    private long mStartTimeMs = -1;
-    private int mStartSegmentNum = -1;
-    private int mEarliestMediaSequenceNum = -1;
-    private int mSequenceStartNumber = -1;
-    private long mMpdRequestTimeMs = -1;
-    private long mPeriodStartTimeMs = -1;
-    private long mAvailabilityStartTimeMs = -1;
+  private int mMinimumUpdatePeriodMs = -1;
+  private int mTimeShiftBufferDepthMs = -1;
 
-    private int mMinimumUpdatePeriodMs = -1;
-    private int mTimeShiftBufferDepthMs = -1;
+  @Override
+  public int getSegmentDurationUs() {
+    return getMinimumUpdatePeriodMs() * 1_000;
+  }
 
-    @Override
-    public int getSegmentDurationUs() {
-        return getMinimumUpdatePeriodMs() * 1_000;
+  @Override
+  public int getStartSegmentNum() {
+    calculateTimings();
+
+    return mStartSegmentNum;
+  }
+
+  @Override
+  public long getStartTimeMs() {
+    calculateTimings();
+
+    return mStartTimeMs;
+  }
+
+  @Override
+  public boolean isSeekable() {
+    return getEarliestMediaSequenceNum() == getSequenceStartNumber();
+  }
+
+  private long getMpdRequestTimeMs() {
+    if (mMpdRequestTimeMs == -1) {
+      mMpdRequestTimeMs = DateHelper.toUnixTimeMs(mMpdRequestTime);
     }
 
-    @Override
-    public int getStartSegmentNum() {
-        calculateTimings();
+    return mMpdRequestTimeMs;
+  }
 
-        return mStartSegmentNum;
+  private long getAvailabilityStartTimeMs() {
+    if (mAvailabilityStartTimeMs == -1) {
+      mAvailabilityStartTimeMs = DateHelper.toUnixTimeMs(mAvailabilityStartTime);
     }
 
-    @Override
-    public long getStartTimeMs() {
-        calculateTimings();
+    return mAvailabilityStartTimeMs;
+  }
 
-        return mStartTimeMs;
+  private long getPeriodStartTimeMs() {
+    if (mPeriodStartTimeMs == -1) {
+      if (getSequenceStartNumber() == 0) { // stream length < 4hrs
+        mPeriodStartTimeMs = getAvailabilityStartTimeMs();
+      } else if (!isSeekable()) { // non-seekable stream
+        mPeriodStartTimeMs = getMpdRequestTimeMs();
+      } else { // stream length > 4hrs
+        mPeriodStartTimeMs = getMpdRequestTimeMs() - getTimeShiftBufferDepthMs();
+      }
     }
 
-    @Override
-    public boolean isSeekable() {
-        return getEarliestMediaSequenceNum() == getSequenceStartNumber();
+    return mPeriodStartTimeMs;
+  }
+
+  private int getMinimumUpdatePeriodMs() {
+    if (mMinimumUpdatePeriodMs == -1) {
+      mMinimumUpdatePeriodMs = (int) (Helpers.parseFloat(mMinimumUpdatePeriodSec) * 1_000);
     }
 
-    private long getMpdRequestTimeMs() {
-        if (mMpdRequestTimeMs == -1) {
-            mMpdRequestTimeMs = DateHelper.toUnixTimeMs(mMpdRequestTime);
-        }
+    return mMinimumUpdatePeriodMs;
+  }
 
-        return mMpdRequestTimeMs;
+  private int getTimeShiftBufferDepthMs() {
+    if (mTimeShiftBufferDepthMs == -1) {
+      mTimeShiftBufferDepthMs = (int) (Helpers.parseFloat(mTimeShiftBufferDepthSec) * 1_000);
     }
 
-    private long getAvailabilityStartTimeMs() {
-        if (mAvailabilityStartTimeMs == -1) {
-            mAvailabilityStartTimeMs = DateHelper.toUnixTimeMs(mAvailabilityStartTime);
-        }
+    return mTimeShiftBufferDepthMs;
+  }
 
-        return mAvailabilityStartTimeMs;
+  private int getEarliestMediaSequenceNum() {
+    if (mEarliestMediaSequenceNum == -1) {
+      mEarliestMediaSequenceNum = Helpers.parseInt(mEarliestMediaSequence);
     }
 
+    return mEarliestMediaSequenceNum;
+  }
 
-    private long getPeriodStartTimeMs() {
-        if (mPeriodStartTimeMs == -1) {
-            if (getSequenceStartNumber() == 0) { // stream length < 4hrs
-                mPeriodStartTimeMs = getAvailabilityStartTimeMs();
-            } else if (!isSeekable()) { // non-seekable stream
-                mPeriodStartTimeMs = getMpdRequestTimeMs();
-            } else { // stream length > 4hrs
-                mPeriodStartTimeMs = getMpdRequestTimeMs() - getTimeShiftBufferDepthMs();
-            }
-        }
-
-        return mPeriodStartTimeMs;
+  private int getSequenceStartNumber() {
+    if (mSequenceStartNumber == -1) {
+      mSequenceStartNumber = Helpers.parseInt(mStartNumber);
     }
 
-    private int getMinimumUpdatePeriodMs() {
-        if (mMinimumUpdatePeriodMs == -1) {
-            mMinimumUpdatePeriodMs = (int)(Helpers.parseFloat(mMinimumUpdatePeriodSec) * 1_000);
-        }
+    return mSequenceStartNumber;
+  }
 
-        return mMinimumUpdatePeriodMs;
+  private void calculateTimings() {
+    if (mStartTimeMs != -1 && mStartSegmentNum != -1) {
+      return;
     }
 
-    private int getTimeShiftBufferDepthMs() {
-        if (mTimeShiftBufferDepthMs == -1) {
-            mTimeShiftBufferDepthMs = (int)(Helpers.parseFloat(mTimeShiftBufferDepthSec) * 1_000);
-        }
+    mStartTimeMs = getPeriodStartTimeMs();
+    mStartSegmentNum = getSequenceStartNumber();
 
-        return mTimeShiftBufferDepthMs;
+    int shortDurationMs = (int) (getMpdRequestTimeMs() - getPeriodStartTimeMs());
+
+    int additionalDurationMs = MAX_DURATION_MS - shortDurationMs;
+
+    if (additionalDurationMs > 0) {
+      int additionalSegmentsNum = additionalDurationMs / getMinimumUpdatePeriodMs();
+
+      int startSegmentNum = getSequenceStartNumber() - additionalSegmentsNum;
+
+      if (startSegmentNum > 0) {
+        mStartSegmentNum = startSegmentNum;
+        // mStartTimeMs = getPeriodStartTimeMs() - (getSequenceStartNumber() *
+        // getMinimumUpdatePeriodMs());
+        mStartTimeMs = getPeriodStartTimeMs() - additionalDurationMs;
+      } else {
+        mStartSegmentNum = 0;
+        mStartTimeMs =
+            getPeriodStartTimeMs() - ((long) getSequenceStartNumber() * getMinimumUpdatePeriodMs());
+      }
     }
-
-    private int getEarliestMediaSequenceNum() {
-        if (mEarliestMediaSequenceNum == -1) {
-            mEarliestMediaSequenceNum = Helpers.parseInt(mEarliestMediaSequence);
-        }
-
-        return mEarliestMediaSequenceNum;
-    }
-
-    private int getSequenceStartNumber() {
-        if (mSequenceStartNumber == -1) {
-            mSequenceStartNumber = Helpers.parseInt(mStartNumber);
-        }
-
-        return mSequenceStartNumber;
-    }
-
-    private void calculateTimings() {
-        if (mStartTimeMs != -1 && mStartSegmentNum != -1) {
-            return;
-        }
-
-        mStartTimeMs = getPeriodStartTimeMs();
-        mStartSegmentNum = getSequenceStartNumber();
-
-        int shortDurationMs = (int)(getMpdRequestTimeMs() - getPeriodStartTimeMs());
-
-        int additionalDurationMs = MAX_DURATION_MS - shortDurationMs;
-
-        if (additionalDurationMs > 0) {
-            int additionalSegmentsNum = additionalDurationMs / getMinimumUpdatePeriodMs();
-
-            int startSegmentNum = getSequenceStartNumber() - additionalSegmentsNum;
-
-            if (startSegmentNum > 0) {
-                mStartSegmentNum = startSegmentNum;
-                //mStartTimeMs = getPeriodStartTimeMs() - (getSequenceStartNumber() * getMinimumUpdatePeriodMs());
-                mStartTimeMs = getPeriodStartTimeMs() - additionalDurationMs;
-            } else {
-                mStartSegmentNum = 0;
-                mStartTimeMs = getPeriodStartTimeMs() - ((long) getSequenceStartNumber() * getMinimumUpdatePeriodMs());
-            }
-        }
-    }
+  }
 }

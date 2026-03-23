@@ -63,8 +63,8 @@ public final class GvrAudioProcessor implements AudioProcessor {
   }
 
   /**
-   * Updates the listener head orientation. May be called on any thread. See
-   * {@code GvrAudioSurround.updateNativeOrientation}.
+   * Updates the listener head orientation. May be called on any thread. See {@code
+   * GvrAudioSurround.updateNativeOrientation}.
    *
    * @param w The w component of the quaternion.
    * @param x The x component of the quaternion.
@@ -118,8 +118,9 @@ public final class GvrAudioProcessor implements AudioProcessor {
         throw new UnhandledFormatException(sampleRateHz, channelCount, encoding);
     }
     if (buffer == EMPTY_BUFFER) {
-      buffer = ByteBuffer.allocateDirect(FRAMES_PER_OUTPUT_BUFFER * OUTPUT_FRAME_SIZE)
-          .order(ByteOrder.nativeOrder());
+      buffer =
+          ByteBuffer.allocateDirect(FRAMES_PER_OUTPUT_BUFFER * OUTPUT_FRAME_SIZE)
+              .order(ByteOrder.nativeOrder());
     }
     return true;
   }
@@ -208,5 +209,4 @@ public final class GvrAudioProcessor implements AudioProcessor {
       gvrAudioSurround = null;
     }
   }
-
 }

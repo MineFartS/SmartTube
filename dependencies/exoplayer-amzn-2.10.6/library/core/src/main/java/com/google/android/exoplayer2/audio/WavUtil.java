@@ -24,21 +24,28 @@ public final class WavUtil {
 
   /** Four character code for "RIFF". */
   public static final int RIFF_FOURCC = Util.getIntegerCodeForString("RIFF");
+
   /** Four character code for "WAVE". */
   public static final int WAVE_FOURCC = Util.getIntegerCodeForString("WAVE");
+
   /** Four character code for "fmt ". */
   public static final int FMT_FOURCC = Util.getIntegerCodeForString("fmt ");
+
   /** Four character code for "data". */
   public static final int DATA_FOURCC = Util.getIntegerCodeForString("data");
 
   /** WAVE type value for integer PCM audio data. */
   private static final int TYPE_PCM = 0x0001;
+
   /** WAVE type value for float PCM audio data. */
   private static final int TYPE_FLOAT = 0x0003;
+
   /** WAVE type value for 8-bit ITU-T G.711 A-law audio data. */
   private static final int TYPE_A_LAW = 0x0006;
+
   /** WAVE type value for 8-bit ITU-T G.711 mu-law audio data. */
   private static final int TYPE_MU_LAW = 0x0007;
+
   /** WAVE type value for extended WAVE format. */
   private static final int TYPE_WAVE_FORMAT_EXTENSIBLE = 0xFFFE;
 

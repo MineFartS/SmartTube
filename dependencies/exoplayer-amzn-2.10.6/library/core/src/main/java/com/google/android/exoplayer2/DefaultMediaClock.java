@@ -21,14 +21,12 @@ import com.google.android.exoplayer2.util.MediaClock;
 import com.google.android.exoplayer2.util.StandaloneMediaClock;
 
 /**
- * Default {@link MediaClock} which uses a renderer media clock and falls back to a
- * {@link StandaloneMediaClock} if necessary.
+ * Default {@link MediaClock} which uses a renderer media clock and falls back to a {@link
+ * StandaloneMediaClock} if necessary.
  */
 /* package */ final class DefaultMediaClock implements MediaClock {
 
-  /**
-   * Listener interface to be notified of changes to the active playback parameters.
-   */
+  /** Listener interface to be notified of changes to the active playback parameters. */
   public interface PlaybackParameterListener {
 
     /**
@@ -37,7 +35,6 @@ import com.google.android.exoplayer2.util.StandaloneMediaClock;
      * @param newPlaybackParameters The newly active {@link PlaybackParameters}.
      */
     void onPlaybackParametersChanged(PlaybackParameters newPlaybackParameters);
-
   }
 
   private final StandaloneMediaClock standaloneMediaClock;
@@ -50,8 +47,7 @@ import com.google.android.exoplayer2.util.StandaloneMediaClock;
    * Creates a new instance with listener for playback parameter changes and a {@link Clock} to use
    * for the standalone clock implementation.
    *
-   * @param listener A {@link PlaybackParameterListener} to listen for playback parameter
-   *     changes.
+   * @param listener A {@link PlaybackParameterListener} to listen for playback parameter changes.
    * @param clock A {@link Clock}.
    */
   public DefaultMediaClock(PlaybackParameterListener listener, Clock clock) {
@@ -59,16 +55,12 @@ import com.google.android.exoplayer2.util.StandaloneMediaClock;
     this.standaloneMediaClock = new StandaloneMediaClock(clock);
   }
 
-  /**
-   * Starts the standalone fallback clock.
-   */
+  /** Starts the standalone fallback clock. */
   public void start() {
     standaloneMediaClock.start();
   }
 
-  /**
-   * Stops the standalone fallback clock.
-   */
+  /** Stops the standalone fallback clock. */
   public void stop() {
     standaloneMediaClock.stop();
   }
@@ -117,9 +109,7 @@ import com.google.android.exoplayer2.util.StandaloneMediaClock;
     }
   }
 
-  /**
-   * Syncs internal clock if needed and returns current clock position in microseconds.
-   */
+  /** Syncs internal clock if needed and returns current clock position in microseconds. */
   public long syncAndGetPositionUs() {
     if (isUsingRendererClock()) {
       ensureSynced();
@@ -152,7 +142,8 @@ import com.google.android.exoplayer2.util.StandaloneMediaClock;
 
   @Override
   public PlaybackParameters getPlaybackParameters() {
-    return rendererClock != null ? rendererClock.getPlaybackParameters()
+    return rendererClock != null
+        ? rendererClock.getPlaybackParameters()
         : standaloneMediaClock.getPlaybackParameters();
   }
 
@@ -171,8 +162,8 @@ import com.google.android.exoplayer2.util.StandaloneMediaClock;
     // stream to reenter the ready state. The latter case uses the standalone clock to avoid getting
     // stuck if tracks in the current period have uneven durations.
     // See: https://github.com/google/ExoPlayer/issues/1874.
-    return rendererClockSource != null && !rendererClockSource.isEnded()
+    return rendererClockSource != null
+        && !rendererClockSource.isEnded()
         && (rendererClockSource.isReady() || !rendererClockSource.hasReadStreamToEnd());
   }
-
 }

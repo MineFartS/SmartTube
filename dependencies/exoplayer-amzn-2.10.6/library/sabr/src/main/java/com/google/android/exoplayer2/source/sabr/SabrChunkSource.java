@@ -16,9 +16,7 @@
 package com.google.android.exoplayer2.source.sabr;
 
 import android.os.SystemClock;
-
 import androidx.annotation.Nullable;
-
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.source.chunk.ChunkSource;
 import com.google.android.exoplayer2.source.sabr.PlayerEmsgHandler.PlayerTrackEmsgHandler;
@@ -26,12 +24,9 @@ import com.google.android.exoplayer2.source.sabr.manifest.SabrManifest;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.upstream.LoaderErrorThrower;
 import com.google.android.exoplayer2.upstream.TransferListener;
-
 import java.util.List;
 
-/**
- * An {@link ChunkSource} for DASH streams.
- */
+/** An {@link ChunkSource} for DASH streams. */
 public interface SabrChunkSource extends ChunkSource {
 
   /** Factory for {@link SabrChunkSource}s. */

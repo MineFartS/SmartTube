@@ -20,9 +20,7 @@ import com.google.android.exoplayer2.upstream.DataSpec;
 import java.io.IOException;
 import javax.crypto.Cipher;
 
-/**
- * A wrapping {@link DataSink} that encrypts the data being consumed.
- */
+/** A wrapping {@link DataSink} that encrypts the data being consumed. */
 public final class AesCipherDataSink implements DataSink {
 
   private final DataSink wrappedDataSink;
@@ -65,8 +63,9 @@ public final class AesCipherDataSink implements DataSink {
   public void open(DataSpec dataSpec) throws IOException {
     wrappedDataSink.open(dataSpec);
     long nonce = CryptoUtil.getFNV64Hash(dataSpec.key);
-    cipher = new AesFlushingCipher(Cipher.ENCRYPT_MODE, secretKey, nonce,
-        dataSpec.absoluteStreamPosition);
+    cipher =
+        new AesFlushingCipher(
+            Cipher.ENCRYPT_MODE, secretKey, nonce, dataSpec.absoluteStreamPosition);
   }
 
   @Override

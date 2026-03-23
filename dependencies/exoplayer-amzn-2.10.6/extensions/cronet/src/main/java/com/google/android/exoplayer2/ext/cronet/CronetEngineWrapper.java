@@ -30,9 +30,7 @@ import java.util.List;
 import org.chromium.net.CronetEngine;
 import org.chromium.net.CronetProvider;
 
-/**
- * A wrapper class for a {@link CronetEngine}.
- */
+/** A wrapper class for a {@link CronetEngine}. */
 public final class CronetEngineWrapper {
 
   private static final String TAG = "CronetEngineWrapper";
@@ -48,31 +46,26 @@ public final class CronetEngineWrapper {
   @Retention(RetentionPolicy.SOURCE)
   @IntDef({SOURCE_NATIVE, SOURCE_GMS, SOURCE_UNKNOWN, SOURCE_USER_PROVIDED, SOURCE_UNAVAILABLE})
   public @interface CronetEngineSource {}
-  /**
-   * Natively bundled Cronet implementation.
-   */
+
+  /** Natively bundled Cronet implementation. */
   public static final int SOURCE_NATIVE = 0;
-  /**
-   * Cronet implementation from GMSCore.
-   */
+
+  /** Cronet implementation from GMSCore. */
   public static final int SOURCE_GMS = 1;
-  /**
-   * Other (unknown) Cronet implementation.
-   */
+
+  /** Other (unknown) Cronet implementation. */
   public static final int SOURCE_UNKNOWN = 2;
-  /**
-   * User-provided Cronet engine.
-   */
+
+  /** User-provided Cronet engine. */
   public static final int SOURCE_USER_PROVIDED = 3;
-  /**
-   * No Cronet implementation available. Fallback Http provider is used if possible.
-   */
+
+  /** No Cronet implementation available. Fallback Http provider is used if possible. */
   public static final int SOURCE_UNAVAILABLE = 4;
 
   /**
    * Creates a wrapper for a {@link CronetEngine} which automatically selects the most suitable
-   * {@link CronetProvider}. Sets wrapper to prefer natively bundled Cronet over GMSCore Cronet
-   * if both are available.
+   * {@link CronetProvider}. Sets wrapper to prefer natively bundled Cronet over GMSCore Cronet if
+   * both are available.
    *
    * @param context A context.
    */
@@ -106,8 +99,11 @@ public final class CronetEngineWrapper {
       String providerName = cronetProviders.get(i).getName();
       try {
         // MODIFIED: enable Quic
-        //cronetEngine = cronetProviders.get(i).createBuilder().build();
-        cronetEngine = cronetProviders.get(i).createBuilder()
+        // cronetEngine = cronetProviders.get(i).createBuilder().build();
+        cronetEngine =
+            cronetProviders
+                .get(i)
+                .createBuilder()
                 .enableQuic(true)
                 .enableHttp2(true)
                 .enableBrotli(true)
@@ -121,11 +117,15 @@ public final class CronetEngineWrapper {
         }
         Log.d(TAG, "CronetEngine built using " + providerName);
       } catch (SecurityException e) {
-        Log.w(TAG, "Failed to build CronetEngine. Please check if current process has "
-            + "android.permission.ACCESS_NETWORK_STATE.");
+        Log.w(
+            TAG,
+            "Failed to build CronetEngine. Please check if current process has "
+                + "android.permission.ACCESS_NETWORK_STATE.");
       } catch (UnsatisfiedLinkError e) {
-        Log.w(TAG, "Failed to link Cronet binaries. Please check if native Cronet binaries are "
-            + "bundled into your app.");
+        Log.w(
+            TAG,
+            "Failed to link Cronet binaries. Please check if native Cronet binaries are "
+                + "bundled into your app.");
       }
     }
     if (cronetEngine == null) {
@@ -209,8 +209,7 @@ public final class CronetEngineWrapper {
     }
 
     /**
-     * Convert Cronet provider name into a sortable preference value.
-     * Smaller values are preferred.
+     * Convert Cronet provider name into a sortable preference value. Smaller values are preferred.
      */
     private int evaluateCronetProviderType(String providerName) {
       if (isNativeProvider(providerName)) {
@@ -223,9 +222,7 @@ public final class CronetEngineWrapper {
       return -1;
     }
 
-    /**
-     * Compares version strings of format "12.123.35.23".
-     */
+    /** Compares version strings of format "12.123.35.23". */
     private static int compareVersionStrings(String versionLeft, String versionRight) {
       if (versionLeft == null || versionRight == null) {
         return 0;
@@ -247,5 +244,4 @@ public final class CronetEngineWrapper {
       return 0;
     }
   }
-
 }

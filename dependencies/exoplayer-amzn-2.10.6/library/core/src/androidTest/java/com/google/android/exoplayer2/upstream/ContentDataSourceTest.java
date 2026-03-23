@@ -101,27 +101,29 @@ public final class ContentDataSourceTest {
       DataSpec dataSpec = new DataSpec(contentUri, offset, length, null);
       byte[] completeData =
           TestUtil.getByteArray(InstrumentationRegistry.getTargetContext(), DATA_PATH);
-      byte[] expectedData = Arrays.copyOfRange(completeData, offset,
-          length == C.LENGTH_UNSET ? completeData.length : offset + length);
+      byte[] expectedData =
+          Arrays.copyOfRange(
+              completeData,
+              offset,
+              length == C.LENGTH_UNSET ? completeData.length : offset + length);
       TestUtil.assertDataSourceContent(dataSource, dataSpec, expectedData, !pipeMode);
     } finally {
       dataSource.close();
     }
   }
 
-  /**
-   * A {@link ContentProvider} for the test.
-   */
+  /** A {@link ContentProvider} for the test. */
   public static final class TestContentProvider extends ContentProvider
       implements ContentProvider.PipeDataWriter<Object> {
 
     private static final String PARAM_PIPE_MODE = "pipe-mode";
 
     public static Uri buildUri(String filePath, boolean pipeMode) {
-      Uri.Builder builder = new Uri.Builder()
-          .scheme(ContentResolver.SCHEME_CONTENT)
-          .authority(AUTHORITY)
-          .path(filePath);
+      Uri.Builder builder =
+          new Uri.Builder()
+              .scheme(ContentResolver.SCHEME_CONTENT)
+              .authority(AUTHORITY)
+              .path(filePath);
       if (pipeMode) {
         builder.appendQueryParameter(TestContentProvider.PARAM_PIPE_MODE, "1");
       }
@@ -134,8 +136,12 @@ public final class ContentDataSourceTest {
     }
 
     @Override
-    public Cursor query(@NonNull Uri uri, String[] projection, String selection,
-        String[] selectionArgs, String sortOrder) {
+    public Cursor query(
+        @NonNull Uri uri,
+        String[] projection,
+        String selection,
+        String[] selectionArgs,
+        String sortOrder) {
       throw new UnsupportedOperationException();
     }
 
@@ -177,14 +183,18 @@ public final class ContentDataSourceTest {
     }
 
     @Override
-    public int update(@NonNull Uri uri, ContentValues values, String selection,
-        String[] selectionArgs) {
+    public int update(
+        @NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
       throw new UnsupportedOperationException();
     }
 
     @Override
-    public void writeDataToPipe(@NonNull ParcelFileDescriptor output, @NonNull Uri uri,
-        @NonNull String mimeType, @Nullable Bundle opts, @Nullable Object args) {
+    public void writeDataToPipe(
+        @NonNull ParcelFileDescriptor output,
+        @NonNull Uri uri,
+        @NonNull String mimeType,
+        @Nullable Bundle opts,
+        @Nullable Object args) {
       try {
         byte[] data = TestUtil.getByteArray(getContext(), getFileName(uri));
         FileOutputStream outputStream = new FileOutputStream(output.getFileDescriptor());
@@ -198,7 +208,5 @@ public final class ContentDataSourceTest {
     private static String getFileName(Uri uri) {
       return uri.getPath().replaceFirst("/", "");
     }
-
   }
-
 }

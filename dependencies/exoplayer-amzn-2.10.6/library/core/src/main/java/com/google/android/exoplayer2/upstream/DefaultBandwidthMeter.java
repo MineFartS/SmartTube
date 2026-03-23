@@ -22,8 +22,8 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.os.Looper;
-import androidx.annotation.Nullable;
 import android.util.SparseArray;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.Clock;
@@ -236,7 +236,9 @@ public final class DefaultBandwidthMeter implements BandwidthMeter, TransferList
   private boolean networkTypeOverrideSet;
   @C.NetworkType private int networkTypeOverride;
 
-  /** @deprecated Use {@link Builder} instead. */
+  /**
+   * @deprecated Use {@link Builder} instead.
+   */
   @Deprecated
   public DefaultBandwidthMeter() {
     this(

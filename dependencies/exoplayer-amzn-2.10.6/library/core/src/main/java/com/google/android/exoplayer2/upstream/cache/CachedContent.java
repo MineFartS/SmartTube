@@ -28,12 +28,16 @@ import java.util.TreeSet;
 
   /** The cache file id that uniquely identifies the original stream. */
   public final int id;
+
   /** The cache key that uniquely identifies the original stream. */
   public final String key;
+
   /** The cached spans of this content. */
   private final TreeSet<SimpleCacheSpan> cachedSpans;
+
   /** Metadata values. */
   private DefaultContentMetadata metadata;
+
   /** Whether the content is locked. */
   private boolean locked;
 
@@ -91,8 +95,8 @@ import java.util.TreeSet;
   }
 
   /**
-   * Returns the span containing the position. If there isn't one, it returns a hole span
-   * which defines the maximum extents of the hole in the cache.
+   * Returns the span containing the position. If there isn't one, it returns a hole span which
+   * defines the maximum extents of the hole in the cache.
    */
   public SimpleCacheSpan getSpan(long position) {
     SimpleCacheSpan lookupSpan = SimpleCacheSpan.createLookup(key, position);
@@ -101,7 +105,8 @@ import java.util.TreeSet;
       return floorSpan;
     }
     SimpleCacheSpan ceilSpan = cachedSpans.ceiling(lookupSpan);
-    return ceilSpan == null ? SimpleCacheSpan.createOpenHole(key, position)
+    return ceilSpan == null
+        ? SimpleCacheSpan.createOpenHole(key, position)
         : SimpleCacheSpan.createClosedHole(key, position, ceilSpan.position - position);
   }
 

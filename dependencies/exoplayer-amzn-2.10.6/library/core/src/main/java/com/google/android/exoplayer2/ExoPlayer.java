@@ -117,22 +117,30 @@ import com.google.android.exoplayer2.video.MediaCodecVideoRenderer;
  */
 public interface ExoPlayer extends Player {
 
-  /** @deprecated Use {@link PlayerMessage.Target} instead. */
+  /**
+   * @deprecated Use {@link PlayerMessage.Target} instead.
+   */
   @Deprecated
   interface ExoPlayerComponent extends PlayerMessage.Target {}
 
-  /** @deprecated Use {@link PlayerMessage} instead. */
+  /**
+   * @deprecated Use {@link PlayerMessage} instead.
+   */
   @Deprecated
   final class ExoPlayerMessage {
 
     /** The target to receive the message. */
     public final PlayerMessage.Target target;
+
     /** The type of the message. */
     public final int messageType;
+
     /** The message. */
     public final Object message;
 
-    /** @deprecated Use {@link ExoPlayer#createMessage(PlayerMessage.Target)} instead. */
+    /**
+     * @deprecated Use {@link ExoPlayer#createMessage(PlayerMessage.Target)} instead.
+     */
     @Deprecated
     public ExoPlayerMessage(PlayerMessage.Target target, int messageType, Object message) {
       this.target = target;
@@ -151,8 +159,8 @@ public interface ExoPlayer extends Player {
   void retry();
 
   /**
-   * Prepares the player to play the provided {@link MediaSource}. Equivalent to
-   * {@code prepare(mediaSource, true, true)}.
+   * Prepares the player to play the provided {@link MediaSource}. Equivalent to {@code
+   * prepare(mediaSource, true, true)}.
    */
   void prepare(MediaSource mediaSource);
 
@@ -181,7 +189,9 @@ public interface ExoPlayer extends Player {
    */
   PlayerMessage createMessage(PlayerMessage.Target target);
 
-  /** @deprecated Use {@link #createMessage(PlayerMessage.Target)} instead. */
+  /**
+   * @deprecated Use {@link #createMessage(PlayerMessage.Target)} instead.
+   */
   @Deprecated
   @SuppressWarnings("deprecation")
   void sendMessages(ExoPlayerMessage... messages);

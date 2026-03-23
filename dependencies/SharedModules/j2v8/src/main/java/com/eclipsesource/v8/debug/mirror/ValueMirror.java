@@ -12,29 +12,26 @@ package com.eclipsesource.v8.debug.mirror;
 
 import com.eclipsesource.v8.V8Object;
 
-/**
- * Represents 'Value' Mirrors (Objects, Numbers, Strings, ...).
- */
+/** Represents 'Value' Mirrors (Objects, Numbers, Strings, ...). */
 public class ValueMirror extends Mirror {
 
-    private static final String VALUE = "value";
+  private static final String VALUE = "value";
 
-    ValueMirror(final V8Object v8Object) {
-        super(v8Object);
-    }
+  ValueMirror(final V8Object v8Object) {
+    super(v8Object);
+  }
 
-    /**
-     * Returns the Object that this mirror represents.
-     *
-     * @return The object that this mirror represents.
-     */
-    public Object getValue() {
-        return v8Object.executeFunction(VALUE, null);
-    }
+  /**
+   * Returns the Object that this mirror represents.
+   *
+   * @return The object that this mirror represents.
+   */
+  public Object getValue() {
+    return v8Object.executeFunction(VALUE, null);
+  }
 
-    @Override
-    public boolean isValue() {
-        return true;
-    }
-
+  @Override
+  public boolean isValue() {
+    return true;
+  }
 }

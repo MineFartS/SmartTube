@@ -38,7 +38,7 @@ public final class SilenceMediaSource extends BaseMediaSource {
   private static final int CHANNEL_COUNT = 2;
   private static final Format FORMAT =
       Format.createAudioSampleFormat(
-          /* id=*/ null,
+          /* id= */ null,
           MimeTypes.AUDIO_RAW,
           /* codecs= */ null,
           /* bitrate= */ Format.NO_VALUE,

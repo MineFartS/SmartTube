@@ -66,10 +66,13 @@ public final class AudioFocusManager {
     PLAYER_COMMAND_PLAY_WHEN_READY,
   })
   public @interface PlayerCommand {}
+
   /** Do not play. */
   public static final int PLAYER_COMMAND_DO_NOT_PLAY = -1;
+
   /** Do not play now. Wait for callback to play. */
   public static final int PLAYER_COMMAND_WAIT_FOR_CALLBACK = 0;
+
   /** Play freely. */
   public static final int PLAYER_COMMAND_PLAY_WHEN_READY = 1;
 
@@ -84,14 +87,19 @@ public final class AudioFocusManager {
     AUDIO_FOCUS_STATE_LOSS_TRANSIENT_DUCK
   })
   private @interface AudioFocusState {}
+
   /** No audio focus was held, but has been lost by another app taking it permanently. */
   private static final int AUDIO_FOCUS_STATE_LOST_FOCUS = -1;
+
   /** No audio focus is currently being held. */
   private static final int AUDIO_FOCUS_STATE_NO_FOCUS = 0;
+
   /** The requested audio focus is currently held. */
   private static final int AUDIO_FOCUS_STATE_HAVE_FOCUS = 1;
+
   /** Audio focus has been temporarily lost. */
   private static final int AUDIO_FOCUS_STATE_LOSS_TRANSIENT = 2;
+
   /** Audio focus has been temporarily lost, but playback may continue with reduced volume. */
   private static final int AUDIO_FOCUS_STATE_LOSS_TRANSIENT_DUCK = 3;
 

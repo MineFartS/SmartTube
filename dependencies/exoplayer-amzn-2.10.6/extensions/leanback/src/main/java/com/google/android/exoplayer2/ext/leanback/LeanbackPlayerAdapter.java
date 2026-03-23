@@ -17,14 +17,14 @@ package com.google.android.exoplayer2.ext.leanback;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Pair;
+import android.view.Surface;
+import android.view.SurfaceHolder;
 import androidx.annotation.Nullable;
 import androidx.leanback.R;
 import androidx.leanback.media.PlaybackGlueHost;
 import androidx.leanback.media.PlayerAdapter;
 import androidx.leanback.media.SurfaceHolderGlueHost;
-import android.util.Pair;
-import android.view.Surface;
-import android.view.SurfaceHolder;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ControlDispatcher;
 import com.google.android.exoplayer2.DefaultControlDispatcher;
@@ -88,12 +88,12 @@ public final class LeanbackPlayerAdapter extends PlayerAdapter implements Runnab
   /**
    * Sets the {@link ControlDispatcher}.
    *
-   * @param controlDispatcher The {@link ControlDispatcher}, or null to use
-   *     {@link DefaultControlDispatcher}.
+   * @param controlDispatcher The {@link ControlDispatcher}, or null to use {@link
+   *     DefaultControlDispatcher}.
    */
   public void setControlDispatcher(@Nullable ControlDispatcher controlDispatcher) {
-    this.controlDispatcher = controlDispatcher == null ? new DefaultControlDispatcher()
-        : controlDispatcher;
+    this.controlDispatcher =
+        controlDispatcher == null ? new DefaultControlDispatcher() : controlDispatcher;
   }
 
   /**
@@ -151,7 +151,8 @@ public final class LeanbackPlayerAdapter extends PlayerAdapter implements Runnab
   @Override
   public boolean isPlaying() {
     int playbackState = player.getPlaybackState();
-    return playbackState != Player.STATE_IDLE && playbackState != Player.STATE_ENDED
+    return playbackState != Player.STATE_IDLE
+        && playbackState != Player.STATE_ENDED
         && player.getPlayWhenReady();
   }
 
@@ -282,8 +283,11 @@ public final class LeanbackPlayerAdapter extends PlayerAdapter implements Runnab
         Pair<Integer, String> errorMessage = errorMessageProvider.getErrorMessage(exception);
         callback.onError(LeanbackPlayerAdapter.this, errorMessage.first, errorMessage.second);
       } else {
-        callback.onError(LeanbackPlayerAdapter.this, exception.type, context.getString(
-            R.string.lb_media_player_error, exception.type, exception.rendererIndex));
+        callback.onError(
+            LeanbackPlayerAdapter.this,
+            exception.type,
+            context.getString(
+                R.string.lb_media_player_error, exception.type, exception.rendererIndex));
       }
     }
 
@@ -315,7 +319,5 @@ public final class LeanbackPlayerAdapter extends PlayerAdapter implements Runnab
     public void onRenderedFirstFrame() {
       // Do nothing.
     }
-
   }
-
 }

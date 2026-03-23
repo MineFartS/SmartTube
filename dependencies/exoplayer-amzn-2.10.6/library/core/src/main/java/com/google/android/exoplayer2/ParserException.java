@@ -17,9 +17,7 @@ package com.google.android.exoplayer2;
 
 import java.io.IOException;
 
-/**
- * Thrown when an error occurs parsing media data and metadata.
- */
+/** Thrown when an error occurs parsing media data and metadata. */
 public class ParserException extends IOException {
 
   public ParserException() {
@@ -47,5 +45,4 @@ public class ParserException extends IOException {
   public ParserException(String message, Throwable cause) {
     super(message, cause);
   }
-
 }

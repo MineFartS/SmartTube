@@ -16,9 +16,9 @@
 package com.google.android.exoplayer2.offline;
 
 import android.net.Uri;
+import android.util.Pair;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.Pair;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DataSpec;
@@ -26,13 +26,11 @@ import com.google.android.exoplayer2.upstream.cache.Cache;
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource;
 import com.google.android.exoplayer2.upstream.cache.CacheKeyFactory;
 import com.google.android.exoplayer2.upstream.cache.CacheUtil;
-import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.PriorityTaskManager;
 import com.google.android.exoplayer2.util.Util;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Queue;
@@ -113,8 +111,8 @@ public abstract class SegmentDownloader<M extends FilterableManifest<M>> impleme
   @Override
   public final void download(@Nullable ProgressListener progressListener)
       throws IOException, InterruptedException {
-    ExecutorService executorService = Executors.newFixedThreadPool(
-        Math.max(1, cacheKeyFactory.maxDownloadParallelSegments()));
+    ExecutorService executorService =
+        Executors.newFixedThreadPool(Math.max(1, cacheKeyFactory.maxDownloadParallelSegments()));
     priorityTaskManager.add(C.PRIORITY_DOWNLOAD);
     try {
       // Get the manifest and all of the segments.
@@ -125,8 +123,7 @@ public abstract class SegmentDownloader<M extends FilterableManifest<M>> impleme
         if (!streamKeys.isEmpty()) {
           manifest = manifest.copy(streamKeys);
         }
-        segments = getSegments(dataSource, manifest, /* allowIncompleteList= */
-            false);
+        segments = getSegments(dataSource, manifest, /* allowIncompleteList= */ false);
       } finally {
         cacheDataSources.release(dataSource);
       }
@@ -134,7 +131,7 @@ public abstract class SegmentDownloader<M extends FilterableManifest<M>> impleme
       // Sort, merge and reassign segment cache key
       Collections.sort(segments);
       // TODO Merge segment can cause in playback with the current approach
-      //mergeSegments(segments, cacheKeyFactory);
+      // mergeSegments(segments, cacheKeyFactory);
       reassignCacheKey(segments);
 
       // Scan the segments, removing any that are fully downloaded.
@@ -180,11 +177,7 @@ public abstract class SegmentDownloader<M extends FilterableManifest<M>> impleme
       for (Segment segment : segments) {
         futures.add(
             executorService.submit(
-                new SegmentDownloadTask<>(
-                    this,
-                    segment,
-                    progressNotifier,
-                    countDownLatch)));
+                new SegmentDownloadTask<>(this, segment, progressNotifier, countDownLatch)));
       }
       countDownLatch.await();
       executorService.shutdownNow();
@@ -273,16 +266,17 @@ public abstract class SegmentDownloader<M extends FilterableManifest<M>> impleme
     for (int i = 0; i < size; i++) {
       Segment segment = segments.get(i);
       if (segment.dataSpec.key == null) {
-        DataSpec dataSpec = new DataSpec(
-            segment.dataSpec.uri,
-            segment.dataSpec.httpMethod,
-            segment.dataSpec.httpBody,
-            segment.dataSpec.absoluteStreamPosition,
-            segment.dataSpec.position,
-            segment.dataSpec.length,
-            cacheKeyFactory.buildCacheKey(segment.dataSpec),
-            segment.dataSpec.flags,
-            segment.dataSpec.httpRequestHeaders);
+        DataSpec dataSpec =
+            new DataSpec(
+                segment.dataSpec.uri,
+                segment.dataSpec.httpMethod,
+                segment.dataSpec.httpBody,
+                segment.dataSpec.absoluteStreamPosition,
+                segment.dataSpec.position,
+                segment.dataSpec.length,
+                cacheKeyFactory.buildCacheKey(segment.dataSpec),
+                segment.dataSpec.flags,
+                segment.dataSpec.httpRequestHeaders);
         segments.set(i, new Segment(segment.startTimeUs, dataSpec));
       }
     }
@@ -343,7 +337,8 @@ public abstract class SegmentDownloader<M extends FilterableManifest<M>> impleme
     }
   }
 
-  private static final class SegmentDownloadTask<M extends FilterableManifest<M>> implements Callable<SegmentDownloadTaskResult> {
+  private static final class SegmentDownloadTask<M extends FilterableManifest<M>>
+      implements Callable<SegmentDownloadTaskResult> {
     private final SegmentDownloader<M> downloader;
     private final Segment segment;
     private final ProgressNotifier progressNotifier;
@@ -407,7 +402,7 @@ public abstract class SegmentDownloader<M extends FilterableManifest<M>> impleme
     }
 
     public void abort() {
-      while(getCount() > 0) {
+      while (getCount() > 0) {
         countDown();
       }
     }

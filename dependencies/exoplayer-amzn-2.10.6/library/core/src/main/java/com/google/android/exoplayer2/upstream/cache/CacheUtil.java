@@ -15,8 +15,8 @@
  */
 package com.google.android.exoplayer2.upstream.cache;
 
-import androidx.annotation.Nullable;
 import android.util.Pair;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DataSourceException;
@@ -29,9 +29,7 @@ import java.io.IOException;
 import java.util.NavigableSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * Caching related utility methods.
- */
+/** Caching related utility methods. */
 public final class CacheUtil {
 
   /** Receives progress updates during cache operations. */
@@ -53,22 +51,25 @@ public final class CacheUtil {
   public static final int DEFAULT_BUFFER_SIZE_BYTES = 128 * 1024;
 
   /** Default {@link CacheKeyFactory}. */
-  public static final CacheKeyFactory DEFAULT_CACHE_KEY_FACTORY = new CacheKeyFactory() {
-    private static final int MIN_PARALLEL_CHUNCKS_DOWNLOADS = 2;
+  public static final CacheKeyFactory DEFAULT_CACHE_KEY_FACTORY =
+      new CacheKeyFactory() {
+        private static final int MIN_PARALLEL_CHUNCKS_DOWNLOADS = 2;
 
-    @Override
-    public String buildCacheKey(DataSpec dataSpec) {
-      return dataSpec.key != null ? dataSpec.key : generateKey(dataSpec);
-    }
+        @Override
+        public String buildCacheKey(DataSpec dataSpec) {
+          return dataSpec.key != null ? dataSpec.key : generateKey(dataSpec);
+        }
 
-    @Override
-    public int maxDownloadParallelSegments() {
-      // TODO Implement a better logic to determine the number of concurrent chunck downloads or
-      // provide a way to customize by client. For now it uses at least MIN_PARALLEL_CHUNCKS_DOWNLOADS
-      // and at most the half of the number of device processor.
-      return Math.max(MIN_PARALLEL_CHUNCKS_DOWNLOADS, Runtime.getRuntime().availableProcessors() / 2);
-    }
-  };
+        @Override
+        public int maxDownloadParallelSegments() {
+          // TODO Implement a better logic to determine the number of concurrent chunck downloads or
+          // provide a way to customize by client. For now it uses at least
+          // MIN_PARALLEL_CHUNCKS_DOWNLOADS
+          // and at most the half of the number of device processor.
+          return Math.max(
+              MIN_PARALLEL_CHUNCKS_DOWNLOADS, Runtime.getRuntime().availableProcessors() / 2);
+        }
+      };
 
   /**
    * Generates a cache key out of the given {@link DataSpec}.
@@ -76,7 +77,7 @@ public final class CacheUtil {
    * @param dataSpec DataSpec of a content which the requested key is for.
    */
   public static String generateKey(DataSpec dataSpec) {
-    return dataSpec.toString() + "-" +  + dataSpec.absoluteStreamPosition;
+    return dataSpec.toString() + "-" + +dataSpec.absoluteStreamPosition;
   }
 
   /**
@@ -404,8 +405,10 @@ public final class CacheUtil {
   private static final class ProgressNotifier {
     /** The listener to notify when progress is made. */
     private final ProgressListener listener;
+
     /** The length of the content being cached in bytes, or {@link C#LENGTH_UNSET} if unknown. */
     private long requestLength;
+
     /** The number of bytes that are cached. */
     private long bytesCached;
 

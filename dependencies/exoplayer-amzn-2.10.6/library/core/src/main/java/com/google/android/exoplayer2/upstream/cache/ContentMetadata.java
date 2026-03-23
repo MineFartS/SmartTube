@@ -19,9 +19,7 @@ import android.net.Uri;
 import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 
-/**
- * Interface for an immutable snapshot of keyed metadata.
- */
+/** Interface for an immutable snapshot of keyed metadata. */
 public interface ContentMetadata {
 
   /**
@@ -30,8 +28,10 @@ public interface ContentMetadata {
    */
   @SuppressWarnings("unused")
   String KEY_CUSTOM_PREFIX = "custom_";
+
   /** Key for redirected uri (type: String). */
   String KEY_REDIRECTED_URI = "exo_redir";
+
   /** Key for content length in bytes (type: long). */
   String KEY_CONTENT_LENGTH = "exo_len";
 

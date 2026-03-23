@@ -29,9 +29,7 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * Parses a continuous (E-)AC-3 byte stream and extracts individual samples.
- */
+/** Parses a continuous (E-)AC-3 byte stream and extracts individual samples. */
 public final class Ac3Reader implements ElementaryStreamReader {
 
   @Documented
@@ -66,9 +64,7 @@ public final class Ac3Reader implements ElementaryStreamReader {
   // Used when reading the samples.
   private long timeUs;
 
-  /**
-   * Constructs a new reader for (E-)AC-3 elementary streams.
-   */
+  /** Constructs a new reader for (E-)AC-3 elementary streams. */
   public Ac3Reader() {
     this(null);
   }
@@ -185,19 +181,28 @@ public final class Ac3Reader implements ElementaryStreamReader {
     return false;
   }
 
-  /**
-   * Parses the sample header.
-   */
+  /** Parses the sample header. */
   @SuppressWarnings("ReferenceEquality")
   private void parseHeader() {
     headerScratchBits.setPosition(0);
     SyncFrameInfo frameInfo = Ac3Util.parseAc3SyncframeInfo(headerScratchBits);
-    if (format == null || frameInfo.channelCount != format.channelCount
+    if (format == null
+        || frameInfo.channelCount != format.channelCount
         || frameInfo.sampleRate != format.sampleRate
         || frameInfo.mimeType != format.sampleMimeType) {
-      format = Format.createAudioSampleFormat(trackFormatId, frameInfo.mimeType, null,
-          Format.NO_VALUE, Format.NO_VALUE, frameInfo.channelCount, frameInfo.sampleRate, null,
-          null, 0, language);
+      format =
+          Format.createAudioSampleFormat(
+              trackFormatId,
+              frameInfo.mimeType,
+              null,
+              Format.NO_VALUE,
+              Format.NO_VALUE,
+              frameInfo.channelCount,
+              frameInfo.sampleRate,
+              null,
+              null,
+              0,
+              language);
       output.format(format);
     }
     sampleSize = frameInfo.frameSize;
@@ -205,5 +210,4 @@ public final class Ac3Reader implements ElementaryStreamReader {
     // specifies the number of PCM audio samples per second.
     sampleDurationUs = C.MICROS_PER_SECOND * frameInfo.sampleCount / format.sampleRate;
   }
-
 }

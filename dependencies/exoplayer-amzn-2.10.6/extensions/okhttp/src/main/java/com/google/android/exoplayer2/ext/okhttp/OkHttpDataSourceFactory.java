@@ -23,9 +23,7 @@ import com.google.android.exoplayer2.upstream.TransferListener;
 import okhttp3.CacheControl;
 import okhttp3.Call;
 
-/**
- * A {@link Factory} that produces {@link OkHttpDataSource}.
- */
+/** A {@link Factory} that produces {@link OkHttpDataSource}. */
 public final class OkHttpDataSourceFactory extends BaseFactory {
 
   private final Call.Factory callFactory;

@@ -27,11 +27,8 @@ import java.nio.file.SimpleFileVisitor;
  */
 public abstract class SimplePathVisitor extends SimpleFileVisitor<Path> {
 
-    /**
-     * Constructs a new instance.
-     */
-    protected SimplePathVisitor() {
-        super();
-    }
-
+  /** Constructs a new instance. */
+  protected SimplePathVisitor() {
+    super();
+  }
 }

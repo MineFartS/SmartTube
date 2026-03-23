@@ -42,8 +42,8 @@ import java.util.List;
  * A {@link SampleStream} that loads media in {@link Chunk}s, obtained from a {@link ChunkSource}.
  * May also be configured to expose additional embedded {@link SampleStream}s.
  */
-public class ChunkSampleStream<T extends ChunkSource> implements SampleStream, SequenceableLoader,
-    Loader.Callback<Chunk>, Loader.ReleaseCallback {
+public class ChunkSampleStream<T extends ChunkSource>
+    implements SampleStream, SequenceableLoader, Loader.Callback<Chunk>, Loader.ReleaseCallback {
 
   /** A callback to be notified when a sample stream has finished being released. */
   public interface ReleaseCallback<T extends ChunkSource> {
@@ -229,9 +229,7 @@ public class ChunkSampleStream<T extends ChunkSource> implements SampleStream, S
     throw new IllegalStateException();
   }
 
-  /**
-   * Returns the {@link ChunkSource} used by this stream.
-   */
+  /** Returns the {@link ChunkSource} used by this stream. */
   public T getChunkSource() {
     return chunkSource;
   }
@@ -251,8 +249,10 @@ public class ChunkSampleStream<T extends ChunkSource> implements SampleStream, S
     } else {
       long bufferedPositionUs = lastSeekPositionUs;
       BaseMediaChunk lastMediaChunk = getLastMediaChunk();
-      BaseMediaChunk lastCompletedMediaChunk = lastMediaChunk.isLoadCompleted() ? lastMediaChunk
-          : mediaChunks.size() > 1 ? mediaChunks.get(mediaChunks.size() - 2) : null;
+      BaseMediaChunk lastCompletedMediaChunk =
+          lastMediaChunk.isLoadCompleted()
+              ? lastMediaChunk
+              : mediaChunks.size() > 1 ? mediaChunks.get(mediaChunks.size() - 2) : null;
       if (lastCompletedMediaChunk != null) {
         bufferedPositionUs = Math.max(bufferedPositionUs, lastCompletedMediaChunk.endTimeUs);
       }
@@ -403,8 +403,8 @@ public class ChunkSampleStream<T extends ChunkSource> implements SampleStream, S
   }
 
   @Override
-  public int readData(FormatHolder formatHolder, DecoderInputBuffer buffer,
-      boolean formatRequired) {
+  public int readData(
+      FormatHolder formatHolder, DecoderInputBuffer buffer, boolean formatRequired) {
     if (isPendingReset()) {
       return C.RESULT_NOTHING_READ;
     }
@@ -454,8 +454,8 @@ public class ChunkSampleStream<T extends ChunkSource> implements SampleStream, S
   }
 
   @Override
-  public void onLoadCanceled(Chunk loadable, long elapsedRealtimeMs, long loadDurationMs,
-      boolean released) {
+  public void onLoadCanceled(
+      Chunk loadable, long elapsedRealtimeMs, long loadDurationMs, boolean released) {
     eventDispatcher.loadCanceled(
         loadable.dataSpec,
         loadable.getUri(),
@@ -697,8 +697,11 @@ public class ChunkSampleStream<T extends ChunkSource> implements SampleStream, S
     BaseMediaChunk currentChunk = mediaChunks.get(mediaChunkReadIndex);
     Format trackFormat = currentChunk.trackFormat;
     if (!trackFormat.equals(primaryDownstreamTrackFormat)) {
-      eventDispatcher.downstreamFormatChanged(primaryTrackType, trackFormat,
-          currentChunk.trackSelectionReason, currentChunk.trackSelectionData,
+      eventDispatcher.downstreamFormatChanged(
+          primaryTrackType,
+          trackFormat,
+          currentChunk.trackSelectionReason,
+          currentChunk.trackSelectionData,
           currentChunk.startTimeUs);
     }
     primaryDownstreamTrackFormat = trackFormat;
@@ -748,9 +751,7 @@ public class ChunkSampleStream<T extends ChunkSource> implements SampleStream, S
     return firstRemovedChunk;
   }
 
-  /**
-   * A {@link SampleStream} embedded in a {@link ChunkSampleStream}.
-   */
+  /** A {@link SampleStream} embedded in a {@link ChunkSampleStream}. */
   public final class EmbeddedSampleStream implements SampleStream {
 
     public final ChunkSampleStream<T> parent;
@@ -795,8 +796,8 @@ public class ChunkSampleStream<T extends ChunkSource> implements SampleStream, S
     }
 
     @Override
-    public int readData(FormatHolder formatHolder, DecoderInputBuffer buffer,
-        boolean formatRequired) {
+    public int readData(
+        FormatHolder formatHolder, DecoderInputBuffer buffer, boolean formatRequired) {
       if (isPendingReset()) {
         return C.RESULT_NOTHING_READ;
       }
@@ -822,5 +823,4 @@ public class ChunkSampleStream<T extends ChunkSource> implements SampleStream, S
       }
     }
   }
-
 }

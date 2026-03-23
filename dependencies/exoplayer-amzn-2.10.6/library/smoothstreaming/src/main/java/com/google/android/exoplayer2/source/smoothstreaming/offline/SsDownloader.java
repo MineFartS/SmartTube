@@ -88,5 +88,4 @@ public final class SsDownloader extends SegmentDownloader<SsManifest> {
     }
     return segments;
   }
-
 }

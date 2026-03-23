@@ -7,29 +7,28 @@ import com.liskovsoft.youtubeapi.chat.LiveChatServiceInt;
 import io.reactivex.Observable;
 
 class YouTubeLiveChatService implements LiveChatService {
-    private static YouTubeLiveChatService sInstance;
-    private final LiveChatServiceInt mLiveChatServiceInt;
+  private static YouTubeLiveChatService sInstance;
+  private final LiveChatServiceInt mLiveChatServiceInt;
 
-    private YouTubeLiveChatService() {
-        mLiveChatServiceInt = LiveChatServiceInt.INSTANCE;
+  private YouTubeLiveChatService() {
+    mLiveChatServiceInt = LiveChatServiceInt.INSTANCE;
+  }
+
+  public static YouTubeLiveChatService instance() {
+    if (sInstance == null) {
+      sInstance = new YouTubeLiveChatService();
     }
 
-    public static YouTubeLiveChatService instance() {
-        if (sInstance == null) {
-            sInstance = new YouTubeLiveChatService();
-        }
+    return sInstance;
+  }
 
-        return sInstance;
-    }
+  @Override
+  public Observable<ChatItem> openLiveChatObserve(String chatKey) {
+    return RxHelper.createLong(
+        emitter -> {
+          mLiveChatServiceInt.openLiveChat(chatKey, emitter::onNext);
 
-    @Override
-    public Observable<ChatItem> openLiveChatObserve(String chatKey) {
-        return RxHelper.createLong(emitter -> {
-            mLiveChatServiceInt.openLiveChat(
-                    chatKey, emitter::onNext
-            );
-
-            emitter.onComplete();
+          emitter.onComplete();
         });
-    }
+  }
 }

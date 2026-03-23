@@ -152,8 +152,13 @@ public final class DefaultDataSource implements DataSource {
       @Nullable TransferListener listener,
       String userAgent,
       boolean allowCrossProtocolRedirects) {
-    this(context, listener, userAgent, DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
-        DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS, allowCrossProtocolRedirects);
+    this(
+        context,
+        listener,
+        userAgent,
+        DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
+        DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
+        allowCrossProtocolRedirects);
   }
 
   /**

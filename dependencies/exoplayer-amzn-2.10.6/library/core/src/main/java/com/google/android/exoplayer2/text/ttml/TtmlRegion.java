@@ -17,9 +17,7 @@ package com.google.android.exoplayer2.text.ttml;
 
 import com.google.android.exoplayer2.text.Cue;
 
-/**
- * Represents a TTML Region.
- */
+/** Represents a TTML Region. */
 /* package */ final class TtmlRegion {
 
   public final String id;
@@ -65,5 +63,4 @@ import com.google.android.exoplayer2.text.Cue;
     this.textSizeType = textSizeType;
     this.textSize = textSize;
   }
-
 }

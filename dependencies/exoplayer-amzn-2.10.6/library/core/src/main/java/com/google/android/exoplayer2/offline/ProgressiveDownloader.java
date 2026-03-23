@@ -27,9 +27,7 @@ import com.google.android.exoplayer2.util.PriorityTaskManager;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * A downloader for progressive media streams.
- */
+/** A downloader for progressive media streams. */
 public final class ProgressiveDownloader implements Downloader {
 
   private static final int BUFFER_SIZE_BYTES = 128 * 1024;

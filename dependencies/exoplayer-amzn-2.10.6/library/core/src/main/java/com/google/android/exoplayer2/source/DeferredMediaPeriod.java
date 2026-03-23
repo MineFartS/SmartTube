@@ -42,6 +42,7 @@ public final class DeferredMediaPeriod implements MediaPeriod, MediaPeriod.Callb
 
   /** The {@link MediaSource} which will create the actual media period. */
   public final MediaSource mediaSource;
+
   /** The {@link MediaPeriodId} used to create the deferred media period. */
   public final MediaPeriodId id;
 
@@ -112,9 +113,7 @@ public final class DeferredMediaPeriod implements MediaPeriod, MediaPeriod.Callb
     }
   }
 
-  /**
-   * Releases the period.
-   */
+  /** Releases the period. */
   public void releasePeriod() {
     if (mediaPeriod != null) {
       mediaSource.releasePeriod(mediaPeriod);
@@ -154,14 +153,18 @@ public final class DeferredMediaPeriod implements MediaPeriod, MediaPeriod.Callb
   }
 
   @Override
-  public long selectTracks(TrackSelection[] selections, boolean[] mayRetainStreamFlags,
-      SampleStream[] streams, boolean[] streamResetFlags, long positionUs) {
+  public long selectTracks(
+      TrackSelection[] selections,
+      boolean[] mayRetainStreamFlags,
+      SampleStream[] streams,
+      boolean[] streamResetFlags,
+      long positionUs) {
     if (preparePositionOverrideUs != C.TIME_UNSET && positionUs == preparePositionUs) {
       positionUs = preparePositionOverrideUs;
       preparePositionOverrideUs = C.TIME_UNSET;
     }
-    return mediaPeriod.selectTracks(selections, mayRetainStreamFlags, streams, streamResetFlags,
-        positionUs);
+    return mediaPeriod.selectTracks(
+        selections, mayRetainStreamFlags, streams, streamResetFlags, positionUs);
   }
 
   @Override

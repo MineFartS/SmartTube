@@ -17,11 +17,11 @@ package com.google.android.exoplayer2.ext.mediasession;
 
 import android.os.Bundle;
 import android.os.ResultReceiver;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ControlDispatcher;
 import com.google.android.exoplayer2.Player;
@@ -45,9 +45,7 @@ public final class TimelineQueueEditor
   public static final String EXTRA_FROM_INDEX = "from_index";
   public static final String EXTRA_TO_INDEX = "to_index";
 
-  /**
-   * Factory to create {@link MediaSource}s.
-   */
+  /** Factory to create {@link MediaSource}s. */
   public interface MediaSourceFactory {
     /**
      * Creates a {@link MediaSource} for the given {@link MediaDescriptionCompat}.
@@ -56,13 +54,14 @@ public final class TimelineQueueEditor
      * @return A {@link MediaSource} or {@code null} if no source can be created for the given
      *     description.
      */
-    @Nullable MediaSource createMediaSource(MediaDescriptionCompat description);
+    @Nullable
+    MediaSource createMediaSource(MediaDescriptionCompat description);
   }
 
   /**
    * Adapter to get {@link MediaDescriptionCompat} of items in the queue and to notify the
-   * application about changes in the queue to sync the data structure backing the
-   * {@link MediaSessionConnector}.
+   * application about changes in the queue to sync the data structure backing the {@link
+   * MediaSessionConnector}.
    */
   public interface QueueDataAdapter {
     /**
@@ -72,12 +71,14 @@ public final class TimelineQueueEditor
      * @param description The {@link MediaDescriptionCompat} to be added.
      */
     void add(int position, MediaDescriptionCompat description);
+
     /**
      * Removes the item at the given {@code position}.
      *
      * @param position The position at which to remove the item.
      */
     void remove(int position);
+
     /**
      * Moves a queue item from position {@code from} to position {@code to}.
      *
@@ -87,9 +88,7 @@ public final class TimelineQueueEditor
     void move(int from, int to);
   }
 
-  /**
-   * Used to evaluate whether two {@link MediaDescriptionCompat} are considered equal.
-   */
+  /** Used to evaluate whether two {@link MediaDescriptionCompat} are considered equal. */
   interface MediaDescriptionEqualityChecker {
     /**
      * Returns {@code true} whether the descriptions are considered equal.
@@ -111,7 +110,6 @@ public final class TimelineQueueEditor
     public boolean equals(MediaDescriptionCompat d1, MediaDescriptionCompat d2) {
       return Util.areEqual(d1.getMediaId(), d2.getMediaId());
     }
-
   }
 
   private final MediaControllerCompat mediaController;
@@ -133,7 +131,11 @@ public final class TimelineQueueEditor
       @NonNull ConcatenatingMediaSource queueMediaSource,
       @NonNull QueueDataAdapter queueDataAdapter,
       @NonNull MediaSourceFactory sourceFactory) {
-    this(mediaController, queueMediaSource, queueDataAdapter, sourceFactory,
+    this(
+        mediaController,
+        queueMediaSource,
+        queueDataAdapter,
+        sourceFactory,
         new MediaIdEqualityChecker());
   }
 
@@ -205,5 +207,4 @@ public final class TimelineQueueEditor
     }
     return true;
   }
-
 }

@@ -17,10 +17,10 @@ package com.google.android.exoplayer2.extractor.ts;
 
 import static com.google.android.exoplayer2.extractor.ts.TsPayloadReader.FLAG_PAYLOAD_UNIT_START_INDICATOR;
 
-import androidx.annotation.IntDef;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.util.SparseIntArray;
+import androidx.annotation.IntDef;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ParserException;
 import com.google.android.exoplayer2.extractor.Extractor;
@@ -48,9 +48,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Extracts data from the MPEG-2 TS container format.
- */
+/** Extracts data from the MPEG-2 TS container format. */
 public final class TsExtractor implements Extractor {
 
   /** Factory for {@link TsExtractor} instances. */
@@ -65,14 +63,12 @@ public final class TsExtractor implements Extractor {
   @IntDef({MODE_MULTI_PMT, MODE_SINGLE_PMT, MODE_HLS})
   public @interface Mode {}
 
-  /**
-   * Behave as defined in ISO/IEC 13818-1.
-   */
+  /** Behave as defined in ISO/IEC 13818-1. */
   public static final int MODE_MULTI_PMT = 0;
-  /**
-   * Assume only one PMT will be contained in the stream, even if more are declared by the PAT.
-   */
+
+  /** Assume only one PMT will be contained in the stream, even if more are declared by the PAT. */
   public static final int MODE_SINGLE_PMT = 1;
+
   /**
    * Enable single PMT mode, map {@link TrackOutput}s by their type (instead of PID) and ignore
    * continuity counters.
@@ -437,9 +433,7 @@ public final class TsExtractor implements Extractor {
     id3Reader = null;
   }
 
-  /**
-   * Parses Program Association Table data.
-   */
+  /** Parses Program Association Table data. */
   private class PatReader implements SectionPayloadReader {
 
     private final ParsableBitArray patScratch;
@@ -449,7 +443,9 @@ public final class TsExtractor implements Extractor {
     }
 
     @Override
-    public void init(TimestampAdjuster timestampAdjuster, ExtractorOutput extractorOutput,
+    public void init(
+        TimestampAdjuster timestampAdjuster,
+        ExtractorOutput extractorOutput,
         TrackIdGenerator idGenerator) {
       // Do nothing.
     }
@@ -483,12 +479,9 @@ public final class TsExtractor implements Extractor {
         tsPayloadReaders.remove(TS_PAT_PID);
       }
     }
-
   }
 
-  /**
-   * Parses Program Map Table.
-   */
+  /** Parses Program Map Table. */
   private class PmtReader implements SectionPayloadReader {
 
     private static final int TS_PMT_DESC_REGISTRATION = 0x05;
@@ -514,7 +507,9 @@ public final class TsExtractor implements Extractor {
     }
 
     @Override
-    public void init(TimestampAdjuster timestampAdjuster, ExtractorOutput extractorOutput,
+    public void init(
+        TimestampAdjuster timestampAdjuster,
+        ExtractorOutput extractorOutput,
         TrackIdGenerator idGenerator) {
       // Do nothing.
     }
@@ -531,8 +526,8 @@ public final class TsExtractor implements Extractor {
       if (mode == MODE_SINGLE_PMT || mode == MODE_HLS || remainingPmts == 1) {
         timestampAdjuster = timestampAdjusters.get(0);
       } else {
-        timestampAdjuster = new TimestampAdjuster(
-            timestampAdjusters.get(0).getFirstSampleTimestampUs());
+        timestampAdjuster =
+            new TimestampAdjuster(timestampAdjusters.get(0).getFirstSampleTimestampUs());
         timestampAdjusters.add(timestampAdjuster);
       }
 
@@ -563,7 +558,9 @@ public final class TsExtractor implements Extractor {
         // appears intermittently during playback. See [Internal: b/20261500].
         EsInfo dummyEsInfo = new EsInfo(TS_STREAM_TYPE_ID3, null, null, Util.EMPTY_BYTE_ARRAY);
         id3Reader = payloadReaderFactory.createPayloadReader(TS_STREAM_TYPE_ID3, dummyEsInfo);
-        id3Reader.init(timestampAdjuster, output,
+        id3Reader.init(
+            timestampAdjuster,
+            output,
             new TrackIdGenerator(programNumber, TS_STREAM_TYPE_ID3, MAX_PID_PLUS_ONE));
       }
 
@@ -588,8 +585,10 @@ public final class TsExtractor implements Extractor {
           continue;
         }
 
-        TsPayloadReader reader = mode == MODE_HLS && streamType == TS_STREAM_TYPE_ID3 ? id3Reader
-            : payloadReaderFactory.createPayloadReader(streamType, esInfo);
+        TsPayloadReader reader =
+            mode == MODE_HLS && streamType == TS_STREAM_TYPE_ID3
+                ? id3Reader
+                : payloadReaderFactory.createPayloadReader(streamType, esInfo);
         if (mode != MODE_HLS
             || elementaryPid < trackIdToPidScratch.get(trackId, MAX_PID_PLUS_ONE)) {
           trackIdToPidScratch.put(trackId, elementaryPid);
@@ -606,7 +605,9 @@ public final class TsExtractor implements Extractor {
         TsPayloadReader reader = trackIdToReaderScratch.valueAt(i);
         if (reader != null) {
           if (reader != id3Reader) {
-            reader.init(timestampAdjuster, output,
+            reader.init(
+                timestampAdjuster,
+                output,
                 new TrackIdGenerator(programNumber, trackId, MAX_PID_PLUS_ONE));
           }
           tsPayloadReaders.put(trackPid, reader);
@@ -682,18 +683,19 @@ public final class TsExtractor implements Extractor {
             int dvbSubtitlingType = data.readUnsignedByte();
             byte[] initializationData = new byte[4];
             data.readBytes(initializationData, 0, 4);
-            dvbSubtitleInfos.add(new DvbSubtitleInfo(dvbLanguage, dvbSubtitlingType,
-                initializationData));
+            dvbSubtitleInfos.add(
+                new DvbSubtitleInfo(dvbLanguage, dvbSubtitlingType, initializationData));
           }
         }
         // Skip unused bytes of current descriptor.
         data.skipBytes(positionOfNextDescriptor - data.getPosition());
       }
       data.setPosition(descriptorsEndPosition);
-      return new EsInfo(streamType, language, dvbSubtitleInfos,
+      return new EsInfo(
+          streamType,
+          language,
+          dvbSubtitleInfos,
           Arrays.copyOfRange(data.data, descriptorsStartPosition, descriptorsEndPosition));
     }
-
   }
-
 }

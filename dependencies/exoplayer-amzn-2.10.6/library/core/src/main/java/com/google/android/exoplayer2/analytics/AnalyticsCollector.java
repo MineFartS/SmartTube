@@ -15,8 +15,8 @@
  */
 package com.google.android.exoplayer2.analytics;
 
-import androidx.annotation.Nullable;
 import android.view.Surface;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
@@ -879,11 +879,13 @@ public class AnalyticsCollector
 
     /** The {@link MediaPeriodId} of the media period. */
     public final MediaPeriodId mediaPeriodId;
+
     /**
      * The {@link Timeline} in which the media period can be found. Or {@link Timeline#EMPTY} if the
      * media period is not part of a known timeline yet.
      */
     public final Timeline timeline;
+
     /**
      * The window index of the media period in the timeline. If the timeline is empty, this is the
      * prospective window index.

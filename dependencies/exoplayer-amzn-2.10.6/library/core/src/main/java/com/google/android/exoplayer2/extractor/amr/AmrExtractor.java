@@ -58,6 +58,7 @@ public final class AmrExtractor implements Extractor {
       flag = true,
       value = {FLAG_ENABLE_CONSTANT_BITRATE_SEEKING})
   public @interface Flags {}
+
   /**
    * Flag to force enable seeking using a constant bitrate assumption in cases where seeking would
    * otherwise not be possible.
@@ -115,6 +116,7 @@ public final class AmrExtractor implements Extractor {
 
   /** Theoretical maximum frame size for a AMR frame. */
   private static final int MAX_FRAME_SIZE_BYTES = frameSizeBytesByTypeWb[8];
+
   /**
    * The required number of samples in the stream with same sample size to classify the stream as a
    * constant-bitrate-stream.
@@ -147,7 +149,9 @@ public final class AmrExtractor implements Extractor {
     this(/* flags= */ 0);
   }
 
-  /** @param flags Flags that control the extractor's behavior. */
+  /**
+   * @param flags Flags that control the extractor's behavior.
+   */
   public AmrExtractor(@Flags int flags) {
     this.flags = flags;
     scratch = new byte[1];

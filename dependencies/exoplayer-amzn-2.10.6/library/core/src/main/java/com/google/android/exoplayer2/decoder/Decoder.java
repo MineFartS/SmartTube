@@ -61,9 +61,6 @@ public interface Decoder<I, O, E extends Exception> {
    */
   void flush();
 
-  /**
-   * Releases the decoder. Must be called when the decoder is no longer needed.
-   */
+  /** Releases the decoder. Must be called when the decoder is no longer needed. */
   void release();
-
 }

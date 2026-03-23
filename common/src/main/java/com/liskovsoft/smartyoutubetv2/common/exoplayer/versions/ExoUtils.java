@@ -6,53 +6,53 @@ import com.google.android.exoplayer2.mediacodec.MediaCodecUtil;
 import com.google.android.exoplayer2.mediacodec.MediaCodecUtil.DecoderQueryException;
 
 public class ExoUtils {
-    private static String sVideoDecoderName;
+  private static String sVideoDecoderName;
 
-    public static boolean isPlaying(ExoPlayer player) {
-        if (player == null) {
-            return false;
-        }
-
-        // Exo 2.9
-        //return player.getPlayWhenReady() && player.getPlaybackState() == Player.STATE_READY;
-
-        // Exo 2.10 and up
-        return player.isPlaying();
+  public static boolean isPlaying(ExoPlayer player) {
+    if (player == null) {
+      return false;
     }
 
-    public static boolean isLoading(ExoPlayer player) {
-        if (player == null) {
-            return false;
-        }
+    // Exo 2.9
+    // return player.getPlayWhenReady() && player.getPlaybackState() == Player.STATE_READY;
 
-        return player.isLoading();
+    // Exo 2.10 and up
+    return player.isPlaying();
+  }
+
+  public static boolean isLoading(ExoPlayer player) {
+    if (player == null) {
+      return false;
     }
 
-    public static MediaCodecInfo getCapsDecoderInfo(String mimeType) {
-        MediaCodecInfo info = null;
+    return player.isLoading();
+  }
 
-        try {
-            // Exo 2.9
-            //info = MediaCodecUtil.getDecoderInfo(mimeType, false);
+  public static MediaCodecInfo getCapsDecoderInfo(String mimeType) {
+    MediaCodecInfo info = null;
 
-            // Exo 2.10 and up
-            info = MediaCodecUtil.getDecoderInfo(mimeType, false, false);
-        } catch (DecoderQueryException e) {
-            e.printStackTrace();
-        }
+    try {
+      // Exo 2.9
+      // info = MediaCodecUtil.getDecoderInfo(mimeType, false);
 
-        return info;
+      // Exo 2.10 and up
+      info = MediaCodecUtil.getDecoderInfo(mimeType, false, false);
+    } catch (DecoderQueryException e) {
+      e.printStackTrace();
     }
 
-    public static void updateVideoDecoderInfo(MediaCodecInfo codecInfo) {
-        if (codecInfo == null) {
-            return;
-        }
+    return info;
+  }
 
-        sVideoDecoderName = codecInfo.name;
+  public static void updateVideoDecoderInfo(MediaCodecInfo codecInfo) {
+    if (codecInfo == null) {
+      return;
     }
 
-    public static String getVideoDecoderName() {
-        return sVideoDecoderName;
-    }
+    sVideoDecoderName = codecInfo.name;
+  }
+
+  public static String getVideoDecoderName() {
+    return sVideoDecoderName;
+  }
 }

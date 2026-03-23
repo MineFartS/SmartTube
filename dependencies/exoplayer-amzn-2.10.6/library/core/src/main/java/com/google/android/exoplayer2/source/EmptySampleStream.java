@@ -20,9 +20,7 @@ import com.google.android.exoplayer2.FormatHolder;
 import com.google.android.exoplayer2.decoder.DecoderInputBuffer;
 import java.io.IOException;
 
-/**
- * An empty {@link SampleStream}.
- */
+/** An empty {@link SampleStream}. */
 public final class EmptySampleStream implements SampleStream {
 
   @Override
@@ -36,8 +34,8 @@ public final class EmptySampleStream implements SampleStream {
   }
 
   @Override
-  public int readData(FormatHolder formatHolder, DecoderInputBuffer buffer,
-      boolean formatRequired) {
+  public int readData(
+      FormatHolder formatHolder, DecoderInputBuffer buffer, boolean formatRequired) {
     buffer.setFlags(C.BUFFER_FLAG_END_OF_STREAM);
     return C.RESULT_BUFFER_READ;
   }
@@ -46,5 +44,4 @@ public final class EmptySampleStream implements SampleStream {
   public int skipData(long positionUs) {
     return 0;
   }
-
 }

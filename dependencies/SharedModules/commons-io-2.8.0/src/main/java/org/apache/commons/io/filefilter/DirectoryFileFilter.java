@@ -21,9 +21,8 @@ import java.io.Serializable;
 
 /**
  * This filter accepts <code>File</code>s that are directories.
- * <p>
- * For example, here is how to print out a list of the
- * current directory's subdirectories:
+ *
+ * <p>For example, here is how to print out a list of the current directory's subdirectories:
  *
  * <pre>
  * File dir = new File(".");
@@ -34,41 +33,37 @@ import java.io.Serializable;
  * </pre>
  *
  * @since 1.0
- *
- *
  * @see FileFilterUtils#directoryFileFilter()
  */
 public class DirectoryFileFilter extends AbstractFileFilter implements Serializable {
 
-    private static final long serialVersionUID = -5148237843784525732L;
-    /**
-     * Singleton instance of directory filter.
-     * @since 1.3
-     */
-    public static final IOFileFilter DIRECTORY = new DirectoryFileFilter();
-    /**
-     * Singleton instance of directory filter.
-     * Please use the identical DirectoryFileFilter.DIRECTORY constant.
-     * The new name is more JDK 1.5 friendly as it doesn't clash with other
-     * values when using static imports.
-     */
-    public static final IOFileFilter INSTANCE = DIRECTORY;
+  private static final long serialVersionUID = -5148237843784525732L;
 
-    /**
-     * Restrictive constructor.
-     */
-    protected DirectoryFileFilter() {
-    }
+  /**
+   * Singleton instance of directory filter.
+   *
+   * @since 1.3
+   */
+  public static final IOFileFilter DIRECTORY = new DirectoryFileFilter();
 
-    /**
-     * Checks to see if the file is a directory.
-     *
-     * @param file  the File to check
-     * @return true if the file is a directory
-     */
-    @Override
-    public boolean accept(final File file) {
-        return file.isDirectory();
-    }
+  /**
+   * Singleton instance of directory filter. Please use the identical DirectoryFileFilter.DIRECTORY
+   * constant. The new name is more JDK 1.5 friendly as it doesn't clash with other values when
+   * using static imports.
+   */
+  public static final IOFileFilter INSTANCE = DIRECTORY;
 
+  /** Restrictive constructor. */
+  protected DirectoryFileFilter() {}
+
+  /**
+   * Checks to see if the file is a directory.
+   *
+   * @param file the File to check
+   * @return true if the file is a directory
+   */
+  @Override
+  public boolean accept(final File file) {
+    return file.isDirectory();
+  }
 }

@@ -301,7 +301,6 @@ public final class SsMediaSource extends BaseMediaSource
     public int[] getSupportedTypes() {
       return new int[] {C.TYPE_SS};
     }
-
   }
 
   /**
@@ -310,10 +309,9 @@ public final class SsMediaSource extends BaseMediaSource
    */
   public static final long DEFAULT_LIVE_PRESENTATION_DELAY_MS = 30000;
 
-  /**
-   * The minimum period between manifest refreshes.
-   */
+  /** The minimum period between manifest refreshes. */
   private static final int MINIMUM_MANIFEST_REFRESH_PERIOD_MS = 5000;
+
   /**
    * The minimum default start position for live streams, relative to the start of the live window.
    */
@@ -452,8 +450,15 @@ public final class SsMediaSource extends BaseMediaSource
       long livePresentationDelayMs,
       Handler eventHandler,
       MediaSourceEventListener eventListener) {
-    this(manifestUri, manifestDataSourceFactory, new SsManifestParser(), chunkSourceFactory,
-        minLoadableRetryCount, livePresentationDelayMs, eventHandler, eventListener);
+    this(
+        manifestUri,
+        manifestDataSourceFactory,
+        new SsManifestParser(),
+        chunkSourceFactory,
+        minLoadableRetryCount,
+        livePresentationDelayMs,
+        eventHandler,
+        eventListener);
   }
 
   /**
@@ -591,8 +596,8 @@ public final class SsMediaSource extends BaseMediaSource
   // Loader.Callback implementation
 
   @Override
-  public void onLoadCompleted(ParsingLoadable<SsManifest> loadable, long elapsedRealtimeMs,
-      long loadDurationMs) {
+  public void onLoadCompleted(
+      ParsingLoadable<SsManifest> loadable, long elapsedRealtimeMs, long loadDurationMs) {
     manifestEventDispatcher.loadCompleted(
         loadable.dataSpec,
         loadable.getUri(),
@@ -608,8 +613,11 @@ public final class SsMediaSource extends BaseMediaSource
   }
 
   @Override
-  public void onLoadCanceled(ParsingLoadable<SsManifest> loadable, long elapsedRealtimeMs,
-      long loadDurationMs, boolean released) {
+  public void onLoadCanceled(
+      ParsingLoadable<SsManifest> loadable,
+      long elapsedRealtimeMs,
+      long loadDurationMs,
+      boolean released) {
     manifestEventDispatcher.loadCanceled(
         loadable.dataSpec,
         loadable.getUri(),
@@ -659,8 +667,11 @@ public final class SsMediaSource extends BaseMediaSource
     for (StreamElement element : manifest.streamElements) {
       if (element.chunkCount > 0) {
         startTimeUs = Math.min(startTimeUs, element.getStartTimeUs(0));
-        endTimeUs = Math.max(endTimeUs, element.getStartTimeUs(element.chunkCount - 1)
-            + element.getChunkDurationUs(element.chunkCount - 1));
+        endTimeUs =
+            Math.max(
+                endTimeUs,
+                element.getStartTimeUs(element.chunkCount - 1)
+                    + element.getChunkDurationUs(element.chunkCount - 1));
       }
     }
 
@@ -698,8 +709,8 @@ public final class SsMediaSource extends BaseMediaSource
               /* isDynamic= */ true,
               tag);
     } else {
-      long durationUs = manifest.durationUs != C.TIME_UNSET ? manifest.durationUs
-          : endTimeUs - startTimeUs;
+      long durationUs =
+          manifest.durationUs != C.TIME_UNSET ? manifest.durationUs : endTimeUs - startTimeUs;
       timeline =
           new SinglePeriodTimeline(
               startTimeUs + durationUs,
@@ -726,12 +737,12 @@ public final class SsMediaSource extends BaseMediaSource
     if (manifestLoader.hasFatalError()) {
       return;
     }
-    ParsingLoadable<SsManifest> loadable = new ParsingLoadable<>(manifestDataSource,
-        manifestUri, C.DATA_TYPE_MANIFEST, manifestParser);
+    ParsingLoadable<SsManifest> loadable =
+        new ParsingLoadable<>(
+            manifestDataSource, manifestUri, C.DATA_TYPE_MANIFEST, manifestParser);
     long elapsedRealtimeMs =
         manifestLoader.startLoading(
             loadable, this, loadErrorHandlingPolicy.getMinimumLoadableRetryCount(loadable.type));
     manifestEventDispatcher.loadStarted(loadable.dataSpec, loadable.type, elapsedRealtimeMs);
   }
-
 }

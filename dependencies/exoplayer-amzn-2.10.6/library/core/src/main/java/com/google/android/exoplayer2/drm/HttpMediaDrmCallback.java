@@ -17,8 +17,8 @@ package com.google.android.exoplayer2.drm;
 
 import android.annotation.TargetApi;
 import android.net.Uri;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.drm.ExoMediaDrm.KeyRequest;
 import com.google.android.exoplayer2.drm.ExoMediaDrm.ProvisionRequest;
@@ -34,9 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-/**
- * A {@link MediaDrmCallback} that makes requests using {@link HttpDataSource} instances.
- */
+/** A {@link MediaDrmCallback} that makes requests using {@link HttpDataSource} instances. */
 @TargetApi(18)
 public final class HttpMediaDrmCallback implements MediaDrmCallback {
 
@@ -58,13 +56,15 @@ public final class HttpMediaDrmCallback implements MediaDrmCallback {
 
   /**
    * @param defaultLicenseUrl The default license URL. Used for key requests that do not specify
-   *     their own license URL, or for all key requests if {@code forceDefaultLicenseUrl} is
-   *     set to true.
+   *     their own license URL, or for all key requests if {@code forceDefaultLicenseUrl} is set to
+   *     true.
    * @param forceDefaultLicenseUrl Whether to use {@code defaultLicenseUrl} for key requests that
    *     include their own license URL.
    * @param dataSourceFactory A factory from which to obtain {@link HttpDataSource} instances.
    */
-  public HttpMediaDrmCallback(String defaultLicenseUrl, boolean forceDefaultLicenseUrl,
+  public HttpMediaDrmCallback(
+      String defaultLicenseUrl,
+      boolean forceDefaultLicenseUrl,
       HttpDataSource.Factory dataSourceFactory) {
     this.dataSourceFactory = dataSourceFactory;
     this.defaultLicenseUrl = defaultLicenseUrl;
@@ -98,9 +98,7 @@ public final class HttpMediaDrmCallback implements MediaDrmCallback {
     }
   }
 
-  /**
-   * Clears all headers for key requests made by the callback.
-   */
+  /** Clears all headers for key requests made by the callback. */
   public void clearAllKeyRequestProperties() {
     synchronized (keyRequestProperties) {
       keyRequestProperties.clear();
@@ -122,12 +120,14 @@ public final class HttpMediaDrmCallback implements MediaDrmCallback {
     }
     Map<String, String> requestProperties = new HashMap<>();
     // Add standard request properties for supported schemes.
-    String contentType = C.PLAYREADY_UUID.equals(uuid) ? "text/xml"
-        : (C.CLEARKEY_UUID.equals(uuid) ? "application/json" : "application/octet-stream");
+    String contentType =
+        C.PLAYREADY_UUID.equals(uuid)
+            ? "text/xml"
+            : (C.CLEARKEY_UUID.equals(uuid) ? "application/json" : "application/octet-stream");
     requestProperties.put("Content-Type", contentType);
     if (C.PLAYREADY_UUID.equals(uuid)) {
-      requestProperties.put("SOAPAction",
-          "http://schemas.microsoft.com/DRM/2007/03/protocols/AcquireLicense");
+      requestProperties.put(
+          "SOAPAction", "http://schemas.microsoft.com/DRM/2007/03/protocols/AcquireLicense");
     }
     // Add additional request properties.
     synchronized (keyRequestProperties) {
@@ -190,5 +190,4 @@ public final class HttpMediaDrmCallback implements MediaDrmCallback {
     }
     return null;
   }
-
 }

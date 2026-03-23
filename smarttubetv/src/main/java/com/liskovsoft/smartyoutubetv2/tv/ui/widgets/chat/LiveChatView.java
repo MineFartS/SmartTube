@@ -9,72 +9,74 @@ import android.widget.FrameLayout;
 import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.ChatReceiver;
-import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerTweaksData;
 import com.liskovsoft.smartyoutubetv2.tv.util.ViewUtil;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
 
 public class LiveChatView extends com.stfalcon.chatkit.messages.MessagesList {
-    private static final String SENDER_ID = LiveChatView.class.getSimpleName();
-    private ChatReceiver mChatReceiver;
-    private MessagesListAdapter<ChatItemMessage> mAdapter;
+  private static final String SENDER_ID = LiveChatView.class.getSimpleName();
+  private ChatReceiver mChatReceiver;
+  private MessagesListAdapter<ChatItemMessage> mAdapter;
 
-    public LiveChatView(Context context) {
-        super(context);
+  public LiveChatView(Context context) {
+    super(context);
+  }
+
+  public LiveChatView(Context context, @Nullable AttributeSet attrs) {
+    super(context, attrs);
+  }
+
+  public LiveChatView(Context context, @Nullable AttributeSet attrs, int defStyle) {
+    super(context, attrs, defStyle);
+  }
+
+  @Override
+  public void requestLayout() {
+    super.requestLayout();
+    setFocusable(false);
+  }
+
+  public void setChatReceiver(ChatReceiver chatReceiver) {
+    if (mChatReceiver != null) {
+      mChatReceiver.setCallback(null);
+      mChatReceiver = null;
     }
 
-    public LiveChatView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
+    if (mAdapter != null) {
+      mAdapter.clear();
     }
 
-    public LiveChatView(Context context, @Nullable AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+    mChatReceiver = chatReceiver;
+
+    if (mChatReceiver == null) {
+      setVisibility(View.GONE);
+      return;
     }
 
-    @Override
-    public void requestLayout() {
-        super.requestLayout();
-        setFocusable(false);
+    alignChat();
+
+    setVisibility(View.VISIBLE);
+
+    if (mAdapter == null) {
+      mAdapter =
+          new MessagesListAdapter<>(
+              SENDER_ID,
+              (imageView, url, payload) ->
+                  Glide.with(getContext())
+                      .load(url)
+                      .apply(ViewUtil.glideOptions())
+                      .circleCrop() // resize image
+                      .into(imageView));
+      mAdapter.setMaxItemsCount(20);
+      setAdapter(mAdapter);
     }
 
-    public void setChatReceiver(ChatReceiver chatReceiver) {
-        if (mChatReceiver != null) {
-            mChatReceiver.setCallback(null);
-            mChatReceiver = null;
-        }
+    mChatReceiver.setCallback(
+        chatItem -> mAdapter.addToStart(ChatItemMessage.from(chatItem), true));
+  }
 
-        if (mAdapter != null) {
-            mAdapter.clear();
-        }
+  private void alignChat() {
 
-        mChatReceiver = chatReceiver;
-
-        if (mChatReceiver == null) {
-            setVisibility(View.GONE);
-            return;
-        }
-
-        alignChat();
-
-        setVisibility(View.VISIBLE);
-
-        if (mAdapter == null) {
-            mAdapter = new MessagesListAdapter<>(SENDER_ID, (imageView, url, payload) ->
-                    Glide.with(getContext())
-                            .load(url)
-                            .apply(ViewUtil.glideOptions())
-                            .circleCrop() // resize image
-                            .into(imageView));
-            mAdapter.setMaxItemsCount(20);
-            setAdapter(mAdapter);
-        }
-
-        mChatReceiver.setCallback(chatItem -> mAdapter.addToStart(ChatItemMessage.from(chatItem), true));
-    }
-
-    private void alignChat() {
-
-        ((FrameLayout.LayoutParams)((ViewGroup) getParent()).getLayoutParams()).gravity = Gravity.RIGHT;
-    
-    }
-
+    ((FrameLayout.LayoutParams) ((ViewGroup) getParent()).getLayoutParams()).gravity =
+        Gravity.RIGHT;
+  }
 }

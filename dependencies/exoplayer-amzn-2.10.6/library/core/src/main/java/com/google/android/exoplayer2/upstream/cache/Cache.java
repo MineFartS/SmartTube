@@ -22,14 +22,10 @@ import java.io.IOException;
 import java.util.NavigableSet;
 import java.util.Set;
 
-/**
- * An interface for cache.
- */
+/** An interface for cache. */
 public interface Cache {
 
-  /**
-   * Listener of {@link Cache} events.
-   */
+  /** Listener of {@link Cache} events. */
   interface Listener {
 
     /**
@@ -63,9 +59,7 @@ public interface Cache {
     void onSpanTouched(Cache cache, CacheSpan oldSpan, CacheSpan newSpan);
   }
 
-  /**
-   * Thrown when an error is encountered when writing data.
-   */
+  /** Thrown when an error is encountered when writing data. */
   class CacheException extends IOException {
 
     public CacheException(String message) {
@@ -221,14 +215,14 @@ public interface Cache {
    */
   void removeSpan(CacheSpan span) throws CacheException;
 
- /**
-  * Queries if a range is entirely available in the cache.
-  *
-  * @param key The cache key for the data.
-  * @param position The starting position of the data.
-  * @param length The length of the data.
-  * @return true if the data is available in the Cache otherwise false;
-  */
+  /**
+   * Queries if a range is entirely available in the cache.
+   *
+   * @param key The cache key for the data.
+   * @param position The starting position of the data.
+   * @param length The length of the data.
+   * @return true if the data is available in the Cache otherwise false;
+   */
   boolean isCached(String key, long position, long length);
 
   /**

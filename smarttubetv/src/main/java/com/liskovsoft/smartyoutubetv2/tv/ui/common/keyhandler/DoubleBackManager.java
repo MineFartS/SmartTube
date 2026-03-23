@@ -5,137 +5,135 @@ import android.os.Handler;
 import android.view.KeyEvent;
 import com.liskovsoft.sharedutils.helpers.KeyHelpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv2.tv.R;
 
 public class DoubleBackManager {
 
-    private static final int DEFAULT_REPEAT_COUNT = 2;
-    private final Handler mHandler;
-    private final Activity mContext;
+  private static final int DEFAULT_REPEAT_COUNT = 2;
+  private final Handler mHandler;
+  private final Activity mContext;
 
-    private boolean mEnableDoubleBackExit;
-    private boolean mDownPressed;
-    private boolean mIsDoubleBackPressed;
-    private int mRepeatCount;
-    private Runnable mOnDoubleBack;
-    private boolean mIsMsgShown;
-    private long mMsgShownTimeMs;
+  private boolean mEnableDoubleBackExit;
+  private boolean mDownPressed;
+  private boolean mIsDoubleBackPressed;
+  private int mRepeatCount;
+  private Runnable mOnDoubleBack;
+  private boolean mIsMsgShown;
+  private long mMsgShownTimeMs;
 
-    public DoubleBackManager(Activity ctx) {
-        mHandler = new Handler(ctx.getMainLooper());
-        mContext = ctx;
+  public DoubleBackManager(Activity ctx) {
+    mHandler = new Handler(ctx.getMainLooper());
+    mContext = ctx;
+  }
+
+  public void checkDoubleBack(KeyEvent event) {
+    // Reset if the user didn't do second press within interval
+    if (System.currentTimeMillis() - mMsgShownTimeMs > 5_000) {
+      resetBackPressed();
     }
 
-    public void checkDoubleBack(KeyEvent event) {
-        // Reset if the user didn't do second press within interval
-        if (System.currentTimeMillis() - mMsgShownTimeMs > 5_000) {
-            resetBackPressed();
-        }
-
-        if (ignoreEvent(event)) {
-            resetBackPressed();
-            return;
-        }
-
-        if (isReservedKey(event)) {
-            resetBackPressed();
-            return;
-        }
-
-        checkBackPressed(event);
-
-        if (mIsDoubleBackPressed) {
-            mOnDoubleBack.run();
-        }
-
+    if (ignoreEvent(event)) {
+      resetBackPressed();
+      return;
     }
 
-    public void enableDoubleBackExit(Runnable onDoubleBack) {
-        mOnDoubleBack = onDoubleBack;
-
-        showMsg();
-
-        if (mEnableDoubleBackExit) {
-            return;
-        }
-
-        resetBackPressed();
-        mEnableDoubleBackExit = true;
+    if (isReservedKey(event)) {
+      resetBackPressed();
+      return;
     }
 
-    private void checkBackPressed(KeyEvent event) {
-        if (!mEnableDoubleBackExit) {
-            resetBackPressed();
-            return;
-        }
+    checkBackPressed(event);
 
-        boolean isBack =
-                event.getKeyCode() == KeyEvent.KEYCODE_BACK ||
-                        event.getKeyCode() == KeyEvent.KEYCODE_ESCAPE ||
-                        event.getKeyCode() == KeyEvent.KEYCODE_B;
+    if (mIsDoubleBackPressed) {
+      mOnDoubleBack.run();
+    }
+  }
 
-        if (event.getAction() == KeyEvent.ACTION_DOWN && isBack) {
-            mRepeatCount++;
+  public void enableDoubleBackExit(Runnable onDoubleBack) {
+    mOnDoubleBack = onDoubleBack;
 
-            if (mRepeatCount >= DEFAULT_REPEAT_COUNT) { // same event fires multiple times
-                mIsDoubleBackPressed = true;
-            }
+    showMsg();
 
-            showMsg();
-        }
-
-        if (!isBack) {
-            resetBackPressed();
-        }
+    if (mEnableDoubleBackExit) {
+      return;
     }
 
-    private void showMsg() {
-        mIsMsgShown = false;
-        if (mRepeatCount == (DEFAULT_REPEAT_COUNT - 1)) {
-            MessageHelpers.showMessageThrottled(mContext, R.string.msg_press_again_to_exit);
-            mIsMsgShown = true;
-            mMsgShownTimeMs = System.currentTimeMillis();
-        }
+    resetBackPressed();
+    mEnableDoubleBackExit = true;
+  }
+
+  private void checkBackPressed(KeyEvent event) {
+    if (!mEnableDoubleBackExit) {
+      resetBackPressed();
+      return;
     }
 
-    private void resetBackPressed() {
-        mIsDoubleBackPressed = false;
-        mEnableDoubleBackExit = false;
-        mRepeatCount = 1;
+    boolean isBack =
+        event.getKeyCode() == KeyEvent.KEYCODE_BACK
+            || event.getKeyCode() == KeyEvent.KEYCODE_ESCAPE
+            || event.getKeyCode() == KeyEvent.KEYCODE_B;
+
+    if (event.getAction() == KeyEvent.ACTION_DOWN && isBack) {
+      mRepeatCount++;
+
+      if (mRepeatCount >= DEFAULT_REPEAT_COUNT) { // same event fires multiple times
+        mIsDoubleBackPressed = true;
+      }
+
+      showMsg();
     }
 
-    /**
-     * Ignore unpaired ACTION_UP events<br/>
-     * Ignore UNKNOWN key codes
-     */
-    private boolean ignoreEvent(KeyEvent event) {
-        if (event == null || event.getKeyCode() == KeyEvent.KEYCODE_UNKNOWN) {
-            return true;
-        }
+    if (!isBack) {
+      resetBackPressed();
+    }
+  }
 
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            mDownPressed = true;
-            return false;
-        }
+  private void showMsg() {
+    mIsMsgShown = false;
+    if (mRepeatCount == (DEFAULT_REPEAT_COUNT - 1)) {
+      MessageHelpers.showMessageThrottled(mContext, R.string.msg_press_again_to_exit);
+      mIsMsgShown = true;
+      mMsgShownTimeMs = System.currentTimeMillis();
+    }
+  }
 
-        if (event.getAction() == KeyEvent.ACTION_UP && mDownPressed) {
-            mDownPressed = false;
-            return false;
-        }
+  private void resetBackPressed() {
+    mIsDoubleBackPressed = false;
+    mEnableDoubleBackExit = false;
+    mRepeatCount = 1;
+  }
 
-        return true;
+  /**
+   * Ignore unpaired ACTION_UP events<br>
+   * Ignore UNKNOWN key codes
+   */
+  private boolean ignoreEvent(KeyEvent event) {
+    if (event == null || event.getKeyCode() == KeyEvent.KEYCODE_UNKNOWN) {
+      return true;
     }
 
-    private boolean isReservedKey(KeyEvent event) {
-        return KeyHelpers.isAmbilightKey(event.getKeyCode());
+    if (event.getAction() == KeyEvent.ACTION_DOWN) {
+      mDownPressed = true;
+      return false;
     }
 
-    public boolean isDoubleBackPressed() {
-        return mIsDoubleBackPressed;
+    if (event.getAction() == KeyEvent.ACTION_UP && mDownPressed) {
+      mDownPressed = false;
+      return false;
     }
 
-    public boolean isMsgShown() {
-        return mIsMsgShown;
-    }
+    return true;
+  }
+
+  private boolean isReservedKey(KeyEvent event) {
+    return KeyHelpers.isAmbilightKey(event.getKeyCode());
+  }
+
+  public boolean isDoubleBackPressed() {
+    return mIsDoubleBackPressed;
+  }
+
+  public boolean isMsgShown() {
+    return mIsMsgShown;
+  }
 }

@@ -17,14 +17,10 @@ package com.google.android.exoplayer2;
 
 import java.util.HashSet;
 
-/**
- * Information about the ExoPlayer library.
- */
+/** Information about the ExoPlayer library. */
 public final class ExoPlayerLibraryInfo {
 
-  /**
-   * A tag to use when logging library information.
-   */
+  /** A tag to use when logging library information. */
   public static final String TAG = "ExoPlayer";
 
   /** The version of the library expressed as a string, for example "1.2.3". */
@@ -65,9 +61,7 @@ public final class ExoPlayerLibraryInfo {
 
   private ExoPlayerLibraryInfo() {} // Prevents instantiation.
 
-  /**
-   * Returns a string consisting of registered module names separated by ", ".
-   */
+  /** Returns a string consisting of registered module names separated by ", ". */
   public static synchronized String registeredModules() {
     return registeredModulesString;
   }
@@ -82,5 +76,4 @@ public final class ExoPlayerLibraryInfo {
       registeredModulesString = registeredModulesString + ", " + name;
     }
   }
-
 }

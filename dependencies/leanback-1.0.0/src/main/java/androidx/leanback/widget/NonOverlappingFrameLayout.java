@@ -19,23 +19,21 @@ import android.widget.FrameLayout;
 
 class NonOverlappingFrameLayout extends FrameLayout {
 
-    public NonOverlappingFrameLayout(Context context) {
-        this(context, null);
-    }
+  public NonOverlappingFrameLayout(Context context) {
+    this(context, null);
+  }
 
-    public NonOverlappingFrameLayout(Context context, AttributeSet attrs) {
-        super(context, attrs, 0);
-    }
+  public NonOverlappingFrameLayout(Context context, AttributeSet attrs) {
+    super(context, attrs, 0);
+  }
 
-    public NonOverlappingFrameLayout(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-    }
+  public NonOverlappingFrameLayout(Context context, AttributeSet attrs, int defStyle) {
+    super(context, attrs, defStyle);
+  }
 
-    /**
-     * Avoid creating hardware layer when Transition is animating alpha.
-     */
-    @Override
-    public boolean hasOverlappingRendering() {
-        return false;
-    }
+  /** Avoid creating hardware layer when Transition is animating alpha. */
+  @Override
+  public boolean hasOverlappingRendering() {
+    return false;
+  }
 }

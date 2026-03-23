@@ -2,61 +2,60 @@ package com.liskovsoft.youtubeapi.search;
 
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.search.models.SearchResult;
-
 import java.util.List;
 
 public class SearchServiceWrapper extends SearchService {
-    private static SearchServiceWrapper sInstance;
+  private static SearchServiceWrapper sInstance;
 
-    public static SearchServiceWrapper instance() {
-        if (sInstance == null) {
-            sInstance = new SearchServiceWrapper();
-        }
-
-        return sInstance;
+  public static SearchServiceWrapper instance() {
+    if (sInstance == null) {
+      sInstance = new SearchServiceWrapper();
     }
 
-    @Override
-    public SearchResult getSearch(String searchText) {
-        saveTagIfNeeded(searchText);
+    return sInstance;
+  }
 
-        return super.getSearch(searchText);
+  @Override
+  public SearchResult getSearch(String searchText) {
+    saveTagIfNeeded(searchText);
+
+    return super.getSearch(searchText);
+  }
+
+  @Override
+  public SearchResult getSearch(String searchText, int options) {
+    saveTagIfNeeded(searchText);
+
+    return super.getSearch(searchText, options);
+  }
+
+  @Override
+  public List<String> getSearchTags(String searchText) {
+    List<String> result = super.getSearchTags(searchText);
+
+    if (result == null || result.isEmpty()) {
+      return getTagsIfNeeded();
     }
 
-    @Override
-    public SearchResult getSearch(String searchText, int options) {
-        saveTagIfNeeded(searchText);
+    return result;
+  }
 
-        return super.getSearch(searchText, options);
+  @Override
+  public void clearSearchHistory() {
+    SearchTagStorage.clear();
+  }
+
+  private List<String> getTagsIfNeeded() {
+    if (GlobalPreferences.sInstance != null) {
+      return SearchTagStorage.getTags();
     }
 
-    @Override
-    public List<String> getSearchTags(String searchText) {
-        List<String> result = super.getSearchTags(searchText);
+    return null;
+  }
 
-        if (result == null || result.isEmpty()) {
-            return getTagsIfNeeded();
-        }
-
-        return result;
+  private void saveTagIfNeeded(String searchText) {
+    if (GlobalPreferences.sInstance != null) {
+      SearchTagStorage.saveTag(searchText);
     }
-
-    @Override
-    public void clearSearchHistory() {
-        SearchTagStorage.clear();
-    }
-
-    private List<String> getTagsIfNeeded() {
-        if (GlobalPreferences.sInstance != null) {
-            return SearchTagStorage.getTags();
-        }
-
-        return null;
-    }
-
-    private void saveTagIfNeeded(String searchText) {
-        if (GlobalPreferences.sInstance != null) {
-            SearchTagStorage.saveTag(searchText);
-        }
-    }
+  }
 }

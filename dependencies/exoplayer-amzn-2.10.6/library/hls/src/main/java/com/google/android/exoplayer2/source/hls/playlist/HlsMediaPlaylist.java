@@ -34,47 +34,49 @@ public final class HlsMediaPlaylist extends HlsPlaylist {
   @SuppressWarnings("ComparableType")
   public static final class Segment implements Comparable<Long> {
 
-    /**
-     * The url of the segment.
-     */
+    /** The url of the segment. */
     public final String url;
+
     /**
      * The media initialization section for this segment, as defined by #EXT-X-MAP. May be null if
      * the media playlist does not define a media section for this segment. The same instance is
      * used for all segments that share an EXT-X-MAP tag.
      */
     @Nullable public final Segment initializationSegment;
+
     /** The duration of the segment in microseconds, as defined by #EXTINF. */
     public final long durationUs;
+
     /** The human readable title of the segment. */
     public final String title;
-    /**
-     * The number of #EXT-X-DISCONTINUITY tags in the playlist before the segment.
-     */
+
+    /** The number of #EXT-X-DISCONTINUITY tags in the playlist before the segment. */
     public final int relativeDiscontinuitySequence;
-    /**
-     * The start time of the segment in microseconds, relative to the start of the playlist.
-     */
+
+    /** The start time of the segment in microseconds, relative to the start of the playlist. */
     public final long relativeStartTimeUs;
+
     /**
      * DRM initialization data for sample decryption, or null if the segment does not use CDM-DRM
      * protection.
      */
     @Nullable public final DrmInitData drmInitData;
+
     /**
      * The encryption identity key uri as defined by #EXT-X-KEY, or null if the segment does not use
      * full segment encryption with identity key.
      */
     @Nullable public final String fullSegmentEncryptionKeyUri;
+
     /**
      * The encryption initialization vector as defined by #EXT-X-KEY, or null if the segment is not
      * encrypted.
      */
     @Nullable public final String encryptionIV;
-    /**
-     * The segment's byte range offset, as defined by #EXT-X-BYTERANGE.
-     */
+
+    /** The segment's byte range offset, as defined by #EXT-X-BYTERANGE. */
     public final long byterangeOffset;
+
     /**
      * The segment's byte range length, as defined by #EXT-X-BYTERANGE, or {@link C#LENGTH_UNSET} if
      * no byte range is specified.
@@ -156,9 +158,9 @@ public final class HlsMediaPlaylist extends HlsPlaylist {
     @Override
     public int compareTo(@NonNull Long relativeStartTimeUs) {
       return this.relativeStartTimeUs > relativeStartTimeUs
-          ? 1 : (this.relativeStartTimeUs < relativeStartTimeUs ? -1 : 0);
+          ? 1
+          : (this.relativeStartTimeUs < relativeStartTimeUs ? -1 : 0);
     }
-
   }
 
   /**
@@ -174,62 +176,56 @@ public final class HlsMediaPlaylist extends HlsPlaylist {
   public static final int PLAYLIST_TYPE_VOD = 1;
   public static final int PLAYLIST_TYPE_EVENT = 2;
 
-  /**
-   * The type of the playlist. See {@link PlaylistType}.
-   */
+  /** The type of the playlist. See {@link PlaylistType}. */
   @PlaylistType public final int playlistType;
-  /**
-   * The start offset in microseconds, as defined by #EXT-X-START.
-   */
+
+  /** The start offset in microseconds, as defined by #EXT-X-START. */
   public final long startOffsetUs;
+
   /**
    * If {@link #hasProgramDateTime} is true, contains the datetime as microseconds since epoch.
    * Otherwise, contains the aggregated duration of removed segments up to this snapshot of the
    * playlist.
    */
   public final long startTimeUs;
-  /**
-   * Whether the playlist contains the #EXT-X-DISCONTINUITY-SEQUENCE tag.
-   */
+
+  /** Whether the playlist contains the #EXT-X-DISCONTINUITY-SEQUENCE tag. */
   public final boolean hasDiscontinuitySequence;
+
   /**
    * The discontinuity sequence number of the first media segment in the playlist, as defined by
    * #EXT-X-DISCONTINUITY-SEQUENCE.
    */
   public final int discontinuitySequence;
+
   /**
    * The media sequence number of the first media segment in the playlist, as defined by
    * #EXT-X-MEDIA-SEQUENCE.
    */
   public final long mediaSequence;
-  /**
-   * The compatibility version, as defined by #EXT-X-VERSION.
-   */
+
+  /** The compatibility version, as defined by #EXT-X-VERSION. */
   public final int version;
-  /**
-   * The target duration in microseconds, as defined by #EXT-X-TARGETDURATION.
-   */
+
+  /** The target duration in microseconds, as defined by #EXT-X-TARGETDURATION. */
   public final long targetDurationUs;
-  /**
-   * Whether the playlist contains the #EXT-X-ENDLIST tag.
-   */
+
+  /** Whether the playlist contains the #EXT-X-ENDLIST tag. */
   public final boolean hasEndTag;
-  /**
-   * Whether the playlist contains a #EXT-X-PROGRAM-DATE-TIME tag.
-   */
+
+  /** Whether the playlist contains a #EXT-X-PROGRAM-DATE-TIME tag. */
   public final boolean hasProgramDateTime;
+
   /**
    * Contains the CDM protection schemes used by segments in this playlist. Does not contain any key
    * acquisition data. Null if none of the segments in the playlist is CDM-encrypted.
    */
   @Nullable public final DrmInitData protectionSchemes;
-  /**
-   * The list of segments in the playlist.
-   */
+
+  /** The list of segments in the playlist. */
   public final List<Segment> segments;
-  /**
-   * The total duration of the playlist in microseconds.
-   */
+
+  /** The total duration of the playlist in microseconds. */
   public final long durationUs;
 
   /**
@@ -283,8 +279,10 @@ public final class HlsMediaPlaylist extends HlsPlaylist {
     } else {
       durationUs = 0;
     }
-    this.startOffsetUs = startOffsetUs == C.TIME_UNSET ? C.TIME_UNSET
-        : startOffsetUs >= 0 ? startOffsetUs : durationUs + startOffsetUs;
+    this.startOffsetUs =
+        startOffsetUs == C.TIME_UNSET
+            ? C.TIME_UNSET
+            : startOffsetUs >= 0 ? startOffsetUs : durationUs + startOffsetUs;
   }
 
   @Override
@@ -312,9 +310,7 @@ public final class HlsMediaPlaylist extends HlsPlaylist {
         || (segmentCount == otherSegmentCount && hasEndTag && !other.hasEndTag);
   }
 
-  /**
-   * Returns the result of adding the duration of the playlist to its start time.
-   */
+  /** Returns the result of adding the duration of the playlist to its start time. */
   public long getEndTimeUs() {
     return startTimeUs + durationUs;
   }
@@ -372,5 +368,4 @@ public final class HlsMediaPlaylist extends HlsPlaylist {
         protectionSchemes,
         segments);
   }
-
 }

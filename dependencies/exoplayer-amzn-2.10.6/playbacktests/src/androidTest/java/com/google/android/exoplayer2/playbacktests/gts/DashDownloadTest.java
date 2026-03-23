@@ -124,5 +124,4 @@ public final class DashDownloadTest {
         new DownloaderConstructorHelper(cache, httpDataSourceFactory);
     return new DashDownloader(MANIFEST_URI, keys, constructorHelper);
   }
-
 }

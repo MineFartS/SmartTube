@@ -27,9 +27,7 @@ import com.google.android.exoplayer2.util.ParsableByteArray;
 import java.util.Arrays;
 import java.util.Collections;
 
-/**
- * Parses a continuous H262 byte stream and extracts individual frames.
- */
+/** Parses a continuous H262 byte stream and extracts individual frames. */
 public final class H262Reader implements ElementaryStreamReader {
 
   private static final int START_PICTURE = 0x00;
@@ -42,8 +40,8 @@ public final class H262Reader implements ElementaryStreamReader {
   private TrackOutput output;
 
   // Maps (frame_rate_code - 1) indices to values, as defined in ITU-T H.262 Table 6-4.
-  private static final double[] FRAME_RATE_VALUES = new double[] {
-      24000d / 1001, 24, 25, 30000d / 1001, 30, 50, 60000d / 1001, 60};
+  private static final double[] FRAME_RATE_VALUES =
+      new double[] {24000d / 1001, 24, 25, 30000d / 1001, 30, 50, 60000d / 1001, 60};
 
   // State that should not be reset on seek.
   private boolean hasOutputFormat;
@@ -186,8 +184,10 @@ public final class H262Reader implements ElementaryStreamReader {
         if (!startedFirstSample || sampleHasPicture) {
           // Start the next sample.
           samplePosition = totalBytesWritten - bytesWrittenPastStartCode;
-          sampleTimeUs = pesTimeUs != C.TIME_UNSET ? pesTimeUs
-              : (startedFirstSample ? (sampleTimeUs + frameDurationUs) : 0);
+          sampleTimeUs =
+              pesTimeUs != C.TIME_UNSET
+                  ? pesTimeUs
+                  : (startedFirstSample ? (sampleTimeUs + frameDurationUs) : 0);
           sampleIsKeyframe = false;
           pesTimeUs = C.TIME_UNSET;
           startedFirstSample = true;
@@ -211,8 +211,8 @@ public final class H262Reader implements ElementaryStreamReader {
    *
    * @param csdBuffer The csd buffer.
    * @param formatId The id for the generated format. May be null.
-   * @return A pair consisting of the {@link Format} and the frame duration in microseconds, or
-   *     0 if the duration could not be determined.
+   * @return A pair consisting of the {@link Format} and the frame duration in microseconds, or 0 if
+   *     the duration could not be determined.
    */
   private static Pair<Format, Long> parseCsdBuffer(CsdBuffer csdBuffer, String formatId) {
     byte[] csdData = Arrays.copyOf(csdBuffer.data, csdBuffer.length);
@@ -225,7 +225,7 @@ public final class H262Reader implements ElementaryStreamReader {
 
     float pixelWidthHeightRatio = 1f;
     int aspectRatioCode = (csdData[7] & 0xF0) >> 4;
-    switch(aspectRatioCode) {
+    switch (aspectRatioCode) {
       case 2:
         pixelWidthHeightRatio = (4 * height) / (float) (3 * width);
         break;
@@ -240,9 +240,20 @@ public final class H262Reader implements ElementaryStreamReader {
         break;
     }
 
-    Format format = Format.createVideoSampleFormat(formatId, MimeTypes.VIDEO_MPEG2, null,
-        Format.NO_VALUE, Format.NO_VALUE, width, height, Format.NO_VALUE,
-        Collections.singletonList(csdData), Format.NO_VALUE, pixelWidthHeightRatio, null);
+    Format format =
+        Format.createVideoSampleFormat(
+            formatId,
+            MimeTypes.VIDEO_MPEG2,
+            null,
+            Format.NO_VALUE,
+            Format.NO_VALUE,
+            width,
+            height,
+            Format.NO_VALUE,
+            Collections.singletonList(csdData),
+            Format.NO_VALUE,
+            pixelWidthHeightRatio,
+            null);
 
     long frameDurationUs = 0;
     int frameRateCodeMinusOne = (csdData[7] & 0x0F) - 1;
@@ -274,9 +285,7 @@ public final class H262Reader implements ElementaryStreamReader {
       data = new byte[initialCapacity];
     }
 
-    /**
-     * Resets the buffer, clearing any data that it holds.
-     */
+    /** Resets the buffer, clearing any data that it holds. */
     public void reset() {
       isFilling = false;
       length = 0;
@@ -289,9 +298,9 @@ public final class H262Reader implements ElementaryStreamReader {
      * @param startCodeValue The start code value.
      * @param bytesAlreadyPassed The number of bytes of the start code that have been passed to
      *     {@link #onData(byte[], int, int)}, or 0.
-     * @return Whether the csd data is now complete. If true is returned, neither
-     *     this method nor {@link #onData(byte[], int, int)} should be called again without an
-     *     interleaving call to {@link #reset()}.
+     * @return Whether the csd data is now complete. If true is returned, neither this method nor
+     *     {@link #onData(byte[], int, int)} should be called again without an interleaving call to
+     *     {@link #reset()}.
      */
     public boolean onStartCode(int startCodeValue, int bytesAlreadyPassed) {
       if (isFilling) {
@@ -327,7 +336,5 @@ public final class H262Reader implements ElementaryStreamReader {
       System.arraycopy(newData, offset, data, length, readLength);
       length += readLength;
     }
-
   }
-
 }

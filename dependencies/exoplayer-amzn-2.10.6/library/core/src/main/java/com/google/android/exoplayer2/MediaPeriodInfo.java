@@ -25,14 +25,17 @@ import com.google.android.exoplayer2.util.Util;
 
   /** The media period's identifier. */
   public final MediaPeriodId id;
+
   /** The start position of the media to play within the media period, in microseconds. */
   public final long startPositionUs;
+
   /**
    * If this is an ad, the position to play in the next content media period. {@link C#TIME_UNSET}
    * if this is not an ad or the next content media period should be played from its default
    * position.
    */
   public final long contentPositionUs;
+
   /**
    * The end position to which the media period's content is clipped in order to play a following ad
    * group, in microseconds, or {@link C#TIME_UNSET} if there is no following ad group or if this
@@ -40,17 +43,20 @@ import com.google.android.exoplayer2.util.Util;
    * follows at the end of this content media period.
    */
   public final long endPositionUs;
+
   /**
    * The duration of the media period, like {@link #endPositionUs} but with {@link
    * C#TIME_END_OF_SOURCE} and {@link C#TIME_UNSET} resolved to the timeline period duration if
    * known.
    */
   public final long durationUs;
+
   /**
    * Whether this is the last media period in its timeline period (e.g., a postroll ad, or a media
    * period corresponding to a timeline period without ads).
    */
   public final boolean isLastInTimelinePeriod;
+
   /**
    * Whether this is the last media period in the entire timeline. If true, {@link
    * #isLastInTimelinePeriod} will also be true.

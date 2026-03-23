@@ -335,8 +335,7 @@ public class AdaptiveTrackSelection extends BaseTrackSelection {
    *     empty. May be in any order.
    * @param bandwidthMeter Provides an estimate of the currently available bandwidth.
    */
-  public AdaptiveTrackSelection(TrackGroup group, int[] tracks,
-      BandwidthMeter bandwidthMeter) {
+  public AdaptiveTrackSelection(TrackGroup group, int[] tracks, BandwidthMeter bandwidthMeter) {
     this(
         group,
         tracks,
@@ -575,8 +574,10 @@ public class AdaptiveTrackSelection extends BaseTrackSelection {
           Util.getPlayoutDurationForMediaDuration(mediaDurationBeforeThisChunkUs, playbackSpeed);
       if (playoutDurationBeforeThisChunkUs >= minDurationToRetainAfterDiscardUs
           && format.bitrate < idealFormat.bitrate
-          && format.height != Format.NO_VALUE && format.height < 720
-          && format.width != Format.NO_VALUE && format.width < 1280
+          && format.height != Format.NO_VALUE
+          && format.height < 720
+          && format.width != Format.NO_VALUE
+          && format.width < 1280
           && format.height < idealFormat.height) {
         return i;
       }
@@ -647,8 +648,9 @@ public class AdaptiveTrackSelection extends BaseTrackSelection {
   }
 
   private long minDurationForQualityIncreaseUs(long availableDurationUs) {
-    boolean isAvailableDurationTooShort = availableDurationUs != C.TIME_UNSET
-        && availableDurationUs <= minDurationForQualityIncreaseUs;
+    boolean isAvailableDurationTooShort =
+        availableDurationUs != C.TIME_UNSET
+            && availableDurationUs <= minDurationForQualityIncreaseUs;
     return isAvailableDurationTooShort
         ? (long) (availableDurationUs * bufferedFractionToLiveEdgeForQualityIncrease)
         : minDurationForQualityIncreaseUs;
