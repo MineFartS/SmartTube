@@ -464,11 +464,17 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
   public void sync(YouTubeMediaItemFormatInfo formatInfo) {
     mIsSynced = true;
 
-    if (formatInfo == null
-        || Helpers.anyNull(
-            formatInfo.getEventId(),
-            formatInfo.getVisitorMonitoringData(),
-            formatInfo.getOfParam())) {
+    if (formatInfo == null) {
+      return;
+    }
+
+    // Preserve auth flag even if tracking params are missing after sync.
+    mIsAuth = formatInfo.isAuth();
+
+    if (Helpers.anyNull(
+        formatInfo.getEventId(),
+        formatInfo.getVisitorMonitoringData(),
+        formatInfo.getOfParam())) {
       return;
     }
 
@@ -476,7 +482,6 @@ public class YouTubeMediaItemFormatInfo implements MediaItemFormatInfo {
     mEventId = formatInfo.getEventId();
     mVisitorMonitoringData = formatInfo.getVisitorMonitoringData();
     mOfParam = formatInfo.getOfParam();
-    mIsAuth = formatInfo.isAuth();
   }
 
   /** MPD file is not valid without duration */

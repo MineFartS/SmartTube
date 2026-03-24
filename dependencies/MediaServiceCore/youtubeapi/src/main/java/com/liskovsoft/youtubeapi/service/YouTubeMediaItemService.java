@@ -186,8 +186,22 @@ public class YouTubeMediaItemService implements MediaItemService {
     // Improve the performance by fetching the history data on the second run
     syncWithAuthFormatIfNeeded(formatInfo);
 
-    if (shouldBeSynced(formatInfo)) {
-      throw new IllegalStateException("Update history error: the format should be synced first");
+    if (shouldBeSynced(formatInfo) && !formatInfo.isSynced()) {
+      Log.w(
+          TAG,
+          "Update history skipped: format should be synced first for videoId %s",
+          videoId);
+      return;
+    }
+
+    if (formatInfo.getEventId() == null
+        || formatInfo.getVisitorMonitoringData() == null
+        || formatInfo.getOfParam() == null) {
+      Log.w(
+          TAG,
+          "Update history skipped: missing tracking params for videoId %s",
+          videoId);
+      return;
     }
 
     getTrackingService()

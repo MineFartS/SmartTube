@@ -349,9 +349,7 @@ public class MediaServiceManager implements OnAccountChange {
   }
 
   public void enableHistory(boolean enable) {
-    if (enable) { // don't disable history for other clients
-      RxHelper.runAsyncUser(() -> mContentService.enableHistory(true));
-    }
+    RxHelper.runAsyncUser(() -> mContentService.enableHistory(enable));
   }
 
   public void clearHistory(Context context, Runnable onFinish) {
