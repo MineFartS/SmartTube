@@ -179,7 +179,7 @@ public class YouTubeMediaItemService implements MediaItemService {
         YouTubeMediaItemFormatInfo formatInfo;
 
         try {
-            YouTubeMediaItemFormatInfo formatInfo = getFormatInfo(videoId);
+            formatInfo = getFormatInfo(videoId);
         } catch (Exception e) {
             formatInfo = null;
         }
