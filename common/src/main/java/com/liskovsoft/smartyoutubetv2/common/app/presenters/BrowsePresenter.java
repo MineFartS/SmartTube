@@ -257,20 +257,30 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
 
     private void initRowAndGridMapping() {
 
-        mRowMapping.put(MediaGroup.TYPE_HOME, getContentService().getHomeObserve());
+        mRowMapping.put(
+                MediaGroup.TYPE_HOME,
+                getContentService().getHomeObserve());
 
-        mRowMapping.put(MediaGroup.TYPE_USER_PLAYLISTS, getContentService().getPlaylistRowsObserve());
+        mRowMapping.put(
+                MediaGroup.TYPE_USER_PLAYLISTS,
+                getContentService().getPlaylistRowsObserve());
 
-        mGridMapping.put(MediaGroup.TYPE_SUBSCRIPTIONS, getContentService().getSubscriptionsObserve());
+        mGridMapping.put(
+                MediaGroup.TYPE_SUBSCRIPTIONS,
+                getContentService().getSubscriptionsObserve());
 
-        mGridMapping.put(MediaGroup.TYPE_HISTORY, getContentService().getHistoryObserve());
+        mGridMapping.put(
+                MediaGroup.TYPE_HISTORY,
+                getContentService().getHistoryObserve());
 
         mGridMapping.put(
                 MediaGroup.TYPE_CHANNEL_UPLOADS,
                 getContentService().getSubscribedChannelsByNewContentObserve());
 
         mGridMapping.put(
-                MediaGroup.TYPE_NOTIFICATIONS, getNotificationsService().getNotificationItemsObserve());
+                MediaGroup.TYPE_NOTIFICATIONS,
+                getNotificationsService().getNotificationItemsObserve());
+
     }
 
     private void initPinnedSections() {
@@ -645,6 +655,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
 
     private void updateSection(BrowseSection section) {
         switch (section.getType()) {
+
             case BrowseSection.TYPE_GRID:
             case BrowseSection.TYPE_SHORTS_GRID:
                 if (mGridMapping.containsKey(section.getId())) {
@@ -655,21 +666,26 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
                     updateLocalGrid(section, localVideos);
                 }
                 break;
+
             case BrowseSection.TYPE_ROW:
                 Observable<List<MediaGroup>> groups = mRowMapping.get(section.getId());
                 updateVideoRows(section, groups, section.isAuthOnly());
                 break;
+
             case BrowseSection.TYPE_SETTINGS_GRID:
                 Callable<List<SettingsItem>> items = mSettingsGridMapping.get(section.getId());
                 updateSettingsGrid(section, items);
                 break;
+
             case BrowseSection.TYPE_MULTI_GRID:
                 Observable<MediaGroup> group2 = mGridMapping.get(section.getId());
                 updateVideoGrid(section, group2, 0, section.isAuthOnly());
                 break;
+
             case BrowseSection.TYPE_ERROR:
                 getView().showProgressBar(false);
                 break;
+
         }
 
         updateRefreshTime();
