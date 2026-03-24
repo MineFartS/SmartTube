@@ -176,16 +176,19 @@ public class YouTubeMediaItemService implements MediaItemService {
 
         checkSigned();
 
+        String errMess = "Can't update history for video id %s. ".format(videoId);
+
         YouTubeMediaItemFormatInfo formatInfo;
 
         try {
             formatInfo = getFormatInfo(videoId);
         } catch (Exception e) {
             formatInfo = null;
+            Log.e(TAG, errMess, e);
         }
 
         if (formatInfo == null) {
-            Log.e(TAG, "Can't update history for video id %s. formatInfo == null", videoId);
+            Log.e(TAG, errMess + "formatInfo == null", videoId);
             return;
         }
 
