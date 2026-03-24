@@ -13,132 +13,140 @@ import java.util.List;
 import java.util.Set;
 
 public interface MediaItemService {
-    int PLAYLIST_ORDER_ADDED_DATE_NEWER_FIRST = 1;
-    int PLAYLIST_ORDER_ADDED_DATE_OLDER_FIRST = 2;
-    int PLAYLIST_ORDER_POPULARITY = 3;
-    int PLAYLIST_ORDER_PUBLISHED_DATE_NEWER_FIRST = 4;
-    int PLAYLIST_ORDER_PUBLISHED_DATE_OLDER_FIRST = 5;
+  int PLAYLIST_ORDER_ADDED_DATE_NEWER_FIRST = 1;
+  int PLAYLIST_ORDER_ADDED_DATE_OLDER_FIRST = 2;
+  int PLAYLIST_ORDER_POPULARITY = 3;
+  int PLAYLIST_ORDER_PUBLISHED_DATE_NEWER_FIRST = 4;
+  int PLAYLIST_ORDER_PUBLISHED_DATE_OLDER_FIRST = 5;
 
-    // Blocking interfaces
-    MediaItemFormatInfo getFormatInfo(MediaItem item);
+  // Blocking interfaces
+  MediaItemFormatInfo getFormatInfo(MediaItem item);
 
-    MediaItemFormatInfo getFormatInfo(String videoId);
+  MediaItemFormatInfo getFormatInfo(String videoId);
 
-    MediaItemFormatInfo getFormatInfo(String videoId, String clickTrackingParams);
+  MediaItemFormatInfo getFormatInfo(String videoId, String clickTrackingParams);
 
-    MediaItemStoryboard getStoryboard(MediaItem item);
+  MediaItemStoryboard getStoryboard(MediaItem item);
 
-    MediaItemStoryboard getStoryboard(String videoId);
+  MediaItemStoryboard getStoryboard(String videoId);
 
-    MediaItemMetadata getMetadata(MediaItem item);
+  MediaItemMetadata getMetadata(MediaItem item);
 
-    MediaItemMetadata getMetadata(String videoId);
+  MediaItemMetadata getMetadata(String videoId);
 
-    MediaItemMetadata getMetadata(
-            String videoId, String playlistId, int playlistIndex, String playlistParams);
+  MediaItemMetadata getMetadata(
+      String videoId, String playlistId, int playlistIndex, String playlistParams);
 
-    void updateHistoryPosition(String videoId, float positionSec);
+  // MediaGroup continueGroup(MediaGroup mediaGroup);
+  void updateHistoryPosition(MediaItem item, float positionSec);
 
-    void setLike(MediaItem item);
+  void updateHistoryPosition(String videoId, float positionSec);
 
-    void removeLike(MediaItem item);
+  void setLike(MediaItem item);
 
-    void setDislike(MediaItem item);
+  void removeLike(MediaItem item);
 
-    void removeDislike(MediaItem item);
+  void setDislike(MediaItem item);
 
-    void subscribe(MediaItem item);
+  void removeDislike(MediaItem item);
 
-    void subscribe(String channelId);
+  void subscribe(MediaItem item);
 
-    void unsubscribe(MediaItem item);
+  void subscribe(String channelId);
 
-    void unsubscribe(String channelId);
+  void unsubscribe(MediaItem item);
 
-    void markAsNotInterested(String feedbackToken);
+  void unsubscribe(String channelId);
 
-    List<PlaylistInfo> getPlaylistsInfo(String videoId);
+  void markAsNotInterested(String feedbackToken);
 
-    void removeFromPlaylist(String playlistId, String videoId);
+  List<PlaylistInfo> getPlaylistsInfo(String videoId);
 
-    void renamePlaylist(String playlistId, String newName);
+  void removeFromPlaylist(String playlistId, String videoId);
 
-    void setPlaylistOrder(String playlistId, int playlistOrder);
+  void renamePlaylist(String playlistId, String newName);
 
-    void removePlaylist(String playlistId);
+  void setPlaylistOrder(String playlistId, int playlistOrder);
 
-    List<SponsorSegment> getSponsorSegments(String videoId);
+  void removePlaylist(String playlistId);
 
-    List<SponsorSegment> getSponsorSegments(String videoId, Set<String> categories);
+  List<SponsorSegment> getSponsorSegments(String videoId);
 
-    // RxJava interfaces
-    Observable<MediaItemFormatInfo> getFormatInfoObserve(MediaItem item);
+  List<SponsorSegment> getSponsorSegments(String videoId, Set<String> categories);
 
-    Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId);
+  // RxJava interfaces
+  Observable<MediaItemFormatInfo> getFormatInfoObserve(MediaItem item);
 
-    Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId, String clickTrackingParams);
+  Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId);
 
-    Observable<MediaItemStoryboard> getStoryboardObserve(MediaItem item);
+  Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId, String clickTrackingParams);
 
-    Observable<MediaItemStoryboard> getStoryboardObserve(String videoId);
+  Observable<MediaItemStoryboard> getStoryboardObserve(MediaItem item);
 
-    Observable<MediaItemMetadata> getMetadataObserve(MediaItem item);
+  Observable<MediaItemStoryboard> getStoryboardObserve(String videoId);
 
-    Observable<MediaItemMetadata> getMetadataObserve(String videoId);
+  Observable<MediaItemMetadata> getMetadataObserve(MediaItem item);
 
-    Observable<MediaItemMetadata> getMetadataObserve(
-            String videoId, String playlistId, int playlistIndex, String playlistParams);
+  Observable<MediaItemMetadata> getMetadataObserve(String videoId);
 
-    Observable<Void> subscribeObserve(MediaItem item);
+  Observable<MediaItemMetadata> getMetadataObserve(
+      String videoId, String playlistId, int playlistIndex, String playlistParams);
 
-    Observable<Void> subscribeObserve(String channelId);
+  // Observable<MediaGroup> continueGroupObserve(MediaGroup mediaGroup);
+  Observable<Void> updateHistoryPositionObserve(MediaItem item, float positionSec);
 
-    Observable<Void> unsubscribeObserve(MediaItem item);
+  Observable<Void> updateHistoryPositionObserve(String videoId, float positionSec);
 
-    Observable<Void> unsubscribeObserve(String channelId);
+  Observable<Void> subscribeObserve(MediaItem item);
 
-    Observable<Void> markAsNotInterestedObserve(String feedbackToken);
+  Observable<Void> subscribeObserve(String channelId);
 
-    Observable<Void> setLikeObserve(MediaItem item);
+  Observable<Void> unsubscribeObserve(MediaItem item);
 
-    Observable<Void> removeLikeObserve(MediaItem item);
+  Observable<Void> unsubscribeObserve(String channelId);
 
-    Observable<Void> setDislikeObserve(MediaItem item);
+  Observable<Void> markAsNotInterestedObserve(String feedbackToken);
 
-    Observable<Void> removeDislikeObserve(MediaItem item);
+  Observable<Void> setLikeObserve(MediaItem item);
 
-    Observable<List<PlaylistInfo>> getPlaylistsInfoObserve(String videoId);
+  Observable<Void> removeLikeObserve(MediaItem item);
 
-    Observable<Void> addToPlaylistObserve(String playlistId, String videoId);
+  Observable<Void> setDislikeObserve(MediaItem item);
 
-    Observable<Void> addToPlaylistObserve(String playlistId, MediaItem item);
+  Observable<Void> removeDislikeObserve(MediaItem item);
 
-    Observable<Void> removeFromPlaylistObserve(String playlistId, String videoId);
+  Observable<List<PlaylistInfo>> getPlaylistsInfoObserve(String videoId);
 
-    Observable<Void> renamePlaylistObserve(String playlistId, String newName);
+  Observable<Void> addToPlaylistObserve(String playlistId, String videoId);
 
-    Observable<Void> setPlaylistOrderObserve(String playlistId, int playlistOrder);
+  Observable<Void> addToPlaylistObserve(String playlistId, MediaItem item);
 
-    Observable<Void> savePlaylistObserve(String playlistId);
+  Observable<Void> removeFromPlaylistObserve(String playlistId, String videoId);
 
-    Observable<Void> savePlaylistObserve(MediaItem item);
+  Observable<Void> renamePlaylistObserve(String playlistId, String newName);
 
-    Observable<Void> removePlaylistObserve(String playlistId);
+  Observable<Void> setPlaylistOrderObserve(String playlistId, int playlistOrder);
 
-    Observable<Void> createPlaylistObserve(String playlistName, String videoId);
+  Observable<Void> savePlaylistObserve(String playlistId);
 
-    Observable<Void> createPlaylistObserve(String playlistName, MediaItem item);
+  Observable<Void> savePlaylistObserve(MediaItem item);
 
-    Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId);
+  Observable<Void> removePlaylistObserve(String playlistId);
 
-    Observable<List<SponsorSegment>> getSponsorSegmentsObserve(
-            String videoId, Set<String> categories);
+  Observable<Void> createPlaylistObserve(String playlistName, String videoId);
 
-    Observable<DeArrowData> getDeArrowDataObserve(String videoId);
+  Observable<Void> createPlaylistObserve(String playlistName, MediaItem item);
 
-    Observable<DeArrowData> getDeArrowDataObserve(List<String> videoIds);
+  Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId);
 
-    Observable<DislikeData> getDislikeDataObserve(String videoId);
+  Observable<List<SponsorSegment>> getSponsorSegmentsObserve(
+      String videoId, Set<String> categories);
 
-    Observable<String> getUnlocalizedTitleObserve(String videoId);
+  Observable<DeArrowData> getDeArrowDataObserve(String videoId);
+
+  Observable<DeArrowData> getDeArrowDataObserve(List<String> videoIds);
+
+  Observable<DislikeData> getDislikeDataObserve(String videoId);
+
+  Observable<String> getUnlocalizedTitleObserve(String videoId);
 }

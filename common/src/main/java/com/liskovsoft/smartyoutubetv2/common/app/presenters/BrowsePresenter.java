@@ -1189,6 +1189,25 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
   }
 
   private void appendLocalHistory(VideoGroup videoGroup) {
-    // disabled local history
+    if (!isHistorySection()) {
+      return;
+    }
+
+    VideoStateService stateService = VideoStateService.instance(getContext());
+
+    if (stateService.isEmpty() || (!stateService.isHistoryBroken() && !videoGroup.isEmpty())) {
+      return;
+    }
+
+    Video lastHistoryItem = videoGroup.isEmpty() ? null : videoGroup.get(0);
+    State lastState = stateService.getLastState();
+
+    if (lastState == null || Helpers.equals(lastHistoryItem, lastState.video)) {
+      return;
+    }
+
+    for (State state : stateService.getStates()) {
+      videoGroup.add(0, state.video);
+    }
   }
 }

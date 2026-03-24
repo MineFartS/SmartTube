@@ -80,11 +80,13 @@ public class AppPrefs extends SharedPreferencesBase implements AccountChangeList
   }
 
   public String getStateUpdaterData() {
-    return ""; // no local history
+    // Always use multiple profiles for the history
+    return getData(getProfileKey(STATE_UPDATER_DATA, true));
   }
 
   public void setStateUpdaterData(String data) {
-    // disabled local history
+    // Always use multiple profiles for the history
+    setData(getProfileKey(STATE_UPDATER_DATA, true), data);
   }
 
   public String getChannelGroupData() {
