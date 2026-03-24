@@ -186,14 +186,6 @@ public class YouTubeMediaItemService implements MediaItemService {
     // Improve the performance by fetching the history data on the second run
     syncWithAuthFormatIfNeeded(formatInfo);
 
-    if (shouldBeSynced(formatInfo) && !formatInfo.isSynced()) {
-      Log.w(
-          TAG,
-          "Update history skipped: format should be synced first for videoId %s",
-          videoId);
-      return;
-    }
-
     if (formatInfo.getEventId() == null
         || formatInfo.getVisitorMonitoringData() == null
         || formatInfo.getOfParam() == null) {
