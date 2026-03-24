@@ -10,5 +10,6 @@ Thumbs.db
 .gradle
 **/build/
 
-# Build Logs
-build_**.txt
+# Temp files
+/build_**.txt
+/temp_**.**
