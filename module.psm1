@@ -15,6 +15,9 @@ function Test-ADBConnection {
 
 function Connect-ADB {
 
+    # Set Android SDK Path
+    Set-SDK "C:\Users\$env:USERNAME\AppData\Local\Android\sdk\"
+
     if (-not (Test-ADBConnection)) {
 
         Write-Host "No ADB device is connected"
