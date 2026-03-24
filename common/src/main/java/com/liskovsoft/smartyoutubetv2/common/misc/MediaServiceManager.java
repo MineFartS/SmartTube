@@ -380,7 +380,13 @@ public class MediaServiceManager implements OnAccountChange {
 
     mHistoryAction =
         RxHelper.execute(
-            historyObservable, error -> setHistoryBroken(true), () -> setHistoryBroken(false));
+            historyObservable, error -> {
+              Log.e(TAG, "History sync error: %s", error.getMessage());
+              setHistoryBroken(true);
+            }, () -> {
+              Log.d(TAG, "History sync success");
+              setHistoryBroken(false);
+            });
   }
 
   public void hideNotification(Video item) {

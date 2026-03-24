@@ -176,10 +176,21 @@ public class YouTubeMediaItemService implements MediaItemService {
   public void updateHistoryPosition(String videoId, float positionSec) {
     checkSigned();
 
-    YouTubeMediaItemFormatInfo formatInfo = getFormatInfo(videoId);
+    YouTubeMediaItemFormatInfo formatInfo = null;
+    for (int attempt = 0; attempt < 3; attempt++) {
+      formatInfo = getFormatInfo(videoId);
+      if (formatInfo != null) {
+        break;
+      }
+      if (attempt < 2) {
+        try {
+          Thread.sleep(1500);
+        } catch (InterruptedException ignored) {}
+      }
+    }
 
     if (formatInfo == null) {
-      Log.e(TAG, "Can't update history for video id %s. formatInfo == null", videoId);
+      Log.e(TAG, "Can't update history for video id %s. formatInfo == null after 3 retries", videoId);
       return;
     }
 
@@ -196,14 +207,18 @@ public class YouTubeMediaItemService implements MediaItemService {
       return;
     }
 
-    getTrackingService()
-        .updateWatchTime(
-            formatInfo.getVideoId(),
-            positionSec,
-            Helpers.parseFloat(formatInfo.getLengthSeconds()),
-            formatInfo.getEventId(),
-            formatInfo.getVisitorMonitoringData(),
-            formatInfo.getOfParam());
+    try {
+      getTrackingService()
+          .updateWatchTime(
+              formatInfo.getVideoId(),
+              positionSec,
+              Helpers.parseFloat(formatInfo.getLengthSeconds()),
+              formatInfo.getEventId(),
+              formatInfo.getVisitorMonitoringData(),
+              formatInfo.getOfParam());
+    } catch (Exception e) {
+      Log.e(TAG, "Failed to update watch time for %s: %s", videoId, e.getMessage(), e);
+    }
   }
 
   @Override

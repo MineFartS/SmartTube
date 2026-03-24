@@ -34,10 +34,10 @@ import okhttp3.logging.HttpLoggingInterceptor;
 
 final class OkHttpCommons {
   private static final String TAG = OkHttpCommons.class.getSimpleName();
-  public static final long CONNECT_TIMEOUT_MS = 20_000;
-  public static final long READ_TIMEOUT_MS = 20_000;
-  public static final long WRITE_TIMEOUT_MS = 20_000;
-  public static boolean enableProfiler = true;
+public static final long CONNECT_TIMEOUT_MS = 60_000;
+public static final long READ_TIMEOUT_MS = 60_000;
+public static final long WRITE_TIMEOUT_MS = 60_000;
+public static boolean enableProfiler = false;
 
   private OkHttpCommons() {}
 
