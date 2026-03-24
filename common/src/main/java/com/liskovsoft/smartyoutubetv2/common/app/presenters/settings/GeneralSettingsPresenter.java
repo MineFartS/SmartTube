@@ -57,7 +57,8 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
     mMediaServiceData = MediaServiceData.instance();
 
     mSidebarService = SidebarService.instance(context);
-  }
+  
+}
 
   public static GeneralSettingsPresenter instance(Context context) {
     return new GeneralSettingsPresenter(context);
@@ -80,9 +81,15 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
             mRestartApp = false;
 
-            MessageHelpers.showLongMessage(getContext(), R.string.msg_restart_app);
+            MessageHelpers.showLongMessage(
+                getContext(), 
+                R.string.msg_restart_app
+            );
+
           }
-        });
+        }
+    );
+
   }
 
   private void appendEnabledSections(AppDialogPresenter settingsPresenter) {
@@ -118,48 +125,59 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
     List<OptionItem> options = new ArrayList<>();
 
-    options.add(
-        UiOptionItem.from(
-            "Content Mixes",
-            option ->
-                mMediaServiceData.setContentHidden(
-                    MediaServiceData.CONTENT_MIXES, option.isSelected()),
-            mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_MIXES)));
+    options.add(UiOptionItem.from(
+        "Content Mixes",
+        option ->
+            mMediaServiceData.setContentHidden(
+                MediaServiceData.CONTENT_MIXES, option.isSelected()),
+        mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_MIXES)
+    ));
 
-    options.add(
-        UiOptionItem.from(
-            "Hide watched videos",
-            option ->
-                mMediaServiceData.setContentHidden(
-                    MediaServiceData.CONTENT_WATCHED, option.isSelected()),
-            mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_WATCHED)));
+    options.add(UiOptionItem.from(
+        "Watched Videos",
+        option ->
+            mMediaServiceData.setContentHidden(
+                MediaServiceData.CONTENT_WATCHED, 
+                option.isSelected()
+            ),
+        mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_WATCHED)
+    ));
 
-    options.add(
-        UiOptionItem.from(
-            "Shorts",
-            option ->
-                mMediaServiceData.setContentHidden(
-                    MediaServiceData.CONTENT_SHORTS, option.isSelected()),
-            mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_SHORTS)));
+    options.add(UiOptionItem.from(
+        "Shorts",
+        option ->
+            mMediaServiceData.setContentHidden(
+                MediaServiceData.CONTENT_SHORTS, 
+                option.isSelected()
+            ),
+        mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_SHORTS)
+    ));
 
-    options.add(
-        UiOptionItem.from(
-            "Upcoming Streams",
-            option ->
-                mMediaServiceData.setContentHidden(
-                    MediaServiceData.CONTENT_UPCOMING, option.isSelected()),
-            mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_UPCOMING)));
+    options.add(UiOptionItem.from(
+        "Upcoming Streams",
+        option ->
+            mMediaServiceData.setContentHidden(
+                MediaServiceData.CONTENT_UPCOMING, 
+                option.isSelected()
+        ),
+        mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_UPCOMING)
+    ));
 
-    options.add(
-        UiOptionItem.from(
-            getContext().getString(R.string.hide_streams),
-            option ->
-                mMediaServiceData.setContentHidden(
-                    MediaServiceData.CONTENT_STREAMS_SUBSCRIPTIONS, option.isSelected()),
-            mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_STREAMS_SUBSCRIPTIONS)));
+    options.add(UiOptionItem.from(
+        getContext().getString(R.string.hide_streams),
+        option ->
+            mMediaServiceData.setContentHidden(
+                MediaServiceData.CONTENT_STREAMS_SUBSCRIPTIONS, 
+                option.isSelected()
+            ),
+        mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_STREAMS_SUBSCRIPTIONS)
+    ));
 
     settingsPresenter.appendCheckedCategory(
-        getContext().getString(R.string.hide_unwanted_content), options);
+        getContext().getString(R.string.hide_unwanted_content), 
+        options
+    );
+
   }
 
   private void appendContextMenuItemsCategory(AppDialogPresenter settingsPresenter) {
@@ -281,26 +299,86 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
     Map<Long, Integer> menuNames = new HashMap<>();
 
-    menuNames.put(MainUIData.MENU_ITEM_EXIT_FROM_PIP, R.string.return_to_background_video);
+    menuNames.put(
+        MainUIData.MENU_ITEM_EXIT_FROM_PIP, 
+        R.string.return_to_background_video
+    );
 
     menuNames.put(
-        MainUIData.MENU_ITEM_EXCLUDE_FROM_CONTENT_BLOCK, R.string.content_block_exclude_channel);
+        MainUIData.MENU_ITEM_EXCLUDE_FROM_CONTENT_BLOCK, 
+        R.string.content_block_exclude_channel
+    );
 
-    menuNames.put(MainUIData.MENU_ITEM_MARK_AS_WATCHED, R.string.mark_as_watched);
-    menuNames.put(MainUIData.MENU_ITEM_OPEN_CHANNEL, R.string.open_channel);
-    menuNames.put(MainUIData.MENU_ITEM_UPDATE_CHECK, R.string.check_for_updates);
-    menuNames.put(MainUIData.MENU_ITEM_CLEAR_HISTORY, R.string.clear_history);
-    menuNames.put(MainUIData.MENU_ITEM_TOGGLE_HISTORY, R.string.pause_history);
-    menuNames.put(MainUIData.MENU_ITEM_PLAYLIST_ORDER, R.string.playlist_order);
-    menuNames.put(MainUIData.MENU_ITEM_PLAY_NEXT, R.string.play_next);
-    menuNames.put(MainUIData.MENU_ITEM_ADD_TO_QUEUE, R.string.add_remove_from_playback_queue);
-    menuNames.put(MainUIData.MENU_ITEM_SHOW_QUEUE, R.string.action_playback_queue);
+    menuNames.put(
+        MainUIData.MENU_ITEM_MARK_AS_WATCHED, 
+        R.string.mark_as_watched
+    );
+    
+    menuNames.put(
+        MainUIData.MENU_ITEM_OPEN_CHANNEL, 
+        R.string.open_channel
+    );
 
-    menuNames.put(MainUIData.MENU_ITEM_SUBSCRIBE, R.string.subscribe_unsubscribe_from_channel);
-    menuNames.put(MainUIData.MENU_ITEM_SAVE_REMOVE_PLAYLIST, R.string.save_remove_playlist);
-    menuNames.put(MainUIData.MENU_ITEM_CREATE_PLAYLIST, R.string.create_playlist);
-    menuNames.put(MainUIData.MENU_ITEM_RENAME_PLAYLIST, R.string.rename_playlist);
-    menuNames.put(MainUIData.MENU_ITEM_ADD_TO_NEW_PLAYLIST, R.string.add_video_to_new_playlist);
+    menuNames.put(
+        MainUIData.MENU_ITEM_UPDATE_CHECK, 
+        R.string.check_for_updates
+    );
+
+    menuNames.put(
+        MainUIData.MENU_ITEM_CLEAR_HISTORY, 
+        R.string.clear_history
+    );
+    
+    menuNames.put(
+        MainUIData.MENU_ITEM_TOGGLE_HISTORY, 
+        R.string.pause_history
+    );
+
+    menuNames.put(
+        MainUIData.MENU_ITEM_PLAYLIST_ORDER, 
+        R.string.playlist_order
+    );
+
+    menuNames.put(
+        MainUIData.MENU_ITEM_PLAY_NEXT, 
+        R.string.play_next
+    );
+
+    menuNames.put(
+        MainUIData.MENU_ITEM_ADD_TO_QUEUE, 
+        R.string.add_remove_from_playback_queue
+    );
+
+    menuNames.put(
+        MainUIData.MENU_ITEM_SHOW_QUEUE, 
+        R.string.action_playback_queue
+    );
+
+    menuNames.put(
+        MainUIData.MENU_ITEM_SUBSCRIBE, 
+        R.string.subscribe_unsubscribe_from_channel
+    );
+    
+    menuNames.put(
+        MainUIData.MENU_ITEM_SAVE_REMOVE_PLAYLIST, 
+        R.string.save_remove_playlist
+    );
+    
+    menuNames.put(
+        MainUIData.MENU_ITEM_CREATE_PLAYLIST, 
+        R.string.create_playlist
+    );
+    
+    menuNames.put(
+        MainUIData.MENU_ITEM_RENAME_PLAYLIST, 
+        R.string.rename_playlist
+    );
+
+    menuNames.put(
+        MainUIData.MENU_ITEM_ADD_TO_NEW_PLAYLIST, 
+        R.string.add_video_to_new_playlist
+    );
+    
     menuNames.put(MainUIData.MENU_ITEM_ADD_TO_PLAYLIST, R.string.dialog_add_to_playlist);
     menuNames.put(MainUIData.MENU_ITEM_RECENT_PLAYLIST, R.string.add_remove_from_recent_playlist);
     menuNames.put(MainUIData.MENU_ITEM_PLAY_VIDEO, R.string.play_video);
@@ -328,4 +406,5 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
     return menuNames;
   }
+
 }
