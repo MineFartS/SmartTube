@@ -52,14 +52,46 @@ public class MainApplication extends MultiDexApplication {
                 BrowseView.class,
                 BrowseActivity.class); // no parent, because it's root activity
 
-        viewManager.register(PlaybackView.class, PlaybackActivity.class, BrowseActivity.class);
-        viewManager.register(AppDialogView.class, AppDialogActivity.class, BrowseActivity.class);
-        viewManager.register(SearchView.class, SearchTagsActivity.class, BrowseActivity.class);
-        viewManager.register(SignInView.class, SignInActivity.class, BrowseActivity.class);
-        viewManager.register(AddDeviceView.class, AddDeviceActivity.class, BrowseActivity.class);
-        viewManager.register(ChannelView.class, ChannelActivity.class, BrowseActivity.class);
         viewManager.register(
-                ChannelUploadsView.class, ChannelUploadsActivity.class, BrowseActivity.class);
-        viewManager.register(WebBrowserView.class, WebBrowserActivity.class, BrowseActivity.class);
+                PlaybackView.class,
+                PlaybackActivity.class,
+                BrowseActivity.class);
+
+        viewManager.register(
+                AppDialogView.class,
+                AppDialogActivity.class,
+                BrowseActivity.class);
+
+        viewManager.register(
+                SearchView.class,
+                SearchTagsActivity.class,
+                BrowseActivity.class);
+
+        viewManager.register(
+                SignInView.class,
+                SignInActivity.class,
+                BrowseActivity.class);
+
+        viewManager.register(
+                AddDeviceView.class,
+                AddDeviceActivity.class,
+                BrowseActivity.class);
+
+        viewManager.register(
+                ChannelView.class,
+                ChannelActivity.class,
+                BrowseActivity.class);
+
+        viewManager.register(
+                ChannelUploadsView.class,
+                ChannelUploadsActivity.class,
+                BrowseActivity.class);
+
+        viewManager.register(
+                WebBrowserView.class,
+                WebBrowserActivity.class,
+                BrowseActivity.class);
+
     }
+
 }

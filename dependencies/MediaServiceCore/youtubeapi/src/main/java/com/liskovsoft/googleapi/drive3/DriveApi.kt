@@ -18,17 +18,17 @@ import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-/**
- * https://developers.google.com/drive/api/reference/rest/v3
- */
+/** https://developers.google.com/drive/api/reference/rest/v3 */
 @WithGson
 internal interface DriveApi {
-    /**
-     * Metadata: https://developers.google.com/drive/api/reference/rest/v3/files#File
-     */
+
+    /** Metadata: https://developers.google.com/drive/api/reference/rest/v3/files#File */
     @Multipart
     @POST("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart")
-    fun uploadFile(@Part("metadata") metadata: FileMetadata, @Part("file") file: RequestBody): Call<FileMetadata?>
+    fun uploadFile(
+            @Part("metadata") metadata: FileMetadata,
+            @Part("file") file: RequestBody
+    ): Call<FileMetadata?>
 
     @Headers("Content-Type: text/plain")
     @POST("https://www.googleapis.com/upload/drive/v3/files?uploadType=media")
@@ -40,9 +40,7 @@ internal interface DriveApi {
     @DELETE("https://www.googleapis.com/drive/v3/files/{fileId}")
     fun deleteFile(@Path("fileId") fileId: String): Call<Unit?>
 
-    /**
-     * https://developers.google.com/drive/api/reference/rest/v3/files/get
-     */
+    /** https://developers.google.com/drive/api/reference/rest/v3/files/get */
     @GET("https://www.googleapis.com/drive/v3/files/{fileId}?alt=media")
     fun getFile(@Path("fileId") fileId: String): Call<ResponseBody?>
 
