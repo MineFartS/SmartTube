@@ -518,10 +518,6 @@ public class MediaServiceManager implements OnAccountChange {
   }
 
   private void setHistoryBroken(boolean isBroken) {
-    VideoStateService stateService = VideoStateService.instance(null);
-
-    if (stateService != null) {
-      stateService.setHistoryBroken(isBroken);
-    }
+    // disabled, no local
   }
 }

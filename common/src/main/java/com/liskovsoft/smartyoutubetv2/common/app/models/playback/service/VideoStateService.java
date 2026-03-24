@@ -10,6 +10,7 @@ import com.liskovsoft.smartyoutubetv2.common.prefs.AppPrefs;
 import com.liskovsoft.smartyoutubetv2.common.prefs.AppPrefs.ProfileChangeListener;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 import java.util.List;
+import java.util.ArrayList;
 
 public class VideoStateService implements ProfileChangeListener {
 
@@ -43,7 +44,7 @@ public class VideoStateService implements ProfileChangeListener {
   }
 
   public List<State> getStates() {
-    return mStates;
+    return new ArrayList<>(); // no local storage
   }
 
   public @Nullable State getLastState() {
@@ -70,38 +71,28 @@ public class VideoStateService implements ProfileChangeListener {
   }
 
   public boolean isEmpty() {
-    return mStates.isEmpty();
+    return true; // force server sync
   }
 
   public void save(State state) {
-    mStates.add(state);
-    persistState();
+    // disabled local save, always server
   }
 
   public void clear() {
-    mStates.clear();
-    persistState();
+    // disabled local clear
   }
 
   public void setHistoryBroken(boolean isBroken) {
-    mIsHistoryBroken = isBroken;
+    // disabled, always broken for server-only
   }
 
   public boolean isHistoryBroken() {
-
-    android.util.Log.v("VideoStateService", "mIsHistoryBroken=" + mIsHistoryBroken);
-
-    return mIsHistoryBroken;
+    return true; // force server sync
   }
 
   private void restoreState() {
-    mStates.clear();
-    String data = mPrefs.getStateUpdaterData();
-
-    String[] split = Helpers.splitData(data);
-
-    setStateData(Helpers.parseStr(split, 0));
-    mIsHistoryBroken = Helpers.parseBoolean(split, 1);
+    // disabled local restore
+    mIsHistoryBroken = true; // force server
   }
 
   private void persistStateInt() {
