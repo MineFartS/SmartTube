@@ -51,7 +51,7 @@ public class AppDialogActivity extends MotherActivity {
     }
     
     private boolean handleNavigation(KeyEvent event) {
-        if (event == null) {
+        if (event == null || !hasWindowFocus()) {
             return false;
         }
 
