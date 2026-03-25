@@ -46,8 +46,6 @@ public class GeneralData implements ProfileChangeListener {
     private Map<Integer, Video> mSelectedItems;
     private boolean mIsFirstUseTooltipEnabled;
     private boolean mIsDeviceSpecificBackupEnabled;
-    private int mGDriveBackupFreqDays;
-    private int mLocalDriveBackupFreqDays;
     private List<Video> mOldPinnedItems;
     private final Runnable mPersistStateInt = this::persistStateInt;
 
@@ -259,24 +257,6 @@ public class GeneralData implements ProfileChangeListener {
         persistState();
     }
 
-    public int getGDriveBackupFreqDays() {
-        return mGDriveBackupFreqDays;
-    }
-
-    public void setGDriveBackupFreqDays(int freqDays) {
-        mGDriveBackupFreqDays = freqDays;
-        persistState();
-    }
-
-    public int getLocalDriveBackupFreqDays() {
-        return mLocalDriveBackupFreqDays;
-    }
-
-    public void setLocalDriveBackupFreqDays(int freqDays) {
-        mLocalDriveBackupFreqDays = freqDays;
-        persistState();
-    }
-
     private synchronized void restoreState() {
         
         String data = mPrefs.getProfileData(GENERAL_DATA);
@@ -304,8 +284,6 @@ public class GeneralData implements ProfileChangeListener {
         mSelectedItems = Helpers.parseMap(split, 63, Helpers::parseInt, Video::fromString);
         mIsFirstUseTooltipEnabled = Helpers.parseBoolean(split, 64, true);
         mIsDeviceSpecificBackupEnabled = Helpers.parseBoolean(split, 65, false);
-        mGDriveBackupFreqDays = Helpers.parseInt(split, 69, -1);
-        mLocalDriveBackupFreqDays = Helpers.parseInt(split, 70, -1);
 
     }
 
@@ -351,9 +329,7 @@ public class GeneralData implements ProfileChangeListener {
                 mSelectedItems, 
                 mIsFirstUseTooltipEnabled, 
                 mIsDeviceSpecificBackupEnabled, 
-                null,
-                mGDriveBackupFreqDays, 
-                mLocalDriveBackupFreqDays
+                        null
             )
         );
     }

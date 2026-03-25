@@ -223,9 +223,6 @@
     <string name="popular_uploads_row_name">Popular uploads</string>
     <string name="enable_voice_search">Enable global search (firmware support needed)</string>
     <string name="subscribe_unsubscribe_from_channel">Subscribe/Unsubscribe from the channel</string>
-    <string name="app_backup_restore">Backup/Restore</string>
-    <string name="app_backup">Backup app data</string>
-    <string name="app_restore">Restore app data</string>
     <string name="player_time_correction">Show the time with speed correction</string>
     <string name="sponsor_color_markers">Color markers on progress bar</string>
     <string name="refresh_section">Refresh section</string>
@@ -530,9 +527,6 @@
     <string name="player_only_mode">Show only the player if the video is opened outside of the app</string>
     <string name="long_press_for_settings">LONG PRESS FOR SETTINGS</string>
     <string name="long_press_for_options">LONG PRESS FOR OPTIONS</string>
-    <string name="device_specific_backup">Backup for this device only</string>
-    <string name="local_backup">Local backup</string>
-    <string name="auto_backup">Auto backup (once a day)</string>
     <string name="repeat_mode_reverse_list">Play the playlist or channel videos in reverse order</string>
     <string name="calm_msg">We are fixing the issue. Check for updates from time to time</string>
     <string name="without_picture">Without picture</string>
@@ -561,7 +555,6 @@
     <string name="typing_corrections">Disable auto-correction while typing text</string>
     <string name="suggestions_horizontally_scrolled">Horizontally scrolled Suggestions</string>
     <string name="stable_restore">Restore the stable build (all data will be lost)</string>
-    <string name="auto_backup_category">Auto backup</string>
     <string name="once_a_day">Once a day</string>
     <string name="once_a_week">Once a week</string>
     <string name="once_a_month">Once a month</string>
