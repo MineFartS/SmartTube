@@ -11,3 +11,7 @@ Clear-Host
     '-classpath' ".\gradle\wrapper\gradle-wrapper.jar" `
     'org.gradle.wrapper.GradleWrapperMain' `
     "clean" "installStstableDebug"
+
+# Clear App Cache
+& $ADB 'shell' 'run-as' 'org.smarttube' `
+    'sh' '-c' "rm -rf cache/*"
