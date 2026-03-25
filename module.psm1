@@ -1,5 +1,7 @@
 
-$ADB = "C:\Users\$env:USERNAME\AppData\Local\Android\Sdk\platform-tools\adb.exe"
+$ANDROID_SDK = "$env:USERPROFILE\AppData\Local\Android\SDK"
+
+$ADB = "$ANDROID_SDK\platform-tools\adb.exe"
 
 $JAVA = "C:\Program Files\Java\jdk-14\bin\java.exe"
 
@@ -16,7 +18,7 @@ function Test-ADBConnection {
 function Connect-ADB {
 
     # Set Android SDK Path
-    Set-SDK "C:\Users\$env:USERNAME\AppData\Local\Android\sdk\"
+    Repair-AndroidSDK
 
     if (-not (Test-ADBConnection)) {
 
@@ -35,11 +37,9 @@ function Connect-ADB {
 
 }
 
-function Set-SDK {
+function Repair-AndroidSDK {
 
-    param ([String]$Path)
-
-    $Path = $Path.Replace('\', '\\')
+    $Path = $ANDROID_SDK.Replace('\', '\\') + '\\'
 
     "sdk.dir = $Path" ` | Set-Content "$PSScriptRoot\local.properties"
 
