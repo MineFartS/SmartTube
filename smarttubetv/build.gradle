@@ -40,6 +40,8 @@ if (new File("${projectDir}/google-services.json").exists() && (getGradle().getS
     apply plugin: 'com.google.firebase.crashlytics'
 }
 
+def now = new Date()
+
 android {
     // FIX: Default interface methods are only supported starting with Android N (--min-api 24)
     compileOptions {
@@ -56,8 +58,11 @@ android {
         applicationId "org.smarttube"
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
-        versionCode 2260
-        versionName "26.03.23"
+
+        versionCode now.format('yyMMdd').toInteger()
+
+        versionName now.format('yy.MM.dd')
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
 
