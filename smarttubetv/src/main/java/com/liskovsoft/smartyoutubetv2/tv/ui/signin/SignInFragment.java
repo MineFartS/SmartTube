@@ -26,9 +26,7 @@ import java.util.List;
 public class SignInFragment extends GuidedStepSupportFragment implements SignInView {
     private static final String TAG = SignInFragment.class.getSimpleName();
     private static final int CONTINUE = 2;
-    private static final int OPEN_BROWSER = 3;
     private SignInPresenter mSignInPresenter;
-    private String mFullSignInUrl;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,10 +61,10 @@ public class SignInFragment extends GuidedStepSupportFragment implements SignInV
 
         getGuidanceStylist().getTitleView().setText(userCode);
 
-        mFullSignInUrl = signInUrl + "?user_code=" + userCode.replace(" ", "-");
+        String fullSignInUrl = signInUrl + "?user_code=" + userCode.replace(" ", "-");
 
         Glide.with(getContext())
-                .load(Utils.toQrCodeLink(mFullSignInUrl))
+                .load(Utils.toQrCodeLink(fullSignInUrl))
                 .placeholder(R.drawable.activate_account_qrcode)
                 .apply(ViewUtil.glideOptions())
                 .error(R.drawable.activate_account_qrcode)
@@ -98,27 +96,15 @@ public class SignInFragment extends GuidedStepSupportFragment implements SignInV
 
     @Override
     public void onCreateActions(@NonNull List<GuidedAction> actions, Bundle savedInstanceState) {
-        GuidedAction login = new GuidedAction.Builder()
+        actions.add(new GuidedAction.Builder()
                 .id(CONTINUE)
                 .title(getString(R.string.signin_view_action_text))
-                .build();
-        GuidedAction openBrowser = new GuidedAction.Builder()
-                .id(OPEN_BROWSER)
-                .title(getString(R.string.login_from_browser))
-                .build();
-        actions.add(login);
-        actions.add(openBrowser);
+                        .build());
     }
 
     @Override
     public void onGuidedActionClicked(GuidedAction action) {
-        if (action.getId() == CONTINUE) {
-            mSignInPresenter.onActionClicked();
-        } else if (action.getId() == OPEN_BROWSER) {
-            if (mFullSignInUrl != null) {
-                Utils.openLinkExt(getContext(), mFullSignInUrl);
-            }
-        }
+        mSignInPresenter.onActionClicked();
     }
 
     private final RequestListener<Drawable> mErrorListener = new RequestListener<Drawable>() {
