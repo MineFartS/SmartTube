@@ -11,7 +11,7 @@ gradle.ext.mediaServiceCoreRoot = new File(settingsDir, 'dependencies/MediaServi
 apply from: new File(gradle.ext.mediaServiceCoreRoot, 'core_settings.gradle')
 
 // exoplayer-amzn-2.10.6
-gradle.ext.exoplayerRoot = new File(settingsDir, 'dependencies/exoplayer-amzn-2.10.6')
+gradle.ext.exoplayerRoot = new File(settingsDir, 'dependencies/exoplayer-amzn-2.19.1')
 gradle.ext.exoplayerModulePrefix = 'exoplayer-'
 apply from: new File(
     gradle.ext.exoplayerRoot, 
