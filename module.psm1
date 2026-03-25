@@ -1,7 +1,7 @@
 
 $ADB = "C:\Users\$env:USERNAME\AppData\Local\Android\Sdk\platform-tools\adb.exe"
 
-$JAVA = "C:\Program Files\Java\jdk-14\bin\java.exe"
+$JAVA = "C:\Program Files\Java\latest\jdk-21\bin\java.exe"
 
 function Test-ADBConnection {
 
