@@ -22,6 +22,7 @@ import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+
 import org.apache.commons.io.file.Counters.PathCounters;
 import org.apache.commons.io.mod.Objects;
 
@@ -32,93 +33,92 @@ import org.apache.commons.io.mod.Objects;
  */
 public class CountingPathVisitor extends SimplePathVisitor {
 
-  static final String[] EMPTY_STRING_ARRAY = new String[0];
+    static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-  /**
-   * Creates a new instance configured with a BigInteger {@link PathCounters}.
-   *
-   * @return a new instance configured with a BigInteger {@link PathCounters}.
-   */
-  public static CountingPathVisitor withBigIntegerCounters() {
-    return new CountingPathVisitor(Counters.bigIntegerPathCounters());
-  }
-
-  /**
-   * Creates a new instance configured with a long {@link PathCounters}.
-   *
-   * @return a new instance configured with a long {@link PathCounters}.
-   */
-  public static CountingPathVisitor withLongCounters() {
-    return new CountingPathVisitor(Counters.longPathCounters());
-  }
-
-  private final PathCounters pathCounters;
-
-  /**
-   * Constructs a new instance.
-   *
-   * @param pathCounter How to count path visits.
-   */
-  public CountingPathVisitor(final PathCounters pathCounter) {
-    super();
-    this.pathCounters = Objects.requireNonNull(pathCounter, "pathCounter");
-  }
-
-  @Override
-  public boolean equals(final Object obj) {
-    if (this == obj) {
-      return true;
+    /**
+     * Creates a new instance configured with a BigInteger {@link PathCounters}.
+     *
+     * @return a new instance configured with a BigInteger {@link PathCounters}.
+     */
+    public static CountingPathVisitor withBigIntegerCounters() {
+        return new CountingPathVisitor(Counters.bigIntegerPathCounters());
     }
-    if (!(obj instanceof CountingPathVisitor)) {
-      return false;
+
+    /**
+     * Creates a new instance configured with a long {@link PathCounters}.
+     *
+     * @return a new instance configured with a long {@link PathCounters}.
+     */
+    public static CountingPathVisitor withLongCounters() {
+        return new CountingPathVisitor(Counters.longPathCounters());
     }
-    final CountingPathVisitor other = (CountingPathVisitor) obj;
-    return Objects.equals(pathCounters, other.pathCounters);
-  }
 
-  /**
-   * Gets the visitation counts.
-   *
-   * @return the visitation counts.
-   */
-  public PathCounters getPathCounters() {
-    return pathCounters;
-  }
+    private final PathCounters pathCounters;
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(pathCounters);
-  }
-
-  @Override
-  public FileVisitResult postVisitDirectory(final Path dir, final IOException exc)
-      throws IOException {
-    pathCounters.getDirectoryCounter().increment();
-    return FileVisitResult.CONTINUE;
-  }
-
-  @Override
-  public String toString() {
-    return pathCounters.toString();
-  }
-
-  /**
-   * Updates the counters for visiting the given file.
-   *
-   * @param file the visited file.
-   * @param attributes the visited file attributes.
-   */
-  protected void updateFileCounters(final Path file, final BasicFileAttributes attributes) {
-    pathCounters.getFileCounter().increment();
-    pathCounters.getByteCounter().add(attributes.size());
-  }
-
-  @Override
-  public FileVisitResult visitFile(final Path file, final BasicFileAttributes attributes)
-      throws IOException {
-    if (Files.exists(file)) {
-      updateFileCounters(file, attributes);
+    /**
+     * Constructs a new instance.
+     *
+     * @param pathCounter How to count path visits.
+     */
+    public CountingPathVisitor(final PathCounters pathCounter) {
+        super();
+        this.pathCounters = Objects.requireNonNull(pathCounter, "pathCounter");
     }
-    return FileVisitResult.CONTINUE;
-  }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof CountingPathVisitor)) {
+            return false;
+        }
+        final CountingPathVisitor other = (CountingPathVisitor) obj;
+        return Objects.equals(pathCounters, other.pathCounters);
+    }
+
+    /**
+     * Gets the visitation counts.
+     *
+     * @return the visitation counts.
+     */
+    public PathCounters getPathCounters() {
+        return pathCounters;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pathCounters);
+    }
+
+    @Override
+    public FileVisitResult postVisitDirectory(final Path dir, final IOException exc) throws IOException {
+        pathCounters.getDirectoryCounter().increment();
+        return FileVisitResult.CONTINUE;
+    }
+
+    @Override
+    public String toString() {
+        return pathCounters.toString();
+    }
+
+    /**
+     * Updates the counters for visiting the given file.
+     *
+     * @param file the visited file.
+     * @param attributes the visited file attributes.
+     */
+    protected void updateFileCounters(final Path file, final BasicFileAttributes attributes) {
+        pathCounters.getFileCounter().increment();
+        pathCounters.getByteCounter().add(attributes.size());
+    }
+
+    @Override
+    public FileVisitResult visitFile(final Path file, final BasicFileAttributes attributes) throws IOException {
+        if (Files.exists(file)) {
+            updateFileCounters(file, attributes);
+        }
+        return FileVisitResult.CONTINUE;
+    }
+
 }

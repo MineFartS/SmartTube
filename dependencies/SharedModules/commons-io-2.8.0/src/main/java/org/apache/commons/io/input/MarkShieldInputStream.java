@@ -20,42 +20,45 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * This is an alternative to {@link java.io.ByteArrayInputStream} which removes the synchronization
- * overhead for non-concurrent access; as such this class is not thread-safe.
+ * This is an alternative to {@link java.io.ByteArrayInputStream}
+ * which removes the synchronization overhead for non-concurrent
+ * access; as such this class is not thread-safe.
  *
- * <p>Proxy stream that prevents the underlying input stream from being marked/reset.
- *
- * <p>This class is typically used in cases where an input stream that supports marking needs to be
- * passed to a component that wants to explicitly mark the stream, but it it is not desirable to
- * allow marking of the stream.
+ * Proxy stream that prevents the underlying input stream from being marked/reset.
+ * <p>
+ * This class is typically used in cases where an input stream that supports
+ * marking needs to be passed to a component that wants to explicitly mark
+ * the stream, but it it is not desirable to allow marking of the stream.
+ * </p>
  *
  * @since 2.8.0
  */
 public class MarkShieldInputStream extends ProxyInputStream {
 
-  /**
-   * Creates a proxy that shields the given input stream from being marked or rest.
-   *
-   * @param in underlying input stream
-   */
-  public MarkShieldInputStream(final InputStream in) {
-    super(in);
-  }
+    /**
+     * Creates a proxy that shields the given input stream from being
+     * marked or rest.
+     *
+     * @param in underlying input stream
+     */
+    public MarkShieldInputStream(final InputStream in) {
+        super(in);
+    }
 
-  @SuppressWarnings("sync-override")
-  @Override
-  public void mark(final int readlimit) {
-    // no-op
-  }
+    @SuppressWarnings("sync-override")
+    @Override
+    public void mark(final int readlimit) {
+        // no-op
+    }
 
-  @Override
-  public boolean markSupported() {
-    return false;
-  }
+    @Override
+    public boolean markSupported() {
+        return false;
+    }
 
-  @SuppressWarnings("sync-override")
-  @Override
-  public void reset() throws IOException {
-    throw new IOException("mark/reset not supported");
-  }
+    @SuppressWarnings("sync-override")
+    @Override
+    public void reset() throws IOException {
+        throw new IOException("mark/reset not supported");
+    }
 }

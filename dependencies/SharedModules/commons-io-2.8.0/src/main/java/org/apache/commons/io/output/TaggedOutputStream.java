@@ -20,13 +20,14 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.UUID;
+
 import org.apache.commons.io.TaggedIOException;
 
 /**
- * An output stream decorator that tags potential exceptions so that the stream that caused the
- * exception can easily be identified. This is done by using the {@link TaggedIOException} class to
- * wrap all thrown {@link IOException}s. See below for an example of using this class.
- *
+ * An output stream decorator that tags potential exceptions so that the
+ * stream that caused the exception can easily be identified. This is
+ * done by using the {@link TaggedIOException} class to wrap all thrown
+ * {@link IOException}s. See below for an example of using this class.
  * <pre>
  * TaggedOutputStream stream = new TaggedOutputStream(...);
  * try {
@@ -42,11 +43,11 @@ import org.apache.commons.io.TaggedIOException;
  *     }
  * }
  * </pre>
- *
- * <p>Alternatively, the {@link #throwIfCauseOf(Exception)} method can be used to let higher levels
- * of code handle the exception caused by this stream while other processing errors are being taken
- * care of at this lower level.
- *
+ * <p>
+ * Alternatively, the {@link #throwIfCauseOf(Exception)} method can be
+ * used to let higher levels of code handle the exception caused by this
+ * stream while other processing errors are being taken care of at this
+ * lower level.
  * <pre>
  * TaggedOutputStream stream = new TaggedOutputStream(...);
  * try {
@@ -62,49 +63,54 @@ import org.apache.commons.io.TaggedIOException;
  */
 public class TaggedOutputStream extends ProxyOutputStream {
 
-  /** The unique tag associated with exceptions from stream. */
-  private final Serializable tag = UUID.randomUUID();
+    /**
+     * The unique tag associated with exceptions from stream.
+     */
+    private final Serializable tag = UUID.randomUUID();
 
-  /**
-   * Creates a tagging decorator for the given output stream.
-   *
-   * @param proxy output stream to be decorated
-   */
-  public TaggedOutputStream(final OutputStream proxy) {
-    super(proxy);
-  }
+    /**
+     * Creates a tagging decorator for the given output stream.
+     *
+     * @param proxy output stream to be decorated
+     */
+    public TaggedOutputStream(final OutputStream proxy) {
+        super(proxy);
+    }
 
-  /**
-   * Tests if the given exception was caused by this stream.
-   *
-   * @param exception an exception
-   * @return {@code true} if the exception was thrown by this stream, {@code false} otherwise
-   */
-  public boolean isCauseOf(final Exception exception) {
-    return TaggedIOException.isTaggedWith(exception, tag);
-  }
+    /**
+     * Tests if the given exception was caused by this stream.
+     *
+     * @param exception an exception
+     * @return {@code true} if the exception was thrown by this stream,
+     *         {@code false} otherwise
+     */
+    public boolean isCauseOf(final Exception exception) {
+        return TaggedIOException.isTaggedWith(exception, tag);
+    }
 
-  /**
-   * Re-throws the original exception thrown by this stream. This method first checks whether the
-   * given exception is a {@link TaggedIOException} wrapper created by this decorator, and then
-   * unwraps and throws the original wrapped exception. Returns normally if the exception was not
-   * thrown by this stream.
-   *
-   * @param exception an exception
-   * @throws IOException original exception, if any, thrown by this stream
-   */
-  public void throwIfCauseOf(final Exception exception) throws IOException {
-    TaggedIOException.throwCauseIfTaggedWith(exception, tag);
-  }
+    /**
+     * Re-throws the original exception thrown by this stream. This method
+     * first checks whether the given exception is a {@link TaggedIOException}
+     * wrapper created by this decorator, and then unwraps and throws the
+     * original wrapped exception. Returns normally if the exception was
+     * not thrown by this stream.
+     *
+     * @param exception an exception
+     * @throws IOException original exception, if any, thrown by this stream
+     */
+    public void throwIfCauseOf(final Exception exception) throws IOException {
+        TaggedIOException.throwCauseIfTaggedWith(exception, tag);
+    }
 
-  /**
-   * Tags any IOExceptions thrown, wrapping and re-throwing.
-   *
-   * @param e The IOException thrown
-   * @throws IOException if an I/O error occurs
-   */
-  @Override
-  protected void handleIOException(final IOException e) throws IOException {
-    throw new TaggedIOException(e, tag);
-  }
+    /**
+     * Tags any IOExceptions thrown, wrapping and re-throwing.
+     *
+     * @param e The IOException thrown
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void handleIOException(final IOException e) throws IOException {
+        throw new TaggedIOException(e, tag);
+    }
+
 }

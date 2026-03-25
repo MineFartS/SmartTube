@@ -15,13 +15,14 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-// V8RuntimeNotLoadedTest must be run first. This is because we need to test when the natives are
-// not loaded
+// V8RuntimeNotLoadedTest must be run first. This is because we need to test when the natives are not loaded
 // and once the V8 class is loaded we cannot unload it.
-@SuiteClasses({V8RuntimeNotLoadedTest.class})
+@SuiteClasses({ V8RuntimeNotLoadedTest.class })
 /**
- * IMPORTANT: This class is intentionally prefixed with "A_" because this leads the JUnit test
- * runner to run it before all other classes (this behavior is undocumented and could break at any
- * point though) @
+ * IMPORTANT: This class is intentionally prefixed with "A_" because this leads the JUnit test runner
+ * to run it before all other classes (this behavior is undocumented and could break at any point though)
+ * @
  */
-public class A_RunAheadTests {}
+public class A_RunAheadTests {
+
+}

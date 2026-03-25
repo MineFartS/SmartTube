@@ -6,43 +6,42 @@ import com.liskovsoft.smartyoutubetv2.common.app.presenters.base.BasePresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.views.WebBrowserView;
 
 public class WebBrowserPresenter extends BasePresenter<WebBrowserView> {
-  @SuppressLint("StaticFieldLeak")
-  private static WebBrowserPresenter sInstance;
+    @SuppressLint("StaticFieldLeak")
+    private static WebBrowserPresenter sInstance;
+    private String mUrl;
 
-  private String mUrl;
-
-  private WebBrowserPresenter(Context context) {
-    super(context);
-  }
-
-  public static WebBrowserPresenter instance(Context context) {
-    if (sInstance == null) {
-      sInstance = new WebBrowserPresenter(context);
+    private WebBrowserPresenter(Context context) {
+        super(context);
     }
 
-    sInstance.setContext(context);
+    public static WebBrowserPresenter instance(Context context) {
+        if (sInstance == null) {
+            sInstance = new WebBrowserPresenter(context);
+        }
 
-    return sInstance;
-  }
+        sInstance.setContext(context);
 
-  public static void unhold() {
-    sInstance = null;
-  }
-
-  @Override
-  public void onViewInitialized() {
-    if (mUrl != null) {
-      getView().loadUrl(mUrl);
+        return sInstance;
     }
-  }
 
-  public void loadUrl(String url) {
-    mUrl = url;
-
-    getViewManager().startView(WebBrowserView.class);
-
-    if (getView() != null) {
-      getView().loadUrl(url);
+    public static void unhold() {
+        sInstance = null;
     }
-  }
+
+    @Override
+    public void onViewInitialized() {
+        if (mUrl != null) {
+            getView().loadUrl(mUrl);
+        }
+    }
+
+    public void loadUrl(String url) {
+        mUrl = url;
+
+        getViewManager().startView(WebBrowserView.class);
+
+        if (getView() != null) {
+            getView().loadUrl(url);
+        }
+    }
 }

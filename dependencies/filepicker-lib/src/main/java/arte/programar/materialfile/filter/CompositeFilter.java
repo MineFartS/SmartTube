@@ -5,20 +5,20 @@ import java.util.List;
 
 public class CompositeFilter implements FileFilter {
 
-  private final List<FileFilter> mFilters;
+    private final List<FileFilter> mFilters;
 
-  public CompositeFilter(List<FileFilter> filters) {
-    mFilters = filters;
-  }
-
-  @Override
-  public boolean accept(File f) {
-    for (FileFilter filter : mFilters) {
-      if (!filter.accept(f)) {
-        return false;
-      }
+    public CompositeFilter(List<FileFilter> filters) {
+        mFilters = filters;
     }
 
-    return true;
-  }
+    @Override
+    public boolean accept(File f) {
+        for (FileFilter filter : mFilters) {
+            if (!filter.accept(f)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

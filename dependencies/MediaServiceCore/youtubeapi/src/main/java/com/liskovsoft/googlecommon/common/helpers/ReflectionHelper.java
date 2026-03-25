@@ -1,11 +1,12 @@
 package com.liskovsoft.googlecommon.common.helpers;
 
 import android.content.Context;
-import com.liskovsoft.googlecommon.common.converters.FieldNullable;
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.PermissionHelpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
+import com.liskovsoft.googlecommon.common.converters.FieldNullable;
+
 import java.io.File;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
@@ -17,7 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ReflectionHelper {
-
     public static Class<?> getGenericParamType(Field field) {
         Type[] params = getGenericParams(field);
 
@@ -53,7 +53,7 @@ public class ReflectionHelper {
             type = type.getSuperclass();
             result.addAll(Arrays.asList(type.getDeclaredFields()));
             // ??? Speedup json parsing by putting on top important fields.
-            // Collections.sort(result, (o1, o2) -> o1.getName().compareTo(o2.getName()));
+            //Collections.sort(result, (o1, o2) -> o1.getName().compareTo(o2.getName()));
         }
 
         return result;
@@ -72,7 +72,6 @@ public class ReflectionHelper {
     }
 
     public static void dumpDebugInfo(Class<?> type, InputStream content) {
-
         // Thread probably has been interrupted. Do skip.
         if (content == null || !GlobalPreferences.isInitialized()) {
             return;
@@ -98,10 +97,14 @@ public class ReflectionHelper {
         File destination = new File(filesDir, fileName);
         FileHelpers.streamToFile(content, destination);
 
+        // NOTE: Send file from crashlytics is useless. All strings are truncated!
+        //FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
+        //crashlytics.log(fileName + ": " + Helpers.toString(content));
+        //crashlytics.recordException(new Exception(fileName));
+        //crashlytics.sendUnsentReports();
     }
 
     public static boolean isNullable(Field field) {
-
         Annotation[] annotations = field.getAnnotations();
 
         for (Annotation annotation : annotations) {
@@ -112,5 +115,4 @@ public class ReflectionHelper {
 
         return false;
     }
-
 }

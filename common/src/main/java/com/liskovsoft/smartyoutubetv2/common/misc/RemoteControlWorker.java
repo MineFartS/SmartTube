@@ -8,19 +8,21 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.PlaybackPresenter;
 
 public class RemoteControlWorker extends Worker {
-  private static final String TAG = RemoteControlWorker.class.getSimpleName();
+    private static final String TAG = RemoteControlWorker.class.getSimpleName();
 
-  public RemoteControlWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
-    super(context, workerParams);
-  }
+    public RemoteControlWorker(
+            @NonNull Context context,
+            @NonNull WorkerParameters workerParams) {
+        super(context, workerParams);
+    }
 
-  @NonNull
-  @Override
-  public Result doWork() {
-    Log.d(TAG, "Doing some work...");
+    @NonNull
+    @Override
+    public Result doWork() {
+        Log.d(TAG, "Doing some work...");
 
-    PlaybackPresenter.instance(getApplicationContext()); // init RemoteControlListener
+        PlaybackPresenter.instance(getApplicationContext()); // init RemoteControlListener
 
-    return Result.success();
-  }
+        return Result.success();
+    }
 }

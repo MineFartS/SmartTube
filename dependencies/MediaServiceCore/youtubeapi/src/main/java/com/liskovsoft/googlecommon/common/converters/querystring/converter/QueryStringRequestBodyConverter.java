@@ -8,18 +8,18 @@ import retrofit2.Converter;
 import retrofit2.internal.EverythingIsNonNull;
 
 public class QueryStringRequestBodyConverter<T> implements Converter<T, RequestBody> {
-  private static final String TAG = QueryStringRequestBodyConverter.class.getSimpleName();
-  private static final MediaType MEDIA_TYPE = MediaType.get("application/json; charset=UTF-8");
-  private final JsonPathTypeAdapter<T> mAdapter;
+    private static final String TAG = QueryStringRequestBodyConverter.class.getSimpleName();
+    private static final MediaType MEDIA_TYPE = MediaType.get("application/json; charset=UTF-8");
+    private final JsonPathTypeAdapter<T> mAdapter;
 
-  public QueryStringRequestBodyConverter(JsonPathTypeAdapter<T> adapter) {
-    mAdapter = adapter;
-  }
+    public QueryStringRequestBodyConverter(JsonPathTypeAdapter<T> adapter) {
+        mAdapter = adapter;
+    }
 
-  @EverythingIsNonNull
-  @Override
-  public RequestBody convert(T value) {
-    Log.d(TAG, value.toString());
-    return RequestBody.create(MEDIA_TYPE, value.toString());
-  }
+    @EverythingIsNonNull
+    @Override
+    public RequestBody convert(T value) {
+        Log.d(TAG, value.toString());
+        return RequestBody.create(MEDIA_TYPE, value.toString());
+    }
 }

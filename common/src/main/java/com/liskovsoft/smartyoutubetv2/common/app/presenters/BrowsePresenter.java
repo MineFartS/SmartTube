@@ -3,9 +3,11 @@ package com.liskovsoft.smartyoutubetv2.common.app.presenters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
+
 import androidx.annotation.Nullable;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+
 import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.locale.LocaleUtility;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -36,24 +38,26 @@ import com.liskovsoft.smartyoutubetv2.common.misc.AppDataSourceManager;
 import com.liskovsoft.smartyoutubetv2.common.misc.BrowseProcessorManager;
 import com.liskovsoft.smartyoutubetv2.common.misc.MediaServiceManager;
 import com.liskovsoft.smartyoutubetv2.common.misc.MediaServiceManager.AccountChangeListener;
+import com.liskovsoft.smartyoutubetv2.common.prefs.AccountsData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
+import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerTweaksData;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
-import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-public class BrowsePresenter extends BasePresenter<BrowseView>
-        implements SectionPresenter, VideoGroupPresenter, AccountChangeListener {
-    private static final String TAG = BrowsePresenter.class.getSimpleName();
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 
+public class BrowsePresenter extends BasePresenter<BrowseView> implements SectionPresenter, VideoGroupPresenter, AccountChangeListener {
+    private static final String TAG = BrowsePresenter.class.getSimpleName();
     @SuppressLint("StaticFieldLeak")
     private static BrowsePresenter sInstance;
-
     private final List<BrowseSection> mSections;
     private final List<BrowseSection> mErrorSections;
     private final Map<Integer, Observable<MediaGroup>> mGridMapping;
@@ -116,11 +120,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
         updateSections();
 
         // Move default focus
-        int selectedSectionIndex = findSectionIndex(
-                mCurrentSection != null ? mCurrentSection.getId() : mBootstrapSectionId);
+        int selectedSectionIndex = findSectionIndex(mCurrentSection != null ? mCurrentSection.getId() : mBootstrapSectionId);
         mBootstrapSectionId = -1;
-        getView()
-                .selectSection(selectedSectionIndex != -1 ? selectedSectionIndex : mBootSectionIndex, true);
+        getView().selectSection(selectedSectionIndex != -1 ? selectedSectionIndex : mBootSectionIndex, true);
     }
 
     @Override
@@ -138,10 +140,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
     }
 
     private void refreshIfNeeded() {
-        if (getView() == null
-                || !isHomeSection()
-                || mLastUpdateTimeMs == -1
-                || System.currentTimeMillis() - mLastUpdateTimeMs < 3 * 60 * 60 * 1_000) {
+        if (getView() == null || !isHomeSection() || mLastUpdateTimeMs == -1 || System.currentTimeMillis() - mLastUpdateTimeMs < 3 * 60 * 60 * 1_000) {
             return;
         }
 
@@ -150,9 +149,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
 
     private void saveSelectedItems() {
         // Fix position reset when jumping between sections
-        if (mCurrentVideo != null
-                && mCurrentVideo.getPositionInsideGroup() == 0
-                && (System.currentTimeMillis() - mCurrentVideo.timestamp) < 10_000) {
+        if (mCurrentVideo != null && mCurrentVideo.getPositionInsideGroup() == 0 && (System.currentTimeMillis() - mCurrentVideo.timestamp) < 10_000) {
             return;
         }
 
@@ -185,102 +182,107 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
         String country = LocaleUtility.getCurrentLocale(getContext()).getCountry();
 
         mSectionsMapping.put(
-                MediaGroup.TYPE_HOME,
-                new BrowseSection(
-                        MediaGroup.TYPE_HOME,
-                        getContext().getString(R.string.header_home),
-                        BrowseSection.TYPE_ROW,
-                        R.drawable.icon_home,
-                        false));
+            MediaGroup.TYPE_HOME, 
+            new BrowseSection(
+                MediaGroup.TYPE_HOME, 
+                getContext().getString(R.string.header_home), 
+                BrowseSection.TYPE_ROW, 
+                R.drawable.icon_home, 
+                false
+            )
+        );
+        
+        mSectionsMapping.put(
+            MediaGroup.TYPE_CHANNEL_UPLOADS, 
+            new BrowseSection(
+                MediaGroup.TYPE_CHANNEL_UPLOADS, 
+                getContext().getString(R.string.header_channels), 
+                BrowseSection.TYPE_MULTI_GRID,
+                R.drawable.icon_channels, 
+                false
+            )
+        );
 
         mSectionsMapping.put(
-                MediaGroup.TYPE_CHANNEL_UPLOADS,
-                new BrowseSection(
-                        MediaGroup.TYPE_CHANNEL_UPLOADS,
-                        getContext().getString(R.string.header_channels),
-                        BrowseSection.TYPE_MULTI_GRID,
-                        R.drawable.icon_channels,
-                        false));
+            MediaGroup.TYPE_SUBSCRIPTIONS, 
+            new BrowseSection(
+                MediaGroup.TYPE_SUBSCRIPTIONS, 
+                getContext().getString(R.string.header_subscriptions), 
+                BrowseSection.TYPE_GRID, 
+                R.drawable.icon_subscriptions, 
+                false
+            )
+        );
 
         mSectionsMapping.put(
-                MediaGroup.TYPE_SUBSCRIPTIONS,
-                new BrowseSection(
-                        MediaGroup.TYPE_SUBSCRIPTIONS,
-                        getContext().getString(R.string.header_subscriptions),
-                        BrowseSection.TYPE_GRID,
-                        R.drawable.icon_subscriptions,
-                        false));
+            MediaGroup.TYPE_HISTORY, 
+            new BrowseSection(
+                MediaGroup.TYPE_HISTORY, 
+                getContext().getString(R.string.header_history), 
+                BrowseSection.TYPE_GRID, 
+                R.drawable.icon_history, 
+                true
+            )
+        );
 
         mSectionsMapping.put(
-                MediaGroup.TYPE_HISTORY,
-                new BrowseSection(
-                        MediaGroup.TYPE_HISTORY,
-                        getContext().getString(R.string.header_history),
-                        BrowseSection.TYPE_GRID,
-                        R.drawable.icon_history,
-                        true));
+            MediaGroup.TYPE_USER_PLAYLISTS, 
+            new BrowseSection(
+                MediaGroup.TYPE_USER_PLAYLISTS, 
+                getContext().getString(R.string.header_playlists), 
+                BrowseSection.TYPE_ROW, 
+                R.drawable.icon_playlist, 
+                false
+            )
+        );
+
+        mSectionsMapping.put(MediaGroup.TYPE_NOTIFICATIONS, new BrowseSection(MediaGroup.TYPE_NOTIFICATIONS, getContext().getString(R.string.header_notifications), BrowseSection.TYPE_GRID, R.drawable.icon_notification, false));
+        mSectionsMapping.put(MediaGroup.TYPE_PLAYBACK_QUEUE, new BrowseSection(MediaGroup.TYPE_PLAYBACK_QUEUE, getContext().getString(R.string.playback_queue_category_title), BrowseSection.TYPE_GRID, R.drawable.icon_queue, false));
 
         mSectionsMapping.put(
-                MediaGroup.TYPE_USER_PLAYLISTS,
-                new BrowseSection(
-                        MediaGroup.TYPE_USER_PLAYLISTS,
-                        getContext().getString(R.string.header_playlists),
-                        BrowseSection.TYPE_ROW,
-                        R.drawable.icon_playlist,
-                        false));
-
-        mSectionsMapping.put(
-                MediaGroup.TYPE_NOTIFICATIONS,
-                new BrowseSection(
-                        MediaGroup.TYPE_NOTIFICATIONS,
-                        getContext().getString(R.string.header_notifications),
-                        BrowseSection.TYPE_GRID,
-                        R.drawable.icon_notification,
-                        false));
-        mSectionsMapping.put(
-                MediaGroup.TYPE_PLAYBACK_QUEUE,
-                new BrowseSection(
-                        MediaGroup.TYPE_PLAYBACK_QUEUE,
-                        getContext().getString(R.string.playback_queue_category_title),
-                        BrowseSection.TYPE_GRID,
-                        R.drawable.icon_queue,
-                        false));
-
-        mSectionsMapping.put(
-                MediaGroup.TYPE_SETTINGS,
-                new BrowseSection(
-                        MediaGroup.TYPE_SETTINGS,
-                        getContext().getString(R.string.header_settings),
-                        BrowseSection.TYPE_SETTINGS_GRID,
-                        R.drawable.icon_settings));
+            MediaGroup.TYPE_SETTINGS, 
+            new BrowseSection(
+                MediaGroup.TYPE_SETTINGS, 
+                getContext().getString(R.string.header_settings), 
+                BrowseSection.TYPE_SETTINGS_GRID, 
+                R.drawable.icon_settings
+            )
+        );
+        
     }
 
     private void initRowAndGridMapping() {
-
+        
         mRowMapping.put(
-                MediaGroup.TYPE_HOME,
-                getContentService().getHomeObserve());
-
+            MediaGroup.TYPE_HOME, 
+            getContentService().getHomeObserve()
+        );
+        
         mRowMapping.put(
-                MediaGroup.TYPE_USER_PLAYLISTS,
-                getContentService().getPlaylistRowsObserve());
+            MediaGroup.TYPE_USER_PLAYLISTS, 
+            getContentService().getPlaylistRowsObserve()
+        );
 
         mGridMapping.put(
-                MediaGroup.TYPE_SUBSCRIPTIONS,
-                getContentService().getSubscriptionsObserve());
+            MediaGroup.TYPE_SUBSCRIPTIONS, 
+            getContentService().getSubscriptionsObserve()
+        );
 
         mGridMapping.put(
-                MediaGroup.TYPE_HISTORY,
-                getContentService().getHistoryObserve());
-
+            MediaGroup.TYPE_HISTORY, 
+            getContentService().getHistoryObserve()
+        );
+        
         mGridMapping.put(
-                MediaGroup.TYPE_CHANNEL_UPLOADS,
-                getContentService().getSubscribedChannelsByNewContentObserve());
-
+            MediaGroup.TYPE_CHANNEL_UPLOADS, 
+            getContentService().getSubscribedChannelsByNewContentObserve()
+        );
+        
         mGridMapping.put(
-                MediaGroup.TYPE_NOTIFICATIONS,
-                getNotificationsService().getNotificationItemsObserve());
-
+            MediaGroup.TYPE_NOTIFICATIONS, 
+            getNotificationsService().getNotificationItemsObserve()
+        );
+        
     }
 
     private void initPinnedSections() {
@@ -316,11 +318,16 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
 
     private void initSettingsGridMapping() {
         mSettingsGridMapping.put(
-                MediaGroup.TYPE_SETTINGS, () -> mDataSourcePresenter.getSettingItems(getContext()));
+            MediaGroup.TYPE_SETTINGS, 
+            () -> mDataSourcePresenter.getSettingItems(getContext())
+        );
     }
 
     private void initLocalGridMapping() {
-        mLocalGridMappings.put(MediaGroup.TYPE_PLAYBACK_QUEUE, () -> Playlist.instance().getAll());
+        mLocalGridMappings.put(
+            MediaGroup.TYPE_PLAYBACK_QUEUE, 
+            () -> Playlist.instance().getAll()
+        );
     }
 
     public void updateSections() {
@@ -364,9 +371,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
 
         // Refresh and restore last focus
         int selectedSectionIndex = findSectionIndex(mCurrentSection != null ? mCurrentSection.getId() : -1);
-        getView()
-                .selectSection(
-                        selectedSectionIndex != -1 ? selectedSectionIndex : mBootSectionIndex, false);
+        getView().selectSection(selectedSectionIndex != -1 ? selectedSectionIndex : mBootSectionIndex, false);
     }
 
     private void initPinnedData() {
@@ -377,29 +382,36 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
     public void updateChannelSorting() {
 
         switch (getMainUIData().getChannelCategorySorting()) {
+
             case MainUIData.CHANNEL_SORTING_DEFAULT:
                 mGridMapping.put(
-                        MediaGroup.TYPE_CHANNEL_UPLOADS, getContentService().getSubscribedChannelsObserve());
+                    MediaGroup.TYPE_CHANNEL_UPLOADS, 
+                    getContentService().getSubscribedChannelsObserve()
+                );
                 break;
-
+            
             case MainUIData.CHANNEL_SORTING_NAME2:
             case MainUIData.CHANNEL_SORTING_NAME:
                 mGridMapping.put(
-                        MediaGroup.TYPE_CHANNEL_UPLOADS,
-                        getContentService().getSubscribedChannelsByNameObserve());
+                    MediaGroup.TYPE_CHANNEL_UPLOADS, 
+                    getContentService().getSubscribedChannelsByNameObserve()
+                );
                 break;
-
+            
             case MainUIData.CHANNEL_SORTING_NEW_CONTENT:
                 mGridMapping.put(
-                        MediaGroup.TYPE_CHANNEL_UPLOADS,
-                        getContentService().getSubscribedChannelsByNewContentObserve());
+                    MediaGroup.TYPE_CHANNEL_UPLOADS, 
+                    getContentService().getSubscribedChannelsByNewContentObserve()
+                );
                 break;
-
+            
             case MainUIData.CHANNEL_SORTING_LAST_VIEWED:
                 mGridMapping.put(
-                        MediaGroup.TYPE_CHANNEL_UPLOADS,
-                        getContentService().getSubscribedChannelsByLastViewedObserve());
+                    MediaGroup.TYPE_CHANNEL_UPLOADS, 
+                    getContentService().getSubscribedChannelsByLastViewedObserve()
+                );
                 break;
+        
         }
     }
 
@@ -408,6 +420,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
         mRowMapping.remove(MediaGroup.TYPE_USER_PLAYLISTS);
         mGridMapping.put(MediaGroup.TYPE_USER_PLAYLISTS, getContentService().getPlaylistsObserve());
         updateCategoryType(MediaGroup.TYPE_USER_PLAYLISTS, BrowseSection.TYPE_GRID);
+        
     }
 
     private void updateCategoryType(int categoryId, int categoryType) {
@@ -465,36 +478,27 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
         }
 
         if (belongsToChannelUploads(item)) { // We need to be sure we exactly on Channels section
-            ChannelUploadsMenuPresenter.instance(getContext())
-                    .showMenu(
-                            item,
-                            (videoItem, action) -> {
-                                if (action == VideoMenuCallback.ACTION_UNSUBSCRIBE) { // works with any uploads section
-                                                                                      // look
-                                    removeItem(item);
-                                }
-                            });
+            ChannelUploadsMenuPresenter.instance(getContext()).showMenu(item, (videoItem, action) -> {
+                if (action == VideoMenuCallback.ACTION_UNSUBSCRIBE) { // works with any uploads section look
+                    removeItem(item);
+                }
+            });
         } else {
-            VideoMenuPresenter.instance(getContext())
-                    .showMenu(
-                            item,
-                            (videoItem, action) -> {
-                                if (action == VideoMenuCallback.ACTION_REMOVE
-                                        || action == VideoMenuCallback.ACTION_REMOVE_FROM_PLAYLIST
-                                        || action == VideoMenuCallback.ACTION_REMOVE_FROM_QUEUE) {
-                                    removeItem(videoItem);
-                                } else if (action == VideoMenuCallback.ACTION_UNSUBSCRIBE
-                                        && isMultiGridChannelUploadsSection()) {
-                                    removeItem(mCurrentVideo);
-                                    VideoMenuPresenter.instance(getContext()).closeDialog();
-                                } else if (action == VideoMenuCallback.ACTION_UNSUBSCRIBE
-                                        && isSubscriptionsSection()) {
-                                    removeItemAuthor(videoItem);
-                                    VideoMenuPresenter.instance(getContext()).closeDialog();
-                                } else if (action == VideoMenuCallback.ACTION_REMOVE_AUTHOR) {
-                                    removeItemAuthor(videoItem);
-                                }
-                            });
+            VideoMenuPresenter.instance(getContext()).showMenu(item, (videoItem, action) -> {
+                if (action == VideoMenuCallback.ACTION_REMOVE ||
+                    action == VideoMenuCallback.ACTION_REMOVE_FROM_PLAYLIST ||
+                    action == VideoMenuCallback.ACTION_REMOVE_FROM_QUEUE) {
+                    removeItem(videoItem);
+                } else if (action == VideoMenuCallback.ACTION_UNSUBSCRIBE && isMultiGridChannelUploadsSection()) {
+                    removeItem(mCurrentVideo);
+                    VideoMenuPresenter.instance(getContext()).closeDialog();
+                } else if (action == VideoMenuCallback.ACTION_UNSUBSCRIBE && isSubscriptionsSection()) {
+                    removeItemAuthor(videoItem);
+                    VideoMenuPresenter.instance(getContext()).closeDialog();
+                } else if (action == VideoMenuCallback.ACTION_REMOVE_AUTHOR) {
+                    removeItemAuthor(videoItem);
+                }
+            });
         }
     }
 
@@ -563,8 +567,10 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
         enableSection(MediaGroup.TYPE_USER_PLAYLISTS, enable);
         enableSection(MediaGroup.TYPE_SUBSCRIPTIONS, enable);
         enableSection(MediaGroup.TYPE_CHANNEL_UPLOADS, enable);
+        
 
         enableSection(MediaGroup.TYPE_HOME, enable);
+
     }
 
     public void enableSection(int sectionId, boolean enable) {
@@ -587,8 +593,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
         createPinnedMapping(item);
 
         BrowseSection newSection = createPinnedSection(item);
-        // Helpers.removeIf(mSections, section -> section.getId() ==
-        // newSection.getId());
+        //Helpers.removeIf(mSections, section -> section.getId() == newSection.getId());
         if (!mSections.contains(newSection)) {
             mSections.add(newSection);
         }
@@ -600,8 +605,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
             return;
         }
 
-        BrowseSection newSection = new BrowseSection(title.hashCode(), title, BrowseSection.TYPE_ERROR, resId, false,
-                data);
+        BrowseSection newSection = new BrowseSection(title.hashCode(), title, BrowseSection.TYPE_ERROR, resId, false, data);
         Helpers.removeIf(mErrorSections, section -> section.getId() == newSection.getId());
         mErrorSections.add(newSection);
         getView().addSection(0, newSection);
@@ -655,7 +659,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
 
     private void updateSection(BrowseSection section) {
         switch (section.getType()) {
-
             case BrowseSection.TYPE_GRID:
             case BrowseSection.TYPE_SHORTS_GRID:
                 if (mGridMapping.containsKey(section.getId())) {
@@ -666,26 +669,21 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
                     updateLocalGrid(section, localVideos);
                 }
                 break;
-
             case BrowseSection.TYPE_ROW:
                 Observable<List<MediaGroup>> groups = mRowMapping.get(section.getId());
                 updateVideoRows(section, groups, section.isAuthOnly());
                 break;
-
             case BrowseSection.TYPE_SETTINGS_GRID:
                 Callable<List<SettingsItem>> items = mSettingsGridMapping.get(section.getId());
                 updateSettingsGrid(section, items);
                 break;
-
             case BrowseSection.TYPE_MULTI_GRID:
                 Observable<MediaGroup> group2 = mGridMapping.get(section.getId());
                 updateVideoGrid(section, group2, 0, section.isAuthOnly());
                 break;
-
             case BrowseSection.TYPE_ERROR:
                 getView().showProgressBar(false);
                 break;
-
         }
 
         updateRefreshTime();
@@ -705,20 +703,17 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
         getView().showProgressBar(false);
     }
 
-    private void updateVideoRows(
-            BrowseSection section, Observable<List<MediaGroup>> groups, boolean authCheck) {
+    private void updateVideoRows(BrowseSection section, Observable<List<MediaGroup>> groups, boolean authCheck) {
         Log.d(TAG, "loadRowsHeader: Start loading section: " + section.getTitle());
 
         authCheck(authCheck, () -> updateVideoRows(section, groups));
     }
 
-    private void updateVideoGrid(
-            BrowseSection section, Observable<MediaGroup> group, boolean authCheck) {
+    private void updateVideoGrid(BrowseSection section, Observable<MediaGroup> group, boolean authCheck) {
         updateVideoGrid(section, group, -1, authCheck);
     }
 
-    private void updateVideoGrid(
-            BrowseSection section, Observable<MediaGroup> group, int column, boolean authCheck) {
+    private void updateVideoGrid(BrowseSection section, Observable<MediaGroup> group, int column, boolean authCheck) {
         Log.d(TAG, "loadMultiGridHeader: Start loading section: " + section.getTitle());
 
         authCheck(authCheck, () -> updateVideoGrid(section, group, column));
@@ -734,7 +729,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
             getViewManager().startView(BrowseView.class);
             return;
         }
-
+        
         getView().showProgressBar(true);
 
         VideoGroup firstGroup = VideoGroup.from(section);
@@ -747,37 +742,35 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
             return;
         }
 
-        Disposable updateAction = groups.subscribe(
-                mediaGroups -> {
-                    getView().showProgressBar(false);
+        Disposable updateAction = groups
+                .subscribe(
+                        mediaGroups -> {
+                            getView().showProgressBar(false);
 
-                    filterHomeIfNeeded(mediaGroups);
+                            filterHomeIfNeeded(mediaGroups);
 
-                    for (MediaGroup mediaGroup : mediaGroups) {
-                        if (mediaGroup.isEmpty()) {
-                            Log.e(
-                                    TAG,
-                                    "loadRowsHeader: MediaGroup is empty. Group Name: " + mediaGroup.getTitle());
-                            continue;
-                        }
+                            for (MediaGroup mediaGroup : mediaGroups) {
+                                if (mediaGroup.isEmpty()) {
+                                    Log.e(TAG, "loadRowsHeader: MediaGroup is empty. Group Name: " + mediaGroup.getTitle());
+                                    continue;
+                                }
 
-                        VideoGroup videoGroup = VideoGroup.from(mediaGroup, section);
+                                VideoGroup videoGroup = VideoGroup.from(mediaGroup, section);
 
-                        if (TextUtils.isEmpty(videoGroup.getTitle())) {
-                            videoGroup.setTitle(getContext().getString(R.string.suggestions));
-                        }
+                                if (TextUtils.isEmpty(videoGroup.getTitle())) {
+                                    videoGroup.setTitle(getContext().getString(R.string.suggestions));
+                                }
 
-                        getView().updateSection(videoGroup);
-                        mBrowseProcessor.process(videoGroup);
+                                getView().updateSection(videoGroup);
+                                mBrowseProcessor.process(videoGroup);
 
-                        continueGroupIfNeeded(videoGroup, false);
-                    }
-                },
-                error -> {
-                    Log.e(TAG, "updateRowsHeader error: %s", error.getMessage());
-                    handleLoadError(error);
-                },
-                () -> handleLoadError(null));
+                                continueGroupIfNeeded(videoGroup, false);
+                            }
+                        },
+                        error -> {
+                            Log.e(TAG, "updateRowsHeader error: %s", error.getMessage());
+                            handleLoadError(error);
+                        }, () -> handleLoadError(null));
 
         mActions.add(updateAction);
     }
@@ -806,28 +799,28 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
             return;
         }
 
-        Disposable updateAction = group.subscribe(
-                mediaGroup -> {
-                    getView().showProgressBar(false);
+        Disposable updateAction = group
+                .subscribe(
+                        mediaGroup -> {
+                            getView().showProgressBar(false);
 
-                    if (getView() == null) {
-                        Log.e(TAG, "Browse view has been unloaded from the memory. Low RAM?");
-                        getViewManager().startView(BrowseView.class);
-                        return;
-                    }
+                            if (getView() == null) {
+                                Log.e(TAG, "Browse view has been unloaded from the memory. Low RAM?");
+                                getViewManager().startView(BrowseView.class);
+                                return;
+                            }
 
-                    VideoGroup videoGroup = VideoGroup.from(baseGroup, mediaGroup);
-                    appendLocalHistory(videoGroup);
-                    getView().updateSection(videoGroup);
-                    mBrowseProcessor.process(videoGroup);
+                            VideoGroup videoGroup = VideoGroup.from(baseGroup, mediaGroup);
+                            appendLocalHistory(videoGroup);
+                            getView().updateSection(videoGroup);
+                            mBrowseProcessor.process(videoGroup);
 
-                    continueGroupIfNeeded(videoGroup);
-                },
-                error -> {
-                    Log.e(TAG, "updateGridHeader error: %s", error.getMessage());
-                    handleLoadError(error);
-                },
-                () -> handleLoadError(null));
+                            continueGroupIfNeeded(videoGroup);
+                        },
+                        error -> {
+                            Log.e(TAG, "updateGridHeader error: %s", error.getMessage());
+                            handleLoadError(error);
+                        }, () -> handleLoadError(null));
 
         mActions.add(updateAction);
     }
@@ -847,8 +840,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
             return;
         }
 
-        if (getCurrentSection() != null
-                && mLocalGridMappings.containsKey(getCurrentSection().getId())) {
+        if (getCurrentSection() != null && mLocalGridMappings.containsKey(getCurrentSection().getId())) {
             Log.d(TAG, "Local grid section doesn't assume a continuation...");
             return;
         }
@@ -866,22 +858,24 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
 
         continuation = getContentService().continueGroupObserve(mediaGroup);
 
-        Disposable continueAction = continuation.subscribe(
-                continueGroup -> {
-                    getView().showProgressBar(false);
+        Disposable continueAction = continuation
+                .subscribe(
+                        continueGroup -> {
+                            getView().showProgressBar(false);
 
-                    VideoGroup videoGroup = VideoGroup.from(group, continueGroup);
-                    getView().updateSection(videoGroup);
-                    mBrowseProcessor.process(videoGroup);
+                            VideoGroup videoGroup = VideoGroup.from(group, continueGroup);
+                            getView().updateSection(videoGroup);
+                            mBrowseProcessor.process(videoGroup);
 
-                    continueGroupIfNeeded(videoGroup, showLoading);
-                },
-                error -> {
-                    Log.e(TAG, "continueGroup error: %s", error.getMessage());
-                    if (getView() != null) {
-                        getView().showProgressBar(false);
-                    }
-                });
+                            continueGroupIfNeeded(videoGroup, showLoading);
+                        },
+                        error -> {
+                            Log.e(TAG, "continueGroup error: %s", error.getMessage());
+                            if (getView() != null) {
+                                getView().showProgressBar(false);
+                            }
+                        }
+                );
 
         mActions.add(continueAction);
     }
@@ -909,15 +903,18 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
         }
     }
 
-    /** Most tiny ui has 8 cards in a row or 24 in grid. */
+    /**
+     * Most tiny ui has 8 cards in a row or 24 in grid.
+     */
     private void continueGroupIfNeeded(VideoGroup group) {
         continueGroupIfNeeded(group, true);
     }
 
-    /** Most tiny ui has 8 cards in a row or 24 in grid. */
+    /**
+     * Most tiny ui has 8 cards in a row or 24 in grid.
+     */
     private void continueGroupIfNeeded(VideoGroup group, boolean showLoading) {
-        if (MediaServiceManager.instance()
-                .shouldContinueTheGroup(getContext(), group, isGridSection())) {
+        if (MediaServiceManager.instance().shouldContinueTheGroup(getContext(), group, isGridSection())) {
             continueGroup(group, showLoading);
         }
     }
@@ -934,11 +931,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
             return;
         }
 
-        updateVideoGrid(
-                mCurrentSection,
-                ChannelUploadsPresenter.instance(getContext()).obtainUploadsObservable(item),
-                1,
-                false);
+        updateVideoGrid(mCurrentSection, ChannelUploadsPresenter.instance(getContext()).obtainUploadsObservable(item), 1, false);
     }
 
     private boolean belongsToChannelUploadsMultiGrid(Video item) {
@@ -1030,28 +1023,28 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
     }
 
     private void filterHomeIfNeeded(List<MediaGroup> mediaGroups) {
-
+        
         if (mediaGroups == null || !isHomeSection()) {
             return;
         }
 
         Helpers.removeIf(
-                mediaGroups,
-                value -> Helpers.containsAny(
-                        value.getTitle(),
-                        "Primetime", // Free movies and shows row
-                        "News", // Top news
-                        "news", // Top news
-                        "NBA TV", // Sports
-                        "The Life of a Showgirl"));
+            mediaGroups, 
+            value -> Helpers.containsAny(
+                value.getTitle(),
+                "Primetime", // Free movies and shows row
+                "News", // Top news
+                "news", // Top news
+                "NBA TV", // Sports
+                "The Life of a Showgirl"
+            )
+        );
+        
     }
 
     private Observable<MediaGroup> createPinnedGridAction(Video item) {
         if (item.channelGroupId != null) {
-            return getContentService()
-                    .getRssFeedObserve(
-                            ChannelGroupServiceWrapper.instance(getContext())
-                                    .findChannelIdsForGroup(item.channelGroupId));
+            return getContentService().getRssFeedObserve(ChannelGroupServiceWrapper.instance(getContext()).findChannelIdsForGroup(item.channelGroupId));
         }
 
         return ChannelUploadsPresenter.instance(getContext()).obtainUploadsObservable(item);
@@ -1061,11 +1054,11 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
         return ChannelPresenter.instance(getContext()).obtainChannelObservable(item.channelId);
     }
 
-    /** Is Channels new look enabled? */
+    /**
+     * Is Channels new look enabled?
+     */
     public boolean isMultiGridChannelUploadsSection() {
-        return mCurrentSection != null
-                && mCurrentSection.getType() == BrowseSection.TYPE_MULTI_GRID
-                && mCurrentSection.getId() == MediaGroup.TYPE_CHANNEL_UPLOADS;
+        return mCurrentSection != null && mCurrentSection.getType() == BrowseSection.TYPE_MULTI_GRID && mCurrentSection.getId() == MediaGroup.TYPE_CHANNEL_UPLOADS;
     }
 
     public boolean isSettingsSection() {
@@ -1087,7 +1080,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
     public boolean isSubscriptionsSection() {
         return isSection(MediaGroup.TYPE_SUBSCRIPTIONS);
     }
-
+    
     public boolean isPlaybackQueueSection() {
         return isSection(MediaGroup.TYPE_PLAYBACK_QUEUE);
     }
@@ -1161,13 +1154,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
 
     private BrowseSection createPinnedSection(Video item) {
         return new BrowseSection(
-                item.getId(),
-                item.getTitle(),
-                enableRows(item) ? BrowseSection.TYPE_ROW : BrowseSection.TYPE_GRID,
-                R.drawable.icon_pin,
-                item.getCardImageUrl(),
-                false,
-                item);
+                item.getId(), item.getTitle(), enableRows(item) ? BrowseSection.TYPE_ROW : BrowseSection.TYPE_GRID, R.drawable.icon_pin, item.getCardImageUrl(), false, item);
     }
 
     private boolean enableRows(Video item) {
@@ -1185,8 +1172,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
 
             ErrorFragmentData errorFragmentData;
 
-            if (error != null
-                    && !Helpers.containsAny(error.getMessage(), "fromNullable result is null")) {
+            if (error != null && !Helpers.containsAny(error.getMessage(), "fromNullable result is null")) {
                 errorFragmentData = new CategoryEmptyError(getContext(), error);
             } else if (getSignInService().isSigned()) {
                 errorFragmentData = new CategoryEmptyError(getContext(), null);
@@ -1196,6 +1182,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
 
             getView().showError(errorFragmentData);
             Utils.postDelayed(mRefreshSection, 30_000);
+            
         }
     }
 
@@ -1206,7 +1193,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView>
 
         VideoStateService stateService = VideoStateService.instance(getContext());
 
-        if (stateService.isEmpty() || !videoGroup.isEmpty()) {
+        if (stateService.isEmpty() || (!stateService.isHistoryBroken() && !videoGroup.isEmpty())) {
             return;
         }
 

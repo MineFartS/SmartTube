@@ -4,47 +4,46 @@ import android.content.Context;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 
 public class AmazonBridgePresenter extends BridgePresenter {
-  private static final Integer[] AMAZON_YOUTUBE_PKG_HASH = {-1}; // always reinstall
-  private static final String AMAZON_YOUTUBE_PKG_NAME = "com.amazon.firetv.youtube";
-  private static final String AMAZON_BRIDGE_PKG_URL =
-      "https://github.com/yuliskov/SmartTubeNext/releases/download/latest/Amazon_SYTV_Bridge.apk";
-  private static AmazonBridgePresenter sInstance;
+    private static final Integer[] AMAZON_YOUTUBE_PKG_HASH = {-1}; // always reinstall
+    private static final String AMAZON_YOUTUBE_PKG_NAME = "com.amazon.firetv.youtube";
+    private static final String AMAZON_BRIDGE_PKG_URL = "https://github.com/yuliskov/SmartTubeNext/releases/download/latest/Amazon_SYTV_Bridge.apk";
+    private static AmazonBridgePresenter sInstance;
 
-  public AmazonBridgePresenter(Context context) {
-    super(context);
-  }
-
-  public static AmazonBridgePresenter instance(Context context) {
-    if (sInstance == null) {
-      sInstance = new AmazonBridgePresenter(context);
+    public AmazonBridgePresenter(Context context) {
+        super(context);
     }
 
-    sInstance.setContext(context);
+    public static AmazonBridgePresenter instance(Context context) {
+        if (sInstance == null) {
+            sInstance = new AmazonBridgePresenter(context);
+        }
 
-    return sInstance;
-  }
+        sInstance.setContext(context);
 
-  public void unhold() {
-    sInstance = null;
-  }
+        return sInstance;
+    }
 
-  @Override
-  protected String getPackageName() {
-    return AMAZON_YOUTUBE_PKG_NAME;
-  }
+    public void unhold() {
+        sInstance = null;
+    }
 
-  @Override
-  protected String getPackageUrl() {
-    return AMAZON_BRIDGE_PKG_URL;
-  }
+    @Override
+    protected String getPackageName() {
+        return AMAZON_YOUTUBE_PKG_NAME;
+    }
 
-  @Override
-  protected Integer[] getPackageSignatureHash() {
-    return AMAZON_YOUTUBE_PKG_HASH;
-  }
+    @Override
+    protected String getPackageUrl() {
+        return AMAZON_BRIDGE_PKG_URL;
+    }
 
-  @Override
-  protected boolean checkLauncher() {
-    return Helpers.isAmazonFireTVDevice();
-  }
+    @Override
+    protected Integer[] getPackageSignatureHash() {
+        return AMAZON_YOUTUBE_PKG_HASH;
+    }
+
+    @Override
+    protected boolean checkLauncher() {
+        return Helpers.isAmazonFireTVDevice();
+    }
 }

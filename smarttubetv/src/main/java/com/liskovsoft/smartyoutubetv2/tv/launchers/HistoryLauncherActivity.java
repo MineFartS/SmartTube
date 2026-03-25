@@ -6,12 +6,12 @@ import com.liskovsoft.smartyoutubetv2.common.app.presenters.BrowsePresenter;
 import com.liskovsoft.smartyoutubetv2.common.misc.MotherActivity;
 
 public class HistoryLauncherActivity extends MotherActivity {
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    BrowsePresenter.instance(this).selectSection(MediaGroup.TYPE_HISTORY);
+        BrowsePresenter.instance(this).selectSection(MediaGroup.TYPE_HISTORY);
 
-    finish();
-  }
+        finish();
+    }
 }

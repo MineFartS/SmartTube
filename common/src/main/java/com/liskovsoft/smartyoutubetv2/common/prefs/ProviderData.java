@@ -5,47 +5,45 @@ import android.content.Context;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 
 public class ProviderData {
-  private static final String PROVIDER_DATA = "provider_data";
+    private static final String PROVIDER_DATA = "provider_data";
+    @SuppressLint("StaticFieldLeak")
+    private static ProviderData sInstance;
+    private final Context mContext;
+    private final AppPrefs mAppPrefs;
+    private boolean mIsInstantVoiceSearchEnabled;
 
-  @SuppressLint("StaticFieldLeak")
-  private static ProviderData sInstance;
-
-  private final Context mContext;
-  private final AppPrefs mAppPrefs;
-  private boolean mIsInstantVoiceSearchEnabled;
-
-  private ProviderData(Context context) {
-    mContext = context;
-    mAppPrefs = AppPrefs.instance(mContext);
-    restoreData();
-  }
-
-  public static ProviderData instance(Context context) {
-    if (sInstance == null) {
-      sInstance = new ProviderData(context.getApplicationContext());
+    private ProviderData(Context context) {
+        mContext = context;
+        mAppPrefs = AppPrefs.instance(mContext);
+        restoreData();
     }
 
-    return sInstance;
-  }
+    public static ProviderData instance(Context context) {
+        if (sInstance == null) {
+            sInstance = new ProviderData(context.getApplicationContext());
+        }
 
-  public void setInstantVoiceSearchEnabled(boolean enabled) {
-    mIsInstantVoiceSearchEnabled = enabled;
-    persistData();
-  }
+        return sInstance;
+    }
 
-  public boolean isInstantVoiceSearchEnabled() {
-    return mIsInstantVoiceSearchEnabled;
-  }
+    public void setInstantVoiceSearchEnabled(boolean enabled) {
+        mIsInstantVoiceSearchEnabled = enabled;
+        persistData();
+    }
 
-  private void restoreData() {
-    String data = mAppPrefs.getData(PROVIDER_DATA);
+    public boolean isInstantVoiceSearchEnabled() {
+        return mIsInstantVoiceSearchEnabled;
+    }
 
-    String[] split = Helpers.splitData(data);
+    private void restoreData() {
+        String data = mAppPrefs.getData(PROVIDER_DATA);
 
-    mIsInstantVoiceSearchEnabled = Helpers.parseBoolean(split, 0, false);
-  }
+        String[] split = Helpers.splitData(data);
 
-  private void persistData() {
-    mAppPrefs.setData(PROVIDER_DATA, Helpers.mergeData(mIsInstantVoiceSearchEnabled));
-  }
+        mIsInstantVoiceSearchEnabled = Helpers.parseBoolean(split, 0, false);
+    }
+
+    private void persistData() {
+        mAppPrefs.setData(PROVIDER_DATA, Helpers.mergeData(mIsInstantVoiceSearchEnabled));
+    }
 }

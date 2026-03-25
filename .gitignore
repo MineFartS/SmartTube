@@ -9,7 +9,3 @@ Thumbs.db
 # Build Cache
 .gradle
 **/build/
-
-# Temp files
-/build_**.txt
-/temp_**.**

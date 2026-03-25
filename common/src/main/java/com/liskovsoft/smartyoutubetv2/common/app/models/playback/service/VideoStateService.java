@@ -4,24 +4,28 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import com.liskovsoft.smartyoutubetv2.common.prefs.AppPrefs;
 import com.liskovsoft.smartyoutubetv2.common.prefs.AppPrefs.ProfileChangeListener;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
+
 import java.util.List;
 
 public class VideoStateService implements ProfileChangeListener {
-
+    
     @SuppressLint("StaticFieldLeak")
     private static VideoStateService sInstance;
-
+    
     private static final int MIN_PERSISTENT_STATE_SIZE = 50;
     private static final int MAX_PERSISTENT_STATE_SIZE = 300;
 
     private final List<State> mStates;
     private final AppPrefs mPrefs;
     private static final String DELIM = "&si;";
+    private boolean mIsHistoryBroken;
+    private final Runnable mPersistStateInt = this::persistStateInt;
 
     private VideoStateService(Context context) {
         mPrefs = AppPrefs.instance(context);
@@ -80,41 +84,52 @@ public class VideoStateService implements ProfileChangeListener {
         persistState();
     }
 
-    private void restoreState() {
-
-        mStates.clear();
-
-        String[] split = Helpers.splitData(mPrefs.getStateUpdaterData());
-
-        String data = Helpers.parseStr(split, 0);
-
-        if (data != null) {
-
-            for (String spec : Helpers.split(data, DELIM)) {
-
-                State state = State.from(spec);
-
-                if (state != null) {
-                    mStates.add(state);
-                }
-
-            }
-        }
-
+    public void setHistoryBroken(boolean isBroken) {
+        mIsHistoryBroken = isBroken;
     }
 
-    public void persistState() {
-        StringBuilder sb = new StringBuilder();
+    public boolean isHistoryBroken() {
 
-        for (State state : mStates) {
-            if (sb.length() != 0) {
-                sb.append(DELIM);
-            }
+        android.util.Log.v(
+            "VideoStateService", 
+            "mIsHistoryBroken=" + mIsHistoryBroken
+        );
 
-            sb.append(state);
+        return mIsHistoryBroken;
+    }
+
+    private void restoreState() {
+        mStates.clear();
+        String data = mPrefs.getStateUpdaterData();
+
+        String[] split = Helpers.splitData(data);
+
+        setStateData(Helpers.parseStr(split, 0));
+        mIsHistoryBroken = Helpers.parseBoolean(split, 1);
+    }
+
+    private void persistStateInt() {
+        if (isHistoryBroken()) {
+            mPrefs.setStateUpdaterData(
+                Helpers.mergeData(
+                    getStateData(), 
+                    mIsHistoryBroken
+                )
+            );
+        } else {
+            // Eliminate additional string creation with the merge
+            mPrefs.setStateUpdaterData(getStateData());
         }
+    }
 
-        mPrefs.setStateUpdaterData(sb.toString());
+    public void persistNow() {
+        Utils.post(mPersistStateInt);
+    }
+
+    private void persistState() {
+        // Improve memory and disc usage
+        //Utils.postDelayed(mPersistStateInt, PERSIST_DELAY_MS);
+        persistNow();
     }
 
     public static class State {
@@ -186,4 +201,31 @@ public class VideoStateService implements ProfileChangeListener {
         restoreState();
     }
 
+    private void setStateData(String data) {
+        if (data != null) {
+            String[] split = Helpers.split(data, DELIM);
+
+            for (String spec : split) {
+                State state = State.from(spec);
+
+                if (state != null) {
+                    mStates.add(state);
+                }
+            }
+        }
+    }
+
+    private String getStateData() {
+        StringBuilder sb = new StringBuilder();
+
+        for (State state : mStates) {
+            if (sb.length() != 0) {
+                sb.append(DELIM);
+            }
+
+            sb.append(state);
+        }
+
+        return sb.toString();
+    }
 }

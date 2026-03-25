@@ -6,148 +6,149 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 
 public class SearchData {
 
-  private static final String SEARCH_DATA = "search_data";
+    private static final String SEARCH_DATA = "search_data";
+    @SuppressLint("StaticFieldLeak")
+    private static SearchData sInstance;
+    private final AppPrefs mAppPrefs;
+    private boolean mIsInstantVoiceSearchEnabled;
+    private int mSearchOptions;
+    private boolean mIsFocusOnResultsEnabled;
 
-  @SuppressLint("StaticFieldLeak")
-  private static SearchData sInstance;
+    private boolean mIsTempBackgroundModeEnabled;
 
-  private final AppPrefs mAppPrefs;
-  private boolean mIsInstantVoiceSearchEnabled;
-  private int mSearchOptions;
-  private boolean mIsFocusOnResultsEnabled;
+    private Class<?> mTempBackgroundModeClass;
+    private boolean mIsTrendingSearchesEnabled;
+    private boolean mIsSearchHistoryDisabled;
+    private boolean mIsPopularSearchesDisabled;
 
-  private boolean mIsTempBackgroundModeEnabled;
+    private boolean mIsTypingCorrectionDisabled;
 
-  private Class<?> mTempBackgroundModeClass;
-  private boolean mIsTrendingSearchesEnabled;
-  private boolean mIsSearchHistoryDisabled;
-  private boolean mIsPopularSearchesDisabled;
-
-  private boolean mIsTypingCorrectionDisabled;
-
-  private SearchData(Context context) {
-    mAppPrefs = AppPrefs.instance(context);
-    restoreData();
-  }
-
-  public static SearchData instance(Context context) {
-    if (sInstance == null) {
-      sInstance = new SearchData(context.getApplicationContext());
+    private SearchData(Context context) {
+        mAppPrefs = AppPrefs.instance(context);
+        restoreData();
     }
 
-    return sInstance;
-  }
+    public static SearchData instance(Context context) {
+        if (sInstance == null) {
+            sInstance = new SearchData(context.getApplicationContext());
+        }
 
-  public boolean isInstantVoiceSearchEnabled() {
-    return mIsInstantVoiceSearchEnabled;
-  }
+        return sInstance;
+    }
 
-  public void setInstantVoiceSearchEnabled(boolean enabled) {
-    mIsInstantVoiceSearchEnabled = enabled;
-    persistData();
-  }
+    public boolean isInstantVoiceSearchEnabled() {
+        return mIsInstantVoiceSearchEnabled;
+    }
 
-  public boolean isFocusOnResultsEnabled() {
-    return mIsFocusOnResultsEnabled;
-  }
+    public void setInstantVoiceSearchEnabled(boolean enabled) {
+        mIsInstantVoiceSearchEnabled = enabled;
+        persistData();
+    }
 
-  public void setFocusOnResultsEnabled(boolean enabled) {
-    mIsFocusOnResultsEnabled = enabled;
-    persistData();
-  }
+    public boolean isFocusOnResultsEnabled() {
+        return mIsFocusOnResultsEnabled;
+    }
 
-  public int getSearchOptions() {
-    return mSearchOptions;
-  }
+    public void setFocusOnResultsEnabled(boolean enabled) {
+        mIsFocusOnResultsEnabled = enabled;
+        persistData();
+    }
 
-  public void setSearchOptions(int searchOptions) {
-    mSearchOptions = searchOptions;
-    persistData();
-  }
+    public int getSearchOptions() {
+        return mSearchOptions;
+    }
 
-  public boolean isTypingCorrectionDisabled() {
-    return mIsTypingCorrectionDisabled;
-  }
+    public void setSearchOptions(int searchOptions) {
+        mSearchOptions = searchOptions;
+        persistData();
+    }
 
-  public void setTypingCorrectionDisabled(boolean disabled) {
-    mIsTypingCorrectionDisabled = disabled;
-    persistData();
-  }
+    public boolean isTypingCorrectionDisabled() {
+        return mIsTypingCorrectionDisabled;
+    }
 
-  public void setTrendingSearchesEnabled(boolean enabled) {
-    mIsTrendingSearchesEnabled = enabled;
-    persistData();
-  }
+    public void setTypingCorrectionDisabled(boolean disabled) {
+        mIsTypingCorrectionDisabled = disabled;
+        persistData();
+    }
 
-  public boolean isTrendingSearchesEnabled() {
-    return mIsTrendingSearchesEnabled;
-  }
+    public void setTrendingSearchesEnabled(boolean enabled) {
+        mIsTrendingSearchesEnabled = enabled;
+        persistData();
+    }
 
-  public boolean isTempBackgroundModeEnabled() {
-    return mIsTempBackgroundModeEnabled;
-  }
+    public boolean isTrendingSearchesEnabled() {
+        return mIsTrendingSearchesEnabled;
+    }
 
-  public void setTempBackgroundModeEnabled(boolean enabled) {
-    mIsTempBackgroundModeEnabled = enabled;
-    persistData();
-  }
+    public boolean isTempBackgroundModeEnabled() {
+        return mIsTempBackgroundModeEnabled;
+    }
 
-  public Class<?> getTempBackgroundModeClass() {
-    return mTempBackgroundModeClass;
-  }
+    public void setTempBackgroundModeEnabled(boolean enabled) {
+        mIsTempBackgroundModeEnabled = enabled;
+        persistData();
+    }
 
-  public void setTempBackgroundModeClass(Class<?> clazz) {
-    mTempBackgroundModeClass = clazz;
-  }
+    public Class<?> getTempBackgroundModeClass() {
+        return mTempBackgroundModeClass;
+    }
 
-  public boolean isSearchHistoryDisabled() {
-    return mIsSearchHistoryDisabled;
-  }
+    public void setTempBackgroundModeClass(Class<?> clazz) {
+        mTempBackgroundModeClass = clazz;
+    }
 
-  public void setSearchHistoryDisabled(boolean disabled) {
-    mIsSearchHistoryDisabled = disabled;
-    persistData();
-  }
+    public boolean isSearchHistoryDisabled() {
+        return mIsSearchHistoryDisabled;
+    }
 
-  public boolean isPopularSearchesDisabled() {
-    return mIsPopularSearchesDisabled;
-  }
+    public void setSearchHistoryDisabled(boolean disabled) {
+        mIsSearchHistoryDisabled = disabled;
+        persistData();
+    }
 
-  public void setPopularSearchesDisabled(boolean disabled) {
-    mIsPopularSearchesDisabled = disabled;
-    persistData();
-  }
+    public boolean isPopularSearchesDisabled() {
+        return mIsPopularSearchesDisabled;
+    }
 
-  private void restoreData() {
-    String data = mAppPrefs.getData(SEARCH_DATA);
+    public void setPopularSearchesDisabled(boolean disabled) {
+        mIsPopularSearchesDisabled = disabled;
+        persistData();
+    }
 
-    String[] split = Helpers.splitData(data);
+    private void restoreData() {
+        String data = mAppPrefs.getData(SEARCH_DATA);
 
-    mIsInstantVoiceSearchEnabled = Helpers.parseBoolean(split, 0, false);
-    mSearchOptions = Helpers.parseInt(split, 1, 0);
-    mIsFocusOnResultsEnabled = Helpers.parseBoolean(split, 2, true);
+        String[] split = Helpers.splitData(data);
 
-    mIsTempBackgroundModeEnabled = Helpers.parseBoolean(split, 4, false);
+        mIsInstantVoiceSearchEnabled = Helpers.parseBoolean(split, 0, false);
+        mSearchOptions = Helpers.parseInt(split, 1, 0);
+        mIsFocusOnResultsEnabled = Helpers.parseBoolean(split, 2, true);
 
-    mIsTrendingSearchesEnabled = Helpers.parseBoolean(split, 7, true);
-    mIsSearchHistoryDisabled = Helpers.parseBoolean(split, 8, false);
-    mIsPopularSearchesDisabled = Helpers.parseBoolean(split, 9, false);
+        mIsTempBackgroundModeEnabled = Helpers.parseBoolean(split, 4, false);
 
-    mIsTypingCorrectionDisabled = Helpers.parseBoolean(split, 11, false);
-  }
+        mIsTrendingSearchesEnabled = Helpers.parseBoolean(split, 7, true);
+        mIsSearchHistoryDisabled = Helpers.parseBoolean(split, 8, false);
+        mIsPopularSearchesDisabled = Helpers.parseBoolean(split, 9, false);
+        
+        mIsTypingCorrectionDisabled = Helpers.parseBoolean(split, 11, false);
+    }
 
-  private void persistData() {
-    mAppPrefs.setData(
-        SEARCH_DATA,
-        Helpers.mergeData(
-            mIsInstantVoiceSearchEnabled,
-            mSearchOptions,
-            mIsFocusOnResultsEnabled,
-            mIsTempBackgroundModeEnabled,
-            null,
-            mIsTrendingSearchesEnabled,
-            mIsSearchHistoryDisabled,
-            mIsPopularSearchesDisabled,
-            mIsTypingCorrectionDisabled));
-  }
+    private void persistData() {
+        mAppPrefs.setData(
+            SEARCH_DATA,
+            Helpers.mergeData(
+                mIsInstantVoiceSearchEnabled, 
+                mSearchOptions, 
+                mIsFocusOnResultsEnabled,
+
+                mIsTempBackgroundModeEnabled, 
+                null, 
+                mIsTrendingSearchesEnabled, 
+                mIsSearchHistoryDisabled, 
+                mIsPopularSearchesDisabled,
+                mIsTypingCorrectionDisabled
+            )
+        );
+    }
 }

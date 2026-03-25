@@ -9,51 +9,49 @@ import com.liskovsoft.sharedutils.R;
 import com.liskovsoft.sharedutils.dialogs.GenericSelectorDialog.DialogSourceBase.DialogItem;
 
 public class CombinedChoiceSelectorDialog extends GenericSelectorDialog {
-  private final CombinedDialogSource mDialogSource;
+    private final CombinedDialogSource mDialogSource;
 
-  public CombinedChoiceSelectorDialog(
-      Context activity, CombinedDialogSource dataSource, int themeResId) {
-    super(activity, dataSource, themeResId);
+    public CombinedChoiceSelectorDialog(Context activity, CombinedDialogSource dataSource, int themeResId) {
+        super(activity, dataSource, themeResId);
 
-    mDialogSource = dataSource;
-  }
-
-  public static void create(Context ctx, CombinedDialogSource dataSource, int themeResId) {
-    GenericSelectorDialog dialog = new CombinedChoiceSelectorDialog(ctx, dataSource, themeResId);
-    dialog.run();
-  }
-
-  @Override
-  protected CheckedTextView createDialogItem(
-      LayoutInflater inflater, ViewGroup root, DialogItem item) {
-    switch (getItemType(item)) {
-      case SINGLE_CHOICE:
-        return (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_single, root, false);
-      case MULTI_CHOICE:
-        return (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_multi, root, false);
+        mDialogSource = dataSource;
     }
 
-    throw new IllegalStateException("Incorrect DialogItem supplied");
-  }
-
-  @Override
-  public void onClick(View view) {
-    DialogItem item = (DialogItem) view.getTag();
-    CheckedTextView textView = (CheckedTextView) view;
-
-    switch (getItemType(item)) {
-      case SINGLE_CHOICE:
-        textView.setChecked(true);
-        break;
-      case MULTI_CHOICE:
-        textView.setChecked(!textView.isChecked());
-        break;
+    public static void create(Context ctx, CombinedDialogSource dataSource, int themeResId) {
+        GenericSelectorDialog dialog = new CombinedChoiceSelectorDialog(ctx, dataSource, themeResId);
+        dialog.run();
     }
 
-    if (item.getChecked() != textView.isChecked()) { // prevent user for click on same item twice
-      item.setChecked(textView.isChecked());
+    @Override
+    protected CheckedTextView createDialogItem(LayoutInflater inflater, ViewGroup root, DialogItem item) {
+        switch (getItemType(item)) {
+            case SINGLE_CHOICE:
+                return (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_single, root, false);
+            case MULTI_CHOICE:
+                return (CheckedTextView) inflater.inflate(R.layout.dialog_check_item_multi, root, false);
+        }
 
-      updateViews(getRoot());
+        throw new IllegalStateException("Incorrect DialogItem supplied");
     }
-  }
+
+    @Override
+    public void onClick(View view) {
+        DialogItem item = (DialogItem) view.getTag();
+        CheckedTextView textView = (CheckedTextView) view;
+
+        switch (getItemType(item)) {
+            case SINGLE_CHOICE:
+                textView.setChecked(true);
+                break;
+            case MULTI_CHOICE:
+                textView.setChecked(!textView.isChecked());
+                break;
+        }
+
+        if (item.getChecked() != textView.isChecked()) { // prevent user for click on same item twice
+            item.setChecked(textView.isChecked());
+
+            updateViews(getRoot());
+        }
+    }
 }

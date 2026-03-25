@@ -22,30 +22,32 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 
 class FragmentViewLifecycleOwner implements LifecycleOwner {
-  private LifecycleRegistry mLifecycleRegistry = null;
+    private LifecycleRegistry mLifecycleRegistry = null;
 
-  /** Initializes the underlying Lifecycle if it hasn't already been created. */
-  void initialize() {
-    if (mLifecycleRegistry == null) {
-      mLifecycleRegistry = new LifecycleRegistry(this);
+    /**
+     * Initializes the underlying Lifecycle if it hasn't already been created.
+     */
+    void initialize() {
+        if (mLifecycleRegistry == null) {
+            mLifecycleRegistry = new LifecycleRegistry(this);
+        }
     }
-  }
 
-  /**
-   * @return True if the Lifecycle has been initialized.
-   */
-  boolean isInitialized() {
-    return mLifecycleRegistry != null;
-  }
+    /**
+     * @return True if the Lifecycle has been initialized.
+     */
+    boolean isInitialized() {
+        return mLifecycleRegistry != null;
+    }
 
-  @NonNull
-  @Override
-  public Lifecycle getLifecycle() {
-    initialize();
-    return mLifecycleRegistry;
-  }
+    @NonNull
+    @Override
+    public Lifecycle getLifecycle() {
+        initialize();
+        return mLifecycleRegistry;
+    }
 
-  void handleLifecycleEvent(@NonNull Lifecycle.Event event) {
-    mLifecycleRegistry.handleLifecycleEvent(event);
-  }
+    void handleLifecycleEvent(@NonNull Lifecycle.Event event) {
+        mLifecycleRegistry.handleLifecycleEvent(event);
+    }
 }

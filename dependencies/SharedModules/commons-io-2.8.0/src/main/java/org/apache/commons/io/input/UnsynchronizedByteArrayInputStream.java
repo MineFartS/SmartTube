@@ -16,160 +16,174 @@
  */
 package org.apache.commons.io.input;
 
-import static java.lang.Math.min;
-
-import java.io.InputStream;
 import org.apache.commons.io.mod.Objects;
 
+import java.io.InputStream;
+
+import static java.lang.Math.min;
+
 /**
- * This is an alternative to {@link java.io.ByteArrayInputStream} which removes the synchronization
- * overhead for non-concurrent access; as such this class is not thread-safe.
+ * This is an alternative to {@link java.io.ByteArrayInputStream}
+ * which removes the synchronization overhead for non-concurrent
+ * access; as such this class is not thread-safe.
  *
  * @since 2.7
  */
-// @NotThreadSafe
+//@NotThreadSafe
 public class UnsynchronizedByteArrayInputStream extends InputStream {
 
-  /** The end of stream marker. */
-  public static final int END_OF_STREAM = -1;
+    /**
+     * The end of stream marker.
+     */
+    public static final int END_OF_STREAM = -1;
 
-  /** The underlying data buffer. */
-  private final byte[] data;
+    /**
+     * The underlying data buffer.
+     */
+    private final byte[] data;
 
-  /**
-   * End Of Data.
-   *
-   * <p>Similar to data.length, i.e. the last readable offset + 1.
-   */
-  private final int eod;
+    /**
+     * End Of Data.
+     *
+     * Similar to data.length,
+     * i.e. the last readable offset + 1.
+     */
+    private final int eod;
 
-  /** Current offset in the data buffer. */
-  private int offset;
+    /**
+     * Current offset in the data buffer.
+     */
+    private int offset;
 
-  /** The current mark (if any). */
-  private int markedOffset;
+    /**
+     * The current mark (if any).
+     */
+    private int markedOffset;
 
-  /**
-   * Creates a new byte array input stream.
-   *
-   * @param data the buffer
-   */
-  public UnsynchronizedByteArrayInputStream(final byte[] data) {
-    Objects.requireNonNull(data);
-    this.data = data;
-    this.offset = 0;
-    this.eod = data.length;
-    this.markedOffset = this.offset;
-  }
-
-  /**
-   * Creates a new byte array input stream.
-   *
-   * @param data the buffer
-   * @param offset the offset into the buffer
-   * @throws IllegalArgumentException if the offset is less than zero
-   */
-  public UnsynchronizedByteArrayInputStream(final byte[] data, final int offset) {
-    Objects.requireNonNull(data);
-    if (offset < 0) {
-      throw new IllegalArgumentException("offset cannot be negative");
-    }
-    this.data = data;
-    this.offset = min(offset, data.length > 0 ? data.length : offset);
-    this.eod = data.length;
-    this.markedOffset = this.offset;
-  }
-
-  /**
-   * Creates a new byte array input stream.
-   *
-   * @param data the buffer
-   * @param offset the offset into the buffer
-   * @param length the length of the buffer
-   * @throws IllegalArgumentException if the offset or length less than zero
-   */
-  public UnsynchronizedByteArrayInputStream(final byte[] data, final int offset, final int length) {
-    Objects.requireNonNull(data);
-    if (offset < 0) {
-      throw new IllegalArgumentException("offset cannot be negative");
-    }
-    if (length < 0) {
-      throw new IllegalArgumentException("length cannot be negative");
-    }
-    this.data = data;
-    this.offset = min(offset, data.length > 0 ? data.length : offset);
-    this.eod = min(this.offset + length, data.length);
-    this.markedOffset = this.offset;
-  }
-
-  @Override
-  public int available() {
-    return offset < eod ? eod - offset : 0;
-  }
-
-  @Override
-  public int read() {
-    return offset < eod ? data[offset++] & 0xff : END_OF_STREAM;
-  }
-
-  @Override
-  public int read(final byte[] b) {
-    Objects.requireNonNull(b);
-    return read(b, 0, b.length);
-  }
-
-  @Override
-  public int read(final byte[] b, final int off, final int len) {
-    Objects.requireNonNull(b);
-    if (off < 0 || len < 0 || off + len > b.length) {
-      throw new IndexOutOfBoundsException();
+    /**
+     * Creates a new byte array input stream.
+     *
+     * @param data the buffer
+     */
+    public UnsynchronizedByteArrayInputStream(final byte[] data) {
+        Objects.requireNonNull(data);
+        this.data = data;
+        this.offset = 0;
+        this.eod = data.length;
+        this.markedOffset = this.offset;
     }
 
-    if (offset >= eod) {
-      return END_OF_STREAM;
+    /**
+     * Creates a new byte array input stream.
+     *
+     * @param data the buffer
+     * @param offset the offset into the buffer
+     *
+     * @throws IllegalArgumentException if the offset is less than zero
+     */
+    public UnsynchronizedByteArrayInputStream(final byte[] data, final int offset) {
+        Objects.requireNonNull(data);
+        if (offset < 0) {
+            throw new IllegalArgumentException("offset cannot be negative");
+        }
+        this.data = data;
+        this.offset = min(offset, data.length > 0 ? data.length: offset);
+        this.eod = data.length;
+        this.markedOffset = this.offset;
     }
 
-    int actualLen = eod - offset;
-    if (len < actualLen) {
-      actualLen = len;
+
+    /**
+     * Creates a new byte array input stream.
+     *
+     * @param data the buffer
+     * @param offset the offset into the buffer
+     * @param length the length of the buffer
+     *
+     * @throws IllegalArgumentException if the offset or length less than zero
+     */
+    public UnsynchronizedByteArrayInputStream(final byte[] data, final int offset, final int length) {
+        Objects.requireNonNull(data);
+        if (offset < 0) {
+            throw new IllegalArgumentException("offset cannot be negative");
+        }
+        if (length < 0) {
+            throw new IllegalArgumentException("length cannot be negative");
+        }
+        this.data = data;
+        this.offset = min(offset, data.length > 0 ? data.length : offset);
+        this.eod = min(this.offset + length, data.length);
+        this.markedOffset = this.offset;
     }
-    if (actualLen <= 0) {
-      return 0;
-    }
-    System.arraycopy(data, offset, b, off, actualLen);
-    offset += actualLen;
-    return actualLen;
-  }
 
-  @Override
-  public long skip(final long n) {
-    if (n < 0) {
-      throw new IllegalArgumentException("Skipping backward is not supported");
+    @Override
+    public int available() {
+        return offset < eod ? eod - offset : 0;
     }
 
-    long actualSkip = eod - offset;
-    if (n < actualSkip) {
-      actualSkip = n;
+    @Override
+    public int read() {
+        return offset < eod ? data[offset++] & 0xff : END_OF_STREAM;
     }
 
-    offset += actualSkip;
-    return actualSkip;
-  }
+    @Override
+    public int read(final byte[] b) {
+        Objects.requireNonNull(b);
+        return read(b, 0, b.length);
+    }
 
-  @Override
-  public boolean markSupported() {
-    return true;
-  }
+    @Override
+    public int read(final byte[] b, final int off, final int len) {
+        Objects.requireNonNull(b);
+        if (off < 0 || len < 0 || off + len > b.length) {
+            throw new IndexOutOfBoundsException();
+        }
 
-  @SuppressWarnings("sync-override")
-  @Override
-  public void mark(final int readlimit) {
-    this.markedOffset = this.offset;
-  }
+        if (offset >= eod) {
+            return END_OF_STREAM;
+        }
 
-  @SuppressWarnings("sync-override")
-  @Override
-  public void reset() {
-    this.offset = this.markedOffset;
-  }
+        int actualLen = eod - offset;
+        if (len < actualLen) {
+            actualLen = len;
+        }
+        if (actualLen <= 0) {
+            return 0;
+        }
+        System.arraycopy(data, offset, b, off, actualLen);
+        offset += actualLen;
+        return actualLen;
+    }
+
+    @Override
+    public long skip(final long n) {
+        if(n < 0) {
+            throw new IllegalArgumentException("Skipping backward is not supported");
+        }
+
+        long actualSkip = eod - offset;
+        if (n < actualSkip) {
+            actualSkip = n;
+        }
+
+        offset += actualSkip;
+        return actualSkip;
+    }
+
+    @Override
+    public boolean markSupported() {
+        return true;
+    }
+
+    @SuppressWarnings("sync-override")
+    @Override
+    public void mark(final int readlimit) {
+        this.markedOffset = this.offset;
+    }
+
+    @SuppressWarnings("sync-override")
+    @Override
+    public void reset() {
+        this.offset = this.markedOffset;
+    }
 }

@@ -7,10 +7,12 @@ import retrofit2.http.Body;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
-/** For signed users! */
+/**
+ * For signed users!
+ */
 @WithJsonPath
 public interface FeedbackApi {
-  @Headers("Content-Type: application/json")
-  @POST("https://www.youtube.com/youtubei/v1/feedback")
-  Call<FeedbackResponse> setNotInterested(@Body String feedbackQuery);
+    @Headers("Content-Type: application/json")
+    @POST("https://www.youtube.com/youtubei/v1/feedback")
+    Call<FeedbackResponse> setNotInterested(@Body String feedbackQuery);
 }

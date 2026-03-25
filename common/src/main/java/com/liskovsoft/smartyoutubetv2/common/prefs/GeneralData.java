@@ -2,365 +2,365 @@ package com.liskovsoft.smartyoutubetv2.common.prefs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import com.liskovsoft.smartyoutubetv2.common.prefs.AppPrefs.ProfileChangeListener;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 public class GeneralData implements ProfileChangeListener {
 
-  private static final String GENERAL_DATA = "general_data";
+    private static final String GENERAL_DATA = "general_data";
 
-  public static final int BACKGROUND_PLAYBACK_SHORTCUT_HOME = 0;
-  public static final int BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK = 1;
-  public static final int BACKGROUND_PLAYBACK_SHORTCUT_BACK = 2;
+    public static final int BACKGROUND_PLAYBACK_SHORTCUT_HOME = 0;
+    public static final int BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK = 1;
+    public static final int BACKGROUND_PLAYBACK_SHORTCUT_BACK = 2;
 
-  @SuppressLint("StaticFieldLeak")
-  private static GeneralData sInstance;
+    @SuppressLint("StaticFieldLeak")
+    private static GeneralData sInstance;
+    private final Context mContext;
+    private final AppPrefs mPrefs;
 
-  private final Context mContext;
-  private final AppPrefs mPrefs;
+    private int mBackgroundShortcut;
+    private boolean mIsHideShortsFromSubscriptionsEnabled;
+    private boolean mIsHideUpcomingEnabled;
+    private boolean mIsBridgeCheckEnabled;
+    private String mLastPlaylistId;
+    private String mLastPlaylistTitle;
+    private boolean mIsHideShortsFromHomeEnabled;
+    private boolean mIsHideShortsFromHistoryEnabled;
+    private boolean mIsVPNEnabled;
+    private boolean mIsAltAppIconEnabled;
+    private int mVersionCode;
+    private boolean mIsOldUpdateNotificationsEnabled;
+    private boolean mIsRememberSubscriptionsPositionEnabled;
+    private boolean mIsHideWatchedFromNotificationsEnabled;
+    private List<String> mChangelog;
+    private Map<String, Integer> mPlaylistOrder;
+    private List<Video> mPendingStreams;
+    private Map<Integer, Video> mSelectedItems;
+    private boolean mIsFirstUseTooltipEnabled;
+    private boolean mIsDeviceSpecificBackupEnabled;
+    private int mGDriveBackupFreqDays;
+    private int mLocalDriveBackupFreqDays;
+    private List<Video> mOldPinnedItems;
+    private final Runnable mPersistStateInt = this::persistStateInt;
 
-  private int mBackgroundShortcut;
-  private boolean mIsHideShortsFromSubscriptionsEnabled;
-  private boolean mIsHideUpcomingEnabled;
-  private boolean mIsBridgeCheckEnabled;
-  private String mLastPlaylistId;
-  private String mLastPlaylistTitle;
-  private boolean mIsHideShortsFromHomeEnabled;
-  private boolean mIsHideShortsFromHistoryEnabled;
-  private boolean mIsVPNEnabled;
-  private boolean mIsAltAppIconEnabled;
-  private int mVersionCode;
-  private boolean mIsOldUpdateNotificationsEnabled;
-  private boolean mIsRememberSubscriptionsPositionEnabled;
-  private boolean mIsHideWatchedFromNotificationsEnabled;
-  private List<String> mChangelog;
-  private Map<String, Integer> mPlaylistOrder;
-  private List<Video> mPendingStreams;
-  private Map<Integer, Video> mSelectedItems;
-  private boolean mIsFirstUseTooltipEnabled;
-  private boolean mIsDeviceSpecificBackupEnabled;
-  private int mGDriveBackupFreqDays;
-  private int mLocalDriveBackupFreqDays;
-  private List<Video> mOldPinnedItems;
-  private final Runnable mPersistStateInt = this::persistStateInt;
-
-  private GeneralData(Context context) {
-    mContext = context;
-    mPrefs = AppPrefs.instance(context);
-    mPrefs.addListener(this);
-    restoreState();
-  }
-
-  public static GeneralData instance(Context context) {
-    if (sInstance == null) {
-      sInstance = new GeneralData(context.getApplicationContext());
+    private GeneralData(Context context) {
+        mContext = context;
+        mPrefs = AppPrefs.instance(context);
+        mPrefs.addListener(this);
+        restoreState();
     }
 
-    return sInstance;
-  }
+    public static GeneralData instance(Context context) {
+        if (sInstance == null) {
+            sInstance = new GeneralData(context.getApplicationContext());
+        }
 
-  public int getBackgroundPlaybackShortcut() {
-    return mBackgroundShortcut;
-  }
-
-  public void setBackgroundPlaybackShortcut(int type) {
-    mBackgroundShortcut = type;
-    persistState();
-  }
-
-  public List<Video> getOldPinnedItems() {
-    return mOldPinnedItems;
-  }
-
-  public boolean isRememberSubscriptionsPositionEnabled() {
-    return mIsRememberSubscriptionsPositionEnabled;
-  }
-
-  public void setRememberSubscriptionsPositionEnabled(boolean enable) {
-    mIsRememberSubscriptionsPositionEnabled = enable;
-    persistState();
-  }
-
-  public boolean isHideWatchedFromNotificationsEnabled() {
-    return mIsHideWatchedFromNotificationsEnabled;
-  }
-
-  public void setHideWatchedFromNotificationsEnabled(boolean enable) {
-    mIsHideWatchedFromNotificationsEnabled = enable;
-    persistState();
-  }
-
-  public boolean is24HourLocaleEnabled() {
-    return GlobalPreferences.sInstance.is24HourLocaleEnabled();
-  }
-
-  public void set24HourLocaleEnabled(boolean enable) {
-    GlobalPreferences.sInstance.set24HourLocaleEnabled(enable);
-  }
-
-  public boolean isVPNEnabled() {
-    return mIsVPNEnabled;
-  }
-
-  public void setVPNEnabled(boolean enable) {
-    mIsVPNEnabled = enable;
-    persistState();
-  }
-
-  public boolean isBridgeCheckEnabled() {
-    return mIsBridgeCheckEnabled;
-  }
-
-  public void setBridgeCheckEnabled(boolean enable) {
-    mIsBridgeCheckEnabled = enable;
-    persistState();
-  }
-
-  public String getLastPlaylistId() {
-    return mLastPlaylistId;
-  }
-
-  public void setLastPlaylistId(String playlistId) {
-    mLastPlaylistId = playlistId;
-    persistState();
-  }
-
-  public String getLastPlaylistTitle() {
-    return mLastPlaylistTitle;
-  }
-
-  public void setLastPlaylistTitle(String playlistTitle) {
-    mLastPlaylistTitle = playlistTitle;
-    persistState();
-  }
-
-  public int getPlaylistOrder(String playlistId) {
-    Integer order = mPlaylistOrder.get(playlistId);
-    return order != null ? order : -1; // default order unpredictable (depends on site prefs)
-  }
-
-  public void setPlaylistOrder(String playlistId, int playlistOrder) {
-    if (playlistOrder == -1) {
-      mPlaylistOrder.remove(playlistId);
-    } else {
-      mPlaylistOrder.put(playlistId, playlistOrder);
-    }
-    persistState();
-  }
-
-  public List<Video> getPendingStreams() {
-    return Collections.unmodifiableList(mPendingStreams);
-  }
-
-  public boolean containsPendingStream(Video video) {
-    if (video == null || video.videoId == null) {
-      return false;
+        return sInstance;
     }
 
-    return Helpers.containsIf(mPendingStreams, item -> video.videoId.equals(item.videoId));
-  }
-
-  public void addPendingStream(Video video) {
-    if (video == null || video.videoId == null || containsPendingStream(video)) {
-      return;
+    public int getBackgroundPlaybackShortcut() {
+        return mBackgroundShortcut;
     }
 
-    mPendingStreams.add(video);
-    persistState();
-  }
-
-  public void removePendingStream(Video video) {
-    if (video == null || video.videoId == null || !containsPendingStream(video)) {
-      return;
+    public void setBackgroundPlaybackShortcut(int type) {
+        mBackgroundShortcut = type;
+        persistState();
     }
 
-    Helpers.removeIf(mPendingStreams, item -> video.videoId.equals(item.videoId));
-    persistState();
-  }
-
-  public boolean isAltAppIconEnabled() {
-    return mIsAltAppIconEnabled;
-  }
-
-  public void setAltAppIconEnabled(boolean enable) {
-    mIsAltAppIconEnabled = enable;
-
-    persistState();
-  }
-
-  public int getVersionCode() {
-    return mVersionCode;
-  }
-
-  public void setVersionCode(int code) {
-    mVersionCode = code;
-
-    persistState();
-  }
-
-  public boolean isOldUpdateNotificationsEnabled() {
-    return mIsOldUpdateNotificationsEnabled;
-  }
-
-  public void setOldUpdateNotificationsEnabled(boolean enable) {
-    mIsOldUpdateNotificationsEnabled = enable;
-    persistState();
-  }
-
-  public Video getSelectedItem(int sectionId) {
-    return mSelectedItems.get(sectionId);
-  }
-
-  public void setSelectedItem(int sectionId, Video item) {
-    if (item == null) {
-      return;
+    public List<Video> getOldPinnedItems() {
+        return mOldPinnedItems;
     }
 
-    mSelectedItems.put(sectionId, item);
+    public boolean isRememberSubscriptionsPositionEnabled() {
+        return mIsRememberSubscriptionsPositionEnabled;
+    }
 
-    persistState();
-  }
+    public void setRememberSubscriptionsPositionEnabled(boolean enable) {
+        mIsRememberSubscriptionsPositionEnabled = enable;
+        persistState();
+    }
 
-  public void removeSelectedItem(int sectionId) {
-    mSelectedItems.remove(sectionId);
-  }
+    public boolean isHideWatchedFromNotificationsEnabled() {
+        return mIsHideWatchedFromNotificationsEnabled;
+    }
 
-  public List<String> getChangelog() {
-    return mChangelog;
-  }
+    public void setHideWatchedFromNotificationsEnabled(boolean enable) {
+        mIsHideWatchedFromNotificationsEnabled = enable;
+        persistState();
+    }
 
-  public void setChangelog(List<String> changelog) {
-    mChangelog = changelog;
-    persistState();
-  }
+    public boolean is24HourLocaleEnabled() {
+        return GlobalPreferences.sInstance.is24HourLocaleEnabled();
+    }
 
-  public boolean isFirstUseTooltipEnabled() {
-    return mIsFirstUseTooltipEnabled;
-  }
+    public void set24HourLocaleEnabled(boolean enable) {
+        GlobalPreferences.sInstance.set24HourLocaleEnabled(enable);
+    }
 
-  public void setFirstUseTooltipEnabled(boolean enable) {
-    mIsFirstUseTooltipEnabled = enable;
-    persistState();
-  }
+    public boolean isVPNEnabled() {
+        return mIsVPNEnabled;
+    }
 
-  public boolean isDeviceSpecificBackupEnabled() {
-    return mIsDeviceSpecificBackupEnabled;
-  }
+    public void setVPNEnabled(boolean enable) {
+        mIsVPNEnabled = enable;
+        persistState();
+    }
 
-  public void setDeviceSpecificBackupEnabled(boolean enable) {
-    mIsDeviceSpecificBackupEnabled = enable;
-    persistState();
-  }
+    public boolean isBridgeCheckEnabled() {
+        return mIsBridgeCheckEnabled;
+    }
 
-  public int getGDriveBackupFreqDays() {
-    return mGDriveBackupFreqDays;
-  }
+    public void setBridgeCheckEnabled(boolean enable) {
+        mIsBridgeCheckEnabled = enable;
+        persistState();
+    }
 
-  public void setGDriveBackupFreqDays(int freqDays) {
-    mGDriveBackupFreqDays = freqDays;
-    persistState();
-  }
+    public String getLastPlaylistId() {
+        return mLastPlaylistId;
+    }
 
-  public int getLocalDriveBackupFreqDays() {
-    return mLocalDriveBackupFreqDays;
-  }
+    public void setLastPlaylistId(String playlistId) {
+        mLastPlaylistId = playlistId;
+        persistState();
+    }
 
-  public void setLocalDriveBackupFreqDays(int freqDays) {
-    mLocalDriveBackupFreqDays = freqDays;
-    persistState();
-  }
+    public String getLastPlaylistTitle() {
+        return mLastPlaylistTitle;
+    }
 
-  private synchronized void restoreState() {
+    public void setLastPlaylistTitle(String playlistTitle) {
+        mLastPlaylistTitle = playlistTitle;
+        persistState();
+    }
 
-    String data = mPrefs.getProfileData(GENERAL_DATA);
+    public int getPlaylistOrder(String playlistId) {
+        Integer order = mPlaylistOrder.get(playlistId);
+        return order != null ? order : -1; // default order unpredictable (depends on site prefs)
+    }
 
-    String[] split = Helpers.splitData(data);
+    public void setPlaylistOrder(String playlistId, int playlistOrder) {
+        if (playlistOrder == -1) {
+            mPlaylistOrder.remove(playlistId);
+        } else {
+            mPlaylistOrder.put(playlistId, playlistOrder);
+        }
+        persistState();
+    }
 
-    mBackgroundShortcut = Helpers.parseInt(split, 5, BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK);
-    mOldPinnedItems = Helpers.parseList(split, 6, Video::fromString);
-    mIsHideShortsFromSubscriptionsEnabled = Helpers.parseBoolean(split, 7, false);
-    mIsBridgeCheckEnabled = Helpers.parseBoolean(split, 11, true);
-    mLastPlaylistId = Helpers.parseStr(split, 13);
-    mIsHideUpcomingEnabled = Helpers.parseBoolean(split, 15, false);
-    mIsHideShortsFromHomeEnabled = Helpers.parseBoolean(split, 24, false);
-    mIsHideShortsFromHistoryEnabled = Helpers.parseBoolean(split, 25, false);
-    mIsVPNEnabled = Helpers.parseBoolean(split, 27, false);
-    mLastPlaylistTitle = Helpers.parseStr(split, 28);
-    mPlaylistOrder = Helpers.parseMap(split, 29, Helpers::parseStr, Helpers::parseInt);
-    mPendingStreams = Helpers.parseList(split, 30, Video::fromString);
-    mIsAltAppIconEnabled = Helpers.parseBoolean(split, 38, false);
-    mVersionCode = Helpers.parseInt(split, 39, -1);
-    mIsOldUpdateNotificationsEnabled = Helpers.parseBoolean(split, 43, false);
-    mIsRememberSubscriptionsPositionEnabled = Helpers.parseBoolean(split, 48, false);
-    mIsHideWatchedFromNotificationsEnabled = Helpers.parseBoolean(split, 56, false);
-    mChangelog = Helpers.parseStrList(split, 57);
-    mSelectedItems = Helpers.parseMap(split, 63, Helpers::parseInt, Video::fromString);
-    mIsFirstUseTooltipEnabled = Helpers.parseBoolean(split, 64, true);
-    mIsDeviceSpecificBackupEnabled = Helpers.parseBoolean(split, 65, false);
-    mGDriveBackupFreqDays = Helpers.parseInt(split, 69, -1);
-    mLocalDriveBackupFreqDays = Helpers.parseInt(split, 70, -1);
-  }
+    public List<Video> getPendingStreams() {
+        return Collections.unmodifiableList(mPendingStreams);
+    }
 
-  public void persistNow() {
-    Utils.post(mPersistStateInt);
-  }
+    public boolean containsPendingStream(Video video) {
+        if (video == null || video.videoId == null) {
+            return false;
+        }
 
-  private void persistState() {
-    // Utils.postDelayed(mPersistStateInt, 10_000);
-    persistNow();
-  }
+        return Helpers.containsIf(mPendingStreams, item -> video.videoId.equals(item.videoId));
+    }
 
-  private void persistStateInt() {
-    // Zero index is skipped. Selected sections were there.
-    mPrefs.setProfileData(
-        GENERAL_DATA,
-        Helpers.mergeData(
-            null,
-            null,
-            null,
-            mBackgroundShortcut,
-            mOldPinnedItems,
-            mIsHideShortsFromSubscriptionsEnabled,
-            null,
-            mIsBridgeCheckEnabled,
-            mLastPlaylistId,
-            null,
-            mIsHideUpcomingEnabled,
-            mIsHideShortsFromHomeEnabled,
-            mIsHideShortsFromHistoryEnabled,
-            mIsVPNEnabled,
-            mLastPlaylistTitle,
-            mPlaylistOrder,
-            mPendingStreams,
-            null,
-            null,
-            mIsAltAppIconEnabled,
-            mVersionCode,
-            null,
-            mIsOldUpdateNotificationsEnabled,
-            mIsRememberSubscriptionsPositionEnabled,
-            null,
-            mIsHideWatchedFromNotificationsEnabled,
-            mChangelog,
-            null,
-            null,
-            mSelectedItems,
-            mIsFirstUseTooltipEnabled,
-            mIsDeviceSpecificBackupEnabled,
-            null,
-            mGDriveBackupFreqDays,
-            mLocalDriveBackupFreqDays));
-  }
+    public void addPendingStream(Video video) {
+        if (video == null || video.videoId == null || containsPendingStream(video)) {
+            return;
+        }
 
-  @Override
-  public void onProfileChanged() {
-    Utils.removeCallbacks(mPersistStateInt);
-    restoreState();
-  }
+        mPendingStreams.add(video);
+        persistState();
+    }
+
+    public void removePendingStream(Video video) {
+        if (video == null || video.videoId == null || !containsPendingStream(video)) {
+            return;
+        }
+
+        Helpers.removeIf(mPendingStreams, item -> video.videoId.equals(item.videoId));
+        persistState();
+    }
+
+    public boolean isAltAppIconEnabled() {
+        return mIsAltAppIconEnabled;
+    }
+
+    public void setAltAppIconEnabled(boolean enable) {
+        mIsAltAppIconEnabled = enable;
+
+        persistState();
+    }
+
+    public int getVersionCode() {
+        return mVersionCode;
+    }
+
+    public void setVersionCode(int code) {
+        mVersionCode = code;
+
+        persistState();
+    }
+
+    public boolean isOldUpdateNotificationsEnabled() {
+        return mIsOldUpdateNotificationsEnabled;
+    }
+
+    public void setOldUpdateNotificationsEnabled(boolean enable) {
+        mIsOldUpdateNotificationsEnabled = enable;
+        persistState();
+    }
+
+    public Video getSelectedItem(int sectionId) {
+        return mSelectedItems.get(sectionId);
+    }
+
+    public void setSelectedItem(int sectionId, Video item) {
+        if (item == null) {
+            return;
+        }
+
+        mSelectedItems.put(sectionId, item);
+
+        persistState();
+    }
+
+    public void removeSelectedItem(int sectionId) {
+        mSelectedItems.remove(sectionId);
+    }
+
+    public List<String> getChangelog() {
+        return mChangelog;
+    }
+
+    public void setChangelog(List<String> changelog) {
+        mChangelog = changelog;
+        persistState();
+    }
+
+    public boolean isFirstUseTooltipEnabled() {
+        return mIsFirstUseTooltipEnabled;
+    }
+
+    public void setFirstUseTooltipEnabled(boolean enable) {
+        mIsFirstUseTooltipEnabled = enable;
+        persistState();
+    }
+
+    public boolean isDeviceSpecificBackupEnabled() {
+        return mIsDeviceSpecificBackupEnabled;
+    }
+
+    public void setDeviceSpecificBackupEnabled(boolean enable) {
+        mIsDeviceSpecificBackupEnabled = enable;
+        persistState();
+    }
+
+    public int getGDriveBackupFreqDays() {
+        return mGDriveBackupFreqDays;
+    }
+
+    public void setGDriveBackupFreqDays(int freqDays) {
+        mGDriveBackupFreqDays = freqDays;
+        persistState();
+    }
+
+    public int getLocalDriveBackupFreqDays() {
+        return mLocalDriveBackupFreqDays;
+    }
+
+    public void setLocalDriveBackupFreqDays(int freqDays) {
+        mLocalDriveBackupFreqDays = freqDays;
+        persistState();
+    }
+
+    private synchronized void restoreState() {
+        
+        String data = mPrefs.getProfileData(GENERAL_DATA);
+
+        String[] split = Helpers.splitData(data);
+
+        mBackgroundShortcut = Helpers.parseInt(split, 5, BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK);
+        mOldPinnedItems = Helpers.parseList(split, 6, Video::fromString);
+        mIsHideShortsFromSubscriptionsEnabled = Helpers.parseBoolean(split, 7, false);
+        mIsBridgeCheckEnabled = Helpers.parseBoolean(split, 11, true);
+        mLastPlaylistId = Helpers.parseStr(split, 13);
+        mIsHideUpcomingEnabled = Helpers.parseBoolean(split, 15, false);
+        mIsHideShortsFromHomeEnabled = Helpers.parseBoolean(split, 24, false);
+        mIsHideShortsFromHistoryEnabled = Helpers.parseBoolean(split, 25, false);
+        mIsVPNEnabled = Helpers.parseBoolean(split, 27, false);
+        mLastPlaylistTitle = Helpers.parseStr(split, 28);
+        mPlaylistOrder = Helpers.parseMap(split, 29, Helpers::parseStr, Helpers::parseInt);
+        mPendingStreams = Helpers.parseList(split, 30, Video::fromString);
+        mIsAltAppIconEnabled = Helpers.parseBoolean(split, 38, false);
+        mVersionCode = Helpers.parseInt(split, 39, -1);
+        mIsOldUpdateNotificationsEnabled = Helpers.parseBoolean(split, 43, false);
+        mIsRememberSubscriptionsPositionEnabled = Helpers.parseBoolean(split, 48, false);
+        mIsHideWatchedFromNotificationsEnabled = Helpers.parseBoolean(split, 56, false);
+        mChangelog = Helpers.parseStrList(split, 57);
+        mSelectedItems = Helpers.parseMap(split, 63, Helpers::parseInt, Video::fromString);
+        mIsFirstUseTooltipEnabled = Helpers.parseBoolean(split, 64, true);
+        mIsDeviceSpecificBackupEnabled = Helpers.parseBoolean(split, 65, false);
+        mGDriveBackupFreqDays = Helpers.parseInt(split, 69, -1);
+        mLocalDriveBackupFreqDays = Helpers.parseInt(split, 70, -1);
+
+    }
+
+    public void persistNow() {
+        Utils.post(mPersistStateInt);
+    }
+
+    private void persistState() {
+        //Utils.postDelayed(mPersistStateInt, 10_000);
+        persistNow();
+    }
+
+    private void persistStateInt() {
+        // Zero index is skipped. Selected sections were there.
+        mPrefs.setProfileData(
+            GENERAL_DATA, 
+            Helpers.mergeData(
+                null, null, null, 
+                mBackgroundShortcut, 
+                mOldPinnedItems, 
+                mIsHideShortsFromSubscriptionsEnabled,
+                null, 
+                mIsBridgeCheckEnabled, 
+                mLastPlaylistId,
+                null, 
+                mIsHideUpcomingEnabled, 
+                mIsHideShortsFromHomeEnabled, 
+                mIsHideShortsFromHistoryEnabled, 
+                mIsVPNEnabled, 
+                mLastPlaylistTitle,
+                mPlaylistOrder, 
+                mPendingStreams, 
+                null, null, 
+                mIsAltAppIconEnabled, 
+                mVersionCode, 
+                null, 
+                mIsOldUpdateNotificationsEnabled,
+                mIsRememberSubscriptionsPositionEnabled, 
+                null, 
+                mIsHideWatchedFromNotificationsEnabled, 
+                mChangelog, 
+                null, null,
+                mSelectedItems, 
+                mIsFirstUseTooltipEnabled, 
+                mIsDeviceSpecificBackupEnabled, 
+                null,
+                mGDriveBackupFreqDays, 
+                mLocalDriveBackupFreqDays
+            )
+        );
+    }
+
+    @Override
+    public void onProfileChanged() {
+        Utils.removeCallbacks(mPersistStateInt);
+        restoreState();
+    }
 }

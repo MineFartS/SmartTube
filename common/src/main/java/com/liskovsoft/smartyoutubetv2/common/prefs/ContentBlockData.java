@@ -5,8 +5,10 @@ import android.content.Context;
 import android.os.Build.VERSION;
 import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.smartyoutubetv2.common.R;
 import com.liskovsoft.smartyoutubetv2.common.app.models.playback.controllers.ContentBlockController.SegmentAction;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,269 +19,268 @@ import java.util.Set;
 
 public class ContentBlockData {
 
-  public static final int ACTION_UNDEFINED = -1;
-  public static final int ACTION_SKIP_WITH_TOAST = 1;
-  public static final int ACTION_DO_NOTHING = 3;
+    public static final int ACTION_UNDEFINED = -1;
+    public static final int ACTION_SKIP_WITH_TOAST = 1;
+    public static final int ACTION_DO_NOTHING = 3;
 
-  private static final String CONTENT_BLOCK_DATA = "content_block_data";
+    private static final String CONTENT_BLOCK_DATA = "content_block_data";
 
-  @SuppressLint("StaticFieldLeak")
-  private static ContentBlockData sInstance;
+    @SuppressLint("StaticFieldLeak")
+    private static ContentBlockData sInstance;
 
-  private final AppPrefs mAppPrefs;
+    private final AppPrefs mAppPrefs;
 
-  private boolean mIsSponsorBlockEnabled;
+    private boolean mIsSponsorBlockEnabled;
 
-  private final Set<String> mColorCategories = new LinkedHashSet<>();
+    private final Set<String> mColorCategories = new LinkedHashSet<>();
 
-  private final Set<SegmentAction> mActions = new LinkedHashSet<>();
+    private final Set<SegmentAction> mActions = new LinkedHashSet<>();
 
-  private final Set<String> mExcludedChannels = new LinkedHashSet<>();
+    private final Set<String> mExcludedChannels = new LinkedHashSet<>();
 
-  private Map<String, Integer> mSegmentLocalizedMapping;
+    private Map<String, Integer> mSegmentLocalizedMapping;
 
-  private Map<String, Integer> mSegmentColorMapping;
+    private Map<String, Integer> mSegmentColorMapping;
 
-  private Set<String> mAllCategories;
+    private Set<String> mAllCategories;
 
-  private ContentBlockData(Context context) {
-    mAppPrefs = AppPrefs.instance(context);
-    initLocalizedMapping();
-    initColorMapping();
-    initAllCategories();
-    restoreState();
-  }
-
-  public static ContentBlockData instance(Context context) {
-    if (sInstance == null) {
-      sInstance = new ContentBlockData(context.getApplicationContext());
+    private ContentBlockData(Context context) {
+        mAppPrefs = AppPrefs.instance(context);
+        initLocalizedMapping();
+        initColorMapping();
+        initAllCategories();
+        restoreState();
     }
 
-    return sInstance;
-  }
+    public static ContentBlockData instance(Context context) {
+        if (sInstance == null) {
+            sInstance = new ContentBlockData(context.getApplicationContext());
+        }
 
-  private void initLocalizedMapping() {
-    mSegmentLocalizedMapping = new HashMap<>();
-    mSegmentLocalizedMapping.put(SponsorSegment.CATEGORY_SPONSOR, R.string.content_block_sponsor);
-    mSegmentLocalizedMapping.put(
-        SponsorSegment.CATEGORY_SELF_PROMO, R.string.content_block_self_promo);
-    mSegmentLocalizedMapping.put(
-        SponsorSegment.CATEGORY_INTERACTION, R.string.content_block_interaction);
-  }
-
-  private void initColorMapping() {
-    mSegmentColorMapping = new HashMap<>();
-    mSegmentColorMapping.put(SponsorSegment.CATEGORY_SPONSOR, R.color.green);
-    mSegmentColorMapping.put(SponsorSegment.CATEGORY_INTRO, R.color.cyan);
-    mSegmentColorMapping.put(SponsorSegment.CATEGORY_OUTRO, R.color.blue);
-    mSegmentColorMapping.put(SponsorSegment.CATEGORY_SELF_PROMO, R.color.yellow);
-    mSegmentColorMapping.put(SponsorSegment.CATEGORY_INTERACTION, R.color.magenta);
-    mSegmentColorMapping.put(SponsorSegment.CATEGORY_MUSIC_OFF_TOPIC, R.color.orange_peel);
-    mSegmentColorMapping.put(SponsorSegment.CATEGORY_PREVIEW_RECAP, R.color.light_blue);
-    mSegmentColorMapping.put(SponsorSegment.CATEGORY_POI_HIGHLIGHT, R.color.light_pink);
-    mSegmentColorMapping.put(SponsorSegment.CATEGORY_FILLER, R.color.electric_violet);
-  }
-
-  private void initAllCategories() {
-    mAllCategories = new LinkedHashSet<>();
-    mAllCategories.add(SponsorSegment.CATEGORY_SPONSOR);
-    mAllCategories.add(SponsorSegment.CATEGORY_INTERACTION);
-    mAllCategories.add(SponsorSegment.CATEGORY_SELF_PROMO);
-  }
-
-  public Integer getLocalizedRes(String segmentCategory) {
-    return mSegmentLocalizedMapping.get(segmentCategory);
-  }
-
-  public Integer getColorRes(String segmentCategory) {
-    return mSegmentColorMapping.get(segmentCategory);
-  }
-
-  public Set<String> getAllCategories() {
-    return Collections.unmodifiableSet(mAllCategories);
-  }
-
-  public Set<String> getEnabledCategories() {
-    Set<String> enabledCategories = new HashSet<>();
-
-    for (SegmentAction action : mActions) {
-      if (action.actionType != ACTION_DO_NOTHING) {
-        enabledCategories.add(action.segmentCategory);
-      }
+        return sInstance;
     }
 
-    enabledCategories.addAll(mColorCategories);
-
-    return Collections.unmodifiableSet(enabledCategories);
-  }
-
-  public void enableColorMarker(String segmentCategory) {
-    mColorCategories.add(segmentCategory);
-    persistState();
-  }
-
-  public void disableColorMarker(String segmentCategory) {
-    mColorCategories.remove(segmentCategory);
-    persistState();
-  }
-
-  public boolean isColorMarkerEnabled(String segmentCategory) {
-    return mColorCategories.contains(segmentCategory);
-  }
-
-  public boolean isColorMarkersEnabled() {
-    return !mColorCategories.isEmpty();
-  }
-
-  public void excludeChannel(String channelId) {
-    mExcludedChannels.add(channelId);
-    persistState();
-  }
-
-  public void stopExcludingChannel(String channelId) {
-    mExcludedChannels.remove(channelId);
-    persistState();
-  }
-
-  public boolean isChannelExcluded(String channelId) {
-    return mExcludedChannels.contains(channelId);
-  }
-
-  public void toggleExcludeChannel(String channelId) {
-    if (channelId == null) {
-      return;
+    private void initLocalizedMapping() {
+        mSegmentLocalizedMapping = new HashMap<>();
+        mSegmentLocalizedMapping.put(SponsorSegment.CATEGORY_SPONSOR, R.string.content_block_sponsor);
+        mSegmentLocalizedMapping.put(SponsorSegment.CATEGORY_SELF_PROMO, R.string.content_block_self_promo);
+        mSegmentLocalizedMapping.put(SponsorSegment.CATEGORY_INTERACTION, R.string.content_block_interaction);
     }
 
-    if (isChannelExcluded(channelId)) {
-      stopExcludingChannel(channelId);
-    } else {
-      excludeChannel(channelId);
-    }
-  }
-
-  public Set<SegmentAction> getActions() {
-    return Collections.unmodifiableSet(mActions);
-  }
-
-  public int getAction(String segmentCategory) {
-    for (SegmentAction action : mActions) {
-      if (Helpers.equals(action.segmentCategory, segmentCategory)) {
-        return action.actionType;
-      }
+    private void initColorMapping() {
+        mSegmentColorMapping = new HashMap<>();
+        mSegmentColorMapping.put(SponsorSegment.CATEGORY_SPONSOR, R.color.green);
+        mSegmentColorMapping.put(SponsorSegment.CATEGORY_INTRO, R.color.cyan);
+        mSegmentColorMapping.put(SponsorSegment.CATEGORY_OUTRO, R.color.blue);
+        mSegmentColorMapping.put(SponsorSegment.CATEGORY_SELF_PROMO, R.color.yellow);
+        mSegmentColorMapping.put(SponsorSegment.CATEGORY_INTERACTION, R.color.magenta);
+        mSegmentColorMapping.put(SponsorSegment.CATEGORY_MUSIC_OFF_TOPIC, R.color.orange_peel);
+        mSegmentColorMapping.put(SponsorSegment.CATEGORY_PREVIEW_RECAP, R.color.light_blue);
+        mSegmentColorMapping.put(SponsorSegment.CATEGORY_POI_HIGHLIGHT, R.color.light_pink);
+        mSegmentColorMapping.put(SponsorSegment.CATEGORY_FILLER, R.color.electric_violet);
     }
 
-    return ACTION_UNDEFINED;
-  }
-
-  public boolean isSponsorBlockEnabled() {
-    return mIsSponsorBlockEnabled;
-  }
-
-  public void enableSponsorBlock(boolean enabled) {
-    mIsSponsorBlockEnabled = enabled;
-    persistState();
-  }
-
-  public void persistActions() {
-    persistState();
-  }
-
-  public boolean isActionsEnabled() {
-    for (SegmentAction action : mActions) {
-      if (action.actionType != ACTION_DO_NOTHING) {
-        return true;
-      }
+    private void initAllCategories() {
+        mAllCategories = new LinkedHashSet<>();
+        mAllCategories.add(SponsorSegment.CATEGORY_SPONSOR);
+        mAllCategories.add(SponsorSegment.CATEGORY_INTERACTION);
+        mAllCategories.add(SponsorSegment.CATEGORY_SELF_PROMO);
     }
 
-    return false;
-  }
-
-  private void restoreState() {
-
-    String data = mAppPrefs.getData(CONTENT_BLOCK_DATA);
-
-    String[] split = Helpers.splitData(data);
-
-    mIsSponsorBlockEnabled =
-        Helpers.parseBoolean(split, 0, VERSION.SDK_INT > 19); // Android 4 may have memory problems
-    // categories: index 2
-    // don't skip segment
-    // colorMarkers: index 4
-    String actions = Helpers.parseStr(split, 6);
-    String excludedChannels = Helpers.parseStr(split, 9);
-    String colorCategories = Helpers.parseStr(split, 7);
-
-    if (excludedChannels != null) {
-      String[] channelsArr = Helpers.splitArray(excludedChannels);
-
-      mExcludedChannels.clear();
-
-      mExcludedChannels.addAll(Arrays.asList(channelsArr));
-    } else {
-      mExcludedChannels.clear();
+    public Integer getLocalizedRes(String segmentCategory) {
+        return mSegmentLocalizedMapping.get(segmentCategory);
     }
 
-    if (actions != null) {
-      String[] actionsArr = Helpers.splitArray(actions);
-
-      mActions.clear();
-
-      for (String action : actionsArr) {
-        mActions.add(SegmentAction.from(action));
-      }
+    public Integer getColorRes(String segmentCategory) {
+        return mSegmentColorMapping.get(segmentCategory);
     }
 
-    if (colorCategories != null) {
-
-      String[] categoriesArr = Helpers.splitArray(colorCategories);
-
-      mColorCategories.clear();
-
-      mColorCategories.addAll(Arrays.asList(categoriesArr));
-
-    } else {
-
-      // Enable Color Marker for all Segments
-      mColorCategories.addAll(mAllCategories);
+    public Set<String> getAllCategories() {
+        return Collections.unmodifiableSet(mAllCategories);
     }
 
-    // Easy add new segments
-    for (String segmentCategory : mAllCategories) {
+    public Set<String> getEnabledCategories() {
+        Set<String> enabledCategories = new HashSet<>();
 
-      if (getAction(segmentCategory) == ACTION_UNDEFINED) {
+        for (SegmentAction action : mActions) {
+            if (action.actionType != ACTION_DO_NOTHING) {
+                enabledCategories.add(action.segmentCategory);
+            }
+        }
 
-        // Skip sponsor by default & ignore everything else
-        if (segmentCategory == SponsorSegment.CATEGORY_SPONSOR) {
+        enabledCategories.addAll(mColorCategories);
 
-          // Skip Segment
-          mActions.add(SegmentAction.from(segmentCategory, ACTION_SKIP_WITH_TOAST));
+        return Collections.unmodifiableSet(enabledCategories);
+    }
+
+    public void enableColorMarker(String segmentCategory) {
+        mColorCategories.add(segmentCategory);
+        persistState();
+    }
+
+    public void disableColorMarker(String segmentCategory) {
+        mColorCategories.remove(segmentCategory);
+        persistState();
+    }
+
+    public boolean isColorMarkerEnabled(String segmentCategory) {
+        return mColorCategories.contains(segmentCategory);
+    }
+
+    public boolean isColorMarkersEnabled() {
+        return !mColorCategories.isEmpty();
+    }
+
+    public void excludeChannel(String channelId) {
+        mExcludedChannels.add(channelId);
+        persistState();
+    }
+
+    public void stopExcludingChannel(String channelId) {
+        mExcludedChannels.remove(channelId);
+        persistState();
+    }
+
+    public boolean isChannelExcluded(String channelId) {
+        return mExcludedChannels.contains(channelId);
+    }
+
+    public void toggleExcludeChannel(String channelId) {
+        if (channelId == null) {
+            return;
+        }
+
+        if (isChannelExcluded(channelId)) {
+            stopExcludingChannel(channelId);
+        } else {
+            excludeChannel(channelId);
+        }
+    }
+
+    public Set<SegmentAction> getActions() {
+        return Collections.unmodifiableSet(mActions);
+    }
+
+    public int getAction(String segmentCategory) {
+        for (SegmentAction action : mActions) {
+            if (Helpers.equals(action.segmentCategory, segmentCategory)) {
+                return action.actionType;
+            }
+        }
+
+        return ACTION_UNDEFINED;
+    }
+
+    public boolean isSponsorBlockEnabled() {
+        return mIsSponsorBlockEnabled;
+    }
+
+    public void enableSponsorBlock(boolean enabled) {
+        mIsSponsorBlockEnabled = enabled;
+        persistState();
+    }
+
+    public void persistActions() {
+        persistState();
+    }
+
+    public boolean isActionsEnabled() {
+        for (SegmentAction action : mActions) {
+            if (action.actionType != ACTION_DO_NOTHING) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void restoreState() {
+
+        String data = mAppPrefs.getData(CONTENT_BLOCK_DATA);
+
+        String[] split = Helpers.splitData(data);
+
+        mIsSponsorBlockEnabled = Helpers.parseBoolean(split, 0, VERSION.SDK_INT > 19); // Android 4 may have memory problems
+        // categories: index 2
+        // don't skip segment
+        // colorMarkers: index 4
+        String actions = Helpers.parseStr(split, 6);
+        String excludedChannels = Helpers.parseStr(split, 9);
+        String colorCategories = Helpers.parseStr(split, 7);
+
+        if (excludedChannels != null) {
+            String[] channelsArr = Helpers.splitArray(excludedChannels);
+
+            mExcludedChannels.clear();
+
+            mExcludedChannels.addAll(Arrays.asList(channelsArr));
+        } else {
+            mExcludedChannels.clear();
+        }
+
+        if (actions != null) {
+            String[] actionsArr = Helpers.splitArray(actions);
+
+            mActions.clear();
+
+            for (String action : actionsArr) {
+                mActions.add(SegmentAction.from(action));
+            }
+        }
+
+        if (colorCategories != null) {
+            
+            String[] categoriesArr = Helpers.splitArray(colorCategories);
+
+            mColorCategories.clear();
+
+            mColorCategories.addAll(Arrays.asList(categoriesArr));
 
         } else {
 
-          // Don't Skip Segment
-          mActions.add(SegmentAction.from(segmentCategory, ACTION_DO_NOTHING));
+            // Enable Color Marker for all Segments
+            mColorCategories.addAll(mAllCategories);
+
         }
-      }
+
+        // Easy add new segments
+        for (String segmentCategory : mAllCategories) {
+
+            if (getAction(segmentCategory) == ACTION_UNDEFINED) {
+                
+                // Skip sponsor by default & ignore everything else
+                if (segmentCategory == SponsorSegment.CATEGORY_SPONSOR) {
+
+                    // Skip Segment
+                    mActions.add(SegmentAction.from(segmentCategory, ACTION_SKIP_WITH_TOAST));
+                
+                } else {
+
+                    // Don't Skip Segment
+                    mActions.add(SegmentAction.from(segmentCategory, ACTION_DO_NOTHING));
+
+                }
+
+            }
+        }
+
     }
-  }
 
-  private void persistState() {
+    private void persistState() {
+        
+        String colorCategories = Helpers.mergeArray(mColorCategories.toArray());
+        String actions = Helpers.mergeArray(mActions.toArray());
+        String excludedChannels = Helpers.mergeArray(mExcludedChannels.toArray());
 
-    String colorCategories = Helpers.mergeArray(mColorCategories.toArray());
-    String actions = Helpers.mergeArray(mActions.toArray());
-    String excludedChannels = Helpers.mergeArray(mExcludedChannels.toArray());
-
-    mAppPrefs.setData(
-        CONTENT_BLOCK_DATA,
-        Helpers.mergeData(
-            mIsSponsorBlockEnabled,
-            null,
-            null,
-            null,
-            null,
-            null,
-            actions,
-            colorCategories,
-            excludedChannels));
-  }
+        mAppPrefs.setData(
+            CONTENT_BLOCK_DATA, 
+            Helpers.mergeData(
+                mIsSponsorBlockEnabled, 
+                null, null, null, null, null, 
+                actions, 
+                colorCategories, 
+                excludedChannels
+            )
+        );
+    }
 }

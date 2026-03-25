@@ -2,80 +2,79 @@ package com.liskovsoft.smartyoutubetv2.common.app.presenters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.base.BasePresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.views.SignInView;
 
 public class SignInPresenter extends BasePresenter<SignInView> {
+    
+    @SuppressLint("StaticFieldLeak")
+    private static SignInPresenter sInstance;
+    private SignInPresenter mPresenter;
+    private boolean mIsWaiting;
 
-  @SuppressLint("StaticFieldLeak")
-  private static SignInPresenter sInstance;
-
-  private SignInPresenter mPresenter;
-  private boolean mIsWaiting;
-
-  protected SignInPresenter(Context context) {
-    super(context);
-  }
-
-  public static SignInPresenter instance(Context context) {
-    if (sInstance == null) {
-      sInstance = new SignInPresenter(context);
+    protected SignInPresenter(Context context) {
+        super(context);
     }
 
-    sInstance.setContext(context);
+    public static SignInPresenter instance(Context context) {
+        if (sInstance == null) {
+            sInstance = new SignInPresenter(context);
+        }
 
-    return sInstance;
-  }
+        sInstance.setContext(context);
 
-  public void unhold() {
-    sInstance = null;
-  }
-
-  @Override
-  public void onViewDestroyed() {
-    super.onViewDestroyed();
-    unhold();
-  }
-
-  @Override
-  public void onViewInitialized() {
-    if (this.getClass() != SignInPresenter.class) {
-      doWait(false);
-      return;
+        return sInstance;
     }
 
-    if (YTSignInPresenter.instance(getContext()).isWaiting()) {
-      mPresenter = YTSignInPresenter.instance(getContext());
-    } else if (GoogleSignInPresenter.instance(getContext()).isWaiting()) {
-      mPresenter = GoogleSignInPresenter.instance(getContext());
+    public void unhold() {
+        sInstance = null;
     }
 
-    if (mPresenter == null) {
-      mPresenter = YTSignInPresenter.instance(getContext());
-      // throw new IllegalStateException("At least one nested sign in presenter should be
-      // initialized.");
+    @Override
+    public void onViewDestroyed() {
+        super.onViewDestroyed();
+        unhold();
     }
 
-    mPresenter.setView(getView());
-    mPresenter.onViewInitialized();
-  }
+    @Override
+    public void onViewInitialized() {
+        if (this.getClass() != SignInPresenter.class) {
+            doWait(false);
+            return;
+        }
 
-  public void onActionClicked() {
-    if (mPresenter != null) {
-      mPresenter.onActionClicked();
+        if (YTSignInPresenter.instance(getContext()).isWaiting()) {
+            mPresenter = YTSignInPresenter.instance(getContext());
+        } else if (GoogleSignInPresenter.instance(getContext()).isWaiting()) {
+            mPresenter = GoogleSignInPresenter.instance(getContext());
+        }
+
+        if (mPresenter == null) {
+            mPresenter = YTSignInPresenter.instance(getContext());
+            //throw new IllegalStateException("At least one nested sign in presenter should be initialized.");
+        }
+
+        mPresenter.setView(getView());
+        mPresenter.onViewInitialized();
     }
-  }
 
-  private void doWait(boolean doWait) {
-    mIsWaiting = doWait;
-  }
+    public void onActionClicked() {
+        if (mPresenter != null) {
+            mPresenter.onActionClicked();
+        }
+    }
 
-  protected final boolean isWaiting() {
-    return mIsWaiting;
-  }
+    private void doWait(boolean doWait) {
+        mIsWaiting = doWait;
+    }
 
-  public void start() {
-    getViewManager().startView(SignInView.class);
-    doWait(true);
-  }
+    protected final boolean isWaiting() {
+        return mIsWaiting;
+    }
+
+    public void start() {
+        getViewManager().startView(SignInView.class);
+        doWait(true);
+    }
 }

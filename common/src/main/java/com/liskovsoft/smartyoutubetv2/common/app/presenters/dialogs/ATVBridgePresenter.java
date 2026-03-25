@@ -4,47 +4,46 @@ import android.content.Context;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 
 public class ATVBridgePresenter extends BridgePresenter {
-  private static final Integer[] ATV_YOUTUBE_PKG_HASH = {-1}; // always reinstall
-  private static final String ATV_YOUTUBE_PKG_NAME = "com.google.android.youtube.tv";
-  private static final String ATV_BRIDGE_PKG_URL =
-      "https://github.com/yuliskov/SmartTubeNext/releases/download/latest/ATV_SYTV_Bridge.apk";
-  private static ATVBridgePresenter sInstance;
+    private static final Integer[] ATV_YOUTUBE_PKG_HASH = {-1}; // always reinstall
+    private static final String ATV_YOUTUBE_PKG_NAME = "com.google.android.youtube.tv";
+    private static final String ATV_BRIDGE_PKG_URL = "https://github.com/yuliskov/SmartTubeNext/releases/download/latest/ATV_SYTV_Bridge.apk";
+    private static ATVBridgePresenter sInstance;
 
-  public ATVBridgePresenter(Context context) {
-    super(context);
-  }
-
-  public static ATVBridgePresenter instance(Context context) {
-    if (sInstance == null) {
-      sInstance = new ATVBridgePresenter(context);
+    public ATVBridgePresenter(Context context) {
+        super(context);
     }
 
-    sInstance.setContext(context);
+    public static ATVBridgePresenter instance(Context context) {
+        if (sInstance == null) {
+            sInstance = new ATVBridgePresenter(context);
+        }
 
-    return sInstance;
-  }
+        sInstance.setContext(context);
 
-  public void unhold() {
-    sInstance = null;
-  }
+        return sInstance;
+    }
 
-  @Override
-  protected String getPackageName() {
-    return ATV_YOUTUBE_PKG_NAME;
-  }
+    public void unhold() {
+        sInstance = null;
+    }
 
-  @Override
-  protected String getPackageUrl() {
-    return ATV_BRIDGE_PKG_URL;
-  }
+    @Override
+    protected String getPackageName() {
+        return ATV_YOUTUBE_PKG_NAME;
+    }
 
-  @Override
-  protected Integer[] getPackageSignatureHash() {
-    return ATV_YOUTUBE_PKG_HASH;
-  }
+    @Override
+    protected String getPackageUrl() {
+        return ATV_BRIDGE_PKG_URL;
+    }
 
-  @Override
-  protected boolean checkLauncher() {
-    return Helpers.isAndroidTVLauncher(getContext());
-  }
+    @Override
+    protected Integer[] getPackageSignatureHash() {
+        return ATV_YOUTUBE_PKG_HASH;
+    }
+
+    @Override
+    protected boolean checkLauncher() {
+        return Helpers.isAndroidTVLauncher(getContext());
+    }
 }

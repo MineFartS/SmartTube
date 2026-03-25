@@ -1,66 +1,66 @@
 package com.liskovsoft.youtubeapi.app.models.cached;
 
 import androidx.annotation.NonNull;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.models.AppInfo;
 
 public class AppInfoCached extends AppInfo {
-  private static final String DELIM = "%aic%";
-  private final String mPlayerUrl;
-  private final String mClientUrl;
-  private final String mVisitorData;
+    private static final String DELIM = "%aic%";
+    private final String mPlayerUrl;
+    private final String mClientUrl;
+    private final String mVisitorData;
 
-  private AppInfoCached(String playerUrl, String clientUrl, String visitorData) {
-    mPlayerUrl = playerUrl;
-    mClientUrl = clientUrl;
-    mVisitorData = visitorData;
-  }
-
-  public static AppInfoCached fromString(String spec) {
-    if (spec == null) {
-      return null;
+    private AppInfoCached(String playerUrl, String clientUrl, String visitorData) {
+        mPlayerUrl = playerUrl;
+        mClientUrl = clientUrl;
+        mVisitorData = visitorData;
     }
 
-    String[] split = Helpers.split(spec, DELIM);
+    public static AppInfoCached fromString(String spec) {
+        if (spec == null) {
+            return null;
+        }
 
-    String playerUrl = Helpers.parseStr(split, 0);
-    String clientUrl = Helpers.parseStr(split, 1);
-    String visitorData = Helpers.parseStr(split, 2);
+        String[] split = Helpers.split(spec, DELIM);
 
-    return new AppInfoCached(playerUrl, clientUrl, visitorData);
-  }
+        String playerUrl = Helpers.parseStr(split, 0);
+        String clientUrl = Helpers.parseStr(split, 1);
+        String visitorData = Helpers.parseStr(split, 2);
 
-  public static AppInfoCached from(AppInfo appInfo) {
-    if (appInfo == null) {
-      return null;
+        return new AppInfoCached(playerUrl, clientUrl, visitorData);
     }
 
-    return new AppInfoCached(
-        appInfo.getPlayerUrl(), appInfo.getClientUrl(), appInfo.getVisitorData());
-  }
+    public static AppInfoCached from(AppInfo appInfo) {
+        if (appInfo == null) {
+            return null;
+        }
 
-  @NonNull
-  @Override
-  public String toString() {
-    return Helpers.merge(DELIM, mPlayerUrl, mClientUrl, mVisitorData);
-  }
+        return new AppInfoCached(appInfo.getPlayerUrl(), appInfo.getClientUrl(), appInfo.getVisitorData());
+    }
 
-  @Override
-  public String getPlayerUrl() {
-    return mPlayerUrl;
-  }
+    @NonNull
+    @Override
+    public String toString() {
+        return Helpers.merge(DELIM, mPlayerUrl, mClientUrl, mVisitorData);
+    }
 
-  @Override
-  public String getClientUrl() {
-    return mClientUrl;
-  }
+    @Override
+    public String getPlayerUrl() {
+        return mPlayerUrl;
+    }
 
-  @Override
-  public String getVisitorData() {
-    return mVisitorData;
-  }
+    @Override
+    public String getClientUrl() {
+        return mClientUrl;
+    }
 
-  public boolean validate() {
-    return mPlayerUrl != null && mClientUrl != null && mVisitorData != null;
-  }
+    @Override
+    public String getVisitorData() {
+        return mVisitorData;
+    }
+
+    public boolean validate() {
+        return mPlayerUrl != null && mClientUrl != null && mVisitorData != null;
+    }
 }

@@ -2,19 +2,20 @@ package com.liskovsoft.smartyoutubetv2.common.misc;
 
 import android.content.Context;
 import android.util.Pair;
+
 import com.liskovsoft.mediaserviceinterfaces.ContentService;
 import com.liskovsoft.mediaserviceinterfaces.MediaItemService;
-import com.liskovsoft.mediaserviceinterfaces.NotificationsService;
 import com.liskovsoft.mediaserviceinterfaces.ServiceManager;
+import com.liskovsoft.mediaserviceinterfaces.NotificationsService;
 import com.liskovsoft.mediaserviceinterfaces.SignInService;
 import com.liskovsoft.mediaserviceinterfaces.SignInService.OnAccountChange;
+import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.mediaserviceinterfaces.data.NotificationState;
 import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
-import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
@@ -29,8 +30,10 @@ import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
 import com.liskovsoft.smartyoutubetv2.common.utils.LoadingManager;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
+
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,28 +120,25 @@ public class MediaServiceManager implements OnAccountChange {
 
         Observable<MediaItemMetadata> observable;
 
-        // NOTE: Load suggestions from mediaItem isn't robust. Because playlistId may be
-        // initialized
-        // from RemoteControlManager.
+        // NOTE: Load suggestions from mediaItem isn't robust. Because playlistId may be initialized from RemoteControlManager.
         // Video might be loaded from Channels section (has playlistParams)
         if (video.mediaItem != null) {
             // Use additional data like playlist id
             observable = mItemService.getMetadataObserve(video.mediaItem);
         } else {
             // Simply load
-            observable = mItemService.getMetadataObserve(
-                    video.videoId, video.getPlaylistId(), video.playlistIndex, video.playlistParams);
+            observable = mItemService.getMetadataObserve(video.videoId, video.getPlaylistId(), video.playlistIndex, video.playlistParams);
         }
 
-        mMetadataAction = observable.subscribe(
-                onMetadata::onMetadata,
-                error -> Log.e(TAG, "loadMetadata error: %s", error.getMessage()));
+        mMetadataAction = observable
+                .subscribe(
+                        onMetadata::onMetadata,
+                        error -> Log.e(TAG, "loadMetadata error: %s", error.getMessage())
+                );
     }
 
     /**
-     * NOTE: Load suggestions from MediaItem isn't robust. Because playlistId may be
-     * initialized from
-     * RemoteControlManager.
+     * NOTE: Load suggestions from MediaItem isn't robust. Because playlistId may be initialized from RemoteControlManager.
      */
     public void loadMetadata(MediaItem mediaItem, OnMetadata onMetadata) {
         if (mediaItem == null) {
@@ -151,9 +151,11 @@ public class MediaServiceManager implements OnAccountChange {
 
         observable = mItemService.getMetadataObserve(mediaItem);
 
-        mMetadataAction = observable.subscribe(
-                onMetadata::onMetadata,
-                error -> Log.e(TAG, "loadMetadata error: %s", error.getMessage()));
+        mMetadataAction = observable
+                .subscribe(
+                        onMetadata::onMetadata,
+                        error -> Log.e(TAG, "loadMetadata error: %s", error.getMessage())
+                );
     }
 
     public void loadChannelUploads(Video item, OnMediaGroup onMediaGroup) {
@@ -173,12 +175,14 @@ public class MediaServiceManager implements OnAccountChange {
 
         Observable<MediaGroup> observable = mContentService.getGroupObserve(item);
 
-        mUploadsAction = observable.subscribe(
-                onMediaGroup::onMediaGroup,
-                error -> {
-                    onMediaGroup.onMediaGroup(null);
-                    Log.e(TAG, "loadChannelUploads error: %s", error.getMessage());
-                });
+        mUploadsAction = observable
+                .subscribe(
+                        onMediaGroup::onMediaGroup,
+                        error -> {
+                            onMediaGroup.onMediaGroup(null);
+                            Log.e(TAG, "loadChannelUploads error: %s", error.getMessage());
+                        }
+                );
     }
 
     public void loadSubscribedChannels(OnMediaGroup onMediaGroup) {
@@ -186,9 +190,11 @@ public class MediaServiceManager implements OnAccountChange {
 
         Observable<MediaGroup> observable = mContentService.getSubscribedChannelsByNewContentObserve();
 
-        mSubscribedChannelsAction = observable.subscribe(
-                onMediaGroup::onMediaGroup,
-                error -> Log.e(TAG, "loadSubscribedChannels error: %s", error.getMessage()));
+        mSubscribedChannelsAction = observable
+                .subscribe(
+                        onMediaGroup::onMediaGroup,
+                        error -> Log.e(TAG, "loadSubscribedChannels error: %s", error.getMessage())
+                );
     }
 
     public void loadChannelRows(Video item, OnMediaGroupList onMediaGroupList) {
@@ -202,22 +208,26 @@ public class MediaServiceManager implements OnAccountChange {
 
         RxHelper.disposeActions(mRowsAction);
 
-        Observable<List<MediaGroup>> observable = item.mediaItem != null
-                ? mContentService.getChannelObserve(item.mediaItem)
-                : mContentService.getChannelObserve(item.channelId);
+        Observable<List<MediaGroup>> observable = item.mediaItem != null ?
+                mContentService.getChannelObserve(item.mediaItem) : mContentService.getChannelObserve(item.channelId);
 
-        mRowsAction = observable.subscribe(
-                onMediaGroupList::onMediaGroupList,
-                error -> {
-                    Log.e(TAG, "loadChannelRows error: %s", error.getMessage());
-                    if (onError != null) {
-                        onError.onError(error);
-                    }
-                });
+        mRowsAction = observable
+                .subscribe(
+                        onMediaGroupList::onMediaGroupList,
+                        error -> {
+                            Log.e(TAG, "loadChannelRows error: %s", error.getMessage());
+                            if (onError != null) {
+                                onError.onError(error);
+                            }
+                        }
+                );
     }
 
     public void loadChannelPlaylist(Video item, OnMediaGroup callback) {
-        loadChannelRows(item, mediaGroupList -> callback.onMediaGroup(mediaGroupList.get(0)));
+        loadChannelRows(
+                item,
+                mediaGroupList -> callback.onMediaGroup(mediaGroupList.get(0))
+        );
     }
 
     public void loadFormatInfo(Video item, OnFormatInfo onFormatInfo) {
@@ -229,9 +239,11 @@ public class MediaServiceManager implements OnAccountChange {
 
         Observable<MediaItemFormatInfo> observable = mItemService.getFormatInfoObserve(item.videoId);
 
-        mFormatInfoAction = observable.subscribe(
-                onFormatInfo::onFormatInfo,
-                error -> Log.e(TAG, "loadFormatInfo error: %s", error.getMessage()));
+        mFormatInfoAction = observable
+                .subscribe(
+                        onFormatInfo::onFormatInfo,
+                        error -> Log.e(TAG, "loadFormatInfo error: %s", error.getMessage())
+                );
     }
 
     public void loadPlaylists(Video item, OnMediaGroup onPlaylistGroup) {
@@ -243,9 +255,11 @@ public class MediaServiceManager implements OnAccountChange {
 
         Observable<MediaGroup> observable = mContentService.getPlaylistsObserve();
 
-        mPlaylistGroupAction = observable.subscribe(
-                onPlaylistGroup::onMediaGroup,
-                error -> Log.e(TAG, "loadPlaylists error: %s", error.getMessage()));
+        mPlaylistGroupAction = observable
+                .subscribe(
+                        onPlaylistGroup::onMediaGroup,
+                        error -> Log.e(TAG, "loadPlaylists error: %s", error.getMessage())
+                );
     }
 
     public void getPlaylistInfos(OnPlaylistInfos onPlaylistInfos) {
@@ -253,9 +267,11 @@ public class MediaServiceManager implements OnAccountChange {
 
         Observable<List<PlaylistInfo>> observable = mItemService.getPlaylistsInfoObserve(null);
 
-        mPlaylistInfosAction = observable.subscribe(
-                onPlaylistInfos::onPlaylistInfos,
-                error -> Log.e(TAG, "getPlaylistInfos error: %s", error.getMessage()));
+        mPlaylistInfosAction = observable
+                .subscribe(
+                        onPlaylistInfos::onPlaylistInfos,
+                        error -> Log.e(TAG, "getPlaylistInfos error: %s", error.getMessage())
+                );
     }
 
     public void loadAccounts(OnAccountList onAccountList) {
@@ -279,11 +295,12 @@ public class MediaServiceManager implements OnAccountChange {
     }
 
     public void disposeActions() {
-        RxHelper.disposeActions(
-                mMetadataAction, mUploadsAction, mRowsAction, mSubscribedChannelsAction);
+        RxHelper.disposeActions(mMetadataAction, mUploadsAction, mRowsAction, mSubscribedChannelsAction);
     }
 
-    /** Most tiny ui has 8 cards in a row or 24 in grid. */
+    /**
+     * Most tiny ui has 8 cards in a row or 24 in grid.
+     */
     public void shouldContinueGridGroup(Context context, VideoGroup group, Runnable onNeedContinue) {
         shouldContinueTheGroup(context, group, onNeedContinue, true);
     }
@@ -292,24 +309,29 @@ public class MediaServiceManager implements OnAccountChange {
         shouldContinueTheGroup(context, group, onNeedContinue, false);
     }
 
-    /** Most tiny ui has 8 cards in a row or 24 in grid. */
-    public void shouldContinueTheGroup(
-            Context context, VideoGroup group, Runnable onNeedContinue, boolean isGrid) {
+    /**
+     * Most tiny ui has 8 cards in a row or 24 in grid.
+     */
+    public void shouldContinueTheGroup(Context context, VideoGroup group, Runnable onNeedContinue, boolean isGrid) {
         if (shouldContinueTheGroup(context, group, isGrid) && onNeedContinue != null) {
             onNeedContinue.run();
         }
     }
 
-    /** Most tiny ui has 8 cards in a row or 24 in grid. */
+    /**
+     * Most tiny ui has 8 cards in a row or 24 in grid.
+     */
     public boolean shouldContinueGridGroup(Context context, VideoGroup group) {
         return shouldContinueTheGroup(context, group, true);
     }
 
     public boolean shouldContinueRowGroup(Context context, VideoGroup group) {
-        return shouldContinueTheGroup(context, group, false);
+        return shouldContinueTheGroup(context, group,false);
     }
 
-    /** Most tiny ui has 8 cards in a row or 24 in grid. */
+    /**
+     * Most tiny ui has 8 cards in a row or 24 in grid.
+     */
     public boolean shouldContinueTheGroup(Context context, VideoGroup group, boolean isGrid) {
         if (group == null || group.getMediaGroup() == null) {
             return false;
@@ -320,8 +342,7 @@ public class MediaServiceManager implements OnAccountChange {
         Pair<Integer, Long> sizeTimestamp = mContinuations.get(group.getId());
 
         long currentTimeMillis = System.currentTimeMillis();
-        if (sizeTimestamp != null
-                && currentTimeMillis - sizeTimestamp.second > 3_000) { // seems that section is refreshed
+        if (sizeTimestamp != null && currentTimeMillis - sizeTimestamp.second > 3_000) { // seems that section is refreshed
             sizeTimestamp = null;
         }
 
@@ -332,7 +353,7 @@ public class MediaServiceManager implements OnAccountChange {
         MainUIData mainUIData = MainUIData.instance(context);
 
         int minSize = isGrid ? MIN_GRID_GROUP_SIZE : MIN_ROW_GROUP_SIZE;
-
+        
         boolean groupTooSmall = totalSize < minSize;
 
         mContinuations.put(group.getId(), new Pair<>(groupTooSmall ? totalSize : 0, currentTimeMillis));
@@ -341,7 +362,9 @@ public class MediaServiceManager implements OnAccountChange {
     }
 
     public void enableHistory(boolean enable) {
-        RxHelper.runAsyncUser(() -> mContentService.enableHistory(enable));
+        if (enable) { // don't disable history for other clients
+            RxHelper.runAsyncUser(() -> mContentService.enableHistory(true));
+        }
     }
 
     public void clearHistory(Context context, Runnable onFinish) {
@@ -354,19 +377,21 @@ public class MediaServiceManager implements OnAccountChange {
     }
 
     public void updateHistory(Video video, long positionMs) {
-
         if (video == null || RxHelper.isAnyActionRunning(mHistoryAction)) {
             return;
         }
 
         RxHelper.disposeActions(mHistoryAction);
 
-        String videoId = (video.mediaItem != null) ? video.mediaItem.getVideoId() : video.videoId;
+        Observable<Void> historyObservable;
 
-        float positionSec = positionMs / 1_000f;
+        if (video.mediaItem != null) {
+            historyObservable = mItemService.updateHistoryPositionObserve(video.mediaItem, positionMs / 1_000f);
+        } else { // video launched form ATV channels
+            historyObservable = mItemService.updateHistoryPositionObserve(video.videoId, positionMs / 1_000f);
+        }
 
-        mItemService.updateHistoryPosition(videoId, positionSec);
-
+        mHistoryAction = RxHelper.execute(historyObservable, error -> setHistoryBroken(true), () -> setHistoryBroken(false));
     }
 
     public void hideNotification(Video item) {
@@ -388,36 +413,33 @@ public class MediaServiceManager implements OnAccountChange {
             return;
         }
 
-        Disposable playlistsInfoAction = mItemService
-                .getPlaylistsInfoObserve(video.videoId)
+        Disposable playlistsInfoAction = mItemService.getPlaylistsInfoObserve(video.videoId)
                 .subscribe(
                         videoPlaylistInfos -> {
                             PlaylistInfo watchLater = videoPlaylistInfos.get(0);
 
                             if (watchLater.isSelected()) {
-                                Observable<Void> editObserve = mItemService.removeFromPlaylistObserve(
-                                        watchLater.getPlaylistId(), video.videoId);
+                                Observable<Void> editObserve = mItemService.removeFromPlaylistObserve(watchLater.getPlaylistId(), video.videoId);
 
-                                RxHelper.execute(
-                                        editObserve,
-                                        () -> {
-                                            if (onSuccess != null) {
-                                                onSuccess.run();
-                                            }
-                                        });
+                                RxHelper.execute(editObserve, () -> {
+                                    if (onSuccess != null) {
+                                        onSuccess.run();
+                                    }
+                                });
                             }
                         },
                         error -> {
                             // Fallback to something on error
                             Log.e(TAG, "Get playlists error: %s", error.getMessage());
-                        });
+                        }
+                );
     }
 
     public void addAccountListener(AccountChangeListener listener) {
         if (!mAccountListeners.contains(listener)) {
-            if (listener instanceof AccountsData || listener instanceof AppPrefs) {
-                mAccountListeners.add(
-                        0, listener); // data classes should be called before regular listeners
+            if (listener instanceof AccountsData ||
+                listener instanceof AppPrefs) {
+                mAccountListeners.add(0, listener); // data classes should be called before regular listeners
             } else {
                 mAccountListeners.add(listener);
             }
@@ -444,10 +466,8 @@ public class MediaServiceManager implements OnAccountChange {
     }
 
     /**
-     * Selecting right presenter for the channel.<br>
-     * Channels could be of two types: regular (usr channel) and playlist channel
-     * (contains single
-     * row, try search: 'Mon mix')
+     * Selecting right presenter for the channel.<br/>
+     * Channels could be of two types: regular (usr channel) and playlist channel (contains single row, try search: 'Mon mix')
      */
     public static void chooseChannelPresenter(Context context, Video item) {
         if (item.hasVideo() || item.hasReloadPageKey()) { // an channel item from Channels section
@@ -459,43 +479,41 @@ public class MediaServiceManager implements OnAccountChange {
 
         AtomicInteger atomicIndex = new AtomicInteger(0);
 
-        MediaServiceManager.instance()
-                .loadChannelRows(
-                        item,
-                        groups -> {
-                            LoadingManager.showLoading(context, false);
+        MediaServiceManager.instance().loadChannelRows(item, groups -> {
+            LoadingManager.showLoading(context, false);
 
-                            if (groups == null || groups.isEmpty()) {
-                                return;
-                            }
+            if (groups == null || groups.isEmpty()) {
+                return;
+            }
 
-                            MediaGroup firstGroup = groups.get(0);
-                            int type = firstGroup.getType();
+            MediaGroup firstGroup = groups.get(0);
+            int type = firstGroup.getType();
 
-                            if (type == MediaGroup.TYPE_CHANNEL_UPLOADS) {
-                                if (atomicIndex.incrementAndGet() == 1) {
-                                    ChannelUploadsPresenter.instance(context).clear();
-                                    ChannelUploadsPresenter.instance(context).setChannel(item);
-                                }
-                                // NOTE: Crashes RecycleView IndexOutOfBoundsException when doing add
-                                // immediately
-                                // after clear
-                                Utils.postDelayed(
-                                        () -> ChannelUploadsPresenter.instance(context).update(firstGroup), 100);
-                            } else if (type == MediaGroup.TYPE_CHANNEL) {
-                                if (atomicIndex.incrementAndGet() == 1) {
-                                    ChannelPresenter.instance(context).clear();
-                                    ChannelPresenter.instance(context).setChannel(item);
-                                }
-                                // NOTE: Crashes RecycleView IndexOutOfBoundsException when doing add
-                                // immediately
-                                // after clear
-                                Utils.postDelayed(() -> ChannelPresenter.instance(context).updateRows(groups), 100);
-                            } else {
-                                MessageHelpers.showMessage(context, "Unknown type of channel");
-                            }
-                        },
-                        error -> LoadingManager.showLoading(context, false));
+            if (type == MediaGroup.TYPE_CHANNEL_UPLOADS) {
+                if (atomicIndex.incrementAndGet() == 1) {
+                    ChannelUploadsPresenter.instance(context).clear();
+                    ChannelUploadsPresenter.instance(context).setChannel(item);
+                }
+                // NOTE: Crashes RecycleView IndexOutOfBoundsException when doing add immediately after clear
+                Utils.postDelayed(() -> ChannelUploadsPresenter.instance(context).update(firstGroup), 100);
+            } else if (type == MediaGroup.TYPE_CHANNEL) {
+                if (atomicIndex.incrementAndGet() == 1) {
+                    ChannelPresenter.instance(context).clear();
+                    ChannelPresenter.instance(context).setChannel(item);
+                }
+                // NOTE: Crashes RecycleView IndexOutOfBoundsException when doing add immediately after clear
+                Utils.postDelayed(() -> ChannelPresenter.instance(context).updateRows(groups), 100);
+            } else {
+                MessageHelpers.showMessage(context, "Unknown type of channel");
+            }
+        }, error -> LoadingManager.showLoading(context, false));
     }
 
+    private void setHistoryBroken(boolean isBroken) {
+        VideoStateService stateService = VideoStateService.instance(null);
+
+        if (stateService != null) {
+            stateService.setHistoryBroken(isBroken);
+        }
+    }
 }

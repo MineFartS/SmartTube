@@ -1,54 +1,49 @@
 package com.liskovsoft.youtubeapi.block;
 
-import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
-import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.youtubeapi.block.data.SegmentList;
-import java.util.Set;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
+import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 import retrofit2.Call;
 
+import java.util.Set;
+
 public class SponsorBlockService {
-  private static SponsorBlockService sInstance;
-  private final SponsorBlockApi mSponsorBlockApi;
+    private static SponsorBlockService sInstance;
+    private final SponsorBlockApi mSponsorBlockApi;
 
-  private SponsorBlockService() {
-    mSponsorBlockApi = RetrofitHelper.create(SponsorBlockApi.class);
-  }
-
-  public static SponsorBlockService instance() {
-    if (sInstance == null) {
-      sInstance = new SponsorBlockService();
+    private SponsorBlockService() {
+        mSponsorBlockApi = RetrofitHelper.create(SponsorBlockApi.class);
     }
 
-    return sInstance;
-  }
+    public static SponsorBlockService instance() {
+        if (sInstance == null) {
+            sInstance = new SponsorBlockService();
+        }
 
-  public SegmentList getSegmentList(String videoId) {
-    Call<SegmentList> wrapper =
-        isAltServerEnabled()
-            ? mSponsorBlockApi.getSegments2(videoId)
-            : mSponsorBlockApi.getSegments(videoId);
+        return sInstance;
+    }
 
-    return RetrofitHelper.get(wrapper);
-  }
+    public SegmentList getSegmentList(String videoId) {
+        Call<SegmentList> wrapper =
+                isAltServerEnabled() ? mSponsorBlockApi.getSegments2(videoId) : mSponsorBlockApi.getSegments(videoId);
 
-  public SegmentList getSegmentList(String videoId, Set<String> categories) {
-    return categories != null && categories.size() > 0
-        ? getSegmentListInt(videoId, categories)
-        : getSegmentList(videoId);
-  }
+        return RetrofitHelper.get(wrapper);
+    }
 
-  private SegmentList getSegmentListInt(String videoId, Set<String> categories) {
-    Call<SegmentList> wrapper =
-        isAltServerEnabled()
-            ? mSponsorBlockApi.getSegments2(videoId, ServiceHelper.toJsonArrayString(categories))
-            : mSponsorBlockApi.getSegments(videoId, ServiceHelper.toJsonArrayString(categories));
+    public SegmentList getSegmentList(String videoId, Set<String> categories) {
+        return categories != null && categories.size() > 0 ? getSegmentListInt(videoId, categories) : getSegmentList(videoId);
+    }
 
-    return RetrofitHelper.get(wrapper);
-  }
+    private SegmentList getSegmentListInt(String videoId, Set<String> categories) {
+        Call<SegmentList> wrapper = isAltServerEnabled() ?
+                mSponsorBlockApi.getSegments2(videoId, ServiceHelper.toJsonArrayString(categories)) :
+                mSponsorBlockApi.getSegments(videoId, ServiceHelper.toJsonArrayString(categories));
 
-  private boolean isAltServerEnabled() {
-    return GlobalPreferences.isInitialized()
-        && GlobalPreferences.sInstance.isContentBlockAltServerEnabled();
-  }
+        return RetrofitHelper.get(wrapper);
+    }
+
+    private boolean isAltServerEnabled() {
+        return GlobalPreferences.isInitialized() && GlobalPreferences.sInstance.isContentBlockAltServerEnabled();
+    }
 }

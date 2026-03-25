@@ -8,211 +8,208 @@ import com.liskovsoft.smartyoutubetv2.common.autoframerate.internal.DisplayHolde
 import com.liskovsoft.smartyoutubetv2.common.autoframerate.internal.DisplaySyncHelper;
 import com.liskovsoft.smartyoutubetv2.common.autoframerate.internal.DisplaySyncHelper.AutoFrameRateListener;
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem;
+
 import java.util.HashMap;
 
 public class AutoFrameRateHelper {
-  private static final String TAG = AutoFrameRateHelper.class.getSimpleName();
-  private static AutoFrameRateHelper sInstance;
-  private static final long THROTTLE_INTERVAL_MS = 5_000;
-  private final DisplaySyncHelper mSyncHelper;
-  private long mPrevCall;
-  private HashMap<Float, Float> mFrameRateMapping;
-  private boolean mIsFpsCorrectionEnabled;
-  private AutoFrameRateListener mListener;
+    private static final String TAG = AutoFrameRateHelper.class.getSimpleName();
+    private static AutoFrameRateHelper sInstance;
+    private static final long THROTTLE_INTERVAL_MS = 5_000;
+    private final DisplaySyncHelper mSyncHelper;
+    private long mPrevCall;
+    private HashMap<Float, Float> mFrameRateMapping;
+    private boolean mIsFpsCorrectionEnabled;
+    private AutoFrameRateListener mListener;
 
-  private AutoFrameRateHelper(Context context) {
-    mSyncHelper = new DisplaySyncHelper(context);
+    private AutoFrameRateHelper(Context context) {
+        mSyncHelper = new DisplaySyncHelper(context);
 
-    initFrameRateMapping();
-  }
-
-  public static AutoFrameRateHelper instance(Context context) {
-    if (sInstance == null) {
-      sInstance = new AutoFrameRateHelper(context);
+        initFrameRateMapping();
     }
 
-    if (context != null) {
-      sInstance.setContext(context);
-    }
-
-    return sInstance;
-  }
-
-  public void apply(Activity activity, FormatItem format) {
-    apply(activity, format, false);
-  }
-
-  public boolean isSupported() {
-    resetStats();
-    return mSyncHelper.supportsDisplayModeChangeComplex();
-  }
-
-  public boolean isResolutionSwitchEnabled() {
-    return mSyncHelper.isResolutionSwitchEnabled();
-  }
-
-  public void setResolutionSwitchEnabled(boolean enabled, boolean force) {
-    if (force) {
-      Mode originalMode = mSyncHelper.getOriginalMode();
-      Mode newMode = mSyncHelper.getNewMode();
-
-      if (originalMode != null && newMode != null) {
-        if (enabled) {
-          mSyncHelper.setResolutionSwitchEnabled(true);
-          // syncMode(mCurrentFormat.first, mCurrentFormat.second);
-        } else {
-          // syncMode(originalMode.getPhysicalWidth(), newMode.getRefreshRate());
-          mSyncHelper.setResolutionSwitchEnabled(false);
+    public static AutoFrameRateHelper instance(Context context) {
+        if (sInstance == null) {
+            sInstance = new AutoFrameRateHelper(context);
         }
-      }
-    } else {
-      mSyncHelper.setResolutionSwitchEnabled(enabled);
-    }
-  }
 
-  public void saveOriginalState(Activity activity) {
-    setContext(activity);
+        if (context != null) {
+            sInstance.setContext(context);
+        }
 
-    if (activity == null) {
-      Log.e(TAG, "Activity in null. exiting...");
-      return;
+        return sInstance;
     }
 
-    if (!isSupported()) {
-      return;
+    public void apply(Activity activity, FormatItem format) {
+        apply(activity, format, false);
     }
 
-    mSyncHelper.saveOriginalState();
-  }
-
-  private void initFrameRateMapping() {
-    mFrameRateMapping = new HashMap<>();
-    mFrameRateMapping.put(24f, 23.97f);
-    mFrameRateMapping.put(30f, 29.97f);
-    mFrameRateMapping.put(60f, 59.94f);
-  }
-
-  public void apply(Activity activity, FormatItem format, boolean force) {
-    setContext(activity);
-
-    if (activity == null) {
-      Log.e(TAG, "Activity in null. exiting...");
-      if (mListener != null) {
-        mListener.onModeCancel();
-      }
-      return;
+    public boolean isSupported() {
+        resetStats();
+        return mSyncHelper.supportsDisplayModeChangeComplex();
     }
 
-    if (format == null) {
-      Log.e(TAG, "Can't apply mode change: format is null");
-      if (mListener != null) {
-        mListener.onModeCancel();
-      }
-      return;
+    public boolean isResolutionSwitchEnabled() {
+        return mSyncHelper.isResolutionSwitchEnabled();
     }
 
-    if (!isSupported()) {
-      Log.e(TAG, "Autoframerate not supported. Exiting...");
-      if (mListener != null) {
-        mListener.onModeCancel();
-      }
-      return;
+    public void setResolutionSwitchEnabled(boolean enabled, boolean force) {
+        if (force) {
+            Mode originalMode = mSyncHelper.getOriginalMode();
+            Mode newMode = mSyncHelper.getNewMode();
+
+            if (originalMode != null && newMode != null) {
+                if (enabled) {
+                    mSyncHelper.setResolutionSwitchEnabled(true);
+                    //syncMode(mCurrentFormat.first, mCurrentFormat.second);
+                } else {
+                    //syncMode(originalMode.getPhysicalWidth(), newMode.getRefreshRate());
+                    mSyncHelper.setResolutionSwitchEnabled(false);
+                }
+            }
+        } else {
+            mSyncHelper.setResolutionSwitchEnabled(enabled);
+        }
     }
 
-    if (System.currentTimeMillis() - mPrevCall < THROTTLE_INTERVAL_MS) {
-      Log.e(TAG, "Throttling afr calls...");
-      if (mListener != null) {
-        mListener.onModeCancel();
-      }
-      return;
-    } else {
-      mPrevCall = System.currentTimeMillis();
+    public void saveOriginalState(Activity activity) {
+        setContext(activity);
+
+        if (activity == null) {
+            Log.e(TAG, "Activity in null. exiting...");
+            return;
+        }
+
+        if (!isSupported()) {
+            return;
+        }
+
+        mSyncHelper.saveOriginalState();
     }
 
-    int width = format.getWidth();
-    float frameRate = correctFrameRate(format.getFrameRate());
-
-    Pair<Integer, Float> currentFormat = new Pair<>(width, frameRate);
-
-    Log.d(
-        TAG,
-        String.format(
-            "Applying mode change... Video fps: %s, width: %s, height: %s",
-            frameRate, width, format.getHeight()));
-
-    syncMode(activity, width, frameRate, force);
-  }
-
-  private void syncMode(Activity activity, int width, float frameRate, boolean force) {
-    if (activity == null) {
-      Log.e(TAG, "Activity in null. exiting...");
-      return;
+    private void initFrameRateMapping() {
+        mFrameRateMapping = new HashMap<>();
+        mFrameRateMapping.put(24f, 23.97f);
+        mFrameRateMapping.put(30f, 29.97f);
+        mFrameRateMapping.put(60f, 59.94f);
     }
 
-    if (!isSupported()) {
-      Log.e(TAG, "Autoframerate not supported. Exiting...");
-      return;
+    public void apply(Activity activity, FormatItem format, boolean force) {
+        setContext(activity);
+
+        if (activity == null) {
+            Log.e(TAG, "Activity in null. exiting...");
+            if (mListener != null) {
+                mListener.onModeCancel();
+            }
+            return;
+        }
+
+        if (format == null) {
+            Log.e(TAG, "Can't apply mode change: format is null");
+            if (mListener != null) {
+                mListener.onModeCancel();
+            }
+            return;
+        }
+
+        if (!isSupported()) {
+            Log.e(TAG, "Autoframerate not supported. Exiting...");
+            if (mListener != null) {
+                mListener.onModeCancel();
+            }
+            return;
+        }
+
+        if (System.currentTimeMillis() - mPrevCall < THROTTLE_INTERVAL_MS) {
+            Log.e(TAG, "Throttling afr calls...");
+            if (mListener != null) {
+                mListener.onModeCancel();
+            }
+            return;
+        } else {
+            mPrevCall = System.currentTimeMillis();
+        }
+
+        int width = format.getWidth();
+        float frameRate = correctFrameRate(format.getFrameRate());
+
+        Pair<Integer, Float> currentFormat = new Pair<>(width, frameRate);
+
+        Log.d(TAG, String.format("Applying mode change... Video fps: %s, width: %s, height: %s", frameRate, width, format.getHeight()));
+
+        syncMode(activity, width, frameRate, force);
     }
 
-    mSyncHelper.syncDisplayMode(activity.getWindow(), width, frameRate, force);
-  }
+    private void syncMode(Activity activity, int width, float frameRate, boolean force) {
+        if (activity == null) {
+            Log.e(TAG, "Activity in null. exiting...");
+            return;
+        }
 
-  public void restoreOriginalState(Activity activity) {
-    restoreOriginalState(activity, false);
-  }
+        if (!isSupported()) {
+            Log.e(TAG, "Autoframerate not supported. Exiting...");
+            return;
+        }
 
-  private void restoreOriginalState(Activity activity, boolean force) {
-    if (activity == null) {
-      Log.e(TAG, "activity == null");
-      return;
+        mSyncHelper.syncDisplayMode(activity.getWindow(), width, frameRate, force);
     }
 
-    if (!isSupported()) {
-      Log.d(TAG, "restoreOriginalState: autoframerate not enabled... exiting...");
-      return;
+    public void restoreOriginalState(Activity activity) {
+        restoreOriginalState(activity, false);
     }
 
-    Log.d(TAG, "Restoring original mode...");
+    private void restoreOriginalState(Activity activity, boolean force) {
+        if (activity == null) {
+            Log.e(TAG, "activity == null");
+            return;
+        }
 
-    boolean result = mSyncHelper.restoreOriginalState(activity.getWindow(), force);
+        if (!isSupported()) {
+            Log.d(TAG, "restoreOriginalState: autoframerate not enabled... exiting...");
+            return;
+        }
 
-    Log.d(TAG, "Restore mode result: " + result);
-  }
+        Log.d(TAG, "Restoring original mode...");
 
-  public void setListener(AutoFrameRateListener listener) {
-    mListener = listener;
-    mSyncHelper.setListener(listener);
-  }
+        boolean result = mSyncHelper.restoreOriginalState(activity.getWindow(), force);
 
-  public boolean isFpsCorrectionEnabled() {
-    return mIsFpsCorrectionEnabled;
-  }
-
-  public void setFpsCorrectionEnabled(boolean enabled) {
-    mIsFpsCorrectionEnabled = enabled;
-  }
-
-  public void setDoubleRefreshRateEnabled(boolean enabled) {
-    mSyncHelper.setDoubleRefreshRateEnabled(enabled);
-  }
-
-  public void setSkip24RateEnabled(boolean enabled) {
-    mSyncHelper.setSkip24RateEnabled(enabled);
-  }
-
-  private void resetStats() {
-    mSyncHelper.resetStats();
-  }
-
-  private float correctFrameRate(float frameRate) {
-    if (mIsFpsCorrectionEnabled && mFrameRateMapping.containsKey(frameRate)) {
-      return mFrameRateMapping.get(frameRate);
+        Log.d(TAG, "Restore mode result: " + result);
     }
 
-    return frameRate;
-  }
+    public void setListener(AutoFrameRateListener listener) {
+        mListener = listener;
+        mSyncHelper.setListener(listener);
+    }
 
-  private void setContext(Context activity) {
-    mSyncHelper.setContext(activity);
-  }
+    public boolean isFpsCorrectionEnabled() {
+        return mIsFpsCorrectionEnabled;
+    }
+
+    public void setFpsCorrectionEnabled(boolean enabled) {
+        mIsFpsCorrectionEnabled = enabled;
+    }
+
+    public void setDoubleRefreshRateEnabled(boolean enabled) {
+        mSyncHelper.setDoubleRefreshRateEnabled(enabled);
+    }
+
+    public void setSkip24RateEnabled(boolean enabled) {
+        mSyncHelper.setSkip24RateEnabled(enabled);
+    }
+
+    private void resetStats() {
+        mSyncHelper.resetStats();
+    }
+
+    private float correctFrameRate(float frameRate) {
+        if (mIsFpsCorrectionEnabled && mFrameRateMapping.containsKey(frameRate)) {
+            return mFrameRateMapping.get(frameRate);
+        }
+
+        return frameRate;
+    }
+
+    private void setContext(Context activity) {
+        mSyncHelper.setContext(activity);
+    }
 }

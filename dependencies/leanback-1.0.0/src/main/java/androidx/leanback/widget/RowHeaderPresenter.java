@@ -21,200 +21,211 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.RestrictTo;
 import androidx.leanback.R;
 
 /**
- * RowHeaderPresenter provides a default presentation for {@link HeaderItem} using a {@link
- * RowHeaderView} and optionally a TextView for description. If a subclass creates its own view, the
- * subclass must also override {@link #onCreateViewHolder(ViewGroup)}, {@link
- * #onSelectLevelChanged(ViewHolder)}.
+ * RowHeaderPresenter provides a default presentation for {@link HeaderItem} using a
+ * {@link RowHeaderView} and optionally a TextView for description. If a subclass creates its own
+ * view, the subclass must also override {@link #onCreateViewHolder(ViewGroup)},
+ * {@link #onSelectLevelChanged(ViewHolder)}.
  */
 public class RowHeaderPresenter extends Presenter {
 
-  private final int mLayoutResourceId;
-  private final Paint mFontMeasurePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-  private boolean mNullItemVisibilityGone;
-  private final boolean mAnimateSelect;
-
-  /**
-   * Creates default RowHeaderPresenter using a title view and a description view.
-   *
-   * @see ViewHolder#RowHeaderPresenter.ViewHolder(View)
-   */
-  public RowHeaderPresenter() {
-    this(R.layout.lb_row_header);
-  }
-
-  /** @hide */
-  @RestrictTo(LIBRARY_GROUP)
-  public RowHeaderPresenter(int layoutResourceId) {
-    this(layoutResourceId, true);
-  }
-
-  /** @hide */
-  @RestrictTo(LIBRARY_GROUP)
-  public RowHeaderPresenter(int layoutResourceId, boolean animateSelect) {
-    mLayoutResourceId = layoutResourceId;
-    mAnimateSelect = animateSelect;
-  }
-
-  /** Optionally sets the view visibility to {@link View#GONE} when bound to null. */
-  public void setNullItemVisibilityGone(boolean nullItemVisibilityGone) {
-    mNullItemVisibilityGone = nullItemVisibilityGone;
-  }
-
-  /** Returns true if the view visibility is set to {@link View#GONE} when bound to null. */
-  public boolean isNullItemVisibilityGone() {
-    return mNullItemVisibilityGone;
-  }
-
-  /** A ViewHolder for the RowHeaderPresenter. */
-  public static class ViewHolder extends Presenter.ViewHolder {
-    float mSelectLevel;
-    int mOriginalTextColor;
-    float mUnselectAlpha;
-    RowHeaderView mTitleView;
-    TextView mDescriptionView;
+    private final int mLayoutResourceId;
+    private final Paint mFontMeasurePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private boolean mNullItemVisibilityGone;
+    private final boolean mAnimateSelect;
 
     /**
-     * Creating a new ViewHolder that supports title and description.
-     *
-     * @param view Root of Views.
+     * Creates default RowHeaderPresenter using a title view and a description view.
+     * @see ViewHolder#RowHeaderPresenter.ViewHolder(View)
      */
-    public ViewHolder(View view) {
-      super(view);
-      mTitleView = (RowHeaderView) view.findViewById(R.id.row_header);
-      mDescriptionView = (TextView) view.findViewById(R.id.row_header_description);
-      initColors();
+    public RowHeaderPresenter() {
+        this(R.layout.lb_row_header);
     }
 
     /**
-     * Uses a single {@link RowHeaderView} for creating a new ViewHolder.
-     *
-     * @param view The single RowHeaderView.
      * @hide
      */
     @RestrictTo(LIBRARY_GROUP)
-    public ViewHolder(RowHeaderView view) {
-      super(view);
-      mTitleView = view;
-      initColors();
+    public RowHeaderPresenter(int layoutResourceId) {
+        this(layoutResourceId, true);
     }
 
-    void initColors() {
-      if (mTitleView != null) {
-        mOriginalTextColor = mTitleView.getCurrentTextColor();
-      }
-
-      mUnselectAlpha =
-          view.getResources().getFraction(R.fraction.lb_browse_header_unselect_alpha, 1, 1);
+    /**
+     * @hide
+     */
+    @RestrictTo(LIBRARY_GROUP)
+    public RowHeaderPresenter(int layoutResourceId, boolean animateSelect) {
+        mLayoutResourceId = layoutResourceId;
+        mAnimateSelect = animateSelect;
     }
 
-    public final float getSelectLevel() {
-      return mSelectLevel;
+    /**
+     * Optionally sets the view visibility to {@link View#GONE} when bound to null.
+     */
+    public void setNullItemVisibilityGone(boolean nullItemVisibilityGone) {
+        mNullItemVisibilityGone = nullItemVisibilityGone;
     }
-  }
 
-  @Override
-  public Presenter.ViewHolder onCreateViewHolder(ViewGroup parent) {
-    View root = LayoutInflater.from(parent.getContext()).inflate(mLayoutResourceId, parent, false);
-
-    ViewHolder viewHolder = new ViewHolder(root);
-    if (mAnimateSelect) {
-      setSelectLevel(viewHolder, 0);
+    /**
+     * Returns true if the view visibility is set to {@link View#GONE} when bound to null.
+     */
+    public boolean isNullItemVisibilityGone() {
+        return mNullItemVisibilityGone;
     }
-    return viewHolder;
-  }
 
-  @Override
-  public void onBindViewHolder(Presenter.ViewHolder viewHolder, Object item) {
-    HeaderItem headerItem = item == null ? null : ((Row) item).getHeaderItem();
-    RowHeaderPresenter.ViewHolder vh = (RowHeaderPresenter.ViewHolder) viewHolder;
-    if (headerItem == null) {
-      if (vh.mTitleView != null) {
-        vh.mTitleView.setText(null);
-      }
-      if (vh.mDescriptionView != null) {
-        vh.mDescriptionView.setText(null);
-      }
+    /**
+     * A ViewHolder for the RowHeaderPresenter.
+     */
+    public static class ViewHolder extends Presenter.ViewHolder {
+        float mSelectLevel;
+        int mOriginalTextColor;
+        float mUnselectAlpha;
+        RowHeaderView mTitleView;
+        TextView mDescriptionView;
 
-      viewHolder.view.setContentDescription(null);
-      if (mNullItemVisibilityGone) {
-        viewHolder.view.setVisibility(View.GONE);
-      }
-    } else {
-      if (vh.mTitleView != null) {
-        // MOD: hide row header if the title is null
-        // vh.mTitleView.setText(headerItem.getName());
-        String name = headerItem.getName();
-        vh.mTitleView.setText(name);
-        vh.mTitleView.setVisibility(name != null ? View.VISIBLE : View.GONE);
-      }
-      if (vh.mDescriptionView != null) {
-        if (TextUtils.isEmpty(headerItem.getDescription())) {
-          vh.mDescriptionView.setVisibility(View.GONE);
-        } else {
-          vh.mDescriptionView.setVisibility(View.VISIBLE);
+        /**
+         * Creating a new ViewHolder that supports title and description.
+         * @param view Root of Views.
+         */
+        public ViewHolder(View view) {
+            super(view);
+            mTitleView = (RowHeaderView)view.findViewById(R.id.row_header);
+            mDescriptionView = (TextView)view.findViewById(R.id.row_header_description);
+            initColors();
         }
-        vh.mDescriptionView.setText(headerItem.getDescription());
-      }
-      viewHolder.view.setContentDescription(headerItem.getContentDescription());
-      viewHolder.view.setVisibility(View.VISIBLE);
-    }
-  }
 
-  @Override
-  public void onUnbindViewHolder(Presenter.ViewHolder viewHolder) {
-    RowHeaderPresenter.ViewHolder vh = (ViewHolder) viewHolder;
-    if (vh.mTitleView != null) {
-      vh.mTitleView.setText(null);
-    }
-    if (vh.mDescriptionView != null) {
-      vh.mDescriptionView.setText(null);
+        /**
+         * Uses a single {@link RowHeaderView} for creating a new ViewHolder.
+         * @param view The single RowHeaderView.
+         * @hide
+         */
+        @RestrictTo(LIBRARY_GROUP)
+        public ViewHolder(RowHeaderView view) {
+            super(view);
+            mTitleView = view;
+            initColors();
+        }
+
+        void initColors() {
+            if (mTitleView != null) {
+                mOriginalTextColor = mTitleView.getCurrentTextColor();
+            }
+
+            mUnselectAlpha = view.getResources().getFraction(
+                    R.fraction.lb_browse_header_unselect_alpha, 1, 1);
+        }
+
+        public final float getSelectLevel() {
+            return mSelectLevel;
+        }
     }
 
-    if (mAnimateSelect) {
-      setSelectLevel((ViewHolder) viewHolder, 0);
-    }
-  }
+    @Override
+    public Presenter.ViewHolder onCreateViewHolder(ViewGroup parent) {
+        View root = LayoutInflater.from(parent.getContext())
+                .inflate(mLayoutResourceId, parent, false);
 
-  /** Sets the select level. */
-  public final void setSelectLevel(ViewHolder holder, float selectLevel) {
-    holder.mSelectLevel = selectLevel;
-    onSelectLevelChanged(holder);
-  }
+        ViewHolder viewHolder = new ViewHolder(root);
+        if (mAnimateSelect) {
+            setSelectLevel(viewHolder, 0);
+        }
+        return viewHolder;
+    }
 
-  /**
-   * Called when the select level changes. The default implementation sets the alpha on the view.
-   */
-  protected void onSelectLevelChanged(ViewHolder holder) {
-    if (mAnimateSelect) {
-      holder.view.setAlpha(
-          holder.mUnselectAlpha + holder.mSelectLevel * (1f - holder.mUnselectAlpha));
-    }
-  }
+    @Override
+    public void onBindViewHolder(Presenter.ViewHolder viewHolder, Object item) {
+        HeaderItem headerItem = item == null ? null : ((Row) item).getHeaderItem();
+        RowHeaderPresenter.ViewHolder vh = (RowHeaderPresenter.ViewHolder)viewHolder;
+        if (headerItem == null) {
+            if (vh.mTitleView != null) {
+                vh.mTitleView.setText(null);
+            }
+            if (vh.mDescriptionView != null) {
+                vh.mDescriptionView.setText(null);
+            }
 
-  /**
-   * Returns the space (distance in pixels) below the baseline of the text view, if one exists;
-   * otherwise, returns 0.
-   */
-  public int getSpaceUnderBaseline(ViewHolder holder) {
-    int space = holder.view.getPaddingBottom();
-    if (holder.view instanceof TextView) {
-      space += (int) getFontDescent((TextView) holder.view, mFontMeasurePaint);
+            viewHolder.view.setContentDescription(null);
+            if (mNullItemVisibilityGone) {
+                viewHolder.view.setVisibility(View.GONE);
+            }
+        } else {
+            if (vh.mTitleView != null) {
+                // MOD: hide row header if the title is null
+                //vh.mTitleView.setText(headerItem.getName());
+                String name = headerItem.getName();
+                vh.mTitleView.setText(name);
+                vh.mTitleView.setVisibility(name != null ? View.VISIBLE : View.GONE);
+            }
+            if (vh.mDescriptionView != null) {
+                if (TextUtils.isEmpty(headerItem.getDescription())) {
+                    vh.mDescriptionView.setVisibility(View.GONE);
+                } else {
+                    vh.mDescriptionView.setVisibility(View.VISIBLE);
+                }
+                vh.mDescriptionView.setText(headerItem.getDescription());
+            }
+            viewHolder.view.setContentDescription(headerItem.getContentDescription());
+            viewHolder.view.setVisibility(View.VISIBLE);
+        }
     }
-    return space;
-  }
 
-  @SuppressWarnings("ReferenceEquality")
-  protected static float getFontDescent(TextView textView, Paint fontMeasurePaint) {
-    if (fontMeasurePaint.getTextSize() != textView.getTextSize()) {
-      fontMeasurePaint.setTextSize(textView.getTextSize());
+    @Override
+    public void onUnbindViewHolder(Presenter.ViewHolder viewHolder) {
+        RowHeaderPresenter.ViewHolder vh = (ViewHolder)viewHolder;
+        if (vh.mTitleView != null) {
+            vh.mTitleView.setText(null);
+        }
+        if (vh.mDescriptionView != null) {
+            vh.mDescriptionView.setText(null);
+        }
+
+        if (mAnimateSelect) {
+            setSelectLevel((ViewHolder) viewHolder, 0);
+        }
     }
-    if (fontMeasurePaint.getTypeface() != textView.getTypeface()) {
-      fontMeasurePaint.setTypeface(textView.getTypeface());
+
+    /**
+     * Sets the select level.
+     */
+    public final void setSelectLevel(ViewHolder holder, float selectLevel) {
+        holder.mSelectLevel = selectLevel;
+        onSelectLevelChanged(holder);
     }
-    return fontMeasurePaint.descent();
-  }
+
+    /**
+     * Called when the select level changes.  The default implementation sets the alpha on the view.
+     */
+    protected void onSelectLevelChanged(ViewHolder holder) {
+        if (mAnimateSelect) {
+            holder.view.setAlpha(holder.mUnselectAlpha + holder.mSelectLevel
+                    * (1f - holder.mUnselectAlpha));
+        }
+    }
+
+    /**
+     * Returns the space (distance in pixels) below the baseline of the
+     * text view, if one exists; otherwise, returns 0.
+     */
+    public int getSpaceUnderBaseline(ViewHolder holder) {
+        int space = holder.view.getPaddingBottom();
+        if (holder.view instanceof TextView) {
+            space += (int) getFontDescent((TextView) holder.view, mFontMeasurePaint);
+        }
+        return space;
+    }
+
+    @SuppressWarnings("ReferenceEquality")
+    protected static float getFontDescent(TextView textView, Paint fontMeasurePaint) {
+        if (fontMeasurePaint.getTextSize() != textView.getTextSize()) {
+            fontMeasurePaint.setTextSize(textView.getTextSize());
+        }
+        if (fontMeasurePaint.getTypeface() != textView.getTypeface()) {
+            fontMeasurePaint.setTypeface(textView.getTypeface());
+        }
+        return fontMeasurePaint.descent();
+    }
 }

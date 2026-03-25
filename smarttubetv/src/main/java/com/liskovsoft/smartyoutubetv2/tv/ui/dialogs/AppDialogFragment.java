@@ -101,11 +101,13 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
         }
     }
 
+    @Override
     public boolean onPreferenceStartFragment(PreferenceFragment preferenceFragment, Preference preference) {
         // Contains only child fragments.
         return false;
     }
 
+    @Override
     public boolean onPreferenceStartScreen(PreferenceFragment preferenceFragment, PreferenceScreen preferenceScreen) {
         // Contains only child fragments.
         return false;
@@ -120,7 +122,6 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void show(List<OptionCategory> categories, String title, boolean isExpandable, boolean isTransparent, boolean isOverlay, int id) {
         if (!Utils.checkActivity(getActivity())) {
             return;
@@ -143,6 +144,7 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
         }
     }
 
+    @Override
     public boolean onPreferenceDisplayDialog(@Nullable PreferenceFragment caller, @NonNull Preference pref) {
         // Fix: IllegalStateException: Activity has been destroyed
         if (!Utils.checkActivity(getActivity())) {
@@ -209,9 +211,11 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
     /**
      * Fix possible state loss!!!
      */
+    @Override
     public void startPreferenceFragment(@NonNull Fragment fragment) {
         final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        final Fragment prevFragment = getChildFragmentManager().findFragmentByTag(PREFERENCE_FRAGMENT_TAG);
+        final Fragment prevFragment =
+                getChildFragmentManager().findFragmentByTag(PREFERENCE_FRAGMENT_TAG);
         if (prevFragment != null) {
             transaction
                     .addToBackStack(null)
@@ -234,7 +238,6 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void goBack() {
         if (getChildFragmentManager() != null && getChildFragmentManager().getBackStackEntryCount() > 0) {
             getChildFragmentManager().popBackStack();

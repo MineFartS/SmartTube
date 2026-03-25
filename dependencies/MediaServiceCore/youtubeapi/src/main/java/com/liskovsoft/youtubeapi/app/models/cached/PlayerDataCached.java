@@ -1,98 +1,88 @@
 package com.liskovsoft.youtubeapi.app.models.cached;
 
 import androidx.annotation.NonNull;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.app.models.PlayerData;
 
 public class PlayerDataCached extends PlayerData {
-  private static final String DELIM = "%pdc%";
-  private final String mPlayerUrl;
-  private final String mClientPlaybackNonceFunction;
-  private final String mRawClientPlaybackNonceFunction;
-  private final String mDecipherFunction;
-  private final String mSignatureTimestamp;
+    private static final String DELIM = "%pdc%";
+    private final String mPlayerUrl;
+    private final String mClientPlaybackNonceFunction;
+    private final String mRawClientPlaybackNonceFunction;
+    private final String mDecipherFunction;
+    private final String mSignatureTimestamp;
 
-  public PlayerDataCached(
-      String playerUrl,
-      String clientPlaybackNonceFunction,
-      String rawClientPlaybackNonceFunction,
-      String decipherFunction,
-      String signatureTimestamp) {
-    mPlayerUrl = playerUrl;
-    mClientPlaybackNonceFunction = clientPlaybackNonceFunction;
-    mRawClientPlaybackNonceFunction = rawClientPlaybackNonceFunction;
-    mDecipherFunction = decipherFunction;
-    mSignatureTimestamp = signatureTimestamp;
-  }
-
-  public static PlayerDataCached fromString(String spec) {
-    if (spec == null) {
-      return null;
+    public PlayerDataCached(String playerUrl,
+                             String clientPlaybackNonceFunction,
+                             String rawClientPlaybackNonceFunction,
+                             String decipherFunction,
+                             String signatureTimestamp) {
+        mPlayerUrl = playerUrl;
+        mClientPlaybackNonceFunction = clientPlaybackNonceFunction;
+        mRawClientPlaybackNonceFunction = rawClientPlaybackNonceFunction;
+        mDecipherFunction = decipherFunction;
+        mSignatureTimestamp = signatureTimestamp;
     }
 
-    String[] split = Helpers.split(spec, DELIM);
+    public static PlayerDataCached fromString(String spec) {
+        if (spec == null) {
+            return null;
+        }
 
-    return new PlayerDataCached(
-        Helpers.parseStr(split, 0),
-        Helpers.parseStr(split, 1),
-        Helpers.parseStr(split, 2),
-        Helpers.parseStr(split, 3),
-        Helpers.parseStr(split, 4));
-  }
+        String[] split = Helpers.split(spec, DELIM);
 
-  public static PlayerDataCached from(String playerUrl, PlayerData playerData) {
-    if (playerData == null) {
-      return null;
+        return new PlayerDataCached(
+                Helpers.parseStr(split, 0),
+                Helpers.parseStr(split, 1),
+                Helpers.parseStr(split, 2),
+                Helpers.parseStr(split, 3),
+                Helpers.parseStr(split, 4));
     }
 
-    return new PlayerDataCached(
-        playerUrl,
-        playerData.getClientPlaybackNonceFunction(),
-        playerData.getRawClientPlaybackNonceFunction(),
-        playerData.getDecipherFunction(),
-        playerData.getSignatureTimestamp());
-  }
+    public static PlayerDataCached from(String playerUrl, PlayerData playerData) {
+        if (playerData == null) {
+            return null;
+        }
 
-  @NonNull
-  @Override
-  public String toString() {
-    return Helpers.merge(
-        DELIM,
-        mPlayerUrl,
-        mClientPlaybackNonceFunction,
-        mRawClientPlaybackNonceFunction,
-        mDecipherFunction,
-        mSignatureTimestamp);
-  }
+        return new PlayerDataCached(playerUrl,
+                playerData.getClientPlaybackNonceFunction(),
+                playerData.getRawClientPlaybackNonceFunction(),
+                playerData.getDecipherFunction(),
+                playerData.getSignatureTimestamp());
+    }
 
-  @Override
-  public String getClientPlaybackNonceFunction() {
-    return mClientPlaybackNonceFunction;
-  }
+    @NonNull
+    @Override
+    public String toString() {
+        return Helpers.merge(DELIM, mPlayerUrl, mClientPlaybackNonceFunction, mRawClientPlaybackNonceFunction, mDecipherFunction, mSignatureTimestamp);
+    }
 
-  @Override
-  public String getRawClientPlaybackNonceFunction() {
-    return mRawClientPlaybackNonceFunction;
-  }
+    @Override
+    public String getClientPlaybackNonceFunction() {
+        return mClientPlaybackNonceFunction;
+    }
 
-  @Override
-  public String getDecipherFunction() {
-    return mDecipherFunction;
-  }
+    @Override
+    public String getRawClientPlaybackNonceFunction() {
+        return mRawClientPlaybackNonceFunction;
+    }
 
-  @Override
-  public String getSignatureTimestamp() {
-    return mSignatureTimestamp;
-  }
+    @Override
+    public String getDecipherFunction() {
+        return mDecipherFunction;
+    }
 
-  public String getPlayerUrl() {
-    return mPlayerUrl;
-  }
+    @Override
+    public String getSignatureTimestamp() {
+        return mSignatureTimestamp;
+    }
 
-  public boolean validate() {
-    return mClientPlaybackNonceFunction != null
-        && mRawClientPlaybackNonceFunction != null
-        && mDecipherFunction != null
-        && mSignatureTimestamp != null;
-  }
+    public String getPlayerUrl() {
+        return mPlayerUrl;
+    }
+
+    public boolean validate() {
+        return mClientPlaybackNonceFunction != null && mRawClientPlaybackNonceFunction != null && mDecipherFunction != null && mSignatureTimestamp != null;
+    }
 }

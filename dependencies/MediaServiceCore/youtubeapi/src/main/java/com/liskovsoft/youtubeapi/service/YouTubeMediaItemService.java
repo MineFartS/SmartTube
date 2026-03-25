@@ -2,6 +2,7 @@ package com.liskovsoft.youtubeapi.service;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.liskovsoft.mediaserviceinterfaces.MediaItemService;
 import com.liskovsoft.mediaserviceinterfaces.data.DeArrowData;
 import com.liskovsoft.mediaserviceinterfaces.data.DislikeData;
@@ -33,6 +34,7 @@ import com.liskovsoft.youtubeapi.track.TrackingService;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import io.reactivex.Observable;
+
 import java.util.List;
 import java.util.Set;
 
@@ -52,7 +54,9 @@ public class YouTubeMediaItemService implements MediaItemService {
         return sInstance;
     }
 
-    /** Format info is cached because it's supposed to run in multiple methods */
+    /**
+     * Format info is cached because it's supposed to run in multiple methods
+     */
     @Override
     public YouTubeMediaItemFormatInfo getFormatInfo(MediaItem item) {
         return getFormatInfo(item.getVideoId(), item.getClickTrackingParams());
@@ -68,6 +72,8 @@ public class YouTubeMediaItemService implements MediaItemService {
         YouTubeMediaItemFormatInfo cachedFormatInfo = getCachedFormatInfo(videoId);
 
         if (cachedFormatInfo != null) {
+            // Improve the performance by fetching the history data on the second run
+            //syncWithAuthFormatIfNeeded(cachedFormatInfo);
             return cachedFormatInfo;
         }
 
@@ -93,8 +99,7 @@ public class YouTubeMediaItemService implements MediaItemService {
     }
 
     @Override
-    public Observable<MediaItemFormatInfo> getFormatInfoObserve(
-            String videoId, String clickTrackingParams) {
+    public Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId, String clickTrackingParams) {
         return RxHelper.fromCallable(() -> getFormatInfo(videoId, clickTrackingParams));
     }
 
@@ -121,13 +126,11 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     @Override
     public MediaItemMetadata getMetadata(MediaItem item) {
-        return getMetadata(
-                item.getVideoId(), item.getPlaylistId(), item.getPlaylistIndex(), item.getParams());
+        return getMetadata(item.getVideoId(), item.getPlaylistId(), item.getPlaylistIndex(), item.getParams());
     }
 
     @Override
-    public MediaItemMetadata getMetadata(
-            String videoId, String playlistId, int playlistIndex, String playlistParams) {
+    public MediaItemMetadata getMetadata(String videoId, String playlistId, int playlistIndex, String playlistParams) {
         return getWatchNextService().getMetadata(videoId, playlistId, playlistIndex, playlistParams);
     }
 
@@ -138,18 +141,17 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     @Override
     public Observable<MediaItemMetadata> getMetadataObserve(MediaItem item) {
-        return RxHelper.create(
-                emitter -> {
-                    MediaItemMetadata metadata = getMetadata(item);
+        return RxHelper.create(emitter -> {
+            MediaItemMetadata metadata = getMetadata(item);
 
-                    if (metadata != null) {
-                        syncItem(item, metadata);
-                        emitter.onNext(metadata);
-                        emitter.onComplete();
-                    } else {
-                        RxHelper.onError(emitter, "getMetadataObserve result is null");
-                    }
-                });
+            if (metadata != null) {
+                syncItem(item, metadata);
+                emitter.onNext(metadata);
+                emitter.onComplete();
+            } else {
+                RxHelper.onError(emitter, "getMetadataObserve result is null");
+            }
+        });
     }
 
     @Override
@@ -158,58 +160,48 @@ public class YouTubeMediaItemService implements MediaItemService {
     }
 
     @Override
-    public Observable<MediaItemMetadata> getMetadataObserve(
-            String videoId, String playlistId, int playlistIndex, String playlistParams) {
-        return RxHelper.fromCallable(
-                () -> getMetadata(videoId, playlistId, playlistIndex, playlistParams));
+    public Observable<MediaItemMetadata> getMetadataObserve(String videoId, String playlistId, int playlistIndex, String playlistParams) {
+        return RxHelper.fromCallable(() -> getMetadata(videoId, playlistId, playlistIndex, playlistParams));
     }
 
     @Override
     public void updateHistoryPosition(MediaItem item, float positionSec) {
-        updateHistoryPosition(
-                item.getVideoId(),
-                positionSec);
+        checkSigned();
+
+        updateHistoryPosition(item.getVideoId(), positionSec);
     }
 
     @Override
     public void updateHistoryPosition(String videoId, float positionSec) {
-
         checkSigned();
 
-        String errMess = "Can't update history for video id %s. ".format(videoId);
-
-        YouTubeMediaItemFormatInfo formatInfo;
-
-        try {
-            formatInfo = getFormatInfo(videoId);
-        } catch (Exception e) {
-            formatInfo = null;
-            Log.e(TAG, errMess, e);
-        }
+        YouTubeMediaItemFormatInfo formatInfo = getFormatInfo(videoId);
 
         if (formatInfo == null) {
-            Log.e(TAG, errMess + "formatInfo == null", videoId);
+            Log.e(TAG, "Can't update history for video id %s. formatInfo == null", videoId);
             return;
         }
 
         // Improve the performance by fetching the history data on the second run
         syncWithAuthFormatIfNeeded(formatInfo);
 
-        if (formatInfo.getEventId() == null
-                || formatInfo.getVisitorMonitoringData() == null
-                || formatInfo.getOfParam() == null) {
-            Log.w(TAG, "Update history skipped: missing tracking params for videoId %s", videoId);
-            return;
+        if (shouldBeSynced(formatInfo)) {
+            throw new IllegalStateException("Update history error: the format should be synced first");
         }
 
-        getTrackingService()
-                .updateWatchTime(
-                        formatInfo.getVideoId(),
-                        positionSec,
-                        Helpers.parseFloat(formatInfo.getLengthSeconds()),
-                        formatInfo.getEventId(),
-                        formatInfo.getVisitorMonitoringData(),
-                        formatInfo.getOfParam());
+        getTrackingService().updateWatchTime(
+                formatInfo.getVideoId(), positionSec, Helpers.parseFloat(formatInfo.getLengthSeconds()), formatInfo.getEventId(),
+                formatInfo.getVisitorMonitoringData(), formatInfo.getOfParam());
+    }
+
+    @Override
+    public Observable<Void> updateHistoryPositionObserve(MediaItem item, float positionSec) {
+        return RxHelper.fromRunnable(() -> updateHistoryPosition(item, positionSec));
+    }
+
+    @Override
+    public Observable<Void> updateHistoryPositionObserve(String videoId, float positionSec) {
+        return RxHelper.fromRunnable(() -> updateHistoryPosition(videoId, positionSec));
     }
 
     @Override
@@ -469,8 +461,7 @@ public class YouTubeMediaItemService implements MediaItemService {
     }
 
     @Override
-    public Observable<List<SponsorSegment>> getSponsorSegmentsObserve(
-            String videoId, Set<String> categories) {
+    public Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId, Set<String> categories) {
         return RxHelper.fromCallable(() -> getSponsorSegments(videoId, categories));
     }
 
@@ -481,16 +472,15 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     @Override
     public Observable<DeArrowData> getDeArrowDataObserve(List<String> videoIds) {
-        return RxHelper.create(
-                emitter -> {
-                    for (String videoId : videoIds) {
-                        DeArrowData result = getDeArrowData(videoId);
-                        if (result != null) {
-                            emitter.onNext(result);
-                        }
-                    }
-                    emitter.onComplete();
-                });
+        return RxHelper.create(emitter -> {
+            for (String videoId : videoIds) {
+                DeArrowData result = getDeArrowData(videoId);
+                if (result != null) {
+                    emitter.onNext(result);
+                }
+            }
+            emitter.onComplete();
+        });
     }
 
     private DeArrowData getDeArrowData(String videoId) {
@@ -512,16 +502,13 @@ public class YouTubeMediaItemService implements MediaItemService {
     }
 
     private YouTubeMediaItemFormatInfo getCachedFormatInfo(String videoId) {
-        return mCachedFormatInfo != null
-                && mCachedFormatInfo.getVideoId() != null
-                && mCachedFormatInfo.getVideoId().equals(videoId)
-                && mCachedFormatInfo.isCacheActual()
-                        ? mCachedFormatInfo
-                        : null;
+        return  mCachedFormatInfo != null &&
+                mCachedFormatInfo.getVideoId() != null &&
+                mCachedFormatInfo.getVideoId().equals(videoId) &&
+                mCachedFormatInfo.isCacheActual() ? mCachedFormatInfo : null;
     }
 
-    private void setCachedFormatInfo(
-            YouTubeMediaItemFormatInfo formatInfo, String clickTrackingParams) {
+    private void setCachedFormatInfo(YouTubeMediaItemFormatInfo formatInfo, String clickTrackingParams) {
         mCachedFormatInfo = formatInfo;
 
         if (formatInfo != null) {
@@ -579,8 +566,7 @@ public class YouTubeMediaItemService implements MediaItemService {
         }
 
         if (shouldBeSynced(formatInfo) && !formatInfo.isSynced()) {
-            VideoInfo videoInfo = getVideoInfoService()
-                    .getAuthVideoInfo(formatInfo.getVideoId(), formatInfo.getClickTrackingParams());
+            VideoInfo videoInfo = getVideoInfoService().getAuthVideoInfo(formatInfo.getVideoId(), formatInfo.getClickTrackingParams());
             formatInfo.sync(YouTubeMediaItemFormatInfo.from(videoInfo));
         }
     }

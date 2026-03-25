@@ -23,72 +23,75 @@ import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
+
 import com.stfalcon.chatkit.R;
 
-/** Base class for chat component styles */
+/**
+ * Base class for chat component styles
+ */
 public abstract class Style {
 
-  protected Context context;
-  protected Resources resources;
-  protected AttributeSet attrs;
+    protected Context context;
+    protected Resources resources;
+    protected AttributeSet attrs;
 
-  protected Style(Context context, AttributeSet attrs) {
-    this.context = context;
-    this.resources = context.getResources();
-    this.attrs = attrs;
-  }
+    protected Style(Context context, AttributeSet attrs) {
+        this.context = context;
+        this.resources = context.getResources();
+        this.attrs = attrs;
+    }
 
-  protected final int getSystemAccentColor() {
-    return getSystemColor(VERSION.SDK_INT >= 21 ? android.R.attr.colorAccent : R.attr.colorAccent);
-  }
+    protected final int getSystemAccentColor() {
+        return getSystemColor(VERSION.SDK_INT >= 21 ? android.R.attr.colorAccent : R.attr.colorAccent);
+    }
 
-  protected final int getSystemPrimaryColor() {
-    return getSystemColor(
-        VERSION.SDK_INT >= 21 ? android.R.attr.colorPrimary : R.attr.colorPrimary);
-  }
+    protected final int getSystemPrimaryColor() {
+        return getSystemColor(VERSION.SDK_INT >= 21 ? android.R.attr.colorPrimary : R.attr.colorPrimary);
+    }
 
-  protected final int getSystemPrimaryDarkColor() {
-    return getSystemColor(
-        VERSION.SDK_INT >= 21 ? android.R.attr.colorPrimaryDark : R.attr.colorPrimaryDark);
-  }
+    protected final int getSystemPrimaryDarkColor() {
+        return getSystemColor(VERSION.SDK_INT >= 21 ? android.R.attr.colorPrimaryDark : R.attr.colorPrimaryDark);
+    }
 
-  protected final int getSystemPrimaryTextColor() {
-    return getSystemColor(android.R.attr.textColorPrimary);
-  }
+    protected final int getSystemPrimaryTextColor() {
+        return getSystemColor(android.R.attr.textColorPrimary);
+    }
 
-  protected final int getSystemHintColor() {
-    return getSystemColor(android.R.attr.textColorHint);
-  }
+    protected final int getSystemHintColor() {
+        return getSystemColor(android.R.attr.textColorHint);
+    }
 
-  protected final int getSystemColor(@AttrRes int attr) {
-    TypedValue typedValue = new TypedValue();
+    protected final int getSystemColor(@AttrRes int attr) {
+        TypedValue typedValue = new TypedValue();
 
-    TypedArray a = context.obtainStyledAttributes(typedValue.data, new int[] {attr});
-    // MOD: Invisible link fix on old devices (provide the default color)
-    int color = a.getColor(0, getColor(R.color.dark_red));
-    a.recycle();
+        TypedArray a = context.obtainStyledAttributes(typedValue.data, new int[]{attr});
+        // MOD: Invisible link fix on old devices (provide the default color)
+        int color = a.getColor(0, getColor(R.color.dark_red));
+        a.recycle();
 
-    return color;
-  }
+        return color;
+    }
 
-  protected final int getDimension(@DimenRes int dimen) {
-    return resources.getDimensionPixelSize(dimen);
-  }
+    protected final int getDimension(@DimenRes int dimen) {
+        return resources.getDimensionPixelSize(dimen);
+    }
 
-  protected final int getColor(@ColorRes int color) {
-    return ContextCompat.getColor(context, color);
-  }
+    protected final int getColor(@ColorRes int color) {
+        return ContextCompat.getColor(context, color);
+    }
 
-  protected final Drawable getDrawable(@DrawableRes int drawable) {
-    return ContextCompat.getDrawable(context, drawable);
-  }
+    protected final Drawable getDrawable(@DrawableRes int drawable) {
+        return ContextCompat.getDrawable(context, drawable);
+    }
 
-  protected final Drawable getVectorDrawable(@DrawableRes int drawable) {
-    return ContextCompat.getDrawable(context, drawable);
-  }
+    protected final Drawable getVectorDrawable(@DrawableRes int drawable) {
+        return ContextCompat.getDrawable(context, drawable);
+    }
+
 }

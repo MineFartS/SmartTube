@@ -17,13 +17,17 @@ package com.liskovsoft.googlecommon.common.converters.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
+
 import java.io.IOException;
+import java.nio.charset.Charset;
+
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Converter;
 
 final class GsonRequestBodyConverter<T> implements Converter<T, RequestBody> {
   private static final MediaType MEDIA_TYPE = MediaType.get("application/json; charset=UTF-8");
+
 
   private final Gson gson;
   private final TypeAdapter<T> adapter;
@@ -33,11 +37,9 @@ final class GsonRequestBodyConverter<T> implements Converter<T, RequestBody> {
     this.adapter = adapter;
   }
 
-  @Override
-  public RequestBody convert(T value) throws IOException {
+  @Override public RequestBody convert(T value) throws IOException {
 
     // Accept raw json body as a String
-    return RequestBody.create(
-        MEDIA_TYPE, value instanceof String ? (String) value : gson.toJson(value));
+    return RequestBody.create(MEDIA_TYPE, value instanceof String ? (String) value : gson.toJson(value));
   }
 }

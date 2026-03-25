@@ -16,118 +16,102 @@ import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.versions.selector.BlacklistMediaCodecSelector;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerTweaksData;
+
 import java.util.ArrayList;
 
-/** Main intent: override audio delay */
+/**
+ * Main intent: override audio delay
+ */
 public class CustomOverridesRenderersFactory extends CustomRenderersFactoryBase {
 
-  private final PlayerData mPlayerData;
-  private final PlayerTweaksData mPlayerTweaksData;
+    private final PlayerData mPlayerData;
+    private final PlayerTweaksData mPlayerTweaksData;
 
-  // 2.9, 2.10, 2.11
-  public CustomOverridesRenderersFactory(Context activity) {
-    super(activity);
+    // 2.9, 2.10, 2.11
+    public CustomOverridesRenderersFactory(Context activity) {
+        super(activity);
 
-    mPlayerData = PlayerData.instance(activity);
-    mPlayerTweaksData = PlayerTweaksData.instance(activity);
+        mPlayerData = PlayerData.instance(activity);
+        mPlayerTweaksData = PlayerTweaksData.instance(activity);
 
-    setExtensionRendererMode(EXTENSION_RENDERER_MODE_ON);
+        setExtensionRendererMode(EXTENSION_RENDERER_MODE_ON);
 
-    if (mPlayerTweaksData.isSWDecoderForced()) {
-      setMediaCodecSelector(new BlacklistMediaCodecSelector());
+        if (mPlayerTweaksData.isSWDecoderForced()) {
+            setMediaCodecSelector(new BlacklistMediaCodecSelector());
+        }
+
+        AmazonQuirks.skipProfileLevelCheck(mPlayerTweaksData.isProfileLevelCheckSkipped());
     }
 
-    AmazonQuirks.skipProfileLevelCheck(mPlayerTweaksData.isProfileLevelCheckSkipped());
-  }
+    // 2.10, 2.11
+    @Override
+    protected void buildAudioRenderers(Context context, @ExtensionRendererMode int extensionRendererMode, MediaCodecSelector mediaCodecSelector,
+                                       @Nullable DrmSessionManager<FrameworkMediaCrypto> drmSessionManager, boolean playClearSamplesWithoutKeys,
+                                       boolean enableDecoderFallback, AudioProcessor[] audioProcessors, Handler eventHandler,
+                                       AudioRendererEventListener eventListener, ArrayList<Renderer> out) {
+        super.buildAudioRenderers(context, extensionRendererMode, mediaCodecSelector, drmSessionManager, playClearSamplesWithoutKeys,
+                enableDecoderFallback, audioProcessors, eventHandler, eventListener, out);
 
-  // 2.10, 2.11
-  @Override
-  protected void buildAudioRenderers(
-      Context context,
-      @ExtensionRendererMode int extensionRendererMode,
-      MediaCodecSelector mediaCodecSelector,
-      @Nullable DrmSessionManager<FrameworkMediaCrypto> drmSessionManager,
-      boolean playClearSamplesWithoutKeys,
-      boolean enableDecoderFallback,
-      AudioProcessor[] audioProcessors,
-      Handler eventHandler,
-      AudioRendererEventListener eventListener,
-      ArrayList<Renderer> out) {
-    super.buildAudioRenderers(
-        context,
-        extensionRendererMode,
-        mediaCodecSelector,
-        drmSessionManager,
-        playClearSamplesWithoutKeys,
-        enableDecoderFallback,
-        audioProcessors,
-        eventHandler,
-        eventListener,
-        out);
+        if (mPlayerData.getAudioDelayMs() == 0 && !mPlayerTweaksData.isAudioSyncFixEnabled()) {
+            // Improve performance a bit by eliminating calculations presented in custom renderer.
 
-    if (mPlayerData.getAudioDelayMs() == 0 && !mPlayerTweaksData.isAudioSyncFixEnabled()) {
-      // Improve performance a bit by eliminating calculations presented in custom renderer.
+            return;
+        }
 
-      return;
+        DelayMediaCodecAudioRenderer audioRenderer =
+                new DelayMediaCodecAudioRenderer(context, mediaCodecSelector, drmSessionManager, playClearSamplesWithoutKeys, enableDecoderFallback,
+                        eventHandler, eventListener, new DefaultAudioSink(AudioCapabilities.getCapabilities(context), audioProcessors));
+
+        audioRenderer.setAudioDelayMs(mPlayerData.getAudioDelayMs());
+        audioRenderer.enableAudioSyncFix(mPlayerTweaksData.isAudioSyncFixEnabled());
+
+        replaceAudioRenderer(out, audioRenderer);
     }
 
-    DelayMediaCodecAudioRenderer audioRenderer =
-        new DelayMediaCodecAudioRenderer(
-            context,
-            mediaCodecSelector,
-            drmSessionManager,
+    // 2.10, 2.11
+    @Override
+    protected void buildVideoRenderers(
+        Context context, 
+        int extensionRendererMode, 
+        MediaCodecSelector mediaCodecSelector,
+        @Nullable DrmSessionManager<FrameworkMediaCrypto> drmSessionManager, 
+        boolean playClearSamplesWithoutKeys,
+        boolean enableDecoderFallback, 
+        Handler eventHandler, 
+        VideoRendererEventListener eventListener,
+        long allowedVideoJoiningTimeMs, 
+        ArrayList<Renderer> out
+    ) {
+        
+        super.buildVideoRenderers(
+            context, 
+            extensionRendererMode, 
+            mediaCodecSelector, 
+            drmSessionManager, 
             playClearSamplesWithoutKeys,
-            enableDecoderFallback,
-            eventHandler,
-            eventListener,
-            new DefaultAudioSink(AudioCapabilities.getCapabilities(context), audioProcessors));
-
-    audioRenderer.setAudioDelayMs(mPlayerData.getAudioDelayMs());
-    audioRenderer.enableAudioSyncFix(mPlayerTweaksData.isAudioSyncFixEnabled());
-
-    replaceAudioRenderer(out, audioRenderer);
-  }
-
-  // 2.10, 2.11
-  @Override
-  protected void buildVideoRenderers(
-      Context context,
-      int extensionRendererMode,
-      MediaCodecSelector mediaCodecSelector,
-      @Nullable DrmSessionManager<FrameworkMediaCrypto> drmSessionManager,
-      boolean playClearSamplesWithoutKeys,
-      boolean enableDecoderFallback,
-      Handler eventHandler,
-      VideoRendererEventListener eventListener,
-      long allowedVideoJoiningTimeMs,
-      ArrayList<Renderer> out) {
-
-    super.buildVideoRenderers(
-        context,
-        extensionRendererMode,
-        mediaCodecSelector,
-        drmSessionManager,
-        playClearSamplesWithoutKeys,
-        enableDecoderFallback,
-        eventHandler,
-        eventListener,
-        allowedVideoJoiningTimeMs,
-        out);
-
-    DebugInfoMediaCodecVideoRenderer videoRenderer =
-        new DebugInfoMediaCodecVideoRenderer(
-            context,
-            mediaCodecSelector,
-            allowedVideoJoiningTimeMs,
+            enableDecoderFallback, 
+            eventHandler, 
+            eventListener, 
+            allowedVideoJoiningTimeMs, 
+            out
+        );
+        
+        DebugInfoMediaCodecVideoRenderer videoRenderer = new DebugInfoMediaCodecVideoRenderer(
+            context, 
+            mediaCodecSelector, 
+            allowedVideoJoiningTimeMs, 
             drmSessionManager,
-            playClearSamplesWithoutKeys,
-            enableDecoderFallback,
-            eventHandler,
-            eventListener,
-            MAX_DROPPED_VIDEO_FRAME_COUNT_TO_NOTIFY);
+            playClearSamplesWithoutKeys, 
+            enableDecoderFallback, 
+            eventHandler, 
+            eventListener, 
+            MAX_DROPPED_VIDEO_FRAME_COUNT_TO_NOTIFY
+        );
 
-    videoRenderer.enableSetOutputSurfaceWorkaround(true); // Force enable?
+        videoRenderer.enableSetOutputSurfaceWorkaround(true); // Force enable?
 
-    replaceVideoRenderer(out, videoRenderer);
-  }
+        replaceVideoRenderer(out, videoRenderer);
+
+    }
+
 }

@@ -8,6 +8,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
 public @interface RegExp {
-  /** Path for the desired json element */
-  String[] value();
+    /**
+     * Path for the desired json element
+     */
+    String[] value();
 }

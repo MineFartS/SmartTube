@@ -6,15 +6,11 @@ import com.liskovsoft.mediaserviceinterfaces.data.NotificationState;
 import io.reactivex.Observable;
 
 public interface NotificationsService {
-  MediaGroup getNotificationItems();
+    MediaGroup getNotificationItems();
+    void hideNotification(MediaItem item);
+    void setNotificationState(NotificationState state);
 
-  void hideNotification(MediaItem item);
-
-  void setNotificationState(NotificationState state);
-
-  Observable<MediaGroup> getNotificationItemsObserve();
-
-  Observable<Void> hideNotificationObserve(MediaItem item);
-
-  Observable<Void> setNotificationStateObserve(NotificationState state);
+    Observable<MediaGroup> getNotificationItemsObserve();
+    Observable<Void> hideNotificationObserve(MediaItem item);
+    Observable<Void> setNotificationStateObserve(NotificationState state);
 }

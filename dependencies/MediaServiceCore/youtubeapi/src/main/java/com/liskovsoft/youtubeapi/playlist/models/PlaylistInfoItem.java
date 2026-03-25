@@ -4,30 +4,30 @@ import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
 
 public class PlaylistInfoItem {
 
-  private static final String CONTAINS_SELECTED_ALL = "ALL";
+    private static final String CONTAINS_SELECTED_ALL = "ALL";
 
-  @JsonPath("$.playlistId")
-  private String mPlaylistId;
+    @JsonPath("$.playlistId")
+    private String mPlaylistId;
 
-  @JsonPath("$.title.simpleText")
-  private String mTitle;
+    @JsonPath("$.title.simpleText")
+    private String mTitle;
 
-  @JsonPath("$.containsSelectedVideos")
-  private String mContainsSelected;
+    @JsonPath("$.containsSelectedVideos")
+    private String mContainsSelected;
 
-  public String getPlaylistId() {
-    return mPlaylistId;
-  }
+    public String getPlaylistId() {
+        return mPlaylistId;
+    }
 
-  public String getTitle() {
-    return mTitle;
-  }
+    public String getTitle() {
+        return mTitle;
+    }
 
-  public String getContainsSelected() {
-    return mContainsSelected;
-  }
+    public String getContainsSelected() {
+        return mContainsSelected;
+    }
 
-  public boolean isSelected() {
-    return CONTAINS_SELECTED_ALL.equals(mContainsSelected);
-  }
+    public boolean isSelected() {
+        return CONTAINS_SELECTED_ALL.equals(mContainsSelected);
+    }
 }

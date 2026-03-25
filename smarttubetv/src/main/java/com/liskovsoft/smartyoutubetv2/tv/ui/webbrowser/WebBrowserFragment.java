@@ -15,55 +15,52 @@ import com.liskovsoft.smartyoutubetv2.common.app.views.WebBrowserView;
 import com.liskovsoft.smartyoutubetv2.tv.R;
 
 public class WebBrowserFragment extends Fragment implements WebBrowserView {
-  private WebView mWebView;
-  private WebBrowserPresenter mWebBrowserPresenter;
+    private WebView mWebView;
+    private WebBrowserPresenter mWebBrowserPresenter;
 
-  @Override
-  public void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    mWebBrowserPresenter = WebBrowserPresenter.instance(getContext());
-    mWebBrowserPresenter.setView(this);
-  }
-
-  @Nullable
-  @Override
-  public View onCreateView(
-      @NonNull LayoutInflater inflater,
-      @Nullable ViewGroup container,
-      @Nullable Bundle savedInstanceState) {
-    try {
-      return inflater.inflate(R.layout.webbrowser, null);
-    } catch (Exception e) { // Failed to load WebView provider: No WebView installed
-      e.printStackTrace();
+        mWebBrowserPresenter = WebBrowserPresenter.instance(getContext());
+        mWebBrowserPresenter.setView(this);
     }
 
-    return null;
-  }
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        try {
+            return inflater.inflate(R.layout.webbrowser, null);
+        } catch (Exception e) { // Failed to load WebView provider: No WebView installed
+            e.printStackTrace();
+        }
 
-  @Override
-  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
+        return null;
+    }
 
-    mWebView = (WebView) view.findViewById(R.id.webview);
-    mWebView.setBackgroundColor(Color.TRANSPARENT);
-    WebSettings webSettings = mWebView.getSettings();
-    webSettings.setJavaScriptEnabled(true);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-    // No caching
-    // webSettings.setAppCacheEnabled(false);
-    webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-  }
+        mWebView = (WebView) view.findViewById(R.id.webview);
+        mWebView.setBackgroundColor(Color.TRANSPARENT);
+        WebSettings webSettings = mWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
 
-  @Override
-  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
+        // No caching
+        //webSettings.setAppCacheEnabled(false);
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+    }
 
-    mWebBrowserPresenter.onViewInitialized();
-  }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-  @Override
-  public void loadUrl(String url) {
-    mWebView.loadUrl(url);
-  }
+        mWebBrowserPresenter.onViewInitialized();
+    }
+
+    @Override
+    public void loadUrl(String url) {
+        mWebView.loadUrl(url);
+    }
 }

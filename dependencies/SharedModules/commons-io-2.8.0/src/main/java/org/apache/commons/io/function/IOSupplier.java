@@ -29,11 +29,12 @@ import java.util.function.Supplier;
 @FunctionalInterface
 public interface IOSupplier<T> {
 
-  /**
-   * Gets a result.
-   *
-   * @return a result
-   * @throws IOException if an IO error occurs whilst supplying the value.
-   */
-  T get() throws IOException;
+    /**
+     * Gets a result.
+     *
+     * @return a result
+     *
+     * @throws IOException if an IO error occurs whilst supplying the value.
+     */
+    T get() throws IOException;
 }

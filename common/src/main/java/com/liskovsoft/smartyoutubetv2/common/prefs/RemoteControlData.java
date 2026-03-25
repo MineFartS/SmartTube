@@ -7,118 +7,109 @@ import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import com.liskovsoft.smartyoutubetv2.common.prefs.common.DataChangeBase;
 
 public class RemoteControlData extends DataChangeBase {
-  private static final String DEVICE_LINK_DATA = "device_link_data";
+    private static final String DEVICE_LINK_DATA = "device_link_data";
+    @SuppressLint("StaticFieldLeak")
+    private static RemoteControlData sInstance;
+    private final Context mContext;
+    private final AppPrefs mAppPrefs;
+    private boolean mIsDeviceLinkEnabled;
+    
+    private boolean mIsFinishOnDisconnectEnabled;
+    private boolean mIsConnectMessagesEnabled;
+    private boolean mIsRemoteHistoryDisabled;
+    private Video mLastVideo;
+    private boolean mIsConnectedBefore;
 
-  @SuppressLint("StaticFieldLeak")
-  private static RemoteControlData sInstance;
-
-  private final Context mContext;
-  private final AppPrefs mAppPrefs;
-  private boolean mIsDeviceLinkEnabled;
-
-  private boolean mIsFinishOnDisconnectEnabled;
-  private boolean mIsConnectMessagesEnabled;
-  private boolean mIsRemoteHistoryDisabled;
-  private Video mLastVideo;
-  private boolean mIsConnectedBefore;
-
-  private RemoteControlData(Context context) {
-    mContext = context;
-    mAppPrefs = AppPrefs.instance(mContext);
-    restoreState();
-  }
-
-  public static RemoteControlData instance(Context context) {
-    if (sInstance == null) {
-      sInstance = new RemoteControlData(context.getApplicationContext());
+    private RemoteControlData(Context context) {
+        mContext = context;
+        mAppPrefs = AppPrefs.instance(mContext);
+        restoreState();
     }
 
-    return sInstance;
-  }
+    public static RemoteControlData instance(Context context) {
+        if (sInstance == null) {
+            sInstance = new RemoteControlData(context.getApplicationContext());
+        }
 
-  public void enableDeviceLink(boolean select) {
-    mIsDeviceLinkEnabled = select;
-    persistState();
-  }
+        return sInstance;
+    }
 
-  public boolean isDeviceLinkEnabled() {
-    // Merge device link and background service (saves memory)
-    return mIsDeviceLinkEnabled;
-  }
+    public void enableDeviceLink(boolean select) {
+        mIsDeviceLinkEnabled = select;
+        persistState();
+    }
 
-  public void enableFinishOnDisconnect(boolean enable) {
-    mIsFinishOnDisconnectEnabled = enable;
-    persistState();
-  }
+    public boolean isDeviceLinkEnabled() {
+        // Merge device link and background service (saves memory)
+        return mIsDeviceLinkEnabled;
+    }
 
-  public boolean isFinishOnDisconnectEnabled() {
-    return mIsFinishOnDisconnectEnabled;
-  }
+    public void enableFinishOnDisconnect(boolean enable) {
+        mIsFinishOnDisconnectEnabled = enable;
+        persistState();
+    }
 
-  public void enableConnectMessages(boolean enable) {
-    mIsConnectMessagesEnabled = enable;
-    persistState();
-  }
+    public boolean isFinishOnDisconnectEnabled() {
+        return mIsFinishOnDisconnectEnabled;
+    }
 
-  public boolean isConnectMessagesEnabled() {
-    return mIsConnectMessagesEnabled;
-  }
+    public void enableConnectMessages(boolean enable) {
+        mIsConnectMessagesEnabled = enable;
+        persistState();
+    }
 
-  public void disableRemoteHistory(boolean disable) {
-    mIsRemoteHistoryDisabled = disable;
-    persistState();
-  }
+    public boolean isConnectMessagesEnabled() {
+        return mIsConnectMessagesEnabled;
+    }
 
-  public boolean isRemoteHistoryDisabled() {
-    return mIsRemoteHistoryDisabled;
-  }
+    public void disableRemoteHistory(boolean disable) {
+        mIsRemoteHistoryDisabled = disable;
+        persistState();
+    }
 
-  public Video getLastVideo() {
-    return mLastVideo;
-  }
+    public boolean isRemoteHistoryDisabled() {
+        return mIsRemoteHistoryDisabled;
+    }
 
-  public void setLastVideo(Video video) {
-    mLastVideo = video;
-    persistState();
-  }
+    public Video getLastVideo() {
+        return mLastVideo;
+    }
 
-  public void setConnectedBefore(boolean connected) {
-    mIsConnectedBefore = connected;
-    persistState();
-  }
+    public void setLastVideo(Video video) {
+        mLastVideo = video;
+        persistState();
+    }
 
-  public boolean isConnectedBefore() {
-    return mIsConnectedBefore;
-  }
+    public void setConnectedBefore(boolean connected) {
+        mIsConnectedBefore = connected;
+        persistState();
+    }
 
-  private void restoreState() {
-    String data = mAppPrefs.getData(DEVICE_LINK_DATA);
+    public boolean isConnectedBefore() {
+        return mIsConnectedBefore;
+    }
 
-    String[] split = Helpers.splitData(data);
+    private void restoreState() {
+        String data = mAppPrefs.getData(DEVICE_LINK_DATA);
 
-    // null
-    // null
-    mIsDeviceLinkEnabled = Helpers.parseBoolean(split, 2, false);
-    mIsFinishOnDisconnectEnabled = Helpers.parseBoolean(split, 3, false);
-    mIsConnectMessagesEnabled = Helpers.parseBoolean(split, 4, false);
-    mIsRemoteHistoryDisabled = Helpers.parseBoolean(split, 5, false);
-    mLastVideo = Helpers.parseItem(split, 6, Video::fromString);
-    mIsConnectedBefore = Helpers.parseBoolean(split, 7, false);
-  }
+        String[] split = Helpers.splitData(data);
 
-  private void persistState() {
-    mAppPrefs.setData(
-        DEVICE_LINK_DATA,
-        Helpers.mergeData(
-            null,
-            null,
-            mIsDeviceLinkEnabled,
-            mIsFinishOnDisconnectEnabled,
-            mIsConnectMessagesEnabled,
-            mIsRemoteHistoryDisabled,
-            mLastVideo,
-            mIsConnectedBefore));
+        // null
+        // null
+        mIsDeviceLinkEnabled = Helpers.parseBoolean(split, 2, false);
+        mIsFinishOnDisconnectEnabled = Helpers.parseBoolean(split, 3, false);
+        mIsConnectMessagesEnabled = Helpers.parseBoolean(split, 4, false);
+        mIsRemoteHistoryDisabled = Helpers.parseBoolean(split, 5, false);
+        mLastVideo = Helpers.parseItem(split, 6, Video::fromString);
+        mIsConnectedBefore = Helpers.parseBoolean(split, 7, false);
+    }
 
-    onDataChange();
-  }
+    private void persistState() {
+        mAppPrefs.setData(DEVICE_LINK_DATA, Helpers.mergeData(
+                null, null, mIsDeviceLinkEnabled, mIsFinishOnDisconnectEnabled, mIsConnectMessagesEnabled,
+                mIsRemoteHistoryDisabled, mLastVideo, mIsConnectedBefore
+        ));
+
+        onDataChange();
+    }
 }

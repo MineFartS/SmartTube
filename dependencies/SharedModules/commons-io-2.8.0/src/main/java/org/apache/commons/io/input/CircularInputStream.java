@@ -18,66 +18,68 @@ package org.apache.commons.io.input;
 
 import java.io.IOException;
 import java.io.InputStream;
-import org.apache.commons.io.IOUtils;
+
 import org.apache.commons.io.mod.Objects;
+import org.apache.commons.io.IOUtils;
 
 /**
- * An {@link InputStream} that repeats provided bytes for given target byte count.
  *
- * <p>Closing this input stream has no effect. The methods in this class can be called after the
- * stream has been closed without generating an {@link IOException}.
+ * An {@link InputStream} that repeats provided bytes for given target byte count.
+ * <p>
+ * Closing this input stream has no effect. The methods in this class can be called after the stream has been closed
+ * without generating an {@link IOException}.
+ * </p>
  *
  * @see InfiniteCircularInputStream
  * @since 2.8.0
  */
 public class CircularInputStream extends InputStream {
 
-  /**
-   * Throws an {@link IllegalArgumentException} if the input contains -1.
-   *
-   * @param repeatContent input to validate.
-   * @return the input.
-   */
-  private static byte[] validate(final byte[] repeatContent) {
-    Objects.requireNonNull(repeatContent, "repeatContent");
-    for (final byte b : repeatContent) {
-      if (b == IOUtils.EOF) {
-        throw new IllegalArgumentException(
-            "repeatContent contains the end-of-stream marker " + IOUtils.EOF);
-      }
+    /**
+     * Throws an {@link IllegalArgumentException} if the input contains -1.
+     *
+     * @param repeatContent input to validate.
+     * @return the input.
+     */
+    private static byte[] validate(final byte[] repeatContent) {
+        Objects.requireNonNull(repeatContent, "repeatContent");
+        for (final byte b : repeatContent) {
+            if (b == IOUtils.EOF) {
+                throw new IllegalArgumentException("repeatContent contains the end-of-stream marker " + IOUtils.EOF);
+            }
+        }
+        return repeatContent;
     }
-    return repeatContent;
-  }
 
-  private long byteCount;
-  private int position = -1;
-  private final byte[] repeatedContent;
-  private final long targetByteCount;
+    private long byteCount;
+    private int position = -1;
+    private final byte[] repeatedContent;
+    private final long targetByteCount;
 
-  /**
-   * Creates an instance from the specified array of bytes.
-   *
-   * @param repeatContent Input buffer to be repeated this buffer is not copied.
-   * @param targetByteCount How many bytes the read. A negative number means an infinite target
-   *     count.
-   */
-  public CircularInputStream(final byte[] repeatContent, final long targetByteCount) {
-    this.repeatedContent = validate(repeatContent);
-    if (repeatContent.length == 0) {
-      throw new IllegalArgumentException("repeatContent is empty.");
+    /**
+     * Creates an instance from the specified array of bytes.
+     *
+     * @param repeatContent Input buffer to be repeated this buffer is not copied.
+     * @param targetByteCount How many bytes the read. A negative number means an infinite target count.
+     */
+    public CircularInputStream(final byte[] repeatContent, final long targetByteCount) {
+        this.repeatedContent = validate(repeatContent);
+        if (repeatContent.length == 0) {
+            throw new IllegalArgumentException("repeatContent is empty.");
+        }
+        this.targetByteCount = targetByteCount;
     }
-    this.targetByteCount = targetByteCount;
-  }
 
-  @Override
-  public int read() {
-    if (targetByteCount >= 0) {
-      if (byteCount == targetByteCount) {
-        return IOUtils.EOF;
-      }
-      byteCount++;
+    @Override
+    public int read() {
+        if (targetByteCount >= 0) {
+            if (byteCount == targetByteCount) {
+                return IOUtils.EOF;
+            }
+            byteCount++;
+        }
+        position = (position + 1) % repeatedContent.length;
+        return repeatedContent[position] & 0xff;
     }
-    position = (position + 1) % repeatedContent.length;
-    return repeatedContent[position] & 0xff;
-  }
+
 }

@@ -10,10 +10,11 @@ internal class MediaGroupOptions private constructor(
     val removeLive: Boolean = false,
     val removeUpcoming: Boolean = false,
     val removeWatched: Boolean = false,
-    val groupType: Int
+    val groupType: Int,
+    val enableLegacyUI: Boolean = false
 ) {
 
-    val clientTV by lazy { AppClient.TV }
+    val clientTV by lazy { if (enableLegacyUI) AppClient.TV_LEGACY else AppClient.TV }
 
     companion object {
         fun create(groupType: Int, channelId: String? = null): MediaGroupOptions {
@@ -31,13 +32,16 @@ internal class MediaGroupOptions private constructor(
             val isGridSection = MediaGroup.TYPE_SUBSCRIPTIONS == groupType || MediaGroup.TYPE_HISTORY == groupType || MediaGroup.TYPE_CHANNEL_UPLOADS == groupType
             
             val isBrowseSection = groupType != MediaGroup.TYPE_SUGGESTIONS // legacy suggestions ui doesn't have chapters
+            
+            val enableLegacyUI = (data.isLegacyUIEnabled && isBrowseSection) || (!removeShorts && isGridSection) // the modern grid ui contains shorts on a separate row
 
             return MediaGroupOptions(
                 removeShorts,
                 removeLive,
                 removeUpcoming,
                 removeWatched,
-                groupType
+                groupType,
+                enableLegacyUI
             )
 
         }

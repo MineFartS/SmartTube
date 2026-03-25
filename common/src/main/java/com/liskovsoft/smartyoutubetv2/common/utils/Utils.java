@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
+import android.app.AlarmManager;
 import android.app.Instrumentation;
 import android.app.KeyguardManager;
 import android.app.Notification;
@@ -31,6 +32,7 @@ import android.os.Build.VERSION;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.os.PowerManager;
 import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 import android.text.Spannable;
@@ -42,6 +44,7 @@ import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.BaseInputConnection;
+
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
@@ -49,6 +52,7 @@ import androidx.core.graphics.ColorUtils;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
+
 import com.jakewharton.processphoenix.ProcessPhoenix;
 import com.liskovsoft.sharedutils.helpers.DeviceHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
@@ -79,6 +83,7 @@ import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerTweaksData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.RemoteControlData;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
+
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,15 +102,11 @@ public class Utils {
     private static final int GLOBAL_VOLUME_TYPE = AudioManager.STREAM_MUSIC;
     private static final String GLOBAL_VOLUME_SERVICE = Context.AUDIO_SERVICE;
     public static final Handler sHandler = new Handler(Looper.getMainLooper());
-    public static final float[] SPEED_LIST_LONG = new float[] {
-            0.25f, 0.5f, 0.75f, 0.80f, 0.85f, 0.90f, 0.95f, 1.0f, 1.05f, 1.1f, 1.15f, 1.2f, 1.25f, 1.3f,
-            1.4f, 1.5f, 1.75f, 2f, 2.25f, 2.5f, 2.75f, 3.0f, 3.25f, 3.5f, 3.75f, 4.0f
-    };
+    public static final float[] SPEED_LIST_LONG =
+            new float[]{0.25f, 0.5f, 0.75f, 0.80f, 0.85f, 0.90f, 0.95f, 1.0f, 1.05f, 1.1f, 1.15f, 1.2f, 1.25f, 1.3f, 1.4f, 1.5f, 1.75f, 2f, 2.25f, 2.5f, 2.75f, 3.0f, 3.25f, 3.5f, 3.75f, 4.0f};
     public static final float[] SPEED_LIST_EXTRA_LONG = Helpers.range(0.05f, 4f, 0.05f);
-    public static final float[] SPEED_LIST_SHORT = new float[] {
-            0.25f, 0.5f, 0.75f, 1.0f, 1.25f, 1.5f, 1.75f, 2.0f, 2.25f, 2.5f, 2.75f, 3.0f, 3.25f, 3.5f,
-            3.75f, 4.0f
-    };
+    public static final float[] SPEED_LIST_SHORT =
+            new float[] {0.25f, 0.5f, 0.75f, 1.0f, 1.25f, 1.5f, 1.75f, 2.0f, 2.25f, 2.5f, 2.75f, 3.0f, 3.25f, 3.5f, 3.75f, 4.0f};
     private static Boolean sGlobalVolumeFixed;
     private static int sCurrentVolume = -1;
     private static final Runnable sForceFinishTheApp = () -> Runtime.getRuntime().exit(0);
@@ -143,12 +144,11 @@ public class Utils {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(url);
         intent.setPackage(context.getPackageName());
-        // intent.setClass(context,
-        // ViewManager.instance(context).getActivity(SplashView.class));
+        //intent.setClass(context, ViewManager.instance(context).getActivity(SplashView.class));
         PackageManager packageManager = context.getPackageManager();
         if (intent.resolveActivity(packageManager) != null) {
             SplashPresenter.instance(context).applyNewIntent(intent);
-            // context.startActivity(intent);
+            //context.startActivity(intent);
         } else {
             // Fallback to the chooser dialog
             showMultiChooser(context, url);
@@ -173,7 +173,7 @@ public class Utils {
     }
 
     /**
-     * https://youtu.be/nragduYePsQ?t=193<br>
+     * https://youtu.be/nragduYePsQ?t=193<br/>
      * https://www.youtube.com/watch?v=nragduYePsQ&t=193
      */
     public static Uri convertToFullVideoUrl(String videoId, int posSec) {
@@ -181,7 +181,9 @@ public class Utils {
         return Uri.parse(url);
     }
 
-    /** https://www.youtube.com/embed/nragduYePsQ?start=193 */
+    /**
+     * https://www.youtube.com/embed/nragduYePsQ?start=193
+     */
     public static Uri convertToEmbedVideoUrl(String videoId, int posSec) {
         String url = String.format("https://www.youtube.com/embed/%s?start=%s", videoId, posSec);
         return Uri.parse(url);
@@ -198,8 +200,7 @@ public class Utils {
     }
 
     /**
-     * NOTE: Below won't help with "Can not perform this action after
-     * onSaveInstanceState"
+     * NOTE: Below won't help with "Can not perform this action after onSaveInstanceState"
      */
     public static boolean checkActivity(Activity activity) {
         return activity != null && !activity.isDestroyed() && !activity.isFinishing();
@@ -221,33 +222,37 @@ public class Utils {
     private static void bindService(Context context, Intent serviceIntent) {
         // https://medium.com/@debuggingisfun/android-auto-stop-background-service-336e8b3ff03c
         // https://medium.com/@debuggingisfun/android-o-work-around-background-service-limitation-e697b2192bc3
-        context
-                .getApplicationContext()
-                .bindService(
-                        serviceIntent,
-                        new ServiceConnection() {
-                            @Override
-                            public void onServiceConnected(ComponentName name, IBinder service) {
-                                // NOP
-                            }
+        context.getApplicationContext().bindService(serviceIntent, new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                 // NOP
+            }
 
-                            @Override
-                            public void onServiceDisconnected(ComponentName name) {
-                                // NOP
-                            }
-                        },
-                        Context.BIND_AUTO_CREATE);
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                 // NOP
+            }
+        }, Context.BIND_AUTO_CREATE);
     }
 
     public static void startRemoteControlWorkRequest(Context context) {
-        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(RemoteControlWorker.class, 30,
-                TimeUnit.MINUTES).build();
+        PeriodicWorkRequest workRequest =
+                new PeriodicWorkRequest.Builder(
+                        RemoteControlWorker.class, 30, TimeUnit.MINUTES
+                ).build();
 
-        WorkManager.getInstance(context)
-                .enqueueUniquePeriodicWork(TASK_ID, ExistingPeriodicWorkPolicy.KEEP, workRequest);
+        WorkManager
+                .getInstance(context)
+                .enqueueUniquePeriodicWork(
+                        TASK_ID,
+                        ExistingPeriodicWorkPolicy.KEEP,
+                        workRequest
+                );
     }
 
-    /** Volume: 0 - 100 */
+    /**
+     * Volume: 0 - 100
+     */
     private static void setGlobalVolume(Context context, int volume) {
         if (context != null) {
             AudioManager audioManager = (AudioManager) context.getSystemService(GLOBAL_VOLUME_SERVICE);
@@ -270,7 +275,9 @@ public class Utils {
         }
     }
 
-    /** Volume: 0 - 100 */
+    /**
+     * Volume: 0 - 100
+     */
     private static int getGlobalVolume(Context context) {
         if (context != null) {
             AudioManager audioManager = (AudioManager) context.getSystemService(GLOBAL_VOLUME_SERVICE);
@@ -279,9 +286,7 @@ public class Utils {
                 int streamVolume = audioManager.getStreamVolume(GLOBAL_VOLUME_TYPE);
 
                 int volume = (int) Math.ceil(streamVolume / (streamMaxVolume / 100f));
-                return Math.abs(sCurrentVolume - volume) == 1
-                        ? sCurrentVolume
-                        : volume; // fix small steps (1). volume should be precise.
+                return Math.abs(sCurrentVolume - volume) == 1 ? sCurrentVolume : volume; // fix small steps (1). volume should be precise.
             }
         }
 
@@ -304,7 +309,9 @@ public class Utils {
         setGlobalVolume(context, volume);
     }
 
-    /** Global volume may not be supported (see FireTV Stick) */
+    /**
+     * Global volume may not be supported (see FireTV Stick)
+     */
     private static boolean isGlobalVolumeFixed(Context context) {
         if (sGlobalVolumeFixed != null) {
             return sGlobalVolumeFixed;
@@ -314,7 +321,9 @@ public class Utils {
         return sGlobalVolumeFixed;
     }
 
-    /** Volume: 0 - 100 */
+    /**
+     * Volume: 0 - 100
+     */
     public static int getVolume(Context context, PlayerManager player) {
         if (context != null) {
             if (isGlobalVolumeFixed(context)) {
@@ -323,8 +332,7 @@ public class Utils {
                 try {
                     return getGlobalVolume(context);
                 } catch (SecurityException e) {
-                    // Permission denial: writing to settings
-                    // requires:android.permission.WRITE_SECURE_SETTINGS
+                    // Permission denial: writing to settings requires:android.permission.WRITE_SECURE_SETTINGS
                     return getPlayerVolume(player);
                 }
             }
@@ -337,10 +345,12 @@ public class Utils {
         if (player == null) {
             return -1;
         }
-        return (int) (player.getVolume() * 100);
+        return (int)(player.getVolume() * 100);
     }
 
-    /** Volume: 0 - 100 */
+    /**
+     * Volume: 0 - 100
+     */
     public static void setVolume(Context context, PlayerManager player, int volume) {
         Log.d(TAG, "setVolume: %s", volume);
 
@@ -356,8 +366,7 @@ public class Utils {
                     setGlobalVolume(context, volume);
                     showSystemVolumeUI(context);
                 } catch (SecurityException e) {
-                    // Permission denial: writing to settings
-                    // requires:android.permission.WRITE_SECURE_SETTINGS
+                    // Permission denial: writing to settings requires:android.permission.WRITE_SECURE_SETTINGS
                     setPlayerVolume(context, player, volume);
                 }
             }
@@ -370,8 +379,7 @@ public class Utils {
             return;
         }
         player.setVolume(volume / 100f);
-        MessageHelpers.showMessage(
-                context, context.getString(R.string.volume, getPlayerVolume(player)));
+        MessageHelpers.showMessage(context, context.getString(R.string.volume, getPlayerVolume(player)));
     }
 
     public static void volumeUp(Context context, PlayerManager player, boolean up) {
@@ -411,8 +419,7 @@ public class Utils {
 
             // Check that volume is set.
             // Because global value may not be supported (see FireTV Stick).
-            MessageHelpers.showMessage(
-                    context, context.getString(R.string.volume, (int) (player.getVolume() * 100)));
+            MessageHelpers.showMessage(context, context.getString(R.string.volume, (int) (player.getVolume() * 100)));
         }
     }
 
@@ -429,9 +436,7 @@ public class Utils {
     }
 
     public static void registerAudioObserver(Context context, ContentObserver observer) {
-        context
-                .getApplicationContext()
-                .getContentResolver()
+        context.getApplicationContext().getContentResolver()
                 .registerContentObserver(android.provider.Settings.System.CONTENT_URI, true, observer);
     }
 
@@ -440,9 +445,7 @@ public class Utils {
     }
 
     /**
-     * <a href=
-     * "https://stackoverflow.com/questions/2891337/turning-on-screen-programmatically">More
-     * info</a>
+     * <a href="https://stackoverflow.com/questions/2891337/turning-on-screen-programmatically">More info</a>
      */
     @SuppressWarnings("deprecation")
     public static void turnScreenOn(Context context) {
@@ -458,9 +461,10 @@ public class Utils {
             } else {
                 Window window = activity.getWindow();
                 window.addFlags(
-                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                        WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
+                        WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                );
             }
         }
     }
@@ -489,9 +493,7 @@ public class Utils {
     }
 
     /**
-     * <a href=
-     * "https://developer.chrome.com/docs/android/custom-tabs/integration-guide/">Chrome
-     * custom tabs</a>
+     * <a href="https://developer.chrome.com/docs/android/custom-tabs/integration-guide/">Chrome custom tabs</a>
      */
     private static void openLinkInTabs(Context context, String url) {
         CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
@@ -540,38 +542,37 @@ public class Utils {
     public static CharSequence color(CharSequence string, int color) {
         SpannableString spannable = new SpannableString(string);
         ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(color);
-        spannable.setSpan(
-                foregroundColorSpan, 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannable.setSpan(foregroundColorSpan, 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         return spannable;
     }
 
-    /** NOTE: Android 5.1: Italic cause crashes with Arabic fonts */
+    /**
+     * NOTE: Android 5.1: Italic cause crashes with Arabic fonts
+     */
     public static CharSequence italic(CharSequence string) {
         if (Build.VERSION.SDK_INT <= 22) {
             return string;
         }
 
         SpannableString spannable = new SpannableString(string);
-        spannable.setSpan(
-                new StyleSpan(Typeface.ITALIC), 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannable.setSpan(new StyleSpan(Typeface.ITALIC), 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spannable;
     }
 
     public static CharSequence bold(CharSequence string) {
         SpannableString spannable = new SpannableString(string);
-        spannable.setSpan(
-                new StyleSpan(Typeface.BOLD), 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannable.setSpan(new StyleSpan(Typeface.BOLD), 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spannable;
     }
 
     public static CharSequence icon(Context context, int resId, int lineHeight) {
-
+        
         SpannableString spannable = new SpannableString(" ");
-
+        
         Drawable drawable = context.getDrawable(resId);
         drawable.setBounds(0, 0, lineHeight, lineHeight);
-
+        
         ImageSpan imageSpan = new ImageSpan(drawable);
         spannable.setSpan(imageSpan, 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
@@ -600,10 +601,7 @@ public class Utils {
         try {
             return manager.getRunningServices(Integer.MAX_VALUE);
         } catch (NullPointerException e) {
-            // NullPointerException: Attempt to invoke interface method 'java.lang.Object
-            // android.os.Parcelable$Creator.createFromParcel(android.os.Parcel)' on a null
-            // object
-            // reference
+            // NullPointerException: Attempt to invoke interface method 'java.lang.Object android.os.Parcelable$Creator.createFromParcel(android.os.Parcel)' on a null object reference
             e.printStackTrace();
         }
 
@@ -611,28 +609,22 @@ public class Utils {
     }
 
     public static void cancelNotification(Context context, int notificationId) {
-        NotificationManager notificationManager = (NotificationManager) context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(notificationId);
     }
 
-    public static Notification createNotification(
-            Context context, int iconResId, String title, Class<? extends Activity> activityCls) {
+    public static Notification createNotification(Context context, int iconResId, String title, Class<? extends Activity> activityCls) {
         return createNotification(context, iconResId, title, null, activityCls);
     }
 
     @SuppressWarnings("deprecation")
-    public static Notification createNotification(
-            Context context,
-            int iconResId,
-            String title,
-            String content,
-            Class<? extends Activity> activityCls) {
-        NotificationManager notificationManager = (NotificationManager) context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
+    public static Notification createNotification(Context context, int iconResId, String title, String content, Class<? extends Activity> activityCls) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context).setSmallIcon(iconResId)
-                .setContentTitle(title);
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(iconResId)
+                        .setContentTitle(title);
 
         if (content != null) {
             builder.setContentText(content);
@@ -641,9 +633,7 @@ public class Utils {
         int flags = PendingIntent.FLAG_UPDATE_CURRENT;
 
         if (Build.VERSION.SDK_INT >= 23) {
-            // IllegalArgumentException fix: Targeting S+ (version 31 and above) requires
-            // that one of
-            // FLAG_IMMUTABLE...
+            // IllegalArgumentException fix: Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE...
             flags |= PendingIntent.FLAG_IMMUTABLE;
         }
 
@@ -653,7 +643,9 @@ public class Utils {
 
         if (VERSION.SDK_INT >= 26) {
             String channelId = context.getPackageName();
-            NotificationChannel channel = new NotificationChannel(channelId, title,
+            NotificationChannel channel = new NotificationChannel(
+                    channelId,
+                    title,
                     NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
             builder.setChannelId(channelId);
@@ -662,10 +654,8 @@ public class Utils {
         return builder.build();
     }
 
-    public static void showNotification(
-            Context context, int notificationId, Notification notification) {
-        NotificationManager notificationManager = (NotificationManager) context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
+    public static void showNotification(Context context, int notificationId, Notification notification) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(notificationId, notification);
     }
 
@@ -715,10 +705,8 @@ public class Utils {
     }
 
     /**
-     * NOTE: Doesn't work in Android 13<br>
-     * java.lang.SecurityException: Injecting input events requires the caller (or
-     * the source of the
-     * instrumentation, if any) to have the INJECT_EVENTS permission.
+     * NOTE: Doesn't work in Android 13<br/>
+     * java.lang.SecurityException: Injecting input events requires the caller (or the source of the instrumentation, if any) to have the INJECT_EVENTS permission.
      */
     public static void sendKey(int key) {
         if (VERSION.SDK_INT < 33) {
@@ -733,10 +721,8 @@ public class Utils {
     }
 
     /**
-     * NOTE: Doesn't work in Android 13<br>
-     * java.lang.SecurityException: Injecting input events requires the caller (or
-     * the source of the
-     * instrumentation, if any) to have the INJECT_EVENTS permission.
+     * NOTE: Doesn't work in Android 13<br/>
+     * java.lang.SecurityException: Injecting input events requires the caller (or the source of the instrumentation, if any) to have the INJECT_EVENTS permission.
      */
     public static void sendKey(KeyEvent keyEvent) {
         if (VERSION.SDK_INT < 33) {
@@ -751,8 +737,7 @@ public class Utils {
     }
 
     public static void sendKey(Activity activity, int keyCode) {
-        BaseInputConnection inputConnection = new BaseInputConnection(activity.getWindow().getDecorView().getRootView(),
-                true);
+        BaseInputConnection  inputConnection = new BaseInputConnection(activity.getWindow().getDecorView().getRootView(), true);
         KeyEvent kd = new KeyEvent(KeyEvent.ACTION_DOWN, keyCode);
         KeyEvent ku = new KeyEvent(KeyEvent.ACTION_UP, keyCode);
         inputConnection.sendKeyEvent(kd);
@@ -760,16 +745,14 @@ public class Utils {
     }
 
     public static void showNotCompatibleMessage(Context context, int msgResId) {
-        MessageHelpers.showMessage(
-                context,
-                String.format(
-                        "%s '%s'",
-                        context.getString(R.string.not_compatible_with), context.getString(msgResId)));
+        MessageHelpers.showMessage(context, String.format("%s '%s'",
+                context.getString(R.string.not_compatible_with),
+                context.getString(msgResId)));
     }
 
     public static String getCountryFlagUrl(String countryCode) {
         // Sometimes down
-        // return "https://countryflagsapi.com/png/" + countryCode;
+        //return "https://countryflagsapi.com/png/" + countryCode;
 
         // https://flagpedia.net/download/api
         return String.format("https://flagcdn.com/w160/%s.png", countryCode.toLowerCase());
@@ -805,15 +788,11 @@ public class Utils {
     }
 
     public static boolean isFormatSupported(MediaTrack mediaTrack) {
-        if (mediaTrack.isVP9Codec()
-                && !DeviceHelpers.isVP9ResolutionSupported(
-                        TrackSelectorUtil.getRealHeight(mediaTrack.format))) {
+        if (mediaTrack.isVP9Codec() && !DeviceHelpers.isVP9ResolutionSupported(TrackSelectorUtil.getRealHeight(mediaTrack.format))) {
             return false;
         }
 
-        if (mediaTrack.isAV1Codec()
-                && !DeviceHelpers.isAV1ResolutionSupported(
-                        TrackSelectorUtil.getRealHeight(mediaTrack.format))) {
+        if (mediaTrack.isAV1Codec() && !DeviceHelpers.isAV1ResolutionSupported(TrackSelectorUtil.getRealHeight(mediaTrack.format))) {
             return false;
         }
 
@@ -822,7 +801,7 @@ public class Utils {
 
     public static int getColor(Context context, int colorResId, int dimPercents) {
         int color = ContextCompat.getColor(context, colorResId);
-        color = ColorUtils.setAlphaComponent(color, (int) (255f / 100 * dimPercents));
+        color = ColorUtils.setAlphaComponent(color, (int)(255f / 100 * dimPercents));
 
         return color;
     }
@@ -830,8 +809,12 @@ public class Utils {
     /**
      * https://stackoverflow.com/questions/11288147/get-resources-from-another-apk
      */
-    public static Drawable getDrawable(Context context, String packageName, String drawableName) {
-
+    public static Drawable getDrawable(
+        Context context, 
+        String packageName, 
+        String drawableName
+    ) {
+        
         if (context == null || packageName == null || drawableName == null) {
             return null;
         }
@@ -841,7 +824,7 @@ public class Utils {
         try {
 
             Resources resources = context.getPackageManager().getResourcesForApplication(packageName);
-
+            
             int drawableResId = resources.getIdentifier(drawableName, "drawable", packageName);
 
             if (drawableResId == 0) {
@@ -869,12 +852,16 @@ public class Utils {
         startReceiver(context, REMOTE_CONTROL_RECEIVER_CLASS_NAME);
     }
 
-    /** Finish the app but remain running services */
+    /**
+     * Finish the app but remain running services
+     */
     public static void properlyFinishTheApp(Context context) {
         ViewManager.instance(context).properlyFinishTheApp(context);
     }
 
-    /** Simply kills the app. */
+    /**
+     * Simply kills the app.
+     */
     public static void forceFinishTheApp(Context context) {
         persistData(context);
         postDelayed(sForceFinishTheApp, 1_000);
@@ -913,13 +900,12 @@ public class Utils {
         try {
             Intent intent = new Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse(
-                            String.format(
-                                    "https://www.youtube.com/watch?v=%s&t=%ss", video.videoId, posMs / 1_000)),
+                    Uri.parse(String.format("https://www.youtube.com/watch?v=%s&t=%ss", video.videoId, posMs / 1_000)),
                     context,
-                    Class.forName(BOOTSTRAP_ACTIVITY_CLASS_NAME));
+                    Class.forName(BOOTSTRAP_ACTIVITY_CLASS_NAME)
+            );
             intent.putExtra(IntentExtractor.RESTART_INTENT, true);
-
+            
             ProcessPhoenix.triggerRebirth(context, intent);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -943,7 +929,7 @@ public class Utils {
                 try {
                     context.sendBroadcast(intent);
                 } catch (Exception e) {
-                    // NullPointerException on MX9Pro (rk3328 7.1.2)
+                    // NullPointerException on MX9Pro (rk3328  7.1.2)
                 }
             }
         } else {
@@ -952,8 +938,7 @@ public class Utils {
     }
 
     /**
-     * More info:
-     * https://stackoverflow.com/questions/6609414/how-do-i-programmatically-restart-an-android-app
+     * More info: https://stackoverflow.com/questions/6609414/how-do-i-programmatically-restart-an-android-app
      */
     private static void triggerRebirth(Context context, Class<?> rootActivity) {
         Intent intent = new Intent(context, rootActivity);
@@ -973,9 +958,8 @@ public class Utils {
     }
 
     public static String updateTooltip(Context context, String tooltip) {
-        return GeneralData.instance(context).isFirstUseTooltipEnabled()
-                ? String.format("%s (%s)", tooltip, context.getString(R.string.long_press_for_options))
-                : tooltip;
+        return GeneralData.instance(context).isFirstUseTooltipEnabled() ?
+                String.format("%s (%s)", tooltip, context.getString(R.string.long_press_for_options)) : tooltip;
     }
 
     private static String createTransactionID() {
@@ -983,7 +967,7 @@ public class Utils {
     }
 
     /**
-     * https://stackoverflow.com/a/5626208/1279056<br>
+     * https://stackoverflow.com/a/5626208/1279056<br/>
      * https://stackoverflow.com/a/40237325/1279056
      */
     @SuppressWarnings("MissingPermission")
@@ -993,21 +977,23 @@ public class Utils {
         if (uniqueId == null) {
             UUID uuid = null;
             @SuppressLint("HardwareIds")
-            final String androidId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
+            final String androidId = Secure.getString(
+                    context.getContentResolver(), Secure.ANDROID_ID);
             // Use the Android ID unless it's broken, in which case
             // fallback on deviceId,
             // unless it's not available, then fallback on a random
             // number which we store to a prefs file
             try {
                 if (!"9774d56d682e549c".equals(androidId)) {
-                    uuid = UUID.nameUUIDFromBytes(androidId.getBytes("utf8"));
+                    uuid = UUID.nameUUIDFromBytes(androidId
+                            .getBytes("utf8"));
                 } else {
                     @SuppressLint("HardwareIds")
-                    final String deviceId = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE))
-                            .getDeviceId();
-                    uuid = deviceId != null
-                            ? UUID.nameUUIDFromBytes(deviceId.getBytes("utf8"))
-                            : UUID.randomUUID();
+                    final String deviceId = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+                    uuid = deviceId != null ? UUID
+                            .nameUUIDFromBytes(deviceId
+                                    .getBytes("utf8")) : UUID
+                            .randomUUID();
                 }
             } catch (UnsupportedEncodingException e) {
                 Log.e(TAG, e.getMessage());
@@ -1056,7 +1042,7 @@ public class Utils {
     public static boolean isEnoughRam() {
         long maxMemory = Runtime.getRuntime().maxMemory();
 
-        return (int) (maxMemory / (1024 * 1024)) > 350; // more than 350MB available to the app
+        return (int)(maxMemory / (1024 * 1024)) > 350; // more than 350MB available to the app
     }
 
     public static String getStackTraceAsString(Throwable throwable) {
@@ -1066,12 +1052,7 @@ public class Utils {
         if (elements.length > 0) {
             StackTraceElement topElement = elements[0];
             result.append(topElement.getMethodName());
-            result
-                    .append("(")
-                    .append(topElement.getFileName())
-                    .append(":")
-                    .append(topElement.getLineNumber())
-                    .append(")");
+            result.append("(").append(topElement.getFileName()).append(":").append(topElement.getLineNumber()).append(")");
         } else {
             result.append("No stack trace available");
         }
@@ -1157,7 +1138,7 @@ public class Utils {
     }
 
     private static void persistData(Context context) {
-        VideoStateService.instance(context).persistState();
+        VideoStateService.instance(context).persistNow();
         PlayerTweaksData.instance(context).persistNow();
         MainUIData.instance(context).persistNow();
         GeneralData.instance(context).persistNow();

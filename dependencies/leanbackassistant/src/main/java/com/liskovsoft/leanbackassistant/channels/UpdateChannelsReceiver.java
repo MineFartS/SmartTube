@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build.VERSION;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 
@@ -19,19 +20,19 @@ import com.liskovsoft.sharedutils.mylogger.Log;
  *      -n com.google.android.tvhomescreenchannels/.RunOnInstallReceiver"
  */
 public class UpdateChannelsReceiver extends BroadcastReceiver {
-  private static final String TAG = UpdateChannelsReceiver.class.getSimpleName();
+    private static final String TAG = UpdateChannelsReceiver.class.getSimpleName();
 
-  @Override
-  public void onReceive(Context context, Intent intent) {
-    Log.d(TAG, "Synchronizing database");
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        Log.d(TAG, "Synchronizing database");
 
-    if (VERSION.SDK_INT < 21) {
-      return;
+        if (VERSION.SDK_INT < 21) {
+            return;
+        }
+
+        if (Helpers.isATVChannelsSupported(context) || Helpers.isATVRecommendationsSupported(context)) {
+            UpdateChannelsWorker.schedule(context);
+            //UpdateChannelsJobService.schedule(context);
+        }
     }
-
-    if (Helpers.isATVChannelsSupported(context) || Helpers.isATVRecommendationsSupported(context)) {
-      UpdateChannelsWorker.schedule(context);
-      // UpdateChannelsJobService.schedule(context);
-    }
-  }
 }
