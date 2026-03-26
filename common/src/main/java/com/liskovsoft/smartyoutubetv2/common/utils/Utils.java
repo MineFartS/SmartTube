@@ -67,7 +67,6 @@ import com.liskovsoft.smartyoutubetv2.common.app.models.playback.manager.PlayerM
 import com.liskovsoft.smartyoutubetv2.common.app.models.playback.service.VideoStateService;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.PlaybackPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.SplashPresenter;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.WebBrowserPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.views.PlaybackView;
 import com.liskovsoft.smartyoutubetv2.common.app.views.ViewManager;
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem.VideoPreset;
@@ -474,15 +473,6 @@ public class Utils {
     }
 
     public static void openLink(Context context, String url) {
-        try {
-            WebBrowserPresenter.instance(context).loadUrl(url);
-        } catch (Exception e) {
-            // WebView not found. Use alt method.
-            openLinkExt(context, url);
-        }
-    }
-
-    public static void openLinkExt(Context context, String url) {
         try {
             openLinkInTabs(context, url);
         } catch (Exception e) {
