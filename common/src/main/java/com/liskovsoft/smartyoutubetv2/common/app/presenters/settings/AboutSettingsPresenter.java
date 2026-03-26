@@ -10,19 +10,11 @@ import com.liskovsoft.smartyoutubetv2.common.R;
 import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionItem;
 import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.UiOptionItem;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.AppDialogPresenter;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs.ATVBridgePresenter;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs.AmazonBridgePresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs.AppUpdatePresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.base.BasePresenter;
 import com.liskovsoft.smartyoutubetv2.common.prefs.ContentBlockData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
 import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
@@ -31,6 +23,11 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerTweaksData;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class AboutSettingsPresenter extends BasePresenter<Void> {
 
@@ -63,8 +60,6 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
         appendUpdateChangelogButton(settingsPresenter);
 
         appendUpdateSource(settingsPresenter);
-
-        appendInstallBridge(settingsPresenter);
 
         settingsPresenter.appendSingleSwitch(
             UiOptionItem.from(
@@ -157,34 +152,6 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
             options
         );
 
-    }
-
-    private void appendInstallBridge(AppDialogPresenter settingsPresenter) {
-        
-        OptionItem installBridgeOption = UiOptionItem.from(
-            "Install ATV/Amazon bridge",
-            option -> startBridgePresenter()
-        );
-
-        settingsPresenter.appendSingleButton(installBridgeOption);
-    
-    }
-
-    private void startBridgePresenter() {
-        
-        MessageHelpers.showLongMessage(
-            getContext(), 
-            R.string.enable_voice_search_desc
-        );
-
-        ATVBridgePresenter atvPresenter = ATVBridgePresenter.instance(getContext());
-        atvPresenter.runBridgeInstaller(true);
-        atvPresenter.unhold();
-
-        AmazonBridgePresenter amazonPresenter = AmazonBridgePresenter.instance(getContext());
-        amazonPresenter.runBridgeInstaller(true);
-        amazonPresenter.unhold();
-    
     }
 
 }
