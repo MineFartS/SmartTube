@@ -3,8 +3,7 @@ package com.liskovsoft.smartyoutubetv2.common.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import java.util.HexFormat;
-import java.io.*;
+import javax.annotation.Nullable;
 
 import com.liskovsoft.smartyoutubetv2.common.utils.Serialize;
 
@@ -33,19 +32,27 @@ public class DataStore {
 
     }
 
+    public boolean getBool(Integer key, boolean defval) {
+
+        return (boolean) get(key, defval);
+
+    }
+
     public Object get(Integer key) {
         return get(key, null);
     } 
 
-    public put(
+    public void put(
         Integer x, 
         Object value
     ) {
 
+        String key = x.toString();
+
         String hex = Serialize.encode(value);
 
         mPrefs.edit()
-            .putString(x, hex)
+            .putString(key, hex)
             .apply();
 
     }

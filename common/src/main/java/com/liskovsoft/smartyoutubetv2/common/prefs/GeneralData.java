@@ -266,7 +266,7 @@ public class GeneralData implements ProfileChangeListener {
     private synchronized void restoreState() {
 
         /* 00 */ mBackgroundShortcut = mDataStore.get(0, BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK);
-        /* 01 */ mOldPinnedItems = mDataStore.get(1, Video::fromString);
+        /* 01 */ mOldPinnedItems = mDataStore.get(1);
         /* 02 */ mIsHideShortsFromSubscriptionsEnabled = mDataStore.get(2, false);
         /* 03 */ mIsBridgeCheckEnabled = mDataStore.get(3, true);
         /* 04 */ mLastPlaylistId = mDataStore.get(4);
@@ -275,15 +275,15 @@ public class GeneralData implements ProfileChangeListener {
         /* 07 */ mIsHideShortsFromHistoryEnabled = mDataStore.get(7, false);
         /* 08 */ mIsVPNEnabled = mDataStore.get(8, false);
         /* 09 */ mLastPlaylistTitle = mDataStore.get(9);
-        /* 10 */ mPlaylistOrder = mDataStore.get(10, Helpers::parseStr, Helpers::parseInt);
-        /* 11 */ mPendingStreams = mDataStore.get(11, Video::fromString);
+        /* 10 */ mPlaylistOrder = mDataStore.get(10);
+        /* 11 */ mPendingStreams = mDataStore.get(11);
         /* 12 */ mIsAltAppIconEnabled = mDataStore.get(12, false);
         /* 13 */ mVersionCode = Helpers.mDataStore.get(13, -1);
         /* 14 */ mIsOldUpdateNotificationsEnabled = mDataStore.get(14, false);
         /* 15 */ mIsRememberSubscriptionsPositionEnabled = mDataStore.get(15, false);
         /* 16 */ mIsHideWatchedFromNotificationsEnabled = mDataStore.get(16, false);
         /* 17 */ mChangelog = mDataStore.get(17);
-        /* 18 */ mSelectedItems = mDataStore.get(18, Helpers::parseInt, Video::fromString);
+        /* 18 */ mSelectedItems = mDataStore.get(18);
         /* 19 */ mIsFirstUseTooltipEnabled = mDataStore.get(19, true);
         /* 20 */ mIsDeviceSpecificBackupEnabled = mDataStore.get(20, false);
 
