@@ -184,14 +184,10 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         
     private long mMenuItems;
     
-    private int mThumbQuality;
-    
     private List<Long> mMenuItemsOrdered;
     
     private int mCardPreviewType;
-    
-    private final Runnable mPersistStateInt = this::persistStateInt;
-    
+        
     private MainUIData(Context context) {
 
         mContext = context;
@@ -219,17 +215,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     public void setCartTitleLinesNum(int lines) {
         
         mCardTitleLinesNum = lines;
-        persistState();
-
-    }
-
-    public int getThumbQuality() {
-        return mThumbQuality;
-    }
-
-    public void setThumbQuality(int quality) {
-        
-        mThumbQuality = quality;
         persistState();
 
     }
@@ -304,20 +289,14 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     private void restoreState() {
         
         String data = mPrefs.getProfileData(MAIN_UI_DATA);
-
         String[] split = Helpers.splitData(data);
 
-        mUIScale = Helpers.parseFloat(split, 2, 1.0f);
-
-        mChannelCategorySorting = Helpers.parseInt(split, 5, CHANNEL_SORTING_LAST_VIEWED);
-
-        mCardTitleLinesNum = Helpers.parseInt(split, 7, 1);
-
-        mMenuItems = Helpers.parseLong(split, 12, MENU_ITEM_DEFAULT);
-
-        mMenuItemsOrdered = Helpers.parseLongList(split, 17);
-        
-        mCardPreviewType = Helpers.parseInt(split, 21, CARD_PREVIEW_DISABLED);
+        /* 0 */ mUIScale = Helpers.parseFloat(split, 0, 1.0f);
+        /* 1 */ mChannelCategorySorting = Helpers.parseInt(split, 1, CHANNEL_SORTING_LAST_VIEWED);
+        /* 2 */ mCardTitleLinesNum = Helpers.parseInt(split, 2, 1);
+        /* 3 */ mMenuItems = Helpers.parseLong(split, 3, MENU_ITEM_DEFAULT);
+        /* 4 */ mMenuItemsOrdered = Helpers.parseLongList(split, 4);
+        /* 5 */ mCardPreviewType = Helpers.parseInt(split, 5, CARD_PREVIEW_DISABLED);
 
         int idx = -1;
         for (Long menuItem : MENU_ITEM_DEFAULT_ORDER) {
@@ -349,42 +328,22 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
             }
 
         }
-
-
         
         updateDefaultValues();
     
     }
 
-    public void persistNow() {
-
-        Utils.post(mPersistStateInt);
-    
-    }
-
     private void persistState() {
-    
-        //onDataChange();
-        //Utils.postDelayed(mPersistStateInt, 10_000);
-
-        persistNow();
-    
-    }
-
-    private void persistStateInt() {
 
         mPrefs.setProfileData(
             MAIN_UI_DATA,
             Helpers.mergeData(
-                null,
-                mUIScale, 
-                mChannelCategorySorting, 
-                mCardTitleLinesNum, 
-                mMenuItems, 
-                null, 
-                mThumbQuality, 
-                Helpers.mergeList(mMenuItemsOrdered),
-                mCardPreviewType
+            /* 0 */ mUIScale, 
+            /* 1 */ mChannelCategorySorting, 
+            /* 2 */ mCardTitleLinesNum, 
+            /* 3 */ mMenuItems, 
+            /* 4 */ Helpers.mergeList(mMenuItemsOrdered),
+            /* 5 */ mCardPreviewType
             )
         );
     }

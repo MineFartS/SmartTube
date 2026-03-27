@@ -61,10 +61,24 @@ public class ContentBlockData {
     }
 
     private void initLocalizedMapping() {
+
         mSegmentLocalizedMapping = new HashMap<>();
-        mSegmentLocalizedMapping.put(SponsorSegment.CATEGORY_SPONSOR, R.string.content_block_sponsor);
-        mSegmentLocalizedMapping.put(SponsorSegment.CATEGORY_SELF_PROMO, R.string.content_block_self_promo);
-        mSegmentLocalizedMapping.put(SponsorSegment.CATEGORY_INTERACTION, R.string.content_block_interaction);
+        
+        mSegmentLocalizedMapping.put(
+            SponsorSegment.CATEGORY_SPONSOR, 
+            R.string.content_block_sponsor
+        );
+
+        mSegmentLocalizedMapping.put(
+            SponsorSegment.CATEGORY_SELF_PROMO, 
+            R.string.content_block_self_promo
+        );
+
+        mSegmentLocalizedMapping.put(
+            SponsorSegment.CATEGORY_INTERACTION, 
+            R.string.content_block_interaction\
+        );
+
     }
 
     private void initColorMapping() {
@@ -197,16 +211,12 @@ public class ContentBlockData {
     private void restoreState() {
 
         String data = mAppPrefs.getData(CONTENT_BLOCK_DATA);
-
         String[] split = Helpers.splitData(data);
 
-        mIsSponsorBlockEnabled = Helpers.parseBoolean(split, 0, VERSION.SDK_INT > 19); // Android 4 may have memory problems
-        // categories: index 2
-        // don't skip segment
-        // colorMarkers: index 4
-        String actions = Helpers.parseStr(split, 6);
-        String excludedChannels = Helpers.parseStr(split, 9);
-        String colorCategories = Helpers.parseStr(split, 7);
+        /* 0 */ mIsSponsorBlockEnabled = Helpers.parseBoolean(split, 0, VERSION.SDK_INT>19);
+        /* 1 */ String actions = Helpers.parseStr(split, 1);
+        /* 2 */ String excludedChannels = Helpers.parseStr(split, 2);
+        /* 3 */ String colorCategories = Helpers.parseStr(split, 3);
 
         if (excludedChannels != null) {
             String[] channelsArr = Helpers.splitArray(excludedChannels);
@@ -275,11 +285,10 @@ public class ContentBlockData {
         mAppPrefs.setData(
             CONTENT_BLOCK_DATA, 
             Helpers.mergeData(
-                mIsSponsorBlockEnabled, 
-                null, null, null, null, null, 
-                actions, 
-                colorCategories, 
-                excludedChannels
+            /* 0 */ mIsSponsorBlockEnabled,
+            /* 1 */ actions, 
+            /* 2 */ excludedChannels,
+            /* 3 */ colorCategories
             )
         );
     }

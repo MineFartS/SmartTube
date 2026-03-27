@@ -47,7 +47,6 @@ public class GeneralData implements ProfileChangeListener {
     private boolean mIsFirstUseTooltipEnabled;
     private boolean mIsDeviceSpecificBackupEnabled;
     private List<Video> mOldPinnedItems;
-    private final Runnable mPersistStateInt = this::persistStateInt;
 
     private GeneralData(Context context) {
         mContext = context;
@@ -260,83 +259,65 @@ public class GeneralData implements ProfileChangeListener {
     private synchronized void restoreState() {
         
         String data = mPrefs.getProfileData(GENERAL_DATA);
-
         String[] split = Helpers.splitData(data);
 
-        mBackgroundShortcut = Helpers.parseInt(split, 5, BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK);
-        mOldPinnedItems = Helpers.parseList(split, 6, Video::fromString);
-        mIsHideShortsFromSubscriptionsEnabled = Helpers.parseBoolean(split, 7, false);
-        mIsBridgeCheckEnabled = Helpers.parseBoolean(split, 11, true);
-        mLastPlaylistId = Helpers.parseStr(split, 13);
-        mIsHideUpcomingEnabled = Helpers.parseBoolean(split, 15, false);
-        mIsHideShortsFromHomeEnabled = Helpers.parseBoolean(split, 24, false);
-        mIsHideShortsFromHistoryEnabled = Helpers.parseBoolean(split, 25, false);
-        mIsVPNEnabled = Helpers.parseBoolean(split, 27, false);
-        mLastPlaylistTitle = Helpers.parseStr(split, 28);
-        mPlaylistOrder = Helpers.parseMap(split, 29, Helpers::parseStr, Helpers::parseInt);
-        mPendingStreams = Helpers.parseList(split, 30, Video::fromString);
-        mIsAltAppIconEnabled = Helpers.parseBoolean(split, 38, false);
-        mVersionCode = Helpers.parseInt(split, 39, -1);
-        mIsOldUpdateNotificationsEnabled = Helpers.parseBoolean(split, 43, false);
-        mIsRememberSubscriptionsPositionEnabled = Helpers.parseBoolean(split, 48, false);
-        mIsHideWatchedFromNotificationsEnabled = Helpers.parseBoolean(split, 56, false);
-        mChangelog = Helpers.parseStrList(split, 57);
-        mSelectedItems = Helpers.parseMap(split, 63, Helpers::parseInt, Video::fromString);
-        mIsFirstUseTooltipEnabled = Helpers.parseBoolean(split, 64, true);
-        mIsDeviceSpecificBackupEnabled = Helpers.parseBoolean(split, 65, false);
+        /* 00 */ mBackgroundShortcut = Helpers.parseInt(split, 0, BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK);
+        /* 01 */ mOldPinnedItems = Helpers.parseList(split, 1, Video::fromString);
+        /* 02 */ mIsHideShortsFromSubscriptionsEnabled = Helpers.parseBoolean(split, 2, false);
+        /* 03 */ mIsBridgeCheckEnabled = Helpers.parseBoolean(split, 3, true);
+        /* 04 */ mLastPlaylistId = Helpers.parseStr(split, 4);
+        /* 05 */ mIsHideUpcomingEnabled = Helpers.parseBoolean(split, 5, false);
+        /* 06 */ mIsHideShortsFromHomeEnabled = Helpers.parseBoolean(split, 6, false);
+        /* 07 */ mIsHideShortsFromHistoryEnabled = Helpers.parseBoolean(split, 7, false);
+        /* 08 */ mIsVPNEnabled = Helpers.parseBoolean(split, 8, false);
+        /* 09 */ mLastPlaylistTitle = Helpers.parseStr(split, 9);
+        /* 10 */ mPlaylistOrder = Helpers.parseMap(split, 10, Helpers::parseStr, Helpers::parseInt);
+        /* 11 */ mPendingStreams = Helpers.parseList(split, 11, Video::fromString);
+        /* 12 */ mIsAltAppIconEnabled = Helpers.parseBoolean(split, 12, false);
+        /* 13 */ mVersionCode = Helpers.parseInt(split, 13, -1);
+        /* 14 */ mIsOldUpdateNotificationsEnabled = Helpers.parseBoolean(split, 14, false);
+        /* 15 */ mIsRememberSubscriptionsPositionEnabled = Helpers.parseBoolean(split, 15, false);
+        /* 16 */ mIsHideWatchedFromNotificationsEnabled = Helpers.parseBoolean(split, 16, false);
+        /* 17 */ mChangelog = Helpers.parseStrList(split, 17);
+        /* 18 */ mSelectedItems = Helpers.parseMap(split, 18, Helpers::parseInt, Video::fromString);
+        /* 19 */ mIsFirstUseTooltipEnabled = Helpers.parseBoolean(split, 19, true);
+        /* 20 */ mIsDeviceSpecificBackupEnabled = Helpers.parseBoolean(split, 20, false);
 
-    }
-
-    public void persistNow() {
-        Utils.post(mPersistStateInt);
     }
 
     private void persistState() {
-        //Utils.postDelayed(mPersistStateInt, 10_000);
-        persistNow();
-    }
-
-    private void persistStateInt() {
         // Zero index is skipped. Selected sections were there.
         mPrefs.setProfileData(
             GENERAL_DATA, 
             Helpers.mergeData(
-                null, null, null, 
-                mBackgroundShortcut, 
-                mOldPinnedItems, 
-                mIsHideShortsFromSubscriptionsEnabled,
-                null, 
-                mIsBridgeCheckEnabled, 
-                mLastPlaylistId,
-                null, 
-                mIsHideUpcomingEnabled, 
-                mIsHideShortsFromHomeEnabled, 
-                mIsHideShortsFromHistoryEnabled, 
-                mIsVPNEnabled, 
-                mLastPlaylistTitle,
-                mPlaylistOrder, 
-                mPendingStreams, 
-                null, null, 
-                mIsAltAppIconEnabled, 
-                mVersionCode, 
-                null, 
-                mIsOldUpdateNotificationsEnabled,
-                mIsRememberSubscriptionsPositionEnabled, 
-                null, 
-                mIsHideWatchedFromNotificationsEnabled, 
-                mChangelog, 
-                null, null,
-                mSelectedItems, 
-                mIsFirstUseTooltipEnabled, 
-                mIsDeviceSpecificBackupEnabled, 
-                        null
+            /* 00 */ mBackgroundShortcut, 
+            /* 01 */ mOldPinnedItems, 
+            /* 02 */ mIsHideShortsFromSubscriptionsEnabled,
+            /* 03 */ mIsBridgeCheckEnabled, 
+            /* 04 */ mLastPlaylistId,
+            /* 05 */ mIsHideUpcomingEnabled, 
+            /* 06 */ mIsHideShortsFromHomeEnabled, 
+            /* 07 */ mIsHideShortsFromHistoryEnabled, 
+            /* 08 */ mIsVPNEnabled,
+            /* 09 */ mLastPlaylistTitle,
+            /* 10 */ mPlaylistOrder, 
+            /* 11 */ mPendingStreams, 
+            /* 12 */ mIsAltAppIconEnabled, 
+            /* 13 */ mVersionCode, 
+            /* 14 */ mIsOldUpdateNotificationsEnabled,
+            /* 15 */ mIsRememberSubscriptionsPositionEnabled, 
+            /* 16 */ mIsHideWatchedFromNotificationsEnabled, 
+            /* 17 */ mChangelog,
+            /* 18 */ mSelectedItems, 
+            /* 19 */ mIsFirstUseTooltipEnabled, 
+            /* 20 */ mIsDeviceSpecificBackupEnabled
             )
         );
     }
 
     @Override
     public void onProfileChanged() {
-        Utils.removeCallbacks(mPersistStateInt);
+        persistState();
         restoreState();
     }
 }

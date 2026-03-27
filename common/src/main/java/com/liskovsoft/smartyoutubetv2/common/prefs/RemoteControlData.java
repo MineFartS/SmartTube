@@ -90,26 +90,34 @@ public class RemoteControlData extends DataChangeBase {
     }
 
     private void restoreState() {
-        String data = mAppPrefs.getData(DEVICE_LINK_DATA);
 
+        String data = mAppPrefs.getData(DEVICE_LINK_DATA);
         String[] split = Helpers.splitData(data);
 
-        // null
-        // null
-        mIsDeviceLinkEnabled = Helpers.parseBoolean(split, 2, false);
-        mIsFinishOnDisconnectEnabled = Helpers.parseBoolean(split, 3, false);
-        mIsConnectMessagesEnabled = Helpers.parseBoolean(split, 4, false);
-        mIsRemoteHistoryDisabled = Helpers.parseBoolean(split, 5, false);
-        mLastVideo = Helpers.parseItem(split, 6, Video::fromString);
-        mIsConnectedBefore = Helpers.parseBoolean(split, 7, false);
+        /* 0 */ mIsDeviceLinkEnabled = Helpers.parseBoolean(split, 0, false);
+        /* 1 */ mIsFinishOnDisconnectEnabled = Helpers.parseBoolean(split, 1, false);
+        /* 2 */ mIsConnectMessagesEnabled = Helpers.parseBoolean(split, 2, false);
+        /* 3 */ mIsRemoteHistoryDisabled = Helpers.parseBoolean(split, 3, false);
+        /* 4 */ mLastVideo = Helpers.parseItem(split, 4, Video::fromString);
+        /* 5 */ mIsConnectedBefore = Helpers.parseBoolean(split, 5, false);
+    
     }
 
     private void persistState() {
-        mAppPrefs.setData(DEVICE_LINK_DATA, Helpers.mergeData(
-                null, null, mIsDeviceLinkEnabled, mIsFinishOnDisconnectEnabled, mIsConnectMessagesEnabled,
-                mIsRemoteHistoryDisabled, mLastVideo, mIsConnectedBefore
-        ));
+    
+        mAppPrefs.setData(
+            DEVICE_LINK_DATA, 
+            Helpers.mergeData(
+            /* 0 */ mIsDeviceLinkEnabled, 
+            /* 1 */ mIsFinishOnDisconnectEnabled, 
+            /* 2 */ mIsConnectMessagesEnabled,
+            /* 3 */ mIsRemoteHistoryDisabled, 
+            /* 4 */ mLastVideo, 
+            /* 5 */ mIsConnectedBefore
+            )
+        );
 
         onDataChange();
+    
     }
 }

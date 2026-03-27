@@ -100,9 +100,8 @@ public class AccountsData implements AccountChangeListener {
 
         String[] split = Helpers.splitData(data);
 
-        mIsSelectAccountOnBootEnabled = Helpers.parseBoolean(split, 0, false);
-        // mIsAccountProtectedWithPassword
-        // mAccountPassword
+        /* 0 */ mIsSelectAccountOnBootEnabled = Helpers.parseBoolean(split, 0, false);
+
         String[] passwords = Helpers.parseArray(split, 3);
 
         if (passwords != null) {
@@ -114,9 +113,14 @@ public class AccountsData implements AccountChangeListener {
     }
 
     private void persistState() {
-        mAppPrefs.setData(ACCOUNTS_DATA, Helpers.mergeData(
-                mIsSelectAccountOnBootEnabled, null, null, Helpers.mergeArray(mPasswords.values().toArray())
-        ));
+        
+        mAppPrefs.setData(
+            ACCOUNTS_DATA, 
+            Helpers.mergeData(
+            /* 0 */ mIsSelectAccountOnBootEnabled
+            )
+        );
+
     }
 
     private String getAccountName() {
