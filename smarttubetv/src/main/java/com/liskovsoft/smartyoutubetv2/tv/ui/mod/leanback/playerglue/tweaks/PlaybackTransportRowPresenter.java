@@ -418,9 +418,9 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
             super(rootView);
 
             mPlayerData = PlayerData.instance(rootView.getContext());
-            PlayerTweaksData tweaksData = PlayerTweaksData.instance(rootView.getContext());
-            PlaybackTransportRowPresenter.this.mPlaybackControlsPresenter.setSyncedFocusIndexEnabled(tweaksData.isSyncRowButtonIndexEnabled());
-            PlaybackTransportRowPresenter.this.mSecondaryControlsPresenter.setSyncedFocusIndexEnabled(tweaksData.isSyncRowButtonIndexEnabled());
+
+            PlaybackTransportRowPresenter.this.mPlaybackControlsPresenter.setSyncedFocusIndexEnabled(true);
+            PlaybackTransportRowPresenter.this.mSecondaryControlsPresenter.setSyncedFocusIndexEnabled(true);
 
             mImageView = (ImageView) rootView.findViewById(R.id.image);
             mDescriptionDock = (ViewGroup) rootView.findViewById(R.id.description_dock);

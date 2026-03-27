@@ -69,7 +69,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsExtraLongSpeedListEnabled;
     private int mPlayerDataSource;
     private boolean mIsSectionPlaylistEnabled;
-    private boolean mIsSyncRowButtonIndexEnabled;
     private boolean mIsLoopShortsEnabled;
     
     private final Runnable mPersistDataInt = this::persistDataInt;
@@ -171,15 +170,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         persistData();
     }
 
-    public boolean isSyncRowButtonIndexEnabled() {
-        return mIsSyncRowButtonIndexEnabled;
-    }
-
-    public void setSyncRowButtonIndexEnabled(boolean enable) {
-        mIsSyncRowButtonIndexEnabled = enable;
-        persistData();
-    }
-
     public boolean isLoopShortsEnabled() {
         return mIsLoopShortsEnabled;
     }
@@ -205,7 +195,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mPlayerDataSource = Helpers.parseInt(split, 26, PLAYER_DATA_SOURCE_DEFAULT);
         // Cause severe garbage collector stuttering
         mIsSectionPlaylistEnabled = Helpers.parseBoolean(split, 31, Utils.isEnoughRam());
-        mIsSyncRowButtonIndexEnabled = Helpers.parseBoolean(split, 41, true);
         mIsLoopShortsEnabled = Helpers.parseBoolean(split, 44, true);
         mIsRememberPositionOfLiveVideosEnabled = Helpers.parseBoolean(split, 46, true);
         mIsExtraLongSpeedListEnabled = Helpers.parseBoolean(split, 49, false);
@@ -235,7 +224,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mIsLongSpeedListEnabled, 
                 mPlayerDataSource, 
                 mIsSectionPlaylistEnabled,
-                mIsSyncRowButtonIndexEnabled,
                 null, 
                 mIsLoopShortsEnabled, 
                 mIsRememberPositionOfLiveVideosEnabled,

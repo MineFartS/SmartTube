@@ -223,11 +223,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 option -> mPlayerTweaksData.setRememberPositionOfLiveVideosEnabled(option.isSelected()),
                 mPlayerTweaksData.isRememberPositionOfLiveVideosEnabled()));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.player_global_focus),
-                getContext().getString(R.string.player_global_focus_desc),
-                option -> mPlayerTweaksData.setSyncRowButtonIndexEnabled(option.isSelected()),
-                mPlayerTweaksData.isSyncRowButtonIndexEnabled()));
-
         options.add(UiOptionItem.from(getContext().getString(R.string.player_show_tooltips),
                 option -> mPlayerData.setTooltipsEnabled(option.isSelected()),
                 mPlayerData.isTooltipsEnabled()));
