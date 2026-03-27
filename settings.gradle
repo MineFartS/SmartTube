@@ -1,4 +1,4 @@
-include ':smarttubetv', ':common', ':chatkit', ':leanbackassistant', ':leanback-1.0.0', ':fragment-1.1.0', ':filepicker-lib'
+include ':smarttubetv', ':common', ':chatkit', ':leanbackassistant', ':leanback-1.0.0', ':fragment-1.1.0'
 
 // SharedModules
 gradle.ext.sharedModulesRoot = new File(settingsDir, 'dependencies/SharedModules')
@@ -29,6 +29,3 @@ project(':leanbackassistant').projectDir = new File(settingsDir, 'dependencies/l
 
 // leanback-1.0.0
 project(':leanback-1.0.0').projectDir = new File(settingsDir, 'dependencies/leanback-1.0.0')
-
-// filepicker-lib
-project(':filepicker-lib').projectDir = new File(settingsDir, 'dependencies/filepicker-lib')

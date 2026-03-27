@@ -58,9 +58,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import arte.programar.materialfile.MaterialFilePicker;
-import arte.programar.materialfile.ui.FilePickerActivity;
-import arte.programar.materialfile.utils.FileUtils;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
@@ -586,61 +583,15 @@ public class AppDialogUtil {
         );
     }
 
-    public static OptionItem createSubscriptionsBackupButton(Context context) {
-        AppDialogPresenter dialogPresenter = AppDialogPresenter.instance(context);
-        List<OptionItem> options = new ArrayList<>();
-
-        // Import from the file
-        String filePickerTitle = context.getString(R.string.import_subscriptions_group) + " (GrayJay/PocketTube/NewPipe)";
-        OptionItem item = UiOptionItem.from(filePickerTitle, optionItem -> {
-            dialogPresenter.closeDialog();
-
-            MotherActivity activity = getMotherActivity(context);
-
-            if (PermissionHelpers.hasStoragePermissions(activity)) {
-                runFilePicker(activity, filePickerTitle);
-            } else {
-                activity.addOnPermissions((requestCode, permissions, grantResults) -> {
-                    if (requestCode == PermissionHelpers.REQUEST_EXTERNAL_STORAGE) {
-                        if (grantResults.length >= 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                            runFilePicker(activity, filePickerTitle);
-                        }
-                    }
-                });
-                PermissionHelpers.verifyStoragePermissions(activity);
-            }
-        });
-
-        return item;
-    }
-
-    private static void runFilePicker(Activity activity, String title) {
-        File filesDir = FileUtils.getFile(activity, null);
-
-        if (filesDir == null) {
-            Log.e(TAG, "Storage device is unavailable");
-            return;
-        }
-
-        new MaterialFilePicker()
-                .withActivity(activity)
-                .withTitle(title)
-                .withRootPath(filesDir.getAbsolutePath())
-                .start(FILE_PICKER_REQUEST_CODE);
-    }
-
     @NonNull
     private static MotherActivity getMotherActivity(Context context) {
+
         ChannelGroupServiceWrapper mService = ChannelGroupServiceWrapper.instance(context);
+
         MotherActivity activity = (MotherActivity) context;
-        activity.addOnResult((requestCode, resultCode, data) -> {
-            if (FILE_PICKER_REQUEST_CODE == requestCode && resultCode == Activity.RESULT_OK) {
-                String filePath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
-                RxHelper.execute(mService.importGroupsObserve(new File(filePath)), result -> pinGroups(context, result),
-                        error -> MessageHelpers.showLongMessage(context, error.getMessage()));
-            }
-        });
+
         return activity;
+
     }
 
     private static void pinGroups(Context context, @NonNull List<ItemGroup> newGroups) {
