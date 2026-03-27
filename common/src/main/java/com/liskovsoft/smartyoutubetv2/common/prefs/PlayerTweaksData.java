@@ -181,42 +181,35 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
         String[] split = Helpers.splitData(data);
 
-        mIsSnapToVsyncDisabled = Helpers.parseBoolean(split, 2, false);
-        // Need to be enabled (?) on older version of ExoPlayer (e.g. 2.10.6).
-        // It's because there's no tweaks for modern devices.
-        mIsSetOutputSurfaceWorkaroundEnabled = Helpers.parseBoolean(split, 7, true);
-        mIsPlaybackNotificationsDisabled = Helpers.parseBoolean(split, 11, !Helpers.isAndroidTVLauncher(mPrefs.getContext()));
-        mPlayerButtons = Helpers.parseInt(split, 13, PLAYER_BUTTON_DEFAULT);
-        mIsLongSpeedListEnabled = Helpers.parseBoolean(split, 25, true);
-        mPlayerDataSource = Helpers.parseInt(split, 26, PLAYER_DATA_SOURCE_DEFAULT);
-        // Cause severe garbage collector stuttering
-        mIsSectionPlaylistEnabled = Helpers.parseBoolean(split, 31, Utils.isEnoughRam());
-        mIsLoopShortsEnabled = Helpers.parseBoolean(split, 44, true);
-        mIsRememberPositionOfLiveVideosEnabled = Helpers.parseBoolean(split, 46, true);
-        mIsExtraLongSpeedListEnabled = Helpers.parseBoolean(split, 49, false);
+        /* 0 */ mIsSnapToVsyncDisabled = Helpers.parseBoolean(split, 0, false);
+        /* 1 */ mIsSetOutputSurfaceWorkaroundEnabled = Helpers.parseBoolean(split, 1, true);
+        /* 2 */ mIsPlaybackNotificationsDisabled = Helpers.parseBoolean(split, 2, !Helpers.isAndroidTVLauncher(mPrefs.getContext()));
+        /* 3 */ mPlayerButtons = Helpers.parseInt(split, 3, PLAYER_BUTTON_DEFAULT);
+        /* 4 */ mIsLongSpeedListEnabled = Helpers.parseBoolean(split, 4, true);
+        /* 5 */ mPlayerDataSource = Helpers.parseInt(split, 5, PLAYER_DATA_SOURCE_DEFAULT);
+        /* 6 */ mIsSectionPlaylistEnabled = Helpers.parseBoolean(split, 6, Utils.isEnoughRam());
+        /* 7 */ mIsLoopShortsEnabled = Helpers.parseBoolean(split, 7, true);
+        /* 8 */ mIsRememberPositionOfLiveVideosEnabled = Helpers.parseBoolean(split, 8, true);
+        /* 9 */ mIsExtraLongSpeedListEnabled = Helpers.parseBoolean(split, 9, false);
 
         updateDefaultValues();
+
     }
 
     public void persistState() {
         mPrefs.setProfileData(
             VIDEO_PLAYER_TWEAKS_DATA, 
             Helpers.mergeData(
-                mIsSnapToVsyncDisabled,
-                null, 
-                mIsSetOutputSurfaceWorkaroundEnabled, 
-                mIsPlaybackNotificationsDisabled, 
-                mPlayerButtons,
-                null,
-                mIsLongSpeedListEnabled, 
-                mPlayerDataSource, 
-                mIsSectionPlaylistEnabled,
-                null, 
-                mIsLoopShortsEnabled, 
-                mIsRememberPositionOfLiveVideosEnabled,
-                null, 
-                mIsExtraLongSpeedListEnabled, 
-                null
+            /* 0 */ mIsSnapToVsyncDisabled,
+            /* 1 */ mIsSetOutputSurfaceWorkaroundEnabled, 
+            /* 2 */ mIsPlaybackNotificationsDisabled, 
+            /* 3 */ mPlayerButtons,
+            /* 4 */ mIsLongSpeedListEnabled, 
+            /* 5 */ mPlayerDataSource, 
+            /* 6 */ mIsSectionPlaylistEnabled,
+            /* 7 */ mIsLoopShortsEnabled, 
+            /* 8 */ mIsRememberPositionOfLiveVideosEnabled,
+            /* 9 */ mIsExtraLongSpeedListEnabled
             )
         );
     }

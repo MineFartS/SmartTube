@@ -93,7 +93,7 @@ public class MediaServiceData {
         mCachedPrefs = new MediaServiceCache(mGlobalPrefs.getContext());
 
         restoreState();
-        restoreCachedData();
+
     }
 
     public static MediaServiceData instance() {
@@ -275,25 +275,25 @@ public class MediaServiceData {
     }
 
     private void restoreState() {
-        String data = mGlobalPrefs.getMediaServiceData();
 
+        String data = mGlobalPrefs.getMediaServiceData();
         String[] split = Helpers.splitData(data);
 
         String appVersion = AppInfoHelpers.getAppVersionName(mGlobalPrefs.getContext());
 
-        mScreenId = Helpers.parseStr(split, 1);
-        mDeviceId = Helpers.parseStr(split, 2);
-        mOldAppVersion = Helpers.parseStr(split, 3);
-        mVideoInfoType = Helpers.parseInt(split, 4, -1);
-        mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_DASH | FORMATS_URL);
-        mPoToken = Helpers.parseItem(split, 14, PoTokenResponse::fromString);
-        mAppInfo = Helpers.parseItem(split, 15, AppInfoCached::fromString);
-        mPlayerData = Helpers.parseItem(split, 16, PlayerDataCached::fromString);
-        mClientData = Helpers.parseItem(split, 17, ClientDataCached::fromString);
-        mHiddenContent = Helpers.parseInt(split, 18, CONTENT_SHORTS | CONTENT_UPCOMING);
-        mIsMoreSubtitlesUnlocked = Helpers.parseBoolean(split, 19);
-        mVisitorCookie = Helpers.parseStr(split, 21);
-        mFailedAppInfo = Helpers.parseItem(split, 24, AppInfoCached::fromString);
+        /* 00 */ mScreenId = Helpers.parseStr(split, 0);
+        /* 01 */ mDeviceId = Helpers.parseStr(split, 1);
+        /* 02 */ mOldAppVersion = Helpers.parseStr(split, 2);
+        /* 03 */ mVideoInfoType = Helpers.parseInt(split, 3, -1);
+        /* 04 */ mEnabledFormats = Helpers.parseInt(split, 4, FORMATS_DASH | FORMATS_URL);
+        /* 05 */ mPoToken = Helpers.parseItem(split, 5, PoTokenResponse::fromString);
+        /* 06 */ mAppInfo = Helpers.parseItem(split, 6, AppInfoCached::fromString);
+        /* 07 */ mPlayerData = Helpers.parseItem(split, 7, PlayerDataCached::fromString);
+        /* 08 */ mClientData = Helpers.parseItem(split, 8, ClientDataCached::fromString);
+        /* 09 */ mHiddenContent = Helpers.parseInt(split, 9, CONTENT_SHORTS | CONTENT_UPCOMING);
+        /* 10 */ mIsMoreSubtitlesUnlocked = Helpers.parseBoolean(split, 10);
+        /* 11 */ mVisitorCookie = Helpers.parseStr(split, 11);
+        /* 12 */ mFailedAppInfo = Helpers.parseItem(split, 12, AppInfoCached::fromString);
 
         // Hide watched content by default
         setContentHidden(MediaServiceData.CONTENT_WATCHED, true);
@@ -307,27 +307,28 @@ public class MediaServiceData {
         mOldAppVersion = appVersion;
     }
 
-    private void restoreCachedData() {
-        String cache = mCachedPrefs.getMediaServiceCache();
-
-        String[] split = Helpers.splitData(cache);
-
-        mNSigData = Helpers.parseItem(split, 8, NSigData::fromString);
-        mSigData = Helpers.parseItem(split, 9, NSigData::fromString);
-        //mPlayerExtractorVersion = Helpers.parseStr(split, 10);
-        mPlayerExtractorCache = Helpers.parseItem(split, 11, PlayerExtractorCache::fromString);
-    }
-
     public void persistState() {
+
         if (mGlobalPrefs == null) {
             return;
         }
 
-        mGlobalPrefs.setMediaServiceData(
-                Helpers.mergeData(null, mScreenId, mDeviceId, mOldAppVersion, mVideoInfoType, null,
-                        null, null, null, null, null, mEnabledFormats, null, null, mPoToken,
-                        mAppInfo, mPlayerData, mClientData, mHiddenContent,
-                        mIsMoreSubtitlesUnlocked, null, mVisitorCookie, null, mFailedAppInfo));
+        mGlobalPrefs.setMediaServiceData(Helpers.mergeData(
+        /* 00 */ mScreenId, 
+        /* 01 */ mDeviceId, 
+        /* 02 */ mOldAppVersion, 
+        /* 03 */ mVideoInfoType,
+        /* 04 */ mEnabledFormats,
+        /* 05 */ mPoToken,
+        /* 06 */ mAppInfo, 
+        /* 07 */ mPlayerData, 
+        /* 08 */ mClientData, 
+        /* 09 */ mHiddenContent,
+        /* 10 */ mIsMoreSubtitlesUnlocked, 
+        /* 11 */ mVisitorCookie, 
+        /* 12 */ mFailedAppInfo
+        ));
+    
     }
 
     private void resetSensitiveData() {

@@ -11,10 +11,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class DataSaverBase extends DataChangeBase {
+
     private final AppPrefs mAppPrefs;
     private final String mDataKey;
     private final List<Object> mValues;
-    private final Runnable mPersistStateInt = this::persistStateInt;
 
     private interface Converter {
         Object convert(String input);
@@ -83,23 +83,23 @@ public abstract class DataSaverBase extends DataChangeBase {
     }
 
     private void restoreState() {
-        String data = mAppPrefs.getData(mDataKey);
 
+        String data = mAppPrefs.getData(mDataKey);
         String[] split = Helpers.splitData(data);
 
         if (split != null) {
             mValues.addAll(Arrays.asList(split));
         }
+        
     }
 
     public void persistState() {
-        onDataChange();
-        Utils.postDelayed(mPersistStateInt, 10_000);
+        mAppPrefs.setData(
+            mDataKey, 
+            Helpers.mergeData(
+                mValues.toArray()
+            )
+        );
     }
 
-    public void persistStateInt() {
-        mAppPrefs.setData(mDataKey, Helpers.mergeData(
-                mValues.toArray()
-        ));
-    }
 }

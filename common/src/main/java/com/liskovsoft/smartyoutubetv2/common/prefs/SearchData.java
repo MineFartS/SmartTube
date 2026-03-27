@@ -81,10 +81,10 @@ public class SearchData {
         String data = mAppPrefs.getData(SEARCH_DATA);
         String[] split = Helpers.splitData(data);
 
-        mSearchOptions = Helpers.parseInt(split, 1, 0);
-        mIsTempBackgroundModeEnabled = Helpers.parseBoolean(split, 4, false);
-        mIsTrendingSearchesEnabled = Helpers.parseBoolean(split, 7, true);
-        mIsPopularSearchesDisabled = Helpers.parseBoolean(split, 9, false);
+        /* 0 */ mSearchOptions = Helpers.parseInt(split, 0, 0);
+        /* 1 */ mIsTempBackgroundModeEnabled = Helpers.parseBoolean(split, 1, false);
+        /* 2 */ mIsTrendingSearchesEnabled = Helpers.parseBoolean(split, 2, true);
+        /* 3 */ mIsPopularSearchesDisabled = Helpers.parseBoolean(split, 3, false);
     
     }
 
@@ -92,11 +92,10 @@ public class SearchData {
         mAppPrefs.setData(
             SEARCH_DATA,
             Helpers.mergeData(
-                mSearchOptions, 
-                mIsTempBackgroundModeEnabled, 
-                null, 
-                mIsTrendingSearchesEnabled,
-                mIsPopularSearchesDisabled
+            /* 0 */ mSearchOptions, 
+            /* 1 */ mIsTempBackgroundModeEnabled, 
+            /* 2 */ mIsTrendingSearchesEnabled,
+            /* 3 */ mIsPopularSearchesDisabled
             )
         );
     }
