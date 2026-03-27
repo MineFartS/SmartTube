@@ -218,17 +218,8 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendDeveloperCategory(AppDialogPresenter settingsPresenter) {
-        
-        List<OptionItem> options = new ArrayList<>();
 
-        options.add(
-            UiOptionItem.from(
-                getContext().getString(R.string.disable_stream_buffer),
-                getContext().getString(R.string.disable_stream_buffer_desc),
-                option -> mPlayerTweaksData.setBufferOnStreamsDisabled(option.isSelected()),
-                mPlayerTweaksData.isBufferOnStreamsDisabled()
-            )
-        );
+        List<OptionItem> options = new ArrayList<>();
 
         options.add(
             UiOptionItem.from(

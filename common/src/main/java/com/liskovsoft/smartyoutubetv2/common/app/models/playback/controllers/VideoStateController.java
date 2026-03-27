@@ -19,21 +19,21 @@ import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
 public class VideoStateController extends BasePlayerController {
     private static final String TAG = VideoStateController.class.getSimpleName();
+
     private static final long MUSIC_VIDEO_MAX_DURATION_MS = 6 * 60 * 1000;
     private static final long RESTORE_LIVE_BUFFER_MS = 60_000;
-
     private static final long OFFICIAL_LIVE_BUFFER_MS = 15_000; // Official app buffer
     private static final long LIVE_BUFFER_MS = OFFICIAL_LIVE_BUFFER_MS;
-    private static final long SHORT_LIVE_BUFFER_MS = 0; // Note, on buffer lower than the 60sec you'll notice segment skip
     private static final long BEGIN_THRESHOLD_MS = 10_000;
     private static final long EMBED_THRESHOLD_MS = 30_000;
     private static final int HISTORY_UPDATE_INTERVAL_MINUTES = 3; // Sync history every x minutes
+
     private boolean mIsPlayEnabled;
     private boolean mIsPlayBlocked;
     private int mTickleLeft;
+    private long mNewVideoTimeMs;
 
     private final Runnable mUpdateHistory = this::saveState;
-    private long mNewVideoTimeMs;
 
     /**
      * Fired after user clicked on video in browse activity<br/>
@@ -587,7 +587,7 @@ public class VideoStateController extends BasePlayerController {
     }
 
     private long getLiveBuffer() {
-        return getPlayerTweaksData().isBufferOnStreamsDisabled() ? SHORT_LIVE_BUFFER_MS : LIVE_BUFFER_MS;
+        return LIVE_BUFFER_MS;
     }
 
     private boolean isMutedEmbed() {

@@ -76,7 +76,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsLongSpeedListEnabled;
     private boolean mIsExtraLongSpeedListEnabled;
     private int mPlayerDataSource;
-    private boolean mIsBufferOnStreamsDisabled;
     private boolean mIsSectionPlaylistEnabled;
     private boolean mIsSyncRowButtonIndexEnabled;
     private boolean mIsLoopShortsEnabled;
@@ -216,15 +215,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         persistData();
     }
 
-    public boolean isBufferOnStreamsDisabled() {
-        return mIsBufferOnStreamsDisabled;
-    }
-
-    public void setBufferOnStreamsDisabled(boolean disable) {
-        mIsBufferOnStreamsDisabled = disable;
-        persistData();
-    }
-
     public boolean isSectionPlaylistEnabled() {
         return mIsSectionPlaylistEnabled;
     }
@@ -271,7 +261,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsButtonLongClickEnabled = Helpers.parseBoolean(split, 24, true);
         mIsLongSpeedListEnabled = Helpers.parseBoolean(split, 25, true);
         mPlayerDataSource = Helpers.parseInt(split, 26, PLAYER_DATA_SOURCE_DEFAULT);
-        mIsBufferOnStreamsDisabled = Helpers.parseBoolean(split, 30, false);
         // Cause severe garbage collector stuttering
         mIsSectionPlaylistEnabled = Helpers.parseBoolean(split, 31, Utils.isEnoughRam());
         mIsSyncRowButtonIndexEnabled = Helpers.parseBoolean(split, 41, true);
@@ -308,7 +297,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mIsButtonLongClickEnabled, 
                 mIsLongSpeedListEnabled, 
                 mPlayerDataSource, 
-                mIsBufferOnStreamsDisabled, 
                 mIsSectionPlaylistEnabled,
                 mIsSyncRowButtonIndexEnabled,
                 null, 
