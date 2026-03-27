@@ -21,6 +21,7 @@ import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.track.MediaTrack
 import com.liskovsoft.smartyoutubetv2.common.prefs.AppPrefs.ProfileChangeListener;
 import com.liskovsoft.smartyoutubetv2.common.prefs.common.DataChangeBase;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
+import com.liskovsoft.smartyoutubetv2.common.utils.DataStore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PlayerData extends DataChangeBase implements PlayerConstants, ProfileChangeListener {
-    private static final String VIDEO_PLAYER_DATA = "video_player_data";
+    
     public static final int ONLY_UI = 0;
     public static final int UI_AND_PAUSE = 1;
     public static final int ONLY_PAUSE = 2;
@@ -36,7 +37,9 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
 
     @SuppressLint("StaticFieldLeak")
     private static PlayerData sInstance;
+
     private final AppPrefs mPrefs;
+    private final DataStore mDataStore;
 
     private int mBackgroundMode;
     private FormatItem mVideoFormat;
@@ -75,7 +78,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private final Map<String, SpeedItem> mSpeeds = new HashMap<>();
     private float mPitch;
     private List<String> mLastAudioLanguages;
-    private final Runnable mPersistStateInt = this::persistStateInt;
 
     private static class SpeedItem {
         public String channelId;
@@ -104,11 +106,17 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     }
 
     private PlayerData(Context context) {
+
         mPrefs = AppPrefs.instance(context);
         mPrefs.addListener(this);
+
+        mDataStore = new DataStore("video_player_data");
+
         initSubtitleStyles();
         initDefaultFormats();
+
         restoreState();
+
     }
 
     public static PlayerData instance(Context context) {
@@ -539,46 +547,42 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         mDefaultVideoFormats.put("P1", FormatItem.VIDEO_FHD_AVC_60); // Chinese projector (see annoying emails)
     }
 
-    private void restoreState() {
+    private void restoreState() {       
 
-        String data = mPrefs.getProfileData(VIDEO_PLAYER_DATA);
-
-        String[] split = Helpers.splitData(data);
-
-        mBackgroundMode = Helpers.parseInt(split, 7, PlayerEngine.BACKGROUND_MODE_DEFAULT);
-        mVideoFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 9)), getDefaultVideoFormat());
-        mAudioFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 10)), getDefaultAudioFormat());
-        mSubtitleFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 11)), getDefaultSubtitleFormat());
-        mSubtitleStyleIndex = Helpers.parseInt(split, 13, 4); // yellow on semi bg
-        mResizeMode = Helpers.parseInt(split, 14, PlayerEngine.RESIZE_MODE_DEFAULT);
-        mSpeed = Helpers.parseFloat(split, 15, 1.0f);
-        mIsAfrEnabled = Helpers.parseBoolean(split, 16, false);
-        mIsAfrFpsCorrectionEnabled = Helpers.parseBoolean(split, 17, true);
-        mIsAfrResSwitchEnabled = Helpers.parseBoolean(split, 18, false);
-        mAudioDelayMs = Helpers.parseInt(split, 20, 0);
-        mIsAllSpeedEnabled = Helpers.parseBoolean(split, 21, false);
-        mIsSpeedPerVideoEnabled = Helpers.parseBoolean(split, 29, false);
-        mIsTimeCorrectionEnabled = Helpers.parseBoolean(split, 32, true);
-        mIsDoubleRefreshRateEnabled = Helpers.parseBoolean(split, 35, true);
-        mSubtitleScale = Helpers.parseFloat(split, 39, .7f);
-        mPlayerVolume = Helpers.parseFloat(split, 40, 1.0f);
-        mIsTooltipsEnabled = Helpers.parseBoolean(split, 41, true);
-        mSubtitlePosition = Helpers.parseFloat(split, 42, 0.1f);
-        mIsSkip24RateEnabled = Helpers.parseBoolean(split, 44, false);
-        mIsLiveChatEnabled = Helpers.parseBoolean(split, 46, false);
-        mLastSubtitleFormats = Helpers.parseList(split, 47, ExoFormatItem::from);
-        mLastSpeed = Helpers.parseFloat(split, 48, 1.0f);
-        mRotationAngle = Helpers.parseInt(split, 49, 0);
-        mZoomPercents = Helpers.parseInt(split, 50, -1);
-        mPlaybackMode = Helpers.parseInt(split, 51, PlayerConstants.PLAYBACK_MODE_ALL);
-        mAudioLanguage = Helpers.parseStr(split, 52, LocaleUtility.getCurrentLanguage(mPrefs.getContext()));
-        mSubtitleLanguage = Helpers.parseStr(split, 53, LocaleUtility.getCurrentLanguage(mPrefs.getContext()));
-        mIsSpeedPerChannelEnabled = Helpers.parseBoolean(split, 56, true);
-        String[] speeds = Helpers.parseArray(split, 57);
-        mPitch = Helpers.parseFloat(split, 58, 1.0f);
-        mIsSkipShortsEnabled = Helpers.parseBoolean(split, 59, false);
-        mLastAudioLanguages = Helpers.parseStrList(split, 60);
-        mIsVideoFlipEnabled = Helpers.parseBoolean(split, 61, false);
+        /* 00 */ mBackgroundMode = mDataStore.get(0, PlayerEngine.BACKGROUND_MODE_DEFAULT);
+        /* 01 */ mVideoFormat = Helpers.firstNonNull(ExoFormatItem.from(mDataStore.get(1)), getDefaultVideoFormat());
+        /* 02 */ mAudioFormat = Helpers.firstNonNull(ExoFormatItem.from(mDataStore.get(2)), getDefaultAudioFormat());
+        /* 03 */ mSubtitleFormat = Helpers.firstNonNull(ExoFormatItem.from(mDataStore.get(3)), getDefaultSubtitleFormat());
+        /* 04 */ mSubtitleStyleIndex = mDataStore.get(4, 4); // yellow on semi bg
+        /* 05 */ mResizeMode = mDataStore.get(5, PlayerEngine.RESIZE_MODE_DEFAULT);
+        /* 06 */ mSpeed = mDataStore.get(6, 1.0f);
+        /* 07 */ mIsAfrEnabled = mDataStore.get(7, false);
+        /* 08 */ mIsAfrFpsCorrectionEnabled = mDataStore.get(8, true);
+        /* 09 */ mIsAfrResSwitchEnabled = mDataStore.get(9, false);
+        /* 10 */ mAudioDelayMs = mDataStore.get(10, 0);
+        /* 11 */ mIsAllSpeedEnabled = mDataStore.get(11, false);
+        /* 12 */ mIsSpeedPerVideoEnabled = mDataStore.get(12, false);
+        /* 13 */ mIsTimeCorrectionEnabled = mDataStore.get(13, true);
+        /* 14 */ mIsDoubleRefreshRateEnabled = mDataStore.get(14, true);
+        /* 15 */ mSubtitleScale = mDataStore.get(15, .7f);
+        /* 16 */ mPlayerVolume = mDataStore.get(16, 1.0f);
+        /* 17 */ mIsTooltipsEnabled = mDataStore.get(17, true);
+        /* 18 */ mSubtitlePosition = mDataStore.get(18, 0.1f);
+        /* 19 */ mIsSkip24RateEnabled = mDataStore.get(19, false);
+        /* 20 */ mIsLiveChatEnabled = mDataStore.get(20, false);
+        /* 21 */ mLastSubtitleFormats = mDataStore.get(21, ExoFormatItem::from);
+        /* 22 */ mLastSpeed = mDataStore.get(22, 1.0f);
+        /* 23 */ mRotationAngle = mDataStore.get(23, 0);
+        /* 24 */ mZoomPercents = mDataStore.get(24, -1);
+        /* 25 */ mPlaybackMode = mDataStore.get(25, PlayerConstants.PLAYBACK_MODE_ALL);
+        /* 26 */ mAudioLanguage = mDataStore.get(26, LocaleUtility.getCurrentLanguage(mPrefs.getContext()));
+        /* 27 */ mSubtitleLanguage = mDataStore.get(27, LocaleUtility.getCurrentLanguage(mPrefs.getContext()));
+        /* 28 */ mIsSpeedPerChannelEnabled = mDataStore.get(28, true);
+        /* 29 */ String[] speeds = mDataStore.get(29);
+        /* 30 */ mPitch = mDataStore.get(30, 1.0f);
+        /* 31 */ mIsSkipShortsEnabled = mDataStore.get(31, false);
+        /* 32 */ mLastAudioLanguages = mDataStore.get(32);
+        /* 33 */ mIsVideoFlipEnabled = mDataStore.get(33, false);
 
         if (speeds != null) {
             for (String speedSpec : speeds) {
@@ -593,63 +597,53 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     }
 
     private void persistState() {
-        onDataChange();
-        Utils.postDelayed(mPersistStateInt, 10_000);
-    }
-
-    private void persistStateInt() {
-        mPrefs.setProfileData(
-            VIDEO_PLAYER_DATA, 
-            Helpers.mergeData(
-                null,
-                mBackgroundMode, 
-                null,
-                mVideoFormat, 
-                mAudioFormat, 
-                mSubtitleFormat,
-                mSubtitleStyleIndex, 
-                mResizeMode, 
-                mSpeed,
-                mIsAfrEnabled, 
-                mIsAfrFpsCorrectionEnabled, 
-                mIsAfrResSwitchEnabled, 
-                null, 
-                mAudioDelayMs, 
-                mIsAllSpeedEnabled, 
-                null, null, null, null,
-                mIsSpeedPerVideoEnabled,
-                mIsTimeCorrectionEnabled,
-                mIsDoubleRefreshRateEnabled, 
-                null, 
-                mSubtitleScale, 
-                mPlayerVolume, 
-                mIsTooltipsEnabled, 
-                mSubtitlePosition, 
-                mIsSkip24RateEnabled, 
-                mIsLiveChatEnabled, 
-                mLastSubtitleFormats, 
-                mLastSpeed, 
-                mRotationAngle, 
-                mZoomPercents, 
-                mPlaybackMode, 
-                mAudioLanguage, 
-                mSubtitleLanguage,
-                mIsSpeedPerChannelEnabled, 
-                Helpers.mergeArray(mSpeeds.values().toArray()), 
-                mPitch, 
-                mIsSkipShortsEnabled, 
-                mLastAudioLanguages, 
-                mIsVideoFlipEnabled
-        ));
+        
+        /* 00 */ mDataStore.put(0, mBackgroundMode);
+        /* 01 */ mDataStore.put(1, mVideoFormat);
+        /* 02 */ mDataStore.put(2, mAudioFormat);
+        /* 03 */ mDataStore.put(3, mSubtitleFormat);
+        /* 04 */ mDataStore.put(4, mSubtitleStyleIndex); 
+        /* 05 */ mDataStore.put(5, mResizeMode);
+        /* 06 */ mDataStore.put(6, mSpeed);
+        /* 07 */ mDataStore.put(7, mIsAfrEnabled); 
+        /* 08 */ mDataStore.put(8, mIsAfrFpsCorrectionEnabled); 
+        /* 09 */ mDataStore.put(9, mIsAfrResSwitchEnabled);
+        /* 10 */ mDataStore.put(10, mAudioDelayMs);
+        /* 11 */ mDataStore.put(11, mIsAllSpeedEnabled); 
+        /* 12 */ mDataStore.put(12, mIsSpeedPerVideoEnabled);
+        /* 13 */ mDataStore.put(13, mIsTimeCorrectionEnabled);
+        /* 14 */ mDataStore.put(14, mIsDoubleRefreshRateEnabled); 
+        /* 15 */ mDataStore.put(15, mSubtitleScale);
+        /* 16 */ mDataStore.put(16, mPlayerVolume);
+        /* 17 */ mDataStore.put(17, mIsTooltipsEnabled); 
+        /* 18 */ mDataStore.put(18, mSubtitlePosition);
+        /* 19 */ mDataStore.put(19, mIsSkip24RateEnabled); 
+        /* 20 */ mDataStore.put(20, mIsLiveChatEnabled);
+        /* 21 */ mDataStore.put(21, mLastSubtitleFormats); 
+        /* 22 */ mDataStore.put(22, mLastSpeed);
+        /* 23 */ mDataStore.put(23, mRotationAngle); 
+        /* 24 */ mDataStore.put(24, mZoomPercents);
+        /* 25 */ mDataStore.put(25, mPlaybackMode);
+        /* 26 */ mDataStore.put(26, mAudioLanguage); 
+        /* 27 */ mDataStore.put(27, mSubtitleLanguage);
+        /* 28 */ mDataStore.put(28, mIsSpeedPerChannelEnabled); 
+        /* 29 */ mDataStore.put(29, mSpeeds.values().toArray()); 
+        /* 30 */ mDataStore.put(30, mPitch);
+        /* 31 */ mDataStore.put(31, mIsSkipShortsEnabled); 
+        /* 32 */ mDataStore.put(32, mLastAudioLanguages);
+        /* 33 */ mDataStore.put(33, mIsVideoFlipEnabled);
+    
     }
 
     @Override
     public void onProfileChanged() {
-        Utils.removeCallbacks(mPersistStateInt);
+        
+        persistState();
 
         // reset on profile change
         mSpeeds.clear();
 
         restoreState();
     }
+    
 }
