@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchSettingsPresenter extends BasePresenter<Void> {
-    
+
     private final SearchData mSearchData;
     private final GeneralData mGeneralData;
 
@@ -30,24 +30,21 @@ public class SearchSettingsPresenter extends BasePresenter<Void> {
     }
 
     public void show() {
+
         AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
 
         appendMiscCategory(settingsPresenter);
 
-        settingsPresenter.showDialog(getContext().getString(R.string.dialog_search), () -> {
-            if (mSearchData.isSearchHistoryDisabled()) {
-                MediaServiceManager.instance().clearSearchHistory();
-            }
-        });
+        settingsPresenter.showDialog(
+            getContext().getString(R.string.dialog_search), 
+            () -> {}
+        );
+
     }
 
     private void appendMiscCategory(AppDialogPresenter settingsPresenter) {
         
         List<OptionItem> options = new ArrayList<>();
-
-        options.add(UiOptionItem.from(getContext().getString(R.string.disable_search_history),
-                option -> mSearchData.setSearchHistoryDisabled(option.isSelected()),
-                mSearchData.isSearchHistoryDisabled()));
 
         options.add(UiOptionItem.from(getContext().getString(R.string.search_background_playback),
                 option -> mSearchData.setTempBackgroundModeEnabled(option.isSelected()),

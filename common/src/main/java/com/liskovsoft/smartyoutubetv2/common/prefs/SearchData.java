@@ -19,7 +19,6 @@ public class SearchData {
     private boolean mIsTempBackgroundModeEnabled;
     private Class<?> mTempBackgroundModeClass;
     private boolean mIsTrendingSearchesEnabled;
-    private boolean mIsSearchHistoryDisabled;
     private boolean mIsPopularSearchesDisabled;
 
     private SearchData(Context context) {
@@ -88,15 +87,6 @@ public class SearchData {
         mTempBackgroundModeClass = clazz;
     }
 
-    public boolean isSearchHistoryDisabled() {
-        return mIsSearchHistoryDisabled;
-    }
-
-    public void setSearchHistoryDisabled(boolean disabled) {
-        mIsSearchHistoryDisabled = disabled;
-        persistData();
-    }
-
     public boolean isPopularSearchesDisabled() {
         return mIsPopularSearchesDisabled;
     }
@@ -116,7 +106,6 @@ public class SearchData {
         mIsFocusOnResultsEnabled = Helpers.parseBoolean(split, 2, true);
         mIsTempBackgroundModeEnabled = Helpers.parseBoolean(split, 4, false);
         mIsTrendingSearchesEnabled = Helpers.parseBoolean(split, 7, true);
-        mIsSearchHistoryDisabled = Helpers.parseBoolean(split, 8, false);
         mIsPopularSearchesDisabled = Helpers.parseBoolean(split, 9, false);
     
     }
@@ -130,8 +119,7 @@ public class SearchData {
                 mIsFocusOnResultsEnabled,
                 mIsTempBackgroundModeEnabled, 
                 null, 
-                mIsTrendingSearchesEnabled, 
-                mIsSearchHistoryDisabled, 
+                mIsTrendingSearchesEnabled,
                 mIsPopularSearchesDisabled
             )
         );

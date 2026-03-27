@@ -66,7 +66,7 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
             return;
         }
 
-        getView().setTagsProvider(new MediaServiceSearchTagProvider(getSearchData().isSearchHistoryDisabled()));
+        getView().setTagsProvider(new MediaServiceSearchTagProvider());
 
         startSearchInt();
     }
@@ -280,14 +280,15 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
     }
 
     public void disposeActions() {
+
         RxHelper.disposeActions(mLoadAction, mScrollAction);
+
         if (getView() != null) {
             getView().showProgressBar(false);
         }
-        if (getSearchData().isSearchHistoryDisabled()) {
-            MediaServiceManager.instance().clearSearchHistory();
-        }
+
         mBrowseProcessor.dispose();
+
     }
 
     private void showSettingsDialog() {
