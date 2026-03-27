@@ -233,13 +233,7 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
             UiOptionItem.from(
                 getContext().getString(R.string.ambilight_ratio_fix),
                 getContext().getString(R.string.ambilight_ratio_fix_desc),
-                option -> {
-                    mPlayerTweaksData.setTextureViewEnabled(option.isSelected());
-                    if (option.isSelected()) {
-                        // Tunneled playback works only with SurfaceView
-                        mPlayerTweaksData.setTunneledPlaybackEnabled(false);
-                    }
-                },
+                option -> mPlayerTweaksData.setTextureViewEnabled(option.isSelected()),
                 mPlayerTweaksData.isTextureViewEnabled()
             )
         );
@@ -250,21 +244,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 getContext().getString(R.string.disable_stream_buffer_desc),
                 option -> mPlayerTweaksData.setBufferOnStreamsDisabled(option.isSelected()),
                 mPlayerTweaksData.isBufferOnStreamsDisabled()
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
-                getContext().getString(R.string.tunneled_video_playback),
-                getContext().getString(R.string.tunneled_video_playback_desc),
-                option -> {
-                    mPlayerTweaksData.setTunneledPlaybackEnabled(option.isSelected());
-                    if (option.isSelected()) {
-                        // Tunneled playback works only with SurfaceView
-                        mPlayerTweaksData.setTextureViewEnabled(false);
-                    }
-                },
-                mPlayerTweaksData.isTunneledPlaybackEnabled()
             )
         );
 
@@ -283,14 +262,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 getContext().getString(R.string.force_sw_codec_desc),
                 option -> mPlayerTweaksData.setSWDecoderForced(option.isSelected()),
                 mPlayerTweaksData.isSWDecoderForced()
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
-                getContext().getString(R.string.keep_finished_activities),
-                option -> mPlayerTweaksData.setKeepFinishedActivityEnabled(option.isSelected()),
-                mPlayerTweaksData.isKeepFinishedActivityEnabled()
             )
         );
 

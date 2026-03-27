@@ -70,7 +70,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsSetOutputSurfaceWorkaroundEnabled;
     private boolean mIsAudioSyncFixEnabled;
     private boolean mIsPlaybackNotificationsDisabled;
-    private boolean mIsTunneledPlaybackEnabled;
     private int mPlayerButtons;
     private boolean mIsRememberPositionOfLiveVideosEnabled;
     private boolean mIsRealChannelIconEnabled;
@@ -155,15 +154,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     public void setPlaybackNotificationsDisabled(boolean disable) {
         mIsPlaybackNotificationsDisabled = disable;
-        persistData();
-    }
-
-    public boolean isTunneledPlaybackEnabled() {
-        return mIsTunneledPlaybackEnabled;
-    }
-
-    public void setTunneledPlaybackEnabled(boolean enable) {
-        mIsTunneledPlaybackEnabled = enable;
         persistData();
     }
 
@@ -297,7 +287,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsSetOutputSurfaceWorkaroundEnabled = Helpers.parseBoolean(split, 7, true);
         mIsAudioSyncFixEnabled = Helpers.parseBoolean(split, 8, false);
         mIsPlaybackNotificationsDisabled = Helpers.parseBoolean(split, 11, !Helpers.isAndroidTVLauncher(mPrefs.getContext()));
-        mIsTunneledPlaybackEnabled = Helpers.parseBoolean(split, 12, false);
         mPlayerButtons = Helpers.parseInt(split, 13, PLAYER_BUTTON_DEFAULT);
         mIsRealChannelIconEnabled = Helpers.parseBoolean(split, 20, true);
         mIsQualityInfoBitrateEnabled = Helpers.parseBoolean(split, 22, false);
@@ -336,7 +325,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mIsSetOutputSurfaceWorkaroundEnabled, 
                 mIsAudioSyncFixEnabled, 
                 mIsPlaybackNotificationsDisabled, 
-                mIsTunneledPlaybackEnabled, 
                 mPlayerButtons,
                 null,
                 mIsRealChannelIconEnabled,

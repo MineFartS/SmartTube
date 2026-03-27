@@ -317,8 +317,6 @@
     <string name="ambilight_ratio_fix">Ambilight/Aspect ratio/Video scale/Screenshots fix</string>
     <string name="playback_notifications_fix_desc">Hides track change notifications. Could be useful on AOSP-based firmware.</string>
     <string name="playback_notifications_fix">Disable playback notifications</string>
-    <string name="tunneled_video_playback_desc">NOTE: pause may not work properly! Tunneled video playback promises benefits such as better audio/video synchronization (AV sync) and smoother playback. Required Android 5+</string>
-    <string name="tunneled_video_playback">Tunneled video playback (Android 5+)</string>
     <string name="master_volume">Master volume</string>
     <string name="volume_limit">Volume limit</string>
     <string name="player_volume">Volume</string>
