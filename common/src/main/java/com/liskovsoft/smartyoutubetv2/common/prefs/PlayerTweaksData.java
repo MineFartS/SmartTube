@@ -64,7 +64,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private final AppPrefs mPrefs;
 
     private boolean mIsSnapToVsyncDisabled;
-    private boolean mIsProfileLevelCheckSkipped;
     private boolean mIsSWDecoderForced;
     private boolean mIsSetOutputSurfaceWorkaroundEnabled;
     private boolean mIsPlaybackNotificationsDisabled;
@@ -94,15 +93,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         }
 
         return sInstance;
-    }
-
-    public boolean isProfileLevelCheckSkipped() {
-        return mIsProfileLevelCheckSkipped;
-    }
-
-    public void setProfileLevelCheckSkipped(boolean enable) {
-        mIsProfileLevelCheckSkipped = enable;
-        persistData();
     }
 
     public boolean isSWDecoderForced() {
@@ -249,7 +239,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         String[] split = Helpers.splitData(data);
 
         mIsSnapToVsyncDisabled = Helpers.parseBoolean(split, 2, false);
-        mIsProfileLevelCheckSkipped = Helpers.parseBoolean(split, 3, false);
         mIsSWDecoderForced = Helpers.parseBoolean(split, 4, false);
         // Need to be enabled (?) on older version of ExoPlayer (e.g. 2.10.6).
         // It's because there's no tweaks for modern devices.
@@ -285,7 +274,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
             VIDEO_PLAYER_TWEAKS_DATA, 
             Helpers.mergeData(
                 mIsSnapToVsyncDisabled,
-                mIsProfileLevelCheckSkipped, 
                 mIsSWDecoderForced, 
                 null, 
                 mIsSetOutputSurfaceWorkaroundEnabled, 

@@ -40,7 +40,6 @@ public class CustomOverridesRenderersFactory extends CustomRenderersFactoryBase 
             setMediaCodecSelector(new BlacklistMediaCodecSelector());
         }
 
-        AmazonQuirks.skipProfileLevelCheck(mPlayerTweaksData.isProfileLevelCheckSkipped());
     }
 
     // 2.10, 2.11

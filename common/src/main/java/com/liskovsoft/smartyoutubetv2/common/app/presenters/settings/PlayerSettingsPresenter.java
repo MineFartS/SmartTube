@@ -223,15 +223,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.skip_codec_profile_check),
-                getContext().getString(R.string.skip_codec_profile_check_desc),
-                option -> mPlayerTweaksData.setProfileLevelCheckSkipped(option.isSelected()),
-                mPlayerTweaksData.isProfileLevelCheckSkipped()
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
                 getContext().getString(R.string.force_sw_codec),
                 getContext().getString(R.string.force_sw_codec_desc),
                 option -> mPlayerTweaksData.setSWDecoderForced(option.isSelected()),
