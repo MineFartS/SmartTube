@@ -238,6 +238,7 @@ public final class DownloadManager {
         return mResponseStream;
     }
 
+    @SuppressWarnings("deprecation")
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);

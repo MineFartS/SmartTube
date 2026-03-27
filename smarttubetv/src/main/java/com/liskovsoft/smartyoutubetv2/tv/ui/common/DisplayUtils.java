@@ -14,6 +14,7 @@ import android.widget.VideoView;
 
 import java.util.HashMap;
 
+@SuppressWarnings("deprecation")
 public class DisplayUtils {
 
     public interface MediaDimensions {
@@ -24,7 +25,7 @@ public class DisplayUtils {
         double MEDIA_BOTTOM_MARGIN = 0.025;
         double MEDIA_LEFT_MARGIN = 0.025;
     }
-    
+
     private DisplayUtils() {
         // NOP
     }
@@ -54,7 +55,7 @@ public class DisplayUtils {
     }
 
     /**
-     * Example for handling resizing content for overscan.  Typically you won't need to resize when
+     * Example for handling resizing content for overscan. Typically you won't need to resize when
      * using the Leanback support library.
      */
     public void overScan(Activity activity, VideoView videoView) {

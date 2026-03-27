@@ -163,6 +163,7 @@ class FileLogger extends MyLogger {
         return Log.LOG_TYPE_FILE;
     }
 
+    @SuppressWarnings("deprecation")
     private void startWatchDog() {
         if (mHandler == null) {
             mHandler = new Handler();

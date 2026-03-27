@@ -49,22 +49,22 @@ import java.util.List;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 /**
- * A fragment to handle searches. An application will supply an implementation
- * of the {@link SearchResultProvider} interface to handle the search and return
- * an {@link ObjectAdapter} containing the results. The results are rendered
- * into a {@link RowsSupportFragment}, in the same way that they are in a {@link
- * BrowseSupportFragment}.
+ * A fragment to handle searches. An application will supply an implementation of the
+ * {@link SearchResultProvider} interface to handle the search and return an {@link ObjectAdapter}
+ * containing the results. The results are rendered into a {@link RowsSupportFragment}, in the same
+ * way that they are in a {@link BrowseSupportFragment}.
  *
- * <p>A SpeechRecognizer object will be created for which your application will need to declare
- * android.permission.RECORD_AUDIO in AndroidManifest file. If app's target version is >= 23 and
- * the device version is >= 23, a permission dialog will show first time using speech recognition.
- * 0 will be used as requestCode in requestPermissions() call.
+ * <p>
+ * A SpeechRecognizer object will be created for which your application will need to declare
+ * android.permission.RECORD_AUDIO in AndroidManifest file. If app's target version is >= 23 and the
+ * device version is >= 23, a permission dialog will show first time using speech recognition. 0
+ * will be used as requestCode in requestPermissions() call.
  * {@link #setSpeechRecognitionCallback(SpeechRecognitionCallback)} is deprecated.
  * </p>
  * <p>
- * Speech recognition is automatically started when fragment is created, but
- * not when fragment is restored from an instance state.  Activity may manually
- * call {@link #startRecognition()}, typically in onNewIntent().
+ * Speech recognition is automatically started when fragment is created, but not when fragment is
+ * restored from an instance state. Activity may manually call {@link #startRecognition()},
+ * typically in onNewIntent().
  * </p>
  */
 public class SearchSupportFragment extends Fragment {
@@ -73,8 +73,8 @@ public class SearchSupportFragment extends Fragment {
 
     private static final String EXTRA_LEANBACK_BADGE_PRESENT = "LEANBACK_BADGE_PRESENT";
     private static final String ARG_PREFIX = SearchSupportFragment.class.getCanonicalName();
-    private static final String ARG_QUERY =  ARG_PREFIX + ".query";
-    private static final String ARG_TITLE = ARG_PREFIX  + ".title";
+    private static final String ARG_QUERY = ARG_PREFIX + ".query";
+    private static final String ARG_TITLE = ARG_PREFIX + ".title";
 
     static final long SPEECH_RECOGNITION_DELAY_MS = 300;
 
@@ -88,23 +88,31 @@ public class SearchSupportFragment extends Fragment {
      */
     public static interface SearchResultProvider {
         /**
-         * <p>Method invoked some time prior to the first call to onQueryTextChange to retrieve
-         * an ObjectAdapter that will contain the results to future updates of the search query.</p>
+         * <p>
+         * Method invoked some time prior to the first call to onQueryTextChange to retrieve an
+         * ObjectAdapter that will contain the results to future updates of the search query.
+         * </p>
          *
-         * <p>As results are retrieved, the application should use the data set notification methods
-         * on the ObjectAdapter to instruct the SearchSupportFragment to update the results.</p>
+         * <p>
+         * As results are retrieved, the application should use the data set notification methods on
+         * the ObjectAdapter to instruct the SearchSupportFragment to update the results.
+         * </p>
          *
          * @return ObjectAdapter The result object adapter.
          */
         public ObjectAdapter getResultsAdapter();
 
         /**
-         * <p>Method invoked when the search query is updated.</p>
+         * <p>
+         * Method invoked when the search query is updated.
+         * </p>
          *
-         * <p>This is called as soon as the query changes; it is up to the application to add a
-         * delay before actually executing the queries if needed.
+         * <p>
+         * This is called as soon as the query changes; it is up to the application to add a delay
+         * before actually executing the queries if needed.
          *
-         * <p>This method might not always be called before onQueryTextSubmit gets called, in
+         * <p>
+         * This method might not always be called before onQueryTextSubmit gets called, in
          * particular for voice input.
          *
          * @param newQuery The current search query.
@@ -132,12 +140,14 @@ public class SearchSupportFragment extends Fragment {
         }
     };
 
+    @SuppressWarnings("deprecation")
     final Handler mHandler = new Handler();
 
     final Runnable mResultsChangedCallback = new Runnable() {
         @Override
         public void run() {
-            if (DEBUG) Log.v(TAG, "results changed, new size " + mResultAdapter.size());
+            if (DEBUG)
+                Log.v(TAG, "results changed, new size " + mResultAdapter.size());
             if (mRowsSupportFragment != null
                     && mRowsSupportFragment.getAdapter() != mResultAdapter) {
                 if (!(mRowsSupportFragment.getAdapter() == null && mResultAdapter.size() == 0)) {
@@ -166,7 +176,8 @@ public class SearchSupportFragment extends Fragment {
             }
             // Retrieve the result adapter
             ObjectAdapter adapter = mProvider.getResultsAdapter();
-            if (DEBUG) Log.v(TAG, "Got results adapter " + adapter);
+            if (DEBUG)
+                Log.v(TAG, "Got results adapter " + adapter);
             if (adapter != mResultAdapter) {
                 boolean firstTime = mResultAdapter == null;
                 releaseAdapter();
@@ -188,9 +199,8 @@ public class SearchSupportFragment extends Fragment {
             updateSearchBarNextFocusId();
 
             if (DEBUG) {
-                Log.v(TAG, "mAutoStartRecognition " + mAutoStartRecognition
-                        + " mResultAdapter " + mResultAdapter
-                        + " adapter " + mRowsSupportFragment.getAdapter());
+                Log.v(TAG, "mAutoStartRecognition " + mAutoStartRecognition + " mResultAdapter "
+                        + mResultAdapter + " adapter " + mRowsSupportFragment.getAdapter());
             }
             if (mAutoStartRecognition) {
                 mHandler.removeCallbacks(mStartRecognitionRunnable);
@@ -227,26 +237,27 @@ public class SearchSupportFragment extends Fragment {
     private SpeechRecognizer mSpeechRecognizer;
     int mStatus;
     boolean mAutoStartRecognition = false; // MOD: don't start search immediately
-    
+
     private boolean mPendingStartRecognition;
     private SearchBar.SearchBarPermissionListener mPermissionListener =
             new SearchBar.SearchBarPermissionListener() {
-        @Override
-        public void requestAudioPermission() {
-            requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO},
-                    AUDIO_PERMISSION_REQUEST_CODE);
-        }
-    };
+                @Override
+                public void requestAudioPermission() {
+                    requestPermissions(new String[] {Manifest.permission.RECORD_AUDIO},
+                            AUDIO_PERMISSION_REQUEST_CODE);
+                }
+            };
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                           int[] grantResults) {
+            int[] grantResults) {
         if (requestCode == AUDIO_PERMISSION_REQUEST_CODE && permissions.length > 0) {
             if (permissions[0].equals(Manifest.permission.RECORD_AUDIO)
                     && grantResults[0] == PERMISSION_GRANTED) {
                 startRecognition();
             } else {
-                MessageHelpers.showMessage(getContext(), com.liskovsoft.smartyoutubetv2.common.R.string.not_supported_by_device);
+                MessageHelpers.showMessage(getContext(),
+                        com.liskovsoft.smartyoutubetv2.common.R.string.not_supported_by_device);
             }
         }
     }
@@ -258,7 +269,7 @@ public class SearchSupportFragment extends Fragment {
         return createArgs(args, query, null);
     }
 
-    public static Bundle createArgs(Bundle args, String query, String title)  {
+    public static Bundle createArgs(Bundle args, String query, String title) {
         if (args == null) {
             args = new Bundle();
         }
@@ -270,8 +281,8 @@ public class SearchSupportFragment extends Fragment {
     /**
      * Creates a search fragment with a given search query.
      *
-     * <p>You should only use this if you need to start the search fragment with a
-     * pre-filled query.
+     * <p>
+     * You should only use this if you need to start the search fragment with a pre-filled query.
      *
      * @param query The search query to begin with.
      * @return A new SearchSupportFragment.
@@ -293,7 +304,7 @@ public class SearchSupportFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.lb_search_fragment, container, false);
 
         FrameLayout searchFrame = (FrameLayout) root.findViewById(R.id.lb_search_frame);
@@ -304,8 +315,9 @@ public class SearchSupportFragment extends Fragment {
         mSearchBar.setSearchBarListener(new SearchBar.SearchBarListener() {
             @Override
             public void onSearchQueryChange(String query) {
-                if (DEBUG) Log.v(TAG, String.format("onSearchQueryChange %s %s", query,
-                        null == mProvider ? "(null)" : mProvider));
+                if (DEBUG)
+                    Log.v(TAG, String.format("onSearchQueryChange %s %s", query,
+                            null == mProvider ? "(null)" : mProvider));
                 if (null != mProvider) {
                     retrieveResults(query);
                 } else {
@@ -315,15 +327,17 @@ public class SearchSupportFragment extends Fragment {
 
             @Override
             public void onSearchQuerySubmit(String query) {
-                if (DEBUG) Log.v(TAG, String.format("onSearchQuerySubmit %s", query));
+                if (DEBUG)
+                    Log.v(TAG, String.format("onSearchQuerySubmit %s", query));
                 submitQuery(query);
             }
 
             @Override
             public void onKeyboardDismiss(String query) {
-                if (DEBUG) Log.v(TAG, String.format("onKeyboardDismiss %s", query));
+                if (DEBUG)
+                    Log.v(TAG, String.format("onKeyboardDismiss %s", query));
                 // MOD: don't focus on results row after hiding keyboard
-                //queryComplete();
+                // queryComplete();
             }
         });
         mSearchBar.setSpeechRecognitionCallback(mSpeechRecognitionCallback);
@@ -333,7 +347,8 @@ public class SearchSupportFragment extends Fragment {
         // MOD: inner search bar views for improved focus handling
 
         mSearchTextEditor = mSearchBar.findViewById(R.id.lb_search_text_editor);
-        mSearchTextEditor.setSelectAllOnFocus(true); // Select all on focus (easy clear previous search)
+        mSearchTextEditor.setSelectAllOnFocus(true); // Select all on focus (easy clear previous
+                                                     // search)
         mSearchTextEditor.setOnFocusChangeListener((v, focused) -> {
             Log.d(TAG, "on search field focused");
 
@@ -356,11 +371,12 @@ public class SearchSupportFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {}
-            
+
         });
 
         // MOD: commit search button
-        mSearchOrbView = mSearchBar.findViewById(com.liskovsoft.smartyoutubetv2.tv.R.id.lb_search_bar_search_orb);
+        mSearchOrbView = mSearchBar
+                .findViewById(com.liskovsoft.smartyoutubetv2.tv.R.id.lb_search_bar_search_orb);
         mSearchOrbView.setOnFocusChangeListener((v, focused) -> {
             if (focused) {
                 Helpers.hideKeyboard(getContext(), v);
@@ -369,7 +385,8 @@ public class SearchSupportFragment extends Fragment {
         mSearchOrbView.setOnOrbClickedListener(v -> submitQuery(getSearchBarText()));
 
         // MOD: search settings button
-        mSearchSettingsOrbView = mSearchBar.findViewById(com.liskovsoft.smartyoutubetv2.tv.R.id.search_settings_orb);
+        mSearchSettingsOrbView =
+                mSearchBar.findViewById(com.liskovsoft.smartyoutubetv2.tv.R.id.search_settings_orb);
         mSearchSettingsOrbView.setOnFocusChangeListener((v, focused) -> {
             if (focused) {
                 Helpers.hideKeyboard(getContext(), v);
@@ -412,15 +429,15 @@ public class SearchSupportFragment extends Fragment {
         mRowsSupportFragment.setOnItemViewSelectedListener(new OnItemViewSelectedListener() {
             @Override
             public void onItemSelected(ViewHolder itemViewHolder, Object item,
-                                       RowPresenter.ViewHolder rowViewHolder, Row row) {
+                    RowPresenter.ViewHolder rowViewHolder, Row row) {
                 if (DEBUG) {
                     int position = mRowsSupportFragment.getSelectedPosition();
                     Log.v(TAG, String.format("onItemSelected %d", position));
                 }
                 updateSearchBarVisibility();
                 if (null != mOnItemViewSelectedListener) {
-                    mOnItemViewSelectedListener.onItemSelected(itemViewHolder, item,
-                            rowViewHolder, row);
+                    mOnItemViewSelectedListener.onItemSelected(itemViewHolder, item, rowViewHolder,
+                            row);
                 }
             }
         });
@@ -448,15 +465,14 @@ public class SearchSupportFragment extends Fragment {
         list.setFocusable(false);
         list.setFocusableInTouchMode(false);
         // MOD: disable scroll
-        //list.setFocusScrollStrategy(VerticalGridView.FOCUS_SCROLL_ITEM);
+        // list.setFocusScrollStrategy(VerticalGridView.FOCUS_SCROLL_ITEM);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         if (mSpeechRecognitionCallback == null && null == mSpeechRecognizer) {
-            mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(
-                    getContext());
+            mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(getContext());
             mSearchBar.setSpeechRecognizer(mSpeechRecognizer);
         }
         if (mPendingStartRecognition) {
@@ -511,12 +527,12 @@ public class SearchSupportFragment extends Fragment {
 
     /**
      * NOTE: Activity should be resumed in order to recognize the voice<br/>
-     * Because SpeechRecognizer added to SearchBar after resume. See: {@link SearchSupportFragment#onResume()}<br/>
-     * Starts speech recognition.  Typical use case is that
-     * activity receives onNewIntent() call when user clicks a MIC button.
-     * Note that SearchSupportFragment automatically starts speech recognition
-     * at first time created, there is no need to call startRecognition()
-     * when fragment is created.
+     * Because SpeechRecognizer added to SearchBar after resume. See:
+     * {@link SearchSupportFragment#onResume()}<br/>
+     * Starts speech recognition. Typical use case is that activity receives onNewIntent() call when
+     * user clicks a MIC button. Note that SearchSupportFragment automatically starts speech
+     * recognition at first time created, there is no need to call startRecognition() when fragment
+     * is created.
      */
     public void startRecognition() {
         if (isResumed()) {
@@ -536,8 +552,7 @@ public class SearchSupportFragment extends Fragment {
     }
 
     /**
-     * Sets the search provider that is responsible for returning results for the
-     * search query.
+     * Sets the search provider that is responsible for returning results for the search query.
      */
     public void setSearchResultProvider(SearchResultProvider searchResultProvider) {
         if (mProvider != searchResultProvider) {
@@ -549,8 +564,8 @@ public class SearchSupportFragment extends Fragment {
     /**
      * Sets an item selection listener for the results.
      *
-     * @param listener The item selection listener to be invoked when an item in
-     *        the search results is selected.
+     * @param listener The item selection listener to be invoked when an item in the search results
+     *        is selected.
      */
     public void setOnItemViewSelectedListener(OnItemViewSelectedListener listener) {
         mOnItemViewSelectedListener = listener;
@@ -559,8 +574,8 @@ public class SearchSupportFragment extends Fragment {
     /**
      * Sets an item clicked listener for the results.
      *
-     * @param listener The item clicked listener to be invoked when an item in
-     *        the search results is clicked.
+     * @param listener The item clicked listener to be invoked when an item in the search results is
+     *        clicked.
      */
     public void setOnItemViewClickedListener(OnItemViewClickedListener listener) {
         if (listener != mOnItemViewClickedListener) {
@@ -572,9 +587,8 @@ public class SearchSupportFragment extends Fragment {
     }
 
     /**
-     * Sets the title string to be be shown in an empty search bar. The title
-     * may be placed in a call-to-action, such as "Search <i>title</i>" or
-     * "Speak to search <i>title</i>".
+     * Sets the title string to be be shown in an empty search bar. The title may be placed in a
+     * call-to-action, such as "Search <i>title</i>" or "Speak to search <i>title</i>".
      */
     public void setTitle(String title) {
         mTitle = title;
@@ -594,8 +608,7 @@ public class SearchSupportFragment extends Fragment {
     }
 
     /**
-     * Sets the badge drawable that will be shown inside the search bar next to
-     * the title.
+     * Sets the badge drawable that will be shown inside the search bar next to the title.
      */
     public void setBadgeDrawable(Drawable drawable) {
         mBadgeDrawable = drawable;
@@ -637,30 +650,31 @@ public class SearchSupportFragment extends Fragment {
     }
 
     /**
-     * Displays the completions shown by the IME. An application may provide
-     * a list of query completions that the system will show in the IME.
+     * Displays the completions shown by the IME. An application may provide a list of query
+     * completions that the system will show in the IME.
      *
-     * @param completions A list of completions to show in the IME. Setting to
-     *        null or empty will clear the list.
+     * @param completions A list of completions to show in the IME. Setting to null or empty will
+     *        clear the list.
      */
     public void displayCompletions(List<String> completions) {
         mSearchBar.displayCompletions(completions);
     }
 
     /**
-     * Displays the completions shown by the IME. An application may provide
-     * a list of query completions that the system will show in the IME.
+     * Displays the completions shown by the IME. An application may provide a list of query
+     * completions that the system will show in the IME.
      *
-     * @param completions A list of completions to show in the IME. Setting to
-     *        null or empty will clear the list.
+     * @param completions A list of completions to show in the IME. Setting to null or empty will
+     *        clear the list.
      */
     public void displayCompletions(CompletionInfo[] completions) {
         mSearchBar.displayCompletions(completions);
     }
 
     /**
-     * Sets this callback to have the fragment pass speech recognition requests
-     * to the activity rather than using a SpeechRecognizer object.
+     * Sets this callback to have the fragment pass speech recognition requests to the activity
+     * rather than using a SpeechRecognizer object.
+     * 
      * @deprecated Launching voice recognition activity is no longer supported. App should declare
      *             android.permission.RECORD_AUDIO in AndroidManifest file.
      */
@@ -678,14 +692,15 @@ public class SearchSupportFragment extends Fragment {
     /**
      * Sets the text of the search query and optionally submits the query. Either
      * {@link SearchResultProvider#onQueryTextChange onQueryTextChange} or
-     * {@link SearchResultProvider#onQueryTextSubmit onQueryTextSubmit} will be
-     * called on the provider if it is set.
+     * {@link SearchResultProvider#onQueryTextSubmit onQueryTextSubmit} will be called on the
+     * provider if it is set.
      *
      * @param query The search query to set.
      * @param submit Whether to submit the query.
      */
     public void setSearchQuery(String query, boolean submit) {
-        if (DEBUG) Log.v(TAG, "setSearchQuery " + query + " submit " + submit);
+        if (DEBUG)
+            Log.v(TAG, "setSearchQuery " + query + " submit " + submit);
         if (query == null) {
             return;
         }
@@ -698,9 +713,9 @@ public class SearchSupportFragment extends Fragment {
     }
 
     /**
-     * Sets the text of the search query based on the {@link RecognizerIntent#EXTRA_RESULTS} in
-     * the given intent, and optionally submit the query.  If more than one result is present
-     * in the results list, the first will be used.
+     * Sets the text of the search query based on the {@link RecognizerIntent#EXTRA_RESULTS} in the
+     * given intent, and optionally submit the query. If more than one result is present in the
+     * results list, the first will be used.
      *
      * @param intent Intent received from a speech recognition service.
      * @param submit Whether to submit the query.
@@ -713,9 +728,8 @@ public class SearchSupportFragment extends Fragment {
     }
 
     /**
-     * Returns an intent that can be used to request speech recognition.
-     * Built from the base {@link RecognizerIntent#ACTION_RECOGNIZE_SPEECH} plus
-     * extras:
+     * Returns an intent that can be used to request speech recognition. Built from the base
+     * {@link RecognizerIntent#ACTION_RECOGNIZE_SPEECH} plus extras:
      *
      * <ul>
      * <li>{@link RecognizerIntent#EXTRA_LANGUAGE_MODEL} set to
@@ -791,7 +805,8 @@ public class SearchSupportFragment extends Fragment {
     }
 
     void retrieveResults(String searchQuery) {
-        if (DEBUG) Log.v(TAG, "retrieveResults " + searchQuery);
+        if (DEBUG)
+            Log.v(TAG, "retrieveResults " + searchQuery);
         if (mProvider.onQueryTextChange(searchQuery)) {
             mStatus &= ~QUERY_COMPLETE;
         }
@@ -809,20 +824,26 @@ public class SearchSupportFragment extends Fragment {
     }
 
     void queryComplete() {
-        if (DEBUG) Log.v(TAG, "queryComplete");
+        if (DEBUG)
+            Log.v(TAG, "queryComplete");
         mStatus |= QUERY_COMPLETE;
         focusOnResults();
     }
 
     void updateSearchBarVisibility() {
-        int position = mRowsSupportFragment != null ? mRowsSupportFragment.getSelectedPosition() : -1;
+        int position =
+                mRowsSupportFragment != null ? mRowsSupportFragment.getSelectedPosition() : -1;
         try {
-            mSearchBar.setVisibility(position <=0 || mResultAdapter == null
-                    || mResultAdapter.size() == 0 ? View.VISIBLE : View.GONE);
+            mSearchBar.setVisibility(
+                    position <= 0 || mResultAdapter == null || mResultAdapter.size() == 0
+                            ? View.VISIBLE
+                            : View.GONE);
         } catch (NullPointerException e) {
             // Fatal Exception: java.lang.NullPointerException
-            // Attempt to invoke interface method 'void android.view.autofill.IAutoFillManager.addClient(android.view.autofill
-            // .IAutoFillManagerClient, android.content.ComponentName, int, com.android.internal.os.IResultReceiver)' on a null object reference
+            // Attempt to invoke interface method 'void
+            // android.view.autofill.IAutoFillManager.addClient(android.view.autofill
+            // .IAutoFillManagerClient, android.content.ComponentName, int,
+            // com.android.internal.os.IResultReceiver)' on a null object reference
             e.printStackTrace();
         }
     }
@@ -832,19 +853,19 @@ public class SearchSupportFragment extends Fragment {
             return;
         }
         final int viewId = (mResultAdapter.size() == 0 || mRowsSupportFragment == null
-                || mRowsSupportFragment.getVerticalGridView() == null)
-                        ? 0 : mRowsSupportFragment.getVerticalGridView().getId();
-        
+                || mRowsSupportFragment.getVerticalGridView() == null) ? 0
+                        : mRowsSupportFragment.getVerticalGridView().getId();
+
         mSearchBar.setNextFocusDownId(viewId);
     }
 
     void updateFocus() {
-        if (mResultAdapter != null && mResultAdapter.size() > 0
-                && mRowsSupportFragment != null && mRowsSupportFragment.getAdapter() == mResultAdapter) {
+        if (mResultAdapter != null && mResultAdapter.size() > 0 && mRowsSupportFragment != null
+                && mRowsSupportFragment.getAdapter() == mResultAdapter) {
             focusOnResults();
         } else {
             // MOD: Comment to fix moving focus to voice button when activity started
-            //mSearchBar.requestFocus();
+            // mSearchBar.requestFocus();
         }
     }
 

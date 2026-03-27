@@ -1,17 +1,15 @@
 /*
  * Copyright 2018 The Android Open Source Project
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package androidx.fragment.app;
@@ -37,14 +35,17 @@ import java.io.PrintWriter;
 /**
  * Integration points with the Fragment host.
  * <p>
- * Fragments may be hosted by any object; such as an {@link Activity}. In order to
- * host fragments, implement {@link FragmentHostCallback}, overriding the methods
- * applicable to the host.
+ * Fragments may be hosted by any object; such as an {@link Activity}. In order to host fragments,
+ * implement {@link FragmentHostCallback}, overriding the methods applicable to the host.
  */
+@SuppressWarnings("deprecation")
 public abstract class FragmentHostCallback<E> extends FragmentContainer {
-    @Nullable private final Activity mActivity;
-    @NonNull private final Context mContext;
-    @NonNull private final Handler mHandler;
+    @Nullable
+    private final Activity mActivity;
+    @NonNull
+    private final Context mContext;
+    @NonNull
+    private final Handler mHandler;
     private final int mWindowAnimations;
     final FragmentManagerImpl mFragmentManager = new FragmentManagerImpl();
 
@@ -55,7 +56,7 @@ public abstract class FragmentHostCallback<E> extends FragmentContainer {
     }
 
     FragmentHostCallback(@NonNull FragmentActivity activity) {
-        this(activity, activity /*context*/, new Handler(), 0 /*windowAnimations*/);
+        this(activity, activity /* context */, new Handler(), 0 /* windowAnimations */);
     }
 
     FragmentHostCallback(@Nullable Activity activity, @NonNull Context context,
@@ -71,13 +72,12 @@ public abstract class FragmentHostCallback<E> extends FragmentContainer {
      *
      * @param prefix Desired prefix to prepend at each line of output.
      * @param fd The raw file descriptor that the dump is being sent to.
-     * @param writer The PrintWriter to which you should dump your state. This will be closed
-     *                  for you after you return.
+     * @param writer The PrintWriter to which you should dump your state. This will be closed for
+     *        you after you return.
      * @param args additional arguments to the dump request.
      */
     public void onDump(@NonNull String prefix, @Nullable FileDescriptor fd,
-            @NonNull PrintWriter writer, @Nullable String[] args) {
-    }
+            @NonNull PrintWriter writer, @Nullable String[] args) {}
 
     /**
      * Return {@code true} if the fragment's state needs to be saved.
@@ -87,8 +87,7 @@ public abstract class FragmentHostCallback<E> extends FragmentContainer {
     }
 
     /**
-     * Return a {@link LayoutInflater}.
-     * See {@link Activity#getLayoutInflater()}.
+     * Return a {@link LayoutInflater}. See {@link Activity#getLayoutInflater()}.
      */
     @NonNull
     public LayoutInflater onGetLayoutInflater() {
@@ -96,23 +95,22 @@ public abstract class FragmentHostCallback<E> extends FragmentContainer {
     }
 
     /**
-     * Return the object that's currently hosting the fragment. If a {@link Fragment}
-     * is hosted by a {@link FragmentActivity}, the object returned here should be
-     * the same object returned from {@link Fragment#getActivity()}.
+     * Return the object that's currently hosting the fragment. If a {@link Fragment} is hosted by a
+     * {@link FragmentActivity}, the object returned here should be the same object returned from
+     * {@link Fragment#getActivity()}.
      */
     @Nullable
     public abstract E onGetHost();
 
     /**
-     * Invalidates the activity's options menu.
-     * See {@link FragmentActivity#supportInvalidateOptionsMenu()}
+     * Invalidates the activity's options menu. See
+     * {@link FragmentActivity#supportInvalidateOptionsMenu()}
      */
-    public void onSupportInvalidateOptionsMenu() {
-    }
+    public void onSupportInvalidateOptionsMenu() {}
 
     /**
-     * Starts a new {@link Activity} from the given fragment.
-     * See {@link FragmentActivity#startActivityForResult(Intent, int)}.
+     * Starts a new {@link Activity} from the given fragment. See
+     * {@link FragmentActivity#startActivityForResult(Intent, int)}.
      */
     public void onStartActivityFromFragment(@NonNull Fragment fragment,
             @SuppressLint("UnknownNullness") Intent intent, int requestCode) {
@@ -120,12 +118,12 @@ public abstract class FragmentHostCallback<E> extends FragmentContainer {
     }
 
     /**
-     * Starts a new {@link Activity} from the given fragment.
-     * See {@link FragmentActivity#startActivityForResult(Intent, int, Bundle)}.
+     * Starts a new {@link Activity} from the given fragment. See
+     * {@link FragmentActivity#startActivityForResult(Intent, int, Bundle)}.
      */
-    public void onStartActivityFromFragment(
-            @NonNull Fragment fragment, @SuppressLint("UnknownNullness") Intent intent,
-            int requestCode, @Nullable Bundle options) {
+    public void onStartActivityFromFragment(@NonNull Fragment fragment,
+            @SuppressLint("UnknownNullness") Intent intent, int requestCode,
+            @Nullable Bundle options) {
         if (requestCode != -1) {
             throw new IllegalStateException(
                     "Starting activity with a requestCode requires a FragmentActivity host");
@@ -134,8 +132,8 @@ public abstract class FragmentHostCallback<E> extends FragmentContainer {
     }
 
     /**
-     * Starts a new {@link IntentSender} from the given fragment.
-     * See {@link Activity#startIntentSender(IntentSender, Intent, int, int, int, Bundle)}.
+     * Starts a new {@link IntentSender} from the given fragment. See
+     * {@link Activity#startIntentSender(IntentSender, Intent, int, int, int, Bundle)}.
      */
     public void onStartIntentSenderFromFragment(@NonNull Fragment fragment,
             @SuppressLint("UnknownNullness") IntentSender intent, int requestCode,
@@ -150,16 +148,15 @@ public abstract class FragmentHostCallback<E> extends FragmentContainer {
     }
 
     /**
-     * Requests permissions from the given fragment.
-     * See {@link FragmentActivity#requestPermissions(String[], int)}
+     * Requests permissions from the given fragment. See
+     * {@link FragmentActivity#requestPermissions(String[], int)}
      */
     public void onRequestPermissionsFromFragment(@NonNull Fragment fragment,
-            @NonNull String[] permissions, int requestCode) {
-    }
+            @NonNull String[] permissions, int requestCode) {}
 
     /**
-     * Checks whether to show permission rationale UI from a fragment.
-     * See {@link FragmentActivity#shouldShowRequestPermissionRationale(String)}
+     * Checks whether to show permission rationale UI from a fragment. See
+     * {@link FragmentActivity#shouldShowRequestPermissionRationale(String)}
      */
     public boolean onShouldShowRequestPermissionRationale(@NonNull String permission) {
         return false;
@@ -205,6 +202,5 @@ public abstract class FragmentHostCallback<E> extends FragmentContainer {
         return mHandler;
     }
 
-    void onAttachFragment(@NonNull Fragment fragment) {
-    }
+    void onAttachFragment(@NonNull Fragment fragment) {}
 }

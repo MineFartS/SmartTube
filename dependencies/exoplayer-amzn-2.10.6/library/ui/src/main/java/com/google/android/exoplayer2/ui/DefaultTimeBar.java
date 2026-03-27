@@ -355,6 +355,7 @@ public class DefaultTimeBar extends View implements TimeBar {
    * @param playedColor The color for the portion of the time bar representing media before the
    *     playback position.
    */
+  @SuppressWarnings("deprecation")
   public void setPlayedColor(@ColorInt int playedColor) {
     playedPaint.setColor(playedColor);
     invalidate(seekBounds);
@@ -365,6 +366,7 @@ public class DefaultTimeBar extends View implements TimeBar {
    *
    * @param scrubberColor The color for the scrubber handle.
    */
+  @SuppressWarnings("deprecation")
   public void setScrubberColor(@ColorInt int scrubberColor) {
     scrubberPaint.setColor(scrubberColor);
     invalidate(seekBounds);
@@ -377,6 +379,7 @@ public class DefaultTimeBar extends View implements TimeBar {
    * @param bufferedColor The color for the portion of the time bar after the current played
    *     position up to the current buffered position.
    */
+  @SuppressWarnings("deprecation")
   public void setBufferedColor(@ColorInt int bufferedColor) {
     bufferedPaint.setColor(bufferedColor);
     invalidate(seekBounds);
@@ -388,6 +391,7 @@ public class DefaultTimeBar extends View implements TimeBar {
    * @param unplayedColor The color for the portion of the time bar after the current played
    *     position.
    */
+  @SuppressWarnings("deprecation")
   public void setUnplayedColor(@ColorInt int unplayedColor) {
     unplayedPaint.setColor(unplayedColor);
     invalidate(seekBounds);
@@ -398,6 +402,7 @@ public class DefaultTimeBar extends View implements TimeBar {
    *
    * @param adMarkerColor The color for unplayed ad markers.
    */
+  @SuppressWarnings("deprecation")
   public void setAdMarkerColor(@ColorInt int adMarkerColor) {
     adMarkerPaint.setColor(adMarkerColor);
     invalidate(seekBounds);
@@ -408,6 +413,7 @@ public class DefaultTimeBar extends View implements TimeBar {
    *
    * @param playedAdMarkerColor The color for played ad markers.
    */
+  @SuppressWarnings("deprecation")
   public void setPlayedAdMarkerColor(@ColorInt int playedAdMarkerColor) {
     playedAdMarkerPaint.setColor(playedAdMarkerColor);
     invalidate(seekBounds);
@@ -741,6 +747,7 @@ public class DefaultTimeBar extends View implements TimeBar {
     return true;
   }
 
+  @SuppressWarnings("deprecation")
   private void update() {
     bufferedBar.set(progressBar);
     scrubberBar.set(progressBar);

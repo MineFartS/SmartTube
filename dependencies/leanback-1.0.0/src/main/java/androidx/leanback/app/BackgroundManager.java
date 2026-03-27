@@ -50,32 +50,35 @@ import java.lang.ref.WeakReference;
 /**
  * Supports background image continuity between multiple Activities.
  *
- * <p>An Activity should instantiate a BackgroundManager and {@link #attach}
- * to the Activity's window.  When the Activity is started, the background is
- * initialized to the current background values stored in a continuity service.
- * The background continuity service is updated as the background is updated.
+ * <p>
+ * An Activity should instantiate a BackgroundManager and {@link #attach} to the Activity's window.
+ * When the Activity is started, the background is initialized to the current background values
+ * stored in a continuity service. The background continuity service is updated as the background is
+ * updated.
  *
- * <p>At some point, for example when it is stopped, the Activity may release
- * its background state.
+ * <p>
+ * At some point, for example when it is stopped, the Activity may release its background state.
  *
- * <p>When an Activity is resumed, if the BackgroundManager has not been
- * released, the continuity service is updated from the BackgroundManager state.
- * If the BackgroundManager was released, the BackgroundManager inherits the
- * current state from the continuity service.
+ * <p>
+ * When an Activity is resumed, if the BackgroundManager has not been released, the continuity
+ * service is updated from the BackgroundManager state. If the BackgroundManager was released, the
+ * BackgroundManager inherits the current state from the continuity service.
  *
- * <p>When the last Activity is destroyed, the background state is reset.
+ * <p>
+ * When the last Activity is destroyed, the background state is reset.
  *
- * <p>Backgrounds consist of several layers, from back to front:
+ * <p>
+ * Backgrounds consist of several layers, from back to front:
  * <ul>
- *   <li>the background Drawable of the theme</li>
- *   <li>a solid color (set via {@link #setColor})</li>
- *   <li>two Drawables, previous and current (set via {@link #setBitmap} or
- *   {@link #setDrawable}), which may be in transition</li>
+ * <li>the background Drawable of the theme</li>
+ * <li>a solid color (set via {@link #setColor})</li>
+ * <li>two Drawables, previous and current (set via {@link #setBitmap} or {@link #setDrawable}),
+ * which may be in transition</li>
  * </ul>
  *
- * <p>BackgroundManager holds references to potentially large bitmap Drawables.
- * Call {@link #release} to release these references when the Activity is not
- * visible.
+ * <p>
+ * BackgroundManager holds references to potentially large bitmap Drawables. Call {@link #release}
+ * to release these references when the Activity is not visible.
  */
 // TODO: support for multiple app processes requires a proper android service
 // instead of the shared memory "service" implemented here. Such a service could
@@ -172,7 +175,8 @@ public final class BackgroundManager {
                 return;
             }
             if (mState.mPaint.getAlpha() < FULL_ALPHA && mState.mPaint.getColorFilter() != null) {
-                throw new IllegalStateException("Can't draw with translucent alpha and color filter");
+                throw new IllegalStateException(
+                        "Can't draw with translucent alpha and color filter");
             }
             canvas.drawBitmap(mState.mBitmap, mState.mMatrix, mState.mPaint);
         }
@@ -192,8 +196,8 @@ public final class BackgroundManager {
         }
 
         /**
-         * Does not invalidateSelf to avoid recursion issues.
-         * Caller must ensure appropriate invalidation.
+         * Does not invalidateSelf to avoid recursion issues. Caller must ensure appropriate
+         * invalidation.
          */
         @Override
         public void setColorFilter(ColorFilter cf) {
@@ -230,6 +234,7 @@ public final class BackgroundManager {
         public DrawableWrapper(Drawable drawable) {
             mDrawable = drawable;
         }
+
         public DrawableWrapper(DrawableWrapper wrapper, Drawable drawable) {
             mDrawable = drawable;
             mAlpha = wrapper.mAlpha;
@@ -357,7 +362,8 @@ public final class BackgroundManager {
                 // temporarily using mSuspendInvalidation to suppress invalidate event.
                 if (mWrapper[i] != null && (d = mWrapper[i].getDrawable()) != null) {
                     int alpha = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
-                            ? DrawableCompat.getAlpha(d) : FULL_ALPHA;
+                            ? DrawableCompat.getAlpha(d)
+                            : FULL_ALPHA;
                     final int savedAlpha = alpha;
                     int multiple = 0;
                     if (mAlpha < FULL_ALPHA) {
@@ -390,8 +396,7 @@ public final class BackgroundManager {
         }
     }
 
-    TranslucentLayerDrawable createTranslucentLayerDrawable(
-            LayerDrawable layerDrawable) {
+    TranslucentLayerDrawable createTranslucentLayerDrawable(LayerDrawable layerDrawable) {
         int numChildren = layerDrawable.getNumberOfLayers();
         Drawable[] drawables = new Drawable[numChildren];
         for (int i = 0; i < numChildren; i++) {
@@ -419,11 +424,11 @@ public final class BackgroundManager {
         };
 
         @Override
-        public void onAnimationStart(Animator animation) {
-        }
+        public void onAnimationStart(Animator animation) {}
+
         @Override
-        public void onAnimationRepeat(Animator animation) {
-        }
+        public void onAnimationRepeat(Animator animation) {}
+
         @Override
         public void onAnimationEnd(Animator animation) {
             if (mLayerDrawable != null) {
@@ -431,21 +436,21 @@ public final class BackgroundManager {
             }
             mHandler.post(mRunnable);
         }
+
         @Override
-        public void onAnimationCancel(Animator animation) {
-        }
+        public void onAnimationCancel(Animator animation) {}
     };
 
     private final ValueAnimator.AnimatorUpdateListener mAnimationUpdateListener =
             new ValueAnimator.AnimatorUpdateListener() {
-        @Override
-        public void onAnimationUpdate(ValueAnimator animation) {
-            int fadeInAlpha = (Integer) animation.getAnimatedValue();
-            if (mImageInWrapperIndex != -1) {
-                mLayerDrawable.setWrapperAlpha(mImageInWrapperIndex, fadeInAlpha);
-            }
-        }
-    };
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    int fadeInAlpha = (Integer) animation.getAnimatedValue();
+                    if (mImageInWrapperIndex != -1) {
+                        mLayerDrawable.setWrapperAlpha(mImageInWrapperIndex, fadeInAlpha);
+                    }
+                }
+            };
 
     /**
      * Shared memory continuity service.
@@ -475,44 +480,54 @@ public final class BackgroundManager {
 
         public static BackgroundContinuityService getInstance() {
             final int count = sService.mCount++;
-            if (DEBUG) Log.v(TAG, "Returning instance with new count " + count);
+            if (DEBUG)
+                Log.v(TAG, "Returning instance with new count " + count);
             return sService;
         }
 
         public void unref() {
-            if (mCount <= 0) throw new IllegalStateException("Can't unref, count " + mCount);
+            if (mCount <= 0)
+                throw new IllegalStateException("Can't unref, count " + mCount);
             if (--mCount == 0) {
-                if (DEBUG) Log.v(TAG, "mCount is zero, resetting");
+                if (DEBUG)
+                    Log.v(TAG, "mCount is zero, resetting");
                 reset();
             }
         }
+
         public int getColor() {
             return mColor;
         }
+
         public Drawable getDrawable() {
             return mDrawable;
         }
+
         public void setColor(int color) {
             mColor = color;
             mDrawable = null;
         }
+
         public void setDrawable(Drawable drawable) {
             mDrawable = drawable;
         }
+
         public Drawable getThemeDrawable(Context context, int themeDrawableId) {
             Drawable drawable = null;
             if (mLastThemeDrawableState != null && mLastThemeDrawableId == themeDrawableId) {
                 Drawable.ConstantState drawableState = mLastThemeDrawableState.get();
-                if (DEBUG) Log.v(TAG, "got cached theme drawable state " + drawableState);
+                if (DEBUG)
+                    Log.v(TAG, "got cached theme drawable state " + drawableState);
                 if (drawableState != null) {
                     drawable = drawableState.newDrawable();
                 }
             }
             if (drawable == null) {
                 drawable = ContextCompat.getDrawable(context, themeDrawableId);
-                if (DEBUG) Log.v(TAG, "loaded theme drawable " + drawable);
-                mLastThemeDrawableState = new WeakReference<Drawable.ConstantState>(
-                        drawable.getConstantState());
+                if (DEBUG)
+                    Log.v(TAG, "loaded theme drawable " + drawable);
+                mLastThemeDrawableState =
+                        new WeakReference<Drawable.ConstantState>(drawable.getConstantState());
                 mLastThemeDrawableId = themeDrawableId;
             }
             // No mutate required because this drawable is never manipulated.
@@ -542,13 +557,12 @@ public final class BackgroundManager {
     /**
      * Returns the BackgroundManager associated with the given Activity.
      * <p>
-     * The BackgroundManager will be created on-demand for each individual
-     * Activity. Subsequent calls will return the same BackgroundManager created
-     * for this Activity.
+     * The BackgroundManager will be created on-demand for each individual Activity. Subsequent
+     * calls will return the same BackgroundManager created for this Activity.
      */
     public static BackgroundManager getInstance(Activity activity) {
-        BackgroundFragment fragment = (BackgroundFragment) activity.getFragmentManager()
-                .findFragmentByTag(FRAGMENT_TAG);
+        BackgroundFragment fragment =
+                (BackgroundFragment) activity.getFragmentManager().findFragmentByTag(FRAGMENT_TAG);
         if (fragment != null) {
             BackgroundManager manager = fragment.getBackgroundManager();
             if (manager != null) {
@@ -560,6 +574,7 @@ public final class BackgroundManager {
         return new BackgroundManager(activity);
     }
 
+    @SuppressWarnings("deprecation")
     private BackgroundManager(Activity activity) {
         mContext = activity;
         mService = BackgroundContinuityService.getInstance();
@@ -568,21 +583,22 @@ public final class BackgroundManager {
         mHandler = new Handler();
 
         Interpolator defaultInterpolator = new FastOutLinearInInterpolator();
-        mAccelerateInterpolator = AnimationUtils.loadInterpolator(mContext,
-                android.R.anim.accelerate_interpolator);
-        mDecelerateInterpolator = AnimationUtils.loadInterpolator(mContext,
-                android.R.anim.decelerate_interpolator);
+        mAccelerateInterpolator =
+                AnimationUtils.loadInterpolator(mContext, android.R.anim.accelerate_interpolator);
+        mDecelerateInterpolator =
+                AnimationUtils.loadInterpolator(mContext, android.R.anim.decelerate_interpolator);
 
         mAnimator = ValueAnimator.ofInt(0, FULL_ALPHA);
         mAnimator.addListener(mAnimationListener);
         mAnimator.addUpdateListener(mAnimationUpdateListener);
         mAnimator.setInterpolator(defaultInterpolator);
 
-        TypedArray ta = activity.getTheme().obtainStyledAttributes(new int[] {
-                android.R.attr.windowBackground });
+        TypedArray ta = activity.getTheme()
+                .obtainStyledAttributes(new int[] {android.R.attr.windowBackground});
         mThemeDrawableResourceId = ta.getResourceId(0, -1);
         if (mThemeDrawableResourceId < 0) {
-            if (DEBUG) Log.v(TAG, "BackgroundManager no window background resource!");
+            if (DEBUG)
+                Log.v(TAG, "BackgroundManager no window background resource!");
         }
         ta.recycle();
 
@@ -591,8 +607,8 @@ public final class BackgroundManager {
 
     private void createFragment(Activity activity) {
         // Use a fragment to ensure the background manager gets detached properly.
-        BackgroundFragment fragment = (BackgroundFragment) activity.getFragmentManager()
-                .findFragmentByTag(FRAGMENT_TAG);
+        BackgroundFragment fragment =
+                (BackgroundFragment) activity.getFragmentManager().findFragmentByTag(FRAGMENT_TAG);
         if (fragment == null) {
             fragment = new BackgroundFragment();
             activity.getFragmentManager().beginTransaction().add(fragment, FRAGMENT_TAG).commit();
@@ -607,18 +623,16 @@ public final class BackgroundManager {
     }
 
     DrawableWrapper getImageInWrapper() {
-        return mLayerDrawable == null
-                ? null : mLayerDrawable.mWrapper[mImageInWrapperIndex];
+        return mLayerDrawable == null ? null : mLayerDrawable.mWrapper[mImageInWrapperIndex];
     }
 
     DrawableWrapper getImageOutWrapper() {
-        return mLayerDrawable == null
-                ? null : mLayerDrawable.mWrapper[mImageOutWrapperIndex];
+        return mLayerDrawable == null ? null : mLayerDrawable.mWrapper[mImageOutWrapperIndex];
     }
 
     /**
-     * Synchronizes state when the owning Activity is started.
-     * At that point the view becomes visible.
+     * Synchronizes state when the owning Activity is started. At that point the view becomes
+     * visible.
      */
     void onActivityStart() {
         updateImmediate();
@@ -631,7 +645,8 @@ public final class BackgroundManager {
     }
 
     void onResume() {
-        if (DEBUG) Log.v(TAG, "onResume " + this);
+        if (DEBUG)
+            Log.v(TAG, "onResume " + this);
         postChangeRunnable();
     }
 
@@ -639,12 +654,13 @@ public final class BackgroundManager {
         int color = mService.getColor();
         Drawable drawable = mService.getDrawable();
 
-        if (DEBUG) Log.v(TAG, "syncWithService color " + Integer.toHexString(color)
-                + " drawable " + drawable);
+        if (DEBUG)
+            Log.v(TAG, "syncWithService color " + Integer.toHexString(color) + " drawable "
+                    + drawable);
 
         mBackgroundColor = color;
-        mBackgroundDrawable = drawable == null ? null :
-            drawable.getConstantState().newDrawable().mutate();
+        mBackgroundDrawable =
+                drawable == null ? null : drawable.getConstantState().newDrawable().mutate();
 
         updateImmediate();
     }
@@ -658,9 +674,8 @@ public final class BackgroundManager {
     }
 
     /**
-     * Sets the resource id for the drawable to be shown when there is no background set.
-     * Overrides the window background drawable from the theme. This should
-     * be called before attaching.
+     * Sets the resource id for the drawable to be shown when there is no background set. Overrides
+     * the window background drawable from the theme. This should be called before attaching.
      */
     public void setThemeDrawableResourceId(int resourceId) {
         mThemeDrawableResourceId = resourceId;
@@ -695,11 +710,12 @@ public final class BackgroundManager {
     }
 
     /**
-     * Release references to Drawables and put the BackgroundManager into the
-     * detached state. Called when the associated Activity is destroyed.
+     * Release references to Drawables and put the BackgroundManager into the detached state. Called
+     * when the associated Activity is destroyed.
      */
     void detach() {
-        if (DEBUG) Log.v(TAG, "detach " + this);
+        if (DEBUG)
+            Log.v(TAG, "detach " + this);
         release();
 
         mBgView = null;
@@ -716,10 +732,12 @@ public final class BackgroundManager {
      * overhead when not visible. It's app's responsibility to restore the drawable/bitmap in
      * Activity onStart(). The method is automatically called in onStop() when
      * {@link #isAutoReleaseOnStop()} is true.
+     * 
      * @see #setAutoReleaseOnStop(boolean)
      */
     public void release() {
-        if (DEBUG) Log.v(TAG, "release " + this);
+        if (DEBUG)
+            Log.v(TAG, "release " + this);
         if (mChangeRunnable != null) {
             mHandler.removeCallbacks(mChangeRunnable);
             mChangeRunnable = null;
@@ -737,14 +755,15 @@ public final class BackgroundManager {
 
     /**
      * Sets the drawable used as a dim layer.
+     * 
      * @deprecated No longer support dim layer.
      */
     @Deprecated
-    public void setDimLayer(Drawable drawable) {
-    }
+    public void setDimLayer(Drawable drawable) {}
 
     /**
      * Returns the drawable used as a dim layer.
+     * 
      * @deprecated No longer support dim layer.
      */
     @Deprecated
@@ -754,6 +773,7 @@ public final class BackgroundManager {
 
     /**
      * Returns the default drawable used as a dim layer.
+     * 
      * @deprecated No longer support dim layer.
      */
     @Deprecated
@@ -772,14 +792,18 @@ public final class BackgroundManager {
         // and we want to use the optimized drawing path for performance reasons (see
         // OptimizedTranslucentLayerDrawable).
         if (mAnimator.isStarted()) {
-            if (DEBUG) Log.v(TAG, "animation in progress");
+            if (DEBUG)
+                Log.v(TAG, "animation in progress");
         } else if (!mFragmentState.isResumed()) {
-            if (DEBUG) Log.v(TAG, "not resumed");
+            if (DEBUG)
+                Log.v(TAG, "not resumed");
         } else if (mLayerDrawable.getAlpha() < FULL_ALPHA) {
-            if (DEBUG) Log.v(TAG, "in transition, alpha " + mLayerDrawable.getAlpha());
+            if (DEBUG)
+                Log.v(TAG, "in transition, alpha " + mLayerDrawable.getAlpha());
         } else {
             long delayMs = getRunnableDelay();
-            if (DEBUG) Log.v(TAG, "posting runnable delayMs " + delayMs);
+            if (DEBUG)
+                Log.v(TAG, "posting runnable delayMs " + delayMs);
             mLastSetTime = System.currentTimeMillis();
             mHandler.postDelayed(mChangeRunnable, delayMs);
             mChangeRunnablePending = false;
@@ -791,8 +815,8 @@ public final class BackgroundManager {
             return;
         }
 
-        LayerDrawable layerDrawable = (LayerDrawable)
-                ContextCompat.getDrawable(mContext, R.drawable.lb_background).mutate();
+        LayerDrawable layerDrawable = (LayerDrawable) ContextCompat
+                .getDrawable(mContext, R.drawable.lb_background).mutate();
         mLayerDrawable = createTranslucentLayerDrawable(layerDrawable);
         mImageInWrapperIndex = mLayerDrawable.findWrapperIndexById(R.id.background_imagein);
         mImageOutWrapperIndex = mLayerDrawable.findWrapperIndexById(R.id.background_imageout);
@@ -806,21 +830,24 @@ public final class BackgroundManager {
         lazyInit();
 
         if (mBackgroundDrawable == null) {
-            if (DEBUG) Log.v(TAG, "Use defefault background");
+            if (DEBUG)
+                Log.v(TAG, "Use defefault background");
             mLayerDrawable.updateDrawable(R.id.background_imagein, getDefaultDrawable());
         } else {
-            if (DEBUG) Log.v(TAG, "Background drawable is available " + mBackgroundDrawable);
+            if (DEBUG)
+                Log.v(TAG, "Background drawable is available " + mBackgroundDrawable);
             mLayerDrawable.updateDrawable(R.id.background_imagein, mBackgroundDrawable);
         }
         mLayerDrawable.clearDrawable(R.id.background_imageout, mContext);
     }
 
     /**
-     * Sets the background to the given color. The timing for when this becomes
-     * visible in the app is undefined and may take place after a small delay.
+     * Sets the background to the given color. The timing for when this becomes visible in the app
+     * is undefined and may take place after a small delay.
      */
     public void setColor(@ColorInt int color) {
-        if (DEBUG) Log.v(TAG, "setColor " + Integer.toHexString(color));
+        if (DEBUG)
+            Log.v(TAG, "setColor " + Integer.toHexString(color));
 
         mService.setColor(color);
         mBackgroundColor = color;
@@ -832,13 +859,13 @@ public final class BackgroundManager {
     }
 
     /**
-     * Sets the given drawable into the background. The provided Drawable will be
-     * used unmodified as the background, without any scaling or cropping
-     * applied to it. The timing for when this becomes visible in the app is
-     * undefined and may take place after a small delay.
+     * Sets the given drawable into the background. The provided Drawable will be used unmodified as
+     * the background, without any scaling or cropping applied to it. The timing for when this
+     * becomes visible in the app is undefined and may take place after a small delay.
      */
     public void setDrawable(Drawable drawable) {
-        if (DEBUG) Log.v(TAG, "setBackgroundDrawable " + drawable);
+        if (DEBUG)
+            Log.v(TAG, "setBackgroundDrawable " + drawable);
 
         mService.setDrawable(drawable);
         mBackgroundDrawable = drawable;
@@ -854,8 +881,8 @@ public final class BackgroundManager {
 
     /**
      * Clears the Drawable set by {@link #setDrawable(Drawable)} or {@link #setBitmap(Bitmap)}.
-     * BackgroundManager will show a solid color set by {@link #setColor(int)} or theme drawable
-     * if color is not provided.
+     * BackgroundManager will show a solid color set by {@link #setColor(int)} or theme drawable if
+     * color is not provided.
      */
     public void clearDrawable() {
         setDrawable(null);
@@ -868,7 +895,8 @@ public final class BackgroundManager {
 
         if (mChangeRunnable != null) {
             if (sameDrawable(drawable, mChangeRunnable.mDrawable)) {
-                if (DEBUG) Log.v(TAG, "new drawable same as pending");
+                if (DEBUG)
+                    Log.v(TAG, "new drawable same as pending");
                 return;
             }
             mHandler.removeCallbacks(mChangeRunnable);
@@ -887,9 +915,9 @@ public final class BackgroundManager {
 
     /**
      * Sets the given bitmap into the background. When using setCoverImageBitmap to set the
-     * background, the provided bitmap will be scaled and cropped to correctly
-     * fit within the dimensions of the view. The timing for when this becomes
-     * visible in the app is undefined and may take place after a small delay.
+     * background, the provided bitmap will be scaled and cropped to correctly fit within the
+     * dimensions of the view. The timing for when this becomes visible in the app is undefined and
+     * may take place after a small delay.
      */
     public void setBitmap(Bitmap bitmap) {
         if (DEBUG) {
@@ -942,6 +970,7 @@ public final class BackgroundManager {
 
     /**
      * Enable or disable call release() in Activity onStop(). Default is true.
+     * 
      * @param autoReleaseOnStop True to call release() in Activity onStop(), false otherwise.
      */
     public void setAutoReleaseOnStop(boolean autoReleaseOnStop) {
@@ -978,7 +1007,8 @@ public final class BackgroundManager {
             return true;
         }
         if (first instanceof BitmapDrawable && second instanceof BitmapDrawable) {
-            if (((BitmapDrawable) first).getBitmap().sameAs(((BitmapDrawable) second).getBitmap())) {
+            if (((BitmapDrawable) first).getBitmap()
+                    .sameAs(((BitmapDrawable) second).getBitmap())) {
                 return true;
             }
         }
@@ -1008,18 +1038,21 @@ public final class BackgroundManager {
 
         private void runTask() {
             if (mLayerDrawable == null) {
-                if (DEBUG) Log.v(TAG, "runTask while released - should not happen");
+                if (DEBUG)
+                    Log.v(TAG, "runTask while released - should not happen");
                 return;
             }
 
             DrawableWrapper imageInWrapper = getImageInWrapper();
             if (imageInWrapper != null) {
                 if (sameDrawable(mDrawable, imageInWrapper.getDrawable())) {
-                    if (DEBUG) Log.v(TAG, "new drawable same as current");
+                    if (DEBUG)
+                        Log.v(TAG, "new drawable same as current");
                     return;
                 }
 
-                if (DEBUG) Log.v(TAG, "moving image in to image out");
+                if (DEBUG)
+                    Log.v(TAG, "moving image in to image out");
                 // Order is important! Setting a drawable "removes" the
                 // previous one from the view
                 mLayerDrawable.clearDrawable(R.id.background_imagein, mContext);
@@ -1035,14 +1068,16 @@ public final class BackgroundManager {
                 return;
             }
 
-            if (DEBUG) Log.v(TAG, "applyBackgroundChanges drawable " + mDrawable);
+            if (DEBUG)
+                Log.v(TAG, "applyBackgroundChanges drawable " + mDrawable);
 
             DrawableWrapper imageInWrapper = getImageInWrapper();
             if (imageInWrapper == null && mDrawable != null) {
-                if (DEBUG) Log.v(TAG, "creating new imagein drawable");
-                imageInWrapper = mLayerDrawable.updateDrawable(
-                        R.id.background_imagein, mDrawable);
-                if (DEBUG) Log.v(TAG, "imageInWrapper animation starting");
+                if (DEBUG)
+                    Log.v(TAG, "creating new imagein drawable");
+                imageInWrapper = mLayerDrawable.updateDrawable(R.id.background_imagein, mDrawable);
+                if (DEBUG)
+                    Log.v(TAG, "imageInWrapper animation starting");
                 mLayerDrawable.setWrapperAlpha(mImageInWrapperIndex, 0);
             }
 

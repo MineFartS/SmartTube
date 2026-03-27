@@ -83,8 +83,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("deprecation")
 public final class Helpers {
+
     private static final String TAG = Helpers.class.getSimpleName();
+    
     public static final int REMOVE_PACKAGE_CODE = 521;
     private static final String ARRAY_DELIM = "%AR%";
     private static final String DATA_DELIM = "%OB%";

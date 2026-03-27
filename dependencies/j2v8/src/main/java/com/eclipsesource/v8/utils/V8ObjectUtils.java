@@ -30,6 +30,7 @@ import com.eclipsesource.v8.V8Value;
  * java.util Maps and Lists and back again. These conversions
  * perform a deep copy.
  */
+@SuppressWarnings("deprecation")
 public class V8ObjectUtils {
 
     private static final Object      IGNORE               = new Object();

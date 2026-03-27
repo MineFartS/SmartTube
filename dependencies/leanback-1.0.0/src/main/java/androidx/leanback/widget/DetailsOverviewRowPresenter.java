@@ -33,31 +33,32 @@ import androidx.leanback.R;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * Renders a {@link DetailsOverviewRow} to display an overview of an item.
- * Typically this row will be the first row in a fragment
- * such as the {@link androidx.leanback.app.DetailsFragment
- * DetailsFragment}.  The View created by the DetailsOverviewRowPresenter is made in three parts:
- * ImageView on the left, action list view on the bottom and a customizable detailed
- * description view on the right.
+ * Renders a {@link DetailsOverviewRow} to display an overview of an item. Typically this row will
+ * be the first row in a fragment such as the {@link androidx.leanback.app.DetailsFragment
+ * DetailsFragment}. The View created by the DetailsOverviewRowPresenter is made in three parts:
+ * ImageView on the left, action list view on the bottom and a customizable detailed description
+ * view on the right.
  *
- * <p>The detailed description is rendered using a {@link Presenter} passed in
- * {@link #DetailsOverviewRowPresenter(Presenter)}.  Typically this will be an instance of
- * {@link AbstractDetailsDescriptionPresenter}.  The application can access the
- * detailed description ViewHolder from {@link ViewHolder#mDetailsDescriptionViewHolder}.
+ * <p>
+ * The detailed description is rendered using a {@link Presenter} passed in
+ * {@link #DetailsOverviewRowPresenter(Presenter)}. Typically this will be an instance of
+ * {@link AbstractDetailsDescriptionPresenter}. The application can access the detailed description
+ * ViewHolder from {@link ViewHolder#mDetailsDescriptionViewHolder}.
  * </p>
  *
  * <p>
- * To participate in activity transition, call {@link #setSharedElementEnterTransition(Activity,
- * String)} during Activity's onCreate().
+ * To participate in activity transition, call
+ * {@link #setSharedElementEnterTransition(Activity, String)} during Activity's onCreate().
  * </p>
  *
  * <p>
  * Because transition support and layout are fully controlled by DetailsOverviewRowPresenter,
- * developer can not override DetailsOverviewRowPresenter.ViewHolder for adding/replacing views
- * of DetailsOverviewRowPresenter.  If further customization is required beyond replacing
- * the detailed description, the application should create a new row presenter class.
+ * developer can not override DetailsOverviewRowPresenter.ViewHolder for adding/replacing views of
+ * DetailsOverviewRowPresenter. If further customization is required beyond replacing the detailed
+ * description, the application should create a new row presenter class.
  * </p>
- * @deprecated  Use {@link FullWidthDetailsOverviewRowPresenter}
+ * 
+ * @deprecated Use {@link FullWidthDetailsOverviewRowPresenter}
  */
 @Deprecated
 public class DetailsOverviewRowPresenter extends RowPresenter {
@@ -78,14 +79,14 @@ public class DetailsOverviewRowPresenter extends RowPresenter {
         public void onBind(final ItemBridgeAdapter.ViewHolder ibvh) {
             if (mViewHolder.getOnItemViewClickedListener() != null
                     || mActionClickedListener != null) {
-                ibvh.getPresenter().setOnClickListener(
-                        ibvh.getViewHolder(), new View.OnClickListener() {
+                ibvh.getPresenter().setOnClickListener(ibvh.getViewHolder(),
+                        new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 if (mViewHolder.getOnItemViewClickedListener() != null) {
                                     mViewHolder.getOnItemViewClickedListener().onItemClicked(
-                                            ibvh.getViewHolder(), ibvh.getItem(),
-                                            mViewHolder, mViewHolder.getRow());
+                                            ibvh.getViewHolder(), ibvh.getItem(), mViewHolder,
+                                            mViewHolder.getRow());
                                 }
                                 if (mActionClickedListener != null) {
                                     mActionClickedListener.onActionClicked((Action) ibvh.getItem());
@@ -94,6 +95,7 @@ public class DetailsOverviewRowPresenter extends RowPresenter {
                         });
             }
         }
+
         @Override
         public void onUnbind(final ItemBridgeAdapter.ViewHolder ibvh) {
             if (mViewHolder.getOnItemViewClickedListener() != null
@@ -101,12 +103,14 @@ public class DetailsOverviewRowPresenter extends RowPresenter {
                 ibvh.getPresenter().setOnClickListener(ibvh.getViewHolder(), null);
             }
         }
+
         @Override
         public void onAttachedToWindow(ItemBridgeAdapter.ViewHolder viewHolder) {
             // Remove first to ensure we don't add ourselves more than once.
             viewHolder.itemView.removeOnLayoutChangeListener(mViewHolder.mLayoutChangeListener);
             viewHolder.itemView.addOnLayoutChangeListener(mViewHolder.mLayoutChangeListener);
         }
+
         @Override
         public void onDetachedFromWindow(ItemBridgeAdapter.ViewHolder viewHolder) {
             viewHolder.itemView.removeOnLayoutChangeListener(mViewHolder.mLayoutChangeListener);
@@ -129,6 +133,8 @@ public class DetailsOverviewRowPresenter extends RowPresenter {
         boolean mShowMoreRight;
         boolean mShowMoreLeft;
         ItemBridgeAdapter mActionBridgeAdapter;
+
+        @SuppressWarnings("deprecation")
         final Handler mHandler = new Handler();
 
         final Runnable mUpdateDrawableCallback = new Runnable() {
@@ -172,13 +178,14 @@ public class DetailsOverviewRowPresenter extends RowPresenter {
         final View.OnLayoutChangeListener mLayoutChangeListener =
                 new View.OnLayoutChangeListener() {
 
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right,
-                    int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                if (DEBUG) Log.v(TAG, "onLayoutChange " + v);
-                checkFirstAndLastPosition(false);
-            }
-        };
+                    @Override
+                    public void onLayoutChange(View v, int left, int top, int right, int bottom,
+                            int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                        if (DEBUG)
+                            Log.v(TAG, "onLayoutChange " + v);
+                        checkFirstAndLastPosition(false);
+                    }
+                };
 
         final OnChildSelectedListener mChildSelectedListener = new OnChildSelectedListener() {
             @Override
@@ -196,23 +203,22 @@ public class DetailsOverviewRowPresenter extends RowPresenter {
                     : mActionsRow.findViewHolderForPosition(mActionsRow.getSelectedPosition()));
             if (ibvh == null) {
                 if (getOnItemViewSelectedListener() != null) {
-                    getOnItemViewSelectedListener().onItemSelected(null, null,
-                            ViewHolder.this, getRow());
+                    getOnItemViewSelectedListener().onItemSelected(null, null, ViewHolder.this,
+                            getRow());
                 }
             } else {
                 if (getOnItemViewSelectedListener() != null) {
-                    getOnItemViewSelectedListener().onItemSelected(ibvh.getViewHolder(), ibvh.getItem(),
-                            ViewHolder.this, getRow());
+                    getOnItemViewSelectedListener().onItemSelected(ibvh.getViewHolder(),
+                            ibvh.getItem(), ViewHolder.this, getRow());
                 }
             }
         };
 
-        final RecyclerView.OnScrollListener mScrollListener =
-                new RecyclerView.OnScrollListener() {
+        final RecyclerView.OnScrollListener mScrollListener = new RecyclerView.OnScrollListener() {
 
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-            }
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {}
+
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 checkFirstAndLastPosition(true);
@@ -223,15 +229,15 @@ public class DetailsOverviewRowPresenter extends RowPresenter {
             RecyclerView.ViewHolder viewHolder;
 
             viewHolder = mActionsRow.findViewHolderForPosition(mNumItems - 1);
-            boolean showRight = (viewHolder == null
-                    || viewHolder.itemView.getRight() > mActionsRow.getWidth());
+            boolean showRight =
+                    (viewHolder == null || viewHolder.itemView.getRight() > mActionsRow.getWidth());
 
             viewHolder = mActionsRow.findViewHolderForPosition(0);
             boolean showLeft = (viewHolder == null || viewHolder.itemView.getLeft() < 0);
 
             if (DEBUG) {
-                Log.v(TAG, "checkFirstAndLast fromScroll " + fromScroll
-                        + " showRight " + showRight + " showLeft " + showLeft);
+                Log.v(TAG, "checkFirstAndLast fromScroll " + fromScroll + " showRight " + showRight
+                        + " showLeft " + showLeft);
             }
 
             showMoreRight(showRight);
@@ -255,8 +261,7 @@ public class DetailsOverviewRowPresenter extends RowPresenter {
         /**
          * Constructor for the ViewHolder.
          *
-         * @param rootView The root View that this view holder will be attached
-         *        to.
+         * @param rootView The root View that this view holder will be attached to.
          */
         public ViewHolder(View rootView, Presenter detailsPresenter) {
             super(rootView);
@@ -273,8 +278,8 @@ public class DetailsOverviewRowPresenter extends RowPresenter {
             mActionsRow.setAdapter(mActionBridgeAdapter);
             mActionsRow.setOnChildSelectedListener(mChildSelectedListener);
 
-            final int fadeLength = rootView.getResources().getDimensionPixelSize(
-                    R.dimen.lb_details_overview_actions_fade_size);
+            final int fadeLength = rootView.getResources()
+                    .getDimensionPixelSize(R.dimen.lb_details_overview_actions_fade_size);
             mActionsRow.setFadingRightEdgeLength(fadeLength);
             mActionsRow.setFadingLeftEdgeLength(fadeLength);
             mDetailsDescriptionViewHolder =
@@ -295,8 +300,8 @@ public class DetailsOverviewRowPresenter extends RowPresenter {
     /**
      * Constructor for a DetailsOverviewRowPresenter.
      *
-     * @param detailsPresenter The {@link Presenter} used to render the detailed
-     *        description of the row.
+     * @param detailsPresenter The {@link Presenter} used to render the detailed description of the
+     *        row.
      */
     public DetailsOverviewRowPresenter(Presenter detailsPresenter) {
         setHeaderPresenter(null);
@@ -319,7 +324,7 @@ public class DetailsOverviewRowPresenter extends RowPresenter {
     }
 
     /**
-     * Sets the background color.  If not set, a default from the theme will be used.
+     * Sets the background color. If not set, a default from the theme will be used.
      */
     public void setBackgroundColor(@ColorInt int color) {
         mBackgroundColor = color;
@@ -327,8 +332,7 @@ public class DetailsOverviewRowPresenter extends RowPresenter {
     }
 
     /**
-     * Returns the background color.  If no background color was set, transparent
-     * is returned.
+     * Returns the background color. If no background color was set, transparent is returned.
      */
     @ColorInt
     public int getBackgroundColor() {
@@ -336,8 +340,8 @@ public class DetailsOverviewRowPresenter extends RowPresenter {
     }
 
     /**
-     * Sets the layout style to be large or small. This affects the height of
-     * the overview, including the text description. The default is large.
+     * Sets the layout style to be large or small. This affects the height of the overview,
+     * including the text description. The default is large.
      */
     public void setStyleLarge(boolean large) {
         mIsStyleLarge = large;
@@ -351,19 +355,18 @@ public class DetailsOverviewRowPresenter extends RowPresenter {
     }
 
     /**
-     * Sets the enter transition of target activity to be
-     * transiting into overview row created by this presenter.  The transition will
-     * be cancelled if the overview image is not loaded in the timeout period.
+     * Sets the enter transition of target activity to be transiting into overview row created by
+     * this presenter. The transition will be cancelled if the overview image is not loaded in the
+     * timeout period.
      * <p>
-     * It assumes shared element passed from calling activity is an ImageView;
-     * the shared element transits to overview image on the starting edge of the detail
-     * overview row, while bounds of overview row grows and reveals text
-     * and action buttons.
+     * It assumes shared element passed from calling activity is an ImageView; the shared element
+     * transits to overview image on the starting edge of the detail overview row, while bounds of
+     * overview row grows and reveals text and action buttons.
      * <p>
      * The method must be invoked in target Activity's onCreate().
      */
-    public final void setSharedElementEnterTransition(Activity activity,
-            String sharedElementName, long timeoutMs) {
+    public final void setSharedElementEnterTransition(Activity activity, String sharedElementName,
+            long timeoutMs) {
         if (mSharedElementHelper == null) {
             mSharedElementHelper = new DetailsOverviewSharedElementHelper();
         }
@@ -372,19 +375,17 @@ public class DetailsOverviewRowPresenter extends RowPresenter {
     }
 
     /**
-     * Sets the enter transition of target activity to be
-     * transiting into overview row created by this presenter.  The transition will
-     * be cancelled if overview image is not loaded in a default timeout period.
+     * Sets the enter transition of target activity to be transiting into overview row created by
+     * this presenter. The transition will be cancelled if overview image is not loaded in a default
+     * timeout period.
      * <p>
-     * It assumes shared element passed from calling activity is an ImageView;
-     * the shared element transits to overview image on the starting edge of the detail
-     * overview row, while bounds of overview row grows and reveals text
-     * and action buttons.
+     * It assumes shared element passed from calling activity is an ImageView; the shared element
+     * transits to overview image on the starting edge of the detail overview row, while bounds of
+     * overview row grows and reveals text and action buttons.
      * <p>
      * The method must be invoked in target Activity's onCreate().
      */
-    public final void setSharedElementEnterTransition(Activity activity,
-            String sharedElementName) {
+    public final void setSharedElementEnterTransition(Activity activity, String sharedElementName) {
         setSharedElementEnterTransition(activity, sharedElementName, DEFAULT_TIMEOUT);
     }
 
@@ -406,8 +407,8 @@ public class DetailsOverviewRowPresenter extends RowPresenter {
 
     @Override
     protected RowPresenter.ViewHolder createRowViewHolder(ViewGroup parent) {
-        View v = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.lb_details_overview, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.lb_details_overview,
+                parent, false);
         ViewHolder vh = new ViewHolder(v, mDetailsPresenter);
 
         initDetailsOverview(vh);
@@ -416,8 +417,8 @@ public class DetailsOverviewRowPresenter extends RowPresenter {
     }
 
     private int getCardHeight(Context context) {
-        int resId = mIsStyleLarge ? R.dimen.lb_details_overview_height_large :
-            R.dimen.lb_details_overview_height_small;
+        int resId = mIsStyleLarge ? R.dimen.lb_details_overview_height_large
+                : R.dimen.lb_details_overview_height_small;
         return context.getResources().getDimensionPixelSize(resId);
     }
 
@@ -460,10 +461,10 @@ public class DetailsOverviewRowPresenter extends RowPresenter {
         ViewGroup.MarginLayoutParams layoutParams =
                 (ViewGroup.MarginLayoutParams) vh.mImageView.getLayoutParams();
         final int cardHeight = getCardHeight(vh.mImageView.getContext());
-        final int verticalMargin = vh.mImageView.getResources().getDimensionPixelSize(
-                R.dimen.lb_details_overview_image_margin_vertical);
-        final int horizontalMargin = vh.mImageView.getResources().getDimensionPixelSize(
-                R.dimen.lb_details_overview_image_margin_horizontal);
+        final int verticalMargin = vh.mImageView.getResources()
+                .getDimensionPixelSize(R.dimen.lb_details_overview_image_margin_vertical);
+        final int horizontalMargin = vh.mImageView.getResources()
+                .getDimensionPixelSize(R.dimen.lb_details_overview_image_margin_horizontal);
         final int drawableWidth = getNonNegativeWidth(row.getImageDrawable());
         final int drawableHeight = getNonNegativeHeight(row.getImageDrawable());
 
@@ -499,8 +500,8 @@ public class DetailsOverviewRowPresenter extends RowPresenter {
             }
         }
 
-        final int bgColor = mBackgroundColorSet ? mBackgroundColor :
-            getDefaultBackgroundColor(vh.mOverviewView.getContext());
+        final int bgColor = mBackgroundColorSet ? mBackgroundColor
+                : getDefaultBackgroundColor(vh.mOverviewView.getContext());
 
         if (useMargin) {
             layoutParams.setMarginStart(horizontalMargin);
@@ -579,8 +580,8 @@ public class DetailsOverviewRowPresenter extends RowPresenter {
     protected void onRowViewAttachedToWindow(RowPresenter.ViewHolder vh) {
         super.onRowViewAttachedToWindow(vh);
         if (mDetailsPresenter != null) {
-            mDetailsPresenter.onViewAttachedToWindow(
-                    ((ViewHolder) vh).mDetailsDescriptionViewHolder);
+            mDetailsPresenter
+                    .onViewAttachedToWindow(((ViewHolder) vh).mDetailsDescriptionViewHolder);
         }
     }
 
@@ -588,8 +589,8 @@ public class DetailsOverviewRowPresenter extends RowPresenter {
     protected void onRowViewDetachedFromWindow(RowPresenter.ViewHolder vh) {
         super.onRowViewDetachedFromWindow(vh);
         if (mDetailsPresenter != null) {
-            mDetailsPresenter.onViewDetachedFromWindow(
-                    ((ViewHolder) vh).mDetailsDescriptionViewHolder);
+            mDetailsPresenter
+                    .onViewDetachedFromWindow(((ViewHolder) vh).mDetailsDescriptionViewHolder);
         }
     }
 }

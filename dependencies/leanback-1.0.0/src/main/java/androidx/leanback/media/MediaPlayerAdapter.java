@@ -1,17 +1,15 @@
 /*
  * Copyright (C) 2017 The Android Open Source Project
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package androidx.leanback.media;
@@ -42,7 +40,10 @@ public class MediaPlayerAdapter extends PlayerAdapter {
             mHandler.postDelayed(this, getProgressUpdatingInterval());
         }
     };;
+
+    @SuppressWarnings("deprecation")
     final Handler mHandler = new Handler();
+
     boolean mInitialized = false; // true when the MediaPlayer is prepared/initialized
     Uri mMediaSourceUri = null;
     boolean mHasDisplay;
@@ -61,39 +62,38 @@ public class MediaPlayerAdapter extends PlayerAdapter {
 
     final MediaPlayer.OnCompletionListener mOnCompletionListener =
             new MediaPlayer.OnCompletionListener() {
-        @Override
-        public void onCompletion(MediaPlayer mediaPlayer) {
-            getCallback().onPlayStateChanged(MediaPlayerAdapter.this);
-            getCallback().onPlayCompleted(MediaPlayerAdapter.this);
-        }
-    };
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    getCallback().onPlayStateChanged(MediaPlayerAdapter.this);
+                    getCallback().onPlayCompleted(MediaPlayerAdapter.this);
+                }
+            };
 
     final MediaPlayer.OnBufferingUpdateListener mOnBufferingUpdateListener =
             new MediaPlayer.OnBufferingUpdateListener() {
-        @Override
-        public void onBufferingUpdate(MediaPlayer mp, int percent) {
-            mBufferedProgress = getDuration() * percent / 100;
-            getCallback().onBufferedPositionChanged(MediaPlayerAdapter.this);
-        }
-    };
+                @Override
+                public void onBufferingUpdate(MediaPlayer mp, int percent) {
+                    mBufferedProgress = getDuration() * percent / 100;
+                    getCallback().onBufferedPositionChanged(MediaPlayerAdapter.this);
+                }
+            };
 
     final MediaPlayer.OnVideoSizeChangedListener mOnVideoSizeChangedListener =
             new MediaPlayer.OnVideoSizeChangedListener() {
-        @Override
-        public void onVideoSizeChanged(MediaPlayer mediaPlayer, int width, int height) {
-            getCallback().onVideoSizeChanged(MediaPlayerAdapter.this, width, height);
-        }
-    };
-
-    final MediaPlayer.OnErrorListener mOnErrorListener =
-            new MediaPlayer.OnErrorListener() {
                 @Override
-                public boolean onError(MediaPlayer mp, int what, int extra) {
-                    getCallback().onError(MediaPlayerAdapter.this, what,
-                            mContext.getString(R.string.lb_media_player_error, what, extra));
-                    return MediaPlayerAdapter.this.onError(what, extra);
+                public void onVideoSizeChanged(MediaPlayer mediaPlayer, int width, int height) {
+                    getCallback().onVideoSizeChanged(MediaPlayerAdapter.this, width, height);
                 }
             };
+
+    final MediaPlayer.OnErrorListener mOnErrorListener = new MediaPlayer.OnErrorListener() {
+        @Override
+        public boolean onError(MediaPlayer mp, int what, int extra) {
+            getCallback().onError(MediaPlayerAdapter.this, what,
+                    mContext.getString(R.string.lb_media_player_error, what, extra));
+            return MediaPlayerAdapter.this.onError(what, extra);
+        }
+    };
 
     final MediaPlayer.OnSeekCompleteListener mOnSeekCompleteListener =
             new MediaPlayer.OnSeekCompleteListener() {
@@ -188,23 +188,21 @@ public class MediaPlayerAdapter extends PlayerAdapter {
     /**
      * Called to indicate an error.
      *
-     * @param what    the type of error that has occurred:
-     * <ul>
-     * <li>{@link MediaPlayer#MEDIA_ERROR_UNKNOWN}
-     * <li>{@link MediaPlayer#MEDIA_ERROR_SERVER_DIED}
-     * </ul>
-     * @param extra an extra code, specific to the error. Typically
-     * implementation dependent.
-     * <ul>
-     * <li>{@link MediaPlayer#MEDIA_ERROR_IO}
-     * <li>{@link MediaPlayer#MEDIA_ERROR_MALFORMED}
-     * <li>{@link MediaPlayer#MEDIA_ERROR_UNSUPPORTED}
-     * <li>{@link MediaPlayer#MEDIA_ERROR_TIMED_OUT}
-     * <li><code>MEDIA_ERROR_SYSTEM (-2147483648)</code> - low-level system error.
-     * </ul>
-     * @return True if the method handled the error, false if it didn't.
-     * Returning false, will cause the {@link PlayerAdapter.Callback#onPlayCompleted(PlayerAdapter)}
-     * being called.
+     * @param what the type of error that has occurred:
+     *        <ul>
+     *        <li>{@link MediaPlayer#MEDIA_ERROR_UNKNOWN}
+     *        <li>{@link MediaPlayer#MEDIA_ERROR_SERVER_DIED}
+     *        </ul>
+     * @param extra an extra code, specific to the error. Typically implementation dependent.
+     *        <ul>
+     *        <li>{@link MediaPlayer#MEDIA_ERROR_IO}
+     *        <li>{@link MediaPlayer#MEDIA_ERROR_MALFORMED}
+     *        <li>{@link MediaPlayer#MEDIA_ERROR_UNSUPPORTED}
+     *        <li>{@link MediaPlayer#MEDIA_ERROR_TIMED_OUT}
+     *        <li><code>MEDIA_ERROR_SYSTEM (-2147483648)</code> - low-level system error.
+     *        </ul>
+     * @return True if the method handled the error, false if it didn't. Returning false, will cause
+     *         the {@link PlayerAdapter.Callback#onPlayCompleted(PlayerAdapter)} being called.
      */
     protected boolean onError(int what, int extra) {
         return false;
@@ -213,31 +211,29 @@ public class MediaPlayerAdapter extends PlayerAdapter {
     /**
      * Called to indicate the completion of a seek operation.
      */
-    protected void onSeekComplete() {
-    }
+    protected void onSeekComplete() {}
 
     /**
      * Called to indicate an info or a warning.
      *
-     * @param what    the type of info or warning.
-     * <ul>
-     * <li>{@link MediaPlayer#MEDIA_INFO_UNKNOWN}
-     * <li>{@link MediaPlayer#MEDIA_INFO_VIDEO_TRACK_LAGGING}
-     * <li>{@link MediaPlayer#MEDIA_INFO_VIDEO_RENDERING_START}
-     * <li>{@link MediaPlayer#MEDIA_INFO_BUFFERING_START}
-     * <li>{@link MediaPlayer#MEDIA_INFO_BUFFERING_END}
-     * <li><code>MEDIA_INFO_NETWORK_BANDWIDTH (703)</code> -
-     *     bandwidth information is available (as <code>extra</code> kbps)
-     * <li>{@link MediaPlayer#MEDIA_INFO_BAD_INTERLEAVING}
-     * <li>{@link MediaPlayer#MEDIA_INFO_NOT_SEEKABLE}
-     * <li>{@link MediaPlayer#MEDIA_INFO_METADATA_UPDATE}
-     * <li>{@link MediaPlayer#MEDIA_INFO_UNSUPPORTED_SUBTITLE}
-     * <li>{@link MediaPlayer#MEDIA_INFO_SUBTITLE_TIMED_OUT}
-     * </ul>
-     * @param extra an extra code, specific to the info. Typically
-     * implementation dependent.
-     * @return True if the method handled the info, false if it didn't.
-     * Returning false, will cause the info to be discarded.
+     * @param what the type of info or warning.
+     *        <ul>
+     *        <li>{@link MediaPlayer#MEDIA_INFO_UNKNOWN}
+     *        <li>{@link MediaPlayer#MEDIA_INFO_VIDEO_TRACK_LAGGING}
+     *        <li>{@link MediaPlayer#MEDIA_INFO_VIDEO_RENDERING_START}
+     *        <li>{@link MediaPlayer#MEDIA_INFO_BUFFERING_START}
+     *        <li>{@link MediaPlayer#MEDIA_INFO_BUFFERING_END}
+     *        <li><code>MEDIA_INFO_NETWORK_BANDWIDTH (703)</code> - bandwidth information is
+     *        available (as <code>extra</code> kbps)
+     *        <li>{@link MediaPlayer#MEDIA_INFO_BAD_INTERLEAVING}
+     *        <li>{@link MediaPlayer#MEDIA_INFO_NOT_SEEKABLE}
+     *        <li>{@link MediaPlayer#MEDIA_INFO_METADATA_UPDATE}
+     *        <li>{@link MediaPlayer#MEDIA_INFO_UNSUPPORTED_SUBTITLE}
+     *        <li>{@link MediaPlayer#MEDIA_INFO_SUBTITLE_TIMED_OUT}
+     *        </ul>
+     * @param extra an extra code, specific to the info. Typically implementation dependent.
+     * @return True if the method handled the info, false if it didn't. Returning false, will cause
+     *         the info to be discarded.
      */
     protected boolean onInfo(int what, int extra) {
         return false;
@@ -276,6 +272,7 @@ public class MediaPlayerAdapter extends PlayerAdapter {
 
     /**
      * Return updating interval of progress UI in milliseconds. Subclass may override.
+     * 
      * @return Update interval of progress UI in milliseconds.
      */
     public int getProgressUpdatingInterval() {
@@ -332,7 +329,7 @@ public class MediaPlayerAdapter extends PlayerAdapter {
      * Sets the media source of the player witha given URI.
      *
      * @return Returns <code>true</code> if uri represents a new media; <code>false</code>
-     * otherwise.
+     *         otherwise.
      * @see MediaPlayer#setDataSource(String)
      */
     public boolean setDataSource(Uri uri) {
@@ -370,17 +367,13 @@ public class MediaPlayerAdapter extends PlayerAdapter {
     }
 
     /**
-     * Return the MediaPlayer associated with the MediaPlayerAdapter. App can use the instance
-     * to config DRM or control volumes, etc. Warning: App should not use the following seven
-     * listeners as they are controlled by MediaPlayerAdapter. If that's the case, app should write
-     * its own PlayerAdapter class.
-     * {@link MediaPlayer#setOnPreparedListener}
-     * {@link MediaPlayer#setOnVideoSizeChangedListener}
-     * {@link MediaPlayer#setOnErrorListener}
-     * {@link MediaPlayer#setOnSeekCompleteListener}
-     * {@link MediaPlayer#setOnCompletionListener}
-     * {@link MediaPlayer#setOnInfoListener}
-     * {@link MediaPlayer#setOnBufferingUpdateListener}
+     * Return the MediaPlayer associated with the MediaPlayerAdapter. App can use the instance to
+     * config DRM or control volumes, etc. Warning: App should not use the following seven listeners
+     * as they are controlled by MediaPlayerAdapter. If that's the case, app should write its own
+     * PlayerAdapter class. {@link MediaPlayer#setOnPreparedListener}
+     * {@link MediaPlayer#setOnVideoSizeChangedListener} {@link MediaPlayer#setOnErrorListener}
+     * {@link MediaPlayer#setOnSeekCompleteListener} {@link MediaPlayer#setOnCompletionListener}
+     * {@link MediaPlayer#setOnInfoListener} {@link MediaPlayer#setOnBufferingUpdateListener}
      *
      * @return The MediaPlayer associated with the MediaPlayerAdapter.
      */
@@ -390,7 +383,7 @@ public class MediaPlayerAdapter extends PlayerAdapter {
 
     /**
      * @return True if MediaPlayer OnPreparedListener is invoked and got a SurfaceHolder if
-     * {@link PlaybackGlueHost} provides SurfaceHolder.
+     *         {@link PlaybackGlueHost} provides SurfaceHolder.
      */
     @Override
     public boolean isPrepared() {
@@ -408,8 +401,7 @@ public class MediaPlayerAdapter extends PlayerAdapter {
         }
 
         @Override
-        public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-        }
+        public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {}
 
         @Override
         public void surfaceDestroyed(SurfaceHolder surfaceHolder) {

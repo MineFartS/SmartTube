@@ -1,17 +1,15 @@
 /*
  * Copyright (C) 2017 The Android Open Source Project
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package androidx.leanback.media;
@@ -45,7 +43,8 @@ public class MediaControllerAdapter extends PlayerAdapter {
     private static final boolean DEBUG = false;
 
     private MediaControllerCompat mController;
-    @SuppressWarnings("WeakerAccess") /* synthetic access */
+
+    @SuppressWarnings({"WeakerAccess", "deprecation"}) /* synthetic access */
     Handler mHandler = new Handler();
 
     // Runnable object to update current media's playing position.
@@ -66,59 +65,57 @@ public class MediaControllerAdapter extends PlayerAdapter {
     @SuppressWarnings("WeakerAccess") /* synthetic access */
     boolean mIsBuffering = false;
 
-    MediaControllerCompat.Callback mMediaControllerCallback =
-            new MediaControllerCompat.Callback() {
-                @Override
-                public void onPlaybackStateChanged(PlaybackStateCompat state) {
-                    if (mIsBuffering && state.getState() != PlaybackStateCompat.STATE_BUFFERING) {
-                        getCallback().onBufferingStateChanged(MediaControllerAdapter.this, false);
-                        getCallback().onBufferedPositionChanged(MediaControllerAdapter.this);
-                        mIsBuffering = false;
-                    }
-                    if (state.getState() == PlaybackStateCompat.STATE_NONE) {
-                        // The STATE_NONE playback state will only occurs when initialize the player
-                        // at first time.
-                        if (DEBUG) {
-                            Log.d(TAG, "Playback state is none");
-                        }
-                    } else if (state.getState() == PlaybackStateCompat.STATE_STOPPED) {
-                        // STATE_STOPPED is associated with onPlayCompleted() callback.
-                        // STATE_STOPPED playback state will only occurs when the last item in
-                        // play list is finished. And repeat mode is not enabled.
-                        getCallback().onPlayCompleted(MediaControllerAdapter.this);
-                    } else if (state.getState() == PlaybackStateCompat.STATE_PAUSED) {
-                        getCallback().onPlayStateChanged(MediaControllerAdapter.this);
-                        getCallback().onCurrentPositionChanged(MediaControllerAdapter.this);
-                    } else if (state.getState() == PlaybackStateCompat.STATE_PLAYING) {
-                        getCallback().onPlayStateChanged(MediaControllerAdapter.this);
-                        getCallback().onCurrentPositionChanged(MediaControllerAdapter.this);
-                    } else if (state.getState() == PlaybackStateCompat.STATE_BUFFERING) {
-                        mIsBuffering = true;
-                        getCallback().onBufferingStateChanged(MediaControllerAdapter.this, true);
-                        getCallback().onBufferedPositionChanged(MediaControllerAdapter.this);
-                    } else if (state.getState() == PlaybackStateCompat.STATE_ERROR) {
-                        CharSequence errorMessage = state.getErrorMessage();
-                        if (errorMessage == null) {
-                            getCallback().onError(MediaControllerAdapter.this, state.getErrorCode(),
-                                    "");
-                        } else {
-                            getCallback().onError(MediaControllerAdapter.this, state.getErrorCode(),
-                                    state.getErrorMessage().toString());
-                        }
-                    } else if (state.getState() == PlaybackStateCompat.STATE_FAST_FORWARDING) {
-                        getCallback().onPlayStateChanged(MediaControllerAdapter.this);
-                        getCallback().onCurrentPositionChanged(MediaControllerAdapter.this);
-                    } else if (state.getState() == PlaybackStateCompat.STATE_REWINDING) {
-                        getCallback().onPlayStateChanged(MediaControllerAdapter.this);
-                        getCallback().onCurrentPositionChanged(MediaControllerAdapter.this);
-                    }
+    MediaControllerCompat.Callback mMediaControllerCallback = new MediaControllerCompat.Callback() {
+        @Override
+        public void onPlaybackStateChanged(PlaybackStateCompat state) {
+            if (mIsBuffering && state.getState() != PlaybackStateCompat.STATE_BUFFERING) {
+                getCallback().onBufferingStateChanged(MediaControllerAdapter.this, false);
+                getCallback().onBufferedPositionChanged(MediaControllerAdapter.this);
+                mIsBuffering = false;
+            }
+            if (state.getState() == PlaybackStateCompat.STATE_NONE) {
+                // The STATE_NONE playback state will only occurs when initialize the player
+                // at first time.
+                if (DEBUG) {
+                    Log.d(TAG, "Playback state is none");
                 }
+            } else if (state.getState() == PlaybackStateCompat.STATE_STOPPED) {
+                // STATE_STOPPED is associated with onPlayCompleted() callback.
+                // STATE_STOPPED playback state will only occurs when the last item in
+                // play list is finished. And repeat mode is not enabled.
+                getCallback().onPlayCompleted(MediaControllerAdapter.this);
+            } else if (state.getState() == PlaybackStateCompat.STATE_PAUSED) {
+                getCallback().onPlayStateChanged(MediaControllerAdapter.this);
+                getCallback().onCurrentPositionChanged(MediaControllerAdapter.this);
+            } else if (state.getState() == PlaybackStateCompat.STATE_PLAYING) {
+                getCallback().onPlayStateChanged(MediaControllerAdapter.this);
+                getCallback().onCurrentPositionChanged(MediaControllerAdapter.this);
+            } else if (state.getState() == PlaybackStateCompat.STATE_BUFFERING) {
+                mIsBuffering = true;
+                getCallback().onBufferingStateChanged(MediaControllerAdapter.this, true);
+                getCallback().onBufferedPositionChanged(MediaControllerAdapter.this);
+            } else if (state.getState() == PlaybackStateCompat.STATE_ERROR) {
+                CharSequence errorMessage = state.getErrorMessage();
+                if (errorMessage == null) {
+                    getCallback().onError(MediaControllerAdapter.this, state.getErrorCode(), "");
+                } else {
+                    getCallback().onError(MediaControllerAdapter.this, state.getErrorCode(),
+                            state.getErrorMessage().toString());
+                }
+            } else if (state.getState() == PlaybackStateCompat.STATE_FAST_FORWARDING) {
+                getCallback().onPlayStateChanged(MediaControllerAdapter.this);
+                getCallback().onCurrentPositionChanged(MediaControllerAdapter.this);
+            } else if (state.getState() == PlaybackStateCompat.STATE_REWINDING) {
+                getCallback().onPlayStateChanged(MediaControllerAdapter.this);
+                getCallback().onCurrentPositionChanged(MediaControllerAdapter.this);
+            }
+        }
 
-                @Override
-                public void onMetadataChanged(MediaMetadataCompat metadata) {
-                    getCallback().onMetadataChanged(MediaControllerAdapter.this);
-                }
-            };
+        @Override
+        public void onMetadataChanged(MediaMetadataCompat metadata) {
+            getCallback().onMetadataChanged(MediaControllerAdapter.this);
+        }
+    };
 
     /**
      * Constructor for the adapter using {@link MediaControllerCompat}.
@@ -193,10 +190,9 @@ public class MediaControllerAdapter extends PlayerAdapter {
         if (mController.getPlaybackState() == null) {
             return false;
         }
-        return mController.getPlaybackState().getState()
-                == PlaybackStateCompat.STATE_PLAYING
-                || mController.getPlaybackState().getState()
-                == PlaybackStateCompat.STATE_FAST_FORWARDING
+        return mController.getPlaybackState().getState() == PlaybackStateCompat.STATE_PLAYING
+                || mController.getPlaybackState()
+                        .getState() == PlaybackStateCompat.STATE_FAST_FORWARDING
                 || mController.getPlaybackState().getState() == PlaybackStateCompat.STATE_REWINDING;
     }
 
@@ -258,8 +254,7 @@ public class MediaControllerAdapter extends PlayerAdapter {
         if (mController.getMetadata() == null) {
             return 0;
         }
-        return (int) mController.getMetadata().getLong(
-                MediaMetadataCompat.METADATA_KEY_DURATION);
+        return (int) mController.getMetadata().getLong(MediaMetadataCompat.METADATA_KEY_DURATION);
     }
 
     @Override
@@ -314,8 +309,8 @@ public class MediaControllerAdapter extends PlayerAdapter {
     }
 
     /**
-     * This function will translate the index of RepeatAction in PlaybackControlsRow to
-     * the repeat mode which is defined by PlaybackStateCompat.
+     * This function will translate the index of RepeatAction in PlaybackControlsRow to the repeat
+     * mode which is defined by PlaybackStateCompat.
      *
      * @param repeatActionIndex Index of RepeatAction in PlaybackControlsRow.
      * @return Repeat Mode in playback state.
@@ -333,8 +328,8 @@ public class MediaControllerAdapter extends PlayerAdapter {
     }
 
     /**
-     * This function will translate the index of RepeatAction in PlaybackControlsRow to
-     * the repeat mode which is defined by PlaybackStateCompat.
+     * This function will translate the index of RepeatAction in PlaybackControlsRow to the repeat
+     * mode which is defined by PlaybackStateCompat.
      *
      * @param shuffleActionIndex Index of RepeatAction in PlaybackControlsRow.
      * @return Repeat Mode in playback state.

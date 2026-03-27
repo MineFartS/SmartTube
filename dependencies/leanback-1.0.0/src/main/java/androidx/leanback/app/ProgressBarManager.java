@@ -8,11 +8,12 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 /**
- * Manager for showing/hiding progress bar widget. This class lets user specify an initial
- * delay after which the progress bar will be shown. This is currently being used in
- * {@link BrowseFragment} & {@link VerticalGridFragment} to show {@link ProgressBar}
- * while the data is being loaded.
+ * Manager for showing/hiding progress bar widget. This class lets user specify an initial delay
+ * after which the progress bar will be shown. This is currently being used in
+ * {@link BrowseFragment} & {@link VerticalGridFragment} to show {@link ProgressBar} while the data
+ * is being loaded.
  */
+@SuppressWarnings("deprecation")
 public final class ProgressBarManager {
     // Default delay for progress bar widget.
     private static final long DEFAULT_PROGRESS_BAR_DELAY = 1000;
@@ -34,11 +35,11 @@ public final class ProgressBarManager {
 
             if (mIsShowing) {
                 if (mProgressBarView == null) {
-                    mProgressBarView = new ProgressBar(
-                            rootView.getContext(), null, android.R.attr.progressBarStyleLarge);
-                    FrameLayout.LayoutParams progressBarParams = new FrameLayout.LayoutParams(
-                            FrameLayout.LayoutParams.WRAP_CONTENT,
-                            FrameLayout.LayoutParams.WRAP_CONTENT);
+                    mProgressBarView = new ProgressBar(rootView.getContext(), null,
+                            android.R.attr.progressBarStyleLarge);
+                    FrameLayout.LayoutParams progressBarParams =
+                            new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
+                                    FrameLayout.LayoutParams.WRAP_CONTENT);
                     progressBarParams.gravity = Gravity.CENTER;
                     rootView.addView(mProgressBarView, progressBarParams);
                 } else if (mUserProvidedProgressBar) {
@@ -49,9 +50,9 @@ public final class ProgressBarManager {
     };
 
     /**
-     * Sets the root view on which the progress bar will be attached. This class assumes the
-     * root view to be {@link FrameLayout} in order to position the progress bar widget
-     * in the center of the screen.
+     * Sets the root view on which the progress bar will be attached. This class assumes the root
+     * view to be {@link FrameLayout} in order to position the progress bar widget in the center of
+     * the screen.
      *
      * @param rootView view that will contain the progress bar.
      */
@@ -85,8 +86,8 @@ public final class ProgressBarManager {
     }
 
     /**
-     * Sets a custom view to be shown in place of the default {@link ProgressBar}. This
-     * view must have a parent. Once set, we maintain the visibility property of this view.
+     * Sets a custom view to be shown in place of the default {@link ProgressBar}. This view must
+     * have a parent. Once set, we maintain the visibility property of this view.
      *
      * @param progressBarView custom view that will be shown to indicate progress.
      */

@@ -41,8 +41,3 @@ project.ext {
         modulePrefix += gradle.ext.exoplayerModulePrefix
     }
 }
-
-
-tasks.withType(JavaCompile) {
-    options.deprecation = true
-}

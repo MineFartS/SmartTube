@@ -57,8 +57,8 @@ import java.util.List;
  *
  * <p>
  * Note: When {@link SpeechRecognitionCallback} is not used, i.e. using {@link SpeechRecognizer},
- * your application will need to declare android.permission.RECORD_AUDIO in manifest file.
- * If your application target >= 23 and the device is running >= 23, it needs implement
+ * your application will need to declare android.permission.RECORD_AUDIO in manifest file. If your
+ * application target >= 23 and the device is running >= 23, it needs implement
  * {@link SearchBarPermissionListener} where requests runtime permission.
  * </p>
  */
@@ -85,10 +85,14 @@ public class SearchBar extends RelativeLayout {
         public void onSearchQueryChange(String query);
 
         /**
-         * <p>Method invoked when the search query is submitted.</p>
+         * <p>
+         * Method invoked when the search query is submitted.
+         * </p>
          *
-         * <p>This method can be called without a preceeding onSearchQueryChange,
-         * in particular in the case of a voice input.</p>
+         * <p>
+         * This method can be called without a preceeding onSearchQueryChange, in particular in the
+         * case of a voice input.
+         * </p>
          *
          * @param query The query being submitted.
          */
@@ -125,7 +129,10 @@ public class SearchBar extends RelativeLayout {
     private String mHint;
     private String mTitle;
     private Drawable mBadgeDrawable;
+
+    @SuppressWarnings("deprecation")
     final Handler mHandler = new Handler();
+
     private final InputMethodManager mInputMethodManager;
     boolean mAutoStartRecognition = false;
     private Drawable mBarBackground;
@@ -165,8 +172,8 @@ public class SearchBar extends RelativeLayout {
         inflater.inflate(R.layout.lb_search_bar, this, true);
 
         mBarHeight = getResources().getDimensionPixelSize(R.dimen.lb_search_bar_height);
-        RelativeLayout.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                mBarHeight);
+        RelativeLayout.LayoutParams params =
+                new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mBarHeight);
         params.addRule(ALIGN_PARENT_TOP, RelativeLayout.TRUE);
         setLayoutParams(params);
         setBackgroundColor(Color.TRANSPARENT);
@@ -174,7 +181,7 @@ public class SearchBar extends RelativeLayout {
 
         mSearchQuery = "";
         mInputMethodManager =
-                (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 
         mTextColorSpeechMode = r.getColor(R.color.lb_search_bar_text_speech_mode);
         mTextColor = r.getColor(R.color.lb_search_bar_text);
@@ -192,11 +199,11 @@ public class SearchBar extends RelativeLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        RelativeLayout items = (RelativeLayout)findViewById(R.id.lb_search_bar_items);
+        RelativeLayout items = (RelativeLayout) findViewById(R.id.lb_search_bar_items);
         mBarBackground = items.getBackground();
 
-        mSearchTextEditor = (SearchEditText)findViewById(R.id.lb_search_text_editor);
-        mBadgeView = (ImageView)findViewById(R.id.lb_search_bar_badge);
+        mSearchTextEditor = (SearchEditText) findViewById(R.id.lb_search_text_editor);
+        mBadgeView = (ImageView) findViewById(R.id.lb_search_bar_badge);
         if (null != mBadgeDrawable) {
             mBadgeView.setImageDrawable(mBadgeDrawable);
         }
@@ -204,7 +211,8 @@ public class SearchBar extends RelativeLayout {
         mSearchTextEditor.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-                if (DEBUG) Log.v(TAG, "EditText.onFocusChange " + hasFocus);
+                if (DEBUG)
+                    Log.v(TAG, "EditText.onFocusChange " + hasFocus);
                 if (hasFocus) {
                     showNativeKeyboard();
                 } else {
@@ -221,8 +229,7 @@ public class SearchBar extends RelativeLayout {
         };
         mSearchTextEditor.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {}
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -230,7 +237,7 @@ public class SearchBar extends RelativeLayout {
                 if (mRecognizing) {
                     return;
                 }
-                // while IME opens,  text editor becomes "" then restores to current value
+                // while IME opens, text editor becomes "" then restores to current value
                 mHandler.removeCallbacks(mOnTextChangedRunnable);
                 mHandler.post(mOnTextChangedRunnable);
             }
@@ -240,8 +247,8 @@ public class SearchBar extends RelativeLayout {
 
             }
         });
-        mSearchTextEditor.setOnKeyboardDismissListener(
-                new SearchEditText.OnKeyboardDismissListener() {
+        mSearchTextEditor
+                .setOnKeyboardDismissListener(new SearchEditText.OnKeyboardDismissListener() {
                     @Override
                     public void onKeyboardDismiss() {
                         if (null != mSearchBarListener) {
@@ -253,41 +260,48 @@ public class SearchBar extends RelativeLayout {
         mSearchTextEditor.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int action, KeyEvent keyEvent) {
-                if (DEBUG) Log.v(TAG, "onEditorAction: " + action + " event: " + keyEvent);
+                if (DEBUG)
+                    Log.v(TAG, "onEditorAction: " + action + " event: " + keyEvent);
                 boolean handled = true;
-                if ((EditorInfo.IME_ACTION_SEARCH == action
-                        || EditorInfo.IME_NULL == action) && null != mSearchBarListener) {
-                    if (DEBUG) Log.v(TAG, "Action or enter pressed");
+                if ((EditorInfo.IME_ACTION_SEARCH == action || EditorInfo.IME_NULL == action)
+                        && null != mSearchBarListener) {
+                    if (DEBUG)
+                        Log.v(TAG, "Action or enter pressed");
                     hideNativeKeyboard();
                     mHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            if (DEBUG) Log.v(TAG, "Delayed action handling (search)");
+                            if (DEBUG)
+                                Log.v(TAG, "Delayed action handling (search)");
                             submitQuery();
                         }
                     }, 500);
 
                 } else if (EditorInfo.IME_ACTION_NONE == action && null != mSearchBarListener) {
-                    if (DEBUG) Log.v(TAG, "Escaped North");
+                    if (DEBUG)
+                        Log.v(TAG, "Escaped North");
                     hideNativeKeyboard();
                     mHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            if (DEBUG) Log.v(TAG, "Delayed action handling (escape_north)");
+                            if (DEBUG)
+                                Log.v(TAG, "Delayed action handling (escape_north)");
                             mSearchBarListener.onKeyboardDismiss(mSearchQuery);
                         }
                     }, 500);
                 } else if (EditorInfo.IME_ACTION_GO == action) {
-                    if (DEBUG) Log.v(TAG, "Voice Clicked");
-                        hideNativeKeyboard();
-                        mHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (DEBUG) Log.v(TAG, "Delayed action handling (voice_mode)");
-                                mAutoStartRecognition = true;
-                                mSpeechOrbView.requestFocus();
-                            }
-                        }, 500);
+                    if (DEBUG)
+                        Log.v(TAG, "Voice Clicked");
+                    hideNativeKeyboard();
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (DEBUG)
+                                Log.v(TAG, "Delayed action handling (voice_mode)");
+                            mAutoStartRecognition = true;
+                            mSpeechOrbView.requestFocus();
+                        }
+                    }, 500);
                 } else {
                     handled = false;
                 }
@@ -298,7 +312,7 @@ public class SearchBar extends RelativeLayout {
 
         mSearchTextEditor.setPrivateImeOptions("escapeNorth,voiceDismiss");
 
-        mSpeechOrbView = (SpeechOrbView)findViewById(R.id.lb_search_bar_speech_orb);
+        mSpeechOrbView = (SpeechOrbView) findViewById(R.id.lb_search_bar_speech_orb);
         mSpeechOrbView.setOnOrbClickedListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -308,7 +322,8 @@ public class SearchBar extends RelativeLayout {
         mSpeechOrbView.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
-                if (DEBUG) Log.v(TAG, "SpeechOrb.onFocusChange " + hasFocus);
+                if (DEBUG)
+                    Log.v(TAG, "SpeechOrb.onFocusChange " + hasFocus);
                 if (hasFocus) {
                     hideNativeKeyboard();
                     if (mAutoStartRecognition) {
@@ -329,7 +344,8 @@ public class SearchBar extends RelativeLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (DEBUG) Log.v(TAG, "Loading soundPool");
+        if (DEBUG)
+            Log.v(TAG, "Loading soundPool");
         mSoundPool = new SoundPool(2, AudioManager.STREAM_SYSTEM, 0);
         loadSounds(mContext);
     }
@@ -337,13 +353,15 @@ public class SearchBar extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         stopRecognition();
-        if (DEBUG) Log.v(TAG, "Releasing SoundPool");
+        if (DEBUG)
+            Log.v(TAG, "Releasing SoundPool");
         mSoundPool.release();
         super.onDetachedFromWindow();
     }
 
     /**
      * Sets a listener for when the term search changes
+     * 
      * @param listener
      */
     public void setSearchBarListener(SearchBarListener listener) {
@@ -352,6 +370,7 @@ public class SearchBar extends RelativeLayout {
 
     /**
      * Sets the search query
+     * 
      * @param query the search query to use
      */
     public void setSearchQuery(String query) {
@@ -361,7 +380,8 @@ public class SearchBar extends RelativeLayout {
     }
 
     void setSearchQueryInternal(String query) {
-        if (DEBUG) Log.v(TAG, "setSearchQueryInternal " + query);
+        if (DEBUG)
+            Log.v(TAG, "setSearchQueryInternal " + query);
         if (TextUtils.equals(mSearchQuery, query)) {
             return;
         }
@@ -374,6 +394,7 @@ public class SearchBar extends RelativeLayout {
 
     /**
      * Sets the title text used in the hint shown in the search bar.
+     * 
      * @param title The hint to use.
      */
     public void setTitle(String title) {
@@ -419,6 +440,7 @@ public class SearchBar extends RelativeLayout {
 
     /**
      * Sets the badge drawable showing inside the search bar.
+     * 
      * @param drawable The drawable to be used in the search bar.
      */
     public void setBadgeDrawable(Drawable drawable) {
@@ -548,6 +570,7 @@ public class SearchBar extends RelativeLayout {
 
     /**
      * Returns true if is not running Recognizer, false otherwise.
+     * 
      * @return True if is not running Recognizer, false otherwise.
      */
     public boolean isRecognizing() {
@@ -558,10 +581,12 @@ public class SearchBar extends RelativeLayout {
      * Stops the speech recognition, if already started.
      */
     public void stopRecognition() {
-        if (DEBUG) Log.v(TAG, String.format("stopRecognition (listening: %s, recognizing: %s)",
-                mListening, mRecognizing));
+        if (DEBUG)
+            Log.v(TAG, String.format("stopRecognition (listening: %s, recognizing: %s)", mListening,
+                    mRecognizing));
 
-        if (!mRecognizing) return;
+        if (!mRecognizing)
+            return;
 
         // Edit text content was cleared when starting recognition; ensure the content is restored
         // in error cases
@@ -570,7 +595,8 @@ public class SearchBar extends RelativeLayout {
 
         mRecognizing = false;
 
-        if (mSpeechRecognitionCallback != null || null == mSpeechRecognizer) return;
+        if (mSpeechRecognitionCallback != null || null == mSpeechRecognizer)
+            return;
 
         mSpeechOrbView.showNotListening();
 
@@ -584,6 +610,7 @@ public class SearchBar extends RelativeLayout {
 
     /**
      * Sets listener that handles runtime permission requests.
+     * 
      * @param listener Listener that handles runtime permission requests.
      */
     public void setPermissionListener(SearchBarPermissionListener listener) {
@@ -591,10 +618,12 @@ public class SearchBar extends RelativeLayout {
     }
 
     public void startRecognition() {
-        if (DEBUG) Log.v(TAG, String.format("startRecognition (listening: %s, recognizing: %s)",
-                mListening, mRecognizing));
+        if (DEBUG)
+            Log.v(TAG, String.format("startRecognition (listening: %s, recognizing: %s)",
+                    mListening, mRecognizing));
 
-        if (mRecognizing) return;
+        if (mRecognizing)
+            return;
         if (!hasFocus()) {
             requestFocus();
         }
@@ -605,7 +634,8 @@ public class SearchBar extends RelativeLayout {
             mRecognizing = true;
             return;
         }
-        if (null == mSpeechRecognizer) return;
+        if (null == mSpeechRecognizer)
+            return;
         int res = getContext().checkCallingOrSelfPermission(Manifest.permission.RECORD_AUDIO);
         if (PackageManager.PERMISSION_GRANTED != res) {
             if (Build.VERSION.SDK_INT >= 23 && mPermissionListener != null) {
@@ -613,8 +643,8 @@ public class SearchBar extends RelativeLayout {
                 return;
             } else {
                 // MOD: don't crash
-                //throw new IllegalStateException(Manifest.permission.RECORD_AUDIO
-                //        + " required for search");
+                // throw new IllegalStateException(Manifest.permission.RECORD_AUDIO
+                // + " required for search");
                 return;
             }
         }
@@ -632,36 +662,42 @@ public class SearchBar extends RelativeLayout {
         mSpeechRecognizer.setRecognitionListener(new RecognitionListener() {
             @Override
             public void onReadyForSpeech(Bundle bundle) {
-                if (DEBUG) Log.v(TAG, "onReadyForSpeech");
+                if (DEBUG)
+                    Log.v(TAG, "onReadyForSpeech");
                 mSpeechOrbView.showListening();
                 playSearchOpen();
             }
 
             @Override
             public void onBeginningOfSpeech() {
-                if (DEBUG) Log.v(TAG, "onBeginningOfSpeech");
+                if (DEBUG)
+                    Log.v(TAG, "onBeginningOfSpeech");
             }
 
             @Override
             public void onRmsChanged(float rmsdB) {
-                if (DEBUG) Log.v(TAG, "onRmsChanged " + rmsdB);
-                int level = rmsdB < 0 ? 0 : (int)(10 * rmsdB);
+                if (DEBUG)
+                    Log.v(TAG, "onRmsChanged " + rmsdB);
+                int level = rmsdB < 0 ? 0 : (int) (10 * rmsdB);
                 mSpeechOrbView.setSoundLevel(level);
             }
 
             @Override
             public void onBufferReceived(byte[] bytes) {
-                if (DEBUG) Log.v(TAG, "onBufferReceived " + bytes.length);
+                if (DEBUG)
+                    Log.v(TAG, "onBufferReceived " + bytes.length);
             }
 
             @Override
             public void onEndOfSpeech() {
-                if (DEBUG) Log.v(TAG, "onEndOfSpeech");
+                if (DEBUG)
+                    Log.v(TAG, "onEndOfSpeech");
             }
 
             @Override
             public void onError(int error) {
-                if (DEBUG) Log.v(TAG, "onError " + error);
+                if (DEBUG)
+                    Log.v(TAG, "onError " + error);
                 switch (error) {
                     case SpeechRecognizer.ERROR_NETWORK_TIMEOUT:
                         Log.w(TAG, "recognizer network timeout");
@@ -701,11 +737,13 @@ public class SearchBar extends RelativeLayout {
 
             @Override
             public void onResults(Bundle bundle) {
-                if (DEBUG) Log.v(TAG, "onResults");
+                if (DEBUG)
+                    Log.v(TAG, "onResults");
                 final ArrayList<String> matches =
                         bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 if (matches != null) {
-                    if (DEBUG) Log.v(TAG, "Got results" + matches);
+                    if (DEBUG)
+                        Log.v(TAG, "Got results" + matches);
 
                     mSearchQuery = matches.get(0);
                     mSearchTextEditor.setText(mSearchQuery);
@@ -718,8 +756,8 @@ public class SearchBar extends RelativeLayout {
 
             @Override
             public void onPartialResults(Bundle bundle) {
-                ArrayList<String> results = bundle.getStringArrayList(
-                        SpeechRecognizer.RESULTS_RECOGNITION);
+                ArrayList<String> results =
+                        bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 if (DEBUG) {
                     Log.v(TAG, "onPartialResults " + bundle + " results "
                             + (results == null ? results : results.size()));
@@ -731,12 +769,14 @@ public class SearchBar extends RelativeLayout {
                 // stableText: high confidence text from PartialResults, if any.
                 // Otherwise, existing stable text.
                 final String stableText = results.get(0);
-                if (DEBUG) Log.v(TAG, "onPartialResults stableText " + stableText);
+                if (DEBUG)
+                    Log.v(TAG, "onPartialResults stableText " + stableText);
 
                 // pendingText: low confidence text from PartialResults, if any.
                 // Otherwise, empty string.
                 final String pendingText = results.size() > 1 ? results.get(1) : null;
-                if (DEBUG) Log.v(TAG, "onPartialResults pendingText " + pendingText);
+                if (DEBUG)
+                    Log.v(TAG, "onPartialResults pendingText " + pendingText);
 
                 mSearchTextEditor.updateRecognizedText(stableText, pendingText);
             }
@@ -752,7 +792,9 @@ public class SearchBar extends RelativeLayout {
             mSpeechRecognizer.startListening(recognizerIntent);
         } catch (SecurityException e) {
             // MOD: Swallow the exception
-            // Not allowed to bind to service Intent { act=android.speech.RecognitionService cmp=com.touchtype.swiftkey/com.swiftkey.microsoftspeechservice.MicrosoftSpeechRecognitionService }
+            // Not allowed to bind to service Intent { act=android.speech.RecognitionService
+            // cmp=com.touchtype.swiftkey/com.swiftkey.microsoftspeechservice.MicrosoftSpeechRecognitionService
+            // }
             e.printStackTrace();
         }
     }
@@ -787,12 +829,8 @@ public class SearchBar extends RelativeLayout {
     }
 
     private void loadSounds(Context context) {
-        int[] sounds = {
-                R.raw.lb_voice_failure,
-                R.raw.lb_voice_open,
-                R.raw.lb_voice_no_input,
-                R.raw.lb_voice_success,
-        };
+        int[] sounds = {R.raw.lb_voice_failure, R.raw.lb_voice_open, R.raw.lb_voice_no_input,
+                R.raw.lb_voice_success,};
         for (int sound : sounds) {
             mSoundMap.put(sound, mSoundPool.load(context, sound, 1));
         }

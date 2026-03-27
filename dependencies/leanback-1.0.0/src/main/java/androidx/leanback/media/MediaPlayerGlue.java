@@ -1,17 +1,15 @@
 /*
  * Copyright (C) 2016 The Android Open Source Project
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package androidx.leanback.media;
@@ -45,7 +43,7 @@ import java.util.List;
  * <ul>
  * <li>{@link androidx.leanback.widget.PlaybackControlsRow.FastForwardAction}</li>
  * <li>{@link androidx.leanback.widget.PlaybackControlsRow.RewindAction}</li>
- * <li>{@link  androidx.leanback.widget.PlaybackControlsRow.PlayPauseAction}</li>
+ * <li>{@link androidx.leanback.widget.PlaybackControlsRow.PlayPauseAction}</li>
  * <li>{@link androidx.leanback.widget.PlaybackControlsRow.RepeatAction}</li>
  * <li>{@link androidx.leanback.widget.PlaybackControlsRow.ThumbsDownAction}</li>
  * <li>{@link androidx.leanback.widget.PlaybackControlsRow.ThumbsUpAction}</li>
@@ -57,8 +55,7 @@ import java.util.List;
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 @Deprecated
-public class MediaPlayerGlue extends PlaybackControlGlue implements
-        OnItemViewSelectedListener {
+public class MediaPlayerGlue extends PlaybackControlGlue implements OnItemViewSelectedListener {
 
     public static final int NO_REPEAT = 0;
     public static final int REPEAT_ONE = 1;
@@ -72,10 +69,13 @@ public class MediaPlayerGlue extends PlaybackControlGlue implements
     MediaPlayer mPlayer = new MediaPlayer();
     private final PlaybackControlsRow.RepeatAction mRepeatAction;
     private Runnable mRunnable;
-    @SuppressWarnings("WeakerAccess") /* synthetic access */
+
+    @SuppressWarnings({"WeakerAccess", "deprecation"}) /* synthetic access */
     Handler mHandler = new Handler();
+
     @SuppressWarnings("WeakerAccess") /* synthetic access */
     boolean mInitialized = false; // true when the MediaPlayer is prepared/initialized
+
     private Action mSelectedAction; // the action which is currently selected by the user
     private long mLastKeyDownEvent = 0L; // timestamp when the last DPAD_CENTER KEY_DOWN occurred
     private Uri mMediaSourceUri = null;
@@ -118,14 +118,13 @@ public class MediaPlayerGlue extends PlaybackControlGlue implements
      * Constructor.
      */
     public MediaPlayerGlue(Context context) {
-        this(context, new int[]{1}, new int[]{1});
+        this(context, new int[] {1}, new int[] {1});
     }
 
     /**
      * Constructor.
      */
-    public MediaPlayerGlue(
-            Context context, int[] fastForwardSpeeds, int[] rewindSpeeds) {
+    public MediaPlayerGlue(Context context, int[] fastForwardSpeeds, int[] rewindSpeeds) {
         super(context, fastForwardSpeeds, rewindSpeeds);
 
         // Instantiate secondary actions
@@ -140,8 +139,8 @@ public class MediaPlayerGlue extends PlaybackControlGlue implements
     protected void onAttachedToHost(PlaybackGlueHost host) {
         super.onAttachedToHost(host);
         if (host instanceof SurfaceHolderGlueHost) {
-            ((SurfaceHolderGlueHost) host).setSurfaceHolderCallback(
-                    new VideoPlayerSurfaceHolderCallback());
+            ((SurfaceHolderGlueHost) host)
+                    .setSurfaceHolderCallback(new VideoPlayerSurfaceHolderCallback());
         }
     }
 
@@ -160,7 +159,7 @@ public class MediaPlayerGlue extends PlaybackControlGlue implements
             mInitialized = false;
             List<PlayerCallback> callbacks = getPlayerCallbacks();
             if (callbacks != null) {
-                for (PlayerCallback callback: callbacks) {
+                for (PlayerCallback callback : callbacks) {
                     callback.onPreparedStateChanged(MediaPlayerGlue.this);
                 }
             }
@@ -201,7 +200,8 @@ public class MediaPlayerGlue extends PlaybackControlGlue implements
 
     @Override
     public void enableProgressUpdating(final boolean enabled) {
-        if (mRunnable != null) mHandler.removeCallbacks(mRunnable);
+        if (mRunnable != null)
+            mHandler.removeCallbacks(mRunnable);
         if (!enabled) {
             return;
         }
@@ -253,8 +253,8 @@ public class MediaPlayerGlue extends PlaybackControlGlue implements
         consume = consume && mInitialized;
         consume = consume && event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER;
         consume = consume && event.getAction() == KeyEvent.ACTION_DOWN;
-        consume = consume && System
-                .currentTimeMillis() - mLastKeyDownEvent > FAST_FORWARD_REWIND_REPEAT_DELAY;
+        consume = consume && System.currentTimeMillis()
+                - mLastKeyDownEvent > FAST_FORWARD_REWIND_REPEAT_DELAY;
 
         if (consume) {
             mLastKeyDownEvent = System.currentTimeMillis();
@@ -263,8 +263,10 @@ public class MediaPlayerGlue extends PlaybackControlGlue implements
                 newPosition = getCurrentPosition() - FAST_FORWARD_REWIND_STEP;
             }
             // Make sure the new calculated duration is in the range 0 >= X >= MediaDuration
-            if (newPosition < 0) newPosition = 0;
-            if (newPosition > getMediaDuration()) newPosition = getMediaDuration();
+            if (newPosition < 0)
+                newPosition = 0;
+            if (newPosition > getMediaDuration())
+                newPosition = getMediaDuration();
             seekTo(newPosition);
             return true;
         }
@@ -309,8 +311,7 @@ public class MediaPlayerGlue extends PlaybackControlGlue implements
 
     @Override
     public long getSupportedActions() {
-        return PlaybackControlGlue.ACTION_PLAY_PAUSE
-                | PlaybackControlGlue.ACTION_FAST_FORWARD
+        return PlaybackControlGlue.ACTION_PLAY_PAUSE | PlaybackControlGlue.ACTION_FAST_FORWARD
                 | PlaybackControlGlue.ACTION_REWIND;
     }
 
@@ -345,11 +346,10 @@ public class MediaPlayerGlue extends PlaybackControlGlue implements
     }
 
     /**
-     * Sets the playback mode. It currently support no repeat, repeat once and infinite
-     * loop mode.
+     * Sets the playback mode. It currently support no repeat, repeat once and infinite loop mode.
      */
     public void setMode(int mode) {
-        switch(mode) {
+        switch (mode) {
             case NO_REPEAT:
                 mOnCompletionListener = null;
                 break;
@@ -379,8 +379,8 @@ public class MediaPlayerGlue extends PlaybackControlGlue implements
     }
 
     /**
-     * Called whenever the user presses fast-forward/rewind or when the user keeps the
-     * corresponding action pressed.
+     * Called whenever the user presses fast-forward/rewind or when the user keeps the corresponding
+     * action pressed.
      *
      * @param newPosition The new position of the media track in milliseconds.
      */
@@ -395,7 +395,7 @@ public class MediaPlayerGlue extends PlaybackControlGlue implements
      * Sets the media source of the player witha given URI.
      *
      * @return Returns <code>true</code> if uri represents a new media; <code>false</code>
-     * otherwise.
+     *         otherwise.
      * @see MediaPlayer#setDataSource(String)
      */
     public boolean setMediaSource(Uri uri) {
@@ -412,7 +412,7 @@ public class MediaPlayerGlue extends PlaybackControlGlue implements
      * Sets the media source of the player with a String path URL.
      *
      * @return Returns <code>true</code> if path represents a new media; <code>false</code>
-     * otherwise.
+     *         otherwise.
      * @see MediaPlayer#setDataSource(String)
      */
     public boolean setMediaSource(String path) {
@@ -446,7 +446,7 @@ public class MediaPlayerGlue extends PlaybackControlGlue implements
                 mInitialized = true;
                 List<PlayerCallback> callbacks = getPlayerCallbacks();
                 if (callbacks != null) {
-                    for (PlayerCallback callback: callbacks) {
+                    for (PlayerCallback callback : callbacks) {
                         callback.onPreparedStateChanged(MediaPlayerGlue.this);
                     }
                 }
@@ -471,20 +471,19 @@ public class MediaPlayerGlue extends PlaybackControlGlue implements
     }
 
     /**
-     * This is a listener implementation for the {@link OnItemViewSelectedListener}.
-     * This implementation is required in order to detect KEY_DOWN events
-     * on the {@link androidx.leanback.widget.PlaybackControlsRow.FastForwardAction} and
-     * {@link androidx.leanback.widget.PlaybackControlsRow.RewindAction}. Thus you
-     * should <u>NOT</u> set another {@link OnItemViewSelectedListener} on your
-     * Fragment. Instead, override this method and call its super (this)
-     * implementation.
+     * This is a listener implementation for the {@link OnItemViewSelectedListener}. This
+     * implementation is required in order to detect KEY_DOWN events on the
+     * {@link androidx.leanback.widget.PlaybackControlsRow.FastForwardAction} and
+     * {@link androidx.leanback.widget.PlaybackControlsRow.RewindAction}. Thus you should <u>NOT</u>
+     * set another {@link OnItemViewSelectedListener} on your Fragment. Instead, override this
+     * method and call its super (this) implementation.
      *
-     * @see OnItemViewSelectedListener#onItemSelected(
-     *Presenter.ViewHolder, Object, RowPresenter.ViewHolder, Object)
+     * @see OnItemViewSelectedListener#onItemSelected( Presenter.ViewHolder, Object,
+     *      RowPresenter.ViewHolder, Object)
      */
     @Override
     public void onItemSelected(Presenter.ViewHolder itemViewHolder, Object item,
-                               RowPresenter.ViewHolder rowViewHolder, Row row) {
+            RowPresenter.ViewHolder rowViewHolder, Row row) {
         if (item instanceof Action) {
             mSelectedAction = (Action) item;
         } else {
@@ -508,8 +507,7 @@ public class MediaPlayerGlue extends PlaybackControlGlue implements
         }
 
         @Override
-        public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-        }
+        public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {}
 
         @Override
         public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
