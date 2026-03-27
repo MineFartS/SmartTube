@@ -13,7 +13,6 @@ import com.liskovsoft.smartyoutubetv2.common.app.presenters.base.BasePresenter;
 
 import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
-import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData.ColorScheme;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
 
 import java.util.ArrayList;
@@ -44,11 +43,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
 
         AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
 
-        settingsPresenter.appendRadioCategory(
-            getContext().getString(R.string.color_scheme), 
-            fromColorSchemes(mMainUIData.getColorSchemes())
-        );
-
         appendCardPreviews(settingsPresenter);
 
         appendChannelSortingCategory(settingsPresenter);
@@ -65,22 +59,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
             }
         );
 
-    }
-
-    private List<OptionItem> fromColorSchemes(List<ColorScheme> colorSchemes) {
-        List<OptionItem> styleOptions = new ArrayList<>();
-
-        for (ColorScheme colorScheme : colorSchemes) {
-            styleOptions.add(UiOptionItem.from(
-                    getContext().getString(colorScheme.nameResId),
-                    option -> {
-                        mMainUIData.setColorScheme(colorScheme);
-                        mRestartApp = true;
-                    },
-                    colorScheme.equals(mMainUIData.getColorScheme())));
-        }
-
-        return styleOptions;
     }
 
     private void appendCardPreviews(AppDialogPresenter settingsPresenter) {

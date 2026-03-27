@@ -49,14 +49,6 @@ public class PlaybackActivity extends LeanbackActivity {
     }
 
     @Override
-    protected void initTheme() {
-        int playerThemeResId = MainUIData.instance(this).getColorScheme().playerThemeResId;
-        if (playerThemeResId > 0) {
-            setTheme(playerThemeResId);
-        }
-    }
-
-    @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (mPlaybackFragment != null) {
             mPlaybackFragment.onDispatchKeyEvent(event);

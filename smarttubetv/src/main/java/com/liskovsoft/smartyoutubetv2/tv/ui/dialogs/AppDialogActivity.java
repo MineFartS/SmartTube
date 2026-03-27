@@ -37,14 +37,6 @@ public class AppDialogActivity extends MotherActivity {
     }
 
     @Override
-    protected void initTheme() {
-        int settingsThemeResId = MainUIData.instance(this).getColorScheme().settingsThemeResId;
-        if (settingsThemeResId > 0) {
-            setTheme(settingsThemeResId);
-        }
-    }
-
-    @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         KeyEvent newEvent = mGlobalKeyTranslator.translate(event);
         return handleNavigation(newEvent) || super.dispatchKeyEvent(newEvent);

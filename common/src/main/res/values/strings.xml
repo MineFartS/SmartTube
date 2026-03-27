@@ -83,11 +83,6 @@
     <string name="option_never">Never</string>
     <string name="side_panel_sections">Set-up sections</string>
     <string name="large_ui">Large UI</string>
-    <string name="color_scheme">Color scheme</string>
-    <string name="color_scheme_default">Default</string>
-    <string name="color_scheme_red_grey">Red-grey</string>
-    <string name="color_scheme_red">Red</string>
-    <string name="color_scheme_dark_grey">Dark Grey</string>
     <string name="disable_update_check">Disable update check</string>
     <string name="show_again">Show again</string>
     <string name="check_updates_auto">Notify about updates</string>
@@ -116,7 +111,6 @@
     <string name="subtitle_yellow_transparent">Yellow on transparent background</string>
     <string name="subtitle_white_transparent">White on transparent background</string>
     <string name="subtitle_white_black">White on black background</string>
-    <string name="color_scheme_dark_grey_oled">Dark Grey (OLED)</string>
     <string name="channels_section_sorting">Channels section sorting</string>
     <string name="sorting_by_new_content">New content</string>
     <string name="sorting_alphabetically">Alphabetically</string>
@@ -128,8 +122,6 @@
     <string name="open_channel_uploads">Open channel uploads</string>
     <string name="player_exit_shortcut">Exit from the player</string>
     <string name="search_exit_shortcut">Exit from the search</string>
-    <string name="color_scheme_teal">Teal</string>
-    <string name="color_scheme_teal_oled">Teal (OLED)</string>
     <string name="unsubscribe_from_channel">Unsubscribe from the channel</string>
     <string name="card_title_lines_num">Card title lines num</string>
     <string name="card_auto_scrolled_title">Auto-scroll cropped title</string>
@@ -389,7 +381,6 @@
     <string name="subtitle_yellow_semi_transparent">Yellow on semitransparent background</string>
     <string name="subtitle_yellow_black">Yellow on black background</string>
     <string name="player_pixel_ratio">Pixel ratio</string>
-    <string name="color_scheme_dark_grey_monochrome">Dark Grey (monochrome)</string>
     <string name="disable_mic_permission">Please disable microphone access for the app in order for this recognizer to work properly.</string>
     <string name="repeat_mode_shuffle">Shuffle any playlist</string>
     <string name="chat_left">Left</string>
@@ -470,8 +461,6 @@
     <string name="unknown_renderer_error">Unknown renderer error</string>
     <string name="header_notifications">Notifications</string>
     <string name="disable_search_history">Disable search history</string>
-    <string name="color_scheme_blue">Blue</string>
-    <string name="color_scheme_dark_blue">Dark Blue</string>
     <string name="player_speed_per_channel">Per each channel</string>
     <string name="disable_popular_searches">Disable popular search queries</string>
     <string name="multi_profiles">Use separate settings per each account</string>

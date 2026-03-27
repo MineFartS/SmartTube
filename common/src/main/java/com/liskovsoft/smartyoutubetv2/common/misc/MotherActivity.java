@@ -62,7 +62,6 @@ public class MotherActivity extends FragmentActivity {
         Log.d(TAG, "Starting %s...", this.getClass().getSimpleName());
 
         initDpi();
-        initTheme();
 
         // This keeps the screen on and prevents screensaver
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -160,13 +159,6 @@ public class MotherActivity extends FragmentActivity {
         super.onConfigurationChanged(newConfig);
 
         applyCustomConfig();
-    }
-
-    protected void initTheme() {
-        int rootThemeResId = MainUIData.instance(this).getColorScheme().browseThemeResId;
-        if (rootThemeResId > 0) {
-            setTheme(rootThemeResId);
-        }
     }
 
     private void initDpi() {

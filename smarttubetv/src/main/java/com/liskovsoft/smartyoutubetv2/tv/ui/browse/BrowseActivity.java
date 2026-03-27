@@ -12,13 +12,5 @@ public class BrowseActivity extends LeanbackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_main);
     }
-
-    @Override
-    protected void initTheme() {
-        int browseThemeResId = MainUIData.instance(this).getColorScheme().browseThemeResId;
-        if (browseThemeResId > 0) {
-            setTheme(browseThemeResId);
-        }
-    }
     
 }
