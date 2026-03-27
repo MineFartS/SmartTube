@@ -25,7 +25,7 @@
     </style>
 
     <!-- Color scheme: Teal (Default) -->
-    <style name="App.Theme.Leanback.Player" parent="Theme.Leanback">
+    <style name="App.Theme.Teal.Player" parent="Theme.Leanback">
         <!-- <item name="android:windowBackground">@null</item> -->
         <!-- NOTE: don't use transparency because the BackgroundManager won't work (BackgroundManager:778) -->
         <item name="android:windowBackground">@android:color/black</item>
@@ -46,7 +46,7 @@
         <item tools:targetApi="18" name="android:windowOverscan">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
-    <style name="App.Theme.Leanback.Browse" parent="Theme.Leanback.Browse">
+    <style name="App.Theme.Teal.Browse" parent="Theme.Leanback.Browse">
         <item name="android:windowBackground">@color/shelf_background_dark</item>
         <item name="brandColor">@color/fastlane_background_dark</item>
         <item name="brandAccentColor">@color/fastlane_background</item>
@@ -69,7 +69,7 @@
         <item tools:targetApi="18" name="android:windowOverscan">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
-    <style name="App.Theme.Leanback.GuidedStep" parent="Theme.Leanback.GuidedStep">
+    <style name="App.Theme.Teal.GuidedStep" parent="Theme.Leanback.GuidedStep">
         <item name="android:windowBackground">@color/shelf_background_dark</item>
         <item name="shelfBackground">@color/shelf_background_dark</item>
         <!-- Disable activity transition animations -->
@@ -80,7 +80,7 @@
         <item tools:targetApi="19" name="android:windowTranslucentNavigation">true</item>
     </style>
     <!-- AppDialogFragment style -->
-    <style name="App.Theme.Leanback.Preferences.Base" parent="Theme.Leanback">
+    <style name="App.Theme.Teal.Preferences.Base" parent="Theme.Leanback">
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Leanback</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -96,11 +96,11 @@
         <item tools:targetApi="19" name="android:windowTranslucentNavigation">true</item>
     </style>
     <!-- Give ability to override style for different api -->
-    <style name="App.Theme.Leanback.Preferences" parent="App.Theme.Leanback.Preferences.Base" />
+    <style name="App.Theme.Teal.Preferences" parent="App.Theme.Teal.Preferences.Base" />
     <!-- End Color scheme: Teal (Default) -->
 
     <!--  Color scheme: Dark Grey  -->
-    <style name="App.Theme.DarkGrey.Player" parent="App.Theme.Leanback.Player">
+    <style name="App.Theme.Leanback.Player" parent="App.Theme.Teal.Player">
         <item name="playbackProgressPrimaryColor">@color/red</item>
         <item name="playbackProgressSecondaryColor">@color/light_red</item>
         <item name="playbackControlsIconHighlightColor">@color/red</item>
@@ -109,7 +109,7 @@
         <item name="cardDefaultBackground">@color/scheme_grey_card_background_dark</item>
         <item name="android:colorAccent" tools:targetApi="21">@color/semi_red</item>
     </style>
-    <style name="App.Theme.DarkGrey.Browse" parent="App.Theme.Leanback.Browse">
+    <style name="App.Theme.Leanback.Browse" parent="App.Theme.Teal.Browse">
         <item name="android:windowBackground">@color/scheme_grey_shelf_background_dark</item>
         <item name="brandColor">@color/scheme_grey_background_dark</item>
         <item name="brandAccentColor">@color/semi_red</item>
@@ -121,11 +121,11 @@
     <style name="ProgressBarHorizontal.Dark" parent="@android:style/Widget.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_bar_red</item>
     </style>
-    <style name="App.Theme.DarkGrey.Preferences" parent="App.Theme.Leanback.Preferences">
+    <style name="App.Theme.Leanback.Preferences" parent="App.Theme.Teal.Preferences">
         <item name="android:colorPrimary" tools:targetApi="21">@color/scheme_grey_background</item>
         <item name="android:colorAccent" tools:targetApi="21">@color/semi_red</item>
     </style>
-    <style name="App.Theme.DarkGrey.GuidedStep" parent="App.Theme.Leanback.GuidedStep">
+    <style name="App.Theme.Leanback.GuidedStep" parent="App.Theme.Teal.GuidedStep">
         <item name="android:windowBackground">@color/scheme_grey_shelf_background_dark</item>
         <item name="shelfBackground">@color/scheme_grey_shelf_background_dark</item>
     </style>
