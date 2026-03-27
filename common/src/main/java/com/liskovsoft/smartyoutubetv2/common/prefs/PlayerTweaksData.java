@@ -64,7 +64,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private final AppPrefs mPrefs;
 
     private boolean mIsSnapToVsyncDisabled;
-    private boolean mIsSWDecoderForced;
     private boolean mIsSetOutputSurfaceWorkaroundEnabled;
     private boolean mIsPlaybackNotificationsDisabled;
     private int mPlayerButtons;
@@ -93,15 +92,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         }
 
         return sInstance;
-    }
-
-    public boolean isSWDecoderForced() {
-        return mIsSWDecoderForced;
-    }
-
-    public void setSWDecoderForced(boolean force) {
-        mIsSWDecoderForced = force;
-        persistData();
     }
 
     public boolean isSetOutputSurfaceWorkaroundEnabled() {
@@ -239,7 +229,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         String[] split = Helpers.splitData(data);
 
         mIsSnapToVsyncDisabled = Helpers.parseBoolean(split, 2, false);
-        mIsSWDecoderForced = Helpers.parseBoolean(split, 4, false);
         // Need to be enabled (?) on older version of ExoPlayer (e.g. 2.10.6).
         // It's because there's no tweaks for modern devices.
         mIsSetOutputSurfaceWorkaroundEnabled = Helpers.parseBoolean(split, 7, true);
@@ -274,7 +263,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
             VIDEO_PLAYER_TWEAKS_DATA, 
             Helpers.mergeData(
                 mIsSnapToVsyncDisabled,
-                mIsSWDecoderForced, 
                 null, 
                 mIsSetOutputSurfaceWorkaroundEnabled, 
                 mIsPlaybackNotificationsDisabled, 

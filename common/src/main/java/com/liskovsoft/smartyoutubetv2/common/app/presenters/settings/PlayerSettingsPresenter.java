@@ -73,7 +73,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         settingsPresenter.appendCategory(category);
 
         appendMiscCategory(settingsPresenter);
-        appendDeveloperCategory(settingsPresenter);
 
         settingsPresenter.showDialog(
             getContext().getString(R.string.settings_player),
@@ -215,26 +214,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
             options
         );
     
-    }
-
-    private void appendDeveloperCategory(AppDialogPresenter settingsPresenter) {
-
-        List<OptionItem> options = new ArrayList<>();
-
-        options.add(
-            UiOptionItem.from(
-                getContext().getString(R.string.force_sw_codec),
-                getContext().getString(R.string.force_sw_codec_desc),
-                option -> mPlayerTweaksData.setSWDecoderForced(option.isSelected()),
-                mPlayerTweaksData.isSWDecoderForced()
-            )
-        );
-
-        settingsPresenter.appendCheckedCategory(
-            getContext().getString(R.string.player_tweaks),
-            options
-        );
-        
     }
 
     private void appendMiscCategory(AppDialogPresenter settingsPresenter) {

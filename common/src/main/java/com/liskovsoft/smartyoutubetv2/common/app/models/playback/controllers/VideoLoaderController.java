@@ -532,21 +532,21 @@ public class VideoLoaderController extends BasePlayerController {
             }
             restartEngine = false;
             showMessage = false;
+            
         } else if (type == PlayerEventListener.ERROR_TYPE_RENDERER && rendererIndex == PlayerEventListener.RENDERER_INDEX_SUBTITLE) {
             // "Response code: 429" (subtitle error)
             // "Response code: 500" (subtitle error)
             disableSubtitles();
             restartEngine = false;
+
         } else if (type == PlayerEventListener.ERROR_TYPE_RENDERER && rendererIndex == PlayerEventListener.RENDERER_INDEX_VIDEO) {
             getPlayerData().setFormat(FormatItem.VIDEO_FHD_AVC_30);
-            if (getPlayerTweaksData().isSWDecoderForced()) {
-                getPlayerTweaksData().setSWDecoderForced(false);
-            } else {
-                restartEngine = false;
-            }
+            restartEngine = false;
+    
         } else if (type == PlayerEventListener.ERROR_TYPE_RENDERER && rendererIndex == PlayerEventListener.RENDERER_INDEX_AUDIO) {
             getPlayerData().setFormat(FormatItem.AUDIO_HQ_MP4A);
             restartEngine = false;
+            
         } else if (type == PlayerEventListener.ERROR_TYPE_UNEXPECTED) {
             // Hide unknown errors on all devices
             showMessage = false;
