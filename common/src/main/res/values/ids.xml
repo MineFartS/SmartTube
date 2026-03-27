@@ -16,7 +16,6 @@
     <item name="action_content_block" type="id"/>
     <item name="action_rotate" type="id"/>
     <item name="action_flip" type="id"/>
-    <item name="action_afr" type="id"/>
     <item name="channel_new_content" type="id"/>
     <item name="linkify_click_handler" type="id"/>
 </resources>

@@ -101,10 +101,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
         for (int[] pair : new int[][] {
             {
-                R.string.auto_frame_rate,
-                PlayerTweaksData.PLAYER_BUTTON_AFR
-            },
-            {
                 R.string.open_chat,
                 PlayerTweaksData.PLAYER_BUTTON_CHAT
             },

@@ -35,7 +35,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     public static final int PLAYER_BUTTON_SHARE = 1 << 19;
     public static final int PLAYER_BUTTON_CONTENT_BLOCK = 1 << 21;
     public static final int PLAYER_BUTTON_CHAT = 1 << 22;
-    public static final int PLAYER_BUTTON_AFR = 1 << 26;
     
     public static final int PLAYER_BUTTON_DEFAULT = 
         PLAYER_BUTTON_SEARCH | 
