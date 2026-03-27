@@ -4,7 +4,7 @@ include ':smarttubetv', ':common', ':chatkit', ':leanbackassistant', ':leanback-
 gradle.ext.sharedModulesRoot = new File(settingsDir, 'dependencies/SharedModules')
 apply from: new File(gradle.ext.sharedModulesRoot, 'core_settings.gradle')
 
-gradle.ext.sharedModulesConstants = new File(gradle.ext.sharedModulesRoot, 'constants.gradle')
+gradle.ext.sharedModulesConstants = new File(gradle.ext.sharedModulesRoot, '/../constants.gradle')
 
 // MediaServiceCore
 gradle.ext.mediaServiceCoreRoot = new File(settingsDir, 'dependencies/MediaServiceCore')
