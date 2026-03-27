@@ -88,7 +88,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsPlayerAutoVolumeEnabled;
     private boolean mIsSyncRowButtonIndexEnabled;
     private boolean mIsLoopShortsEnabled;
-    private boolean mIsSuggestionsHorizontallyScrolled;
     
     private final Runnable mPersistDataInt = this::persistDataInt;
 
@@ -339,16 +338,8 @@ public class PlayerTweaksData implements ProfileChangeListener {
         persistData();
     }
 
-    public boolean isSuggestionsHorizontallyScrolled() {
-        return mIsSuggestionsHorizontallyScrolled;
-    }
-
-    public void setSuggestionsHorizontallyScrolled(boolean enable) {
-        mIsSuggestionsHorizontallyScrolled = enable;
-        persistData();
-    }
-
     private void restoreData() {
+
         String data = mPrefs.getProfileData(VIDEO_PLAYER_TWEAKS_DATA);
 
         String[] split = Helpers.splitData(data);
@@ -381,7 +372,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsLoopShortsEnabled = Helpers.parseBoolean(split, 44, true);
         mIsRememberPositionOfLiveVideosEnabled = Helpers.parseBoolean(split, 46, true);
         mIsExtraLongSpeedListEnabled = Helpers.parseBoolean(split, 49, false);
-        mIsSuggestionsHorizontallyScrolled = Helpers.parseBoolean(split, 56, false);
 
         updateDefaultValues();
     }
@@ -428,8 +418,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mIsRememberPositionOfLiveVideosEnabled,
                 null, 
                 mIsExtraLongSpeedListEnabled, 
-                null,
-                mIsSuggestionsHorizontallyScrolled
+                        null
             )
         );
     }

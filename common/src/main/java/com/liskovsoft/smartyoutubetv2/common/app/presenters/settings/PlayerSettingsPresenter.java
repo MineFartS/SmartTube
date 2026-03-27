@@ -310,11 +310,8 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendMiscCategory(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.suggestions_horizontally_scrolled),
-                option -> mPlayerTweaksData.setSuggestionsHorizontallyScrolled(option.isSelected()),
-                mPlayerTweaksData.isSuggestionsHorizontallyScrolled()));
+        List<OptionItem> options = new ArrayList<>();
 
         options.add(UiOptionItem.from(getContext().getString(R.string.player_auto_volume),
                 option -> mPlayerTweaksData.setPlayerAutoVolumeEnabled(option.isSelected()),
@@ -378,6 +375,7 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 mPlayerTweaksData.isRealChannelIconEnabled()));
 
         settingsPresenter.appendCheckedCategory(getContext().getString(R.string.player_other), options);
+
     }
 
 }
