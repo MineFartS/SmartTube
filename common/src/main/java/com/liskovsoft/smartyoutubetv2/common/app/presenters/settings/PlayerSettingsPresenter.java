@@ -333,10 +333,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 option -> mPlayerTweaksData.setLoopShortsEnabled(option.isSelected()),
                 mPlayerTweaksData.isLoopShortsEnabled()));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.player_disable_suggestions),
-                option -> mPlayerTweaksData.setSuggestionsDisabled(option.isSelected()),
-                mPlayerTweaksData.isSuggestionsDisabled()));
-
         options.add(UiOptionItem.from(getContext().getString(R.string.remember_position_of_live_videos),
                 option -> mPlayerTweaksData.setRememberPositionOfLiveVideosEnabled(option.isSelected()),
                 mPlayerTweaksData.isRememberPositionOfLiveVideosEnabled()));

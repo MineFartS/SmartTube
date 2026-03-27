@@ -382,24 +382,19 @@
     <string name="action_subscribe_on">Subscribe On</string>
     <string name="skip_24_rate">Skip 24fps formats (real cinema mode fix\?)</string>
     <string name="skip_shorts">Skip Shorts</string>
-    <string name="player_disable_suggestions">Disable suggestions</string>
     <string name="suggestions">Suggestions</string>
     <string name="feedback">Feedback</string>
     <string name="sources">Sources</string>
     <string name="releases">Releases</string>
-
     <string name="open_chat">Chat/Comments</string>
     <string name="open_comments">Open comments</string>
-
     <string name="place_comments_left">Place comments to the left</string>
     <string name="use_alt_speech_recognizer">Alt speech recognizer</string>
     <string name="time_format">Time format</string>
     <string name="time_format_24">24 hours</string>
     <string name="time_format_12">12 hours (AM/PM)</string>
-
     <string name="speech_recognizer">Speech recognizer</string>
     <string name="speech_engine">Voice search engine</string>
-
     <string name="real_channel_icon">Show icon on the channel button</string>
     <string name="subtitle_yellow_semi_transparent">Yellow on semitransparent background</string>
     <string name="subtitle_yellow_black">Yellow on black background</string>

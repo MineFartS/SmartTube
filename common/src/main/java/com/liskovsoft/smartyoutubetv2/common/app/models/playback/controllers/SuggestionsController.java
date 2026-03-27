@@ -369,10 +369,6 @@ public class SuggestionsController extends BasePlayerController {
         int groupIndex = -1;
         int suggestRows = -1;
 
-        if (getPlayerTweaksData().isSuggestionsDisabled()) {
-            suggestRows = video.hasPlaylist() ? 1 : 0;
-        }
-
         for (MediaGroup group : suggestions) {
             groupIndex++;
 
