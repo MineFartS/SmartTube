@@ -393,7 +393,6 @@
     <string name="child_mode">Child mode</string>
     <string name="child_mode_desc">In this mode, the user can\'t use search or see any suggested content. The settings page will be password protected.</string>
     <string name="lost_setting_warning">The app settings will be changed. Make sure that you created a backup of the settings.</string>
-    <string name="player_button_long_click">Long press this button for additional options</string>
     <string name="pause_history">Pause history</string>
     <string name="resume_history">Resume history</string>
     <string name="clear_history">Clear history</string>

@@ -66,7 +66,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private int mPlayerButtons;
     private boolean mIsRememberPositionOfLiveVideosEnabled;
     private boolean mIsRealChannelIconEnabled;
-    private boolean mIsButtonLongClickEnabled;
     private boolean mIsLongSpeedListEnabled;
     private boolean mIsExtraLongSpeedListEnabled;
     private int mPlayerDataSource;
@@ -153,15 +152,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         persistData();
     }
 
-    public boolean isButtonLongClickEnabled() {
-        return mIsButtonLongClickEnabled;
-    }
-
-    public void setButtonLongClickEnabled(boolean enable) {
-        mIsButtonLongClickEnabled = enable;
-        persistData();
-    }
-
     public boolean isLongSpeedListEnabled() {
         return mIsLongSpeedListEnabled;
     }
@@ -222,7 +212,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsPlaybackNotificationsDisabled = Helpers.parseBoolean(split, 11, !Helpers.isAndroidTVLauncher(mPrefs.getContext()));
         mPlayerButtons = Helpers.parseInt(split, 13, PLAYER_BUTTON_DEFAULT);
         mIsRealChannelIconEnabled = Helpers.parseBoolean(split, 20, true);
-        mIsButtonLongClickEnabled = Helpers.parseBoolean(split, 24, true);
         mIsLongSpeedListEnabled = Helpers.parseBoolean(split, 25, true);
         mPlayerDataSource = Helpers.parseInt(split, 26, PLAYER_DATA_SOURCE_DEFAULT);
         // Cause severe garbage collector stuttering
@@ -255,7 +244,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mPlayerButtons,
                 null,
                 mIsRealChannelIconEnabled,
-                mIsButtonLongClickEnabled, 
                 mIsLongSpeedListEnabled, 
                 mPlayerDataSource, 
                 mIsSectionPlaylistEnabled,
