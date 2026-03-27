@@ -38,18 +38,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SuggestionsController extends BasePlayerController {
+
     private static final String TAG = SuggestionsController.class.getSimpleName();
+
     private final List<Disposable> mActions = new ArrayList<>();
+
     private MediaItemService mMediaItemService;
     private ContentService mContentService;
     private BrowseProcessorManager mBrowseProcessor;
     private Video mNextSectionVideo;
     private int mFocusCount;
     private int mNextRetryCount;
+
     private List<ChapterItem> mChapters;
 
     private static final int MAX_PLAYLIST_CONTINUATIONS = 20;
-    private static final int CHAPTER_NOTIFICATION_Id = 565;
 
     private interface OnVideoGroup {
         void onVideoGroup(VideoGroup group);
@@ -688,58 +691,6 @@ public class SuggestionsController extends BasePlayerController {
             continueGroup(group, continuation -> findNextSectionVideoIfNeeded(video), getPlayer().isSuggestionsShown());
             mNextRetryCount++;
         }
-    }
-
-    private void showChapterDialog(ChapterItem chapter) {
-        AppDialogPresenter dialogPresenter = AppDialogPresenter.instance(getContext());
-
-        if (dialogPresenter.isDialogShown() && dialogPresenter.getId() != CHAPTER_NOTIFICATION_Id) {
-            // Another dialog is opened. Don't distract a user.
-            return;
-        }
-
-        if (dialogPresenter.isDialogShown() && getPlayer() != null && !getPlayer().isPlaying()) {
-            return;
-        }
-
-        dialogPresenter.closeDialog(); // remove previous dialog
-
-        if (chapter == null || getPlayer() == null || getPlayer().isOverlayShown() || getPlayer().isInPIPMode()) {
-            return;
-        }
-
-        OptionItem acceptOption = UiOptionItem.from(
-                chapter.getTitle(),
-                option -> {
-                    // return to previous dialog or close if no other dialogs in stack
-                    dialogPresenter.closeDialog();
-                    ChapterItem nextChapter = getNextChapter();
-                    getPlayer().setPositionMs(nextChapter != null ? nextChapter.getStartTimeMs() : getPlayer().getDurationMs());
-                }
-        );
-
-        dialogPresenter.appendSingleButton(acceptOption);
-
-        dialogPresenter.enableTransparent(true);
-        dialogPresenter.enableOverlay(true);
-        dialogPresenter.enableExpandable(false);
-        dialogPresenter.setId(CHAPTER_NOTIFICATION_Id);
-        dialogPresenter.showDialog();
-    }
-
-    private ChapterItem getNextChapter() {
-        if (getPlayer() == null || mChapters == null) {
-            return null;
-        }
-
-        long positionMs = getPlayer().getPositionMs();
-        for (ChapterItem chapter : mChapters) {
-            if (chapter.getStartTimeMs() > (positionMs + 3_000)) {
-                return chapter;
-            }
-        }
-
-        return null;
     }
 
     private Pair<ChapterItem, Integer> getCurrentChapter() {

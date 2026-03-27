@@ -28,9 +28,12 @@ private interface InnertubePlayerApi {
 internal class HTTPClient(val session: Session) {
     private val requestApi = RetrofitHelper.create(InnertubePlayerApi::class.java)
 
-    fun fetch(input: String, init: RequestInit): PlayerResult? {
-        val innertubeUrl = URLS.API.PRODUCTION_1 + session.apiVersion
-        val baseURL = innertubeUrl
+    fun fetch(
+        input: String, 
+        init: RequestInit
+    ): PlayerResult? {
+    
+        val baseURL = URLS.API.PRODUCTION_1 + session.apiVersion
 
         val url = "${baseURL}${if (baseURL.endsWith("/") || input.startsWith("/")) "" else "/"}$input"
 
@@ -43,12 +46,11 @@ internal class HTTPClient(val session: Session) {
 
         setupCommonHeaders(requestHeaders, session, url.toUri())
 
-        //val isInnertubeReq = baseURL == innertubeUrl || baseURL == URLS.YT_UPLOAD
-
         var requestBody: String? = null
         var isWebKids: Boolean? = false
 
         if (requestHeaders["Content-Type"] == "application/json") {
+
             val jsonPayload = processJsonPayload(init.body, session)
 
             val (newBody, processedIsWebKids, processedClientVersion, processedClientNameId, adjustedClientName) = jsonPayload
@@ -74,41 +76,13 @@ internal class HTTPClient(val session: Session) {
                     CLIENTS.IOS.USER_AGENT?.let { requestHeaders["User-Agent"] = it }
                 }
             }
+
         } else if (requestHeaders["Content-Type"] == "application/x-protobuf") {
             // Assume it is always an Android request.
             CLIENTS.ANDROID.USER_AGENT?.let { requestHeaders["User-Agent"] = it }
             requestHeaders["X-GOOG-API-FORMAT-VERSION"] = "2"
             requestHeaders.remove("X-Youtube-Client-Version")
         }
-
-        // TODO: not implemented
-        // Authenticate (NOTE: YouTube Kids does not support regular bearer tokens)
-        //if (session.logged_in && is_innertube_req && !is_web_kids) {
-        //    const oauth = session.oauth;
-        //
-        //    if (oauth.oauth2_tokens) {
-        //        if (oauth.shouldRefreshToken()) {
-        //            await oauth.refreshAccessToken();
-        //        }
-        //
-        //        request_headers.set('Authorization', `Bearer ${oauth.oauth2_tokens.access_token}`);
-        //    }
-        //
-        //    const cookie = this.#cookie;
-        //
-        //    if (cookie) {
-        //        const sapisid = getCookie(cookie, 'SAPISID');
-        //
-        //        if (sapisid) {
-        //            request_headers.set('Authorization', await generateSidAuth(sapisid));
-        //            request_headers.set('X-Goog-Authuser', session.account_index.toString());
-        //            if (session.context.user.onBehalfOfUser)
-        //                request_headers.set('X-Goog-PageId', session.context.user.onBehalfOfUser);
-        //        }
-        //
-        //        request_headers.set('Cookie', cookie);
-        //    }
-        //}
 
         if (requestBody == null)
             return null
@@ -118,7 +92,11 @@ internal class HTTPClient(val session: Session) {
         return RetrofitHelper.get(playerResultWrapper)
     }
 
-    private fun setupCommonHeaders(requestHeaders: MutableMap<String, String>, session: Session, requestUrl: Uri) {
+    private fun setupCommonHeaders(
+        requestHeaders: MutableMap<String, String>, 
+        session: Session, 
+        requestUrl: Uri
+    ) {
         requestHeaders["Accept"] = "*/*"
         requestHeaders["Accept-Language"] = "*"
 
@@ -140,7 +118,11 @@ internal class HTTPClient(val session: Session) {
         requestHeaders["Origin"] = requestUrl.scheme + "://" + requestUrl.host
     }
 
-    private fun processJsonPayload(body: RequestInitBody, session: Session): JsonPayloadProcessed {
+    private fun processJsonPayload(
+        body: RequestInitBody, 
+        session: Session
+    ): JsonPayloadProcessed {
+        
         val parsedPayload = body
         val adjustedContext = session.context // why do JSON.parse(JSON.stringify(session.context)) as Context
 

@@ -16,7 +16,10 @@ internal class MediaGroupOptions private constructor(
     val clientTV by lazy { AppClient.TV }
 
     companion object {
-        fun create(groupType: Int, channelId: String? = null): MediaGroupOptions {
+        fun create(
+            groupType: Int, 
+            channelId: String? = null
+        ): MediaGroupOptions {
             
             val data = MediaServiceData.instance()
             
@@ -27,10 +30,6 @@ internal class MediaGroupOptions private constructor(
             val removeUpcoming = data.isContentHidden(MediaServiceData.CONTENT_UPCOMING)
             
             val removeWatched = data.isContentHidden(MediaServiceData.CONTENT_WATCHED)
-            
-            val isGridSection = MediaGroup.TYPE_SUBSCRIPTIONS == groupType || MediaGroup.TYPE_HISTORY == groupType || MediaGroup.TYPE_CHANNEL_UPLOADS == groupType
-            
-            val isBrowseSection = groupType != MediaGroup.TYPE_SUGGESTIONS // legacy suggestions ui doesn't have chapters
 
             return MediaGroupOptions(
                 removeShorts,
