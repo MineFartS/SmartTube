@@ -100,9 +100,9 @@
     <string name="option_background_playback_behind">Play behind</string>
     <string name="next_video_info_is_not_loaded_yet">Next video info is not loaded yet</string>
     <string name="cards_style">Cards style</string>
-    <string name="repeat_mode_all">Play videos continuously</string>
-    <string name="repeat_mode_one">Repeat current video</string>
-    <string name="repeat_mode_pause">Pause playback after each video (except queue)</string>
+    <string name="repeat_mode_all">Auto play</string>
+    <string name="repeat_mode_one">Loop</string>
+    <string name="repeat_mode_pause">Disabled</string>
     <string name="repeat_mode_pause_alt">Play only playlist videos continuously</string>
     <string name="repeat_mode_none">Stop playback after one video (except queue)</string>
     <string name="subscribed_to_channel">Subscribed</string>
@@ -260,7 +260,7 @@
     <string name="action_like">Like</string>
     <string name="action_dislike">Dislike</string>
     <string name="action_play_pause">Play/Pause</string>
-    <string name="action_repeat_mode">Playback mode</string>
+    <string name="action_repeat_mode">AutoPlay Controls</string>
     <string name="action_next">Next video</string>
     <string name="action_previous">Previous video</string>
     <string name="action_high_quality">Video quality</string>
@@ -376,7 +376,7 @@
     <string name="subtitle_yellow_black">Yellow on black background</string>
     <string name="player_pixel_ratio">Pixel ratio</string>
     <string name="disable_mic_permission">Please disable microphone access for the app in order for this recognizer to work properly.</string>
-    <string name="repeat_mode_shuffle">Shuffle any playlist</string>
+    <string name="repeat_mode_shuffle">Shuffle</string>
     <string name="chat_left">Left</string>
     <string name="chat_right">Right</string>
     <string name="card_real_thumbnails">Replace thumbnails with a frame from the video</string>
@@ -481,7 +481,7 @@
     <string name="player_only_mode">Show only the player if the video is opened outside of the app</string>
     <string name="long_press_for_settings">LONG PRESS FOR SETTINGS</string>
     <string name="long_press_for_options">LONG PRESS FOR OPTIONS</string>
-    <string name="repeat_mode_reverse_list">Play the playlist or channel videos in reverse order</string>
+    <string name="repeat_mode_reverse_list">Reverse</string>
     <string name="calm_msg">We are fixing the issue. Check for updates from time to time</string>
     <string name="without_picture">Without picture</string>
     <string name="video_disabled">Video disabled</string>
