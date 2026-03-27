@@ -374,7 +374,6 @@
     <string name="time_format_12">12 hours (AM/PM)</string>
     <string name="speech_recognizer">Speech recognizer</string>
     <string name="speech_engine">Voice search engine</string>
-    <string name="real_channel_icon">Show icon on the channel button</string>
     <string name="subtitle_yellow_semi_transparent">Yellow on semitransparent background</string>
     <string name="subtitle_yellow_black">Yellow on black background</string>
     <string name="player_pixel_ratio">Pixel ratio</string>

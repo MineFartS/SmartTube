@@ -232,10 +232,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 option -> mPlayerData.setTooltipsEnabled(option.isSelected()),
                 mPlayerData.isTooltipsEnabled()));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.real_channel_icon),
-                option -> mPlayerTweaksData.setRealChannelIconEnabled(option.isSelected()),
-                mPlayerTweaksData.isRealChannelIconEnabled()));
-
         settingsPresenter.appendCheckedCategory(getContext().getString(R.string.player_other), options);
 
     }
