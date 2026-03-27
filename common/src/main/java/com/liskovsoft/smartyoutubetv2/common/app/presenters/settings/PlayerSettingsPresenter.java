@@ -109,10 +109,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 PlayerTweaksData.PLAYER_BUTTON_CONTENT_BLOCK
             },
             {
-                R.string.share_link,
-                PlayerTweaksData.PLAYER_BUTTON_SHARE
-            },
-            {
                 R.string.action_video_info,
                 PlayerTweaksData.PLAYER_BUTTON_VIDEO_INFO
             },

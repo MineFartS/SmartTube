@@ -448,25 +448,6 @@ public class PlayerUIController extends BasePlayerController {
         dialogPresenter.showDialog(title);
     }
 
-    private void onShareLink() {
-        fitVideoIntoDialog();
-
-        Video video = getVideo();
-
-        if (video == null) {
-            return;
-        }
-
-        AppDialogPresenter dialogPresenter = getAppDialogPresenter();
-
-        int positionSec = Utils.toSec(getPlayer().getPositionMs());
-        AppDialogUtil.appendShareLinkDialogItem(getContext(), dialogPresenter, getVideo(), positionSec);
-        AppDialogUtil.appendShareQRLinkDialogItem(getContext(), dialogPresenter, getVideo(), positionSec);
-        AppDialogUtil.appendShareEmbedLinkDialogItem(getContext(), dialogPresenter, getVideo(), positionSec);
-
-        dialogPresenter.showDialog(getVideo().getTitle());
-    }
-
     private void onSearchClicked() {
         startTempBackgroundMode(SearchPresenter.class);
         SearchPresenter.instance(getContext()).startSearch(null);
@@ -499,10 +480,9 @@ public class PlayerUIController extends BasePlayerController {
         } else if (buttonId == R.id.action_playback_queue) {
             AppDialogUtil.showPlaybackQueueDialog(getContext(), item -> getMainController().onNewVideo(item));
 
-        } else if (buttonId == R.id.action_share) {
-            onShareLink();
         } else if (buttonId == R.id.action_info) {
             onVideoInfoClicked();
+
         } else if (buttonId == R.id.action_pip) {
             onPipClicked();
 
