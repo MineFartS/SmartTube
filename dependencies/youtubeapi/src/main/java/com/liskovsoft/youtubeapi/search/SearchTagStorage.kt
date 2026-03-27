@@ -13,7 +13,7 @@ internal object SearchTagStorage: MediaServicePrefs.ProfileChangeListener {
 
     init {
         MediaServicePrefs.addListener(this)
-        restoreData()
+        restoreState()
     }
 
     @JvmStatic
@@ -23,21 +23,21 @@ internal object SearchTagStorage: MediaServicePrefs.ProfileChangeListener {
 
         _tags.add(tag)
 
-        persistData()
+        persistState()
     }
 
     @JvmStatic
     fun clear() {
         _tags.clear()
 
-        persistData()
+        persistState()
     }
 
     override fun onProfileChanged() {
-        restoreData()
+        restoreState()
     }
 
-    private fun restoreData() {
+    private fun restoreState() {
         _tags.clear()
 
         val data = MediaServicePrefs.getData(SEARCH_TAG_DATA)
@@ -49,7 +49,7 @@ internal object SearchTagStorage: MediaServicePrefs.ProfileChangeListener {
         _tags.addAll(tags)
     }
 
-    private fun persistData() {
+    private fun persistState() {
         MediaServicePrefs.setData(SEARCH_TAG_DATA, Helpers.mergeData(_tags))
     }
 }

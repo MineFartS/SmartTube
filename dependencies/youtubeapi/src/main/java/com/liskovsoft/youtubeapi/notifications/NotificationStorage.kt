@@ -12,7 +12,7 @@ internal object NotificationStorage: MediaServicePrefs.ProfileChangeListener {
 
     init {
         MediaServicePrefs.addListener(this)
-        restoreData()
+        restoreState()
     }
 
     fun addChannel(channelId: String?) {
@@ -63,10 +63,10 @@ internal object NotificationStorage: MediaServicePrefs.ProfileChangeListener {
     }
 
     override fun onProfileChanged() {
-        restoreData()
+        restoreState()
     }
 
-    private fun restoreData() {
+    private fun restoreState() {
         val data = MediaServicePrefs.getData(NOTIFICATION_DATA) ?: return
 
         val split = Helpers.splitData(data)

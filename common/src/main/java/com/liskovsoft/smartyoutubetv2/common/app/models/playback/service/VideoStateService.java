@@ -25,7 +25,6 @@ public class VideoStateService implements ProfileChangeListener {
     private final AppPrefs mPrefs;
     private static final String DELIM = "&si;";
     private boolean mIsHistoryBroken;
-    private final Runnable mPersistStateInt = this::persistStateInt;
 
     private VideoStateService(Context context) {
         mPrefs = AppPrefs.instance(context);
@@ -108,7 +107,7 @@ public class VideoStateService implements ProfileChangeListener {
         mIsHistoryBroken = Helpers.parseBoolean(split, 1);
     }
 
-    private void persistStateInt() {
+    public void persistState() {
         if (isHistoryBroken()) {
             mPrefs.setStateUpdaterData(
                 Helpers.mergeData(
@@ -120,16 +119,6 @@ public class VideoStateService implements ProfileChangeListener {
             // Eliminate additional string creation with the merge
             mPrefs.setStateUpdaterData(getStateData());
         }
-    }
-
-    public void persistNow() {
-        Utils.post(mPersistStateInt);
-    }
-
-    private void persistState() {
-        // Improve memory and disc usage
-        //Utils.postDelayed(mPersistStateInt, PERSIST_DELAY_MS);
-        persistNow();
     }
 
     public static class State {

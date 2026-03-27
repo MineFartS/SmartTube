@@ -18,7 +18,7 @@ internal data class ItemGroupImpl(
     private val iconUrl: String? = null,
     private val items: MutableList<Item>,
     private val badge: String? = null,
-    var onChange: (ItemGroup) -> Unit = { ChannelGroupServiceImpl.persistData() }
+    var onChange: (ItemGroup) -> Unit = { ChannelGroupServiceImpl.persistState() }
 ): ItemGroup {
     override fun getId(): String {
         return id

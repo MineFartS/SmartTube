@@ -276,7 +276,7 @@ public class ContentBlockData {
 
     }
 
-    private void persistState() {
+    public void persistState() {
         
         String colorCategories = Helpers.mergeArray(mColorCategories.toArray());
         String actions = Helpers.mergeArray(mActions.toArray());

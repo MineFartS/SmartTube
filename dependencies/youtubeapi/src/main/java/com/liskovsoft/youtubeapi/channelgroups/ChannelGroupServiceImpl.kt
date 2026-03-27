@@ -31,11 +31,11 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
 
     init {
         MediaServicePrefs.addListener(this)
-        restoreData()
+        restoreState()
     }
 
     override fun onProfileChanged() {
-        restoreData()
+        restoreState()
     }
 
     override fun getChannelGroups(): List<ItemGroup> {
@@ -46,13 +46,13 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         // Move to the top
         mChannelGroups.remove(group)
         mChannelGroups.add(0, group)
-        persistData()
+        persistState()
     }
 
     override fun removeChannelGroup(group: ItemGroup?) {
         if (mChannelGroups.contains(group)) {
             mChannelGroups.remove(group)
-            persistData()
+            persistState()
         }
     }
 
@@ -189,7 +189,7 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         }
 
         if (result.isNotEmpty()) {
-            persistData()
+            persistState()
         }
 
         return result
@@ -197,8 +197,8 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
 
     override fun exportData(data: String?) {
         data?.let {
-            restoreData(it)
-            persistData()
+            restoreState(it)
+            persistState()
         }
     }
 
@@ -228,23 +228,23 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         return group?.contains(channelId) ?: false
     }
 
-    private fun restoreData() {
+    private fun restoreState() {
         val data = MediaServicePrefs.getData(CHANNEL_GROUP_DATA)
-        restoreData(data)
+        restoreState(data)
     }
 
-    private fun restoreData(data: String?) {
+    private fun restoreState(data: String?) {
         val split = Helpers.splitData(data)
 
         mChannelGroups = Helpers.parseList(split, 0, ItemGroupImpl::fromString)
     }
 
-    fun persistData() {
+    fun persistState() {
         RxHelper.disposeActions(mPersistAction)
-        mPersistAction = RxHelper.runAsync(::persistDataReal, 5_000)
+        mPersistAction = RxHelper.runAsync(::persistStateReal, 5_000)
     }
 
-    private fun persistDataReal() {
+    private fun persistStateReal() {
         MediaServicePrefs.setData(CHANNEL_GROUP_DATA, Helpers.mergeData(mChannelGroups))
     }
 

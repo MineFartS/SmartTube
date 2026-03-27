@@ -333,7 +333,7 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     
     }
 
-    private void persistState() {
+    public void persistState() {
 
         mPrefs.setProfileData(
             MAIN_UI_DATA,

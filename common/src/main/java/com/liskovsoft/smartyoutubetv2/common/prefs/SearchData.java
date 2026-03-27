@@ -21,7 +21,7 @@ public class SearchData {
 
     private SearchData(Context context) {
         mAppPrefs = AppPrefs.instance(context);
-        restoreData();
+        restoreState();
     }
 
     public static SearchData instance(Context context) {
@@ -38,12 +38,12 @@ public class SearchData {
 
     public void setSearchOptions(int searchOptions) {
         mSearchOptions = searchOptions;
-        persistData();
+        persistState();
     }
 
     public void setTrendingSearchesEnabled(boolean enabled) {
         mIsTrendingSearchesEnabled = enabled;
-        persistData();
+        persistState();
     }
 
     public boolean isTrendingSearchesEnabled() {
@@ -56,7 +56,7 @@ public class SearchData {
 
     public void setTempBackgroundModeEnabled(boolean enabled) {
         mIsTempBackgroundModeEnabled = enabled;
-        persistData();
+        persistState();
     }
 
     public Class<?> getTempBackgroundModeClass() {
@@ -73,10 +73,10 @@ public class SearchData {
 
     public void setPopularSearchesDisabled(boolean disabled) {
         mIsPopularSearchesDisabled = disabled;
-        persistData();
+        persistState();
     }
 
-    private void restoreData() {
+    private void restoreState() {
 
         String data = mAppPrefs.getData(SEARCH_DATA);
         String[] split = Helpers.splitData(data);
@@ -88,7 +88,7 @@ public class SearchData {
     
     }
 
-    private void persistData() {
+    public void persistState() {
         mAppPrefs.setData(
             SEARCH_DATA,
             Helpers.mergeData(

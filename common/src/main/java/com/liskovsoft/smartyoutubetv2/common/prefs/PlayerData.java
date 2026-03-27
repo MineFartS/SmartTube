@@ -592,12 +592,12 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         }
     }
 
-    private void persistState() {
+    public void persistState() {
         onDataChange();
         Utils.postDelayed(mPersistStateInt, 10_000);
     }
 
-    private void persistStateInt() {
+    public void persistStateInt() {
         mPrefs.setProfileData(
             VIDEO_PLAYER_DATA, 
             Helpers.mergeData(

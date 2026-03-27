@@ -92,7 +92,7 @@ public class MediaServiceData {
         mGlobalPrefs = GlobalPreferences.sInstance;
         mCachedPrefs = new MediaServiceCache(mGlobalPrefs.getContext());
 
-        restoreData();
+        restoreState();
         restoreCachedData();
     }
 
@@ -114,7 +114,7 @@ public class MediaServiceData {
 
     public void setScreenId(String screenId) {
         mScreenId = screenId;
-        persistData();
+        persistState();
     }
 
     /**
@@ -123,7 +123,7 @@ public class MediaServiceData {
     public String getDeviceId() {
         if (mDeviceId == null) {
             mDeviceId = UUID.randomUUID().toString();
-            persistData();
+            persistState();
         }
 
         return mDeviceId;
@@ -131,7 +131,7 @@ public class MediaServiceData {
 
     public void setDeviceId(String deviceId) {
         mDeviceId = deviceId;
-        persistData();
+        persistState();
     }
     
     public int getVideoInfoType() {
@@ -140,7 +140,7 @@ public class MediaServiceData {
 
     public void setVideoInfoType(int videoInfoType) {
         mVideoInfoType = videoInfoType;
-        persistData();
+        persistState();
     }
 
     public Triple<NSigData, NSigData, PlayerDataCached> getPlayerExtractorData() {
@@ -151,7 +151,7 @@ public class MediaServiceData {
         mNSigData = nSigData;
         mSigData = sigData;
         mPlayerData = playerData;
-        persistData();
+        persistState();
     }
 
     @Nullable
@@ -161,7 +161,7 @@ public class MediaServiceData {
 
     public void setPlayerExtractorCache(PlayerExtractorCache playerCache) {
         mPlayerExtractorCache = playerCache;
-        persistData();
+        persistState();
     }
 
     public String getVisitorCookie() {
@@ -170,7 +170,7 @@ public class MediaServiceData {
 
     public void setVisitorCookie(String visitorCookie) {
         mVisitorCookie = visitorCookie;
-        persistData();
+        persistState();
     }
 
     public boolean isFormatEnabled(int formats) {
@@ -188,7 +188,7 @@ public class MediaServiceData {
             mEnabledFormats &= ~formats;
         }
 
-        persistData();
+        persistState();
 
         YouTubeMediaItemService.instance().invalidateCache(); // Remove current cached video
     }
@@ -204,7 +204,7 @@ public class MediaServiceData {
             mHiddenContent &= ~content;
         }
 
-        persistData();
+        persistState();
     }
 
     public PoTokenResponse getPoToken() {
@@ -214,7 +214,7 @@ public class MediaServiceData {
     public void setPoToken(PoTokenResponse poToken) {
         mPoToken = poToken;
 
-        persistData();
+        persistState();
     }
 
     public AppInfoCached getAppInfo() {
@@ -232,7 +232,7 @@ public class MediaServiceData {
 
         mAppInfo = appInfo;
 
-        persistData();
+        persistState();
     }
 
     public AppInfoCached getFailedAppInfo() {
@@ -246,7 +246,7 @@ public class MediaServiceData {
 
         mFailedAppInfo = appInfo;
 
-        persistData();
+        persistState();
     }
 
     public ClientDataCached getClientData() {
@@ -256,7 +256,7 @@ public class MediaServiceData {
     public void setClientData(ClientDataCached clientData) {
         mClientData = clientData;
 
-        persistData();
+        persistState();
     }
 
     public boolean isMoreSubtitlesUnlocked() {
@@ -265,7 +265,7 @@ public class MediaServiceData {
 
     public void setMoreSubtitlesUnlocked(boolean unlock) {
         mIsMoreSubtitlesUnlocked = unlock;
-        persistData();
+        persistState();
 
         YouTubeMediaItemService.instance().invalidateCache(); // Remove current cached video
     }
@@ -274,7 +274,7 @@ public class MediaServiceData {
         return PoTokenGate.isWebPotSupported();
     }
 
-    private void restoreData() {
+    private void restoreState() {
         String data = mGlobalPrefs.getMediaServiceData();
 
         String[] split = Helpers.splitData(data);
@@ -318,7 +318,7 @@ public class MediaServiceData {
         mPlayerExtractorCache = Helpers.parseItem(split, 11, PlayerExtractorCache::fromString);
     }
 
-    private void persistDataInt() {
+    public void persistState() {
         if (mGlobalPrefs == null) {
             return;
         }
@@ -330,32 +330,9 @@ public class MediaServiceData {
                         mIsMoreSubtitlesUnlocked, null, mVisitorCookie, null, mFailedAppInfo));
     }
 
-    private void persistCachedDataInt() {
-        if (mCachedPrefs == null) {
-            return;
-        }
-
-        mCachedPrefs.setMediaServiceCache(
-                Helpers.mergeData(null, null, null, null, null, null,
-                        null, null, mNSigData, mSigData, null, mPlayerExtractorCache));
-    }
-
-    public void persistNow() {
-        RxHelper.disposeActions(mPersistAction);
-
-        mPersistAction = RxHelper.runAsync(() -> { persistDataInt(); persistCachedDataInt(); });
-    }
-
-    private void persistData() {
-        //RxHelper.disposeActions(mPersistAction);
-
-        // Improve memory usage by merging multiple persist requests
-        //mPersistAction = RxHelper.runAsync(() -> { persistDataInt(); persistCachedDataInt(); }, 5_000);
-        persistNow();
-    }
-
     private void resetSensitiveData() {
         mVideoInfoType = -1;
         mFailedAppInfo = null;
     }
+
 }

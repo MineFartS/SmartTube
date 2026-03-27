@@ -853,7 +853,7 @@ public class Utils {
      * Simply kills the app.
      */
     public static void forceFinishTheApp(Context context) {
-        persistData(context);
+        persistState(context);
         postDelayed(sForceFinishTheApp, 1_000);
     }
 
@@ -863,7 +863,7 @@ public class Utils {
     }
 
     public static void restartTheApp(Context context) {
-        persistData(context);
+        persistState(context);
         postDelayed(() -> restartTheAppInt(context), 1_000);
     }
 
@@ -878,7 +878,7 @@ public class Utils {
     }
 
     public static void restartTheApp(Context context, Video video, long posMs) {
-        persistData(context);
+        persistState(context);
         postDelayed(() -> restartTheAppInt(context, video, posMs), 1_000);
     }
 
@@ -1127,14 +1127,14 @@ public class Utils {
         return original.equals(typed);
     }
 
-    private static void persistData(Context context) {
-        VideoStateService.instance(context).persistNow();
-        PlayerTweaksData.instance(context).persistNow();
-        MainUIData.instance(context).persistNow();
-        GeneralData.instance(context).persistNow();
+    private static void persistState(Context context) {
+        VideoStateService.instance(context).persistState();
+        PlayerTweaksData.instance(context).persistState();
+        MainUIData.instance(context).persistState();
+        GeneralData.instance(context).persistState();
         MediaServiceData mediaServiceData = MediaServiceData.instance();
         if (mediaServiceData != null) {
-            mediaServiceData.persistNow();
+            mediaServiceData.persistState();
         }
     }
 }

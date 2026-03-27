@@ -19,11 +19,11 @@ internal object PlaylistGroupServiceImpl : MediaServicePrefs.ProfileChangeListen
 
     init {
         MediaServicePrefs.addListener(this)
-        restoreData()
+        restoreState()
     }
 
     override fun onProfileChanged() {
-        restoreData()
+        restoreState()
     }
 
     @JvmStatic
@@ -32,16 +32,16 @@ internal object PlaylistGroupServiceImpl : MediaServicePrefs.ProfileChangeListen
             return
 
         // Move to the top
-        (group as ItemGroupImpl).onChange = { persistData() }
+        (group as ItemGroupImpl).onChange = { persistState() }
         mPlaylists.remove(group)
         mPlaylists.add(0, group)
-        persistData()
+        persistState()
     }
 
     @JvmStatic
     fun removePlaylistGroup(group: ItemGroup) {
         mPlaylists.remove(group)
-        persistData()
+        persistState()
     }
 
     @JvmStatic
@@ -51,7 +51,7 @@ internal object PlaylistGroupServiceImpl : MediaServicePrefs.ProfileChangeListen
 
         val result = Helpers.removeIf(mPlaylists) { it.id == id }
         if (!result.isNullOrEmpty()) {
-            persistData()
+            persistState()
         }
     }
 
@@ -83,27 +83,27 @@ internal object PlaylistGroupServiceImpl : MediaServicePrefs.ProfileChangeListen
         return mPlaylists.firstOrNull { it.id == id }
     }
 
-    private fun restoreData() {
+    private fun restoreState() {
         val data = MediaServicePrefs.getData(PLAYLIST_GROUP_DATA)
-        restoreData(data)
+        restoreState(data)
     }
 
-    private fun restoreData(data: String?) {
+    private fun restoreState(data: String?) {
         val split = Helpers.splitData(data)
 
         mPlaylists = Helpers.parseList(split, 0, ItemGroupImpl::fromString)
         mPlaylists.forEach {
             it as ItemGroupImpl
-            it.onChange = { persistData() }
+            it.onChange = { persistState() }
         }
     }
 
-    private fun persistData() {
+    private fun persistState() {
         RxHelper.disposeActions(mPersistAction)
-        mPersistAction = RxHelper.runAsync(::persistDataReal, PERSIST_DELAY_MS)
+        mPersistAction = RxHelper.runAsync(::persistStateReal, PERSIST_DELAY_MS)
     }
 
-    private fun persistDataReal() {
+    private fun persistStateReal() {
         MediaServicePrefs.setData(PLAYLIST_GROUP_DATA, Helpers.mergeData(mPlaylists))
     }
 }

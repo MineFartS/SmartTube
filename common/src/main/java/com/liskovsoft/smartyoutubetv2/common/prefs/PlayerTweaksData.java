@@ -70,13 +70,11 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private int mPlayerDataSource;
     private boolean mIsSectionPlaylistEnabled;
     private boolean mIsLoopShortsEnabled;
-    
-    private final Runnable mPersistDataInt = this::persistDataInt;
 
     private PlayerTweaksData(Context context) {
         mPrefs = AppPrefs.instance(context);
         mPrefs.addListener(this);
-        restoreData();
+        restoreState();
     }
 
     public static PlayerTweaksData instance(Context context) {
@@ -97,7 +95,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
      */
     public void setSetOutputSurfaceWorkaroundEnabled(boolean enable) {
         mIsSetOutputSurfaceWorkaroundEnabled = enable;
-        persistData();
+        persistState();
     }
 
     public boolean isPlaybackNotificationsDisabled() {
@@ -106,7 +104,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     public void setPlaybackNotificationsDisabled(boolean disable) {
         mIsPlaybackNotificationsDisabled = disable;
-        persistData();
+        persistState();
     }
 
     public boolean isPlayerButtonEnabled(int menuItems) {
@@ -115,12 +113,12 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     public void setPlayerButtonEnabled(int playerButtons) {
         mPlayerButtons |= playerButtons;
-        persistData();
+        persistState();
     }
 
     public void setPlayerButtonDisabled(int playerButtons) {
         mPlayerButtons &= ~playerButtons;
-        persistData();
+        persistState();
     }
 
     public int getPlayerDataSource() {
@@ -129,7 +127,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     public void setPlayerDataSource(int dataSource) {
         mPlayerDataSource = dataSource;
-        persistData();
+        persistState();
     }
 
     public boolean isRememberPositionOfLiveVideosEnabled() {
@@ -138,7 +136,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     public void setRememberPositionOfLiveVideosEnabled(boolean enable) {
         mIsRememberPositionOfLiveVideosEnabled = enable;
-        persistData();
+        persistState();
     }
 
     public boolean isLongSpeedListEnabled() {
@@ -148,7 +146,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
     public void setLongSpeedListEnabled(boolean enable) {
         mIsExtraLongSpeedListEnabled = false;
         mIsLongSpeedListEnabled = enable;
-        persistData();
+        persistState();
     }
 
     public boolean isExtraLongSpeedListEnabled() {
@@ -158,7 +156,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
     public void setExtraLongSpeedListEnabled(boolean enable) {
         mIsLongSpeedListEnabled = false;
         mIsExtraLongSpeedListEnabled = enable;
-        persistData();
+        persistState();
     }
 
     public boolean isSectionPlaylistEnabled() {
@@ -167,7 +165,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     public void setSectionPlaylistEnabled(boolean enable) {
         mIsSectionPlaylistEnabled = enable;
-        persistData();
+        persistState();
     }
 
     public boolean isLoopShortsEnabled() {
@@ -176,10 +174,10 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     public void setLoopShortsEnabled(boolean enable) {
         mIsLoopShortsEnabled = enable;
-        persistData();
+        persistState();
     }
 
-    private void restoreData() {
+    private void restoreState() {
 
         String data = mPrefs.getProfileData(VIDEO_PLAYER_TWEAKS_DATA);
 
@@ -202,16 +200,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
         updateDefaultValues();
     }
 
-    public void persistNow() {
-        Utils.post(mPersistDataInt);
-    }
-
-    private void persistData() {
-        //Utils.postDelayed(mPersistDataInt, 10_000);
-        persistNow();
-    }
-
-    private void persistDataInt() {
+    public void persistState() {
         mPrefs.setProfileData(
             VIDEO_PLAYER_TWEAKS_DATA, 
             Helpers.mergeData(
@@ -244,7 +233,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     @Override
     public void onProfileChanged() {
-        Utils.removeCallbacks(mPersistDataInt);
-        restoreData();
+        persistState();
+        restoreState();
     }
 }

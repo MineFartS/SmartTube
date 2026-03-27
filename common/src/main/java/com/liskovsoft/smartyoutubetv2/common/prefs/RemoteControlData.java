@@ -103,7 +103,7 @@ public class RemoteControlData extends DataChangeBase {
     
     }
 
-    private void persistState() {
+    public void persistState() {
     
         mAppPrefs.setData(
             DEVICE_LINK_DATA, 

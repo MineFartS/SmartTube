@@ -112,7 +112,7 @@ public class AccountsData implements AccountChangeListener {
         }
     }
 
-    private void persistState() {
+    public void persistState() {
         
         mAppPrefs.setData(
             ACCOUNTS_DATA, 

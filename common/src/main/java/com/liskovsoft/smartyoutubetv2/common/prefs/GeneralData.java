@@ -285,7 +285,7 @@ public class GeneralData implements ProfileChangeListener {
 
     }
 
-    private void persistState() {
+    public void persistState() {
         // Zero index is skipped. Selected sections were there.
         mPrefs.setProfileData(
             GENERAL_DATA, 

@@ -92,12 +92,12 @@ public abstract class DataSaverBase extends DataChangeBase {
         }
     }
 
-    private void persistState() {
+    public void persistState() {
         onDataChange();
         Utils.postDelayed(mPersistStateInt, 10_000);
     }
 
-    private void persistStateInt() {
+    public void persistStateInt() {
         mAppPrefs.setData(mDataKey, Helpers.mergeData(
                 mValues.toArray()
         ));
