@@ -82,7 +82,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private int mPlayerDataSource;
     private boolean mIsBufferOnStreamsDisabled;
     private boolean mIsSectionPlaylistEnabled;
-    private boolean mIsPlayerAutoVolumeEnabled;
     private boolean mIsSyncRowButtonIndexEnabled;
     private boolean mIsLoopShortsEnabled;
     
@@ -281,15 +280,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         persistData();
     }
 
-    public boolean isPlayerAutoVolumeEnabled() {
-        return mIsPlayerAutoVolumeEnabled;
-    }
-
-    public void setPlayerAutoVolumeEnabled(boolean enable) {
-        mIsPlayerAutoVolumeEnabled = enable;
-        persistData();
-    }
-
     public boolean isSyncRowButtonIndexEnabled() {
         return mIsSyncRowButtonIndexEnabled;
     }
@@ -334,7 +324,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsBufferOnStreamsDisabled = Helpers.parseBoolean(split, 30, false);
         // Cause severe garbage collector stuttering
         mIsSectionPlaylistEnabled = Helpers.parseBoolean(split, 31, Utils.isEnoughRam());
-        mIsPlayerAutoVolumeEnabled = Helpers.parseBoolean(split, 40, true);
         mIsSyncRowButtonIndexEnabled = Helpers.parseBoolean(split, 41, true);
         mIsLoopShortsEnabled = Helpers.parseBoolean(split, 44, true);
         mIsRememberPositionOfLiveVideosEnabled = Helpers.parseBoolean(split, 46, true);
@@ -375,7 +364,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mPlayerDataSource, 
                 mIsBufferOnStreamsDisabled, 
                         mIsSectionPlaylistEnabled,
-                mIsPlayerAutoVolumeEnabled, 
                 mIsSyncRowButtonIndexEnabled,
                 null, 
                 mIsLoopShortsEnabled, 

@@ -116,11 +116,14 @@ public class ExoPlayerInitializer {
     private void setupVolumeBoost(SimpleExoPlayer player) {
         // 5.1 audio cannot be boosted (format isn't supported error)
         // also, other 2.0 tracks in 5.1 group is already too loud. so cancel them too.
-        float volume = mPlayerTweaksData.isPlayerAutoVolumeEnabled() ? 2.0f : mPlayerData.getPlayerVolume();
+
+        float volume = 2.0f;
+
         if (volume > 1f && Build.VERSION.SDK_INT >= 19) {
             VolumeBooster mVolumeBooster = new VolumeBooster(true, volume, player);
             player.addAudioListener(mVolumeBooster);
         }
+
     }
 
     /**
