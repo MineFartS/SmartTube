@@ -12,10 +12,9 @@ import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
 import io.reactivex.disposables.Disposable;
 
 public class YTSignInPresenter extends SignInPresenter {
+    
     private static final String TAG = YTSignInPresenter.class.getSimpleName();
-    private static final String SIGN_IN_URL = "https://yt.be/activate"; // 18+, no search history
-    //private static final String SIGN_IN_URL = "https://youtube.com/tv/activate"; // 18+, no search history
-    //private static final String SIGN_IN_URL = "https://youtube.com/activate"; // age restricted, supports search history
+    
     @SuppressLint("StaticFieldLeak")
     private static YTSignInPresenter sInstance;
     private final ServiceManager mService;
@@ -62,24 +61,23 @@ public class YTSignInPresenter extends SignInPresenter {
     }
 
     private void updateUserCode() {
-        mSignInAction = mService.getSignInService().signInObserve()
-                .subscribe(
-                        userCode -> getView().showCode(userCode, SIGN_IN_URL),
-                        error -> {
-                            Log.e(TAG, "Sign in error: %s", error.getMessage());
-                            if (getView() != null) {
-                                getView().showCode(error.getMessage(), "");
-                            }
-                        },
-                        () -> {
-                            // Success
-                            if (getView() != null) {
-                                getView().close();
-                            }
+        mSignInAction = mService.getSignInService().signInObserve().subscribe(
+            userCode -> getView().showCode(userCode, "https://youtube.com/tv/activate"),
+            error -> {
+                Log.e(TAG, "Sign in error: %s", error.getMessage());
+                if (getView() != null) {
+                    getView().showCode(error.getMessage(), "");
+                }
+            },
+            () -> {
+                // Success
+                if (getView() != null) {
+                    getView().close();
+                }
 
-                            AccountSelectionPresenter.instance(getContext()).show(true);
-                        }
-                 );
+                AccountSelectionPresenter.instance(getContext()).show(true);
+            }
+        );
     }
 
     public void start() {
