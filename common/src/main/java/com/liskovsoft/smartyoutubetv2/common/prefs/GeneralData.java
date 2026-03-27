@@ -8,7 +8,6 @@ import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import com.liskovsoft.smartyoutubetv2.common.prefs.AppPrefs.ProfileChangeListener;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
-import com.liskovsoft.smartyoutubetv2.common.utils.DataStore;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,16 +15,16 @@ import java.util.Map;
 
 public class GeneralData implements ProfileChangeListener {
 
+    private static final String GENERAL_DATA = "general_data";
+
     public static final int BACKGROUND_PLAYBACK_SHORTCUT_HOME = 0;
     public static final int BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK = 1;
     public static final int BACKGROUND_PLAYBACK_SHORTCUT_BACK = 2;
 
     @SuppressLint("StaticFieldLeak")
     private static GeneralData sInstance;
-
     private final Context mContext;
     private final AppPrefs mPrefs;
-    private final DataStore mDataStore;
 
     private int mBackgroundShortcut;
     private boolean mIsHideShortsFromSubscriptionsEnabled;
@@ -50,16 +49,10 @@ public class GeneralData implements ProfileChangeListener {
     private List<Video> mOldPinnedItems;
 
     private GeneralData(Context context) {
-        
         mContext = context;
-        
         mPrefs = AppPrefs.instance(context);
         mPrefs.addListener(this);
-
-        mDataStore = new DataStore("general_data");
-        
         restoreState();
-    
     }
 
     public static GeneralData instance(Context context) {
@@ -264,55 +257,62 @@ public class GeneralData implements ProfileChangeListener {
     }
 
     private synchronized void restoreState() {
+        
+        String data = mPrefs.getProfileData(GENERAL_DATA);
+        String[] split = Helpers.splitData(data);
 
-        /* 00 */ mBackgroundShortcut = mDataStore.get(0, BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK);
-        /* 01 */ mOldPinnedItems = mDataStore.get(1);
-        /* 02 */ mIsHideShortsFromSubscriptionsEnabled = mDataStore.get(2, false);
-        /* 03 */ mIsBridgeCheckEnabled = mDataStore.get(3, true);
-        /* 04 */ mLastPlaylistId = mDataStore.get(4);
-        /* 05 */ mIsHideUpcomingEnabled = mDataStore.get(5, false);
-        /* 06 */ mIsHideShortsFromHomeEnabled = mDataStore.get(6, false);
-        /* 07 */ mIsHideShortsFromHistoryEnabled = mDataStore.get(7, false);
-        /* 08 */ mIsVPNEnabled = mDataStore.get(8, false);
-        /* 09 */ mLastPlaylistTitle = mDataStore.get(9);
-        /* 10 */ mPlaylistOrder = mDataStore.get(10);
-        /* 11 */ mPendingStreams = mDataStore.get(11);
-        /* 12 */ mIsAltAppIconEnabled = mDataStore.get(12, false);
-        /* 13 */ mVersionCode = Helpers.mDataStore.get(13, -1);
-        /* 14 */ mIsOldUpdateNotificationsEnabled = mDataStore.get(14, false);
-        /* 15 */ mIsRememberSubscriptionsPositionEnabled = mDataStore.get(15, false);
-        /* 16 */ mIsHideWatchedFromNotificationsEnabled = mDataStore.get(16, false);
-        /* 17 */ mChangelog = mDataStore.get(17);
-        /* 18 */ mSelectedItems = mDataStore.get(18);
-        /* 19 */ mIsFirstUseTooltipEnabled = mDataStore.get(19, true);
-        /* 20 */ mIsDeviceSpecificBackupEnabled = mDataStore.get(20, false);
+        /* 00 */ mBackgroundShortcut = Helpers.parseInt(split, 0, BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK);
+        /* 01 */ mOldPinnedItems = Helpers.parseList(split, 1, Video::fromString);
+        /* 02 */ mIsHideShortsFromSubscriptionsEnabled = Helpers.parseBoolean(split, 2, false);
+        /* 03 */ mIsBridgeCheckEnabled = Helpers.parseBoolean(split, 3, true);
+        /* 04 */ mLastPlaylistId = Helpers.parseStr(split, 4);
+        /* 05 */ mIsHideUpcomingEnabled = Helpers.parseBoolean(split, 5, false);
+        /* 06 */ mIsHideShortsFromHomeEnabled = Helpers.parseBoolean(split, 6, false);
+        /* 07 */ mIsHideShortsFromHistoryEnabled = Helpers.parseBoolean(split, 7, false);
+        /* 08 */ mIsVPNEnabled = Helpers.parseBoolean(split, 8, false);
+        /* 09 */ mLastPlaylistTitle = Helpers.parseStr(split, 9);
+        /* 10 */ mPlaylistOrder = Helpers.parseMap(split, 10, Helpers::parseStr, Helpers::parseInt);
+        /* 11 */ mPendingStreams = Helpers.parseList(split, 11, Video::fromString);
+        /* 12 */ mIsAltAppIconEnabled = Helpers.parseBoolean(split, 12, false);
+        /* 13 */ mVersionCode = Helpers.parseInt(split, 13, -1);
+        /* 14 */ mIsOldUpdateNotificationsEnabled = Helpers.parseBoolean(split, 14, false);
+        /* 15 */ mIsRememberSubscriptionsPositionEnabled = Helpers.parseBoolean(split, 15, false);
+        /* 16 */ mIsHideWatchedFromNotificationsEnabled = Helpers.parseBoolean(split, 16, false);
+        /* 17 */ mChangelog = Helpers.parseStrList(split, 17);
+        /* 18 */ mSelectedItems = Helpers.parseMap(split, 18, Helpers::parseInt, Video::fromString);
+        /* 19 */ mIsFirstUseTooltipEnabled = Helpers.parseBoolean(split, 19, true);
+        /* 20 */ mIsDeviceSpecificBackupEnabled = Helpers.parseBoolean(split, 20, false);
 
     }
 
     private void persistState() {
-
-        /* 00 */ mDataStore.put(0, mBackgroundShortcut); 
-        /* 01 */ mDataStore.put(1, mOldPinnedItems);
-        /* 02 */ mDataStore.put(2, mIsHideShortsFromSubscriptionsEnabled);
-        /* 03 */ mDataStore.put(3, mIsBridgeCheckEnabled);
-        /* 04 */ mDataStore.put(4, mLastPlaylistId);
-        /* 05 */ mDataStore.put(5, mIsHideUpcomingEnabled); 
-        /* 06 */ mDataStore.put(6, mIsHideShortsFromHomeEnabled); 
-        /* 07 */ mDataStore.put(7, mIsHideShortsFromHistoryEnabled); 
-        /* 08 */ mDataStore.put(8, mIsVPNEnabled);
-        /* 09 */ mDataStore.put(9, mLastPlaylistTitle);
-        /* 10 */ mDataStore.put(10, mPlaylistOrder);
-        /* 11 */ mDataStore.put(11, mPendingStreams); 
-        /* 12 */ mDataStore.put(12, mIsAltAppIconEnabled); 
-        /* 13 */ mDataStore.put(13, mVersionCode);
-        /* 14 */ mDataStore.put(14, mIsOldUpdateNotificationsEnabled);
-        /* 15 */ mDataStore.put(15, mIsRememberSubscriptionsPositionEnabled); 
-        /* 16 */ mDataStore.put(16, mIsHideWatchedFromNotificationsEnabled);
-        /* 17 */ mDataStore.put(17, mChangelog);
-        /* 18 */ mDataStore.put(18, mSelectedItems); 
-        /* 19 */ mDataStore.put(19, mIsFirstUseTooltipEnabled); 
-        /* 20 */ mDataStore.put(20, mIsDeviceSpecificBackupEnabled);
-
+        // Zero index is skipped. Selected sections were there.
+        mPrefs.setProfileData(
+            GENERAL_DATA, 
+            Helpers.mergeData(
+            /* 00 */ mBackgroundShortcut, 
+            /* 01 */ mOldPinnedItems, 
+            /* 02 */ mIsHideShortsFromSubscriptionsEnabled,
+            /* 03 */ mIsBridgeCheckEnabled, 
+            /* 04 */ mLastPlaylistId,
+            /* 05 */ mIsHideUpcomingEnabled, 
+            /* 06 */ mIsHideShortsFromHomeEnabled, 
+            /* 07 */ mIsHideShortsFromHistoryEnabled, 
+            /* 08 */ mIsVPNEnabled,
+            /* 09 */ mLastPlaylistTitle,
+            /* 10 */ mPlaylistOrder, 
+            /* 11 */ mPendingStreams, 
+            /* 12 */ mIsAltAppIconEnabled, 
+            /* 13 */ mVersionCode, 
+            /* 14 */ mIsOldUpdateNotificationsEnabled,
+            /* 15 */ mIsRememberSubscriptionsPositionEnabled, 
+            /* 16 */ mIsHideWatchedFromNotificationsEnabled, 
+            /* 17 */ mChangelog,
+            /* 18 */ mSelectedItems, 
+            /* 19 */ mIsFirstUseTooltipEnabled, 
+            /* 20 */ mIsDeviceSpecificBackupEnabled
+            )
+        );
     }
 
     @Override
@@ -320,5 +320,4 @@ public class GeneralData implements ProfileChangeListener {
         persistState();
         restoreState();
     }
-
 }

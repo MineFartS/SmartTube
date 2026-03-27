@@ -7,19 +7,16 @@ import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv2.common.misc.MediaServiceManager;
 import com.liskovsoft.smartyoutubetv2.common.misc.MediaServiceManager.AccountChangeListener;
-import com.liskovsoft.smartyoutubetv2.common.utils.DataStore;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class AccountsData implements AccountChangeListener {
-
+    private static final String ACCOUNTS_DATA = "accounts_data";
     @SuppressLint("StaticFieldLeak")
     private static AccountsData sInstance;
-
     private final Context mContext;
-    private final DataStore mDataStore;
-
+    private final AppPrefs mAppPrefs;
     private boolean mIsSelectAccountOnBootEnabled;
     private boolean mIsPasswordAccepted;
     private final Map<String, PasswordItem> mPasswords = new HashMap<>();
@@ -51,13 +48,9 @@ public class AccountsData implements AccountChangeListener {
     }
 
     private AccountsData(Context context) {
-        
         mContext = context;
-
-        mDataStore = new DataStore("accounts_data");
-        
+        mAppPrefs = AppPrefs.instance(mContext);
         MediaServiceManager.instance().addAccountListener(this);
-        
         restoreState();
     }
 
@@ -103,14 +96,30 @@ public class AccountsData implements AccountChangeListener {
     }
 
     private void restoreState() {
+        String data = mAppPrefs.getData(ACCOUNTS_DATA);
 
-        /* 0 */ mIsSelectAccountOnBootEnabled = mDataStore.get(0, false);
+        String[] split = Helpers.splitData(data);
 
+        /* 0 */ mIsSelectAccountOnBootEnabled = Helpers.parseBoolean(split, 0, false);
+
+        String[] passwords = Helpers.parseArray(split, 3);
+
+        if (passwords != null) {
+            for (String passwordSpec : passwords) {
+                PasswordItem item = PasswordItem.fromString(passwordSpec);
+                mPasswords.put(item.accountName, item);
+            }
+        }
     }
 
     private void persistState() {
-
-        mDataStore.put(0, mIsSelectAccountOnBootEnabled);
+        
+        mAppPrefs.setData(
+            ACCOUNTS_DATA, 
+            Helpers.mergeData(
+            /* 0 */ mIsSelectAccountOnBootEnabled
+            )
+        );
 
     }
 

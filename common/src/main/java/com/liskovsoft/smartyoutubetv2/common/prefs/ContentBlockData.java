@@ -3,13 +3,11 @@ package com.liskovsoft.smartyoutubetv2.common.prefs;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build.VERSION;
-
 import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.smartyoutubetv2.common.R;
 import com.liskovsoft.smartyoutubetv2.common.app.models.playback.controllers.ContentBlockController.SegmentAction;
-import com.liskovsoft.smartyoutubetv2.common.utils.DataStore;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,8 +23,12 @@ public class ContentBlockData {
     public static final int ACTION_SKIP_WITH_TOAST = 1;
     public static final int ACTION_DO_NOTHING = 3;
 
+    private static final String CONTENT_BLOCK_DATA = "content_block_data";
+
     @SuppressLint("StaticFieldLeak")
     private static ContentBlockData sInstance;
+
+    private final AppPrefs mAppPrefs;
 
     private boolean mIsSponsorBlockEnabled;
 
@@ -42,18 +44,12 @@ public class ContentBlockData {
 
     private Set<String> mAllCategories;
 
-    private final DataStore mDataStore;
-
     private ContentBlockData(Context context) {
-
-        mDataStore = new DataStore("content_block_data");
-        
+        mAppPrefs = AppPrefs.instance(context);
         initLocalizedMapping();
         initColorMapping();
         initAllCategories();
-        
         restoreState();
-    
     }
 
     public static ContentBlockData instance(Context context) {
@@ -214,10 +210,13 @@ public class ContentBlockData {
 
     private void restoreState() {
 
-        /* 0 */ mIsSponsorBlockEnabled = mDataStore.get(0, VERSION.SDK_INT>19);
-        /* 1 */ String actions = mDataStore.get(1);
-        /* 2 */ String excludedChannels = mDataStore.get(2);
-        /* 3 */ String colorCategories = mDataStore.get(3);
+        String data = mAppPrefs.getData(CONTENT_BLOCK_DATA);
+        String[] split = Helpers.splitData(data);
+
+        /* 0 */ mIsSponsorBlockEnabled = Helpers.parseBoolean(split, 0, VERSION.SDK_INT>19);
+        /* 1 */ String actions = Helpers.parseStr(split, 1);
+        /* 2 */ String excludedChannels = Helpers.parseStr(split, 2);
+        /* 3 */ String colorCategories = Helpers.parseStr(split, 3);
 
         if (excludedChannels != null) {
             String[] channelsArr = Helpers.splitArray(excludedChannels);
@@ -283,10 +282,14 @@ public class ContentBlockData {
         String actions = Helpers.mergeArray(mActions.toArray());
         String excludedChannels = Helpers.mergeArray(mExcludedChannels.toArray());
 
-        /* 0 */ mDataStore.put(0, mIsSponsorBlockEnabled);
-        /* 1 */ mDataStore.put(1, actions);
-        /* 2 */ mDataStore.put(2, excludedChannels);
-        /* 3 */ mDataStore.put(3, colorCategories);
-
+        mAppPrefs.setData(
+            CONTENT_BLOCK_DATA, 
+            Helpers.mergeData(
+            /* 0 */ mIsSponsorBlockEnabled,
+            /* 1 */ actions, 
+            /* 2 */ excludedChannels,
+            /* 3 */ colorCategories
+            )
+        );
     }
 }
