@@ -69,7 +69,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsTextureViewEnabled;
     private boolean mIsSetOutputSurfaceWorkaroundEnabled;
     private boolean mIsAudioSyncFixEnabled;
-    private boolean mIsKeepFinishedActivityEnabled;
     private boolean mIsPlaybackNotificationsDisabled;
     private boolean mIsTunneledPlaybackEnabled;
     private int mPlayerButtons;
@@ -147,21 +146,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     public void setAudioSyncFixEnabled(boolean enable) {
         mIsAudioSyncFixEnabled = enable;
-        persistData();
-    }
-
-    /**
-     * Fix crashes on chinese projectors
-     */
-    public boolean isKeepFinishedActivityEnabled() {
-        return mIsKeepFinishedActivityEnabled;
-    }
-
-    /**
-     * Fix crashes on chinese projectors
-     */
-    public void setKeepFinishedActivityEnabled(boolean enable) {
-        mIsKeepFinishedActivityEnabled = enable;
         persistData();
     }
 
@@ -312,7 +296,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         // It's because there's no tweaks for modern devices.
         mIsSetOutputSurfaceWorkaroundEnabled = Helpers.parseBoolean(split, 7, true);
         mIsAudioSyncFixEnabled = Helpers.parseBoolean(split, 8, false);
-        mIsKeepFinishedActivityEnabled = Helpers.parseBoolean(split, 9, false);
         mIsPlaybackNotificationsDisabled = Helpers.parseBoolean(split, 11, !Helpers.isAndroidTVLauncher(mPrefs.getContext()));
         mIsTunneledPlaybackEnabled = Helpers.parseBoolean(split, 12, false);
         mPlayerButtons = Helpers.parseInt(split, 13, PLAYER_BUTTON_DEFAULT);
@@ -352,25 +335,24 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 null, 
                 mIsSetOutputSurfaceWorkaroundEnabled, 
                 mIsAudioSyncFixEnabled, 
-                mIsKeepFinishedActivityEnabled, 
                 mIsPlaybackNotificationsDisabled, 
                 mIsTunneledPlaybackEnabled, 
                 mPlayerButtons,
-                        null,
+                null,
                 mIsRealChannelIconEnabled,
                 mIsQualityInfoBitrateEnabled,
                 mIsButtonLongClickEnabled, 
                 mIsLongSpeedListEnabled, 
                 mPlayerDataSource, 
                 mIsBufferOnStreamsDisabled, 
-                        mIsSectionPlaylistEnabled,
+                mIsSectionPlaylistEnabled,
                 mIsSyncRowButtonIndexEnabled,
                 null, 
                 mIsLoopShortsEnabled, 
                 mIsRememberPositionOfLiveVideosEnabled,
                 null, 
                 mIsExtraLongSpeedListEnabled, 
-                        null
+                null
             )
         );
     }
