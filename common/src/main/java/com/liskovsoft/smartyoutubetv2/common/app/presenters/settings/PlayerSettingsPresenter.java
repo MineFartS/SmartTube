@@ -321,10 +321,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 option -> mPlayerTweaksData.setSectionPlaylistEnabled(option.isSelected()),
                 mPlayerTweaksData.isSectionPlaylistEnabled()));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.player_chapter_notification2),
-                option -> mPlayerTweaksData.setChapterNotificationEnabled(option.isSelected()),
-                mPlayerTweaksData.isChapterNotificationEnabled()));
-
         options.add(UiOptionItem.from(getContext().getString(R.string.search_background_playback),
                 option -> mSearchData.setTempBackgroundModeEnabled(option.isSelected()),
                 mSearchData.isTempBackgroundModeEnabled()));

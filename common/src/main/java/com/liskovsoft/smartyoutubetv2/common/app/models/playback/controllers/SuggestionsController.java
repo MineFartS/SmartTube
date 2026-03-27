@@ -47,7 +47,7 @@ public class SuggestionsController extends BasePlayerController {
     private int mFocusCount;
     private int mNextRetryCount;
     private List<ChapterItem> mChapters;
-    private final Runnable mChapterHandler = this::startChapterNotificationServiceIfNeededInt;
+
     private static final int MAX_PLAYLIST_CONTINUATIONS = 20;
     private static final int CHAPTER_NOTIFICATION_Id = 565;
 
@@ -113,22 +113,20 @@ public class SuggestionsController extends BasePlayerController {
     public void onControlsShown(boolean shown) {
         if (shown) {
             focusCurrentChapter();
-        } else {
-            startChapterNotificationServiceIfNeeded();
         }
     }
 
     @Override
     public void onSeekEnd() {
+
         if (getPlayer() == null) {
             return;
         }
 
         if (getPlayer().isControlsShown()) {
             focusCurrentChapter();
-        } else {
-            startChapterNotificationServiceIfNeeded();
         }
+
     }
 
     @Override
@@ -498,37 +496,11 @@ public class SuggestionsController extends BasePlayerController {
         getPlayer().updateSuggestions(videoGroup);
     }
 
-    private void startChapterNotificationServiceIfNeeded() {
-        if (getPlayerTweaksData().isChapterNotificationEnabled()) {
-            Utils.postDelayed(mChapterHandler, 1_000); // small delay to give a chance to complete dialog transitions
-        }
-    }
-
-    private void startChapterNotificationServiceIfNeededInt() {
-        Utils.removeCallbacks(mChapterHandler);
-
-        Pair<ChapterItem, Integer> currentChapter = getCurrentChapter();
-        showChapterDialog(currentChapter != null ? currentChapter.first : null);
-
-        if (mChapters == null) {
-            return;
-        }
-
-        long positionMs = getPlayer().getPositionMs();
-
-        ChapterItem chapter = getNextChapter();
-
-        if (chapter != null) {
-            Utils.postDelayed(mChapterHandler, (long) ((chapter.getStartTimeMs() - positionMs) * getPlayer().getSpeed()));
-        }
-    }
-
     private void appendChaptersIfNeeded(MediaItemMetadata mediaItemMetadata) {
         mChapters = mediaItemMetadata.getChapters();
         
         addChapterMarkersIfNeeded();
         appendChapterSuggestionsIfNeeded();
-        startChapterNotificationServiceIfNeeded();
         focusCurrentChapter();
     }
 
