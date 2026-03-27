@@ -45,30 +45,14 @@ public class ExoPlayerInitializer {
         mMaxBufferBytes = deviceRam <= 0 ? 196_000_000 : (int)(deviceRam / 18);
     }
 
-    public SimpleExoPlayer createPlayer(Context context, DefaultRenderersFactory renderersFactory, DefaultTrackSelector trackSelector) {
+    public SimpleExoPlayer createPlayer(
+        Context context, 
+        DefaultRenderersFactory renderersFactory, 
+        DefaultTrackSelector trackSelector
+    ) {
         DefaultLoadControl loadControl = createLoadControl();
 
-        // HDR fix?
-        //trackSelector.setParameters(trackSelector.buildUponParameters().setTunnelingAudioSessionId(C.generateAudioSessionIdV21(context)));
-
-        // Old initializer
         SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(context, renderersFactory, trackSelector, loadControl);
-
-        // New initializer
-        //SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(
-        //        context, renderersFactory, trackSelector, loadControl,
-        //        null, new DummyBandwidthMeter(), new AnalyticsCollector.Factory(), Util.getLooper()
-        //);
-
-        //enableAudioFocus(player);
-
-        // Lead to numbered errors
-        //player.setRepeatMode(Player.REPEAT_MODE_ONE);
-
-        // Fix still image while audio is playing (happens after format change or exit from sleep)
-        //player.setPlayWhenReady(true);
-
-        applyPlaybackFixes(player);
 
         setupAudioFocus(player);
 
@@ -136,14 +120,6 @@ public class ExoPlayerInitializer {
             } catch (SecurityException e) { // uid 10390 not allowed to perform TAKE_AUDIO_FOCUS
                 e.printStackTrace();
             }
-        }
-    }
-
-    private void applyPlaybackFixes(SimpleExoPlayer player) {
-        // Fix seeking on TextureView (some devices only)
-        if (mPlayerTweaksData.isTextureViewEnabled()) {
-            // Also, live stream (dash) seeking fix
-            player.setSeekParameters(SeekParameters.CLOSEST_SYNC);
         }
     }
 

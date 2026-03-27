@@ -35,10 +35,7 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
     
         ViewGroup root = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
         
-        mVideoSurfaceWrapper = (
-            PlayerTweaksData.instance(getContext()).isTextureViewEnabled() ||
-                PlayerData.instance(getContext()).getRotationAngle() != 0) ?
-                new TextureViewWrapper(getContext(), root) : new SurfaceViewWrapper(getContext(), root);
+        mVideoSurfaceWrapper = (PlayerData.instance(getContext()).getRotationAngle() != 0) ? new TextureViewWrapper(getContext(), root) : new SurfaceViewWrapper(getContext(), root);
         
         mVideoSurfaceRoot = root.findViewById(com.liskovsoft.smartyoutubetv2.tv.R.id.surface_root);
         mVideoSurfaceRoot.addView(mVideoSurfaceWrapper.getSurfaceView(), 0);

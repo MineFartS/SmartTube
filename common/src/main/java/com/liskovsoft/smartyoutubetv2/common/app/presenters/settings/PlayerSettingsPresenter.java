@@ -231,15 +231,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
         options.add(
             UiOptionItem.from(
-                getContext().getString(R.string.ambilight_ratio_fix),
-                getContext().getString(R.string.ambilight_ratio_fix_desc),
-                option -> mPlayerTweaksData.setTextureViewEnabled(option.isSelected()),
-                mPlayerTweaksData.isTextureViewEnabled()
-            )
-        );
-
-        options.add(
-            UiOptionItem.from(
                 getContext().getString(R.string.disable_stream_buffer),
                 getContext().getString(R.string.disable_stream_buffer_desc),
                 option -> mPlayerTweaksData.setBufferOnStreamsDisabled(option.isSelected()),

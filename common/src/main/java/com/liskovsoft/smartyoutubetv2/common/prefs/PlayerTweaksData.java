@@ -66,7 +66,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsSnapToVsyncDisabled;
     private boolean mIsProfileLevelCheckSkipped;
     private boolean mIsSWDecoderForced;
-    private boolean mIsTextureViewEnabled;
     private boolean mIsSetOutputSurfaceWorkaroundEnabled;
     private boolean mIsAudioSyncFixEnabled;
     private boolean mIsPlaybackNotificationsDisabled;
@@ -114,15 +113,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     public void setSWDecoderForced(boolean force) {
         mIsSWDecoderForced = force;
-        persistData();
-    }
-
-    public boolean isTextureViewEnabled() {
-        return mIsTextureViewEnabled;
-    }
-
-    public void setTextureViewEnabled(boolean enable) {
-        mIsTextureViewEnabled = enable;
         persistData();
     }
 
@@ -281,7 +271,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsSnapToVsyncDisabled = Helpers.parseBoolean(split, 2, false);
         mIsProfileLevelCheckSkipped = Helpers.parseBoolean(split, 3, false);
         mIsSWDecoderForced = Helpers.parseBoolean(split, 4, false);
-        mIsTextureViewEnabled = Helpers.parseBoolean(split, 5, false);
         // Need to be enabled (?) on older version of ExoPlayer (e.g. 2.10.6).
         // It's because there's no tweaks for modern devices.
         mIsSetOutputSurfaceWorkaroundEnabled = Helpers.parseBoolean(split, 7, true);
@@ -320,7 +309,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mIsSnapToVsyncDisabled,
                 mIsProfileLevelCheckSkipped, 
                 mIsSWDecoderForced, 
-                mIsTextureViewEnabled,
                 null, 
                 mIsSetOutputSurfaceWorkaroundEnabled, 
                 mIsAudioSyncFixEnabled, 
