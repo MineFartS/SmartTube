@@ -358,10 +358,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 option -> mPlayerTweaksData.setSyncRowButtonIndexEnabled(option.isSelected()),
                 mPlayerTweaksData.isSyncRowButtonIndexEnabled()));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.player_likes_count),
-                option -> mPlayerTweaksData.setLikesCounterEnabled(option.isSelected()),
-                mPlayerTweaksData.isLikesCounterEnabled()));
-
         options.add(UiOptionItem.from(getContext().getString(R.string.player_show_tooltips),
                 option -> mPlayerData.setTooltipsEnabled(option.isSelected()),
                 mPlayerData.isTooltipsEnabled()));

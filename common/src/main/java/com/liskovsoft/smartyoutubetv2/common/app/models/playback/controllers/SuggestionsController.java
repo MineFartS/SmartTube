@@ -821,13 +821,6 @@ public class SuggestionsController extends BasePlayerController {
             return;
         }
 
-        if (!getPlayerTweaksData().isLikesCounterEnabled()) {
-            video.likeCount = null;
-            video.dislikeCount = null;
-            getPlayer().setVideo(video);
-            return;
-        }
-
         Observable<DislikeData> dislikeDataObserve = mMediaItemService.getDislikeDataObserve(video.videoId);
 
         Disposable dislikeAction = dislikeDataObserve.subscribe(

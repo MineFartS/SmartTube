@@ -83,7 +83,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private int mPlayerDataSource;
     private boolean mIsBufferOnStreamsDisabled;
     private boolean mIsSectionPlaylistEnabled;
-    private boolean mIsLikesCounterEnabled;
     private boolean mIsChapterNotificationEnabled;
     private boolean mIsPlayerAutoVolumeEnabled;
     private boolean mIsSyncRowButtonIndexEnabled;
@@ -293,15 +292,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         persistData();
     }
 
-    public boolean isLikesCounterEnabled() {
-        return mIsLikesCounterEnabled;
-    }
-
-    public void setLikesCounterEnabled(boolean enable) {
-        mIsLikesCounterEnabled = enable;
-        persistData();
-    }
-
     public boolean isChapterNotificationEnabled() {
         return mIsChapterNotificationEnabled;
     }
@@ -365,7 +355,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsBufferOnStreamsDisabled = Helpers.parseBoolean(split, 30, false);
         // Cause severe garbage collector stuttering
         mIsSectionPlaylistEnabled = Helpers.parseBoolean(split, 31, Utils.isEnoughRam());
-        mIsLikesCounterEnabled = Helpers.parseBoolean(split, 35, true);
         mIsChapterNotificationEnabled = Helpers.parseBoolean(split, 36, false);
         mIsPlayerAutoVolumeEnabled = Helpers.parseBoolean(split, 40, true);
         mIsSyncRowButtonIndexEnabled = Helpers.parseBoolean(split, 41, true);
@@ -408,8 +397,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mIsLongSpeedListEnabled, 
                 mPlayerDataSource, 
                 mIsBufferOnStreamsDisabled, 
-                mIsSectionPlaylistEnabled,
-                mIsLikesCounterEnabled, 
+                        mIsSectionPlaylistEnabled,
                 mIsChapterNotificationEnabled,
                 mIsPlayerAutoVolumeEnabled, 
                 mIsSyncRowButtonIndexEnabled,
