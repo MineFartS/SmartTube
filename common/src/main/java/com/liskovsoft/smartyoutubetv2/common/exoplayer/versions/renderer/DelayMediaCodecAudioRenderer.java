@@ -19,15 +19,28 @@ import java.nio.ByteBuffer;
 public class DelayMediaCodecAudioRenderer extends MediaCodecAudioRenderer {
 
     private int mDelayUs;
-    private boolean mIsAudioSyncFixEnabled;
-    private boolean mIsAudioSyncFixChanged;
 
     // Exo 2.10, 2.11
-    public DelayMediaCodecAudioRenderer(Context context, MediaCodecSelector mediaCodecSelector,
-                                        @Nullable DrmSessionManager<FrameworkMediaCrypto> drmSessionManager,
-                                        boolean playClearSamplesWithoutKeys, boolean enableDecoderFallback, @Nullable Handler eventHandler,
-                                        @Nullable AudioRendererEventListener eventListener, AudioSink audioSink) {
-        super(context, mediaCodecSelector, drmSessionManager, playClearSamplesWithoutKeys, enableDecoderFallback, eventHandler, eventListener, audioSink);
+    public DelayMediaCodecAudioRenderer(
+        Context context, 
+        MediaCodecSelector mediaCodecSelector,
+        @Nullable DrmSessionManager<FrameworkMediaCrypto> drmSessionManager,
+        boolean playClearSamplesWithoutKeys, 
+        boolean enableDecoderFallback, 
+        @Nullable Handler eventHandler,
+        @Nullable AudioRendererEventListener eventListener, 
+        AudioSink audioSink
+    ) {
+        super(
+            context, 
+            mediaCodecSelector, 
+            drmSessionManager, 
+            playClearSamplesWithoutKeys, 
+            enableDecoderFallback, 
+            eventHandler, 
+            eventListener, 
+            audioSink
+        );
     }
 
     @Override
@@ -44,43 +57,32 @@ public class DelayMediaCodecAudioRenderer extends MediaCodecAudioRenderer {
     }
 
     @Override
-    protected boolean processOutputBuffer(long positionUs, long elapsedRealtimeUs, MediaCodec codec, ByteBuffer buffer, int bufferIndex,
-                                          int bufferFlags, long bufferPresentationTimeUs, boolean isDecodeOnlyBuffer, boolean isLastBuffer, Format format) throws ExoPlaybackException {
-        boolean result = super.processOutputBuffer(
-                positionUs, elapsedRealtimeUs, codec, buffer, bufferIndex, bufferFlags,
-                bufferPresentationTimeUs, isDecodeOnlyBuffer, isLastBuffer, format
+    protected boolean processOutputBuffer(
+        long positionUs, 
+        long elapsedRealtimeUs, 
+        MediaCodec codec, 
+        ByteBuffer buffer, 
+        int bufferIndex,
+        int bufferFlags, 
+        long bufferPresentationTimeUs, 
+        boolean isDecodeOnlyBuffer, 
+        boolean isLastBuffer, 
+        Format format
+    ) throws ExoPlaybackException {
+
+        return super.processOutputBuffer(
+            positionUs, 
+            elapsedRealtimeUs, 
+            codec, 
+            buffer, 
+            bufferIndex, 
+            bufferFlags,
+            bufferPresentationTimeUs, 
+            isDecodeOnlyBuffer, 
+            isLastBuffer, 
+            format
         );
 
-        // Disable the use of AudioTrack.getTimestamp and force ExoPlayer to go through the legacy path of using
-        // AudioTrack.getPlaybackHeadPosition instead, which might help if the first one drifts but the second one doesn't.
-        if (mIsAudioSyncFixEnabled && mIsAudioSyncFixChanged) {
-            Object audioSink = Helpers.getField(this, "audioSink");
-            if (audioSink != null) {
-                Object audioTrackPositionTracker = Helpers.getField(audioSink, "audioTrackPositionTracker");
-                if (audioTrackPositionTracker != null) {
-                    Object audioTimestampPoller = Helpers.getField(audioTrackPositionTracker, "audioTimestampPoller");
-                    if (audioTimestampPoller != null) {
-                        Helpers.setField(audioTimestampPoller, "audioTimestamp", null);
-                        Helpers.setField(audioTimestampPoller, "state", 3);
-                        mIsAudioSyncFixChanged = false;
-                    }
-                }
-            }
-        }
-
-        return result;
     }
 
-    public void enableAudioSyncFix(boolean enable) {
-        if (mIsAudioSyncFixEnabled == enable) {
-            return;
-        }
-
-        mIsAudioSyncFixEnabled = enable;
-        mIsAudioSyncFixChanged = true;
-    }
-
-    public boolean isAudioSyncFixEnabled() {
-        return mIsAudioSyncFixEnabled;
-    }
 }

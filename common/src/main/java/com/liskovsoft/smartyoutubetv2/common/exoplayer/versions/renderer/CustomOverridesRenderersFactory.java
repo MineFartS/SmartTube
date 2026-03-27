@@ -52,18 +52,26 @@ public class CustomOverridesRenderersFactory extends CustomRenderersFactoryBase 
         super.buildAudioRenderers(context, extensionRendererMode, mediaCodecSelector, drmSessionManager, playClearSamplesWithoutKeys,
                 enableDecoderFallback, audioProcessors, eventHandler, eventListener, out);
 
-        if (mPlayerData.getAudioDelayMs() == 0 && !mPlayerTweaksData.isAudioSyncFixEnabled()) {
+        if (mPlayerData.getAudioDelayMs() == 0) {
             // Improve performance a bit by eliminating calculations presented in custom renderer.
-
             return;
         }
 
-        DelayMediaCodecAudioRenderer audioRenderer =
-                new DelayMediaCodecAudioRenderer(context, mediaCodecSelector, drmSessionManager, playClearSamplesWithoutKeys, enableDecoderFallback,
-                        eventHandler, eventListener, new DefaultAudioSink(AudioCapabilities.getCapabilities(context), audioProcessors));
+        DelayMediaCodecAudioRenderer audioRenderer = new DelayMediaCodecAudioRenderer(
+            context, 
+            mediaCodecSelector, 
+            drmSessionManager, 
+            playClearSamplesWithoutKeys, 
+            enableDecoderFallback,
+            eventHandler, 
+            eventListener, 
+            new DefaultAudioSink(
+                AudioCapabilities.getCapabilities(context), 
+                audioProcessors
+            )
+        );
 
         audioRenderer.setAudioDelayMs(mPlayerData.getAudioDelayMs());
-        audioRenderer.enableAudioSyncFix(mPlayerTweaksData.isAudioSyncFixEnabled());
 
         replaceAudioRenderer(out, audioRenderer);
     }

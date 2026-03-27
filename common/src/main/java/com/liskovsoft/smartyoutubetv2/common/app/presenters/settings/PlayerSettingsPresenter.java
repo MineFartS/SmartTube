@@ -218,16 +218,8 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendDeveloperCategory(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
         
-        options.add(
-            UiOptionItem.from(
-                getContext().getString(R.string.audio_sync_fix),
-                getContext().getString(R.string.audio_sync_fix_desc),
-                option -> mPlayerTweaksData.setAudioSyncFixEnabled(option.isSelected()),
-                mPlayerTweaksData.isAudioSyncFixEnabled()
-            )
-        );
+        List<OptionItem> options = new ArrayList<>();
 
         options.add(
             UiOptionItem.from(

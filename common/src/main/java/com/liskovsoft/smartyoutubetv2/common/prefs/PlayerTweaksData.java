@@ -67,7 +67,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsProfileLevelCheckSkipped;
     private boolean mIsSWDecoderForced;
     private boolean mIsSetOutputSurfaceWorkaroundEnabled;
-    private boolean mIsAudioSyncFixEnabled;
     private boolean mIsPlaybackNotificationsDisabled;
     private int mPlayerButtons;
     private boolean mIsRememberPositionOfLiveVideosEnabled;
@@ -126,15 +125,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
      */
     public void setSetOutputSurfaceWorkaroundEnabled(boolean enable) {
         mIsSetOutputSurfaceWorkaroundEnabled = enable;
-        persistData();
-    }
-
-    public boolean isAudioSyncFixEnabled() {
-        return mIsAudioSyncFixEnabled;
-    }
-
-    public void setAudioSyncFixEnabled(boolean enable) {
-        mIsAudioSyncFixEnabled = enable;
         persistData();
     }
 
@@ -274,7 +264,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         // Need to be enabled (?) on older version of ExoPlayer (e.g. 2.10.6).
         // It's because there's no tweaks for modern devices.
         mIsSetOutputSurfaceWorkaroundEnabled = Helpers.parseBoolean(split, 7, true);
-        mIsAudioSyncFixEnabled = Helpers.parseBoolean(split, 8, false);
         mIsPlaybackNotificationsDisabled = Helpers.parseBoolean(split, 11, !Helpers.isAndroidTVLauncher(mPrefs.getContext()));
         mPlayerButtons = Helpers.parseInt(split, 13, PLAYER_BUTTON_DEFAULT);
         mIsRealChannelIconEnabled = Helpers.parseBoolean(split, 20, true);
@@ -311,7 +300,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mIsSWDecoderForced, 
                 null, 
                 mIsSetOutputSurfaceWorkaroundEnabled, 
-                mIsAudioSyncFixEnabled, 
                 mIsPlaybackNotificationsDisabled, 
                 mPlayerButtons,
                 null,
