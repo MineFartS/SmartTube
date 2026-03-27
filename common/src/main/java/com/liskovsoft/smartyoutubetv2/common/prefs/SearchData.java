@@ -14,7 +14,6 @@ public class SearchData {
     private final AppPrefs mAppPrefs;
 
     private int mSearchOptions;
-    private boolean mIsFocusOnResultsEnabled;
     private boolean mIsTempBackgroundModeEnabled;
     private Class<?> mTempBackgroundModeClass;
     private boolean mIsTrendingSearchesEnabled;
@@ -31,15 +30,6 @@ public class SearchData {
         }
 
         return sInstance;
-    }
-
-    public boolean isFocusOnResultsEnabled() {
-        return mIsFocusOnResultsEnabled;
-    }
-
-    public void setFocusOnResultsEnabled(boolean enabled) {
-        mIsFocusOnResultsEnabled = enabled;
-        persistData();
     }
 
     public int getSearchOptions() {
@@ -92,7 +82,6 @@ public class SearchData {
         String[] split = Helpers.splitData(data);
 
         mSearchOptions = Helpers.parseInt(split, 1, 0);
-        mIsFocusOnResultsEnabled = Helpers.parseBoolean(split, 2, true);
         mIsTempBackgroundModeEnabled = Helpers.parseBoolean(split, 4, false);
         mIsTrendingSearchesEnabled = Helpers.parseBoolean(split, 7, true);
         mIsPopularSearchesDisabled = Helpers.parseBoolean(split, 9, false);
@@ -104,7 +93,6 @@ public class SearchData {
             SEARCH_DATA,
             Helpers.mergeData(
                 mSearchOptions, 
-                mIsFocusOnResultsEnabled,
                 mIsTempBackgroundModeEnabled, 
                 null, 
                 mIsTrendingSearchesEnabled,
