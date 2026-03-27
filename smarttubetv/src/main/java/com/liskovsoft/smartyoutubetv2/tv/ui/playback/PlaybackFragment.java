@@ -52,7 +52,6 @@ import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.SeekBarSegme
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.PlaybackPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.views.PlaybackView;
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.controller.ExoPlayerController;
-import com.liskovsoft.smartyoutubetv2.common.exoplayer.other.DebugInfoManager;
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.other.ExoPlayerInitializer;
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.other.SubtitleManager;
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem;
@@ -91,10 +90,13 @@ import java.util.Map;
  * {@link VideoPlayerGlue}.
  */
 public class PlaybackFragment extends SeekModePlaybackFragment implements PlaybackView {
+
     private static final String TAG = PlaybackFragment.class.getSimpleName();
+
     private static final String SELECTED_VIDEO_ID = "SelectedVideoId";
     private static final int UPDATE_DELAY_MS = 100;
     private static final int SUGGESTIONS_START_INDEX = 1;
+
     private VideoPlayerGlue mPlayerGlue;
     private SimpleExoPlayer mPlayer;
     private PlaybackPresenter mPlaybackPresenter;
@@ -106,7 +108,6 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     private ExoPlayerController mExoPlayerController;
     private ExoPlayerInitializer mPlayerInitializer;
     private SubtitleManager mSubtitleManager;
-    private DebugInfoManager mDebugInfoManager;
     private UriBackgroundManager mBackgroundManager;
     private RowsSupportFragment mRowsSupportFragment;
     private boolean mIsEngineBlocked;
@@ -116,6 +117,9 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     private Video mPendingFocus;
     private long mProgressShowTimeMs;
     private String mSelectedVideoId;
+
+    @Override
+    public void showDebugInfo(boolean x) {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -402,12 +406,13 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
         if (mRowsAdapter != null) {
             mRowsAdapter.clear();
         }
+
         setAdapter(null); // PlayerGlue->LeanbackPlayerAdapter->Context memory leak fix
+
         mPlayer = null;
         mPlayerGlue = null;
         mRowsAdapter = null;
         mSubtitleManager = null;
-        mDebugInfoManager = null;
         mMediaSessionConnector = null;
         mMediaSession = null;
     }
@@ -420,8 +425,6 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
         createPlayerGlue();
 
         createSubtitleManager();
-
-        createDebugManager();
 
         createMediaSession();
 
@@ -463,10 +466,6 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
         if (mPlayer.getTextComponent() != null) {
             mPlayer.getTextComponent().addTextOutput(mSubtitleManager);
         }
-    }
-
-    private void createDebugManager() {
-        mDebugInfoManager = new DebugInfoManager(getActivity(), mPlayer, R.id.debug_view_group);
     }
 
     private void createMediaSession() {
@@ -526,20 +525,8 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
             }
         });
 
-        // Fix exoplayer pause when switching AFR. The code seems buggy.
-        mMediaSessionConnector.setControlDispatcher(new DefaultControlDispatcher() {
-            @Override
-            public boolean dispatchSetPlayWhenReady(Player player, boolean playWhenReady) {
-                // Fix exoplayer pause after activity is resumed (AFR switching).
-                // It's tied to activity state transitioning because window has different mode.
-                // NOTE: may be a problems with background playback or bluetooth button events
-                if (System.currentTimeMillis() - PlayerData.instance(getContext()).getAfrSwitchTimeMs() < 5_000) {
-                    return false;
-                }
+        mMediaSessionConnector.setControlDispatcher(new DefaultControlDispatcher());
 
-                return super.dispatchSetPlayWhenReady(player, playWhenReady);
-            }
-        });
     }
 
     private void initializePlayerRows() {
@@ -1193,21 +1180,10 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     }
 
     @Override
-    public void showDebugInfo(boolean show) {
-        if (mDebugInfoManager != null) {
-            mDebugInfoManager.show(show);
-        }
-    }
-
-    @Override
     public void showSubtitles(boolean show) {
         if (mSubtitleManager != null) {
             mSubtitleManager.show(show);
         }
-    }
-
-    public boolean isDebugInfoShown() {
-        return mDebugInfoManager != null && mDebugInfoManager.isShown();
     }
 
     @Override

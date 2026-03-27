@@ -6,7 +6,6 @@ import android.view.KeyEvent;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.SearchPresenter;
-import com.liskovsoft.smartyoutubetv2.common.autoframerate.ModeSyncManager;
 import com.liskovsoft.smartyoutubetv2.common.misc.GlobalKeyTranslator;
 import com.liskovsoft.smartyoutubetv2.common.misc.MotherActivity;
 import com.liskovsoft.smartyoutubetv2.common.misc.PlayerKeyTranslator;
@@ -21,22 +20,28 @@ import com.liskovsoft.smartyoutubetv2.tv.ui.search.tags.SearchTagsActivity;
  * This parent class contains common methods that run in every activity such as search.
  */
 public abstract class LeanbackActivity extends MotherActivity {
+
     private static final String TAG = LeanbackActivity.class.getSimpleName();
+    
     private UriBackgroundManager mBackgroundManager;
-    private ModeSyncManager mModeSyncManager;
     private DoubleBackManager2 mDoubleBackManager;
     private GlobalKeyTranslator mGlobalKeyTranslator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+ 
         super.onCreate(savedInstanceState);
+ 
         mBackgroundManager = new UriBackgroundManager(this);
-        mModeSyncManager = ModeSyncManager.instance();
+        
         mDoubleBackManager = new DoubleBackManager2(this);
+        
         mGlobalKeyTranslator = this instanceof PlaybackActivity ?
-                new PlayerKeyTranslator(this) :
-                new GlobalKeyTranslator(this);
+            new PlayerKeyTranslator(this) :
+            new GlobalKeyTranslator(this);
+        
         mGlobalKeyTranslator.apply();
+ 
     }
 
     @Override
@@ -72,8 +77,6 @@ public abstract class LeanbackActivity extends MotherActivity {
         // PIP fix: While entering/exiting PIP mode only Pause/Resume is called
 
         mGlobalKeyTranslator.apply(); // adapt to state changes (like enter/exit from PIP mode)
-
-        mModeSyncManager.restore(this);
 
         getViewManager().addTop(this);
     }

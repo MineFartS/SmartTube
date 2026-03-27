@@ -55,7 +55,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private boolean mIsAfrEnabled;
     private boolean mIsAfrFpsCorrectionEnabled;
     private boolean mIsAfrResSwitchEnabled;
-    private int mAfrPauseMs;
     private int mAudioDelayMs;
     private String mAudioLanguage;
     private String mSubtitleLanguage;
@@ -76,7 +75,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private boolean mIsSpeedPerChannelEnabled;
     private final Map<String, SpeedItem> mSpeeds = new HashMap<>();
     private float mPitch;
-    private long mAfrSwitchTimeMs;
     private List<String> mLastAudioLanguages;
     private final Runnable mPersistStateInt = this::persistStateInt;
 
@@ -195,15 +193,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
 
     public void setAfrResSwitchEnabled(boolean enabled) {
         mIsAfrResSwitchEnabled = enabled;
-        persistState();
-    }
-
-    public int getAfrPauseMs() {
-        return mAfrPauseMs;
-    }
-
-    public void setAfrPauseMs(int pauseSec) {
-        mAfrPauseMs = pauseSec;
         persistState();
     }
 
@@ -537,14 +526,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         return FormatItem.SUBTITLE_NONE;
     }
 
-    public void setAfrSwitchTimeMs(long timeMillis) {
-        mAfrSwitchTimeMs = timeMillis;
-    }
-
-    public long getAfrSwitchTimeMs() {
-        return mAfrSwitchTimeMs;
-    }
-
     private void initSubtitleStyles() {
         mSubtitleStyles.add(new SubtitleStyle(R.string.subtitle_white_transparent, R.color.light_grey, R.color.transparent, CaptionStyleCompat.EDGE_TYPE_DROP_SHADOW));
         mSubtitleStyles.add(new SubtitleStyle(R.string.subtitle_white_semi_transparent, R.color.light_grey, R.color.semi_transparent, CaptionStyleCompat.EDGE_TYPE_OUTLINE));
@@ -595,7 +576,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         mIsTooltipsEnabled = Helpers.parseBoolean(split, 41, true);
         mSubtitlePosition = Helpers.parseFloat(split, 42, 0.1f);
         mIsSkip24RateEnabled = Helpers.parseBoolean(split, 44, false);
-        mAfrPauseMs = Helpers.parseInt(split, 45, 0);
         mIsLiveChatEnabled = Helpers.parseBoolean(split, 46, false);
         mLastSubtitleFormats = Helpers.parseList(split, 47, ExoFormatItem::from);
         mLastSpeed = Helpers.parseFloat(split, 48, 1.0f);
@@ -632,7 +612,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         mPrefs.setProfileData(
             VIDEO_PLAYER_DATA, 
             Helpers.mergeData(
-                        null,
+                null,
                 mBackgroundMode, 
                 null,
                 mVideoFormat, 
@@ -658,7 +638,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
                 mIsTooltipsEnabled, 
                 mSubtitlePosition, 
                 mIsSkip24RateEnabled, 
-                mAfrPauseMs, 
                 mIsLiveChatEnabled, 
                 mLastSubtitleFormats, 
                 mLastSpeed, 

@@ -6,7 +6,6 @@ import com.liskovsoft.smartyoutubetv2.common.R;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.SettingsItem;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.settings.AboutSettingsPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.settings.AccountSettingsPresenter;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.settings.AutoFrameRateSettingsPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.settings.ContentBlockSettingsPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.settings.GeneralSettingsPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.settings.MainUISettingsPresenter;
@@ -37,34 +36,52 @@ public class AppDataSourceManager {
         List<SettingsItem> settingItems = new ArrayList<>();
 
         settingItems.add(new SettingsItem(
-                context.getString(R.string.settings_accounts), () -> AccountSettingsPresenter.instance(context).show(), R.drawable.settings_account));
-        settingItems.add(new SettingsItem(
-                context.getString(R.string.settings_remote_control), () -> RemoteControlSettingsPresenter.instance(context).show(), R.drawable.settings_cast));
+            context.getString(R.string.settings_accounts), 
+            () -> AccountSettingsPresenter.instance(context).show(), 
+            R.drawable.settings_account
+        ));
 
         settingItems.add(new SettingsItem(
-                context.getString(R.string.settings_general), () -> GeneralSettingsPresenter.instance(context).show(), R.drawable.settings_app));
+            context.getString(R.string.settings_remote_control), 
+            () -> RemoteControlSettingsPresenter.instance(context).show(), 
+            R.drawable.settings_cast
+        ));
+
         settingItems.add(new SettingsItem(
-                context.getString(R.string.settings_main_ui), () -> MainUISettingsPresenter.instance(context).show(), R.drawable.settings_main_ui));
+            context.getString(R.string.settings_general), 
+            () -> GeneralSettingsPresenter.instance(context).show(), 
+            R.drawable.settings_app
+        ));
+
         settingItems.add(new SettingsItem(
-                context.getString(R.string.settings_player), () -> PlayerSettingsPresenter.instance(context).show(), R.drawable.settings_player));
-        // Don't add afr support check here.
-        // Users want even fake afr settings.
+            context.getString(R.string.settings_main_ui), 
+            () -> MainUISettingsPresenter.instance(context).show(), 
+            R.drawable.settings_main_ui
+        ));
+
         settingItems.add(new SettingsItem(
-                context.getString(R.string.auto_frame_rate), () -> AutoFrameRateSettingsPresenter.instance(context).show(), R.drawable.settings_afr));
+            context.getString(R.string.settings_player), 
+            () -> PlayerSettingsPresenter.instance(context).show(), 
+            R.drawable.settings_player
+        ));
         
-        settingItems.add(
-            new SettingsItem(
-                "Subtitles", 
-                () -> SubtitleSettingsPresenter.instance(context).show(),
-                R.drawable.settings_subtitles
-            )
-        );
+        settingItems.add(new SettingsItem(
+            "Subtitles", 
+            () -> SubtitleSettingsPresenter.instance(context).show(),
+            R.drawable.settings_subtitles
+        ));
         
         settingItems.add(new SettingsItem(
-                context.getString(R.string.settings_search), () -> SearchSettingsPresenter.instance(context).show(), R.drawable.settings_search));
+            context.getString(R.string.settings_search), 
+            () -> SearchSettingsPresenter.instance(context).show(), 
+            R.drawable.settings_search
+        ));
         
         settingItems.add(new SettingsItem(
-                context.getString(R.string.content_block_provider), () -> ContentBlockSettingsPresenter.instance(context).show(), R.drawable.settings_block));
+            context.getString(R.string.content_block_provider), 
+            () -> ContentBlockSettingsPresenter.instance(context).show(), 
+            R.drawable.settings_block
+        ));
 
         settingItems.add(new SettingsItem(
             context.getString(R.string.settings_about), 

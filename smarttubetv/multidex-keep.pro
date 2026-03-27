@@ -218,7 +218,6 @@
 
 # NOTE: Stable/Beta: VirusTotal (Google: Detected, Ikarus: Trojan.AndroidOS.Agent)
 #-keep class com.liskovsoft.smartyoutubetv2.tv.ui.main.MainApplication { *; }
-#-keep class com.liskovsoft.smartyoutubetv2.common.app.models.playback.controllers.AutoFrameRateController { *; }
 #-keep class com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData { *; }
 #-keep class com.liskovsoft.smartyoutubetv2.common.app.presenters.ChannelUploadsPresenter { *; }
 

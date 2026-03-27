@@ -29,7 +29,6 @@ import com.liskovsoft.smartyoutubetv2.common.app.presenters.ChannelPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.SearchPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs.menu.VideoMenuPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.settings.AutoFrameRateSettingsPresenter;
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem;
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.track.SubtitleTrack;
 import com.liskovsoft.smartyoutubetv2.common.misc.MediaServiceManager;
@@ -339,20 +338,24 @@ public class PlayerUIController extends BasePlayerController {
 
     @Override
     public void onMetadata(MediaItemMetadata metadata) {
+
         mIsMetadataLoaded = true;
 
         getPlayer().loadStoryboard();
         
         getPlayer().setButtonState(R.id.action_thumbs_up, metadata.getLikeStatus() == MediaItemMetadata.LIKE_STATUS_LIKE ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
         getPlayer().setButtonState(R.id.action_thumbs_down, metadata.getLikeStatus() == MediaItemMetadata.LIKE_STATUS_DISLIKE ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
+
         if (getPlayerTweaksData().isRealChannelIconEnabled()) {
             getPlayer().setChannelIcon(metadata.getAuthorImageUrl());
         }
+
         setPlaylistAddButtonStateCached();
         setSubtitleButtonState();
+
         getPlayer().setButtonState(R.id.action_rotate, getPlayerData().getRotationAngle() == 0 ? PlayerUI.BUTTON_OFF : PlayerUI.BUTTON_ON);
         getPlayer().setButtonState(R.id.action_subscribe, metadata.isSubscribed() ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
-        getPlayer().setButtonState(R.id.action_afr, getPlayerData().isAfrEnabled() ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
+
     }
 
     @Override
@@ -493,18 +496,22 @@ public class PlayerUIController extends BasePlayerController {
 
     @Override
     public void onButtonClicked(int buttonId, int buttonState) {
+        
         if (buttonId == R.id.action_rotate) {
             onRotate();
+
         } else if (buttonId == R.id.action_flip) {
             onFlip();
+
         } else if (buttonId == R.id.action_subscribe) {
             onSubscribe(buttonState);
-        } else if (buttonId == R.id.action_afr) {
-            applyAfr(buttonState);
+
         } else if (buttonId == R.id.action_repeat) {
             applyRepeatMode(buttonState);
+
         } else if (buttonId == R.id.action_channel) {
             openChannel();
+
         } else if (buttonId == R.id.action_playback_queue) {
             AppDialogUtil.showPlaybackQueueDialog(getContext(), item -> getMainController().onNewVideo(item));
 
@@ -531,15 +538,17 @@ public class PlayerUIController extends BasePlayerController {
 
     @Override
     public void onButtonLongClicked(int buttonId, int buttonState) {
+        
         if (buttonId == R.id.action_subscribe || buttonId == R.id.action_channel) {
             showNotificationsDialog(buttonState);
-        } else if (buttonId == R.id.action_afr) {
-            AutoFrameRateSettingsPresenter.instance(getContext()).show(() -> applyAfr(getPlayerData().isAfrEnabled() ? PlayerUI.BUTTON_OFF : PlayerUI.BUTTON_ON));
+
         } else if (buttonId == R.id.action_repeat) {
             showPlaybackModeDialog(buttonState);
+
         } else if (buttonId == R.id.lb_control_closed_captioning) {
             onSubtitleLongClicked();
         }
+
     }
 
     private void disableUiAutoHideTimeout() {
@@ -793,12 +802,6 @@ public class PlayerUIController extends BasePlayerController {
 
         getVideo().isSubscribed = buttonState == PlayerUI.BUTTON_OFF;
         getPlayer().setButtonState(R.id.action_subscribe, buttonState == PlayerUI.BUTTON_OFF ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
-    }
-
-    private void applyAfr(int buttonState) {
-        getPlayerData().setAfrEnabled(buttonState == PlayerUI.BUTTON_OFF);
-        getController(AutoFrameRateController.class).applyAfr();
-        getPlayer().setButtonState(R.id.action_afr, buttonState == PlayerUI.BUTTON_OFF ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
     }
 
     private void applyRepeatMode(int buttonState) {
