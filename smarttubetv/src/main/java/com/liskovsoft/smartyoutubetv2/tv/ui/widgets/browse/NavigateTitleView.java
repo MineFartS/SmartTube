@@ -52,8 +52,8 @@ import static androidx.leanback.widget.TitleViewAdapter.SEARCH_VIEW_VISIBLE;
  * https://stackoverflow.com/questions/40802470/add-button-to-browsefragment
  */
 public class NavigateTitleView extends TitleView implements OnDataChange, AccountChangeListener {
-    private LongClickSearchOrbView mAccountView;
 
+    private LongClickSearchOrbView mAccountView;
     private SearchOrbView mExitPip;
     private TextView mPipTitle;
     private int mSearchVisibility = View.INVISIBLE;
@@ -65,8 +65,6 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
     private int mFlags = FULL_VIEW_VISIBLE;
     private int mIconWidth;
     private int mIconHeight;
-    private boolean mIsSearchOrbEnabled;
-    private boolean mIsAccountViewEnabled;
 
     public NavigateTitleView(Context context) {
         super(context);
@@ -140,19 +138,11 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
 
         mFlags = flags;
 
-        mSearchVisibility = (flags & SEARCH_VIEW_VISIBLE) == SEARCH_VIEW_VISIBLE
-                ? View.VISIBLE : View.INVISIBLE;
+        mSearchVisibility = ((flags & SEARCH_VIEW_VISIBLE) == SEARCH_VIEW_VISIBLE) ? View.VISIBLE : View.INVISIBLE;
 
-        mBrandingVisibility = (flags & BRANDING_VIEW_VISIBLE) == BRANDING_VIEW_VISIBLE
-                ? View.VISIBLE : View.INVISIBLE;
+        mBrandingVisibility = ((flags & BRANDING_VIEW_VISIBLE) == BRANDING_VIEW_VISIBLE) ? View.VISIBLE : View.INVISIBLE;
 
-        if (mIsSearchOrbEnabled) {
-            mSearchOrbView.setVisibility(View.GONE);
-        }
-
-        if (mIsAccountViewEnabled) {
-            mAccountView.setVisibility(mSearchVisibility);
-        }
+        mAccountView.setVisibility(mSearchVisibility);
 
         if (mExitPip != null && (PlaybackPresenter.instance(getContext()).isRunningInBackground() || mSearchVisibility != View.VISIBLE)) {
             mExitPip.setVisibility(mSearchVisibility);
@@ -165,6 +155,7 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
     }
 
     private void init() {
+
         if (mInitDone) {
             return;
         }
@@ -177,39 +168,70 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
         mainUIData.setOnChange(this);
 
         mInitDone = true;
+
     }
 
     private void setupButtons() {
+
         MainUIData mainUIData = MainUIData.instance(getContext());
+
+        //=========================================================
 
         mSearchOrbView = findViewById(R.id.title_orb);
 
+        //=========================================================
+
         mAccountView = findViewById(R.id.account_orb);
+
         mAccountView.setOnOrbClickedListener(v -> AccountSelectionPresenter.instance(getContext()).nextAccountOrDialog());
+        
         mAccountView.setOnOrbLongClickedListener(v -> {
             AccountSettingsPresenter.instance(getContext()).show();
             return true;
         });
-        TooltipCompatHandler.setTooltipText(mAccountView, getContext().getString(R.string.settings_accounts));
+        
+        TooltipCompatHandler.setTooltipText(
+            mAccountView, 
+            getContext().getString(R.string.settings_accounts)
+        );
+
+        //=========================================================
 
         mExitPip = findViewById(R.id.exit_pip);
-        mPipTitle = findViewById(R.id.pip_title);
+
         mExitPip.setOnOrbClickedListener(v -> ViewManager.instance(getContext()).startView(PlaybackView.class));
+
+        TooltipCompatHandler.setTooltipText(
+            mExitPip, 
+            getContext().getString(R.string.return_to_background_video)
+        );
+
+        //=========================================================
+
+        mPipTitle = findViewById(R.id.pip_title);
+        
         ViewUtil.enableMarquee(mPipTitle);
+
         ViewUtil.setTextScrollSpeed(
             mPipTitle, 
             2.5f
         );
-        TooltipCompatHandler.setTooltipText(mExitPip, getContext().getString(R.string.return_to_background_video));
+
+        //=========================================================
 
         mGlobalClock = findViewById(R.id.global_time);
         mGlobalClock.showDate(false);
+
+        //=========================================================
 
         mGlobalDate = findViewById(R.id.global_date);
         mGlobalDate.showTime(false);
         mGlobalDate.showDate(true);
 
+        //=========================================================
+
         updateButtonsVisibility();
+        
     }
 
     private void updateButtonsVisibility() {
@@ -262,22 +284,45 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
     }
 
     private void updateAccountIcon() {
-        if (!mIsAccountViewEnabled) {
-            return;
-        }
 
         Account current = MediaServiceManager.instance().getSelectedAccount();
 
         if (current != null && current.getAvatarImageUrl() != null) {
-            loadIcon(mAccountView, current.getAvatarImageUrl(), false);
-            String accountName = current.getName() != null ? current.getName() : current.getEmail();
-            //TooltipCompatHandler.setTooltipText(mAccountView, Utils.updateTooltip(getContext(), accountName));
-            TooltipCompatHandler.setTooltipText(mAccountView, accountName);
+
+            loadIcon(
+                mAccountView, 
+                current.getAvatarImageUrl(), 
+                false
+            );
+            
+            TooltipCompatHandler.setTooltipText(
+                mAccountView, 
+                current.getName() != null ? current.getName() : current.getEmail()
+            );
+        
         } else {
+            
             Colors orbColors = mAccountView.getOrbColors();
-            mAccountView.setOrbColors(new Colors(orbColors.color, orbColors.brightColor, ContextCompat.getColor(getContext(), R.color.orb_icon_color)));
-            mAccountView.setOrbIcon(ContextCompat.getDrawable(getContext(), R.drawable.browse_title_account));
-            TooltipCompatHandler.setTooltipText(mAccountView, getContext().getString(R.string.dialog_account_none));
+            
+            mAccountView.setOrbColors(new Colors(
+                orbColors.color, 
+                orbColors.brightColor, 
+                ContextCompat.getColor(
+                    getContext(), 
+                    R.color.orb_icon_color
+                )
+            ));
+            
+            mAccountView.setOrbIcon(ContextCompat.getDrawable(
+                getContext(), 
+                R.drawable.browse_title_account
+            ));
+            
+            TooltipCompatHandler.setTooltipText(
+                mAccountView, 
+                getContext().getString(R.string.dialog_account_none)
+            );
+        
         }
     }
 
