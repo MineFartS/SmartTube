@@ -36,13 +36,14 @@ import java.util.regex.Pattern;
  * It contains an Image CardView
  */
 public class VideoCardPresenter extends LongClickPresenter {
+
     private static final String TAG = VideoCardPresenter.class.getSimpleName();
+
     private int mDefaultBackgroundColor = -1;
     private int mDefaultTextColor = -1;
     private int mSelectedBackgroundColor = -1;
     private int mSelectedTextColor = -1;
     private int mCardPreviewType;
-    private int mThumbQuality;
     private int mWidth;
     private int mHeight;
 
@@ -60,7 +61,6 @@ public class VideoCardPresenter extends LongClickPresenter {
                 ContextCompat.getColor(context, R.color.card_selected_text_grey);
 
         mCardPreviewType = getCardPreviewType(context);
-        mThumbQuality = getThumbQuality(context);
 
         updateDimensions(context);
 
@@ -183,10 +183,6 @@ public class VideoCardPresenter extends LongClickPresenter {
 
     protected int getCardPreviewType(Context context) {
         return MainUIData.instance(context).getCardPreviewType();
-    }
-
-    protected int getThumbQuality(Context context) {
-        return MainUIData.instance(context).getThumbQuality();
     }
 
     protected boolean isContentEnabled() {
