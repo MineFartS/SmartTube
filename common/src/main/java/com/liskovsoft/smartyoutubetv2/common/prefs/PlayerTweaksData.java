@@ -57,6 +57,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     @SuppressLint("StaticFieldLeak")
     private static PlayerTweaksData sInstance;
+
     private final AppPrefs mPrefs;
 
     private boolean mIsSnapToVsyncDisabled;
@@ -65,7 +66,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private int mPlayerButtons;
     private boolean mIsRememberPositionOfLiveVideosEnabled;
     private boolean mIsRealChannelIconEnabled;
-    private boolean mIsQualityInfoBitrateEnabled;
     private boolean mIsButtonLongClickEnabled;
     private boolean mIsLongSpeedListEnabled;
     private boolean mIsExtraLongSpeedListEnabled;
@@ -153,15 +153,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         persistData();
     }
 
-    public boolean isQualityInfoBitrateEnabled() {
-        return mIsQualityInfoBitrateEnabled;
-    }
-
-    public void setQualityInfoBitrateEnabled(boolean enable) {
-        mIsQualityInfoBitrateEnabled = enable;
-        persistData();
-    }
-
     public boolean isButtonLongClickEnabled() {
         return mIsButtonLongClickEnabled;
     }
@@ -231,7 +222,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         mIsPlaybackNotificationsDisabled = Helpers.parseBoolean(split, 11, !Helpers.isAndroidTVLauncher(mPrefs.getContext()));
         mPlayerButtons = Helpers.parseInt(split, 13, PLAYER_BUTTON_DEFAULT);
         mIsRealChannelIconEnabled = Helpers.parseBoolean(split, 20, true);
-        mIsQualityInfoBitrateEnabled = Helpers.parseBoolean(split, 22, false);
         mIsButtonLongClickEnabled = Helpers.parseBoolean(split, 24, true);
         mIsLongSpeedListEnabled = Helpers.parseBoolean(split, 25, true);
         mPlayerDataSource = Helpers.parseInt(split, 26, PLAYER_DATA_SOURCE_DEFAULT);
@@ -265,7 +255,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mPlayerButtons,
                 null,
                 mIsRealChannelIconEnabled,
-                mIsQualityInfoBitrateEnabled,
                 mIsButtonLongClickEnabled, 
                 mIsLongSpeedListEnabled, 
                 mPlayerDataSource, 

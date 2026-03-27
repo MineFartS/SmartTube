@@ -60,7 +60,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private String mSubtitleLanguage;
     private boolean mIsAllSpeedEnabled;
     private int mPlaybackMode;
-    private boolean mIsQualityInfoEnabled;
     private boolean mIsSpeedPerVideoEnabled;
     private boolean mIsTimeCorrectionEnabled;
     private boolean mIsDoubleRefreshRateEnabled;
@@ -118,15 +117,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         }
 
         return sInstance;
-    }
-
-    public boolean isQualityInfoEnabled() {
-        return mIsQualityInfoEnabled;
-    }
-
-    public void setQualityInfoEnabled(boolean enable) {
-        mIsQualityInfoEnabled = enable;
-        persistState();
     }
 
     public void setBackgroundMode(int type) {
@@ -567,7 +557,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         mIsAfrResSwitchEnabled = Helpers.parseBoolean(split, 18, false);
         mAudioDelayMs = Helpers.parseInt(split, 20, 0);
         mIsAllSpeedEnabled = Helpers.parseBoolean(split, 21, false);
-        mIsQualityInfoEnabled = Helpers.parseBoolean(split, 28, true);
         mIsSpeedPerVideoEnabled = Helpers.parseBoolean(split, 29, false);
         mIsTimeCorrectionEnabled = Helpers.parseBoolean(split, 32, true);
         mIsDoubleRefreshRateEnabled = Helpers.parseBoolean(split, 35, true);
@@ -628,7 +617,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
                 mAudioDelayMs, 
                 mIsAllSpeedEnabled, 
                 null, null, null, null,
-                mIsQualityInfoEnabled, 
                 mIsSpeedPerVideoEnabled,
                 mIsTimeCorrectionEnabled,
                 mIsDoubleRefreshRateEnabled, 

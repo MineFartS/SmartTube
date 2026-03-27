@@ -169,7 +169,6 @@
     <string name="msg_player_error">Player error occurred %s. Restarting playback…</string>
     <string name="video_preset_disabled">Without preset</string>
     <string name="video_preset_enabled">Format of the next video will be set according to preset</string>
-    <string name="player_show_quality_info">Show quality info in the controls bar</string>
     <string name="player_remember_each_speed">Remember each video speed</string>
     <string name="player_remember_speed_none">None</string>
     <string name="player_remember_speed_all">Same on all videos</string>
@@ -391,7 +390,6 @@
     <string name="thumb_quality_end">End of the video</string>
     <string name="content_block_status">Check SponsorBlock server status</string>
     <string name="dearrow_status">Check DeArrow server status</string>
-    <string name="player_show_quality_info_bitrate">Add bitrate into the quality info</string>
     <string name="child_mode">Child mode</string>
     <string name="child_mode_desc">In this mode, the user can\'t use search or see any suggested content. The settings page will be password protected.</string>
     <string name="lost_setting_warning">The app settings will be changed. Make sure that you created a backup of the settings.</string>

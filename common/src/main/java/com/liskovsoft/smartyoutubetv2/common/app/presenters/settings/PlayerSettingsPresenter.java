@@ -223,14 +223,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 option -> mPlayerTweaksData.setRememberPositionOfLiveVideosEnabled(option.isSelected()),
                 mPlayerTweaksData.isRememberPositionOfLiveVideosEnabled()));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.player_show_quality_info),
-                option -> mPlayerData.setQualityInfoEnabled(option.isSelected()),
-                mPlayerData.isQualityInfoEnabled()));
-
-        options.add(UiOptionItem.from(getContext().getString(R.string.player_show_quality_info_bitrate),
-                option -> mPlayerTweaksData.setQualityInfoBitrateEnabled(option.isSelected()),
-                mPlayerTweaksData.isQualityInfoBitrateEnabled()));
-
         options.add(UiOptionItem.from(getContext().getString(R.string.player_global_focus),
                 getContext().getString(R.string.player_global_focus_desc),
                 option -> mPlayerTweaksData.setSyncRowButtonIndexEnabled(option.isSelected()),

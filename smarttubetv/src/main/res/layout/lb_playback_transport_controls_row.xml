@@ -117,18 +117,12 @@
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:focusable="false" >
-                <TextView
-                    android:id="@+id/quality_info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    style="?attr/playbackControlsTimeStyle" />
+
                 <com.liskovsoft.smartyoutubetv2.tv.ui.widgets.time.DateTimeView
                     android:id="@+id/date_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_below="@+id/quality_info"
                     style="?attr/playbackControlsTimeStyle" />
             </RelativeLayout>
         </RelativeLayout>

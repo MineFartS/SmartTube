@@ -57,14 +57,14 @@ public class ExoPlayerController implements Player.EventListener {
     private Runnable mOnVideoLoaded;
 
     public ExoPlayerController(Context context, PlayerEventListener eventListener) {
+
         PlayerTweaksData playerTweaksData = PlayerTweaksData.instance(context);
+
         mContext = context.getApplicationContext();
         mMediaSourceFactory = new ExoMediaSourceFactory(context);
         mTrackSelectorManager = new TrackSelectorManager(context);
         mTrackFormatter = new TrackInfoFormatter2();
-        mTrackFormatter.enableBitrate(PlayerTweaksData.instance(context).isQualityInfoBitrateEnabled());
         mTrackErrorFixer = new TrackErrorFixer(mTrackSelectorManager);
-
         mMediaSourceFactory.setTrackErrorFixer(mTrackErrorFixer);
         mEventListener = eventListener;
         
@@ -123,7 +123,6 @@ public class ExoPlayerController implements Player.EventListener {
 
     private void openMediaSource(MediaSource mediaSource) {
         resetPlayerState(); // fixes occasional video artifacts and problems with quality switching
-        setQualityInfo("");
 
         mTrackSelectorManager.setMergedSource(mediaSource instanceof MergingMediaSource);
         mTrackSelectorManager.invalidate();
@@ -276,11 +275,6 @@ public class ExoPlayerController implements Player.EventListener {
             }
         }
         
-        setQualityInfo(mTrackFormatter.getQualityLabel());
-
-        // Manage audio focus. E.g. use Spotify when audio is disabled. (NOT NEEDED!!!)
-        //MediaTrack audioTrack = mTrackSelectorManager.getAudioTrack();
-        //ExoPlayerInitializer.enableAudioFocus(mPlayer, audioTrack != null && !audioTrack.isEmpty());
     }
 
     private void notifyOnVideoLoad() {
@@ -359,12 +353,14 @@ public class ExoPlayerController implements Player.EventListener {
     }
     
     public void setSpeed(float speed) {
+
         if (mPlayer != null && speed > 0 && !Helpers.floatEquals(speed, getSpeed())) {
+
             mPlayer.setPlaybackParameters(new PlaybackParameters(speed, mPlayer.getPlaybackParameters().pitch));
 
             mTrackFormatter.setSpeed(speed);
-            setQualityInfo(mTrackFormatter.getQualityLabel());
             mEventListener.onSpeedChanged(speed);
+
         }
     }
     
@@ -419,12 +415,6 @@ public class ExoPlayerController implements Player.EventListener {
     
     public void setOnVideoLoaded(Runnable onVideoLoaded) {
         mOnVideoLoaded = onVideoLoaded;
-    }
-
-    private void setQualityInfo(String qualityInfoStr) {
-        if (mPlayerView != null && qualityInfoStr != null) {
-            mPlayerView.setQualityInfo(qualityInfoStr);
-        }
     }
 
     private void releasePlayer() {

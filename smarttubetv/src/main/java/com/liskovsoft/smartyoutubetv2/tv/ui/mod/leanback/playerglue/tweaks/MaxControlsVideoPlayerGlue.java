@@ -75,30 +75,34 @@ public abstract class MaxControlsVideoPlayerGlue<T extends PlayerAdapter>
                 };
 
         PlaybackTransportRowPresenter rowPresenter = new PlaybackTransportRowPresenter() {
+
             @Override
             protected void onBindRowViewHolder(RowPresenter.ViewHolder vh, Object item) {
+
                 super.onBindRowViewHolder(vh, item);
+
                 vh.setOnKeyListener(MaxControlsVideoPlayerGlue.this);
 
                 ViewHolder viewHolder = (ViewHolder) vh;
+
                 mTransportViewHolder = new WeakReference<>(viewHolder);
 
                 viewHolder.setTopEdgeFocusListener(MaxControlsVideoPlayerGlue.this);
-                viewHolder.setQualityInfo(mQualityInfo);
+
                 viewHolder.setDateVisibility(isControlsVisible());
-                // Don't uncomment
-                // Reset to defaults
-                //viewHolder.setSeekPreviewTitle(null);
-                // Don't uncomment
-                //viewHolder.setSeekBarSegments(null);
+
             }
+
             @Override
             protected void onUnbindRowViewHolder(RowPresenter.ViewHolder vh) {
                 super.onUnbindRowViewHolder(vh);
                 vh.setOnKeyListener(null);
             }
+
         };
+
         rowPresenter.setDescriptionPresenter(detailsPresenter);
+
         return rowPresenter;
     }
 
@@ -108,15 +112,6 @@ public abstract class MaxControlsVideoPlayerGlue<T extends PlayerAdapter>
 
         if (getTransportViewHolder() != null) {
             getTransportViewHolder().setDateVisibility(show);
-        }
-    }
-
-    @Override
-    public void setQualityInfo(String info) {
-        mQualityInfo = info;
-
-        if (getTransportViewHolder() != null) {
-            getTransportViewHolder().setQualityInfo(info);
         }
     }
 

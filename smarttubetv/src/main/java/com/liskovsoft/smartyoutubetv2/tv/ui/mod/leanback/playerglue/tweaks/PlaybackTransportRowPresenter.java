@@ -79,10 +79,12 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
      * A ViewHolder for the PlaybackControlsRow supporting seek UI.
      */
     public class ViewHolder extends PlaybackRowPresenter.ViewHolder implements PlaybackSeekUi {
+
         private static final long SPEED_INCREASE_PERIOD_MS = 1000;
         private static final double SPEED_INCREASE_FACTOR = 1.5;
         private static final int CONTROLS_MODE_FULL = 0;
         private static final int CONTROLS_MODE_COMPACT = 1;
+
         final Presenter.ViewHolder mDescriptionViewHolder;
         final ImageView mImageView;
         final ViewGroup mDescriptionDock;
@@ -90,8 +92,6 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
         final ViewGroup mSecondaryControlsDock;
         final TextView mTotalTime;
         final TextView mCurrentTime;
-
-        final TextView mQualityInfo;
         final TextView mDateTime;
         final ViewGroup mAdditionalInfo;
         final ViewGroup mTimeInfo;
@@ -106,9 +106,12 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
         long mCurrentTimeInMs = Long.MIN_VALUE;
         long mRemainingTimeInMs = Long.MIN_VALUE;
         long mSecondaryProgressInMs;
+
         final StringBuilder mTempBuilder = new StringBuilder();
+
         ControlBarPresenter.ViewHolder mControlsVh;
         ControlBarPresenter.ViewHolder mSecondaryControlsVh;
+        
         BoundData mControlsBoundData = new BoundData();
         BoundData mSecondaryBoundData = new BoundData();
         Presenter.ViewHolder mSelectedViewHolder;
@@ -411,17 +414,18 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
          *                             ViewHolder. The description view will be added into tree.
          */
         public ViewHolder(View rootView, Presenter descriptionPresenter) {
+
             super(rootView);
+
             mPlayerData = PlayerData.instance(rootView.getContext());
-            // MOD: switch between navigation modes
             PlayerTweaksData tweaksData = PlayerTweaksData.instance(rootView.getContext());
             PlaybackTransportRowPresenter.this.mPlaybackControlsPresenter.setSyncedFocusIndexEnabled(tweaksData.isSyncRowButtonIndexEnabled());
             PlaybackTransportRowPresenter.this.mSecondaryControlsPresenter.setSyncedFocusIndexEnabled(tweaksData.isSyncRowButtonIndexEnabled());
+
             mImageView = (ImageView) rootView.findViewById(R.id.image);
             mDescriptionDock = (ViewGroup) rootView.findViewById(R.id.description_dock);
             mCurrentTime = (TextView) rootView.findViewById(R.id.current_time);
             mTotalTime = (TextView) rootView.findViewById(R.id.total_time);
-            mQualityInfo = (TextView) rootView.findViewById(com.liskovsoft.smartyoutubetv2.tv.R.id.quality_info);
             mDateTime = (TextView) rootView.findViewById(com.liskovsoft.smartyoutubetv2.tv.R.id.date_time);
 
             mRemainingTimeFormat = rootView.getContext().getString(com.liskovsoft.smartyoutubetv2.tv.R.string.player_remaining_time);
@@ -726,17 +730,6 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
             double ratio = (double) progressMs / mTotalTimeInMs;           // Range: [0, 1]
             double progressRatio = ratio * Integer.MAX_VALUE;   // Could safely cast to int
             mProgressBar.setSecondaryProgress((int) progressRatio);
-        }
-
-        void setQualityInfo(String content) {
-            if (content != null) {
-                if (mPlayerData.isQualityInfoEnabled()) {
-                    mQualityInfo.setText(content);
-                    mQualityInfo.setVisibility(View.VISIBLE);
-                } else {
-                    mQualityInfo.setVisibility(View.GONE);
-                }
-            }
         }
 
         void setDateVisibility(boolean isVisible) {
