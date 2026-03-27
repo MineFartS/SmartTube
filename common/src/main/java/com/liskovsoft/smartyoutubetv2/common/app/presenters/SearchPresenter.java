@@ -264,7 +264,7 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
             return;
         }
 
-        if ((mIsVoice || getSearchData().isInstantVoiceSearchEnabled()) && mSearchText == null) {
+        if (mIsVoice) {
             getView().startVoiceRecognition();
         } else {
             getView().startSearch(mSearchText);

@@ -50,10 +50,6 @@ public class SearchSettingsPresenter extends BasePresenter<Void> {
                 option -> mSearchData.setTempBackgroundModeEnabled(option.isSelected()),
                 mSearchData.isTempBackgroundModeEnabled()));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.instant_voice_search),
-                option -> mSearchData.setInstantVoiceSearchEnabled(option.isSelected()),
-                mSearchData.isInstantVoiceSearchEnabled()));
-
         options.add(UiOptionItem.from(getContext().getString(R.string.focus_on_search_results),
                 option -> mSearchData.setFocusOnResultsEnabled(option.isSelected()),
                 mSearchData.isFocusOnResultsEnabled()));

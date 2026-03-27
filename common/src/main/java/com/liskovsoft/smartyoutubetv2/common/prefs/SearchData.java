@@ -13,7 +13,6 @@ public class SearchData {
     
     private final AppPrefs mAppPrefs;
 
-    private boolean mIsInstantVoiceSearchEnabled;
     private int mSearchOptions;
     private boolean mIsFocusOnResultsEnabled;
     private boolean mIsTempBackgroundModeEnabled;
@@ -32,15 +31,6 @@ public class SearchData {
         }
 
         return sInstance;
-    }
-
-    public boolean isInstantVoiceSearchEnabled() {
-        return mIsInstantVoiceSearchEnabled;
-    }
-
-    public void setInstantVoiceSearchEnabled(boolean enabled) {
-        mIsInstantVoiceSearchEnabled = enabled;
-        persistData();
     }
 
     public boolean isFocusOnResultsEnabled() {
@@ -101,7 +91,6 @@ public class SearchData {
         String data = mAppPrefs.getData(SEARCH_DATA);
         String[] split = Helpers.splitData(data);
 
-        mIsInstantVoiceSearchEnabled = Helpers.parseBoolean(split, 0, false);
         mSearchOptions = Helpers.parseInt(split, 1, 0);
         mIsFocusOnResultsEnabled = Helpers.parseBoolean(split, 2, true);
         mIsTempBackgroundModeEnabled = Helpers.parseBoolean(split, 4, false);
@@ -114,7 +103,6 @@ public class SearchData {
         mAppPrefs.setData(
             SEARCH_DATA,
             Helpers.mergeData(
-                mIsInstantVoiceSearchEnabled, 
                 mSearchOptions, 
                 mIsFocusOnResultsEnabled,
                 mIsTempBackgroundModeEnabled, 
