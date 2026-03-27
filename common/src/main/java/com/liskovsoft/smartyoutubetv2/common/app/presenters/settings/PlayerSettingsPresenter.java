@@ -105,10 +105,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 PlayerTweaksData.PLAYER_BUTTON_AFR
             },
             {
-                R.string.video_flip,
-                PlayerTweaksData.PLAYER_BUTTON_VIDEO_FLIP
-            },
-            {
                 R.string.open_chat,
                 PlayerTweaksData.PLAYER_BUTTON_CHAT
             },
