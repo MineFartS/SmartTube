@@ -15,9 +15,7 @@ internal abstract class BaseMediaGroup(private val options: MediaGroupOptions): 
         (options.removeUpcoming && it.isUpcoming()) ||
         (options.removeWatched && (it.getPercentWatched() ?: 0) > 80 && !it.isLive()) // check if fully watched
     }
-    private val legacyFilter: ((WrapperMediaItem) -> Boolean) = {
-        options.removeShorts && if (options.enableLegacyUI) YouTubeHelper.isShortsLegacy(it) else false
-    }
+
     private var _titleItem: String? = null
         get() = field ?: titleItem
     private var _mediaItemList: List<MediaItem?>? = null
@@ -31,7 +29,7 @@ internal abstract class BaseMediaGroup(private val options: MediaGroupOptions): 
         ?.mapIndexedNotNull { index, it -> it
             ?.let { if (filter.invoke(it)) null else it }
             ?.let { WrapperMediaItem(it).apply { playlistIndex = index } }
-            ?.let { if (legacyFilter.invoke(it)) null else it }
+            ?.let { it }
         }?.let {
             // Move Watch Later to the top
             if (options.groupType != MediaGroup.TYPE_USER_PLAYLISTS)

@@ -63,7 +63,6 @@ public class MediaServiceData {
     private NSigData mNSigData;
     private NSigData mSigData;
     private boolean mIsMoreSubtitlesUnlocked;
-    private boolean mIsLegacyUIEnabled;
 
     private static class MediaServiceCache extends SharedPreferencesBase {
         private static final String PREF_NAME = MediaServiceCache.class.getSimpleName();
@@ -275,16 +274,6 @@ public class MediaServiceData {
         return PoTokenGate.isWebPotSupported();
     }
 
-    public boolean isLegacyUIEnabled() {
-        return mIsLegacyUIEnabled;
-    }
-
-    public void setLegacyUIEnabled(boolean enable) {
-        mIsLegacyUIEnabled = enable;
-
-        persistData();
-    }
-
     private void restoreData() {
         String data = mGlobalPrefs.getMediaServiceData();
 
@@ -292,27 +281,18 @@ public class MediaServiceData {
 
         String appVersion = AppInfoHelpers.getAppVersionName(mGlobalPrefs.getContext());
 
-        // null for ScreenItem
         mScreenId = Helpers.parseStr(split, 1);
         mDeviceId = Helpers.parseStr(split, 2);
-        
         mOldAppVersion = Helpers.parseStr(split, 3);
         mVideoInfoType = Helpers.parseInt(split, 4, -1);
-        
-        // entries here moved to the cache
         mEnabledFormats = Helpers.parseInt(split, 11, FORMATS_DASH | FORMATS_URL);
-        // null
         mPoToken = Helpers.parseItem(split, 14, PoTokenResponse::fromString);
         mAppInfo = Helpers.parseItem(split, 15, AppInfoCached::fromString);
         mPlayerData = Helpers.parseItem(split, 16, PlayerDataCached::fromString);
         mClientData = Helpers.parseItem(split, 17, ClientDataCached::fromString);
-        
-        mHiddenContent = Helpers.parseInt(split, 18, CONTENT_SHORTS|CONTENT_UPCOMING);
-
+        mHiddenContent = Helpers.parseInt(split, 18, CONTENT_SHORTS | CONTENT_UPCOMING);
         mIsMoreSubtitlesUnlocked = Helpers.parseBoolean(split, 19);
-        
         mVisitorCookie = Helpers.parseStr(split, 21);
-        mIsLegacyUIEnabled = Helpers.parseBoolean(split, 23);
         mFailedAppInfo = Helpers.parseItem(split, 24, AppInfoCached::fromString);
 
         // Hide watched content by default
@@ -344,11 +324,10 @@ public class MediaServiceData {
         }
 
         mGlobalPrefs.setMediaServiceData(
-                Helpers.mergeData(null, mScreenId, mDeviceId, mOldAppVersion,
-                        mVideoInfoType, null, null, null, null, null,
-                        null, mEnabledFormats, null, null, mPoToken, mAppInfo,
-                        mPlayerData, mClientData, mHiddenContent, mIsMoreSubtitlesUnlocked,
-                        null, mVisitorCookie, null, mIsLegacyUIEnabled, mFailedAppInfo));
+                Helpers.mergeData(null, mScreenId, mDeviceId, mOldAppVersion, mVideoInfoType, null,
+                        null, null, null, null, null, mEnabledFormats, null, null, mPoToken,
+                        mAppInfo, mPlayerData, mClientData, mHiddenContent,
+                        mIsMoreSubtitlesUnlocked, null, mVisitorCookie, null, mFailedAppInfo));
     }
 
     private void persistCachedDataInt() {

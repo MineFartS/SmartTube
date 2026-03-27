@@ -294,14 +294,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
             )
         );
 
-        options.add(
-            UiOptionItem.from(
-                "Fix empty Subscriptions and Channels",
-                option -> mMediaServiceData.setLegacyUIEnabled(option.isSelected()),
-                mMediaServiceData.isLegacyUIEnabled()
-            )
-        );
-
         settingsPresenter.appendCheckedCategory(
             getContext().getString(R.string.player_tweaks),
             options
