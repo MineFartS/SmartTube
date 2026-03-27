@@ -11,7 +11,6 @@ import com.liskovsoft.smartyoutubetv2.common.app.presenters.settings.GeneralSett
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.settings.MainUISettingsPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.settings.PlayerSettingsPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.settings.RemoteControlSettingsPresenter;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.settings.SearchSettingsPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.settings.SubtitleSettingsPresenter;
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem.VideoPreset;
 
@@ -70,13 +69,7 @@ public class AppDataSourceManager {
             () -> SubtitleSettingsPresenter.instance(context).show(),
             R.drawable.settings_subtitles
         ));
-        
-        settingItems.add(new SettingsItem(
-            context.getString(R.string.settings_search), 
-            () -> SearchSettingsPresenter.instance(context).show(), 
-            R.drawable.settings_search
-        ));
-        
+                
         settingItems.add(new SettingsItem(
             context.getString(R.string.content_block_provider), 
             () -> ContentBlockSettingsPresenter.instance(context).show(), 
