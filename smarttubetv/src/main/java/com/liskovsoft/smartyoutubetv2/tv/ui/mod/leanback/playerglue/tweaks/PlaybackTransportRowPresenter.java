@@ -740,11 +740,7 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
         }
 
         void setDateVisibility(boolean isVisible) {
-            if (mPlayerData.isClockEnabled()) {
-                mDateTime.setVisibility(View.VISIBLE);
-            } else {
-                mDateTime.setVisibility(View.GONE);
-            }
+            mDateTime.setVisibility(View.GONE);
         }
 
         void setSeekPreviewTitle(String title) {

@@ -38,7 +38,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private static PlayerData sInstance;
     private final AppPrefs mPrefs;
 
-    private boolean mIsClockEnabled;
     private int mBackgroundMode;
     private FormatItem mVideoFormat;
     private FormatItem mTempVideoFormat;
@@ -121,15 +120,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         }
 
         return sInstance;
-    }
-
-    public boolean isClockEnabled() {
-        return mIsClockEnabled;
-    }
-
-    public void setClockEnabled(boolean enable) {
-        mIsClockEnabled = enable;
-        persistState();
     }
 
     public boolean isQualityInfoEnabled() {
@@ -579,11 +569,11 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     }
 
     private void restoreState() {
+
         String data = mPrefs.getProfileData(VIDEO_PLAYER_DATA);
 
         String[] split = Helpers.splitData(data);
 
-        mIsClockEnabled = Helpers.parseBoolean(split, 5, true);
         mBackgroundMode = Helpers.parseInt(split, 7, PlayerEngine.BACKGROUND_MODE_DEFAULT);
         mVideoFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 9)), getDefaultVideoFormat());
         mAudioFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 10)), getDefaultAudioFormat());
@@ -642,8 +632,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         mPrefs.setProfileData(
             VIDEO_PLAYER_DATA, 
             Helpers.mergeData(
-                null,
-                mIsClockEnabled, 
+                        null,
                 mBackgroundMode, 
                 null,
                 mVideoFormat, 
