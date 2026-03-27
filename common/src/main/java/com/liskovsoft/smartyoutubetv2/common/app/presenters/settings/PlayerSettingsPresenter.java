@@ -105,10 +105,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 PlayerTweaksData.PLAYER_BUTTON_AFR
             },
             {
-                R.string.video_rotate,
-                PlayerTweaksData.PLAYER_BUTTON_VIDEO_ROTATE
-            },
-            {
                 R.string.video_flip,
                 PlayerTweaksData.PLAYER_BUTTON_VIDEO_FLIP
             },
@@ -120,7 +116,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 R.string.content_block_provider,
                 PlayerTweaksData.PLAYER_BUTTON_CONTENT_BLOCK
             },
-
             {
                 R.string.share_link,
                 PlayerTweaksData.PLAYER_BUTTON_SHARE

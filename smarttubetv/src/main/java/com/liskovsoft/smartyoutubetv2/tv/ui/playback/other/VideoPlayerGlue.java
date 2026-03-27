@@ -35,7 +35,6 @@ import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.ClosedCaptioningAct
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.ContentBlockAction;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.FlipAction;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.HighQualityAction;
-import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.RotateAction;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.ShareAction;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.VideoInfoAction;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.PipAction;
@@ -87,9 +86,10 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
     private int mPreviousAction = KeyEvent.ACTION_UP;
 
     public VideoPlayerGlue(
-            Context context,
-            PlayerAdapter playerAdapter,
-            OnActionClickedListener actionListener) {
+        Context context,
+        PlayerAdapter playerAdapter,
+        OnActionClickedListener actionListener
+    ) {
         super(context, playerAdapter);
 
         mPlayerTweaksData = PlayerTweaksData.instance(getContext());
@@ -106,6 +106,7 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         ThumbsDownAction thumbsDownAction = new ThumbsDownAction(context);
         thumbsUpAction.setBoundAction(thumbsDownAction);
         thumbsDownAction.setBoundAction(thumbsUpAction);
+
         putAction(thumbsUpAction);
         putAction(thumbsDownAction);
         putAction(new HighQualityAction(context));
@@ -124,8 +125,8 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         putAction(new PlaybackQueueAction(context));
         putAction(new ContentBlockAction(context));
         putAction(new ShareAction(context));
-        putAction(new RotateAction(context));
         putAction(new FlipAction(context));
+
     }
 
     @Override
@@ -134,42 +135,51 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         // Will display as follows:
         // play/pause, previous, rewind, fast forward, next
         //   > /||      |<        <<        >>         >|
+        
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_PLAY_PAUSE)) {
             super.onCreatePrimaryActions(adapter);
         }
+
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_PREVIOUS)) {
             adapter.add(mSkipPreviousAction);
         }
+
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_NEXT)) {
             adapter.add(mSkipNextAction);
         }
+
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_REPEAT_MODE)) {
             adapter.add(mActions.get(R.id.action_repeat));
         }
+
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_VIDEO_SPEED)) {
             adapter.add(mActions.get(R.id.action_video_speed));
         }
+
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_PIP)) {
             adapter.add(mActions.get(R.id.action_pip));
         }
+
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_CHAT)) {
             adapter.add(mActions.get(R.id.action_chat));
         }
+
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_SEARCH)) {
             adapter.add(mActions.get(R.id.action_search));
         }
+
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_SHARE)) {
             adapter.add(mActions.get(R.id.action_share));
         }
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_VIDEO_ROTATE)) {
-            adapter.add(mActions.get(R.id.action_rotate));
-        }
+
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_VIDEO_FLIP)) {
             adapter.add(mActions.get(R.id.action_flip));
         }
+
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_AFR)) {
             adapter.add(mActions.get(R.id.action_afr));
         }
+
     }
 
     @Override

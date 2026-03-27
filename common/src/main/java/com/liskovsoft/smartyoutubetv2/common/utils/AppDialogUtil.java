@@ -453,22 +453,6 @@ public class AppDialogUtil {
         return styleOptions;
     }
 
-    public static OptionCategory createVideoRotateCategory(Context context, PlayerData playerData, Runnable onRotate) {
-        List<OptionItem> options = new ArrayList<>();
-
-        for (int angle : new int[] {0, 90, 180, 270}) {
-            options.add(UiOptionItem.from(String.valueOf(angle),
-                    optionItem -> {
-                        playerData.setRotationAngle(angle);
-                        onRotate.run();
-                    }, playerData.getRotationAngle() == angle));
-        }
-
-        String videoRotateTitle = context.getString(R.string.video_rotate);
-
-        return OptionCategory.from(SUBTITLE_STYLES_ID, OptionCategory.TYPE_RADIO_LIST, videoRotateTitle, options);
-    }
-
     public static OptionItem createExcludeFromContentBlockButton(
             Context context,  Video video, MediaServiceManager serviceManager, Runnable onClose) {
         return UiOptionItem.from(
