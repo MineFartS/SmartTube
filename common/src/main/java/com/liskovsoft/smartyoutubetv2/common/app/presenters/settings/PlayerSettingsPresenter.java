@@ -121,10 +121,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 PlayerTweaksData.PLAYER_BUTTON_VIDEO_INFO
             },
             {
-                R.string.action_video_stats, 
-                PlayerTweaksData.PLAYER_BUTTON_VIDEO_STATS
-            },
-            {
                 R.string.action_playback_queue, 
                 PlayerTweaksData.PLAYER_BUTTON_PLAYBACK_QUEUE
             },

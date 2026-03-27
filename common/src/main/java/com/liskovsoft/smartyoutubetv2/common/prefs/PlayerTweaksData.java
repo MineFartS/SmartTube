@@ -20,7 +20,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     public static final int PLAYER_BUTTON_PIP = 1 << 2;
     public static final int PLAYER_BUTTON_PLAYBACK_QUEUE = 1 << 4;
     public static final int PLAYER_BUTTON_VIDEO_SPEED = 1 << 5;
-    public static final int PLAYER_BUTTON_VIDEO_STATS = 1 << 6;
     public static final int PLAYER_BUTTON_OPEN_CHANNEL = 1 << 7;
     public static final int PLAYER_BUTTON_SUBTITLES = 1 << 8;
     public static final int PLAYER_BUTTON_SUBSCRIBE = 1 << 9;
@@ -42,7 +41,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         PLAYER_BUTTON_SEARCH | 
         PLAYER_BUTTON_PIP | 
         PLAYER_BUTTON_VIDEO_SPEED |
-        PLAYER_BUTTON_VIDEO_STATS | 
         PLAYER_BUTTON_OPEN_CHANNEL | 
         PLAYER_BUTTON_SUBTITLES | 
         PLAYER_BUTTON_SUBSCRIBE |

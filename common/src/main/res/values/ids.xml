@@ -5,7 +5,6 @@
     <item name="action_subscribe" type="id"/>
     <item name="action_channel" type="id"/>
     <item name="action_playlist_add" type="id"/>
-    <item name="action_video_stats" type="id"/>
     <item name="action_video_speed" type="id"/>
     <item name="action_repeat" type="id"/>
     <item name="action_search" type="id"/>

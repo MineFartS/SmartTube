@@ -252,7 +252,6 @@
     <string name="move_section_down">Move section down</string>
     <string name="player_buttons">Setup player buttons</string>
     <string name="action_playlist_add">Add to playlist</string>
-    <string name="action_video_stats">Video stats</string>
     <string name="action_subscribe">Subscribe</string>
     <string name="action_channel">Open channel</string>
     <string name="action_pip">PIP</string>

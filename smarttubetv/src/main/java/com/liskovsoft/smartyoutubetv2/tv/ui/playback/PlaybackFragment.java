@@ -119,9 +119,6 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     private String mSelectedVideoId;
 
     @Override
-    public void showDebugInfo(boolean x) {}
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(null); // trying to fix bug with presets
 

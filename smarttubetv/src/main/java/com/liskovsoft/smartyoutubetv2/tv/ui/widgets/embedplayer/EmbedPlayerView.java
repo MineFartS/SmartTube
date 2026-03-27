@@ -167,11 +167,6 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public void showDebugInfo(boolean show) {
-
-    }
-
-    @Override
     public void showSubtitles(boolean show) {
 
     }

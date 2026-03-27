@@ -46,7 +46,6 @@ import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.TwoStateAction;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.ThumbsDownAction;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.ThumbsUpAction;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.VideoSpeedAction;
-import com.liskovsoft.smartyoutubetv2.tv.ui.playback.actions.VideoStatsAction;
 import com.liskovsoft.smartyoutubetv2.tv.util.ViewUtil;
 
 import java.util.HashMap;
@@ -102,11 +101,13 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
 
         ThumbsUpAction thumbsUpAction = new ThumbsUpAction(context);
         ThumbsDownAction thumbsDownAction = new ThumbsDownAction(context);
-        thumbsUpAction.setBoundAction(thumbsDownAction);
-        thumbsDownAction.setBoundAction(thumbsUpAction);
 
+        thumbsUpAction.setBoundAction(thumbsDownAction);
         putAction(thumbsUpAction);
+
+        thumbsDownAction.setBoundAction(thumbsUpAction);
         putAction(thumbsDownAction);
+
         putAction(new HighQualityAction(context));
         putAction(new PlaybackModeAction(context));
         putAction(new ChannelAction(context));
@@ -115,7 +116,6 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         putAction(new SubscribeAction(context));
         putAction(new VideoInfoAction(context));
         putAction(new VideoSpeedAction(context));
-        putAction(new VideoStatsAction(context));
         putAction(new SearchAction(context));
         putAction(new PipAction(context));
         putAction(new AFRAction(context));
@@ -213,9 +213,6 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         }
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_CONTENT_BLOCK)) {
             adapter.add(mActions.get(R.id.action_content_block));
-        }
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_VIDEO_STATS)) {
-            adapter.add(mActions.get(R.id.action_video_stats));
         }
     }
 

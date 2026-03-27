@@ -53,7 +53,6 @@ public class PlayerUIController extends BasePlayerController {
     private List<PlaylistInfo> mPlaylistInfos;
 
     private boolean mEngineReady;
-    private boolean mDebugViewEnabled;
     private boolean mIsMetadataLoaded;
     private long mOverlayHideTimeMs;
     private final Runnable mSuggestionsResetHandler = () -> {
@@ -254,14 +253,9 @@ public class PlayerUIController extends BasePlayerController {
         }
     }
 
-    private void onDebugInfoClicked(boolean enabled) {
-        mDebugViewEnabled = !enabled;
-        getPlayer().showDebugInfo(mDebugViewEnabled);
-        getPlayer().setButtonState(R.id.action_video_stats, mDebugViewEnabled ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
-    }
-
     @Override
     public void onEngineInitialized() {
+
         mEngineReady = true;
 
         if (isEmbedPlayer()) {
@@ -269,10 +263,7 @@ public class PlayerUIController extends BasePlayerController {
         }
 
         if (getAppDialogPresenter().isDialogShown()) {
-            // Activate debug infos/show ui after engine restarting (buffering, sound shift, error?).
             getPlayer().showOverlay(true);
-            getPlayer().showDebugInfo(mDebugViewEnabled);
-            getPlayer().setButtonState(R.id.action_video_stats, mDebugViewEnabled ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
         }
         
     }
@@ -293,9 +284,6 @@ public class PlayerUIController extends BasePlayerController {
         // Reset temp mode.
         getSearchData().setTempBackgroundModeClass(null);
 
-        // Activate debug infos when restoring after PIP.
-        getPlayer().showDebugInfo(mDebugViewEnabled);
-        getPlayer().setButtonState(R.id.action_video_stats, mDebugViewEnabled ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
         getPlayer().showSubtitles(true);
 
         // Maybe dialog just closed. Reset timeout just in case.
@@ -307,8 +295,6 @@ public class PlayerUIController extends BasePlayerController {
         if (getPlayer() != null && getPlayer().isInPIPMode()) {
             // UI couldn't be properly displayed in PIP mode
             getPlayer().showOverlay(false);
-            getPlayer().showDebugInfo(false);
-            getPlayer().setButtonState(R.id.action_video_stats, PlayerUI.BUTTON_OFF);
             getPlayer().showSubtitles(false);
         }
     }
@@ -521,19 +507,23 @@ public class PlayerUIController extends BasePlayerController {
             onVideoInfoClicked();
         } else if (buttonId == R.id.action_pip) {
             onPipClicked();
+
         } else if (buttonId == R.id.action_search) {
             onSearchClicked();
-        } else if (buttonId == R.id.action_video_stats) {
-            onDebugInfoClicked(buttonState == PlayerUI.BUTTON_ON);
+
         } else if (buttonId == R.id.action_playlist_add) {
             onPlaylistAddClicked();
+
         } else if (buttonId == R.id.lb_control_closed_captioning) {
             onSubtitleClicked(buttonState == PlayerUI.BUTTON_ON);
+
         } else if (buttonId == R.id.action_thumbs_down) {
             onDislikeClicked(buttonState == PlayerUI.BUTTON_ON);
+            
         } else if (buttonId == R.id.action_thumbs_up) {
             onLikeClicked(buttonState == PlayerUI.BUTTON_ON);
         }
+        
     }
 
     @Override

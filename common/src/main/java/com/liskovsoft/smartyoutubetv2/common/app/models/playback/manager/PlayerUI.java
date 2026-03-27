@@ -8,9 +8,11 @@ import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.ChatReceiver
 import java.util.List;
 
 public interface PlayerUI {
+
     int BUTTON_OFF = 0;
     int BUTTON_ON = 1;
     int BUTTON_DISABLED = -1;
+
     void updateSuggestions(VideoGroup group);
     void removeSuggestions(VideoGroup group);
     int getSuggestionsIndex(VideoGroup group);
@@ -30,12 +32,11 @@ public interface PlayerUI {
     void setChannelIcon(String iconUrl);
     void setSeekPreviewTitle(String title);
     void setNextTitle(Video nextVideo);
-    void showDebugInfo(boolean show);
     void showSubtitles(boolean show);
     void loadStoryboard();
     void setTitle(String title);
     void showProgressBar(boolean show);
     void setSeekBarSegments(List<SeekBarSegment> segments);
-
     void setChatReceiver(ChatReceiver chatReceiver);
+    
 }
