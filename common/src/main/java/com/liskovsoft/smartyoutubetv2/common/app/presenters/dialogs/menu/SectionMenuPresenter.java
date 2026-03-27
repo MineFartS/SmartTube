@@ -32,7 +32,6 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
     private final AppDialogPresenter mDialogPresenter;
     private Video mVideo;
     private BrowseSection mSection;
-    private boolean mIsReturnToBackgroundVideoEnabled;
     private boolean mIsMarkAllChannelsWatchedEnabled;
     private boolean mIsRefreshEnabled;
     private boolean mIsMoveSectionEnabled;
@@ -88,11 +87,11 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
     }
 
     private void prepareAndShowDialogSigned() {
+
         if (getContext() == null) {
             return;
         }
 
-        appendReturnToBackgroundVideoButton();
         appendRefreshButton();
         appendUnpinVideoFromSidebarButton();
         appendUnpinSectionFromSidebarButton();
@@ -101,7 +100,6 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
         appendMoveSectionButton();
         appendRenameSectionButton();
         appendCreatePlaylistButton();
-
         appendClearHistoryButton();
         appendUpdateCheckButton();
 
@@ -116,14 +114,15 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
             String title = mSection != null ? mSection.getTitle() : null;
             mDialogPresenter.showDialog(title, this::disposeActions);
         }
+
     }
 
     private void prepareAndShowDialogUnsigned() {
+
         if (getContext() == null) {
             return;
         }
 
-        appendReturnToBackgroundVideoButton();
         appendRefreshButton();
         appendUnpinVideoFromSidebarButton();
         appendUnpinSectionFromSidebarButton();
@@ -143,6 +142,7 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
             String title = mSection != null ? mSection.getTitle() : null;
             mDialogPresenter.showDialog(title, this::disposeActions);
         }
+
     }
 
     private void appendRefreshButton() {
@@ -211,19 +211,6 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
                 }));
     }
 
-    private void appendReturnToBackgroundVideoButton() {
-        if (!mIsReturnToBackgroundVideoEnabled || !PlaybackPresenter.instance(getContext()).isRunningInBackground()) {
-            return;
-        }
-
-        mDialogPresenter.appendSingleButton(
-                UiOptionItem.from(getContext().getString(R.string.return_to_background_video),
-                        // Assume that the Playback view already blocked and remembered.
-                        optionItem -> getViewManager().startView(SplashView.class)
-                )
-        );
-    }
-
     private void appendMarkAllChannelsWatchedButton() {
         if (!mIsMarkAllChannelsWatchedEnabled) {
             return;
@@ -271,9 +258,9 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
 
     @Override
     protected void updateEnabledMenuItems() {
+
         super.updateEnabledMenuItems();
 
-        mIsReturnToBackgroundVideoEnabled = true;
         mIsRefreshEnabled = true;
         mIsMarkAllChannelsWatchedEnabled = true;
         mIsMoveSectionEnabled = true;
@@ -284,6 +271,7 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
         mIsMoveSectionEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_MOVE_SECTION_UP);
         mIsMoveSectionEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_MOVE_SECTION_DOWN);
         mIsRenameSectionEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_RENAME_SECTION);
+    
     }
 
     private void initMenuMapping() {

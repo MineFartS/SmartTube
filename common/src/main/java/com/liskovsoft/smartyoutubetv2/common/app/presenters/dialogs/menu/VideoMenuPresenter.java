@@ -62,7 +62,6 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
     private boolean mIsShareEmbedLinkButtonEnabled;
     private boolean mIsAddToPlaylistButtonEnabled;
     private boolean mIsAddToRecentPlaylistButtonEnabled;
-    private boolean mIsReturnToBackgroundVideoEnabled;
     private boolean mIsOpenPlaylistButtonEnabled;
     private boolean mIsAddToPlaybackQueueButtonEnabled;
     private boolean mIsPlayNextButtonEnabled;
@@ -171,11 +170,10 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
     }
 
     private void prepareAndShowDialogSigned() {
+
         if (getContext() == null) {
             return;
         }
-
-        appendReturnToBackgroundVideoButton();
 
         for (Long menuItem : MainUIData.instance(getContext()).getMenuItemsOrdered()) {
             MenuAction menuAction = mMenuMapping.get(menuItem);
@@ -189,14 +187,13 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
             // No need to add author because: 1) This could be a channel card. 2) This info isn't so important.
             mDialogPresenter.showDialog(title);
         }
+
     }
 
     private void prepareAndShowDialogUnsigned() {
         if (getContext() == null) {
             return;
         }
-
-        appendReturnToBackgroundVideoButton();
 
         for (Long menuItem : MainUIData.instance(getContext()).getMenuItemsOrdered()) {
             MenuAction menuAction = mMenuMapping.get(menuItem);
@@ -572,19 +569,6 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
                         optionItem -> toggleSubscribe()));
     }
 
-    private void appendReturnToBackgroundVideoButton() {
-        if (!mIsReturnToBackgroundVideoEnabled || !PlaybackPresenter.instance(getContext()).isRunningInBackground()) {
-            return;
-        }
-
-        mDialogPresenter.appendSingleButton(
-                UiOptionItem.from(getContext().getString(R.string.return_to_background_video),
-                        // Assume that the Playback view already blocked and remembered.
-                        optionItem -> getViewManager().startView(PlaybackView.class)
-                )
-        );
-    }
-
     private void appendAddToPlaybackQueueButton() {
         if (!mIsAddToPlaybackQueueButtonEnabled) {
             return;
@@ -758,13 +742,13 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
 
     @Override
     protected void updateEnabledMenuItems() {
+        
         super.updateEnabledMenuItems();
 
         MainUIData mainUIData = MainUIData.instance(getContext());
 
         mIsOpenChannelUploadsButtonEnabled = true;
         mIsOpenPlaylistButtonEnabled = true;
-        mIsReturnToBackgroundVideoEnabled = true;
         mIsOpenChannelButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_OPEN_CHANNEL);
         mIsAddToRecentPlaylistButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_RECENT_PLAYLIST);
         mIsAddToPlaybackQueueButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_ADD_TO_QUEUE);
@@ -779,13 +763,12 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         mIsRemoveFromSubscriptionsButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_REMOVE_FROM_SUBSCRIPTIONS);
         mIsOpenDescriptionButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_OPEN_DESCRIPTION);
         mIsPlayVideoButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_PLAY_VIDEO);
-
         mIsSubscribeButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_SUBSCRIBE);
-
         mIsShowPlaybackQueueButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_SHOW_QUEUE);
         mIsPlaylistOrderButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_PLAYLIST_ORDER);
         mIsMarkAsWatchedButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_MARK_AS_WATCHED);
         mIsOpenCommentsButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_OPEN_COMMENTS);
+
     }
 
     private void initMenuMapping() {

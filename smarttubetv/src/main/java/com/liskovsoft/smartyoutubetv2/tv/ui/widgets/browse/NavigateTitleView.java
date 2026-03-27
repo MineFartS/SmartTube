@@ -54,7 +54,6 @@ import static androidx.leanback.widget.TitleViewAdapter.SEARCH_VIEW_VISIBLE;
 public class NavigateTitleView extends TitleView implements OnDataChange, AccountChangeListener {
 
     private LongClickSearchOrbView mAccountView;
-    private SearchOrbView mExitPip;
     private TextView mPipTitle;
     private int mSearchVisibility = View.INVISIBLE;
     private int mBrandingVisibility = View.INVISIBLE;
@@ -144,11 +143,6 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
 
         mAccountView.setVisibility(mSearchVisibility);
 
-        if (mExitPip != null && (PlaybackPresenter.instance(getContext()).isRunningInBackground() || mSearchVisibility != View.VISIBLE)) {
-            mExitPip.setVisibility(mSearchVisibility);
-            mPipTitle.setVisibility(mSearchVisibility);
-        }
-
         mGlobalClock.setVisibility(mBrandingVisibility);
         mGlobalDate.setVisibility(mBrandingVisibility);
 
@@ -197,17 +191,6 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
 
         //=========================================================
 
-        mExitPip = findViewById(R.id.exit_pip);
-
-        mExitPip.setOnOrbClickedListener(v -> ViewManager.instance(getContext()).startView(PlaybackView.class));
-
-        TooltipCompatHandler.setTooltipText(
-            mExitPip, 
-            getContext().getString(R.string.return_to_background_video)
-        );
-
-        //=========================================================
-
         mPipTitle = findViewById(R.id.pip_title);
         
         ViewUtil.enableMarquee(mPipTitle);
@@ -248,39 +231,8 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
     }
 
     @Override
-    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
-        super.onVisibilityChanged(changedView, visibility);
-
-        if (visibility == View.VISIBLE) { // scroll grid up, scroll grid down
-            applyPipParameters();
-        }
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasWindowFocus) {
-        super.onWindowFocusChanged(hasWindowFocus);
-
-        if (hasWindowFocus) { // pip window closed, dialog closed
-            applyPipParameters();
-        }
-    }
-
-    @Override
     public void onAccountChanged(Account account) {
         updateAccountIcon();
-    }
-
-    private void applyPipParameters() {
-        if (mExitPip != null) {
-            int newVisibility = PlaybackPresenter.instance(getContext()).isRunningInBackground() ? mSearchVisibility : View.INVISIBLE;
-            mExitPip.setVisibility(newVisibility);
-            mPipTitle.setVisibility(newVisibility);
-
-            if (newVisibility == View.VISIBLE) {
-                Video video = PlaybackPresenter.instance(getContext()).getVideo();
-                mPipTitle.setText(video != null ? String.format("%s - %s", video.getTitle(), video.getAuthor()) : "");
-            }
-        }
     }
 
     private void updateAccountIcon() {
