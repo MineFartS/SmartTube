@@ -514,7 +514,6 @@
     <string name="card_preview_muted">Video without sound</string>
     <string name="card_preview_full">Video with sound</string>
     <string name="card_preview">Card preview</string>
-    <string name="typing_corrections">Disable auto-correction while typing text</string>
     <string name="stable_restore">Restore the stable build (all data will be lost)</string>
     <string name="once_a_day">Once a day</string>
     <string name="once_a_week">Once a week</string>

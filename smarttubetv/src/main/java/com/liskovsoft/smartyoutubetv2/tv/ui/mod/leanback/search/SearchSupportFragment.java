@@ -217,21 +217,14 @@ public class SearchSupportFragment extends Fragment {
     String mPendingQuery = null;
     SearchOrbView mSearchOrbView;
     SearchOrbView mSearchSettingsOrbView;
-
     OnItemViewSelectedListener mOnItemViewSelectedListener;
     private OnItemViewClickedListener mOnItemViewClickedListener;
     ObjectAdapter mResultAdapter;
     private SpeechRecognitionCallback mSpeechRecognitionCallback;
-
     private String mTitle;
     private Drawable mBadgeDrawable;
     private ExternalQuery mExternalQuery;
-
-    
-    private boolean mIsTypingCorrectionDisabled;
-
     private SpeechRecognizer mSpeechRecognizer;
-
     int mStatus;
     boolean mAutoStartRecognition = false; // MOD: don't start search immediately
     
@@ -365,10 +358,6 @@ public class SearchSupportFragment extends Fragment {
             public void afterTextChanged(Editable s) {}
             
         });
-
-        if (mIsTypingCorrectionDisabled) {
-            mSearchTextEditor.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-        }
 
         // MOD: commit search button
         mSearchOrbView = mSearchBar.findViewById(com.liskovsoft.smartyoutubetv2.tv.R.id.lb_search_bar_search_orb);
@@ -782,10 +771,6 @@ public class SearchSupportFragment extends Fragment {
         if (mSearchTextEditor != null) {
             mSearchTextEditor.selectAll();
         }
-    }
-
-    protected void setTypingCorrectionDisabled(boolean disable) {
-        mIsTypingCorrectionDisabled = disable;
     }
 
     protected void showListening() {

@@ -1,6 +1,7 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters.settings;
 
 import android.content.Context;
+
 import com.liskovsoft.smartyoutubetv2.common.R;
 import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionItem;
 import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.UiOptionItem;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchSettingsPresenter extends BasePresenter<Void> {
+    
     private final SearchData mSearchData;
     private final GeneralData mGeneralData;
 
@@ -40,11 +42,8 @@ public class SearchSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendMiscCategory(AppDialogPresenter settingsPresenter) {
+        
         List<OptionItem> options = new ArrayList<>();
-
-        options.add(UiOptionItem.from(getContext().getString(R.string.typing_corrections),
-                option -> mSearchData.setTypingCorrectionDisabled(option.isSelected()),
-                mSearchData.isTypingCorrectionDisabled()));
 
         options.add(UiOptionItem.from(getContext().getString(R.string.disable_search_history),
                 option -> mSearchData.setSearchHistoryDisabled(option.isSelected()),
@@ -63,5 +62,6 @@ public class SearchSettingsPresenter extends BasePresenter<Void> {
                 mSearchData.isFocusOnResultsEnabled()));
 
         settingsPresenter.appendCheckedCategory(getContext().getString(R.string.player_other), options);
+
     }
 }

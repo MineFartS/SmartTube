@@ -55,7 +55,6 @@ public class SearchTagsFragment extends SearchTagsFragmentBase {
 
         setupEventListeners();
         
-        setTypingCorrectionDisabled(mSearchData.isTypingCorrectionDisabled());
     }
 
     private void setupEventListeners() {

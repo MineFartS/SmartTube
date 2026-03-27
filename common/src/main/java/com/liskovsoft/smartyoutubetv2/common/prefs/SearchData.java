@@ -7,21 +7,20 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 public class SearchData {
 
     private static final String SEARCH_DATA = "search_data";
+    
     @SuppressLint("StaticFieldLeak")
     private static SearchData sInstance;
+    
     private final AppPrefs mAppPrefs;
+
     private boolean mIsInstantVoiceSearchEnabled;
     private int mSearchOptions;
     private boolean mIsFocusOnResultsEnabled;
-
     private boolean mIsTempBackgroundModeEnabled;
-
     private Class<?> mTempBackgroundModeClass;
     private boolean mIsTrendingSearchesEnabled;
     private boolean mIsSearchHistoryDisabled;
     private boolean mIsPopularSearchesDisabled;
-
-    private boolean mIsTypingCorrectionDisabled;
 
     private SearchData(Context context) {
         mAppPrefs = AppPrefs.instance(context);
@@ -60,15 +59,6 @@ public class SearchData {
 
     public void setSearchOptions(int searchOptions) {
         mSearchOptions = searchOptions;
-        persistData();
-    }
-
-    public boolean isTypingCorrectionDisabled() {
-        return mIsTypingCorrectionDisabled;
-    }
-
-    public void setTypingCorrectionDisabled(boolean disabled) {
-        mIsTypingCorrectionDisabled = disabled;
         persistData();
     }
 
@@ -117,21 +107,18 @@ public class SearchData {
     }
 
     private void restoreData() {
-        String data = mAppPrefs.getData(SEARCH_DATA);
 
+        String data = mAppPrefs.getData(SEARCH_DATA);
         String[] split = Helpers.splitData(data);
 
         mIsInstantVoiceSearchEnabled = Helpers.parseBoolean(split, 0, false);
         mSearchOptions = Helpers.parseInt(split, 1, 0);
         mIsFocusOnResultsEnabled = Helpers.parseBoolean(split, 2, true);
-
         mIsTempBackgroundModeEnabled = Helpers.parseBoolean(split, 4, false);
-
         mIsTrendingSearchesEnabled = Helpers.parseBoolean(split, 7, true);
         mIsSearchHistoryDisabled = Helpers.parseBoolean(split, 8, false);
         mIsPopularSearchesDisabled = Helpers.parseBoolean(split, 9, false);
-        
-        mIsTypingCorrectionDisabled = Helpers.parseBoolean(split, 11, false);
+    
     }
 
     private void persistData() {
@@ -141,13 +128,11 @@ public class SearchData {
                 mIsInstantVoiceSearchEnabled, 
                 mSearchOptions, 
                 mIsFocusOnResultsEnabled,
-
                 mIsTempBackgroundModeEnabled, 
                 null, 
                 mIsTrendingSearchesEnabled, 
                 mIsSearchHistoryDisabled, 
-                mIsPopularSearchesDisabled,
-                mIsTypingCorrectionDisabled
+                mIsPopularSearchesDisabled
             )
         );
     }
