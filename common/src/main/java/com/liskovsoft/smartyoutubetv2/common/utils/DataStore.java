@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 import java.io.Serializable;
+import java.io.IOException;
+import java.lang.ClassNotFoundException;
 
 import javax.annotation.Nullable;
 
@@ -39,14 +41,18 @@ public class DataStore extends Fragment {
         if (raw == null) {
             return def;
         } else {
-            return (T) Serializer.decode(raw);
+            
+            try {
+                return (T) Serializer.decode(raw);
+            } catch (IOException|ClassNotFoundException e) {
+                return null;
+            }
+
         }
     
     }
 
-    public <T> T get(
-        Integer x
-    ) {
+    public <T> T get(Integer x) {
         return get(x, null);
     }
 
@@ -59,7 +65,13 @@ public class DataStore extends Fragment {
     ) {
 
         String key = x.toString();
-        String val = Serializer.encode(value);
+
+        String val;
+        try {
+            val = Serializer.encode(value);
+        } catch (IOException e) {
+            val = null;
+        }
 
         mPrefs.edit()
             .putString(key, val)
