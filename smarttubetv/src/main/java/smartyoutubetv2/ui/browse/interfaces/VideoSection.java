@@ -1,7 +1,7 @@
 package smartyoutubetv2.ui.browse.interfaces;
 
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
+import smartyoutubetv1.app.models.data.Video;
+import smartyoutubetv1.app.models.data.VideoGroup;
 
 public interface VideoSection extends Section {
     void update(VideoGroup group);

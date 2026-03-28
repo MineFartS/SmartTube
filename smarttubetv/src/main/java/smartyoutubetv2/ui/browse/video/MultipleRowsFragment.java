@@ -18,9 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.interfaces.VideoGroupPresenter;
+import smartyoutubetv1.app.models.data.Video;
+import smartyoutubetv1.app.models.data.VideoGroup;
+import smartyoutubetv1.app.presenters.interfaces.VideoGroupPresenter;
 import smartyoutubetv2.adapter.VideoGroupObjectAdapter;
 import smartyoutubetv2.presenter.ChannelHeaderPresenter;
 import smartyoutubetv2.presenter.ChannelHeaderPresenter.ChannelHeaderCallback;

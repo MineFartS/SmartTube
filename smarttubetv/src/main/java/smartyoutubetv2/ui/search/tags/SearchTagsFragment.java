@@ -12,12 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
-import com.liskovsoft.smartyoutubetv2.common.app.models.search.MediaServiceSearchTagProvider;
-import com.liskovsoft.smartyoutubetv2.common.app.models.search.vineyard.Tag;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.SearchPresenter;
-import com.liskovsoft.smartyoutubetv2.common.prefs.SearchData;
+import smartyoutubetv1.app.models.data.Video;
+import smartyoutubetv1.app.models.data.VideoGroup;
+import smartyoutubetv1.app.models.search.MediaServiceSearchTagProvider;
+import smartyoutubetv1.app.models.search.vineyard.Tag;
+import smartyoutubetv1.app.presenters.SearchPresenter;
+import smartyoutubetv1.prefs.SearchData;
 import smartyoutubetv2.adapter.VideoGroupObjectAdapter;
 import smartyoutubetv2.presenter.ShortsCardPresenter;
 import smartyoutubetv2.presenter.VideoCardPresenter;

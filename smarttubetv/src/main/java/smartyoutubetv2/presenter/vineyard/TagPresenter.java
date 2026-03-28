@@ -5,8 +5,8 @@ import android.view.ViewGroup;
 import androidx.core.content.ContextCompat;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import smartyoutubetv2.R;
-import com.liskovsoft.smartyoutubetv2.common.app.models.search.vineyard.Tag;
-import com.liskovsoft.smartyoutubetv2.common.app.models.search.vineyard.User;
+import smartyoutubetv1.app.models.search.vineyard.Tag;
+import smartyoutubetv1.app.models.search.vineyard.User;
 import smartyoutubetv2.presenter.base.LongClickPresenter;
 import smartyoutubetv2.ui.widgets.vineyard.TagCardView;
 

@@ -14,12 +14,12 @@ import androidx.leanback.widget.RowPresenter;
 import androidx.leanback.widget.VerticalGridPresenter;
 import androidx.leanback.widget.VerticalGridView;
 
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.BrowsePresenter;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.interfaces.VideoGroupPresenter;
-import com.liskovsoft.smartyoutubetv2.common.misc.TickleManager;
-import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
+import smartyoutubetv1.app.models.data.Video;
+import smartyoutubetv1.app.models.data.VideoGroup;
+import smartyoutubetv1.app.presenters.BrowsePresenter;
+import smartyoutubetv1.app.presenters.interfaces.VideoGroupPresenter;
+import smartyoutubetv1.misc.TickleManager;
+import smartyoutubetv1.prefs.MainUIData;
 import smartyoutubetv2.R;
 import smartyoutubetv2.adapter.HeaderVideoGroupObjectAdapter;
 import smartyoutubetv2.adapter.VideoGroupObjectAdapter;

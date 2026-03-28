@@ -1,7 +1,7 @@
 package smartyoutubetv2.ui.browse;
 
 import android.os.Bundle;
-import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
+import smartyoutubetv1.prefs.MainUIData;
 import smartyoutubetv2.R;
 import smartyoutubetv2.ui.common.LeanbackActivity;
 

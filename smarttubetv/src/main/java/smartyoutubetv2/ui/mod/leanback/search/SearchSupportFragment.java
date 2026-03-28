@@ -39,8 +39,8 @@ import androidx.leanback.widget.VerticalGridView;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.KeyHelpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.SearchPresenter;
-import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
+import smartyoutubetv1.app.presenters.SearchPresenter;
+import smartyoutubetv1.utils.Utils;
 import smartyoutubetv2.BuildConfig;
 
 import java.util.ArrayList;
@@ -257,7 +257,7 @@ public class SearchSupportFragment extends Fragment {
                 startRecognition();
             } else {
                 MessageHelpers.showMessage(getContext(),
-                        com.liskovsoft.smartyoutubetv2.common.R.string.not_supported_by_device);
+                        smartyoutubetv1.R.string.not_supported_by_device);
             }
         }
     }

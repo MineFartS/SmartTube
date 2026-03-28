@@ -1,6 +1,6 @@
 package smartyoutubetv2.adapter;
 
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
+import smartyoutubetv1.app.models.data.VideoGroup;
 import smartyoutubetv2.presenter.VideoCardPresenter;
 
 public class DeferredVideoGroupObjectAdapter extends VideoGroupObjectAdapter {

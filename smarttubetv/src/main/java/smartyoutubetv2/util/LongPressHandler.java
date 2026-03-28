@@ -3,9 +3,9 @@ package smartyoutubetv2.util;
 import android.view.KeyEvent;
 
 import com.liskovsoft.sharedutils.helpers.KeyHelpers;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.PlaybackPresenter;
-import com.liskovsoft.smartyoutubetv2.common.app.views.PlaybackView;
-import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
+import smartyoutubetv1.app.presenters.PlaybackPresenter;
+import smartyoutubetv1.app.views.PlaybackView;
+import smartyoutubetv1.utils.Utils;
 
 public class LongPressHandler {
     // Long press handler

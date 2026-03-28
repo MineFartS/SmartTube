@@ -12,13 +12,13 @@ import androidx.fragment.app.Fragment;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv2.common.app.models.playback.manager.PlayerEngine;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.AppDialogPresenter;
-import com.liskovsoft.smartyoutubetv2.common.app.views.PlaybackView;
-import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
-import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
-import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
-import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
+import smartyoutubetv1.app.models.playback.manager.PlayerEngine;
+import smartyoutubetv1.app.presenters.AppDialogPresenter;
+import smartyoutubetv1.app.views.PlaybackView;
+import smartyoutubetv1.prefs.GeneralData;
+import smartyoutubetv1.prefs.MainUIData;
+import smartyoutubetv1.prefs.PlayerData;
+import smartyoutubetv1.utils.Utils;
 import smartyoutubetv2.R;
 import smartyoutubetv2.ui.common.LeanbackActivity;
 

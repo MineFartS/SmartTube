@@ -10,14 +10,14 @@ import androidx.fragment.app.Fragment;
 
 import com.liskovsoft.sharedutils.helpers.KeyHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.PlaybackPresenter;
-import com.liskovsoft.smartyoutubetv2.common.app.views.PlaybackView;
-import com.liskovsoft.smartyoutubetv2.common.app.views.ViewManager;
-import com.liskovsoft.smartyoutubetv2.common.misc.GlobalKeyTranslator;
-import com.liskovsoft.smartyoutubetv2.common.misc.PlayerKeyTranslator;
-import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
+import smartyoutubetv1.app.presenters.PlaybackPresenter;
+import smartyoutubetv1.app.views.PlaybackView;
+import smartyoutubetv1.app.views.ViewManager;
+import smartyoutubetv1.misc.GlobalKeyTranslator;
+import smartyoutubetv1.misc.PlayerKeyTranslator;
+import smartyoutubetv1.prefs.MainUIData;
 import smartyoutubetv2.R;
-import com.liskovsoft.smartyoutubetv2.common.misc.MotherActivity;
+import smartyoutubetv1.misc.MotherActivity;
 import smartyoutubetv2.ui.playback.PlaybackActivity;
 
 public class AppDialogActivity extends MotherActivity {

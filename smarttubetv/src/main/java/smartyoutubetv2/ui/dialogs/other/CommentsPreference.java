@@ -3,7 +3,7 @@ package smartyoutubetv2.ui.dialogs.other;
 import android.content.Context;
 import android.util.AttributeSet;
 import androidx.preference.DialogPreference;
-import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.CommentsReceiver;
+import smartyoutubetv1.app.models.playback.ui.CommentsReceiver;
 
 public class CommentsPreference extends DialogPreference {
     private CommentsReceiver mCommentsReceiver;

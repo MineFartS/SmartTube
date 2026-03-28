@@ -2,9 +2,9 @@ package smartyoutubetv2.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.SplashPresenter;
-import com.liskovsoft.smartyoutubetv2.common.app.views.SplashView;
-import com.liskovsoft.smartyoutubetv2.common.misc.MotherActivity;
+import smartyoutubetv1.app.presenters.SplashPresenter;
+import smartyoutubetv1.app.views.SplashView;
+import smartyoutubetv1.misc.MotherActivity;
 
 public class SplashActivity extends MotherActivity implements SplashView {
 

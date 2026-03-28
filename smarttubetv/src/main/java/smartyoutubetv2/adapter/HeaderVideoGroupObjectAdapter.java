@@ -6,8 +6,8 @@ import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.PresenterSelector;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
+import smartyoutubetv1.app.models.data.Video;
+import smartyoutubetv1.app.models.data.VideoGroup;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -38,8 +38,8 @@ import androidx.preference.ListPreference;
 import androidx.preference.MultiSelectListPreference;
 import androidx.recyclerview.widget.RecyclerView;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.PlaybackPresenter;
-import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
+import smartyoutubetv1.app.presenters.PlaybackPresenter;
+import smartyoutubetv1.utils.Utils;
 import smartyoutubetv2.ui.mod.clickable.LinkifyCompat;
 import smartyoutubetv2.ui.mod.clickable.LinkifyCompat.LinkifyClickHandler;
 

@@ -7,7 +7,7 @@ import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.PresenterSelector;
 import smartyoutubetv2.R;
-import com.liskovsoft.smartyoutubetv2.common.app.models.search.vineyard.Option;
+import smartyoutubetv1.app.models.search.vineyard.Option;
 import smartyoutubetv2.presenter.vineyard.IconItemPresenter;
 import smartyoutubetv2.presenter.vineyard.LoadingPresenter;
 import smartyoutubetv2.ui.widgets.vineyard.LoadingCardView;

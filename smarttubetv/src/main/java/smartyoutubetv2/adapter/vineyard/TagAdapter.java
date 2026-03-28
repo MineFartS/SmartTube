@@ -3,7 +3,7 @@ package smartyoutubetv2.adapter.vineyard;
 import android.content.Context;
 
 import androidx.leanback.widget.Presenter;
-import com.liskovsoft.smartyoutubetv2.common.app.models.search.vineyard.Tag;
+import smartyoutubetv1.app.models.search.vineyard.Tag;
 import smartyoutubetv2.presenter.vineyard.TagPresenter;
 
 import java.util.ArrayList;

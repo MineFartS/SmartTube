@@ -11,9 +11,9 @@ import androidx.fragment.app.Fragment;
 import androidx.leanback.app.BrowseSupportFragment;
 import androidx.leanback.app.BrowseSupportFragment.MainFragmentAdapter;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv2.common.app.models.errors.CategoryEmptyError;
-import com.liskovsoft.smartyoutubetv2.common.app.models.errors.ErrorFragmentData;
-import com.liskovsoft.smartyoutubetv2.common.app.models.errors.SignInError;
+import smartyoutubetv1.app.models.errors.CategoryEmptyError;
+import smartyoutubetv1.app.models.errors.ErrorFragmentData;
+import smartyoutubetv1.app.models.errors.SignInError;
 import smartyoutubetv2.R;
 import smartyoutubetv2.ui.mod.fragments.ErrorSupportFragment;
 

@@ -18,7 +18,7 @@ package smartyoutubetv2.presenter;
 
 import androidx.leanback.widget.AbstractDetailsDescriptionPresenter;
 
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
+import smartyoutubetv1.app.models.data.Video;
 
 public class DetailsDescriptionPresenter extends AbstractDetailsDescriptionPresenter {
 

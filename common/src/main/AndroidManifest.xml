@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.liskovsoft.smartyoutubetv2.common">
+          package="smartyoutubetv1">
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <!-- Android 14 (API 34) -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
@@ -27,7 +27,7 @@
     <!-- More info: https://stackoverflow.com/questions/63364476/requestlegacyexternalstorage-is-not-working-in-android-11-api-30 -->
     <application android:requestLegacyExternalStorage="true">
         <receiver
-            android:name="com.liskovsoft.smartyoutubetv2.common.misc.RemoteControlReceiver"
+            android:name="smartyoutubetv1.misc.RemoteControlReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -46,11 +46,11 @@
             </intent-filter>
         </receiver>
         <service
-            android:name="com.liskovsoft.smartyoutubetv2.common.misc.RemoteControlService"
+            android:name="smartyoutubetv1.misc.RemoteControlService"
             android:enabled="true"
             android:foregroundServiceType="connectedDevice"/>
         <service
-            android:name="com.liskovsoft.smartyoutubetv2.common.misc.BackgroundPlaybackService"
+            android:name="smartyoutubetv1.misc.BackgroundPlaybackService"
             android:enabled="true"/>
 
         <activity android:name=".misc.BackupReceiverActivity"

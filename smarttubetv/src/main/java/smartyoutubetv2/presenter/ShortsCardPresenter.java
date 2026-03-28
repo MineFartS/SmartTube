@@ -2,7 +2,7 @@ package smartyoutubetv2.presenter;
 
 import android.content.Context;
 import android.util.Pair;
-import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
+import smartyoutubetv1.prefs.MainUIData;
 import smartyoutubetv2.R;
 import smartyoutubetv2.ui.browse.video.GridFragmentHelper;
 

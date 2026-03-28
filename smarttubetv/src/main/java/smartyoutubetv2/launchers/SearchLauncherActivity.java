@@ -1,8 +1,8 @@
 package smartyoutubetv2.launchers;
 
 import android.os.Bundle;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.SearchPresenter;
-import com.liskovsoft.smartyoutubetv2.common.misc.MotherActivity;
+import smartyoutubetv1.app.presenters.SearchPresenter;
+import smartyoutubetv1.misc.MotherActivity;
 
 public class SearchLauncherActivity extends MotherActivity {
     @Override

@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 
 import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.Presenter;
-import com.liskovsoft.smartyoutubetv2.common.app.models.search.vineyard.Option;
+import smartyoutubetv1.app.models.search.vineyard.Option;
 import smartyoutubetv2.ui.widgets.vineyard.IconCardView;
 
 public class IconItemPresenter extends Presenter {

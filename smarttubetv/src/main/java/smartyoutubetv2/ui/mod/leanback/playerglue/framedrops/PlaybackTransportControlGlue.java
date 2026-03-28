@@ -35,7 +35,7 @@ import androidx.leanback.widget.PlaybackSeekDataProvider;
 import androidx.leanback.widget.PlaybackSeekUi;
 import androidx.leanback.widget.PlaybackTransportRowPresenter;
 import androidx.leanback.widget.RowPresenter;
-import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
+import smartyoutubetv1.prefs.PlayerData;
 
 import java.lang.ref.WeakReference;
 

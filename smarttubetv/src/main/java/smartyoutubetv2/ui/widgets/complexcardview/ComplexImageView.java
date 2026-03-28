@@ -13,8 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
-import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
+import smartyoutubetv1.app.models.data.Video;
+import smartyoutubetv1.utils.Utils;
 import smartyoutubetv2.R;
 import smartyoutubetv2.ui.widgets.embedplayer.EmbedPlayerView;
 import smartyoutubetv2.util.ViewUtil;

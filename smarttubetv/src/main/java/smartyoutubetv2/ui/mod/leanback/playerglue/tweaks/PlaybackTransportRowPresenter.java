@@ -40,9 +40,9 @@ import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.RowPresenter;
 
 import com.liskovsoft.sharedutils.helpers.DateHelper;
-import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.SeekBarSegment;
-import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
-import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerTweaksData;
+import smartyoutubetv1.app.models.playback.ui.SeekBarSegment;
+import smartyoutubetv1.prefs.PlayerData;
+import smartyoutubetv1.prefs.PlayerTweaksData;
 import smartyoutubetv2.ui.mod.leanback.misc.SeekBar;
 import smartyoutubetv2.ui.mod.leanback.playerglue.tooltips.ControlButtonPresenterSelector;
 import smartyoutubetv2.ui.mod.leanback.playerglue.tweaks.ControlBarPresenter.OnControlClickedListener;

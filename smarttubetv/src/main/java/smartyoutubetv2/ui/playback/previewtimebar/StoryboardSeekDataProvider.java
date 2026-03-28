@@ -3,7 +3,7 @@ package smartyoutubetv2.ui.playback.previewtimebar;
 import android.content.Context;
 import androidx.leanback.media.PlaybackGlue;
 import androidx.leanback.widget.PlaybackSeekDataProvider;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
+import smartyoutubetv1.app.models.data.Video;
 import smartyoutubetv2.ui.mod.leanback.playerglue.framedrops.PlaybackTransportControlGlue;
 
 public class StoryboardSeekDataProvider extends PlaybackSeekDataProvider {

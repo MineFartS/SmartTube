@@ -2,8 +2,8 @@ package smartyoutubetv2.launchers;
 
 import android.os.Bundle;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.BrowsePresenter;
-import com.liskovsoft.smartyoutubetv2.common.misc.MotherActivity;
+import smartyoutubetv1.app.presenters.BrowsePresenter;
+import smartyoutubetv1.misc.MotherActivity;
 
 public class PlaylistsLauncherActivity extends MotherActivity {
     @Override
