@@ -39,9 +39,7 @@ android {
     flavorDimensions "default"
 
     productFlavors {
-        stbeta {}
         ststable {}
-        stfdroid {}
     }
 }
 

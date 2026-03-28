@@ -124,17 +124,8 @@ android {
 
     // NOTE: The main goal of prefixing a flavor is to group flavors' folders together
     productFlavors {
-        stbeta {
-            // matchingFallbacks = ['lite']
-            applicationIdSuffix ".beta"
-        }
         ststable {
-            // matchingFallbacks = ['lite']
             applicationIdSuffix ".stable"
-        }
-        stfdroid {
-            // matchingFallbacks = ['lite']
-            applicationIdSuffix ".fdroid"
         }
     }
 
@@ -221,10 +212,6 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:' + rxJavaVersion
 
     // Add the Firebase Crashlytics SDK.
-
-    stbetaImplementation('com.google.firebase:firebase-crashlytics:' + firebaseCrashlyticsVersion) {
-        transitive = true
-    }
 
     ststableImplementation('com.google.firebase:firebase-crashlytics:' + firebaseCrashlyticsVersion) {
         transitive = true
