@@ -389,30 +389,33 @@ public class VideoStateController extends BasePlayerController {
     }
 
     private void savePosition() {
-
         Video video = getVideo();
 
         if (video == null || getPlayer() == null || !getPlayer().containsMedia()) {
             return;
         }
 
-        video.sync(getPlayer());
-
         // Exceptional cases:
         // 1) Track is ended
         // 2) Pause on end enabled
         // 3) Watching live stream in real time
-
-        boolean isPositionActual = video.getRemainsMs() > 1_000;
-
-        boolean isLiveBroken = video.isLive && video.getDurationMs() <= 30_000; // the live without a history
-        
-        if (!isPositionActual && isLiveBroken) { // fully viewed
+        long durationMs = getPlayer().getDurationMs();
+        long positionMs = getPlayer().getPositionMs();
+        long remainsMs = durationMs - positionMs;
+        boolean isPositionActual = remainsMs > 1_000;
+        boolean isLiveBroken = video.isLive && durationMs <= 30_000; // the live without a history
+        if (isPositionActual && !isLiveBroken) { // partially viewed
+            State state = new State(video, positionMs, durationMs, getPlayer().getSpeed());
+            getStateService().save(state);
+            // Sync video. You could safely use it later to restore state.
+            video.sync(state);
+        } else { // fully viewed
+            // Mark video as fully viewed. This could help to restore proper progress marker on the video card later.
+            getStateService().save(new State(video, durationMs, durationMs, getPlayer().getSpeed()));
             video.markFullyViewed();
         }
 
-        video.persistState(getContext());
-
+        Playlist.instance().sync(video);
     }
 
     private void restorePosition() {

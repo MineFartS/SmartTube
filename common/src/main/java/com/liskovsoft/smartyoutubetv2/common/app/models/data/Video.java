@@ -20,13 +20,9 @@ import com.liskovsoft.sharedutils.helpers.DateHelper;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv2.common.app.models.playback.service.VideoStateService;
-import com.liskovsoft.smartyoutubetv2.common.app.models.playback.service.VideoStateService.State;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerTweaksData;
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Playlist;
-import com.liskovsoft.smartyoutubetv2.common.misc.MediaServiceManager;
-import com.liskovsoft.smartyoutubetv2.common.app.views.PlaybackView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -36,14 +32,12 @@ import java.util.List;
  * Video is an object that holds the various metadata associated with a single video.
  */
 public final class Video {
-    
     public static final String PLAYLIST_LIKED_MUSIC = "LM";
     public static final String TERTIARY_TEXT_DELIM = "•";
     public static final long MAX_LIVE_DURATION_MS = 24 * 60 * 60 * 1_000;
     private static final int MAX_AUTHOR_LENGTH_CHARS = 20;
     private static final String BLACK_PLACEHOLDER_URL = "https://via.placeholder.com/1280x720/000000/000000";
     private static final float RESTORE_POSITION_PERCENTS = 10; // min value for immediately closed videos
-
     public int id;
     public String title;
     public String deArrowTitle;
@@ -103,48 +97,9 @@ public final class Video {
     public String searchQuery;
     private int startSegmentNum;
     private long liveDurationMs = -1;
-    
+    private long durationMs = -1;
     private WeakReference<VideoGroup> group; // Memory leak fix. Used to get next page when scrolling.
     public List<NotificationState> notificationStates;
-
-    //=================================================================
-
-    public long getPositionMs() {
-
-        if (startTimeSeconds > 0) {
-            return startTimeSeconds * 1_000L;
-        }
-
-        // Ignore up to 10% watched because the video might be opened on phone and closed immediately.
-        if (percentWatched <= RESTORE_POSITION_PERCENTS || percentWatched >= 100) {
-            return 0;
-        }
-
-        long posMs = (long) (durationMs / 100f * percentWatched);
-
-        return posMs > 0 && posMs < durationMs ? posMs : 0;
-    
-    } 
-
-    public void setPositionMs(long position) {
-        percentWatched = (position / durationMs);
-    }
-
-    //=================================================================
-
-    public long getRemainsMs() {
-        return (durationMs - getPositionMs());
-    }
-
-    //=================================================================
-
-    private long durationMs = -1;
-
-    public long getDurationMs() {
-        return durationMs;
-    }
-
-    //=================================================================
 
     public Video() {
        // NOP
@@ -723,13 +678,6 @@ public final class Video {
         percentWatched = video.percentWatched;
     }
 
-    public void sync(PlayerView player) {
-
-        durationMs = player.getDurationMs();
-        setPositionMs(player.getPositionMs());
-
-    }
-
     public void sync(MediaItemMetadata metadata) {
         if (metadata == null) {
             return;
@@ -851,31 +799,9 @@ public final class Video {
         return nextVideo;
     }
 
-    public void persistState(Context context) {
-
-        VideoStateService videoState = VideoStateService.instance(context);
-
-        MediaServiceManager mediaServ = MediaServiceManager.instance();
-    
-        Playlist playlist = Playlist.instance();
-
-        State state = new State(
-            this, 
-            getPositionMs(), 
-            durationMs
-        );
-
-        videoState.save(state);
-
-        mediaServ.updateHistory(this, getPositionMs());
-
-        playlist.sync(this);
-
-    }
-
     public void markFullyViewed() {
         percentWatched = 100;
-        startTimeSeconds = (int)(durationMs / 1_000);
+        startTimeSeconds = (int)(getDurationMs() / 1_000);
     }
 
     public void markNotViewed() {
@@ -899,11 +825,33 @@ public final class Video {
         return liveDurationMs > 0 ? liveDurationMs : 0;
     }
 
+    public long getDurationMs() {
+        return durationMs;
+    }
+
+    public long getPositionMs() {
+        if (startTimeSeconds > 0) {
+            return startTimeSeconds * 1_000L;
+        }
+
+        return getPositionFromPercentWatched();
+    }
+
+    private long getPositionFromPercentWatched() {
+        // Ignore up to 10% watched because the video might be opened on phone and closed immediately.
+        if (percentWatched <= RESTORE_POSITION_PERCENTS || percentWatched >= 100) {
+            return 0;
+        }
+
+        long posMs = (long) (durationMs / 100f * percentWatched);
+        return posMs > 0 && posMs < durationMs ? posMs : 0;
+    }
+
     public MediaItem toMediaItem() {
         return SimpleMediaItem.from(this);
     }
 
-    public void sync(State state) {
+    public void sync(VideoStateService.State state) {
         if (state != null) {
             percentWatched = state.positionMs / (state.durationMs / 100f);
         }
