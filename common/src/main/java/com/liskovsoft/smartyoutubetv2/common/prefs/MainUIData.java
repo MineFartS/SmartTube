@@ -10,7 +10,7 @@ import com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs.menu.provide
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs.menu.providers.ContextMenuProvider;
 import com.liskovsoft.smartyoutubetv2.common.prefs.AppPrefs.ProfileChangeListener;
 import com.liskovsoft.smartyoutubetv2.common.prefs.common.DataChangeBase;
-
+import com.liskovsoft.smartyoutubetv2.common.utils.DataStore;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 
 import java.util.ArrayList;
@@ -18,8 +18,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class MainUIData extends DataChangeBase implements ProfileChangeListener {
-
-    private static final String MAIN_UI_DATA = "main_ui_data2";
     
     public static final int CARD_PREVIEW_DISABLED = 0;
     
@@ -175,6 +173,8 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     private final Context mContext;
     
     private final AppPrefs mPrefs;
+
+    private final DataStore mDataStore;
                 
     private int mCardTitleLinesNum;
     
@@ -184,13 +184,16 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         
     private long mMenuItems;
     
-    private List<Long> mMenuItemsOrdered;
+    private ArrayList<Long> mMenuItemsOrdered;
     
     private int mCardPreviewType;
         
     private MainUIData(Context context) {
 
         mContext = context;
+
+        mDataStore = new DataStore("main_ui_data2");
+
         mPrefs = AppPrefs.instance(context);
         mPrefs.addListener(this);
 
@@ -255,8 +258,8 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         persistState();
     }
 
-    public List<Long> getMenuItemsOrdered() {
-        return Collections.unmodifiableList(mMenuItemsOrdered);
+    public ArrayList<Long> getMenuItemsOrdered() {
+        return (ArrayList) Collections.unmodifiableList((List) mMenuItemsOrdered);
     }
 
     public int getMenuItemIndex(long menuItem) {
@@ -287,16 +290,13 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     }
 
     private void restoreState() {
-        
-        String data = mPrefs.getProfileData(MAIN_UI_DATA);
-        String[] split = Helpers.splitData(data);
 
-        /* 0 */ mUIScale = Helpers.parseFloat(split, 0, 1.0f);
-        /* 1 */ mChannelCategorySorting = Helpers.parseInt(split, 1, CHANNEL_SORTING_LAST_VIEWED);
-        /* 2 */ mCardTitleLinesNum = Helpers.parseInt(split, 2, 1);
-        /* 3 */ mMenuItems = Helpers.parseLong(split, 3, MENU_ITEM_DEFAULT);
-        /* 4 */ mMenuItemsOrdered = Helpers.parseLongList(split, 4);
-        /* 5 */ mCardPreviewType = Helpers.parseInt(split, 5, CARD_PREVIEW_DISABLED);
+        /* 0 */ mUIScale = mDataStore.get(0, 1.0f);
+        /* 1 */ mChannelCategorySorting = mDataStore.get(1, CHANNEL_SORTING_LAST_VIEWED);
+        /* 2 */ mCardTitleLinesNum = mDataStore.get(2, 1);
+        /* 3 */ mMenuItems = mDataStore.get(3, MENU_ITEM_DEFAULT);
+        /* 4 */ mMenuItemsOrdered = mDataStore.get(4);
+        /* 5 */ mCardPreviewType = mDataStore.get(5, CARD_PREVIEW_DISABLED);
 
         int idx = -1;
         for (Long menuItem : MENU_ITEM_DEFAULT_ORDER) {
@@ -335,17 +335,13 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
 
     public void persistState() {
 
-        mPrefs.setProfileData(
-            MAIN_UI_DATA,
-            Helpers.mergeData(
-            /* 0 */ mUIScale, 
-            /* 1 */ mChannelCategorySorting, 
-            /* 2 */ mCardTitleLinesNum, 
-            /* 3 */ mMenuItems, 
-            /* 4 */ Helpers.mergeList(mMenuItemsOrdered),
-            /* 5 */ mCardPreviewType
-            )
-        );
+        /* 0 */ mDataStore.put(0, mUIScale); 
+        /* 1 */ mDataStore.put(1, mChannelCategorySorting); 
+        /* 2 */ mDataStore.put(2, mCardTitleLinesNum);
+        /* 3 */ mDataStore.put(3, mMenuItems);
+        /* 4 */ mDataStore.put(4, mMenuItemsOrdered);
+        /* 5 */ mDataStore.put(5, mCardPreviewType);
+
     }
 
     private void updateDefaultValues() {
