@@ -1,4 +1,4 @@
-Import-Module "$PSScriptRoot/module.psm1" -Force
+Import-Module "$PSScriptRoot/__mod__.psm1" -Force
 
 Clear-Host
 
