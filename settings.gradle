@@ -18,6 +18,9 @@ apply from: new File(
     'core_settings.gradle'
 )
 
+// smarttubetv
+project(':smarttubetv').projectDir = new File(settingsDir, 'pkg/smarttubetv')
+
 // common
 project(':common').projectDir = new File(settingsDir, 'pkg/common')
 
