@@ -13,25 +13,29 @@ import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 
 import java.util.List;
 
+import android.util.Log;
+
 public class VideoStateService implements ProfileChangeListener {
+
+    private static String TAG = "VideoStateService";
     
     @SuppressLint("StaticFieldLeak")
     private static VideoStateService sInstance;
-    
-    private static final int MIN_PERSISTENT_STATE_SIZE = 50;
-    private static final int MAX_PERSISTENT_STATE_SIZE = 300;
 
     private final List<State> mStates;
     private final AppPrefs mPrefs;
+
     private static final String DELIM = "&si;";
-    private boolean mIsHistoryBroken;
 
     private VideoStateService(Context context) {
+
         mPrefs = AppPrefs.instance(context);
         mPrefs.addListener(this);
-        mStates = Helpers.createSafeLRUList(
-                Utils.isEnoughRam() ? MAX_PERSISTENT_STATE_SIZE : MIN_PERSISTENT_STATE_SIZE);
+        
+        mStates = Helpers.createSafeLRUList(200);
+
         restoreState();
+
     }
 
     public static VideoStateService instance(Context context) {
@@ -65,8 +69,14 @@ public class VideoStateService implements ProfileChangeListener {
     }
 
     public void removeByVideoId(String videoId) {
-        Helpers.removeIf(mStates, state -> Helpers.equals(state.video.videoId, videoId));
+
+        Helpers.removeIf(
+            mStates, 
+            state -> Helpers.equals(state.video.videoId, videoId)
+        );
+        
         persistState();
+    
     }
 
     public boolean isEmpty() {
@@ -74,8 +84,11 @@ public class VideoStateService implements ProfileChangeListener {
     }
 
     public void save(State state) {
+
         mStates.add(state);
+        
         persistState();
+    
     }
 
     public void clear() {
@@ -83,42 +96,25 @@ public class VideoStateService implements ProfileChangeListener {
         persistState();
     }
 
-    public void setHistoryBroken(boolean isBroken) {
-        mIsHistoryBroken = isBroken;
-    }
-
-    public boolean isHistoryBroken() {
-
-        android.util.Log.v(
-            "VideoStateService", 
-            "mIsHistoryBroken=" + mIsHistoryBroken
-        );
-
-        return mIsHistoryBroken;
-    }
-
     private void restoreState() {
-        mStates.clear();
-        String data = mPrefs.getStateUpdaterData();
 
+        mStates.clear();
+
+        String data = mPrefs.getStateUpdaterData();
         String[] split = Helpers.splitData(data);
 
-        setStateData(Helpers.parseStr(split, 0));
-        mIsHistoryBroken = Helpers.parseBoolean(split, 1);
+        /* 0 */ setStateData(Helpers.parseStr(split, 0));
+    
     }
 
     public void persistState() {
-        if (isHistoryBroken()) {
-            mPrefs.setStateUpdaterData(
-                Helpers.mergeData(
-                    getStateData(), 
-                    mIsHistoryBroken
-                )
-            );
-        } else {
-            // Eliminate additional string creation with the merge
-            mPrefs.setStateUpdaterData(getStateData());
-        }
+        
+        mPrefs.setStateUpdaterData(
+            Helpers.mergeData(
+                /* 0 */ getStateData()
+            )
+        );
+        
     }
 
     public static class State {

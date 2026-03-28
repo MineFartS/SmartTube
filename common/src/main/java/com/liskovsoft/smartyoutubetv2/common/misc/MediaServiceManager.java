@@ -391,7 +391,6 @@ public class MediaServiceManager implements OnAccountChange {
             historyObservable = mItemService.updateHistoryPositionObserve(video.videoId, positionMs / 1_000f);
         }
 
-        mHistoryAction = RxHelper.execute(historyObservable, error -> setHistoryBroken(true), () -> setHistoryBroken(false));
     }
 
     public void hideNotification(Video item) {
@@ -509,11 +508,4 @@ public class MediaServiceManager implements OnAccountChange {
         }, error -> LoadingManager.showLoading(context, false));
     }
 
-    private void setHistoryBroken(boolean isBroken) {
-        VideoStateService stateService = VideoStateService.instance(null);
-
-        if (stateService != null) {
-            stateService.setHistoryBroken(isBroken);
-        }
-    }
 }
