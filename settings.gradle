@@ -1,17 +1,17 @@
 include ':smarttubetv', ':common', ':chatkit', ':leanbackassistant', ':leanback-1.0.0', ':fragment-1.1.0'
 
 // SharedModules
-gradle.ext.sharedModulesRoot = new File(settingsDir, 'dependencies/SharedModules')
+gradle.ext.sharedModulesRoot = new File(settingsDir, 'pkg/SharedModules')
 apply from: new File(gradle.ext.sharedModulesRoot, 'core_settings.gradle')
 
 gradle.ext.sharedModulesConstants = new File(gradle.ext.sharedModulesRoot, '/../constants.gradle')
 
 // MediaServiceCore
-gradle.ext.mediaServiceCoreRoot = new File(settingsDir, 'dependencies/MediaServiceCore')
+gradle.ext.mediaServiceCoreRoot = new File(settingsDir, 'pkg/MediaServiceCore')
 apply from: new File(gradle.ext.mediaServiceCoreRoot, 'core_settings.gradle')
 
 // exoplayer-amzn-2.10.6
-gradle.ext.exoplayerRoot = new File(settingsDir, 'dependencies/exoplayer-amzn-2.10.6')
+gradle.ext.exoplayerRoot = new File(settingsDir, 'pkg/exoplayer-amzn-2.10.6')
 gradle.ext.exoplayerModulePrefix = 'exoplayer-'
 apply from: new File(
     gradle.ext.exoplayerRoot, 
@@ -19,13 +19,13 @@ apply from: new File(
 )
 
 // fragment-1.1.0
-project(':fragment-1.1.0').projectDir = new File(settingsDir, 'dependencies/fragment-1.1.0')
+project(':fragment-1.1.0').projectDir = new File(settingsDir, 'pkg/fragment-1.1.0')
 
 // chatkit
-project(':chatkit').projectDir = new File(settingsDir, 'dependencies/chatkit')
+project(':chatkit').projectDir = new File(settingsDir, 'pkg/chatkit')
 
 // leanbackassistant
-project(':leanbackassistant').projectDir = new File(settingsDir, 'dependencies/leanbackassistant')
+project(':leanbackassistant').projectDir = new File(settingsDir, 'pkg/leanbackassistant')
 
 // leanback-1.0.0
-project(':leanback-1.0.0').projectDir = new File(settingsDir, 'dependencies/leanback-1.0.0')
+project(':leanback-1.0.0').projectDir = new File(settingsDir, 'pkg/leanback-1.0.0')
