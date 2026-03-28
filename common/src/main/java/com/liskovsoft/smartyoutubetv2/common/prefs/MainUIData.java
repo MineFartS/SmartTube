@@ -192,7 +192,7 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
 
         mContext = context;
 
-        mDataStore = new DataStore("main_ui_data2");
+        mDataStore = new DataStore(context, "main_ui_data2");
 
         mPrefs = AppPrefs.instance(context);
         mPrefs.addListener(this);
@@ -295,7 +295,7 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         /* 1 */ mChannelCategorySorting = mDataStore.get(1, CHANNEL_SORTING_LAST_VIEWED);
         /* 2 */ mCardTitleLinesNum = mDataStore.get(2, 1);
         /* 3 */ mMenuItems = mDataStore.get(3, MENU_ITEM_DEFAULT);
-        /* 4 */ mMenuItemsOrdered = mDataStore.get(4);
+        /* 4 */ mMenuItemsOrdered = mDataStore.get(4, new ArrayList());
         /* 5 */ mCardPreviewType = mDataStore.get(5, CARD_PREVIEW_DISABLED);
 
         int idx = -1;

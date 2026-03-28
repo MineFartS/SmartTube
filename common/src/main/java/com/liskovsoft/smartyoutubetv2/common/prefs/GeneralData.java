@@ -57,7 +57,7 @@ public class GeneralData implements ProfileChangeListener {
         mPrefs = AppPrefs.instance(context);
         mPrefs.addListener(this);
 
-        mDataStore = new DataStore("general_data");
+        mDataStore = new DataStore(context, "general_data");
         
         restoreState();
     
@@ -161,7 +161,13 @@ public class GeneralData implements ProfileChangeListener {
     }
 
     public ArrayList<Video> getPendingStreams() {
-        return (ArrayList) Collections.unmodifiableList((List) mPendingStreams);
+
+        if (mPendingStreams == null) {
+            return new ArrayList<Video>();
+        } else {
+            return (ArrayList<Video>) Collections.unmodifiableList((List) mPendingStreams);
+        }
+
     }
 
     public boolean containsPendingStream(Video video) {

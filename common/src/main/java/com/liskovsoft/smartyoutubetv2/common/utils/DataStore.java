@@ -3,7 +3,6 @@ package com.liskovsoft.smartyoutubetv2.common.utils;
 import com.liskovsoft.smartyoutubetv2.common.utils.Serializer;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -16,14 +15,15 @@ import java.lang.ClassNotFoundException;
 
 import javax.annotation.Nullable;
 
-public class DataStore extends Fragment {
+public class DataStore {
 
     private SharedPreferences mPrefs;
 
-    public DataStore(String name) {
-
-        mPrefs = getContext().getSharedPreferences(name, Context.MODE_PRIVATE);
-    
+    public DataStore(
+        Context context,
+        String name
+    ) {
+        mPrefs = context.getSharedPreferences(name, Context.MODE_PRIVATE);
     }
 
     //====================================

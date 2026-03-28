@@ -45,7 +45,7 @@ public class ContentBlockData {
 
     private ContentBlockData(Context context) {
 
-        mDataStore = new DataStore("content_block_data");
+        mDataStore = new DataStore(context, "content_block_data");
         
         initLocalizedMapping();
         initColorMapping();
