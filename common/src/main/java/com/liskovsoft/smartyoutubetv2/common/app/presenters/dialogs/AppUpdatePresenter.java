@@ -52,8 +52,11 @@ public class AppUpdatePresenter extends BasePresenter<Void> implements AppUpdate
         mUpdateChecker.checkForUpdates(mUpdateManifestUrls);
     }
 
-    @Override
-    public void onUpdateFound(String versionName, List<String> changelog, String apkPath) {
+    public void onUpdateFound(
+        String versionName, 
+        ArrayList<String> changelog, 
+        String apkPath
+    ) {
         if (mIsForceCheck) {
             LoadingManager.showLoading(getContext(), false);
             showUpdateDialog(versionName, changelog, apkPath);
@@ -79,7 +82,11 @@ public class AppUpdatePresenter extends BasePresenter<Void> implements AppUpdate
         onFinish();
     }
 
-    private void showUpdateDialog(String versionName, List<String> changelog, String apkPath) {
+    private void showUpdateDialog(
+        String versionName, 
+        ArrayList<String> changelog, 
+        String apkPath
+    ) {
         
         // Don't show update dialog if the player opened or the app is collapsed
         if (getContext() == null || getViewManager().isPlayerInForeground() || !Utils.isAppInForegroundFixed()) {
@@ -113,7 +120,11 @@ public class AppUpdatePresenter extends BasePresenter<Void> implements AppUpdate
         
     }
 
-    private void pinUpdateSection(String versionName, List<String> changelog, String apkPath) {
+    private void pinUpdateSection(
+        String versionName, 
+        ArrayList<String> changelog, 
+        String apkPath
+    ) {
         // Don't show update dialog if the player opened or the app is collapsed
         if (getContext() == null) {
             return;
@@ -140,7 +151,7 @@ public class AppUpdatePresenter extends BasePresenter<Void> implements AppUpdate
         });
     }
 
-    private List<OptionItem> createChangelogOptions(List<String> changelog) {
+    private List<OptionItem> createChangelogOptions(ArrayList<String> changelog) {
         List<OptionItem> options = new ArrayList<>();
 
         for (String change : changelog) {
@@ -150,7 +161,7 @@ public class AppUpdatePresenter extends BasePresenter<Void> implements AppUpdate
         return options;
     }
 
-    private String createChangelog(List<String> changelog) {
+    private String createChangelog(ArrayList<String> changelog) {
         StringBuilder builder = new StringBuilder();
 
         int maxLines = 30;

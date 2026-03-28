@@ -14,17 +14,21 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 
 public class AppUpdateChecker implements AppVersionCheckerListener, AppDownloaderListener {
+
     private static final String TAG = AppUpdateChecker.class.getSimpleName();
+    
     private static final int FRESH_TIME_MS = 15 * 60 * 1_000; // 15 minutes
     private static final int MIN_APK_SIZE_BYTES = 1_000_000; // 1 MB
+    
     private final Context mContext;
     private final AppVersionChecker mVersionChecker;
     private final AppDownloader mDownloader;
     private final AppUpdateCheckerListener mListener;
     private final SettingsManager mSettingsManager;
-    private List<String> mChangeLog;
+    private ArrayList<String> mChangeLog;
     private String mLatestVersionName;
     private int mLatestVersionNumber;
 
@@ -98,7 +102,13 @@ public class AppUpdateChecker implements AppVersionCheckerListener, AppDownloade
     }
 
     @Override
-    public void onChangelogReceived(boolean isLatestVersion, String latestVersionName, int latestVersionNumber, List<String> changelog, Uri[] downloadUris) {
+    public void onChangelogReceived(
+        boolean isLatestVersion, 
+        String latestVersionName, 
+        int latestVersionNumber, 
+        ArrayList<String> changelog, 
+        Uri[] downloadUris
+    ) {
         if (!isLatestVersion) {
             if (downloadUris != null) {
                 mChangeLog = changelog;
@@ -125,6 +135,7 @@ public class AppUpdateChecker implements AppVersionCheckerListener, AppDownloade
 
     @Override
     public void onApkDownloaded(String path) {
+
         if (!checkApk(path)) {
             return;
         }
@@ -136,7 +147,12 @@ public class AppUpdateChecker implements AppVersionCheckerListener, AppDownloade
         Log.d(TAG, "App update received. Apk path: " + path);
         Log.d(TAG, "App update received. Changelog: " + mChangeLog);
 
-        mListener.onUpdateFound(mLatestVersionName, mChangeLog, path);
+        mListener.onUpdateFound(
+            mLatestVersionName, 
+            mChangeLog, 
+            path
+        );
+
     }
 
     @Override
