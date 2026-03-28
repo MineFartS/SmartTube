@@ -51,7 +51,6 @@ public class MediaServiceData {
     private String mVisitorCookie;
     private int mEnabledFormats;
     private int mHiddenContent;
-    private Disposable mPersistAction;
     private MediaServiceCache mCachedPrefs;
     private GlobalPreferences mGlobalPrefs;
     private PoTokenResponse mPoToken;

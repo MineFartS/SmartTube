@@ -23,7 +23,7 @@ import java.util.List;
 
 public abstract class MaxControlsVideoPlayerGlue<T extends PlayerAdapter>
         extends PlaybackTransportControlGlue<T> implements TopEdgeFocusListener, PlayerView {
-    private String mQualityInfo;
+
     private Video mVideo;
     private WeakReference<PlaybackTransportRowPresenter.ViewHolder> mTransportViewHolder;
     private WeakReference<AbstractDetailsDescriptionPresenter.ViewHolder> mDescriptionViewHolder;

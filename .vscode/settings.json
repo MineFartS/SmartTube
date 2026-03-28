@@ -2,7 +2,7 @@
     "deadCodeDetector.exclude": [
         ".gradle",
         "**/build",
-        "dependencies/MediaServiceCore/youtubeapi/src/main/assets/nsigsolver/*.js"
+        "dependencies/youtubeapi/src/main/assets/nsigsolver/*.js"
     ],
     "deadCodeDetector.analyzeOnSave": false,
     "deadCodeDetector.confidenceThreshold": "high",

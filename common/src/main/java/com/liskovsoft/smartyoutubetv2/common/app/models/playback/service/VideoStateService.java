@@ -16,8 +16,6 @@ import java.util.List;
 import android.util.Log;
 
 public class VideoStateService implements ProfileChangeListener {
-
-    private static String TAG = "VideoStateService";
     
     @SuppressLint("StaticFieldLeak")
     private static VideoStateService sInstance;

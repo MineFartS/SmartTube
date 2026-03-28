@@ -74,7 +74,6 @@ public class AppDialogUtil {
     private static final int PITCH_EFFECT_ID = 144;
     private static final int PLAYER_REPEAT_ID = 146;
     private static final int SUBTITLE_STYLES_ID = 45;
-    private static final int FILE_PICKER_REQUEST_CODE = 205;
 
     /**
      * Adds share link items to existing dialog.
@@ -581,30 +580,6 @@ public class AppDialogUtil {
                 context.getString(R.string.action_repeat_mode),
                 options
         );
-    }
-
-    @NonNull
-    private static MotherActivity getMotherActivity(Context context) {
-
-        ChannelGroupServiceWrapper mService = ChannelGroupServiceWrapper.instance(context);
-
-        MotherActivity activity = (MotherActivity) context;
-
-        return activity;
-
-    }
-
-    private static void pinGroups(Context context, @NonNull List<ItemGroup> newGroups) {
-        if (newGroups.isEmpty()) {
-            // Already added to Subscriptions section
-            MessageHelpers.showMessage(context, context.getString(R.string.msg_done));
-            return;
-        }
-
-        for (ItemGroup group : newGroups) {
-            BrowsePresenter.instance(context).pinItem(Video.from(group));
-        }
-        MessageHelpers.showMessage(context, context.getString(R.string.pinned_to_sidebar));
     }
 
     public static void showConfirmationDialog(Context context, String title, Runnable onConfirm) {
