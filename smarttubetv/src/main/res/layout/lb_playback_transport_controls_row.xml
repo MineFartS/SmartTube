@@ -52,7 +52,7 @@
             android:layout_gravity="bottom"
             android:orientation="vertical"
             android:layout_marginBottom="@dimen/lb_playback_transport_thumbs_bottom_margin" >
-            <com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.playerglue.seekpreview.ThumbsBar
+            <smartyoutubetv2.ui.mod.leanback.playerglue.seekpreview.ThumbsBar
                 android:id="@+id/thumbs_row"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -68,7 +68,7 @@
         </LinearLayout>
     </FrameLayout>
 
-    <com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.playerglue.tweaks.PlaybackTransportRowView
+    <smartyoutubetv2.ui.mod.leanback.playerglue.tweaks.PlaybackTransportRowView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/transport_row"
@@ -118,7 +118,7 @@
                             android:layout_centerVertical="true"
                             android:focusable="false" >
 
-                <com.liskovsoft.smartyoutubetv2.tv.ui.widgets.time.DateTimeView
+                <smartyoutubetv2.ui.widgets.time.DateTimeView
                     android:id="@+id/date_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -127,7 +127,7 @@
             </RelativeLayout>
         </RelativeLayout>
 
-        <com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.misc.SeekBar
+        <smartyoutubetv2.ui.mod.leanback.misc.SeekBar
             android:id="@+id/playback_progress"
             android:layout_width="match_parent"
             android:layout_height="@dimen/lb_playback_transport_progressbar_height"
@@ -197,5 +197,5 @@
         </RelativeLayout>
 
 
-    </com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.playerglue.tweaks.PlaybackTransportRowView>
+    </smartyoutubetv2.ui.mod.leanback.playerglue.tweaks.PlaybackTransportRowView>
 </LinearLayout>

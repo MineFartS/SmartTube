@@ -36,7 +36,7 @@
             android:nextFocusRight="@id/account_orb"
             android:visibility="invisible" />
 
-        <com.liskovsoft.smartyoutubetv2.tv.ui.widgets.search.LongClickSearchOrbView
+        <smartyoutubetv2.ui.widgets.search.LongClickSearchOrbView
             android:id="@+id/account_orb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
             android:visibility="gone" />
 
         <!-- Add android:ellipsize="marquee" to horizontal scrolling -->
-        <com.liskovsoft.smartyoutubetv2.tv.ui.widgets.marqueetextview.TitleMarqueeTextView
+        <smartyoutubetv2.ui.widgets.marqueetextview.TitleMarqueeTextView
             android:id="@+id/pip_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -13,7 +13,7 @@
                   android:layout_gravity="center_vertical"
                   android:gravity="center_horizontal"
                   android:orientation="vertical">
-        <com.liskovsoft.smartyoutubetv2.tv.ui.widgets.time.DateTimeView
+        <smartyoutubetv2.ui.widgets.time.DateTimeView
             android:id="@+id/global_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
             android:textStyle="bold"
             style="?attr/browseTitleTextStyle"
             android:visibility="gone" />
-        <com.liskovsoft.smartyoutubetv2.tv.ui.widgets.time.DateTimeView
+        <smartyoutubetv2.ui.widgets.time.DateTimeView
             android:id="@+id/global_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

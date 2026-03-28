@@ -25,7 +25,7 @@
     <init>(...);
     android.graphics.LinearGradient mLowFadeShader;
 }
--keepclassmembers class com.liskovsoft.smartyoutubetv2.tv.ui.browse.video.MultipleRowsFragment$ItemViewClickedListener {
+-keepclassmembers class smartyoutubetv2.ui.browse.video.MultipleRowsFragment$ItemViewClickedListener {
     <init>(...);
 }
 -keepclassmembers class com.liskovsoft.youtubeapi.common.helpers.PostDataHelper {
@@ -55,23 +55,23 @@
 -keepclassmembers class com.liskovsoft.youtubeapi.service.YouTubeServiceManager {
     <init>(...);
 }
--keepclassmembers class com.liskovsoft.smartyoutubetv2.tv.ui.widgets.vineyard.TagCardView {
+-keepclassmembers class smartyoutubetv2.ui.widgets.vineyard.TagCardView {
     <init>(...);
     android.widget.TextView mTagNameText;
     android.widget.ImageView mResultImage;
 }
--keepclassmembers class com.liskovsoft.smartyoutubetv2.tv.ui.widgets.marqueetextview.MarqueeTextView {
+-keepclassmembers class smartyoutubetv2.ui.widgets.marqueetextview.MarqueeTextView {
     <init>(...);
     float mDefaultMarqueeSpeed;
     float mMarqueeSpeedFactor;
 }
--keepclassmembers class com.liskovsoft.smartyoutubetv2.tv.ui.widgets.complexcardview.ComplexImageView {
+-keepclassmembers class smartyoutubetv2.ui.widgets.complexcardview.ComplexImageView {
     <init>(...);
     android.widget.ProgressBar mProgressBar;
     android.view.ViewGroup mProgressContainer;
     android.widget.FrameLayout mPreviewContainer;
 }
--keepclassmembers class com.liskovsoft.smartyoutubetv2.tv.ui.widgets.time.DateTimeView {
+-keepclassmembers class smartyoutubetv2.ui.widgets.time.DateTimeView {
     <init>(...);
     boolean mIsDateEnabled;
     boolean mIsTimeEnabled;
@@ -89,7 +89,7 @@
 -keepclassmembers class androidx.work.impl.constraints.trackers.Trackers {
     <init>(...);
 }
--keepclassmembers class com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.misc.ProgressBarManager {
+-keepclassmembers class smartyoutubetv2.ui.mod.leanback.misc.ProgressBarManager {
     <init>(...);
     android.view.View mProgressBarView;
 }
@@ -123,7 +123,7 @@
     <init>(...);
 }
 # NoSuchMethodError: android.graphics.Canvas.drawCircle
--keepclassmembers class com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.misc.SeekBar {
+-keepclassmembers class smartyoutubetv2.ui.mod.leanback.misc.SeekBar {
     <init>(...);
     void onDraw(android.graphics.Canvas);
     int mKnobx;
@@ -158,7 +158,7 @@
 -keepclassmembers class com.liskovsoft.smartyoutubetv2.common.app.models.playback.controllers.VideoStateController {
     <init>(...);
 }
--keepclassmembers class com.liskovsoft.smartyoutubetv2.tv.ui.browse.BrowseSectionFragmentFactory {
+-keepclassmembers class smartyoutubetv2.ui.browse.BrowseSectionFragmentFactory {
     <init>(...);
 }
 -keepclassmembers class androidx.room.RoomDatabase {
@@ -217,7 +217,7 @@
 #-keep class androidx.room.** { *; }
 
 # NOTE: Stable/Beta: VirusTotal (Google: Detected, Ikarus: Trojan.AndroidOS.Agent)
-#-keep class com.liskovsoft.smartyoutubetv2.tv.ui.main.MainApplication { *; }
+#-keep class smartyoutubetv2.ui.main.MainApplication { *; }
 #-keep class com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData { *; }
 #-keep class com.liskovsoft.smartyoutubetv2.common.app.presenters.ChannelUploadsPresenter { *; }
 
@@ -225,4 +225,4 @@
 #-keep class com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs.menu.providers.ContextMenuProvider { *; }
 #-keep class com.google.android.exoplayer2.util.Util { *; }
 #-keep class com.bumptech.glide.request.RequestOptions { *; }
-#-keep class com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.playerglue.tooltips.TooltipCompatHandler { *; }
+#-keep class smartyoutubetv2.ui.mod.leanback.playerglue.tooltips.TooltipCompatHandler { *; }
