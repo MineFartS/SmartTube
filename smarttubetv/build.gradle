@@ -159,6 +159,7 @@ android {
 }
 
 dependencies {
+    
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation 'androidx.leanback:leanback:' + leanbackXLibraryVersion
@@ -174,23 +175,9 @@ dependencies {
     implementation 'com.github.zjupure:webpdecoder:' + webpDecoderVersion
     implementation 'androidx.multidex:multidex:' + multiDexVersion
 
-    //////// BEGIN EXOPLAYER /////////
-
     implementation project(':exoplayer-library')
     implementation project(':exoplayer-extension-leanback')
     implementation project(':exoplayer-extension-mediasession')
-
-    // implementation 'com.amazon.android:exoplayer:' + amazonExoplayerVersion
-    // implementation 'com.amazon.android:extension-leanback:' + amazonExoplayerVersion
-    // implementation 'com.amazon.android:extension-mediasession:' + amazonExoplayerVersion
-
-    // implementation 'com.google.android.exoplayer:exoplayer:' + exoplayerVersion
-    // implementation 'com.google.android.exoplayer:extension-leanback:' + exoplayerVersion
-    // implementation 'com.google.android.exoplayer:extension-mediasession:' + exoplayerVersion
-
-    // implementation 'com.github.amzn:exoplayer-amazon-port:' + amazonExoplayerJitpackVersion
-
-    //////// END EXOPLAYER //////////
 
     testImplementation 'junit:junit:' + junitVersion
     testImplementation 'org.robolectric:robolectric:' + robolectricVersion
@@ -217,7 +204,6 @@ dependencies {
         transitive = true
     }
 
-    // debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.14'
-
     implementation 'net.gotev:speech:' + gotevSpeechVersion
+
 }

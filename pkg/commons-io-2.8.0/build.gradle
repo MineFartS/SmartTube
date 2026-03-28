@@ -38,9 +38,11 @@ android {
 }
 
 dependencies {
+
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    
     testImplementation 'org.apache.commons:commons-lang3:' + commonsLangVersion
     testImplementation 'com.google.jimfs:jimfs:' + jimfsVersion
     testImplementation 'junit:junit:' + junitVersion
@@ -49,5 +51,9 @@ dependencies {
     testImplementation 'org.junit-pioneer:junit-pioneer:' + junitPioneerVersion
     testImplementation 'org.mockito:mockito-core:' + mockitoVersion
 
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(
+        dir: 'libs', 
+        include: ['*.jar']
+    )
+
 }
