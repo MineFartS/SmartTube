@@ -30,6 +30,7 @@ import smartyoutubetv1.prefs.MainUIData;
 import smartyoutubetv1.utils.LoadingManager;
 import smartyoutubetv1.utils.Utils;
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
+import com.liskovsoft.youtubeapi.browse.v2.BrowseService2;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -41,12 +42,17 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MediaServiceManager implements OnAccountChange {
+
     private static final String TAG = MediaServiceManager.class.getSimpleName();
+    
     private static MediaServiceManager sInstance;
+    
     private final MediaItemService mItemService;
     private final ContentService mContentService;
     private final SignInService mSignInService;
     private final NotificationsService mNotificationsService;
+    private final BrowseService2 mBrowseService;
+
     private Disposable mMetadataAction;
     private Disposable mUploadsAction;
     private Disposable mRowsAction;
@@ -54,7 +60,7 @@ public class MediaServiceManager implements OnAccountChange {
     private Disposable mFormatInfoAction;
     private Disposable mPlaylistGroupAction;
     private Disposable mPlaylistInfosAction;
-    private Disposable mHistoryAction;
+    
     private static final int MIN_GRID_GROUP_SIZE = 13;
     private static final int MIN_ROW_GROUP_SIZE = 5;
 
@@ -94,11 +100,14 @@ public class MediaServiceManager implements OnAccountChange {
     }
 
     private MediaServiceManager() {
+
         ServiceManager service = YouTubeServiceManager.instance();
+        
         mItemService = service.getMediaItemService();
         mContentService = service.getContentService();
         mSignInService = service.getSignInService();
         mNotificationsService = service.getNotificationsService();
+        mBrowseService = new BrowseService2();
 
         mSignInService.addOnAccountChange(this);
     }
@@ -377,19 +386,17 @@ public class MediaServiceManager implements OnAccountChange {
     }
 
     public void updateHistory(Video video, long positionMs) {
-        if (video == null || RxHelper.isAnyActionRunning(mHistoryAction)) {
+
+        if (video == null) {
             return;
         }
 
-        RxHelper.disposeActions(mHistoryAction);
+        mItemService.updateHistoryPosition(
+            video.videoId, 
+            positionMs / 1_000f
+        );
 
-        Observable<Void> historyObservable;
-
-        if (video.mediaItem != null) {
-            historyObservable = mItemService.updateHistoryPositionObserve(video.mediaItem, positionMs / 1_000f);
-        } else { // video launched form ATV channels
-            historyObservable = mItemService.updateHistoryPositionObserve(video.videoId, positionMs / 1_000f);
-        }
+        mBrowseService.addHistoryItem(video.videoId);
 
     }
 

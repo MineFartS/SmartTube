@@ -13,24 +13,19 @@ import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.ShortsMediaItem
 import com.liskovsoft.youtubeapi.next.v2.gen.getItems
 import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationToken
 import com.liskovsoft.youtubeapi.next.v2.gen.getShelves
+import com.liskovsoft.youtubeapi.playlist.PlaylistService;
 
 internal open class BrowseService2 {
+
     private val mBrowseApi = RetrofitHelper.create(BrowseApi::class.java)
 
-    //fun getHome(): List<MediaGroup?>? {
-    //    val home = getBrowseRows(BrowseApiHelper.getHomeQueryWeb(), MediaGroup.TYPE_HOME)
-    //    return if (home?.size ?: 0 < 5) listOfNotNull(home, getRecommended()).flatten() else home
-    //}
+    private val mPlaylistService = RetrofitHelper.create(PlaylistService::class.java)
 
     fun getHome(): Pair<List<MediaGroup?>?, String?>? {
-        //val rows = getBrowseRows(BrowseApiHelper.getHomeQueryWeb(), MediaGroup.TYPE_HOME)
-        //
-        //if (rows?.all { it?.isEmpty == true } != false) // in anonymous mode WEB home page is empty
-        //    return getBrowseRowsTV(BrowseApiHelper.getHomeQueryTV(), MediaGroup.TYPE_HOME)
-        //
-        //return Pair(rows, null)
-
-        return getBrowseRowsTV(BrowseApiHelper::getHomeQuery, MediaGroup.TYPE_HOME)
+        return getBrowseRowsTV(
+            BrowseApiHelper::getHomeQuery, 
+            MediaGroup.TYPE_HOME
+        )
     }
 
     fun getTrending(): List<MediaGroup?>? {
@@ -183,7 +178,14 @@ internal open class BrowseService2 {
     }
 
     fun getHistory(): MediaGroup? {
-        return getBrowseGridTV(BrowseApiHelper::getMyHistoryQuery, MediaGroup.TYPE_HISTORY)
+        return getBrowseGridTV(
+            BrowseApiHelper::getMyHistoryQuery, 
+            MediaGroup.TYPE_HISTORY
+        )
+    }
+
+    fun addHistoryItem(video_id: String) {
+        mPlaylistService.addToPlaylist("HL", video_id)
     }
 
     private fun getLikedMusicWeb(): MediaGroup? {
@@ -531,8 +533,14 @@ internal open class BrowseService2 {
         }
     }
 
-    private fun getBrowseGridTV(query: (AppClient) -> String, sectionType: Int, shouldContinue: Boolean = false): MediaGroup? {
+    private fun getBrowseGridTV(
+        query: (AppClient) -> String, 
+        sectionType: Int, 
+        shouldContinue: Boolean = false
+    ): MediaGroup? {
+    
         val options = MediaGroupOptions.create(sectionType)
+    
         val browseResult = mBrowseApi.getBrowseResultTV(query(options.clientTV))
 
         return RetrofitHelper.get(browseResult)?.let {
