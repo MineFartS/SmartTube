@@ -55,7 +55,7 @@ android {
     
     defaultConfig {
         // values linked with applicationId: searchable.searchSuggestAuthority, searchable.searchSuggestIntentData, VideoContract.CONTENT_AUTHORITY
-        applicationId "org.smarttube"
+        applicationId "minefarts.smarttube"
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
 
@@ -124,9 +124,7 @@ android {
 
     // NOTE: The main goal of prefixing a flavor is to group flavors' folders together
     productFlavors {
-        ststable {
-            applicationIdSuffix ".stable"
-        }
+        ststable {}
     }
 
     // naming example: SmartYouTubeTV_Xwalk_v6.8.12_r.apk

@@ -4,7 +4,7 @@ Connect-ADB
 
 Clear-Host
 
-$_pid = & $ADB shell pidof org.smarttube.stable
+$_pid = & $ADB shell pidof minefarts.smarttube
 
 # Clear Buffer
 & $ADB logcat -c
