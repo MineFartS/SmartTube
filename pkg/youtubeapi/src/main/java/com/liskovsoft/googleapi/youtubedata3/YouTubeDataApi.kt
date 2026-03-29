@@ -9,6 +9,7 @@ import retrofit2.http.Query
 
 @WithGson
 internal interface YouTubeDataApi {
+    
     @GET("https://www.googleapis.com/youtube/v3/channels?part=snippet&key=${ApiKeys.YOUTUBE_DATA_API_KEY}")
     fun getChannelMetadata(@Query("id") ids: String): Call<SnippetResponse?>
 

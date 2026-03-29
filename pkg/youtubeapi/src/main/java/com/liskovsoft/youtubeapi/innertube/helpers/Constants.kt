@@ -1,6 +1,7 @@
 package com.liskovsoft.youtubeapi.innertube.helpers
 
 internal object URLS {
+
     const val YT_BASE = "https://www.youtube.com"
     const val YT_MUSIC_BASE = "https://music.youtube.com"
     const val YT_SUGGESTIONS = "https://suggestqueries-clients6.youtube.com"
@@ -17,9 +18,11 @@ internal object URLS {
         const val CAMI = "http://cami-youtubei.sandbox.googleapis.com/youtubei/"
         const val UYTFE = "https://uytfe.sandbox.google.com/youtubei/"
     }
+
 }
 
 internal object CLIENTS {
+
     val IOS = CLIENT(
         NAME = "iOS",
         VERSION = "20.11.6",
@@ -105,17 +108,29 @@ internal object CLIENTS {
 }
 
 internal data class CLIENT(
+
     val NAME: String,
+    
     val VERSION: String,
+    
     val SDK_VERSION: Int? = null,
+    
     val DEVICE_MODEL: String? = null,
+    
     val USER_AGENT: String? = null,
+    
     val OS_NAME: String? = null,
+    
     val OS_VERSION: String? = null,
+    
     val API_KEY: String? = null,
+    
     val API_VERSION: String? = null,
+    
     val STATIC_VISITOR_ID: String? = null,
+    
     val SUGG_EXP_ID: String? = null
+
 )
 
 /**

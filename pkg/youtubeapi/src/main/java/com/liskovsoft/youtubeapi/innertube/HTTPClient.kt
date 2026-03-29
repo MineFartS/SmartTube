@@ -21,11 +21,18 @@ import kotlin.collections.get
 
 @WithGson
 private interface InnertubePlayerApi {
+
     @POST()
-    fun retrievePlayer(@Url url: String, @HeaderMap headers: Map<String, String>, @Body jsonBody: String): Call<PlayerResult?>
+    fun retrievePlayer(
+        @Url url: String, 
+        @HeaderMap headers: Map<String, String>, 
+        @Body jsonBody: String
+    ): Call<PlayerResult?>
+
 }
 
 internal class HTTPClient(val session: Session) {
+
     private val requestApi = RetrofitHelper.create(InnertubePlayerApi::class.java)
 
     fun fetch(
@@ -153,7 +160,10 @@ internal class HTTPClient(val session: Session) {
     }
 
 
-    private fun adjustContext(ctx: InnertubeContext, client: String?) {
+    private fun adjustContext(
+        ctx: InnertubeContext, 
+        client: String?
+    ) {
         if (client == null) return
 
         val clientName = client.uppercase()

@@ -10,13 +10,17 @@ import retrofit2.http.*
 
 @WithGson
 internal interface WatchNextApi {
+
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next")
     fun getWatchNextResult(@Body watchNextQuery: String): Call<WatchNextResult?>
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next")
-    fun getWatchNextResult(@Body watchNextQuery: String, @Header("X-Goog-Visitor-Id") visitorId: String): Call<WatchNextResult?>
+    fun getWatchNextResult(
+        @Body watchNextQuery: String, 
+        @Header("X-Goog-Visitor-Id") visitorId: String
+    ): Call<WatchNextResult?>
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next")
@@ -24,11 +28,15 @@ internal interface WatchNextApi {
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next")
-    fun continueWatchNextResult(@Body watchNextQuery: String, @Header("X-Goog-Visitor-Id") visitorId: String): Call<WatchNextResultContinuation?>
+    fun continueWatchNextResult(
+        @Body watchNextQuery: String, 
+        @Header("X-Goog-Visitor-Id") visitorId: String
+    ): Call<WatchNextResultContinuation?>
 
     @GET("https://returnyoutubedislikeapi.com/votes")
     fun getDislikes(@Query("videoId") videoId: String): Call<DislikesResult?>
 
     @GET("https://www.youtube.com/oembed")
     fun getUnlocalizedTitle(@Query("url") url: String): Call<UnlocalizedTitleResult?>
+
 }

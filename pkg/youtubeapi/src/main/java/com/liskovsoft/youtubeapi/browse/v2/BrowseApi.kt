@@ -11,6 +11,7 @@ import retrofit2.http.POST
 
 @WithGson
 internal interface BrowseApi {
+
     @Headers(
         "Content-Type: application/json",
         "User-Agent: " + DefaultHeaders.USER_AGENT_WEB,
@@ -90,4 +91,5 @@ internal interface BrowseApi {
     )
     @POST("https://www.youtube.com/youtubei/v1/reel/reel_watch_sequence")
     fun getReelContinuationResult(@Body reelQuery: String?): Call<ReelContinuationResult?>
+
 }

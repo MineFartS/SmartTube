@@ -12,7 +12,9 @@ import retrofit2.http.POST;
  */
 @WithJsonPath
 public interface FeedbackApi {
+
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/feedback")
     Call<FeedbackResponse> setNotInterested(@Body String feedbackQuery);
+    
 }

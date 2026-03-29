@@ -8,13 +8,18 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 
 private const val BASE_URL = "https://jnn-pa.googleapis.com"
+
 private const val GOOG_API_KEY = "AIzaSyDyT5W0Jh49F30Pqqtyfdf7pDLFKLJoAnw"
+
 private const val USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36(KHTML, like Gecko)"
+
 private const val GRPC_CLIENT = "grpc-web-javascript/0.1"
+
 private const val PROTOBUF_CONTENT = "application/json+protobuf"
 
 @WithGson
 internal interface PoTokenApi {
+
     @Headers(
         "Content-Type: $PROTOBUF_CONTENT",
         "User-Agent: $USER_AGENT",

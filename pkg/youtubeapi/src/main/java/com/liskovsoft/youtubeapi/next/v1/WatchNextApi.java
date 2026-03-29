@@ -14,6 +14,7 @@ import retrofit2.http.POST;
  */
 @WithJsonPath
 public interface WatchNextApi {
+
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next")
     Call<WatchNextResult> getWatchNextResult(@Body String watchNextQuery);
@@ -24,5 +25,9 @@ public interface WatchNextApi {
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next")
-    Call<WatchNextResultContinuation> continueWatchNextResult(@Body String suggestQuery, @Header("X-Goog-Visitor-Id") String visitorId);
+    Call<WatchNextResultContinuation> continueWatchNextResult(
+        @Body String suggestQuery, 
+        @Header("X-Goog-Visitor-Id") String visitorId
+    );
+    
 }

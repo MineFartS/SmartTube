@@ -13,6 +13,7 @@ import retrofit2.http.POST;
  */
 @WithJsonPath
 public interface PlaylistApi {
+
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/playlist/get_add_to_playlist")
     Call<PlaylistsResult> getPlaylistsInfo(@Body String playlistsInfoQuery);
@@ -21,16 +22,12 @@ public interface PlaylistApi {
     @POST("https://www.youtube.com/youtubei/v1/browse/edit_playlist")
     Call<ActionResult> editPlaylist(@Body String editPlaylistQuery);
 
-    /**
-     * Works with foreign playlists
-     */
+    // Works with foreign playlists
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/like/like")
     Call<ActionResult> saveForeignPlaylist(@Body String saveRemoveForeignPlaylistQuery);
 
-    /**
-     * Works with foreign playlists
-     */
+    // Works with foreign playlists
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/like/removelike")
     Call<ActionResult> removeForeignPlaylist(@Body String saveRemoveForeignPlaylistQuery);
@@ -39,10 +36,9 @@ public interface PlaylistApi {
     @POST("https://www.youtube.com/youtubei/v1/playlist/create")
     Call<ActionResult> createPlaylist(@Body String createPlaylistQuery);
 
-    /**
-     * Works with user playlists
-     */
+    // Works with user playlists
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/playlist/delete")
     Call<ActionResult> removePlaylist(@Body String removePlaylistQuery);
+
 }

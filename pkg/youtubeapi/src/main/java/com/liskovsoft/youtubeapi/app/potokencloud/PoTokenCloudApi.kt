@@ -11,19 +11,31 @@ import retrofit2.http.Url
 
 @WithGson
 internal interface PoTokenCloudApi {
+
     @GET
-    fun getPoToken(@Url url: String, @Query("visitorData") visitorData: String? = null): Call<PoTokenResponse?>?
+    fun getPoToken(
+        @Url url: String, 
+        @Query("visitorData") visitorData: String? = null
+    ): Call<PoTokenResponse?>?
 
     // /health-check
     @GET
-    fun healthCheck(@Url url: String): Call<Void>
+    fun healthCheck(
+        @Url url: String
+    ): Call<Void>
 
     // /part1
     @GET
-    fun getPoTokenPart1(@Url url: String): Call<PoTokenPart1Response?>?
+    fun getPoTokenPart1(
+        @Url url: String
+    ): Call<PoTokenPart1Response?>?
 
     // /part2
     @Headers("Content-Type: application/json")
     @POST
-    fun getPoTokenPart2(@Url url: String, @Body poTokenPart2Query: String): Call<PoTokenResponse?>?
+    fun getPoTokenPart2(
+        @Url url: String, 
+        @Body poTokenPart2Query: String
+    ): Call<PoTokenResponse?>?
+
 }

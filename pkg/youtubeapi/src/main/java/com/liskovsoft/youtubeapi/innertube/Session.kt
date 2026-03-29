@@ -29,6 +29,7 @@ private interface SessionApi {
 
 @WithGson
 private interface InnertubeConfigApi {
+
     @Headers(
         "Content-Type: application/json",
         "Accept: */*",
@@ -36,7 +37,11 @@ private interface InnertubeConfigApi {
         "X-Origin: ${URLS.YT_BASE}"
     )
     @POST("${URLS.API.PRODUCTION_1}v1/config")
-    fun retrieveInnertubeConfig(@HeaderMap headers: Map<String, String>, @Body jsonConfig: String): Call<InnertubeConfigResult?>
+    fun retrieveInnertubeConfig(
+        @HeaderMap headers: Map<String, String>, 
+        @Body jsonConfig: String
+    ): Call<InnertubeConfigResult?>
+
 }
 
 internal class Session private constructor(

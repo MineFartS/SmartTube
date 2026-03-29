@@ -12,6 +12,7 @@ import retrofit2.http.POST;
 
 @WithJsonPath
 public interface AuthApi {
+
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/o/oauth2/device/code")
     Call<UserCode> getUserCode(@Body String authQuery);
@@ -27,4 +28,5 @@ public interface AuthApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/account/accounts_list")
     Call<AccountsList> getAccountsList(@Body String authQuery);
+
 }

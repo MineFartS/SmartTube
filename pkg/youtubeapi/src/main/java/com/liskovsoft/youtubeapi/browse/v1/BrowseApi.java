@@ -20,6 +20,7 @@ import retrofit2.http.POST;
  */
 @WithJsonPath
 public interface BrowseApi {
+    
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse")
     Call<GridTabList> getGridTabList(@Body String browseQuery);
@@ -34,7 +35,10 @@ public interface BrowseApi {
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse")
-    Call<SectionTabList> getSectionTabList(@Body String browseQuery, @Header("X-Goog-Visitor-Id") String visitorId);
+    Call<SectionTabList> getSectionTabList(
+        @Body String browseQuery, 
+        @Header("X-Goog-Visitor-Id") String visitorId
+    );
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse")
@@ -42,7 +46,10 @@ public interface BrowseApi {
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse")
-    Call<SectionTabContinuation> continueSectionTab(@Body String browseQuery, @Header("X-Goog-Visitor-Id") String visitorId);
+    Call<SectionTabContinuation> continueSectionTab(
+        @Body String browseQuery, 
+        @Header("X-Goog-Visitor-Id") String visitorId
+    );
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse")
@@ -50,7 +57,10 @@ public interface BrowseApi {
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse")
-    Call<SectionContinuation> continueSection(@Body String browseQuery, @Header("X-Goog-Visitor-Id") String visitorId);
+    Call<SectionContinuation> continueSection(
+        @Body String browseQuery, 
+        @Header("X-Goog-Visitor-Id") String visitorId
+    );
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse")
@@ -58,9 +68,13 @@ public interface BrowseApi {
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/browse")
-    Call<SectionList> getSectionList(@Body String browseQuery, @Header("X-Goog-Visitor-Id") String visitorId);
+    Call<SectionList> getSectionList(
+        @Body String browseQuery, 
+        @Header("X-Goog-Visitor-Id") String visitorId
+    );
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/guide")
     Call<Guide> getGuide(@Body String browseQuery);
+
 }

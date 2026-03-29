@@ -9,6 +9,7 @@ import retrofit2.http.POST
 
 @WithGson
 internal interface NotificationsApi {
+
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/notification/get_notification_menu")
     fun getNotifications(@Body notificationsQuery: String?): Call<NotificationsResult?>?
@@ -20,4 +21,5 @@ internal interface NotificationsApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/notification/modify_channel_preference")
     fun getModifyNotification(@Body modifyNotificationQuery: String?): Call<Void>
+
 }
