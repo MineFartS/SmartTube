@@ -64,7 +64,6 @@
     <string name="subtitle_white_semi_transparent">White on semitransparent background</string>
     <string name="subtitle_style">Subtitle style</string>
     <string name="subtitle_language">Subtitle language</string>
-    <string name="action_search">Search</string>
     <string name="settings_main_ui">User interface</string>
     <string name="dialog_main_ui">User interface</string>
     <string name="card_animated_previews">Animated previews</string>

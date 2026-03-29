@@ -38,7 +38,6 @@ import smartyoutubetv2.ui.playback.actions.PipAction;
 import smartyoutubetv2.ui.playback.actions.PlaybackQueueAction;
 import smartyoutubetv2.ui.playback.actions.PlaylistAddAction;
 import smartyoutubetv2.ui.playback.actions.PlaybackModeAction;
-import smartyoutubetv2.ui.playback.actions.SearchAction;
 import smartyoutubetv2.ui.playback.actions.SubscribeAction;
 import smartyoutubetv2.ui.playback.actions.TwoStateAction;
 import smartyoutubetv2.ui.playback.actions.ThumbsDownAction;
@@ -114,7 +113,6 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         putAction(new SubscribeAction(context));
         putAction(new VideoInfoAction(context));
         putAction(new VideoSpeedAction(context));
-        putAction(new SearchAction(context));
         putAction(new PipAction(context));
         putAction(new ChatAction(context));
         putAction(new PlaybackQueueAction(context));
@@ -155,10 +153,6 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
 
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_CHAT)) {
             adapter.add(mActions.get(R.id.action_chat));
-        }
-
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_SEARCH)) {
-            adapter.add(mActions.get(R.id.action_search));
         }
 
     }

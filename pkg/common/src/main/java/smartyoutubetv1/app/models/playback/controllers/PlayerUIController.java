@@ -447,11 +447,6 @@ public class PlayerUIController extends BasePlayerController {
 
         dialogPresenter.showDialog(title);
     }
-
-    private void onSearchClicked() {
-        startTempBackgroundMode(SearchPresenter.class);
-        SearchPresenter.instance(getContext()).startSearch(null);
-    }
     
     private void onPipClicked() {
         getPlayer().showOverlay(false);
@@ -485,9 +480,6 @@ public class PlayerUIController extends BasePlayerController {
 
         } else if (buttonId == R.id.action_pip) {
             onPipClicked();
-
-        } else if (buttonId == R.id.action_search) {
-            onSearchClicked();
 
         } else if (buttonId == R.id.action_playlist_add) {
             onPlaylistAddClicked();

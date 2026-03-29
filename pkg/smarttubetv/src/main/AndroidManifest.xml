@@ -230,16 +230,6 @@
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|layoutDirection"
             android:screenOrientation="unspecified"/>
 
-        <activity
-            android:name="smartyoutubetv2.launchers.SearchLauncherActivity"
-            android:logo="@drawable/action_search"
-            android:icon="@drawable/action_search"
-            android:label="@string/action_search"
-            android:exported="true"
-            android:launchMode="singleInstance"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|layoutDirection"
-            android:screenOrientation="unspecified"/>
-
         <!-- END Launchers -->
     </application>
 
