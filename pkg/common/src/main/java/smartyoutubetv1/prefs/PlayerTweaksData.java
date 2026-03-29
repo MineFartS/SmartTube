@@ -36,7 +36,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     public static final int PLAYER_BUTTON_CHAT = 1 << 22;
     
     public static final int PLAYER_BUTTON_DEFAULT = 
-        PLAYER_BUTTON_PIP | 
         PLAYER_BUTTON_VIDEO_SPEED |
         PLAYER_BUTTON_OPEN_CHANNEL | 
         PLAYER_BUTTON_SUBTITLES | 
@@ -47,8 +46,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
         PLAYER_BUTTON_PLAY_PAUSE |
         PLAYER_BUTTON_REPEAT_MODE | 
         PLAYER_BUTTON_NEXT | 
-        PLAYER_BUTTON_PREVIOUS | 
-        PLAYER_BUTTON_HIGH_QUALITY |
+        PLAYER_BUTTON_PREVIOUS |
         PLAYER_BUTTON_VIDEO_INFO | 
         PLAYER_BUTTON_CHAT;
 
