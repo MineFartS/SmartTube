@@ -2,15 +2,18 @@
     "deadCodeDetector.exclude": [
         ".gradle",
         "**/build",
-        "dependencies/youtubeapi/src/main/assets/nsigsolver/*.js"
+        "pkg/youtubeapi/src/main/assets/nsigsolver/*.js"
     ],
     "deadCodeDetector.analyzeOnSave": false,
     "deadCodeDetector.confidenceThreshold": "high",
-    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx4G -Xms100m -Xlog:disable",
     "files.exclude": {
         ".gradle": true,
         "**/build": true,
         ".vscode": true
     },
-    "java.configuration.updateBuildConfiguration": "automatic"
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.dependency.enableDependencyCheckup": false,
+    "kotlin.inlayHints.parameterHints": false,
+    "kotlin.inlayHints.typeHints": false,
+    "java.import.maven.enabled": false
 }
