@@ -391,16 +391,16 @@ public class MediaServiceManager implements OnAccountChange {
             return;
         }
 
-        mItemService.updateHistoryPosition(
-            video.videoId, 
-            positionMs / 1_000f
-        );
+        RxHelper.runAsyncUser(() -> {
+        
+            mItemService.updateHistoryPosition(
+                video.videoId, 
+                positionMs / 1_000f
+            );
 
-        try{
             mPlaylistService.addToPlaylist("HL", video.videoId);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        
+        });
 
     }
 
