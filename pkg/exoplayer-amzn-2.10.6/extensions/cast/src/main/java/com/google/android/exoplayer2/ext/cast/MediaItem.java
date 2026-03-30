@@ -87,7 +87,7 @@ public final class MediaItem {
 
     /** See {@link MediaItem#drmSchemes}. */
     public Builder setDrmSchemes(List<MediaItem.DrmScheme> drmSchemes) {
-      this.drmSchemes = Collections.unmodifiableList(new ArrayList<>(drmSchemes));
+      this.drmSchemes = Collections.unmodifiableList(drmSchemes);
       return this;
     }
 

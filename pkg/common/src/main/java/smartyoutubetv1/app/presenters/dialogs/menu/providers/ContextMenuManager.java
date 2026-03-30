@@ -11,8 +11,10 @@ import java.util.Collections;
 import java.util.List;
 
 public class ContextMenuManager {
+
     private final Context mContext;
-    private final ArrayList<ContextMenuProvider> mProviders;
+    
+    private final List<ContextMenuProvider> mProviders;
 
     public ContextMenuManager(Context context) {
         mContext = context;

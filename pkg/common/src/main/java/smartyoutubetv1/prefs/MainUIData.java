@@ -259,7 +259,7 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     }
 
     public ArrayList<Long> getMenuItemsOrdered() {
-        return (ArrayList) Collections.unmodifiableList((List) mMenuItemsOrdered);
+        return new ArrayList<Long>(mMenuItemsOrdered);
     }
 
     public int getMenuItemIndex(long menuItem) {
