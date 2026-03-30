@@ -2,22 +2,24 @@ Import-Module "$PSScriptRoot/__mod__.psm1" -Force
 
 Connect-ADB
 
-Clear-Host
+while ($true) {
 
-while (($_pid = $null) -eq $null) {
-
-    Write-Host "Getting PID ..."
+    Clear-Host
 
     $_pid = Get-PID
 
+    if ($null -ne $_pid) {
+
+        # Clear Buffer
+        & $ADB logcat -c
+
+        # Start Logcat
+        & $ADB logcat `
+            "--pid=$($_pid)" `
+            -v color 
+
+    }
+
+    Pause
+
 }
-
-Clear-Host
-
-# Clear Buffer
-& $ADB logcat -c
-
-# Start Logcat
-& $ADB logcat `
-    "--pid=$_pid" `
-    -v color 
