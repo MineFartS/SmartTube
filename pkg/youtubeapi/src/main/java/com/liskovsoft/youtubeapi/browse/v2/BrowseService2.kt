@@ -13,13 +13,10 @@ import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.ShortsMediaItem
 import com.liskovsoft.youtubeapi.next.v2.gen.getItems
 import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationToken
 import com.liskovsoft.youtubeapi.next.v2.gen.getShelves
-import com.liskovsoft.youtubeapi.playlist.PlaylistService;
 
 internal open class BrowseService2 {
 
     private val mBrowseApi = RetrofitHelper.create(BrowseApi::class.java)
-
-    private val mPlaylistService = RetrofitHelper.create(PlaylistService::class.java)
 
     fun getHome(): Pair<List<MediaGroup?>?, String?>? {
         return getBrowseRowsTV(
@@ -182,10 +179,6 @@ internal open class BrowseService2 {
             BrowseApiHelper::getMyHistoryQuery, 
             MediaGroup.TYPE_HISTORY
         )
-    }
-
-    fun addHistoryItem(video_id: String) {
-        mPlaylistService.addToPlaylist("HL", video_id)
     }
 
     private fun getLikedMusicWeb(): MediaGroup? {

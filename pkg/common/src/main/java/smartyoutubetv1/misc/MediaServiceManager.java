@@ -30,7 +30,7 @@ import smartyoutubetv1.prefs.MainUIData;
 import smartyoutubetv1.utils.LoadingManager;
 import smartyoutubetv1.utils.Utils;
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
-import com.liskovsoft.youtubeapi.browse.v2.BrowseService2;
+import com.liskovsoft.youtubeapi.playlist.PlaylistService;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -51,7 +51,7 @@ public class MediaServiceManager implements OnAccountChange {
     private final ContentService mContentService;
     private final SignInService mSignInService;
     private final NotificationsService mNotificationsService;
-    private final BrowseService2 mBrowseService;
+    private final PlaylistService mPlaylistService;
 
     private Disposable mMetadataAction;
     private Disposable mUploadsAction;
@@ -107,7 +107,7 @@ public class MediaServiceManager implements OnAccountChange {
         mContentService = service.getContentService();
         mSignInService = service.getSignInService();
         mNotificationsService = service.getNotificationsService();
-        mBrowseService = new BrowseService2();
+        mPlaylistService = new PlaylistService();
 
         mSignInService.addOnAccountChange(this);
     }
@@ -396,7 +396,7 @@ public class MediaServiceManager implements OnAccountChange {
             positionMs / 1_000f
         );
 
-        mBrowseService.addHistoryItem(video.videoId);
+        mPlaylistService.addToPlaylist("HL", video.videoId);
 
     }
 
