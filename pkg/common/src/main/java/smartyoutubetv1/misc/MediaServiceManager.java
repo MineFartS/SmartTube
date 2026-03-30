@@ -396,7 +396,11 @@ public class MediaServiceManager implements OnAccountChange {
             positionMs / 1_000f
         );
 
-        mPlaylistService.addToPlaylist("HL", video.videoId);
+        try{
+            mPlaylistService.addToPlaylist("HL", video.videoId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
