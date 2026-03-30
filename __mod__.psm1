@@ -5,6 +5,8 @@ $ADB = "$ANDROID_SDK\platform-tools\adb.exe"
 
 $JAVA = "C:\Program Files\Java\jdk-14\bin\java.exe"
 
+$APP_ID = "minefarts.smarttube"
+
 function Test-ADBConnection {
 
     $devices = & $ADB devices `
@@ -43,6 +45,10 @@ function Repair-AndroidSDK {
 
     "sdk.dir = $Path" ` | Set-Content "$PSScriptRoot\local.properties"
 
+}
+
+function Get-PID {
+    return & $ADB shell pidof $APP_ID
 }
 
 Export-ModuleMember `

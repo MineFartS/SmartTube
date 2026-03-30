@@ -4,7 +4,15 @@ Connect-ADB
 
 Clear-Host
 
-$_pid = & $ADB shell pidof minefarts.smarttube
+while (($_pid = $null) -eq $null) {
+
+    Write-Host "Getting PID ..."
+
+    $_pid = Get-PID
+
+}
+
+Clear-Host
 
 # Clear Buffer
 & $ADB logcat -c
