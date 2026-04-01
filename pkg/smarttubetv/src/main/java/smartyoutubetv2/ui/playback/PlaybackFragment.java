@@ -698,25 +698,60 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     }
 
     private CharSequence createSubtitle(Video video) {
-        CharSequence result = video.getSecondTitleFull();
 
-        if (getContext() != null && video.isLive) {
-            result = TextUtils.concat( result, " ", Video.TERTIARY_TEXT_DELIM, " ", Utils.color(getContext().getString(R.string.badge_live), ContextCompat.getColor(getContext(), R.color.red)));
+        if (getContext() == null) {
+            return new CharSequence();
         }
 
-        if (getContext() != null && video.likeCount != null) {
-            result = TextUtils.concat(result, " ", Video.TERTIARY_TEXT_DELIM, " ", video.likeCount, Helpers.NON_BREAKING_SPACE, Helpers.THUMB_UP); // color of thumb cannot be changed
+        List<String> parts = new List();
+
+        parts.add((String) video.getSecondTitleFull());
+
+        if (video.isLive) {
+
+            CharSequence color = Utils.color(
+                getContext().getString(R.string.badge_live), 
+                ContextCompat.getColor(
+                    getContext(), 
+                    R.color.red
+                )
+            )
+
+            parts.add((String) color);
         }
 
-        if (getContext() != null && video.dislikeCount != null) {
-            result = TextUtils.concat(result, " ", Video.TERTIARY_TEXT_DELIM, " ", video.dislikeCount, Helpers.NON_BREAKING_SPACE, Helpers.THUMB_DOWN); // color of thumb cannot be changed
+        if (video.likeCount != null) {
+            parts.add( 
+                video.likeCount +
+                Helpers.NON_BREAKING_SPACE +
+                Helpers.THUMB_UP
+            );
         }
 
-        if (getContext() != null && video.subscriberCount != null) {
-            result = TextUtils.concat(result, " ", Video.TERTIARY_TEXT_DELIM, " ", video.subscriberCount.replace(" ", Helpers.NON_BREAKING_SPACE));
+        if (video.dislikeCount != null) {
+            parts.add(
+                video.dislikeCount + 
+                Helpers.NON_BREAKING_SPACE + 
+                Helpers.THUMB_DOWN
+            );
         }
 
-        return result;
+        if (video.subscriberCount != null) {
+            parts.add(
+                video.subscriberCount.replace(" ", Helpers.NON_BREAKING_SPACE)
+            );
+        }
+
+        String result = "";
+
+        for (String part : parts) {
+            result += " ";
+            result += Video.TERTIARY_TEXT_DELIM;
+            result += " ";
+            result += part;
+        }
+
+        return (CharSequence) result;
     }
 
     private CharSequence createNextTitle(Video video) {
