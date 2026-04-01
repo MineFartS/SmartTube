@@ -329,10 +329,16 @@ public final class Video {
     }
 
     private static String extractAuthor(String secondTitle) {
+
         String result = null;
 
         if (secondTitle != null) {
-            secondTitle = secondTitle.replace(TERTIARY_TEXT_DELIM + " LIVE", ""); // remove special marks
+
+            secondTitle = secondTitle.replace(
+                TERTIARY_TEXT_DELIM + " LIVE", 
+                ""
+            ); // remove special marks
+            
             String[] split = secondTitle.split(TERTIARY_TEXT_DELIM);
 
             if (split.length <= 1) {
@@ -340,12 +346,17 @@ public final class Video {
             } else {
                 // First part may be a special label (4K, Stream, New etc)
                 // Two cases to detect label: 1) Description is long (4 items); 2) First item of info is too short (2 letters)
-                result = split.length < 4 && split[0].trim().length() > 2 ? split[0] : split[1];
+                result = (split.length < 4 && split[0].trim().length() > 2) ? split[0] : split[1];
             }
         }
 
         // Skip subtitles starting with number of views (e.g. 1.4M views)
-        return !TextUtils.isEmpty(result) && !Helpers.isNumeric(result.substring(0, 1)) ? Helpers.abbreviate(result.trim(), MAX_AUTHOR_LENGTH_CHARS) : null;
+        if (!TextUtils.isEmpty(result) && !Helpers.isNumeric(result.substring(0, 1))) {
+            return Helpers.abbreviate(result.trim(), MAX_AUTHOR_LENGTH_CHARS);
+        } else {
+            return null;
+        }
+        
     }
 
     public static List<Video> findVideosByAuthor(VideoGroup group, String author) {
