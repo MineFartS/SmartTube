@@ -83,6 +83,10 @@ public class VideoStateService implements ProfileChangeListener {
 
     public void save(State state) {
 
+        if (mStates.contains(state)) {            
+            return;
+        }
+
         mStates.add(state);
         
         persistState();
@@ -116,11 +120,16 @@ public class VideoStateService implements ProfileChangeListener {
     }
 
     public static class State {
+
         private static final String DELIM = "&sf;";
+        
         public final Video video;
+        
         public final long positionMs;
         public final long durationMs;
+        
         public final float speed;
+        
         public final long timestamp = System.currentTimeMillis();
 
         public State(Video video, long positionMs) {
