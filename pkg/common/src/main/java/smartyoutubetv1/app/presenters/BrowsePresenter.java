@@ -819,6 +819,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
                         },
                         error -> {
                             Log.e(TAG, "updateGridHeader error: %s", error.getMessage());
+                            if (getContext() != null) {
+                                com.liskovsoft.sharedutils.helpers.MessageHelpers.showMessage(getContext(), "History load error: " + error.getMessage());
+                            }
                             handleLoadError(error);
                         }, () -> handleLoadError(null));
 
@@ -1187,7 +1190,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
     }
 
     private void appendLocalHistory(VideoGroup videoGroup) {
-        
         if (!isHistorySection()) {
             return;
         }
@@ -1205,10 +1207,21 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
             return;
         }
 
-        for (State state : stateService.getStates()) {
-            videoGroup.add(0, state.video);
+        // Dedupe local vs remote history
+        List<String> remoteIds = new ArrayList<>();
+        for (Video v : videoGroup.getVideos()) {
+            if (v != null && v.videoId != null) {
+                remoteIds.add(v.videoId);
+            }
         }
 
+        for (State state : stateService.getStates()) {
+            if (state.video != null && state.video.videoId != null && !remoteIds.contains(state.video.videoId)) {
+                videoGroup.add(0, state.video);
+                Log.d(TAG, "Appended local history item: " + state.video.videoId);
+            }
+        }
+        Log.d(TAG, "appendLocalHistory: Added " + (stateService.getStates().size() - remoteIds.size()) + " local items to remote history");
     }
 
 }

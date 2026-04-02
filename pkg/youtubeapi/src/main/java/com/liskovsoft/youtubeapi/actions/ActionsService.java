@@ -74,12 +74,22 @@ public class ActionsService {
 
     public void pauseWatchHistory() {
         Call<Void> wrapper = mActionsApi.pauseWatchHistory(ActionsApiHelper.getEmptyQuery());
-        RetrofitHelper.get(wrapper);
+        Void result = RetrofitHelper.get(wrapper);
+        if (result == null) {
+            Log.e(TAG, "pauseWatchHistory: API call failed");
+        } else {
+            Log.d(TAG, "pauseWatchHistory: Success");
+        }
     }
 
     public void resumeWatchHistory() {
         Call<Void> wrapper = mActionsApi.resumeWatchHistory(ActionsApiHelper.getEmptyQuery());
-        RetrofitHelper.get(wrapper);
+        Void result = RetrofitHelper.get(wrapper);
+        if (result == null) {
+            Log.e(TAG, "resumeWatchHistory: API call failed");
+        } else {
+            Log.d(TAG, "resumeWatchHistory: Success");
+        }
     }
 
     public void clearWatchHistory() {
