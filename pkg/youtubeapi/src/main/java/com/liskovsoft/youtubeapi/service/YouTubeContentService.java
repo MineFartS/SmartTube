@@ -34,9 +34,7 @@ import java.util.Collections;
 import java.util.List;
 
 class YouTubeContentService implements ContentService {
-
     private static final String TAG = YouTubeContentService.class.getSimpleName();
-    
     private static YouTubeContentService sInstance;
 
     private YouTubeContentService() {
@@ -207,6 +205,11 @@ class YouTubeContentService implements ContentService {
         checkSigned();
 
         return getBrowseService2().getHistory();
+    }
+
+    @Override
+    public Observable<MediaGroup> getHistoryObserve() {
+        return RxHelper.fromCallable(this::getHistory);
     }
 
     @Override

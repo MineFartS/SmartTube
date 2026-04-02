@@ -43,6 +43,7 @@ public interface ContentService {
      * NOTE: recommended is a part of Home
      */
     Observable<MediaGroup> getRecommendedObserve();
+    Observable<MediaGroup> getHistoryObserve();
     Observable<List<MediaGroup>> getHomeObserve();
     Observable<List<MediaGroup>> getTrendingObserve();
     Observable<MediaGroup> getShortsObserve();
