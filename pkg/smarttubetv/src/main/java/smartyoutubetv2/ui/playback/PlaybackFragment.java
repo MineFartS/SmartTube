@@ -710,11 +710,7 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
 
         List<String> parts = new ArrayList();
 
-        // Parse Channel Name and View Count from video.metadataSecondTitle
-        String secondTitle = video.getSecondTitleFull().toString();
-        List<String> stParts = Arrays.asList(secondTitle.split(DELIM));
-        stParts = stParts.subList(0, Math.min(2, stParts.size()));
-        parts.addAll(stParts);
+        parts.add(video.secondTitle.toString());
 
         if (video.isLive) {
 
