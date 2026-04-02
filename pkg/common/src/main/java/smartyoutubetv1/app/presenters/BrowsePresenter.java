@@ -3,7 +3,7 @@ package smartyoutubetv1.app.presenters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
-
+import android.content.IContentService;
 import androidx.annotation.Nullable;
 
 import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
@@ -252,35 +252,37 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
     }
 
     private void initRowAndGridMapping() {
+
+        IContentService contentService = getContentService();
         
         mRowMapping.put(
             MediaGroup.TYPE_HOME, 
-            getContentService().getHomeObserve()
+            contentService.getHomeObserve()
         );
         
         mRowMapping.put(
             MediaGroup.TYPE_USER_PLAYLISTS, 
-            getContentService().getPlaylistRowsObserve()
+            contentService.getPlaylistRowsObserve()
         );
 
         mGridMapping.put(
             MediaGroup.TYPE_SUBSCRIPTIONS, 
-            getContentService().getSubscriptionsObserve()
+            contentService.getSubscriptionsObserve()
         );
 
         mGridMapping.put(
             MediaGroup.TYPE_HISTORY, 
-            getContentService().getHistoryObserve()
+            RxHelper.fromCallable(contentService::getHistory)
         );
         
         mGridMapping.put(
             MediaGroup.TYPE_CHANNEL_UPLOADS, 
-            getContentService().getSubscribedChannelsByNewContentObserve()
+            contentService.getSubscribedChannelsByNewContentObserve()
         );
         
         mGridMapping.put(
             MediaGroup.TYPE_NOTIFICATIONS, 
-            getNotificationsService().getNotificationItemsObserve()
+            contentService.getNotificationItemsObserve()
         );
         
     }
