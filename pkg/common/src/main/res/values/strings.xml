@@ -385,7 +385,6 @@
     <string name="thumb_quality_middle">Middle of the video</string>
     <string name="thumb_quality_end">End of the video</string>
     <string name="content_block_status">Check SponsorBlock server status</string>
-    <string name="dearrow_status">Check DeArrow server status</string>
     <string name="child_mode">Child mode</string>
     <string name="child_mode_desc">In this mode, the user can\'t use search or see any suggested content. The settings page will be password protected.</string>
     <string name="lost_setting_warning">The app settings will be changed. Make sure that you created a backup of the settings.</string>
@@ -471,11 +470,9 @@
     <string name="enable">Enable</string>
     <string name="more_info">More info</string>
     <string name="about_sponsorblock">About SponsorBlock</string>
-    <string name="about_dearrow">About DeArrow</string>
     <string name="replace_thumbnails">Replace thumbnails</string>
     <string name="crowdsourced_thumbnails">Crowdsourced thumbnails</string>
     <string name="crowdsoursed_titles">Crowdsourced titles</string>
-    <string name="dearrow_not_submitted_thumbs">Thumbnail source (if there\'s no DeArrow submission)</string>
     <string name="pitch_effect">Pitch effect</string>
     <string name="player_only_mode">Show only the player if the video is opened outside of the app</string>
     <string name="long_press_for_settings">LONG PRESS FOR SETTINGS</string>

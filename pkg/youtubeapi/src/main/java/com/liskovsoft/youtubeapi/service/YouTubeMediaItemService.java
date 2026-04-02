@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.liskovsoft.mediaserviceinterfaces.MediaItemService;
-import com.liskovsoft.mediaserviceinterfaces.data.DeArrowData;
 import com.liskovsoft.mediaserviceinterfaces.data.DislikeData;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
@@ -20,7 +19,6 @@ import com.liskovsoft.youtubeapi.actions.ActionsServiceWrapper;
 import com.liskovsoft.youtubeapi.block.SponsorBlockService;
 import com.liskovsoft.youtubeapi.block.data.SegmentList;
 import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.BaseMediaItem;
-import com.liskovsoft.youtubeapi.dearrow.DeArrowService;
 import com.liskovsoft.youtubeapi.feedback.FeedbackService;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
 import com.liskovsoft.youtubeapi.next.v2.WatchNextServiceWrapper;
@@ -463,28 +461,6 @@ public class YouTubeMediaItemService implements MediaItemService {
     @Override
     public Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId, Set<String> categories) {
         return RxHelper.fromCallable(() -> getSponsorSegments(videoId, categories));
-    }
-
-    @Override
-    public Observable<DeArrowData> getDeArrowDataObserve(String videoId) {
-        return RxHelper.fromCallable(() -> getDeArrowData(videoId));
-    }
-
-    @Override
-    public Observable<DeArrowData> getDeArrowDataObserve(List<String> videoIds) {
-        return RxHelper.create(emitter -> {
-            for (String videoId : videoIds) {
-                DeArrowData result = getDeArrowData(videoId);
-                if (result != null) {
-                    emitter.onNext(result);
-                }
-            }
-            emitter.onComplete();
-        });
-    }
-
-    private DeArrowData getDeArrowData(String videoId) {
-        return DeArrowService.getData(videoId);
     }
 
     @Override

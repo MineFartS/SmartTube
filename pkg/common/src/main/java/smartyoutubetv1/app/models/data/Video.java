@@ -47,7 +47,6 @@ public final class Video {
     
     public int id;
     public String title;
-    public String deArrowTitle;
     public CharSequence secondTitle;
     private String metadataTitle;
     public CharSequence metadataSecondTitle;
@@ -98,7 +97,6 @@ public final class Video {
     public String dislikeCount;
     public String subscriberCount;
     public float volume = 1.0f;
-    public boolean deArrowProcessed;
     public boolean isLiveEnd;
     public boolean isShuffled;
     public String searchQuery;
@@ -285,11 +283,11 @@ public final class Video {
     }
 
     public String getTitle() {
-        return deArrowTitle != null ? deArrowTitle : title;
+        return title;
     }
 
     public String getTitleFull() {
-        return deArrowTitle != null ? deArrowTitle : metadataTitle != null ? metadataTitle : title;
+        return (metadataTitle != null) ? metadataTitle : title;
     }
 
     public CharSequence getSecondTitle() {
