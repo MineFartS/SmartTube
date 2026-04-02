@@ -84,6 +84,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 /**
  * Plays selected video, loads playlist and related videos, and delegates playback to
@@ -629,6 +630,7 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
                 }
             }
         }
+
     }
 
     private class PlayerActionListener implements VideoPlayerGlue.OnActionClickedListener {
@@ -700,12 +702,12 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     private CharSequence createSubtitle(Video video) {
 
         if (getContext() == null) {
-            return new CharSequence();
+            return "";
         }
 
-        List<String> parts = new List();
+        List<String> parts = new ArrayList();
 
-        parts.add((String) video.getSecondTitleFull());
+        parts.add(video.getSecondTitleFull().toString());
 
         if (video.isLive) {
 
@@ -715,9 +717,10 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
                     getContext(), 
                     R.color.red
                 )
-            )
+            );
 
             parts.add((String) color);
+
         }
 
         if (video.likeCount != null) {
