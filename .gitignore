@@ -12,3 +12,7 @@ Thumbs.db
 
 # Build Logs
 *.log
+
+# Markdown
+/*.md
+!ReadMe.md
