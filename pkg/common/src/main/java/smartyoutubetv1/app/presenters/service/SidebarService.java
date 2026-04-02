@@ -337,8 +337,6 @@ public class SidebarService implements ProfileChangeListener {
 
         mPinnedItems = Helpers.parseList(split, 0, Video::fromString);
 
-        transferOldPinnedItems();
-
         if (mPinnedItems.isEmpty()) {
             initPinnedItems();
         }
@@ -347,20 +345,6 @@ public class SidebarService implements ProfileChangeListener {
         enableSection(MediaGroup.TYPE_SETTINGS, true);
 
         cleanupPinnedItems();
-
-    }
-
-    private void transferOldPinnedItems() {
-
-        if (mPinnedItems != null && !mPinnedItems.isEmpty()) {
-            return;
-        }
-
-        List<Video> oldPinnedItems = GeneralData.instance(mContext).getOldPinnedItems();
-
-        if (oldPinnedItems != null && !oldPinnedItems.isEmpty()) {
-            mPinnedItems = oldPinnedItems;
-        }
 
     }
 

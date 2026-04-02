@@ -29,25 +29,16 @@ public class GeneralData implements ProfileChangeListener {
     private final DataStore mDataStore;
 
     private int mBackgroundShortcut;
-    private boolean mIsHideShortsFromSubscriptionsEnabled;
-    private boolean mIsHideUpcomingEnabled;
-    private boolean mIsBridgeCheckEnabled;
     private String mLastPlaylistId;
     private String mLastPlaylistTitle;
-    private boolean mIsHideShortsFromHomeEnabled;
-    private boolean mIsHideShortsFromHistoryEnabled;
-    private boolean mIsAltAppIconEnabled;
     private int mVersionCode;
     private boolean mIsOldUpdateNotificationsEnabled;
     private boolean mIsRememberSubscriptionsPositionEnabled;
-    private boolean mIsHideWatchedFromNotificationsEnabled;
     private ArrayList<String> mChangelog;
     private HashMap<String, Integer> mPlaylistOrder;
     private ArrayList<Video> mPendingStreams;
     private HashMap<Integer, Video> mSelectedItems;
     private boolean mIsFirstUseTooltipEnabled;
-    private boolean mIsDeviceSpecificBackupEnabled;
-    private ArrayList<Video> mOldPinnedItems;
 
     private GeneralData(Context context) {
 
@@ -79,10 +70,6 @@ public class GeneralData implements ProfileChangeListener {
         persistState();
     }
 
-    public ArrayList<Video> getOldPinnedItems() {
-        return mOldPinnedItems;
-    }
-
     public boolean isRememberSubscriptionsPositionEnabled() {
         return mIsRememberSubscriptionsPositionEnabled;
     }
@@ -92,30 +79,12 @@ public class GeneralData implements ProfileChangeListener {
         persistState();
     }
 
-    public boolean isHideWatchedFromNotificationsEnabled() {
-        return mIsHideWatchedFromNotificationsEnabled;
-    }
-
-    public void setHideWatchedFromNotificationsEnabled(boolean enable) {
-        mIsHideWatchedFromNotificationsEnabled = enable;
-        persistState();
-    }
-
     public boolean is24HourLocaleEnabled() {
         return GlobalPreferences.sInstance.is24HourLocaleEnabled();
     }
 
     public void set24HourLocaleEnabled(boolean enable) {
         GlobalPreferences.sInstance.set24HourLocaleEnabled(enable);
-    }
-
-    public boolean isBridgeCheckEnabled() {
-        return mIsBridgeCheckEnabled;
-    }
-
-    public void setBridgeCheckEnabled(boolean enable) {
-        mIsBridgeCheckEnabled = enable;
-        persistState();
     }
 
     public String getLastPlaylistId() {
@@ -186,16 +155,6 @@ public class GeneralData implements ProfileChangeListener {
         persistState();
     }
 
-    public boolean isAltAppIconEnabled() {
-        return mIsAltAppIconEnabled;
-    }
-
-    public void setAltAppIconEnabled(boolean enable) {
-        mIsAltAppIconEnabled = enable;
-
-        persistState();
-    }
-
     public int getVersionCode() {
         return mVersionCode;
     }
@@ -251,62 +210,35 @@ public class GeneralData implements ProfileChangeListener {
         persistState();
     }
 
-    public boolean isDeviceSpecificBackupEnabled() {
-        return mIsDeviceSpecificBackupEnabled;
-    }
-
-    public void setDeviceSpecificBackupEnabled(boolean enable) {
-        mIsDeviceSpecificBackupEnabled = enable;
-        persistState();
-    }
-
     private synchronized void restoreState() {
 
         /* 00 */ mBackgroundShortcut = mDataStore.get(0, BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK);
-        /* 01 */ mOldPinnedItems = mDataStore.get(1);
-        /* 02 */ mIsHideShortsFromSubscriptionsEnabled = mDataStore.get(2, false);
-        /* 03 */ mIsBridgeCheckEnabled = mDataStore.get(3, true);
-        /* 04 */ mLastPlaylistId = mDataStore.get(4);
-        /* 05 */ mIsHideUpcomingEnabled = mDataStore.get(5, false);
-        /* 06 */ mIsHideShortsFromHomeEnabled = mDataStore.get(6, false);
-        /* 07 */ mIsHideShortsFromHistoryEnabled = mDataStore.get(7, false);
-        /* 08 */ mLastPlaylistTitle = mDataStore.get(8);
-        /* 09 */ mPlaylistOrder = mDataStore.get(9);
-        /* 10 */ mPendingStreams = mDataStore.get(10);
-        /* 11 */ mIsAltAppIconEnabled = mDataStore.get(11, false);
-        /* 12 */ mVersionCode = mDataStore.get(12, -1);
-        /* 13 */ mIsOldUpdateNotificationsEnabled = mDataStore.get(13, false);
-        /* 14 */ mIsRememberSubscriptionsPositionEnabled = mDataStore.get(14, false);
-        /* 15 */ mIsHideWatchedFromNotificationsEnabled = mDataStore.get(15, false);
-        /* 16 */ mChangelog = mDataStore.get(16);
-        /* 17 */ mSelectedItems = mDataStore.get(17);
-        /* 18 */ mIsFirstUseTooltipEnabled = mDataStore.get(18, true);
-        /* 19 */ mIsDeviceSpecificBackupEnabled = mDataStore.get(19, false);
+        /* 01 */ mLastPlaylistId = mDataStore.get(1);
+        /* 02 */ mLastPlaylistTitle = mDataStore.get(2);
+        /* 03 */ mPlaylistOrder = mDataStore.get(3);
+        /* 04 */ mPendingStreams = mDataStore.get(4);
+        /* 05 */ mVersionCode = mDataStore.get(5, -1);
+        /* 06 */ mIsOldUpdateNotificationsEnabled = mDataStore.get(6, false);
+        /* 07 */ mIsRememberSubscriptionsPositionEnabled = mDataStore.get(7, false);
+        /* 08 */ mChangelog = mDataStore.get(8);
+        /* 09 */ mSelectedItems = mDataStore.get(9);
+        /* 10 */ mIsFirstUseTooltipEnabled = mDataStore.get(10, true);
 
     }
 
     public void persistState() {
 
         /* 00 */ mDataStore.put(0, mBackgroundShortcut); 
-        /* 01 */ mDataStore.put(1, mOldPinnedItems);
-        /* 02 */ mDataStore.put(2, mIsHideShortsFromSubscriptionsEnabled);
-        /* 03 */ mDataStore.put(3, mIsBridgeCheckEnabled); 
-        /* 04 */ mDataStore.put(4, mLastPlaylistId);
-        /* 05 */ mDataStore.put(5, mIsHideUpcomingEnabled);
-        /* 06 */ mDataStore.put(6, mIsHideShortsFromHomeEnabled);
-        /* 07 */ mDataStore.put(7, mIsHideShortsFromHistoryEnabled); 
-        /* 08 */ mDataStore.put(8, mLastPlaylistTitle);
-        /* 09 */ mDataStore.put(9, mPlaylistOrder);
-        /* 10 */ mDataStore.put(10, mPendingStreams);
-        /* 11 */ mDataStore.put(11, mIsAltAppIconEnabled); 
-        /* 12 */ mDataStore.put(12, mVersionCode);
-        /* 13 */ mDataStore.put(13, mIsOldUpdateNotificationsEnabled);
-        /* 14 */ mDataStore.put(14, mIsRememberSubscriptionsPositionEnabled);
-        /* 15 */ mDataStore.put(15, mIsHideWatchedFromNotificationsEnabled); 
-        /* 16 */ mDataStore.put(16, mChangelog);
-        /* 17 */ mDataStore.put(17, mSelectedItems);
-        /* 18 */ mDataStore.put(18, mIsFirstUseTooltipEnabled);
-        /* 19 */ mDataStore.put(19, mIsDeviceSpecificBackupEnabled);
+        /* 01 */ mDataStore.put(1, mLastPlaylistId);
+        /* 02 */ mDataStore.put(2, mLastPlaylistTitle);
+        /* 03 */ mDataStore.put(3, mPlaylistOrder);
+        /* 04 */ mDataStore.put(4, mPendingStreams);
+        /* 05 */ mDataStore.put(5, mVersionCode);
+        /* 06 */ mDataStore.put(6, mIsOldUpdateNotificationsEnabled);
+        /* 07 */ mDataStore.put(7, mIsRememberSubscriptionsPositionEnabled);
+        /* 08 */ mDataStore.put(8, mChangelog);
+        /* 09 */ mDataStore.put(9, mSelectedItems);
+        /* 10 */ mDataStore.put(10, mIsFirstUseTooltipEnabled);
             
     }
 
