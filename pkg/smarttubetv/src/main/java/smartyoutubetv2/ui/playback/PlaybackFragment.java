@@ -85,6 +85,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Plays selected video, loads playlist and related videos, and delegates playback to
@@ -705,9 +706,13 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
             return "";
         }
 
+        String DELIM = " " + Video.TERTIARY_TEXT_DELIM + " ";
+
         List<String> parts = new ArrayList();
 
-        parts.add(video.getSecondTitleFull().toString());
+        String secondTitle = video.getSecondTitleFull().toString();
+        List<String> stParts = Arrays.asList(secondTitle.split(DELIM));
+        parts.addAll(stParts.subList(0,2));
 
         if (video.isLive) {
 
@@ -748,13 +753,11 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
         String result = "";
 
         for (String part : parts) {
-            result += " ";
-            result += Video.TERTIARY_TEXT_DELIM;
-            result += " ";
+            result += DELIM;
             result += part;
         }
 
-        return (CharSequence) result;
+        return (CharSequence) result.substring(3);
     }
 
     private CharSequence createNextTitle(Video video) {
