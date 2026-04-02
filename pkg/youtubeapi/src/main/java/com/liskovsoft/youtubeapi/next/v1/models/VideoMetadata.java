@@ -7,50 +7,71 @@ import com.liskovsoft.googlecommon.common.models.items.Thumbnail;
 import java.util.List;
 
 public class VideoMetadata {
+
     public static final String LIKE_STATUS_LIKE = "LIKE";
     public static final String LIKE_STATUS_DISLIKE = "DISLIKE";
     public static final String LIKE_STATUS_INDIFFERENT = "INDIFFERENT";
+    
     @JsonPath("$.owner.videoOwnerRenderer.thumbnail.thumbnails[*]")
     private List<Thumbnail> mThumbnails;
+    
     @JsonPath("$.videoId")
     private String mVideoId;
+    
     @JsonPath("$.likeStatus")
     private String mLikeStatus;
+    
     @JsonPath({"$.title.simpleText", "$.title.runs[0].text"})
     private String mTitle;
-    @JsonPath({"$.viewCount.videoViewCountRenderer.shortViewCount.simpleText",
-            "$.shortViewCountText.runs[0].text"})
+    
+    @JsonPath({
+        "$.viewCount.videoViewCountRenderer.shortViewCount.simpleText",
+        "$.shortViewCountText.runs[0].text"
+    })
     private String mShortViewCount1;
+    
     @JsonPath("$.shortViewCountText.runs[1].text")
     private String mShortViewCount2;
+    
     @JsonPath({"$.viewCount.videoViewCountRenderer.viewCount.simpleText",
             "$.viewCountText.simpleText", // YouTube Music
             "$.viewCount.videoViewCountRenderer.viewCount.runs[0].text",
             "$.viewCountText.runs[0].text"})
     private String mViewCount1;
+    
     @JsonPath({"$.viewCount.videoViewCountRenderer.viewCount.runs[1].text", "$.viewCountText.runs[1].text"})
     private String mViewCount2;
+    
     @JsonPath({"$.likesCount.simpleText", "$.likesCount.runs[0].text"})
     private String mLikesCount;
+    
     @JsonPath({"$.dislikesCount.simpleText", "$.dislikesCount.runs[0].text"})
     private String mDislikesCount;
+    
     @JsonPath({"$.description.simpleText", "$.description.runs[0].text"})
     private String mDescription;
+    
     @JsonPath({"$.publishedTimeText.simpleText", "$.publishedTimeText.runs[0].text"})
     private String mPublishedTime;
+    
     @JsonPath({"$.dateText.simpleText", "$.dateText.runs[0].text"})
     private String mPublishedDate;
+    
     @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayResumePlaybackRenderer.percentDurationWatched")
     private int mPercentWatched;
+    
     @JsonPath("$.viewCount.videoViewCountRenderer.isLive")
     private boolean mIsLive;
+    
     @JsonPath("$.badges[0].upcomingEventBadge.label.simpleText")
     private String mUpcomingBadge;
+    
     /**
      * Appeared in YouTube Music
      */
     @JsonPath("$.byline.runs[0].text")
     private String mByLine;
+
     /**
      * Appeared in YouTube Music
      */
@@ -127,4 +148,5 @@ public class VideoMetadata {
     public String getAlbumName() {
         return mAlbumName;
     }
+    
 }
