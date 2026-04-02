@@ -9,7 +9,6 @@ import smartyoutubetv1.app.models.data.Video;
 import smartyoutubetv1.prefs.AppPrefs.ProfileChangeListener;
 import smartyoutubetv1.utils.Utils;
 import smartyoutubetv1.utils.DataStore;
-import android.util.Log;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GeneralData implements ProfileChangeListener {
-    private static final String TAG = "GeneralData";
 
     public static final int BACKGROUND_PLAYBACK_SHORTCUT_HOME = 0;
     public static final int BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK = 1;
@@ -213,43 +211,35 @@ public class GeneralData implements ProfileChangeListener {
     }
 
     private synchronized void restoreState() {
-        try {
-            Log.d(TAG, "restoreState: Starting");
-            /* 00 */ mBackgroundShortcut = mDataStore.get(0, BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK);
-            /* 01 */ mLastPlaylistId = mDataStore.get(1);
-            /* 02 */ mLastPlaylistTitle = mDataStore.get(2);
-            /* 03 */ mPlaylistOrder = mDataStore.get(3);
-            /* 04 */ mPendingStreams = mDataStore.get(4);
-            /* 05 */ mVersionCode = mDataStore.get(5, -1);
-            /* 06 */ mIsOldUpdateNotificationsEnabled = mDataStore.get(6, false);
-            /* 07 */ mIsRememberSubscriptionsPositionEnabled = mDataStore.get(7, false);
-            /* 08 */ mChangelog = mDataStore.get(8);
-            /* 09 */ mSelectedItems = mDataStore.get(9);
-            /* 10 */ mIsFirstUseTooltipEnabled = mDataStore.get(10, true);
-            Log.d(TAG, "restoreState: Success");
-        } catch (Exception e) {
-            Log.e(TAG, "restoreState failed", e);
-        }
+
+        /* 00 */ mBackgroundShortcut = mDataStore.get(0, BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK);
+        /* 01 */ mLastPlaylistId = mDataStore.get(1);
+        /* 02 */ mLastPlaylistTitle = mDataStore.get(2);
+        /* 03 */ mPlaylistOrder = mDataStore.get(3);
+        /* 04 */ mPendingStreams = mDataStore.get(4);
+        /* 05 */ mVersionCode = mDataStore.get(5, -1);
+        /* 06 */ mIsOldUpdateNotificationsEnabled = mDataStore.get(6, false);
+        /* 07 */ mIsRememberSubscriptionsPositionEnabled = mDataStore.get(7, false);
+        /* 08 */ mChangelog = mDataStore.get(8);
+        /* 09 */ mSelectedItems = mDataStore.get(9);
+        /* 10 */ mIsFirstUseTooltipEnabled = mDataStore.get(10, true);
+
     }
 
     public void persistState() {
-        try {
-            Log.d(TAG, "persistState: Starting");
-            /* 00 */ mDataStore.put(0, mBackgroundShortcut); 
-            /* 01 */ mDataStore.put(1, mLastPlaylistId);
-            /* 02 */ mDataStore.put(2, mLastPlaylistTitle);
-            /* 03 */ mDataStore.put(3, mPlaylistOrder);
-            /* 04 */ mDataStore.put(4, mPendingStreams);
-            /* 05 */ mDataStore.put(5, mVersionCode);
-            /* 06 */ mDataStore.put(6, mIsOldUpdateNotificationsEnabled);
-            /* 07 */ mDataStore.put(7, mIsRememberSubscriptionsPositionEnabled);
-            /* 08 */ mDataStore.put(8, mChangelog);
-            /* 09 */ mDataStore.put(9, mSelectedItems);
-            /* 10 */ mDataStore.put(10, mIsFirstUseTooltipEnabled);
-            Log.d(TAG, "persistState: Success");
-        } catch (Exception e) {
-            Log.e(TAG, "persistState failed", e);
-        }
+
+        /* 00 */ mDataStore.put(0, mBackgroundShortcut); 
+        /* 01 */ mDataStore.put(1, mLastPlaylistId);
+        /* 02 */ mDataStore.put(2, mLastPlaylistTitle);
+        /* 03 */ mDataStore.put(3, mPlaylistOrder);
+        /* 04 */ mDataStore.put(4, mPendingStreams);
+        /* 05 */ mDataStore.put(5, mVersionCode);
+        /* 06 */ mDataStore.put(6, mIsOldUpdateNotificationsEnabled);
+        /* 07 */ mDataStore.put(7, mIsRememberSubscriptionsPositionEnabled);
+        /* 08 */ mDataStore.put(8, mChangelog);
+        /* 09 */ mDataStore.put(9, mSelectedItems);
+        /* 10 */ mDataStore.put(10, mIsFirstUseTooltipEnabled);
+            
     }
 
     @Override

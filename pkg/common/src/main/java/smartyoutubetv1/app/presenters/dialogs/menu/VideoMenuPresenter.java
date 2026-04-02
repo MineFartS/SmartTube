@@ -372,16 +372,10 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
                         onRemoveFromHistoryDone();
                     } else {
                         mNotInterestedAction = mMediaItemService.markAsNotInterestedObserve(mVideo.mediaItem.getFeedbackToken())
-                                .retry(2)
                                 .subscribe(
-                                        response -> {
-                                            Log.d(TAG, "Remove from history success");
-                                            onRemoveFromHistoryDone();
-                                        },
-                                        error -> {
-                                            Log.e(TAG, "Remove from history error after retry: %s", error.getMessage());
-                                            MessageHelpers.showMessage(getContext(), "Remove failed: " + error.getMessage());
-                                        }
+                                        var -> {},
+                                        error -> Log.e(TAG, "Remove from history error: %s", error.getMessage()),
+                                        this::onRemoveFromHistoryDone
                                 );
                     }
                     mDialogPresenter.closeDialog();

@@ -10,8 +10,6 @@ import smartyoutubetv1.R;
 import smartyoutubetv1.app.presenters.service.SidebarService;
 import smartyoutubetv1.misc.MediaServiceManager;
 import smartyoutubetv1.misc.MediaServiceManager.AccountChangeListener;
-import smartyoutubetv1.utils.Utils;
-import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,13 +23,12 @@ public class AppPrefs extends SharedPreferencesBase implements AccountChangeList
     private static final String STATE_UPDATER_DATA = "state_updater_data";
     private static final String CHANNEL_GROUP_DATA = "channel_group_data";
     private static final String SIDEBAR_DATA = "sidebar_data";
-    private static final String LAST_PROFILE_NAME = "last_profile_name";
-    private static final String TAG = "AppPrefs";
 
+
+    private static final String LAST_PROFILE_NAME = "last_profile_name";
     private String mBootResolution;
     private final Map<String, Integer> mDataHashes = new HashMap<>();
     private final WeakHashSet<ProfileChangeListener> mListeners = new WeakHashSet<>();
-    private Runnable mProfileChangeRunnable;
 
     public interface ProfileChangeListener {
         void onProfileChanged();
@@ -127,12 +124,8 @@ public class AppPrefs extends SharedPreferencesBase implements AccountChangeList
     }
 
     public void setData(String key, String data) {
-        Log.d(TAG, "setData: key=" + key + ", data length=" + (data != null ? data.length() : 0));
         if (checkData(key, data)) {
             putString(key, data);
-            Log.d(TAG, "setData: Saved to SharedPrefs");
-        } else {
-            Log.d(TAG, "setData: Data unchanged, skipping");
         }
     }
 
@@ -156,17 +149,7 @@ public class AppPrefs extends SharedPreferencesBase implements AccountChangeList
     }
 
     private void onProfileChanged() {
-        Log.d(TAG, "onProfileChanged: Debounced notify " + mListeners.size() + " listeners");
-        Utils.removeCallbacks(mProfileChangeRunnable);
-        mProfileChangeRunnable = () -> {
-            Log.d(TAG, "onProfileChanged: Notifying listeners");
-            try {
-                mListeners.forEach(ProfileChangeListener::onProfileChanged);
-            } catch (Exception e) {
-                Log.e(TAG, "onProfileChanged error", e);
-            }
-        };
-        Utils.postDelayed(mProfileChangeRunnable, 500);
+        mListeners.forEach(ProfileChangeListener::onProfileChanged);
     }
 
     public void addListener(ProfileChangeListener listener) {

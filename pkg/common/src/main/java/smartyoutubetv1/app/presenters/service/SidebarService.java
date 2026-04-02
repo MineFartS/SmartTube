@@ -10,7 +10,6 @@ import smartyoutubetv1.app.models.data.Video;
 import smartyoutubetv1.prefs.AppPrefs;
 import smartyoutubetv1.prefs.AppPrefs.ProfileChangeListener;
 import smartyoutubetv1.prefs.GeneralData;
-import android.util.Log;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -22,7 +21,6 @@ import android.content.Context;
 import android.content.Context;
 
 public class SidebarService implements ProfileChangeListener {
-    private static final String TAG = "SidebarService";
 
     @SuppressLint("StaticFieldLeak")
     private static SidebarService sInstance;
@@ -332,39 +330,30 @@ public class SidebarService implements ProfileChangeListener {
     }
 
     private void restoreState() {
-        try {
-            Log.d(TAG, "restoreState: Starting sidebar restore");
-            String data = mPrefs.getSidebarData();
-            String[] split = Helpers.splitData(data);
-            mPinnedItems = Helpers.parseList(split, 0, Video::fromString);
-            Log.d(TAG, "restoreState: Parsed " + mPinnedItems.size() + " pinned items");
 
-            if (mPinnedItems.isEmpty()) {
-                initPinnedItems();
-            }
+        String data = mPrefs.getSidebarData();
 
-            // Backward compatibility
-            enableSection(MediaGroup.TYPE_SETTINGS, true);
+        String[] split = Helpers.splitData(data);
 
-            cleanupPinnedItems();
-            Log.d(TAG, "restoreState: Success, final pinned items: " + mPinnedItems.size());
-        } catch (Exception e) {
-            Log.e(TAG, "restoreState failed", e);
+        mPinnedItems = Helpers.parseList(split, 0, Video::fromString);
+
+        if (mPinnedItems.isEmpty()) {
+            initPinnedItems();
         }
+
+        // Backward compatibility
+        enableSection(MediaGroup.TYPE_SETTINGS, true);
+
+        cleanupPinnedItems();
+
     }
 
     public void persistState() {
-        try {
-            Log.d(TAG, "persistState: Saving " + mPinnedItems.size() + " pinned items");
-            mPrefs.setSidebarData(
-                Helpers.mergeData(
-                    mPinnedItems
-                )
-            );
-            Log.d(TAG, "persistState: Success");
-        } catch (Exception e) {
-            Log.e(TAG, "persistState failed", e);
-        }
+        mPrefs.setSidebarData(
+            Helpers.mergeData(
+                mPinnedItems
+            )
+        );
     }
 
     @Override

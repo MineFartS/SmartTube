@@ -10,11 +10,9 @@ import smartyoutubetv1.app.models.data.Video;
 import smartyoutubetv1.prefs.AppPrefs;
 import smartyoutubetv1.prefs.AppPrefs.ProfileChangeListener;
 import smartyoutubetv1.utils.Utils;
-import com.liskovsoft.sharedutils.rx.RxHelper;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+
 import java.util.List;
+
 import android.util.Log;
 
 public class VideoStateService implements ProfileChangeListener {
@@ -69,12 +67,14 @@ public class VideoStateService implements ProfileChangeListener {
     }
 
     public void removeByVideoId(String videoId) {
+
         Helpers.removeIf(
             mStates, 
             state -> Helpers.equals(state.video.videoId, videoId)
         );
-        Log.d(TAG, "removeByVideoId: Removing state for videoId=" + videoId + ", states left: " + mStates.size());
+        
         persistState();
+    
     }
 
     public boolean isEmpty() {
@@ -82,47 +82,37 @@ public class VideoStateService implements ProfileChangeListener {
     }
 
     public void save(State state) {
-        if (mStates.contains(state)) {
-            Log.d(TAG, "save: State already exists for videoId=" + state.video.videoId + ", skipping");
-            return;
-        }
+
         mStates.add(state);
-        Log.d(TAG, "save: Added state for videoId=" + state.video.videoId + ", total states: " + mStates.size());
+        
         persistState();
+    
     }
 
     public void clear() {
-        Log.d(TAG, "clear: Clearing all states");
         mStates.clear();
         persistState();
     }
 
     private void restoreState() {
-        Log.d(TAG, "restoreState: Starting async restore");
-        Observable.fromCallable(() -> {
-            mStates.clear();
-            String data = mPrefs.getStateUpdaterData();
-            String[] split = Helpers.splitData(data);
-            setStateData(Helpers.parseStr(split, 0));
-            Log.d(TAG, "restoreState: Restored " + mStates.size() + " states");
-            return mStates.size();
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-          .subscribe(count -> Log.d(TAG, "restoreState: Success, " + count + " states"),
-                     error -> Log.e(TAG, "restoreState failed", error));
+
+        mStates.clear();
+
+        String data = mPrefs.getStateUpdaterData();
+        String[] split = Helpers.splitData(data);
+
+        /* 0 */ setStateData(Helpers.parseStr(split, 0));
+    
     }
 
-    private static final String TAG = "VideoStateService";
-
     public void persistState() {
-        Log.d(TAG, "persistState: Persisting " + mStates.size() + " states async");
-        Observable.fromCallable(() -> {
-            String data = Helpers.mergeData(/* 0 */ getStateData());
-            mPrefs.setStateUpdaterData(data);
-            return data;
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-          .retry(3)
-          .subscribe(data -> Log.d(TAG, "persistState: Success"),
-                     error -> Log.e(TAG, "persistState failed after retries", error));
+        
+        mPrefs.setStateUpdaterData(
+            Helpers.mergeData(
+                /* 0 */ getStateData()
+            )
+        );
+        
     }
 
     public static class State {

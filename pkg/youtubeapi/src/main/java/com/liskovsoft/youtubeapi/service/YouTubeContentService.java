@@ -8,7 +8,6 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.actions.ActionsService;
 import com.liskovsoft.youtubeapi.actions.ActionsServiceWrapper;
 import com.liskovsoft.youtubeapi.browse.v2.BrowseService2;
@@ -210,13 +209,7 @@ class YouTubeContentService implements ContentService {
 
     @Override
     public Observable<MediaGroup> getHistoryObserve() {
-        return RxHelper.fromCallable(this::getHistory)
-                .retry(2)
-                .timeout(10, java.util.concurrent.TimeUnit.SECONDS)
-                .onErrorReturn(error -> {
-                    Log.e(TAG, "getHistoryObserve failed after retries", error);
-                    return null; // empty group on fail
-                });
+        return RxHelper.fromCallable(this::getHistory);
     }
 
     @Override
