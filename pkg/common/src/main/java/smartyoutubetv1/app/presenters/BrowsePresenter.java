@@ -50,6 +50,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -1205,8 +1206,15 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
             return;
         }
 
-        for (State state : stateService.getStates()) {
-            videoGroup.add(0, state.video);
+        List<Video> remote = videoGroup.getVideos();
+
+        List<Video> local = new ArrayList<>();
+        for (State state: stateService.getStates()) {
+            local.add(state.video);
+        }
+
+        for (Video video : local) {
+            videoGroup.add(0, video);
         }
 
     }
