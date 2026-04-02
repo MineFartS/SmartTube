@@ -3,9 +3,11 @@ package com.liskovsoft.mediaserviceinterfaces.data;
 import java.util.List;
 
 public interface MediaItemMetadata {
+
     int LIKE_STATUS_INDIFFERENT = 0;
     int LIKE_STATUS_LIKE = 1;
     int LIKE_STATUS_DISLIKE = 2;
+    
     String getTitle();
     CharSequence getSecondTitle();
     String getDescription();
@@ -34,4 +36,5 @@ public interface MediaItemMetadata {
     List<NotificationState> getNotificationStates();
     long getDurationMs();
     String getBadgeText();
+    
 }

@@ -326,6 +326,7 @@ internal data class VideoItem(
     val navigationEndpoint: NavigationEndpointItem?,
     val lengthText: TextItem?
 ) {
+
     data class BadgeItem(
         val liveBadge: LiveBadge?,
         val upcomingEventBadge: UpcomingEventBadge?,
@@ -349,6 +350,7 @@ internal data class VideoItem(
         val upcomingEventText: TextItem?,
         val startTime: String?
     )
+
 }
 
 internal data class MusicItem(
@@ -396,10 +398,12 @@ internal data class ShortsItem(
     val onTap: OnTap?,
     val overlayMetadata: OverlayMetadata?
 ) {
+
     data class OverlayMetadata(
         val primaryText: TextItem?,
         val secondaryText: TextItem?
     )
+
 }
 
 internal data class OnTap(

@@ -10,15 +10,17 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class TileItem {
+
     public static final String CONTENT_TYPE_UNDEFINED = "UNDEFINED";
     public static final String CONTENT_TYPE_CHANNEL = "TILE_CONTENT_TYPE_CHANNEL";
     public static final String CONTENT_TYPE_PLAYLIST = "TILE_CONTENT_TYPE_PLAYLIST";
     public static final String CONTENT_TYPE_VIDEO = "TILE_CONTENT_TYPE_VIDEO";
+    
     private static final String BADGE_STYLE_LIVE = "LIVE";
     private static final String BADGE_STYLE_SHORTS = "SHORTS";
     private static final String BADGE_STYLE_UPCOMING = "UPCOMING";
-
     private static final String BADGE_STYLE_MOVIE = "BADGE_STYLE_TYPE_YPC";
+
     private static final String TILE_STYLE_SHORTS = "TILE_STYLE_YTLR_SHORTS";
 
     @JsonPath("$.style")
@@ -179,7 +181,9 @@ public class TileItem {
 
     @Nullable
     private String[] getBadgeStyles() {
+
         String headerBadge = mHeader != null ? mHeader.getBadgeStyle() : null;
+        
         List<String> metadataBadge = mMetadata != null ? mMetadata.getBadgeStyles() : null;
 
         if (headerBadge == null && metadataBadge == null) {
@@ -187,7 +191,9 @@ public class TileItem {
         }
 
         int size = (headerBadge != null ? 1 : 0) + (metadataBadge != null ? metadataBadge.size() : 0);
+        
         String[] result = new String[size];
+        
         int i = 0;
 
         if (headerBadge != null) {
@@ -202,4 +208,5 @@ public class TileItem {
 
         return result;
     }
+    
 }

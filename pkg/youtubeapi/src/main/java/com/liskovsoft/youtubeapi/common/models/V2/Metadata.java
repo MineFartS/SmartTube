@@ -9,14 +9,19 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import java.util.List;
 
 public class Metadata {
+
     @JsonPath("$.title")
     private TextItem mTitle;
+
     @JsonPath("$.lines[0].lineRenderer.items[*].lineItemRenderer.text")
     private List<TextItem> mViewsAndDateText1;
+    
     @JsonPath("$.lines[1].lineRenderer.items[*].lineItemRenderer.text")
     private List<TextItem> mViewsAndDateText2;
+    
     @JsonPath("$.lines[*].lineRenderer.items[0].lineItemRenderer.badge.metadataBadgeRenderer.style")
     private List<String> mBadgeStyles;
+    
     @JsonPath("$.lines[*].lineRenderer.items[0].lineItemRenderer.badge.metadataBadgeRenderer.label")
     private List<String> mBadgeLabels;
 
@@ -51,4 +56,5 @@ public class Metadata {
     private CharSequence getViewCountText2() {
         return mViewsAndDateText2 != null ? ServiceHelper.combineItems(" ", mViewsAndDateText2.toArray(new Object[0])) : null;
     }
+    
 }

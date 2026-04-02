@@ -21,7 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class YouTubeMediaItemMetadata implements MediaItemMetadata {
+
     private static final String TAG = YouTubeMediaItemMetadata.class.getSimpleName();
+    
     private String mTitle;
     private CharSequence mSecondTitle;
     private CharSequence mSecondTitleAlt;
@@ -45,6 +47,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     private PlaylistInfo mPlaylistInfo;
 
     public static YouTubeMediaItemMetadata from(WatchNextResult watchNextResult) {
+    
         if (watchNextResult == null) {
             return null;
         }
@@ -60,6 +63,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         }
 
         if (videoDetails != null) {
+    
             mediaItemMetadata.mAuthor = Helpers.toString(videoDetails.getUserName());
             mediaItemMetadata.mChannelId = videoDetails.getChannelId();
             mediaItemMetadata.mTitle = videoDetails.getTitle();
@@ -67,34 +71,49 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
             mediaItemMetadata.mPublishedDate = videoDetails.getPublishedDate();
 
             mediaItemMetadata.mSecondTitle = YouTubeHelper.createInfo(
-                    mediaItemMetadata.mAuthor,
-                    videoDetails.getPublishedDate(),
-                    videoDetails.getViewCountText());
+                mediaItemMetadata.mAuthor,
+                videoDetails.getPublishedDate(),
+                videoDetails.getViewCountText()
+            );
+
             mediaItemMetadata.mSecondTitleAlt = YouTubeHelper.createInfo(
-                    mediaItemMetadata.mAuthor,
-                    videoDetails.getPublishedDate(),
-                    videoDetails.getShortViewCountText());
+                mediaItemMetadata.mAuthor,
+                videoDetails.getPublishedDate(),
+                videoDetails.getShortViewCountText()
+            );
+
         }
 
         if (videoOwner != null) {
+            
             mediaItemMetadata.mAuthor = videoOwner.getVideoAuthor();
             mediaItemMetadata.mAuthorImageUrl = YouTubeHelper.findOptimalResThumbnailUrl(videoOwner.getThumbnails());
             mediaItemMetadata.mChannelId = videoOwner.getChannelId();
+            
             Boolean subscribed = videoOwner.isSubscribed();
             mediaItemMetadata.mIsSubscribed = subscribed != null && subscribed;
+        
         }
 
         if (videoMetadata != null) {
+            
             String author = mediaItemMetadata.mAuthor != null ? mediaItemMetadata.mAuthor : videoMetadata.getByLine();
             String publishedTime = videoMetadata.getPublishedTime() != null ? videoMetadata.getPublishedTime() : videoMetadata.getAlbumName();
+            
             mediaItemMetadata.mTitle = videoMetadata.getTitle();
+            
             mediaItemMetadata.mSecondTitle = YouTubeHelper.createInfo(
-                    author, publishedTime,
-                    videoMetadata.getShortViewCount());
+                author, 
+                publishedTime,
+                videoMetadata.getShortViewCount()
+            );
+
             mediaItemMetadata.mSecondTitleAlt = YouTubeHelper.createInfo(
-                    author,
-                    videoMetadata.getPublishedDate(),
-                    videoMetadata.getShortViewCount());
+                author,
+                videoMetadata.getPublishedDate(),
+                videoMetadata.getShortViewCount()
+            );
+
             mediaItemMetadata.mVideoId = videoMetadata.getVideoId();
             mediaItemMetadata.mDescription = videoMetadata.getDescription();
             mediaItemMetadata.mDislikesCount = videoMetadata.getDislikesCount();
@@ -108,13 +127,17 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
             String likeStatus = videoMetadata.getLikeStatus();
 
             if (likeStatus != null) {
+                
                 switch (likeStatus) {
+                
                     case VideoMetadata.LIKE_STATUS_LIKE:
                         mediaItemMetadata.mLikeStatus = MediaItemMetadata.LIKE_STATUS_LIKE;
                         break;
+                
                     case VideoMetadata.LIKE_STATUS_DISLIKE:
                         mediaItemMetadata.mLikeStatus = MediaItemMetadata.LIKE_STATUS_DISLIKE;
                         break;
+
                 }
             }
         }
@@ -124,9 +147,11 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         List<SuggestedSection> suggestedSections = watchNextResult.getSuggestedSections();
 
         if (suggestedSections != null) {
+
             mediaItemMetadata.mSuggestions = new ArrayList<>();
 
             for (SuggestedSection section : suggestedSections) {
+
                 if (section.getChips() != null) {
                     // Contains multiple nested sections
                     for (Chip chip : section.getChips()) {
@@ -135,6 +160,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
                 }
 
                 mediaItemMetadata.mSuggestions.add(YouTubeMediaGroup.from(section));
+
             }
         }
 
@@ -142,6 +168,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
 
         // Alt path to get like/subscribe status (when no such info in metadata section, e.g. YouTube Music items)
         if (buttonStates != null) {
+
             if (buttonStates.isSubscribeToggled() != null) {
                 mediaItemMetadata.mIsSubscribed = buttonStates.isSubscribeToggled();
             }
@@ -157,6 +184,7 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
             if (buttonStates.getChannelId() != null) {
                 mediaItemMetadata.mChannelId = buttonStates.getChannelId();
             }
+
         }
 
         return mediaItemMetadata;
@@ -325,4 +353,5 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     public String getBadgeText() {
         return null;
     }
+    
 }

@@ -11,66 +11,92 @@ import java.util.List;
  * Root element: gridVideoRenderer/pivotVideoRenderer
  */
 public class VideoItem {
+
     private static final String BADGE_STYLE_LIVE = "LIVE";
     private static final String BADGE_STYLE_UPCOMING = "UPCOMING";
-
     private static final String BADGE_STYLE_MOVIE = "BADGE_STYLE_TYPE_YPC";
+
     @JsonPath("$.videoId")
     private String mVideoId;
+
     @JsonPath("$.navigationEndpoint.watchEndpoint.playlistId")
     private String mPlaylistId;
+
     @JsonPath("$.navigationEndpoint.watchEndpoint.index")
     private int mPlaylistIndex = -1;
+
     @JsonPath("$.navigationEndpoint.clickTrackingParams")
     private String mClickTrackingParams;
+
     @JsonPath("$.thumbnail.thumbnails[*]")
     private List<Thumbnail> mThumbnails;
+
     @JsonPath("$.channelThumbnail.thumbnails[0]")
     private String mChannelThumbnail;
+
     @JsonPath("$.title")
     private TextItem mTitle;
+
     @JsonPath({"$.shortBylineText", "$.shortBylineText", "$.longBylineText"})
     private TextItem mUserName;
+
     @JsonPath({"$.shortBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId",
                "$.longBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId"})
     private String mChannelId;
+    
     @JsonPath("$.menu.menuRenderer.items[*].menuNavigationItemRenderer.navigationEndpoint.browseEndpoint.browseId")
     private List<String> mMenuChannelId;
+    
     @JsonPath("$.menu.menuRenderer.items[*].menuServiceItemRenderer.serviceEndpoint.feedbackEndpoint.feedbackToken")
     private List<String> mFeedbackToken;
+    
     @JsonPath({"$.shortBylineText.runs[0].navigationEndpoint.browseEndpoint.canonicalBaseUrl",
                "$.longBylineText.runs[0].navigationEndpoint.browseEndpoint.canonicalBaseUrl"})
     private String mCanonicalChannelUrl;
+    
     @JsonPath({"$.publishedTimeText.simpleText", "$.publishedTimeText.runs[0].text"})
     private String mPublishedTime;
+    
     @JsonPath("$.viewCountText")
     private TextItem mViewCountText;
+    
     @JsonPath("$.shortViewCountText")
     private TextItem mShortViewCountText;
+    
     @JsonPath("$.lengthText")
     private TextItem mLengthText;
+    
     @JsonPath("$.lengthText.accessibility.accessibilityData.label")
     private String mLengthTextLong;
+    
     @JsonPath({"$.thumbnailOverlays[0].thumbnailOverlayTimeStatusRenderer.text",
                "$.badges[0].liveBadge.label",
                "$.badges[0].upcomingEventBadge.label"})
     private TextItem mBadgeText;
+    
     @JsonPath("$.badges[0].metadataBadgeRenderer.label")
     private String mDescBadgeText;
+    
     // Sometimes live video contains percent watched as first item
     @JsonPath({"$.thumbnailOverlays[0].thumbnailOverlayTimeStatusRenderer.style",
                "$.thumbnailOverlays[1].thumbnailOverlayTimeStatusRenderer.style"})
     private String mBadgeStyle;
+    
     @JsonPath("$.trackingParams")
     private String mTrackingParams;
+    
     @JsonPath("$.thumbnailOverlays[0].thumbnailOverlayResumePlaybackRenderer.percentDurationWatched")
     private int mPercentWatched = -1;
+    
     @JsonPath("$.navigationEndpoint.watchEndpoint.startTimeSeconds")
     private int mStartTimeSeconds;
+    
     @JsonPath("$.upcomingEventData.upcomingEventText")
     private TextItem mUpcomingEventText;
+    
     @JsonPath("$.upcomingEventData.startTime")
     private String mUpcomingEventStartTime;
+    
     @JsonPath("$.richThumbnail.movingThumbnailRenderer.movingThumbnailDetails.thumbnails[0].url")
     private String mRichThumbnailUrl;
 
@@ -197,4 +223,5 @@ public class VideoItem {
     public String getClickTrackingParams() {
         return mClickTrackingParams;
     }
+    
 }

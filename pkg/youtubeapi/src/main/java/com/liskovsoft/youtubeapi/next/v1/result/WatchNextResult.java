@@ -16,23 +16,37 @@ public class WatchNextResult {
     /**
      * Sections == Rows in web app version
      */
-    @JsonPath({"$.contents.singleColumnWatchNextResults.pivot.pivot.contents[*].shelfRenderer",
-            "$.contents.singleColumnWatchNextResults.pivot.sectionListRenderer.contents[*].shelfRenderer"})
+    
+    @JsonPath({
+        "$.contents.singleColumnWatchNextResults.pivot.pivot.contents[*].shelfRenderer",
+        "$.contents.singleColumnWatchNextResults.pivot.sectionListRenderer.contents[*].shelfRenderer"
+    })
     private List<SuggestedSection> mSuggestedSections;
-    @JsonPath({"$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].videoMetadataRenderer",
-               "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].musicWatchMetadataRenderer"}) // youtube music format
+    
+    @JsonPath({
+        "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].videoMetadataRenderer",
+        "$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].musicWatchMetadataRenderer"
+    }) // youtube music format
     private VideoMetadata mVideoMetadata;
+    
     @JsonPath("$.contents.singleColumnWatchNextResults.results.results.contents[0].itemSectionRenderer.contents[0].videoMetadataRenderer.owner.videoOwnerRenderer")
     private VideoOwner mVideoOwner;
-    @JsonPath({"$.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer.maybeHistoryEndpointRenderer",
-               "$.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer.autoplayEndpointRenderer"}) // present only on playlist
+    
+    @JsonPath({
+        "$.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer.maybeHistoryEndpointRenderer",
+        "$.contents.singleColumnWatchNextResults.autoplay.autoplay.sets[0].nextVideoRenderer.autoplayEndpointRenderer"
+    }) // present only on playlist
     private NextVideo mNextVideo;
+    
     @JsonPath("$.contents.singleColumnWatchNextResults.autoplay.autoplay.sets.replayVideoRenderer.pivotVideoRenderer") // V2
     private VideoItem mVideoDetails;
+    
     @JsonPath("$.contents.singleColumnWatchNextResults.playlist.playlist")
     private Playlist mPlaylist;
+    
     @JsonPath("$.contents.singleColumnWatchNextResults.autoplay.autoplay.replayVideoRenderer")
     private ItemWrapper mReplayItem;
+    
     @JsonPath("$.transportControls.transportControlsRenderer")
     private ButtonStates mButtonStates;
 
@@ -71,4 +85,5 @@ public class WatchNextResult {
     public VideoItem getVideoDetails() {
         return mVideoDetails;
     }
+
 }

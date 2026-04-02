@@ -33,22 +33,36 @@ public class VideoMetadata {
     @JsonPath("$.shortViewCountText.runs[1].text")
     private String mShortViewCount2;
     
-    @JsonPath({"$.viewCount.videoViewCountRenderer.viewCount.simpleText",
-            "$.viewCountText.simpleText", // YouTube Music
-            "$.viewCount.videoViewCountRenderer.viewCount.runs[0].text",
-            "$.viewCountText.runs[0].text"})
+    @JsonPath({
+        "$.viewCount.videoViewCountRenderer.viewCount.simpleText",
+        "$.viewCountText.simpleText", // YouTube Music
+        "$.viewCount.videoViewCountRenderer.viewCount.runs[0].text",
+        "$.viewCountText.runs[0].text"
+    })
     private String mViewCount1;
     
-    @JsonPath({"$.viewCount.videoViewCountRenderer.viewCount.runs[1].text", "$.viewCountText.runs[1].text"})
+    @JsonPath({
+        "$.viewCount.videoViewCountRenderer.viewCount.runs[1].text", 
+        "$.viewCountText.runs[1].text"
+    })
     private String mViewCount2;
     
-    @JsonPath({"$.likesCount.simpleText", "$.likesCount.runs[0].text"})
+    @JsonPath({
+        "$.likesCount.simpleText", 
+        "$.likesCount.runs[0].text"
+    })
     private String mLikesCount;
     
-    @JsonPath({"$.dislikesCount.simpleText", "$.dislikesCount.runs[0].text"})
+    @JsonPath({
+        "$.dislikesCount.simpleText", 
+        "$.dislikesCount.runs[0].text"
+    })
     private String mDislikesCount;
     
-    @JsonPath({"$.description.simpleText", "$.description.runs[0].text"})
+    @JsonPath({
+        "$.description.simpleText", 
+        "$.description.runs[0].text"
+    })
     private String mDescription;
     
     @JsonPath({"$.publishedTimeText.simpleText", "$.publishedTimeText.runs[0].text"})
@@ -148,5 +162,5 @@ public class VideoMetadata {
     public String getAlbumName() {
         return mAlbumName;
     }
-    
+
 }

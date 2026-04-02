@@ -9,6 +9,7 @@ import com.liskovsoft.youtubeapi.common.models.gen.getOptimalResThumbnailUrl
 import com.liskovsoft.youtubeapi.common.models.gen.getText
 
 internal data class CommentItemImpl(val commentItemWrapper: CommentItemWrapper): CommentItem {
+
     private val commentRenderer by lazy {
         commentItemWrapper.commentThreadRenderer?.comment?.commentRenderer
     }
@@ -50,4 +51,5 @@ internal data class CommentItemImpl(val commentItemWrapper: CommentItemWrapper):
     override fun getReplyCount(): String? = replyCountItem
 
     override fun isEmpty(): Boolean = replyCountItem == null || nestedCommentKeyItem == null // empty replies fix
+    
 }

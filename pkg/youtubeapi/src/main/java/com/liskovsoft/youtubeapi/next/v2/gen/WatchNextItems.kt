@@ -9,11 +9,13 @@ internal data class NextVideoItem(
     val item: Item?,
     val endpoint: Endpoint?
 ) {
+
     data class Item(val previewButtonRenderer: PreviewButtonRenderer?) {
         data class PreviewButtonRenderer(val thumbnail: ThumbnailItem?, val title: TextItem?, val byline: TextItem?)
     }
 
     data class Endpoint(val watchEndpoint: WatchEndpointItem?)
+
 }
 
 internal data class ShelfRenderer(
@@ -23,11 +25,13 @@ internal data class ShelfRenderer(
     val endpoint: NavigationEndpointItem?,
     val tvhtml5ShelfRendererType: String?
 ) {
+
     data class Content(
         val gridRenderer: GridRenderer?,
         val expandedShelfContentsRenderer: ExpandedShelfContentsRenderer?,
         val horizontalListRenderer: HorizontalListRenderer?
     ) {
+    
         data class ExpandedShelfContentsRenderer(
             val items: List<ItemWrapper?>?
         )
@@ -36,17 +40,20 @@ internal data class ShelfRenderer(
                 val items: List<ItemWrapper?>?,
                 val continuations: List<ContinuationItem?>?
         )
+    
     }
 
     data class HeaderRenderer(
         val shelfHeaderRenderer: ShelfHeaderRenderer?,
         val chipCloudRenderer: ChipCloudRenderer?
     ) {
+
         data class ShelfHeaderRenderer(
                 val title: TextItem?,
                 val avatarLockup: AvatarLockup?,
                 val buttons: List<ButtonContentWrapper?>?
         ) {
+        
             data class AvatarLockup(
                 val avatarLockupRenderer: AvatarLockupRenderer?
             ) {
@@ -54,25 +61,31 @@ internal data class ShelfRenderer(
                     val title: TextItem?
                 )
             }
+
         }
 
         data class ChipCloudRenderer(
                 val chips: List<ChipItem?>?
         )
+
     }
+
 }
 
 internal data class ChipItem(
         val chipCloudChipRenderer: ChipCloudChipRenderer?
 ) {
+
     data class ChipCloudChipRenderer(
             val text: TextItem?,
             val content: Content?
     ) {
+        
         data class Content(
             val horizontalListRenderer: HorizontalListRenderer?,
             val sectionListRenderer: SectionListRenderer?
         ) {
+
             data class HorizontalListRenderer(
                     val items: List<ItemWrapper?>?,
                     val continuations: List<ContinuationItem?>?
@@ -81,12 +94,17 @@ internal data class ChipItem(
             data class SectionListRenderer(
                     val contents: List<Shelf?>?
             ) {
+                
                 data class Shelf(
                         val shelfRenderer: ShelfRenderer?
                 )
+
             }
+
         }
+
     }
+    
 }
 
 internal data class GridContinuationWrapper(

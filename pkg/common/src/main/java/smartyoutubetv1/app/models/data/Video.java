@@ -32,12 +32,19 @@ import java.util.List;
  * Video is an object that holds the various metadata associated with a single video.
  */
 public final class Video {
+
     public static final String PLAYLIST_LIKED_MUSIC = "LM";
+    
     public static final String TERTIARY_TEXT_DELIM = "•";
+    
     public static final long MAX_LIVE_DURATION_MS = 24 * 60 * 60 * 1_000;
+    
     private static final int MAX_AUTHOR_LENGTH_CHARS = 20;
+    
     private static final String BLACK_PLACEHOLDER_URL = "https://via.placeholder.com/1280x720/000000/000000";
+    
     private static final float RESTORE_POSITION_PERCENTS = 10; // min value for immediately closed videos
+    
     public int id;
     public String title;
     public String deArrowTitle;

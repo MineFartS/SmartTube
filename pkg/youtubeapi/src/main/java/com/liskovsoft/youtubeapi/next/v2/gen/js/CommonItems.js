@@ -85,6 +85,7 @@ let videoItem = {
     thumbnailOverlays: [
         thumbnailOverlayItem
     ],
+
     badges: [{
         liveBadge: {
             label: textItem // BadgeText
@@ -96,12 +97,16 @@ let videoItem = {
             label: "" // DescBadgeText
         }
     }],
+    
     upcomingEventData: {
         upcomingEventText: textItem,
         startTime: ""
     },
+    
     richThumbnail: richThumbnailItem,
+    
     menu: menuItem
+
 };
 
 let tileItem = {
