@@ -50,7 +50,7 @@ public final class Video {
     public String deArrowTitle;
     public CharSequence secondTitle;
     private String metadataTitle;
-    private CharSequence metadataSecondTitle;
+    public CharSequence metadataSecondTitle;
     public String description;
     public String category;
     public int itemType = -1;

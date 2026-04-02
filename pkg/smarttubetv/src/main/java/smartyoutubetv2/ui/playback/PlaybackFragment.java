@@ -710,7 +710,19 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
 
         List<String> parts = new ArrayList();
 
-        parts.add(video.secondTitle.toString());
+        //=================================================
+
+        String secondTitle = video.secondTitle.toString();
+
+        // Use old title if segments missing (ex: Mixes)
+        if (!secondTitle.contains(DELIM) && (video.metadataSecondTitle != null)) {
+            secondTitle = video.metadataSecondTitle.toString();
+            secondTitle = secondTitle.replace("Published on ", "");
+        }
+
+        parts.add(secondTitle);
+
+        //=================================================
 
         if (video.isLive) {
 
@@ -726,6 +738,8 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
 
         }
 
+        //=================================================
+
         if (video.likeCount != null) {
             parts.add( 
                 video.likeCount +
@@ -733,6 +747,8 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
                 Helpers.THUMB_UP
             );
         }
+
+        //=================================================
 
         if (video.dislikeCount != null) {
             parts.add(
@@ -742,11 +758,15 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
             );
         }
 
+        //=================================================
+
         if (video.subscriberCount != null) {
             parts.add(
                 video.subscriberCount.replace(" ", Helpers.NON_BREAKING_SPACE)
             );
         }
+
+        //=================================================
 
         String result = "";
 
