@@ -1,5 +1,7 @@
 Import-Module "$PSScriptRoot/__mod__.psm1" -Force
 
+Repair-Environment
+
 Connect-ADB
 
 while ($true) {

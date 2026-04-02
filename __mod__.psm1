@@ -1,9 +1,9 @@
 
 $ANDROID_SDK = "$env:USERPROFILE\AppData\Local\Android\SDK"
-
 $ADB = "$ANDROID_SDK\platform-tools\adb.exe"
 
-$JAVA = "C:\Program Files\Java\jdk-14\bin\java.exe"
+$JDK = "C:\Program Files\Java\jdk-14"
+$JAVA = "$JDK\bin\java.exe"
 
 $APP_ID = "minefarts.smarttube"
 
@@ -18,9 +18,6 @@ function Test-ADBConnection {
 }
 
 function Connect-ADB {
-
-    # Set Android SDK Path
-    Repair-AndroidSDK
 
     if (-not (Test-ADBConnection)) {
 
@@ -39,16 +36,33 @@ function Connect-ADB {
 
 }
 
-function Repair-AndroidSDK {
-
-    $Path = $ANDROID_SDK.Replace('\', '\\') + '\\'
-
-    "sdk.dir = $Path" ` | Set-Content "$PSScriptRoot\local.properties"
-
-}
-
 function Get-PID {
     return & $ADB shell pidof $APP_ID
+}
+
+function Repair-Environment {
+
+    Set-Location $PSScriptRoot
+
+    #=======================================================
+
+    "sdk.dir = $($ANDROID_SDK.Replace('\', '\\'))\\" `
+        | Set-Content "$PSScriptRoot\local.properties"
+
+    #=======================================================
+    
+    [Environment]::SetEnvironmentVariable("JAVA_HOME", $JDK, "Machine")
+
+    #=======================================================
+
+    $Path = [Environment]::GetEnvironmentVariable("Path", "Machine")
+
+    $javabin = ";$JDK\bin\"
+
+    if ($Path -notcontains $javabin) {
+        [Environment]::SetEnvironmentVariable("Path", $Path+$javabin, "Machine")
+    }
+
 }
 
 Export-ModuleMember `
