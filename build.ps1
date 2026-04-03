@@ -2,8 +2,6 @@ Import-Module "$PSScriptRoot/__mod__.psm1" -Force
 
 Repair-Environment
 
-Set-Location $PSScriptRoot
-
 Connect-ADB
 
 Clear-Host

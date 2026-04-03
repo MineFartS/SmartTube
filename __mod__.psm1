@@ -46,14 +46,15 @@ function Repair-Environment {
 
     #=======================================================
 
-    "sdk.dir = $($ANDROID_SDK.Replace('\', '\\'))\\" `
-        | Set-Content "$PSScriptRoot\local.properties"
+    [Environment]::SetEnvironmentVariable("ANDROID_HOME", $ANDROID_SDK, "Machine")
 
     #=======================================================
+    # JAVA_HOME
     
     [Environment]::SetEnvironmentVariable("JAVA_HOME", $JDK, "Machine")
 
     #=======================================================
+    # Path
 
     $Path = [Environment]::GetEnvironmentVariable("Path", "Machine")
 
