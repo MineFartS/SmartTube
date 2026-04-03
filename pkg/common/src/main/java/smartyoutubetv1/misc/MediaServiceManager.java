@@ -398,6 +398,7 @@ public class MediaServiceManager implements OnAccountChange {
                 positionMs / 1_000f
             );
 
+            // https://stackoverflow.com/a/39561135/31195538
             mPlaylistService.addToPlaylist("HL", video.videoId);
         
         });
