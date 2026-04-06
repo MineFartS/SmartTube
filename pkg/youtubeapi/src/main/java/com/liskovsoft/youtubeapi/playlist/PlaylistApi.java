@@ -19,7 +19,7 @@ public interface PlaylistApi {
     Call<PlaylistsResult> getPlaylistsInfo(@Body String playlistsInfoQuery);
 
     @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v3/browse/edit_playlist")
+    @POST("https://www.youtube.com/youtubei/v1/browse/edit_playlist")
     Call<ActionResult> editPlaylist(@Body String editPlaylistQuery);
 
     // Works with foreign playlists
