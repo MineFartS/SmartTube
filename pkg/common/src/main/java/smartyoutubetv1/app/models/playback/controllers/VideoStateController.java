@@ -434,6 +434,7 @@ public class VideoStateController extends BasePlayerController {
     }
 
     private void updateHistory() {
+        
         Video video = getVideo();
 
         if (
@@ -445,7 +446,11 @@ public class VideoStateController extends BasePlayerController {
             return;
         }
 
-        MediaServiceManager.instance().updateHistory(video, Math.max(getPlayer().getPositionMs(), 3_000)); // 0 == fully watched
+        MediaServiceManager.instance().updateHistory(
+            video, 
+            Math.max(getPlayer().getPositionMs(), 3_000)
+        ); // 0 == fully watched
+    
     }
 
     /**
