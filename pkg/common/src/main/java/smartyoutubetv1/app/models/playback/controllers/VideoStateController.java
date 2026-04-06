@@ -18,6 +18,7 @@ import smartyoutubetv1.utils.Utils;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
 public class VideoStateController extends BasePlayerController {
+
     private static final String TAG = VideoStateController.class.getSimpleName();
 
     private static final long MUSIC_VIDEO_MAX_DURATION_MS = 6 * 60 * 1000;
@@ -26,14 +27,10 @@ public class VideoStateController extends BasePlayerController {
     private static final long LIVE_BUFFER_MS = OFFICIAL_LIVE_BUFFER_MS;
     private static final long BEGIN_THRESHOLD_MS = 10_000;
     private static final long EMBED_THRESHOLD_MS = 30_000;
-    private static final int HISTORY_UPDATE_INTERVAL_MINUTES = 3; // Sync history every x minutes
 
     private boolean mIsPlayEnabled;
     private boolean mIsPlayBlocked;
-    private int mTickleLeft;
     private long mNewVideoTimeMs;
-
-    private final Runnable mUpdateHistory = this::saveState;
 
     /**
      * Fired after user clicked on video in browse activity<br/>
@@ -41,14 +38,9 @@ public class VideoStateController extends BasePlayerController {
      */
     @Override
     public void onNewVideo(Video item) {
+
         // Ensure that we aren't running on presenter init stage
         if (getPlayer() != null && getPlayer().containsMedia()) {
-
-            // NOTE: even for the same videos it's good to save state (switch from embed, video reload etc)
-            // Reset auto-save history timer
-            mTickleLeft = 0;
-            // Save state of the previous video.
-            // In case video opened from phone and other stuff.
             saveState();
         }
 
@@ -63,6 +55,7 @@ public class VideoStateController extends BasePlayerController {
         // Don't do reset on videoLoaded state because this will influences minimized music videos.
         resetPositionIfNeeded(item);
         resetGlobalSpeedIfNeeded();
+
     }
 
     @Override
@@ -105,13 +98,6 @@ public class VideoStateController extends BasePlayerController {
 
     @Override
     public void onEngineInitialized() {
-        // Reset auto-save history timer
-        mTickleLeft = 0;
-
-        // Restore before video loaded.
-        // This way we override auto track selection mechanism.
-        //restoreFormats();
-
         // Show user info instead of black screen.
         if (!getPlayEnabled()) {
             getPlayer().showOverlay(true);
@@ -137,10 +123,8 @@ public class VideoStateController extends BasePlayerController {
             return;
         }
 
-        if (++mTickleLeft > HISTORY_UPDATE_INTERVAL_MINUTES && getPlayer().isPlaying()) {
-            mTickleLeft = 0;
-            saveState();
-        }
+        saveState();
+
     }
 
     @Override
@@ -185,15 +169,12 @@ public class VideoStateController extends BasePlayerController {
     @Override
     public void onPlay() {
         setPlayEnabled(true);
-        // throttle seeking calls
-        Utils.removeCallbacks(mUpdateHistory);
     }
 
     @Override
     public void onPause() {
         setPlayEnabled(false);
-        // throttle seeking calls
-        Utils.postDelayed(mUpdateHistory, 10_000);
+        saveState();
     }
 
     @Override
