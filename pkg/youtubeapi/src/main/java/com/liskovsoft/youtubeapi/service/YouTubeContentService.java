@@ -635,20 +635,6 @@ class YouTubeContentService implements ContentService {
     }
 
     @Override
-    public void enableHistory(boolean enable) {
-        if (enable) {
-            getActionsService().resumeWatchHistory();
-        } else {
-            getActionsService().pauseWatchHistory();
-        }
-    }
-
-    @Override
-    public void clearHistory() {
-        getActionsService().clearWatchHistory();
-    }
-
-    @Override
     public void clearSearchHistory() {
         getActionsService().clearSearchHistory();
         getSearchService().clearSearchHistory();

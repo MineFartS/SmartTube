@@ -29,14 +29,14 @@ import io.reactivex.Observable;
 import java.util.List;
 
 public abstract class BaseMenuPresenter extends BasePresenter<Void> {
+
     private final MediaServiceManager mServiceManager;
+    
     private boolean mIsPinToSidebarEnabled;
     private boolean mIsSavePlaylistEnabled;
     private boolean mIsCreatePlaylistEnabled;
     private boolean mIsAccountSelectionEnabled;
     private boolean mIsAddToNewPlaylistEnabled;
-
-    private boolean mIsClearHistoryEnabled;
     private boolean mIsUpdateCheckEnabled;
     private boolean mIsExcludeFromContentBlockEnabled;
     private boolean mIsRenamePlaylistEnabled;
@@ -451,28 +451,6 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
                 });
     }
 
-    protected void appendClearHistoryButton() {
-        if (!mIsClearHistoryEnabled) {
-            return;
-        }
-
-        BrowsePresenter presenter = BrowsePresenter.instance(getContext());
-
-        if (!(presenter.isHistorySection() && presenter.inForeground())) {
-            return;
-        }
-
-        getDialogPresenter().appendSingleButton(
-                UiOptionItem.from(getContext().getString(R.string.clear_history),
-                        optionItem -> AppDialogUtil.showConfirmationDialog(getContext(),
-                                getContext().getString(R.string.clear_history), () -> {
-                                    mServiceManager.clearHistory(getContext(), () -> {
-                                        getDialogPresenter().closeDialog();
-                                        presenter.refresh();
-                                    });
-                        })));
-    }
-
     protected void appendUpdateCheckButton() {
         if (!mIsUpdateCheckEnabled) {
             return;
@@ -498,6 +476,7 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
     }
 
     protected void updateEnabledMenuItems() {
+
         MainUIData mainUIData = MainUIData.instance(getContext());
         
         mIsPinToSidebarEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_PIN_TO_SIDEBAR);
@@ -506,9 +485,8 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
         mIsRenamePlaylistEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_RENAME_PLAYLIST);
         mIsAccountSelectionEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_SELECT_ACCOUNT);
         mIsAddToNewPlaylistEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_ADD_TO_NEW_PLAYLIST);
-
-        mIsClearHistoryEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_CLEAR_HISTORY);
         mIsUpdateCheckEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_UPDATE_CHECK);
         mIsExcludeFromContentBlockEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_EXCLUDE_FROM_CONTENT_BLOCK);
+
     }
 }

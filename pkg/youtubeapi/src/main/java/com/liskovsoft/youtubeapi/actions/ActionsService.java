@@ -72,21 +72,6 @@ public class ActionsService {
         RetrofitHelper.get(wrapper); // ignore result
     }
 
-    public void pauseWatchHistory() {
-        Call<Void> wrapper = mActionsApi.pauseWatchHistory(ActionsApiHelper.getEmptyQuery());
-        RetrofitHelper.get(wrapper);
-    }
-
-    public void resumeWatchHistory() {
-        Call<Void> wrapper = mActionsApi.resumeWatchHistory(ActionsApiHelper.getEmptyQuery());
-        RetrofitHelper.get(wrapper);
-    }
-
-    public void clearWatchHistory() {
-        Call<Void> wrapper = mActionsApi.clearWatchHistory(ActionsApiHelper.getEmptyQuery());
-        RetrofitHelper.get(wrapper);
-    }
-
     public void clearSearchHistory() {
         // Empty start suggestions fix: use anonymous search
         //boolean skipAuth = getBrowseService().getSuggestToken() == null;

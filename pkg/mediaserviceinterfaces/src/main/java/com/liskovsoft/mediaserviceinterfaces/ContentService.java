@@ -29,8 +29,7 @@ public interface ContentService {
      */
     MediaGroup getGroup(String reloadPageKey);
     MediaGroup continueGroup(MediaGroup mediaGroup);
-    void enableHistory(boolean enable);
-    void clearHistory();
+
     void clearSearchHistory();
 
     // RxJava interfaces

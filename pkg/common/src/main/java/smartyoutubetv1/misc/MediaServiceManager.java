@@ -370,17 +370,6 @@ public class MediaServiceManager implements OnAccountChange {
         return groupTooSmall;
     }
 
-    public void enableHistory(boolean enable) {
-        if (enable) { // don't disable history for other clients
-            RxHelper.runAsyncUser(() -> mContentService.enableHistory(true));
-        }
-    }
-
-    public void clearHistory(Context context, Runnable onFinish) {
-        RxHelper.runAsyncUser(mContentService::clearHistory, onFinish);
-        VideoStateService.instance(context).clear(); // even for the logged users this needed too
-    }
-
     public void clearSearchHistory() {
         RxHelper.runAsyncUser(mContentService::clearSearchHistory);
     }

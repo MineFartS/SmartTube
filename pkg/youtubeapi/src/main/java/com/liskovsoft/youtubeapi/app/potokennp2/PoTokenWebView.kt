@@ -344,7 +344,7 @@ internal class PoTokenWebView private constructor(
      */
     @MainThread
     override fun close() {
-        webView.clearHistory()
+
         // clears RAM cache and disk cache (globally for all WebViews)
         webView.clearCache(true)
 

@@ -36,18 +36,6 @@ public interface ActionsApi {
     Call<ActionResult> unsubscribe(@Body String actionQuery);
 
     @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/history/pause_watch_history")
-    Call<Void> pauseWatchHistory(@Body String historyQuery);
-
-    @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/history/resume_watch_history")
-    Call<Void> resumeWatchHistory(@Body String historyQuery);
-
-    @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/history/clear_watch_history")
-    Call<Void> clearWatchHistory(@Body String historyQuery);
-
-    @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/history/clear_search_history")
     Call<Void> clearSearchHistory(@Body String historyQuery);
     
