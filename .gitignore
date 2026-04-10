@@ -16,3 +16,6 @@ Thumbs.db
 # Markdown
 /*.md
 !ReadMe.md
+
+# Android Studio
+.idea
