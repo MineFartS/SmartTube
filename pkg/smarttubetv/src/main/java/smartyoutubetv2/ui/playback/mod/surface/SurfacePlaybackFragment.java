@@ -35,8 +35,6 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
     
         ViewGroup root = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
         
-        mVideoSurfaceWrapper = (PlayerData.instance(getContext()).getRotationAngle() != 0) ? new TextureViewWrapper(getContext(), root) : new SurfaceViewWrapper(getContext(), root);
-        
         mVideoSurfaceRoot = root.findViewById(smartyoutubetv2.R.id.surface_root);
         mVideoSurfaceRoot.addView(mVideoSurfaceWrapper.getSurfaceView(), 0);
         mVideoSurfaceRoot.setAspectRatioListener((targetAspectRatio, naturalAspectRatio, aspectRatioMismatch) -> scaleIfNeeded());

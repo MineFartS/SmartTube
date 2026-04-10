@@ -95,7 +95,6 @@ public class PlayerUIController extends BasePlayerController {
             // Could be set once per activity creation (view layout stuff)
             getPlayer().setResizeMode(getPlayerData().getResizeMode());
             getPlayer().setZoomPercents(getPlayerData().getZoomPercents());
-            getPlayer().setRotationAngle(getPlayerData().getRotationAngle());
         }
     }
 
@@ -337,7 +336,6 @@ public class PlayerUIController extends BasePlayerController {
         setPlaylistAddButtonStateCached();
         setSubtitleButtonState();
 
-        getPlayer().setButtonState(R.id.action_rotate, getPlayerData().getRotationAngle() == 0 ? PlayerUI.BUTTON_OFF : PlayerUI.BUTTON_ON);
         getPlayer().setButtonState(R.id.action_subscribe, metadata.isSubscribed() ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
 
     }
@@ -457,10 +455,7 @@ public class PlayerUIController extends BasePlayerController {
     @Override
     public void onButtonClicked(int buttonId, int buttonState) {
         
-        if (buttonId == R.id.action_rotate) {
-            onRotate();
-
-        } else if (buttonId == R.id.action_flip) {
+        if (buttonId == R.id.action_flip) {
             onFlip();
 
         } else if (buttonId == R.id.action_subscribe) {
@@ -718,18 +713,6 @@ public class PlayerUIController extends BasePlayerController {
         }
 
         return isSelected;
-    }
-
-    private void onRotate() {
-        if (getPlayer() == null) {
-            return;
-        }
-
-        int oldRotation = getPlayerData().getRotationAngle();
-        int rotation = oldRotation == 0 ? 90 : oldRotation == 90 ? 180 : oldRotation == 180 ? 270 : 0;
-        getPlayer().setRotationAngle(rotation);
-        getPlayer().setButtonState(R.id.action_rotate, rotation == 0 ? PlayerUI.BUTTON_OFF : PlayerUI.BUTTON_ON);
-        getPlayerData().setRotationAngle(rotation);
     }
 
     private void onFlip() {

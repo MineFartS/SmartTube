@@ -45,7 +45,6 @@ public interface PlayerEngine extends PlayerConstants {
     void setResizeMode(int mode);
     int getResizeMode();
     void setZoomPercents(int percents);
-    void setRotationAngle(int angle);
     void setVideoFlipEnabled(boolean enabled);
     void setVideoGravity(int gravity);
 }

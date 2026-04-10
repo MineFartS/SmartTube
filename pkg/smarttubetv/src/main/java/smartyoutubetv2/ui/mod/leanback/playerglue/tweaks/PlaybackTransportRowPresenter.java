@@ -402,8 +402,6 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
             mThumbsBar.setNumberOfThumbs(1);
             updateProgressInSeekMod(forward);
 
-            mThumbsBar.setThumbsRotation(mPlayerData.getRotationAngle());
-
             return true;
         }
 

@@ -48,7 +48,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private int mSubtitleStyleIndex;
     private int mResizeMode;
     private int mZoomPercents;
-    private int mRotationAngle;
     private boolean mIsVideoFlipEnabled;
     private float mSpeed;
     private float mLastSpeed;
@@ -323,15 +322,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         persistState();
     }
 
-    public int getRotationAngle() {
-        return mRotationAngle;
-    }
-
-    public void setRotationAngle(int angle) {
-        mRotationAngle = angle;
-        persistState();
-    }
-
     public boolean isVideoFlipEnabled() {
         return mIsVideoFlipEnabled;
     }
@@ -566,7 +556,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         /* 20 */ mIsLiveChatEnabled = Helpers.parseBoolean(split, 20, false);
         /* 21 */ mLastSubtitleFormats = Helpers.parseList(split, 21, ExoFormatItem::from);
         /* 22 */ mLastSpeed = Helpers.parseFloat(split, 22, 1.0f);
-        /* 23 */ mRotationAngle = Helpers.parseInt(split, 23, 0);
+
         /* 24 */ mZoomPercents = Helpers.parseInt(split, 24, -1);
         /* 25 */ mPlaybackMode = Helpers.parseInt(split, 25, PlayerConstants.PLAYBACK_MODE_ALL);
         /* 26 */ mAudioLanguage = Helpers.parseStr(split, 26, LocaleUtility.getCurrentLanguage(mPrefs.getContext()));
@@ -617,7 +607,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
             /* 20 */ mIsLiveChatEnabled, 
             /* 21 */ mLastSubtitleFormats, 
             /* 22 */ mLastSpeed, 
-            /* 23 */ mRotationAngle, 
+            /* 23 */ null, 
             /* 24 */ mZoomPercents, 
             /* 25 */ mPlaybackMode, 
             /* 26 */ mAudioLanguage, 

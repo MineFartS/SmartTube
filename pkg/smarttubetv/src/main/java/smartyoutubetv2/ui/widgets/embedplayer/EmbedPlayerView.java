@@ -451,11 +451,6 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public void setRotationAngle(int angle) {
-
-    }
-
-    @Override
     public void setVideoFlipEnabled(boolean enabled) {
 
     }

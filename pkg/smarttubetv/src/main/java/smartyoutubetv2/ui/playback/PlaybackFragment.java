@@ -1042,11 +1042,6 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     }
 
     @Override
-    public void setRotationAngle(int angle) {
-        setRotation(angle);
-    }
-
-    @Override
     public void setVideoFlipEnabled(boolean enabled) {
         setFlipEnabled(enabled);
     }
