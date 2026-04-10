@@ -10,4 +10,5 @@ Clear-Host
 & $JAVA `
     '-classpath' ".\pkg\gradle-wrapper.jar" `
     'org.gradle.wrapper.GradleWrapperMain' `
-    "clean" "installStstableDebug"
+    "clean" "installStstableDebug" `
+    "--stacktrace"
