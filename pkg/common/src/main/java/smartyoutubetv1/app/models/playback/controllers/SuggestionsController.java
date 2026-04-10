@@ -189,8 +189,6 @@ public class SuggestionsController extends BasePlayerController {
                             getPlayer().updateSuggestions(videoGroup);
                             mBrowseProcessor.process(videoGroup);
 
-                            mergeUserAndRemoteQueue(videoGroup);
-
                             if (callback != null) {
                                 callback.onVideoGroup(videoGroup);
                             } else {
@@ -355,8 +353,6 @@ public class SuggestionsController extends BasePlayerController {
 
         appendChaptersIfNeeded(mediaItemMetadata);
 
-        mergePlaybackAndRemoteQueueIfNeeded(video, mediaItemMetadata);
-
         appendSectionPlaylistIfNeeded(video);
 
         List<MediaGroup> suggestions = mediaItemMetadata.getSuggestions();
@@ -400,87 +396,6 @@ public class SuggestionsController extends BasePlayerController {
             }
         }
     }
-
-    /**
-     * Merge remote queue with player's queue (when phone cast just started or user clicked on playlist item)
-     */
-    private void mergePlaybackAndRemoteQueueIfNeeded(Video video, MediaItemMetadata metadata) {
-        // Ensure that the user pressed video thumb on the phone
-        if (video.isRemote && video.remotePlaylistId != null) {
-            // Create user queue from remote queue
-
-            List<MediaGroup> suggestions = metadata.getSuggestions();
-
-            if (suggestions != null && !suggestions.isEmpty()) {
-                MediaGroup remoteRow = suggestions.get(0);
-
-                VideoGroup remoteGroup = VideoGroup.from(remoteRow);
-
-                suggestions.remove(remoteRow);
-
-                appendRemoteQueueIfNeeded(video, remoteGroup);
-            }
-        } else {
-            appendPlaybackQueueIfNeeded();
-        }
-    }
-
-    private void mergeUserAndRemoteQueue(VideoGroup videoGroup) {
-        if (getPlayer() == null)
-            return;
-
-        Video video = getPlayer().getVideo();
-        if (videoGroup.isQueue) {
-            Playlist.instance().addAll(videoGroup.getVideos());
-            Playlist.instance().setCurrent(video);
-        }
-    }
-
-    private void appendPlaybackQueueIfNeeded() {
-        if (getPlayer() == null)
-            return;
-
-        Playlist playlist = Playlist.instance();
-
-        if (playlist.hasNext()) {
-            List<Video> queue = playlist.getAllAfterCurrent();
-
-            VideoGroup videoGroup = VideoGroup.from(queue);
-            videoGroup.setTitle(getContext().getString(R.string.action_playback_queue));
-            videoGroup.setId(videoGroup.getTitle().hashCode());
-            videoGroup.setType(MediaGroup.TYPE_PLAYBACK_QUEUE);
-
-            getPlayer().updateSuggestions(videoGroup);
-        }
-    }
-
-    private void appendRemoteQueueIfNeeded(Video video, VideoGroup remoteGroup) {
-        if (getPlayer() == null)
-            return;
-
-        remoteGroup.removeAllBefore(video);
-        remoteGroup.stripPlaylistInfo(); // prefer user queue even when a phone disconnected
-
-        if (remoteGroup.contains(video)) {
-            Playlist playlist = Playlist.instance();
-            playlist.removeAllAfterCurrent();
-            playlist.addAll(remoteGroup.getVideos());
-            playlist.setCurrent(video);
-        }
-
-        remoteGroup.setTitle(getContext().getString(R.string.action_playback_queue));
-        remoteGroup.setId(remoteGroup.getTitle().hashCode());
-        remoteGroup.setType(MediaGroup.TYPE_PLAYBACK_QUEUE);
-        remoteGroup.isQueue = true;
-
-        remoteGroup.setAction(VideoGroup.ACTION_REPLACE);
-        getPlayer().updateSuggestions(remoteGroup);
-
-        if (!remoteGroup.contains(video) && remoteGroup.getSize() < 100) {
-            continueGroup(remoteGroup, group -> appendRemoteQueueIfNeeded(video, group), false);
-        }
-    }
-
     private void addChapterMarkersIfNeeded() {
         if (getPlayer() == null || mChapters == null) {
             return;

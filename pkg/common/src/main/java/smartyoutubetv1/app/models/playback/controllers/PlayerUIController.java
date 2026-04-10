@@ -341,35 +341,7 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     @Override
-    public void onSuggestionItemLongClicked(Video item) {
-        VideoMenuPresenter.instance(getContext()).showMenu(item, (videoItem, action) -> {
-            if (getPlayer() == null || item.getGroup() == null)
-                return;
-
-            if (action == VideoMenuCallback.ACTION_REMOVE_FROM_QUEUE
-                    || action == VideoMenuCallback.ACTION_REMOVE_FROM_PLAYLIST
-                    || action == VideoMenuCallback.ACTION_REMOVE) {
-                int id = item.getGroup().getId();
-                VideoGroup group = VideoGroup.from(videoItem);
-                group.setId(id);
-                getPlayer().removeSuggestions(group);
-            } else if (action == VideoMenuCallback.ACTION_ADD_TO_QUEUE || action == VideoMenuCallback.ACTION_PLAY_NEXT) {
-                String title = getContext().getString(R.string.action_playback_queue);
-                int id = title.hashCode();
-                Video newItem = videoItem.copy();
-                VideoGroup group = VideoGroup.from(newItem, 0);
-                group.setTitle(title);
-                group.setId(id);
-                group.setType(MediaGroup.TYPE_PLAYBACK_QUEUE);
-                newItem.setGroup(group);
-                if (action == VideoMenuCallback.ACTION_PLAY_NEXT) {
-                    group.setAction(VideoGroup.ACTION_PREPEND);
-                }
-                getPlayer().updateSuggestions(group);
-                getPlayer().setNextTitle(mSuggestionsController.getNext());
-            }
-        });
-    }
+    public void onSuggestionItemLongClicked(Video item) {}
 
     private void onDislikeClicked(boolean dislike) {
         if (getPlayer() == null)
@@ -457,9 +429,6 @@ public class PlayerUIController extends BasePlayerController {
 
         } else if (buttonId == R.id.action_channel) {
             openChannel();
-
-        } else if (buttonId == R.id.action_playback_queue) {
-            AppDialogUtil.showPlaybackQueueDialog(getContext(), item -> getMainController().onNewVideo(item));
 
         } else if (buttonId == R.id.action_info) {
             onVideoInfoClicked();

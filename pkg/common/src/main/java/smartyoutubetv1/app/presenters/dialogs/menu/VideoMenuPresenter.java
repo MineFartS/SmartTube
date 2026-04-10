@@ -65,14 +65,12 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
     private boolean mIsOpenPlaylistButtonEnabled;
     private boolean mIsAddToPlaybackQueueButtonEnabled;
     private boolean mIsPlayNextButtonEnabled;
-    private boolean mIsShowPlaybackQueueButtonEnabled;
     private boolean mIsOpenDescriptionButtonEnabled;
     private boolean mIsOpenCommentsButtonEnabled;
     private boolean mIsPlayVideoButtonEnabled;
-
     private boolean mIsPlaylistOrderButtonEnabled;
-
     private boolean mIsMarkAsWatchedButtonEnabled;
+
     private VideoMenuCallback mCallback;
     private List<PlaylistInfo> mPlaylistInfos;
     private final Map<Long, MenuAction> mMenuMapping = new HashMap<>();
@@ -641,23 +639,6 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
                         }));
     }
 
-    private void appendShowPlaybackQueueButton() {
-        if (!mIsShowPlaybackQueueButtonEnabled) {
-            return;
-        }
-
-        if (mVideo == null || !mVideo.hasVideo()) {
-            return;
-        }
-
-        mDialogPresenter.appendSingleButton(
-                UiOptionItem.from(
-                        getContext().getString(R.string.action_playback_queue),
-                        optionItem -> AppDialogUtil.showPlaybackQueueDialog(getContext(), video -> PlaybackPresenter.instance(getContext()).openVideo(video))
-                )
-        );
-    }
-
     private void appendPlaylistOrderButton() {
         if (!mIsPlaylistOrderButtonEnabled) {
             return;
@@ -764,7 +745,6 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         mIsOpenDescriptionButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_OPEN_DESCRIPTION);
         mIsPlayVideoButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_PLAY_VIDEO);
         mIsSubscribeButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_SUBSCRIBE);
-        mIsShowPlaybackQueueButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_SHOW_QUEUE);
         mIsPlaylistOrderButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_PLAYLIST_ORDER);
         mIsMarkAsWatchedButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_MARK_AS_WATCHED);
         mIsOpenCommentsButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_OPEN_COMMENTS);
@@ -789,7 +769,6 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         mMenuMapping.put(MainUIData.MENU_ITEM_PLAYLIST_ORDER, new MenuAction(this::appendPlaylistOrderButton, true));
         mMenuMapping.put(MainUIData.MENU_ITEM_ADD_TO_QUEUE, new MenuAction(this::appendAddToPlaybackQueueButton, false));
         mMenuMapping.put(MainUIData.MENU_ITEM_PLAY_NEXT, new MenuAction(this::appendPlayNextButton, false));
-        mMenuMapping.put(MainUIData.MENU_ITEM_SHOW_QUEUE, new MenuAction(this::appendShowPlaybackQueueButton, false));
         mMenuMapping.put(MainUIData.MENU_ITEM_OPEN_CHANNEL, new MenuAction(this::appendOpenChannelButton, false));
         mMenuMapping.put(MainUIData.MENU_ITEM_OPEN_PLAYLIST, new MenuAction(this::appendOpenPlaylistButton, false));
         mMenuMapping.put(MainUIData.MENU_ITEM_SUBSCRIBE, new MenuAction(this::appendSubscribeButton, false));
@@ -804,10 +783,16 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         mMenuMapping.put(MainUIData.MENU_ITEM_OPEN_COMMENTS, new MenuAction(this::appendOpenCommentsButton, false));
 
         for (ContextMenuProvider provider : new ContextMenuManager(getContext()).getProviders()) {
+            
             if (provider.getMenuType() != ContextMenuProvider.MENU_TYPE_VIDEO) {
                 continue;
             }
-            mMenuMapping.put(provider.getId(), new MenuAction(() -> appendContextMenuItem(provider), false));
+
+            mMenuMapping.put(
+                provider.getId(), 
+                new MenuAction(() -> appendContextMenuItem(provider), false)
+            );
+
         }
         
     }

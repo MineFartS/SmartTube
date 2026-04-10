@@ -34,7 +34,6 @@ import smartyoutubetv2.ui.playback.actions.ClosedCaptioningAction;
 import smartyoutubetv2.ui.playback.actions.ContentBlockAction;
 import smartyoutubetv2.ui.playback.actions.HighQualityAction;
 import smartyoutubetv2.ui.playback.actions.VideoInfoAction;
-import smartyoutubetv2.ui.playback.actions.PlaybackQueueAction;
 import smartyoutubetv2.ui.playback.actions.PlaylistAddAction;
 import smartyoutubetv2.ui.playback.actions.PlaybackModeAction;
 import smartyoutubetv2.ui.playback.actions.SubscribeAction;
@@ -113,7 +112,6 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         putAction(new VideoInfoAction(context));
         putAction(new VideoSpeedAction(context));
         putAction(new ChatAction(context));
-        putAction(new PlaybackQueueAction(context));
         putAction(new ContentBlockAction(context));
 
     }
@@ -153,6 +151,7 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
 
     @Override
     protected void onCreateSecondaryActions(ArrayObjectAdapter adapter) {
+
         // Does nothing
         super.onCreateSecondaryActions(adapter);
 
@@ -184,12 +183,10 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_VIDEO_INFO)) {
             adapter.add(mActions.get(R.id.action_info));
         }
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_PLAYBACK_QUEUE)) {
-            adapter.add(mActions.get(R.id.action_playback_queue));
-        }
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_CONTENT_BLOCK)) {
             adapter.add(mActions.get(R.id.action_content_block));
         }
+
     }
 
     @Override

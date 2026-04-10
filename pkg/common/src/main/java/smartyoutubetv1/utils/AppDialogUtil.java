@@ -745,32 +745,4 @@ public class AppDialogUtil {
         void onClick(Video item);
     }
 
-    public static void showPlaybackQueueDialog(Context context, OnVideoClick onClick) {
-        String playbackQueueCategoryTitle = context.getString(R.string.playback_queue_category_title);
-
-        AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(context);
-
-        List<OptionItem> options = new ArrayList<>();
-
-        Playlist playlist = Playlist.instance();
-
-        for (Video video : playlist.getAll()) {
-            String title = video.getTitle();
-            String author = video.getAuthor();
-            //options.add(0, UiOptionItem.from( // Add to start (recent videos on top)
-            options.add(UiOptionItem.from( // Add to end (like on mobile client)
-                    String.format("%s - %s", title != null ? title : "...", author != null ? author : "..."),
-                    optionItem -> {
-                        video.fromQueue = true;
-                        onClick.onClick(video);
-                        settingsPresenter.closeDialog();
-                    },
-                    video == playlist.getCurrent())
-            );
-        }
-
-        settingsPresenter.appendRadioCategory(playbackQueueCategoryTitle, options);
-
-        settingsPresenter.showDialog(playbackQueueCategoryTitle);
-    }
 }
