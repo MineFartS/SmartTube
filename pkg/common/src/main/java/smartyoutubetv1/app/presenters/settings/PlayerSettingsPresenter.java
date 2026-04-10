@@ -121,10 +121,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 PlayerTweaksData.PLAYER_BUTTON_OPEN_CHANNEL
             },
             {
-                R.string.run_in_background, 
-                PlayerTweaksData.PLAYER_BUTTON_PIP
-            },
-            {
                 R.string.action_video_speed, 
                 PlayerTweaksData.PLAYER_BUTTON_VIDEO_SPEED
             },

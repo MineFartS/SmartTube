@@ -215,7 +215,6 @@
     <string name="refresh_section">Refresh section</string>
     <string name="option_disabled">Disabled</string>
     <string name="live_now_row_name">Live now</string>
-    <string name="run_in_background">Background playback</string>
     <string name="settings_remote_control">Remote control</string>
     <string name="background_service_started">Background service started</string>
     <string name="dialog_add_to">Add to %s</string>
@@ -250,7 +249,6 @@
     <string name="action_playlist_add">Add to playlist</string>
     <string name="action_subscribe">Subscribe</string>
     <string name="action_channel">Open channel</string>
-    <string name="action_pip">PIP</string>
     <string name="action_video_info">Video description</string>
     <string name="action_screen_off">Screen off</string>
     <string name="action_playback_queue">Playback queue</string>

@@ -445,12 +445,6 @@ public class PlayerUIController extends BasePlayerController {
 
         dialogPresenter.showDialog(title);
     }
-    
-    private void onPipClicked() {
-        getPlayer().showOverlay(false);
-        getPlayer().blockEngine(true);
-        getPlayer().finish();
-    }
 
     @Override
     public void onButtonClicked(int buttonId, int buttonState) {
@@ -469,9 +463,6 @@ public class PlayerUIController extends BasePlayerController {
 
         } else if (buttonId == R.id.action_info) {
             onVideoInfoClicked();
-
-        } else if (buttonId == R.id.action_pip) {
-            onPipClicked();
 
         } else if (buttonId == R.id.action_playlist_add) {
             onPlaylistAddClicked();
@@ -682,11 +673,19 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private void startTempBackgroundMode(Class<?> clazz) {
+        
         SearchData searchData = getSearchData();
+        
         if (searchData.isTempBackgroundModeEnabled()) {
+
             searchData.setTempBackgroundModeClass(clazz);
-            onPipClicked();
+            
+            getPlayer().showOverlay(false);
+            getPlayer().blockEngine(true);
+            getPlayer().finish();
+        
         }
+
     }
 
     private boolean isSubtitleSelected() {
