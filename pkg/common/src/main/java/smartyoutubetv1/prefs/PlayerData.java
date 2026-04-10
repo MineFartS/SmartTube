@@ -48,7 +48,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private int mSubtitleStyleIndex;
     private int mResizeMode;
     private int mZoomPercents;
-    private boolean mIsVideoFlipEnabled;
     private float mSpeed;
     private float mLastSpeed;
     private boolean mIsAfrEnabled;
@@ -322,15 +321,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         persistState();
     }
 
-    public boolean isVideoFlipEnabled() {
-        return mIsVideoFlipEnabled;
-    }
-
-    public void setVideoFlipEnabled(boolean enabled) {
-        mIsVideoFlipEnabled = enabled;
-        persistState();
-    }
-
     public float getSpeed() {
         return getSpeed(null);
     }
@@ -566,7 +556,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         /* 30 */ mPitch = Helpers.parseFloat(split, 30, 1.0f);
         /* 31 */ mIsSkipShortsEnabled = Helpers.parseBoolean(split, 31, false);
         /* 32 */ mLastAudioLanguages = Helpers.parseStrList(split, 32);
-        /* 33 */ mIsVideoFlipEnabled = Helpers.parseBoolean(split, 33, false);
 
         if (speeds != null) {
             for (String speedSpec : speeds) {
@@ -616,8 +605,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
             /* 29 */ Helpers.mergeArray(mSpeeds.values().toArray()), 
             /* 30 */ mPitch, 
             /* 31 */ mIsSkipShortsEnabled, 
-            /* 32 */ mLastAudioLanguages, 
-            /* 33 */ mIsVideoFlipEnabled
+            /* 32 */ mLastAudioLanguages
         ));
     }
 
