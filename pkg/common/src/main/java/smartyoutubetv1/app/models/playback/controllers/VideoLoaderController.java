@@ -367,7 +367,11 @@ public class VideoLoaderController extends BasePlayerController {
             scheduleReloadVideoTimer(30 * 1_000);
         }
 
+        player.showProgressBar(true);
+        player.setPlayWhenReady(true);
+        
         player.showBackground(bgImageUrl); // remove bg (if video playing) or set another bg
+    
     }
 
     private void scheduleReloadVideoTimer(int delayMs) {
