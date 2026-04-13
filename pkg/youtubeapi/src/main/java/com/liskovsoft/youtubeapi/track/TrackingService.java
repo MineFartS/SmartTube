@@ -13,8 +13,6 @@ import com.liskovsoft.youtubeapi.track.models.WatchTimeEmptyResult;
 import retrofit2.Call;
 
 public class TrackingService {
-
-    private static final String TAG = TrackingService.class.getSimpleName();
     
     private static final int START_THRESHOLD_SEC = 3 * 60;
     
