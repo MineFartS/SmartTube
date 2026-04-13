@@ -28,10 +28,16 @@ import com.liskovsoft.youtubeapi.playlistgroups.PlaylistGroupServiceImpl;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeSponsorSegment;
-import com.liskovsoft.youtubeapi.track.TrackingService;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
+import com.liskovsoft.youtubeapi.app.AppService;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.track.models.WatchTimeEmptyResult;
+import com.liskovsoft.youtubeapi.track.TrackingApi;
+
 import io.reactivex.Observable;
+
+import retrofit2.Call;
 
 import java.util.List;
 import java.util.Set;
@@ -43,8 +49,11 @@ public class YouTubeMediaItemService implements MediaItemService {
     private static YouTubeMediaItemService sInstance;
     
     private YouTubeMediaItemFormatInfo mCachedFormatInfo;
+    private final TrackingApi mTrackingApi;
 
-    private YouTubeMediaItemService() {}
+    private YouTubeMediaItemService() {
+        mTrackingApi = RetrofitHelper.create(TrackingApi.class);
+    }
 
     public static YouTubeMediaItemService instance() {
 
@@ -219,25 +228,30 @@ public class YouTubeMediaItemService implements MediaItemService {
             return;
         }
 
-        if (shouldBeSynced(formatInfo)) {
+        if (!formatInfo.isAuth() && !formatInfo.isUnplayable() && getSignInService().isSigned()) {
             
             VideoInfo videoInfo = getVideoInfoService().getAuthVideoInfo(
                 formatInfo.getVideoId(), 
                 formatInfo.getClickTrackingParams()
             );
 
-            formatInfo.sync(YouTubeMediaItemFormatInfo.from(videoInfo));
+            YouTubeMediaItemFormatInfo formatInfo2 = YouTubeMediaItemFormatInfo.from(videoInfo);
+
+            formatInfo.sync(formatInfo2);
         
         }
 
-        getTrackingService().updateWatchTime(
+        Call<WatchTimeEmptyResult> wrapper = mTrackingApi.createWatchRecord(
             formatInfo.getVideoId(), 
-            positionSec, 
             Helpers.parseFloat(formatInfo.getLengthSeconds()), 
+            (positionSec < 180) ? 0 : positionSec,
+            AppService.instance().getClientPlaybackNonce(),
             formatInfo.getEventId(),
             formatInfo.getVisitorMonitoringData(), 
             formatInfo.getOfParam()
         );
+
+        RetrofitHelper.get(wrapper); // execute
 
     }
 
@@ -546,11 +560,6 @@ public class YouTubeMediaItemService implements MediaItemService {
     }
 
     @NonNull
-    private static TrackingService getTrackingService() {
-        return TrackingService.instance();
-    }
-
-    @NonNull
     private static VideoInfoService getVideoInfoService() {
         return VideoInfoService.instance();
     }
@@ -573,10 +582,6 @@ public class YouTubeMediaItemService implements MediaItemService {
     @NonNull
     private static WatchNextService getWatchNextService() {
         return WatchNextServiceWrapper.INSTANCE;
-    }
-
-    private static boolean shouldBeSynced(YouTubeMediaItemFormatInfo formatInfo) {
-        return !formatInfo.isAuth() && !formatInfo.isUnplayable() && getSignInService().isSigned();
     }
 
     private static void syncItem(MediaItem item, MediaItemMetadata metadata) {
