@@ -2,7 +2,7 @@
 $ANDROID_SDK = "$env:USERPROFILE\AppData\Local\Android\SDK"
 $ADB = "$ANDROID_SDK\platform-tools\adb.exe"
 
-$JDK = "C:\Program Files\Java\latest\jdk-21"
+$JDK = "C:\Program Files\Java\jdk-14"
 $JAVA = "$JDK\bin\java.exe"
 
 $APP_ID = "minefarts.smarttube"
