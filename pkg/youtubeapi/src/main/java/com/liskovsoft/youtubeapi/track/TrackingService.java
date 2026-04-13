@@ -42,44 +42,11 @@ public class TrackingService {
         String ofParam
     ) {
 
-        if (Helpers.anyNull(videoId, eventId, visitorMonitoringData, ofParam)) {
-            return;
-        }
-
-        boolean containsRecord = mPosition != null && Helpers.equals(mPosition.first, videoId);
-
-        float oldPositionSec = containsRecord ? mPosition.second : positionSec < START_THRESHOLD_SEC ? 0 : positionSec;
-
-        String clientPlaybackNonce = getAppService().getClientPlaybackNonce();
-
-        // Mark video as full watched if less than couple minutes remains
-        if ((lengthSec - positionSec) < (lengthSec * 0.05f)) {
-            positionSec = lengthSec;
-        }
-
-        if (!containsRecord) {
-
-            Call<WatchTimeEmptyResult> wrapper = mTrackingApi.createWatchRecord(
-                videoId, 
-                lengthSec, 
-                oldPositionSec,
-                clientPlaybackNonce,
-                eventId,
-                visitorMonitoringData,
-                ofParam
-            );
-
-            RetrofitHelper.get(wrapper); // execute
-        
-        }
-
-        Call<WatchTimeEmptyResult> wrapper = mTrackingApi.updateWatchTime(
+        Call<WatchTimeEmptyResult> wrapper = mTrackingApi.createWatchRecord(
             videoId, 
             lengthSec, 
-            oldPositionSec, 
-            positionSec, 
-            positionSec,
-            clientPlaybackNonce,
+            (positionSec < START_THRESHOLD_SEC) ? 0 : positionSec,
+            getAppService().getClientPlaybackNonce(),
             eventId,
             visitorMonitoringData,
             ofParam
