@@ -16,6 +16,7 @@ import smartyoutubetv1.app.models.playback.manager.PlayerEngine;
 import smartyoutubetv1.prefs.PlayerData;
 import smartyoutubetv1.prefs.PlayerTweaksData;
 import smartyoutubetv2.util.ViewUtil;
+import android.util.Log;
 
 /**
  * Subclass of {@link PlaybackSupportFragment} that is responsible for providing a {@link SurfaceView}
@@ -25,6 +26,8 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
     private SurfaceWrapper mVideoSurfaceWrapper;
     private AspectRatioFrameLayout mVideoSurfaceRoot;
     private int mBackgroundResId;
+    
+    private static final String TAG = "SurfacePlaybackFragment";
 
     @Override
     public View onCreateView(
@@ -36,6 +39,15 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
         ViewGroup root = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
         
         mVideoSurfaceRoot = root.findViewById(smartyoutubetv2.R.id.surface_root);
+        if (mVideoSurfaceRoot == null) {
+            Log.e(TAG, "surface_root not found in layout");
+            return root;
+        }
+        
+        if (mVideoSurfaceWrapper == null) {
+            mVideoSurfaceWrapper = new SurfaceViewWrapper(getContext(), root);
+        }
+        
         mVideoSurfaceRoot.addView(mVideoSurfaceWrapper.getSurfaceView(), 0);
         mVideoSurfaceRoot.setAspectRatioListener((targetAspectRatio, naturalAspectRatio, aspectRatioMismatch) -> scaleIfNeeded());
         
