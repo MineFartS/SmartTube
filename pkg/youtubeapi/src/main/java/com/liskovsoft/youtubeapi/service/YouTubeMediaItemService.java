@@ -228,18 +228,14 @@ public class YouTubeMediaItemService implements MediaItemService {
             return;
         }
 
-        if (!formatInfo.isAuth() && !formatInfo.isUnplayable() && getSignInService().isSigned()) {
-            
-            VideoInfo videoInfo = getVideoInfoService().getAuthVideoInfo(
-                formatInfo.getVideoId(), 
-                formatInfo.getClickTrackingParams()
-            );
+        VideoInfo videoInfo = getVideoInfoService().getAuthVideoInfo(
+            formatInfo.getVideoId(), 
+            formatInfo.getClickTrackingParams()
+        );
 
-            YouTubeMediaItemFormatInfo formatInfo2 = YouTubeMediaItemFormatInfo.from(videoInfo);
+        YouTubeMediaItemFormatInfo formatInfo2 = YouTubeMediaItemFormatInfo.from(videoInfo);
 
-            formatInfo.sync(formatInfo2);
-        
-        }
+        formatInfo.sync(formatInfo2);
 
         Call<WatchTimeEmptyResult> wrapper = mTrackingApi.createWatchRecord(
             formatInfo.getVideoId(), 
