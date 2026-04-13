@@ -242,16 +242,6 @@ public class YouTubeMediaItemService implements MediaItemService {
     }
 
     @Override
-    public Observable<Void> updateHistoryPositionObserve(MediaItem item, float positionSec) {
-        return RxHelper.fromRunnable(() -> updateHistoryPosition(item, positionSec));
-    }
-
-    @Override
-    public Observable<Void> updateHistoryPositionObserve(String videoId, float positionSec) {
-        return RxHelper.fromRunnable(() -> updateHistoryPosition(videoId, positionSec));
-    }
-
-    @Override
     public Observable<Void> subscribeObserve(MediaItem item) {
         return RxHelper.fromRunnable(() -> subscribe(item));
     }
