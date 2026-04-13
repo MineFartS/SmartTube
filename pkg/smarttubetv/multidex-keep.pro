@@ -155,9 +155,6 @@
     androidx.leanback.widget.VerticalGridView mVerticalGridView;
     androidx.leanback.widget.VerticalGridView getVerticalGridView();
 }
--keepclassmembers class smartyoutubetv1.app.models.playback.controllers.VideoStateController {
-    <init>(...);
-}
 -keepclassmembers class smartyoutubetv2.ui.browse.BrowseSectionFragmentFactory {
     <init>(...);
 }

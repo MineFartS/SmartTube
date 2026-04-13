@@ -21,7 +21,6 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import smartyoutubetv1.app.models.data.Video;
 import smartyoutubetv1.app.models.data.VideoGroup;
-import smartyoutubetv1.app.models.playback.service.VideoStateService;
 import smartyoutubetv1.app.presenters.ChannelPresenter;
 import smartyoutubetv1.app.presenters.ChannelUploadsPresenter;
 import smartyoutubetv1.prefs.AccountsData;

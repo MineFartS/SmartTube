@@ -15,7 +15,6 @@ import com.liskovsoft.mediaserviceinterfaces.SignInService;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import smartyoutubetv1.app.models.data.Video;
 import smartyoutubetv1.app.models.playback.listener.PlayerEventListener;
-import smartyoutubetv1.app.models.playback.service.VideoStateService;
 import smartyoutubetv1.app.presenters.AppDialogPresenter;
 import smartyoutubetv1.app.presenters.PlaybackPresenter;
 import smartyoutubetv1.app.presenters.SearchPresenter;
@@ -312,10 +311,6 @@ public abstract class BasePlayerController implements PlayerEventListener {
 
     protected RemoteControlData getRemoteControlData() {
         return RemoteControlData.instance(getContext());
-    }
-
-    protected VideoStateService getStateService() {
-        return VideoStateService.instance(getContext());
     }
 
     protected ContentBlockData getContentBlockData() {

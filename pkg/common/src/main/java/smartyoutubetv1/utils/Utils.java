@@ -64,7 +64,6 @@ import smartyoutubetv1.R;
 import smartyoutubetv1.app.models.data.Video;
 import smartyoutubetv1.app.models.playback.manager.PlayerConstants;
 import smartyoutubetv1.app.models.playback.manager.PlayerManager;
-import smartyoutubetv1.app.models.playback.service.VideoStateService;
 import smartyoutubetv1.app.presenters.PlaybackPresenter;
 import smartyoutubetv1.app.presenters.SplashPresenter;
 import smartyoutubetv1.app.views.PlaybackView;
@@ -759,12 +758,6 @@ public class Utils {
         return (int) (ms / 1_000);
     }
 
-    public static boolean isFirstRun(Context context) {
-        VideoStateService stateService = VideoStateService.instance(context);
-
-        return stateService.isEmpty();
-    }
-
     public static boolean isPresetSupported(VideoPreset preset) {
         if (preset.isVP9Preset() && !DeviceHelpers.isVP9ResolutionSupported(preset.getHeight())) {
             return false;
@@ -1128,7 +1121,6 @@ public class Utils {
     }
 
     private static void persistState(Context context) {
-        VideoStateService.instance(context).persistState();
         PlayerTweaksData.instance(context).persistState();
         MainUIData.instance(context).persistState();
         GeneralData.instance(context).persistState();
@@ -1137,4 +1129,5 @@ public class Utils {
             mediaServiceData.persistState();
         }
     }
+    
 }

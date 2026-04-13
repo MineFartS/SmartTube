@@ -22,8 +22,6 @@ import smartyoutubetv1.app.models.data.VideoGroup;
 import smartyoutubetv1.app.models.errors.CategoryEmptyError;
 import smartyoutubetv1.app.models.errors.ErrorFragmentData;
 import smartyoutubetv1.app.models.errors.SignInError;
-import smartyoutubetv1.app.models.playback.service.VideoStateService;
-import smartyoutubetv1.app.models.playback.service.VideoStateService.State;
 import smartyoutubetv1.app.presenters.base.BasePresenter;
 import smartyoutubetv1.app.presenters.dialogs.VideoActionPresenter;
 import smartyoutubetv1.app.presenters.dialogs.menu.ChannelUploadsMenuPresenter;
@@ -812,7 +810,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
                             }
 
                             VideoGroup videoGroup = VideoGroup.from(baseGroup, mediaGroup);
-                            appendLocalHistory(videoGroup);
                             getView().updateSection(videoGroup);
                             mBrowseProcessor.process(videoGroup);
 
@@ -892,10 +889,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         if (getSignInService().isSigned()) {
             callback.run();
         } else if (getView() != null) {
-            if (isHistorySection() && !VideoStateService.instance(getContext()).isEmpty()) {
+            if (isHistorySection()) {
                 getView().showProgressBar(false);
                 VideoGroup videoGroup = VideoGroup.from(getCurrentSection());
-                appendLocalHistory(videoGroup);
                 getView().updateSection(videoGroup);
             } else {
                 getView().showProgressBar(false);
@@ -1185,38 +1181,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
             Utils.postDelayed(mRefreshSection, 30_000);
             
         }
-    }
-
-    private void appendLocalHistory(VideoGroup videoGroup) {
-        
-        if (!isHistorySection()) {
-            return;
-        }
-
-        VideoStateService stateService = VideoStateService.instance(getContext());
-
-        if (stateService.isEmpty() || videoGroup.isEmpty()) {
-            return;
-        }
-
-        Video lastHistoryItem = videoGroup.get(0);
-        State lastState = stateService.getLastState();
-
-        if (lastState == null || Helpers.equals(lastHistoryItem, lastState.video)) {
-            return;
-        }
-
-        List<Video> remote = videoGroup.getVideos();
-
-        List<Video> local = new ArrayList<>();
-        for (State state: stateService.getStates()) {
-            local.add(state.video);
-        }
-
-        for (Video video : local) {
-            videoGroup.add(0, video);
-        }
-
     }
 
 }

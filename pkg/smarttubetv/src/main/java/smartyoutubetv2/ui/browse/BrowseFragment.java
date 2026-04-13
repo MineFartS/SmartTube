@@ -25,8 +25,6 @@ import smartyoutubetv1.app.models.data.SettingsGroup;
 import smartyoutubetv1.app.models.data.Video;
 import smartyoutubetv1.app.models.data.VideoGroup;
 import smartyoutubetv1.app.models.errors.ErrorFragmentData;
-import smartyoutubetv1.app.models.playback.service.VideoStateService;
-import smartyoutubetv1.app.models.playback.service.VideoStateService.State;
 import smartyoutubetv1.app.presenters.BrowsePresenter;
 import smartyoutubetv1.app.presenters.PlaybackPresenter;
 import smartyoutubetv1.app.presenters.SearchPresenter;
@@ -124,24 +122,6 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
 
         mBrowsePresenter.onViewInitialized();
 
-        if (mSelectedHeaderIndex != -1) {
-            // Restore state after crash
-            selectSection(mSelectedHeaderIndex, true);
-            mSelectedHeaderIndex = -1;
-
-            // Restore state after crash
-            selectSectionItem(mSelectedVideo);
-            if (PlaybackPresenter.instance(getContext()).getPlayer() == null
-                    && mIsPlayerInForeground) {
-                VideoStateService stateService = VideoStateService.instance(getContext());
-                boolean isVideoStateSynced = mSelectedVideo == null
-                        || stateService.getByVideoId(mSelectedVideo.videoId) != null;
-                State lastState = stateService.getLastState();
-                PlaybackPresenter.instance(getContext()).openVideo(
-                        lastState != null && isVideoStateSynced ? lastState.video : mSelectedVideo);
-            }
-            mSelectedVideo = null;
-        }
     }
 
     @Override

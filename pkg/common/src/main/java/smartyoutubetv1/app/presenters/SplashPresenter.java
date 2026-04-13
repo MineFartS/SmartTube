@@ -13,7 +13,6 @@ import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import smartyoutubetv1.R;
 import smartyoutubetv1.app.models.data.Video;
-import smartyoutubetv1.app.models.playback.service.VideoStateService;
 import smartyoutubetv1.app.presenters.base.BasePresenter;
 import smartyoutubetv1.app.presenters.dialogs.AccountSelectionPresenter;
 import smartyoutubetv1.app.presenters.dialogs.BootDialogPresenter;
@@ -86,7 +85,6 @@ public class SplashPresenter extends BasePresenter<SplashView> {
             sRunOnce = true;
             RxHelper.setupGlobalErrorHandler();
             initGlobalPrefs();
-            initVideoStateService();
             initStreamReminderService();
         }
     }
@@ -131,12 +129,6 @@ public class SplashPresenter extends BasePresenter<SplashView> {
     private void checkForUpdates() {
         BootDialogPresenter updatePresenter = BootDialogPresenter.instance(getContext());
         updatePresenter.start();
-    }
-
-    private void initVideoStateService() {
-        if (getContext() != null) {
-            VideoStateService.instance(getContext());
-        }
     }
 
     private void initStreamReminderService() {

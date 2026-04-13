@@ -16,7 +16,6 @@ import smartyoutubetv1.app.models.playback.controllers.PlayerUIController;
 import smartyoutubetv1.app.models.playback.controllers.RemoteController;
 import smartyoutubetv1.app.models.playback.controllers.SuggestionsController;
 import smartyoutubetv1.app.models.playback.controllers.VideoLoaderController;
-import smartyoutubetv1.app.models.playback.controllers.VideoStateController;
 import smartyoutubetv1.app.models.playback.listener.PlayerEventListener;
 import smartyoutubetv1.app.models.playback.listener.ViewEventListener;
 import smartyoutubetv1.app.presenters.base.BasePresenter;
@@ -54,7 +53,6 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
         super(context);
 
         // NOTE: position matters!!!
-        mEventListeners.add(new VideoStateController());
         mEventListeners.add(new SuggestionsController());
         mEventListeners.add(new PlayerUIController());
         mEventListeners.add(new VideoLoaderController());
@@ -116,7 +114,6 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
             // NOTE: don't release after init check because this depends on timings
             getView().finishReally();
             setView(null);
-            //getController(VideoStateController.class).saveState();
         }
 
         onNewVideo(video);
