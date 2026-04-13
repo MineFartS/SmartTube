@@ -440,9 +440,14 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         mDialogPresenter.appendSingleButton(UiOptionItem.from(
             getContext().getString(R.string.mark_as_watched), 
             optionItem -> {
-                MediaServiceManager.instance().updateHistory(mVideo, 0);
-                mVideo.markFullyViewed();
-                Playlist.instance().sync(mVideo);
+                // Get accurate length from format info for full watch
+                MediaServiceManager.instance().loadFormatInfo(mVideo, formatInfo -> {
+                    float lengthSec = formatInfo != null ? Helpers.parseFloat(formatInfo.getLengthSeconds()) : 0;
+                    MediaServiceManager.instance().updateHistory(mVideo, (long) (lengthSec * 1000));
+                    mVideo.markFullyViewed();
+                    Playlist.instance().sync(mVideo);
+                    MessageHelpers.showMessage(getContext(), "Video has been marked as watched");
+                });
                 mDialogPresenter.closeDialog();
             }
         ));
