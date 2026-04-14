@@ -376,18 +376,29 @@ public class MediaServiceManager implements OnAccountChange {
     public void updateHistory(Video video, long positionMs) {
 
         if (video == null) {
+            Log.d(TAG, "updateHistory: video null");
             return;
         }
 
-        RxHelper.runAsyncUser(() -> {
-        
-            mItemService.updateHistoryPosition(
-                video.videoId, 
-                positionMs / 1_000f
-            );
+        Log.d(TAG, String.format("updateHistory: videoId=%s posMs=%s signed=%s", video.videoId, positionMs, mSignInService.isSigned()));
 
-            // https://stackoverflow.com/a/39561135/31195538
-            mPlaylistService.addToPlaylist("HL", video.videoId);
+        RxHelper.runAsyncUser(() -> {
+            try {
+                mItemService.updateHistoryPosition(
+                    video.videoId, 
+                    positionMs / 1_000f
+                );
+                Log.d(TAG, "updateHistoryPosition called successfully");
+            } catch (Exception e) {
+                Log.e(TAG, "updateHistoryPosition error", e);
+            }
+
+            try {
+                mPlaylistService.addToPlaylist("HL", video.videoId);
+                Log.d(TAG, "HL playlist add called");
+            } catch (Exception e) {
+                Log.e(TAG, "HL playlist add error", e);
+            }
         
         });
 

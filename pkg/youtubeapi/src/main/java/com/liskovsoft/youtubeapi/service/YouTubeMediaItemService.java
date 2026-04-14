@@ -216,10 +216,12 @@ public class YouTubeMediaItemService implements MediaItemService {
         updateHistoryPosition(item.getVideoId(), positionSec);
     }
 
-    @Override
+@Override
     public void updateHistoryPosition(String videoId, float positionSec) {
 
         checkSigned();
+
+        Log.d(TAG, String.format("updateHistoryPosition: videoId=%s pos=%s signed=%s", videoId, positionSec, YouTubeSignInService.instance().isSigned()));
 
         YouTubeMediaItemFormatInfo formatInfo = getFormatInfo(videoId);
 
@@ -228,26 +230,36 @@ public class YouTubeMediaItemService implements MediaItemService {
             return;
         }
 
-        VideoInfo videoInfo = getVideoInfoService().getAuthVideoInfo(
-            formatInfo.getVideoId(), 
-            formatInfo.getClickTrackingParams()
-        );
+        Log.d(TAG, String.format("formatInfo ok: lengthSec=%s eventId=%s", formatInfo.getLengthSeconds(), formatInfo.getEventId()));
 
-        YouTubeMediaItemFormatInfo formatInfo2 = YouTubeMediaItemFormatInfo.from(videoInfo);
+        try {
+            VideoInfo videoInfo = getVideoInfoService().getAuthVideoInfo(
+                formatInfo.getVideoId(), 
+                formatInfo.getClickTrackingParams()
+            );
 
-        formatInfo.sync(formatInfo2);
+            YouTubeMediaItemFormatInfo formatInfo2 = YouTubeMediaItemFormatInfo.from(videoInfo);
 
-        Call<WatchTimeEmptyResult> wrapper = mTrackingApi.createWatchRecord(
-            formatInfo.getVideoId(), 
-            Helpers.parseFloat(formatInfo.getLengthSeconds()), 
-            (positionSec < 180) ? 0 : positionSec,
-            AppService.instance().getClientPlaybackNonce(),
-            formatInfo.getEventId(),
-            formatInfo.getVisitorMonitoringData(), 
-            formatInfo.getOfParam()
-        );
+            formatInfo.sync(formatInfo2);
 
-        RetrofitHelper.get(wrapper); // execute
+            String cpn = AppService.instance().getClientPlaybackNonce();
+            Log.d(TAG, String.format("cpn=%s", cpn));
+
+            Call<WatchTimeEmptyResult> wrapper = mTrackingApi.createWatchRecord(
+                formatInfo.getVideoId(), 
+                Helpers.parseFloat(formatInfo.getLengthSeconds()), 
+                (positionSec < 180) ? 0 : positionSec,
+                cpn,
+                formatInfo.getEventId(),
+                formatInfo.getVisitorMonitoringData(), 
+                formatInfo.getOfParam()
+            );
+
+            RetrofitHelper.get(wrapper); // execute
+            Log.d(TAG, "createWatchRecord executed");
+        } catch (Exception e) {
+            Log.e(TAG, "updateHistoryPosition full fail", e);
+        }
 
     }
 
