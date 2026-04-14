@@ -51,6 +51,7 @@ public class PlayerUIController extends BasePlayerController {
     private final MediaItemService mMediaItemService;
     private SuggestionsController mSuggestionsController;
     private List<PlaylistInfo> mPlaylistInfos;
+    private Disposable mSubscribeDisposable;
 
     private boolean mEngineReady;
     private boolean mIsMetadataLoaded;
@@ -316,6 +317,7 @@ public class PlayerUIController extends BasePlayerController {
     @Override
     public void onEngineReleased() {
         Log.d(TAG, "Engine released. Disabling all callbacks...");
+        RxHelper.disposeActions(mSubscribeDisposable);
         mEngineReady = false;
 
         disposeTimeouts();
@@ -422,7 +424,7 @@ public class PlayerUIController extends BasePlayerController {
     public void onButtonClicked(int buttonId, int buttonState) {
         
         if (buttonId == R.id.action_subscribe) {
-            onSubscribe(buttonState);
+            onSubscribeToggle(buttonState != PlayerUI.BUTTON_ON);
 
         } else if (buttonId == R.id.action_repeat) {
             applyRepeatMode(buttonState);
@@ -680,24 +682,39 @@ public class PlayerUIController extends BasePlayerController {
         return isSelected;
     }
 
-    private void onSubscribe(int buttonState) {
+    private void setButtonOn(int id, boolean on) {
+        getPlayer().setButtonState(
+            id, 
+            on ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF
+        );
+    }
+
+    private void onSubscribeToggle(boolean doSubscribe) {
         if (getVideo() == null) {
             return;
         }
 
-        if (!mIsMetadataLoaded) {
-            MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
-            return;
-        }
+        String channelId = getVideo().channelId;
 
-        if (buttonState == PlayerUI.BUTTON_OFF) {
-            callMediaItemObservable(mMediaItemService::subscribeObserve);
-        } else {
-            callMediaItemObservable(mMediaItemService::unsubscribeObserve);
-        }
+        // Optimistic update
+        setButtonOn(R.id.action_subscribe, doSubscribe);
 
-        getVideo().isSubscribed = buttonState == PlayerUI.BUTTON_OFF;
-        getPlayer().setButtonState(R.id.action_subscribe, buttonState == PlayerUI.BUTTON_OFF ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
+        Observable<Void> observable = doSubscribe ?
+            mMediaItemService.subscribeObserve(channelId) :
+            mMediaItemService.unsubscribeObserve(channelId);
+
+        RxHelper.disposeActions(mSubscribeDisposable);
+
+        mSubscribeDisposable = observable.subscribe(
+            aVoid -> { /* success */ },
+            error -> {
+                Log.e(TAG, "Subscribe toggle failed: " + error.getMessage());
+                MessageHelpers.showMessage(getContext(), "Failed to toggle subscription");
+                // Revert on error
+                setButtonOn(R.id.action_subscribe, !doSubscribe);
+            }
+        );
+
     }
 
     private void applyRepeatMode(int buttonState) {
