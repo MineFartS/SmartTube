@@ -46,13 +46,7 @@ public abstract class BasePlayerController implements PlayerEventListener {
             return;
         }
         
-        FormatItem videoFormat = getPlayer().getVideoFormat();
-        
-        Format format = videoFormat != null && videoFormat.getTrack() != null ? videoFormat.getTrack().format : null;
-        
-        if (format == null) {
-            return;
-        }
+        // No forced 16:9 - use source aspect ratio
         
         getPlayer().showControls(false);
         
@@ -60,13 +54,6 @@ public abstract class BasePlayerController implements PlayerEventListener {
         float dialogWidth = 37 * getMainUIData().getUIScale();
         float initialZoom = 100;
         float totalZoom = initialZoom - dialogWidth;
-        float ratio = format.width / (float) format.height;
-        float targetRatio = 16/9f;
-        float multiplier = targetRatio / ratio;
-        
-        if (multiplier > 1) { // skip cinema ratio
-            totalZoom *= multiplier;
-        }
         
         if (totalZoom > 130) {
             return; // shorts overzoom fix
@@ -74,9 +61,7 @@ public abstract class BasePlayerController implements PlayerEventListener {
         
         getPlayer().setZoomPercents(Math.round(totalZoom));
         
-        getPlayer().setVideoGravity(
-            Gravity.START | Gravity.CENTER_VERTICAL
-        );
+        getPlayer().setVideoGravity(Gravity.CENTER);
 
     };
     private final Runnable mFitVideoFinish = () -> {
