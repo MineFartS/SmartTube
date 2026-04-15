@@ -26,6 +26,7 @@ import smartyoutubetv1.utils.Utils;
 import smartyoutubetv1.utils.Utils.ChainProcessor;
 import smartyoutubetv1.utils.Utils.Processor;
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
+import smartyoutubetv1.app.models.playback.controllers.WatchStateController;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -61,6 +62,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
         mEventListeners.add(new HQDialogController());
         mEventListeners.add(new ChatController());
         mEventListeners.add(new CommentsController());
+        mEventListeners.add(new WatchStateController());
     }
 
     public static PlaybackPresenter instance(Context context) {
