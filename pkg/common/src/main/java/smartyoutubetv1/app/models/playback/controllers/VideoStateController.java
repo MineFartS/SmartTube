@@ -448,7 +448,7 @@ public class VideoStateController extends BasePlayerController {
 
         MediaServiceManager.instance().updateHistory(
             video, 
-            Math.max(getPlayer().getPositionMs(), 3_000)
+            getPlayer().getPositionMs()
         ); // 0 == fully watched
     
     }
