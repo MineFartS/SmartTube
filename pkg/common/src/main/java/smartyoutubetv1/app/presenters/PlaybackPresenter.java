@@ -16,6 +16,7 @@ import smartyoutubetv1.app.models.playback.controllers.PlayerUIController;
 import smartyoutubetv1.app.models.playback.controllers.RemoteController;
 import smartyoutubetv1.app.models.playback.controllers.SuggestionsController;
 import smartyoutubetv1.app.models.playback.controllers.VideoLoaderController;
+import smartyoutubetv1.app.models.playback.controllers.VideoStateController;
 import smartyoutubetv1.app.models.playback.listener.PlayerEventListener;
 import smartyoutubetv1.app.models.playback.listener.ViewEventListener;
 import smartyoutubetv1.app.presenters.base.BasePresenter;
@@ -26,7 +27,6 @@ import smartyoutubetv1.utils.Utils;
 import smartyoutubetv1.utils.Utils.ChainProcessor;
 import smartyoutubetv1.utils.Utils.Processor;
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
-import smartyoutubetv1.app.models.playback.controllers.WatchStateController;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -54,6 +54,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
         super(context);
 
         // NOTE: position matters!!!
+        mEventListeners.add(new VideoStateController());
         mEventListeners.add(new SuggestionsController());
         mEventListeners.add(new PlayerUIController());
         mEventListeners.add(new VideoLoaderController());
@@ -62,7 +63,6 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
         mEventListeners.add(new HQDialogController());
         mEventListeners.add(new ChatController());
         mEventListeners.add(new CommentsController());
-        mEventListeners.add(new WatchStateController());
     }
 
     public static PlaybackPresenter instance(Context context) {
@@ -116,6 +116,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
             // NOTE: don't release after init check because this depends on timings
             getView().finishReally();
             setView(null);
+            //getController(VideoStateController.class).saveState();
         }
 
         onNewVideo(video);

@@ -13,6 +13,8 @@ import smartyoutubetv1.app.models.data.Playlist;
 import smartyoutubetv1.app.models.data.Video;
 import smartyoutubetv1.app.models.playback.controllers.CommentsController;
 import smartyoutubetv1.app.models.playback.manager.PlayerUI;
+import smartyoutubetv1.app.models.playback.service.VideoStateService;
+import smartyoutubetv1.app.models.playback.service.VideoStateService.State;
 import smartyoutubetv1.app.models.playback.ui.UiOptionItem;
 import smartyoutubetv1.app.presenters.AppDialogPresenter;
 import smartyoutubetv1.app.presenters.BrowsePresenter;
@@ -384,6 +386,8 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         } else {
             MessageHelpers.showMessage(getContext(), R.string.removed_from_history);
         }
+        VideoStateService stateService = VideoStateService.instance(getContext());
+        stateService.removeByVideoId(mVideo.videoId);
     }
 
     private void appendRemoveFromSubscriptionsButton() {
@@ -440,14 +444,10 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         mDialogPresenter.appendSingleButton(UiOptionItem.from(
             getContext().getString(R.string.mark_as_watched), 
             optionItem -> {
-                // Get accurate length from format info for full watch
-                MediaServiceManager.instance().loadFormatInfo(mVideo, formatInfo -> {
-                    float lengthSec = formatInfo != null ? Helpers.parseFloat(formatInfo.getLengthSeconds()) : 0;
-                    MediaServiceManager.instance().updateHistory(mVideo, (long) (lengthSec * 1000));
-                    mVideo.markFullyViewed();
-                    Playlist.instance().sync(mVideo);
-                    MessageHelpers.showMessage(getContext(), "Video has been marked as watched");
-                });
+                MediaServiceManager.instance().updateHistory(mVideo, 0);
+                mVideo.markFullyViewed();
+                VideoStateService.instance(getContext()).save(new State(mVideo, mVideo.getDurationMs()));
+                Playlist.instance().sync(mVideo);
                 mDialogPresenter.closeDialog();
             }
         ));

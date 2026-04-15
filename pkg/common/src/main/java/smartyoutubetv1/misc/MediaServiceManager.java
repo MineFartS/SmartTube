@@ -21,6 +21,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import smartyoutubetv1.app.models.data.Video;
 import smartyoutubetv1.app.models.data.VideoGroup;
+import smartyoutubetv1.app.models.playback.service.VideoStateService;
 import smartyoutubetv1.app.presenters.ChannelPresenter;
 import smartyoutubetv1.app.presenters.ChannelUploadsPresenter;
 import smartyoutubetv1.prefs.AccountsData;
@@ -376,29 +377,18 @@ public class MediaServiceManager implements OnAccountChange {
     public void updateHistory(Video video, long positionMs) {
 
         if (video == null) {
-            Log.d(TAG, "updateHistory: video null");
             return;
         }
 
-        Log.d(TAG, String.format("updateHistory: videoId=%s posMs=%s signed=%s", video.videoId, positionMs, mSignInService.isSigned()));
-
         RxHelper.runAsyncUser(() -> {
-            try {
-                mItemService.updateHistoryPosition(
-                    video.videoId, 
-                    positionMs / 1_000f
-                );
-                Log.d(TAG, "updateHistoryPosition called successfully");
-            } catch (Exception e) {
-                Log.e(TAG, "updateHistoryPosition error", e);
-            }
+        
+            mItemService.updateHistoryPosition(
+                video.videoId, 
+                positionMs / 1_000f
+            );
 
-            try {
-                mPlaylistService.addToPlaylist("HL", video.videoId);
-                Log.d(TAG, "HL playlist add called");
-            } catch (Exception e) {
-                Log.e(TAG, "HL playlist add error", e);
-            }
+            // https://stackoverflow.com/a/39561135/31195538
+            mPlaylistService.addToPlaylist("HL", video.videoId);
         
         });
 

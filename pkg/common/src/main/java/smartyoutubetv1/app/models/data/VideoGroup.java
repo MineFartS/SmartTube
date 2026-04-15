@@ -5,6 +5,8 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
+import smartyoutubetv1.app.models.playback.service.VideoStateService;
+import smartyoutubetv1.app.models.playback.service.VideoStateService.State;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -453,6 +455,12 @@ public class VideoGroup {
         // Group position in multi-grid fragments
         video.groupPosition = mPosition;
         video.setGroup(this);
+
+        VideoStateService stateService = VideoStateService.instance(null);
+        if (stateService != null && (video.percentWatched == -1 || video.percentWatched == 100)) {
+            State state = stateService.getByVideoId(video.videoId);
+            video.sync(state);
+        }
 
         mVideos.add(idx, video);
     }

@@ -218,15 +218,10 @@ public class VideoLoaderController extends BasePlayerController {
 
     }
 
-@Override
+    @Override
     public void onPlayEnd() {
         if (getPlayer() == null) {
             return;
-        }
-
-        // Mark video as fully watched via MediaServiceManager
-        if (getVideo() != null && getPlayer() != null) {
-            MediaServiceManager.instance().updateHistory(getVideo(), getPlayer().getDurationMs());
         }
 
         // Stop the playback if the user is browsing options or reading comments
@@ -372,11 +367,7 @@ public class VideoLoaderController extends BasePlayerController {
             scheduleReloadVideoTimer(30 * 1_000);
         }
 
-        player.showProgressBar(true);
-        player.setPlayWhenReady(true);
-        
         player.showBackground(bgImageUrl); // remove bg (if video playing) or set another bg
-    
     }
 
     private void scheduleReloadVideoTimer(int delayMs) {

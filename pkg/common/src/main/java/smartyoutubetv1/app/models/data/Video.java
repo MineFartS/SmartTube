@@ -19,6 +19,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
 import com.liskovsoft.sharedutils.helpers.DateHelper;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
+import smartyoutubetv1.app.models.playback.service.VideoStateService;
 import smartyoutubetv1.prefs.PlayerTweaksData;
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
@@ -864,6 +865,12 @@ public final class Video {
 
     public MediaItem toMediaItem() {
         return SimpleMediaItem.from(this);
+    }
+
+    public void sync(VideoStateService.State state) {
+        if (state != null) {
+            percentWatched = state.positionMs / (state.durationMs / 100f);
+        }
     }
 
     /**
