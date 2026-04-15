@@ -734,7 +734,7 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
                 )
             );
 
-            parts.add((String) color);
+            parts.add(color.toString());
 
         }
 
