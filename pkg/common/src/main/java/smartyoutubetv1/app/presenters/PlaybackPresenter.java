@@ -101,7 +101,6 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
 
         Video video = Video.from(videoId);
         video.finishOnEnded = finishOnEnded;
-        video.pendingPosMs = timeMs;
 
         openVideo(video);
     }
@@ -175,11 +174,10 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
             getView().setPlayWhenReady(true);
             getView().showOverlay(false);
         } else {
+            
             Video video = VideoMenuPresenter.sVideoHolder.get();
-            if (video != null) {
-                video.pendingPosMs = positionMs;
-                openVideo(video);
-            }
+            if (video != null) openVideo(video);
+
         }
     }
 
