@@ -17,5 +17,8 @@ Thumbs.db
 /*.md
 !ReadMe.md
 
-# Android Studio
+# IDE
 .idea
+**/.project
+**/.classpath
+**/.settings/

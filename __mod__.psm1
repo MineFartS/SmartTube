@@ -22,22 +22,45 @@ function Connect-ADB {
     if (-not (Test-ADBConnection)) {
 
         Write-Host "No ADB device is connected"
+        Write-Host "Enter Target IP Address or leave blank to skip install"
         $IP = Read-Host 'Target IP Address'
+
+        if ($IP -eq "") {return $false}
 
         & $ADB connect $IP
 
         while (-not (Test-ADBConnection)) {
-
             Write-Host 'Awaiting Connection ...'
-
         }
         
     }
+
+    return $true
 
 }
 
 function Get-PID {
     return & $ADB shell pidof $APP_ID
+}
+
+function Invoke-Gradle {
+    param (
+        [String] $Script
+    )
+
+    & $JAVA `
+        '-classpath' ".\gradle\wrapper\gradle-wrapper.jar" `
+        'org.gradle.wrapper.GradleWrapperMain' `
+        $Script
+
+}
+
+function Remove-Cache {
+
+    taskkill.exe /im java.exe /f
+ 
+    Invoke-Gradle 'clean'
+
 }
 
 function Repair-Environment {

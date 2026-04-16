@@ -1,13 +1,17 @@
+param (
+    [Switch] $Clear
+)
+
 Import-Module "$PSScriptRoot/__mod__.psm1" -Force
 
 Repair-Environment
 
-Connect-ADB
+if ($Clear) {Remove-Cache}
 
 Clear-Host
 
-# Execute Gradle
-& $JAVA `
-    '-classpath' ".\gradle\wrapper\gradle-wrapper.jar" `
-    'org.gradle.wrapper.GradleWrapperMain' `
-    "clean" "installStstableDebug"
+if (Connect-ADB) {
+    Invoke-Gradle "installStstableDebug"
+} else {
+    Invoke-Gradle "build"
+}
