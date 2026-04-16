@@ -203,45 +203,6 @@ public class YouTubeMediaItemService implements MediaItemService {
     }
 
     @Override
-    public void updateHistoryPosition(MediaItem item, float positionSec) {
-        updateHistoryPosition(item.getVideoId(), positionSec);
-    }
-
-    @Override
-    public void updateHistoryPosition(String videoId, float positionSec) {
-
-        checkSigned();
-
-        YouTubeMediaItemFormatInfo formatInfo = getFormatInfo(videoId);
-
-        if (formatInfo == null) {
-            Log.e(TAG, "Can't update history for video id %s. formatInfo == null", videoId);
-            return;
-        }
-
-        if (shouldBeSynced(formatInfo)) {
-            
-            VideoInfo videoInfo = getVideoInfoService().getAuthVideoInfo(
-                formatInfo.getVideoId(), 
-                formatInfo.getClickTrackingParams()
-            );
-
-            formatInfo.sync(YouTubeMediaItemFormatInfo.from(videoInfo));
-        
-        }
-
-        getTrackingService().updateWatchTime(
-            formatInfo.getVideoId(), 
-            positionSec, 
-            Helpers.parseFloat(formatInfo.getLengthSeconds()), 
-            formatInfo.getEventId(),
-            formatInfo.getVisitorMonitoringData(), 
-            formatInfo.getOfParam()
-        );
-
-    }
-
-    @Override
     public Observable<Void> subscribeObserve(MediaItem item) {
         return RxHelper.fromRunnable(() -> subscribe(item));
     }
@@ -573,10 +534,6 @@ public class YouTubeMediaItemService implements MediaItemService {
     @NonNull
     private static WatchNextService getWatchNextService() {
         return WatchNextServiceWrapper.INSTANCE;
-    }
-
-    private static boolean shouldBeSynced(YouTubeMediaItemFormatInfo formatInfo) {
-        return !formatInfo.isAuth() && !formatInfo.isUnplayable() && getSignInService().isSigned();
     }
 
     private static void syncItem(MediaItem item, MediaItemMetadata metadata) {

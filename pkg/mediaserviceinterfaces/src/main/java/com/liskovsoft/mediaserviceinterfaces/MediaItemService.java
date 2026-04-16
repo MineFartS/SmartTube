@@ -28,9 +28,7 @@ public interface MediaItemService {
     MediaItemMetadata getMetadata(MediaItem item);
     MediaItemMetadata getMetadata(String videoId);
     MediaItemMetadata getMetadata(String videoId, String playlistId, int playlistIndex, String playlistParams);
-    //MediaGroup continueGroup(MediaGroup mediaGroup);
-    void updateHistoryPosition(MediaItem item, float positionSec);
-    void updateHistoryPosition(String videoId, float positionSec);
+
     void setLike(MediaItem item);
     void removeLike(MediaItem item);
     void setDislike(MediaItem item);

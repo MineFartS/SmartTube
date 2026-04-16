@@ -3,6 +3,14 @@ package smartyoutubetv1.misc;
 import android.content.Context;
 import android.util.Pair;
 
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
+import com.liskovsoft.googleapi.oauth2.manager.OAuth2AccountManager;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
+import com.liskovsoft.youtubeapi.track.TrackingService;
+import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.youtubeapi.track.TrackingService;
+import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
+import com.liskovsoft.youtubeapi.service.YouTubeMediaItemService;
 import com.liskovsoft.mediaserviceinterfaces.ContentService;
 import com.liskovsoft.mediaserviceinterfaces.MediaItemService;
 import com.liskovsoft.mediaserviceinterfaces.ServiceManager;
@@ -52,6 +60,9 @@ public class MediaServiceManager implements OnAccountChange {
     private final SignInService mSignInService;
     private final NotificationsService mNotificationsService;
     private final PlaylistService mPlaylistService;
+    private final YouTubeMediaItemService mYTMediaItemService;
+    private final VideoInfoService mVideoInfoService;
+    private final OAuth2AccountManager mAccountManager;
 
     private Disposable mMetadataAction;
     private Disposable mUploadsAction;
@@ -108,8 +119,12 @@ public class MediaServiceManager implements OnAccountChange {
         mSignInService = service.getSignInService();
         mNotificationsService = service.getNotificationsService();
         mPlaylistService = new PlaylistService();
+        mYTMediaItemService = YouTubeMediaItemService.instance();
+        mAccountManager = OAuth2AccountManager.instance();
+        mVideoInfoService = VideoInfoService.instance();
 
         mSignInService.addOnAccountChange(this);
+
     }
 
     public static MediaServiceManager instance() {
@@ -376,21 +391,36 @@ public class MediaServiceManager implements OnAccountChange {
 
     public void updateHistory(Video video, long positionMs) {
 
-        if (video == null) {
+        if (video == null) return;
+
+        mAccountManager.checkAuth();
+
+        YouTubeMediaItemFormatInfo formatInfo = mYTMediaItemService.getFormatInfo(video.videoId);
+
+        if (formatInfo == null) {
+            Log.e(TAG, "Can't update history for video id %s. formatInfo == null", video.videoId);
             return;
         }
 
-        RxHelper.runAsyncUser(() -> {
-        
-            mItemService.updateHistoryPosition(
-                video.videoId, 
-                positionMs / 1_000f
+        if (!formatInfo.isAuth() && !formatInfo.isUnplayable() && mSignInService.isSigned()) {
+            
+            VideoInfo videoInfo = mVideoInfoService.getAuthVideoInfo(
+                formatInfo.getVideoId(), 
+                formatInfo.getClickTrackingParams()
             );
 
-            // https://stackoverflow.com/a/39561135/31195538
-            mPlaylistService.addToPlaylist("HL", video.videoId);
+            formatInfo.sync(YouTubeMediaItemFormatInfo.from(videoInfo));
         
-        });
+        }
+
+        TrackingService.instance().updateWatchTime(
+            formatInfo.getVideoId(), 
+            positionMs / 1_000f, 
+            Helpers.parseFloat(formatInfo.getLengthSeconds()), 
+            formatInfo.getEventId(),
+            formatInfo.getVisitorMonitoringData(), 
+            formatInfo.getOfParam()
+        );
 
     }
 

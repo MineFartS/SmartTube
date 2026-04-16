@@ -15,11 +15,16 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class OAuth2AccountManager extends OAuth2AccountManagerBase {
+    
     private static final String TAG = OAuth2AccountManager.class.getSimpleName();
+    
     private static OAuth2AccountManager sInstance;
+    
     private final OAuth2Service mOAuth2Service;
+
     private UserCode mUserCodeResult;
     private Runnable mOnChange;
+
     /**
      * Fix ConcurrentModificationException when using {@link #getSelectedAccount()}
      */
@@ -72,29 +77,6 @@ public class OAuth2AccountManager extends OAuth2AccountManagerBase {
 
         return sInstance;
     }
-
-    //public Observable<String> signInObserve() {
-    //    return RxHelper.createLong(emitter -> {
-    //        UserCode userCodeResult = mOAuth2Service.getUserCode();
-    //
-    //        if (userCodeResult == null) {
-    //            RxHelper.onError(emitter, "User code result is empty");
-    //            return;
-    //        }
-    //
-    //        emitter.onNext(userCodeResult.getUserCode());
-    //
-    //        try {
-    //            AccessToken token = mOAuth2Service.getAccessTokenWait(userCodeResult.getDeviceCode());
-    //
-    //            persistRefreshToken(token.getRefreshToken());
-    //
-    //            emitter.onComplete();
-    //        } catch (InterruptedException e) {
-    //            // NOP
-    //        }
-    //    });
-    //}
 
     /**
      * The code is working limited amount of time. Need to be confirmed instantly.
