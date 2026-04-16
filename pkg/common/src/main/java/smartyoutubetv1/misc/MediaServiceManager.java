@@ -393,6 +393,12 @@ public class MediaServiceManager implements OnAccountChange {
 
         if (video == null) return;
 
+        RxHelper.runAsyncUser(() -> updateHistoryMain(video, positionMs));
+    
+    }
+
+    private void updateHistoryMain(Video video, long positionMs) {
+
         mAccountManager.checkAuth();
 
         YouTubeMediaItemFormatInfo formatInfo = mYTMediaItemService.getFormatInfo(video.videoId);
