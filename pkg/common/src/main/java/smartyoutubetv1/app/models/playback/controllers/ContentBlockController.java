@@ -95,18 +95,15 @@ public class ContentBlockController extends BasePlayerController {
 
     @Override
     public void onVideoLoaded(Video item) {
+        
         disposeActions();
 
-        if (getPlayer() == null) {
-            return;
-        }
+        if (getPlayer() == null) return;
 
-        boolean enabled = getContentBlockData().isSponsorBlockEnabled() && checkVideo(item) && !isChannelExcluded(item.channelId);
-        getPlayer().setButtonState(R.id.action_content_block, enabled ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
-
-        if (enabled) {
+        if (getContentBlockData().isSponsorBlockEnabled() && checkVideo(item) && !isChannelExcluded(item.channelId)) {
             updateSponsorSegmentsAndWatch(item);
         }
+
     }
 
     @Override
@@ -116,7 +113,6 @@ public class ContentBlockController extends BasePlayerController {
         if (!getContentBlockData().isSponsorBlockEnabled() || !checkVideo(getPlayer().getVideo())) {
             disposeActions();
         } else if (isChannelExcluded(metadata.getChannelId())) { // got channel id. check the exclusions
-            getPlayer().setButtonState(R.id.action_content_block, PlayerUI.BUTTON_OFF);
             disposeActions();
         }
     }
@@ -127,28 +123,10 @@ public class ContentBlockController extends BasePlayerController {
     }
 
     @Override
-    public void onButtonClicked(int buttonId, int buttonState) {
-        if (buttonId == R.id.action_content_block) {
-            List<SponsorSegment> foundSegments = findMatchedSegments(getPlayer().getPositionMs(), mOriginalSegments, true);
-
-            if (foundSegments != null) {
-                SponsorSegment lastSegment = foundSegments.get(foundSegments.size() - 1);
-                setPositionMs(lastSegment.getEndMs());
-                return;
-            }
-        }
-    }
+    public void onButtonClicked(int buttonId, int buttonState) {}
 
     @Override
-    public void onButtonLongClicked(int buttonId, int buttonState) {
-        if (buttonId == R.id.action_content_block) {
-            ContentBlockSettingsPresenter.instance(getContext()).show(() -> {
-                if (getPlayer() != null) {
-                    onVideoLoaded(getPlayer().getVideo());
-                }
-            });
-        }
-    }
+    public void onButtonLongClicked(int buttonId, int buttonState) {}
 
     private boolean checkVideo(Video video) {
 
@@ -241,14 +219,20 @@ public class ContentBlockController extends BasePlayerController {
     }
 
     private void messageSkip(long skipPosMs, String category) {
-        if (mLastSkipPosMs == skipPosMs) {
-            return;
-        }
+        if (mLastSkipPosMs == skipPosMs) return;
 
-        MessageHelpers.showMessage(getContext(),
-                String.format("%s: %s", getContext().getString(R.string.content_block_provider), getContext().getString(R.string.msg_skipping_segment, category)));
+        MessageHelpers.showMessage(
+            getContext(),
+            getContext().getString(
+                R.string.msg_skipping_segment, 
+                category
+            )
+        );
+    
         setPositionMs(skipPosMs);
+        
         closeTransparentDialog();
+    
     }
 
     private List<SeekBarSegment> toSeekBarSegments(List<SponsorSegment> segments) {

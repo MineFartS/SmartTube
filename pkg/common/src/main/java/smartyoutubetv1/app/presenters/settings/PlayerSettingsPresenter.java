@@ -105,10 +105,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 PlayerTweaksData.PLAYER_BUTTON_CHAT
             },
             {
-                R.string.content_block_provider,
-                PlayerTweaksData.PLAYER_BUTTON_CONTENT_BLOCK
-            },
-            {
                 R.string.action_video_info,
                 PlayerTweaksData.PLAYER_BUTTON_VIDEO_INFO
             },
