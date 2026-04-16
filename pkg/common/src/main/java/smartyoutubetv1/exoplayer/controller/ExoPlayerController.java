@@ -356,7 +356,7 @@ public class ExoPlayerController implements Player.EventListener {
 
         if (mPlayer != null && speed > 0 && !Helpers.floatEquals(speed, getSpeed())) {
 
-            mPlayer.setPlaybackParameters(new PlaybackParameters(speed, mPlayer.getPlaybackParameters().pitch));
+            mPlayer.setPlaybackParameters(new PlaybackParameters(speed));
 
             mTrackFormatter.setSpeed(speed);
             mEventListener.onSpeedChanged(speed);
@@ -371,21 +371,7 @@ public class ExoPlayerController implements Player.EventListener {
             return -1;
         }
     }
-    
-    public void setPitch(float pitch) {
-        if (mPlayer != null && pitch > 0 && !Helpers.floatEquals(pitch, getPitch())) {
-            mPlayer.setPlaybackParameters(new PlaybackParameters(mPlayer.getPlaybackParameters().speed, pitch));
-        }
-    }
-    
-    public float getPitch() {
-        if (mPlayer != null) {
-            return mPlayer.getPlaybackParameters().pitch;
-        } else {
-            return -1;
-        }
-    }
-    
+        
     public void setVolume(float volume) {
         if (mPlayer != null && volume >= 0) {
             mPlayer.setVolume(Math.min(volume, 1f));

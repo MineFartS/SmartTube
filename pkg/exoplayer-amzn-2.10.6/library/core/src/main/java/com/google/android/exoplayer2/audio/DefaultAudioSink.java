@@ -133,9 +133,10 @@ public final class DefaultAudioSink implements AudioSink {
         @Override
         public PlaybackParameters applyPlaybackParameters(PlaybackParameters playbackParameters) {
             silenceSkippingAudioProcessor.setEnabled(playbackParameters.skipSilence);
-            return new PlaybackParameters(sonicAudioProcessor.setSpeed(playbackParameters.speed),
-                    sonicAudioProcessor.setPitch(playbackParameters.pitch),
-                    playbackParameters.skipSilence);
+            return new PlaybackParameters(
+                sonicAudioProcessor.setSpeed(playbackParameters.speed),
+                playbackParameters.skipSilence
+            );
         }
 
         @Override
@@ -1090,9 +1091,10 @@ public final class DefaultAudioSink implements AudioSink {
                 ? audioProcessorChain.applyPlaybackParameters(playbackParameters)
                 : PlaybackParameters.DEFAULT;
         // Store the position and corresponding media time from which the parameters will apply.
-        playbackParametersCheckpoints.add(new PlaybackParametersCheckpoint(newPlaybackParameters,
-                /* mediaTimeUs= */ Math.max(0, presentationTimeUs),
-                /* positionUs= */ configuration.framesToDurationUs(getWrittenFrames())));
+        playbackParametersCheckpoints.add(new PlaybackParametersCheckpoint(
+            newPlaybackParameters,
+            /* mediaTimeUs= */ Math.max(0, presentationTimeUs),
+            /* positionUs= */ configuration.framesToDurationUs(getWrittenFrames())));
         setupAudioProcessors();
     }
 

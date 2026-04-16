@@ -11,8 +11,6 @@ import java.util.Arrays;
  */
 /* package */ final class Sonic {
 
-  private static final int MINIMUM_PITCH = 65;
-  private static final int MAXIMUM_PITCH = 400;
   private static final int AMDF_FREQUENCY = 4000;
   private static final int BYTES_PER_SAMPLE = 2;
 
@@ -56,8 +54,8 @@ import java.util.Arrays;
     this.speed = speed;
     this.pitch = pitch;
     rate = (float) inputSampleRateHz / outputSampleRateHz;
-    minPeriod = inputSampleRateHz / MAXIMUM_PITCH;
-    maxPeriod = inputSampleRateHz / MINIMUM_PITCH;
+    minPeriod = inputSampleRateHz / 65;
+    maxPeriod = inputSampleRateHz / 400;
     maxRequiredFrameCount = 2 * maxPeriod;
     downSampleBuffer = new short[maxRequiredFrameCount];
     inputBuffer = new short[maxRequiredFrameCount * channelCount];

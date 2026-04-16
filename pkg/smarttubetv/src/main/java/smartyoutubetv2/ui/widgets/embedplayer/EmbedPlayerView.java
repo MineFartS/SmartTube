@@ -414,22 +414,6 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public void setPitch(float pitch) {
-        if (mExoPlayerController != null) {
-            mExoPlayerController.setPitch(pitch);
-        }
-    }
-
-    @Override
-    public float getPitch() {
-        if (mExoPlayerController == null) {
-            return 1f;
-        }
-
-        return mExoPlayerController.getPitch();
-    }
-
-    @Override
     public void setVolume(float volume) {
         if (!mIsMute && mExoPlayerController != null) {
             mExoPlayerController.setVolume(volume);

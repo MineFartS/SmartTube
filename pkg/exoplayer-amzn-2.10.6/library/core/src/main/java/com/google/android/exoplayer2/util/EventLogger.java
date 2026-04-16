@@ -103,16 +103,22 @@ public class EventLogger implements AnalyticsListener {
     logd(eventTime, "seekStarted");
   }
 
-  @Override
-  public void onPlaybackParametersChanged(
-      EventTime eventTime, PlaybackParameters playbackParameters) {
-    logd(
-        eventTime,
-        "playbackParameters",
-        Util.formatInvariant(
-            "speed=%.2f, pitch=%.2f, skipSilence=%s",
-            playbackParameters.speed, playbackParameters.pitch, playbackParameters.skipSilence));
-  }
+    @Override
+    public void onPlaybackParametersChanged(
+        EventTime eventTime, 
+        PlaybackParameters playbackParameters
+    ) {
+        logd(
+            eventTime,
+            "playbackParameters",
+            Util.formatInvariant(
+                "speed=%.2f, pitch=%.2f, skipSilence=%s",
+                playbackParameters.speed, 
+                playbackParameters.skipSilence
+            )
+        );
+
+    }
 
   @Override
   public void onTimelineChanged(EventTime eventTime, @Player.TimelineChangeReason int reason) {

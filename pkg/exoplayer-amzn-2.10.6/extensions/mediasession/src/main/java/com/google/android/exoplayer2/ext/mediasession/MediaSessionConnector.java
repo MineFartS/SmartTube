@@ -115,11 +115,6 @@ public final class MediaSessionConnector {
      * {@link PlaybackParameters#speed}.
      */
     public static final String EXTRAS_SPEED = "EXO_SPEED";
-    /**
-     * The name of the {@link PlaybackStateCompat} float extra with the value of
-     * {@link PlaybackParameters#pitch}.
-     */
-    public static final String EXTRAS_PITCH = "EXO_PITCH";
 
     private static final long BASE_PLAYBACK_ACTIONS = PlaybackStateCompat.ACTION_PLAY_PAUSE
             | PlaybackStateCompat.ACTION_PLAY | PlaybackStateCompat.ACTION_PAUSE
@@ -742,7 +737,7 @@ public final class MediaSessionConnector {
                         : MediaSessionCompat.QueueItem.UNKNOWN_ID;
         PlaybackParameters playbackParameters = player.getPlaybackParameters();
         extras.putFloat(EXTRAS_SPEED, playbackParameters.speed);
-        extras.putFloat(EXTRAS_PITCH, playbackParameters.pitch);
+
         float sessionPlaybackSpeed = player.isPlaying() ? playbackParameters.speed : 0f;
         builder.setActions(buildPrepareActions() | buildPlaybackActions(player))
                 .setActiveQueueItemId(activeQueueItemId)

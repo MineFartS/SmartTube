@@ -24,14 +24,7 @@ public final class SonicAudioProcessor implements AudioProcessor {
    * The minimum allowed playback speed in {@link #setSpeed(float)}.
    */
   public static final float MINIMUM_SPEED = 0.1f;
-  /**
-   * The maximum allowed pitch in {@link #setPitch(float)}.
-   */
-  public static final float MAXIMUM_PITCH = 8.0f;
-  /**
-   * The minimum allowed pitch in {@link #setPitch(float)}.
-   */
-  public static final float MINIMUM_PITCH = 0.1f;
+
   /**
    * Indicates that the output sample rate should be the same as the input.
    */
@@ -94,23 +87,6 @@ public final class SonicAudioProcessor implements AudioProcessor {
     }
     flush();
     return speed;
-  }
-
-  /**
-   * Sets the playback pitch. Calling this method will discard any data buffered within the
-   * processor, and may update the value returned by {@link #isActive()}.
-   *
-   * @param pitch The requested new pitch.
-   * @return The actual new pitch.
-   */
-  public float setPitch(float pitch) {
-    pitch = Util.constrainValue(pitch, MINIMUM_PITCH, MAXIMUM_PITCH);
-    if (this.pitch != pitch) {
-      this.pitch = pitch;
-      pendingSonicRecreation = true;
-    }
-    flush();
-    return pitch;
   }
 
   /**

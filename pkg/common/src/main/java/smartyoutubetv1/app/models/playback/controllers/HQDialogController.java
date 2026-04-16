@@ -50,8 +50,6 @@ public class HQDialogController extends BasePlayerController {
         addAudioLanguage();
         addPresetsCategory();
 
-        addPitchEffectCategory();
-
         appendOptions(mCategoriesInt);
         appendOptions(mCategories);
 
@@ -107,10 +105,6 @@ public class HQDialogController extends BasePlayerController {
         } else {
             getPlayerData().setFormat(formatItem);
         }
-    }
-
-    private void addPitchEffectCategory() {
-        addCategoryInt(AppDialogUtil.createPitchEffectCategory(getContext()));
     }
 
     private void addAudioLanguage() {
