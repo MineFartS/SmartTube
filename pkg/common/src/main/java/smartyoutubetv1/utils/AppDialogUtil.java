@@ -71,7 +71,6 @@ public class AppDialogUtil {
     private static final int PLAYER_SPEED_LIST_ID = 141;
     private static final int PLAYER_REMEMBER_SPEED_ID = 142;
     private static final int PLAYER_SPEED_MISC_ID = 143;
-    private static final int PITCH_EFFECT_ID = 144;
     private static final int PLAYER_REPEAT_ID = 146;
     private static final int SUBTITLE_STYLES_ID = 45;
 
@@ -362,53 +361,6 @@ public class AppDialogUtil {
                 "".equals(playerData.getAudioLanguage())));
 
         return OptionCategory.from(AUDIO_LANGUAGE_ID, OptionCategory.TYPE_RADIO_LIST, title, options);
-    }
-
-    public static OptionCategory createPitchEffectCategory(Context context) {
-
-        List<OptionItem> options = new ArrayList<>();
-
-        addPitches(
-            context, options, 
-            Helpers.range(0.025f, 0.975f, 0.025f)
-        );
-        
-        addPitches(
-            context, options, 
-            new float[]{ 0.985f, 0.990f, 0.995f }
-        ); // Custom pitches
-        
-        addPitches(
-            context, options, 
-            Helpers.range(1f, 2f, 0.025f)
-        );
-
-        return OptionCategory.from(
-            PITCH_EFFECT_ID, 
-            OptionCategory.TYPE_RADIO_LIST, 
-            context.getString(R.string.pitch_effect), 
-            options
-        );
-    
-    }
-
-    private static void addPitches(Context context, List<OptionItem> options, float[] pitchList) {
-        
-        PlayerManager playerManager = PlaybackPresenter.instance(context).getPlayer();
-        
-        PlayerData playerData = PlayerData.instance(context);
-
-        for (float pitch : pitchList) {
-            options.add(UiOptionItem.from(
-                Helpers.toString(pitch),
-                optionItem -> {
-                    playerManager.setPitch(pitch);
-                    playerData.setPitch(pitch);
-                },
-                Helpers.floatEquals(pitch, playerManager.getPitch())
-            ));
-        }
-
     }
 
     public static OptionCategory createSubtitleStylesCategory(Context context) {

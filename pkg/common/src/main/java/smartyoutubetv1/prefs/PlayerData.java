@@ -393,15 +393,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         persistState();
     }
 
-    public float getPitch() {
-        return mPitch;
-    }
-
-    public void setPitch(float pitch) {
-        mPitch = pitch;
-        persistState();
-    }
-
     public String getAudioLanguage() {
         return mAudioLanguage;
     }

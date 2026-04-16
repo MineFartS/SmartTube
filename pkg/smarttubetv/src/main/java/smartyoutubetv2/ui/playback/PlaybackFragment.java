@@ -1007,16 +1007,6 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     }
 
     @Override
-    public float getPitch() {
-        return mExoPlayerController.getPitch();
-    }
-
-    @Override
-    public void setPitch(float pitch) {
-        mExoPlayerController.setPitch(pitch);
-    }
-
-    @Override
     public float getVolume() {
         return mExoPlayerController.getVolume();
     }

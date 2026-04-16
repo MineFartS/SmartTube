@@ -534,7 +534,7 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
         PlaybackParameters playbackParameters;
         if (params != null) {
             params.allowDefaults();
-            playbackParameters = new PlaybackParameters(params.getSpeed(), params.getPitch());
+            playbackParameters = new PlaybackParameters(params.getSpeed());
         } else {
             playbackParameters = null;
         }

@@ -13,13 +13,10 @@ public final class PlaybackParameters {
    * The default playback parameters: real-time playback with no pitch modification or silence
    * skipping.
    */
-  public static final PlaybackParameters DEFAULT = new PlaybackParameters(/* speed= */ 1f);
+  public static final PlaybackParameters DEFAULT = new PlaybackParameters(1f);
 
   /** The factor by which playback will be sped up. */
   public final float speed;
-
-  /** The factor by which the audio pitch will be scaled. */
-  public final float pitch;
 
   /** Whether to skip silence in the input. */
   public final boolean skipSilence;
@@ -32,17 +29,7 @@ public final class PlaybackParameters {
    * @param speed The factor by which playback will be sped up. Must be greater than zero.
    */
   public PlaybackParameters(float speed) {
-    this(speed, /* pitch= */ 1f, /* skipSilence= */ false);
-  }
-
-  /**
-   * Creates new playback parameters that set the playback speed and audio pitch scaling factor.
-   *
-   * @param speed The factor by which playback will be sped up. Must be greater than zero.
-   * @param pitch The factor by which the audio pitch will be scaled. Must be greater than zero.
-   */
-  public PlaybackParameters(float speed, float pitch) {
-    this(speed, pitch, /* skipSilence= */ false);
+    this(speed, false);
   }
 
   /**
@@ -50,14 +37,11 @@ public final class PlaybackParameters {
    * whether to skip silence in the audio stream.
    *
    * @param speed The factor by which playback will be sped up. Must be greater than zero.
-   * @param pitch The factor by which the audio pitch will be scaled. Must be greater than zero.
    * @param skipSilence Whether to skip silences in the audio stream.
    */
-  public PlaybackParameters(float speed, float pitch, boolean skipSilence) {
+  public PlaybackParameters(float speed, boolean skipSilence) {
     Assertions.checkArgument(speed > 0);
-    Assertions.checkArgument(pitch > 0);
     this.speed = speed;
-    this.pitch = pitch;
     this.skipSilence = skipSilence;
     scaledUsPerMs = Math.round(speed * 1000f);
   }
@@ -83,7 +67,6 @@ public final class PlaybackParameters {
     }
     PlaybackParameters other = (PlaybackParameters) obj;
     return this.speed == other.speed
-        && this.pitch == other.pitch
         && this.skipSilence == other.skipSilence;
   }
 
@@ -91,7 +74,7 @@ public final class PlaybackParameters {
   public int hashCode() {
     int result = 17;
     result = 31 * result + Float.floatToRawIntBits(speed);
-    result = 31 * result + Float.floatToRawIntBits(pitch);
+    result = 31 * result + 1;
     result = 31 * result + (skipSilence ? 1 : 0);
     return result;
   }
