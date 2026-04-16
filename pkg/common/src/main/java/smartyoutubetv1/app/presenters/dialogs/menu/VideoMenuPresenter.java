@@ -40,16 +40,23 @@ import java.util.List;
 import java.util.Map;
 
 public class VideoMenuPresenter extends BaseMenuPresenter {
+
     private static final String TAG = VideoMenuPresenter.class.getSimpleName();
+    
     private final MediaItemService mMediaItemService;
     private final AppDialogPresenter mDialogPresenter;
     private final MediaServiceManager mServiceManager;
+    private final VideoStateService mVideoStateService;
+    private final Playlist mPlaylist;
+
     private Disposable mAddToPlaylistAction;
     private Disposable mNotInterestedAction;
     private Disposable mSubscribeAction;
     private Disposable mPlaylistsInfoAction;
     private Video mVideo;
+    
     public static WeakReference<Video> sVideoHolder = new WeakReference<>(null);
+    
     private boolean mIsNotInterestedButtonEnabled;
     private boolean mIsNotRecommendChannelEnabled;
     private boolean mIsRemoveFromHistoryButtonEnabled;
@@ -107,10 +114,13 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
 
     private VideoMenuPresenter(Context context) {
         super(context);
+        
         ServiceManager service = YouTubeServiceManager.instance();
         mMediaItemService = service.getMediaItemService();
         mServiceManager = MediaServiceManager.instance();
         mDialogPresenter = AppDialogPresenter.instance(context);
+        mVideoStateService = VideoStateService.instance(context);
+        mPlaylist = Playlist.instance();
 
         initMenuMapping();
     }
@@ -242,9 +252,8 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
     }
 
     private void appendSimpleAddToRecentPlaylistButton(String playlistId, String playlistTitle) {
-        if (mPlaylistInfos == null) {
-            return;
-        }
+        
+        if (mPlaylistInfos == null) return;
 
         boolean isSelected = false;
         for (PlaylistInfo playlistInfo : mPlaylistInfos) {
@@ -263,13 +272,10 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
     }
 
     private void appendOpenChannelButton() {
-        if (!mIsOpenChannelButtonEnabled) {
-            return;
-        }
 
-        if (!ChannelPresenter.canOpenChannel(mVideo)) {
-            return;
-        }
+        if (!mIsOpenChannelButtonEnabled) return;
+
+        if (!ChannelPresenter.canOpenChannel(mVideo)) return;
 
         // Prepare to special type of channels that work as playlist
         mDialogPresenter.appendSingleButton(
@@ -281,9 +287,8 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
     }
 
     private void appendOpenPlaylistButton() {
-        if (!mIsOpenPlaylistButtonEnabled) {
-            return;
-        }
+
+        if (!mIsOpenPlaylistButtonEnabled) return;
 
         // Check view to allow open playlist in grid
         if (mVideo == null || !mVideo.hasPlaylist() || (getViewManager().getTopView() == ChannelUploadsView.class && mVideo.belongsToSamePlaylistGroup())) {
@@ -291,22 +296,19 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         }
 
         // Prepare to special type of channels that work as playlist
-        if (mVideo.isPlaylistAsChannel() && ChannelPresenter.canOpenChannel(mVideo)) {
-            return;
-        }
+        if (mVideo.isPlaylistAsChannel() && ChannelPresenter.canOpenChannel(mVideo)) return;
 
         mDialogPresenter.appendSingleButton(
                 UiOptionItem.from(getContext().getString(R.string.open_playlist), optionItem -> ChannelUploadsPresenter.instance(getContext()).openChannel(mVideo)));
     }
 
     private void appendNotInterestedButton() {
+
         if (mVideo == null || mVideo.mediaItem == null || mVideo.mediaItem.getFeedbackToken() == null) {
             return;
         }
 
-        if (!mVideo.belongsToHome() || !mIsNotInterestedButtonEnabled) {
-            return;
-        }
+        if (!mVideo.belongsToHome() || !mIsNotInterestedButtonEnabled) return;
 
         RxHelper.disposeActions(mNotInterestedAction);
 
@@ -329,13 +331,12 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
     }
 
     private void appendNotRecommendChannelButton() {
+
         if (mVideo == null || mVideo.mediaItem == null || mVideo.mediaItem.getFeedbackToken2() == null) {
             return;
         }
 
-        if (!mVideo.belongsToHome() || !mIsNotRecommendChannelEnabled) {
-            return;
-        }
+        if (!mVideo.belongsToHome() || !mIsNotRecommendChannelEnabled) return;
 
         RxHelper.disposeActions(mNotInterestedAction);
 
@@ -381,13 +382,15 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
     }
 
     private void onRemoveFromHistoryDone() {
+
         if (mCallback != null) {
             mCallback.onItemAction(mVideo, VideoMenuCallback.ACTION_REMOVE);
         } else {
             MessageHelpers.showMessage(getContext(), R.string.removed_from_history);
         }
-        VideoStateService stateService = VideoStateService.instance(getContext());
-        stateService.removeByVideoId(mVideo.videoId);
+        
+        mVideoStateService.removeByVideoId(mVideo.videoId);
+    
     }
 
     private void appendRemoveFromSubscriptionsButton() {
@@ -444,10 +447,9 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         mDialogPresenter.appendSingleButton(UiOptionItem.from(
             getContext().getString(R.string.mark_as_watched), 
             optionItem -> {
-                MediaServiceManager.instance().updateHistory(mVideo, 0);
                 mVideo.markFullyViewed();
-                VideoStateService.instance(getContext()).save(new State(mVideo, mVideo.getDurationMs()));
-                Playlist.instance().sync(mVideo);
+                mVideoStateService.save(new State(mVideo, mVideo.getDurationMs()));
+                mPlaylist.sync(mVideo);
                 mDialogPresenter.closeDialog();
             }
         ));
@@ -576,23 +578,21 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
             return;
         }
 
-        Playlist playlist = Playlist.instance();
         // Toggle between add/remove while dialog is opened
-        //boolean containsVideo = playlist.containsAfterCurrent(mVideo);
-        boolean containsVideo = playlist.contains(mVideo);
+        boolean containsVideo = mPlaylist.contains(mVideo);
 
         mDialogPresenter.appendSingleButton(
                 UiOptionItem.from(
                         getContext().getString(containsVideo ? R.string.remove_from_playback_queue : R.string.add_to_playback_queue),
                         optionItem -> {
                             if (containsVideo) {
-                                playlist.remove(mVideo);
+                                mPlaylist.remove(mVideo);
                                 if (mCallback != null) {
                                     mCallback.onItemAction(mVideo, VideoMenuCallback.ACTION_REMOVE_FROM_QUEUE);
                                 }
                             } else {
                                 mVideo.fromQueue = true;
-                                playlist.add(mVideo);
+                                mPlaylist.add(mVideo);
                                 if (mCallback != null) {
                                     mCallback.onItemAction(mVideo, VideoMenuCallback.ACTION_ADD_TO_QUEUE);
                                 }
@@ -607,36 +607,30 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
     }
 
     private void appendPlayNextButton() {
-        if (!mIsPlayNextButtonEnabled) {
-            return;
-        }
 
-        if (mVideo == null || !mVideo.hasVideo()) {
-            return;
-        }
+        if (!mIsPlayNextButtonEnabled) return;
 
-        Playlist playlist = Playlist.instance();
+        if (mVideo == null || !mVideo.hasVideo()) return;
 
-        if (Helpers.equals(playlist.getNext(), mVideo)) {
-            return;
-        }
+        if (Helpers.equals(mPlaylist.getNext(), mVideo)) return;
 
-        mDialogPresenter.appendSingleButton(
-                UiOptionItem.from(
-                        getContext().getString(R.string.play_next),
-                        optionItem -> {
-                            mVideo.fromQueue = true;
-                            playlist.next(mVideo);
-                            if (mCallback != null) {
-                                mCallback.onItemAction(mVideo, VideoMenuCallback.ACTION_PLAY_NEXT);
-                            }
+        mDialogPresenter.appendSingleButton(UiOptionItem.from(
+            getContext().getString(R.string.play_next),
+            optionItem -> {
+                mVideo.fromQueue = true;
+                mPlaylist.next(mVideo);
+                if (mCallback != null) {
+                    mCallback.onItemAction(mVideo, VideoMenuCallback.ACTION_PLAY_NEXT);
+                }
 
-                            closeDialog();
-                            MessageHelpers.showMessage(getContext(), String.format("%s: %s",
-                                    mVideo.getAuthor(),
-                                    getContext().getString(R.string.play_next))
-                            );
-                        }));
+                closeDialog();
+                MessageHelpers.showMessage(getContext(), String.format("%s: %s",
+                    mVideo.getAuthor(),
+                    getContext().getString(R.string.play_next))
+                );
+            }
+        ));
+
     }
 
     private void appendPlaylistOrderButton() {

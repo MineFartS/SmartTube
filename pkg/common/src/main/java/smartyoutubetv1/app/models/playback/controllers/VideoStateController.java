@@ -28,9 +28,17 @@ public class VideoStateController extends BasePlayerController {
     private static final long BEGIN_THRESHOLD_MS = 10_000;
     private static final long EMBED_THRESHOLD_MS = 30_000;
 
+    private final MediaServiceManager mMediaServiceManager;
+    private final Playlist mPlaylist;
+
     private boolean mIsPlayEnabled;
     private boolean mIsPlayBlocked;
     private long mNewVideoTimeMs;
+
+    public VideoStateController() {
+        mMediaServiceManager = MediaServiceManager.instance();
+        mPlaylist = Playlist.instance();
+    }
 
     /**
      * Fired after user clicked on video in browse activity<br/>
@@ -344,17 +352,26 @@ public class VideoStateController extends BasePlayerController {
     }
 
     private void saveState() {
-        // Skip mini player, but don't save for the previews (mute enabled)
-        if (isMutedEmbed()) {
+
+        Video video = getVideo();
+
+        if (video == null || getPlayer() == null || !getPlayer().containsMedia()) {
             return;
         }
-
-        savePosition();
-
-        if (!isBeginEmbed()) {
-            updateHistory();
-            syncWithPlaylists();
+        
+        long durMs = getPlayer().getDurationMs();
+        long posMs = getPlayer().getPositionMs();
+        
+        if (durMs-posMs <= 1_000) {
+            posMs = durMs;
         }
+
+        getStateService().save(new State(video, posMs, durMs, getPlayer().getSpeed()));
+
+        mPlaylist.sync(video);
+
+        mMediaServiceManager.updateHistory(video, posMs); // 0 == fully watched
+        
     }
 
     private void restoreState() {
@@ -367,36 +384,6 @@ public class VideoStateController extends BasePlayerController {
 
         restoreVolume();
         restorePitch();
-    }
-
-    private void savePosition() {
-        Video video = getVideo();
-
-        if (video == null || getPlayer() == null || !getPlayer().containsMedia()) {
-            return;
-        }
-
-        // Exceptional cases:
-        // 1) Track is ended
-        // 2) Pause on end enabled
-        // 3) Watching live stream in real time
-        long durationMs = getPlayer().getDurationMs();
-        long positionMs = getPlayer().getPositionMs();
-        long remainsMs = durationMs - positionMs;
-        boolean isPositionActual = remainsMs > 1_000;
-        boolean isLiveBroken = video.isLive && durationMs <= 30_000; // the live without a history
-        if (isPositionActual && !isLiveBroken) { // partially viewed
-            State state = new State(video, positionMs, durationMs, getPlayer().getSpeed());
-            getStateService().save(state);
-            // Sync video. You could safely use it later to restore state.
-            video.sync(state);
-        } else { // fully viewed
-            // Mark video as fully viewed. This could help to restore proper progress marker on the video card later.
-            getStateService().save(new State(video, durationMs, durationMs, getPlayer().getSpeed()));
-            video.markFullyViewed();
-        }
-
-        Playlist.instance().sync(video);
     }
 
     private void restorePosition() {
@@ -431,26 +418,6 @@ public class VideoStateController extends BasePlayerController {
         if (!mIsPlayBlocked) {
             getPlayer().setPlayWhenReady(getPlayEnabled());
         }
-    }
-
-    private void updateHistory() {
-        
-        Video video = getVideo();
-
-        if (
-            video == null 
-            || getPlayer() == null 
-            || !getPlayer().containsMedia()
-            || (video.isRemote && getRemoteControlData().isRemoteHistoryDisabled())
-        ) {
-            return;
-        }
-
-        MediaServiceManager.instance().updateHistory(
-            video, 
-            getPlayer().getPositionMs()
-        ); // 0 == fully watched
-    
     }
 
     /**
@@ -557,9 +524,6 @@ public class VideoStateController extends BasePlayerController {
         return (posPercents2 != 0 && Math.abs(posPercents1 - posPercents2) > 3) && state.timestamp < item.timestamp;
     }
 
-    private void syncWithPlaylists() {
-    }
-
     private boolean isLiveEnd() {
         if (getPlayer() == null || getVideo() == null || !getVideo().isLive) {
             return false;
@@ -576,12 +540,4 @@ public class VideoStateController extends BasePlayerController {
         return LIVE_BUFFER_MS;
     }
 
-    private boolean isMutedEmbed() {
-        return isEmbedPlayer() && getPlayer() != null && Helpers.floatEquals(getPlayer().getVolume(), 0);
-    }
-
-    private boolean isBeginEmbed() {
-        return isEmbedPlayer() && System.currentTimeMillis() - mNewVideoTimeMs <= EMBED_THRESHOLD_MS &&
-                getPlayer() != null && getPlayer().getPositionMs() < getPlayer().getDurationMs();
-    }
 }
