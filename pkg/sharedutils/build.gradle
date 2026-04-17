@@ -36,7 +36,11 @@ android {
 }
 
 dependencies {
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.squareup.retrofit2:retrofit:' + retrofitVersion
+    implementation 'com.squareup.retrofit2:converter-gson:' + retrofitVersion
 
     testImplementation 'junit:junit:' + junitVersion
     testImplementation 'org.robolectric:robolectric:' + robolectricVersion

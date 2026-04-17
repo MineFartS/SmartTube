@@ -28,7 +28,6 @@ import com.liskovsoft.youtubeapi.playlistgroups.PlaylistGroupServiceImpl;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.service.data.YouTubeSponsorSegment;
-import com.liskovsoft.youtubeapi.track.TrackingService;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import io.reactivex.Observable;
@@ -504,11 +503,6 @@ public class YouTubeMediaItemService implements MediaItemService {
     @NonNull
     private static SponsorBlockService getSponsorBlockService() {
         return SponsorBlockService.instance();
-    }
-
-    @NonNull
-    private static TrackingService getTrackingService() {
-        return TrackingService.instance();
     }
 
     @NonNull

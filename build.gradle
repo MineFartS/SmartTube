@@ -28,6 +28,10 @@ allprojects {
         options.compilerArgs << "-nowarn" // Hide warnings
     }
 
+    tasks.withType(Jar) {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+
     repositories {
         google()
         mavenCentral()
