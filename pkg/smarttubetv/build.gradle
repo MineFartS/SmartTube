@@ -43,6 +43,7 @@ if (new File("${projectDir}/google-services.json").exists() && (getGradle().getS
 def now = new Date()
 
 android {
+    
     // FIX: Default interface methods are only supported starting with Android N (--min-api 24)
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -52,7 +53,7 @@ android {
     compileSdkVersion project.properties.compileSdkVersion
     buildToolsVersion project.properties.buildToolsVersion
     testOptions.unitTests.includeAndroidResources = true
-    
+
     defaultConfig {
         // values linked with applicationId: searchable.searchSuggestAuthority, searchable.searchSuggestIntentData, VideoContract.CONTENT_AUTHORITY
         applicationId "minefarts.smarttube"
@@ -198,3 +199,4 @@ dependencies {
     implementation 'net.gotev:speech:' + gotevSpeechVersion
 
 }
+

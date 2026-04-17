@@ -6,9 +6,7 @@ import android.util.Pair;
 import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
 import com.liskovsoft.googleapi.oauth2.manager.OAuth2AccountManager;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
-import com.liskovsoft.youtubeapi.track.TrackingService;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.track.TrackingService;
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.youtubeapi.service.YouTubeMediaItemService;
 import com.liskovsoft.mediaserviceinterfaces.ContentService;
@@ -39,7 +37,7 @@ import smartyoutubetv1.utils.LoadingManager;
 import smartyoutubetv1.utils.Utils;
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
 import com.liskovsoft.youtubeapi.playlist.PlaylistService;
-
+import com.liskovsoft.sharedutils.okhttp.ApiCaller;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
@@ -63,6 +61,7 @@ public class MediaServiceManager implements OnAccountChange {
     private final YouTubeMediaItemService mYTMediaItemService;
     private final VideoInfoService mVideoInfoService;
     private final OAuth2AccountManager mAccountManager;
+    private final AppService mAppService;
 
     private Disposable mMetadataAction;
     private Disposable mUploadsAction;
@@ -122,6 +121,7 @@ public class MediaServiceManager implements OnAccountChange {
         mYTMediaItemService = YouTubeMediaItemService.instance();
         mAccountManager = OAuth2AccountManager.instance();
         mVideoInfoService = VideoInfoService.instance();
+        mAppService = AppService.instance();
 
         mSignInService.addOnAccountChange(this);
 
@@ -419,14 +419,37 @@ public class MediaServiceManager implements OnAccountChange {
         
         }
 
-        TrackingService.instance().updateWatchTime(
-            formatInfo.getVideoId(), 
-            positionMs / 1_000f, 
-            Helpers.parseFloat(formatInfo.getLengthSeconds()), 
-            formatInfo.getEventId(),
-            formatInfo.getVisitorMonitoringData(), 
-            formatInfo.getOfParam()
-        );
+        String videoId = formatInfo.getVideoId();
+        float oldPositionSec = mPositionSec;
+        float positionSec = positionMs / 1_000f;
+
+        ApiCaller apiTempl = new ApiCaller("https://www.youtube.com/api/stats/playback?ns=yt&ver=2");
+        apiTempl.add("docid", videoId);
+        apiTempl.add("len", Helpers.parseFloat(formatInfo.getLengthSeconds()));
+        apiTempl.add("cpn", mAppService.getClientPlaybackNonce());            
+        apiTempl.add("ei", formatInfo.getEventId());
+        apiTempl.add("vm", formatInfo.getVisitorMonitoringData());
+        apiTempl.add("of", formatInfo.getOfParam());
+
+        ApiCaller api;
+
+        if (mVideoId == null || mVideoId != videoId) {
+
+            mVideoId = videoId;
+
+            api = apiTempl.copy();
+            api.add("cmt", oldPositionSec);
+            api.call();
+        
+        }
+
+        api = apiTempl.copy();
+        api.add("st", oldPositionSec);
+        api.add("et", positionSec);
+        api.add("cmt", positionSec);
+        api.call();
+        
+        mPositionSec = positionSec;
 
     }
 
