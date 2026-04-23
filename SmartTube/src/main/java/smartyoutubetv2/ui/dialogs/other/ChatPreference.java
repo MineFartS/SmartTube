@@ -3,7 +3,7 @@ package SmartTubeApp.ui.dialogs.other;
 import android.content.Context;
 import android.util.AttributeSet;
 import androidx.preference.DialogPreference;
-import smartyoutubetv1.app.models.playback.ui.ChatReceiver;
+import SmartTubeApp.app.models.playback.ui.ChatReceiver;
 
 public class ChatPreference extends DialogPreference {
     private ChatReceiver mChatReceiver;

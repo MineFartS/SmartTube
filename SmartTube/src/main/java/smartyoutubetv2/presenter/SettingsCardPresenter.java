@@ -9,8 +9,8 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.Presenter;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import smartyoutubetv1.app.models.data.SettingsItem;
-import smartyoutubetv1.prefs.MainUIData;
+import SmartTubeApp.app.models.data.SettingsItem;
+import SmartTubeApp.prefs.MainUIData;
 import SmartTubeApp.R;
 import SmartTubeApp.util.ViewUtil;
 

@@ -1,7 +1,7 @@
 package SmartTubeApp.ui.browse;
 
 import android.os.Bundle;
-import smartyoutubetv1.prefs.MainUIData;
+import SmartTubeApp.prefs.MainUIData;
 import SmartTubeApp.R;
 import SmartTubeApp.ui.common.LeanbackActivity;
 

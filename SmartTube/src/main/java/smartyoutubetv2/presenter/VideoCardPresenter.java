@@ -20,8 +20,8 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import smartyoutubetv1.app.models.data.Video;
-import smartyoutubetv1.prefs.MainUIData;
+import SmartTubeApp.app.models.data.Video;
+import SmartTubeApp.prefs.MainUIData;
 
 import SmartTubeApp.R;
 import SmartTubeApp.presenter.base.LongClickPresenter;

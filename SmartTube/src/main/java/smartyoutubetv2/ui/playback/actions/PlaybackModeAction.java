@@ -6,7 +6,7 @@ import android.graphics.drawable.Drawable;
 import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.PlaybackControlsRow.MultiAction;
 
-import smartyoutubetv1.app.models.playback.manager.PlayerConstants;
+import SmartTubeApp.app.models.playback.manager.PlayerConstants;
 import SmartTubeApp.R;
 
 /**

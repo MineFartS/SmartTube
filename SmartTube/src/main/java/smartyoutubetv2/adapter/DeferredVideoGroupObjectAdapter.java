@@ -1,6 +1,6 @@
 package SmartTubeApp.adapter;
 
-import smartyoutubetv1.app.models.data.VideoGroup;
+import SmartTubeApp.app.models.data.VideoGroup;
 import SmartTubeApp.presenter.VideoCardPresenter;
 
 public class DeferredVideoGroupObjectAdapter extends VideoGroupObjectAdapter {

@@ -6,9 +6,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.leanback.widget.VerticalGridView;
-import smartyoutubetv1.app.presenters.ChannelUploadsPresenter;
-import smartyoutubetv1.app.presenters.interfaces.VideoGroupPresenter;
-import smartyoutubetv1.app.views.ChannelUploadsView;
+import SmartTubeApp.app.presenters.ChannelUploadsPresenter;
+import SmartTubeApp.app.presenters.interfaces.VideoGroupPresenter;
+import SmartTubeApp.app.views.ChannelUploadsView;
 import SmartTubeApp.ui.browse.video.VideoGridFragment;
 import SmartTubeApp.ui.mod.leanback.misc.ProgressBarManager;
 

@@ -7,8 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.leanback.app.GuidedStepSupportFragment;
 import androidx.leanback.widget.GuidanceStylist;
 import androidx.leanback.widget.GuidedAction;
-import smartyoutubetv1.app.presenters.AddDevicePresenter;
-import smartyoutubetv1.app.views.AddDeviceView;
+import SmartTubeApp.app.presenters.AddDevicePresenter;
+import SmartTubeApp.app.views.AddDeviceView;
 import SmartTubeApp.R;
 
 import java.util.List;

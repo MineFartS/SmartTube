@@ -1,7 +1,7 @@
 package SmartTubeApp.ui.browse.interfaces;
 
-import smartyoutubetv1.app.models.data.Video;
-import smartyoutubetv1.app.models.data.VideoGroup;
+import SmartTubeApp.app.models.data.Video;
+import SmartTubeApp.app.models.data.VideoGroup;
 
 public interface VideoSection extends Section {
     void update(VideoGroup group);

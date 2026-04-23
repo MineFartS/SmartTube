@@ -6,10 +6,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import smartyoutubetv1.app.presenters.ChannelPresenter;
-import smartyoutubetv1.app.presenters.interfaces.VideoGroupPresenter;
-import smartyoutubetv1.app.views.ChannelView;
-import smartyoutubetv1.prefs.MainUIData;
+import SmartTubeApp.app.presenters.ChannelPresenter;
+import SmartTubeApp.app.presenters.interfaces.VideoGroupPresenter;
+import SmartTubeApp.app.views.ChannelView;
+import SmartTubeApp.prefs.MainUIData;
 import SmartTubeApp.presenter.ChannelHeaderPresenter.ChannelHeaderCallback;
 import SmartTubeApp.ui.browse.video.MultipleRowsFragment;
 import SmartTubeApp.ui.mod.leanback.misc.ProgressBarManager;

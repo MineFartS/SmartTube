@@ -15,9 +15,9 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import smartyoutubetv1.app.presenters.SignInPresenter;
-import smartyoutubetv1.app.views.SignInView;
-import smartyoutubetv1.utils.Utils;
+import SmartTubeApp.app.presenters.SignInPresenter;
+import SmartTubeApp.app.views.SignInView;
+import SmartTubeApp.utils.Utils;
 import SmartTubeApp.R;
 import SmartTubeApp.util.ViewUtil;
 

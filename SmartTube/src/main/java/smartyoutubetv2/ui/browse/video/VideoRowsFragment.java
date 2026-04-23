@@ -2,8 +2,8 @@ package SmartTubeApp.ui.browse.video;
 
 import android.os.Bundle;
 import androidx.annotation.Nullable;
-import smartyoutubetv1.app.presenters.BrowsePresenter;
-import smartyoutubetv1.app.presenters.interfaces.VideoGroupPresenter;
+import SmartTubeApp.app.presenters.BrowsePresenter;
+import SmartTubeApp.app.presenters.interfaces.VideoGroupPresenter;
 
 public class VideoRowsFragment extends MultipleRowsFragment {
     @Override

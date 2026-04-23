@@ -13,7 +13,7 @@ import androidx.leanback.widget.Presenter;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import smartyoutubetv1.prefs.MainUIData;
+import SmartTubeApp.prefs.MainUIData;
 import SmartTubeApp.R;
 import SmartTubeApp.ui.browse.video.GridFragmentHelper;
 import SmartTubeApp.util.ViewUtil;

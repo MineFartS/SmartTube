@@ -3,7 +3,7 @@ package SmartTubeApp.presenter.base;
 import android.view.KeyEvent;
 import androidx.leanback.widget.Presenter;
 import com.liskovsoft.sharedutils.helpers.KeyHelpers;
-import smartyoutubetv1.prefs.GeneralData;
+import SmartTubeApp.prefs.GeneralData;
 
 public abstract class LongClickPresenter extends Presenter {
     private OnItemLongPressedListener mLongPressedListener;

@@ -15,7 +15,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import smartyoutubetv1.app.models.data.Video;
+import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.R;
 import SmartTubeApp.util.ViewUtil;
 

@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat;
 import androidx.leanback.app.BrowseFragment;
 import androidx.leanback.app.VerticalGridFragment;
 
-import smartyoutubetv1.utils.Utils;
+import SmartTubeApp.utils.Utils;
 import SmartTubeApp.R;
 
 /**

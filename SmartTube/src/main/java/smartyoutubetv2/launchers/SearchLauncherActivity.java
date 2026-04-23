@@ -1,8 +1,8 @@
 package SmartTubeApp.launchers;
 
 import android.os.Bundle;
-import smartyoutubetv1.app.presenters.SearchPresenter;
-import smartyoutubetv1.misc.MotherActivity;
+import SmartTubeApp.app.presenters.SearchPresenter;
+import SmartTubeApp.misc.MotherActivity;
 
 public class SearchLauncherActivity extends MotherActivity {
     @Override

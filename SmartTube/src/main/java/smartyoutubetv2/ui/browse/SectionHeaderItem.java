@@ -1,7 +1,7 @@
 package SmartTubeApp.ui.browse;
 
 import androidx.leanback.widget.HeaderItem;
-import smartyoutubetv1.app.models.data.BrowseSection;
+import SmartTubeApp.app.models.data.BrowseSection;
 
 public class SectionHeaderItem extends HeaderItem {
     private final BrowseSection mSection;

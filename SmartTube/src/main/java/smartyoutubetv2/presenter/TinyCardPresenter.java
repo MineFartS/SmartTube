@@ -2,7 +2,7 @@ package SmartTubeApp.presenter;
 
 import android.content.Context;
 import android.util.Pair;
-import smartyoutubetv1.prefs.MainUIData;
+import SmartTubeApp.prefs.MainUIData;
 import SmartTubeApp.R;
 import SmartTubeApp.ui.browse.video.GridFragmentHelper;
 

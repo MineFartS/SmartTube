@@ -6,9 +6,9 @@ import android.util.DisplayMetrics;
 import android.util.Pair;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import smartyoutubetv1.app.models.data.VideoGroup;
-import smartyoutubetv1.app.views.ViewManager;
-import smartyoutubetv1.prefs.MainUIData;
+import SmartTubeApp.app.models.data.VideoGroup;
+import SmartTubeApp.app.views.ViewManager;
+import SmartTubeApp.prefs.MainUIData;
 import SmartTubeApp.R;
 import SmartTubeApp.adapter.VideoGroupObjectAdapter;
 

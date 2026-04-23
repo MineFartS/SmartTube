@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.liskovsoft.sharedutils.helpers.DateHelper;
-import smartyoutubetv1.misc.TickleManager;
-import smartyoutubetv1.misc.TickleManager.TickleListener;
+import SmartTubeApp.misc.TickleManager;
+import SmartTubeApp.misc.TickleManager.TickleListener;
 
 /**
  * Note, same view is used inside player and in as global time view

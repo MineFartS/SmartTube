@@ -4,7 +4,7 @@ package SmartTubeApp.presenter;
 
 import androidx.leanback.widget.AbstractDetailsDescriptionPresenter;
 
-import smartyoutubetv1.app.models.data.Video;
+import SmartTubeApp.app.models.data.Video;
 
 public class DetailsDescriptionPresenter extends AbstractDetailsDescriptionPresenter {
 

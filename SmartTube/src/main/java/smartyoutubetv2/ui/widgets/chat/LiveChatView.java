@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
-import smartyoutubetv1.app.models.playback.ui.ChatReceiver;
-import smartyoutubetv1.prefs.PlayerTweaksData;
+import SmartTubeApp.app.models.playback.ui.ChatReceiver;
+import SmartTubeApp.prefs.PlayerTweaksData;
 import SmartTubeApp.util.ViewUtil;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
 

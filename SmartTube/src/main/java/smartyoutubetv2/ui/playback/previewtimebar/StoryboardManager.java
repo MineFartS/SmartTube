@@ -16,7 +16,7 @@ import com.liskovsoft.youtubeapi.data.MediaItemStoryboard;
 import com.liskovsoft.youtubeapi.data.MediaItemStoryboard.Size;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import smartyoutubetv1.app.models.data.Video;
+import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.util.ViewUtil;
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
 import io.reactivex.Observable;

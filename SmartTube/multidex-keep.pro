@@ -93,12 +93,12 @@
     <init>(...);
     android.view.View mProgressBarView;
 }
--keepclassmembers class smartyoutubetv1.misc.MotherActivity {
+-keepclassmembers class SmartTubeApp.misc.MotherActivity {
     <init>(...);
 }
--keepclassmembers class smartyoutubetv1.misc.TickleManager {
+-keepclassmembers class SmartTubeApp.misc.TickleManager {
     <init>(...);
-    smartyoutubetv1.misc.TickleManager sInstance;
+    SmartTubeApp.misc.TickleManager sInstance;
 }
 -keepclassmembers class androidx.core.content.FileProvider {
     <init>(...);
@@ -136,13 +136,13 @@
 #    <init>(...);
 #    void setNestedScrollingEnabled(boolean);
 #}
--keepclassmembers class smartyoutubetv1.utils.Utils {
-    boolean isFormatSupported(smartyoutubetv1.exoplayer.selector.track.MediaTrack);
+-keepclassmembers class SmartTubeApp.utils.Utils {
+    boolean isFormatSupported(SmartTubeApp.exoplayer.selector.track.MediaTrack);
 }
 -keepclassmembers class com.google.android.exoplayer2.video.VideoRendererEventListener {
     void onVideoDisabled(com.google.android.exoplayer2.decoder.DecoderCounters);
 }
--keepclassmembers class smartyoutubetv1.app.models.search.MediaServiceSearchTagProvider {
+-keepclassmembers class SmartTubeApp.app.models.search.MediaServiceSearchTagProvider {
     <init>(...);
     boolean mIgnoreEmptyQuery;
     com.liskovsoft.youtubeapi.ContentService mContentService;
@@ -155,7 +155,7 @@
     androidx.leanback.widget.VerticalGridView mVerticalGridView;
     androidx.leanback.widget.VerticalGridView getVerticalGridView();
 }
--keepclassmembers class smartyoutubetv1.app.models.playback.controllers.VideoStateController {
+-keepclassmembers class SmartTubeApp.app.models.playback.controllers.VideoStateController {
     <init>(...);
 }
 -keepclassmembers class SmartTubeApp.ui.browse.BrowseSectionFragmentFactory {
@@ -173,7 +173,7 @@
     <init>(...);
     void setZ(float);
 }
--keepclassmembers class smartyoutubetv1.exoplayer.controller.ExoPlayerController {
+-keepclassmembers class SmartTubeApp.exoplayer.controller.ExoPlayerController {
     <init>(...);
     boolean containsMedia();
 }
@@ -201,7 +201,7 @@
 #-keep class com.google.gson.internal.bind.TypeAdapters$7 { *; }
 #-keep class com.google.gson.internal.bind.TypeAdapters { *; }
 #-keep class androidx.leanback.widget.ItemAlignmentFacet$ItemAlignmentDef { *; }
-#-keep class smartyoutubetv1.app.models.playback.ui.OptionCategory { *; }
+#-keep class SmartTubeApp.app.models.playback.ui.OptionCategory { *; }
 #-keep class com.liskovsoft.leanbackassistant.channels.UpdateChannelsReceiver { *; }
 #-keep class androidx.core.view.ViewCompat { *; }
 #-keep class androidx.work.impl.WorkManagerInitializer { *; }
@@ -218,11 +218,11 @@
 
 # NOTE: Stable/Beta: VirusTotal (Google: Detected, Ikarus: Trojan.AndroidOS.Agent)
 #-keep class SmartTubeApp.ui.main.MainApplication { *; }
-#-keep class smartyoutubetv1.prefs.MainUIData { *; }
-#-keep class smartyoutubetv1.app.presenters.ChannelUploadsPresenter { *; }
+#-keep class SmartTubeApp.prefs.MainUIData { *; }
+#-keep class SmartTubeApp.app.presenters.ChannelUploadsPresenter { *; }
 
 # NOTE: Fdroid: VirusTotal (Google: Detected, Ikarus: Trojan.AndroidOS.Agent)
-#-keep class smartyoutubetv1.app.presenters.dialogs.menu.providers.ContextMenuProvider { *; }
+#-keep class SmartTubeApp.app.presenters.dialogs.menu.providers.ContextMenuProvider { *; }
 #-keep class com.google.android.exoplayer2.util.Util { *; }
 #-keep class com.bumptech.glide.request.RequestOptions { *; }
 #-keep class SmartTubeApp.ui.mod.leanback.playerglue.tooltips.TooltipCompatHandler { *; }

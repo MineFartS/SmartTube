@@ -6,7 +6,7 @@ import android.graphics.drawable.Drawable;
 import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.PlaybackControlsRow.MultiAction;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import smartyoutubetv1.utils.Utils;
+import SmartTubeApp.utils.Utils;
 import SmartTubeApp.R;
 
 public class TwoStateAction extends MultiAction {

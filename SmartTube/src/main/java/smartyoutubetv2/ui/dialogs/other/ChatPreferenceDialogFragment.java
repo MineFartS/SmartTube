@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.preference.DialogPreference;
 import com.bumptech.glide.Glide;
-import smartyoutubetv1.app.models.playback.ui.ChatReceiver;
+import SmartTubeApp.app.models.playback.ui.ChatReceiver;
 import SmartTubeApp.R;
 import SmartTubeApp.ui.mod.leanback.preference.LeanbackPreferenceDialogFragment;
 import SmartTubeApp.ui.widgets.chat.ChatItemMessage;

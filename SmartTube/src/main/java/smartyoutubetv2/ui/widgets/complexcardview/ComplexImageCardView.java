@@ -8,7 +8,7 @@ import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 import androidx.leanback.widget.ImageCardView;
 
-import smartyoutubetv1.app.models.data.Video;
+import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.R;
 import SmartTubeApp.util.ViewUtil;
 

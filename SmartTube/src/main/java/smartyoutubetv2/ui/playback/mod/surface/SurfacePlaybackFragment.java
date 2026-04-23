@@ -12,9 +12,9 @@ import androidx.leanback.app.PlaybackSupportFragment;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout.ResizeMode;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import smartyoutubetv1.app.models.playback.manager.PlayerEngine;
-import smartyoutubetv1.prefs.PlayerData;
-import smartyoutubetv1.prefs.PlayerTweaksData;
+import SmartTubeApp.app.models.playback.manager.PlayerEngine;
+import SmartTubeApp.prefs.PlayerData;
+import SmartTubeApp.prefs.PlayerTweaksData;
 import SmartTubeApp.util.ViewUtil;
 import android.util.Log;
 

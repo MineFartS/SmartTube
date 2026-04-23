@@ -16,7 +16,7 @@ import android.view.View;
 import androidx.annotation.RestrictTo;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.leanback.R;
-import smartyoutubetv1.app.models.playback.ui.SeekBarSegment;
+import SmartTubeApp.app.models.playback.ui.SeekBarSegment;
 
 import java.util.ArrayList;
 import java.util.List;

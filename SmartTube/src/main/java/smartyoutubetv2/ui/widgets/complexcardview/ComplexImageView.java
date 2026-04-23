@@ -13,8 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import smartyoutubetv1.app.models.data.Video;
-import smartyoutubetv1.utils.Utils;
+import SmartTubeApp.app.models.data.Video;
+import SmartTubeApp.utils.Utils;
 import SmartTubeApp.R;
 import SmartTubeApp.ui.widgets.embedplayer.EmbedPlayerView;
 import SmartTubeApp.util.ViewUtil;

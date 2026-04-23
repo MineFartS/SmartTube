@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import smartyoutubetv1.BuildConfig;
+import SmartTubeApp.BuildConfig;
 
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;

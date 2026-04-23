@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import androidx.leanback.widget.SearchOrbView;
-import smartyoutubetv1.prefs.GeneralData;
+import SmartTubeApp.prefs.GeneralData;
 
 /**
  *     1) Add long click listener <br/>
