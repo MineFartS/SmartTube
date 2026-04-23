@@ -14,16 +14,7 @@ android {
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
     }
-
-    buildTypes {
-        // Re-enable test coverage when the following issue is fixed:
-        // https://issuetracker.google.com/issues/37019591
-        // debug {
-        //    testCoverageEnabled = true
-        // }
-    }
-
-    testOptions.unitTests.includeAndroidResources = true
+    
 }
 
 dependencies {
@@ -33,7 +24,7 @@ dependencies {
     implementation 'androidx.media:media:1.0.1'
     implementation 'androidx.annotation:annotation:1.1.0'
     compileOnly 'org.checkerframework:checker-qual:' + checkerframeworkVersion
-    testImplementation project(modulePrefix + 'testutils-robolectric')
+
 }
 
 ext {

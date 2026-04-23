@@ -15,7 +15,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    testOptions.unitTests.includeAndroidResources = true
+
 
     // gradle 4.6 migration: disable dimensions mechanism
     // more: https://proandroiddev.com/advanced-android-flavors-part-4-a-new-version-fc2ad80c01bb
@@ -30,8 +30,8 @@ dependencies {
     api 'org.chromium.net:cronet-embedded:75.3770.101'
     implementation project(modulePrefix + 'library-core')
     implementation 'androidx.annotation:annotation:1.1.0'
-    testImplementation project(modulePrefix + 'library')
-    testImplementation project(modulePrefix + 'testutils-robolectric')
+
+
 }
 
 ext {

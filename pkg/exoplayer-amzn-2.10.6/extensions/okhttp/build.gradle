@@ -16,7 +16,7 @@ android {
         consumerProguardFiles 'proguard-rules.txt'
     }
 
-    testOptions.unitTests.includeAndroidResources = true
+
 }
 
 dependencies {

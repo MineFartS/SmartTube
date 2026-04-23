@@ -15,7 +15,7 @@ android {
         targetSdkVersion project.ext.targetSdkVersion
     }
 
-    testOptions.unitTests.includeAndroidResources = true
+
 }
 
 dependencies {

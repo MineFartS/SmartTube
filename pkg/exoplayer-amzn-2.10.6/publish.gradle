@@ -6,7 +6,7 @@ if (project.ext.has("exoplayerPublishEnabled")
         artifactId = releaseArtifact
         desc = releaseDescription
         publishVersion = releaseVersion
-        repoName = getBintrayRepo()
+        repoName = 'exoplayer'
         userOrg = 'google'
         groupId = 'com.google.android.exoplayer'
         website = 'https://github.com/google/ExoPlayer'
@@ -26,12 +26,6 @@ if (project.ext.has("exoplayerPublishEnabled")
                     }
                 }
     }
-}
-
-def getBintrayRepo() {
-    boolean publicRepo = hasProperty('publicRepo') &&
-        property('publicRepo').toBoolean()
-    return publicRepo ? 'exoplayer' : 'exoplayer-test'
 }
 
 static void addLicense(File pom) {

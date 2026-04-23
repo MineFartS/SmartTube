@@ -4,7 +4,7 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion project.ext.compileSdkVersion
     buildToolsVersion project.ext.buildToolsVersion
-    testOptions.unitTests.includeAndroidResources = true
+
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -29,8 +29,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    testImplementation 'junit:junit:' + junitVersion
-    testImplementation 'org.robolectric:robolectric:' + robolectricVersion
+
+
 
     implementation project(':sharedutils')
 

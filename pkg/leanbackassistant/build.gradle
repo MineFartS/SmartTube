@@ -4,7 +4,7 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion project.ext.compileSdkVersion
     buildToolsVersion project.ext.buildToolsVersion
-    testOptions.unitTests.includeAndroidResources = true
+
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

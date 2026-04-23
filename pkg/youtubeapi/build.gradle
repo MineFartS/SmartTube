@@ -5,7 +5,7 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion project.ext.compileSdkVersion
     buildToolsVersion project.ext.buildToolsVersion
-    testOptions.unitTests.includeAndroidResources = true
+
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -17,17 +17,7 @@ android {
         targetSdkVersion project.ext.targetSdkVersion
         versionCode 15
         versionName "0.1.5"
-
-        // required for androidTest support
-        // more info: https://developer.android.com/training/testing/unit-testing/instrumented-unit-tests
-        // small tests: https://stackoverflow.com/questions/4671923/what-is-the-purpose-of-smalltest-mediumtest-and-largetest-annotations-in-an
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        // More info: http://myhexaville.com/2017/03/10/android-multidex/
-        // Additionally, you should extend your application from MultiDexApplication
         multiDexEnabled = true
-
-        // consumerProguardFiles 'proguard-rules.txt' // embed this file to aar
     }
 
     buildTypes {
@@ -49,17 +39,17 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    testImplementation project(':youtubeapi')
 
-    testImplementation 'co.infinum:retromock:' + retromockVersion
-    testImplementation 'junit:junit:' + junitVersion
-    testImplementation 'org.robolectric:robolectric:' + robolectricVersion
 
-    androidTestImplementation project(':youtubeapi')
 
-    androidTestImplementation 'junit:junit:' + junitVersion
-    androidTestImplementation 'androidx.test:runner:' + testXSupportLibraryVersion
-    androidTestImplementation 'androidx.test:rules:' + testXSupportLibraryVersion
+
+
+
+
+
+
+
+
 
     implementation project(':commons-io-2.8.0') // My Android 4.3 fix
     implementation project(':sharedutils')
@@ -89,6 +79,6 @@ dependencies {
     implementation 'com.github.florianingerl.util:regex:1.1.11'
 
     // NewPipe pot
-    implementation 'androidx.webkit:webkit:1.11.0' // Latest with Android 4.4 support
+    implementation 'androidx.webkit:webkit:1.11.0'
     implementation 'com.grack:nanojson:1.7'
 }

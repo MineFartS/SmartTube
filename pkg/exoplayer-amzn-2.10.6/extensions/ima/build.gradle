@@ -16,7 +16,7 @@ android {
         consumerProguardFiles 'proguard-rules.txt'
     }
 
-    testOptions.unitTests.includeAndroidResources = true
+
 }
 
 dependencies {
@@ -24,7 +24,7 @@ dependencies {
     implementation project(modulePrefix + 'library-core')
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'com.google.android.gms:play-services-ads-identifier:16.0.0'
-    testImplementation project(modulePrefix + 'testutils-robolectric')
+
 }
 
 ext {

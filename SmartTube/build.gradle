@@ -52,7 +52,7 @@ android {
 
     compileSdkVersion project.properties.compileSdkVersion
     buildToolsVersion project.properties.buildToolsVersion
-    testOptions.unitTests.includeAndroidResources = true
+
 
     defaultConfig {
         // values linked with applicationId: searchable.searchSuggestAuthority, searchable.searchSuggestIntentData, VideoContract.CONTENT_AUTHORITY
@@ -64,7 +64,7 @@ android {
 
         versionName now.format('yy.MM.dd')
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
 
         // More info: http://myhexaville.com/2017/03/10/android-multidex/
@@ -101,18 +101,9 @@ android {
     
     buildTypes {
         release {
-            // Enable minification
-            // shrinkResources true
-            // minifyEnabled true
 
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            if (keystorePropertiesFile.exists()) {
-                signingConfig signingConfigs.release
-            }
-        }
-        // Use same key for release and debug for testing
-        debug {
             if (keystorePropertiesFile.exists()) {
                 signingConfig signingConfigs.release
             }
@@ -171,13 +162,13 @@ dependencies {
     implementation project(':exoplayer-extension-leanback')
     implementation project(':exoplayer-extension-mediasession')
 
-    testImplementation 'junit:junit:' + junitVersion
-    testImplementation 'org.robolectric:robolectric:' + robolectricVersion
-    androidTestImplementation 'androidx.test.ext:junit:' + testXSupportLibraryVersion
-    androidTestImplementation 'androidx.test.ext:truth:' + testXSupportLibraryVersion
-    androidTestImplementation 'androidx.test:runner:' + testXSupportLibraryVersion
-    androidTestImplementation 'androidx.test:rules:' + testXSupportLibraryVersion
-    androidTestImplementation 'androidx.test.espresso:espresso-core:' + espressoVersion
+
+
+
+
+
+
+
 
     implementation project(':fragment-1.1.0')
     implementation project(':leanback-1.0.0')
