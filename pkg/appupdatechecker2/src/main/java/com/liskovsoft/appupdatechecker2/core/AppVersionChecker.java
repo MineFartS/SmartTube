@@ -17,47 +17,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.nio.charset.StandardCharsets;
 
-import edu.mit.mobile.android.utils.StreamUtils;
-
-/**
- * A fairly simple non-Market app update checker. Give it a URL pointing to a JSON file
- * and it will compare its version (from the manifest file) to the versions listed in the JSON.
- * If there are newer version(s), it will provide the changelog between the installed version
- * and the latest version. The updater checks against the versionCode, but displays the versionName.
- *
- * While you can create your own OnAppUpdateListener to listen for new updates, OnUpdateDialog is
- * a handy implementation that displays a Dialog with a bulleted list and a button to do the upgrade.
- *
- * The JSON format looks like this:
- * <pre>
- * {
- * "package": {
- * "downloadUrl": "http://locast.mit.edu/connects/lcc.apk"
- * },
- *
- * "1.4.3": {
- * "versionCode": 6,
- * "changelog": ["New automatic update checker", "Improved template interactions"]
- * "changelog_ru": ["Новая система проверки оьновлений", "Улучшенное взаимодействие шаблонов"]
- * },
- * "1.4.2": {
- * "versionCode": 5,
- * "changelog": ["fixed crash when saving cast"]
- * }
- * }
- * </pre>
- *
- * @author <a href="mailto:spomeroy@mit.edu">Steve Pomeroy</a>
- */
 public class AppVersionChecker {
+
     private final static String TAG = AppVersionChecker.class.getSimpleName();
+    
     private int mCurrentAppVersion;
     private JSONObject mVersionInfo;
     private final Context mContext;
@@ -66,6 +38,7 @@ public class AppVersionChecker {
 
     @SuppressWarnings("deprecation")
     public AppVersionChecker(Context context, AppVersionCheckerListener listener) {
+        
         mContext = context;
         mListener = listener;
 
@@ -258,7 +231,17 @@ public class AppVersionChecker {
                 long reqId = manager.enqueue(request);
 
                 InputStream content = manager.getStreamForDownloadedFile(reqId);
-                jo = new JSONObject(StreamUtils.inputStreamToString(content));
+
+                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                int nRead;
+                byte[] data = new byte[16384];
+                while ((nRead = content.read(data, 0, data.length)) != -1) {
+                    buffer.write(data, 0, nRead);
+                }
+                String result = new String(buffer.toByteArray(), StandardCharsets.UTF_8);
+
+                jo = new JSONObject(result);
+
             } catch (final Exception ex) {
                 // IllegalStateException | IllegalArgumentException | JSONException | SocketTimeoutException |
                 // SocketException | StreamResetException | SSLException | ProtocolException

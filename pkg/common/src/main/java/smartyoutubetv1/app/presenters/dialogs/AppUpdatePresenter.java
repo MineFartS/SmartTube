@@ -20,18 +20,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AppUpdatePresenter extends BasePresenter<Void> implements AppUpdateCheckerListener {
+    
     @SuppressLint("StaticFieldLeak")
     private static AppUpdatePresenter sInstance;
+    
     private final AppUpdateChecker mUpdateChecker;
     private final AppDialogPresenter mSettingsPresenter;
-    private final String[] mUpdateManifestUrls;
     private boolean mIsForceCheck;
 
     public AppUpdatePresenter(Context context) {
         super(context);
         mUpdateChecker = new AppUpdateChecker(context, this);
         mSettingsPresenter = AppDialogPresenter.instance(context);
-        mUpdateManifestUrls = context.getResources().getStringArray(R.array.update_urls);
     }
 
     public static AppUpdatePresenter instance(Context context) {
@@ -49,7 +49,11 @@ public class AppUpdatePresenter extends BasePresenter<Void> implements AppUpdate
     }
 
     public void start(boolean forceCheck) {
-        mUpdateChecker.checkForUpdates(mUpdateManifestUrls);
+
+        String url = "https://github.com/yuliskov/SmartTubeNext/releases/download/latest/smarttube_stable2.json";
+        
+        mUpdateChecker.checkForUpdates(url);
+    
     }
 
     public void onUpdateFound(

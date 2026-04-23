@@ -59,8 +59,6 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
 
         appendUpdateChangelogButton(settingsPresenter);
 
-        appendUpdateSource(settingsPresenter);
-
         settingsPresenter.appendSingleSwitch(
             UiOptionItem.from(
                 getContext().getString(R.string.check_updates_auto), 
@@ -113,44 +111,6 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
         );
 
         settingsPresenter.appendStringsCategory(title, changelog);
-
-    }
-
-    private void appendUpdateSource(AppDialogPresenter settingsPresenter) {
-        
-        List<OptionItem> options = new ArrayList<>();
-
-        String[] updateUrls = getContext().getResources().getStringArray(R.array.update_urls);
-
-        if (updateUrls.length <= 1) {
-            return;
-        }
-
-        if (mUpdateChecker.getPreferredHost() == null) {
-            mUpdateChecker.setPreferredHost(Helpers.getHost(updateUrls[0]));
-        }
-
-        for (String url : updateUrls) {
-
-            String hostName = Helpers.getHost(url);
-            
-            options.add(
-                UiOptionItem.from(
-                    hostName,
-                    optionItem -> mUpdateChecker.setPreferredHost(hostName),
-                    Helpers.equals(
-                        hostName, 
-                        mUpdateChecker.getPreferredHost()
-                    )
-                )
-            );
-        
-        }
-
-        settingsPresenter.appendRadioCategory(
-            getContext().getString(R.string.preferred_update_source), 
-            options
-        );
 
     }
 
