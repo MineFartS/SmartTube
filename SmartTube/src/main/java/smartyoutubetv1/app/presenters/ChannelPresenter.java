@@ -2,8 +2,8 @@ package SmartTubeApp.app.presenters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import com.liskovsoft.youtubeapi.data.MediaGroup;
-import com.liskovsoft.youtubeapi.data.MediaItem;
+import com.liskovsoft.sharedutils.data.MediaGroup;
+import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;

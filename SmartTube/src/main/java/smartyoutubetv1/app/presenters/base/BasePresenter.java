@@ -6,11 +6,11 @@ import android.view.View;
 
 import androidx.fragment.app.Fragment;
 
-import com.liskovsoft.youtubeapi.CommentsService;
-import com.liskovsoft.youtubeapi.ContentService;
-import com.liskovsoft.youtubeapi.MediaItemService;
-import com.liskovsoft.youtubeapi.NotificationsService;
-import com.liskovsoft.youtubeapi.SignInService;
+import com.liskovsoft.sharedutils.CommentsService;
+import com.liskovsoft.sharedutils.ContentService;
+import com.liskovsoft.sharedutils.MediaItemService;
+import com.liskovsoft.sharedutils.NotificationsService;
+import com.liskovsoft.sharedutils.SignInService;
 import SmartTubeApp.app.models.data.Playlist;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.models.data.VideoGroup;
@@ -29,7 +29,7 @@ import SmartTubeApp.prefs.GeneralData;
 import SmartTubeApp.prefs.MainUIData;
 import SmartTubeApp.prefs.SearchData;
 import SmartTubeApp.utils.Utils;
-import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
+import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 
 import java.lang.ref.WeakReference;
 import java.util.Collections;

@@ -18,7 +18,7 @@
 -keepclassmembers class androidx.work.WorkManager {
     static void initialize(android.content.Context, androidx.work.Configuration);
 }
--keepclassmembers class com.liskovsoft.youtubeapi.search.SearchTagStorage {
+-keepclassmembers class com.liskovsoft.sharedutils.search.SearchTagStorage {
     <clinit>(...);
 }
 -keepclassmembers class androidx.leanback.widget.HorizontalGridView {
@@ -28,14 +28,14 @@
 -keepclassmembers class SmartTubeApp.ui.browse.video.MultipleRowsFragment$ItemViewClickedListener {
     <init>(...);
 }
--keepclassmembers class com.liskovsoft.youtubeapi.common.helpers.PostDataHelper {
+-keepclassmembers class com.liskovsoft.sharedutils.common.helpers.PostDataHelper {
     <clinit>(...);
     java.lang.String createQueryTV(java.lang.String);
 }
 -keepclassmembers class androidx.work.impl.utils.ForceStopRunnable {
     <init>(...);
 }
--keepclassmembers class com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl {
+-keepclassmembers class com.liskovsoft.sharedutils.channelgroups.ChannelGroupServiceImpl {
     <init>(...);
 }
 -keepclassmembers class androidx.leanback.widget.BrowseRowsFrameLayout {
@@ -52,7 +52,7 @@
 -keepclassmembers class com.liskovsoft.sharedutils.mylogger.Log {
     static void d(java.lang.String, java.lang.Object, java.lang.Object[]);
 }
--keepclassmembers class com.liskovsoft.youtubeapi.service.YouTubeServiceManager {
+-keepclassmembers class com.liskovsoft.sharedutils.service.YouTubeServiceManager {
     <init>(...);
 }
 -keepclassmembers class SmartTubeApp.ui.widgets.vineyard.TagCardView {
@@ -110,9 +110,9 @@
 -keepclassmembers class androidx.leanback.widget.SearchBar {
     <init>(...);
 }
--keepclassmembers class com.liskovsoft.youtubeapi.ServiceManager {
+-keepclassmembers class com.liskovsoft.sharedutils.ServiceManager {
     <init>(...);
-    com.liskovsoft.youtubeapi.MediaItemService getMediaItemService();
+    com.liskovsoft.sharedutils.MediaItemService getMediaItemService();
 }
 # IncompatibleClassChangeError: androidx.recyclerview.widget.RecyclerView$Recycler
 -keepclassmembers class androidx.recyclerview.widget.RecyclerView$Recycler {
@@ -145,7 +145,7 @@
 -keepclassmembers class SmartTubeApp.app.models.search.MediaServiceSearchTagProvider {
     <init>(...);
     boolean mIgnoreEmptyQuery;
-    com.liskovsoft.youtubeapi.ContentService mContentService;
+    com.liskovsoft.sharedutils.ContentService mContentService;
 }
 -keepclassmembers class androidx.leanback.widget.GridLayoutManager {
     <init>(...);

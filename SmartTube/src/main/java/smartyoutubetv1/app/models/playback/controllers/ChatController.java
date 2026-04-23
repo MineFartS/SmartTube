@@ -1,8 +1,8 @@
 package SmartTubeApp.app.models.playback.controllers;
 
-import com.liskovsoft.youtubeapi.LiveChatService;
-import com.liskovsoft.youtubeapi.data.ChatItem;
-import com.liskovsoft.youtubeapi.data.MediaItemMetadata;
+import com.liskovsoft.sharedutils.LiveChatService;
+import com.liskovsoft.sharedutils.data.ChatItem;
+import com.liskovsoft.sharedutils.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import SmartTubeApp.R;
@@ -13,7 +13,7 @@ import SmartTubeApp.app.models.playback.ui.ChatReceiverImpl;
 import SmartTubeApp.app.models.playback.ui.OptionItem;
 import SmartTubeApp.app.models.playback.ui.UiOptionItem;
 import SmartTubeApp.app.presenters.AppDialogPresenter;
-import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
+import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 import io.reactivex.disposables.Disposable;
 
 import java.util.ArrayList;

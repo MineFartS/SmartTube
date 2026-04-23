@@ -4,7 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.liskovsoft.youtubeapi.data.ItemGroup;
+import com.liskovsoft.sharedutils.data.ItemGroup;
 import SmartTubeApp.R;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.presenters.AppDialogPresenter;

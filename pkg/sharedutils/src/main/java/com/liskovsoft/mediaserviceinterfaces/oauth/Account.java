@@ -1,0 +1,10 @@
+package com.liskovsoft.sharedutils.oauth;
+
+public interface Account {
+    int getId();
+    String getName();
+    String getEmail();
+    String getAvatarImageUrl();
+    boolean isSelected();
+    boolean isEmpty();
+}

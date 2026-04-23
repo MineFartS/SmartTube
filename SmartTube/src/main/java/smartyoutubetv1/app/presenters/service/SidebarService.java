@@ -3,7 +3,7 @@ package SmartTubeApp.app.presenters.service;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.liskovsoft.youtubeapi.data.MediaGroup;
+import com.liskovsoft.sharedutils.data.MediaGroup;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import SmartTubeApp.R;
 import SmartTubeApp.app.models.data.Video;

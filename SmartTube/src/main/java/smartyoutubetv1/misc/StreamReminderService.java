@@ -1,9 +1,9 @@
 package SmartTubeApp.misc;
 
 import android.content.Context;
-import com.liskovsoft.youtubeapi.MediaItemService;
-import com.liskovsoft.youtubeapi.ServiceManager;
-import com.liskovsoft.youtubeapi.data.MediaItemFormatInfo;
+import com.liskovsoft.sharedutils.MediaItemService;
+import com.liskovsoft.sharedutils.ServiceManager;
+import com.liskovsoft.sharedutils.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
@@ -14,7 +14,7 @@ import SmartTubeApp.app.presenters.PlaybackPresenter;
 import SmartTubeApp.app.views.ViewManager;
 import SmartTubeApp.misc.TickleManager.TickleListener;
 import SmartTubeApp.prefs.GeneralData;
-import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
+import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 

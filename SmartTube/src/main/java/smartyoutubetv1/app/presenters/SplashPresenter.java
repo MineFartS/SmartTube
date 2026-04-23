@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 
-import com.liskovsoft.youtubeapi.oauth.Account;
-import com.liskovsoft.youtubeapi.data.MediaGroup;
+import com.liskovsoft.sharedutils.oauth.Account;
+import com.liskovsoft.sharedutils.data.MediaGroup;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -26,7 +26,7 @@ import SmartTubeApp.prefs.GeneralData;
 import SmartTubeApp.utils.IntentExtractor;
 import SmartTubeApp.utils.SimpleEditDialog;
 import SmartTubeApp.utils.Utils;
-import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
+import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 
 import java.util.ArrayList;
 import java.util.List;

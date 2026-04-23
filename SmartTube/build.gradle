@@ -154,7 +154,6 @@ dependencies {
     implementation project(':fragment-1.1.0')
     implementation project(':leanback-1.0.0')
     implementation project(':sharedutils')
-    implementation project(':youtubeapi')
     implementation project(':leanbackassistant')
 
     implementation 'androidx.leanback:leanback:' + leanbackXLibraryVersion

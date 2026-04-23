@@ -10,10 +10,10 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.liskovsoft.youtubeapi.MediaItemService;
-import com.liskovsoft.youtubeapi.data.ItemGroup;
-import com.liskovsoft.youtubeapi.data.MediaItem;
-import com.liskovsoft.youtubeapi.data.PlaylistInfo;
+import com.liskovsoft.sharedutils.MediaItemService;
+import com.liskovsoft.sharedutils.data.ItemGroup;
+import com.liskovsoft.sharedutils.data.MediaItem;
+import com.liskovsoft.sharedutils.data.PlaylistInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.helpers.PermissionHelpers;
@@ -46,8 +46,8 @@ import SmartTubeApp.prefs.ContentBlockData;
 import SmartTubeApp.prefs.GeneralData;
 import SmartTubeApp.prefs.PlayerData;
 import SmartTubeApp.prefs.PlayerTweaksData;
-import com.liskovsoft.youtubeapi.service.YouTubeMediaItemService;
-import com.liskovsoft.youtubeapi.playlist.impl.YouTubePlaylistInfo;
+import com.liskovsoft.sharedutils.service.YouTubeMediaItemService;
+import com.liskovsoft.sharedutils.playlist.impl.YouTubePlaylistInfo;
 
 import java.io.File;
 import java.util.ArrayList;

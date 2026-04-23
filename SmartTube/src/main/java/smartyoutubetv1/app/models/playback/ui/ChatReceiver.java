@@ -1,6 +1,6 @@
 package SmartTubeApp.app.models.playback.ui;
 
-import com.liskovsoft.youtubeapi.data.ChatItem;
+import com.liskovsoft.sharedutils.data.ChatItem;
 
 public interface ChatReceiver {
     interface Callback {

@@ -1,6 +1,6 @@
 package SmartTubeApp.app.models.playback.manager;
 
-import com.liskovsoft.youtubeapi.data.MediaItemFormatInfo;
+import com.liskovsoft.sharedutils.data.MediaItemFormatInfo;
 import SmartTubeApp.exoplayer.selector.FormatItem;
 
 import java.io.InputStream;

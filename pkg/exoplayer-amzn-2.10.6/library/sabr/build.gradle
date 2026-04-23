@@ -29,12 +29,9 @@ android {
 dependencies {
     implementation project(modulePrefix + 'library-core')
     implementation project(':sharedutils')
-    implementation project(':youtubeapi')
     compileOnly 'org.checkerframework:checker-qual:' + checkerframeworkVersion
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'com.google.protobuf:protobuf-javalite:' + protobufVersion
-
-
 }
 
 protobuf {

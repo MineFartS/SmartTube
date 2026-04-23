@@ -1,7 +1,7 @@
 package SmartTubeApp.app.models.playback.ui;
 
-import com.liskovsoft.youtubeapi.data.CommentGroup;
-import com.liskovsoft.youtubeapi.data.CommentItem;
+import com.liskovsoft.sharedutils.data.CommentGroup;
+import com.liskovsoft.sharedutils.data.CommentItem;
 
 public interface CommentsReceiver {
     interface Callback {

@@ -37,12 +37,9 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    // MOD: add custom lib
     implementation project(':leanback-1.0.0')
     implementation project(':sharedutils')
-    implementation project(':youtubeapi')
 
-    //implementation 'com.android.support:leanback-v17:' + supportLibraryVersion
     implementation 'androidx.leanback:leanback:' + leanbackXLibraryVersion
     implementation 'androidx.tvprovider:tvprovider:' + leanbackXLibraryVersion
     implementation 'androidx.recommendation:recommendation:' + leanbackXLibraryVersion

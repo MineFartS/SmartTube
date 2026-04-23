@@ -81,7 +81,7 @@ import SmartTubeApp.prefs.MainUIData;
 import SmartTubeApp.prefs.PlayerData;
 import SmartTubeApp.prefs.PlayerTweaksData;
 import SmartTubeApp.prefs.RemoteControlData;
-import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
+import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;

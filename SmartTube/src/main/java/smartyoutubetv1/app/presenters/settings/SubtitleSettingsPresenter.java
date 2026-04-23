@@ -8,7 +8,7 @@ import SmartTubeApp.app.presenters.AppDialogPresenter;
 import SmartTubeApp.app.presenters.base.BasePresenter;
 import SmartTubeApp.prefs.PlayerData;
 import SmartTubeApp.utils.AppDialogUtil;
-import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
+import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
 
 public class SubtitleSettingsPresenter extends BasePresenter<Void> {
     private final PlayerData mPlayerData;

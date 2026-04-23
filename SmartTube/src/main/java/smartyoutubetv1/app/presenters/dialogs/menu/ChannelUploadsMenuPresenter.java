@@ -1,9 +1,9 @@
 package SmartTubeApp.app.presenters.dialogs.menu;
 
 import android.content.Context;
-import com.liskovsoft.youtubeapi.MediaItemService;
-import com.liskovsoft.youtubeapi.ServiceManager;
-import com.liskovsoft.youtubeapi.data.MediaItem;
+import com.liskovsoft.sharedutils.MediaItemService;
+import com.liskovsoft.sharedutils.ServiceManager;
+import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import SmartTubeApp.R;
@@ -14,7 +14,7 @@ import SmartTubeApp.app.presenters.ChannelPresenter;
 import SmartTubeApp.app.presenters.ChannelUploadsPresenter;
 import SmartTubeApp.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
 import SmartTubeApp.misc.MediaServiceManager;
-import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
+import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 import io.reactivex.disposables.Disposable;
 
 import java.util.List;

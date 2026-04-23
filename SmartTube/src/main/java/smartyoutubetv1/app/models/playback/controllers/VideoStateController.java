@@ -1,6 +1,6 @@
 package SmartTubeApp.app.models.playback.controllers;
 
-import com.liskovsoft.youtubeapi.data.MediaItemMetadata;
+import com.liskovsoft.sharedutils.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import SmartTubeApp.R;
@@ -15,7 +15,7 @@ import SmartTubeApp.misc.MediaServiceManager;
 import SmartTubeApp.prefs.GeneralData;
 import SmartTubeApp.utils.AppDialogUtil;
 import SmartTubeApp.utils.Utils;
-import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
+import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
 
 public class VideoStateController extends BasePlayerController {
 

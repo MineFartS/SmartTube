@@ -3,7 +3,7 @@ package SmartTubeApp.prefs;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import androidx.annotation.NonNull;
-import com.liskovsoft.youtubeapi.oauth.Account;
+import com.liskovsoft.sharedutils.oauth.Account;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import SmartTubeApp.misc.MediaServiceManager;
 import SmartTubeApp.misc.MediaServiceManager.AccountChangeListener;

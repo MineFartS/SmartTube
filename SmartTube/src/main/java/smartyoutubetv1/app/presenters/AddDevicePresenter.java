@@ -2,12 +2,12 @@ package SmartTubeApp.app.presenters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import com.liskovsoft.youtubeapi.ServiceManager;
+import com.liskovsoft.sharedutils.ServiceManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import SmartTubeApp.app.presenters.base.BasePresenter;
 import SmartTubeApp.app.views.AddDeviceView;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
+import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 import io.reactivex.disposables.Disposable;
 
 public class AddDevicePresenter extends BasePresenter<AddDeviceView> {

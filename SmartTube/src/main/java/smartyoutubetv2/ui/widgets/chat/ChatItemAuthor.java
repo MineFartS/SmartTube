@@ -1,7 +1,7 @@
 package SmartTubeApp.ui.widgets.chat;
 
-import com.liskovsoft.youtubeapi.data.ChatItem;
-import com.liskovsoft.youtubeapi.data.CommentItem;
+import com.liskovsoft.sharedutils.data.ChatItem;
+import com.liskovsoft.sharedutils.data.CommentItem;
 import SmartTubeApp.commons.models.IUser;
 
 public class ChatItemAuthor implements IUser {

@@ -1,7 +1,7 @@
 package SmartTubeApp.app.models.data;
 
-import com.liskovsoft.youtubeapi.data.MediaItem;
-import com.liskovsoft.youtubeapi.data.MediaItemMetadata;
+import com.liskovsoft.sharedutils.data.MediaItem;
+import com.liskovsoft.sharedutils.data.MediaItemMetadata;
 
 public final class SimpleMediaItem implements MediaItem {
     private int mId;

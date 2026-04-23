@@ -2,12 +2,12 @@ package SmartTubeApp.app.models.search;
 
 import android.text.TextUtils;
 
-import com.liskovsoft.youtubeapi.ContentService;
-import com.liskovsoft.youtubeapi.ServiceManager;
+import com.liskovsoft.sharedutils.ContentService;
+import com.liskovsoft.sharedutils.ServiceManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import SmartTubeApp.app.models.search.vineyard.Tag;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
+import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 import io.reactivex.disposables.Disposable;
 
 public class MediaServiceSearchTagProvider implements SearchTagsProvider {

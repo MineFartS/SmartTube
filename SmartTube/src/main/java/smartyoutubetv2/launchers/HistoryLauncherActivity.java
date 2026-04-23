@@ -1,7 +1,7 @@
 package SmartTubeApp.launchers;
 
 import android.os.Bundle;
-import com.liskovsoft.youtubeapi.data.MediaGroup;
+import com.liskovsoft.sharedutils.data.MediaGroup;
 import SmartTubeApp.app.presenters.BrowsePresenter;
 import SmartTubeApp.misc.MotherActivity;
 

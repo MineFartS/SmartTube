@@ -2,10 +2,10 @@ package SmartTubeApp.app.models.playback.controllers;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import com.liskovsoft.youtubeapi.MediaItemService;
-import com.liskovsoft.youtubeapi.ServiceManager;
-import com.liskovsoft.youtubeapi.data.MediaItemMetadata;
-import com.liskovsoft.youtubeapi.data.SponsorSegment;
+import com.liskovsoft.sharedutils.MediaItemService;
+import com.liskovsoft.sharedutils.ServiceManager;
+import com.liskovsoft.sharedutils.data.MediaItemMetadata;
+import com.liskovsoft.sharedutils.data.SponsorSegment;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -22,7 +22,7 @@ import SmartTubeApp.prefs.ContentBlockData;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import SmartTubeApp.prefs.PlayerTweaksData;
 import SmartTubeApp.utils.Utils;
-import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
+import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 

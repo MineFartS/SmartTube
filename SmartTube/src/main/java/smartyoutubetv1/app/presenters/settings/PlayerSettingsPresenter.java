@@ -19,7 +19,7 @@ import SmartTubeApp.prefs.PlayerData;
 import SmartTubeApp.prefs.PlayerTweaksData;
 import SmartTubeApp.prefs.SearchData;
 import SmartTubeApp.utils.AppDialogUtil;
-import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
+import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
 
 import java.util.ArrayList;
 import java.util.List;

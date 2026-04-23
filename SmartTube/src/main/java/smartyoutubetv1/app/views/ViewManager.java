@@ -27,7 +27,7 @@ import SmartTubeApp.app.presenters.base.BasePresenter;
 import SmartTubeApp.app.presenters.dialogs.AppUpdatePresenter;
 import SmartTubeApp.misc.MotherActivity;
 import SmartTubeApp.utils.Utils;
-import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
+import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 
 import java.util.HashMap;
 import java.util.Map;

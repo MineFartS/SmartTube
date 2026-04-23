@@ -1,8 +1,8 @@
 package SmartTubeApp.app.models.data;
 
-import com.liskovsoft.youtubeapi.data.ChapterItem;
-import com.liskovsoft.youtubeapi.data.MediaGroup;
-import com.liskovsoft.youtubeapi.data.MediaItem;
+import com.liskovsoft.sharedutils.data.ChapterItem;
+import com.liskovsoft.sharedutils.data.MediaGroup;
+import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import SmartTubeApp.app.models.playback.service.VideoStateService;

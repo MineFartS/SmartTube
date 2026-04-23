@@ -7,7 +7,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import SmartTubeApp.prefs.AppPrefs.ProfileChangeListener;
 import SmartTubeApp.utils.Utils;
-import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
+import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
 
 public class PlayerTweaksData implements ProfileChangeListener {
 

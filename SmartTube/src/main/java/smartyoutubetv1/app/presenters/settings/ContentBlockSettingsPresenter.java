@@ -17,7 +17,7 @@ import SmartTubeApp.prefs.ContentBlockData;
 import SmartTubeApp.utils.AppDialogUtil;
 import SmartTubeApp.utils.Utils;
 
-import com.liskovsoft.youtubeapi.data.SponsorSegment;
+import com.liskovsoft.sharedutils.data.SponsorSegment;
 
 import java.util.ArrayList;
 import java.util.List;

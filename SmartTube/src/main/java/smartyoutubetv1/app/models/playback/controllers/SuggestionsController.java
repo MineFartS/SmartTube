@@ -5,12 +5,12 @@ import android.util.Pair;
 
 import androidx.core.content.ContextCompat;
 
-import com.liskovsoft.youtubeapi.ContentService;
-import com.liskovsoft.youtubeapi.MediaItemService;
-import com.liskovsoft.youtubeapi.data.ChapterItem;
-import com.liskovsoft.youtubeapi.data.DislikeData;
-import com.liskovsoft.youtubeapi.data.MediaGroup;
-import com.liskovsoft.youtubeapi.data.MediaItemMetadata;
+import com.liskovsoft.sharedutils.ContentService;
+import com.liskovsoft.sharedutils.MediaItemService;
+import com.liskovsoft.sharedutils.data.ChapterItem;
+import com.liskovsoft.sharedutils.data.DislikeData;
+import com.liskovsoft.sharedutils.data.MediaGroup;
+import com.liskovsoft.sharedutils.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -30,7 +30,7 @@ import SmartTubeApp.misc.BrowseProcessorManager;
 import SmartTubeApp.misc.MediaServiceManager;
 import SmartTubeApp.prefs.GeneralData;
 import SmartTubeApp.utils.Utils;
-import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
+import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 

@@ -1,10 +1,10 @@
 package SmartTubeApp.app.presenters.dialogs.menu;
 
 import android.content.Context;
-import com.liskovsoft.youtubeapi.MediaItemService;
-import com.liskovsoft.youtubeapi.data.MediaGroup;
-import com.liskovsoft.youtubeapi.data.MediaItem;
-import com.liskovsoft.youtubeapi.data.PlaylistInfo;
+import com.liskovsoft.sharedutils.MediaItemService;
+import com.liskovsoft.sharedutils.data.MediaGroup;
+import com.liskovsoft.sharedutils.data.MediaItem;
+import com.liskovsoft.sharedutils.data.PlaylistInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.rx.RxHelper;
@@ -23,7 +23,7 @@ import SmartTubeApp.prefs.GeneralData;
 import SmartTubeApp.prefs.MainUIData;
 import SmartTubeApp.utils.AppDialogUtil;
 import SmartTubeApp.utils.SimpleEditDialog;
-import com.liskovsoft.youtubeapi.service.YouTubeMediaItemService;
+import com.liskovsoft.sharedutils.service.YouTubeMediaItemService;
 import io.reactivex.Observable;
 
 import java.util.List;

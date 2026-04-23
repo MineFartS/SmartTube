@@ -4,12 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 
-import com.liskovsoft.youtubeapi.ChannelGroupService;
-import com.liskovsoft.youtubeapi.data.ItemGroup;
-import com.liskovsoft.youtubeapi.data.ItemGroup.Item;
+import com.liskovsoft.sharedutils.ChannelGroupService;
+import com.liskovsoft.sharedutils.data.ItemGroup;
+import com.liskovsoft.sharedutils.data.ItemGroup.Item;
 import SmartTubeApp.prefs.AppPrefs;
 import SmartTubeApp.prefs.AppPrefs.ProfileChangeListener;
-import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
+import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 
 import java.io.File;
 import java.util.List;

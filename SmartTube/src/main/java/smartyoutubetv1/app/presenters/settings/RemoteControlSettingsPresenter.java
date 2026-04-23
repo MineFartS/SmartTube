@@ -2,8 +2,8 @@ package SmartTubeApp.app.presenters.settings;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import com.liskovsoft.youtubeapi.ServiceManager;
-import com.liskovsoft.youtubeapi.RemoteControlService;
+import com.liskovsoft.sharedutils.ServiceManager;
+import com.liskovsoft.sharedutils.RemoteControlService;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.helpers.PermissionHelpers;
 import SmartTubeApp.R;
@@ -17,7 +17,7 @@ import SmartTubeApp.prefs.RemoteControlData;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import SmartTubeApp.utils.AppDialogUtil;
 import SmartTubeApp.utils.Utils;
-import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
+import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 
 import java.util.ArrayList;
 import java.util.List;

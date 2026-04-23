@@ -1,8 +1,8 @@
 package SmartTubeApp.app.models.playback.ui;
 
 import android.content.Context;
-import com.liskovsoft.youtubeapi.data.CommentGroup;
-import com.liskovsoft.youtubeapi.data.CommentItem;
+import com.liskovsoft.sharedutils.data.CommentGroup;
+import com.liskovsoft.sharedutils.data.CommentItem;
 import SmartTubeApp.R;
 
 public abstract class AbstractCommentsReceiver implements CommentsReceiver {

@@ -1,7 +1,7 @@
 package SmartTubeApp.exoplayer.selector.track;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.videoinfo.models.TranslatedCaptionTrack;
+import com.liskovsoft.sharedutils.videoinfo.models.TranslatedCaptionTrack;
 
 import java.util.regex.Pattern;
 

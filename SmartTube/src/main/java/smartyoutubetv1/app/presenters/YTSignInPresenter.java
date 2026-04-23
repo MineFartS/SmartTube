@@ -3,11 +3,11 @@ package SmartTubeApp.app.presenters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.liskovsoft.youtubeapi.ServiceManager;
+import com.liskovsoft.sharedutils.ServiceManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import SmartTubeApp.app.presenters.dialogs.AccountSelectionPresenter;
-import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
+import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 
 import io.reactivex.disposables.Disposable;
 

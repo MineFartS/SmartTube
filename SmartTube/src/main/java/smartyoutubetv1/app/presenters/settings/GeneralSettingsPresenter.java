@@ -3,7 +3,7 @@ package SmartTubeApp.app.presenters.settings;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.liskovsoft.youtubeapi.data.MediaGroup;
+import com.liskovsoft.sharedutils.data.MediaGroup;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
@@ -28,7 +28,7 @@ import SmartTubeApp.prefs.PlayerTweaksData;
 import SmartTubeApp.prefs.SearchData;
 import SmartTubeApp.utils.AppDialogUtil;
 import SmartTubeApp.utils.SimpleEditDialog;
-import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
+import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
 
 import java.util.ArrayList;
 import java.util.Collection;

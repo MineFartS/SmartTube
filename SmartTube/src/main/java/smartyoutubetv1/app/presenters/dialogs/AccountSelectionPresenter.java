@@ -3,9 +3,9 @@ package SmartTubeApp.app.presenters.dialogs;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.liskovsoft.youtubeapi.ServiceManager;
-import com.liskovsoft.youtubeapi.SignInService;
-import com.liskovsoft.youtubeapi.oauth.Account;
+import com.liskovsoft.sharedutils.ServiceManager;
+import com.liskovsoft.sharedutils.SignInService;
+import com.liskovsoft.sharedutils.oauth.Account;
 import SmartTubeApp.R;
 import SmartTubeApp.app.models.playback.ui.OptionItem;
 import SmartTubeApp.app.models.playback.ui.UiOptionItem;
@@ -16,7 +16,7 @@ import SmartTubeApp.misc.MediaServiceManager;
 import SmartTubeApp.prefs.AccountsData;
 import SmartTubeApp.prefs.GeneralData;
 import SmartTubeApp.utils.Utils;
-import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
+import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 
 import java.util.ArrayList;
 import java.util.List;

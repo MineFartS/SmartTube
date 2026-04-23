@@ -7,12 +7,12 @@ import android.view.Gravity;
 import androidx.annotation.Nullable;
 
 import com.google.android.exoplayer2.Format;
-import com.liskovsoft.youtubeapi.CommentsService;
-import com.liskovsoft.youtubeapi.ContentService;
-import com.liskovsoft.youtubeapi.MediaItemService;
-import com.liskovsoft.youtubeapi.NotificationsService;
-import com.liskovsoft.youtubeapi.SignInService;
-import com.liskovsoft.youtubeapi.data.MediaItemMetadata;
+import com.liskovsoft.sharedutils.CommentsService;
+import com.liskovsoft.sharedutils.ContentService;
+import com.liskovsoft.sharedutils.MediaItemService;
+import com.liskovsoft.sharedutils.NotificationsService;
+import com.liskovsoft.sharedutils.SignInService;
+import com.liskovsoft.sharedutils.data.MediaItemMetadata;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.models.playback.listener.PlayerEventListener;
 import SmartTubeApp.app.models.playback.service.VideoStateService;
@@ -32,8 +32,8 @@ import SmartTubeApp.prefs.PlayerData;
 import SmartTubeApp.prefs.PlayerTweaksData;
 import SmartTubeApp.prefs.RemoteControlData;
 import SmartTubeApp.prefs.SearchData;
-import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
-import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
+import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
+import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
 
 public abstract class BasePlayerController implements PlayerEventListener {
     private PlaybackPresenter mMainController;

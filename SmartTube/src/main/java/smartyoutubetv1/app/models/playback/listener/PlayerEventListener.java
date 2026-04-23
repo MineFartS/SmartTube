@@ -1,6 +1,6 @@
 package SmartTubeApp.app.models.playback.listener;
 
-import com.liskovsoft.youtubeapi.data.MediaItemMetadata;
+import com.liskovsoft.sharedutils.data.MediaItemMetadata;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.models.playback.manager.PlayerManager;
 import SmartTubeApp.misc.TickleManager.TickleListener;
