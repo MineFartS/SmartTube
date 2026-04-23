@@ -1,4 +1,4 @@
-include ':SmartTubeApp', ':chatkit', ':leanbackassistant', ':leanback-1.0.0', ':fragment-1.1.0'
+include ':SmartTubeApp', ':leanbackassistant', ':leanback-1.0.0', ':fragment-1.1.0'
 
 // SharedModules
 gradle.ext.sharedModulesRoot = new File(settingsDir, 'pkg/SharedModules')
@@ -23,9 +23,6 @@ project(':SmartTubeApp').projectDir = new File(settingsDir, 'SmartTube')
 
 // fragment-1.1.0
 project(':fragment-1.1.0').projectDir = new File(settingsDir, 'pkg/fragment-1.1.0')
-
-// chatkit
-project(':chatkit').projectDir = new File(settingsDir, 'pkg/chatkit')
 
 // leanbackassistant
 project(':leanbackassistant').projectDir = new File(settingsDir, 'pkg/leanbackassistant')

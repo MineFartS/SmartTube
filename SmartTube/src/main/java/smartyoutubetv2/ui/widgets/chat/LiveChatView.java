@@ -11,9 +11,9 @@ import com.bumptech.glide.Glide;
 import SmartTubeApp.app.models.playback.ui.ChatReceiver;
 import SmartTubeApp.prefs.PlayerTweaksData;
 import SmartTubeApp.util.ViewUtil;
-import com.stfalcon.chatkit.messages.MessagesListAdapter;
+import SmartTubeApp.messages.MessagesListAdapter;
 
-public class LiveChatView extends com.stfalcon.chatkit.messages.MessagesList {
+public class LiveChatView extends SmartTubeApp.messages.MessagesList {
     private static final String SENDER_ID = LiveChatView.class.getSimpleName();
     private ChatReceiver mChatReceiver;
     private MessagesListAdapter<ChatItemMessage> mAdapter;

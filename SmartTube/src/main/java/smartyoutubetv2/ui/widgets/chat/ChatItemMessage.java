@@ -10,7 +10,7 @@ import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.utils.Utils;
 import SmartTubeApp.R;
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
-import com.stfalcon.chatkit.commons.models.IMessage;
+import SmartTubeApp.commons.models.IMessage;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -155,7 +155,6 @@ dependencies {
     implementation project(':leanback-1.0.0')
     implementation project(':sharedutils')
     implementation project(':youtubeapi')
-    implementation project(':chatkit')
     implementation project(':leanbackassistant')
 
     implementation 'androidx.leanback:leanback:' + leanbackXLibraryVersion
@@ -169,6 +168,9 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:' + appCompatXLibraryVersion
     implementation 'androidx.core:core-ktx:' + kotlinCoreXVersion
     implementation 'androidx.multidex:multidex:' + multiDexVersion
+    
+    implementation 'com.google.android.material:material:' + materialVersion
+    implementation "com.google.android.flexbox:flexbox:" + flexboxVersion
 
     implementation 'com.github.bumptech.glide:glide:' + glideVersion
     implementation 'com.github.bumptech.glide:annotations:' + glideVersion

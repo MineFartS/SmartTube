@@ -20,9 +20,9 @@ import SmartTubeApp.R;
 import SmartTubeApp.ui.mod.leanback.preference.LeanbackPreferenceDialogFragment;
 import SmartTubeApp.ui.widgets.chat.ChatItemMessage;
 import SmartTubeApp.util.ViewUtil;
-import com.stfalcon.chatkit.commons.models.IMessage;
-import com.stfalcon.chatkit.messages.MessagesList;
-import com.stfalcon.chatkit.messages.MessagesListAdapter;
+import SmartTubeApp.commons.models.IMessage;
+import SmartTubeApp.messages.MessagesList;
+import SmartTubeApp.messages.MessagesListAdapter;
 
 import java.util.List;
 

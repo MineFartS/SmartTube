@@ -14,8 +14,8 @@ import SmartTubeApp.R;
 import SmartTubeApp.ui.mod.leanback.preference.LeanbackPreferenceDialogFragment;
 import SmartTubeApp.ui.widgets.chat.ChatItemMessage;
 import SmartTubeApp.util.ViewUtil;
-import com.stfalcon.chatkit.messages.MessagesList;
-import com.stfalcon.chatkit.messages.MessagesListAdapter;
+import SmartTubeApp.messages.MessagesList;
+import SmartTubeApp.messages.MessagesListAdapter;
 
 public class ChatPreferenceDialogFragment extends LeanbackPreferenceDialogFragment {
     private static final String SENDER_ID = ChatPreferenceDialogFragment.class.getSimpleName();
