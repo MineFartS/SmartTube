@@ -1,14 +1,13 @@
-package com.liskovsoft.appupdatechecker2.other;
+package smartyoutubetv1.other;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import edu.mit.mobile.android.appupdater.R;
 
 public class SettingsManager {
     public static final long CHECK_INTERVAL_DEFAULT_MS = 60 * 1_000;
     private static final String TAG = SettingsManager.class.getSimpleName();
-    private static final String SHARED_PREFERENCES_NAME = "com.liskovsoft.appupdatechecker2.preferences";
+    private static final String SHARED_PREFERENCES_NAME = "smartyoutubetv1.preferences";
     private static final String PREF_CHECK_INTERVAL_MS = "check_interval_ms";
     private static final String PREF_LAST_CHECKED_MS = "last_checked_ms";
     private static final String PREF_APK_PATH = "apk_path";
@@ -25,8 +24,6 @@ public class SettingsManager {
 
         mPrefs = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
 
-        // defaults are kept in the preference file for ease of tweaking
-        //android.preference.PreferenceManager.setDefaultValues(context, SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE, R.xml.upd_prefs, true);
     }
 
     public long getLastCheckedMs() {

@@ -1,13 +1,13 @@
-package com.liskovsoft.appupdatechecker2;
+package smartyoutubetv1;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.net.Uri;
-import com.liskovsoft.appupdatechecker2.core.AppDownloader;
-import com.liskovsoft.appupdatechecker2.core.AppDownloaderListener;
-import com.liskovsoft.appupdatechecker2.core.AppVersionChecker;
-import com.liskovsoft.appupdatechecker2.core.AppVersionCheckerListener;
-import com.liskovsoft.appupdatechecker2.other.SettingsManager;
+import smartyoutubetv1.core.AppDownloader;
+import smartyoutubetv1.core.AppDownloaderListener;
+import smartyoutubetv1.core.AppVersionChecker;
+import smartyoutubetv1.core.AppVersionCheckerListener;
+import smartyoutubetv1.other.SettingsManager;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;

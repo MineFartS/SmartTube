@@ -1,4 +1,4 @@
-package com.liskovsoft.appupdatechecker2.other.downloadmanager;
+package smartyoutubetv1.other.downloadmanager;
 
 import android.util.Log;
 import org.xbill.DNS.ARecord;

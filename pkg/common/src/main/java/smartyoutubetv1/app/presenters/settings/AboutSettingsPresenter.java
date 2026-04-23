@@ -1,7 +1,7 @@
 package smartyoutubetv1.app.presenters.settings;
 
 import android.content.Context;
-import com.liskovsoft.appupdatechecker2.AppUpdateChecker;
+import smartyoutubetv1.AppUpdateChecker;
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;

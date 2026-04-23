@@ -1,12 +1,12 @@
-package com.liskovsoft.appupdatechecker2.core;
+package smartyoutubetv1.core;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.webkit.URLUtil;
-import com.liskovsoft.appupdatechecker2.other.downloadmanager.DownloadManager;
-import com.liskovsoft.appupdatechecker2.other.downloadmanager.DownloadManager.MyRequest;
+import smartyoutubetv1.other.downloadmanager.DownloadManager;
+import smartyoutubetv1.other.downloadmanager.DownloadManager.MyRequest;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 
 import java.io.File;

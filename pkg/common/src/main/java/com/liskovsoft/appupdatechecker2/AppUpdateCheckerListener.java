@@ -1,4 +1,4 @@
-package com.liskovsoft.appupdatechecker2;
+package smartyoutubetv1;
 
 import java.util.ArrayList;
 

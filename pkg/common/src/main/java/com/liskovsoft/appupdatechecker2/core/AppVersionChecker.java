@@ -1,4 +1,4 @@
-package com.liskovsoft.appupdatechecker2.core;
+package smartyoutubetv1.core;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,8 +6,8 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.AsyncTask;
 
-import com.liskovsoft.appupdatechecker2.other.downloadmanager.DownloadManager;
-import com.liskovsoft.appupdatechecker2.other.downloadmanager.DownloadManager.MyRequest;
+import smartyoutubetv1.other.downloadmanager.DownloadManager;
+import smartyoutubetv1.other.downloadmanager.DownloadManager.MyRequest;
 import com.liskovsoft.sharedutils.helpers.DeviceHelpers;
 import com.liskovsoft.sharedutils.locale.LocaleUtility;
 import com.liskovsoft.sharedutils.mylogger.Log;

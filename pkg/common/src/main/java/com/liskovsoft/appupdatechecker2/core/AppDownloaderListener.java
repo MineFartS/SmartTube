@@ -1,4 +1,4 @@
-package com.liskovsoft.appupdatechecker2.core;
+package smartyoutubetv1.core;
 
 public interface AppDownloaderListener {
     void onApkDownloaded(String path);

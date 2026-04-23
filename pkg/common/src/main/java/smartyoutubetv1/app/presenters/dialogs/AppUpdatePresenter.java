@@ -2,8 +2,8 @@ package smartyoutubetv1.app.presenters.dialogs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import com.liskovsoft.appupdatechecker2.AppUpdateChecker;
-import com.liskovsoft.appupdatechecker2.AppUpdateCheckerListener;
+import smartyoutubetv1.AppUpdateChecker;
+import smartyoutubetv1.AppUpdateCheckerListener;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import smartyoutubetv1.R;
 import smartyoutubetv1.app.models.errors.ErrorFragmentData;
