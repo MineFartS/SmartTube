@@ -3,11 +3,11 @@ package smartyoutubetv1.app.models.playback.controllers;
 import android.annotation.SuppressLint;
 import android.util.Pair;
 
-import com.liskovsoft.mediaserviceinterfaces.MediaItemService;
-import com.liskovsoft.mediaserviceinterfaces.ServiceManager;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.youtubeapi.MediaItemService;
+import com.liskovsoft.youtubeapi.ServiceManager;
+import com.liskovsoft.youtubeapi.data.MediaFormat;
+import com.liskovsoft.youtubeapi.data.MediaItemFormatInfo;
+import com.liskovsoft.youtubeapi.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;

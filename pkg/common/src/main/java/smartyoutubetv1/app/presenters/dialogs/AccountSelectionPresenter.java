@@ -3,9 +3,9 @@ package smartyoutubetv1.app.presenters.dialogs;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.liskovsoft.mediaserviceinterfaces.ServiceManager;
-import com.liskovsoft.mediaserviceinterfaces.SignInService;
-import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
+import com.liskovsoft.youtubeapi.ServiceManager;
+import com.liskovsoft.youtubeapi.SignInService;
+import com.liskovsoft.youtubeapi.oauth.Account;
 import smartyoutubetv1.R;
 import smartyoutubetv1.app.models.playback.ui.OptionItem;
 import smartyoutubetv1.app.models.playback.ui.UiOptionItem;

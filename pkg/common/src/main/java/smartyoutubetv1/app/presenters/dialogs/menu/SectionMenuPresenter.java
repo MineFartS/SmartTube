@@ -4,8 +4,8 @@ import android.content.Context;
 
 import androidx.annotation.Nullable;
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.youtubeapi.data.MediaGroup;
+import com.liskovsoft.youtubeapi.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import smartyoutubetv1.R;
 import smartyoutubetv1.app.models.data.BrowseSection;

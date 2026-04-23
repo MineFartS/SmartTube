@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.playlistgroups
 
-import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup
-import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup.Item
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
+import com.liskovsoft.youtubeapi.data.ItemGroup
+import com.liskovsoft.youtubeapi.data.ItemGroup.Item
+import com.liskovsoft.youtubeapi.data.MediaItem
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.sharedutils.rx.RxHelper
 import com.liskovsoft.youtubeapi.channelgroups.models.ItemGroupImpl

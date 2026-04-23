@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.browse.v2
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
+import com.liskovsoft.youtubeapi.data.MediaGroup
+import com.liskovsoft.youtubeapi.data.MediaItem
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl
 import com.liskovsoft.youtubeapi.playlistgroups.PlaylistGroupServiceImpl
 import com.liskovsoft.youtubeapi.rss.RssService

@@ -11,7 +11,7 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
+import com.liskovsoft.youtubeapi.data.MediaItemFormatInfo;
 import smartyoutubetv1.app.models.data.Video;
 import smartyoutubetv1.app.models.data.VideoGroup;
 import smartyoutubetv1.app.models.playback.ui.ChatReceiver;

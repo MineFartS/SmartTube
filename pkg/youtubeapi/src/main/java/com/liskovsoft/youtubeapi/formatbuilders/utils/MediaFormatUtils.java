@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.formatbuilders.utils;
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat;
+import com.liskovsoft.youtubeapi.data.MediaFormat;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 
 import java.util.regex.Matcher;

@@ -1,8 +1,8 @@
 package smartyoutubetv1.app.models.data;
 
-import com.liskovsoft.mediaserviceinterfaces.data.ChapterItem;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.youtubeapi.data.ChapterItem;
+import com.liskovsoft.youtubeapi.data.MediaGroup;
+import com.liskovsoft.youtubeapi.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import smartyoutubetv1.app.models.playback.service.VideoStateService;

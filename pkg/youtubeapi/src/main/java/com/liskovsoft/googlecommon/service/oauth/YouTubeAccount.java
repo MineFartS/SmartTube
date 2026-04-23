@@ -1,7 +1,7 @@
 package com.liskovsoft.googlecommon.service.oauth;
 
 import androidx.annotation.NonNull;
-import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
+import com.liskovsoft.youtubeapi.oauth.Account;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.googlecommon.common.models.auth.info.AccountInt;
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;

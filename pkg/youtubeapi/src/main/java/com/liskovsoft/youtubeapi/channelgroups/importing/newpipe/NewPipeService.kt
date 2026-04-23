@@ -5,8 +5,8 @@ import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
 import com.liskovsoft.googleapi.youtubedata3.YouTubeDataServiceInt
-import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup
-import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup.Item
+import com.liskovsoft.youtubeapi.data.ItemGroup
+import com.liskovsoft.youtubeapi.data.ItemGroup.Item
 import com.liskovsoft.youtubeapi.channelgroups.importing.GroupImportService
 import com.liskovsoft.youtubeapi.channelgroups.importing.newpipe.gen.NewPipeSubscriptionsGroup
 import com.liskovsoft.youtubeapi.channelgroups.models.ItemGroupImpl

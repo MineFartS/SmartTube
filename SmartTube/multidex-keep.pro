@@ -110,9 +110,9 @@
 -keepclassmembers class androidx.leanback.widget.SearchBar {
     <init>(...);
 }
--keepclassmembers class com.liskovsoft.mediaserviceinterfaces.ServiceManager {
+-keepclassmembers class com.liskovsoft.youtubeapi.ServiceManager {
     <init>(...);
-    com.liskovsoft.mediaserviceinterfaces.MediaItemService getMediaItemService();
+    com.liskovsoft.youtubeapi.MediaItemService getMediaItemService();
 }
 # IncompatibleClassChangeError: androidx.recyclerview.widget.RecyclerView$Recycler
 -keepclassmembers class androidx.recyclerview.widget.RecyclerView$Recycler {
@@ -145,7 +145,7 @@
 -keepclassmembers class smartyoutubetv1.app.models.search.MediaServiceSearchTagProvider {
     <init>(...);
     boolean mIgnoreEmptyQuery;
-    com.liskovsoft.mediaserviceinterfaces.ContentService mContentService;
+    com.liskovsoft.youtubeapi.ContentService mContentService;
 }
 -keepclassmembers class androidx.leanback.widget.GridLayoutManager {
     <init>(...);

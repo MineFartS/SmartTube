@@ -40,7 +40,6 @@ dependencies {
     // MOD: add custom lib
     implementation project(':leanback-1.0.0')
     implementation project(':sharedutils')
-    implementation project(':mediaserviceinterfaces')
     implementation project(':youtubeapi')
 
     //implementation 'com.android.support:leanback-v17:' + supportLibraryVersion

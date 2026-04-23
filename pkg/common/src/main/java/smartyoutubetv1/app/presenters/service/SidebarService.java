@@ -3,7 +3,7 @@ package smartyoutubetv1.app.presenters.service;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+import com.liskovsoft.youtubeapi.data.MediaGroup;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import smartyoutubetv1.R;
 import smartyoutubetv1.app.models.data.Video;

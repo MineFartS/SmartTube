@@ -3,9 +3,9 @@ package com.liskovsoft.youtubeapi.service;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.liskovsoft.mediaserviceinterfaces.ContentService;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.youtubeapi.ContentService;
+import com.liskovsoft.youtubeapi.data.MediaGroup;
+import com.liskovsoft.youtubeapi.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.actions.ActionsService;

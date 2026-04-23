@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.comments
 
-import com.liskovsoft.mediaserviceinterfaces.data.CommentGroup
+import com.liskovsoft.youtubeapi.data.CommentGroup
 import com.liskovsoft.youtubeapi.comments.gen.getDislikeParams
 import com.liskovsoft.youtubeapi.comments.gen.getLikeParams
 import com.liskovsoft.youtubeapi.comments.gen.getActiveCommentItem

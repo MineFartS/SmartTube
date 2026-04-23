@@ -1,9 +1,9 @@
 package com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder;
 
 import android.util.Xml;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaSubtitle;
+import com.liskovsoft.youtubeapi.data.MediaFormat;
+import com.liskovsoft.youtubeapi.data.MediaItemFormatInfo;
+import com.liskovsoft.youtubeapi.data.MediaSubtitle;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.YouTubeOtfSegmentParser.OtfSegment;

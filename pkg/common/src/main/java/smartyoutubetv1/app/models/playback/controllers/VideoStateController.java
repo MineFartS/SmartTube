@@ -1,6 +1,6 @@
 package smartyoutubetv1.app.models.playback.controllers;
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.youtubeapi.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import smartyoutubetv1.R;

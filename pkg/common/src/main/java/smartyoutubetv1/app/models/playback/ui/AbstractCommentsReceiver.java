@@ -1,8 +1,8 @@
 package smartyoutubetv1.app.models.playback.ui;
 
 import android.content.Context;
-import com.liskovsoft.mediaserviceinterfaces.data.CommentGroup;
-import com.liskovsoft.mediaserviceinterfaces.data.CommentItem;
+import com.liskovsoft.youtubeapi.data.CommentGroup;
+import com.liskovsoft.youtubeapi.data.CommentItem;
 import smartyoutubetv1.R;
 
 public abstract class AbstractCommentsReceiver implements CommentsReceiver {

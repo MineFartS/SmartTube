@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.notifications
 
-import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup
+import com.liskovsoft.youtubeapi.data.ItemGroup
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl
 import com.liskovsoft.youtubeapi.channelgroups.models.ItemImpl

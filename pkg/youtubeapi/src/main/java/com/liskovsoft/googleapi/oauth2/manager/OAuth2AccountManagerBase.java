@@ -3,7 +3,7 @@ package com.liskovsoft.googleapi.oauth2.manager;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
 import com.liskovsoft.googlecommon.service.oauth.YouTubeAccount;
-import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
+import com.liskovsoft.youtubeapi.oauth.Account;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 

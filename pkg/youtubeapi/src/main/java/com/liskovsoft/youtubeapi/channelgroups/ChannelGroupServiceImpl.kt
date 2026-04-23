@@ -2,9 +2,9 @@ package com.liskovsoft.youtubeapi.channelgroups
 
 import android.net.Uri
 import com.liskovsoft.googleapi.youtubedata3.YouTubeDataServiceInt
-import com.liskovsoft.mediaserviceinterfaces.ChannelGroupService
-import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup
-import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup.Item
+import com.liskovsoft.youtubeapi.ChannelGroupService
+import com.liskovsoft.youtubeapi.data.ItemGroup
+import com.liskovsoft.youtubeapi.data.ItemGroup.Item
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.sharedutils.rx.RxHelper
 import com.liskovsoft.youtubeapi.channelgroups.importing.grayjay.GrayJayService

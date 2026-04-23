@@ -1,9 +1,9 @@
 package com.liskovsoft.youtubeapi.service.data;
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemStoryboard;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaSubtitle;
+import com.liskovsoft.youtubeapi.data.MediaFormat;
+import com.liskovsoft.youtubeapi.data.MediaItemFormatInfo;
+import com.liskovsoft.youtubeapi.data.MediaItemStoryboard;
+import com.liskovsoft.youtubeapi.data.MediaSubtitle;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;

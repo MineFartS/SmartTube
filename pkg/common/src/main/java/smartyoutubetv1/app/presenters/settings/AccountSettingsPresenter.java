@@ -2,7 +2,7 @@ package smartyoutubetv1.app.presenters.settings;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
+import com.liskovsoft.youtubeapi.oauth.Account;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import smartyoutubetv1.R;
 import smartyoutubetv1.app.models.playback.ui.OptionItem;

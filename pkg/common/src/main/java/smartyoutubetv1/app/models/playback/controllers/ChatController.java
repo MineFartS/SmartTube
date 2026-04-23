@@ -1,8 +1,8 @@
 package smartyoutubetv1.app.models.playback.controllers;
 
-import com.liskovsoft.mediaserviceinterfaces.LiveChatService;
-import com.liskovsoft.mediaserviceinterfaces.data.ChatItem;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.youtubeapi.LiveChatService;
+import com.liskovsoft.youtubeapi.data.ChatItem;
+import com.liskovsoft.youtubeapi.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import smartyoutubetv1.R;

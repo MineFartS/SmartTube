@@ -3,7 +3,7 @@ package smartyoutubetv1.prefs;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build.VERSION;
-import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
+import com.liskovsoft.youtubeapi.data.SponsorSegment;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import smartyoutubetv1.R;

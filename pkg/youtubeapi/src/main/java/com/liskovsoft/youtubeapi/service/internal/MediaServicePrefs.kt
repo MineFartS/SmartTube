@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.service.internal
 
-import com.liskovsoft.mediaserviceinterfaces.SignInService.OnAccountChange
-import com.liskovsoft.mediaserviceinterfaces.oauth.Account
+import com.liskovsoft.youtubeapi.SignInService.OnAccountChange
+import com.liskovsoft.youtubeapi.oauth.Account
 import com.liskovsoft.sharedutils.misc.WeakHashSet
 import com.liskovsoft.sharedutils.prefs.SharedPreferencesBase
 import com.liskovsoft.youtubeapi.app.AppService

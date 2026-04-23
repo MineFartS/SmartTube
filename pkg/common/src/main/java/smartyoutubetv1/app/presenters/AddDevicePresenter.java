@@ -2,7 +2,7 @@ package smartyoutubetv1.app.presenters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import com.liskovsoft.mediaserviceinterfaces.ServiceManager;
+import com.liskovsoft.youtubeapi.ServiceManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import smartyoutubetv1.app.presenters.base.BasePresenter;
 import smartyoutubetv1.app.views.AddDeviceView;

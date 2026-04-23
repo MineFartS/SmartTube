@@ -14,9 +14,9 @@ import com.google.android.exoplayer2.source.dash.manifest.SegmentBase.SegmentTem
 import com.google.android.exoplayer2.source.dash.manifest.SegmentBase.SegmentTimelineElement;
 import com.google.android.exoplayer2.source.dash.manifest.SegmentBase.SingleSegmentBase;
 import com.google.android.exoplayer2.util.MimeTypes;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaSubtitle;
+import com.liskovsoft.youtubeapi.data.MediaFormat;
+import com.liskovsoft.youtubeapi.data.MediaItemFormatInfo;
+import com.liskovsoft.youtubeapi.data.MediaSubtitle;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.MediaFormatComparator;

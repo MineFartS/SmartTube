@@ -17,7 +17,7 @@ import smartyoutubetv1.prefs.ContentBlockData;
 import smartyoutubetv1.utils.AppDialogUtil;
 import smartyoutubetv1.utils.Utils;
 
-import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
+import com.liskovsoft.youtubeapi.data.SponsorSegment;
 
 import java.util.ArrayList;
 import java.util.List;

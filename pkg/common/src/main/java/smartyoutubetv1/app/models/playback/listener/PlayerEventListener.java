@@ -1,6 +1,6 @@
 package smartyoutubetv1.app.models.playback.listener;
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.youtubeapi.data.MediaItemMetadata;
 import smartyoutubetv1.app.models.data.Video;
 import smartyoutubetv1.app.models.playback.manager.PlayerManager;
 import smartyoutubetv1.misc.TickleManager.TickleListener;

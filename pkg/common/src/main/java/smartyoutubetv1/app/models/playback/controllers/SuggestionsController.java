@@ -5,12 +5,12 @@ import android.util.Pair;
 
 import androidx.core.content.ContextCompat;
 
-import com.liskovsoft.mediaserviceinterfaces.ContentService;
-import com.liskovsoft.mediaserviceinterfaces.MediaItemService;
-import com.liskovsoft.mediaserviceinterfaces.data.ChapterItem;
-import com.liskovsoft.mediaserviceinterfaces.data.DislikeData;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.youtubeapi.ContentService;
+import com.liskovsoft.youtubeapi.MediaItemService;
+import com.liskovsoft.youtubeapi.data.ChapterItem;
+import com.liskovsoft.youtubeapi.data.DislikeData;
+import com.liskovsoft.youtubeapi.data.MediaGroup;
+import com.liskovsoft.youtubeapi.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;

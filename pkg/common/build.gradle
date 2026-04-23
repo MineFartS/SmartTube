@@ -48,7 +48,6 @@ dependencies {
 
     implementation project(':sharedutils')
     implementation project(':fragment-1.1.0')
-    implementation project(':mediaserviceinterfaces')
     implementation project(':leanbackassistant')
     implementation project(':youtubeapi')
     implementation project(':exoplayer-library')

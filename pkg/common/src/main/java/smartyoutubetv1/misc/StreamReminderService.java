@@ -1,9 +1,9 @@
 package smartyoutubetv1.misc;
 
 import android.content.Context;
-import com.liskovsoft.mediaserviceinterfaces.MediaItemService;
-import com.liskovsoft.mediaserviceinterfaces.ServiceManager;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
+import com.liskovsoft.youtubeapi.MediaItemService;
+import com.liskovsoft.youtubeapi.ServiceManager;
+import com.liskovsoft.youtubeapi.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;

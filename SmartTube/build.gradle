@@ -162,19 +162,10 @@ dependencies {
     implementation project(':exoplayer-extension-leanback')
     implementation project(':exoplayer-extension-mediasession')
 
-
-
-
-
-
-
-
-
     implementation project(':fragment-1.1.0')
     implementation project(':leanback-1.0.0')
     implementation project(':common')
     implementation project(':sharedutils')
-    implementation project(':mediaserviceinterfaces')
     implementation project(':youtubeapi')
     implementation project(':chatkit')
 

@@ -7,12 +7,12 @@ import android.view.Gravity;
 import androidx.annotation.Nullable;
 
 import com.google.android.exoplayer2.Format;
-import com.liskovsoft.mediaserviceinterfaces.CommentsService;
-import com.liskovsoft.mediaserviceinterfaces.ContentService;
-import com.liskovsoft.mediaserviceinterfaces.MediaItemService;
-import com.liskovsoft.mediaserviceinterfaces.NotificationsService;
-import com.liskovsoft.mediaserviceinterfaces.SignInService;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.youtubeapi.CommentsService;
+import com.liskovsoft.youtubeapi.ContentService;
+import com.liskovsoft.youtubeapi.MediaItemService;
+import com.liskovsoft.youtubeapi.NotificationsService;
+import com.liskovsoft.youtubeapi.SignInService;
+import com.liskovsoft.youtubeapi.data.MediaItemMetadata;
 import smartyoutubetv1.app.models.data.Video;
 import smartyoutubetv1.app.models.playback.listener.PlayerEventListener;
 import smartyoutubetv1.app.models.playback.service.VideoStateService;

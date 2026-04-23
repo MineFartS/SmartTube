@@ -26,7 +26,6 @@ android {
 
 dependencies {
     implementation project(modulePrefix + 'library-core')
-    implementation project(':mediaserviceinterfaces')
     implementation project(':sharedutils')
     implementation project(':youtubeapi')
     compileOnly 'org.checkerframework:checker-qual:' + checkerframeworkVersion

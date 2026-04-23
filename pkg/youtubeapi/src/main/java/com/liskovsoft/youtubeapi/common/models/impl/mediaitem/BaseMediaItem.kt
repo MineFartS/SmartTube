@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.common.models.impl.mediaitem
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
+import com.liskovsoft.youtubeapi.data.MediaItem
+import com.liskovsoft.youtubeapi.data.MediaItemMetadata
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper

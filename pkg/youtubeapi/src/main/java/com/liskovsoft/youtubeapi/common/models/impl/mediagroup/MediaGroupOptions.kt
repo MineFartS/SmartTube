@@ -1,6 +1,6 @@
 package com.liskovsoft.youtubeapi.common.models.impl.mediagroup
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
+import com.liskovsoft.youtubeapi.data.MediaGroup
 import com.liskovsoft.youtubeapi.browse.v2.BrowseApiHelper
 import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData

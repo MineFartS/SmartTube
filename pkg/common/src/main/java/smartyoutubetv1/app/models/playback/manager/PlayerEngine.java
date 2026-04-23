@@ -1,6 +1,6 @@
 package smartyoutubetv1.app.models.playback.manager;
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
+import com.liskovsoft.youtubeapi.data.MediaItemFormatInfo;
 import smartyoutubetv1.exoplayer.selector.FormatItem;
 
 import java.io.InputStream;

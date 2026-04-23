@@ -2,8 +2,8 @@ package smartyoutubetv1.app.presenters.settings;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import com.liskovsoft.mediaserviceinterfaces.ServiceManager;
-import com.liskovsoft.mediaserviceinterfaces.RemoteControlService;
+import com.liskovsoft.youtubeapi.ServiceManager;
+import com.liskovsoft.youtubeapi.RemoteControlService;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.helpers.PermissionHelpers;
 import smartyoutubetv1.R;

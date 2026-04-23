@@ -1,8 +1,8 @@
 package com.liskovsoft.youtubeapi.next.v2
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
-import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo
+import com.liskovsoft.youtubeapi.data.MediaGroup
+import com.liskovsoft.youtubeapi.data.MediaItemMetadata
+import com.liskovsoft.youtubeapi.data.PlaylistInfo
 import com.liskovsoft.youtubeapi.playlistgroups.PlaylistGroupServiceImpl
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaGroup
 import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem

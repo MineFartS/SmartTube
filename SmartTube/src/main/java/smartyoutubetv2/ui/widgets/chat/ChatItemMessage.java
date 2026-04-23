@@ -3,8 +3,8 @@ package SmartTubeApp.ui.widgets.chat;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.liskovsoft.mediaserviceinterfaces.data.ChatItem;
-import com.liskovsoft.mediaserviceinterfaces.data.CommentItem;
+import com.liskovsoft.youtubeapi.data.ChatItem;
+import com.liskovsoft.youtubeapi.data.CommentItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import smartyoutubetv1.app.models.data.Video;
 import smartyoutubetv1.utils.Utils;

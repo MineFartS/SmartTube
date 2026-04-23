@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.youtubeapi.data.MediaItemMetadata;
 import smartyoutubetv1.app.models.data.Playlist;
 import smartyoutubetv1.app.models.data.Video;
 import smartyoutubetv1.app.models.playback.BasePlayerController;

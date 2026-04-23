@@ -18,7 +18,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
+import com.liskovsoft.youtubeapi.oauth.Account;
 import com.liskovsoft.sharedutils.locale.LocaleUtility;
 import smartyoutubetv1.app.models.data.Video;
 import smartyoutubetv1.app.presenters.PlaybackPresenter;

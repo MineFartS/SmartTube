@@ -3,10 +3,10 @@ package com.liskovsoft.youtubeapi.playlist;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
-import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
+import com.liskovsoft.youtubeapi.data.ItemGroup;
+import com.liskovsoft.youtubeapi.data.MediaItem;
+import com.liskovsoft.youtubeapi.data.MediaItemMetadata;
+import com.liskovsoft.youtubeapi.data.PlaylistInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.browse.v2.BrowseApiHelper;
 import com.liskovsoft.youtubeapi.channelgroups.models.ItemGroupImpl;

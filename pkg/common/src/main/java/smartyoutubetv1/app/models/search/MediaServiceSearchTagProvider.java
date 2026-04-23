@@ -2,8 +2,8 @@ package smartyoutubetv1.app.models.search;
 
 import android.text.TextUtils;
 
-import com.liskovsoft.mediaserviceinterfaces.ContentService;
-import com.liskovsoft.mediaserviceinterfaces.ServiceManager;
+import com.liskovsoft.youtubeapi.ContentService;
+import com.liskovsoft.youtubeapi.ServiceManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import smartyoutubetv1.app.models.search.vineyard.Tag;
 import com.liskovsoft.sharedutils.rx.RxHelper;

@@ -1,9 +1,9 @@
 package com.liskovsoft.youtubeapi.next.v2
 
-import com.liskovsoft.mediaserviceinterfaces.data.DislikeData
-import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata
+import com.liskovsoft.youtubeapi.data.DislikeData
+import com.liskovsoft.youtubeapi.data.MediaGroup
+import com.liskovsoft.youtubeapi.data.MediaItem
+import com.liskovsoft.youtubeapi.data.MediaItemMetadata
 import com.liskovsoft.youtubeapi.app.AppService
 import com.liskovsoft.youtubeapi.browse.v1.BrowseApiHelper
 import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl

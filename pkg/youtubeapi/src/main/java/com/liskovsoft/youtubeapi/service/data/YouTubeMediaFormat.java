@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.service.data;
 
 import androidx.annotation.NonNull;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat;
+import com.liskovsoft.youtubeapi.data.MediaFormat;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.youtubeapi.formatbuilders.utils.ITagUtils;
 import com.liskovsoft.youtubeapi.videoinfo.models.formats.AdaptiveVideoFormat;

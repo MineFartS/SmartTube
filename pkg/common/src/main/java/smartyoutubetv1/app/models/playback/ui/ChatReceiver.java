@@ -1,6 +1,6 @@
 package smartyoutubetv1.app.models.playback.ui;
 
-import com.liskovsoft.mediaserviceinterfaces.data.ChatItem;
+import com.liskovsoft.youtubeapi.data.ChatItem;
 
 public interface ChatReceiver {
     interface Callback {

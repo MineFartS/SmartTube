@@ -2,7 +2,7 @@ package com.liskovsoft.youtubeapi.rss;
 
 import android.util.Xml;
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.youtubeapi.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.DateHelper;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;

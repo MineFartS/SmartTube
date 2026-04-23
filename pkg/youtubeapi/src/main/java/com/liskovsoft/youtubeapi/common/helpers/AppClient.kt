@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.common.helpers
 
 import com.liskovsoft.googlecommon.common.helpers.DefaultHeaders
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo
+import com.liskovsoft.youtubeapi.data.MediaItemFormatInfo
 import com.liskovsoft.sharedutils.helpers.Helpers
 
 private const val JSON_POST_DATA_BASE = "{\"context\":{\"client\":{\"clientName\":\"%s\",\"clientVersion\":\"%s\"," +

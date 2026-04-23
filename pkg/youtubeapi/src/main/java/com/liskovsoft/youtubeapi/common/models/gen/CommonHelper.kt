@@ -1,7 +1,7 @@
 package com.liskovsoft.youtubeapi.common.models.gen
 
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
+import com.liskovsoft.youtubeapi.data.MediaItem
 import com.liskovsoft.sharedutils.helpers.DateHelper
 import com.liskovsoft.youtubeapi.browse.v2.gen.getContinuationToken
 import com.liskovsoft.youtubeapi.browse.v2.gen.getThumbnails
