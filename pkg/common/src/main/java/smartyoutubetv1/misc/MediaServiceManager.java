@@ -38,6 +38,8 @@ import smartyoutubetv1.utils.Utils;
 import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
 import com.liskovsoft.youtubeapi.playlist.PlaylistService;
 import com.liskovsoft.sharedutils.okhttp.ApiCaller;
+import com.liskovsoft.youtubeapi.app.AppService;
+
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
@@ -76,6 +78,9 @@ public class MediaServiceManager implements OnAccountChange {
 
     private final Map<Integer, Pair<Integer, Long>> mContinuations = new HashMap<>();
     private final List<AccountChangeListener> mAccountListeners = new CopyOnWriteArrayList<>();
+
+    private float mPositionSec;
+    private String mVideoId;
 
     public interface OnMetadata {
         void onMetadata(MediaItemMetadata metadata);
@@ -436,6 +441,7 @@ public class MediaServiceManager implements OnAccountChange {
         if (mVideoId == null || mVideoId != videoId) {
 
             mVideoId = videoId;
+            mPositionSec = 0;
 
             api = apiTempl.copy();
             api.add("cmt", oldPositionSec);
