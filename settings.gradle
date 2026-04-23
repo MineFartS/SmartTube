@@ -6,10 +6,6 @@ apply from: new File(gradle.ext.sharedModulesRoot, 'core_settings.gradle')
 
 gradle.ext.sharedModulesConstants = new File(gradle.ext.sharedModulesRoot, '/../constants.gradle')
 
-// MediaServiceCore
-gradle.ext.mediaServiceCoreRoot = new File(settingsDir, 'pkg/MediaServiceCore')
-apply from: new File(gradle.ext.mediaServiceCoreRoot, 'core_settings.gradle')
-
 // exoplayer-amzn-2.10.6
 gradle.ext.exoplayerRoot = new File(settingsDir, 'pkg/exoplayer-amzn-2.10.6')
 gradle.ext.exoplayerModulePrefix = 'exoplayer-'
