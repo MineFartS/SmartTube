@@ -1,6 +1,6 @@
 
 
-package com.liskovsoft.leanbackassistant.media;
+package SmartTubeApp.media;
 
 import android.os.Parcel;
 import android.os.Parcelable;

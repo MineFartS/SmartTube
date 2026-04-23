@@ -202,7 +202,7 @@
 #-keep class com.google.gson.internal.bind.TypeAdapters { *; }
 #-keep class androidx.leanback.widget.ItemAlignmentFacet$ItemAlignmentDef { *; }
 #-keep class SmartTubeApp.app.models.playback.ui.OptionCategory { *; }
-#-keep class com.liskovsoft.leanbackassistant.channels.UpdateChannelsReceiver { *; }
+#-keep class SmartTubeApp.channels.UpdateChannelsReceiver { *; }
 #-keep class androidx.core.view.ViewCompat { *; }
 #-keep class androidx.work.impl.WorkManagerInitializer { *; }
 #-keep class **$r8$backportedMethods$** { *; }

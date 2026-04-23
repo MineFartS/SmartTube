@@ -1,11 +1,11 @@
 
 
-package com.liskovsoft.leanbackassistant.media;
+package SmartTubeApp.media;
 
 import androidx.tvprovider.media.tv.TvContractCompat;
 
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
-import com.liskovsoft.leanbackassistant.media.ClipService.GroupCallback;
+import SmartTubeApp.media.ClipService.GroupCallback;
 import com.liskovsoft.sharedutils.ContentService;
 import com.liskovsoft.sharedutils.ServiceManager;
 import com.liskovsoft.sharedutils.data.MediaGroup;

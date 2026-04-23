@@ -154,8 +154,9 @@ dependencies {
     implementation project(':fragment-1.1.0')
     implementation project(':leanback-1.0.0')
     implementation project(':sharedutils')
-    implementation project(':leanbackassistant')
+    implementation project(':leanback-1.0.0')
 
+    implementation 'androidx.tvprovider:tvprovider:' + leanbackXLibraryVersion
     implementation 'androidx.leanback:leanback:' + leanbackXLibraryVersion
     implementation 'androidx.leanback:leanback-preference:' + leanbackXLibraryVersion
     implementation 'androidx.recommendation:recommendation:' + leanbackXLibraryVersion

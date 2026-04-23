@@ -1,4 +1,4 @@
-package com.liskovsoft.leanbackassistant.utils;
+package SmartTubeApp.utils;
 
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
