@@ -1,5 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <dimen name="input_button_width">36dp</dimen>
+    <dimen name="input_button_height">36dp</dimen>
+    <dimen name="input_button_margin">16dp</dimen>
+    <dimen name="input_text_size">17sp</dimen>
+    <dimen name="input_padding_left">16sp</dimen>
+    <dimen name="input_padding_right">16sp</dimen>
+    <dimen name="input_padding_top">8sp</dimen>
+    <dimen name="input_padding_bottom">8sp</dimen>
+
+    <dimen name="message_bubble_corners_radius">15dp</dimen>
+
+    <dimen name="dialog_avatar_width">56dp</dimen>
+    <dimen name="dialog_avatar_height">56dp</dimen>
+    <dimen name="dialog_last_message_avatar_width">24dp</dimen>
+    <dimen name="dialog_last_message_avatar_height">24dp</dimen>
+    <dimen name="dialog_title_text_size">18sp</dimen>
+    <dimen name="dialog_message_text_size">16sp</dimen>
+    <dimen name="dialog_date_text_size">14sp</dimen>
+    <dimen name="dialog_unread_bubble_text_size">13sp</dimen>
+    <dimen name="dialog_divider_margin_left">88dp</dimen>
+    <dimen name="dialog_divider_margin_right">0dp</dimen>
+
+    <dimen name="message_avatar_width">40dp</dimen>
+    <dimen name="message_avatar_height">40dp</dimen>
+    <dimen name="message_padding_left">16dp</dimen>
+    <dimen name="message_padding_right">16dp</dimen>
+    <dimen name="message_padding_top">16dp</dimen>
+    <dimen name="message_padding_bottom">16dp</dimen>
+    <!-- Incoming/Outcoming text message size -->
+    <!-- MODIFIED: message_text_size: "17sp"->"14sp" -->
+    <dimen name="message_text_size">16sp</dimen>
+    <dimen name="message_time_text_size">14sp</dimen>
+    <dimen name="message_date_header_text_size">16sp</dimen>
+    <dimen name="message_date_header_padding">16dp</dimen>
+    <!--<dimen name="message_incoming_bubble_margin_right">40dp</dimen>-->
+    <!-- Make messages to stick exactly to the right edge -->
+    <dimen name="message_incoming_bubble_margin_right">0dp</dimen>
+    <dimen name="message_outcoming_bubble_margin_left">88dp</dimen>
+
+    <dimen name="exo_media_button_height">60dp</dimen>
+    <dimen name="exo_media_button_width">60dp</dimen>
+    <dimen name="exo_media_button_margin">8dp</dimen>
+    <dimen name="exo_media_button_padding">4dp</dimen>
+    <dimen name="player_main_padding">50dp</dimen>
+    <dimen name="player_second_padding">25dp</dimen>
+    <dimen name="player_top_bar_text_size">20sp</dimen>
+    <dimen name="player_top_bar_text_size2">14sp</dimen>
+    <dimen name="player_time_bar_height">4dp</dimen>
+    <dimen name="player_time_bar_text_size">14sp</dimen>
+    <dimen name="player_time_bar_scrubber_size">12dp</dimen>
+    <dimen name="player_time_bar_scrubber_dragged_size">16dp</dimen>
+    <dimen name="progress_bar_size">70dp</dimen>
+    <dimen name="debug_text_size">12sp</dimen>
+    <dimen name="player_suggestions_height">50dp</dimen>
+    <dimen name="subtitle_text_size">30sp</dimen>
+
     <!-- Default, same as xhdpi -->
     <!-- 320dpi, Amazon Fire TV Stick -->
 

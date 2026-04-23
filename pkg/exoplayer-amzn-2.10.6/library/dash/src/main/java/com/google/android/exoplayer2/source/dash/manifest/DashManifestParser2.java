@@ -14,14 +14,14 @@ import com.google.android.exoplayer2.source.dash.manifest.SegmentBase.SegmentTem
 import com.google.android.exoplayer2.source.dash.manifest.SegmentBase.SegmentTimelineElement;
 import com.google.android.exoplayer2.source.dash.manifest.SegmentBase.SingleSegmentBase;
 import com.google.android.exoplayer2.util.MimeTypes;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaSubtitle;
+import com.liskovsoft.sharedutils.data.MediaFormat;
+import com.liskovsoft.sharedutils.data.MediaItemFormatInfo;
+import com.liskovsoft.sharedutils.data.MediaSubtitle;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.youtubeapi.formatbuilders.mpdbuilder.MediaFormatComparator;
-import com.liskovsoft.youtubeapi.formatbuilders.utils.ITagUtils;
-import com.liskovsoft.youtubeapi.formatbuilders.utils.MediaFormatUtils;
+import com.liskovsoft.sharedutils.formatbuilders.mpdbuilder.MediaFormatComparator;
+import com.liskovsoft.sharedutils.formatbuilders.utils.ITagUtils;
+import com.liskovsoft.sharedutils.formatbuilders.utils.MediaFormatUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;

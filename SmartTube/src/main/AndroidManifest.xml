@@ -3,6 +3,23 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="SmartTubeApp">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.QUICKBOOT_POWERON" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+
+    <queries>
+        <package android:name="com.google.android.youtube.tv" />
+        <package android:name="com.amazon.firetv.youtube" />
+    </queries>
+
     <!-- Shield on Android 11 speech recognizer not working fix? -->
     <!-- https://stackoverflow.com/questions/64319117/speechrecognizer-not-available-when-targeting-android-11 -->
     <queries>
@@ -59,16 +76,59 @@
         android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
         android:theme="@style/App.Theme.Leanback.Browse"
+        android:requestLegacyExternalStorage="true"
         tools:node="merge"
         tools:replace="android:theme,android:allowBackup"
         tools:ignore="GoogleAppIndexingWarning,LockedOrientationActivity,UnusedAttribute">
 
-        <!-- Screen Mirror (e.g. DIAL) for Amazon TV -->
-        <!-- Not implemented yet( -->
-        <!--<meta-data android:name="whisperplay" android:resource="@xml/whisperplay"/>-->
 
-        <!-- This activity's name used inside atv channels -->
-        <!-- More info: com.liskovsoft.leanbackassistant.utils.AppUtil -->
+        <provider
+            android:name="SmartTubeApp.other.GenericFileProvider"
+            android:authorities="${applicationId}.update_provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <!-- Details: https://developer.android.com/reference/android/support/v4/content/FileProvider.html#SpecifyFiles -->
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+        
+        <receiver
+            android:name="SmartTubeApp.misc.RemoteControlReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.SCREEN_ON" />
+                <!-- For HTC devices -->
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+                <!-- Fix: Permission Denial: not allowed to send broadcast android.intent.action.BOOT_COMPLETED -->
+                <action android:name="android.intent.action.ACTION_BOOT_COMPLETED" />
+                <!-- Autostart fix on some devices? -->
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="SmartTubeApp.misc.RemoteControlService"
+            android:enabled="true"
+            android:foregroundServiceType="connectedDevice"/>
+        <service
+            android:name="SmartTubeApp.misc.BackgroundPlaybackService"
+            android:enabled="true"/>
+
+        <activity android:name=".misc.BackupReceiverActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="application/zip"/>
+            </intent-filter>
+        </activity>
+
         <activity
             android:name="SmartTubeApp.ui.main.SplashActivity"
             android:exported="true"

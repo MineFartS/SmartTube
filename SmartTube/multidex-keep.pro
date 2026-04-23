@@ -18,7 +18,7 @@
 -keepclassmembers class androidx.work.WorkManager {
     static void initialize(android.content.Context, androidx.work.Configuration);
 }
--keepclassmembers class com.liskovsoft.youtubeapi.search.SearchTagStorage {
+-keepclassmembers class com.liskovsoft.sharedutils.search.SearchTagStorage {
     <clinit>(...);
 }
 -keepclassmembers class androidx.leanback.widget.HorizontalGridView {
@@ -28,14 +28,14 @@
 -keepclassmembers class SmartTubeApp.ui.browse.video.MultipleRowsFragment$ItemViewClickedListener {
     <init>(...);
 }
--keepclassmembers class com.liskovsoft.youtubeapi.common.helpers.PostDataHelper {
+-keepclassmembers class com.liskovsoft.sharedutils.common.helpers.PostDataHelper {
     <clinit>(...);
     java.lang.String createQueryTV(java.lang.String);
 }
 -keepclassmembers class androidx.work.impl.utils.ForceStopRunnable {
     <init>(...);
 }
--keepclassmembers class com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl {
+-keepclassmembers class com.liskovsoft.sharedutils.channelgroups.ChannelGroupServiceImpl {
     <init>(...);
 }
 -keepclassmembers class androidx.leanback.widget.BrowseRowsFrameLayout {
@@ -52,7 +52,7 @@
 -keepclassmembers class com.liskovsoft.sharedutils.mylogger.Log {
     static void d(java.lang.String, java.lang.Object, java.lang.Object[]);
 }
--keepclassmembers class com.liskovsoft.youtubeapi.service.YouTubeServiceManager {
+-keepclassmembers class com.liskovsoft.sharedutils.service.YouTubeServiceManager {
     <init>(...);
 }
 -keepclassmembers class SmartTubeApp.ui.widgets.vineyard.TagCardView {
@@ -93,12 +93,12 @@
     <init>(...);
     android.view.View mProgressBarView;
 }
--keepclassmembers class smartyoutubetv1.misc.MotherActivity {
+-keepclassmembers class SmartTubeApp.misc.MotherActivity {
     <init>(...);
 }
--keepclassmembers class smartyoutubetv1.misc.TickleManager {
+-keepclassmembers class SmartTubeApp.misc.TickleManager {
     <init>(...);
-    smartyoutubetv1.misc.TickleManager sInstance;
+    SmartTubeApp.misc.TickleManager sInstance;
 }
 -keepclassmembers class androidx.core.content.FileProvider {
     <init>(...);
@@ -110,9 +110,9 @@
 -keepclassmembers class androidx.leanback.widget.SearchBar {
     <init>(...);
 }
--keepclassmembers class com.liskovsoft.mediaserviceinterfaces.ServiceManager {
+-keepclassmembers class com.liskovsoft.sharedutils.ServiceManager {
     <init>(...);
-    com.liskovsoft.mediaserviceinterfaces.MediaItemService getMediaItemService();
+    com.liskovsoft.sharedutils.MediaItemService getMediaItemService();
 }
 # IncompatibleClassChangeError: androidx.recyclerview.widget.RecyclerView$Recycler
 -keepclassmembers class androidx.recyclerview.widget.RecyclerView$Recycler {
@@ -136,16 +136,16 @@
 #    <init>(...);
 #    void setNestedScrollingEnabled(boolean);
 #}
--keepclassmembers class smartyoutubetv1.utils.Utils {
-    boolean isFormatSupported(smartyoutubetv1.exoplayer.selector.track.MediaTrack);
+-keepclassmembers class SmartTubeApp.utils.Utils {
+    boolean isFormatSupported(SmartTubeApp.exoplayer.selector.track.MediaTrack);
 }
 -keepclassmembers class com.google.android.exoplayer2.video.VideoRendererEventListener {
     void onVideoDisabled(com.google.android.exoplayer2.decoder.DecoderCounters);
 }
--keepclassmembers class smartyoutubetv1.app.models.search.MediaServiceSearchTagProvider {
+-keepclassmembers class SmartTubeApp.app.models.search.MediaServiceSearchTagProvider {
     <init>(...);
     boolean mIgnoreEmptyQuery;
-    com.liskovsoft.mediaserviceinterfaces.ContentService mContentService;
+    com.liskovsoft.sharedutils.ContentService mContentService;
 }
 -keepclassmembers class androidx.leanback.widget.GridLayoutManager {
     <init>(...);
@@ -155,7 +155,7 @@
     androidx.leanback.widget.VerticalGridView mVerticalGridView;
     androidx.leanback.widget.VerticalGridView getVerticalGridView();
 }
--keepclassmembers class smartyoutubetv1.app.models.playback.controllers.VideoStateController {
+-keepclassmembers class SmartTubeApp.app.models.playback.controllers.VideoStateController {
     <init>(...);
 }
 -keepclassmembers class SmartTubeApp.ui.browse.BrowseSectionFragmentFactory {
@@ -173,7 +173,7 @@
     <init>(...);
     void setZ(float);
 }
--keepclassmembers class smartyoutubetv1.exoplayer.controller.ExoPlayerController {
+-keepclassmembers class SmartTubeApp.exoplayer.controller.ExoPlayerController {
     <init>(...);
     boolean containsMedia();
 }
@@ -201,7 +201,7 @@
 #-keep class com.google.gson.internal.bind.TypeAdapters$7 { *; }
 #-keep class com.google.gson.internal.bind.TypeAdapters { *; }
 #-keep class androidx.leanback.widget.ItemAlignmentFacet$ItemAlignmentDef { *; }
-#-keep class smartyoutubetv1.app.models.playback.ui.OptionCategory { *; }
+#-keep class SmartTubeApp.app.models.playback.ui.OptionCategory { *; }
 #-keep class com.liskovsoft.leanbackassistant.channels.UpdateChannelsReceiver { *; }
 #-keep class androidx.core.view.ViewCompat { *; }
 #-keep class androidx.work.impl.WorkManagerInitializer { *; }
@@ -218,11 +218,11 @@
 
 # NOTE: Stable/Beta: VirusTotal (Google: Detected, Ikarus: Trojan.AndroidOS.Agent)
 #-keep class SmartTubeApp.ui.main.MainApplication { *; }
-#-keep class smartyoutubetv1.prefs.MainUIData { *; }
-#-keep class smartyoutubetv1.app.presenters.ChannelUploadsPresenter { *; }
+#-keep class SmartTubeApp.prefs.MainUIData { *; }
+#-keep class SmartTubeApp.app.presenters.ChannelUploadsPresenter { *; }
 
 # NOTE: Fdroid: VirusTotal (Google: Detected, Ikarus: Trojan.AndroidOS.Agent)
-#-keep class smartyoutubetv1.app.presenters.dialogs.menu.providers.ContextMenuProvider { *; }
+#-keep class SmartTubeApp.app.presenters.dialogs.menu.providers.ContextMenuProvider { *; }
 #-keep class com.google.android.exoplayer2.util.Util { *; }
 #-keep class com.bumptech.glide.request.RequestOptions { *; }
 #-keep class SmartTubeApp.ui.mod.leanback.playerglue.tooltips.TooltipCompatHandler { *; }

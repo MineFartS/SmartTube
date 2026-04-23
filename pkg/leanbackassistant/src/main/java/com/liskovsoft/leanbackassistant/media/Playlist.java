@@ -6,12 +6,12 @@ import androidx.tvprovider.media.tv.TvContractCompat;
 
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 import com.liskovsoft.leanbackassistant.media.ClipService.GroupCallback;
-import com.liskovsoft.mediaserviceinterfaces.ContentService;
-import com.liskovsoft.mediaserviceinterfaces.ServiceManager;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.sharedutils.ContentService;
+import com.liskovsoft.sharedutils.ServiceManager;
+import com.liskovsoft.sharedutils.data.MediaGroup;
+import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
+import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 
 import java.util.ArrayList;
 import java.util.Collections;

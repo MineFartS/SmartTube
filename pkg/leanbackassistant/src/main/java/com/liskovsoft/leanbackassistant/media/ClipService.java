@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.liskovsoft.leanbackassistant.R;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
-import com.liskovsoft.mediaserviceinterfaces.ContentService;
+import com.liskovsoft.sharedutils.data.MediaGroup;
+import com.liskovsoft.sharedutils.ContentService;
 
 public class ClipService {
     private static final int SUBSCRIPTIONS_ID = 1;

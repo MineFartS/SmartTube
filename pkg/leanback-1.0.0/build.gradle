@@ -10,7 +10,7 @@ android {
 
     compileSdkVersion project.properties.compileSdkVersion
     buildToolsVersion project.properties.buildToolsVersion
-    testOptions.unitTests.includeAndroidResources = true
+
 
     defaultConfig {
         minSdkVersion project.properties.minSdkVersion
@@ -18,7 +18,7 @@ android {
         versionCode 10
         versionName "1.0.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        
         consumerProguardFiles 'consumer-rules.pro'
     }
 

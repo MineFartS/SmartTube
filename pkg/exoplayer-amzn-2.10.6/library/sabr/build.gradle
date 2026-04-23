@@ -19,18 +19,6 @@ android {
         targetSdkVersion project.ext.targetSdkVersion
     }
 
-    buildTypes {
-        // Re-enable test coverage when the following issue is fixed:
-        // https://issuetracker.google.com/issues/37019591
-        // debug {
-        //    testCoverageEnabled = true
-        // }
-    }
-
-    testOptions.unitTests.includeAndroidResources = true
-
-    // gradle 4.6 migration: disable dimensions mechanism
-    // more: https://proandroiddev.com/advanced-android-flavors-part-4-a-new-version-fc2ad80c01bb
     flavorDimensions "default"
 
     productFlavors {
@@ -40,14 +28,10 @@ android {
 
 dependencies {
     implementation project(modulePrefix + 'library-core')
-    implementation project(':mediaserviceinterfaces')
     implementation project(':sharedutils')
-    implementation project(':youtubeapi')
     compileOnly 'org.checkerframework:checker-qual:' + checkerframeworkVersion
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'com.google.protobuf:protobuf-javalite:' + protobufVersion
-    testImplementation project(modulePrefix + 'testutils-robolectric')
-    testImplementation project(modulePrefix + 'library-sabr')
 }
 
 protobuf {
