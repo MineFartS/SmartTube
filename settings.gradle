@@ -1,4 +1,4 @@
-include ':smarttubetv', ':common', ':chatkit', ':leanbackassistant', ':leanback-1.0.0', ':fragment-1.1.0'
+include ':SmartTubeApp', ':common', ':chatkit', ':leanbackassistant', ':leanback-1.0.0', ':fragment-1.1.0'
 
 // SharedModules
 gradle.ext.sharedModulesRoot = new File(settingsDir, 'pkg/SharedModules')
@@ -18,8 +18,8 @@ apply from: new File(
     'core_settings.gradle'
 )
 
-// smarttubetv
-project(':smarttubetv').projectDir = new File(settingsDir, 'pkg/smarttubetv')
+// SmartTubeApp
+project(':SmartTubeApp').projectDir = new File(settingsDir, 'SmartTube')
 
 // common
 project(':common').projectDir = new File(settingsDir, 'pkg/common')
