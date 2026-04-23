@@ -40,7 +40,7 @@
         app:justifyContent="flex_start">
 
         <!-- Tweaks from video info dialog: leanback_list_preference_fragment.xml:26 -->
-        <!-- More info: smartyoutubetv2.ui.mod.leanback.misc.LeanbackListPreferenceDialogFragment -->
+        <!-- More info: SmartTubeApp.ui.mod.leanback.misc.LeanbackListPreferenceDialogFragment -->
         <!-- Text: add android:fontFamily="sans-serif-condensed" -->
         <!-- Text: add android:lineSpacingMultiplier="0.9" -->
         <!-- Messages exceeding certain length cause crashes. RecycleView bug? -->
