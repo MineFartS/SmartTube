@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="ChatTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionModeOverlay">true</item>
+    </style>
+
+    <style name="ChatMessageInfo">
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="ChatHeaderTitle">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ChatWhoIsTyping">
+        <item name="android:lines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="ChatSendButton">
+        <item name="android:maxLines">5</item>
+    </style>
+
+    <style name="ChatInputEditText">
+        <item name="android:background">@null</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="ChatMessageLayoutOutcoming">
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:gravity">end|right</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+    </style>
+
+    <style name="ChatMessageLayoutIncoming">
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:gravity">end|right</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+    </style>
+
+    <style name="ChatHeaderLayout">
+        <item name="android:padding">8dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- Other fullscreen params are set here: leanback-1.0.0\src\main\res\values-v19\values-v19.xml:3 -->
+    <style name="FitSystemWindows" parent="TransparentStatus">
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowFullscreen">false</item>
+    </style>
+    <style name="BehindSystemWindows" parent="TransparentStatus">
+        <item name="android:fitsSystemWindows">false</item>
+        <item name="android:windowFullscreen">false</item>
+    </style>
+    <style name="TransparentStatus">
+        <!-- Make status and nav bars same color as the app -->
+        <item name="android:windowTranslucentStatus" tools:targetApi="19">true</item>
+        <item name="android:windowTranslucentNavigation" tools:targetApi="19">true</item>
+    </style>
+
+    <attr name="brandColor" format="reference"/>
+    <attr name="brandAccentColor" format="reference"/>
+    <attr name="shelfBackground" format="reference"/>
+    <attr name="cardDefaultBackground" format="reference"/>
+    <attr name="cardSelectedBackground" format="reference"/>
+    <attr name="cardProgressStyle" format="reference"/>
+    <attr name="appLogo" format="reference"/>
+
+    <!-- Increase spacing between items in GridView -->
+    <style name="GridViewStyle" parent="Widget.Leanback.GridItems.VerticalGridView">
+        <item name="android:horizontalSpacing">@dimen/grid_item_horizontal_spacing</item>
+        <item name="android:verticalSpacing">@dimen/grid_item_vertical_spacing</item>
+    </style>
+
+    <!-- Increase spacing between items in RowView -->
+    <style name="RowViewStyle" parent="Widget.Leanback.Row.HorizontalGridView">
+        <item name="android:horizontalSpacing">@dimen/grid_item_horizontal_spacing</item>
+    </style>
+
+    <!-- Decrease header spacing in BrowseView -->
+    <style name="BrowseHeaderStyle" parent="Widget.Leanback.Headers.VerticalGridView">
+        <item name="android:verticalSpacing">@dimen/browse_headers_vertical_spacing</item>
+    </style>
+
+    <style name="App.Theme.Leanback.Player" parent="Theme.Leanback">
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="cardSelectedBackground">@color/card_selected_background_white</item>
+        <item name="itemsVerticalGridStyle">@style/GridViewStyle</item>
+        <item name="rowHorizontalGridStyle">@style/RowViewStyle</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowFullscreen">true</item>
+        <item tools:targetApi="19" name="android:windowTranslucentNavigation">true</item>
+        <item tools:targetApi="18" name="android:windowOverscan">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="playbackProgressPrimaryColor">@color/red</item>
+        <item name="playbackProgressSecondaryColor">@color/light_red</item>
+        <item name="playbackControlsIconHighlightColor">@color/red</item>
+        <item name="cardProgressStyle">@style/ProgressBarHorizontal.Dark</item>
+        <item name="shelfBackground">@color/scheme_grey_shelf_background_dark</item>
+        <item name="cardDefaultBackground">@color/scheme_grey_card_background_dark</item>
+        <item name="android:colorAccent" tools:targetApi="21">@color/semi_red</item>
+    </style>
+
+    <style name="App.Theme.Leanback.Browse" parent="Theme.Leanback.Browse">
+        <item name="cardDefaultBackground">@color/card_default_background_dark</item>
+        <item name="cardSelectedBackground">@color/card_selected_background_white</item>
+        <item name="cardProgressStyle">?android:attr/progressBarStyleHorizontal</item>
+        <item name="appLogo">@mipmap/app_logo</item>
+        <item name="android:colorAccent" tools:targetApi="21">@color/fastlane_background</item>
+        <item name="itemsVerticalGridStyle">@style/GridViewStyle</item>
+        <item name="rowHorizontalGridStyle">@style/RowViewStyle</item>
+        <item name="headersVerticalGridStyle">@style/BrowseHeaderStyle</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowFullscreen">true</item>
+        <item tools:targetApi="19" name="android:windowTranslucentNavigation">true</item>
+        <item tools:targetApi="18" name="android:windowOverscan">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/scheme_grey_shelf_background_dark</item>
+        <item name="brandColor">@color/scheme_grey_background_dark</item>
+        <item name="brandAccentColor">@color/semi_red</item>
+        <item name="cardProgressStyle">@style/ProgressBarHorizontal.Dark</item>
+        <item name="shelfBackground">@color/scheme_grey_shelf_background_dark</item>
+        <item name="cardDefaultBackground">@color/scheme_grey_card_background_dark</item>
+    </style>
+
+    <style name="App.Theme.Leanback.GuidedStep" parent="Theme.Leanback.GuidedStep">
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowFullscreen">true</item>
+        <item tools:targetApi="19" name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowBackground">@color/scheme_grey_shelf_background_dark</item>
+        <item name="shelfBackground">@color/scheme_grey_shelf_background_dark</item>
+    </style>
+
+    <style name="ProgressBarHorizontal.Dark" parent="@android:style/Widget.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progress_bar_red</item>
+    </style>
+
+    <style name="App.Theme.Leanback.Preferences" parent="Theme.Leanback">
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Leanback</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:colorPrimary" tools:targetApi="21">@color/scheme_grey_background</item>
+        <item name="android:colorAccent" tools:targetApi="21">@color/semi_red</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowFullscreen">true</item>
+        <item tools:targetApi="19" name="android:windowTranslucentNavigation">true</item>
+    </style>
+
+</resources>

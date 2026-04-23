@@ -11,7 +11,11 @@ if ($Clear) {Remove-Cache}
 Clear-Host
 
 if (Connect-ADB) {
-    Invoke-Gradle ":SmartTubeApp:installDebug"
+    try {
+        Invoke-Gradle ":SmartTubeApp:installStstableDebug"
+    } catch {
+        Invoke-Gradle ":installDebug"
+    }
 } else {
-    Invoke-Gradle "build"
+    Invoke-Gradle ":build"
 }
