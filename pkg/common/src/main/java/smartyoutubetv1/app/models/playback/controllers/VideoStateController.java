@@ -358,13 +358,10 @@ public class VideoStateController extends BasePlayerController {
     }
 
     private void restoreState() {
-        if (getPlayer() == null) {
-            return;
-        }
+        if (getPlayer() == null) return;
 
         restorePosition();
         restoreVolume();
-        restorePitch();
     }
 
     private void restorePosition() {
@@ -426,14 +423,6 @@ public class VideoStateController extends BasePlayerController {
 
         getPlayer().setVolume(newVolume);
 
-    }
-
-    private void restorePitch() {
-        if (getPlayer() == null) {
-            return;
-        }
-
-        getPlayer().setPitch(getPlayerData().getPitch());
     }
 
     private void restoreFormats() {
