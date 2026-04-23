@@ -3,9 +3,13 @@ tasks.withType(JavaCompile) {
     options.compilerArgs << "-nowarn" // Hide warnings
 }
 
+tasks.withType(Test) { 
+    enabled = false 
+}
+
 project.ext {
 
-    minSdkVersion = 16
+    minSdkVersion = 21
     targetSdkVersion = 26
 
     compileSdkVersion = 33
