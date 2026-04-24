@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string translatable="false" name="search_authority">minefarts.smarttube</string>
+
+    <string name="search_label">SmartTube</string>
+    <string name="settings_description">SmartTube Videos</string>
+    <string name="cant_play_video">Can\'t play this video</string>
+
     <string name="app_update_new_version">There is a new version (%1$s) of %2$s available!</string>
     <string name="upgrade">Upgrade</string>
     <string name="cancel">Cancel</string>
@@ -541,14 +547,8 @@
     <!-- The action label for global search -->
     <string name="global_search">GLOBALSEARCH</string>
 
-    <!-- The label for use as a searchable item -->
-    <string name="search_label">Leanback API Demo</string>
-
     <!-- The hint text that appears in the search box. -->
     <string name="search_hint">Search for videos</string>
-
-    <!-- The description that will show up in the search settings for this source.  -->
-    <string name="settings_description">Leanback API Demo Videos</string>
 
     <string name="noah_description">to build an Ark to save creation from the coming flood.</string>
     <string name="noah_title">Noah</string>

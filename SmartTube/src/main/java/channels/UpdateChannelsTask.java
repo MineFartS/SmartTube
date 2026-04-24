@@ -1,12 +1,12 @@
-package com.liskovsoft.leanbackassistant.channels;
+package SmartTubeApp.channels;
 
 import android.content.Context;
 
 import androidx.annotation.RequiresApi;
 
-import com.liskovsoft.leanbackassistant.media.ClipService;
-import com.liskovsoft.leanbackassistant.media.Playlist;
-import com.liskovsoft.leanbackassistant.recommendations.RecommendationsProvider;
+import SmartTubeApp.media.ClipService;
+import SmartTubeApp.media.Playlist;
+import SmartTubeApp.recommendations.RecommendationsProvider;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;

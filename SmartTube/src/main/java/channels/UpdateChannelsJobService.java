@@ -1,4 +1,4 @@
-package com.liskovsoft.leanbackassistant.channels;
+package SmartTubeApp.channels;
 
 import android.annotation.SuppressLint;
 import android.app.job.JobInfo;

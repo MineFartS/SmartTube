@@ -1,4 +1,4 @@
-package com.liskovsoft.leanbackassistant.search;
+package SmartTubeApp.search;
 
 import android.app.SearchManager;
 import android.content.ContentProvider;
@@ -10,7 +10,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.liskovsoft.leanbackassistant.R;
+import SmartTubeApp.R;
 import com.liskovsoft.sharedutils.data.MediaGroup;
 import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.mylogger.Log;

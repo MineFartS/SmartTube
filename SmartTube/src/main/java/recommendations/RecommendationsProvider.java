@@ -1,4 +1,4 @@
-package com.liskovsoft.leanbackassistant.recommendations;
+package SmartTubeApp.recommendations;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -8,10 +8,10 @@ import android.graphics.BitmapFactory;
 
 import androidx.annotation.RequiresApi;
 
-import com.liskovsoft.leanbackassistant.R;
-import com.liskovsoft.leanbackassistant.media.Clip;
-import com.liskovsoft.leanbackassistant.media.Playlist;
-import com.liskovsoft.leanbackassistant.utils.AppUtil;
+import SmartTubeApp.R;
+import SmartTubeApp.media.Clip;
+import SmartTubeApp.media.Playlist;
+import SmartTubeApp.utils.AppUtil;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
 import okhttp3.Response;

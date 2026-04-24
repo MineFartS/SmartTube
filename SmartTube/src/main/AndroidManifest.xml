@@ -3,6 +3,8 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="SmartTubeApp">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -20,55 +22,41 @@
         <package android:name="com.amazon.firetv.youtube" />
     </queries>
 
-    <!-- Shield on Android 11 speech recognizer not working fix? -->
-    <!-- https://stackoverflow.com/questions/64319117/speechrecognizer-not-available-when-targeting-android-11 -->
     <queries>
         <intent>
             <action android:name="android.speech.RecognitionService" />
         </intent>
     </queries>
-
-    <permission
-        android:name="${applicationId}.ACCESS_VIDEO_DATA"
-        android:protectionLevel="signature" />
-
-    <uses-permission android:name="${applicationId}.ACCESS_VIDEO_DATA" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
-    <!-- NOTE: use older api -->
+     
     <uses-sdk tools:overrideLibrary="
-        androidx.leanback.preference,
-        androidx.recommendation,
         org.xwalk.core,
         com.algolia.instantsearch.voice,
-        androidx.leanback, androidx.tvprovider,
+        androidx.leanback,
+        androidx.tvprovider,
         com.github.rubensousa.previewseekbar,
         com.github.rubensousa.previewseekbar.exoplayer,
-        com.google.android.exoplayer2.ext.leanback,
-        com.google.android.exoplayer2.ext.vp9,
-        com.google.android.exoplayer2.testutil,
-        com.google.android.exoplayer2.ext.okhttp,
-        com.google.firebase.crashlytics,
-        com.google.firebase.iid,
-        io.nn.alpha"/>
+        androidx.recommendation"/>
 
-    <uses-feature
-        android:name="android.hardware.microphone"
-        android:required="false" />
     <uses-feature
         android:name="android.hardware.touchscreen"
         android:required="false" />
+
     <uses-feature
         android:name="android.software.leanback"
         android:required="true" />
 
-    <!-- android:usesCleartextTraffic - allow HTTP traffic -->
-    <!-- Alt cleartext options: https://stackoverflow.com/questions/45940861/android-8-cleartext-http-traffic-not-permitted -->
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="false" />
+
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="true" />
+
     <application
         android:name="SmartTubeApp.ui.main.MainApplication"
         android:usesCleartextTraffic="true"
-        android:allowBackup="false"
+        android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:largeHeap="true"
         android:banner="@mipmap/app_banner"
@@ -77,21 +65,26 @@
         android:label="@string/app_name"
         android:theme="@style/App.Theme.Leanback.Browse"
         android:requestLegacyExternalStorage="true"
+        android:supportsRtl="true"
         tools:node="merge"
         tools:replace="android:theme,android:allowBackup"
-        tools:ignore="GoogleAppIndexingWarning,LockedOrientationActivity,UnusedAttribute">
+        tools:ignore="GoogleAppIndexingWarning,LockedOrientationActivity,UnusedAttribute,MissingTvBanner">
 
+        
+        <activity
+            android:name=".search.SearchableActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+                <action android:name="android.intent.action.VIEW" />
 
-        <provider
-            android:name="SmartTubeApp.other.GenericFileProvider"
-            android:authorities="${applicationId}.update_provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <!-- Details: https://developer.android.com/reference/android/support/v4/content/FileProvider.html#SpecifyFiles -->
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+
             <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
-        </provider>
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
         
         <receiver
             android:name="SmartTubeApp.misc.RemoteControlReceiver"
@@ -116,18 +109,6 @@
             android:name="SmartTubeApp.misc.RemoteControlService"
             android:enabled="true"
             android:foregroundServiceType="connectedDevice"/>
-        <service
-            android:name="SmartTubeApp.misc.BackgroundPlaybackService"
-            android:enabled="true"/>
-
-        <activity android:name=".misc.BackupReceiverActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.SEND"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:mimeType="application/zip"/>
-            </intent-filter>
-        </activity>
 
         <activity
             android:name="SmartTubeApp.ui.main.SplashActivity"

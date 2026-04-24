@@ -1,6 +1,6 @@
 
 
-package com.liskovsoft.leanbackassistant.media.scheduler;
+package SmartTubeApp.media.scheduler;
 
 /**
  * This class encapsulates all the clip fields that are passed to the AddWatchNextService which is
