@@ -1,7 +1,7 @@
 package com.liskovsoft.sharedutils.app.nsigsolver.impl
 
-import com.eclipsesource.v8.V8
-import com.eclipsesource.v8.V8ScriptExecutionException
+import com.liskovsoft.sharedutils.V8
+import com.liskovsoft.sharedutils.V8ScriptExecutionException
 import com.liskovsoft.sharedutils.app.nsigsolver.common.loadScript
 import com.liskovsoft.sharedutils.app.nsigsolver.common.withLock
 import com.liskovsoft.sharedutils.app.nsigsolver.provider.JsChallengeProviderError

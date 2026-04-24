@@ -1,6 +1,6 @@
 package com.liskovsoft.sharedutils.app.nsigsolver.common
 
-import com.eclipsesource.v8.V8
+import com.liskovsoft.sharedutils.V8
 import com.liskovsoft.sharedutils.app.AppService
 
 internal class ScriptLoaderError(message: String, cause: Exception? = null): Exception(message, cause)
