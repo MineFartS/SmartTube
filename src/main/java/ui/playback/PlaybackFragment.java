@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.os.Handler;
+import android.view.InputEvent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +32,10 @@ import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.Row;
 import androidx.leanback.widget.RowPresenter;
 import androidx.leanback.widget.RowPresenter.ViewHolder;
+import androidx.leanback.widget.PlaybackSeekDataProvider;
+import androidx.leanback.widget.PlaybackSeekUi;
+import androidx.leanback.app.PlaybackSupportFragment;
+import androidx.leanback.widget.VerticalGridView;
 
 import com.google.android.exoplayer2.ControlDispatcher;
 import com.google.android.exoplayer2.DefaultControlDispatcher;
@@ -70,7 +76,6 @@ import SmartTubeApp.ui.browse.video.GridFragmentHelper;
 import SmartTubeApp.ui.common.LeanbackActivity;
 import SmartTubeApp.ui.common.UriBackgroundManager;
 import SmartTubeApp.ui.mod.leanback.misc.ProgressBarManager;
-import SmartTubeApp.ui.playback.mod.SeekModePlaybackFragment;
 import SmartTubeApp.ui.playback.mod.surface.SurfacePlaybackFragmentGlueHost;
 import SmartTubeApp.ui.playback.other.BackboneQueueNavigator;
 import SmartTubeApp.ui.playback.other.VideoPlayerGlue;
@@ -79,6 +84,7 @@ import SmartTubeApp.ui.playback.previewtimebar.StoryboardSeekDataProvider;
 import SmartTubeApp.ui.widgets.chat.LiveChatView;
 import SmartTubeApp.ui.widgets.time.DateTimeView;
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
+import SmartTubeApp.ui.playback.mod.surface.SurfacePlaybackFragment;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -87,18 +93,17 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * Plays selected video, loads playlist and related videos, and delegates playback to
- * {@link VideoPlayerGlue}.
- */
-public class PlaybackFragment extends SeekModePlaybackFragment implements PlaybackView {
+public class PlaybackFragment extends SurfacePlaybackFragment implements PlaybackView {
 
     private static final String TAG = PlaybackFragment.class.getSimpleName();
 
     private static final String SELECTED_VIDEO_ID = "SelectedVideoId";
     private static final int UPDATE_DELAY_MS = 100;
     private static final int SUGGESTIONS_START_INDEX = 1;
+    private static final int START_FADE_OUT = 1;
 
+    private PlaybackSeekUi.Client mSeekUiClient2;
+    private boolean mInSeek;
     private VideoPlayerGlue mPlayerGlue;
     private SimpleExoPlayer mPlayer;
     private PlaybackPresenter mPlaybackPresenter;
@@ -122,7 +127,26 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(null); // trying to fix bug with presets
+        
+        super.onCreate(savedInstanceState);
+
+        Object onTouchInterceptListener = Helpers.getField(this, "mOnTouchInterceptListener");
+
+        if (onTouchInterceptListener != null) {
+            Helpers.setField(this, "mOnTouchInterceptListener", (VerticalGridView.OnTouchInterceptListener) this::onInterceptInputEvent);
+        }
+
+        Object onKeyInterceptListener = Helpers.getField(this, "mOnKeyInterceptListener");
+
+        if (onKeyInterceptListener != null) {
+            Helpers.setField(this, "mOnKeyInterceptListener", (VerticalGridView.OnKeyInterceptListener) this::onInterceptInputEvent);
+        }
+
+        Object chainedClient = Helpers.getField(this, "mChainedClient");
+
+        if (chainedClient != null) {
+            Helpers.setField(this, "mChainedClient", mChainedClient2);
+        }
 
         mSelectedVideoId = savedInstanceState != null ? savedInstanceState.getString(SELECTED_VIDEO_ID, null) : null;
         mVideoGroupAdapters = new HashMap<>();
@@ -295,7 +319,6 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
         }
     }
 
-    @Override
     protected void onSeekPositionChanged(long positionMs) {
         mPlaybackPresenter.onSeekPositionChanged(positionMs);
     }
@@ -1492,4 +1515,147 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     private boolean forbidShowOverlay(boolean show) {
         return show && isInPIPMode();
     }
+
+    /**
+     * Interface to be implemented by UI widget to support PlaybackSeekUi.
+     */
+    @Override
+    public void setPlaybackSeekUiClient(PlaybackSeekUi.Client client) {
+        mSeekUiClient2 = client;
+    }
+
+    private final PlaybackSeekUi.Client mChainedClient2 = new PlaybackSeekUi.Client() {
+        @Override
+        public boolean isSeekEnabled() {
+            return mSeekUiClient2 == null ? false : mSeekUiClient2.isSeekEnabled();
+        }
+
+        @Override
+        public void onSeekStarted() {
+            if (mSeekUiClient2 != null) {
+                mSeekUiClient2.onSeekStarted();
+            }
+            setSeekMode(true);
+        }
+
+        @Override
+        public PlaybackSeekDataProvider getPlaybackSeekDataProvider() {
+            return mSeekUiClient2 == null ? null : mSeekUiClient2.getPlaybackSeekDataProvider();
+        }
+
+        @Override
+        public void onSeekPositionChanged(long positionMs) {
+            if (mSeekUiClient2 != null) {
+                mSeekUiClient2.onSeekPositionChanged(positionMs);
+            }
+            PlaybackFragment.this.onSeekPositionChanged(positionMs);
+        }
+
+        @Override
+        public void onSeekFinished(boolean cancelled) {
+            if (mSeekUiClient2 != null) {
+                mSeekUiClient2.onSeekFinished(cancelled);
+            }
+            setSeekMode(false);
+        }
+    };
+
+    /**
+     * NOTE: MOD version. Removed part: hiding rows.<br/>
+     * Show or hide other rows other than PlaybackRow.
+     * @param inSeek True to make other rows visible, false to make other rows invisible.
+     */
+    private void setSeekMode(boolean inSeek) {
+        if (mInSeek == inSeek) {
+            return;
+        }
+        mInSeek = inSeek;
+        if (mInSeek) {
+            stopFadeTimer();
+            // Show UI while seeking with FastForward/Rewind keys
+            showControlsOverlay(false);
+        }
+    }
+
+    private void stopFadeTimer() {
+        Object handler = Helpers.getField(this, "mHandler");
+        if (handler != null) {
+            ((Handler)handler).removeMessages(START_FADE_OUT);
+        }
+    }
+
+    boolean onInterceptInputEvent(InputEvent event) {
+        final boolean controlsHidden = !isControlsOverlayVisible();
+        //if (DEBUG) Log.v(TAG, "onInterceptInputEvent hidden " + controlsHidden + " " + event);
+        boolean consumeEvent = false;
+        int keyCode = KeyEvent.KEYCODE_UNKNOWN;
+        int keyAction = 0;
+
+        if (event instanceof KeyEvent) {
+            keyCode = ((KeyEvent) event).getKeyCode();
+            keyAction = ((KeyEvent) event).getAction();
+            if (getInputEventHandler() != null) {
+                // VideoPlayerGlue handler
+                consumeEvent = getInputEventHandler().onKey(getView(), keyCode, (KeyEvent) event);
+            }
+        }
+
+        if (consumeEvent) {
+            return true;
+        }
+
+        switch (keyCode) {
+            // Confirm key
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+            case KeyEvent.KEYCODE_ENTER:
+            case KeyEvent.KEYCODE_SPACE:
+            case KeyEvent.KEYCODE_NUMPAD_ENTER:
+            case KeyEvent.KEYCODE_BUTTON_A:
+            // Navigation key
+            case KeyEvent.KEYCODE_DPAD_DOWN:
+            case KeyEvent.KEYCODE_DPAD_UP:
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                // Event may be consumed; regardless, if controls are hidden then these keys will
+                // bring up the controls.
+
+                if (keyAction == KeyEvent.ACTION_DOWN) {
+                    tickle();
+                }
+                break;
+            case KeyEvent.KEYCODE_BACK:
+            case KeyEvent.KEYCODE_ESCAPE:
+                if (isInSeek()) {
+                    // when in seek, the SeekUi will handle the BACK.
+                    return false;
+                }
+                // If controls are not hidden, back will be consumed to fade
+                // them out (even if the key was consumed by the handler).
+                if (!controlsHidden) {
+                    consumeEvent = true;
+
+                    if (((KeyEvent) event).getAction() == KeyEvent.ACTION_UP) {
+                        hideControlsOverlay(true);
+                    }
+                }
+                break;
+            default:
+                if (consumeEvent) {
+                    if (keyAction == KeyEvent.ACTION_DOWN) {
+                        tickle();
+                    }
+                }
+        }
+        return consumeEvent;
+    }
+
+    private View.OnKeyListener getInputEventHandler() {
+        return (View.OnKeyListener) Helpers.getField(this, "mInputEventHandler");
+    }
+
+    private boolean isInSeek() {
+        Object mInSeek = Helpers.getField(this, "mInSeek");
+        return mInSeek != null && (boolean) mInSeek;
+    }
+
 }

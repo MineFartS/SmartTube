@@ -433,30 +433,29 @@ public class VideoStateController extends BasePlayerController {
     }
 
     private void restoreSpeedAndPositionIfNeeded() {
-        if (getPlayer() == null || getVideo() == null) {
-            return;
-        }
+
+        if (getPlayer() == null || getVideo() == null) return;
 
         Video item = getVideo();
 
-        boolean liveEnd = isLiveEnd();
+        boolean liveEnd = item.isLive && getPlayer().getDurationMs() - getPlayer().getPositionMs() <= 1_000;
 
-        // Position
         if (liveEnd) {
+
             getPlayer().setPositionMs(getPlayer().getDurationMs() - getLiveBuffer());
-        }
 
-        // Speed
-        if (liveEnd) {
             getPlayer().setSpeed(1.0f);
         } else {
+
             State state = getStateService().getByVideoId(item.videoId);
             float speed = getPlayerData().getSpeed(item.channelId);
             getPlayer().setSpeed(
                     state != null && getPlayerData().isSpeedPerVideoEnabled() ? state.speed :
                             getPlayerData().isAllSpeedEnabled() || item.channelId != null ? speed : 1.0f
             );
+
         }
+
     }
 
     public void blockPlay(boolean block) {
