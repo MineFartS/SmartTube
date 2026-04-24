@@ -1,0 +1,39 @@
+
+apply from: '../../constants.gradle'
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion project.ext.compileSdkVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        minSdkVersion project.ext.minSdkVersion
+        targetSdkVersion project.ext.targetSdkVersion
+    }
+    
+}
+
+dependencies {
+    // MODIFIED: add subs bg padding
+    implementation project(':sharedutils')
+    implementation project(':exoplayer-core')
+    implementation 'androidx.media:media:1.0.1'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    compileOnly 'org.checkerframework:checker-qual:' + checkerframeworkVersion
+
+}
+
+ext {
+    javadocTitle = 'UI module'
+}
+
+
+ext {
+    releaseArtifact = 'exoplayer-ui'
+    releaseDescription = 'The ExoPlayer library UI module.'
+}
+
