@@ -1,4 +1,4 @@
-package SmartTubeApp.channels;
+package com.liskovsoft.leanbackassistant.channels;
 
 import android.content.Context;
 import android.os.Build.VERSION;

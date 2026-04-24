@@ -1,4 +1,4 @@
-package SmartTubeApp.search;
+package com.liskovsoft.leanbackassistant.search;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,7 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
-import SmartTubeApp.utils.AppUtil;
+import com.liskovsoft.leanbackassistant.utils.AppUtil;
 import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;

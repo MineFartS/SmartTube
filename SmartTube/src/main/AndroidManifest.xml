@@ -14,14 +14,14 @@
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
-    <uses-permission android:name="com.android.providers.tv.permission.READ_EPG_DATA" />
-    <uses-permission android:name="com.android.providers.tv.permission.WRITE_EPG_DATA" />
 
     <queries>
         <package android:name="com.google.android.youtube.tv" />
         <package android:name="com.amazon.firetv.youtube" />
     </queries>
 
+    <!-- Shield on Android 11 speech recognizer not working fix? -->
+    <!-- https://stackoverflow.com/questions/64319117/speechrecognizer-not-available-when-targeting-android-11 -->
     <queries>
         <intent>
             <action android:name="android.speech.RecognitionService" />
@@ -31,28 +31,12 @@
     <permission
         android:name="${applicationId}.ACCESS_VIDEO_DATA"
         android:protectionLevel="signature" />
-     
-    <uses-sdk tools:overrideLibrary="
-        org.xwalk.core,
-        com.algolia.instantsearch.voice,
-        androidx.leanback,
-        androidx.tvprovider,
-        com.github.rubensousa.previewseekbar,
-        com.github.rubensousa.previewseekbar.exoplayer,
-        androidx.recommendation"/>
-
-    <uses-feature
-        android:name="android.hardware.touchscreen"
-        android:required="false" />
-
-    <uses-feature
-        android:name="android.software.leanback"
-        android:required="true" />
 
     <uses-permission android:name="${applicationId}.ACCESS_VIDEO_DATA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
+    <!-- NOTE: use older api -->
     <uses-sdk tools:overrideLibrary="
         androidx.leanback.preference,
         androidx.recommendation,
@@ -72,19 +56,19 @@
     <uses-feature
         android:name="android.hardware.microphone"
         android:required="false" />
-
     <uses-feature
         android:name="android.hardware.touchscreen"
         android:required="false" />
-
     <uses-feature
         android:name="android.software.leanback"
         android:required="true" />
 
+    <!-- android:usesCleartextTraffic - allow HTTP traffic -->
+    <!-- Alt cleartext options: https://stackoverflow.com/questions/45940861/android-8-cleartext-http-traffic-not-permitted -->
     <application
         android:name="SmartTubeApp.ui.main.MainApplication"
         android:usesCleartextTraffic="true"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:hardwareAccelerated="true"
         android:largeHeap="true"
         android:banner="@mipmap/app_banner"
@@ -93,50 +77,10 @@
         android:label="@string/app_name"
         android:theme="@style/App.Theme.Leanback.Browse"
         android:requestLegacyExternalStorage="true"
-        android:supportsRtl="true"
         tools:node="merge"
         tools:replace="android:theme,android:allowBackup"
-        tools:ignore="GoogleAppIndexingWarning,LockedOrientationActivity,UnusedAttribute,MissingTvBanner">
+        tools:ignore="GoogleAppIndexingWarning,LockedOrientationActivity,UnusedAttribute">
 
-        
-        <activity
-            android:name=".search.SearchableActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-        </activity>
-
-        <provider android:name=".search.VideoContentProvider"
-                  android:authorities="minefarts.smarttube"
-                  android:exported="true"
-                  android:initOrder="1999999999"
-                  tools:ignore="ExportedContentProvider" />
-
-               <receiver
-            android:name=".channels.UpdateChannelsReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                <action android:name="android.intent.action.SCREEN_ON" />
-                <!-- For HTC devices -->
-                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
-                <!-- Fix: Permission Denial: not allowed to send broadcast android.intent.action.BOOT_COMPLETED -->
-                <action android:name="android.intent.action.ACTION_BOOT_COMPLETED" />
-                <!-- Called one time after app is installed -->
-                <!-- <action android:name="android.media.tv.action.INITIALIZE_PROGRAMS" />-->
-            </intent-filter>
-        </receiver>
 
         <provider
             android:name="SmartTubeApp.other.GenericFileProvider"

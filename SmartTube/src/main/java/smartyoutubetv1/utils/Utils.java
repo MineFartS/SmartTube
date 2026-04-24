@@ -93,7 +93,7 @@ public class Utils {
     private static final String UNIVERSAL_PASSWD = "smarttube";
     private static final int RANDOM_FAIL_REPEAT_TIMES = 10;
     private static final String REMOTE_CONTROL_RECEIVER_CLASS_NAME = "SmartTubeApp.misc.RemoteControlReceiver";
-    private static final String UPDATE_CHANNELS_RECEIVER_CLASS_NAME = "SmartTubeApp.channels.UpdateChannelsReceiver";
+    private static final String UPDATE_CHANNELS_RECEIVER_CLASS_NAME = "com.liskovsoft.leanbackassistant.channels.UpdateChannelsReceiver";
     private static final String BOOTSTRAP_ACTIVITY_CLASS_NAME = "SmartTubeApp.ui.main.SplashActivity";
     private static final String TASK_ID = RemoteControlWorker.class.getSimpleName();
     private static final String TAG = Utils.class.getSimpleName();

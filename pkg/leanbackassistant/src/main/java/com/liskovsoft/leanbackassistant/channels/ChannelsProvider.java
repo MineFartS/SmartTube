@@ -1,4 +1,4 @@
-package SmartTubeApp.channels;
+package com.liskovsoft.leanbackassistant.channels;
 
 import android.annotation.TargetApi;
 import android.content.ComponentName;
@@ -22,10 +22,10 @@ import androidx.tvprovider.media.tv.TvContractCompat.Channels;
 import androidx.tvprovider.media.tv.WatchNextProgram;
 import android.text.TextUtils;
 
-import SmartTubeApp.media.Clip;
-import SmartTubeApp.media.Playlist;
-import SmartTubeApp.media.scheduler.ClipData;
-import SmartTubeApp.utils.AppUtil;
+import com.liskovsoft.leanbackassistant.media.Clip;
+import com.liskovsoft.leanbackassistant.media.Playlist;
+import com.liskovsoft.leanbackassistant.media.scheduler.ClipData;
+import com.liskovsoft.leanbackassistant.utils.AppUtil;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 

@@ -1,9 +1,9 @@
-package SmartTubeApp.media;
+package com.liskovsoft.leanbackassistant.media;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import SmartTubeApp.R;
+import com.liskovsoft.leanbackassistant.R;
 import com.liskovsoft.sharedutils.data.MediaGroup;
 import com.liskovsoft.sharedutils.ContentService;
 
