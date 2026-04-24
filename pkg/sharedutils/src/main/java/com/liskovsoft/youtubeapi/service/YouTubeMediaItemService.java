@@ -36,8 +36,6 @@ import java.util.List;
 import java.util.Set;
 
 public class YouTubeMediaItemService implements MediaItemService {
-
-    private static final String TAG = YouTubeMediaItemService.class.getSimpleName();
     
     private static YouTubeMediaItemService sInstance;
     

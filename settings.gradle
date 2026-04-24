@@ -6,22 +6,14 @@ apply from: new File(gradle.ext.sharedModulesRoot, 'core_settings.gradle')
 
 gradle.ext.sharedModulesConstants = new File(gradle.ext.sharedModulesRoot, '/../constants.gradle')
 
-// exoplayer-amzn-2.10.6
-gradle.ext.exoplayerRoot = new File(settingsDir, 'pkg/exoplayer-amzn-2.10.6')
-gradle.ext.exoplayerModulePrefix = 'exoplayer-'
-
 // SmartTubeApp
 project(':SmartTubeApp').projectDir = new File(settingsDir, 'SmartTube')
 
 // fragment-1.1.0
 project(':fragment-1.1.0').projectDir = new File(settingsDir, 'pkg/fragment-1.1.0')
 
-// leanbackassistant
-project(':leanbackassistant').projectDir = new File(settingsDir, 'pkg/leanbackassistant')
-
 // leanback-1.0.0
 project(':leanback-1.0.0').projectDir = new File(settingsDir, 'pkg/leanback-1.0.0')
-
 
 def rootDir = project(':SmartTubeApp').projectDir
 

@@ -26,7 +26,6 @@ public class VideoStateController extends BasePlayerController {
     private static final long OFFICIAL_LIVE_BUFFER_MS = 15_000; // Official app buffer
     private static final long LIVE_BUFFER_MS = OFFICIAL_LIVE_BUFFER_MS;
     private static final long BEGIN_THRESHOLD_MS = 10_000;
-    private static final long EMBED_THRESHOLD_MS = 30_000;
 
     private final MediaServiceManager mMediaServiceManager;
     private final Playlist mPlaylist;
@@ -447,14 +446,6 @@ public class VideoStateController extends BasePlayerController {
         float posPercents2 = item.getPositionMs() * 100f / item.getDurationMs();
 
         return (posPercents2 != 0 && Math.abs(posPercents1 - posPercents2) > 3) && state.timestamp < item.timestamp;
-    }
-
-    private boolean isLiveEnd() {
-        if (getPlayer() == null || getVideo() == null || !getVideo().isLive) {
-            return false;
-        }
-
-        return getPlayer().getDurationMs() - getPlayer().getPositionMs() <= 1_000;
     }
 
     private long getLiveThreshold() {
