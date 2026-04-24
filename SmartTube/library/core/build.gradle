@@ -1,6 +1,6 @@
 
-apply from: '../../constants.gradle'
 apply plugin: 'com.android.library'
+apply from: '../../constants.gradle'
 
 android {
     compileSdkVersion project.ext.compileSdkVersion
@@ -13,27 +13,25 @@ android {
     defaultConfig {
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
+        consumerProguardFiles 'proguard-rules.txt'
     }
-    
+
 }
 
 dependencies {
-    // MODIFIED: add subs bg padding
     implementation project(':sharedutils')
-    implementation project(modulePrefix + 'library-core')
-    implementation 'androidx.media:media:1.0.1'
-    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.annotation:annotation:' + annotationXLibraryVersion
     compileOnly 'org.checkerframework:checker-qual:' + checkerframeworkVersion
-
+    compileOnly 'org.checkerframework:checker-compat-qual:' + checkerframeworkVersion
 }
 
 ext {
-    javadocTitle = 'UI module'
+    javadocTitle = 'Core module'
 }
-apply from: '../../javadoc_library.gradle'
+
 
 ext {
-    releaseArtifact = 'exoplayer-ui'
-    releaseDescription = 'The ExoPlayer library UI module.'
+    releaseArtifact = 'exoplayer-core'
+    releaseDescription = 'The ExoPlayer library core module.'
 }
-apply from: '../../publish.gradle'
+

@@ -18,19 +18,19 @@ android {
 }
 
 dependencies {
-    implementation project(modulePrefix + 'library-core')
-    compileOnly 'org.checkerframework:checker-qual:' + checkerframeworkVersion
     implementation 'androidx.annotation:annotation:1.1.0'
+    compileOnly 'org.checkerframework:checker-qual:' + checkerframeworkVersion
+    implementation project(':exoplayer-core')
 
 }
 
 ext {
-    javadocTitle = 'SmoothStreaming module'
+    javadocTitle = 'HLS module'
 }
-apply from: '../../javadoc_library.gradle'
+
 
 ext {
-    releaseArtifact = 'exoplayer-smoothstreaming'
-    releaseDescription = 'The ExoPlayer library SmoothStreaming module.'
+    releaseArtifact = 'exoplayer-hls'
+    releaseDescription = 'The ExoPlayer library HLS module.'
 }
-apply from: '../../publish.gradle'
+

@@ -20,7 +20,7 @@ android {
 }
 
 dependencies {
-    implementation project(modulePrefix + 'library-core')
+    implementation project(':exoplayer-core')
     implementation 'androidx.annotation:annotation:1.1.0'
     compileOnly 'org.checkerframework:checker-qual:' + checkerframeworkVersion
     api 'com.squareup.okhttp3:okhttp:3.12.5'
@@ -29,10 +29,10 @@ dependencies {
 ext {
     javadocTitle = 'OkHttp extension'
 }
-apply from: '../../javadoc_library.gradle'
+
 
 ext {
     releaseArtifact = 'extension-okhttp'
     releaseDescription = 'OkHttp extension for ExoPlayer.'
 }
-apply from: '../../publish.gradle'
+

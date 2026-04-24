@@ -27,7 +27,7 @@ android {
 }
 
 dependencies {
-    implementation project(modulePrefix + 'library-core')
+    implementation project(':exoplayer-core')
     implementation project(':sharedutils')
     compileOnly 'org.checkerframework:checker-qual:' + checkerframeworkVersion
     implementation 'androidx.annotation:annotation:1.1.0'
@@ -53,10 +53,10 @@ protobuf {
 ext {
     javadocTitle = 'SABR module'
 }
-apply from: '../../javadoc_library.gradle'
+
 
 ext {
     releaseArtifact = 'exoplayer-sabr'
     releaseDescription = 'The ExoPlayer library SABR module.'
 }
-apply from: '../../publish.gradle'
+

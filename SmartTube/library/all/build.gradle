@@ -26,16 +26,16 @@ android {
 }
 
 dependencies {
-    api project(modulePrefix + 'library-core')
-    api project(modulePrefix + 'library-dash')
-    api project(modulePrefix + 'library-sabr')
-    api project(modulePrefix + 'library-hls')
-    api project(modulePrefix + 'library-smoothstreaming')
-    api project(modulePrefix + 'library-ui')
+    api project(':exoplayer-core')
+    api project(':exoplayer-dash')
+    api project(':exoplayer-sabr')
+    api project(':exoplayer-hls')
+    api project(':exoplayer-smoothstreaming')
+    api project(':exoplayer-ui')
 }
 
 ext {
     releaseArtifact = 'exoplayer'
     releaseDescription = 'The ExoPlayer library (all modules).'
 }
-apply from: '../../publish.gradle'
+

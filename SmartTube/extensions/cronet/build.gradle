@@ -5,15 +5,17 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion project.ext.compileSdkVersion
 
+    defaultConfig {
+        minSdkVersion project.ext.minSdkVersion
+        targetSdkVersion project.ext.targetSdkVersion
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    defaultConfig {
-        minSdkVersion project.ext.minSdkVersion
-        targetSdkVersion project.ext.targetSdkVersion
-    }
+
 
     // gradle 4.6 migration: disable dimensions mechanism
     // more: https://proandroiddev.com/advanced-android-flavors-part-4-a-new-version-fc2ad80c01bb
@@ -25,20 +27,18 @@ android {
 }
 
 dependencies {
-    implementation project(modulePrefix + 'library-core')
-    implementation project(':sharedutils')
-    compileOnly 'org.checkerframework:checker-qual:' + checkerframeworkVersion
+    api 'org.chromium.net:cronet-embedded:75.3770.101'
+    implementation project(':exoplayer-core')
     implementation 'androidx.annotation:annotation:1.1.0'
-
 }
 
 ext {
-    javadocTitle = 'DASH module'
+    javadocTitle = 'Cronet extension'
 }
-apply from: '../../javadoc_library.gradle'
+
 
 ext {
-    releaseArtifact = 'exoplayer-dash'
-    releaseDescription = 'The ExoPlayer library DASH module.'
+    releaseArtifact = 'extension-cronet'
+    releaseDescription = 'Cronet extension for ExoPlayer.'
 }
-apply from: '../../publish.gradle'
+

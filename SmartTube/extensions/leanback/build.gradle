@@ -11,26 +11,28 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion project.ext.minSdkVersion
+        minSdkVersion 17
         targetSdkVersion project.ext.targetSdkVersion
     }
+
 
 }
 
 dependencies {
+    // MOD: add custom lib
+    implementation project(':leanback-1.0.0')
+    implementation project(':exoplayer-core')
     implementation 'androidx.annotation:annotation:1.1.0'
-    compileOnly 'org.checkerframework:checker-qual:' + checkerframeworkVersion
-    implementation project(modulePrefix + 'library-core')
-
+    implementation 'androidx.leanback:leanback:1.0.0'
 }
 
 ext {
-    javadocTitle = 'HLS module'
+    javadocTitle = 'Leanback extension'
 }
-apply from: '../../javadoc_library.gradle'
+
 
 ext {
-    releaseArtifact = 'exoplayer-hls'
-    releaseDescription = 'The ExoPlayer library HLS module.'
+    releaseArtifact = 'extension-leanback'
+    releaseDescription = 'Leanback extension for ExoPlayer.'
 }
-apply from: '../../publish.gradle'
+

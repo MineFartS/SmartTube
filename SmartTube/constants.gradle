@@ -12,8 +12,4 @@ project.ext {
     autoValueVersion = '1.6'
     checkerframeworkVersion = '2.5.0'
     protobufVersion = '3.17.3'
-    modulePrefix = ':'
-    if (gradle.ext.has('exoplayerModulePrefix')) {
-        modulePrefix += gradle.ext.exoplayerModulePrefix
-    }
 }

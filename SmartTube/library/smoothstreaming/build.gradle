@@ -11,28 +11,26 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 17
+        minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
     }
-
 
 }
 
 dependencies {
-    // MOD: add custom lib
-    implementation project(':leanback-1.0.0')
-    implementation project(modulePrefix + 'library-core')
+    implementation project(':exoplayer-core')
+    compileOnly 'org.checkerframework:checker-qual:' + checkerframeworkVersion
     implementation 'androidx.annotation:annotation:1.1.0'
-    implementation 'androidx.leanback:leanback:1.0.0'
+
 }
 
 ext {
-    javadocTitle = 'Leanback extension'
+    javadocTitle = 'SmoothStreaming module'
 }
-apply from: '../../javadoc_library.gradle'
+
 
 ext {
-    releaseArtifact = 'extension-leanback'
-    releaseDescription = 'Leanback extension for ExoPlayer.'
+    releaseArtifact = 'exoplayer-smoothstreaming'
+    releaseDescription = 'The ExoPlayer library SmoothStreaming module.'
 }
-apply from: '../../publish.gradle'
+

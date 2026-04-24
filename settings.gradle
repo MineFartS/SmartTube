@@ -9,10 +9,6 @@ gradle.ext.sharedModulesConstants = new File(gradle.ext.sharedModulesRoot, '/../
 // exoplayer-amzn-2.10.6
 gradle.ext.exoplayerRoot = new File(settingsDir, 'pkg/exoplayer-amzn-2.10.6')
 gradle.ext.exoplayerModulePrefix = 'exoplayer-'
-apply from: new File(
-    gradle.ext.exoplayerRoot, 
-    'core_settings.gradle'
-)
 
 // SmartTubeApp
 project(':SmartTubeApp').projectDir = new File(settingsDir, 'SmartTube')
@@ -25,3 +21,32 @@ project(':leanbackassistant').projectDir = new File(settingsDir, 'pkg/leanbackas
 
 // leanback-1.0.0
 project(':leanback-1.0.0').projectDir = new File(settingsDir, 'pkg/leanback-1.0.0')
+
+
+def rootDir = project(':SmartTubeApp').projectDir
+
+include ':exoplayer-library'
+include ':exoplayer-core'
+include ':exoplayer-dash'
+include ':exoplayer-hls'
+include ':exoplayer-sabr'
+include ':exoplayer-smoothstreaming'
+include ':exoplayer-ui'
+
+project(':exoplayer-library').projectDir = new File(rootDir, 'library/all')
+project(':exoplayer-core').projectDir = new File(rootDir, 'library/core')
+project(':exoplayer-dash').projectDir = new File(rootDir, 'library/dash')
+project(':exoplayer-hls').projectDir = new File(rootDir, 'library/hls')
+project(':exoplayer-sabr').projectDir = new File(rootDir, 'library/sabr')
+project(':exoplayer-smoothstreaming').projectDir = new File(rootDir, 'library/smoothstreaming')
+project(':exoplayer-ui').projectDir = new File(rootDir, 'library/ui')
+
+include ':exoplayer-cronet'
+include ':exoplayer-mediasession'
+include ':exoplayer-okhttp'
+include ':exoplayer-leanback'
+
+project(':exoplayer-cronet').projectDir = new File(rootDir, 'extensions/cronet')
+project(':exoplayer-mediasession').projectDir = new File(rootDir, 'extensions/mediasession')
+project(':exoplayer-okhttp').projectDir = new File(rootDir, 'extensions/okhttp')
+project(':exoplayer-leanback').projectDir = new File(rootDir, 'extensions/leanback')

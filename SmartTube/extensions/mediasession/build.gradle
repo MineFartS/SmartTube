@@ -19,17 +19,17 @@ android {
 }
 
 dependencies {
-    implementation project(modulePrefix + 'library-core')
+    implementation project(':exoplayer-core')
     api 'androidx.media:media:1.0.1'
 }
 
 ext {
     javadocTitle = 'Media session extension'
 }
-apply from: '../../javadoc_library.gradle'
+
 
 ext {
     releaseArtifact = 'extension-mediasession'
     releaseDescription = 'Media session extension for ExoPlayer.'
 }
-apply from: '../../publish.gradle'
+
