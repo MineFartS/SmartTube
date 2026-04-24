@@ -7,4 +7,4 @@ project(':sharedutils').projectDir = new File(rootDir, 'sharedutils')
 
 project(':commons-io-2.8.0').projectDir = new File(rootDir, 'commons-io-2.8.0')
 
-project(':j2v8').projectDir = new File(rootDir, 'j2v8')
+project(':j2v8').projectDir = new File(rootDir, 'sharedutils/extensions/j2v8')
