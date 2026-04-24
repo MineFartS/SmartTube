@@ -1,14 +1,12 @@
 
-apply from: gradle.ext.sharedModulesConstants
-
 wrapper {
     gradleVersion = gradleVersion
     distributionType = Wrapper.DistributionType.BIN
 }
 
 buildscript {
-    
-    apply from: gradle.ext.sharedModulesConstants
+
+    apply from: 'SmartTube/constants.gradle'
 
     repositories {
         google()

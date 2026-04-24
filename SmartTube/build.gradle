@@ -1,5 +1,3 @@
-apply from: gradle.ext.sharedModulesConstants
-
 buildscript {
 
     repositories {
@@ -25,6 +23,8 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
+
+    apply from: 'constants.gradle'
     
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

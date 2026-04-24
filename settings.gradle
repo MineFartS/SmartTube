@@ -1,10 +1,5 @@
-include ':SmartTubeApp', ':leanbackassistant', ':leanback-1.0.0', ':fragment-1.1.0'
-
-// SharedModules
-gradle.ext.sharedModulesRoot = new File(settingsDir, 'pkg/SharedModules')
-apply from: new File(gradle.ext.sharedModulesRoot, 'core_settings.gradle')
-
-gradle.ext.sharedModulesConstants = new File(gradle.ext.sharedModulesRoot, '/../constants.gradle')
+include ':SmartTubeApp', ':leanback-1.0.0', ':fragment-1.1.0'
+include ':sharedutils', ':commons-io-2.8.0', ':j2v8'
 
 // SmartTubeApp
 project(':SmartTubeApp').projectDir = new File(settingsDir, 'SmartTube')
@@ -14,6 +9,15 @@ project(':fragment-1.1.0').projectDir = new File(settingsDir, 'pkg/fragment-1.1.
 
 // leanback-1.0.0
 project(':leanback-1.0.0').projectDir = new File(settingsDir, 'pkg/leanback-1.0.0')
+
+// sharedutils
+project(':sharedutils').projectDir = new File(settingsDir, 'SmartTube/extensions/sharedutils')
+
+// commons-io-2.8.0
+project(':commons-io-2.8.0').projectDir = new File(settingsDir, 'pkg/commons-io-2.8.0')
+
+// j2v8
+project(':j2v8').projectDir = new File(settingsDir, 'SmartTube/extensions/j2v8')
 
 def rootDir = project(':SmartTubeApp').projectDir
 
@@ -42,3 +46,4 @@ project(':exoplayer-cronet').projectDir = new File(rootDir, 'extensions/cronet')
 project(':exoplayer-mediasession').projectDir = new File(rootDir, 'extensions/mediasession')
 project(':exoplayer-okhttp').projectDir = new File(rootDir, 'extensions/okhttp')
 project(':exoplayer-leanback').projectDir = new File(rootDir, 'extensions/leanback')
+

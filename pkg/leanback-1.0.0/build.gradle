@@ -1,4 +1,4 @@
-apply from: gradle.ext.sharedModulesConstants
+apply from: '../../SmartTube/constants.gradle'
 apply plugin: 'com.android.library'
 
 android {
