@@ -4,20 +4,10 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        mavenCentral()
     }
 
     dependencies {
-        // These docs use an open ended version so that our plugin
-        // can be updated quickly in response to Android tooling updates
-
-        // Check that you have the Google Services Gradle plugin v4.3.2 or later
-        // (if not, add it).
         classpath 'com.google.gms:google-services:4.3.10'
-
-        // Add the Crashlytics Gradle plugin.
-        // https://firebase.google.com/docs/crashlytics/get-started?platform=android
-        // https://firebase.google.com/docs/android/setup
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.1'
     }
 }
@@ -30,21 +20,8 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
-// First letter of flavor name must be in Uppercase
-if (new File("${projectDir}/google-services.json").exists() && (getGradle().getStartParameter().getTaskRequests().toString().contains("Stbeta") ||
-        getGradle().getStartParameter().getTaskRequests().toString().contains("Ststable"))) {
-    // Google Services Gradle plugin (transforms google-services.json file)
-    apply plugin: 'com.google.gms.google-services'
-
-    // Apply the Crashlytics Gradle plugin
-    apply plugin: 'com.google.firebase.crashlytics'
-}
-
-def now = new Date()
-
 android {
     
-    // FIX: Default interface methods are only supported starting with Android N (--min-api 24)
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -53,39 +30,32 @@ android {
     compileSdkVersion project.properties.compileSdkVersion
     buildToolsVersion project.properties.buildToolsVersion
 
-
     defaultConfig {
-        // values linked with applicationId: searchable.searchSuggestAuthority, searchable.searchSuggestIntentData, VideoContract.CONTENT_AUTHORITY
+
         applicationId "minefarts.smarttube"
+
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
 
+        def now = new Date()
+        versionName now.format('yy.MM.dd')
         versionCode now.format('yyMMdd').toInteger()
 
-        versionName now.format('yy.MM.dd')
-
-        
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
 
-        // More info: http://myhexaville.com/2017/03/10/android-multidex/
-        // Additionally, you should extend your application from MultiDexApplication
         multiDexEnabled = true
 
-        // Trying to fix VerifyError/ClassNotFoundException
         multiDexKeepProguard file("multidex-keep.pro")
 
-        // https://stackoverflow.com/questions/37382057/android-apk-how-to-exclude-a-so-file-from-a-3rd-party-dependency-using-gradle
-        // armeabi-v7a backward compatible with arm64-v8a, x86 -> x86_64 etc
         splits {
             abi {
                 enable true
                 reset()
-                // Note, Android could soon start warning users when they run 32-bit apps
-                //include 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a' //select ABIs to build APKs for
-                include 'armeabi-v7a', 'x86', 'arm64-v8a' // v7a main build, x86 for WSL, v8a for Pixel Tablet (no 32 bit support)
-                universalApk false //generate an additional APK that contains all the ABIs
+                include 'armeabi-v7a', 'x86', 'arm64-v8a'
+                universalApk false
             }
         }
+    
     }
 
     signingConfigs {
@@ -107,39 +77,21 @@ android {
             if (keystorePropertiesFile.exists()) {
                 signingConfig signingConfigs.release
             }
+
         }
     }
 
-    // gradle 4.6 migration: disable dimensions mechanism
-    // more: https://proandroiddev.com/advanced-android-flavors-part-4-a-new-version-fc2ad80c01bb
     flavorDimensions "default"
-
-    // NOTE: The main goal of prefixing a flavor is to group flavors' folders together
-    productFlavors {
-        ststable {}
-    }
-
-    // naming example: SmartYouTubeTV_Xwalk_v6.8.12_r.apk
-    // https://stackoverflow.com/questions/18332474/how-to-set-versionname-in-apk-filename-using-gradle
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            def project = "SmartTube"
-            def flavor = variant.productFlavors[-1].name.substring(2) // remove st prefix
-            def buildType = variant.buildType.name.take(1)
-            def version = variant.versionName
-            def arch = output.getFilter(com.android.build.OutputFile.ABI)
-
-            def newApkName = sprintf("%s_%s_%s_%s.apk", [project, flavor, version, arch])
-
-            // gradle 4.6 migration
-            output.outputFileName = new File(newApkName)
-        }
-    }
 
     lintOptions {
         checkReleaseBuilds false // fix for ClassNotFoundException: com.android.tools.lint.client.api.Vendor
     }
+
 }
+
+// Google Services Gradle plugin (transforms google-services.json file)
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 dependencies {
     
@@ -154,8 +106,9 @@ dependencies {
     implementation project(':fragment-1.1.0')
     implementation project(':leanback-1.0.0')
     implementation project(':sharedutils')
-    implementation project(':leanbackassistant')
+    implementation project(':leanback-1.0.0')
 
+    implementation 'androidx.tvprovider:tvprovider:' + leanbackXLibraryVersion
     implementation 'androidx.leanback:leanback:' + leanbackXLibraryVersion
     implementation 'androidx.leanback:leanback-preference:' + leanbackXLibraryVersion
     implementation 'androidx.recommendation:recommendation:' + leanbackXLibraryVersion
@@ -193,7 +146,7 @@ dependencies {
 
     implementation 'com.jakewharton:process-phoenix:' + phoenixVersion
 
-    ststableImplementation('com.google.firebase:firebase-crashlytics:' + firebaseCrashlyticsVersion) {
+    implementation('com.google.firebase:firebase-crashlytics:' + firebaseCrashlyticsVersion) {
         transitive = true
     }
 
