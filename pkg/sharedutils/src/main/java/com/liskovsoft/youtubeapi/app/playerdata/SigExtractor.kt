@@ -1,6 +1,6 @@
 package com.liskovsoft.sharedutils.app.playerdata
 
-import com.liskovsoft.sharedutils.V8ScriptExecutionException
+import com.eclipsesource.v8.V8ScriptExecutionException
 import com.liskovsoft.sharedutils.mylogger.Log
 import com.liskovsoft.googlecommon.common.js.JSInterpret
 import java.util.regex.Pattern

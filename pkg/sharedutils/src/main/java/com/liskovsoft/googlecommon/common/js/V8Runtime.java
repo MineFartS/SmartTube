@@ -2,9 +2,9 @@ package com.liskovsoft.googlecommon.common.js;
 
 import androidx.annotation.Nullable;
 
-import com.liskovsoft.sharedutils.V8;
-import com.liskovsoft.sharedutils.V8ResultUndefined;
-import com.liskovsoft.sharedutils.V8ScriptExecutionException;
+import com.eclipsesource.v8.V8;
+import com.eclipsesource.v8.V8ResultUndefined;
+import com.eclipsesource.v8.V8ScriptExecutionException;
 import com.liskovsoft.sharedutils.mylogger.Log;
 
 import java.util.List;

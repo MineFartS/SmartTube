@@ -1,6 +1,6 @@
 package com.liskovsoft.sharedutils.app.playerdata
 
-import com.liskovsoft.sharedutils.V8ScriptExecutionException
+import com.eclipsesource.v8.V8ScriptExecutionException
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.sharedutils.app.nsigsolver.common.YouTubeInfoExtractor

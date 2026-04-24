@@ -37,6 +37,7 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation project(':j2v8')
     implementation project(path: ':commons-io-2.8.0')
 
     implementation 'androidx.appcompat:appcompat:' + appCompatXLibraryVersion
