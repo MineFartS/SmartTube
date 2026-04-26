@@ -13,9 +13,9 @@ import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.sharedutils.prefs.SharedPreferencesBase;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.sharedutils.app.PoTokenGate;
-import com.liskovsoft.sharedutils.app.models.AppInfo;
-import com.liskovsoft.sharedutils.app.models.ClientData;
-import com.liskovsoft.sharedutils.app.models.PlayerData;
+import com.liskovsoft.sharedutils.app.models.cached.AppInfoCached;
+import com.liskovsoft.sharedutils.app.models.cached.ClientDataCached;
+import com.liskovsoft.sharedutils.app.models.cached.PlayerDataCached;
 import com.liskovsoft.sharedutils.app.playerdata.NSigData;
 import com.liskovsoft.sharedutils.app.playerdata.PlayerExtractorCache;
 import com.liskovsoft.sharedutils.app.potokencloud.PoTokenResponse;
@@ -54,11 +54,11 @@ public class MediaServiceData {
     private MediaServiceCache mCachedPrefs;
     private GlobalPreferences mGlobalPrefs;
     private PoTokenResponse mPoToken;
-    private AppInfo mAppInfo;
-    private AppInfo mFailedAppInfo;
-    private PlayerData mPlayerData;
+    private AppInfoCached mAppInfo;
+    private AppInfoCached mFailedAppInfo;
+    private PlayerDataCached mPlayerData;
     private PlayerExtractorCache mPlayerExtractorCache;
-    private ClientData mClientData;
+    private ClientDataCached mClientData;
     private NSigData mNSigData;
     private NSigData mSigData;
     private boolean mIsMoreSubtitlesUnlocked;
@@ -142,11 +142,11 @@ public class MediaServiceData {
         persistState();
     }
 
-    public Triple<NSigData, NSigData, PlayerData> getPlayerExtractorData() {
+    public Triple<NSigData, NSigData, PlayerDataCached> getPlayerExtractorData() {
         return new Triple<>(mNSigData, mSigData, mPlayerData);
     }
 
-    public void setPlayerExtractorData(NSigData nSigData, NSigData sigData, PlayerData playerData) {
+    public void setPlayerExtractorData(NSigData nSigData, NSigData sigData, PlayerDataCached playerData) {
         mNSigData = nSigData;
         mSigData = sigData;
         mPlayerData = playerData;
@@ -216,11 +216,11 @@ public class MediaServiceData {
         persistState();
     }
 
-    public AppInfo getAppInfo() {
+    public AppInfoCached getAppInfo() {
         return mAppInfo;
     }
 
-    public void setAppInfo(AppInfo appInfo) {
+    public void setAppInfo(AppInfoCached appInfo) {
         if (appInfo != null) {
             mFailedAppInfo = null;
         }
@@ -234,11 +234,11 @@ public class MediaServiceData {
         persistState();
     }
 
-    public AppInfo getFailedAppInfo() {
+    public AppInfoCached getFailedAppInfo() {
         return mFailedAppInfo;
     }
 
-    public void setFailedAppInfo(AppInfo appInfo) {
+    public void setFailedAppInfo(AppInfoCached appInfo) {
         if (Helpers.equals(mFailedAppInfo, appInfo)) {
             return;
         }
@@ -248,11 +248,11 @@ public class MediaServiceData {
         persistState();
     }
 
-    public ClientData getClientData() {
+    public ClientDataCached getClientData() {
         return mClientData;
     }
 
-    public void setClientData(ClientData clientData) {
+    public void setClientData(ClientDataCached clientData) {
         mClientData = clientData;
 
         persistState();
@@ -286,10 +286,13 @@ public class MediaServiceData {
         /* 03 */ mVideoInfoType = Helpers.parseInt(split, 3, -1);
         /* 04 */ mEnabledFormats = Helpers.parseInt(split, 4, FORMATS_DASH | FORMATS_URL);
         /* 05 */ mPoToken = Helpers.parseItem(split, 5, PoTokenResponse::fromString);
-
+        /* 06 */ mAppInfo = Helpers.parseItem(split, 6, AppInfoCached::fromString);
+        /* 07 */ mPlayerData = Helpers.parseItem(split, 7, PlayerDataCached::fromString);
+        /* 08 */ mClientData = Helpers.parseItem(split, 8, ClientDataCached::fromString);
         /* 09 */ mHiddenContent = Helpers.parseInt(split, 9, CONTENT_SHORTS | CONTENT_UPCOMING);
         /* 10 */ mIsMoreSubtitlesUnlocked = Helpers.parseBoolean(split, 10);
         /* 11 */ mVisitorCookie = Helpers.parseStr(split, 11);
+        /* 12 */ mFailedAppInfo = Helpers.parseItem(split, 12, AppInfoCached::fromString);
 
         // Hide watched content by default
         setContentHidden(MediaServiceData.CONTENT_WATCHED, true);
@@ -316,13 +319,13 @@ public class MediaServiceData {
         /* 03 */ mVideoInfoType,
         /* 04 */ mEnabledFormats,
         /* 05 */ mPoToken,
-        /* 06 */ null, 
-        /* 07 */ null, 
-        /* 08 */ null, 
+        /* 06 */ mAppInfo, 
+        /* 07 */ mPlayerData, 
+        /* 08 */ mClientData, 
         /* 09 */ mHiddenContent,
         /* 10 */ mIsMoreSubtitlesUnlocked, 
         /* 11 */ mVisitorCookie, 
-        /* 12 */ null
+        /* 12 */ mFailedAppInfo
         ));
     
     }

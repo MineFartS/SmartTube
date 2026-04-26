@@ -20,7 +20,7 @@ public class AppService {
     private String mClientPlaybackNonce;
 
     private AppService() {
-        mAppServiceInt = new AppServiceInt();
+        mAppServiceInt = new AppServiceIntCached();
     }
 
     public static AppService instance() {
