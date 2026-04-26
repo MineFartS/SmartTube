@@ -915,23 +915,6 @@ public interface Player {
   boolean isCurrentWindowSeekable();
 
   /**
-   * Returns whether the player is currently playing an ad.
-   */
-  boolean isPlayingAd();
-
-  /**
-   * If {@link #isPlayingAd()} returns true, returns the index of the ad group in the period
-   * currently being played. Returns {@link C#INDEX_UNSET} otherwise.
-   */
-  int getCurrentAdGroupIndex();
-
-  /**
-   * If {@link #isPlayingAd()} returns true, returns the index of the ad in its ad group. Returns
-   * {@link C#INDEX_UNSET} otherwise.
-   */
-  int getCurrentAdIndexInAdGroup();
-
-  /**
    * If {@link #isPlayingAd()} returns {@code true}, returns the duration of the current content
    * window in milliseconds, or {@link C#TIME_UNSET} if the duration is not known. If there is no ad
    * playing, the returned duration is the same as that returned by {@link #getDuration()}.

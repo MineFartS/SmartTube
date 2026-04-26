@@ -758,9 +758,6 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
 
   @Override
   public boolean dispatchKeyEvent(KeyEvent event) {
-    if (player != null && player.isPlayingAd()) {
-      return super.dispatchKeyEvent(event);
-    }
 
     boolean isDpadAndUseController = isDpadKey(event.getKeyCode()) && useController;
     boolean handled = false;
@@ -1155,9 +1152,6 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
 
   /** Shows the playback controls, but only if forced or shown indefinitely. */
   private void maybeShowController(boolean isForced) {
-    if (isPlayingAd() && controllerHideDuringAds) {
-      return;
-    }
     if (useController) {
       boolean wasShowingIndefinitely = controller.isVisible() && controller.getShowTimeoutMs() <= 0;
       boolean shouldShowIndefinitely = shouldShowControllerIndefinitely();
@@ -1184,10 +1178,6 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
     }
     controller.setShowTimeoutMs(showIndefinitely ? 0 : controllerShowTimeoutMs);
     controller.show();
-  }
-
-  private boolean isPlayingAd() {
-    return player != null && player.isPlayingAd() && player.getPlayWhenReady();
   }
 
   private void updateForCurrentTrackSelections(boolean isNewPlayer) {
@@ -1447,19 +1437,11 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
       updateBuffering();
       updateErrorMessage();
-      if (isPlayingAd() && controllerHideDuringAds) {
-        hideController();
-      } else {
-        maybeShowController(false);
-      }
+      maybeShowController(false);
     }
 
     @Override
-    public void onPositionDiscontinuity(@DiscontinuityReason int reason) {
-      if (isPlayingAd() && controllerHideDuringAds) {
-        hideController();
-      }
-    }
+    public void onPositionDiscontinuity(@DiscontinuityReason int reason) {}
 
     // OnLayoutChangeListener implementation
 

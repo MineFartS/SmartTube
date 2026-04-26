@@ -24,6 +24,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.lang.IndexOutOfBoundsException;
 
 /** An {@link ExoPlayer} implementation. Instances can be obtained from {@link ExoPlayerFactory}. */
 /* package */ final class ExoPlayerImpl extends BasePlayer implements ExoPlayer {
@@ -314,20 +315,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
     }
     hasPendingSeek = true;
     pendingOperationAcks++;
-    if (isPlayingAd()) {
-      // TODO: Investigate adding support for seeking during ads. This is complicated to do in
-      // general because the midroll ad preceding the seek destination must be played before the
-      // content position can be played, if a different ad is playing at the moment.
-      Log.w(TAG, "seekTo ignored because an ad is playing");
-      eventHandler
-          .obtainMessage(
-              ExoPlayerImplInternal.MSG_PLAYBACK_INFO_CHANGED,
-              /* operationAcks */ 1,
-              /* positionDiscontinuityReason */ C.INDEX_UNSET,
-              playbackInfo)
-          .sendToTarget();
-      return;
-    }
     maskingWindowIndex = windowIndex;
     if (timeline.isEmpty()) {
       maskingWindowPositionMs = positionMs == C.TIME_UNSET ? 0 : positionMs;
@@ -491,33 +478,16 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
   @Override
   public long getDuration() {
-    if (isPlayingAd()) {
-      MediaPeriodId periodId = playbackInfo.periodId;
-      playbackInfo.timeline.getPeriodByUid(periodId.periodUid, period);
-      long adDurationUs = period.getAdDurationUs(periodId.adGroupIndex, periodId.adIndexInAdGroup);
-      return C.usToMs(adDurationUs);
-    }
     return getContentDuration();
   }
 
-  @Override
-  public long getCurrentPosition() {
-    if (shouldMaskPosition()) {
-      return maskingWindowPositionMs;
-    } else if (playbackInfo.periodId.isAd()) {
-      return C.usToMs(playbackInfo.positionUs);
-    } else {
-      return periodPositionUsToWindowPositionMs(playbackInfo.periodId, playbackInfo.positionUs);
+    @Override
+    public long getCurrentPosition() {
+        return periodPositionUsToWindowPositionMs(playbackInfo.periodId, playbackInfo.positionUs);
     }
-  }
 
   @Override
   public long getBufferedPosition() {
-    if (isPlayingAd()) {
-      return playbackInfo.loadingMediaPeriodId.equals(playbackInfo.periodId)
-          ? C.usToMs(playbackInfo.bufferedPositionUs)
-          : getDuration();
-    }
     return getContentBufferedPosition();
   }
 
@@ -527,53 +497,24 @@ import java.util.concurrent.CopyOnWriteArrayList;
   }
 
   @Override
-  public boolean isPlayingAd() {
-    return !shouldMaskPosition() && playbackInfo.periodId.isAd();
-  }
-
-  @Override
-  public int getCurrentAdGroupIndex() {
-    return isPlayingAd() ? playbackInfo.periodId.adGroupIndex : C.INDEX_UNSET;
-  }
-
-  @Override
-  public int getCurrentAdIndexInAdGroup() {
-    return isPlayingAd() ? playbackInfo.periodId.adIndexInAdGroup : C.INDEX_UNSET;
-  }
-
-  @Override
   public long getContentPosition() {
-    if (isPlayingAd()) {
-      playbackInfo.timeline.getPeriodByUid(playbackInfo.periodId.periodUid, period);
-      return playbackInfo.contentPositionUs == C.TIME_UNSET
-          ? playbackInfo.timeline.getWindow(getCurrentWindowIndex(), window).getDefaultPositionMs()
-          : period.getPositionInWindowMs() + C.usToMs(playbackInfo.contentPositionUs);
-    } else {
       return getCurrentPosition();
-    }
   }
 
   @Override
   public long getContentBufferedPosition() {
-    if (shouldMaskPosition()) {
-      return maskingWindowPositionMs;
-    }
+
     if (playbackInfo.loadingMediaPeriodId.windowSequenceNumber
         != playbackInfo.periodId.windowSequenceNumber) {
       return playbackInfo.timeline.getWindow(getCurrentWindowIndex(), window).getDurationMs();
     }
+
     long contentBufferedPositionUs = playbackInfo.bufferedPositionUs;
-    if (playbackInfo.loadingMediaPeriodId.isAd()) {
-      Timeline.Period loadingPeriod =
-          playbackInfo.timeline.getPeriodByUid(playbackInfo.loadingMediaPeriodId.periodUid, period);
-      contentBufferedPositionUs =
-          loadingPeriod.getAdGroupTimeUs(playbackInfo.loadingMediaPeriodId.adGroupIndex);
-      if (contentBufferedPositionUs == C.TIME_END_OF_SOURCE) {
-        contentBufferedPositionUs = loadingPeriod.durationUs;
-      }
-    }
+
     return periodPositionUsToWindowPositionMs(
-        playbackInfo.loadingMediaPeriodId, contentBufferedPositionUs);
+        playbackInfo.loadingMediaPeriodId, 
+        contentBufferedPositionUs
+    );
   }
 
   @Override
@@ -747,10 +688,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
   }
 
   private long periodPositionUsToWindowPositionMs(MediaPeriodId periodId, long positionUs) {
-    long positionMs = C.usToMs(positionUs);
-    playbackInfo.timeline.getPeriodByUid(periodId.periodUid, period);
-    positionMs += period.getPositionInWindowMs();
-    return positionMs;
+    try {
+        long positionMs = C.usToMs(positionUs);
+        playbackInfo.timeline.getPeriodByUid(periodId.periodUid, period);
+        positionMs += period.getPositionInWindowMs();
+        return positionMs;
+    } catch (java.lang.IndexOutOfBoundsException e) {
+        return 0L;
+    }
   }
 
   private boolean shouldMaskPosition() {

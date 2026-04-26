@@ -1079,24 +1079,6 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
     }
 
     @Override
-    public boolean isPlayingAd() {
-        verifyApplicationThread();
-        return player.isPlayingAd();
-    }
-
-    @Override
-    public int getCurrentAdGroupIndex() {
-        verifyApplicationThread();
-        return player.getCurrentAdGroupIndex();
-    }
-
-    @Override
-    public int getCurrentAdIndexInAdGroup() {
-        verifyApplicationThread();
-        return player.getCurrentAdIndexInAdGroup();
-    }
-
-    @Override
     public long getContentPosition() {
         verifyApplicationThread();
         return player.getContentPosition();

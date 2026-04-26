@@ -1054,7 +1054,6 @@ public class PlayerNotificationManager {
     if (Util.SDK_INT >= 21
         && useChronometer
         && player.isPlaying()
-        && !player.isPlayingAd()
         && !player.isCurrentWindowDynamic()) {
       builder
           .setWhen(System.currentTimeMillis() - player.getContentPosition())
@@ -1104,7 +1103,7 @@ public class PlayerNotificationManager {
     boolean enableFastForward = false;
     boolean enableNext = false;
     Timeline timeline = player.getCurrentTimeline();
-    if (!timeline.isEmpty() && !player.isPlayingAd()) {
+    if (!timeline.isEmpty()) {
       timeline.getWindow(player.getCurrentWindowIndex(), window);
       enablePrevious = window.isSeekable || !window.isDynamic || player.hasPrevious();
       enableRewind = rewindMs > 0;
@@ -1185,7 +1184,7 @@ public class PlayerNotificationManager {
 
   private void previous(Player player) {
     Timeline timeline = player.getCurrentTimeline();
-    if (timeline.isEmpty() || player.isPlayingAd()) {
+    if (timeline.isEmpty()) {
       return;
     }
     int windowIndex = player.getCurrentWindowIndex();
@@ -1202,7 +1201,7 @@ public class PlayerNotificationManager {
 
   private void next(Player player) {
     Timeline timeline = player.getCurrentTimeline();
-    if (timeline.isEmpty() || player.isPlayingAd()) {
+    if (timeline.isEmpty()) {
       return;
     }
     int windowIndex = player.getCurrentWindowIndex();
