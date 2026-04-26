@@ -113,8 +113,9 @@ public class VideoStateController extends BasePlayerController {
 
     @Override
     public void onEngineReleased() {
-
-        if (getPlayer() == null) return;
+        if (getPlayer() == null) {
+            return;
+        }
 
         // Save previous state
         if (getPlayer().containsMedia()) {
@@ -125,8 +126,9 @@ public class VideoStateController extends BasePlayerController {
 
     @Override
     public void onTickle() {
-
-        if (getPlayer() == null || !getPlayer().isEngineInitialized()) return;
+        if (getPlayer() == null || !getPlayer().isEngineInitialized()) {
+            return;
+        }
 
         saveState();
 
@@ -138,7 +140,7 @@ public class VideoStateController extends BasePlayerController {
         restoreSubtitleFormat();
 
         // Need to contain channel id
-        restoreState();
+        restoreSpeedAndPositionIfNeeded();
 
         // NOTE: needed for the restore after oom crash?
         saveState(); // start watching?
@@ -157,7 +159,19 @@ public class VideoStateController extends BasePlayerController {
     }
 
     @Override
-    public void onVideoLoaded(Video item) {restoreState();}
+    public void onVideoLoaded(Video item) {
+        // Actual video that match currently loaded one.
+        //mVideo = item;
+
+        // Restore formats again.
+        // Maybe this could help with Shield format problem.
+        // NOTE: produce multi thread exception:
+        // Attempt to read from field 'java.util.TreeMap$TreeMapEntry java.util.TreeMap$TreeMapEntry.left' on a null object reference (TrackSelectorManager.java:181)
+        //restoreFormats();
+
+        // In this state video length is not undefined.
+        restoreState();
+    }
 
     @Override
     public void onPlay() {
@@ -180,7 +194,10 @@ public class VideoStateController extends BasePlayerController {
     }
 
     @Override
-    public void onBuffering() {restoreState();}
+    public void onBuffering() {
+        // Restore speed on LIVE end or after seek
+        restoreSpeedAndPositionIfNeeded();
+    }
 
     @Override
     public void onSourceChanged(Video item) {
@@ -360,13 +377,17 @@ public class VideoStateController extends BasePlayerController {
         if (getPlayer() == null) return;
 
         restorePosition();
+        restorePendingPosition();
+
         restoreVolume();
     }
 
     private void restorePosition() {
         Video item = getVideo();
 
-        if (getPlayer() == null || item == null) return;
+        if (getPlayer() == null || item == null) {
+            return;
+        }
 
         State state = getStateService().getByVideoId(item.videoId);
 
@@ -393,6 +414,48 @@ public class VideoStateController extends BasePlayerController {
         if (!mIsPlayBlocked) {
             getPlayer().setPlayWhenReady(getPlayEnabled());
         }
+    }
+
+    /**
+     * Restore position from description time code
+     */
+    private void restorePendingPosition() {
+        if (getPlayer() == null || getVideo() == null) {
+            return;
+        }
+
+        Video item = getVideo();
+
+        if (item.pendingPosMs > 0) {
+            getPlayer().setPositionMs(item.pendingPosMs);
+            item.pendingPosMs = 0;
+        }
+    }
+
+    private void restoreSpeedAndPositionIfNeeded() {
+
+        if (getPlayer() == null || getVideo() == null) return;
+
+        Video item = getVideo();
+
+        boolean liveEnd = item.isLive && getPlayer().getDurationMs() - getPlayer().getPositionMs() <= 1_000;
+
+        if (liveEnd) {
+
+            getPlayer().setPositionMs(getPlayer().getDurationMs() - getLiveBuffer());
+
+            getPlayer().setSpeed(1.0f);
+        } else {
+
+            State state = getStateService().getByVideoId(item.videoId);
+            float speed = getPlayerData().getSpeed(item.channelId);
+            getPlayer().setSpeed(
+                    state != null && getPlayerData().isSpeedPerVideoEnabled() ? state.speed :
+                            getPlayerData().isAllSpeedEnabled() || item.channelId != null ? speed : 1.0f
+            );
+
+        }
+
     }
 
     public void blockPlay(boolean block) {
