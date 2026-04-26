@@ -80,7 +80,7 @@ public abstract class TimelineQueueNavigator implements MediaSessionConnector.Qu
     boolean enablePrevious = false;
     boolean enableNext = false;
     Timeline timeline = player.getCurrentTimeline();
-    if (!timeline.isEmpty() && !player.isPlayingAd()) {
+    if (!timeline.isEmpty()) {
       timeline.getWindow(player.getCurrentWindowIndex(), window);
       enableSkipTo = timeline.getWindowCount() > 1;
       enablePrevious = window.isSeekable || !window.isDynamic || player.hasPrevious();
@@ -123,7 +123,7 @@ public abstract class TimelineQueueNavigator implements MediaSessionConnector.Qu
   @Override
   public void onSkipToPrevious(Player player, ControlDispatcher controlDispatcher) {
     Timeline timeline = player.getCurrentTimeline();
-    if (timeline.isEmpty() || player.isPlayingAd()) {
+    if (timeline.isEmpty()) {
       return;
     }
     int windowIndex = player.getCurrentWindowIndex();
@@ -141,7 +141,7 @@ public abstract class TimelineQueueNavigator implements MediaSessionConnector.Qu
   @Override
   public void onSkipToQueueItem(Player player, ControlDispatcher controlDispatcher, long id) {
     Timeline timeline = player.getCurrentTimeline();
-    if (timeline.isEmpty() || player.isPlayingAd()) {
+    if (timeline.isEmpty()) {
       return;
     }
     int windowIndex = (int) id;
@@ -153,7 +153,7 @@ public abstract class TimelineQueueNavigator implements MediaSessionConnector.Qu
   @Override
   public void onSkipToNext(Player player, ControlDispatcher controlDispatcher) {
     Timeline timeline = player.getCurrentTimeline();
-    if (timeline.isEmpty() || player.isPlayingAd()) {
+    if (timeline.isEmpty()) {
       return;
     }
     int windowIndex = player.getCurrentWindowIndex();

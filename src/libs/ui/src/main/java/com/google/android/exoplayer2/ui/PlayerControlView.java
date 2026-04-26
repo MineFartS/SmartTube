@@ -757,7 +757,7 @@ public class PlayerControlView extends FrameLayout {
     boolean enableNext = false;
     if (player != null) {
       Timeline timeline = player.getCurrentTimeline();
-      if (!timeline.isEmpty() && !player.isPlayingAd()) {
+      if (!timeline.isEmpty()) {
         timeline.getWindow(player.getCurrentWindowIndex(), window);
         boolean isSeekable = window.isSeekable;
         enableSeeking = isSeekable;
@@ -968,7 +968,7 @@ public class PlayerControlView extends FrameLayout {
 
   private void previous(Player player) {
     Timeline timeline = player.getCurrentTimeline();
-    if (timeline.isEmpty() || player.isPlayingAd()) {
+    if (timeline.isEmpty()) {
       return;
     }
     int windowIndex = player.getCurrentWindowIndex();
@@ -985,7 +985,7 @@ public class PlayerControlView extends FrameLayout {
 
   private void next(Player player) {
     Timeline timeline = player.getCurrentTimeline();
-    if (timeline.isEmpty() || player.isPlayingAd()) {
+    if (timeline.isEmpty()) {
       return;
     }
     int windowIndex = player.getCurrentWindowIndex();

@@ -807,7 +807,7 @@ public final class MediaSessionConnector {
         boolean enableFastForward = false;
         boolean enableSetRating = false;
         Timeline timeline = player.getCurrentTimeline();
-        if (!timeline.isEmpty() && !player.isPlayingAd()) {
+        if (!timeline.isEmpty()) {
             enableSeeking = player.isCurrentWindowSeekable();
             enableRewind = enableSeeking && rewindMs > 0;
             enableFastForward = enableSeeking && fastForwardMs > 0;
@@ -933,9 +933,7 @@ public final class MediaSessionConnector {
                 return METADATA_EMPTY;
             }
             MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder();
-            if (player.isPlayingAd()) {
-                builder.putLong(MediaMetadataCompat.METADATA_KEY_ADVERTISEMENT, 1);
-            }
+
             builder.putLong(MediaMetadataCompat.METADATA_KEY_DURATION,
                     player.isCurrentWindowDynamic() || player.getDuration() == C.TIME_UNSET ? -1
                             : player.getDuration());

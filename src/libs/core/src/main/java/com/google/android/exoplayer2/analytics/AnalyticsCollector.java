@@ -610,10 +610,7 @@ public class AnalyticsCollector
     boolean isInCurrentWindow =
         timeline == player.getCurrentTimeline() && windowIndex == player.getCurrentWindowIndex();
     if (mediaPeriodId != null && mediaPeriodId.isAd()) {
-      boolean isCurrentAd =
-          isInCurrentWindow
-              && player.getCurrentAdGroupIndex() == mediaPeriodId.adGroupIndex
-              && player.getCurrentAdIndexInAdGroup() == mediaPeriodId.adIndexInAdGroup;
+      boolean isCurrentAd = false;
       // Assume start position of 0 for future ads.
       eventPositionMs = isCurrentAd ? player.getCurrentPosition() : 0;
     } else if (isInCurrentWindow) {
