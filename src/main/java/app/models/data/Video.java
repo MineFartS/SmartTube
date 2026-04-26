@@ -88,6 +88,7 @@ public final class Video {
     public int sectionId = -1;
     public String channelGroupId;
     public long startTimeMs;
+    public long pendingPosMs;
     public boolean fromQueue;
     public boolean isPending;
     public boolean finishOnEnded;
