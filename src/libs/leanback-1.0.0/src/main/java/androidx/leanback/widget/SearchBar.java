@@ -196,19 +196,6 @@ public class SearchBar extends RelativeLayout {
             mBadgeView.setImageDrawable(mBadgeDrawable);
         }
 
-        mSearchTextEditor.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (DEBUG)
-                    Log.v(TAG, "EditText.onFocusChange " + hasFocus);
-                if (hasFocus) {
-                    showNativeKeyboard();
-                } else {
-                    hideNativeKeyboard();
-                }
-                updateUi(hasFocus);
-            }
-        });
         final Runnable mOnTextChangedRunnable = new Runnable() {
             @Override
             public void run() {
