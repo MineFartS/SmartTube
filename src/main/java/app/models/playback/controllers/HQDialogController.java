@@ -44,35 +44,42 @@ public class HQDialogController extends BasePlayerController {
     }
 
     private void onHighQualityClicked() {
+
         fitVideoIntoDialog();
 
-        addQualityCategories();
+        addCategoryInt(OptionCategory.from(
+            VIDEO_FORMATS_ID,
+            OptionCategory.TYPE_RADIO_LIST,
+            "Video formats",
+            UiOptionItem.from(
+                getPlayer().getVideoFormats(), 
+                this::selectFormatOption, 
+                getContext().getString(R.string.option_disabled)
+            )
+        ));
+        
+        addCategoryInt(OptionCategory.from(
+            AUDIO_FORMATS_ID,
+            OptionCategory.TYPE_RADIO_LIST,
+            "Audio formats",
+            UiOptionItem.from(
+                getPlayer().getAudioFormats(), 
+                this::selectFormatOption, 
+                getContext().getString(R.string.option_disabled)
+            )
+        ));
+
         addAudioLanguage();
         addPresetsCategory();
 
         appendOptions(mCategoriesInt);
         appendOptions(mCategories);
 
-        mAppDialogPresenter.showDialog(getContext().getString(R.string.playback_settings), this::onDialogHide);
-    }
-
-    private void addQualityCategories() {
-        List<FormatItem> videoFormats = getPlayer().getVideoFormats();
-        String videoFormatsTitle = getContext().getString(R.string.title_video_formats);
-
-        List<FormatItem> audioFormats = getPlayer().getAudioFormats();
-        String audioFormatsTitle = getContext().getString(R.string.title_audio_formats);
-
-        addCategoryInt(OptionCategory.from(
-                VIDEO_FORMATS_ID,
-                OptionCategory.TYPE_RADIO_LIST,
-                videoFormatsTitle,
-                UiOptionItem.from(videoFormats, this::selectFormatOption, getContext().getString(R.string.option_disabled))));
-        addCategoryInt(OptionCategory.from(
-                AUDIO_FORMATS_ID,
-                OptionCategory.TYPE_RADIO_LIST,
-                audioFormatsTitle,
-                UiOptionItem.from(audioFormats, this::selectFormatOption, getContext().getString(R.string.option_disabled))));
+        mAppDialogPresenter.showDialog(
+            getContext().getString(R.string.playback_settings), 
+            this::onDialogHide
+        );
+        
     }
 
     private void selectFormatOption(OptionItem option) {

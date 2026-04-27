@@ -57,7 +57,7 @@ public class SimpleEditDialog {
                 .setTitle(dialogTitle)
                 .setView(contentView)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> { })
-                .setNegativeButton(android.R.string.cancel, (dialog, which) -> { })
+                .setNegativeButton("Cancel", (dialog, which) -> { })
                 .create();
 
         if (onDismiss != null) {

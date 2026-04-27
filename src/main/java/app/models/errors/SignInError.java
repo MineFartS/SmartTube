@@ -18,11 +18,11 @@ public class SignInError implements ErrorFragmentData {
 
     @Override
     public String getMessage() {
-        return mContext.getString(R.string.library_signin_to_show_more);
+        return "Watch videos you liked, saved, or subscribed";
     }
 
     @Override
     public String getActionText() {
-        return mContext.getString(R.string.action_signin);
+        return "SIGN IN";
     }
 }

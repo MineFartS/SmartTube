@@ -226,7 +226,7 @@ public class PlayerUIController extends BasePlayerController {
                                 FormatItem format = UiOptionItem.toFormat(option);
                                 setSubtitleFormat(format);
                             },
-                            getContext().getString(R.string.subtitles_disabled)
+                            "Subtitles disabled"
                         )
                     );
                     settingsPresenter.showDialog();
