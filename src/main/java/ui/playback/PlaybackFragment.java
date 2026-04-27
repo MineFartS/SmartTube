@@ -1544,6 +1544,14 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements Playbac
         }
 
         @Override
+        public void onSeekPositionChanged(long positionMs) {
+            if (mSeekUiClient2 != null) {
+                mSeekUiClient2.onSeekPositionChanged(positionMs);
+            }
+            PlaybackFragment.this.onSeekPositionChanged(positionMs);
+        }
+
+        @Override
         public void onSeekFinished(boolean cancelled) {
             if (mSeekUiClient2 != null) {
                 mSeekUiClient2.onSeekFinished(cancelled);
