@@ -186,7 +186,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
             MediaGroup.TYPE_HOME, 
             new BrowseSection(
                 MediaGroup.TYPE_HOME, 
-                getContext().getString(R.string.header_home), 
+                "Home", 
                 BrowseSection.TYPE_ROW, 
                 R.drawable.icon_home, 
                 false
@@ -208,7 +208,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
             MediaGroup.TYPE_SUBSCRIPTIONS, 
             new BrowseSection(
                 MediaGroup.TYPE_SUBSCRIPTIONS, 
-                getContext().getString(R.string.header_subscriptions), 
+                "Subscriptions", 
                 BrowseSection.TYPE_GRID, 
                 R.drawable.icon_subscriptions, 
                 false
@@ -237,8 +237,27 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
             )
         );
 
-        mSectionsMapping.put(MediaGroup.TYPE_NOTIFICATIONS, new BrowseSection(MediaGroup.TYPE_NOTIFICATIONS, getContext().getString(R.string.header_notifications), BrowseSection.TYPE_GRID, R.drawable.icon_notification, false));
-        mSectionsMapping.put(MediaGroup.TYPE_PLAYBACK_QUEUE, new BrowseSection(MediaGroup.TYPE_PLAYBACK_QUEUE, getContext().getString(R.string.playback_queue_category_title), BrowseSection.TYPE_GRID, R.drawable.icon_queue, false));
+        mSectionsMapping.put(
+            MediaGroup.TYPE_NOTIFICATIONS, 
+            new BrowseSection(
+                MediaGroup.TYPE_NOTIFICATIONS, 
+                getContext().getString(R.string.header_notifications), 
+                BrowseSection.TYPE_GRID, 
+                R.drawable.icon_notification, 
+                false
+            )
+        );
+
+        mSectionsMapping.put(
+            MediaGroup.TYPE_PLAYBACK_QUEUE, 
+            new BrowseSection(
+                MediaGroup.TYPE_PLAYBACK_QUEUE, 
+                "Playback queue", 
+                BrowseSection.TYPE_GRID, 
+                R.drawable.icon_queue, 
+                false
+            )
+        );
 
         mSectionsMapping.put(
             MediaGroup.TYPE_SETTINGS, 

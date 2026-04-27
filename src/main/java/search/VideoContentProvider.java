@@ -82,7 +82,7 @@ public class VideoContentProvider extends ContentProvider {
         String authority = null;
 
         if (getContext() != null) {
-            authority = getContext().getResources().getString(R.string.search_authority);
+            authority = "minefarts.smarttube";
             Log.d(TAG, "Authority found: " + authority);
         }
 
