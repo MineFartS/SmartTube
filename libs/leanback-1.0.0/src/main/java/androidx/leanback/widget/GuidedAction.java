@@ -182,7 +182,7 @@ public class GuidedAction extends Action {
                 mTitle = mContext.getString(android.R.string.ok);
             } else if (id == ACTION_ID_CANCEL) {
                 mId = ACTION_ID_CANCEL;
-                mTitle = mContext.getString(android.R.string.cancel);
+                mTitle = "Cancel";
             } else if (id == ACTION_ID_FINISH) {
                 mId = ACTION_ID_FINISH;
                 mTitle = mContext.getString(R.string.lb_guidedaction_finish_title);
@@ -194,7 +194,7 @@ public class GuidedAction extends Action {
                 mTitle = mContext.getString(android.R.string.ok);
             } else if (id == ACTION_ID_NO) {
                 mId = ACTION_ID_NO;
-                mTitle = mContext.getString(android.R.string.cancel);
+                mTitle = "Cancel";
             }
             return (B) this;
         }

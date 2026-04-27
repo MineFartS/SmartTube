@@ -77,7 +77,7 @@ public class AppDataSourceManager {
         ));
 
         settingItems.add(new SettingsItem(
-            context.getString(R.string.settings_about), 
+            "About", 
             () -> AboutSettingsPresenter.instance(context).show(), 
             R.drawable.settings_about
         ));

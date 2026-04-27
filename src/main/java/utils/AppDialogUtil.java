@@ -164,25 +164,33 @@ public class AppDialogUtil {
     }
 
     public static OptionCategory createBackgroundPlaybackCategory(Context context, PlayerData playerData, GeneralData generalData, Runnable onSetCallback) {
-        String categoryTitle = context.getString(R.string.category_background_playback);
-
+        
         List<OptionItem> options = new ArrayList<>();
-        options.add(UiOptionItem.from(context.getString(R.string.option_background_playback_off),
-                optionItem -> {
-                    playerData.setBackgroundMode(PlayerData.BACKGROUND_MODE_DEFAULT);
-                    generalData.setBackgroundPlaybackShortcut(GeneralData.BACKGROUND_PLAYBACK_SHORTCUT_HOME);
-                    onSetCallback.run();
-                }, playerData.getBackgroundMode() == PlayerData.BACKGROUND_MODE_DEFAULT));
+        
+        options.add(UiOptionItem.from(
+            context.getString(R.string.option_background_playback_off),
+            optionItem -> {
+                playerData.setBackgroundMode(PlayerData.BACKGROUND_MODE_DEFAULT);
+                generalData.setBackgroundPlaybackShortcut(GeneralData.BACKGROUND_PLAYBACK_SHORTCUT_HOME);
+                onSetCallback.run();
+            }, 
+            playerData.getBackgroundMode() == PlayerData.BACKGROUND_MODE_DEFAULT
+        ));
 
         if (Helpers.isPictureInPictureSupported(context)) {
+            
             String pip = context.getString(R.string.option_background_playback_pip);
-            options.add(UiOptionItem.from(String.format("%s (%s)", pip, context.getString(R.string.pressing_home)),
-                    optionItem -> {
-                        playerData.setBackgroundMode(PlayerData.BACKGROUND_MODE_PIP);
-                        generalData.setBackgroundPlaybackShortcut(GeneralData.BACKGROUND_PLAYBACK_SHORTCUT_HOME);
-                        onSetCallback.run();
-                    }, playerData.getBackgroundMode() == PlayerData.BACKGROUND_MODE_PIP &&
-                    generalData.getBackgroundPlaybackShortcut() == GeneralData.BACKGROUND_PLAYBACK_SHORTCUT_HOME));
+            
+            options.add(UiOptionItem.from(
+                String.format("%s (%s)", pip, context.getString(R.string.pressing_home)),
+                optionItem -> {
+                    playerData.setBackgroundMode(PlayerData.BACKGROUND_MODE_PIP);
+                    generalData.setBackgroundPlaybackShortcut(GeneralData.BACKGROUND_PLAYBACK_SHORTCUT_HOME);
+                    onSetCallback.run();
+                }, 
+                playerData.getBackgroundMode() == PlayerData.BACKGROUND_MODE_PIP &&
+                generalData.getBackgroundPlaybackShortcut() == GeneralData.BACKGROUND_PLAYBACK_SHORTCUT_HOME
+            ));
 
             options.add(UiOptionItem.from(String.format("%s (%s)", pip, context.getString(R.string.pressing_home_back)),
                     optionItem -> {
@@ -242,7 +250,12 @@ public class AppDialogUtil {
                         generalData.getBackgroundPlaybackShortcut() == GeneralData.BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK));
         }
 
-        return OptionCategory.from(BACKGROUND_PLAYBACK_ID, OptionCategory.TYPE_RADIO_LIST, categoryTitle, options);
+        return OptionCategory.from(
+            BACKGROUND_PLAYBACK_ID, 
+            OptionCategory.TYPE_RADIO_LIST, 
+            "Background playback", 
+            options
+        );
     }
 
     public static OptionCategory createVideoPresetsCategory(Context context) {
@@ -353,14 +366,22 @@ public class AppDialogUtil {
                     languageCode.equals(playerData.getAudioLanguage())));
         }
 
-        options.add(0, UiOptionItem.from(context.getString(R.string.original_lang),
-                optionItem -> {
-                    playerData.setAudioLanguage("");
-                    onSetCallback.run();
-                },
-                "".equals(playerData.getAudioLanguage())));
+        options.add(0, UiOptionItem.from(
+            "Original",
+            optionItem -> {
+                playerData.setAudioLanguage("");
+                onSetCallback.run();
+            },
+            "".equals(playerData.getAudioLanguage())
+        ));
 
-        return OptionCategory.from(AUDIO_LANGUAGE_ID, OptionCategory.TYPE_RADIO_LIST, title, options);
+        return OptionCategory.from(
+            AUDIO_LANGUAGE_ID, 
+            OptionCategory.TYPE_RADIO_LIST, 
+            title, 
+            options
+        );
+        
     }
 
     public static OptionCategory createSubtitleStylesCategory(Context context) {
@@ -543,11 +564,13 @@ public class AppDialogUtil {
 
         List<OptionItem> options = new ArrayList<>();
 
-        options.add(UiOptionItem.from(context.getString(R.string.cancel),
-                option -> {
-                    settingsPresenter.goBack();
-                    onCancel.run();
-                }));
+        options.add(UiOptionItem.from(
+            "Cancel",
+            option -> {
+                settingsPresenter.goBack();
+                onCancel.run();
+            }
+        ));
 
         options.add(UiOptionItem.from(context.getString(R.string.btn_confirm),
                 option -> {

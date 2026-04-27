@@ -214,7 +214,7 @@ public final class TrackSelectionDialogBuilder {
         .setTitle(title)
         .setView(dialogView)
         .setPositiveButton(android.R.string.ok, okClickListener)
-        .setNegativeButton(android.R.string.cancel, null)
+        .setNegativeButton("Cancel", null)
         .create();
   }
 }

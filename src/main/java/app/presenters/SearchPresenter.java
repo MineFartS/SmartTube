@@ -27,6 +27,9 @@ import io.reactivex.disposables.Disposable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class SearchPresenter extends BasePresenter<SearchView> implements VideoGroupPresenter {
     private static final String TAG = SearchPresenter.class.getSimpleName();
@@ -382,22 +385,28 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
     }
 
     private void appendSortByCategory(AppDialogPresenter settingsPresenter) {
+        
+        Map<String, Integer> ritems = new HashMap<>();
+        ritems.put("Relevance",   0);
+        ritems.put("Upload Date", SearchOptions.SORT_BY_UPLOAD_DATE);
+        ritems.put("View Count",  SearchOptions.SORT_BY_VIEW_COUNT);
+        ritems.put("Rating",      SearchOptions.SORT_BY_RATING);
+
         List<OptionItem> options = new ArrayList<>();
 
-        for (int[] pair : new int[][] {
-                {R.string.sort_by_relevance, 0},
-                {R.string.sort_by_date, SearchOptions.SORT_BY_UPLOAD_DATE},
-                {R.string.sort_by_views, SearchOptions.SORT_BY_VIEW_COUNT},
-                {R.string.sort_by_rating, SearchOptions.SORT_BY_RATING}}) {
-            options.add(UiOptionItem.from(getContext().getString(pair[0]),
-                    optionItem -> {
-                        mSortingOptions = pair[1];
-                        loadSearchResult();
-                    },
-                    mSortingOptions == pair[1]));
+        for (Entry<String, Integer> i : ritems.entrySet()) {
+            options.add(UiOptionItem.from(
+                i.getKey(),
+                optionItem -> {
+                    mSortingOptions = i.getValue();
+                    loadSearchResult();
+                },
+                mSortingOptions == i.getValue()
+            ));
         }
 
-        settingsPresenter.appendRadioCategory(getContext().getString(R.string.search_sorting), options);
+        settingsPresenter.appendRadioCategory("Sort By", options);
+
     }
 
     public void forceFinish() {
