@@ -90,11 +90,6 @@ public class PlayerUIController extends BasePlayerController {
     @Override
     public void onInit() {
         mSuggestionsController = getController(SuggestionsController.class);
-
-        if (getPlayer() != null) {
-            // Could be set once per activity creation (view layout stuff)
-            getPlayer().setZoomPercents(getPlayerData().getZoomPercents());
-        }
     }
 
     @Override

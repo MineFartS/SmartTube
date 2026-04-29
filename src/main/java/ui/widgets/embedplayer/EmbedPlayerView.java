@@ -430,11 +430,6 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public void setZoomPercents(int percents) {
-
-    }
-
-    @Override
     public void setVideoGravity(int gravity) {
         
     }
