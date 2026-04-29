@@ -40,8 +40,6 @@ public interface PlayerEngine extends PlayerConstants {
     float getSpeed();
     void setVolume(float volume);
     float getVolume();
-    void setResizeMode(int mode);
-    int getResizeMode();
     void setZoomPercents(int percents);
     void setVideoGravity(int gravity);
 }
