@@ -78,10 +78,6 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
         super.onDestroyView();
     }
 
-    protected void setZoom(int percents) {
-        mVideoSurfaceRoot.setZoom(percents);
-    }
-
     protected void setRotation(int angle) {
         if (Helpers.floatEquals(mVideoSurfaceRoot.getRotation(), angle) || mVideoSurfaceWrapper == null) {
             return;
