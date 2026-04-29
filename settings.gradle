@@ -1,48 +1,48 @@
 
 include ':fragment-1.1.0'
-project(':fragment-1.1.0').projectDir = new File('libs/fragment-1.1.0')
+project(':fragment-1.1.0').projectDir = new File('src/libs/fragment-1.1.0')
 
 include ':leanback-1.0.0'
-project(':leanback-1.0.0').projectDir = new File('libs/leanback-1.0.0')
+project(':leanback-1.0.0').projectDir = new File('src/libs/leanback-1.0.0')
 
 include ':sharedutils'
-project(':sharedutils').projectDir = new File('libs/sharedutils')
+project(':sharedutils').projectDir = new File('src/libs/sharedutils')
 
 include ':commons-io-2.8.0'
-project(':commons-io-2.8.0').projectDir = new File('libs/commons-io-2.8.0')
+project(':commons-io-2.8.0').projectDir = new File('src/libs/commons-io-2.8.0')
 
 include ':j2v8'
-project(':j2v8').projectDir = new File('libs/j2v8')
+project(':j2v8').projectDir = new File('src/libs/j2v8')
 
 include ':exoplayer-library'
-project(':exoplayer-library').projectDir = new File('libs/all')
+project(':exoplayer-library').projectDir = new File('src/libs/all')
 
 include ':exoplayer-core'
-project(':exoplayer-core').projectDir = new File('libs/core')
+project(':exoplayer-core').projectDir = new File('src/libs/core')
 
 include ':exoplayer-dash'
-project(':exoplayer-dash').projectDir = new File('libs/dash')
+project(':exoplayer-dash').projectDir = new File('src/libs/dash')
 
 include ':exoplayer-hls'
-project(':exoplayer-hls').projectDir = new File('libs/hls')
+project(':exoplayer-hls').projectDir = new File('src/libs/hls')
 
 include ':exoplayer-sabr'
-project(':exoplayer-sabr').projectDir = new File('libs/sabr')
+project(':exoplayer-sabr').projectDir = new File('src/libs/sabr')
 
 include ':exoplayer-smoothstreaming'
-project(':exoplayer-smoothstreaming').projectDir = new File('libs/smoothstreaming')
+project(':exoplayer-smoothstreaming').projectDir = new File('src/libs/smoothstreaming')
 
 include ':exoplayer-ui'
-project(':exoplayer-ui').projectDir = new File('libs/ui')
+project(':exoplayer-ui').projectDir = new File('src/libs/ui')
 
 include ':exoplayer-cronet'
-project(':exoplayer-cronet').projectDir = new File('libs/cronet')
+project(':exoplayer-cronet').projectDir = new File('src/libs/cronet')
 
 include ':exoplayer-mediasession'
-project(':exoplayer-mediasession').projectDir = new File('libs/mediasession')
+project(':exoplayer-mediasession').projectDir = new File('src/libs/mediasession')
 
 include ':exoplayer-okhttp'
-project(':exoplayer-okhttp').projectDir = new File('libs/okhttp')
+project(':exoplayer-okhttp').projectDir = new File('src/libs/okhttp')
 
 include ':exoplayer-leanback'
-project(':exoplayer-leanback').projectDir = new File('libs/leanback')
+project(':exoplayer-leanback').projectDir = new File('src/libs/leanback')
