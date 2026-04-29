@@ -1,0 +1,38 @@
+
+apply from: '../../../constants.gradle'
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion project.ext.compileSdkVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        minSdkVersion 17
+        targetSdkVersion project.ext.targetSdkVersion
+    }
+
+
+}
+
+dependencies {
+    // MOD: add custom lib
+    implementation project(':leanback-1.0.0')
+    implementation project(':exoplayer-core')
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.leanback:leanback:1.0.0'
+}
+
+ext {
+    javadocTitle = 'Leanback extension'
+}
+
+
+ext {
+    releaseArtifact = 'extension-leanback'
+    releaseDescription = 'Leanback extension for ExoPlayer.'
+}
+

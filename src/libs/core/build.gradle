@@ -1,0 +1,37 @@
+
+apply plugin: 'com.android.library'
+apply from: '../../../constants.gradle'
+
+android {
+    compileSdkVersion project.ext.compileSdkVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        minSdkVersion project.ext.minSdkVersion
+        targetSdkVersion project.ext.targetSdkVersion
+        consumerProguardFiles 'proguard-rules.txt'
+    }
+
+}
+
+dependencies {
+    implementation project(':sharedutils')
+    implementation 'androidx.annotation:annotation:' + annotationXLibraryVersion
+    compileOnly 'org.checkerframework:checker-qual:' + checkerframeworkVersion
+    compileOnly 'org.checkerframework:checker-compat-qual:' + checkerframeworkVersion
+}
+
+ext {
+    javadocTitle = 'Core module'
+}
+
+
+ext {
+    releaseArtifact = 'exoplayer-core'
+    releaseDescription = 'The ExoPlayer library core module.'
+}
+
