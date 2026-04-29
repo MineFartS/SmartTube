@@ -44,7 +44,7 @@ import com.google.android.exoplayer2.text.Cue;
 import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.ui.AspectRatioFrameLayout.ResizeMode;
+
 import com.google.android.exoplayer2.ui.spherical.SingleTapListener;
 import com.google.android.exoplayer2.ui.spherical.SphericalSurfaceView;
 import com.google.android.exoplayer2.util.Assertions;
@@ -58,181 +58,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A high level view for {@link Player} media playbacks. It displays video, subtitles and album art
- * during playback, and displays playback controls using a {@link PlayerControlView}.
- *
- * <p>A PlayerView can be customized by setting attributes (or calling corresponding methods),
- * overriding the view's layout file or by specifying a custom view layout file, as outlined below.
- *
- * <h3>Attributes</h3>
- *
- * The following attributes can be set on a PlayerView when used in a layout XML file:
- *
- * <ul>
- *   <li><b>{@code use_artwork}</b> - Whether artwork is used if available in audio streams.
- *       <ul>
- *         <li>Corresponding method: {@link #setUseArtwork(boolean)}
- *         <li>Default: {@code true}
- *       </ul>
- *   <li><b>{@code default_artwork}</b> - Default artwork to use if no artwork available in audio
- *       streams.
- *       <ul>
- *         <li>Corresponding method: {@link #setDefaultArtwork(Drawable)}
- *         <li>Default: {@code null}
- *       </ul>
- *   <li><b>{@code use_controller}</b> - Whether the playback controls can be shown.
- *       <ul>
- *         <li>Corresponding method: {@link #setUseController(boolean)}
- *         <li>Default: {@code true}
- *       </ul>
- *   <li><b>{@code hide_on_touch}</b> - Whether the playback controls are hidden by touch events.
- *       <ul>
- *         <li>Corresponding method: {@link #setControllerHideOnTouch(boolean)}
- *         <li>Default: {@code true}
- *       </ul>
- *   <li><b>{@code auto_show}</b> - Whether the playback controls are automatically shown when
- *       playback starts, pauses, ends, or fails. If set to false, the playback controls can be
- *       manually operated with {@link #showController()} and {@link #hideController()}.
- *       <ul>
- *         <li>Corresponding method: {@link #setControllerAutoShow(boolean)}
- *         <li>Default: {@code true}
- *       </ul>
- *   <li><b>{@code hide_during_ads}</b> - Whether the playback controls are hidden during ads.
- *       Controls are always shown during ads if they are enabled and the player is paused.
- *       <ul>
- *         <li>Corresponding method: {@link #setControllerHideDuringAds(boolean)}
- *         <li>Default: {@code true}
- *       </ul>
- *   <li><b>{@code show_buffering}</b> - Whether the buffering spinner is displayed when the player
- *       is buffering. Valid values are {@code never}, {@code when_playing} and {@code always}.
- *       <ul>
- *         <li>Corresponding method: {@link #setShowBuffering(int)}
- *         <li>Default: {@code never}
- *       </ul>
- *   <li><b>{@code resize_mode}</b> - Controls how video and album art is resized within the view.
- *       Valid values are {@code fit}, {@code fixed_width}, {@code fixed_height} and {@code fill}.
- *       <ul>
- *         <li>Corresponding method: {@link #setResizeMode(int)}
- *         <li>Default: {@code fit}
- *       </ul>
- *   <li><b>{@code surface_type}</b> - The type of surface view used for video playbacks. Valid
- *       values are {@code surface_view}, {@code texture_view}, {@code spherical_view} and {@code
- *       none}. Using {@code none} is recommended for audio only applications, since creating the
- *       surface can be expensive. Using {@code surface_view} is recommended for video applications.
- *       Note, TextureView can only be used in a hardware accelerated window. When rendered in
- *       software, TextureView will draw nothing.
- *       <ul>
- *         <li>Corresponding method: None
- *         <li>Default: {@code surface_view}
- *       </ul>
- *   <li><b>{@code shutter_background_color}</b> - The background color of the {@code exo_shutter}
- *       view.
- *       <ul>
- *         <li>Corresponding method: {@link #setShutterBackgroundColor(int)}
- *         <li>Default: {@code unset}
- *       </ul>
- *   <li><b>{@code keep_content_on_player_reset}</b> - Whether the currently displayed video frame
- *       or media artwork is kept visible when the player is reset.
- *       <ul>
- *         <li>Corresponding method: {@link #setKeepContentOnPlayerReset(boolean)}
- *         <li>Default: {@code false}
- *       </ul>
- *   <li><b>{@code player_layout_id}</b> - Specifies the id of the layout to be inflated. See below
- *       for more details.
- *       <ul>
- *         <li>Corresponding method: None
- *         <li>Default: {@code R.layout.exo_player_view}
- *       </ul>
- *   <li><b>{@code controller_layout_id}</b> - Specifies the id of the layout resource to be
- *       inflated by the child {@link PlayerControlView}. See below for more details.
- *       <ul>
- *         <li>Corresponding method: None
- *         <li>Default: {@code R.layout.exo_player_control_view}
- *       </ul>
- *   <li>All attributes that can be set on {@link PlayerControlView} and {@link DefaultTimeBar} can
- *       also be set on a PlayerView, and will be propagated to the inflated {@link
- *       PlayerControlView} unless the layout is overridden to specify a custom {@code
- *       exo_controller} (see below).
- * </ul>
- *
- * <h3>Overriding the layout file</h3>
- *
- * To customize the layout of PlayerView throughout your app, or just for certain configurations,
- * you can define {@code exo_player_view.xml} layout files in your application {@code res/layout*}
- * directories. These layouts will override the one provided by the ExoPlayer library, and will be
- * inflated for use by PlayerView. The view identifies and binds its children by looking for the
- * following ids:
- *
- * <p>
- *
- * <ul>
- *   <li><b>{@code exo_content_frame}</b> - A frame whose aspect ratio is resized based on the video
- *       or album art of the media being played, and the configured {@code resize_mode}. The video
- *       surface view is inflated into this frame as its first child.
- *       <ul>
- *         <li>Type: {@link AspectRatioFrameLayout}
- *       </ul>
- *   <li><b>{@code exo_shutter}</b> - A view that's made visible when video should be hidden. This
- *       view is typically an opaque view that covers the video surface, thereby obscuring it when
- *       visible. Obscuring the surface in this way also helps to prevent flicker at the start of
- *       playback when {@code surface_type="surface_view"}.
- *       <ul>
- *         <li>Type: {@link View}
- *       </ul>
- *   <li><b>{@code exo_buffering}</b> - A view that's made visible when the player is buffering.
- *       This view typically displays a buffering spinner or animation.
- *       <ul>
- *         <li>Type: {@link View}
- *       </ul>
- *   <li><b>{@code exo_subtitles}</b> - Displays subtitles.
- *       <ul>
- *         <li>Type: {@link SubtitleView}
- *       </ul>
- *   <li><b>{@code exo_artwork}</b> - Displays album art.
- *       <ul>
- *         <li>Type: {@link ImageView}
- *       </ul>
- *   <li><b>{@code exo_error_message}</b> - Displays an error message to the user if playback fails.
- *       <ul>
- *         <li>Type: {@link TextView}
- *       </ul>
- *   <li><b>{@code exo_controller_placeholder}</b> - A placeholder that's replaced with the inflated
- *       {@link PlayerControlView}. Ignored if an {@code exo_controller} view exists.
- *       <ul>
- *         <li>Type: {@link View}
- *       </ul>
- *   <li><b>{@code exo_controller}</b> - An already inflated {@link PlayerControlView}. Allows use
- *       of a custom extension of {@link PlayerControlView}. {@link PlayerControlView} and {@link
- *       DefaultTimeBar} attributes set on the PlayerView will not be automatically propagated
- *       through to this instance. If a view exists with this id, any {@code
- *       exo_controller_placeholder} view will be ignored.
- *       <ul>
- *         <li>Type: {@link PlayerControlView}
- *       </ul>
- *   <li><b>{@code exo_ad_overlay}</b> - A {@link FrameLayout} positioned on top of the player which
- *       is used to show ad UI (if applicable).
- *       <ul>
- *         <li>Type: {@link FrameLayout}
- *       </ul>
- *   <li><b>{@code exo_overlay}</b> - A {@link FrameLayout} positioned on top of the player which
- *       the app can access via {@link #getOverlayFrameLayout()}, provided for convenience.
- *       <ul>
- *         <li>Type: {@link FrameLayout}
- *       </ul>
- * </ul>
- *
- * <p>All child views are optional and so can be omitted if not required, however where defined they
- * must be of the expected type.
- *
- * <h3>Specifying a custom layout file</h3>
- *
- * Defining your own {@code exo_player_view.xml} is useful to customize the layout of PlayerView
- * throughout your application. It's also possible to customize the layout for a single instance in
- * a layout file. This is achieved by setting the {@code player_layout_id} attribute on a
- * PlayerView. This will cause the specified layout to be inflated instead of {@code
- * exo_player_view.xml} for only the instance on which the attribute is set.
- */
 public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider {
 
   // LINT.IfChange
@@ -334,7 +159,7 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
     int defaultArtworkId = 0;
     boolean useController = true;
     int surfaceType = SURFACE_TYPE_SURFACE_VIEW;
-    int resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT;
+
     int controllerShowTimeoutMs = PlayerControlView.DEFAULT_SHOW_TIMEOUT_MS;
     boolean controllerHideOnTouch = true;
     boolean controllerAutoShow = true;
@@ -351,7 +176,7 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
             a.getResourceId(R.styleable.PlayerView_default_artwork, defaultArtworkId);
         useController = a.getBoolean(R.styleable.PlayerView_use_controller, useController);
         surfaceType = a.getInt(R.styleable.PlayerView_surface_type, surfaceType);
-        resizeMode = a.getInt(R.styleable.PlayerView_resize_mode, resizeMode);
+
         controllerShowTimeoutMs =
             a.getInt(R.styleable.PlayerView_show_timeout, controllerShowTimeoutMs);
         controllerHideOnTouch =
@@ -374,9 +199,6 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
 
     // Content frame.
     contentFrame = findViewById(R.id.exo_content_frame);
-    if (contentFrame != null) {
-      setResizeModeRaw(contentFrame, resizeMode);
-    }
 
     // Shutter view.
     shutterView = findViewById(R.id.exo_shutter);
@@ -574,22 +396,6 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
       // Work around https://github.com/google/ExoPlayer/issues/3160.
       surfaceView.setVisibility(visibility);
     }
-  }
-
-  /**
-   * Sets the {@link ResizeMode}.
-   *
-   * @param resizeMode The {@link ResizeMode}.
-   */
-  public void setResizeMode(@ResizeMode int resizeMode) {
-    Assertions.checkState(contentFrame != null);
-    contentFrame.setResizeMode(resizeMode);
-  }
-
-  /** Returns the {@link ResizeMode}. */
-  public @ResizeMode int getResizeMode() {
-    Assertions.checkState(contentFrame != null);
-    return contentFrame.getResizeMode();
   }
 
   /** Returns whether artwork is displayed if present in the media. */
@@ -1328,11 +1134,6 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
   private static void configureEditModeLogo(Resources resources, ImageView logo) {
     logo.setImageDrawable(resources.getDrawable(R.drawable.exo_edit_mode_logo));
     logo.setBackgroundColor(resources.getColor(R.color.exo_edit_mode_background_color));
-  }
-
-  @SuppressWarnings("ResourceType")
-  private static void setResizeModeRaw(AspectRatioFrameLayout aspectRatioFrame, int resizeMode) {
-    aspectRatioFrame.setResizeMode(resizeMode);
   }
 
   /** Applies a texture rotation to a {@link TextureView}. */

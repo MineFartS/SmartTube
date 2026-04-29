@@ -93,7 +93,6 @@ public class PlayerUIController extends BasePlayerController {
 
         if (getPlayer() != null) {
             // Could be set once per activity creation (view layout stuff)
-            getPlayer().setResizeMode(getPlayerData().getResizeMode());
             getPlayer().setZoomPercents(getPlayerData().getZoomPercents());
         }
     }

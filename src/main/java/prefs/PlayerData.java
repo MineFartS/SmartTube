@@ -46,7 +46,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private final List<SubtitleStyle> mSubtitleStyles = new ArrayList<>();
     private final Map<String, FormatItem> mDefaultVideoFormats = new HashMap<>();
     private int mSubtitleStyleIndex;
-    private int mResizeMode;
     private int mZoomPercents;
     private float mSpeed;
     private float mLastSpeed;
@@ -303,15 +302,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         persistState();
     }
 
-    public int getResizeMode() {
-        return mResizeMode;
-    }
-
-    public void setResizeMode(int mode) {
-        mResizeMode = mode;
-        persistState();
-    }
-
     public int getZoomPercents() {
         return mZoomPercents;
     }
@@ -519,7 +509,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         /* 02 */ mAudioFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 2)), getDefaultAudioFormat());
         /* 03 */ mSubtitleFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 3)), getDefaultSubtitleFormat());
         /* 04 */ mSubtitleStyleIndex = Helpers.parseInt(split, 4, 4); // yellow on semi bg
-        /* 05 */ mResizeMode = Helpers.parseInt(split, 5, PlayerEngine.RESIZE_MODE_DEFAULT);
+
         /* 06 */ mSpeed = Helpers.parseFloat(split, 6, 1.0f);
         /* 07 */ mIsAfrEnabled = Helpers.parseBoolean(split, 7, false);
         /* 08 */ mIsAfrFpsCorrectionEnabled = Helpers.parseBoolean(split, 8, true);
@@ -569,7 +559,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
             /* 02 */ mAudioFormat, 
             /* 03 */ mSubtitleFormat,
             /* 04 */ mSubtitleStyleIndex, 
-            /* 05 */ mResizeMode, 
+            /* 05 */ null, 
             /* 06 */ mSpeed,
             /* 07 */ mIsAfrEnabled, 
             /* 08 */ mIsAfrFpsCorrectionEnabled, 
