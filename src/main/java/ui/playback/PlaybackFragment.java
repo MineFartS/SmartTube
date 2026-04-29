@@ -1040,16 +1040,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements Playbac
     }
 
     @Override
-    public int getResizeMode() {
-        return getResize();
-    }
-
-    @Override
-    public void setResizeMode(int mode) {
-        setResize(mode);
-    }
-
-    @Override
     public void setZoomPercents(int percents) {
         setZoom(percents);
     }

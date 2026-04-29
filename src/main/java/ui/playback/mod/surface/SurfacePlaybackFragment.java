@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import androidx.leanback.app.PlaybackSupportFragment;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
-import com.google.android.exoplayer2.ui.AspectRatioFrameLayout.ResizeMode;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import SmartTubeApp.app.models.playback.manager.PlayerEngine;
 import SmartTubeApp.prefs.PlayerData;
@@ -77,20 +76,6 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
     public void onDestroyView() {
         mVideoSurfaceWrapper = null;
         super.onDestroyView();
-    }
-
-    /** Returns the {@link ResizeMode}. */
-    protected @ResizeMode int getResize() {
-        return mVideoSurfaceRoot.getResizeMode();
-    }
-
-    /**
-     * Sets the {@link ResizeMode}.
-     *
-     * @param resizeMode The {@link ResizeMode}.
-     */
-    protected void setResize(@ResizeMode int resizeMode) {
-        mVideoSurfaceRoot.setResizeMode(resizeMode);
     }
 
     protected void setZoom(int percents) {

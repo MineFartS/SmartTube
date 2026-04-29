@@ -14,15 +14,6 @@ public interface PlayerConstants {
     int BACKGROUND_MODE_SOUND = 1;
     int BACKGROUND_MODE_PIP = 2;
     int BACKGROUND_MODE_PLAY_BEHIND = 3;
-    int BUFFER_LOW = 3;
-    int BUFFER_MEDIUM = 0;
-    int BUFFER_HIGH = 1;
-    int BUFFER_HIGHEST = 2;
-    int RESIZE_MODE_DEFAULT = AspectRatioFrameLayout.RESIZE_MODE_FIT;
-    int RESIZE_MODE_FIT_WIDTH = AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH;
-    int RESIZE_MODE_FIT_HEIGHT = AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT;
-    int RESIZE_MODE_FIT_BOTH = AspectRatioFrameLayout.RESIZE_MODE_ZOOM;
-    int RESIZE_MODE_STRETCH = AspectRatioFrameLayout.RESIZE_MODE_FILL;
     float ASPECT_RATIO_DEFAULT = 0;
     float ASPECT_RATIO_1_1 = 1f;
     float ASPECT_RATIO_4_3 = 1.33f;

@@ -487,7 +487,6 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
         mExoPlayerController.setOnVideoLoaded(this::onVideoLoaded);
         mPlaybackPresenter.onViewInitialized(); // init all controllers
 
-        setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_ZOOM); // Fix unfilled borders
     }
 
     private void createPlayerObjects() {
