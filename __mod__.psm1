@@ -55,14 +55,6 @@ function Invoke-Gradle {
 
 }
 
-function Remove-Cache {
-
-    taskkill.exe /im java.exe /f
- 
-    Invoke-Gradle 'clean'
-
-}
-
 function Repair-Environment {
 
     Set-Location $PSScriptRoot
