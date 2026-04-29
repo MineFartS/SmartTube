@@ -1,12 +1,19 @@
 param (
-    [Switch] $Clear
+    [Switch] $Clean,
+    [Switch] $Force
 )
 
 Import-Module "$PSScriptRoot/__mod__.psm1" -Force
 
 Repair-Environment
 
-if ($Clear) {Remove-Cache}
+if ($Clean) {
+    Invoke-Gradle 'clean'
+}
+
+if ($Force) {
+    taskkill.exe /im java.exe /f
+}
 
 Clear-Host
 
