@@ -1040,11 +1040,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements Playbac
     }
 
     @Override
-    public void setZoomPercents(int percents) {
-        setZoom(percents);
-    }
-
-    @Override
     public void setVideoGravity(int gravity) {
         setGravity(gravity);
     }

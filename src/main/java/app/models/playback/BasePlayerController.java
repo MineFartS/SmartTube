@@ -59,21 +59,9 @@ public abstract class BasePlayerController implements PlayerEventListener {
         
         // Dialog takes up 37% of the screen space
         float dialogWidth = 37 * getMainUIData().getUIScale();
-        float initialZoom = 100;
-        float totalZoom = initialZoom - dialogWidth;
         float ratio = format.width / (float) format.height;
         float targetRatio = 16/9f;
         float multiplier = targetRatio / ratio;
-        
-        if (multiplier > 1) { // skip cinema ratio
-            totalZoom *= multiplier;
-        }
-        
-        if (totalZoom > 130) {
-            return; // shorts overzoom fix
-        }
-        
-        getPlayer().setZoomPercents(Math.round(totalZoom));
         
         getPlayer().setVideoGravity(
             Gravity.START | Gravity.CENTER_VERTICAL
@@ -82,7 +70,6 @@ public abstract class BasePlayerController implements PlayerEventListener {
     };
     private final Runnable mFitVideoFinish = () -> {
         if (getPlayer() != null) {
-            getPlayer().setZoomPercents(getPlayerData().getZoomPercents());
             getPlayer().setVideoGravity(Gravity.CENTER);
         };
     };

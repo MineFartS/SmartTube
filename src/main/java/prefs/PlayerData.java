@@ -46,7 +46,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private final List<SubtitleStyle> mSubtitleStyles = new ArrayList<>();
     private final Map<String, FormatItem> mDefaultVideoFormats = new HashMap<>();
     private int mSubtitleStyleIndex;
-    private int mZoomPercents;
     private float mSpeed;
     private float mLastSpeed;
     private boolean mIsAfrEnabled;
@@ -302,15 +301,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         persistState();
     }
 
-    public int getZoomPercents() {
-        return mZoomPercents;
-    }
-
-    public void setZoomPercents(int percents) {
-        mZoomPercents = percents;
-        persistState();
-    }
-
     public float getSpeed() {
         return getSpeed(null);
     }
@@ -528,7 +518,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         /* 21 */ mLastSubtitleFormats = Helpers.parseList(split, 21, ExoFormatItem::from);
         /* 22 */ mLastSpeed = Helpers.parseFloat(split, 22, 1.0f);
 
-        /* 24 */ mZoomPercents = Helpers.parseInt(split, 24, -1);
         /* 25 */ mPlaybackMode = Helpers.parseInt(split, 25, PlayerConstants.PLAYBACK_MODE_ALL);
         /* 26 */ mAudioLanguage = Helpers.parseStr(split, 26, LocaleUtility.getCurrentLanguage(mPrefs.getContext()));
         /* 27 */ mSubtitleLanguage = Helpers.parseStr(split, 27, LocaleUtility.getCurrentLanguage(mPrefs.getContext()));
@@ -578,7 +567,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
             /* 21 */ mLastSubtitleFormats, 
             /* 22 */ mLastSpeed, 
             /* 23 */ null, 
-            /* 24 */ mZoomPercents, 
+            /* 24 */ null, 
             /* 25 */ mPlaybackMode, 
             /* 26 */ mAudioLanguage, 
             /* 27 */ mSubtitleLanguage,
