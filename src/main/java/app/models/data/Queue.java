@@ -7,22 +7,22 @@ import java.util.List;
 /**
  * Manages a playlist of videos.
  */
-public class Playlist {
+public class Queue {
     private static final int PLAYLIST_MAX_SIZE = 50;
-    private final List<Video> mPlaylist;
+    private final List<Video> mQueue;
     private final List<Video> mSyncedItems;
     private int mCurrentIndex;
-    private static Playlist sInstance;
+    private static Queue sInstance;
 
-    private Playlist() {
-        mPlaylist = new ArrayList<>();
+    private Queue() {
+        mQueue = new ArrayList<>();
         mSyncedItems = new ArrayList<>();
         mCurrentIndex = -1;
     }
 
-    public static Playlist instance() {
+    public static Queue instance() {
         if (sInstance == null) {
-            sInstance = new Playlist();
+            sInstance = new Queue();
         }
 
         return sInstance;
@@ -32,7 +32,7 @@ public class Playlist {
      * Clears the videos from the playlist.
      */
     public void clear() {
-        mPlaylist.clear();
+        mQueue.clear();
         mCurrentIndex = -1;
     }
 
@@ -44,8 +44,8 @@ public class Playlist {
      * Used to sync list with remotely added items
      */
     public void addAll(List<Video> videos) {
-        mPlaylist.removeAll(videos);
-        mPlaylist.addAll(videos);
+        mQueue.removeAll(videos);
+        mQueue.addAll(videos);
     }
 
     /**
@@ -67,11 +67,11 @@ public class Playlist {
             return;
         }
 
-        boolean isLastElement = !mPlaylist.isEmpty() && video.equals(mPlaylist.get(mPlaylist.size() - 1));
+        boolean isLastElement = !mQueue.isEmpty() && video.equals(mQueue.get(mQueue.size() - 1));
 
         remove(video);
 
-        mPlaylist.add(video);
+        mQueue.add(video);
 
         // Replacing last element? Increase index then.
         if (isLastElement) {
@@ -80,7 +80,7 @@ public class Playlist {
 
         // Video opened from the browser or suggestions.
         // In this case remove all next items.
-        trimPlaylist();
+        trimQueue();
         stripPrevItem();
     }
 
@@ -91,18 +91,18 @@ public class Playlist {
 
         remove(video);
 
-        int nextIdx = mPlaylist.size() > mCurrentIndex ? mCurrentIndex + 1 : mPlaylist.size() - 1;
+        int nextIdx = mQueue.size() > mCurrentIndex ? mCurrentIndex + 1 : mQueue.size() - 1;
 
         // IndexOutOfBoundsException fix
         if (nextIdx < 0) {
             return;
         }
 
-        mPlaylist.add(nextIdx, video);
+        mQueue.add(nextIdx, video);
 
         // Video opened from the browser or suggestions.
         // In this case remove all next items.
-        trimPlaylist();
+        trimQueue();
         stripPrevItem();
     }
 
@@ -111,11 +111,11 @@ public class Playlist {
             return;
         }
 
-        int index = mPlaylist.indexOf(video);
+        int index = mQueue.indexOf(video);
 
         // If contains
         if (index >= 0) {
-            mPlaylist.remove(video);
+            mQueue.remove(video);
 
             // Shift video stack index if needed
             // Don't remove current index. Except this is the last element.
@@ -126,8 +126,8 @@ public class Playlist {
 
             // Index out of bounds as the result of previous operation.
             // Select last element in this case.
-            if (mCurrentIndex >= mPlaylist.size()) {
-                mCurrentIndex = mPlaylist.size() - 1;
+            if (mCurrentIndex >= mQueue.size()) {
+                mCurrentIndex = mQueue.size() - 1;
             }
         }
     }
@@ -137,7 +137,7 @@ public class Playlist {
             return false;
         }
 
-        return mPlaylist.contains(video);
+        return mQueue.contains(video);
     }
 
     public boolean containsAfterCurrent(Video video) {
@@ -157,8 +157,8 @@ public class Playlist {
      * @return The next video in the playlist.
      */
     public Video getNext() {
-        if (mCurrentIndex >= 0 && (mCurrentIndex + 1) < mPlaylist.size()) {
-            return mPlaylist.get(mCurrentIndex + 1);
+        if (mCurrentIndex >= 0 && (mCurrentIndex + 1) < mQueue.size()) {
+            return mQueue.get(mCurrentIndex + 1);
         }
 
         return null;
@@ -172,7 +172,7 @@ public class Playlist {
      */
     public Video getPrevious() {
         if ((mCurrentIndex - 1) >= 0) {
-            return mPlaylist.get(mCurrentIndex - 1);
+            return mQueue.get(mCurrentIndex - 1);
         }
 
         return null;
@@ -183,26 +183,26 @@ public class Playlist {
             return;
         }
 
-        int currentPosition = mPlaylist.indexOf(video);
+        int currentPosition = mQueue.indexOf(video);
 
         if (currentPosition >= 0) {
             mCurrentIndex = currentPosition;
         } else {
             add(video);
-            mCurrentIndex = mPlaylist.size() - 1;
+            mCurrentIndex = mQueue.size() - 1;
         }
     }
 
     public Video getCurrent() {
-        if (mCurrentIndex < mPlaylist.size() && mCurrentIndex >= 0) {
-            return mPlaylist.get(mCurrentIndex);
+        if (mCurrentIndex < mQueue.size() && mCurrentIndex >= 0) {
+            return mQueue.get(mCurrentIndex);
         }
 
         return null;
     }
 
     public List<Video> getAll() {
-        return Collections.unmodifiableList(mPlaylist);
+        return Collections.unmodifiableList(mQueue);
     }
 
     public List<Video> getChangedItems() {
@@ -215,12 +215,12 @@ public class Playlist {
 
     public List<Video> getAllAfterCurrent() {
         if (mCurrentIndex == -1) {
-            return mPlaylist;
+            return mQueue;
         }
 
         int fromIndex = mCurrentIndex + 1;
-        if (fromIndex > 0 && fromIndex < mPlaylist.size()) {
-            return mPlaylist.subList(fromIndex, mPlaylist.size());
+        if (fromIndex > 0 && fromIndex < mQueue.size()) {
+            return mQueue.subList(fromIndex, mQueue.size());
         }
 
         return null;
@@ -232,26 +232,26 @@ public class Playlist {
         }
 
         int fromIndex = mCurrentIndex + 1;
-        int size = mPlaylist.size();
+        int size = mQueue.size();
         if (fromIndex > 0 && fromIndex < size) {
-            //mPlaylist = mPlaylist.subList(0, fromIndex);
-            mPlaylist.subList(fromIndex, size).clear();
+            //mQueue = mQueue.subList(0, fromIndex);
+            mQueue.subList(fromIndex, size).clear();
         }
     }
 
     /**
      * Trim playlist if one exceeds needed size or current element not last in the list
      */
-    private void trimPlaylist() {
-        int size = mPlaylist.size();
+    private void trimQueue() {
+        int size = mQueue.size();
         boolean playlistTooBig = size > PLAYLIST_MAX_SIZE;
 
         if (playlistTooBig) {
-            //int fromIndex = mPlaylist.size() - PLAYLIST_MAX_SIZE;
-            //int toIndex = mPlaylist.size();
-            //mPlaylist = mPlaylist.subList(fromIndex, toIndex);
+            //int fromIndex = mQueue.size() - PLAYLIST_MAX_SIZE;
+            //int toIndex = mQueue.size();
+            //mQueue = mQueue.subList(fromIndex, toIndex);
             int toIndex = size - PLAYLIST_MAX_SIZE;
-            mPlaylist.subList(0, toIndex).clear();
+            mQueue.subList(0, toIndex).clear();
             mCurrentIndex -= toIndex;
         }
     }
@@ -266,8 +266,8 @@ public class Playlist {
 
         int prevPosition = mCurrentIndex - 1;
 
-        if (prevPosition < mPlaylist.size() && prevPosition >= 0) {
-            Video prevItem = mPlaylist.get(prevPosition);
+        if (prevPosition < mQueue.size() && prevPosition >= 0) {
+            Video prevItem = mQueue.get(prevPosition);
             if (prevItem != null) {
                 prevItem.mediaItem = null;
                 prevItem.nextMediaItem = null;
@@ -277,10 +277,10 @@ public class Playlist {
     }
 
     private void replace(Video origin, Video newItem) {
-        int index = mPlaylist.indexOf(origin);
+        int index = mQueue.indexOf(origin);
 
         if (index != -1) {
-            mPlaylist.set(index, newItem);
+            mQueue.set(index, newItem);
         }
     }
 
@@ -297,7 +297,7 @@ public class Playlist {
         }
 
         // Sync to maintain order. Item may be cloned.
-        for (Video video : mPlaylist) {
+        for (Video video : mQueue) {
             if (video.equals(origin)) {
                 video.sync(origin);
                 break;

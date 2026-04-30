@@ -11,7 +11,7 @@ import com.liskovsoft.sharedutils.ContentService;
 import com.liskovsoft.sharedutils.MediaItemService;
 import com.liskovsoft.sharedutils.NotificationsService;
 import com.liskovsoft.sharedutils.SignInService;
-import SmartTubeApp.app.models.data.Playlist;
+import SmartTubeApp.app.models.data.Queue;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.models.data.VideoGroup;
 import SmartTubeApp.app.presenters.PlaybackPresenter;
@@ -115,8 +115,8 @@ public abstract class BasePresenter<T> implements Presenter<T> {
     public void onViewResumed() {
         if (canViewBeSynced()) {
             // NOTE: don't place cleanup in the onViewResumed!!! This could cause errors when view is resumed.
-            if (syncItem(Playlist.instance().getChangedItems())) {
-                Playlist.instance().onNewSession();
+            if (syncItem(Queue.instance().getChangedItems())) {
+                Queue.instance().onNewSession();
             }
         }
 
@@ -195,7 +195,7 @@ public abstract class BasePresenter<T> implements Presenter<T> {
 
     private void enableSync() {
         if (this instanceof PlaybackPresenter) {
-            Playlist.instance().onNewSession();
+            Queue.instance().onNewSession();
         }
     }
 

@@ -4,7 +4,7 @@ import com.liskovsoft.sharedutils.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import SmartTubeApp.R;
-import SmartTubeApp.app.models.data.Playlist;
+import SmartTubeApp.app.models.data.Queue;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.models.playback.BasePlayerController;
 import SmartTubeApp.app.models.playback.manager.PlayerUI;
@@ -29,7 +29,7 @@ public class VideoStateController extends BasePlayerController {
     private static final long STATE_SAVE_INTERVAL_MS = 10_000; // Save state every 10 seconds
 
     private final MediaServiceManager mMediaServiceManager;
-    private final Playlist mPlaylist;
+    private final Queue mPlaylist;
 
     private boolean mIsPlayEnabled;
     private boolean mIsPlayBlocked;
@@ -37,7 +37,7 @@ public class VideoStateController extends BasePlayerController {
 
     public VideoStateController() {
         mMediaServiceManager = MediaServiceManager.instance();
-        mPlaylist = Playlist.instance();
+        mPlaylist = Queue.instance();
     }
 
     /**

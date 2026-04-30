@@ -5,7 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.liskovsoft.sharedutils.data.MediaItemMetadata;
-import SmartTubeApp.app.models.data.Playlist;
+import SmartTubeApp.app.models.data.Queue;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.models.playback.BasePlayerController;
 import SmartTubeApp.app.models.playback.controllers.ChatController;
@@ -194,7 +194,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
         // E.g. when the user pressed back on the Channel content screen
         if (view != null && view.getVideo() != null && mIsEmbedPlayerStarted) {
             mVideo = new WeakReference<>(view.getVideo());
-            Playlist.instance().add(view.getVideo()); // don't show queue
+            Queue.instance().add(view.getVideo()); // don't show queue
         }
     }
 
