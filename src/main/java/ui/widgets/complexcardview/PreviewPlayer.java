@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.widgets.embedplayer;
+package SmartTubeApp.ui.widgets.complexcardview;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -30,10 +30,7 @@ import SmartTubeApp.utils.Utils;
 import java.io.InputStream;
 import java.util.List;
 
-/**
- * https://chatgpt.com/c/6806b729-1ab0-8010-94f0-56f6b71cdbfb
- */
-public class EmbedPlayerView extends PlayerView implements PlaybackView {
+public class PreviewPlayer extends PlayerView implements PlaybackView {
 
     public static final int QUALITY_LOW = 0;
     public static final int QUALITY_NORMAL = 1;
@@ -48,17 +45,17 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
     private int mQuality;
     private float mPercentWatched;
 
-    public EmbedPlayerView(Context context) {
+    public PreviewPlayer(Context context) {
         super(context);
         hideView();
     }
 
-    public EmbedPlayerView(Context context, AttributeSet attrs) {
+    public PreviewPlayer(Context context, AttributeSet attrs) {
         super(context, attrs);
         hideView();
     }
 
-    public EmbedPlayerView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public PreviewPlayer(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         hideView();
     }
@@ -462,7 +459,7 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
 
         // Fullscreen playback is running. Skipping
         PlaybackView view = mPlaybackPresenter.getView();
-        if (view == null || view instanceof EmbedPlayerView || !PlaybackPresenter.instance(getContext()).isEngineInitialized()) {
+        if (view == null || view instanceof PreviewPlayer || !PlaybackPresenter.instance(getContext()).isEngineInitialized()) {
             initPlayer();
             createPlayerObjects();
             mPlaybackPresenter.onNewVideo(video);
