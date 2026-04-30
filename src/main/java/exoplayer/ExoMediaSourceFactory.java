@@ -6,8 +6,6 @@ import android.net.Uri;
 import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.ext.cronet.CronetDataSourceFactory;
-import com.google.android.exoplayer2.ext.cronet.CronetEngineWrapper;
 import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -38,7 +36,6 @@ import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.upstream.HttpDataSource.BaseFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.sharedutils.data.MediaItemFormatInfo;
-import com.liskovsoft.sharedutils.cronet.CronetManager;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
@@ -125,12 +122,16 @@ public class ExoMediaSourceFactory {
      * @return A new HttpDataSource factory.
      */
     private HttpDataSource.Factory buildHttpDataSourceFactory(boolean useBandwidthMeter) {
+        
         PlayerTweaksData tweaksData = PlayerTweaksData.instance(mContext);
+        
         int source = tweaksData.getPlayerDataSource();
+        
         DefaultBandwidthMeter bandwidthMeter = useBandwidthMeter ? BANDWIDTH_METER : null;
-        return source == PlayerTweaksData.PLAYER_DATA_SOURCE_OKHTTP ? buildOkHttpDataSourceFactory(bandwidthMeter) :
-                        source == PlayerTweaksData.PLAYER_DATA_SOURCE_CRONET && CronetManager.getEngine(mContext) != null ? buildCronetDataSourceFactory(bandwidthMeter) :
-                                buildDefaultHttpDataSourceFactory(bandwidthMeter);
+        
+        return source == PlayerTweaksData.PLAYER_DATA_SOURCE_OKHTTP ? 
+            buildOkHttpDataSourceFactory(bandwidthMeter) :
+            buildDefaultHttpDataSourceFactory(bandwidthMeter);
     }
 
     @SuppressWarnings("deprecation")
@@ -279,21 +280,6 @@ public class ExoMediaSourceFactory {
     private HttpDataSource.Factory buildOkHttpDataSourceFactory(DefaultBandwidthMeter bandwidthMeter) {
         OkHttpDataSourceFactory dataSourceFactory = new OkHttpDataSourceFactory(OkHttpManager.instance().getClient(), USER_AGENT,
                 bandwidthMeter);
-        addCommonHeaders(dataSourceFactory);
-        return dataSourceFactory;
-    }
-
-    private HttpDataSource.Factory buildCronetDataSourceFactory(DefaultBandwidthMeter bandwidthMeter) {
-        CronetDataSourceFactory dataSourceFactory =
-                new CronetDataSourceFactory(
-                        new CronetEngineWrapper(CronetManager.getEngine(mContext)),
-                        Executors.newSingleThreadExecutor(),
-                        null,
-                        bandwidthMeter,
-                        (int) OkHttpManager.getConnectTimeoutMs(),
-                        (int) OkHttpManager.getReadTimeoutMs(),
-                        true,
-                        USER_AGENT);
         addCommonHeaders(dataSourceFactory);
         return dataSourceFactory;
     }

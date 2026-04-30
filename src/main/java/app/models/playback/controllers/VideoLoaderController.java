@@ -814,35 +814,28 @@ public class VideoLoaderController extends BasePlayerController {
         getPlayerTweaksData().setPlayerDataSource(getNextEngine());
     }
 
-    private int getNextEngine() {
-        int currentEngine = getPlayerTweaksData().getPlayerDataSource();
-        Integer[] engineList = Utils.skipCronet() ?
-                new Integer[] { PlayerTweaksData.PLAYER_DATA_SOURCE_DEFAULT, PlayerTweaksData.PLAYER_DATA_SOURCE_OKHTTP } :
-                new Integer[] { PlayerTweaksData.PLAYER_DATA_SOURCE_CRONET, PlayerTweaksData.PLAYER_DATA_SOURCE_DEFAULT, PlayerTweaksData.PLAYER_DATA_SOURCE_OKHTTP };
-        return Helpers.getNextValue(engineList, currentEngine);
+    private static final Integer[] mEngineList = new Integer[] {
+        PlayerTweaksData.PLAYER_DATA_SOURCE_DEFAULT, 
+        PlayerTweaksData.PLAYER_DATA_SOURCE_OKHTTP
+    };
+
+    private int getNextEngine() {        
+        return Helpers.getNextValue(
+            mEngineList, 
+            getPlayerTweaksData().getPlayerDataSource()
+        );
     }
 
-    private static int getFasterDataSource() {
-        return Utils.skipCronet() ? PlayerTweaksData.PLAYER_DATA_SOURCE_DEFAULT : PlayerTweaksData.PLAYER_DATA_SOURCE_CRONET;
-    }
-
-    /**
-     * Bad idea. Faster source is different among devices
-     */
     private void enableFasterDataSource() {
-        if (isFasterDataSourceEnabled()) {
-            return;
+
+        int source = PlayerTweaksData.PLAYER_DATA_SOURCE_DEFAULT;
+
+        if (getPlayerTweaksData().getPlayerDataSource() != source) {
+
+            getPlayerTweaksData().setPlayerDataSource(source);
+
         }
 
-        getPlayerTweaksData().setPlayerDataSource(getFasterDataSource());
-    }
-
-    /**
-     * Bad idea. Faster source is different among devices
-     */
-    private boolean isFasterDataSourceEnabled() {
-        int fasterDataSource = getFasterDataSource();
-        return getPlayerTweaksData().getPlayerDataSource() == fasterDataSource;
     }
 
     private int getPlaybackMode() {
