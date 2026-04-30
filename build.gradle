@@ -110,7 +110,6 @@ dependencies {
     implementation project(':exoplayer-leanback')
     implementation project(':exoplayer-mediasession')
     implementation project(':exoplayer-okhttp')
-    implementation project(':exoplayer-cronet')
 
     implementation project(':fragment-1.1.0')
     implementation project(':leanback-1.0.0')
