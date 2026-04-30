@@ -9,7 +9,7 @@ import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import SmartTubeApp.R;
-import SmartTubeApp.app.models.data.Playlist;
+import SmartTubeApp.app.models.data.Queue;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.models.playback.controllers.CommentsController;
 import SmartTubeApp.app.models.playback.manager.PlayerUI;
@@ -47,7 +47,7 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
     private final AppDialogPresenter mDialogPresenter;
     private final MediaServiceManager mServiceManager;
     private final VideoStateService mVideoStateService;
-    private final Playlist mPlaylist;
+    private final Queue mPlaylist;
 
     private Disposable mAddToPlaylistAction;
     private Disposable mNotInterestedAction;
@@ -120,7 +120,7 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         mServiceManager = MediaServiceManager.instance();
         mDialogPresenter = AppDialogPresenter.instance(context);
         mVideoStateService = VideoStateService.instance(context);
-        mPlaylist = Playlist.instance();
+        mPlaylist = Queue.instance();
 
         initMenuMapping();
     }

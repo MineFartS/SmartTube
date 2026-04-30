@@ -13,7 +13,7 @@ import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import SmartTubeApp.R;
-import SmartTubeApp.app.models.data.Playlist;
+import SmartTubeApp.app.models.data.Queue;
 import SmartTubeApp.app.models.data.SimpleMediaItem;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.models.data.VideoGroup;
@@ -46,7 +46,7 @@ public class VideoLoaderController extends BasePlayerController {
     private static final long BUFFERING_RECURRENCE_COUNT = 5;
     private static final long BUFFERING_CONTINUATION_MS = 20_000;
     
-    private final Playlist mPlaylist;
+    private final Queue mPlaylist;
     private Video mPendingVideo;
     private int mLastErrorType = -1;
     private SuggestionsController mSuggestionsController;
@@ -82,7 +82,7 @@ public class VideoLoaderController extends BasePlayerController {
     private Pair<Integer, Long> mBufferingCount;
 
     public VideoLoaderController() {
-        mPlaylist = Playlist.instance();
+        mPlaylist = Queue.instance();
     }
 
     @Override

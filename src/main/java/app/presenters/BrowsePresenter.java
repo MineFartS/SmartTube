@@ -14,7 +14,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import SmartTubeApp.R;
 import SmartTubeApp.app.models.data.BrowseSection;
-import SmartTubeApp.app.models.data.Playlist;
+import SmartTubeApp.app.models.data.Queue;
 import SmartTubeApp.app.models.data.SettingsGroup;
 import SmartTubeApp.app.models.data.SettingsItem;
 import SmartTubeApp.app.models.data.Video;
@@ -346,7 +346,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
     private void initLocalGridMapping() {
         mLocalGridMappings.put(
             MediaGroup.TYPE_PLAYBACK_QUEUE, 
-            () -> Playlist.instance().getAll()
+            () -> Queue.instance().getAll()
         );
     }
 

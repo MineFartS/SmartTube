@@ -16,7 +16,7 @@ import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import SmartTubeApp.R;
-import SmartTubeApp.app.models.data.Playlist;
+import SmartTubeApp.app.models.data.Queue;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.models.data.VideoGroup;
 import SmartTubeApp.app.models.playback.BasePlayerController;
@@ -109,7 +109,13 @@ public class SuggestionsController extends BasePlayerController {
 
     @Override
     public void onSuggestionItemClicked(Video item) {
-        markAsQueueIfNeeded(item);
+        
+        List<Video> afterCurrent = Queue.instance().getAllAfterCurrent();
+
+        if (afterCurrent != null && afterCurrent.contains(item)) {
+            item.fromQueue = true;
+        }
+
     }
 
     @Override
@@ -264,7 +270,7 @@ public class SuggestionsController extends BasePlayerController {
 
     public Video getNext() {
         Video result = null;
-        Video next = Playlist.instance().getNext();
+        Video next = Queue.instance().getNext();
         Video current = getPlayer().getVideo();
 
         if (next != null) {
@@ -313,6 +319,15 @@ public class SuggestionsController extends BasePlayerController {
                         previous = item;
                     }
                 }
+            }
+        }
+
+        if (result == null) {
+            Video previous = Queue.instance().getPrevious();
+
+            if (previous != null) {
+                previous.fromQueue = true;
+                result = previous;
             }
         }
 
