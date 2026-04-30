@@ -20,7 +20,7 @@ import com.liskovsoft.sharedutils.helpers.PermissionHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import SmartTubeApp.R;
-import SmartTubeApp.app.models.data.Playlist;
+import SmartTubeApp.app.models.data.Queue;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.models.playback.manager.PlayerConstants;
 import SmartTubeApp.app.models.playback.manager.PlayerManager;

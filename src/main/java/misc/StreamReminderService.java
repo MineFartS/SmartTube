@@ -8,7 +8,7 @@ import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import SmartTubeApp.R;
-import SmartTubeApp.app.models.data.Playlist;
+import SmartTubeApp.app.models.data.Queue;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.presenters.PlaybackPresenter;
 import SmartTubeApp.app.views.ViewManager;
@@ -83,7 +83,7 @@ public class StreamReminderService implements TickleListener {
             video.videoId = videoId;
             video.isPending = true;
 
-            Playlist playlist = Playlist.instance();
+            Queue playlist = Queue.instance();
             Video current = playlist.getCurrent();
 
             if (current != null && current.isPending && ViewManager.instance(mContext).isPlayerInForeground()) {
