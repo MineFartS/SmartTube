@@ -13,9 +13,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     private static final String VIDEO_PLAYER_TWEAKS_DATA = "video_player_tweaks_data";
     
-    public static final int PLAYER_DATA_SOURCE_DEFAULT = 0;
-    public static final int PLAYER_DATA_SOURCE_OKHTTP = 1;
-    
     public static final int PLAYER_BUTTON_PLAYBACK_QUEUE = 1 << 4;
     public static final int PLAYER_BUTTON_VIDEO_SPEED = 1 << 5;
     public static final int PLAYER_BUTTON_OPEN_CHANNEL = 1 << 7;
@@ -59,7 +56,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsRememberPositionOfLiveVideosEnabled;
     private boolean mIsLongSpeedListEnabled;
     private boolean mIsExtraLongSpeedListEnabled;
-    private int mPlayerDataSource;
     private boolean mIsSectionPlaylistEnabled;
     private boolean mIsLoopShortsEnabled;
 
@@ -110,15 +106,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     public void setPlayerButtonDisabled(int playerButtons) {
         mPlayerButtons &= ~playerButtons;
-        persistState();
-    }
-
-    public int getPlayerDataSource() {
-        return mPlayerDataSource;
-    }
-
-    public void setPlayerDataSource(int dataSource) {
-        mPlayerDataSource = dataSource;
         persistState();
     }
 
@@ -180,7 +167,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
         /* 2 */ mIsPlaybackNotificationsDisabled = Helpers.parseBoolean(split, 2, !Helpers.isAndroidTVLauncher(mPrefs.getContext()));
         /* 3 */ mPlayerButtons = Helpers.parseInt(split, 3, PLAYER_BUTTON_DEFAULT);
         /* 4 */ mIsLongSpeedListEnabled = Helpers.parseBoolean(split, 4, true);
-        /* 5 */ mPlayerDataSource = Helpers.parseInt(split, 5, PLAYER_DATA_SOURCE_DEFAULT);
+
         /* 6 */ mIsSectionPlaylistEnabled = Helpers.parseBoolean(split, 6, Utils.isEnoughRam());
         /* 7 */ mIsLoopShortsEnabled = Helpers.parseBoolean(split, 7, true);
         /* 8 */ mIsRememberPositionOfLiveVideosEnabled = Helpers.parseBoolean(split, 8, true);
@@ -199,7 +186,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
             /* 2 */ mIsPlaybackNotificationsDisabled, 
             /* 3 */ mPlayerButtons,
             /* 4 */ mIsLongSpeedListEnabled, 
-            /* 5 */ mPlayerDataSource, 
+            /* 5 */ null, 
             /* 6 */ mIsSectionPlaylistEnabled,
             /* 7 */ mIsLoopShortsEnabled, 
             /* 8 */ mIsRememberPositionOfLiveVideosEnabled,

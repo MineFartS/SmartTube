@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 import androidx.annotation.NonNull;
+
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
@@ -29,12 +30,12 @@ import com.google.android.exoplayer2.source.smoothstreaming.DefaultSsChunkSource
 import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DataSource.Factory;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.upstream.HttpDataSource.BaseFactory;
 import com.google.android.exoplayer2.util.Util;
+
 import com.liskovsoft.sharedutils.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -52,18 +53,17 @@ import java.util.List;
 import java.util.concurrent.Executors;
 
 public class ExoMediaSourceFactory {
+
     private static final String TAG = ExoMediaSourceFactory.class.getSimpleName();
-    @SuppressLint("StaticFieldLeak")
-    //private static ExoMediaSourceFactory sInstance;
+
     private static final int MAX_SEGMENTS_PER_LOAD = 3; // default - 1 (1-5)
     private static final String USER_AGENT = DefaultHeaders.APP_USER_AGENT;
-    @SuppressLint("StaticFieldLeak")
-    private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
+
     private final Context mContext;
     private static final Uri DASH_MANIFEST_URI = Uri.parse("https://example.com/test.mpd");
     private static final String DASH_MANIFEST_EXTENSION = "mpd";
     private static final String HLS_PLAYLIST_EXTENSION = "m3u8";
-    private static final boolean USE_BANDWIDTH_METER = false;
+
     private TrackErrorFixer mTrackErrorFixer;
     private Factory mMediaDataSourceFactory;
 
@@ -100,38 +100,6 @@ public class ExoMediaSourceFactory {
 
         //return mediaSources.length == 1 ? mediaSources[0] : new ConcatenatingMediaSource(mediaSources); // or playlist
         return mediaSources[0]; // item with max resolution
-    }
-
-    /**
-     * Returns a new DataSource factory.
-     *
-     * @param useBandwidthMeter Whether to set {@link #BANDWIDTH_METER} as a listener to the new
-     *                          DataSource factory.
-     * @return A new DataSource factory.
-     */
-    private DataSource.Factory buildDataSourceFactory(boolean useBandwidthMeter) {
-        DefaultBandwidthMeter bandwidthMeter = useBandwidthMeter ? BANDWIDTH_METER : null;
-        return new DefaultDataSourceFactory(mContext, bandwidthMeter, buildHttpDataSourceFactory(useBandwidthMeter));
-    }
-
-    /**
-     * Returns a new HttpDataSource factory.
-     *
-     * @param useBandwidthMeter Whether to set {@link #BANDWIDTH_METER} as a listener to the new
-     *                          DataSource factory.
-     * @return A new HttpDataSource factory.
-     */
-    private HttpDataSource.Factory buildHttpDataSourceFactory(boolean useBandwidthMeter) {
-        
-        PlayerTweaksData tweaksData = PlayerTweaksData.instance(mContext);
-        
-        int source = tweaksData.getPlayerDataSource();
-        
-        DefaultBandwidthMeter bandwidthMeter = useBandwidthMeter ? BANDWIDTH_METER : null;
-        
-        return source == PlayerTweaksData.PLAYER_DATA_SOURCE_OKHTTP ? 
-            buildOkHttpDataSourceFactory(bandwidthMeter) :
-            buildDefaultHttpDataSourceFactory(bandwidthMeter);
     }
 
     @SuppressWarnings("deprecation")
@@ -274,32 +242,6 @@ public class ExoMediaSourceFactory {
         return result;
     }
 
-    /**
-     * Use OkHttp for networking
-     */
-    private HttpDataSource.Factory buildOkHttpDataSourceFactory(DefaultBandwidthMeter bandwidthMeter) {
-        OkHttpDataSourceFactory dataSourceFactory = new OkHttpDataSourceFactory(OkHttpManager.instance().getClient(), USER_AGENT,
-                bandwidthMeter);
-        addCommonHeaders(dataSourceFactory);
-        return dataSourceFactory;
-    }
-
-    /**
-     * Use built-in component for networking
-     */
-    private HttpDataSource.Factory buildDefaultHttpDataSourceFactory(DefaultBandwidthMeter bandwidthMeter) {
-        DefaultHttpDataSourceFactory dataSourceFactory = new DefaultHttpDataSourceFactory(
-                USER_AGENT, bandwidthMeter, (int) OkHttpManager.getConnectTimeoutMs(),
-                (int) OkHttpManager.getReadTimeoutMs(), true); // allowCrossProtocolRedirects = true
-
-        addCommonHeaders(dataSourceFactory); // cause troubles for some users
-        return dataSourceFactory;
-    }
-
-    private static void addCommonHeaders(BaseFactory dataSourceFactory) {
-
-    }
-
     public void setTrackErrorFixer(TrackErrorFixer trackErrorFixer) {
         mTrackErrorFixer = trackErrorFixer;
     }
@@ -324,8 +266,25 @@ public class ExoMediaSourceFactory {
     }
 
     private Factory getMediaDataSourceFactory() {
+
         if (mMediaDataSourceFactory == null) {
-            mMediaDataSourceFactory = buildDataSourceFactory(USE_BANDWIDTH_METER);
+
+            PlayerTweaksData tweaksData = PlayerTweaksData.instance(mContext);
+            
+            DefaultHttpDataSourceFactory dataSourceFactory = new DefaultHttpDataSourceFactory(
+                USER_AGENT, 
+                null, 
+                (int) OkHttpManager.getConnectTimeoutMs(),
+                (int) OkHttpManager.getReadTimeoutMs(), 
+                true
+            );
+            
+            mMediaDataSourceFactory = new DefaultDataSourceFactory(
+                mContext, 
+                null, 
+                dataSourceFactory
+            );
+
         }
 
         return mMediaDataSourceFactory;
