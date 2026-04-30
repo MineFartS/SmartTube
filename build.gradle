@@ -106,10 +106,15 @@ dependencies {
     
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation project(':exoplayer-library')
     implementation project(':exoplayer-leanback')
     implementation project(':exoplayer-mediasession')
     implementation project(':exoplayer-okhttp')
+    implementation project(':exoplayer-core')
+    implementation project(':exoplayer-dash')
+    implementation project(':exoplayer-sabr')
+    implementation project(':exoplayer-hls')
+    implementation project(':exoplayer-smoothstreaming')
+    implementation project(':exoplayer-ui')
 
     implementation project(':fragment-1.1.0')
     implementation project(':leanback-1.0.0')
