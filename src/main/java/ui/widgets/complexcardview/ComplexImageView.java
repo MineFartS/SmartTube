@@ -16,7 +16,6 @@ import com.bumptech.glide.Glide;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.utils.Utils;
 import SmartTubeApp.R;
-import SmartTubeApp.ui.widgets.embedplayer.EmbedPlayerView;
 import SmartTubeApp.util.ViewUtil;
 
 import java.lang.ref.WeakReference;
@@ -25,7 +24,7 @@ public class ComplexImageView extends RelativeLayout {
     private static final long PLAYER_START_DELAY_MS = 2_000;
     private ImageView mMainImage;
     private ImageView mPreviewImage;
-    private EmbedPlayerView mPreviewPlayer;
+    private PreviewPlayer mPreviewPlayer;
     private FrameLayout mPreviewContainer;
     private ProgressBar mProgressBar;
     private TextView mBadgeText;
@@ -170,8 +169,8 @@ public class ComplexImageView extends RelativeLayout {
         }
 
         if (mPreviewPlayer == null) {
-            mPreviewPlayer = new EmbedPlayerView(getContext());
-            mPreviewPlayer.setQuality(Math.min(mPreviewWidth, mPreviewHeight) < 300 ? EmbedPlayerView.QUALITY_LOW : EmbedPlayerView.QUALITY_NORMAL);
+            mPreviewPlayer = new PreviewPlayer(getContext());
+            mPreviewPlayer.setQuality(Math.min(mPreviewWidth, mPreviewHeight) < 300 ? PreviewPlayer.QUALITY_LOW : PreviewPlayer.QUALITY_NORMAL);
             mPreviewPlayer.setUseController(false);
             mPreviewPlayer.setMute(mMute);
             mPreviewPlayer.setBackgroundColor(Color.BLACK);
@@ -208,7 +207,7 @@ public class ComplexImageView extends RelativeLayout {
                     mPreviewPlayer.finish();
                     mPreviewContainer.removeView(mPreviewPlayer);
                 } else {
-                    EmbedPlayerView epv = mPreviewPlayer;
+                    PreviewPlayer epv = mPreviewPlayer;
                     epv.setMute(true);
                     Utils.postDelayed(() -> {
                         epv.finish();
