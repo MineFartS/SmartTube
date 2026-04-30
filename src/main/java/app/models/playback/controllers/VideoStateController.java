@@ -26,6 +26,7 @@ public class VideoStateController extends BasePlayerController {
     private static final long OFFICIAL_LIVE_BUFFER_MS = 15_000; // Official app buffer
     private static final long LIVE_BUFFER_MS = OFFICIAL_LIVE_BUFFER_MS;
     private static final long BEGIN_THRESHOLD_MS = 10_000;
+    private static final long STATE_SAVE_INTERVAL_MS = 10_000; // Save state every 10 seconds
 
     private final MediaServiceManager mMediaServiceManager;
     private final Playlist mPlaylist;
@@ -103,12 +104,15 @@ public class VideoStateController extends BasePlayerController {
         saveState();
     }
 
-    @Override
+@Override
     public void onEngineInitialized() {
         // Show user info instead of black screen.
         if (!getPlayEnabled()) {
             getPlayer().showOverlay(true);
         }
+        
+        // Start periodic state saving
+        startPeriodicStateSave();
     }
 
     @Override
@@ -117,6 +121,9 @@ public class VideoStateController extends BasePlayerController {
             return;
         }
 
+        // Stop periodic state saving
+        stopPeriodicStateSave();
+        
         // Save previous state
         if (getPlayer().containsMedia()) {
             setPlayEnabled(getPlayer().getPlayWhenReady());
@@ -132,6 +139,29 @@ public class VideoStateController extends BasePlayerController {
 
         saveState();
 
+    }
+    
+    private void startPeriodicStateSave() {
+        Utils.removeCallbacks(this::saveStatePeriodically);
+        Utils.postDelayed(this::saveStatePeriodically, STATE_SAVE_INTERVAL_MS);
+    }
+    
+    private void stopPeriodicStateSave() {
+        Utils.removeCallbacks(this::saveStatePeriodically);
+    }
+    
+    private void saveStatePeriodically() {
+        if (getPlayer() == null || !getPlayer().isEngineInitialized()) {
+            return;
+        }
+        
+        // Only save if video is playing (not paused)
+        if (getPlayer().getPlayWhenReady()) {
+            saveState();
+        }
+        
+        // Schedule next save
+        Utils.postDelayed(this::saveStatePeriodically, STATE_SAVE_INTERVAL_MS);
     }
 
     @Override
