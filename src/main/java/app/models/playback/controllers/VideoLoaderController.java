@@ -36,12 +36,16 @@ import java.util.Collections;
 import java.util.List;
 
 public class VideoLoaderController extends BasePlayerController {
+    
     private static final String TAG = VideoLoaderController.class.getSimpleName();
+   
     private static final long STREAM_END_THRESHOLD_MS = 180_000;
+   
     private static final long BUFFERING_THRESHOLD_MS = 3_000;
     private static final long BUFFERING_WINDOW_MS = 60_000;
     private static final long BUFFERING_RECURRENCE_COUNT = 5;
     private static final long BUFFERING_CONTINUATION_MS = 20_000;
+    
     private final Playlist mPlaylist;
     private Video mPendingVideo;
     private int mLastErrorType = -1;
@@ -129,8 +133,6 @@ public class VideoLoaderController extends BasePlayerController {
         } else if (!getVideo().isLive && !getVideo().isLiveEnd) {
             MessageHelpers.showLongMessage(getContext(), R.string.playback_buffering_fix);
             YouTubeServiceManager.instance().invalidateCache();
-            // Faster source is different among devices. Try them one by one.
-            switchNextEngine();
             restartEngine();
         }
     }
@@ -276,9 +278,8 @@ public class VideoLoaderController extends BasePlayerController {
     }
 
     private void waitMetadataSync(Video current, boolean showLoadingMsg) {
-        if (current == null) {
-            return;
-        }
+        
+        if (current == null) return;
 
         if (current.nextMediaItem != null) {
             openVideoInt(Video.from(current.nextMediaItem));
@@ -295,10 +296,9 @@ public class VideoLoaderController extends BasePlayerController {
         }
     }
 
-    private void loadFormatInfo(Video video) {
-        if (getPlayer() == null) {
-            return;
-        }
+private void loadFormatInfo(Video video) {
+        
+    if (getPlayer() == null) return;
 
         getPlayer().showProgressBar(true);
         disposeActions();
@@ -483,32 +483,24 @@ public class VideoLoaderController extends BasePlayerController {
     }
 
     private boolean applyEngineErrorAction(int type, int rendererIndex, Throwable error) {
+        
         boolean restartEngine = true;
         boolean showMessage = true;
         String errorContent = error != null ? error.getMessage() : null;
         String errorTitle = getErrorTitle(type, rendererIndex);
         String errorMessage = errorTitle + "\n" + errorContent;
 
-        if (Helpers.startsWithAny(errorContent, "Unable to connect to")) {
-            // No internet connection or WRONG DATE on the device
-            // Recently this message starting to show for other reasons
-            //YouTubeServiceManager.instance().applyNoPlaybackFix(); // ?
-            switchNextEngine(); // ?
-            //restartEngine = false;
-        } else if (error instanceof OutOfMemoryError || (error != null && error.getCause() instanceof OutOfMemoryError)) {
-            if (getPlayerTweaksData().getPlayerDataSource() == PlayerTweaksData.PLAYER_DATA_SOURCE_OKHTTP) {
-                // OkHttp has memory leak problems
-                enableFasterDataSource();
-            } else {
-                getPlayerTweaksData().setSectionPlaylistEnabled(false);
-                restartEngine = false;
-            }
+        if (error instanceof OutOfMemoryError || (error != null && error.getCause() instanceof OutOfMemoryError)) {
+            
+            getPlayerTweaksData().setSectionPlaylistEnabled(false);
+            restartEngine = false;
+
         } else if (Helpers.containsAny(errorContent, "Exception in CronetUrlRequest", "Response code: 503")) {
-            if (getVideo() != null && !getVideo().isLive) { // Finished live stream may provoke errors in Cronet
-                getPlayerTweaksData().setPlayerDataSource(PlayerTweaksData.PLAYER_DATA_SOURCE_DEFAULT);
-            } else {
+
+            if (!(getVideo() != null && !getVideo().isLive)) { // Finished live stream may provoke errors in Cronet
                 restartEngine = false;
             }
+
         } else if (type == PlayerEventListener.ERROR_TYPE_SOURCE && rendererIndex == PlayerEventListener.RENDERER_INDEX_UNKNOWN) {
             // NOTE: Starts with any (url deciphered incorrectly)
             // "Response code: 403" (poToken error, forbidden)
@@ -524,26 +516,36 @@ public class VideoLoaderController extends BasePlayerController {
             // "Response code: 404", "Response code: 429", "Invalid integer size",
             // "Unexpected ArrayIndexOutOfBoundsException", "Unexpected IndexOutOfBoundsException"
             if (Helpers.startsWithAny(errorContent, "Response code: 403")) {
+            
                 YouTubeServiceManager.instance().applyNoPlaybackFix();
+            
             } else if (getPlayer() != null && !FormatItem.SUBTITLE_NONE.equals(getPlayer().getSubtitleFormat())) {
+            
                 disableSubtitles(); // Response code: 429
+            
             } else {
+            
                 YouTubeServiceManager.instance().applyNoPlaybackFix(); // Response code: 403
+            
             }
+            
             restartEngine = false;
             showMessage = false;
             
         } else if (type == PlayerEventListener.ERROR_TYPE_RENDERER && rendererIndex == PlayerEventListener.RENDERER_INDEX_SUBTITLE) {
+            
             // "Response code: 429" (subtitle error)
             // "Response code: 500" (subtitle error)
             disableSubtitles();
             restartEngine = false;
 
         } else if (type == PlayerEventListener.ERROR_TYPE_RENDERER && rendererIndex == PlayerEventListener.RENDERER_INDEX_VIDEO) {
+            
             getPlayerData().setFormat(FormatItem.VIDEO_FHD_AVC_30);
             restartEngine = false;
     
         } else if (type == PlayerEventListener.ERROR_TYPE_RENDERER && rendererIndex == PlayerEventListener.RENDERER_INDEX_AUDIO) {
+            
             getPlayerData().setFormat(FormatItem.AUDIO_HQ_MP4A);
             restartEngine = false;
             
@@ -808,34 +810,6 @@ public class VideoLoaderController extends BasePlayerController {
 
     private boolean isBufferingRecurrent() {
         return mBufferingCount != null && mBufferingCount.first > BUFFERING_RECURRENCE_COUNT;
-    }
-
-    private void switchNextEngine() {
-        getPlayerTweaksData().setPlayerDataSource(getNextEngine());
-    }
-
-    private static final Integer[] mEngineList = new Integer[] {
-        PlayerTweaksData.PLAYER_DATA_SOURCE_DEFAULT, 
-        PlayerTweaksData.PLAYER_DATA_SOURCE_OKHTTP
-    };
-
-    private int getNextEngine() {        
-        return Helpers.getNextValue(
-            mEngineList, 
-            getPlayerTweaksData().getPlayerDataSource()
-        );
-    }
-
-    private void enableFasterDataSource() {
-
-        int source = PlayerTweaksData.PLAYER_DATA_SOURCE_DEFAULT;
-
-        if (getPlayerTweaksData().getPlayerDataSource() != source) {
-
-            getPlayerTweaksData().setPlayerDataSource(source);
-
-        }
-
     }
 
     private int getPlaybackMode() {
