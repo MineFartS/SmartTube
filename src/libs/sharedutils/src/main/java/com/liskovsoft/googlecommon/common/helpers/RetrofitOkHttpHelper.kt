@@ -1,7 +1,5 @@
 package com.liskovsoft.googlecommon.common.helpers
 
-import com.google.net.cronet.okhttptransport.CronetInterceptor
-import com.liskovsoft.sharedutils.cronet.CronetManager
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager
 import com.liskovsoft.sharedutils.common.helpers.AppConstants
 import com.liskovsoft.sharedutils.app.AppService
@@ -64,7 +62,6 @@ internal object RetrofitOkHttpHelper {
     private fun createClient(): OkHttpClient {
         val builder = OkHttpManager.instance().client.newBuilder()
         addCommonHeaders(builder)
-        //addCronetInterceptor(builder)
         return builder.build()
     }
 
@@ -177,10 +174,4 @@ internal object RetrofitOkHttpHelper {
         }
     }
 
-    private fun addCronetInterceptor(builder: OkHttpClient.Builder) {
-        val engine = CronetManager.getEngine(AppService.instance().context)
-        if (engine != null) {
-            builder.addInterceptor(CronetInterceptor.newBuilder(engine).build())
-        }
-    }
 }
