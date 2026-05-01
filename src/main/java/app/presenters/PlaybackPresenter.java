@@ -194,7 +194,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
         // E.g. when the user pressed back on the Channel content screen
         if (view != null && view.getVideo() != null && mIsEmbedPlayerStarted) {
             mVideo = new WeakReference<>(view.getVideo());
-            Queue.instance().add(view.getVideo()); // don't show queue
+            Queue.add(view.getVideo()); // don't show queue
         }
     }
 

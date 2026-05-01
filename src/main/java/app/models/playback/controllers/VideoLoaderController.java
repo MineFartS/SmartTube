@@ -46,7 +46,6 @@ public class VideoLoaderController extends BasePlayerController {
     private static final long BUFFERING_RECURRENCE_COUNT = 5;
     private static final long BUFFERING_CONTINUATION_MS = 20_000;
     
-    private final Queue mPlaylist;
     private Video mPendingVideo;
     private int mLastErrorType = -1;
     private SuggestionsController mSuggestionsController;
@@ -81,10 +80,6 @@ public class VideoLoaderController extends BasePlayerController {
     };
     private Pair<Integer, Long> mBufferingCount;
 
-    public VideoLoaderController() {
-        mPlaylist = Queue.instance();
-    }
-
     @Override
     public void onInit() {
         mSuggestionsController = getController(SuggestionsController.class);
@@ -97,7 +92,7 @@ public class VideoLoaderController extends BasePlayerController {
         }
 
         if (!item.fromQueue && !item.belongsToPlaybackQueue()) {
-            mPlaylist.add(item);
+            Queue.add(item);
         } else {
             item.fromQueue = false;
         }
@@ -259,7 +254,7 @@ public class VideoLoaderController extends BasePlayerController {
      */
     private void loadVideo(Video item) {
         if (getPlayer() != null && item != null) {
-            mPlaylist.setCurrent(item);
+            Queue.setCurrent(item);
             getPlayer().setVideo(item);
             getPlayer().resetPlayerState();
             loadFormatInfo(item);
@@ -271,7 +266,7 @@ public class VideoLoaderController extends BasePlayerController {
      */
     private void loadSuggestions(Video item) {
         if (item != null) {
-            mPlaylist.setCurrent(item);
+            Queue.setCurrent(item);
             getPlayer().setVideo(item);
             mSuggestionsController.loadSuggestions(item);
         }
@@ -663,7 +658,7 @@ private void loadFormatInfo(Video video) {
             case PlayerConstants.PLAYBACK_MODE_CLOSE:
                 // Close player if suggestions not shown
                 // Except when playing from queue
-                if (mPlaylist.getNext() != null) {
+                if (Queue.getNext() != null) {
                     loadNext();
                 } else {
                     AppDialogPresenter dialog = getAppDialogPresenter();
@@ -676,7 +671,7 @@ private void loadFormatInfo(Video video) {
             case PlayerConstants.PLAYBACK_MODE_PAUSE:
                 // Stop player after each video.
                 // Except when playing from queue
-                if (mPlaylist.getNext() != null) {
+                if (Queue.getNext() != null) {
                     loadNext();
                 } else {
                     getPlayer().setPositionMs(getPlayer().getDurationMs());
@@ -686,7 +681,7 @@ private void loadFormatInfo(Video video) {
                 break;
             case PlayerConstants.PLAYBACK_MODE_LIST:
                 // if video has a playlist load next or restart playlist
-                if (video.hasNextPlaylist() || mPlaylist.getNext() != null) {
+                if (video.hasNextPlaylist() || Queue.getNext() != null) {
                     loadNext();
                 } else {
                     restartPlaylistIfNeeded();
