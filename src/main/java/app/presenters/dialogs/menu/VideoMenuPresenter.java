@@ -47,7 +47,6 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
     private final AppDialogPresenter mDialogPresenter;
     private final MediaServiceManager mServiceManager;
     private final VideoStateService mVideoStateService;
-    private final Queue mPlaylist;
 
     private Disposable mAddToPlaylistAction;
     private Disposable mNotInterestedAction;
@@ -120,7 +119,6 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         mServiceManager = MediaServiceManager.instance();
         mDialogPresenter = AppDialogPresenter.instance(context);
         mVideoStateService = VideoStateService.instance(context);
-        mPlaylist = Queue.instance();
 
         initMenuMapping();
     }
@@ -449,7 +447,7 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
             optionItem -> {
                 mVideo.markFullyViewed();
                 mVideoStateService.save(new State(mVideo, mVideo.getDurationMs()));
-                mPlaylist.sync(mVideo);
+                Queue.sync(mVideo);
                 mDialogPresenter.closeDialog();
             }
         ));
@@ -579,20 +577,20 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         }
 
         // Toggle between add/remove while dialog is opened
-        boolean containsVideo = mPlaylist.contains(mVideo);
+        boolean containsVideo = Queue.contains(mVideo);
 
         mDialogPresenter.appendSingleButton(
                 UiOptionItem.from(
                         getContext().getString(containsVideo ? R.string.remove_from_playback_queue : R.string.add_to_playback_queue),
                         optionItem -> {
                             if (containsVideo) {
-                                mPlaylist.remove(mVideo);
+                                Queue.remove(mVideo);
                                 if (mCallback != null) {
                                     mCallback.onItemAction(mVideo, VideoMenuCallback.ACTION_REMOVE_FROM_QUEUE);
                                 }
                             } else {
                                 mVideo.fromQueue = true;
-                                mPlaylist.add(mVideo);
+                                Queue.add(mVideo);
                                 if (mCallback != null) {
                                     mCallback.onItemAction(mVideo, VideoMenuCallback.ACTION_ADD_TO_QUEUE);
                                 }
@@ -612,13 +610,13 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
 
         if (mVideo == null || !mVideo.hasVideo()) return;
 
-        if (Helpers.equals(mPlaylist.getNext(), mVideo)) return;
+        if (Helpers.equals(Queue.getNext(), mVideo)) return;
 
         mDialogPresenter.appendSingleButton(UiOptionItem.from(
             getContext().getString(R.string.play_next),
             optionItem -> {
                 mVideo.fromQueue = true;
-                mPlaylist.next(mVideo);
+                Queue.next(mVideo);
                 if (mCallback != null) {
                     mCallback.onItemAction(mVideo, VideoMenuCallback.ACTION_PLAY_NEXT);
                 }

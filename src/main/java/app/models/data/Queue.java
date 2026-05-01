@@ -4,46 +4,31 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Manages a playlist of videos.
- */
 public class Queue {
+
     private static final int PLAYLIST_MAX_SIZE = 50;
-    private final List<Video> mQueue;
-    private final List<Video> mSyncedItems;
-    private int mCurrentIndex;
-    private static Queue sInstance;
 
-    private Queue() {
-        mQueue = new ArrayList<>();
-        mSyncedItems = new ArrayList<>();
-        mCurrentIndex = -1;
-    }
-
-    public static Queue instance() {
-        if (sInstance == null) {
-            sInstance = new Queue();
-        }
-
-        return sInstance;
-    }
+    private static final List<Video> mQueue = new ArrayList<>();
+    private static final List<Video> mSyncedItems = new ArrayList<>();
+    
+    private static int mCurrentIndex = -1;
 
     /**
      * Clears the videos from the playlist.
      */
-    public void clear() {
+    public static void clear() {
         mQueue.clear();
         mCurrentIndex = -1;
     }
 
-    public void clearPosition() {
+    public static void clearPosition() {
         mCurrentIndex = -1;
     }
 
     /**
      * Used to sync list with remotely added items
      */
-    public void addAll(List<Video> videos) {
+    public static void addAll(List<Video> videos) {
         mQueue.removeAll(videos);
         mQueue.addAll(videos);
     }
@@ -53,7 +38,7 @@ public class Queue {
      *
      * @param video to be added to the playlist.
      */
-    public void add(Video video) {
+    public static void add(Video video) {
         if (Video.isEmpty(video)) {
             return;
         }
@@ -84,7 +69,7 @@ public class Queue {
         stripPrevItem();
     }
 
-    public void next(Video video) {
+    public static void next(Video video) {
         if (Video.isEmpty(video)) {
             return;
         }
@@ -106,7 +91,7 @@ public class Queue {
         stripPrevItem();
     }
 
-    public void remove(Video video) {
+    public static void remove(Video video) {
         if (Video.isEmpty(video)) {
             return;
         }
@@ -132,7 +117,7 @@ public class Queue {
         }
     }
 
-    public boolean contains(Video video) {
+    public static boolean contains(Video video) {
         if (Video.isEmpty(video)) {
             return false;
         }
@@ -140,7 +125,7 @@ public class Queue {
         return mQueue.contains(video);
     }
 
-    public boolean containsAfterCurrent(Video video) {
+    public static boolean containsAfterCurrent(Video video) {
         if (Video.isEmpty(video)) {
             return false;
         }
@@ -156,7 +141,7 @@ public class Queue {
      *
      * @return The next video in the playlist.
      */
-    public Video getNext() {
+    public static Video getNext() {
         if (mCurrentIndex >= 0 && (mCurrentIndex + 1) < mQueue.size()) {
             return mQueue.get(mCurrentIndex + 1);
         }
@@ -170,7 +155,7 @@ public class Queue {
      *
      * @return The previous video in the playlist.
      */
-    public Video getPrevious() {
+    public static Video getPrevious() {
         if ((mCurrentIndex - 1) >= 0) {
             return mQueue.get(mCurrentIndex - 1);
         }
@@ -178,7 +163,7 @@ public class Queue {
         return null;
     }
 
-    public void setCurrent(Video video) {
+    public static void setCurrent(Video video) {
         if (Video.isEmpty(video)) {
             return;
         }
@@ -193,7 +178,7 @@ public class Queue {
         }
     }
 
-    public Video getCurrent() {
+    public static Video getCurrent() {
         if (mCurrentIndex < mQueue.size() && mCurrentIndex >= 0) {
             return mQueue.get(mCurrentIndex);
         }
@@ -201,19 +186,19 @@ public class Queue {
         return null;
     }
 
-    public List<Video> getAll() {
+    public static List<Video> getAll() {
         return Collections.unmodifiableList(mQueue);
     }
 
-    public List<Video> getChangedItems() {
+    public static List<Video> getChangedItems() {
         return Collections.unmodifiableList(mSyncedItems);
     }
 
-    public boolean hasNext() {
+    public static boolean hasNext() {
         return getNext() != null;
     }
 
-    public List<Video> getAllAfterCurrent() {
+    public static List<Video> getAllAfterCurrent() {
         if (mCurrentIndex == -1) {
             return mQueue;
         }
@@ -226,7 +211,7 @@ public class Queue {
         return null;
     }
 
-    public void removeAllAfterCurrent() {
+    public static void removeAllAfterCurrent() {
         if (mCurrentIndex == -1) {
             return;
         }
@@ -242,7 +227,7 @@ public class Queue {
     /**
      * Trim playlist if one exceeds needed size or current element not last in the list
      */
-    private void trimQueue() {
+    private static void trimQueue() {
         int size = mQueue.size();
         boolean playlistTooBig = size > PLAYLIST_MAX_SIZE;
 
@@ -259,7 +244,7 @@ public class Queue {
     /**
      * Do some cleanup to prevent possible OOM exception
      */
-    private void stripPrevItem() {
+    private static void stripPrevItem() {
         if (mCurrentIndex == -1) {
             return;
         }
@@ -276,7 +261,7 @@ public class Queue {
         }
     }
 
-    private void replace(Video origin, Video newItem) {
+    private static void replace(Video origin, Video newItem) {
         int index = mQueue.indexOf(origin);
 
         if (index != -1) {
@@ -284,14 +269,14 @@ public class Queue {
         }
     }
 
-    public void onNewSession() {
+    public static void onNewSession() {
         mSyncedItems.clear();
     }
 
     /**
      * Since all items are clones (saves memory) we need to sync sometimes.
      */
-    public void sync(Video origin) {
+    public static void sync(Video origin) {
         if (origin == null) {
             return;
         }
@@ -308,4 +293,5 @@ public class Queue {
         mSyncedItems.remove(origin);
         mSyncedItems.add(origin);
     }
+
 }

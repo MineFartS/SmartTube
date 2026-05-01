@@ -110,7 +110,7 @@ public class SuggestionsController extends BasePlayerController {
     @Override
     public void onSuggestionItemClicked(Video item) {
         
-        List<Video> afterCurrent = Queue.instance().getAllAfterCurrent();
+        List<Video> afterCurrent = Queue.getAllAfterCurrent();
 
         if (afterCurrent != null && afterCurrent.contains(item)) {
             item.fromQueue = true;
@@ -270,7 +270,7 @@ public class SuggestionsController extends BasePlayerController {
 
     public Video getNext() {
         Video result = null;
-        Video next = Queue.instance().getNext();
+        Video next = Queue.getNext();
         Video current = getPlayer().getVideo();
 
         if (next != null) {
@@ -289,7 +289,7 @@ public class SuggestionsController extends BasePlayerController {
         Video result = getPreviousFromGroup(getPlayer().getVideo());
 
         if (result == null) {
-            Video previous = Playlist.instance().getPrevious();
+            Video previous = Queue.getPrevious();
 
             if (previous != null) {
                 previous.fromQueue = true;
@@ -323,7 +323,7 @@ public class SuggestionsController extends BasePlayerController {
         }
 
         if (result == null) {
-            Video previous = Queue.instance().getPrevious();
+            Video previous = Queue.getPrevious();
 
             if (previous != null) {
                 previous.fromQueue = true;
@@ -453,7 +453,7 @@ public class SuggestionsController extends BasePlayerController {
     }
 
     private void markAsQueueIfNeeded(Video item) {
-        List<Video> afterCurrent = Playlist.instance().getAllAfterCurrent();
+        List<Video> afterCurrent = Queue.getAllAfterCurrent();
 
         if (afterCurrent != null && afterCurrent.contains(item)) {
             item.fromQueue = true;
