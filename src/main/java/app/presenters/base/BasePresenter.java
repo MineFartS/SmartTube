@@ -115,8 +115,8 @@ public abstract class BasePresenter<T> implements Presenter<T> {
     public void onViewResumed() {
         if (canViewBeSynced()) {
             // NOTE: don't place cleanup in the onViewResumed!!! This could cause errors when view is resumed.
-            if (syncItem(Queue.instance().getChangedItems())) {
-                Queue.instance().onNewSession();
+            if (syncItem(Queue.getChangedItems())) {
+                Queue.onNewSession();
             }
         }
 
@@ -195,7 +195,7 @@ public abstract class BasePresenter<T> implements Presenter<T> {
 
     private void enableSync() {
         if (this instanceof PlaybackPresenter) {
-            Queue.instance().onNewSession();
+            Queue.onNewSession();
         }
     }
 

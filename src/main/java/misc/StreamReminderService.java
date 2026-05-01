@@ -83,11 +83,10 @@ public class StreamReminderService implements TickleListener {
             video.videoId = videoId;
             video.isPending = true;
 
-            Queue playlist = Queue.instance();
-            Video current = playlist.getCurrent();
+            Video current = Queue.getCurrent();
 
             if (current != null && current.isPending && ViewManager.instance(mContext).isPlayerInForeground()) {
-                playlist.add(video);
+                Queue.add(video);
             } else {
                 ViewManager.instance(mContext).movePlayerToForeground();
                 PlaybackPresenter.instance(mContext).openVideo(video);

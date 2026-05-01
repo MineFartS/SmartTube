@@ -29,7 +29,6 @@ public class VideoStateController extends BasePlayerController {
     private static final long STATE_SAVE_INTERVAL_MS = 10_000; // Save state every 10 seconds
 
     private final MediaServiceManager mMediaServiceManager;
-    private final Queue mPlaylist;
 
     private boolean mIsPlayEnabled;
     private boolean mIsPlayBlocked;
@@ -37,7 +36,6 @@ public class VideoStateController extends BasePlayerController {
 
     public VideoStateController() {
         mMediaServiceManager = MediaServiceManager.instance();
-        mPlaylist = Queue.instance();
     }
 
     /**
@@ -397,7 +395,7 @@ public class VideoStateController extends BasePlayerController {
 
         getStateService().save(new State(video, posMs, durMs, getPlayer().getSpeed()));
 
-        mPlaylist.sync(video);
+        Queue.sync(video);
 
         mMediaServiceManager.updateHistory(video, posMs); // 0 == fully watched
         

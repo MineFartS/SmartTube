@@ -346,7 +346,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
     private void initLocalGridMapping() {
         mLocalGridMappings.put(
             MediaGroup.TYPE_PLAYBACK_QUEUE, 
-            () -> Queue.instance().getAll()
+            Queue::getAll
         );
     }
 
