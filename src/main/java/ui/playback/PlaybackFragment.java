@@ -725,25 +725,15 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements Playbac
 
     private CharSequence createSubtitle(Video video) {
 
-        if (getContext() == null) {
-            return "";
-        }
-
-        String DELIM = " " + Video.TERTIARY_TEXT_DELIM + " ";
+        if (getContext() == null) return "";
 
         List<String> parts = new ArrayList();
 
         //=================================================
 
-        String secondTitle = video.secondTitle.toString();
-
-        // Use old title if segments missing (ex: Mixes)
-        if (!secondTitle.contains(DELIM) && (video.metadataSecondTitle != null)) {
-            secondTitle = video.metadataSecondTitle.toString();
-            secondTitle = secondTitle.replace("Published on ", "");
-        }
-
-        parts.add(secondTitle);
+        parts.add(
+            video.getSecondTitleFull().replace("Published on ", "")
+        );
 
         //=================================================
 
@@ -794,11 +784,11 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements Playbac
         String result = "";
 
         for (String part : parts) {
-            result += DELIM;
+            result += " • ";
             result += part;
         }
 
-        return (CharSequence) result.substring(3);
+        return result.substring(3);
     }
 
     private CharSequence createNextTitle(Video video) {
