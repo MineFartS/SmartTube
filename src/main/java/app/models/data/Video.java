@@ -294,9 +294,11 @@ public final class Video {
         return secondTitle;
     }
 
-    public CharSequence getSecondTitleFull() {
-        // Don't sync future translation because of not precise info
-        return metadataSecondTitle != null && !isUpcoming ? metadataSecondTitle : secondTitle;
+    public String getSecondTitleFull() {
+
+        CharSequence st = metadataSecondTitle != null && !isUpcoming ? metadataSecondTitle : secondTitle;
+
+        return st.toString();
     }
 
     public String getPlaylistId() {
