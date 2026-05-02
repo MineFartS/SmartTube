@@ -476,11 +476,12 @@ public class VideoStateController extends BasePlayerController {
         } else {
 
             State state = getStateService().getByVideoId(item.videoId);
-            float speed = getPlayerData().getSpeed(item.channelId);
+            float speed = Math.max(0.25f, Math.min(5.0f, getPlayerData().getSpeed(item.channelId)));
+            float stateSpeed = state != null && getPlayerData().isSpeedPerVideoEnabled() ? Math.max(0.25f, Math.min(5.0f, state.speed)) : 1.0f;
             getPlayer().setSpeed(
-                    state != null && getPlayerData().isSpeedPerVideoEnabled() ? state.speed :
-                            getPlayerData().isAllSpeedEnabled() || item.channelId != null ? speed : 1.0f
+                    stateSpeed
             );
+
 
         }
 

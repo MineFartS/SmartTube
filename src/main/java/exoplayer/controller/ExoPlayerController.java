@@ -301,6 +301,13 @@ public class ExoPlayerController implements Player.EventListener {
 
         Throwable nested = error.getCause() != null ? error.getCause() : error;
 
+        if (error.type == ExoPlaybackException.TYPE_RENDERER && nested instanceof ArithmeticException 
+                && !Helpers.floatEquals(getSpeed(), 1.0f)) {
+            Log.w(TAG, "Resetting speed due to Sonic divide-by-zero error");
+            setSpeed(1.0f);
+            mEventListener.onSpeedChanged(1.0f);
+        }
+
         mEventListener.onEngineError(error.type, error.rendererIndex, nested);
     }
 
@@ -353,8 +360,8 @@ public class ExoPlayerController implements Player.EventListener {
     }
     
     public void setSpeed(float speed) {
-
-        if (mPlayer != null && speed > 0 && !Helpers.floatEquals(speed, getSpeed())) {
+        
+        if (mPlayer != null && speed != getSpeed()) {
 
             mPlayer.setPlaybackParameters(new PlaybackParameters(speed));
 
@@ -362,6 +369,7 @@ public class ExoPlayerController implements Player.EventListener {
             mEventListener.onSpeedChanged(speed);
 
         }
+
     }
     
     public float getSpeed() {
