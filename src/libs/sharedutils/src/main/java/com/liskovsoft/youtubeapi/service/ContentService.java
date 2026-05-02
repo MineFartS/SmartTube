@@ -3,7 +3,6 @@ package com.liskovsoft.sharedutils.service;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.liskovsoft.sharedutils.ContentService;
 import com.liskovsoft.sharedutils.data.MediaGroup;
 import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
@@ -33,23 +32,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-class YouTubeContentService implements ContentService {
-    private static final String TAG = YouTubeContentService.class.getSimpleName();
-    private static YouTubeContentService sInstance;
+public class ContentService {
+    private static final String TAG = ContentService.class.getSimpleName();
+    private static ContentService sInstance;
 
-    private YouTubeContentService() {
+    private ContentService() {
         Log.d(TAG, "Starting...");
     }
 
     public static ContentService instance() {
         if (sInstance == null) {
-            sInstance = new YouTubeContentService();
+            sInstance = new ContentService();
         }
 
         return sInstance;
     }
 
-    @Override
+    
     public List<MediaGroup> getSearch(String searchText) {
         checkSigned();
 
@@ -57,7 +56,7 @@ class YouTubeContentService implements ContentService {
         return YouTubeMediaGroup.from(search, MediaGroup.TYPE_SEARCH);
     }
 
-    @Override
+    
     public List<MediaGroup> getSearch(String searchText, int options) {
         checkSigned();
 
@@ -65,29 +64,29 @@ class YouTubeContentService implements ContentService {
         return YouTubeMediaGroup.from(search, MediaGroup.TYPE_SEARCH);
     }
 
-    @Override
+    
     public Observable<List<MediaGroup>> getSearchObserve(String searchText) {
         return RxHelper.fromCallable(() -> getSearch(searchText));
     }
 
-    @Override
+    
     public Observable<List<MediaGroup>> getSearchObserve(String searchText, int options) {
         return RxHelper.fromCallable(() -> getSearch(searchText, options));
     }
 
-    @Override
+    
     public List<String> getSearchTags(String searchText) {
         checkSigned();
 
         return getSearchService().getSearchTags(searchText);
     }
 
-    @Override
+    
     public Observable<List<String>> getSearchTagsObserve(String searchText) {
         return RxHelper.fromCallable(() -> getSearchTags(searchText));
     }
 
-    @Override
+    
     public MediaGroup getSubscriptions() {
         Log.d(TAG, "Getting subscriptions...");
 
@@ -108,12 +107,12 @@ class YouTubeContentService implements ContentService {
         return subscriptions;
     }
 
-    @Override
+    
     public Observable<MediaGroup> getSubscriptionsObserve() {
         return RxHelper.fromCallable(this::getSubscriptions);
     }
 
-    @Override
+    
     public MediaGroup getRssFeed(String... channelIds) {
         if (channelIds == null) {
             return null;
@@ -124,19 +123,19 @@ class YouTubeContentService implements ContentService {
         return RssService.getFeed(channelIds);
     }
 
-    @Override
+    
     public Observable<MediaGroup> getRssFeedObserve(String... channelIds) {
         return RxHelper.fromCallable(() -> getRssFeed(channelIds));
     }
 
-    @Override
+    
     public MediaGroup getSubscribedChannels() {
         checkSigned();
 
         return getBrowseService2().getSubscribedChannels();
     }
 
-    @Override
+    
     public MediaGroup getSubscribedChannelsByNewContent() {
         checkSigned();
 
@@ -146,41 +145,41 @@ class YouTubeContentService implements ContentService {
         return getBrowseService2().getSubscribedChannelsByNewContent();
     }
 
-    @Override
+    
     public MediaGroup getSubscribedChannelsByName() {
         checkSigned();
 
         return getBrowseService2().getSubscribedChannelsByName();
     }
 
-    @Override
+    
     public MediaGroup getSubscribedChannelsByLastViewed() {
         checkSigned();
 
         return getBrowseService2().getSubscribedChannels();
     }
 
-    @Override
+    
     public Observable<MediaGroup> getSubscribedChannelsObserve() {
         return RxHelper.fromCallable(this::getSubscribedChannels);
     }
 
-    @Override
+    
     public Observable<MediaGroup> getSubscribedChannelsByNewContentObserve() {
         return RxHelper.fromCallable(this::getSubscribedChannelsByNewContent);
     }
 
-    @Override
+    
     public Observable<MediaGroup> getSubscribedChannelsByNameObserve() {
         return RxHelper.fromCallable(this::getSubscribedChannelsByName);
     }
 
-    @Override
+    
     public Observable<MediaGroup> getSubscribedChannelsByLastViewedObserve() {
         return RxHelper.fromCallable(this::getSubscribedChannelsByLastViewed);
     }
 
-    @Override
+    
     public MediaGroup getRecommended() {
         Log.d(TAG, "Getting recommended...");
 
@@ -193,12 +192,12 @@ class YouTubeContentService implements ContentService {
         return groups != null && !groups.isEmpty() ? groups.get(0) : null;
     }
 
-    @Override
+    
     public Observable<MediaGroup> getRecommendedObserve() {
         return RxHelper.fromCallable(this::getRecommended);
     }
 
-    @Override
+    
     public MediaGroup getHistory() {
         Log.d(TAG, "Getting history...");
 
@@ -207,34 +206,34 @@ class YouTubeContentService implements ContentService {
         return getBrowseService2().getHistory();
     }
 
-    @Override
+    
     public Observable<MediaGroup> getHistoryObserve() {
         return RxHelper.fromCallable(this::getHistory);
     }
 
-    @Override
+    
     public MediaGroup getGroup(String reloadPageKey) {
         return getBrowseService2().getGroup(reloadPageKey, MediaGroup.TYPE_UNDEFINED, null);
     }
 
-    @Override
+    
     public MediaGroup getGroup(MediaItem mediaItem) {
         return mediaItem.getReloadPageKey() != null ?
                 getBrowseService2().getGroup(mediaItem.getReloadPageKey(), mediaItem.getType(), mediaItem.getTitle()) :
                 getBrowseService2().getChannelAsGrid(mediaItem.getChannelId());
     }
 
-    @Override
+    
     public Observable<MediaGroup> getGroupObserve(MediaItem mediaItem) {
         return RxHelper.fromCallable(() -> getGroup(mediaItem));
     }
 
-    @Override
+    
     public Observable<MediaGroup> getGroupObserve(String reloadPageKey) {
         return RxHelper.fromCallable(() -> getGroup(reloadPageKey));
     }
 
-    @Override
+    
     public List<MediaGroup> getHome() {
         checkSigned();
 
@@ -263,7 +262,7 @@ class YouTubeContentService implements ContentService {
         return result;
     }
 
-    @Override
+    
     public Observable<List<MediaGroup>> getHomeObserve() {
         return RxHelper.create(emitter -> {
             checkSigned();
@@ -272,7 +271,7 @@ class YouTubeContentService implements ContentService {
         });
     }
 
-    @Override
+    
     public Observable<List<MediaGroup>> getTrendingObserve() {
         return RxHelper.create(emitter -> {
             checkSigned();
@@ -281,7 +280,7 @@ class YouTubeContentService implements ContentService {
         });
     }
 
-    @Override
+    
     public Observable<MediaGroup> getShortsObserve() {
         return RxHelper.create(emitter -> {
             checkSigned();
@@ -297,7 +296,7 @@ class YouTubeContentService implements ContentService {
         });
     }
 
-    @Override
+    
     public Observable<List<MediaGroup>> getKidsHomeObserve() {
         return RxHelper.create(emitter -> {
             checkSigned();
@@ -306,7 +305,7 @@ class YouTubeContentService implements ContentService {
         });
     }
 
-    @Override
+    
     public Observable<List<MediaGroup>> getSportsObserve() {
         return RxHelper.create(emitter -> {
             checkSigned();
@@ -315,7 +314,7 @@ class YouTubeContentService implements ContentService {
         });
     }
 
-    @Override
+    
     public Observable<List<MediaGroup>> getLiveObserve() {
         return RxHelper.create(emitter -> {
             checkSigned();
@@ -324,12 +323,12 @@ class YouTubeContentService implements ContentService {
         });
     }
 
-    @Override
+    
     public Observable<MediaGroup> getMyVideosObserve() {
         return RxHelper.fromCallable(getBrowseService2()::getMyVideos);
     }
 
-    @Override
+    
     public Observable<List<MediaGroup>> getMusicObserve() {
         return RxHelper.create(emitter -> {
             checkSigned();
@@ -341,7 +340,7 @@ class YouTubeContentService implements ContentService {
         });
     }
 
-    @Override
+    
     public Observable<List<MediaGroup>> getNewsObserve() {
         return RxHelper.create(emitter -> {
             checkSigned();
@@ -350,7 +349,7 @@ class YouTubeContentService implements ContentService {
         });
     }
 
-    @Override
+    
     public Observable<List<MediaGroup>> getGamingObserve() {
         return RxHelper.create(emitter -> {
             checkSigned();
@@ -359,12 +358,12 @@ class YouTubeContentService implements ContentService {
         });
     }
 
-    @Override
+    
     public Observable<List<MediaGroup>> getChannelObserve(String channelId) {
         return getChannelObserve(channelId, null, null);
     }
 
-    @Override
+    
     public Observable<List<MediaGroup>> getChannelObserve(MediaItem item) {
         return getChannelObserve(item.getChannelId(), item.getTitle(), item.getParams());
     }
@@ -393,14 +392,14 @@ class YouTubeContentService implements ContentService {
         });
     }
 
-    @Override
+    
     public MediaGroup getChannelSearch(String channelId, String query) {
         checkSigned();
 
         return getBrowseService2().getChannelSearch(channelId, query);
     }
 
-    @Override
+    
     public Observable<MediaGroup> getChannelSearchObserve(String channelId, String query) {
         return RxHelper.fromCallable(() -> getChannelSearch(channelId, query));
     }
@@ -488,7 +487,7 @@ class YouTubeContentService implements ContentService {
         emitter.onNext(group);
     }
 
-    @Override
+    
     public MediaGroup continueGroup(MediaGroup mediaGroup) {
         MediaGroup result = continueGroupChecked(mediaGroup);
 
@@ -572,7 +571,7 @@ class YouTubeContentService implements ContentService {
         }
     }
 
-    @Override
+    
     public Observable<MediaGroup> continueGroupObserve(MediaGroup mediaGroup) {
         return RxHelper.fromCallable(() -> continueGroup(mediaGroup));
     }
@@ -581,7 +580,7 @@ class YouTubeContentService implements ContentService {
         getSignInService().checkAuth();
     }
 
-    @Override
+    
     public Observable<List<MediaGroup>> getPlaylistRowsObserve() {
         return RxHelper.create(emitter -> {
             checkSigned();
@@ -606,7 +605,7 @@ class YouTubeContentService implements ContentService {
         });
     }
 
-    @Override
+    
     public Observable<MediaGroup> getPlaylistsObserve() {
         return RxHelper.fromCallable(this::getPlaylists);
     }
@@ -617,7 +616,7 @@ class YouTubeContentService implements ContentService {
         return getBrowseService2().getMyPlaylists();
     }
 
-    @Override
+    
     public void clearSearchHistory() {
         getActionsService().clearSearchHistory();
         getSearchService().clearSearchHistory();

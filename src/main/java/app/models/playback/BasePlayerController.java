@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.exoplayer2.Format;
 import com.liskovsoft.sharedutils.CommentsService;
-import com.liskovsoft.sharedutils.ContentService;
+import com.liskovsoft.sharedutils.service.ContentService;
 import com.liskovsoft.sharedutils.MediaItemService;
 import com.liskovsoft.sharedutils.NotificationsService;
 import com.liskovsoft.sharedutils.SignInService;

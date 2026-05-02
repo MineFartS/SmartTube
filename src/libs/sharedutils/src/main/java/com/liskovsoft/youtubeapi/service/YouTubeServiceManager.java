@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 
 import com.liskovsoft.sharedutils.ChannelGroupService;
 import com.liskovsoft.sharedutils.CommentsService;
-import com.liskovsoft.sharedutils.ContentService;
+import com.liskovsoft.sharedutils.service.ContentService;
 import com.liskovsoft.sharedutils.LiveChatService;
 import com.liskovsoft.sharedutils.MediaItemService;
 import com.liskovsoft.sharedutils.NotificationsService;
@@ -61,7 +61,7 @@ public class YouTubeServiceManager implements ServiceManager {
 
     @Override
     public ContentService getContentService() {
-        return getYouTubeContentService();
+        return ContentService.instance();
     }
 
     @Override
@@ -122,11 +122,6 @@ public class YouTubeServiceManager implements ServiceManager {
     @NonNull
     private static YouTubeRemoteControlService getYouTubeRemoteControlService() {
         return YouTubeRemoteControlService.instance();
-    }
-
-    @NonNull
-    private static ContentService getYouTubeContentService() {
-        return YouTubeContentService.instance();
     }
 
     @NonNull

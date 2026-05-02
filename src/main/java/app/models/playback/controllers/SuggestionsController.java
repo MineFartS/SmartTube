@@ -5,7 +5,7 @@ import android.util.Pair;
 
 import androidx.core.content.ContextCompat;
 
-import com.liskovsoft.sharedutils.ContentService;
+import com.liskovsoft.sharedutils.service.ContentService;
 import com.liskovsoft.sharedutils.MediaItemService;
 import com.liskovsoft.sharedutils.data.ChapterItem;
 import com.liskovsoft.sharedutils.data.DislikeData;
