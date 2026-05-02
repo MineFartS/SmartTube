@@ -321,10 +321,12 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
             mSpeed = speed.speed;
         }
 
+        mSpeed = Math.max(0.25f, Math.min(5.0f, mSpeed));
         return mSpeed;
     }
 
     public void setSpeed(String channelId, float speed) {
+        speed = Math.max(0.25f, Math.min(5.0f, speed));
         if (mSpeed == speed && channelId == null) {
             return;
         }
@@ -346,9 +348,10 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     }
 
     public void setLastSpeed(float speed) {
-        if (speed > 0 && !Helpers.floatEquals(speed, 1.0f)) {
+        speed = Math.max(0.25f, Math.min(5.0f, speed));
+        if (speed > 0.25f && !Helpers.floatEquals(speed, 1.0f)) {
             mLastSpeed = speed;
-        } else if (mSpeed > 0 && !Helpers.floatEquals(mSpeed, 1.0f)) {
+        } else if (mSpeed > 0.25f && !Helpers.floatEquals(mSpeed, 1.0f)) {
             mLastSpeed = mSpeed;
         }
     }
@@ -533,6 +536,13 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
                 mSpeeds.put(item.channelId, item);
             }
         }
+
+        // Clamp persisted speeds to safe range
+        for (SpeedItem item : mSpeeds.values()) {
+            item.speed = Math.max(0.25f, Math.min(5.0f, item.speed));
+        }
+        mSpeed = Math.max(0.25f, Math.min(5.0f, mSpeed));
+        mLastSpeed = Math.max(0.25f, Math.min(5.0f, mLastSpeed));
 
         if (!mIsAllSpeedEnabled) {
             mSpeed = 1.0f;
