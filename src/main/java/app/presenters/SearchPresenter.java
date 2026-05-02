@@ -2,7 +2,7 @@ package SmartTubeApp.app.presenters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import com.liskovsoft.sharedutils.ContentService;
+import com.liskovsoft.sharedutils.service.ContentService;
 import com.liskovsoft.sharedutils.data.MediaGroup;
 import com.liskovsoft.sharedutils.data.SearchOptions;
 import com.liskovsoft.sharedutils.mylogger.Log;

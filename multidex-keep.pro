@@ -145,7 +145,6 @@
 -keepclassmembers class SmartTubeApp.app.models.search.MediaServiceSearchTagProvider {
     <init>(...);
     boolean mIgnoreEmptyQuery;
-    com.liskovsoft.sharedutils.ContentService mContentService;
 }
 -keepclassmembers class androidx.leanback.widget.GridLayoutManager {
     <init>(...);

@@ -2,7 +2,7 @@ package SmartTubeApp.app.models.search;
 
 import android.text.TextUtils;
 
-import com.liskovsoft.sharedutils.ContentService;
+import com.liskovsoft.sharedutils.service.ContentService;
 import com.liskovsoft.sharedutils.ServiceManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import SmartTubeApp.app.models.search.vineyard.Tag;
