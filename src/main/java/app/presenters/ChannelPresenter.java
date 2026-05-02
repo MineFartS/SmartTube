@@ -20,6 +20,8 @@ import SmartTubeApp.app.views.ChannelView;
 import SmartTubeApp.misc.BrowseProcessorManager;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import SmartTubeApp.utils.LoadingManager;
+import com.liskovsoft.sharedutils.browse.v2.BrowseService2;
+
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
@@ -29,9 +31,13 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ChannelPresenter extends BasePresenter<ChannelView> implements VideoGroupPresenter {
+
     private static final String TAG = ChannelPresenter.class.getSimpleName();
+    
     @SuppressLint("StaticFieldLeak")
     private static ChannelPresenter sInstance;
+    
+    private final BrowseService2 mBrowseService;
     private final BrowseProcessorManager mBrowseProcessor;
     private String mChannelId;
     private final List<List<MediaGroup>> mPendingGroups = new ArrayList<>();
@@ -49,8 +55,13 @@ public class ChannelPresenter extends BasePresenter<ChannelView> implements Vide
     }
 
     public ChannelPresenter(Context context) {
+        
         super(context);
+        
         mBrowseProcessor = new BrowseProcessorManager(getContext(), this::syncItem);
+
+        mBrowseService = getContentService().getBrowseService2();
+
     }
 
     public static ChannelPresenter instance(Context context) {
@@ -326,39 +337,20 @@ public class ChannelPresenter extends BasePresenter<ChannelView> implements Vide
         AppDialogPresenter dialogPresenter = AppDialogPresenter.instance(getContext());
 
         List<OptionItem> options = new ArrayList<>();
-                
-        getContentService().getChannelSortingObserve(getChannelId()).subscribe(groups -> {
 
-            AtomicInteger i = new AtomicInteger(0);
+        AtomicInteger i = new AtomicInteger(0);
 
-            for (MediaGroup group : groups) {
-                
-                options.add(UiOptionItem.from(
-                    group.getTitle(), 
-                    item -> {
+        List<MediaGroup> groups = mBrowseService.getChannelSorting(getChannelId());
 
-                        if (getView() != null) {
-
-                            MediaGroup mediaGroup = getContentService().continueGroup(group);
-
-                            VideoGroup replace = VideoGroup.from(mediaGroup);
-
-                            replace.setId(144);
-                            replace.setPosition(0);
-                            replace.setAction(VideoGroup.ACTION_REPLACE);
-                            getView().update(replace);
-
-                            this.mSortIdx = i.get();
-
-                        }
-
-                    },
-                    mSortIdx == i.getAndIncrement()
-                ));
+        for (MediaGroup group : groups) {
             
-            }
-
-        });
+            options.add(UiOptionItem.from(
+                group.getTitle(), 
+                item -> this.mSortIdx = i.get(),
+                mSortIdx == i.getAndIncrement()
+            ));
+        
+        }
 
         dialogPresenter.appendRadioCategory(
             getContext().getString(R.string.search_sorting), 
