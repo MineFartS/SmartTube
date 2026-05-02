@@ -393,23 +393,6 @@ class YouTubeContentService implements ContentService {
         });
     }
 
-    @Nullable
-    private List<MediaGroup> getChannelSorting(String channelId) {
-        checkSigned();
-
-        return getBrowseService2().getChannelSorting(channelId);
-    }
-
-    @Override
-    public Observable<List<MediaGroup>> getChannelSortingObserve(String channelId) {
-        return RxHelper.fromCallable(() -> getChannelSorting(channelId));
-    }
-
-    @Override
-    public Observable<List<MediaGroup>> getChannelSortingObserve(MediaItem item) {
-        return item != null && item.getChannelId() != null ? getChannelSortingObserve(item.getChannelId()) : null;
-    }
-
     @Override
     public MediaGroup getChannelSearch(String channelId, String query) {
         checkSigned();
@@ -661,7 +644,7 @@ class YouTubeContentService implements ContentService {
     }
 
     @NonNull
-    private static BrowseService2 getBrowseService2() {
+    public static BrowseService2 getBrowseService2() {
         return BrowseService2Wrapper.INSTANCE;
     }
 
