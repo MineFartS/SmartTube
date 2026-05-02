@@ -7,7 +7,7 @@ import android.view.View;
 import androidx.fragment.app.Fragment;
 
 import com.liskovsoft.sharedutils.CommentsService;
-import com.liskovsoft.sharedutils.ContentService;
+import com.liskovsoft.sharedutils.service.ContentService;
 import com.liskovsoft.sharedutils.MediaItemService;
 import com.liskovsoft.sharedutils.NotificationsService;
 import com.liskovsoft.sharedutils.SignInService;

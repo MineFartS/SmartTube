@@ -5,7 +5,7 @@ import android.content.Context;
 
 import SmartTubeApp.R;
 import com.liskovsoft.sharedutils.data.MediaGroup;
-import com.liskovsoft.sharedutils.ContentService;
+import com.liskovsoft.sharedutils.service.ContentService;
 
 public class ClipService {
     private static final int SUBSCRIPTIONS_ID = 1;
