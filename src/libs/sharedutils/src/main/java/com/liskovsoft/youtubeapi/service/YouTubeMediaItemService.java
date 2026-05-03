@@ -30,6 +30,8 @@ import com.liskovsoft.sharedutils.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.sharedutils.service.data.YouTubeSponsorSegment;
 import com.liskovsoft.sharedutils.videoinfo.V2.VideoInfoService;
 import com.liskovsoft.sharedutils.videoinfo.models.VideoInfo;
+import com.liskovsoft.sharedutils.okhttp.ApiCaller;
+
 import io.reactivex.Observable;
 
 import java.util.List;
@@ -77,7 +79,11 @@ public class YouTubeMediaItemService implements MediaItemService {
             return cachedFormatInfo;
         }
 
-        checkSigned();
+        ApiCaller.setBypassEnabled(true);
+
+        getSignInService().checkAuth();
+
+        ApiCaller.setBypassEnabled(false);
 
         VideoInfo videoInfo = getVideoInfoService().getVideoInfo(
             videoId, 
@@ -241,28 +247,28 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     @Override
     public void setLike(MediaItem item) {
-        checkSigned();
+        getSignInService().checkAuth();
 
         getActionsService().setLike(item.getVideoId());
     }
 
     @Override
     public void removeLike(MediaItem item) {
-        checkSigned();
+        getSignInService().checkAuth();
 
         getActionsService().removeLike(item.getVideoId());
     }
 
     @Override
     public void setDislike(MediaItem item) {
-        checkSigned();
+        getSignInService().checkAuth();
 
         getActionsService().setDislike(item.getVideoId());
     }
 
     @Override
     public void removeDislike(MediaItem item) {
-        checkSigned();
+        getSignInService().checkAuth();
 
         getActionsService().removeDislike(item.getVideoId());
     }
@@ -278,7 +284,7 @@ public class YouTubeMediaItemService implements MediaItemService {
     }
 
     private void subscribe(String channelId, String params) {
-        checkSigned();
+        getSignInService().checkAuth();
 
         getActionsService().subscribe(channelId, params);
     }
@@ -290,14 +296,14 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     @Override
     public void unsubscribe(String channelId) {
-        checkSigned();
+        getSignInService().checkAuth();
 
         getActionsService().unsubscribe(channelId);
     }
 
     @Override
     public void markAsNotInterested(String feedbackToken) {
-        checkSigned();
+        getSignInService().checkAuth();
 
         getFeedbackService().markAsNotInterested(feedbackToken);
     }
@@ -309,19 +315,19 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     @Override
     public List<PlaylistInfo> getPlaylistsInfo(String videoId) {
-        checkSigned();
+        getSignInService().checkAuth();
 
         return getPlaylistService().getPlaylistsInfo(videoId);
     }
 
     private void addToPlaylist(String playlistId, String videoId) {
-        checkSigned();
+        getSignInService().checkAuth();
 
         getPlaylistService().addToPlaylist(playlistId, videoId);
     }
 
     private void addToPlaylist(String playlistId, MediaItem item) {
-        checkSigned();
+        getSignInService().checkAuth();
 
         PlaylistGroupServiceImpl.cachedItem = item;
         getPlaylistService().addToPlaylist(playlistId, item.getVideoId());
@@ -329,33 +335,33 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     @Override
     public void removeFromPlaylist(String playlistId, String videoId) {
-        checkSigned();
+        getSignInService().checkAuth();
 
         getPlaylistService().removeFromPlaylist(playlistId, videoId);
     }
 
     @Override
     public void renamePlaylist(String playlistId, String newName) {
-        checkSigned();
+        getSignInService().checkAuth();
 
         getPlaylistService().renamePlaylist(playlistId, newName);
     }
 
     @Override
     public void setPlaylistOrder(String playlistId, int playlistOrder) {
-        checkSigned();
+        getSignInService().checkAuth();
 
         getPlaylistService().setPlaylistOrder(playlistId, playlistOrder);
     }
 
     private void savePlaylist(String playlistId) {
-        checkSigned();
+        getSignInService().checkAuth();
 
         getPlaylistService().savePlaylist(playlistId);
     }
 
     private void savePlaylist(MediaItem item) {
-        checkSigned();
+        getSignInService().checkAuth();
 
         PlaylistGroupServiceImpl.cachedItem = item;
         getPlaylistService().savePlaylist(item.getPlaylistId());
@@ -363,19 +369,19 @@ public class YouTubeMediaItemService implements MediaItemService {
 
     @Override
     public void removePlaylist(String playlistId) {
-        checkSigned();
+        getSignInService().checkAuth();
 
         getPlaylistService().removePlaylist(playlistId);
     }
 
     private void createPlaylist(String playlistName, String videoId) {
-        checkSigned();
+        getSignInService().checkAuth();
 
         getPlaylistService().createPlaylist(playlistName, videoId);
     }
 
     private void createPlaylist(String playlistName, @Nullable MediaItem item) {
-        checkSigned();
+        getSignInService().checkAuth();
 
         PlaylistGroupServiceImpl.cachedItem = item;
         getPlaylistService().createPlaylist(playlistName, item != null ? item.getVideoId() : null);
@@ -487,10 +493,6 @@ public class YouTubeMediaItemService implements MediaItemService {
         if (formatInfo != null) {
             formatInfo.setClickTrackingParams(clickTrackingParams);
         }
-    }
-
-    private void checkSigned() {
-        getSignInService().checkAuth();
     }
 
     @NonNull

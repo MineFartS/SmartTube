@@ -1,9 +1,14 @@
 package com.liskovsoft.sharedutils.okhttp;
 
-import retrofit2.Retrofit;
 import okhttp3.*;
+
 import com.google.gson.Gson;
+
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
+
+import android.os.StrictMode;
+import android.os.StrictMode.ThreadPolicy;
 
 public class ApiCaller {
 
@@ -13,19 +18,16 @@ public class ApiCaller {
 
     private HttpUrl.Builder mUrl;
 
-    private static Callback mCallback = new Callback() {
+    public static void setBypassEnabled(boolean enabled) {
 
-        @Override
-        public void onFailure(Call call, IOException e) {
-            e.printStackTrace();
-        }
+        ThreadPolicy.Builder builder = new ThreadPolicy.Builder();
 
-        @Override
-        public void onResponse(Call call, Response response) {
-            // NOP
-        }
-        
-    };
+        if (enabled)
+            builder = builder.permitNetwork();
+
+        StrictMode.setThreadPolicy(builder.build());
+
+    }
 
     public ApiCaller(String url) {
         mUrl = HttpUrl.parse(url).newBuilder();
@@ -43,14 +45,35 @@ public class ApiCaller {
         mUrl = mUrl.addQueryParameter(name, value);
     }
 
-    public void call() {
-
+    /**
+     * Fire-and-forget async API call (background thread via enqueue + executor-ready).
+     * Non-blocking; no response handling needed.
+     */
+    public CompletableFuture<Response> call() {
+        
         Request request = new Request.Builder()
             .url(mUrl.toString())
             .build();
 
-        mClient.newCall(request).enqueue(mCallback);
+        CompletableFuture<Response> future = new CompletableFuture<>();
+        
+        Callback cb = new Callback() {
 
+            @Override
+            public void onFailure(Call call, IOException e) {
+                future.completeExceptionally(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) {
+                future.complete(response);
+            }
+
+        };
+
+        mClient.newCall(request).enqueue(cb);
+        
+        return future;
     }
 
 }
