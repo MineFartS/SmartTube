@@ -1,10 +1,7 @@
 package com.liskovsoft.sharedutils.okhttp;
 
 import retrofit2.Retrofit;
-import okhttp3.OkHttpClient;
-import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import com.google.gson.Gson;
 import java.io.IOException;
 
@@ -15,6 +12,20 @@ public class ApiCaller {
     private final OkHttpClient mClient = new OkHttpClient();
 
     private HttpUrl.Builder mUrl;
+
+    private static Callback mCallback = new Callback() {
+
+        @Override
+        public void onFailure(Call call, IOException e) {
+            e.printStackTrace();
+        }
+
+        @Override
+        public void onResponse(Call call, Response response) {
+            // NOP
+        }
+        
+    };
 
     public ApiCaller(String url) {
         mUrl = HttpUrl.parse(url).newBuilder();
@@ -32,28 +43,13 @@ public class ApiCaller {
         mUrl = mUrl.addQueryParameter(name, value);
     }
 
-    public String call() {
-        return call(String.class);
-    }
-
-    public <T> T call(Class<T> type) {
+    public void call() {
 
         Request request = new Request.Builder()
             .url(mUrl.toString())
             .build();
 
-        try (Response response = mClient.newCall(request).execute()) {
-
-            String content = response.body().string();
-
-            if (!response.isSuccessful()) throw new IOException(content);
-            
-            return mGson.fromJson(content, type);
-        
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        mClient.newCall(request).enqueue(mCallback);
 
     }
 

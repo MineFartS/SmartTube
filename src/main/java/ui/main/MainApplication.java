@@ -4,6 +4,7 @@ import android.content.Context;
 import androidx.multidex.MultiDexApplication;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import android.os.StrictMode;
 import SmartTubeApp.app.models.data.BrowseSection;
 import SmartTubeApp.app.presenters.BrowsePresenter;
 import SmartTubeApp.app.views.AddDeviceView;
@@ -46,6 +47,9 @@ static {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
+        StrictMode.setThreadPolicy(policy);
 
         ViewManager viewManager = ViewManager.instance(this);
 
