@@ -37,7 +37,7 @@ import SmartTubeApp.prefs.SearchData;
 import SmartTubeApp.utils.AppDialogUtil;
 import SmartTubeApp.utils.Utils;
 import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
-import com.liskovsoft.sharedutils.service.YouTubeSignInService;
+import com.liskovsoft.sharedutils.service.SignInService;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
@@ -348,7 +348,7 @@ public class PlayerUIController extends BasePlayerController {
             return;
         }
 
-        if (!YouTubeSignInService.instance().isSigned()) {
+        if (!SignInService.instance().isSigned()) {
             getPlayer().setButtonState(R.id.action_thumbs_down, PlayerUI.BUTTON_OFF);
             MessageHelpers.showMessage(getContext(), R.string.msg_signed_users_only);
             return;
@@ -369,7 +369,7 @@ public class PlayerUIController extends BasePlayerController {
             return;
         }
 
-        if (!YouTubeSignInService.instance().isSigned()) {
+        if (!SignInService.instance().isSigned()) {
             getPlayer().setButtonState(R.id.action_thumbs_up, PlayerUI.BUTTON_OFF);
             MessageHelpers.showMessage(getContext(), R.string.msg_signed_users_only);
             return;

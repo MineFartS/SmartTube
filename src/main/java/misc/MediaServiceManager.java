@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Pair;
 
 import com.liskovsoft.sharedutils.videoinfo.models.VideoInfo;
-import com.liskovsoft.googleapi.oauth2.manager.OAuth2AccountManager;
+import com.liskovsoft.googleapi.oauth2.manager.AccountManager;
 import com.liskovsoft.sharedutils.videoinfo.V2.VideoInfoService;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.service.data.YouTubeMediaItemFormatInfo;
@@ -64,7 +64,7 @@ public class MediaServiceManager implements OnAccountChange {
     private final PlaylistService mPlaylistService;
     private final YouTubeMediaItemService mYTMediaItemService;
     private final VideoInfoService mVideoInfoService;
-    private final OAuth2AccountManager mAccountManager;
+    private final AccountManager mAccountManager;
     private final AppService mAppService;
 
     private Disposable mMetadataAction;
@@ -126,7 +126,7 @@ public class MediaServiceManager implements OnAccountChange {
         mNotificationsService = service.getNotificationsService();
         mPlaylistService = new PlaylistService();
         mYTMediaItemService = YouTubeMediaItemService.instance();
-        mAccountManager = OAuth2AccountManager.instance();
+        mAccountManager = AccountManager.instance();
         mVideoInfoService = VideoInfoService.instance();
         mAppService = AppService.instance();
 
