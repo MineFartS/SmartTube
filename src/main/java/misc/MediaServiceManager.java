@@ -25,9 +25,11 @@ import com.liskovsoft.sharedutils.data.PlaylistInfo;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
+import SmartTubeApp.app.models.data.Queue;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.models.data.VideoGroup;
 import SmartTubeApp.app.models.playback.service.VideoStateService;
+import SmartTubeApp.app.models.playback.service.VideoStateService.State;
 import SmartTubeApp.app.presenters.ChannelPresenter;
 import SmartTubeApp.app.presenters.ChannelUploadsPresenter;
 import SmartTubeApp.prefs.AccountsData;
@@ -362,6 +364,7 @@ public class MediaServiceManager implements OnAccountChange {
      * Most tiny ui has 8 cards in a row or 24 in grid.
      */
     public boolean shouldContinueTheGroup(Context context, VideoGroup group, boolean isGrid) {
+
         if (group == null || group.getMediaGroup() == null) {
             return false;
         }
@@ -396,13 +399,19 @@ public class MediaServiceManager implements OnAccountChange {
 
     public void updateHistory(Video video, long positionMs) {
 
-        if (video == null) return;
+        Queue.sync(video);
 
-        RxHelper.runAsyncUser(() -> updateHistoryMain(video, positionMs));
-    
-    }
+        VideoStateService stateService = VideoStateService.instance(null);
 
-    private void updateHistoryMain(Video video, long positionMs) {
+        if (stateService != null) {
+            stateService.save(new State(
+                video, 
+                positionMs, 
+                video.getDurationMs()
+            ));
+        } else {
+            Log.e(TAG, "State Service not Instantiated");
+        }
 
         mAccountManager.checkAuth();
 
@@ -535,6 +544,7 @@ public class MediaServiceManager implements OnAccountChange {
      * Channels could be of two types: regular (usr channel) and playlist channel (contains single row, try search: 'Mon mix')
      */
     public static void chooseChannelPresenter(Context context, Video item) {
+
         if (item.hasVideo() || item.hasReloadPageKey()) { // an channel item from Channels section
             ChannelPresenter.instance(context).openChannel(item);
             return;

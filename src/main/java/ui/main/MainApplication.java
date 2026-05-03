@@ -1,5 +1,6 @@
 package SmartTubeApp.ui.main;
 
+import android.content.Context;
 import androidx.multidex.MultiDexApplication;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
@@ -27,7 +28,8 @@ import SmartTubeApp.ui.signin.SignInActivity;
 import java.lang.Thread.UncaughtExceptionHandler;
 
 public class MainApplication extends MultiDexApplication { // fix: Didn't find class "com.google.firebase.provider.FirebaseInitProvider"
-    static {
+    
+static {
         // fix youtube bandwidth throttling (best - false)???
         // false is better for streams (less buffering)
         System.setProperty("http.keepAlive", "false");
@@ -39,13 +41,11 @@ public class MainApplication extends MultiDexApplication { // fix: Didn't find c
         //System.setProperty("java.net.preferIPv4Stack" , "true");
     }
 
+    public static Context context;
+
     @Override
     public void onCreate() {
         super.onCreate();
-        setupViewManager();
-    }
-
-    private void setupViewManager() {
 
         ViewManager viewManager = ViewManager.instance(this);
 
