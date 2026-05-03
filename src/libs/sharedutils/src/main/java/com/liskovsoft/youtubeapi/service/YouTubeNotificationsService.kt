@@ -41,9 +41,9 @@ internal object YouTubeNotificationsService: NotificationsService {
     }
 
     private fun checkSigned() {
-        getSignInService().checkAuth()
+        getYouTubeSignInService().checkAuth()
     }
 
-    private fun getSignInService(): SignInService = SignInService.instance()
+    private fun getYouTubeSignInService(): YouTubeSignInService = YouTubeSignInService.instance()
     private fun getNotificationServiceInt(): NotificationsServiceInt = NotificationsServiceIntWrapper
 }

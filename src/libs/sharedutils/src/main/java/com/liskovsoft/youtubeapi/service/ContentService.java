@@ -623,8 +623,8 @@ public class ContentService {
     }
 
     @NonNull
-    private static SignInService getSignInService() {
-        return SignInService.instance();
+    private static YouTubeSignInService getSignInService() {
+        return YouTubeSignInService.instance();
     }
 
     @NonNull

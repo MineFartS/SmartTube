@@ -1,11 +1,11 @@
 package com.liskovsoft.sharedutils.service.internal
 
-import com.liskovsoft.sharedutils.service.SignInService.OnAccountChange
+import com.liskovsoft.sharedutils.SignInService.OnAccountChange
 import com.liskovsoft.sharedutils.oauth.Account
 import com.liskovsoft.sharedutils.misc.WeakHashSet
 import com.liskovsoft.sharedutils.prefs.SharedPreferencesBase
 import com.liskovsoft.sharedutils.app.AppService
-import com.liskovsoft.sharedutils.service.SignInService
+import com.liskovsoft.sharedutils.service.YouTubeSignInService
 
 private const val PREF_NAME = "yt_service_prefs"
 
@@ -19,8 +19,8 @@ internal object MediaServicePrefs: SharedPreferencesBase(AppService.instance().c
     }
 
     init {
-        val signInService = SignInService.instance()
-        setProfileName(signInService.getSelectedAccount())
+        val signInService = YouTubeSignInService.instance()
+        setProfileName(signInService.selectedAccount)
         signInService.addOnAccountChange(this)
     }
 

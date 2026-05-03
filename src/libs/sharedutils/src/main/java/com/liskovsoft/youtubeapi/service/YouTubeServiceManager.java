@@ -41,7 +41,7 @@ public class YouTubeServiceManager implements ServiceManager {
 
     @Override
     public SignInService getSignInService() {
-        return getSignInService();
+        return getYouTubeSignInService();
     }
 
     @Override
@@ -82,7 +82,7 @@ public class YouTubeServiceManager implements ServiceManager {
     @Override
     public void invalidateCache() {
         LocaleManager.unhold();
-        getSignInService().invalidateCache(); // sections infinite loading fix (request timed out fix)
+        getYouTubeSignInService().invalidateCache(); // sections infinite loading fix (request timed out fix)
         getAppService().invalidateCache();
         //AppService.instance().invalidateVisitorData();
         getYouTubeMediaItemService().invalidateCache();
@@ -115,8 +115,8 @@ public class YouTubeServiceManager implements ServiceManager {
     }
 
     @NonNull
-    private static SignInService getSignInService() {
-        return SignInService.instance();
+    private static YouTubeSignInService getYouTubeSignInService() {
+        return YouTubeSignInService.instance();
     }
 
     @NonNull

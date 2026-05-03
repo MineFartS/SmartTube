@@ -3,26 +3,23 @@ package SmartTubeApp.app.presenters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.liskovsoft.sharedutils.service.SignInService;
+import com.liskovsoft.googleapi.oauth2.impl.GoogleSignInService;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 
 import io.reactivex.disposables.Disposable;
 
 public class GoogleSignInPresenter extends SignInPresenter {
-
     private static final String TAG = GoogleSignInPresenter.class.getSimpleName();
-    
     @SuppressLint("StaticFieldLeak")
     private static GoogleSignInPresenter sInstance;
-    
-    private final SignInService mSignInService;
+    private final GoogleSignInService mSignInService;
     private Disposable mSignInAction;
     private Runnable mCallback;
 
     private GoogleSignInPresenter(Context context) {
         super(context);
-        mSignInService = SignInService.instance();
+        mSignInService = GoogleSignInService.instance();
     }
 
     public static GoogleSignInPresenter instance(Context context) {

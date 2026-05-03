@@ -10,25 +10,20 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
 
-import java.util.Map;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class AccountManager {
+public class OAuth2AccountManager extends OAuth2AccountManagerBase {
     
-    private static final String TAG = AccountManager.class.getSimpleName();
-
-    private static final long TOKEN_REFRESH_PERIOD_MS = 60 * 60 * 1_000; // NOTE: auth token max lifetime is 60 min
+    private static final String TAG = OAuth2AccountManager.class.getSimpleName();
     
-    private static AccountManager sInstance;
+    private static OAuth2AccountManager sInstance;
     
     private final OAuth2Service mOAuth2Service;
+
     private UserCode mUserCodeResult;
     private Runnable mOnChange;
-    private String mCachedAuthorizationHeader;
-    private long mCacheUpdateTime;
 
     /**
      * Fix ConcurrentModificationException when using {@link #getSelectedAccount()}
@@ -61,7 +56,7 @@ public class AccountManager {
         }
     };
 
-    private AccountManager() {
+    private OAuth2AccountManager() {
         mOAuth2Service = OAuth2Service.instance();
 
         GlobalPreferences.setOnInit(() -> {
@@ -75,9 +70,10 @@ public class AccountManager {
         });
     }
 
-    public static AccountManager instance() {
-        if (sInstance == null)
-            sInstance = new AccountManager();
+    public static OAuth2AccountManager instance() {
+        if (sInstance == null) {
+            sInstance = new OAuth2AccountManager();
+        }
 
         return sInstance;
     }
@@ -274,76 +270,4 @@ public class AccountManager {
 
         return token;
     }
-
-    public void checkAuth() {
-
-        if (mCachedAuthorizationHeader != null 
-            && Helpers.equals(mCachedAuthorizationHeader, RetrofitOkHttpHelper.getAuthHeaders().get("Authorization"))
-            && System.currentTimeMillis() - mCacheUpdateTime < TOKEN_REFRESH_PERIOD_MS
-        ) return;
-
-        Account account = getSelectedAccount();
-
-        String refreshToken = account != null ? ((YouTubeAccount) account).getRefreshToken() : null;
-        
-        AccessToken accessToken = null;
-        if (GlobalPreferences.sInstance != null && refreshToken != null) {
-            accessToken = getAuthService().updateAccessToken(refreshToken);
-        }
-
-        if (accessToken != null) {
-            mCachedAuthorizationHeader = accessToken.getTokenType() + " " + accessToken.getAccessToken();
-        } else {
-            mCachedAuthorizationHeader = null;
-            Log.e(TAG, "Access token is null!");
-        }
-
-        Map<String, String> headers = RetrofitOkHttpHelper.getAuthHeaders();
-        headers.clear();
-
-        if (mCachedAuthorizationHeader != null && account != null) {
-
-            headers.put("Authorization", mCachedAuthorizationHeader);
-            
-            String pageIdToken = ((YouTubeAccount) account).getPageIdToken();
-            
-            if (pageIdToken != null) {
-                // Apply branded account rights (restricted videos). Branded refresh token with current account page id.
-                headers.put("X-Goog-Pageid", pageIdToken);
-            }
-
-        }
-
-        mAccountManager.syncStorage();
-
-        mCacheUpdateTime = System.currentTimeMillis();
-
-    }
-
-    /**
-     * For testing purposes
-     */
-    public void setAuthorizationHeader(String authorizationHeader) {
-
-        mCachedAuthorizationHeader = authorizationHeader;
-        mCacheUpdateTime = System.currentTimeMillis();
-
-        Map<String, String> headers = RetrofitOkHttpHelper.getAuthHeaders();
-        headers.clear();
-
-        if (mCachedAuthorizationHeader != null && getSelectedAccount() != null) {
-            headers.put("Authorization", mCachedAuthorizationHeader);
-            String pageIdToken = ((YouTubeAccount) getSelectedAccount()).getPageIdToken();
-            if (pageIdToken != null) {
-                // Apply branded account rights (restricted videos). Branded refresh token with current account page id.
-                headers.put("X-Goog-Pageid", pageIdToken);
-            }
-        }
-
-    }
-
-    public void invalidateCache() {
-        mCachedAuthorizationHeader = null;
-    }
-
 }
