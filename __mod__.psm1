@@ -44,14 +44,15 @@ function Get-PID {
 }
 
 function Invoke-Gradle {
-    param (
-        [String] $Script
+    param(
+        [Parameter(ValueFromRemainingArguments)]
+        $cmdargs
     )
 
     & $JAVA `
         '-classpath' ".\.gradle\wrapper\gradle-wrapper.jar" `
         'org.gradle.wrapper.GradleWrapperMain' `
-        $Script
+        @cmdargs
 
 }
 
