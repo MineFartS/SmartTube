@@ -216,9 +216,22 @@ public class VideoStateController extends BasePlayerController {
     public void onTrackSelected(FormatItem track) {
     }
 
-    @Override
+@Override
     public void onPlayEnd() {
-        saveState();
+        
+        if (getPlayer() == null) return;
+
+        long durMs = getPlayer().getDurationMs();
+
+        if (durMs > 0) {
+
+            mMediaServiceManager.updateHistory(
+                getVideo(), 
+                durMs
+            );
+
+        }
+        
     }
 
     @Override
@@ -245,7 +258,7 @@ public class VideoStateController extends BasePlayerController {
     @Override
     public void onButtonClicked(int buttonId, int buttonState) {
         if (buttonId == R.id.action_video_speed) {
-            onSpeedClicked(buttonState == PlayerUI.BUTTON_ON);
+            onSpeedLongClicked(buttonState == PlayerUI.BUTTON_ON);
         }
     }
 
@@ -256,30 +269,6 @@ public class VideoStateController extends BasePlayerController {
         }
     }
 
-    private void onSpeedClicked(boolean enabled) {
-        if (getPlayer() == null || getVideo() == null) {
-            return;
-        }
-
-        fitVideoIntoDialog();
-
-        float lastSpeed = getPlayerData().getSpeed(getVideo().channelId);
-        if (Helpers.floatEquals(lastSpeed, 1.0f)) {
-            lastSpeed = getPlayerData().getLastSpeed();
-        }
-        State state = getStateService().getByVideoId(getVideo() != null ? getVideo().videoId : null);
-        if (state != null && getPlayerData().isSpeedPerVideoEnabled()) {
-            lastSpeed = !Helpers.floatEquals(1.0f, state.speed) ? state.speed : lastSpeed;
-            getStateService().save(new State(state.video, state.positionMs, state.durationMs, enabled ? 1.0f : lastSpeed));
-        }
-
-        if (Helpers.floatEquals(lastSpeed, 1.0f)) {
-            onSpeedLongClicked(enabled);
-        } else {
-            getPlayer().setSpeed(enabled ? 1.0f : lastSpeed);
-        }
-    }
-
     private void onSpeedLongClicked(boolean enabled) {
         fitVideoIntoDialog();
 
@@ -287,17 +276,10 @@ public class VideoStateController extends BasePlayerController {
 
         settingsPresenter.appendCategory(AppDialogUtil.createSpeedListCategory(getContext(), getPlayer()));
 
-        settingsPresenter.showDialog(getContext().getString(R.string.video_speed), () -> {
-            State state = getStateService().getByVideoId(getVideo() != null ? getVideo().videoId : null);
-            if (state != null && getPlayerData().isSpeedPerVideoEnabled()) {
-                getStateService().save(new State(state.video, state.positionMs, state.durationMs, getPlayerData().getSpeed(getVideo().channelId)));
-            }
-        });
     }
 
     @Override
-    public void onFinish() {
-    }
+    public void onFinish() {}
 
     private void clearStateOfNextVideo() {
         if (getVideo() != null && getVideo().nextMediaItem != null) {
@@ -338,20 +320,13 @@ public class VideoStateController extends BasePlayerController {
     }
 
     private void resetPosition(Video video) {
-        if (video == null) {
-            return;
-        }
+        
+        if (video == null) return;
 
         video.markNotViewed();
-        State state = getStateService().getByVideoId(video.videoId);
 
-        if (state != null) {
-            if (getPlayerData().isSpeedPerVideoEnabled()) {
-                getStateService().save(new State(video, 0, state.durationMs, state.speed));
-            } else {
-                getStateService().removeByVideoId(video.videoId);
-            }
-        }
+        mMediaServiceManager.updateHistory(video, 0);
+
     }
 
     private void restoreVideoFormat() {
@@ -382,22 +357,12 @@ public class VideoStateController extends BasePlayerController {
 
         Video video = getVideo();
 
-        if (video == null || getPlayer() == null || !getPlayer().containsMedia()) {
-            return;
-        }
-        
-        long durMs = getPlayer().getDurationMs();
-        long posMs = getPlayer().getPositionMs();
-        
-        if (durMs-posMs <= 1_000) {
-            posMs = durMs;
-        }
+        if (video == null || getPlayer() == null || !getPlayer().containsMedia()) return;
 
-        getStateService().save(new State(video, posMs, durMs, getPlayer().getSpeed()));
-
-        Queue.sync(video);
-
-        mMediaServiceManager.updateHistory(video, posMs); // 0 == fully watched
+        mMediaServiceManager.updateHistory(
+            video, 
+            getPlayer().getPositionMs()
+        );
         
     }
 
@@ -419,15 +384,6 @@ public class VideoStateController extends BasePlayerController {
 
         State state = getStateService().getByVideoId(item.videoId);
 
-        boolean stateIsOutdated = isStateOutdated(state, item);
-        if (stateIsOutdated) { // check that the user logged in
-            // Web state is buggy on short videos (e.g. video clips)
-            boolean isLongVideo = getPlayer().getDurationMs() > MUSIC_VIDEO_MAX_DURATION_MS;
-            if (isLongVideo) {
-                state = new State(item, item.getPositionMs());
-            }
-        }
-
         // Set actual position for live videos with uncommon length
         if (item.isLive && (state == null || state.durationMs - state.positionMs < Math.max(RESTORE_LIVE_BUFFER_MS, getLiveThreshold()))) {
             // Add buffer. Should I take into account segment offset???
@@ -442,6 +398,7 @@ public class VideoStateController extends BasePlayerController {
         if (!mIsPlayBlocked) {
             getPlayer().setPlayWhenReady(getPlayEnabled());
         }
+        
     }
 
     /**

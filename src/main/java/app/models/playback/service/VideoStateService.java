@@ -1,5 +1,6 @@
 package SmartTubeApp.app.models.playback.service;
 
+import android.util.Log;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import androidx.annotation.NonNull;
@@ -12,8 +13,6 @@ import SmartTubeApp.prefs.AppPrefs.ProfileChangeListener;
 import SmartTubeApp.utils.Utils;
 
 import java.util.List;
-
-import android.util.Log;
 
 public class VideoStateService implements ProfileChangeListener {
     
@@ -167,7 +166,7 @@ public class VideoStateService implements ProfileChangeListener {
                 video.videoId = videoId;
             }
 
-            video.percentWatched = (positionMs * 100f) / lengthMs;
+video.percentWatched = Math.min(100f, (positionMs * 100f) / lengthMs);
 
             return new State(video, positionMs, lengthMs, speed);
         }
