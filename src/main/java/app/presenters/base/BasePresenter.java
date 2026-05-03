@@ -6,6 +6,7 @@ import android.view.View;
 
 import androidx.fragment.app.Fragment;
 
+import SmartTubeApp.app.models.playback.service.VideoStateService;
 import com.liskovsoft.sharedutils.CommentsService;
 import com.liskovsoft.sharedutils.service.ContentService;
 import com.liskovsoft.sharedutils.MediaItemService;
@@ -60,9 +61,11 @@ public abstract class BasePresenter<T> implements Presenter<T> {
 
     @Override
     public void setContext(Context context) {
-        if (context == null) {
-            return;
-        }
+        
+        if (context == null) return;
+
+        // Update the VideoStateService context
+        VideoStateService.instance(context);
 
         // Localization fix: prefer Activity context
         if (context instanceof Activity && Utils.checkActivity((Activity) context)) {
