@@ -36,43 +36,9 @@ import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
 
 public abstract class BasePlayerController implements PlayerEventListener {
+    
     private PlaybackPresenter mMainController;
     private Context mContext;
-    
-    private final Runnable mFitVideoStart = () -> {
-        
-        AppDialogPresenter settingsPresenter = getAppDialogPresenter();
-        
-        if (getPlayer() == null || settingsPresenter.isOverlay()) {
-            return;
-        }
-        
-        FormatItem videoFormat = getPlayer().getVideoFormat();
-        
-        Format format = videoFormat != null && videoFormat.getTrack() != null ? videoFormat.getTrack().format : null;
-        
-        if (format == null) {
-            return;
-        }
-        
-        getPlayer().showControls(false);
-        
-        // Dialog takes up 37% of the screen space
-        float dialogWidth = 37 * getMainUIData().getUIScale();
-        float ratio = format.width / (float) format.height;
-        float targetRatio = 16/9f;
-        float multiplier = targetRatio / ratio;
-        
-        getPlayer().setVideoGravity(
-            Gravity.START | Gravity.CENTER_VERTICAL
-        );
-
-    };
-    private final Runnable mFitVideoFinish = () -> {
-        if (getPlayer() != null) {
-            getPlayer().setVideoGravity(Gravity.CENTER);
-        };
-    };
 
     public void setMainController(PlaybackPresenter mainController) {
         mMainController = mainController;
@@ -362,14 +328,51 @@ public abstract class BasePlayerController implements PlayerEventListener {
     }
 
     protected void fitVideoIntoDialog() {
-        if (getPlayer() == null) {
-            return;
-        }
+
+        if (getPlayer() == null) return;
 
         AppDialogPresenter settingsPresenter = getAppDialogPresenter();
 
-        settingsPresenter.setOnStart(mFitVideoStart);
+        settingsPresenter.setOnStart(() -> {
+        
+            if (settingsPresenter.isOverlay()) return;
 
-        settingsPresenter.setOnFinish(mFitVideoFinish);
+            getPlayer().showControls(false);
+            
+            FormatItem videoFormat = getPlayer().getVideoFormat();
+
+            if (videoFormat == null || videoFormat.getTrack() == null) return;
+            
+            Format format = videoFormat.getTrack().format;
+
+            // Dialog takes up 37% of the screen space
+            float dialogWidth = 37 * getMainUIData().getUIScale();
+            float initialZoom = 100;
+            float totalZoom = initialZoom - dialogWidth;
+            float ratio = format.width / (float) format.height;
+            float targetRatio = 16/9f;
+            float multiplier = targetRatio / ratio;
+            
+            // skip cinema ratio
+            if (multiplier > 1) totalZoom *= multiplier;
+            
+            // shorts overzoom fix
+            if (totalZoom > 130) return;
+            
+            //getPlayer().setZoomPercents(Math.round(totalZoom));
+
+            getPlayer().setVideoGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+
+        });
+
+        settingsPresenter.setOnFinish(() -> {
+
+            //getPlayer().setZoomPercents(100);
+
+            getPlayer().setVideoGravity(Gravity.CENTER);
+
+        });
+
     }
+
 }

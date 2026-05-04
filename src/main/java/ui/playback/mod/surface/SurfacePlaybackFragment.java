@@ -15,6 +15,7 @@ import SmartTubeApp.app.models.playback.manager.PlayerEngine;
 import SmartTubeApp.prefs.PlayerData;
 import SmartTubeApp.prefs.PlayerTweaksData;
 import SmartTubeApp.util.ViewUtil;
+import SmartTubeApp.R;
 import android.util.Log;
 
 /**
@@ -22,6 +23,7 @@ import android.util.Log;
  * and rendering video.
  */
 public class SurfacePlaybackFragment extends PlaybackSupportFragment {
+
     private SurfaceWrapper mVideoSurfaceWrapper;
     private AspectRatioFrameLayout mVideoSurfaceRoot;
     private int mBackgroundResId;
@@ -34,26 +36,23 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
         ViewGroup container, 
         Bundle savedInstanceState
     ) {
-    
+
         ViewGroup root = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
-        
-        mVideoSurfaceRoot = root.findViewById(SmartTubeApp.R.id.surface_root);
-        if (mVideoSurfaceRoot == null) {
-            Log.e(TAG, "surface_root not found in layout");
-            return root;
-        }
-        
-        if (mVideoSurfaceWrapper == null) {
-            mVideoSurfaceWrapper = new SurfaceViewWrapper(getContext(), root);
-        }
+
+        if (root == null)
+            throw new IllegalStateException("Can't create root of SurfacePlaybackFragment");
+
+        mVideoSurfaceWrapper = new SurfaceViewWrapper(getContext(), root);
+
+        mVideoSurfaceRoot = root.findViewById(R.id.surface_root);
         
         mVideoSurfaceRoot.addView(mVideoSurfaceWrapper.getSurfaceView(), 0);
-        mVideoSurfaceRoot.setAspectRatioListener((targetAspectRatio, naturalAspectRatio, aspectRatioMismatch) -> scaleIfNeeded());
+        
+        mVideoSurfaceRoot.setAspectRatioListener(this::scaleIfNeeded);
         
         setBackgroundType(PlaybackSupportFragment.BG_LIGHT);
         
         return root;
-    
     }
 
     /**
@@ -78,46 +77,7 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
         super.onDestroyView();
     }
 
-    protected void setRotation(int angle) {
-        if (Helpers.floatEquals(mVideoSurfaceRoot.getRotation(), angle) || mVideoSurfaceWrapper == null) {
-            return;
-        }
-
-        if (mVideoSurfaceWrapper instanceof TextureViewWrapper) {
-            mVideoSurfaceRoot.setRotation(angle);
-        } else {
-            mVideoSurfaceRoot.removeView(mVideoSurfaceWrapper.getSurfaceView());
-            mVideoSurfaceWrapper = new TextureViewWrapper(getContext(), (ViewGroup) getView());
-            mVideoSurfaceRoot.addView(mVideoSurfaceWrapper.getSurfaceView(), 0);
-            mVideoSurfaceRoot.setRotation(angle);
-
-            ((PlayerEngine) this).restartEngine();
-        }
-    }
-
-    protected void setFlipEnabled(boolean enabled) {
-        float scaleX = enabled ? -1f : 1f;
-
-        if (Helpers.floatEquals(mVideoSurfaceRoot.getScaleX(), scaleX) || mVideoSurfaceWrapper == null) {
-            return;
-        }
-
-        if (mVideoSurfaceWrapper instanceof TextureViewWrapper) {
-            mVideoSurfaceRoot.setScaleX(scaleX);
-        } else {
-            mVideoSurfaceRoot.removeView(mVideoSurfaceWrapper.getSurfaceView());
-            mVideoSurfaceWrapper = new TextureViewWrapper(getContext(), (ViewGroup) getView());
-            mVideoSurfaceRoot.addView(mVideoSurfaceWrapper.getSurfaceView(), 0);
-            mVideoSurfaceRoot.setScaleX(scaleX);
-
-            ((PlayerEngine) this).restartEngine();
-        }
-    }
-
-    private void scaleIfNeeded() {
-        if (!(mVideoSurfaceWrapper instanceof TextureViewWrapper)) {
-            return;
-        }
+    private void scaleIfNeeded(Object... ignored) {
 
         if (mVideoSurfaceRoot.getWidth() == 0 || mVideoSurfaceRoot.getHeight() == 0) {
             return;
