@@ -30,7 +30,6 @@ import com.liskovsoft.sharedutils.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.sharedutils.service.data.YouTubeSponsorSegment;
 import com.liskovsoft.sharedutils.videoinfo.V2.VideoInfoService;
 import com.liskovsoft.sharedutils.videoinfo.models.VideoInfo;
-import com.liskovsoft.sharedutils.okhttp.ApiCaller;
 
 import io.reactivex.Observable;
 
@@ -75,15 +74,10 @@ public class YouTubeMediaItemService implements MediaItemService {
 
         YouTubeMediaItemFormatInfo cachedFormatInfo = getCachedFormatInfo(videoId);
 
-        if (cachedFormatInfo != null) {
+        if (cachedFormatInfo != null)
             return cachedFormatInfo;
-        }
-
-        ApiCaller.setBypassEnabled(true);
 
         getSignInService().checkAuth();
-
-        ApiCaller.setBypassEnabled(false);
 
         VideoInfo videoInfo = getVideoInfoService().getVideoInfo(
             videoId, 
