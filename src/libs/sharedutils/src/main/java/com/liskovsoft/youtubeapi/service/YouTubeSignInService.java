@@ -2,6 +2,7 @@ package com.liskovsoft.sharedutils.service;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.liskovsoft.sharedutils.SignInService;
 import com.liskovsoft.sharedutils.oauth.Account;
 import com.liskovsoft.sharedutils.helpers.Helpers;
@@ -12,14 +13,19 @@ import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.googlecommon.service.oauth.YouTubeAccount;
 import com.liskovsoft.sharedutils.service.internal.YouTubeAccountManager;
+import com.liskovsoft.sharedutils.okhttp.ApiCaller;
+
 import io.reactivex.Observable;
 
 import java.util.List;
 import java.util.Map;
 
 public class YouTubeSignInService implements SignInService {
+
     private static final String TAG = YouTubeSignInService.class.getSimpleName();
+    
     private static final long TOKEN_REFRESH_PERIOD_MS = 60 * 60 * 1_000; // NOTE: auth token max lifetime is 60 min
+    
     private static YouTubeSignInService sInstance;
     private final YouTubeAccountManager mAccountManager;
     private String mCachedAuthorizationHeader;
@@ -53,7 +59,13 @@ public class YouTubeSignInService implements SignInService {
     }
 
     public void checkAuth() {
+
+        ApiCaller.setBypassEnabled(true);
+        
         updateAuthHeadersIfNeeded();
+
+        ApiCaller.setBypassEnabled(false);
+
     }
 
     private synchronized void updateAuthHeadersIfNeeded() {
