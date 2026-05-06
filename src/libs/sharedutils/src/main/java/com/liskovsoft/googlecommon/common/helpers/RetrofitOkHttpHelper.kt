@@ -19,9 +19,6 @@ internal object RetrofitOkHttpHelper {
     val client: OkHttpClient by lazy { createClient() }
 
     @JvmStatic
-    var disableCompression: Boolean = false
-
-    @JvmStatic
     fun addAuthSkip(request: Request) {
         if (!authSkipList.contains(request))
             authSkipList.add(request)
@@ -60,13 +57,9 @@ internal object RetrofitOkHttpHelper {
     private val tParamSuffixes = listOf("/browse", "/next", "/reel", "/playlist")
 
     private fun createClient(): OkHttpClient {
+        
         val builder = OkHttpManager.instance().client.newBuilder()
-        addCommonHeaders(builder)
-        return builder.build()
-    }
-
-    private fun addCommonHeaders(builder: OkHttpClient.Builder) {
-
+        
         builder.addInterceptor {chain ->
 
             val request = chain.request()
@@ -132,6 +125,8 @@ internal object RetrofitOkHttpHelper {
 
             chain.proceed(requestBuilder.build())
         }
+
+        return builder.build()
     }
 
     private fun applyHeaders(
@@ -139,12 +134,7 @@ internal object RetrofitOkHttpHelper {
         oldHeaders: Headers, 
         builder: Request.Builder
     ) {
-
         for (header in newHeaders) {
-            if (disableCompression && header.key == "Accept-Encoding") {
-                continue
-            }
-
             // Don't override existing headers
             oldHeaders[header.key] ?: header.value?.let { builder.header(header.key, it) } // NOTE: don't remove null check
         }
