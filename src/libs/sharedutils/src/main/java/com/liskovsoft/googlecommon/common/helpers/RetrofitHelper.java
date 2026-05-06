@@ -3,11 +3,13 @@ package com.liskovsoft.googlecommon.common.helpers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ParseContext;
 import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.googlecommon.common.converters.gson.WithGson;
@@ -34,13 +36,16 @@ import java.util.List;
 
 import okhttp3.Headers;
 import okhttp3.ResponseBody;
+
 import retrofit2.Call;
 import retrofit2.Converter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class RetrofitHelper {
+
     private static final String TAG = RetrofitHelper.class.getSimpleName();
+    
     // Ignored when specified url is absolute
     private static final String DEFAULT_BASE_URL = "https://www.youtube.com";
 
@@ -67,14 +72,6 @@ public class RetrofitHelper {
         return buildRetrofit(RegExpConverterFactory.create()).create(clazz);
     }
 
-    //public static <T> T get(Call<T> wrapper) {
-    //    Response<T> response = getResponse(wrapper);
-    //
-    //    //handleResponseErrors(response);
-    //
-    //    return response != null ? response.body() : null;
-    //}
-
     public static <T> T get(Call<T> wrapper) {
         return get(wrapper, true);
     }
@@ -98,10 +95,32 @@ public class RetrofitHelper {
 
         Response<T> response = getResponse(wrapper);
 
-        if (withErrors) {
-            // NOTE: Be careful. Best suited for transaction like methods (e.g. authentication).
-            // Don't use it with BrowseService (invalid response) and others.
-            handleResponseErrors(response);
+        if (withErrors 
+            && response != null 
+            && response.body() == null
+            && (response.code() == 400 || response.code() == 403 || response.code() == 428)
+        ) {
+
+            Gson gson = new GsonBuilder().create();
+
+            try (ResponseBody body = response.errorBody()) {
+                String errorMsg;
+                String errorData = body != null ? body.string() : null;
+
+                try {
+                    ErrorResponse error = errorData != null ? gson.fromJson(errorData, ErrorResponse.class) : null;
+                    errorMsg = error != null && error.getError() != null ? ErrorResponse.class.getSimpleName() + ": " + error.getError().getMessage() : null;
+                } catch (JsonSyntaxException e) {
+                    AuthErrorResponse authError = gson.fromJson(errorData, AuthErrorResponse.class);
+                    errorMsg = "AuthError: " + authError.getError();
+                }
+
+                errorMsg = errorMsg != null ? errorMsg : String.format("Unknown %s error", response.code());
+
+                Log.e(TAG, errorMsg);
+                throw new IllegalStateException(errorMsg);
+            } catch (IOException e) {}
+            
         }
 
         return response != null ? response.body() : null;
@@ -142,20 +161,15 @@ public class RetrofitHelper {
         return new JsonPathSkipTypeAdapter<>(parser, clazz);
     }
 
-    public static Retrofit buildRetrofit(Converter.Factory factory) {
-        Retrofit.Builder builder = createBuilder();
+    private static Retrofit buildRetrofit(Converter.Factory factory) {
+
+        Retrofit.Builder builder = new Retrofit.Builder().baseUrl(DEFAULT_BASE_URL);
+
+        builder.client(RetrofitOkHttpHelper.getClient());
 
         return builder
-                .addConverterFactory(factory)
-                .build();
-    }
-
-    private static Retrofit.Builder createBuilder() {
-        Retrofit.Builder retrofitBuilder = new Retrofit.Builder().baseUrl(DEFAULT_BASE_URL);
-
-        retrofitBuilder.client(RetrofitOkHttpHelper.getClient());
-
-        return retrofitBuilder;
+            .addConverterFactory(factory)
+            .build();
     }
 
     /**
@@ -216,33 +230,4 @@ public class RetrofitHelper {
         throw new IllegalStateException("RetrofitHelper: unknown class: " + clazz.getName());
     }
 
-    private static <T> void handleResponseErrors(Response<T> response) {
-        if (response == null || response.body() != null) {
-            return;
-        }
-
-        // 428 - sign in error. The normal behavior when the app constantly pulling for the user code.
-        if (response.code() == 400 || response.code() == 403 || response.code() == 428) {
-            Gson gson = new GsonBuilder().create();
-            try (ResponseBody body = response.errorBody()) {
-                String errorMsg;
-                String errorData = body != null ? body.string() : null;
-
-                try {
-                    ErrorResponse error = errorData != null ? gson.fromJson(errorData, ErrorResponse.class) : null;
-                    errorMsg = error != null && error.getError() != null ? ErrorResponse.class.getSimpleName() + ": " + error.getError().getMessage() : null;
-                } catch (JsonSyntaxException e) {
-                    AuthErrorResponse authError = gson.fromJson(errorData, AuthErrorResponse.class);
-                    errorMsg = "AuthError: " + authError.getError();
-                }
-
-                errorMsg = errorMsg != null ? errorMsg : String.format("Unknown %s error", response.code());
-
-                Log.e(TAG, errorMsg);
-                throw new IllegalStateException(errorMsg);
-            } catch (IOException e) {
-                // handle failure to read error
-            }
-        }
-    }
 }
