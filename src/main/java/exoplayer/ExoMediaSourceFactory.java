@@ -39,7 +39,7 @@ import com.google.android.exoplayer2.util.Util;
 import com.liskovsoft.sharedutils.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
+import com.liskovsoft.sharedutils.okhttp.OkHttpCommons;
 import SmartTubeApp.exoplayer.errors.DashDefaultLoadErrorHandlingPolicy;
 import SmartTubeApp.exoplayer.errors.SabrDefaultLoadErrorHandlingPolicy;
 import SmartTubeApp.exoplayer.errors.TrackErrorFixer;
@@ -274,8 +274,8 @@ public class ExoMediaSourceFactory {
             DefaultHttpDataSourceFactory dataSourceFactory = new DefaultHttpDataSourceFactory(
                 USER_AGENT, 
                 null, 
-                (int) OkHttpManager.getConnectTimeoutMs(),
-                (int) OkHttpManager.getReadTimeoutMs(), 
+                (int) OkHttpCommons.CONNECT_TIMEOUT_MS,
+                (int) OkHttpCommons.READ_TIMEOUT_MS, 
                 true
             );
             
