@@ -79,7 +79,7 @@ public final class DownloadManager {
 
         Log.d(TAG, "Starting download %s...", url);
 
-        Response response = OkHttpManager.instance().doRequest(url, mClient, mHeaders);
+        Response response = OkHttpManager.instance().doGetRequest(url, mClient, mHeaders);
 
         if (response == null || response.body() == null) {
             throw new IllegalStateException("Error: bad response");

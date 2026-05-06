@@ -38,16 +38,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-final class OkHttpCommons {
+public final class OkHttpCommons {
+    
     private static final String TAG = OkHttpCommons.class.getSimpleName();
+    
     public static final long CONNECT_TIMEOUT_MS = 20_000;
     public static final long READ_TIMEOUT_MS = 20_000;
     public static final long WRITE_TIMEOUT_MS = 20_000;
-    public static boolean enableProfiler = true;
-
-    private OkHttpCommons() {
-
-    }
 
     // This is nearly equal to the cipher suites supported in Chrome 51, current as of 2016-05-25.
     // All of these suites are available on Android 7.0; earlier releases support a subset of these
@@ -282,9 +279,7 @@ final class OkHttpCommons {
             // Profiler could cause OutOfMemoryError when testing.
             // Also outputs to logcat tons of info.
             // If you enable it to all requests - expect slowdowns.
-            if (enableProfiler) {
-                addProfiler(okBuilder);
-            }
+            addProfiler(okBuilder);
             addLogger(okBuilder);
         }
     }
