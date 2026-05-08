@@ -18,7 +18,7 @@ import SmartTubeApp.app.models.playback.ui.ChatReceiver;
 import SmartTubeApp.app.models.playback.ui.SeekBarSegment;
 import SmartTubeApp.app.presenters.PlaybackPresenter;
 import SmartTubeApp.app.presenters.base.BasePresenter;
-import SmartTubeApp.app.views.PlaybackView;
+import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.app.views.ViewManager;
 import SmartTubeApp.exoplayer.controller.ExoPlayerController;
 import SmartTubeApp.exoplayer.other.ExoPlayerInitializer;
@@ -30,7 +30,7 @@ import SmartTubeApp.utils.Utils;
 import java.io.InputStream;
 import java.util.List;
 
-public class PreviewPlayer extends PlayerView implements PlaybackView {
+public class PreviewPlayer extends PlayerView implements PlayerEngine {
 
     public static final int QUALITY_LOW = 0;
     public static final int QUALITY_NORMAL = 1;
@@ -79,7 +79,7 @@ public class PreviewPlayer extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public int getSuggestionsIndex(VideoGroup group) {
+    public Integer getSuggestionsIndex(VideoGroup group) {
         return 0;
     }
 
@@ -104,7 +104,7 @@ public class PreviewPlayer extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public boolean isSuggestionsEmpty() {
+    public Boolean isSuggestionsEmpty() {
         return false;
     }
 
@@ -119,7 +119,7 @@ public class PreviewPlayer extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public boolean isOverlayShown() {
+    public Boolean isOverlayShown() {
         return false;
     }
 
@@ -129,7 +129,7 @@ public class PreviewPlayer extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public boolean isSuggestionsShown() {
+    public Boolean isSuggestionsShown() {
         return false;
     }
 
@@ -139,7 +139,7 @@ public class PreviewPlayer extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public boolean isControlsShown() {
+    public Boolean isControlsShown() {
         return false;
     }
 
@@ -233,7 +233,7 @@ public class PreviewPlayer extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public boolean isEmbed() {
+    public Boolean isEmbed() {
         return true;
     }
 
@@ -278,7 +278,7 @@ public class PreviewPlayer extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public long getPositionMs() {
+    public Long getPositionMs() {
         return mExoPlayerController.getPositionMs();
     }
 
@@ -288,7 +288,7 @@ public class PreviewPlayer extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public long getDurationMs() {
+    public Long getDurationMs() {
         long durationMs = mExoPlayerController.getDurationMs();
 
         long liveDurationMs = getVideo() != null ? getVideo().getLiveDurationMs() : 0;
@@ -306,17 +306,17 @@ public class PreviewPlayer extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public boolean getPlayWhenReady() {
+    public Boolean getPlayWhenReady() {
         return mExoPlayerController.getPlayWhenReady();
     }
 
     @Override
-    public boolean isPlaying() {
+    public Boolean isPlaying() {
         return mExoPlayerController.isPlaying();
     }
 
     @Override
-    public boolean isLoading() {
+    public Boolean isLoading() {
         return mExoPlayerController.isLoading();
     }
 
@@ -356,7 +356,7 @@ public class PreviewPlayer extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public boolean isEngineInitialized() {
+    public Boolean isEngineInitialized() {
         return mPlayer != null;
     }
 
@@ -376,17 +376,17 @@ public class PreviewPlayer extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public boolean isEngineBlocked() {
+    public Boolean isEngineBlocked() {
         return false;
     }
 
     @Override
-    public boolean isInPIPMode() {
+    public Boolean isInPIPMode() {
         return false;
     }
 
     @Override
-    public boolean containsMedia() {
+    public Boolean containsMedia() {
         if (mExoPlayerController == null) {
             return false;
         }
@@ -402,7 +402,7 @@ public class PreviewPlayer extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public float getSpeed() {
+    public Float getSpeed() {
         if (mExoPlayerController == null) {
             return 1f;
         }
@@ -418,7 +418,7 @@ public class PreviewPlayer extends PlayerView implements PlaybackView {
     }
 
     @Override
-    public float getVolume() {
+    public Float getVolume() {
         if (mExoPlayerController == null) {
             return 1f;
         }
@@ -458,7 +458,7 @@ public class PreviewPlayer extends PlayerView implements PlaybackView {
         }
 
         // Fullscreen playback is running. Skipping
-        PlaybackView view = mPlaybackPresenter.getView();
+        PlayerEngine view = mPlaybackPresenter.getView();
         if (view == null || view instanceof PreviewPlayer || !PlaybackPresenter.instance(getContext()).isEngineInitialized()) {
             initPlayer();
             createPlayerObjects();

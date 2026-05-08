@@ -7,7 +7,6 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import SmartTubeApp.R;
 import SmartTubeApp.app.models.playback.BasePlayerController;
-import SmartTubeApp.app.models.playback.manager.PlayerUI;
 import SmartTubeApp.app.models.playback.ui.ChatReceiver;
 import SmartTubeApp.app.models.playback.ui.ChatReceiverImpl;
 import SmartTubeApp.app.models.playback.ui.OptionItem;
@@ -39,7 +38,7 @@ public class ChatController extends BasePlayerController {
         mLiveChatKey = metadata != null ? metadata.getLiveChatKey() : null;
 
         if (mLiveChatKey != null) {
-            getPlayer().setButtonState(R.id.action_chat, getPlayerData().isLiveChatEnabled() ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
+            getPlayer().setButtonState(R.id.action_chat, getPlayerData().isLiveChatEnabled() ? 1 : 0);
         }
 
         if (getPlayerData().isLiveChatEnabled()) {
@@ -77,7 +76,7 @@ public class ChatController extends BasePlayerController {
     public void onButtonClicked(int buttonId, int buttonState) {
         if (buttonId == R.id.action_chat) {
             if (mLiveChatKey != null) {
-                enableLiveChat(buttonState != PlayerUI.BUTTON_ON);
+                enableLiveChat(buttonState != 1);
             }
         }
     }
@@ -157,7 +156,7 @@ public class ChatController extends BasePlayerController {
         if (mLiveChatKey != null) {
             getPlayer().setButtonState(
                 R.id.action_chat, 
-                enabled ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF
+                enabled ? 1 : 0
             );
         }
 

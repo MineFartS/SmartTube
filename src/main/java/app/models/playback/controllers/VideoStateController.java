@@ -7,7 +7,6 @@ import SmartTubeApp.R;
 import SmartTubeApp.app.models.data.Queue;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.models.playback.BasePlayerController;
-import SmartTubeApp.app.models.playback.manager.PlayerUI;
 import SmartTubeApp.app.models.playback.service.VideoStateService.State;
 import SmartTubeApp.app.presenters.AppDialogPresenter;
 import SmartTubeApp.exoplayer.selector.FormatItem;
@@ -258,14 +257,14 @@ public class VideoStateController extends BasePlayerController {
     @Override
     public void onButtonClicked(int buttonId, int buttonState) {
         if (buttonId == R.id.action_video_speed) {
-            onSpeedLongClicked(buttonState == PlayerUI.BUTTON_ON);
+            onSpeedLongClicked(buttonState == 1);
         }
     }
 
     @Override
     public void onButtonLongClicked(int buttonId, int buttonState) {
         if (buttonId == R.id.action_video_speed) {
-            onSpeedLongClicked(buttonState == PlayerUI.BUTTON_ON);
+            onSpeedLongClicked(buttonState == 1);
         }
     }
 

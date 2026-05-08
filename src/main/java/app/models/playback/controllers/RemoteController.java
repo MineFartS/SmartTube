@@ -15,8 +15,7 @@ import com.liskovsoft.sharedutils.rx.RxHelper;
 import SmartTubeApp.R;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.models.playback.BasePlayerController;
-import SmartTubeApp.app.models.playback.manager.PlayerConstants;
-import SmartTubeApp.app.models.playback.manager.PlayerUI;
+import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.exoplayer.selector.FormatItem;
 import SmartTubeApp.prefs.common.DataChangeBase.OnDataChange;
 import SmartTubeApp.prefs.RemoteControlData;
@@ -105,12 +104,12 @@ public class RemoteController extends BasePlayerController implements OnDataChan
     @Override
     public void onPlayEnd() {
         switch (getPlayerData().getPlaybackMode()) {
-            case PlayerConstants.PLAYBACK_MODE_CLOSE:
-            case PlayerConstants.PLAYBACK_MODE_PAUSE:
-            case PlayerConstants.PLAYBACK_MODE_ALL:
+            case PlayerEngine.PLAYBACK_MODE_CLOSE:
+            case PlayerEngine.PLAYBACK_MODE_PAUSE:
+            case PlayerEngine.PLAYBACK_MODE_ALL:
                 postPlay(false);
                 break;
-            case PlayerConstants.PLAYBACK_MODE_ONE:
+            case PlayerEngine.PLAYBACK_MODE_ONE:
                 postStartPlaying(getVideo(), true);
                 break;
         }
@@ -298,10 +297,10 @@ public class RemoteController extends BasePlayerController implements OnDataChan
                         }
                     }
                     getPlayer().showSubtitles(true);
-                    getPlayer().setButtonState(R.id.lb_control_closed_captioning, PlayerUI.BUTTON_ON);
+                    getPlayer().setButtonState(R.id.lb_control_closed_captioning, 1);
                  } else if (getPlayer() != null) {
                     getPlayer().showSubtitles(false);
-                    getPlayer().setButtonState(R.id.lb_control_closed_captioning, PlayerUI.BUTTON_OFF);
+                    getPlayer().setButtonState(R.id.lb_control_closed_captioning, 0);
                  }
                  openNewVideo(newVideo2);
                  break;

@@ -19,10 +19,10 @@ import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.models.data.VideoGroup;
 import SmartTubeApp.app.models.playback.BasePlayerController;
 import SmartTubeApp.app.models.playback.listener.PlayerEventListener;
-import SmartTubeApp.app.models.playback.manager.PlayerConstants;
+import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.app.presenters.AppDialogPresenter;
 import SmartTubeApp.app.presenters.dialogs.VideoActionPresenter;
-import SmartTubeApp.app.views.PlaybackView;
+import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.exoplayer.selector.FormatItem;
 import SmartTubeApp.misc.MediaServiceManager;
 import SmartTubeApp.prefs.PlayerData;
@@ -165,7 +165,7 @@ public class VideoLoaderController extends BasePlayerController {
         }
 
         mLastErrorType = -1;
-        getPlayer().setButtonState(R.id.action_repeat, video.finishOnEnded ? PlayerConstants.PLAYBACK_MODE_CLOSE : getPlayerData().getPlaybackMode());
+        getPlayer().setButtonState(R.id.action_repeat, video.finishOnEnded ? PlayerEngine.PLAYBACK_MODE_CLOSE : getPlayerData().getPlaybackMode());
 
     }
 
@@ -223,7 +223,7 @@ public class VideoLoaderController extends BasePlayerController {
 
         // Stop the playback if the user is browsing options or reading comments
         int playbackMode = getPlaybackMode();
-        if (getAppDialogPresenter().isDialogShown() && !getAppDialogPresenter().isOverlay() && playbackMode != PlayerConstants.PLAYBACK_MODE_ONE) {
+        if (getAppDialogPresenter().isDialogShown() && !getAppDialogPresenter().isOverlay() && playbackMode != PlayerEngine.PLAYBACK_MODE_ONE) {
             getAppDialogPresenter().setOnFinish(mOnApplyPlaybackMode);
         } else {
             applyPlaybackMode(playbackMode);
@@ -312,7 +312,7 @@ private void loadFormatInfo(Video video) {
     }
 
     private void processFormatInfo(MediaItemFormatInfo formatInfo) {
-        PlaybackView player = getPlayer();
+        PlayerEngine player = getPlayer();
 
         if (player == null || getVideo() == null) {
             return;
@@ -636,11 +636,11 @@ private void loadFormatInfo(Video video) {
         }
 
         if (isEmbedPlayer()) {
-            playbackMode = PlayerConstants.PLAYBACK_MODE_CLOSE;
+            playbackMode = PlayerEngine.PLAYBACK_MODE_CLOSE;
         }
 
         switch (playbackMode) {
-            case PlayerConstants.PLAYBACK_MODE_REVERSE_LIST:
+            case PlayerEngine.PLAYBACK_MODE_REVERSE_LIST:
                 if (video.hasPlaylist() || video.belongsToChannelUploads() || video.belongsToChannel()) {
                     VideoGroup group = video.getGroup();
                     if (group != null && group.indexOf(video) != 0) { // stop after first
@@ -648,14 +648,14 @@ private void loadFormatInfo(Video video) {
                     }
                     break;
                 }
-            case PlayerConstants.PLAYBACK_MODE_ALL:
-            case PlayerConstants.PLAYBACK_MODE_SHUFFLE:
+            case PlayerEngine.PLAYBACK_MODE_ALL:
+            case PlayerEngine.PLAYBACK_MODE_SHUFFLE:
                 loadNext();
                 break;
-            case PlayerConstants.PLAYBACK_MODE_ONE:
+            case PlayerEngine.PLAYBACK_MODE_ONE:
                 getPlayer().setPositionMs(100); // fix frozen image on Android 4?
                 break;
-            case PlayerConstants.PLAYBACK_MODE_CLOSE:
+            case PlayerEngine.PLAYBACK_MODE_CLOSE:
                 // Close player if suggestions not shown
                 // Except when playing from queue
                 if (Queue.getNext() != null) {
@@ -668,7 +668,7 @@ private void loadFormatInfo(Video video) {
                     }
                 }
                 break;
-            case PlayerConstants.PLAYBACK_MODE_PAUSE:
+            case PlayerEngine.PLAYBACK_MODE_PAUSE:
                 // Stop player after each video.
                 // Except when playing from queue
                 if (Queue.getNext() != null) {
@@ -679,7 +679,7 @@ private void loadFormatInfo(Video video) {
                     getPlayer().showSuggestions(true);
                 }
                 break;
-            case PlayerConstants.PLAYBACK_MODE_LIST:
+            case PlayerEngine.PLAYBACK_MODE_LIST:
                 // if video has a playlist load next or restart playlist
                 if (video.hasNextPlaylist() || Queue.getNext() != null) {
                     loadNext();
@@ -742,7 +742,7 @@ private void loadFormatInfo(Video video) {
         MediaServiceManager.instance().disposeActions();
 
         if (getPlayer() == null || getPlayerData() == null || getVideo() == null || getVideo().playlistInfo == null ||
-                getPlayerData().getPlaybackMode() != PlayerConstants.PLAYBACK_MODE_SHUFFLE) {
+                getPlayerData().getPlaybackMode() != PlayerEngine.PLAYBACK_MODE_SHUFFLE) {
             return;
         }
 
@@ -812,9 +812,9 @@ private void loadFormatInfo(Video video) {
 
         Video video = getVideo();
         if (video != null && video.finishOnEnded) {
-            playbackMode = PlayerConstants.PLAYBACK_MODE_CLOSE;
+            playbackMode = PlayerEngine.PLAYBACK_MODE_CLOSE;
         } else if (video != null && video.belongsToShortsGroup() && getPlayerTweaksData().isLoopShortsEnabled()) {
-            playbackMode = PlayerConstants.PLAYBACK_MODE_ONE;
+            playbackMode = PlayerEngine.PLAYBACK_MODE_ONE;
         }
         return playbackMode;
     }

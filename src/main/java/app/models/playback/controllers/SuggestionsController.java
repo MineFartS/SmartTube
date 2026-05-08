@@ -20,7 +20,7 @@ import SmartTubeApp.app.models.data.Queue;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.models.data.VideoGroup;
 import SmartTubeApp.app.models.playback.BasePlayerController;
-import SmartTubeApp.app.models.playback.manager.PlayerConstants;
+import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.app.models.playback.ui.OptionItem;
 import SmartTubeApp.app.models.playback.ui.SeekBarSegment;
 import SmartTubeApp.app.models.playback.ui.UiOptionItem;
@@ -566,7 +566,7 @@ public class SuggestionsController extends BasePlayerController {
     }
 
     private void findNextSectionVideoIfNeeded(Video video) {
-        if (getPlayerData().getPlaybackMode() == PlayerConstants.PLAYBACK_MODE_SHUFFLE) {
+        if (getPlayerData().getPlaybackMode() == PlayerEngine.PLAYBACK_MODE_SHUFFLE) {
             findRandomSectionVideo(video);
         } else {
             findNextSectionVideo(video);

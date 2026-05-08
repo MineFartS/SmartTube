@@ -9,7 +9,6 @@ import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
 import SmartTubeApp.R;
 import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.models.playback.manager.PlayerConstants;
 import SmartTubeApp.app.models.playback.ui.OptionCategory;
 import SmartTubeApp.app.models.playback.ui.OptionItem;
 import SmartTubeApp.app.models.playback.ui.UiOptionItem;

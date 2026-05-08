@@ -28,6 +28,7 @@ import SmartTubeApp.app.presenters.dialogs.AppUpdatePresenter;
 import SmartTubeApp.misc.MotherActivity;
 import SmartTubeApp.utils.Utils;
 import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
+import SmartTubeApp.app.models.playback.PlayerEngine;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -276,7 +277,6 @@ public class ViewManager {
     }
 
     public boolean isPlayerOnlyModeEnabled() {
-        //return mIsPlayerOnlyModeEnabled && PlaybackPresenter.instance(mContext).getBackgroundMode() != PlayerEngine.BACKGROUND_MODE_PIP;
         return mIsPlayerOnlyModeEnabled && !PlaybackPresenter.instance(mContext).isInPipMode();
     }
 
@@ -438,7 +438,7 @@ public class ViewManager {
     }
 
     public boolean isPlayerInForeground() {
-        return Utils.isAppInForegroundFixed() && getTopView() == PlaybackView.class;
+        return Utils.isAppInForegroundFixed() && getTopView() == PlayerEngine.class;
     }
 
     public void moveAppToForeground() {
@@ -451,7 +451,7 @@ public class ViewManager {
         Utils.turnScreenOn(mContext);
 
         if (!isPlayerInForeground()) {
-            startView(PlaybackView.class);
+            startView(PlayerEngine.class);
         }
     }
 
@@ -466,7 +466,7 @@ public class ViewManager {
             return ChannelPresenter.instance(mContext);
         } else if (topView == ChannelUploadsView.class) {
             return ChannelUploadsPresenter.instance(mContext);
-        } else if (topView == PlaybackView.class) {
+        } else if (topView == PlayerEngine.class) {
             return PlaybackPresenter.instance(mContext);
         }
 

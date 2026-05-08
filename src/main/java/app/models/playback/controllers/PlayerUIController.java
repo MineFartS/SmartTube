@@ -19,8 +19,7 @@ import SmartTubeApp.R;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.models.data.VideoGroup;
 import SmartTubeApp.app.models.playback.BasePlayerController;
-import SmartTubeApp.app.models.playback.manager.PlayerConstants;
-import SmartTubeApp.app.models.playback.manager.PlayerUI;
+import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.app.models.playback.ui.OptionCategory;
 import SmartTubeApp.app.models.playback.ui.OptionItem;
 import SmartTubeApp.app.models.playback.ui.UiOptionItem;
@@ -180,7 +179,7 @@ public class PlayerUIController extends BasePlayerController {
 
             getPlayer().setButtonState(
                 R.id.lb_control_closed_captioning, 
-                !FormatItem.SUBTITLE_NONE.equals(matchedFormat) && !enabled ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF
+                !FormatItem.SUBTITLE_NONE.equals(matchedFormat) && !enabled ? 1 : 0
             );
 
         } else {
@@ -293,18 +292,17 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private void resetButtonStates() {
-        if (getPlayer() == null) {
-            return;
-        }
+        if (getPlayer() == null) return;
 
-        getPlayer().setButtonState(R.id.action_thumbs_up, PlayerUI.BUTTON_OFF);
-        getPlayer().setButtonState(R.id.action_thumbs_down, PlayerUI.BUTTON_OFF);
         getPlayer().setChannelIcon(null);
-        getPlayer().setButtonState(R.id.action_playlist_add, PlayerUI.BUTTON_OFF);
-        getPlayer().setButtonState(R.id.lb_control_closed_captioning, PlayerUI.BUTTON_OFF);
-        getPlayer().setButtonState(R.id.action_video_speed, PlayerUI.BUTTON_OFF);
-        getPlayer().setButtonState(R.id.action_chat, PlayerUI.BUTTON_OFF);
-        getPlayer().setButtonState(R.id.action_subscribe, PlayerUI.BUTTON_OFF);
+
+        getPlayer().setButtonState(R.id.action_thumbs_up, 0);
+        getPlayer().setButtonState(R.id.action_thumbs_down, 0);
+        getPlayer().setButtonState(R.id.action_playlist_add, 0);
+        getPlayer().setButtonState(R.id.lb_control_closed_captioning, 0);
+        getPlayer().setButtonState(R.id.action_video_speed, 0);
+        getPlayer().setButtonState(R.id.action_chat, 0);
+        getPlayer().setButtonState(R.id.action_subscribe, 0);
     }
 
     @Override
@@ -322,15 +320,25 @@ public class PlayerUIController extends BasePlayerController {
 
         getPlayer().loadStoryboard();
         
-        getPlayer().setButtonState(R.id.action_thumbs_up, metadata.getLikeStatus() == MediaItemMetadata.LIKE_STATUS_LIKE ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
-        getPlayer().setButtonState(R.id.action_thumbs_down, metadata.getLikeStatus() == MediaItemMetadata.LIKE_STATUS_DISLIKE ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
+        getPlayer().setButtonState(
+            R.id.action_thumbs_up, 
+            metadata.getLikeStatus() == MediaItemMetadata.LIKE_STATUS_LIKE ? 1 : 0
+        );
+        
+        getPlayer().setButtonState(
+            R.id.action_thumbs_down, 
+            metadata.getLikeStatus() == MediaItemMetadata.LIKE_STATUS_DISLIKE ? 1 : 0
+        );
 
         getPlayer().setChannelIcon(metadata.getAuthorImageUrl());
 
         setPlaylistAddButtonStateCached();
         setSubtitleButtonState();
 
-        getPlayer().setButtonState(R.id.action_subscribe, metadata.isSubscribed() ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
+        getPlayer().setButtonState(
+            R.id.action_subscribe, 
+            metadata.isSubscribed() ? 1 : 0
+        );
 
     }
 
@@ -338,10 +346,13 @@ public class PlayerUIController extends BasePlayerController {
     public void onSuggestionItemLongClicked(Video item) {}
 
     private void onDislikeClicked(boolean dislike) {
-        if (getPlayer() == null)
-            return;
 
-        getPlayer().setButtonState(R.id.action_thumbs_down, !dislike ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
+        if (getPlayer() == null) return;
+
+        getPlayer().setButtonState(
+            R.id.action_thumbs_down, 
+            dislike ? 0 : 1
+        );
 
         if (!mIsMetadataLoaded) {
             MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
@@ -349,7 +360,7 @@ public class PlayerUIController extends BasePlayerController {
         }
 
         if (!YouTubeSignInService.instance().isSigned()) {
-            getPlayer().setButtonState(R.id.action_thumbs_down, PlayerUI.BUTTON_OFF);
+            getPlayer().setButtonState(R.id.action_thumbs_down, 0);
             MessageHelpers.showMessage(getContext(), R.string.msg_signed_users_only);
             return;
         }
@@ -362,7 +373,11 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private void onLikeClicked(boolean like) {
-        getPlayer().setButtonState(R.id.action_thumbs_up, !like ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
+
+        getPlayer().setButtonState(
+            R.id.action_thumbs_up, 
+            like ? 0 : 1
+        );
 
         if (!mIsMetadataLoaded) {
             MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
@@ -370,7 +385,9 @@ public class PlayerUIController extends BasePlayerController {
         }
 
         if (!YouTubeSignInService.instance().isSigned()) {
-            getPlayer().setButtonState(R.id.action_thumbs_up, PlayerUI.BUTTON_OFF);
+
+            getPlayer().setButtonState(R.id.action_thumbs_up, 0);
+            
             MessageHelpers.showMessage(getContext(), R.string.msg_signed_users_only);
             return;
         }
@@ -431,13 +448,13 @@ public class PlayerUIController extends BasePlayerController {
             onPlaylistAddClicked();
 
         } else if (buttonId == R.id.lb_control_closed_captioning) {
-            onSubtitleClicked(buttonState == PlayerUI.BUTTON_ON);
+            onSubtitleClicked(buttonState == 1);
 
         } else if (buttonId == R.id.action_thumbs_down) {
-            onDislikeClicked(buttonState == PlayerUI.BUTTON_ON);
+            onDislikeClicked(buttonState == 1);
             
         } else if (buttonId == R.id.action_thumbs_up) {
-            onLikeClicked(buttonState == PlayerUI.BUTTON_ON);
+            onLikeClicked(buttonState == 1);
         }
         
     }
@@ -619,7 +636,11 @@ public class PlayerUIController extends BasePlayerController {
             }
         }
 
-        getPlayer().setButtonState(R.id.action_playlist_add, isSelected ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
+        getPlayer().setButtonState(
+            R.id.action_playlist_add, 
+            isSelected ? 1 : 0
+        );
+
     }
 
     private void setSubtitleButtonState() {
@@ -628,7 +649,7 @@ public class PlayerUIController extends BasePlayerController {
 
             getPlayer().setButtonState(
                 R.id.lb_control_closed_captioning, 
-                isSubtitleSelected() ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF
+                isSubtitleSelected() ? 1 : 0
             );
 
         }
@@ -675,23 +696,29 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private void onSubscribe(int buttonState) {
-        if (getVideo() == null) {
-            return;
-        }
+        
+        if (getVideo() == null) return;
+
+        boolean doSubscribe = (buttonState == 0);
 
         if (!mIsMetadataLoaded) {
             MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
             return;
         }
 
-        if (buttonState == PlayerUI.BUTTON_OFF) {
+        if (doSubscribe) {
             callMediaItemObservable(mMediaItemService::subscribeObserve);
         } else {
             callMediaItemObservable(mMediaItemService::unsubscribeObserve);
         }
 
-        getVideo().isSubscribed = buttonState == PlayerUI.BUTTON_OFF;
-        getPlayer().setButtonState(R.id.action_subscribe, buttonState == PlayerUI.BUTTON_OFF ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
+        getVideo().isSubscribed = doSubscribe;
+
+        getPlayer().setButtonState(
+            R.id.action_subscribe, 
+            doSubscribe ? 1 : 0
+        );
+    
     }
 
     private void applyRepeatMode(int buttonState) {
@@ -704,7 +731,10 @@ public class PlayerUIController extends BasePlayerController {
     private void showPlaybackModeDialog(int buttonState) {
         OptionCategory category = AppDialogUtil.createPlaybackModeCategory(
                 getContext(), () -> {
-                    getPlayer().setButtonState(R.id.action_repeat, getPlayerData().getPlaybackMode());
+                    getPlayer().setButtonState(
+                        R.id.action_repeat, 
+                        getPlayerData().getPlaybackMode()
+                    );
                 });
 
         AppDialogPresenter settingsPresenter = getAppDialogPresenter();
@@ -713,8 +743,8 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private int getNextRepeatMode(int buttonState) {
-        Integer[] modeList = {PlayerConstants.PLAYBACK_MODE_ALL, PlayerConstants.PLAYBACK_MODE_ONE, PlayerConstants.PLAYBACK_MODE_SHUFFLE,
-                PlayerConstants.PLAYBACK_MODE_LIST, PlayerConstants.PLAYBACK_MODE_REVERSE_LIST, PlayerConstants.PLAYBACK_MODE_PAUSE, PlayerConstants.PLAYBACK_MODE_CLOSE};
+        Integer[] modeList = {PlayerEngine.PLAYBACK_MODE_ALL, PlayerEngine.PLAYBACK_MODE_ONE, PlayerEngine.PLAYBACK_MODE_SHUFFLE,
+                PlayerEngine.PLAYBACK_MODE_LIST, PlayerEngine.PLAYBACK_MODE_REVERSE_LIST, PlayerEngine.PLAYBACK_MODE_PAUSE, PlayerEngine.PLAYBACK_MODE_CLOSE};
         int nextMode = Helpers.getNextValue(modeList, buttonState);
         return nextMode;
     }
@@ -756,7 +786,7 @@ public class PlayerUIController extends BasePlayerController {
                 if (optionItem.isSelected()) {
                     MediaServiceManager.instance().setNotificationState(item, error -> MessageHelpers.showMessage(getContext(), error.getLocalizedMessage()));
                     getVideo().isSubscribed = true;
-                    getPlayer().setButtonState(R.id.action_subscribe, PlayerUI.BUTTON_ON);
+                    getPlayer().setButtonState(R.id.action_subscribe, 1);
                 }
             }, item.isSelected()));
         }

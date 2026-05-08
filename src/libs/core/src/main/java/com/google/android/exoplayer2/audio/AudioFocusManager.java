@@ -109,7 +109,7 @@ public final class AudioFocusManager {
     }
 
     /** Gets the current player volume multiplier. */
-    public float getVolumeMultiplier() {
+    public Float getVolumeMultiplier() {
         return volumeMultiplier;
     }
 

@@ -20,7 +20,7 @@ import SmartTubeApp.app.models.playback.listener.PlayerEventListener;
 import SmartTubeApp.app.models.playback.listener.ViewEventListener;
 import SmartTubeApp.app.presenters.base.BasePresenter;
 import SmartTubeApp.app.presenters.dialogs.menu.VideoMenuPresenter;
-import SmartTubeApp.app.views.PlaybackView;
+import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.exoplayer.selector.FormatItem;
 import SmartTubeApp.utils.Utils;
 import SmartTubeApp.utils.Utils.ChainProcessor;
@@ -31,7 +31,7 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class PlaybackPresenter extends BasePresenter<PlaybackView> implements PlayerEventListener {
+public class PlaybackPresenter extends BasePresenter<PlayerEngine> implements PlayerEventListener {
     
     @SuppressLint("StaticFieldLeak")
     private static PlaybackPresenter sInstance;
@@ -46,7 +46,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
     };
     private WeakReference<Video> mVideo;
     // Fix for using destroyed view
-    private WeakReference<PlaybackView> mPlayer = new WeakReference<>(null);
+    private WeakReference<PlayerEngine> mPlayer = new WeakReference<>(null);
     private boolean mIsEmbedPlayerStarted;
 
     private PlaybackPresenter(Context context) {
@@ -119,7 +119,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
 
         onNewVideo(video);
 
-        getViewManager().startView(PlaybackView.class);
+        getViewManager().startView(PlayerEngine.class);
         mIsEmbedPlayerStarted = false;
     }
 
@@ -140,7 +140,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
         return getView() != null && getView().isInPIPMode();
     }
 
-    public boolean isOverlayShown() {
+    public Boolean isOverlayShown() {
         return getView() != null && getView().isOverlayShown();
     }
 
@@ -148,11 +148,11 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
         return getView() != null && getView().isPlaying();
     }
 
-    public boolean isEngineBlocked() {
+    public Boolean isEngineBlocked() {
         return getView() != null && getView().isEngineBlocked();
     }
 
-    public boolean isEngineInitialized() {
+    public Boolean isEngineInitialized() {
         return getView() != null && getView().isEngineInitialized();
     }
 
@@ -184,7 +184,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
     // Controller methods
 
     @Override
-    public void setView(PlaybackView view) {
+    public void setView(PlayerEngine view) {
         super.setView(view);
         mPlayer = new WeakReference<>(view);
 
@@ -196,7 +196,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
         }
     }
 
-    public PlaybackView getPlayer() {
+    public PlayerEngine getPlayer() {
         return mPlayer.get(); // return view even if the one is destroyed
     }
 

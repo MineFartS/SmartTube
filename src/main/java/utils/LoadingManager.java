@@ -9,7 +9,7 @@ import SmartTubeApp.app.presenters.SearchPresenter;
 import SmartTubeApp.app.views.BrowseView;
 import SmartTubeApp.app.views.ChannelUploadsView;
 import SmartTubeApp.app.views.ChannelView;
-import SmartTubeApp.app.views.PlaybackView;
+import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.app.views.SearchView;
 import SmartTubeApp.app.views.ViewManager;
 
@@ -44,8 +44,8 @@ public class LoadingManager {
             if (uploadsView != null) {
                 uploadsView.showProgressBar(show);
             }
-        } else if (topView == PlaybackView.class) {
-            PlaybackView playbackView = PlaybackPresenter.instance(context).getView();
+        } else if (topView == PlayerEngine.class) {
+            PlayerEngine playbackView = PlaybackPresenter.instance(context).getView();
             if (playbackView != null) {
                 playbackView.showProgressBar(show);
             }
