@@ -31,7 +31,6 @@ import SmartTubeApp.ui.playback.actions.ActionHelpers;
 import SmartTubeApp.ui.playback.actions.ChannelAction;
 import SmartTubeApp.ui.playback.actions.ChatAction;
 import SmartTubeApp.ui.playback.actions.ClosedCaptioningAction;
-import SmartTubeApp.ui.playback.actions.HighQualityAction;
 import SmartTubeApp.ui.playback.actions.VideoInfoAction;
 import SmartTubeApp.ui.playback.actions.PlaylistAddAction;
 import SmartTubeApp.ui.playback.actions.PlaybackModeAction;
@@ -102,7 +101,6 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         thumbsDownAction.setBoundAction(thumbsUpAction);
         putAction(thumbsDownAction);
 
-        putAction(new HighQualityAction(context));
         putAction(new PlaybackModeAction(context));
         putAction(new ChannelAction(context));
         putAction(new ClosedCaptioningAction(context));
@@ -121,29 +119,13 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         // play/pause, previous, rewind, fast forward, next
         //   > /||      |<        <<        >>         >|
         
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_PLAY_PAUSE)) {
-            super.onCreatePrimaryActions(adapter);
-        }
+        super.onCreatePrimaryActions(adapter);
 
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_PREVIOUS)) {
-            adapter.add(mSkipPreviousAction);
-        }
-
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_NEXT)) {
-            adapter.add(mSkipNextAction);
-        }
-
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_REPEAT_MODE)) {
-            adapter.add(mActions.get(R.id.action_repeat));
-        }
-
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_VIDEO_SPEED)) {
-            adapter.add(mActions.get(R.id.action_video_speed));
-        }
-
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_CHAT)) {
-            adapter.add(mActions.get(R.id.action_chat));
-        }
+        adapter.add(mSkipPreviousAction);
+        adapter.add(mSkipNextAction);
+        adapter.add(mActions.get(R.id.action_repeat));
+        adapter.add(mActions.get(R.id.action_video_speed));
+        adapter.add(mActions.get(R.id.action_chat));
 
     }
 
@@ -157,30 +139,13 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         // Origin: {@link androidx.leanback.widget.ControlBarPresenter#MAX_CONTROLS}
         // Custom mod: {@link SmartTubeApp.ui.mod.leanback.playerglue.ControlBarPresenter#MAX_CONTROLS}
 
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_HIGH_QUALITY)) {
-            adapter.add(mActions.get(R.id.lb_control_high_quality));
-        }
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_OPEN_CHANNEL)) {
-            adapter.add(mActions.get(R.id.action_channel));
-        }
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_LIKE)) {
-            adapter.add(mActions.get(R.id.action_thumbs_up));
-        }
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_DISLIKE)) {
-            adapter.add(mActions.get(R.id.action_thumbs_down));
-        }
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_SUBTITLES)) {
-            adapter.add(mActions.get(R.id.lb_control_closed_captioning));
-        }
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_ADD_TO_PLAYLIST)) {
-            adapter.add(mActions.get(R.id.action_playlist_add));
-        }
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_SUBSCRIBE)) {
-            adapter.add(mActions.get(R.id.action_subscribe));
-        }
-        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_VIDEO_INFO)) {
-            adapter.add(mActions.get(R.id.action_info));
-        }
+        adapter.add(mActions.get(R.id.action_channel));
+        adapter.add(mActions.get(R.id.action_thumbs_up));
+        adapter.add(mActions.get(R.id.action_thumbs_down));
+        adapter.add(mActions.get(R.id.lb_control_closed_captioning));
+        adapter.add(mActions.get(R.id.action_playlist_add));
+        adapter.add(mActions.get(R.id.action_subscribe));
+        adapter.add(mActions.get(R.id.action_info));
 
     }
 

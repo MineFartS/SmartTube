@@ -25,7 +25,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     public static final int PLAYER_BUTTON_REPEAT_MODE = 1 << 14;
     public static final int PLAYER_BUTTON_NEXT = 1 << 15;
     public static final int PLAYER_BUTTON_PREVIOUS = 1 << 16;
-    public static final int PLAYER_BUTTON_HIGH_QUALITY = 1 << 17;
     public static final int PLAYER_BUTTON_VIDEO_INFO = 1 << 18;
     public static final int PLAYER_BUTTON_CHAT = 1 << 22;
     
@@ -52,7 +51,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsSnapToVsyncDisabled;
     private boolean mIsSetOutputSurfaceWorkaroundEnabled;
     private boolean mIsPlaybackNotificationsDisabled;
-    private int mPlayerButtons;
     private boolean mIsRememberPositionOfLiveVideosEnabled;
     private boolean mIsLongSpeedListEnabled;
     private boolean mIsExtraLongSpeedListEnabled;
@@ -92,20 +90,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
 
     public void setPlaybackNotificationsDisabled(boolean disable) {
         mIsPlaybackNotificationsDisabled = disable;
-        persistState();
-    }
-
-    public boolean isPlayerButtonEnabled(int menuItems) {
-        return (mPlayerButtons & menuItems) == menuItems;
-    }
-
-    public void setPlayerButtonEnabled(int playerButtons) {
-        mPlayerButtons |= playerButtons;
-        persistState();
-    }
-
-    public void setPlayerButtonDisabled(int playerButtons) {
-        mPlayerButtons &= ~playerButtons;
         persistState();
     }
 
@@ -159,21 +143,18 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private void restoreState() {
 
         String data = mPrefs.getProfileData(VIDEO_PLAYER_TWEAKS_DATA);
-
         String[] split = Helpers.splitData(data);
 
         /* 0 */ mIsSnapToVsyncDisabled = Helpers.parseBoolean(split, 0, false);
         /* 1 */ mIsSetOutputSurfaceWorkaroundEnabled = Helpers.parseBoolean(split, 1, true);
         /* 2 */ mIsPlaybackNotificationsDisabled = Helpers.parseBoolean(split, 2, !Helpers.isAndroidTVLauncher(mPrefs.getContext()));
-        /* 3 */ mPlayerButtons = Helpers.parseInt(split, 3, PLAYER_BUTTON_DEFAULT);
+
         /* 4 */ mIsLongSpeedListEnabled = Helpers.parseBoolean(split, 4, true);
 
         /* 6 */ mIsSectionPlaylistEnabled = Helpers.parseBoolean(split, 6, Utils.isEnoughRam());
         /* 7 */ mIsLoopShortsEnabled = Helpers.parseBoolean(split, 7, true);
         /* 8 */ mIsRememberPositionOfLiveVideosEnabled = Helpers.parseBoolean(split, 8, true);
         /* 9 */ mIsExtraLongSpeedListEnabled = Helpers.parseBoolean(split, 9, false);
-
-        updateDefaultValues();
 
     }
 
@@ -184,7 +165,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
             /* 0 */ mIsSnapToVsyncDisabled,
             /* 1 */ mIsSetOutputSurfaceWorkaroundEnabled, 
             /* 2 */ mIsPlaybackNotificationsDisabled, 
-            /* 3 */ mPlayerButtons,
+            /* 3 */ null,
             /* 4 */ mIsLongSpeedListEnabled, 
             /* 5 */ null, 
             /* 6 */ mIsSectionPlaylistEnabled,
@@ -193,14 +174,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
             /* 9 */ mIsExtraLongSpeedListEnabled
             )
         );
-    }
-
-    private void updateDefaultValues() {
-        // Enable only certain buttons (not all, like it was)
-        if (mPlayerButtons >>> 30 == 0b1) { // check leftmost bit (old format)
-            int bits = 32 - 24;
-            mPlayerButtons = mPlayerButtons << bits >>> bits; // remove auto enabled bits
-        }
     }
 
     @Override

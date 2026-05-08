@@ -872,7 +872,7 @@
     <item name="lb_control_closed_captioning" type="id"/>
     <item name="lb_control_fast_forward" type="id"/>
     <item name="lb_control_fast_rewind" type="id"/>
-    <item name="lb_control_high_quality" type="id"/>
+
     <item name="lb_control_more_actions" type="id"/>
     <item name="lb_control_picture_in_picture" type="id"/>
     <item name="lb_control_play_pause" type="id"/>
