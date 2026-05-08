@@ -25,7 +25,6 @@ import SmartTubeApp.app.presenters.PlaybackPresenter;
 import SmartTubeApp.app.presenters.dialogs.AccountSelectionPresenter;
 import SmartTubeApp.app.presenters.settings.AccountSettingsPresenter;
 
-import SmartTubeApp.app.views.PlaybackView;
 import SmartTubeApp.app.views.ViewManager;
 import SmartTubeApp.misc.MediaServiceManager;
 import SmartTubeApp.misc.MediaServiceManager.AccountChangeListener;

@@ -165,7 +165,7 @@ public class ExoPlayerController implements Player.EventListener {
         }
     }
 
-    public boolean getPlayWhenReady() {
+    public Boolean getPlayWhenReady() {
         if (mPlayer == null) {
             return false;
         }
@@ -177,11 +177,11 @@ public class ExoPlayerController implements Player.EventListener {
         return ExoUtils.isPlaying(mPlayer);
     }
     
-    public boolean isLoading() {
+    public Boolean isLoading() {
         return ExoUtils.isLoading(mPlayer);
     }
     
-    public boolean containsMedia() {
+    public Boolean containsMedia() {
         if (mPlayer == null) {
             return false;
         }
@@ -372,11 +372,11 @@ public class ExoPlayerController implements Player.EventListener {
 
     }
     
-    public float getSpeed() {
+    public Float getSpeed() {
         if (mPlayer != null) {
             return mPlayer.getPlaybackParameters().speed;
         } else {
-            return -1;
+            return -1f;
         }
     }
         
@@ -388,11 +388,11 @@ public class ExoPlayerController implements Player.EventListener {
         }
     }
     
-    public float getVolume() {
+    public Float getVolume() {
         if (mPlayer != null) {
             return mPlayer.getVolume();
         } else {
-            return 1;
+            return 1f;
         }
     }
 

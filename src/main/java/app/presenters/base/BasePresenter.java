@@ -21,7 +21,7 @@ import SmartTubeApp.app.presenters.service.SidebarService;
 import SmartTubeApp.app.views.BrowseView;
 import SmartTubeApp.app.views.ChannelUploadsView;
 import SmartTubeApp.app.views.ChannelView;
-import SmartTubeApp.app.views.PlaybackView;
+import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.app.views.SearchView;
 import SmartTubeApp.app.views.ViewManager;
 import SmartTubeApp.misc.MediaServiceManager;
@@ -130,7 +130,7 @@ public abstract class BasePresenter<T> implements Presenter<T> {
     public void onFinish() {
         if (getSearchData().getTempBackgroundModeClass() == this.getClass() &&
             getPlaybackPresenter().isRunningInBackground()) {
-            getViewManager().startView(PlaybackView.class);
+            getViewManager().startView(PlayerEngine.class);
         }
     }
 
@@ -187,8 +187,8 @@ public abstract class BasePresenter<T> implements Presenter<T> {
             ((ChannelUploadsView) view).update(group);
         } else if (view instanceof SearchView) {
             ((SearchView) view).updateSearch(group);
-        } else if (view instanceof PlaybackView) {
-            ((PlaybackView) view).updateSuggestions(group);
+        } else if (view instanceof PlayerEngine) {
+            ((PlayerEngine) view).updateSuggestions(group);
         } else {
             return false;
         }

@@ -206,7 +206,7 @@ public class VideoInfo {
     /**
      * Video cannot be embedded
      */
-    public boolean isEmbedRestricted() {
+    public Boolean isEmbedRestricted() {
         return !mIsPlayableInEmbed;
     }
 

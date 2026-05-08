@@ -138,7 +138,7 @@ public class SpeedMarquee extends TextView {
         startScrollAfterUpdate(textScroller.getCurrX());
     }
 
-    public float getSpeed() {
+    public Float getSpeed() {
         return mScrollSpeed;
     }
 }

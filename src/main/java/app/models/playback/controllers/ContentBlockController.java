@@ -12,7 +12,6 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import SmartTubeApp.R;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.models.playback.BasePlayerController;
-import SmartTubeApp.app.models.playback.manager.PlayerUI;
 import SmartTubeApp.app.models.playback.ui.OptionItem;
 import SmartTubeApp.app.models.playback.ui.SeekBarSegment;
 import SmartTubeApp.app.models.playback.ui.UiOptionItem;

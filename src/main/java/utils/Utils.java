@@ -62,12 +62,11 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import SmartTubeApp.BuildConfig;
 import SmartTubeApp.R;
 import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.models.playback.manager.PlayerConstants;
-import SmartTubeApp.app.models.playback.manager.PlayerManager;
+import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.app.models.playback.service.VideoStateService;
 import SmartTubeApp.app.presenters.PlaybackPresenter;
 import SmartTubeApp.app.presenters.SplashPresenter;
-import SmartTubeApp.app.views.PlaybackView;
+import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.app.views.ViewManager;
 import SmartTubeApp.exoplayer.selector.FormatItem.VideoPreset;
 import SmartTubeApp.exoplayer.selector.TrackSelectorUtil;
@@ -323,7 +322,7 @@ public class Utils {
     /**
      * Volume: 0 - 100
      */
-    public static int getVolume(Context context, PlayerManager player) {
+    public static int getVolume(Context context, PlayerEngine player) {
         if (context != null) {
             if (isGlobalVolumeFixed(context)) {
                 return getPlayerVolume(player);
@@ -340,7 +339,7 @@ public class Utils {
         return 100;
     }
 
-    private static int getPlayerVolume(PlayerManager player) {
+    private static int getPlayerVolume(PlayerEngine player) {
         if (player == null) {
             return -1;
         }
@@ -350,7 +349,7 @@ public class Utils {
     /**
      * Volume: 0 - 100
      */
-    public static void setVolume(Context context, PlayerManager player, int volume) {
+    public static void setVolume(Context context, PlayerEngine player, int volume) {
         Log.d(TAG, "setVolume: %s", volume);
 
         if (volume < 0) {
@@ -373,7 +372,7 @@ public class Utils {
     }
 
     @SuppressLint("StringFormatMatches")
-    private static void setPlayerVolume(Context context, PlayerManager player, int volume) {
+    private static void setPlayerVolume(Context context, PlayerEngine player, int volume) {
         if (player == null) {
             return;
         }
@@ -381,7 +380,7 @@ public class Utils {
         MessageHelpers.showMessage(context, context.getString(R.string.volume, getPlayerVolume(player)));
     }
 
-    public static void volumeUp(Context context, PlayerManager player, boolean up) {
+    public static void volumeUp(Context context, PlayerEngine player, boolean up) {
         if (player != null) {
             int volume = getVolume(context, player);
             final int delta = 1; // volume step
@@ -395,7 +394,7 @@ public class Utils {
     }
 
     @SuppressLint("StringFormatMatches")
-    public static void volumeUpPlayer(Context context, PlayerManager player, boolean up) {
+    public static void volumeUpPlayer(Context context, PlayerEngine player, boolean up) {
         if (player != null) {
             int volume = (int) (player.getVolume() * 100);
             int round = 10 - volume % 10;
@@ -676,19 +675,19 @@ public class Utils {
 
     public static void showRepeatInfo(Context context, int modeIndex) {
         switch (modeIndex) {
-            case PlayerConstants.PLAYBACK_MODE_ALL:
+            case PlayerEngine.PLAYBACK_MODE_ALL:
                 MessageHelpers.showMessage(context, R.string.repeat_mode_all);
                 break;
-            case PlayerConstants.PLAYBACK_MODE_ONE:
+            case PlayerEngine.PLAYBACK_MODE_ONE:
                 MessageHelpers.showMessage(context, R.string.repeat_mode_one);
                 break;
-            case PlayerConstants.PLAYBACK_MODE_PAUSE:
+            case PlayerEngine.PLAYBACK_MODE_PAUSE:
                 MessageHelpers.showMessage(context, R.string.repeat_mode_pause);
                 break;
-            case PlayerConstants.PLAYBACK_MODE_LIST:
+            case PlayerEngine.PLAYBACK_MODE_LIST:
                 MessageHelpers.showMessage(context, R.string.repeat_mode_pause_alt);
                 break;
-            case PlayerConstants.PLAYBACK_MODE_CLOSE:
+            case PlayerEngine.PLAYBACK_MODE_CLOSE:
                 MessageHelpers.showMessage(context, R.string.repeat_mode_none);
                 break;
         }
@@ -749,7 +748,7 @@ public class Utils {
     }
 
     public static void showPlayerControls(Context context, boolean show) {
-        PlaybackView view = PlaybackPresenter.instance(context).getView();
+        PlayerEngine view = PlaybackPresenter.instance(context).getView();
         if (view != null) {
             view.showOverlay(show);
         }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.KeyEvent;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import SmartTubeApp.R;
-import SmartTubeApp.app.models.playback.manager.PlayerUI;
 import SmartTubeApp.app.presenters.PlaybackPresenter;
 import SmartTubeApp.prefs.GeneralData;
 import SmartTubeApp.prefs.PlayerData;
