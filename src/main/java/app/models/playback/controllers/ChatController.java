@@ -47,11 +47,10 @@ public class ChatController extends BasePlayerController {
     }
 
     private void openLiveChat() {
-        disposeActions();
 
-        if (mLiveChatKey == null) {
-            return;
-        }
+        onEngineReleased();
+
+        if (mLiveChatKey == null) return;
 
         ChatReceiver chatReceiver = new ChatReceiverImpl();
         getPlayer().setChatReceiver(chatReceiver);
@@ -112,19 +111,15 @@ public class ChatController extends BasePlayerController {
 
     @Override
     public void onEngineReleased() {
-        disposeActions();
-    }
-
-    @Override
-    public void onFinish() {
-        disposeActions();
-    }
-
-    private void disposeActions() {
         if (RxHelper.isAnyActionRunning(mChatAction)) {
             RxHelper.disposeActions(mChatAction);
             getPlayer().setChatReceiver(null);
         }
+    }
+
+    @Override
+    public void onFinish() {
+        onEngineReleased();
     }
 
     private boolean checkItem(ChatItem chatItem) {
@@ -148,7 +143,7 @@ public class ChatController extends BasePlayerController {
         if (enabled) {
             openLiveChat();
         } else {
-            disposeActions();
+            onEngineReleased();
         }
         
         getPlayerData().setLiveChatEnabled(enabled);

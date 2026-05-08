@@ -1,35 +1,51 @@
-package SmartTubeApp.app.models.playback.listener;
+package SmartTubeApp.app.models.playback;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
+
+import com.liskovsoft.sharedutils.data.MediaItemMetadata;
 import SmartTubeApp.app.models.data.Video;
+import SmartTubeApp.misc.TickleManager.TickleListener;
 import SmartTubeApp.exoplayer.selector.FormatItem;
 import SmartTubeApp.exoplayer.selector.TrackSelectorManager;
 
-public interface PlayerEngineEventListener {
+public interface PlayerEventListener extends TickleListener {
+
+    void onViewCreated();
+    void onViewDestroyed();
+    void onViewPaused();
+    void onViewResumed();
+    
+    void onSuggestionItemClicked(Video item);
+    void onSuggestionItemLongClicked(Video item);
+    void onScrollEnd(Video item);
+    boolean onPreviousClicked();
+    boolean onNextClicked();
+    void onPlayClicked();
+    void onPauseClicked();
+    boolean onKeyDown(int keyCode);
+    void onButtonClicked(int buttonId, int buttonState);
+    void onButtonLongClicked(int buttonId, int buttonState);
+    void onControlsShown(boolean shown);
+
+    void onNewVideo(Video item);
+    void onMetadata(MediaItemMetadata metadata);
+    
     /**
-     * The error occurred loading data
+     * Called after creation of {@link PlayerManager}
      */
+    void onInit();
+    void onFinish();
+
     int ERROR_TYPE_SOURCE = ExoPlaybackException.TYPE_SOURCE;
-    /**
-     * The error occurred in a renderer.
-     */
     int ERROR_TYPE_RENDERER = ExoPlaybackException.TYPE_RENDERER;
-    /**
-     * The error was an unexpected
-     */
     int ERROR_TYPE_UNEXPECTED = ExoPlaybackException.TYPE_UNEXPECTED;
-    /**
-     * The error occurred in a remote component.
-     */
     int ERROR_TYPE_REMOTE = ExoPlaybackException.TYPE_REMOTE;
-    /**
-     * The error was an {@link OutOfMemoryError}.
-     */
     int ERROR_TYPE_OUT_OF_MEMORY = ExoPlaybackException.TYPE_OUT_OF_MEMORY;
     int RENDERER_INDEX_UNKNOWN = TrackSelectorManager.RENDERER_INDEX_UNKNOWN;
     int RENDERER_INDEX_VIDEO = TrackSelectorManager.RENDERER_INDEX_VIDEO;
     int RENDERER_INDEX_AUDIO = TrackSelectorManager.RENDERER_INDEX_AUDIO;
     int RENDERER_INDEX_SUBTITLE = TrackSelectorManager.RENDERER_INDEX_SUBTITLE;
+
     void onPlay();
     void onPause();
     void onPlayEnd();
@@ -44,4 +60,5 @@ public interface PlayerEngineEventListener {
     void onEngineError(int type, int rendererIndex, Throwable error);
     void onTrackChanged(FormatItem track);
     void onTrackSelected(FormatItem track);
+
 }

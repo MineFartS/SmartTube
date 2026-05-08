@@ -15,7 +15,6 @@ import com.liskovsoft.sharedutils.videoinfo.models.VideoInfo;
 import com.liskovsoft.googleapi.oauth2.manager.OAuth2AccountManager;
 import com.liskovsoft.sharedutils.videoinfo.V2.VideoInfoService;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.sharedutils.service.YouTubeMediaItemService;
 import com.liskovsoft.sharedutils.service.ContentService;
 import com.liskovsoft.sharedutils.MediaItemService;
@@ -35,8 +34,6 @@ import com.liskovsoft.sharedutils.rx.RxHelper;
 import SmartTubeApp.app.models.data.Queue;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.models.data.VideoGroup;
-import SmartTubeApp.app.models.playback.service.VideoStateService;
-import SmartTubeApp.app.models.playback.service.VideoStateService.State;
 import SmartTubeApp.app.presenters.ChannelPresenter;
 import SmartTubeApp.app.presenters.ChannelUploadsPresenter;
 import SmartTubeApp.prefs.AccountsData;
@@ -76,9 +73,6 @@ public class ServiceManager {
     private static Disposable mFormatInfoAction;
     private static Disposable mPlaylistGroupAction;
     private static Disposable mPlaylistInfosAction;
-
-    private static float mPositionSec;
-    private static String mVideoId;
     
     private static final int MIN_GRID_GROUP_SIZE = 13;
     private static final int MIN_ROW_GROUP_SIZE = 5;
@@ -357,77 +351,6 @@ public class ServiceManager {
 
     public static void clearSearchHistory() {
         RxHelper.runAsyncUser(getContentService()::clearSearchHistory);
-    }
-
-    public static void updateHistory(Video video, long positionMs) {
-
-        Queue.sync(video);
-
-        VideoStateService stateService = VideoStateService.instance(null);
-
-        if (stateService != null) {
-            stateService.save(new State(
-                video, 
-                positionMs, 
-                video.getDurationMs()
-            ));
-        } else {
-            Log.e(TAG, "State Service not Instantiated");
-        }
-
-        getAccountManager().checkAuth();
-
-        YouTubeMediaItemFormatInfo formatInfo = getMediaItemService().getFormatInfo(video.videoId);
-
-        if (formatInfo == null) {
-            Log.e(TAG, "Can't update history for video id %s. formatInfo == null", video.videoId);
-            return;
-        }
-
-        if (!formatInfo.isAuth() && !formatInfo.isUnplayable() && getSignInService().isSigned()) {
-            
-            VideoInfo videoInfo = getVideoInfoService().getAuthVideoInfo(
-                formatInfo.getVideoId(), 
-                formatInfo.getClickTrackingParams()
-            );
-
-            formatInfo.sync(YouTubeMediaItemFormatInfo.from(videoInfo));
-        
-        }
-
-        String videoId = formatInfo.getVideoId();
-        float oldPositionSec = mPositionSec;
-        float positionSec = positionMs / 1_000f;
-
-        ApiCaller apiTempl = new ApiCaller("https://www.youtube.com/api/stats/playback?ns=yt&ver=2");
-        apiTempl.add("docid", videoId);
-        apiTempl.add("len", Helpers.parseFloat(formatInfo.getLengthSeconds()));
-        apiTempl.add("cpn", getAppService().getClientPlaybackNonce());            
-        apiTempl.add("ei", formatInfo.getEventId());
-        apiTempl.add("vm", formatInfo.getVisitorMonitoringData());
-        apiTempl.add("of", formatInfo.getOfParam());
-
-        ApiCaller api;
-
-        if (mVideoId == null || mVideoId != videoId) {
-
-            mVideoId = videoId;
-            mPositionSec = 0;
-
-            api = apiTempl.copy();
-            api.add("cmt", oldPositionSec);
-            api.call();
-        
-        }
-
-        api = apiTempl.copy();
-        api.add("st", oldPositionSec);
-        api.add("et", positionSec);
-        api.add("cmt", positionSec);
-        api.call();
-        
-        mPositionSec = positionSec;
-
     }
 
     public static void hideNotification(Video item) {
