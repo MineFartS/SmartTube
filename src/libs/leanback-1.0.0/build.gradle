@@ -31,15 +31,18 @@ android {
 }
 
 dependencies {
+    
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.annotation:annotation:' + annotationXLibraryVersion
+    implementation project(':exoplayer-core')
+    implementation project(':fragment-1.1.0')
+    implementation project(':sharedutils')
+
+    implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'androidx.core:core:' + coreXLibraryVersion
     implementation 'androidx.recyclerview:recyclerview:' + recyclerviewXLibraryVersion
     implementation 'androidx.fragment:fragment:' + annotationXLibraryVersion
     implementation 'androidx.media:media:' + mediaXLibraryVersion
     implementation 'androidx.interpolator:interpolator:' + leanbackXLibraryVersion
 
-    implementation project(':fragment-1.1.0')
-    implementation project(':sharedutils')
 }

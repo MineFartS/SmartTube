@@ -1,5 +1,4 @@
-
-package com.google.android.exoplayer2.ext.leanback;
+package androidx.leanback.media;
 
 import android.content.Context;
 import android.os.Handler;

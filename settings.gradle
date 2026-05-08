@@ -37,6 +37,3 @@ project(':exoplayer-mediasession').projectDir = new File('src/libs/mediasession'
 
 include ':exoplayer-okhttp'
 project(':exoplayer-okhttp').projectDir = new File('src/libs/okhttp')
-
-include ':exoplayer-leanback'
-project(':exoplayer-leanback').projectDir = new File('src/libs/leanback')

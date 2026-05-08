@@ -115,10 +115,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 option -> mPlayerTweaksData.setRememberPositionOfLiveVideosEnabled(option.isSelected()),
                 mPlayerTweaksData.isRememberPositionOfLiveVideosEnabled()));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.player_show_tooltips),
-                option -> mPlayerData.setTooltipsEnabled(option.isSelected()),
-                mPlayerData.isTooltipsEnabled()));
-
         settingsPresenter.appendCheckedCategory(getContext().getString(R.string.player_other), options);
 
     }
