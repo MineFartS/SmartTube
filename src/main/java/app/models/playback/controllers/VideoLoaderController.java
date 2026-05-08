@@ -18,7 +18,7 @@ import SmartTubeApp.app.models.data.SimpleMediaItem;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.models.data.VideoGroup;
 import SmartTubeApp.app.models.playback.BasePlayerController;
-import SmartTubeApp.app.models.playback.listener.PlayerEventListener;
+import SmartTubeApp.app.models.playback.PlayerEventListener;
 import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.app.presenters.AppDialogPresenter;
 import SmartTubeApp.app.presenters.dialogs.VideoActionPresenter;
@@ -145,7 +145,10 @@ public class VideoLoaderController extends BasePlayerController {
 
     @Override
     public void onEngineReleased() {
-        disposeActions();
+        mBufferingCount = null;
+        ServiceManager.disposeActions();
+        RxHelper.disposeActions(mFormatInfoAction, mMpdStreamAction);
+        Utils.removeCallbacks(mReloadVideo, mLoadNext, mRestartEngine, mMetadataSync, mOnLongBuffering, mRebootApp);
     }
 
     @Override
@@ -294,7 +297,7 @@ private void loadFormatInfo(Video video) {
     if (getPlayer() == null) return;
 
         getPlayer().showProgressBar(true);
-        disposeActions();
+        onEngineReleased();
 
         MediaItemService mediaItemManager = ServiceManager.getMediaItemService();
         
@@ -395,11 +398,9 @@ private void loadFormatInfo(Video video) {
     }
 
     private void openVideoInt(Video item) {
-        if (item == null) {
-            return;
-        }
+        if (item == null) return;
 
-        disposeActions();
+        onEngineReleased();
 
         if (item.hasVideo()) {
             // NOTE: Next clicked: instant playback even a mix
@@ -413,13 +414,6 @@ private void loadFormatInfo(Video video) {
 
     private boolean isActionsRunning() {
         return RxHelper.isAnyActionRunning(mFormatInfoAction, mMpdStreamAction);
-    }
-
-    private void disposeActions() {
-        mBufferingCount = null;
-        ServiceManager.disposeActions();
-        RxHelper.disposeActions(mFormatInfoAction, mMpdStreamAction);
-        Utils.removeCallbacks(mReloadVideo, mLoadNext, mRestartEngine, mMetadataSync, mOnLongBuffering, mRebootApp);
     }
 
     private void runFormatErrorAction(Throwable error) {
@@ -722,20 +716,7 @@ private void loadFormatInfo(Video video) {
 
     @Override
     public void onMetadata(MediaItemMetadata metadata) {
-        loadRandomNext();
-    }
 
-    @Override
-    public void onPlay() {
-        Utils.removeCallbacks(mOnLongBuffering);
-    }
-
-    @Override
-    public void onPause() {
-        Utils.removeCallbacks(mOnLongBuffering);
-    }
-
-    private void loadRandomNext() {
         ServiceManager.disposeActions();
 
         if (getPlayer() == null || getPlayerData() == null || getVideo() == null || getVideo().playlistInfo == null ||
@@ -744,6 +725,7 @@ private void loadFormatInfo(Video video) {
         }
 
         if (getVideo().playlistInfo.getSize() != -1) {
+
             Video video = new Video();
             video.playlistId = getVideo().playlistId;
             video.playlistIndex = Utils.getRandomIndex(getVideo().playlistInfo.getCurrentIndex(), getVideo().playlistInfo.getSize());
@@ -755,7 +737,9 @@ private void loadFormatInfo(Video video) {
                 getVideo().nextMediaItem = SimpleMediaItem.from(randomMetadata);
                 getPlayer().setNextTitle(Video.from(getVideo().nextMediaItem));
             });
+
         } else {
+
             VideoGroup topRow = getPlayer().getSuggestionsByIndex(0); // the playlist row
             if (topRow != null) {
                 int currentIdx = topRow.indexOf(getVideo());
@@ -767,7 +751,19 @@ private void loadFormatInfo(Video video) {
                     getPlayer().setNextTitle(nextVideo);
                 }
             }
+            
         }
+
+    }
+
+    @Override
+    public void onPlay() {
+        Utils.removeCallbacks(mOnLongBuffering);
+    }
+
+    @Override
+    public void onPause() {
+        Utils.removeCallbacks(mOnLongBuffering);
     }
 
     private void updateBufferingCountIfNeeded() {

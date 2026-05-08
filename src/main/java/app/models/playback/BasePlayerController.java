@@ -14,7 +14,7 @@ import com.liskovsoft.sharedutils.NotificationsService;
 import com.liskovsoft.sharedutils.SignInService;
 import com.liskovsoft.sharedutils.data.MediaItemMetadata;
 import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.models.playback.listener.PlayerEventListener;
+import SmartTubeApp.app.models.playback.PlayerEventListener;
 import SmartTubeApp.app.models.playback.service.VideoStateService;
 import SmartTubeApp.app.presenters.AppDialogPresenter;
 import SmartTubeApp.app.presenters.PlaybackPresenter;
@@ -34,7 +34,7 @@ import SmartTubeApp.prefs.RemoteControlData;
 import SmartTubeApp.prefs.SearchData;
 import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
 
-public abstract class BasePlayerController implements PlayerEventListener {
+public abstract class BasePlayerController extends ServiceManager implements PlayerEventListener {
     
     private PlaybackPresenter mMainController;
     private Context mContext;
@@ -288,26 +288,6 @@ public abstract class BasePlayerController implements PlayerEventListener {
 
     protected AppDialogPresenter getAppDialogPresenter() {
         return AppDialogPresenter.instance(getContext());
-    }
-
-    protected CommentsService getCommentsService() {
-        return ServiceManager.getCommentsService();
-    }
-
-    protected ContentService getContentService() {
-        return ServiceManager.getContentService();
-    }
-
-    protected SignInService getSignInService() {
-        return ServiceManager.getSignInService();
-    }
-
-    protected NotificationsService getNotificationsService() {
-        return ServiceManager.getNotificationsService();
-    }
-
-    protected MediaItemService getMediaItemService() {
-        return ServiceManager.getMediaItemService();
     }
 
     protected SearchPresenter getSearchPresenter() {

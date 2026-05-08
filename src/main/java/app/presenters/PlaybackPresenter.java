@@ -16,8 +16,7 @@ import SmartTubeApp.app.models.playback.controllers.RemoteController;
 import SmartTubeApp.app.models.playback.controllers.SuggestionsController;
 import SmartTubeApp.app.models.playback.controllers.VideoLoaderController;
 import SmartTubeApp.app.models.playback.controllers.VideoStateController;
-import SmartTubeApp.app.models.playback.listener.PlayerEventListener;
-import SmartTubeApp.app.models.playback.listener.ViewEventListener;
+import SmartTubeApp.app.models.playback.PlayerEventListener;
 import SmartTubeApp.app.presenters.base.BasePresenter;
 import SmartTubeApp.app.presenters.dialogs.menu.VideoMenuPresenter;
 import SmartTubeApp.app.models.playback.PlayerEngine;
@@ -257,26 +256,26 @@ public class PlaybackPresenter extends BasePresenter<PlayerEngine> implements Pl
 
     @Override
     public void onViewCreated() {
-        process(ViewEventListener::onViewCreated);
+        process(PlayerEventListener::onViewCreated);
     }
 
     @Override
     public void onViewDestroyed() {
-        process(ViewEventListener::onViewDestroyed);
+        process(PlayerEventListener::onViewDestroyed);
     }
 
     @Override
     public void onViewPaused() {
         super.onViewPaused();
 
-        process(ViewEventListener::onViewPaused);
+        process(PlayerEventListener::onViewPaused);
     }
 
     @Override
     public void onViewResumed() {
         super.onViewResumed();
 
-        process(ViewEventListener::onViewResumed);
+        process(PlayerEventListener::onViewResumed);
     }
 
     // End common events
