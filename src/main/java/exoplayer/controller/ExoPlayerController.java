@@ -21,7 +21,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import SmartTubeApp.BuildConfig;
 import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.models.playback.listener.PlayerEventListener;
+import SmartTubeApp.app.models.playback.PlayerEventListener;
 import SmartTubeApp.exoplayer.ExoMediaSourceFactory;
 import SmartTubeApp.exoplayer.errors.TrackErrorFixer;
 import SmartTubeApp.exoplayer.other.VolumeBooster;

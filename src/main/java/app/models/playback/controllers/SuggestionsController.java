@@ -75,7 +75,7 @@ public class SuggestionsController extends BasePlayerController {
     public void onNewVideo(Video video) {
         // Remote control fix. Slow network fix. Suggestions may still be loading.
         // This could lead to changing current video info (title, id etc) to wrong one.
-        disposeActions();
+        onEngineReleased();
     }
 
     /**
@@ -88,12 +88,17 @@ public class SuggestionsController extends BasePlayerController {
 
     @Override
     public void onEngineReleased() {
-        disposeActions();
+        RxHelper.disposeActions(mActions);
+        mChapters = null;
+        mNextSectionVideo = null;
+        if (mBrowseProcessor != null) {
+            mBrowseProcessor.dispose();
+        }
     }
 
     @Override
     public void onFinish() {
-        disposeActions();
+        onEngineReleased();
     }
 
     @Override
@@ -148,21 +153,14 @@ public class SuggestionsController extends BasePlayerController {
 
     @Override
     public void onTickle() {
-        updateLiveDescription();
-    }
-
-    private void updateLiveDescription() {
-        if (getPlayer() == null) {
-            return;
-        }
+        if (getPlayer() == null) return;
 
         Video video = getPlayer().getVideo();
 
-        if (video == null || !video.isLive || RxHelper.isAnyActionRunning(mActions)) {
-            return;
-        }
+        if (video == null || !video.isLive || RxHelper.isAnyActionRunning(mActions)) return;
 
-        loadMetadata(video, metadata -> syncCurrentVideo(metadata, video));
+        loadMetadata2(video, metadata -> syncCurrentVideo(metadata, video));
+    
     }
 
     private void continueGroup(VideoGroup group) {
@@ -230,16 +228,15 @@ public class SuggestionsController extends BasePlayerController {
     }
 
     public void loadSuggestions(Video video) {
-        if (isEmbedPlayer()) {
-            return;
-        }
+        if (isEmbedPlayer()) return;
 
         clearSuggestionsIfNeeded(video);
-        loadMetadata(video, metadata -> updateSuggestions(metadata, video));
+        loadMetadata2(video, metadata -> updateSuggestions(metadata, video));
     }
 
-    private void loadMetadata(Video video, OnMetadata callback) {
-        disposeActions();
+    private void loadMetadata2(Video video, OnMetadata callback) {
+        
+        onEngineReleased();
 
         if (video == null) {
             Log.e(TAG, "loadSuggestions: video is null");
@@ -654,15 +651,6 @@ public class SuggestionsController extends BasePlayerController {
     private void callListener(MediaItemMetadata mediaItemMetadata) {
         if (mediaItemMetadata != null) {
             getMainController().onMetadata(mediaItemMetadata);
-        }
-    }
-
-    private void disposeActions() {
-        RxHelper.disposeActions(mActions);
-        mChapters = null;
-        mNextSectionVideo = null;
-        if (mBrowseProcessor != null) {
-            mBrowseProcessor.dispose();
         }
     }
 

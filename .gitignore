@@ -7,8 +7,7 @@ Thumbs.db
 .DS_Store
 
 # Build Cache
-.gradle/*
-!.gradle/wrapper
+.gradle
 **/build/
 
 # Build Logs

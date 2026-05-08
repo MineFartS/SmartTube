@@ -93,7 +93,7 @@ public class ContentBlockController extends BasePlayerController {
     @Override
     public void onVideoLoaded(Video item) {
         
-        disposeActions();
+        onEngineReleased();
 
         if (getPlayer() == null) return;
 
@@ -108,15 +108,18 @@ public class ContentBlockController extends BasePlayerController {
         // Disable sponsor for the live streams.
         // Fix when using remote control.
         if (!getContentBlockData().isSponsorBlockEnabled() || !checkVideo(getPlayer().getVideo())) {
-            disposeActions();
+            onEngineReleased();
         } else if (isChannelExcluded(metadata.getChannelId())) { // got channel id. check the exclusions
-            disposeActions();
+            onEngineReleased();
         }
     }
 
     @Override
     public void onEngineReleased() {
-        disposeActions();
+        RxHelper.disposeActions(mSegmentsAction);
+
+        // Reset previously found segment (fix no dialog popup)
+        mLastSkipPosMs = 0;
     }
 
     @Override
@@ -175,16 +178,9 @@ public class ContentBlockController extends BasePlayerController {
         }
     }
 
-    private void disposeActions() {
-        RxHelper.disposeActions(mSegmentsAction);
-
-        // Reset previously found segment (fix no dialog popup)
-        mLastSkipPosMs = 0;
-    }
-
     private void skipSegment(long interval) {
         if (mActiveSegments == null || mActiveSegments.isEmpty() || getVideo() == null || !Helpers.equals(mVideoId, getVideo().videoId)) {
-            disposeActions();
+            onEngineReleased();
             return;
         }
 

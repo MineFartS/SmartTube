@@ -20,7 +20,9 @@ import SmartTubeApp.app.presenters.AppDialogPresenter;
 import io.reactivex.disposables.Disposable;
 
 public class CommentsController extends BasePlayerController {
+
     private static final String TAG = CommentsController.class.getSimpleName();
+
     private Disposable mCommentsAction;
     private String mLiveChatKey;
     private String mCommentsKey;
@@ -47,13 +49,12 @@ public class CommentsController extends BasePlayerController {
     }
 
     private void openCommentsDialog() {
+        
         fitVideoIntoDialog();
 
-        disposeActions();
+        onFinish();
 
-        if (mCommentsKey == null) {
-            return;
-        }
+        if (mCommentsKey == null) return;
 
         final String backupKey = mCommentsKey;
 
@@ -136,21 +137,18 @@ public class CommentsController extends BasePlayerController {
 
     @Override
     public void onEngineReleased() {
-        disposeActions();
+        onFinish();
         mBackup = null;
     }
 
     @Override
     public void onFinish() {
-        disposeActions();
-    }
-
-    private void disposeActions() {
         RxHelper.disposeActions(mCommentsAction);
     }
 
     private void loadComments(CommentsReceiver receiver, String commentsKey) {
-        disposeActions();
+
+        onFinish();
 
         mCommentsAction = getCommentsService().getCommentsObserve(commentsKey)
                 .subscribe(
