@@ -61,7 +61,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
     private boolean mIsDoubleRefreshRateEnabled;
     private float mSubtitleScale;
     private float mPlayerVolume;
-    private boolean mIsTooltipsEnabled;
     private float mSubtitlePosition;
     private boolean mIsSkip24RateEnabled;
     private boolean mIsSkipShortsEnabled;
@@ -187,15 +186,6 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
 
     public void setDoubleRefreshRateEnabled(boolean enabled) {
         mIsDoubleRefreshRateEnabled = enabled;
-        persistState();
-    }
-
-    public boolean isTooltipsEnabled() {
-        return mIsTooltipsEnabled;
-    }
-
-    public void setTooltipsEnabled(boolean enable) {
-        mIsTooltipsEnabled = enable;
         persistState();
     }
 
@@ -514,7 +504,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         /* 14 */ mIsDoubleRefreshRateEnabled = Helpers.parseBoolean(split, 14, true);
         /* 15 */ mSubtitleScale = Helpers.parseFloat(split, 15, .7f);
         /* 16 */ mPlayerVolume = Helpers.parseFloat(split, 16, 1.0f);
-        /* 17 */ mIsTooltipsEnabled = Helpers.parseBoolean(split, 17, true);
+
         /* 18 */ mSubtitlePosition = Helpers.parseFloat(split, 18, 0.1f);
         /* 19 */ mIsSkip24RateEnabled = Helpers.parseBoolean(split, 19, false);
         /* 20 */ mIsLiveChatEnabled = Helpers.parseBoolean(split, 20, false);
@@ -570,7 +560,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
             /* 14 */ mIsDoubleRefreshRateEnabled, 
             /* 15 */ mSubtitleScale, 
             /* 16 */ mPlayerVolume, 
-            /* 17 */ mIsTooltipsEnabled, 
+            /* 17 */ null,
             /* 18 */ mSubtitlePosition, 
             /* 19 */ mIsSkip24RateEnabled, 
             /* 20 */ mIsLiveChatEnabled, 

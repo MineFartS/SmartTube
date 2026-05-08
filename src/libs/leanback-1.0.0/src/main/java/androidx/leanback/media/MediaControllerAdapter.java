@@ -1,5 +1,3 @@
-
-
 package androidx.leanback.media;
 
 import static androidx.leanback.media.PlaybackBaseControlGlue.ACTION_FAST_FORWARD;

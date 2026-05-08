@@ -1,5 +1,3 @@
-
-
 package androidx.leanback.media;
 
 import android.content.Context;
@@ -8,7 +6,9 @@ import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-
+import androidx.leanback.media.MediaPlayerAdapter;
+import androidx.leanback.media.PlaybackGlueHost;
+import androidx.leanback.media.PlayerAdapter;
 import androidx.leanback.widget.AbstractDetailsDescriptionPresenter;
 import androidx.leanback.widget.Action;
 import androidx.leanback.widget.ArrayObjectAdapter;
@@ -22,53 +22,6 @@ import androidx.leanback.widget.RowPresenter;
 
 import java.lang.ref.WeakReference;
 
-/**
- * A helper class for managing a {@link PlaybackControlsRow} being displayed in
- * {@link PlaybackGlueHost}, it supports standard playback control actions play/pause, and
- * skip next/previous. This helper class is a glue layer in that manages interaction between the
- * leanback UI components {@link PlaybackControlsRow} {@link PlaybackTransportRowPresenter}
- * and a functional {@link PlayerAdapter} which represents the underlying
- * media player.
- *
- * <p>App must pass a {@link PlayerAdapter} in constructor for a specific
- * implementation e.g. a {@link MediaPlayerAdapter}.
- * </p>
- *
- * <p>The glue has two actions bar: primary actions bar and secondary actions bar. App
- * can provide additional actions by overriding {@link #onCreatePrimaryActions} and / or
- * {@link #onCreateSecondaryActions} and respond to actions by override
- * {@link #onActionClicked(Action)}.
- * </p>
- *
- * <p> It's also subclass's responsibility to implement the "repeat mode" in
- * {@link #onPlayCompleted()}.
- * </p>
- *
- * <p>
- * Apps calls {@link #setSeekProvider(PlaybackSeekDataProvider)} to provide seek data. If the
- * {@link PlaybackGlueHost} is instance of {@link PlaybackSeekUi}, the provider will be passed to
- * PlaybackGlueHost to render thumb bitmaps.
- * </p>
- * Sample Code:
- * <pre><code>
- * public class MyVideoFragment extends VideoFragment {
- *     &#64;Override
- *     public void onCreate(Bundle savedInstanceState) {
- *         super.onCreate(savedInstanceState);
- *         PlaybackTransportControlGlue<MediaPlayerAdapter> playerGlue =
- *                 new PlaybackTransportControlGlue(getActivity(),
- *                         new MediaPlayerAdapter(getActivity()));
- *         playerGlue.setHost(new VideoFragmentGlueHost(this));
- *         playerGlue.setSubtitle("Leanback artist");
- *         playerGlue.setTitle("Leanback team at work");
- *         String uriPath = "android.resource://com.example.android.leanback/raw/video";
- *         playerGlue.getPlayerAdapter().setDataSource(Uri.parse(uriPath));
- *         playerGlue.playWhenPrepared();
- *     }
- * }
- * </code></pre>
- * @param <T> Type of {@link PlayerAdapter} passed in constructor.
- */
 public class PlaybackTransportControlGlue<T extends PlayerAdapter>
         extends PlaybackBaseControlGlue<T> {
 
@@ -131,6 +84,8 @@ public class PlaybackTransportControlGlue<T extends PlayerAdapter>
                         PlaybackBaseControlGlue glue = (PlaybackBaseControlGlue) obj;
                         viewHolder.getTitle().setText(glue.getTitle());
                         viewHolder.getSubtitle().setText(glue.getSubtitle());
+                        // MOD: add extra title line
+                        viewHolder.getBody().setText(glue.getBody());
                     }
                 };
 
@@ -335,6 +290,7 @@ public class PlaybackTransportControlGlue<T extends PlayerAdapter>
             mPositionBeforeSeek = mSeekProvider == null ? mPlayerAdapter.getCurrentPosition() : -1;
             mLastUserPosition = -1;
             pause();
+
         }
 
         @Override

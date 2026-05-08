@@ -1,4 +1,3 @@
-
 package SmartTubeApp.ui.mod.leanback.playerglue.tweaks;
 
 import android.content.Context;
@@ -24,13 +23,13 @@ import androidx.leanback.widget.PlaybackSeekDataProvider;
 import androidx.leanback.widget.PlaybackSeekUi;
 import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.RowPresenter;
+import androidx.leanback.widget.ControlButtonPresenterSelector;
 
 import com.liskovsoft.sharedutils.helpers.DateHelper;
 import SmartTubeApp.app.models.playback.ui.SeekBarSegment;
 import SmartTubeApp.prefs.PlayerData;
 import SmartTubeApp.prefs.PlayerTweaksData;
 import SmartTubeApp.ui.mod.leanback.misc.SeekBar;
-import SmartTubeApp.ui.mod.leanback.playerglue.tooltips.ControlButtonPresenterSelector;
 import SmartTubeApp.ui.mod.leanback.playerglue.tweaks.ControlBarPresenter.OnControlClickedListener;
 import SmartTubeApp.ui.mod.leanback.playerglue.tweaks.ControlBarPresenter.OnControlLongClickedListener;
 import SmartTubeApp.ui.mod.leanback.playerglue.tweaks.ControlBarPresenter.OnControlSelectedListener;

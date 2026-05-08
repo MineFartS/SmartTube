@@ -1,4 +1,3 @@
-
 package SmartTubeApp.ui.mod.leanback.playerglue.tweaks;
 
 import android.content.Context;
@@ -6,11 +5,12 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.leanback.R;
 import androidx.leanback.widget.Action;
 import androidx.leanback.widget.ObjectAdapter;
 import androidx.leanback.widget.Presenter;
-import SmartTubeApp.ui.mod.leanback.playerglue.tooltips.ControlButtonPresenterSelector;
+import androidx.leanback.widget.ControlButtonPresenterSelector;
 
 /**
  * A presenter that assumes a LinearLayout container for a series
