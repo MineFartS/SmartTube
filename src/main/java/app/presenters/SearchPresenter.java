@@ -20,7 +20,7 @@ import SmartTubeApp.app.presenters.dialogs.menu.VideoMenuPresenter;
 import SmartTubeApp.app.presenters.interfaces.VideoGroupPresenter;
 import SmartTubeApp.app.views.SearchView;
 import SmartTubeApp.misc.BrowseProcessorManager;
-import SmartTubeApp.misc.MediaServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import SmartTubeApp.prefs.AccountsData;
 import SmartTubeApp.utils.AppDialogUtil;
 import io.reactivex.disposables.Disposable;
@@ -125,7 +125,7 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
                 getContext(),
                 getContext().getString(R.string.clear_search_history),
                 () -> {
-                    MediaServiceManager.instance().clearSearchHistory();
+                    ServiceManager.clearSearchHistory();
                     getView().clearSearchTags();
                 });
     }

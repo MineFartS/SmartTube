@@ -2,7 +2,7 @@ package SmartTubeApp.misc;
 
 import android.content.Context;
 import com.liskovsoft.sharedutils.MediaItemService;
-import com.liskovsoft.sharedutils.ServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import com.liskovsoft.sharedutils.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -14,7 +14,6 @@ import SmartTubeApp.app.presenters.PlaybackPresenter;
 import SmartTubeApp.app.views.ViewManager;
 import SmartTubeApp.misc.TickleManager.TickleListener;
 import SmartTubeApp.prefs.GeneralData;
-import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
@@ -30,8 +29,7 @@ public class StreamReminderService implements TickleListener {
     private Disposable mReminderAction;
 
     private StreamReminderService(Context context) {
-        ServiceManager service = YouTubeServiceManager.instance();
-        mMediaItemService = service.getMediaItemService();
+        mMediaItemService = ServiceManager.getMediaItemService();
         mContext = context.getApplicationContext();
         mGeneralData = GeneralData.instance(context);
     }

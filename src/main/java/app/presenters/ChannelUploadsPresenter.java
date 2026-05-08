@@ -22,7 +22,7 @@ import SmartTubeApp.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCall
 import SmartTubeApp.app.presenters.interfaces.VideoGroupPresenter;
 import SmartTubeApp.app.views.ChannelUploadsView;
 import SmartTubeApp.misc.BrowseProcessorManager;
-import SmartTubeApp.misc.MediaServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
@@ -180,7 +180,7 @@ public class ChannelUploadsPresenter extends BasePresenter<ChannelUploadsView> i
 
     private void disposeActions() {
         RxHelper.disposeActions(mUpdateAction, mScrollAction);
-        MediaServiceManager.instance().disposeActions();
+        ServiceManager.disposeActions();
         mBrowseProcessor.dispose();
     }
 
@@ -255,7 +255,7 @@ public class ChannelUploadsPresenter extends BasePresenter<ChannelUploadsView> i
         // The view could be running in the background
         getViewManager().startView(ChannelUploadsView.class);
 
-        if (getView() == null) { // starting from outside (e.g. MediaServiceManager)
+        if (getView() == null) { // starting from outside (e.g. ServiceManager)
             mPendingGroup = mediaGroup; // start loading from this group
             return;
         }

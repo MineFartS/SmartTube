@@ -7,11 +7,10 @@ import androidx.tvprovider.media.tv.TvContractCompat;
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 import SmartTubeApp.media.ClipService.GroupCallback;
 import com.liskovsoft.sharedutils.service.ContentService;
-import com.liskovsoft.sharedutils.ServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import com.liskovsoft.sharedutils.data.MediaGroup;
 import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -158,12 +157,9 @@ public final class Playlist {
     }
 
     private List<Clip> createClips() {
-        if (mCallback == null) {
-            return null;
-        }
+        if (mCallback == null) return null;
 
-        ServiceManager service = YouTubeServiceManager.instance();
-        ContentService contentService = service.getContentService();
+        ContentService contentService = ServiceManager.getContentService();
         MediaGroup selectedGroup = mCallback.call(contentService);
 
         if (selectedGroup != null) {

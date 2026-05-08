@@ -2,7 +2,7 @@ package SmartTubeApp.app.presenters.dialogs.menu;
 
 import android.content.Context;
 import com.liskovsoft.sharedutils.MediaItemService;
-import com.liskovsoft.sharedutils.ServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import com.liskovsoft.sharedutils.data.PlaylistInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
@@ -23,12 +23,10 @@ import SmartTubeApp.app.presenters.PlaybackPresenter;
 import SmartTubeApp.app.presenters.dialogs.menu.providers.ContextMenuManager;
 import SmartTubeApp.app.presenters.dialogs.menu.providers.ContextMenuProvider;
 import SmartTubeApp.app.views.ChannelUploadsView;
-import SmartTubeApp.misc.MediaServiceManager;
 import SmartTubeApp.misc.StreamReminderService;
 import SmartTubeApp.prefs.GeneralData;
 import SmartTubeApp.prefs.MainUIData;
 import SmartTubeApp.utils.AppDialogUtil;
-import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 import SmartTubeApp.ui.playback.actions.SubscribeAction;
 
 import io.reactivex.Observable;
@@ -45,7 +43,6 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
     
     private final MediaItemService mMediaItemService;
     private final AppDialogPresenter mDialogPresenter;
-    private final MediaServiceManager mServiceManager;
     private final VideoStateService mVideoStateService;
 
     private Disposable mAddToPlaylistAction;
@@ -113,9 +110,7 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
     private VideoMenuPresenter(Context context) {
         super(context);
         
-        ServiceManager service = YouTubeServiceManager.instance();
-        mMediaItemService = service.getMediaItemService();
-        mServiceManager = MediaServiceManager.instance();
+        mMediaItemService = ServiceManager.getMediaItemService();
         mDialogPresenter = AppDialogPresenter.instance(context);
         mVideoStateService = VideoStateService.instance(context);
 
@@ -154,7 +149,7 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         mVideo = video;
         sVideoHolder = new WeakReference<>(video);
 
-        MediaServiceManager.instance().authCheck(this::bootstrapPrepareAndShowDialogSigned, this::prepareAndShowDialogUnsigned);
+        ServiceManager.authCheck(this::bootstrapPrepareAndShowDialogSigned, this::prepareAndShowDialogUnsigned);
     }
 
     private void bootstrapPrepareAndShowDialogSigned() {
@@ -278,7 +273,7 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         mDialogPresenter.appendSingleButton(
                 UiOptionItem.from(getContext().getString(
                         mVideo.isPlaylistAsChannel() ? R.string.open_playlist : R.string.open_channel), optionItem -> {
-                    MediaServiceManager.chooseChannelPresenter(getContext(), mVideo);
+                    ServiceManager.chooseChannelPresenter(getContext(), mVideo);
                     mDialogPresenter.closeDialog();
                 }));
     }
@@ -428,7 +423,7 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
 
         mDialogPresenter.appendSingleButton(
                 UiOptionItem.from(getContext().getString(R.string.remove_from_subscriptions), optionItem -> {
-                    MediaServiceManager.instance().hideNotification(mVideo);
+                    ServiceManager.hideNotification(mVideo);
                     if (mCallback != null) {
                         mCallback.onItemAction(mVideo, VideoMenuCallback.ACTION_REMOVE);
                     }
@@ -489,12 +484,12 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
                 UiOptionItem.from(getContext().getString(R.string.action_video_info),
                         optionItem -> {
                             MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
-                            mServiceManager.loadMetadata(mVideo, metadata -> {
+                            ServiceManager.loadMetadata(mVideo, metadata -> {
                                 String description = metadata.getDescription();
                                 if (description != null) {
                                     showLongTextDialog(description);
                                 } else {
-                                    mServiceManager.loadFormatInfo(mVideo, formatInfo -> {
+                                    ServiceManager.loadFormatInfo(mVideo, formatInfo -> {
                                         String newDescription = formatInfo.getDescription();
                                         if (newDescription != null) {
                                             showLongTextDialog(newDescription);
@@ -521,7 +516,7 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
                 UiOptionItem.from(getContext().getString(R.string.open_comments),
                         optionItem -> {
                             MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
-                            mServiceManager.loadMetadata(mVideo, metadata -> {
+                            ServiceManager.loadMetadata(mVideo, metadata -> {
                                 CommentsController controller = new CommentsController(getContext(), metadata);
                                 controller.onButtonClicked(R.id.action_chat, 1);
                             });

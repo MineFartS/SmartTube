@@ -11,14 +11,13 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.liskovsoft.sharedutils.MediaItemService;
-import com.liskovsoft.sharedutils.ServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import com.liskovsoft.sharedutils.data.MediaItemStoryboard;
 import com.liskovsoft.sharedutils.data.MediaItemStoryboard.Size;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.util.ViewUtil;
-import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
@@ -46,8 +45,7 @@ public class StoryboardManager {
 
     public StoryboardManager(Context context) {
         mContext = context;
-        ServiceManager service = YouTubeServiceManager.instance();
-        mMediaItemService = service.getMediaItemService();
+        mMediaItemService = ServiceManager.getMediaItemService();
     }
 
     public void init(Video video, long lengthMs) {

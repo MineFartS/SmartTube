@@ -52,9 +52,6 @@
 -keepclassmembers class com.liskovsoft.sharedutils.mylogger.Log {
     static void d(java.lang.String, java.lang.Object, java.lang.Object[]);
 }
--keepclassmembers class com.liskovsoft.sharedutils.service.YouTubeServiceManager {
-    <init>(...);
-}
 -keepclassmembers class SmartTubeApp.ui.widgets.vineyard.TagCardView {
     <init>(...);
     android.widget.TextView mTagNameText;

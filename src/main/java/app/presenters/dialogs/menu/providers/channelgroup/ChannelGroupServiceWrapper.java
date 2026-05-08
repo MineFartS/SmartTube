@@ -9,7 +9,7 @@ import com.liskovsoft.sharedutils.data.ItemGroup;
 import com.liskovsoft.sharedutils.data.ItemGroup.Item;
 import SmartTubeApp.prefs.AppPrefs;
 import SmartTubeApp.prefs.AppPrefs.ProfileChangeListener;
-import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 
 import java.io.File;
 import java.util.List;
@@ -27,7 +27,7 @@ public class ChannelGroupServiceWrapper implements ProfileChangeListener {
         mContext = context.getApplicationContext();
         mPrefs = AppPrefs.instance(context);
         mPrefs.addListener(this);
-        mService = YouTubeServiceManager.instance().getChannelGroupService();
+        mService = ServiceManager.getChannelGroupService();
         restoreState();
     }
 
