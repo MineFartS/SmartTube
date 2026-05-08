@@ -37,6 +37,8 @@ import SmartTubeApp.utils.AppDialogUtil;
 import SmartTubeApp.utils.Utils;
 import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 import com.liskovsoft.sharedutils.service.YouTubeSignInService;
+import SmartTubeApp.ui.playback.actions.SubscribeAction;
+
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
@@ -44,8 +46,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerUIController extends BasePlayerController {
+
     private static final String TAG = PlayerUIController.class.getSimpleName();
+    
     private static final long SUGGESTIONS_RESET_TIMEOUT_MS = 500;
+    
     private final Handler mHandler;
     private final MediaItemService mMediaItemService;
     private SuggestionsController mSuggestionsController;
@@ -354,11 +359,6 @@ public class PlayerUIController extends BasePlayerController {
             dislike ? 0 : 1
         );
 
-        if (!mIsMetadataLoaded) {
-            MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
-            return;
-        }
-
         if (!YouTubeSignInService.instance().isSigned()) {
             getPlayer().setButtonState(R.id.action_thumbs_down, 0);
             MessageHelpers.showMessage(getContext(), R.string.msg_signed_users_only);
@@ -379,11 +379,6 @@ public class PlayerUIController extends BasePlayerController {
             like ? 0 : 1
         );
 
-        if (!mIsMetadataLoaded) {
-            MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
-            return;
-        }
-
         if (!YouTubeSignInService.instance().isSigned()) {
 
             getPlayer().setButtonState(R.id.action_thumbs_up, 0);
@@ -401,11 +396,6 @@ public class PlayerUIController extends BasePlayerController {
 
     private void onVideoInfoClicked() {
         fitVideoIntoDialog();
-
-        if (!mIsMetadataLoaded) {
-            MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
-            return;
-        }
 
         Video video = getVideo();
 
@@ -431,9 +421,20 @@ public class PlayerUIController extends BasePlayerController {
 
     @Override
     public void onButtonClicked(int buttonId, int buttonState) {
+
+        if (!mIsMetadataLoaded) {
+            MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
+            return;
+        }
         
         if (buttonId == R.id.action_subscribe) {
-            onSubscribe(buttonState);
+
+            SubscribeAction.toggle(getVideo());
+
+            getPlayer().setButtonState(
+                R.id.action_subscribe, 
+                getVideo().isSubscribed ? 1 : 0
+            );
 
         } else if (buttonId == R.id.action_repeat) {
             applyRepeatMode(buttonState);
@@ -693,32 +694,6 @@ public class PlayerUIController extends BasePlayerController {
         }
 
         return isSelected;
-    }
-
-    private void onSubscribe(int buttonState) {
-        
-        if (getVideo() == null) return;
-
-        boolean doSubscribe = (buttonState == 0);
-
-        if (!mIsMetadataLoaded) {
-            MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
-            return;
-        }
-
-        if (doSubscribe) {
-            callMediaItemObservable(mMediaItemService::subscribeObserve);
-        } else {
-            callMediaItemObservable(mMediaItemService::unsubscribeObserve);
-        }
-
-        getVideo().isSubscribed = doSubscribe;
-
-        getPlayer().setButtonState(
-            R.id.action_subscribe, 
-            doSubscribe ? 1 : 0
-        );
-    
     }
 
     private void applyRepeatMode(int buttonState) {
