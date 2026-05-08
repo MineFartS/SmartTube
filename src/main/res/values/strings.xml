@@ -317,8 +317,7 @@
     <string name="add_device_view_description">To link the device enter this code on your phone\'s YouTube app in section Settings/Watch on TV\nNOTE: This only works with the Gboard keyboard!</string>
     <string name="playback_controls_repeat_pause">Repeat Pause</string>
     <string name="playback_controls_repeat_list">Repeat List</string>
-    <string name="action_subscribe_off">Subscribe Off</string>
-    <string name="action_subscribe_on">Subscribe On</string>
+
     <string name="skip_24_rate">Skip 24fps formats (real cinema mode fix\?)</string>
     <string name="skip_shorts">Skip Shorts</string>
     <string name="suggestions">Suggestions</string>

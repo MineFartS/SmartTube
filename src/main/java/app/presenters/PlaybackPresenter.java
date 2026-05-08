@@ -11,7 +11,6 @@ import SmartTubeApp.app.models.playback.BasePlayerController;
 import SmartTubeApp.app.models.playback.controllers.ChatController;
 import SmartTubeApp.app.models.playback.controllers.CommentsController;
 import SmartTubeApp.app.models.playback.controllers.ContentBlockController;
-import SmartTubeApp.app.models.playback.controllers.HQDialogController;
 import SmartTubeApp.app.models.playback.controllers.PlayerUIController;
 import SmartTubeApp.app.models.playback.controllers.RemoteController;
 import SmartTubeApp.app.models.playback.controllers.SuggestionsController;
@@ -60,7 +59,6 @@ public class PlaybackPresenter extends BasePresenter<PlaybackView> implements Pl
         mEventListeners.add(new VideoLoaderController());
         mEventListeners.add(new RemoteController(context));
         mEventListeners.add(new ContentBlockController());
-        mEventListeners.add(new HQDialogController());
         mEventListeners.add(new ChatController());
         mEventListeners.add(new CommentsController());
     }

@@ -66,7 +66,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         category = AppDialogUtil.createVideoPresetsCategory(getContext());
         settingsPresenter.appendCategory(category);
         
-        appendPlayerButtonsCategory(settingsPresenter);
         appendVideoSpeedCategory(settingsPresenter);
         
         category = AppDialogUtil.createAudioLanguageCategory(getContext());
@@ -94,89 +93,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
             settingsPresenter2.appendCategory(AppDialogUtil.createSpeedMiscCategory(getContext()));
             settingsPresenter2.showDialog(getContext().getString(R.string.video_speed));
         }));
-    }
-
-    private void appendPlayerButtonsCategory(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
-
-        for (int[] pair : new int[][] {
-            {
-                R.string.open_chat,
-                PlayerTweaksData.PLAYER_BUTTON_CHAT
-            },
-            {
-                R.string.action_video_info,
-                PlayerTweaksData.PLAYER_BUTTON_VIDEO_INFO
-            },
-            {
-                R.string.action_channel, 
-                PlayerTweaksData.PLAYER_BUTTON_OPEN_CHANNEL
-            },
-            {
-                R.string.action_video_speed, 
-                PlayerTweaksData.PLAYER_BUTTON_VIDEO_SPEED
-            },
-            {
-                R.string.action_subtitles, 
-                PlayerTweaksData.PLAYER_BUTTON_SUBTITLES
-            },
-            {
-                R.string.action_subscribe, 
-                PlayerTweaksData.PLAYER_BUTTON_SUBSCRIBE
-            },
-            {
-                R.string.action_like, 
-                PlayerTweaksData.PLAYER_BUTTON_LIKE
-            },
-            {
-                R.string.action_dislike, 
-                PlayerTweaksData.PLAYER_BUTTON_DISLIKE
-            },
-            {
-                R.string.action_playlist_add, 
-                PlayerTweaksData.PLAYER_BUTTON_ADD_TO_PLAYLIST
-            },
-            {
-                R.string.action_play_pause,
-                PlayerTweaksData.PLAYER_BUTTON_PLAY_PAUSE
-            },
-            {
-                R.string.action_repeat_mode, 
-                PlayerTweaksData.PLAYER_BUTTON_REPEAT_MODE
-            },
-            {
-                R.string.action_next, 
-                PlayerTweaksData.PLAYER_BUTTON_NEXT
-            },
-            {
-                R.string.action_previous, 
-                PlayerTweaksData.PLAYER_BUTTON_PREVIOUS
-            },
-            {
-                R.string.playback_settings, 
-                PlayerTweaksData.PLAYER_BUTTON_HIGH_QUALITY
-            }
-        }) {
-            options.add(
-                UiOptionItem.from(
-                    getContext().getString(pair[0]), 
-                    optionItem -> {
-                        if (optionItem.isSelected()) {
-                            mPlayerTweaksData.setPlayerButtonEnabled(pair[1]);
-                        } else {
-                            mPlayerTweaksData.setPlayerButtonDisabled(pair[1]);
-                        }
-                    }, 
-                    mPlayerTweaksData.isPlayerButtonEnabled(pair[1])
-                )
-            );
-        }
-
-        settingsPresenter.appendCheckedCategory(
-            getContext().getString(R.string.player_buttons),
-            options
-        );
-    
     }
 
     private void appendMiscCategory(AppDialogPresenter settingsPresenter) {
