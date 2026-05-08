@@ -1,5 +1,3 @@
-
-
 package androidx.leanback.media;
 
 import android.content.Context;
@@ -10,14 +8,18 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import androidx.annotation.CallSuper;
+import androidx.leanback.media.MediaPlayerAdapter;
+import androidx.leanback.media.PlaybackGlue;
+import androidx.leanback.media.PlaybackGlueHost;
+import androidx.leanback.media.PlayerAdapter;
 import androidx.leanback.widget.Action;
 import androidx.leanback.widget.ArrayObjectAdapter;
-import androidx.leanback.widget.ControlButtonPresenterSelector;
 import androidx.leanback.widget.OnActionClickedListener;
 import androidx.leanback.widget.PlaybackControlsRow;
 import androidx.leanback.widget.PlaybackRowPresenter;
 import androidx.leanback.widget.PlaybackTransportRowPresenter;
 import androidx.leanback.widget.Presenter;
+import androidx.leanback.widget.ControlButtonPresenterSelector;
 
 import java.util.List;
 
@@ -105,6 +107,7 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
     boolean mIsPlaying = false;
     boolean mFadeWhenPlaying = true;
 
+    CharSequence mBody;
     CharSequence mSubtitle;
     CharSequence mTitle;
     Drawable mCover;
@@ -116,6 +119,7 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
     boolean mErrorSet = false;
     int mErrorCode;
     String mErrorMessage;
+    boolean mIsControlsVisible;
 
     final PlayerAdapter.Callback mAdapterCallback = new PlayerAdapter
             .Callback() {
@@ -312,15 +316,13 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
         mControlsRow.setDuration(-1);
         mControlsRow.setBufferedPosition(-1);
         if (mControlsRow.getPrimaryActionsAdapter() == null) {
-            ArrayObjectAdapter adapter = new ArrayObjectAdapter(
-                    new ControlButtonPresenterSelector());
+            ArrayObjectAdapter adapter = new ArrayObjectAdapter(new ControlButtonPresenterSelector(true));
             onCreatePrimaryActions(adapter);
             mControlsRow.setPrimaryActionsAdapter(adapter);
         }
         // Add secondary actions
         if (mControlsRow.getSecondaryActionsAdapter() == null) {
-            ArrayObjectAdapter secondaryActions = new ArrayObjectAdapter(
-                    new ControlButtonPresenterSelector());
+            ArrayObjectAdapter secondaryActions = new ArrayObjectAdapter(new ControlButtonPresenterSelector(true));
             onCreateSecondaryActions(secondaryActions);
             getControlsRow().setSecondaryActionsAdapter(secondaryActions);
         }
@@ -414,8 +416,33 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
     protected void onCreateSecondaryActions(ArrayObjectAdapter secondaryActionsAdapter) {
     }
 
+    // MOD: fix frame drops: don't update progress too often
+
+    protected void onUpdateControlsVisibility() {
+        if (mIsControlsVisible) {
+            updateProgress();
+            updateBufferedProgress();
+        }
+    }
+
+    public void setControlsVisibility(boolean show) {
+        mIsControlsVisible = show;
+
+        onUpdateControlsVisibility();
+    }
+
+    public boolean isControlsVisible() {
+        return mIsControlsVisible;
+    }
+
     @CallSuper
     protected void onUpdateProgress() {
+        if (mIsControlsVisible) {
+            updateProgress();
+        }
+    }
+
+    private void updateProgress() {
         if (mControlsRow != null) {
             mControlsRow.setCurrentPosition(mPlayerAdapter.isPrepared()
                     ? getCurrentPosition() : -1);
@@ -424,6 +451,12 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
 
     @CallSuper
     protected void onUpdateBufferedProgress() {
+        if (mIsControlsVisible) {
+            updateBufferedProgress();
+        }
+    }
+
+    private void updateBufferedProgress() {
         if (mControlsRow != null) {
             mControlsRow.setBufferedPosition(mPlayerAdapter.getBufferedPosition());
         }
@@ -499,6 +532,28 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
      */
     public Drawable getArt() {
         return mCover;
+    }
+
+    /**
+     * Sets the media body (located under subtitle). The body will be rendered by default description presenter
+     * {@link PlaybackTransportRowPresenter#setDescriptionPresenter(Presenter)}.
+     * @param body Body to set.
+     */
+    public void setBody(CharSequence body) {
+        if (TextUtils.equals(body, mBody)) {
+            return;
+        }
+        mBody = body;
+        if (getHost() != null) {
+            getHost().notifyPlaybackRowChanged();
+        }
+    }
+
+    /**
+     * Return The media body (located under subtitle).
+     */
+    public CharSequence getBody() {
+        return mBody;
     }
 
     /**

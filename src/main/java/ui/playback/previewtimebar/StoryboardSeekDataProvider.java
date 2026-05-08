@@ -4,7 +4,7 @@ import android.content.Context;
 import androidx.leanback.media.PlaybackGlue;
 import androidx.leanback.widget.PlaybackSeekDataProvider;
 import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.ui.mod.leanback.playerglue.framedrops.PlaybackTransportControlGlue;
+import androidx.leanback.media.PlaybackTransportControlGlue;
 
 public class StoryboardSeekDataProvider extends PlaybackSeekDataProvider {
     private final StoryboardManager mStoryboardManager;

@@ -1,4 +1,3 @@
-
 package androidx.leanback.widget;
 
 import android.text.TextUtils;
@@ -8,8 +7,12 @@ import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.leanback.R;
+import androidx.leanback.widget.Action;
+import androidx.leanback.widget.PlaybackControlsRow;
+import androidx.leanback.widget.Presenter;
+import androidx.leanback.widget.PresenterSelector;
+//import SmartTubeApp.ui.playback.actions.PaddingAction;
 
 /**
  * Displays primary and secondary controls for a {@link PlaybackControlsRow}.
@@ -17,12 +20,15 @@ import androidx.leanback.R;
  * Binds to items of type {@link Action}.
  */
 public class ControlButtonPresenterSelector extends PresenterSelector {
-
-    private final Presenter mPrimaryPresenter =
+    private final ControlButtonPresenter mPrimaryPresenter =
             new ControlButtonPresenter(R.layout.lb_control_button_primary);
-    private final Presenter mSecondaryPresenter =
+    private final ControlButtonPresenter mSecondaryPresenter =
             new ControlButtonPresenter(R.layout.lb_control_button_secondary);
     private final Presenter[] mPresenters = new Presenter[]{mPrimaryPresenter};
+
+    public ControlButtonPresenterSelector(boolean tooltipsEnabled) {
+        mPrimaryPresenter.tooltipsEnabled = mSecondaryPresenter.tooltipsEnabled = tooltipsEnabled;
+    }
 
     /**
      * Returns the presenter for primary controls.
@@ -64,8 +70,9 @@ public class ControlButtonPresenterSelector extends PresenterSelector {
         }
     }
 
-    static class ControlButtonPresenter extends Presenter {
+    public static class ControlButtonPresenter extends Presenter {
         private int mLayoutResourceId;
+        private boolean tooltipsEnabled;
 
         ControlButtonPresenter(int layoutResourceId) {
             mLayoutResourceId = layoutResourceId;
@@ -78,11 +85,23 @@ public class ControlButtonPresenterSelector extends PresenterSelector {
             return new ActionViewHolder(v);
         }
 
+        // Used inside: SmartTubeApp.ui.mod.leanback.playerglue.tweaks.ControlBarPresenter.ViewHolder.bindControlToAction()
+        // Restore focus: SmartTubeApp.ui.mod.leanback.playerglue.tweaks.ControlBar.onRequestFocusInDescendants()
         @Override
-        public void onBindViewHolder(Presenter.ViewHolder viewHolder, Object item) {
+        public void onBindViewHolder(ViewHolder viewHolder, Object item) {
             Action action = (Action) item;
             ActionViewHolder vh = (ActionViewHolder) viewHolder;
+
             vh.mIcon.setImageDrawable(action.getIcon());
+            
+            /* TODO: Uncomment once merged with main app
+            if (action instanceof PaddingAction) {
+                int padding = ((PaddingAction) action).getPadding();
+                if (padding > 0) {
+                    vh.mIcon.setPadding(padding, padding, padding, padding);
+                }
+            }*/
+            
             if (vh.mLabel != null) {
                 if (action.getIcon() == null) {
                     vh.mLabel.setText(action.getLabel1());
@@ -90,17 +109,25 @@ public class ControlButtonPresenterSelector extends PresenterSelector {
                     vh.mLabel.setText(null);
                 }
             }
+            
             CharSequence contentDescription = TextUtils.isEmpty(action.getLabel2())
                     ? action.getLabel1() : action.getLabel2();
+            
             if (!TextUtils.equals(vh.mFocusableView.getContentDescription(), contentDescription)) {
+
                 vh.mFocusableView.setContentDescription(contentDescription);
-                vh.mFocusableView.sendAccessibilityEvent(
-                        AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
+                vh.mFocusableView.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
+
+                /* TODO: Uncomment once merged with main app
+                if (tooltipsEnabled) {
+                    TooltipCompatHandler.setTooltipText(vh.mFocusableView, action.getLabel1());
+                }*/
+
             }
         }
 
         @Override
-        public void onUnbindViewHolder(Presenter.ViewHolder viewHolder) {
+        public void onUnbindViewHolder(ViewHolder viewHolder) {
             ActionViewHolder vh = (ActionViewHolder) viewHolder;
             vh.mIcon.setImageDrawable(null);
             if (vh.mLabel != null) {
@@ -110,9 +137,14 @@ public class ControlButtonPresenterSelector extends PresenterSelector {
         }
 
         @Override
-        public void setOnClickListener(Presenter.ViewHolder viewHolder,
-                View.OnClickListener listener) {
+        public void setOnClickListener(ViewHolder viewHolder,
+                                       View.OnClickListener listener) {
             ((ActionViewHolder) viewHolder).mFocusableView.setOnClickListener(listener);
+        }
+
+        public void setOnLongClickListener(ViewHolder viewHolder,
+                                       View.OnLongClickListener listener) {
+            ((ActionViewHolder) viewHolder).mFocusableView.setOnLongClickListener(listener);
         }
     }
 }

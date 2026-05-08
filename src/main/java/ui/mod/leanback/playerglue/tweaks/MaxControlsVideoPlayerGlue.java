@@ -8,13 +8,13 @@ import androidx.leanback.media.PlayerAdapter;
 import androidx.leanback.widget.AbstractDetailsDescriptionPresenter;
 import androidx.leanback.widget.PlaybackControlsRow;
 import androidx.leanback.widget.PlaybackRowPresenter;
+import androidx.leanback.media.PlaybackBaseControlGlue;
 import androidx.leanback.widget.RowPresenter;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.models.playback.ui.SeekBarSegment;
 import SmartTubeApp.exoplayer.controller.PlayerView;
-import SmartTubeApp.ui.mod.leanback.playerglue.framedrops.PlaybackBaseControlGlue;
-import SmartTubeApp.ui.mod.leanback.playerglue.framedrops.PlaybackTransportControlGlue;
+import androidx.leanback.media.PlaybackTransportControlGlue;
 import SmartTubeApp.ui.mod.leanback.playerglue.tweaks.PlaybackTransportRowPresenter.TopEdgeFocusListener;
 import SmartTubeApp.ui.mod.leanback.playerglue.tweaks.PlaybackTransportRowPresenter.ViewHolder;
 

@@ -332,10 +332,9 @@ public abstract class PlaybackControlGlue extends PlaybackGlue
     public void setControlsRow(PlaybackControlsRow controlsRow) {
         mControlsRow = controlsRow;
         mControlsRow.setPrimaryActionsAdapter(
-                createPrimaryActionsAdapter(new ControlButtonPresenterSelector()));
+                createPrimaryActionsAdapter(new ControlButtonPresenterSelector(true)));
         // Add secondary actions
-        ArrayObjectAdapter secondaryActions = new ArrayObjectAdapter(
-                new ControlButtonPresenterSelector());
+        ArrayObjectAdapter secondaryActions = new ArrayObjectAdapter(new ControlButtonPresenterSelector(true));
         onCreateSecondaryActions(secondaryActions);
         getControlsRow().setSecondaryActionsAdapter(secondaryActions);
         updateControlsRow();
