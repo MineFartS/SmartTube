@@ -12,8 +12,8 @@ import com.liskovsoft.sharedutils.helpers.DeviceHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.locale.LocaleUtility;
 import SmartTubeApp.R;
-import SmartTubeApp.app.models.playback.manager.PlayerEngine;
-import SmartTubeApp.app.models.playback.manager.PlayerConstants;
+import SmartTubeApp.app.models.playback.PlayerEngine;
+import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.exoplayer.other.SubtitleManager.SubtitleStyle;
 import SmartTubeApp.exoplayer.selector.ExoFormatItem;
 import SmartTubeApp.exoplayer.selector.FormatItem;
@@ -27,8 +27,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PlayerData extends DataChangeBase implements PlayerConstants, ProfileChangeListener {
+public class PlayerData extends DataChangeBase implements PlayerEngine, ProfileChangeListener {
+
     private static final String VIDEO_PLAYER_DATA = "video_player_data";
+
     public static final int ONLY_UI = 0;
     public static final int UI_AND_PAUSE = 1;
     public static final int ONLY_PAUSE = 2;
@@ -291,7 +293,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         persistState();
     }
 
-    public float getSpeed() {
+    public Float getSpeed() {
         return getSpeed(null);
     }
 
@@ -299,7 +301,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         setSpeed(null, speed);
     }
 
-    public float getSpeed(String channelId) {
+    public Float getSpeed(String channelId) {
         SpeedItem speed = null;
 
         if (isSpeedPerChannelEnabled() && channelId != null) {
@@ -511,7 +513,7 @@ public class PlayerData extends DataChangeBase implements PlayerConstants, Profi
         /* 21 */ mLastSubtitleFormats = Helpers.parseList(split, 21, ExoFormatItem::from);
         /* 22 */ mLastSpeed = Helpers.parseFloat(split, 22, 1.0f);
 
-        /* 25 */ mPlaybackMode = Helpers.parseInt(split, 25, PlayerConstants.PLAYBACK_MODE_ALL);
+        /* 25 */ mPlaybackMode = Helpers.parseInt(split, 25, PlayerEngine.PLAYBACK_MODE_ALL);
         /* 26 */ mAudioLanguage = Helpers.parseStr(split, 26, LocaleUtility.getCurrentLanguage(mPrefs.getContext()));
         /* 27 */ mSubtitleLanguage = Helpers.parseStr(split, 27, LocaleUtility.getCurrentLanguage(mPrefs.getContext()));
         /* 28 */ mIsSpeedPerChannelEnabled = Helpers.parseBoolean(split, 28, true);

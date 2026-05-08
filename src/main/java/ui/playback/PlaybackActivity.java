@@ -12,9 +12,9 @@ import androidx.fragment.app.Fragment;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.app.models.playback.manager.PlayerEngine;
+import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.app.presenters.AppDialogPresenter;
-import SmartTubeApp.app.views.PlaybackView;
+import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.prefs.GeneralData;
 import SmartTubeApp.prefs.MainUIData;
 import SmartTubeApp.prefs.PlayerData;
@@ -110,7 +110,7 @@ public class PlaybackActivity extends LeanbackActivity {
             gamepadTriggerPressed = false;
         } else if ((event.getSource() & InputDevice.SOURCE_CLASS_POINTER) != 0 && event.getAction() == MotionEvent.ACTION_SCROLL) {
             // mouse wheel handling
-            Utils.volumeUp(this, getPlaybackView(), event.getAxisValue(MotionEvent.AXIS_VSCROLL) < 0.0f);
+            Utils.volumeUp(this, getPlayerEngine(), event.getAxisValue(MotionEvent.AXIS_VSCROLL) < 0.0f);
             return true;
         }
         return super.onGenericMotionEvent(event);
@@ -273,7 +273,7 @@ public class PlaybackActivity extends LeanbackActivity {
         return isInPictureInPictureMode();
     }
 
-    public PlaybackView getPlaybackView() {
+    public PlayerEngine getPlayerEngine() {
         return mPlaybackFragment;
     }
 

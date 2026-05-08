@@ -11,7 +11,7 @@ import SmartTubeApp.app.views.AppDialogView;
 import SmartTubeApp.app.views.BrowseView;
 import SmartTubeApp.app.views.ChannelUploadsView;
 import SmartTubeApp.app.views.ChannelView;
-import SmartTubeApp.app.views.PlaybackView;
+import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.app.views.SearchView;
 import SmartTubeApp.app.views.SignInView;
 import SmartTubeApp.app.views.SplashView;
@@ -55,7 +55,7 @@ public class MainApplication extends MultiDexApplication { // fix: Didn't find c
 
         viewManager.register(BrowseView.class, BrowseActivity.class); // no parent, because it's root activity
 
-        viewManager.register(PlaybackView.class, PlaybackActivity.class, BrowseActivity.class);
+        viewManager.register(PlayerEngine.class, PlaybackActivity.class, BrowseActivity.class);
 
         viewManager.register(AppDialogView.class, AppDialogActivity.class, BrowseActivity.class);
 

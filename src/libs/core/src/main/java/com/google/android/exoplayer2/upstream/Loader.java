@@ -239,7 +239,7 @@ public final class Loader implements LoaderErrorThrower {
   /**
    * Returns whether the {@link Loader} is currently loading a {@link Loadable}.
    */
-  public boolean isLoading() {
+  public Boolean isLoading() {
     return currentTask != null;
   }
 

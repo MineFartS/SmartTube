@@ -12,7 +12,6 @@ import SmartTubeApp.R;
 import SmartTubeApp.app.models.data.Queue;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.models.playback.controllers.CommentsController;
-import SmartTubeApp.app.models.playback.manager.PlayerUI;
 import SmartTubeApp.app.models.playback.service.VideoStateService;
 import SmartTubeApp.app.models.playback.service.VideoStateService.State;
 import SmartTubeApp.app.models.playback.ui.UiOptionItem;
@@ -24,7 +23,6 @@ import SmartTubeApp.app.presenters.PlaybackPresenter;
 import SmartTubeApp.app.presenters.dialogs.menu.providers.ContextMenuManager;
 import SmartTubeApp.app.presenters.dialogs.menu.providers.ContextMenuProvider;
 import SmartTubeApp.app.views.ChannelUploadsView;
-import SmartTubeApp.app.views.PlaybackView;
 import SmartTubeApp.misc.MediaServiceManager;
 import SmartTubeApp.misc.StreamReminderService;
 import SmartTubeApp.prefs.GeneralData;
@@ -524,7 +522,7 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
                             MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
                             mServiceManager.loadMetadata(mVideo, metadata -> {
                                 CommentsController controller = new CommentsController(getContext(), metadata);
-                                controller.onButtonClicked(R.id.action_chat, PlayerUI.BUTTON_ON);
+                                controller.onButtonClicked(R.id.action_chat, 1);
                             });
                         }
                 ));

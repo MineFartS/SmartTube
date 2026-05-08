@@ -4,7 +4,6 @@ import android.view.KeyEvent;
 
 import com.liskovsoft.sharedutils.helpers.KeyHelpers;
 import SmartTubeApp.app.presenters.PlaybackPresenter;
-import SmartTubeApp.app.views.PlaybackView;
 import SmartTubeApp.utils.Utils;
 
 public class LongPressHandler {

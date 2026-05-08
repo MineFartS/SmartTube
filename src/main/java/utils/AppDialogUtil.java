@@ -22,8 +22,8 @@ import com.liskovsoft.sharedutils.rx.RxHelper;
 import SmartTubeApp.R;
 import SmartTubeApp.app.models.data.Queue;
 import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.models.playback.manager.PlayerConstants;
-import SmartTubeApp.app.models.playback.manager.PlayerManager;
+import SmartTubeApp.app.models.playback.PlayerEngine;
+import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.app.models.playback.ui.OptionCategory;
 import SmartTubeApp.app.models.playback.ui.OptionItem;
 import SmartTubeApp.app.models.playback.ui.UiOptionItem;
@@ -452,7 +452,7 @@ public class AppDialogUtil {
                 });
     }
 
-    public static OptionCategory createSpeedListCategory(Context context, PlayerManager playbackController) {
+    public static OptionCategory createSpeedListCategory(Context context, PlayerEngine playbackController) {
         PlayerData playerData = PlayerData.instance(context);
         List<OptionItem> items = new ArrayList<>();
 
@@ -530,13 +530,13 @@ public class AppDialogUtil {
         List<OptionItem> options = new ArrayList<>();
 
         for (int[] pair : new int[][] {
-                {R.string.repeat_mode_all, PlayerConstants.PLAYBACK_MODE_ALL},
-                {R.string.repeat_mode_one, PlayerConstants.PLAYBACK_MODE_ONE},
-                {R.string.repeat_mode_shuffle, PlayerConstants.PLAYBACK_MODE_SHUFFLE},
-                {R.string.repeat_mode_pause_alt, PlayerConstants.PLAYBACK_MODE_LIST},
-                {R.string.repeat_mode_reverse_list, PlayerConstants.PLAYBACK_MODE_REVERSE_LIST},
-                {R.string.repeat_mode_pause, PlayerConstants.PLAYBACK_MODE_PAUSE},
-                {R.string.repeat_mode_none, PlayerConstants.PLAYBACK_MODE_CLOSE}
+                {R.string.repeat_mode_all, PlayerEngine.PLAYBACK_MODE_ALL},
+                {R.string.repeat_mode_one, PlayerEngine.PLAYBACK_MODE_ONE},
+                {R.string.repeat_mode_shuffle, PlayerEngine.PLAYBACK_MODE_SHUFFLE},
+                {R.string.repeat_mode_pause_alt, PlayerEngine.PLAYBACK_MODE_LIST},
+                {R.string.repeat_mode_reverse_list, PlayerEngine.PLAYBACK_MODE_REVERSE_LIST},
+                {R.string.repeat_mode_pause, PlayerEngine.PLAYBACK_MODE_PAUSE},
+                {R.string.repeat_mode_none, PlayerEngine.PLAYBACK_MODE_CLOSE}
         }) {
             options.add(UiOptionItem.from(context.getString(pair[0]),
                     optionItem -> {

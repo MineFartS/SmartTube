@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import com.liskovsoft.sharedutils.helpers.KeyHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import SmartTubeApp.app.presenters.PlaybackPresenter;
-import SmartTubeApp.app.views.PlaybackView;
+import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.app.views.ViewManager;
 import SmartTubeApp.misc.GlobalKeyTranslator;
 import SmartTubeApp.misc.PlayerKeyTranslator;
@@ -60,7 +60,7 @@ public class AppDialogActivity extends MotherActivity {
             if (event.getAction() == KeyEvent.ACTION_DOWN) {
                 finish();
             }
-            PlaybackView view = PlaybackPresenter.instance(this).getView();
+            PlayerEngine view = PlaybackPresenter.instance(this).getView();
             if (view instanceof Fragment) {
                 Activity activity = ((Fragment) view).getActivity();
                 if (activity != null) {
@@ -90,7 +90,7 @@ public class AppDialogActivity extends MotherActivity {
         super.onUserLeaveHint();
 
         // Respect PIP mode
-        if (ViewManager.instance(this).getTopView() == PlaybackView.class && PlaybackPresenter.instance(this).getContext() instanceof PlaybackActivity) {
+        if (ViewManager.instance(this).getTopView() == PlayerEngine.class && PlaybackPresenter.instance(this).getContext() instanceof PlaybackActivity) {
             ((PlaybackActivity) PlaybackPresenter.instance(this).getContext()).onUserLeaveHint();
         }
 

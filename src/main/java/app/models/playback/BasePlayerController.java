@@ -19,7 +19,7 @@ import SmartTubeApp.app.models.playback.service.VideoStateService;
 import SmartTubeApp.app.presenters.AppDialogPresenter;
 import SmartTubeApp.app.presenters.PlaybackPresenter;
 import SmartTubeApp.app.presenters.SearchPresenter;
-import SmartTubeApp.app.views.PlaybackView;
+import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.app.views.ViewManager;
 import SmartTubeApp.exoplayer.selector.FormatItem;
 import SmartTubeApp.exoplayer.selector.TrackSelectorUtil;
@@ -53,7 +53,7 @@ public abstract class BasePlayerController implements PlayerEventListener {
     }
 
     @Nullable
-    public PlaybackView getPlayer() {
+    public PlayerEngine getPlayer() {
         return mMainController != null ? mMainController.getPlayer() : null;
     }
 

@@ -52,11 +52,10 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import SmartTubeApp.app.models.data.Video;
 import SmartTubeApp.app.models.data.VideoGroup;
-import SmartTubeApp.app.models.playback.manager.PlayerUI;
 import SmartTubeApp.app.models.playback.ui.ChatReceiver;
 import SmartTubeApp.app.models.playback.ui.SeekBarSegment;
 import SmartTubeApp.app.presenters.PlaybackPresenter;
-import SmartTubeApp.app.views.PlaybackView;
+import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.exoplayer.controller.ExoPlayerController;
 import SmartTubeApp.exoplayer.other.ExoPlayerInitializer;
 import SmartTubeApp.exoplayer.other.SubtitleManager;
@@ -93,7 +92,7 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class PlaybackFragment extends SurfacePlaybackFragment implements PlaybackView {
+public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerEngine {
 
     private static final String TAG = PlaybackFragment.class.getSimpleName();
 
@@ -897,7 +896,7 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements Playbac
     }
 
     @Override
-    public long getPositionMs() {
+    public Long getPositionMs() {
         return mExoPlayerController.getPositionMs();
     }
 
@@ -907,7 +906,7 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements Playbac
     }
 
     @Override
-    public long getDurationMs() {
+    public Long getDurationMs() {
         long durationMs = mExoPlayerController.getDurationMs();
 
         long liveDurationMs = getVideo() != null ? getVideo().getLiveDurationMs() : 0;
@@ -925,17 +924,17 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements Playbac
     }
 
     @Override
-    public boolean getPlayWhenReady() {
+    public Boolean getPlayWhenReady() {
         return mExoPlayerController.getPlayWhenReady();
     }
 
     @Override
-    public boolean isPlaying() {
+    public Boolean isPlaying() {
         return mExoPlayerController.isPlaying();
     }
 
     @Override
-    public boolean isLoading() {
+    public Boolean isLoading() {
         return mExoPlayerController.isLoading();
     }
 
@@ -976,7 +975,7 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements Playbac
     }
 
     @Override
-    public boolean isEngineInitialized() {
+    public Boolean isEngineInitialized() {
         return mPlayer != null;
     }
 
@@ -986,12 +985,12 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements Playbac
     }
 
     @Override
-    public boolean isEngineBlocked() {
+    public Boolean isEngineBlocked() {
         return mIsEngineBlocked;
     }
 
     @Override
-    public boolean isInPIPMode() {
+    public Boolean isInPIPMode() {
         PlaybackActivity playbackActivity = (PlaybackActivity) getActivity();
 
         if (playbackActivity == null) {
@@ -1003,12 +1002,12 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements Playbac
     }
 
     @Override
-    public boolean containsMedia() {
+    public Boolean containsMedia() {
         return mExoPlayerController.containsMedia();
     }
 
     @Override
-    public float getSpeed() {
+    public Float getSpeed() {
         return mExoPlayerController.getSpeed();
     }
 
@@ -1016,11 +1015,11 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements Playbac
     public void setSpeed(float speed) {
         mExoPlayerController.setSpeed(speed);
         // NOTE: Real speed isn't changed immediately, so use supplied speed data
-        setButtonState(R.id.action_video_speed, speed != 1.0f ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
+        setButtonState(R.id.action_video_speed, speed != 1.0f ? 1 : 0);
     }
 
     @Override
-    public float getVolume() {
+    public Float getVolume() {
         return mExoPlayerController.getVolume();
     }
 
@@ -1082,17 +1081,17 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements Playbac
     }
 
     @Override
-    public boolean isOverlayShown() {
+    public Boolean isOverlayShown() {
         return isControlsOverlayVisible();
     }
 
     @Override
-    public boolean isSuggestionsShown() {
+    public Boolean isSuggestionsShown() {
         return isControlsOverlayVisible() && getPlayerRowIndex() != 0;
     }
 
     @Override
-    public boolean isControlsShown() {
+    public Boolean isControlsShown() {
         return isControlsOverlayVisible() && getPlayerRowIndex() == 0;
     }
 
@@ -1298,7 +1297,7 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements Playbac
     }
 
     @Override
-    public int getSuggestionsIndex(VideoGroup group) {
+    public Integer getSuggestionsIndex(VideoGroup group) {
         if (mRowsAdapter == null) {
             Log.e(TAG, "Related videos row not initialized yet.");
             return -1;
@@ -1417,7 +1416,7 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements Playbac
     }
 
     @Override
-    public boolean isSuggestionsEmpty() {
+    public Boolean isSuggestionsEmpty() {
         // Ignore first row. It's player controls row.
         return mRowsAdapter == null || mRowsAdapter.size() <= SUGGESTIONS_START_INDEX;
     }
@@ -1459,7 +1458,7 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements Playbac
     }
 
     @Override
-    public boolean isEmbed() {
+    public Boolean isEmbed() {
         return false;
     }
 

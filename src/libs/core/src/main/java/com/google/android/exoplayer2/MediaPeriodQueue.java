@@ -73,7 +73,7 @@ import com.google.android.exoplayer2.util.Assertions;
   }
 
   /** Returns whether {@code mediaPeriod} is the current loading media period. */
-  public boolean isLoading(MediaPeriod mediaPeriod) {
+  public Boolean isLoading(MediaPeriod mediaPeriod) {
     return loading != null && loading.mediaPeriod == mediaPeriod;
   }
 

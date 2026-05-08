@@ -11,7 +11,7 @@ import SmartTubeApp.app.models.playback.ui.UiOptionItem;
 import SmartTubeApp.app.presenters.AppDialogPresenter;
 import SmartTubeApp.app.presenters.PlaybackPresenter;
 import SmartTubeApp.app.presenters.base.BasePresenter;
-import SmartTubeApp.app.views.PlaybackView;
+import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.misc.MediaServiceManager;
 import SmartTubeApp.prefs.ContentBlockData;
 import SmartTubeApp.utils.AppDialogUtil;
@@ -62,7 +62,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
         
         Video video = null;
 
-        if (getViewManager().getTopView() == PlaybackView.class) {
+        if (getViewManager().getTopView() == PlayerEngine.class) {
             video = PlaybackPresenter.instance(getContext()).getVideo();
         }
 
@@ -182,7 +182,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
     private void appendExcludeChannelButton(AppDialogPresenter settingsPresenter) {
         Video video = PlaybackPresenter.instance(getContext()).getVideo();
 
-        if (video == null || getViewManager().getTopView() != PlaybackView.class) {
+        if (video == null || getViewManager().getTopView() != PlayerEngine.class) {
             return;
         }
 
