@@ -21,6 +21,7 @@ import SmartTubeApp.misc.BrowseProcessorManager;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import SmartTubeApp.utils.LoadingManager;
 import com.liskovsoft.sharedutils.browse.v2.BrowseService2;
+import SmartTubeApp.misc.ServiceManager;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -196,7 +197,7 @@ public class ChannelPresenter extends BasePresenter<ChannelView> implements Vide
 
     private void disposeActions() {
         RxHelper.disposeActions(mUpdateAction, mScrollAction);
-        getServiceManager().disposeActions();
+        ServiceManager.disposeActions();
         mSortIdx = 0;
         mBrowseProcessor.dispose();
     }
@@ -223,7 +224,7 @@ public class ChannelPresenter extends BasePresenter<ChannelView> implements Vide
     }
 
     public void updateRows(List<MediaGroup> mediaGroups) {
-        if (getView() == null) { // starting from outside (e.g. MediaServiceManager)
+        if (getView() == null) { // starting from outside (e.g. ServiceManager)
             mChannelId = null;
             mPendingGroups.add(mediaGroups);
             getViewManager().startView(ChannelView.class);
@@ -302,7 +303,7 @@ public class ChannelPresenter extends BasePresenter<ChannelView> implements Vide
             } else if (item.videoId != null) {
                 LoadingManager.showLoading(getContext(), true);
                 //MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
-                getServiceManager().loadMetadata(item, metadata -> {
+                ServiceManager.loadMetadata(item, metadata -> {
                     LoadingManager.showLoading(getContext(), false);
                     callback.onChannelId(metadata.getChannelId());
                     item.channelId = metadata.getChannelId();

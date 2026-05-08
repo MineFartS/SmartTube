@@ -3,11 +3,10 @@ package SmartTubeApp.app.presenters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.liskovsoft.sharedutils.ServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import SmartTubeApp.app.presenters.dialogs.AccountSelectionPresenter;
-import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 
 import io.reactivex.disposables.Disposable;
 
@@ -17,12 +16,10 @@ public class YTSignInPresenter extends SignInPresenter {
     
     @SuppressLint("StaticFieldLeak")
     private static YTSignInPresenter sInstance;
-    private final ServiceManager mService;
     private Disposable mSignInAction;
 
     private YTSignInPresenter(Context context) {
         super(context);
-        mService = YouTubeServiceManager.instance();
     }
 
     public static YTSignInPresenter instance(Context context) {
@@ -61,7 +58,7 @@ public class YTSignInPresenter extends SignInPresenter {
     }
 
     private void updateUserCode() {
-        mSignInAction = mService.getSignInService().signInObserve().subscribe(
+        mSignInAction = ServiceManager.getSignInService().signInObserve().subscribe(
             userCode -> getView().showCode(userCode, "https://youtube.com/tv/activate"),
             error -> {
                 Log.e(TAG, "Sign in error: %s", error.getMessage());

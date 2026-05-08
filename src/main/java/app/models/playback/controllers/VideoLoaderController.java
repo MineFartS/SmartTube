@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.util.Pair;
 
 import com.liskovsoft.sharedutils.MediaItemService;
-import com.liskovsoft.sharedutils.ServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import com.liskovsoft.sharedutils.data.MediaFormat;
 import com.liskovsoft.sharedutils.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.data.MediaItemMetadata;
@@ -24,11 +24,9 @@ import SmartTubeApp.app.presenters.AppDialogPresenter;
 import SmartTubeApp.app.presenters.dialogs.VideoActionPresenter;
 import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.exoplayer.selector.FormatItem;
-import SmartTubeApp.misc.MediaServiceManager;
 import SmartTubeApp.prefs.PlayerData;
 import SmartTubeApp.prefs.PlayerTweaksData;
 import SmartTubeApp.utils.Utils;
-import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 
 import io.reactivex.disposables.Disposable;
 
@@ -127,7 +125,7 @@ public class VideoLoaderController extends BasePlayerController {
             getMainController().onPlayEnd();
         } else if (!getVideo().isLive && !getVideo().isLiveEnd) {
             MessageHelpers.showLongMessage(getContext(), R.string.playback_buffering_fix);
-            YouTubeServiceManager.instance().invalidateCache();
+            ServiceManager.invalidateCache();
             restartEngine();
         }
     }
@@ -298,8 +296,7 @@ private void loadFormatInfo(Video video) {
         getPlayer().showProgressBar(true);
         disposeActions();
 
-        ServiceManager service = YouTubeServiceManager.instance();
-        MediaItemService mediaItemManager = service.getMediaItemService();
+        MediaItemService mediaItemManager = ServiceManager.getMediaItemService();
         
         mFormatInfoAction = mediaItemManager.getFormatInfoObserve(video.videoId)
             .subscribe(
@@ -420,7 +417,7 @@ private void loadFormatInfo(Video video) {
 
     private void disposeActions() {
         mBufferingCount = null;
-        MediaServiceManager.instance().disposeActions();
+        ServiceManager.disposeActions();
         RxHelper.disposeActions(mFormatInfoAction, mMpdStreamAction);
         Utils.removeCallbacks(mReloadVideo, mLoadNext, mRestartEngine, mMetadataSync, mOnLongBuffering, mRebootApp);
     }
@@ -444,10 +441,10 @@ private void loadFormatInfo(Video video) {
 
         if (Helpers.containsAny(message, "Unexpected token", "Syntax error", "invalid argument") || // temporal fix
                 Helpers.equalsAny(className, "PoTokenException", "BadWebViewException")) {
-            YouTubeServiceManager.instance().applyNoPlaybackFix();
+            ServiceManager.applyNoPlaybackFix();
             reloadVideo();
         } else if (Helpers.containsAny(message, "is not defined")) {
-            YouTubeServiceManager.instance().invalidateCache();
+            ServiceManager.invalidateCache();
             reloadVideo();
         } else {
             Log.e(TAG, "Probably no internet connection");
@@ -512,7 +509,7 @@ private void loadFormatInfo(Video video) {
             // "Unexpected ArrayIndexOutOfBoundsException", "Unexpected IndexOutOfBoundsException"
             if (Helpers.startsWithAny(errorContent, "Response code: 403")) {
             
-                YouTubeServiceManager.instance().applyNoPlaybackFix();
+                ServiceManager.applyNoPlaybackFix();
             
             } else if (getPlayer() != null && !FormatItem.SUBTITLE_NONE.equals(getPlayer().getSubtitleFormat())) {
             
@@ -520,7 +517,7 @@ private void loadFormatInfo(Video video) {
             
             } else {
             
-                YouTubeServiceManager.instance().applyNoPlaybackFix(); // Response code: 403
+                ServiceManager.applyNoPlaybackFix(); // Response code: 403
             
             }
             
@@ -739,7 +736,7 @@ private void loadFormatInfo(Video video) {
     }
 
     private void loadRandomNext() {
-        MediaServiceManager.instance().disposeActions();
+        ServiceManager.disposeActions();
 
         if (getPlayer() == null || getPlayerData() == null || getVideo() == null || getVideo().playlistInfo == null ||
                 getPlayerData().getPlaybackMode() != PlayerEngine.PLAYBACK_MODE_SHUFFLE) {
@@ -750,7 +747,7 @@ private void loadFormatInfo(Video video) {
             Video video = new Video();
             video.playlistId = getVideo().playlistId;
             video.playlistIndex = Utils.getRandomIndex(getVideo().playlistInfo.getCurrentIndex(), getVideo().playlistInfo.getSize());
-            MediaServiceManager.instance().loadMetadata(video, randomMetadata -> {
+            ServiceManager.loadMetadata(video, randomMetadata -> {
                 if (randomMetadata.getNextVideo() == null) {
                     return;
                 }

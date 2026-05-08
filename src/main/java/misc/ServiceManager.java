@@ -3,6 +3,14 @@ package SmartTubeApp.misc;
 import android.content.Context;
 import android.util.Pair;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.liskovsoft.sharedutils.service.YouTubeSignInService;
+import com.liskovsoft.sharedutils.service.YouTubeRemoteControlService;
+import com.liskovsoft.sharedutils.service.YouTubeLiveChatService;
+import com.liskovsoft.sharedutils.service.YouTubeCommentsService;
+import com.liskovsoft.sharedutils.service.YouTubeNotificationsService;
 import com.liskovsoft.sharedutils.videoinfo.models.VideoInfo;
 import com.liskovsoft.googleapi.oauth2.manager.OAuth2AccountManager;
 import com.liskovsoft.sharedutils.videoinfo.V2.VideoInfoService;
@@ -11,7 +19,6 @@ import com.liskovsoft.sharedutils.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.sharedutils.service.YouTubeMediaItemService;
 import com.liskovsoft.sharedutils.service.ContentService;
 import com.liskovsoft.sharedutils.MediaItemService;
-import com.liskovsoft.sharedutils.ServiceManager;
 import com.liskovsoft.sharedutils.NotificationsService;
 import com.liskovsoft.sharedutils.SignInService;
 import com.liskovsoft.sharedutils.SignInService.OnAccountChange;
@@ -37,10 +44,16 @@ import SmartTubeApp.prefs.AppPrefs;
 import SmartTubeApp.prefs.MainUIData;
 import SmartTubeApp.utils.LoadingManager;
 import SmartTubeApp.utils.Utils;
-import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 import com.liskovsoft.sharedutils.playlist.PlaylistService;
 import com.liskovsoft.sharedutils.okhttp.ApiCaller;
 import com.liskovsoft.sharedutils.app.AppService;
+import com.liskovsoft.sharedutils.ChannelGroupService;
+import com.liskovsoft.sharedutils.CommentsService;
+import com.liskovsoft.sharedutils.LiveChatService;
+import com.liskovsoft.sharedutils.MediaItemService;
+import com.liskovsoft.sharedutils.RemoteControlService;
+import com.liskovsoft.sharedutils.channelgroups.ChannelGroupServiceImpl;
+import com.liskovsoft.googlecommon.common.locale.LocaleManager;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -51,101 +64,62 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MediaServiceManager implements OnAccountChange {
+public class ServiceManager {
 
-    private static final String TAG = MediaServiceManager.class.getSimpleName();
-    
-    private static MediaServiceManager sInstance;
-    
-    private final MediaItemService mItemService;
-    private final ContentService mContentService;
-    private final SignInService mSignInService;
-    private final NotificationsService mNotificationsService;
-    private final PlaylistService mPlaylistService;
-    private final YouTubeMediaItemService mYTMediaItemService;
-    private final VideoInfoService mVideoInfoService;
-    private final OAuth2AccountManager mAccountManager;
-    private final AppService mAppService;
+    private static final String TAG = ServiceManager.class.getSimpleName();
 
-    private Disposable mMetadataAction;
-    private Disposable mUploadsAction;
-    private Disposable mRowsAction;
-    private Disposable mSubscribedChannelsAction;
-    private Disposable mFormatInfoAction;
-    private Disposable mPlaylistGroupAction;
-    private Disposable mPlaylistInfosAction;
+    private static Disposable mRefreshCoreDataAction;
+    private static Disposable mMetadataAction;
+    private static Disposable mUploadsAction;
+    private static Disposable mRowsAction;
+    private static Disposable mSubscribedChannelsAction;
+    private static Disposable mFormatInfoAction;
+    private static Disposable mPlaylistGroupAction;
+    private static Disposable mPlaylistInfosAction;
+
+    private static float mPositionSec;
+    private static String mVideoId;
     
     private static final int MIN_GRID_GROUP_SIZE = 13;
     private static final int MIN_ROW_GROUP_SIZE = 5;
 
-    private final Map<Integer, Pair<Integer, Long>> mContinuations = new HashMap<>();
-    private final List<AccountChangeListener> mAccountListeners = new CopyOnWriteArrayList<>();
+    private static final Map<Integer, Pair<Integer, Long>> mContinuations = new HashMap<>();
+    private static final List<AccountChangeListener> mAccountListeners = new CopyOnWriteArrayList<>();
 
-    private float mPositionSec;
-    private String mVideoId;
-
-    public interface OnMetadata {
+    public static interface OnMetadata {
         void onMetadata(MediaItemMetadata metadata);
     }
 
-    public interface OnMediaGroup {
+    public static interface OnMediaGroup {
         void onMediaGroup(MediaGroup group);
     }
 
-    public interface OnMediaGroupList {
+    public static interface OnMediaGroupList {
         void onMediaGroupList(List<MediaGroup> groupList);
     }
 
-    public interface OnFormatInfo {
+    public static interface OnFormatInfo {
         void onFormatInfo(MediaItemFormatInfo formatInfo);
     }
 
-    public interface OnAccountList {
+    public static interface OnAccountList {
         void onAccountList(List<Account> accountList);
     }
 
-    public interface OnPlaylistInfos {
+    public static interface OnPlaylistInfos {
         void onPlaylistInfos(List<PlaylistInfo> playlistInfos);
     }
 
-    public interface AccountChangeListener {
+    public static interface AccountChangeListener {
         void onAccountChanged(Account account);
     }
 
-    public interface OnError {
+    public static interface OnError {
         void onError(Throwable error);
     }
 
-    private MediaServiceManager() {
-
-        ServiceManager service = YouTubeServiceManager.instance();
-        
-        mItemService = service.getMediaItemService();
-        mContentService = service.getContentService();
-        mSignInService = service.getSignInService();
-        mNotificationsService = service.getNotificationsService();
-        mPlaylistService = new PlaylistService();
-        mYTMediaItemService = YouTubeMediaItemService.instance();
-        mAccountManager = OAuth2AccountManager.instance();
-        mVideoInfoService = VideoInfoService.instance();
-        mAppService = AppService.instance();
-
-        mSignInService.addOnAccountChange(this);
-
-    }
-
-    public static MediaServiceManager instance() {
-        if (sInstance == null) {
-            sInstance = new MediaServiceManager();
-        }
-
-        return sInstance;
-    }
-
-    public void loadMetadata(Video video, OnMetadata onMetadata) {
-        if (video == null) {
-            return;
-        }
+    public static void loadMetadata(Video video, OnMetadata onMetadata) {
+        if (video == null) return;
 
         RxHelper.disposeActions(mMetadataAction);
 
@@ -155,10 +129,10 @@ public class MediaServiceManager implements OnAccountChange {
         // Video might be loaded from Channels section (has playlistParams)
         if (video.mediaItem != null) {
             // Use additional data like playlist id
-            observable = mItemService.getMetadataObserve(video.mediaItem);
+            observable = getMediaItemService().getMetadataObserve(video.mediaItem);
         } else {
             // Simply load
-            observable = mItemService.getMetadataObserve(video.videoId, video.getPlaylistId(), video.playlistIndex, video.playlistParams);
+            observable = getMediaItemService().getMetadataObserve(video.videoId, video.getPlaylistId(), video.playlistIndex, video.playlistParams);
         }
 
         mMetadataAction = observable
@@ -171,16 +145,14 @@ public class MediaServiceManager implements OnAccountChange {
     /**
      * NOTE: Load suggestions from MediaItem isn't robust. Because playlistId may be initialized from RemoteControlManager.
      */
-    public void loadMetadata(MediaItem mediaItem, OnMetadata onMetadata) {
-        if (mediaItem == null) {
-            return;
-        }
+    public static void loadMetadata(MediaItem mediaItem, OnMetadata onMetadata) {
+        if (mediaItem == null) return;
 
         RxHelper.disposeActions(mMetadataAction);
 
         Observable<MediaItemMetadata> observable;
 
-        observable = mItemService.getMetadataObserve(mediaItem);
+        observable = getMediaItemService().getMetadataObserve(mediaItem);
 
         mMetadataAction = observable
                 .subscribe(
@@ -189,22 +161,18 @@ public class MediaServiceManager implements OnAccountChange {
                 );
     }
 
-    public void loadChannelUploads(Video item, OnMediaGroup onMediaGroup) {
-        if (item == null) {
-            return;
-        }
+    public static void loadChannelUploads(Video item, OnMediaGroup onMediaGroup) {
+        if (item == null) return;
 
         loadChannelUploads(item.mediaItem, onMediaGroup);
     }
 
-    public void loadChannelUploads(MediaItem item, OnMediaGroup onMediaGroup) {
-        if (item == null) {
-            return;
-        }
+    public static void loadChannelUploads(MediaItem item, OnMediaGroup onMediaGroup) {
+        if (item == null) return;
 
         RxHelper.disposeActions(mUploadsAction);
 
-        Observable<MediaGroup> observable = mContentService.getGroupObserve(item);
+        Observable<MediaGroup> observable = getContentService().getGroupObserve(item);
 
         mUploadsAction = observable
                 .subscribe(
@@ -216,10 +184,10 @@ public class MediaServiceManager implements OnAccountChange {
                 );
     }
 
-    public void loadSubscribedChannels(OnMediaGroup onMediaGroup) {
+    public static void loadSubscribedChannels(OnMediaGroup onMediaGroup) {
         RxHelper.disposeActions(mSubscribedChannelsAction);
 
-        Observable<MediaGroup> observable = mContentService.getSubscribedChannelsByNewContentObserve();
+        Observable<MediaGroup> observable = getContentService().getSubscribedChannelsByNewContentObserve();
 
         mSubscribedChannelsAction = observable
                 .subscribe(
@@ -228,19 +196,17 @@ public class MediaServiceManager implements OnAccountChange {
                 );
     }
 
-    public void loadChannelRows(Video item, OnMediaGroupList onMediaGroupList) {
+    public static void loadChannelRows(Video item, OnMediaGroupList onMediaGroupList) {
         loadChannelRows(item, onMediaGroupList, null);
     }
 
-    public void loadChannelRows(Video item, OnMediaGroupList onMediaGroupList, OnError onError) {
-        if (item == null) {
-            return;
-        }
+    public static void loadChannelRows(Video item, OnMediaGroupList onMediaGroupList, OnError onError) {
+        if (item == null) return;
 
         RxHelper.disposeActions(mRowsAction);
 
         Observable<List<MediaGroup>> observable = item.mediaItem != null ?
-                mContentService.getChannelObserve(item.mediaItem) : mContentService.getChannelObserve(item.channelId);
+                getContentService().getChannelObserve(item.mediaItem) : getContentService().getChannelObserve(item.channelId);
 
         mRowsAction = observable
                 .subscribe(
@@ -254,21 +220,19 @@ public class MediaServiceManager implements OnAccountChange {
                 );
     }
 
-    public void loadChannelPlaylist(Video item, OnMediaGroup callback) {
+    public static void loadChannelPlaylist(Video item, OnMediaGroup callback) {
         loadChannelRows(
                 item,
                 mediaGroupList -> callback.onMediaGroup(mediaGroupList.get(0))
         );
     }
 
-    public void loadFormatInfo(Video item, OnFormatInfo onFormatInfo) {
-        if (item == null) {
-            return;
-        }
+    public static void loadFormatInfo(Video item, OnFormatInfo onFormatInfo) {
+        if (item == null) return;
 
         RxHelper.disposeActions(mFormatInfoAction);
 
-        Observable<MediaItemFormatInfo> observable = mItemService.getFormatInfoObserve(item.videoId);
+        Observable<MediaItemFormatInfo> observable = getMediaItemService().getFormatInfoObserve(item.videoId);
 
         mFormatInfoAction = observable
                 .subscribe(
@@ -277,14 +241,12 @@ public class MediaServiceManager implements OnAccountChange {
                 );
     }
 
-    public void loadPlaylists(Video item, OnMediaGroup onPlaylistGroup) {
-        if (item == null) {
-            return;
-        }
+    public static void loadPlaylists(Video item, OnMediaGroup onPlaylistGroup) {
+        if (item == null) return;
 
         RxHelper.disposeActions(mPlaylistGroupAction);
 
-        Observable<MediaGroup> observable = mContentService.getPlaylistsObserve();
+        Observable<MediaGroup> observable = getContentService().getPlaylistsObserve();
 
         mPlaylistGroupAction = observable
                 .subscribe(
@@ -293,10 +255,10 @@ public class MediaServiceManager implements OnAccountChange {
                 );
     }
 
-    public void getPlaylistInfos(OnPlaylistInfos onPlaylistInfos) {
+    public static void getPlaylistInfos(OnPlaylistInfos onPlaylistInfos) {
         RxHelper.disposeActions(mPlaylistInfosAction);
 
-        Observable<List<PlaylistInfo>> observable = mItemService.getPlaylistsInfoObserve(null);
+        Observable<List<PlaylistInfo>> observable = getMediaItemService().getPlaylistsInfoObserve(null);
 
         mPlaylistInfosAction = observable
                 .subscribe(
@@ -305,16 +267,16 @@ public class MediaServiceManager implements OnAccountChange {
                 );
     }
 
-    public void loadAccounts(OnAccountList onAccountList) {
-        onAccountList.onAccountList(mSignInService.getAccounts());
+    public static void loadAccounts(OnAccountList onAccountList) {
+        onAccountList.onAccountList(getSignInService().getAccounts());
     }
 
-    public void authCheck(Runnable onSuccess, Runnable onError) {
+    public static void authCheck(Runnable onSuccess, Runnable onError) {
         if (onSuccess == null && onError == null) {
             return;
         }
 
-        if (mSignInService.isSigned()) {
+        if (getSignInService().isSigned()) {
             if (onSuccess != null) {
                 onSuccess.run();
             }
@@ -325,25 +287,25 @@ public class MediaServiceManager implements OnAccountChange {
         }
     }
 
-    public void disposeActions() {
+    public static void disposeActions() {
         RxHelper.disposeActions(mMetadataAction, mUploadsAction, mRowsAction, mSubscribedChannelsAction);
     }
 
     /**
      * Most tiny ui has 8 cards in a row or 24 in grid.
      */
-    public void shouldContinueGridGroup(Context context, VideoGroup group, Runnable onNeedContinue) {
+    public static void shouldContinueGridGroup(Context context, VideoGroup group, Runnable onNeedContinue) {
         shouldContinueTheGroup(context, group, onNeedContinue, true);
     }
 
-    public void shouldContinueRowGroup(Context context, VideoGroup group, Runnable onNeedContinue) {
+    public static void shouldContinueRowGroup(Context context, VideoGroup group, Runnable onNeedContinue) {
         shouldContinueTheGroup(context, group, onNeedContinue, false);
     }
 
     /**
      * Most tiny ui has 8 cards in a row or 24 in grid.
      */
-    public void shouldContinueTheGroup(Context context, VideoGroup group, Runnable onNeedContinue, boolean isGrid) {
+    public static void shouldContinueTheGroup(Context context, VideoGroup group, Runnable onNeedContinue, boolean isGrid) {
         if (shouldContinueTheGroup(context, group, isGrid) && onNeedContinue != null) {
             onNeedContinue.run();
         }
@@ -352,18 +314,18 @@ public class MediaServiceManager implements OnAccountChange {
     /**
      * Most tiny ui has 8 cards in a row or 24 in grid.
      */
-    public boolean shouldContinueGridGroup(Context context, VideoGroup group) {
+    public static boolean shouldContinueGridGroup(Context context, VideoGroup group) {
         return shouldContinueTheGroup(context, group, true);
     }
 
-    public boolean shouldContinueRowGroup(Context context, VideoGroup group) {
+    public static boolean shouldContinueRowGroup(Context context, VideoGroup group) {
         return shouldContinueTheGroup(context, group,false);
     }
 
     /**
      * Most tiny ui has 8 cards in a row or 24 in grid.
      */
-    public boolean shouldContinueTheGroup(Context context, VideoGroup group, boolean isGrid) {
+    public static boolean shouldContinueTheGroup(Context context, VideoGroup group, boolean isGrid) {
 
         if (group == null || group.getMediaGroup() == null) {
             return false;
@@ -393,11 +355,11 @@ public class MediaServiceManager implements OnAccountChange {
         return groupTooSmall;
     }
 
-    public void clearSearchHistory() {
-        RxHelper.runAsyncUser(mContentService::clearSearchHistory);
+    public static void clearSearchHistory() {
+        RxHelper.runAsyncUser(getContentService()::clearSearchHistory);
     }
 
-    public void updateHistory(Video video, long positionMs) {
+    public static void updateHistory(Video video, long positionMs) {
 
         Queue.sync(video);
 
@@ -413,18 +375,18 @@ public class MediaServiceManager implements OnAccountChange {
             Log.e(TAG, "State Service not Instantiated");
         }
 
-        mAccountManager.checkAuth();
+        getAccountManager().checkAuth();
 
-        YouTubeMediaItemFormatInfo formatInfo = mYTMediaItemService.getFormatInfo(video.videoId);
+        YouTubeMediaItemFormatInfo formatInfo = getMediaItemService().getFormatInfo(video.videoId);
 
         if (formatInfo == null) {
             Log.e(TAG, "Can't update history for video id %s. formatInfo == null", video.videoId);
             return;
         }
 
-        if (!formatInfo.isAuth() && !formatInfo.isUnplayable() && mSignInService.isSigned()) {
+        if (!formatInfo.isAuth() && !formatInfo.isUnplayable() && getSignInService().isSigned()) {
             
-            VideoInfo videoInfo = mVideoInfoService.getAuthVideoInfo(
+            VideoInfo videoInfo = getVideoInfoService().getAuthVideoInfo(
                 formatInfo.getVideoId(), 
                 formatInfo.getClickTrackingParams()
             );
@@ -440,7 +402,7 @@ public class MediaServiceManager implements OnAccountChange {
         ApiCaller apiTempl = new ApiCaller("https://www.youtube.com/api/stats/playback?ns=yt&ver=2");
         apiTempl.add("docid", videoId);
         apiTempl.add("len", Helpers.parseFloat(formatInfo.getLengthSeconds()));
-        apiTempl.add("cpn", mAppService.getClientPlaybackNonce());            
+        apiTempl.add("cpn", getAppService().getClientPlaybackNonce());            
         apiTempl.add("ei", formatInfo.getEventId());
         apiTempl.add("vm", formatInfo.getVisitorMonitoringData());
         apiTempl.add("of", formatInfo.getOfParam());
@@ -468,32 +430,32 @@ public class MediaServiceManager implements OnAccountChange {
 
     }
 
-    public void hideNotification(Video item) {
+    public static void hideNotification(Video item) {
         if (item != null && item.belongsToNotifications()) {
-            RxHelper.execute(mNotificationsService.hideNotificationObserve(item.mediaItem));
+            RxHelper.execute(getNotificationsService().hideNotificationObserve(item.mediaItem));
         }
     }
 
-    public void setNotificationState(NotificationState state, OnError onError) {
-        RxHelper.execute(mNotificationsService.setNotificationStateObserve(state), onError::onError);
+    public static void setNotificationState(NotificationState state, OnError onError) {
+        RxHelper.execute(getNotificationsService().setNotificationStateObserve(state), onError::onError);
     }
 
-    public void removeFromWatchLaterPlaylist(Video video) {
+    public static void removeFromWatchLaterPlaylist(Video video) {
         removeFromWatchLaterPlaylist(video, null);
     }
 
-    public void removeFromWatchLaterPlaylist(Video video, Runnable onSuccess) {
-        if (video == null || !mSignInService.isSigned()) {
+    public static void removeFromWatchLaterPlaylist(Video video, Runnable onSuccess) {
+        if (video == null || !getSignInService().isSigned()) {
             return;
         }
 
-        Disposable playlistsInfoAction = mItemService.getPlaylistsInfoObserve(video.videoId)
+        Disposable playlistsInfoAction = getMediaItemService().getPlaylistsInfoObserve(video.videoId)
                 .subscribe(
                         videoPlaylistInfos -> {
                             PlaylistInfo watchLater = videoPlaylistInfos.get(0);
 
                             if (watchLater.isSelected()) {
-                                Observable<Void> editObserve = mItemService.removeFromPlaylistObserve(watchLater.getPlaylistId(), video.videoId);
+                                Observable<Void> editObserve = getMediaItemService().removeFromPlaylistObserve(watchLater.getPlaylistId(), video.videoId);
 
                                 RxHelper.execute(editObserve, () -> {
                                     if (onSuccess != null) {
@@ -509,7 +471,7 @@ public class MediaServiceManager implements OnAccountChange {
                 );
     }
 
-    public void addAccountListener(AccountChangeListener listener) {
+    public static void addAccountListener(AccountChangeListener listener) {
         if (!mAccountListeners.contains(listener)) {
             if (listener instanceof AccountsData ||
                 listener instanceof AppPrefs) {
@@ -520,20 +482,20 @@ public class MediaServiceManager implements OnAccountChange {
         }
     }
 
-    public void removeAccountListener(AccountChangeListener listener) {
+    public static void removeAccountListener(AccountChangeListener listener) {
         mAccountListeners.remove(listener);
     }
 
-    public Account getSelectedAccount() {
-        return mSignInService.getSelectedAccount();
+    public static Account getSelectedAccount() {
+        return getSignInService().getSelectedAccount();
     }
 
-    public String printAccountDebugInfo() {
-        return mSignInService.printDebugInfo();
+    public static String printAccountDebugInfo() {
+        return getSignInService().printDebugInfo();
     }
 
-    @Override
-    public void onAccountChanged(Account account) {
+
+    public static void onAccountChanged(Account account) {
         for (AccountChangeListener listener : mAccountListeners) {
             listener.onAccountChanged(account);
         }
@@ -554,7 +516,7 @@ public class MediaServiceManager implements OnAccountChange {
 
         AtomicInteger atomicIndex = new AtomicInteger(0);
 
-        MediaServiceManager.instance().loadChannelRows(item, groups -> {
+        ServiceManager.loadChannelRows(item, groups -> {
             LoadingManager.showLoading(context, false);
 
             if (groups == null || groups.isEmpty()) {
@@ -582,6 +544,87 @@ public class MediaServiceManager implements OnAccountChange {
                 MessageHelpers.showMessage(context, "Unknown type of channel");
             }
         }, error -> LoadingManager.showLoading(context, false));
+    }
+
+    public static YouTubeSignInService getSignInService() {
+        return YouTubeSignInService.instance();
+    }
+
+    public static YouTubeRemoteControlService getRemoteControlService() {
+        return YouTubeRemoteControlService.instance();
+    }
+
+    public static YouTubeLiveChatService getLiveChatService() {
+        return YouTubeLiveChatService.instance();
+    }
+
+    public static YouTubeCommentsService getCommentsService() {
+        return YouTubeCommentsService.INSTANCE;
+    }
+
+    public static ContentService getContentService() {
+        return ContentService.instance();
+    }
+
+    public static YouTubeMediaItemService getMediaItemService() {
+        return YouTubeMediaItemService.instance();
+    }
+
+    public static YouTubeNotificationsService getNotificationsService() {
+        return YouTubeNotificationsService.INSTANCE;
+    }
+
+    public static ChannelGroupServiceImpl getChannelGroupService() {
+        return ChannelGroupServiceImpl.INSTANCE;
+    }
+
+    public static void invalidateCache() {
+        LocaleManager.unhold();
+        getSignInService().invalidateCache(); // sections infinite loading fix (request timed out fix)
+        getAppService().invalidateCache();
+        //AppService.instance().invalidateVisitorData();
+        getMediaItemService().invalidateCache();
+        getVideoInfoService().resetInfoType();
+    }
+
+    public static void refreshCacheIfNeeded() {
+        refreshCacheIfNeededInt();
+    }
+
+    public static void applyNoPlaybackFix() {
+        getMediaItemService().invalidateCache();
+        getVideoInfoService().switchNextFormat();
+    }
+
+    public static void applySubtitleFix() {
+        getMediaItemService().invalidateCache();
+        getVideoInfoService().switchNextSubtitle();
+    }
+
+    private static void refreshCacheIfNeededInt() {
+        if (RxHelper.isAnyActionRunning(mRefreshCoreDataAction)) {
+            return;
+        }
+
+        mRefreshCoreDataAction = RxHelper.execute(RxHelper.fromRunnable(getAppService()::refreshCacheIfNeeded));
+    }
+
+    @NonNull
+    public static VideoInfoService getVideoInfoService() {
+        return VideoInfoService.instance();
+    }
+
+    @NonNull
+    public static AppService getAppService() {
+        return AppService.instance();
+    }
+
+    public static PlaylistService getPlaylistService() {
+        return new PlaylistService();
+    }
+
+    public static OAuth2AccountManager getAccountManager() {
+        return OAuth2AccountManager.instance();
     }
 
 }

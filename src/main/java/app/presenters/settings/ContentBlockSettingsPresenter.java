@@ -12,7 +12,7 @@ import SmartTubeApp.app.presenters.AppDialogPresenter;
 import SmartTubeApp.app.presenters.PlaybackPresenter;
 import SmartTubeApp.app.presenters.base.BasePresenter;
 import SmartTubeApp.app.models.playback.PlayerEngine;
-import SmartTubeApp.misc.MediaServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import SmartTubeApp.prefs.ContentBlockData;
 import SmartTubeApp.utils.AppDialogUtil;
 import SmartTubeApp.utils.Utils;
@@ -186,7 +186,12 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
             return;
         }
 
-        settingsPresenter.appendSingleButton(AppDialogUtil.createExcludeFromContentBlockButton(getContext(), video, MediaServiceManager.instance(), settingsPresenter::closeDialog));
+        settingsPresenter.appendSingleButton(AppDialogUtil.createExcludeFromContentBlockButton(
+            getContext(), 
+            video, 
+            settingsPresenter::closeDialog
+        ));
+        
     }
 
     private CharSequence getColoredString(int strResId, int colorResId) {

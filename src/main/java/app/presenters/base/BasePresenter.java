@@ -24,13 +24,12 @@ import SmartTubeApp.app.views.ChannelView;
 import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.app.views.SearchView;
 import SmartTubeApp.app.views.ViewManager;
-import SmartTubeApp.misc.MediaServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import SmartTubeApp.misc.TickleManager;
 import SmartTubeApp.prefs.GeneralData;
 import SmartTubeApp.prefs.MainUIData;
 import SmartTubeApp.prefs.SearchData;
 import SmartTubeApp.utils.Utils;
-import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 
 import java.lang.ref.WeakReference;
 import java.util.Collections;
@@ -247,27 +246,23 @@ public abstract class BasePresenter<T> implements Presenter<T> {
     }
 
     protected CommentsService getCommentsService() {
-        return YouTubeServiceManager.instance().getCommentsService();
+        return ServiceManager.getCommentsService();
     }
 
     protected ContentService getContentService() {
-        return YouTubeServiceManager.instance().getContentService();
+        return ServiceManager.getContentService();
     }
 
     protected SignInService getSignInService() {
-        return YouTubeServiceManager.instance().getSignInService();
+        return ServiceManager.getSignInService();
     }
 
     protected NotificationsService getNotificationsService() {
-        return YouTubeServiceManager.instance().getNotificationsService();
+        return ServiceManager.getNotificationsService();
     }
 
     protected MediaItemService getMediaItemService() {
-        return YouTubeServiceManager.instance().getMediaItemService();
-    }
-
-    protected MediaServiceManager getServiceManager() {
-        return MediaServiceManager.instance();
+        return ServiceManager.getMediaItemService();
     }
 
     protected ViewManager getViewManager() {

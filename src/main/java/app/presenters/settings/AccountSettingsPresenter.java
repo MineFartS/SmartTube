@@ -12,7 +12,7 @@ import SmartTubeApp.app.presenters.BrowsePresenter;
 import SmartTubeApp.app.presenters.YTSignInPresenter;
 import SmartTubeApp.app.presenters.base.BasePresenter;
 import SmartTubeApp.app.presenters.dialogs.AccountSelectionPresenter;
-import SmartTubeApp.misc.MediaServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import SmartTubeApp.prefs.AccountsData;
 import SmartTubeApp.prefs.AppPrefs;
 import SmartTubeApp.utils.AppDialogUtil;
@@ -27,11 +27,8 @@ public class AccountSettingsPresenter extends BasePresenter<Void> {
     @SuppressLint("StaticFieldLeak")
     private static AccountSettingsPresenter sInstance;
 
-    private final MediaServiceManager mMediaServiceManager;
-
     public AccountSettingsPresenter(Context context) {
         super(context);
-        mMediaServiceManager = MediaServiceManager.instance();
     }
 
     public static AccountSettingsPresenter instance(Context context) {
@@ -49,7 +46,7 @@ public class AccountSettingsPresenter extends BasePresenter<Void> {
     }
 
     public void show() {
-        mMediaServiceManager.loadAccounts(this::createAndShowDialog);
+        ServiceManager.loadAccounts(this::createAndShowDialog);
     }
 
     private void createAndShowDialog(List<Account> accounts) {

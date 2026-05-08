@@ -3,7 +3,7 @@ package SmartTubeApp.app.presenters.dialogs;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.liskovsoft.sharedutils.ServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import com.liskovsoft.sharedutils.SignInService;
 import com.liskovsoft.sharedutils.oauth.Account;
 import SmartTubeApp.R;
@@ -12,11 +12,9 @@ import SmartTubeApp.app.models.playback.ui.UiOptionItem;
 import SmartTubeApp.app.presenters.AppDialogPresenter;
 import SmartTubeApp.app.presenters.base.BasePresenter;
 import SmartTubeApp.app.presenters.settings.AccountSettingsPresenter;
-import SmartTubeApp.misc.MediaServiceManager;
 import SmartTubeApp.prefs.AccountsData;
 import SmartTubeApp.prefs.GeneralData;
 import SmartTubeApp.utils.Utils;
-import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +27,7 @@ public class AccountSelectionPresenter extends BasePresenter<Void> {
 
     public AccountSelectionPresenter(Context context) {
         super(context);
-        ServiceManager service = YouTubeServiceManager.instance();
-        mSignInService = service.getSignInService();
+        mSignInService = ServiceManager.getSignInService();
     }
 
     public static AccountSelectionPresenter instance(Context context) {
@@ -57,7 +54,7 @@ public class AccountSelectionPresenter extends BasePresenter<Void> {
     }
 
     public void nextAccountOrDialog() {
-        MediaServiceManager.instance().loadAccounts(this::nextAccountOrDialog);
+        ServiceManager.loadAccounts(this::nextAccountOrDialog);
     }
 
     public void unhold() {

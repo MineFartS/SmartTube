@@ -2,30 +2,28 @@ package SmartTubeApp.app.presenters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import com.liskovsoft.sharedutils.ServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import SmartTubeApp.app.presenters.base.BasePresenter;
 import SmartTubeApp.app.views.AddDeviceView;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 import io.reactivex.disposables.Disposable;
 
 public class AddDevicePresenter extends BasePresenter<AddDeviceView> {
+
     private static final String TAG = AddDevicePresenter.class.getSimpleName();
+    
     @SuppressLint("StaticFieldLeak")
     private static AddDevicePresenter sInstance;
-    private final ServiceManager mService;
     private Disposable mDeviceCodeAction;
 
     private AddDevicePresenter(Context context) {
         super(context);
-        mService = YouTubeServiceManager.instance();
     }
 
     public static AddDevicePresenter instance(Context context) {
-        if (sInstance == null) {
+        if (sInstance == null)
             sInstance = new AddDevicePresenter(context);
-        }
 
         sInstance.setContext(context);
 
@@ -56,7 +54,7 @@ public class AddDevicePresenter extends BasePresenter<AddDeviceView> {
     }
 
     private void updateDeviceCode() {
-        mDeviceCodeAction = mService.getRemoteControlService().getPairingCodeObserve()
+        mDeviceCodeAction = ServiceManager.getRemoteControlService().getPairingCodeObserve()
                 .subscribe(
                         deviceCode -> getView().showCode(deviceCode),
                         error -> Log.e(TAG, "Get pairing code error: %s", error.getMessage())

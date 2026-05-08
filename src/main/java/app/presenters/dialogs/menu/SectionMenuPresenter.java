@@ -19,7 +19,7 @@ import SmartTubeApp.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCall
 import SmartTubeApp.app.presenters.dialogs.menu.providers.ContextMenuManager;
 import SmartTubeApp.app.presenters.dialogs.menu.providers.ContextMenuProvider;
 import SmartTubeApp.app.views.SplashView;
-import SmartTubeApp.misc.MediaServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import SmartTubeApp.prefs.MainUIData;
 import SmartTubeApp.utils.SimpleEditDialog;
 
@@ -79,7 +79,7 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
         mSection = section;
         mVideo = section.getData() instanceof Video ? (Video) section.getData() : null;
 
-        MediaServiceManager.instance().authCheck(this::obtainPlaylistsAndShowDialogSigned, this::prepareAndShowDialogUnsigned);
+        ServiceManager.authCheck(this::obtainPlaylistsAndShowDialogSigned, this::prepareAndShowDialogUnsigned);
     }
 
     private void obtainPlaylistsAndShowDialogSigned() {
@@ -222,29 +222,27 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
                 UiOptionItem.from(getContext().getString(R.string.mark_all_channels_watched), optionItem -> {
                     mDialogPresenter.closeDialog();
 
-                    MediaServiceManager serviceManager = MediaServiceManager.instance();
-
                     MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
 
-                    serviceManager.loadSubscribedChannels(group -> {
+                    ServiceManager.loadSubscribedChannels(group -> {
                         Iterator<MediaItem> iterator = group.getMediaItems().iterator();
 
-                        processNextChannel(serviceManager, iterator);
+                        processNextChannel(iterator);
                     });
                 }));
     }
 
-    private void processNextChannel(MediaServiceManager serviceManager, Iterator<MediaItem> iterator) {
+    private void processNextChannel(Iterator<MediaItem> iterator) {
         if (iterator.hasNext()) {
             MediaItem next = iterator.next();
 
             if (!next.hasNewContent()) {
-                processNextChannel(serviceManager, iterator);
+                processNextChannel(iterator);
                 return;
             }
 
             MessageHelpers.showMessage(getContext(), next.getTitle());
-            serviceManager.loadChannelUploads(next, (groupTmp) -> processNextChannel(serviceManager, iterator));
+            ServiceManager.loadChannelUploads(next, (groupTmp) -> processNextChannel(iterator));
         } else {
             MessageHelpers.showMessage(getContext(), R.string.msg_done);
         }

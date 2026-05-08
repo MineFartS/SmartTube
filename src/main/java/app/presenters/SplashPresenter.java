@@ -19,14 +19,13 @@ import SmartTubeApp.app.presenters.dialogs.AccountSelectionPresenter;
 import SmartTubeApp.app.presenters.dialogs.BootDialogPresenter;
 import SmartTubeApp.app.views.SplashView;
 import SmartTubeApp.app.views.ViewManager;
-import SmartTubeApp.misc.MediaServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import SmartTubeApp.misc.StreamReminderService;
 import SmartTubeApp.prefs.AccountsData;
 import SmartTubeApp.prefs.GeneralData;
 import SmartTubeApp.utils.IntentExtractor;
 import SmartTubeApp.utils.SimpleEditDialog;
 import SmartTubeApp.utils.Utils;
-import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +109,7 @@ public class SplashPresenter extends BasePresenter<SplashView> {
     }
 
     private void runBackgroundTasks() {
-        YouTubeServiceManager.instance().refreshCacheIfNeeded(); // warm up player engine
+        ServiceManager.refreshCacheIfNeeded(); // warm up player engine
         Utils.updateChannels(getContext());
     }
 

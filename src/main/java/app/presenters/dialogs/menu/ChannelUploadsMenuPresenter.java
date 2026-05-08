@@ -2,7 +2,7 @@ package SmartTubeApp.app.presenters.dialogs.menu;
 
 import android.content.Context;
 import com.liskovsoft.sharedutils.MediaItemService;
-import com.liskovsoft.sharedutils.ServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.rx.RxHelper;
@@ -13,26 +13,22 @@ import SmartTubeApp.app.presenters.AppDialogPresenter;
 import SmartTubeApp.app.presenters.ChannelPresenter;
 import SmartTubeApp.app.presenters.ChannelUploadsPresenter;
 import SmartTubeApp.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
-import SmartTubeApp.misc.MediaServiceManager;
-import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 import io.reactivex.disposables.Disposable;
 
 import java.util.List;
 
 public class ChannelUploadsMenuPresenter extends BaseMenuPresenter {
+    
     private final MediaItemService mItemManager;
     private final AppDialogPresenter mDialogPresenter;
-    private final MediaServiceManager mServiceManager;
     private Disposable mUnsubscribeAction;
     private Video mVideo;
     private VideoMenuCallback mCallback;
 
     private ChannelUploadsMenuPresenter(Context context) {
         super(context);
-        ServiceManager service = YouTubeServiceManager.instance();
-        mItemManager = service.getMediaItemService();
+        mItemManager = ServiceManager.getMediaItemService();
         mDialogPresenter = AppDialogPresenter.instance(context);
-        mServiceManager = MediaServiceManager.instance();
     }
 
     public static ChannelUploadsMenuPresenter instance(Context context) {
@@ -107,7 +103,7 @@ public class ChannelUploadsMenuPresenter extends BaseMenuPresenter {
                                     List<MediaItem> mediaItems = group.getMediaItems();
 
                                     if (mediaItems != null && mediaItems.size() > 0) {
-                                        mServiceManager.loadMetadata(mediaItems.get(0), metadata -> {
+                                        ServiceManager.loadMetadata(mediaItems.get(0), metadata -> {
                                             unsubscribe(metadata.getChannelId());
                                             mVideo.channelId = metadata.getChannelId();
                                         });
@@ -135,7 +131,7 @@ public class ChannelUploadsMenuPresenter extends BaseMenuPresenter {
 
         mDialogPresenter.appendSingleButton(
                 UiOptionItem.from(getContext().getString(R.string.mark_channel_as_watched), optionItem -> {
-                    mServiceManager.loadChannelUploads(mVideo, (group) -> {});
+                    ServiceManager.loadChannelUploads(mVideo, (group) -> {});
                     MessageHelpers.showMessage(getContext(), R.string.channel_marked_as_watched);
                 }));
     }
