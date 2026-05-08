@@ -18,7 +18,7 @@ import SmartTubeApp.app.presenters.base.BasePresenter;
 import SmartTubeApp.app.presenters.dialogs.AccountSelectionPresenter;
 import SmartTubeApp.app.presenters.dialogs.AppUpdatePresenter;
 import SmartTubeApp.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
-import SmartTubeApp.misc.MediaServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import SmartTubeApp.prefs.GeneralData;
 import SmartTubeApp.prefs.MainUIData;
 import SmartTubeApp.utils.AppDialogUtil;
@@ -29,8 +29,6 @@ import io.reactivex.Observable;
 import java.util.List;
 
 public abstract class BaseMenuPresenter extends BasePresenter<Void> {
-
-    private final MediaServiceManager mServiceManager;
     
     private boolean mIsPinToSidebarEnabled;
     private boolean mIsSavePlaylistEnabled;
@@ -43,7 +41,6 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
 
     protected BaseMenuPresenter(Context context) {
         super(context);
-        mServiceManager = MediaServiceManager.instance();
         updateEnabledMenuItems();
     }
 
@@ -80,7 +77,7 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
                             } else if (original.hasVideo()) {
                                 MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
 
-                                mServiceManager.loadMetadata(
+                                ServiceManager.loadMetadata(
                                         original,
                                         metadata -> {
                                             Video video = Video.from(original);
@@ -203,7 +200,7 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
                                 syncToggleSaveRemovePlaylist(original, null);
                             } else if (original.belongsToUserPlaylists()) {
                                 // NOTE: Can't get empty playlist id. Empty playlist doesn't contain videos.
-                                mServiceManager.loadChannelUploads(
+                                ServiceManager.loadChannelUploads(
                                         original,
                                         mediaGroup -> {
                                             String playlistId = getFirstPlaylistId(mediaGroup);
@@ -212,7 +209,7 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
                                                 syncToggleSaveRemovePlaylist(original, playlistId);
                                             } else {
                                                 // Empty playlist fix. Get 'add to playlist' infos
-                                                mServiceManager.getPlaylistInfos(playlistInfos -> {
+                                                ServiceManager.getPlaylistInfos(playlistInfos -> {
                                                     List<PlaylistInfo> infos = Helpers.filter(playlistInfos, value -> Helpers.equals(
                                                             value.getTitle(), original.getTitle()));
 
@@ -229,7 +226,7 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
                                         }
                                 );
                             } else {
-                                mServiceManager.loadChannelPlaylist(
+                                ServiceManager.loadChannelPlaylist(
                                         original,
                                         mediaGroup -> syncToggleSaveRemovePlaylist(original, getFirstPlaylistId(mediaGroup))
                                 );
@@ -254,7 +251,7 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
     }
 
     private void toggleSaveRemovePlaylist(Video video) {
-        mServiceManager.loadPlaylists(video, group -> {
+        ServiceManager.loadPlaylists(video, group -> {
             if (group.getMediaItems() == null)
                 return;
 
@@ -409,7 +406,7 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
 
     private void showRenamePlaylistDialogUploads(Video video) {
         MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
-        mServiceManager.loadChannelUploads(
+        ServiceManager.loadChannelUploads(
                 video,
                 mediaGroup -> {
                     if (mediaGroup.getMediaItems() == null) { // crash fix
@@ -472,7 +469,11 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
             return;
         }
 
-        getDialogPresenter().appendSingleButton(AppDialogUtil.createExcludeFromContentBlockButton(getContext(), original, mServiceManager, this::closeDialog));
+        getDialogPresenter().appendSingleButton(AppDialogUtil.createExcludeFromContentBlockButton(
+            getContext(), 
+            original, 
+            this::closeDialog
+        ));
     }
 
     protected void updateEnabledMenuItems() {

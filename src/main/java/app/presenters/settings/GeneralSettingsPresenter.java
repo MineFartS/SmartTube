@@ -18,7 +18,7 @@ import SmartTubeApp.app.presenters.base.BasePresenter;
 import SmartTubeApp.app.presenters.dialogs.menu.providers.ContextMenuManager;
 import SmartTubeApp.app.presenters.dialogs.menu.providers.ContextMenuProvider;
 import SmartTubeApp.app.presenters.service.SidebarService;
-import SmartTubeApp.misc.MediaServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import SmartTubeApp.prefs.AppPrefs;
 import SmartTubeApp.prefs.GeneralData;
 import SmartTubeApp.prefs.MainUIData;

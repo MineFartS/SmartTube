@@ -27,10 +27,9 @@ import SmartTubeApp.app.models.playback.ui.UiOptionItem;
 import SmartTubeApp.app.presenters.AppDialogPresenter;
 import SmartTubeApp.app.presenters.PlaybackPresenter;
 import SmartTubeApp.misc.BrowseProcessorManager;
-import SmartTubeApp.misc.MediaServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import SmartTubeApp.prefs.GeneralData;
 import SmartTubeApp.utils.Utils;
-import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
@@ -64,9 +63,12 @@ public class SuggestionsController extends BasePlayerController {
 
     @Override
     public void onInit() {
-        mBrowseProcessor = new BrowseProcessorManager(getContext(), PlaybackPresenter.instance(getContext())::syncItem);
-        mMediaItemService = YouTubeServiceManager.instance().getMediaItemService();
-        mContentService = YouTubeServiceManager.instance().getContentService();
+        mBrowseProcessor = new BrowseProcessorManager(
+            getContext(), 
+            PlaybackPresenter.instance(getContext())::syncItem
+        );
+        mMediaItemService = ServiceManager.getMediaItemService();
+        mContentService = ServiceManager.getContentService();
     }
 
     @Override
@@ -74,7 +76,6 @@ public class SuggestionsController extends BasePlayerController {
         // Remote control fix. Slow network fix. Suggestions may still be loading.
         // This could lead to changing current video info (title, id etc) to wrong one.
         disposeActions();
-
     }
 
     /**
@@ -524,7 +525,7 @@ public class SuggestionsController extends BasePlayerController {
             return;
         }
 
-        if (MediaServiceManager.instance().shouldContinueRowGroup(getContext(), group)) {
+        if (ServiceManager.shouldContinueRowGroup(getContext(), group)) {
             continueGroup(group, getPlayer().isSuggestionsShown());
         }
     }

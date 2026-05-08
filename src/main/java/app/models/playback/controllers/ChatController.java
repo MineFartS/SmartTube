@@ -12,7 +12,7 @@ import SmartTubeApp.app.models.playback.ui.ChatReceiverImpl;
 import SmartTubeApp.app.models.playback.ui.OptionItem;
 import SmartTubeApp.app.models.playback.ui.UiOptionItem;
 import SmartTubeApp.app.presenters.AppDialogPresenter;
-import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import io.reactivex.disposables.Disposable;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class ChatController extends BasePlayerController {
 
     @Override
     public void onInit() {
-        mChatService = YouTubeServiceManager.instance().getLiveChatService();
+        mChatService = ServiceManager.getLiveChatService();
     }
 
     @Override

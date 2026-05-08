@@ -6,7 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.KeyEvent;
 import androidx.annotation.Nullable;
-import com.liskovsoft.sharedutils.ServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import com.liskovsoft.sharedutils.RemoteControlService;
 import com.liskovsoft.sharedutils.data.Command;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
@@ -20,7 +20,6 @@ import SmartTubeApp.exoplayer.selector.FormatItem;
 import SmartTubeApp.prefs.common.DataChangeBase.OnDataChange;
 import SmartTubeApp.prefs.RemoteControlData;
 import SmartTubeApp.utils.Utils;
-import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 import io.reactivex.disposables.Disposable;
 import java.util.List;
 import java.util.Locale;
@@ -43,11 +42,13 @@ public class RemoteController extends BasePlayerController implements OnDataChan
     private long mVolumeSelfChangeMs;
 
     public RemoteController(Context context) {
+
         // Start receiving a commands as early as possible
-        ServiceManager service = YouTubeServiceManager.instance();
-        mRemoteControlService = service.getRemoteControlService();
+        mRemoteControlService = ServiceManager.getRemoteControlService();
+
         mRemoteControlData = RemoteControlData.instance(context);
         mRemoteControlData.setOnChange(this);
+        
         tryListening();
     }
 

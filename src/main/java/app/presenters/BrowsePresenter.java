@@ -36,8 +36,8 @@ import SmartTubeApp.app.presenters.interfaces.VideoGroupPresenter;
 import SmartTubeApp.app.views.BrowseView;
 import SmartTubeApp.misc.AppDataSourceManager;
 import SmartTubeApp.misc.BrowseProcessorManager;
-import SmartTubeApp.misc.MediaServiceManager;
-import SmartTubeApp.misc.MediaServiceManager.AccountChangeListener;
+import SmartTubeApp.misc.ServiceManager;
+import SmartTubeApp.misc.ServiceManager.AccountChangeListener;
 import SmartTubeApp.prefs.AccountsData;
 import SmartTubeApp.prefs.MainUIData;
 import SmartTubeApp.prefs.PlayerTweaksData;
@@ -86,7 +86,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         mSettingsGridMapping = new HashMap<>();
         mLocalGridMappings = new HashMap<>();
         mSectionsMapping = new HashMap<>();
-        MediaServiceManager.instance().addAccountListener(this);
+        ServiceManager.addAccountListener(this);
 
         mBrowseProcessor = new BrowseProcessorManager(getContext(), this::syncItem);
         mActions = new ArrayList<>();
@@ -934,7 +934,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
      * Most tiny ui has 8 cards in a row or 24 in grid.
      */
     private void continueGroupIfNeeded(VideoGroup group, boolean showLoading) {
-        if (MediaServiceManager.instance().shouldContinueTheGroup(getContext(), group, isGridSection())) {
+        if (ServiceManager.shouldContinueTheGroup(getContext(), group, isGridSection())) {
             continueGroup(group, showLoading);
         }
     }

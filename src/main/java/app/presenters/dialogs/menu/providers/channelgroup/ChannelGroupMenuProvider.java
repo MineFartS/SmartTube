@@ -17,7 +17,7 @@ import SmartTubeApp.app.presenters.AppDialogPresenter;
 import SmartTubeApp.app.presenters.BrowsePresenter;
 import SmartTubeApp.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
 import SmartTubeApp.app.presenters.dialogs.menu.providers.ContextMenuProvider;
-import SmartTubeApp.misc.MediaServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import SmartTubeApp.utils.SimpleEditDialog;
 
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public class ChannelGroupMenuProvider extends ContextMenuProvider {
         } else {
             MessageHelpers.showMessage(mContext, R.string.wait_data_loading);
 
-            MediaServiceManager.instance().loadMetadata(item, metadata -> {
+            ServiceManager.loadMetadata(item, metadata -> {
                 item.sync(metadata);
                 showGroupDialog(item, callback);
             });

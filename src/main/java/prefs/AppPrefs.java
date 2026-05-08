@@ -8,8 +8,8 @@ import com.liskovsoft.sharedutils.misc.WeakHashSet;
 import com.liskovsoft.sharedutils.prefs.SharedPreferencesBase;
 import SmartTubeApp.R;
 import SmartTubeApp.app.presenters.service.SidebarService;
-import SmartTubeApp.misc.MediaServiceManager;
-import SmartTubeApp.misc.MediaServiceManager.AccountChangeListener;
+import SmartTubeApp.misc.ServiceManager;
+import SmartTubeApp.misc.ServiceManager.AccountChangeListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +41,7 @@ public class AppPrefs extends SharedPreferencesBase implements AccountChangeList
     }
 
     private void initProfiles() {
-        MediaServiceManager.instance().addAccountListener(this);
+        ServiceManager.addAccountListener(this);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class AppPrefs extends SharedPreferencesBase implements AccountChangeList
 
         putBoolean(MULTI_PROFILES, enabled);
         onProfileChanged();
-        //selectAccount(enabled ? MediaServiceManager.instance().getSelectedAccount() : null);
+        //selectAccount(enabled ? ServiceManager.getSelectedAccount() : null);
     }
 
     public boolean isMultiProfilesEnabled() {

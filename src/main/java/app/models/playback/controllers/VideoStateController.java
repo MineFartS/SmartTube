@@ -10,7 +10,7 @@ import SmartTubeApp.app.models.playback.BasePlayerController;
 import SmartTubeApp.app.models.playback.service.VideoStateService.State;
 import SmartTubeApp.app.presenters.AppDialogPresenter;
 import SmartTubeApp.exoplayer.selector.FormatItem;
-import SmartTubeApp.misc.MediaServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import SmartTubeApp.prefs.GeneralData;
 import SmartTubeApp.utils.AppDialogUtil;
 import SmartTubeApp.utils.Utils;
@@ -27,15 +27,9 @@ public class VideoStateController extends BasePlayerController {
     private static final long BEGIN_THRESHOLD_MS = 10_000;
     private static final long STATE_SAVE_INTERVAL_MS = 10_000; // Save state every 10 seconds
 
-    private final MediaServiceManager mMediaServiceManager;
-
     private boolean mIsPlayEnabled;
     private boolean mIsPlayBlocked;
     private long mNewVideoTimeMs;
-
-    public VideoStateController() {
-        mMediaServiceManager = MediaServiceManager.instance();
-    }
 
     /**
      * Fired after user clicked on video in browse activity<br/>
@@ -224,7 +218,7 @@ public class VideoStateController extends BasePlayerController {
 
         if (durMs > 0) {
 
-            mMediaServiceManager.updateHistory(
+            ServiceManager.updateHistory(
                 getVideo(), 
                 durMs
             );
@@ -324,7 +318,7 @@ public class VideoStateController extends BasePlayerController {
 
         video.markNotViewed();
 
-        mMediaServiceManager.updateHistory(video, 0);
+        ServiceManager.updateHistory(video, 0);
 
     }
 
@@ -358,7 +352,7 @@ public class VideoStateController extends BasePlayerController {
 
         if (video == null || getPlayer() == null || !getPlayer().containsMedia()) return;
 
-        mMediaServiceManager.updateHistory(
+        ServiceManager.updateHistory(
             video, 
             getPlayer().getPositionMs()
         );

@@ -4,7 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.KeyEvent;
 import com.liskovsoft.sharedutils.MediaItemService;
-import com.liskovsoft.sharedutils.ServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import com.liskovsoft.sharedutils.data.MediaGroup;
 import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.data.MediaItemMetadata;
@@ -30,12 +30,10 @@ import SmartTubeApp.app.presenters.dialogs.menu.VideoMenuPresenter;
 import SmartTubeApp.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
 import SmartTubeApp.exoplayer.selector.FormatItem;
 import SmartTubeApp.exoplayer.selector.track.SubtitleTrack;
-import SmartTubeApp.misc.MediaServiceManager;
 import SmartTubeApp.prefs.PlayerData;
 import SmartTubeApp.prefs.SearchData;
 import SmartTubeApp.utils.AppDialogUtil;
 import SmartTubeApp.utils.Utils;
-import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 import com.liskovsoft.sharedutils.service.YouTubeSignInService;
 import SmartTubeApp.ui.playback.actions.SubscribeAction;
 
@@ -87,8 +85,7 @@ public class PlayerUIController extends BasePlayerController {
     public PlayerUIController() {
         mHandler = new Handler(Looper.getMainLooper());
 
-        ServiceManager service = YouTubeServiceManager.instance();
-        mMediaItemService = service.getMediaItemService();
+        mMediaItemService = ServiceManager.getMediaItemService();
     }
 
     @Override
@@ -614,7 +611,7 @@ public class PlayerUIController extends BasePlayerController {
         String videoId = getVideo().videoId;
         mPlaylistInfos = null;
         Disposable playlistsInfoAction =
-                YouTubeServiceManager.instance().getMediaItemService().getPlaylistsInfoObserve(videoId)
+                ServiceManager.getMediaItemService().getPlaylistsInfoObserve(videoId)
                         .subscribe(
                                 videoPlaylistInfos -> {
                                     mPlaylistInfos = videoPlaylistInfos;
@@ -759,7 +756,7 @@ public class PlayerUIController extends BasePlayerController {
         for (NotificationState item : getVideo().notificationStates) {
             items.add(UiOptionItem.from(item.getTitle(), optionItem -> {
                 if (optionItem.isSelected()) {
-                    MediaServiceManager.instance().setNotificationState(item, error -> MessageHelpers.showMessage(getContext(), error.getLocalizedMessage()));
+                    ServiceManager.setNotificationState(item, error -> MessageHelpers.showMessage(getContext(), error.getLocalizedMessage()));
                     getVideo().isSubscribed = true;
                     getPlayer().setButtonState(R.id.action_subscribe, 1);
                 }

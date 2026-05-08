@@ -23,7 +23,7 @@ import SmartTubeApp.app.models.playback.PlayerEngine;
 import SmartTubeApp.app.views.ViewManager;
 import SmartTubeApp.exoplayer.selector.FormatItem;
 import SmartTubeApp.exoplayer.selector.TrackSelectorUtil;
-import SmartTubeApp.misc.MediaServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import SmartTubeApp.misc.MotherActivity;
 import SmartTubeApp.prefs.ContentBlockData;
 import SmartTubeApp.prefs.GeneralData;
@@ -32,7 +32,6 @@ import SmartTubeApp.prefs.PlayerData;
 import SmartTubeApp.prefs.PlayerTweaksData;
 import SmartTubeApp.prefs.RemoteControlData;
 import SmartTubeApp.prefs.SearchData;
-import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
 
 public abstract class BasePlayerController implements PlayerEventListener {
@@ -283,10 +282,6 @@ public abstract class BasePlayerController implements PlayerEventListener {
         return MainUIData.instance(getContext());
     }
 
-    protected MediaServiceManager getServiceManager() {
-        return MediaServiceManager.instance();
-    }
-
     protected ViewManager getViewManager() {
         return ViewManager.instance(getContext());
     }
@@ -296,23 +291,23 @@ public abstract class BasePlayerController implements PlayerEventListener {
     }
 
     protected CommentsService getCommentsService() {
-        return YouTubeServiceManager.instance().getCommentsService();
+        return ServiceManager.getCommentsService();
     }
 
     protected ContentService getContentService() {
-        return YouTubeServiceManager.instance().getContentService();
+        return ServiceManager.getContentService();
     }
 
     protected SignInService getSignInService() {
-        return YouTubeServiceManager.instance().getSignInService();
+        return ServiceManager.getSignInService();
     }
 
     protected NotificationsService getNotificationsService() {
-        return YouTubeServiceManager.instance().getNotificationsService();
+        return ServiceManager.getNotificationsService();
     }
 
     protected MediaItemService getMediaItemService() {
-        return YouTubeServiceManager.instance().getMediaItemService();
+        return ServiceManager.getMediaItemService();
     }
 
     protected SearchPresenter getSearchPresenter() {

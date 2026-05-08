@@ -40,7 +40,7 @@ import SmartTubeApp.exoplayer.selector.FormatItem.VideoPreset;
 import SmartTubeApp.exoplayer.selector.TrackSelectorManager;
 import SmartTubeApp.exoplayer.selector.track.MediaTrack;
 import SmartTubeApp.misc.AppDataSourceManager;
-import SmartTubeApp.misc.MediaServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import SmartTubeApp.misc.MotherActivity;
 import SmartTubeApp.prefs.ContentBlockData;
 import SmartTubeApp.prefs.GeneralData;
@@ -423,7 +423,10 @@ public class AppDialogUtil {
     }
 
     public static OptionItem createExcludeFromContentBlockButton(
-            Context context,  Video video, MediaServiceManager serviceManager, Runnable onClose) {
+        Context context,
+        Video video, 
+        Runnable onClose
+    ) {
         return UiOptionItem.from(
                 context.getString(
                         ContentBlockData.instance(context).isChannelExcluded(video.channelId) ?
@@ -438,7 +441,7 @@ public class AppDialogUtil {
                     } else {
                         MessageHelpers.showMessage(context, R.string.wait_data_loading);
 
-                        serviceManager.loadMetadata(
+                        ServiceManager.loadMetadata(
                                 video,
                                 metadata -> {
                                     video.sync(metadata);
@@ -665,7 +668,7 @@ public class AppDialogUtil {
         if (video.hasPlaylist()) {
             showPlaylistOrderDialog(context, video.playlistId, onClose);
         } else if (video.belongsToUserPlaylists()) {
-            MediaServiceManager.instance().loadChannelUploads(video, group -> {
+            ServiceManager.loadChannelUploads(video, group -> {
                 if (group.getMediaItems() == null || group.getMediaItems().isEmpty()) {
                     return;
                 }

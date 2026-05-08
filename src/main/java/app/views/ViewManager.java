@@ -27,7 +27,7 @@ import SmartTubeApp.app.presenters.base.BasePresenter;
 import SmartTubeApp.app.presenters.dialogs.AppUpdatePresenter;
 import SmartTubeApp.misc.MotherActivity;
 import SmartTubeApp.utils.Utils;
-import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import SmartTubeApp.app.models.playback.PlayerEngine;
 
 import java.util.HashMap;
@@ -281,7 +281,7 @@ public class ViewManager {
     }
 
     public void clearCaches() {
-        YouTubeServiceManager.instance().invalidateCache();
+        ServiceManager.invalidateCache();
         // Note, also deletes cached flags (internal cache)
         // Note, deletes cached apks (external cache)
         FileHelpers.deleteCache(mContext);

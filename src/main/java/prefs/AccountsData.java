@@ -5,8 +5,8 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.oauth.Account;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.misc.MediaServiceManager;
-import SmartTubeApp.misc.MediaServiceManager.AccountChangeListener;
+import SmartTubeApp.misc.ServiceManager;
+import SmartTubeApp.misc.ServiceManager.AccountChangeListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +50,7 @@ public class AccountsData implements AccountChangeListener {
     private AccountsData(Context context) {
         mContext = context;
         mAppPrefs = AppPrefs.instance(mContext);
-        MediaServiceManager.instance().addAccountListener(this);
+        ServiceManager.addAccountListener(this);
         restoreState();
     }
 
@@ -124,7 +124,7 @@ public class AccountsData implements AccountChangeListener {
     }
 
     private String getAccountName() {
-        Account account = MediaServiceManager.instance().getSelectedAccount();
+        Account account = ServiceManager.getSelectedAccount();
         return account != null ? account.getName() : null;
     }
 

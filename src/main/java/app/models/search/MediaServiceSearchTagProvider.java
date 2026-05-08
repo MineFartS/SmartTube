@@ -3,11 +3,10 @@ package SmartTubeApp.app.models.search;
 import android.text.TextUtils;
 
 import com.liskovsoft.sharedutils.service.ContentService;
-import com.liskovsoft.sharedutils.ServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import SmartTubeApp.app.models.search.vineyard.Tag;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 import io.reactivex.disposables.Disposable;
 
 public class MediaServiceSearchTagProvider implements SearchTagsProvider {
@@ -18,11 +17,7 @@ public class MediaServiceSearchTagProvider implements SearchTagsProvider {
     private Disposable mTagsAction;
 
     public MediaServiceSearchTagProvider() {
-
-        ServiceManager service = YouTubeServiceManager.instance();
-
-        mContentService = service.getContentService();
-
+        mContentService = ServiceManager.getContentService();
     }
 
     @Override

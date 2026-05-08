@@ -9,7 +9,7 @@ import SmartTubeApp.app.presenters.ChannelUploadsPresenter;
 import SmartTubeApp.app.presenters.PlaybackPresenter;
 import SmartTubeApp.app.presenters.SearchPresenter;
 import SmartTubeApp.app.presenters.base.BasePresenter;
-import SmartTubeApp.misc.MediaServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import SmartTubeApp.utils.LoadingManager;
 
 public class VideoActionPresenter extends BasePresenter<Void> {
@@ -32,7 +32,7 @@ public class VideoActionPresenter extends BasePresenter<Void> {
         if (item.hasVideo() && !item.isPlaylistInChannel()) {
             PlaybackPresenter.instance(getContext()).openVideo(item);
         } else if (item.hasChannel() || item.belongsToChannelUploads()) {
-            MediaServiceManager.chooseChannelPresenter(getContext(), item);
+            ServiceManager.chooseChannelPresenter(getContext(), item);
         } else if (item.hasPlaylist() || item.hasNestedItems()) {
             ChannelUploadsPresenter.instance(getContext()).openChannel(item);
         } else if (item.isChapter) {

@@ -3,7 +3,7 @@ package SmartTubeApp.app.models.playback.controllers;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import com.liskovsoft.sharedutils.MediaItemService;
-import com.liskovsoft.sharedutils.ServiceManager;
+import SmartTubeApp.misc.ServiceManager;
 import com.liskovsoft.sharedutils.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.data.SponsorSegment;
 import com.liskovsoft.sharedutils.helpers.Helpers;
@@ -21,7 +21,6 @@ import SmartTubeApp.prefs.ContentBlockData;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import SmartTubeApp.prefs.PlayerTweaksData;
 import SmartTubeApp.utils.Utils;
-import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
@@ -80,8 +79,7 @@ public class ContentBlockController extends BasePlayerController {
 
     @Override
     public void onInit() {
-        ServiceManager service = YouTubeServiceManager.instance();
-        mMediaItemService = service.getMediaItemService();
+        mMediaItemService = ServiceManager.getMediaItemService();
     }
 
     @Override

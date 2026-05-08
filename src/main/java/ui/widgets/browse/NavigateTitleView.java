@@ -26,8 +26,8 @@ import SmartTubeApp.app.presenters.dialogs.AccountSelectionPresenter;
 import SmartTubeApp.app.presenters.settings.AccountSettingsPresenter;
 
 import SmartTubeApp.app.views.ViewManager;
-import SmartTubeApp.misc.MediaServiceManager;
-import SmartTubeApp.misc.MediaServiceManager.AccountChangeListener;
+import SmartTubeApp.misc.ServiceManager;
+import SmartTubeApp.misc.ServiceManager.AccountChangeListener;
 import SmartTubeApp.prefs.common.DataChangeBase.OnDataChange;
 import SmartTubeApp.prefs.GeneralData;
 import SmartTubeApp.prefs.MainUIData;
@@ -153,7 +153,7 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
             return;
         }
 
-        MediaServiceManager.instance().addAccountListener(this);
+        ServiceManager.addAccountListener(this);
 
         setupButtons();
 
@@ -236,7 +236,7 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
 
     private void updateAccountIcon() {
 
-        Account current = MediaServiceManager.instance().getSelectedAccount();
+        Account current = ServiceManager.getSelectedAccount();
 
         if (current != null && current.getAvatarImageUrl() != null) {
 

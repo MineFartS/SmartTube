@@ -8,7 +8,7 @@ import com.liskovsoft.sharedutils.lounge.LoungeService;
 import com.liskovsoft.sharedutils.service.data.YouTubeCommand;
 import io.reactivex.Observable;
 
-class YouTubeRemoteControlService implements RemoteControlService {
+public class YouTubeRemoteControlService implements RemoteControlService {
 
     private static YouTubeRemoteControlService sInstance;
     private final LoungeService mLoungeService;
