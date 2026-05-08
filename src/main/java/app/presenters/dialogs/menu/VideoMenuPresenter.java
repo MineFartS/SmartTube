@@ -29,6 +29,8 @@ import SmartTubeApp.prefs.GeneralData;
 import SmartTubeApp.prefs.MainUIData;
 import SmartTubeApp.utils.AppDialogUtil;
 import com.liskovsoft.sharedutils.service.YouTubeServiceManager;
+import SmartTubeApp.ui.playback.actions.SubscribeAction;
+
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
@@ -48,7 +50,6 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
 
     private Disposable mAddToPlaylistAction;
     private Disposable mNotInterestedAction;
-    private Disposable mSubscribeAction;
     private Disposable mPlaylistsInfoAction;
     private Video mVideo;
     
@@ -548,21 +549,20 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
     }
 
     private void appendSubscribeButton() {
-        if (!mIsSubscribeButtonEnabled) {
-            return;
-        }
 
-        if (mVideo == null || mVideo.isPlaylistAsChannel() || (!mVideo.isChannel() && !mVideo.hasVideo())) {
-            return;
-        }
+        if (!mIsSubscribeButtonEnabled 
+            || mVideo == null 
+            || mVideo.isPlaylistAsChannel() 
+            || (!mVideo.isChannel() && !mVideo.hasVideo())
+        ) return;
 
         mVideo.isSubscribed = mVideo.isSubscribed || mVideo.belongsToSubscriptions() || mVideo.belongsToChannelUploads();
 
-        mDialogPresenter.appendSingleButton(
-                UiOptionItem.from(getContext().getString(
-                        mVideo.isSynced || mVideo.isSubscribed || (!getSignInService().isSigned() && mVideo.channelId != null) ? mVideo.isSubscribed ?
-                                R.string.unsubscribe_from_channel : R.string.subscribe_to_channel : R.string.subscribe_unsubscribe_from_channel),
-                        optionItem -> toggleSubscribe()));
+        mDialogPresenter.appendSingleButton(UiOptionItem.from(
+            mVideo.isSubscribed ? "Unsubscribe" : "Subscribe",
+            optionItem -> SubscribeAction.toggle(mVideo)
+        ));
+
     }
 
     private void appendAddToPlaybackQueueButton() {
@@ -668,47 +668,6 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
             MessageHelpers.showMessage(getContext(),
                     getContext().getString(R.string.removed_from, playlistTitle));
         }
-    }
-
-    private void toggleSubscribe() {
-        if (mVideo == null) {
-            return;
-        }
-
-        // Until synced we won't really know weather we subscribed to a channel.
-        // Exclusion: channel item (can't be synced)
-        // Note, regular items (from subscribed section etc) aren't contain channel id
-        if (mVideo.isSynced || mVideo.isSubscribed || mVideo.isChannel() || (!getSignInService().isSigned() && mVideo.channelId != null)) {
-            toggleSubscribe(mVideo);
-        } else {
-            MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
-
-            mServiceManager.loadMetadata(mVideo, metadata -> {
-                mVideo.sync(metadata);
-                toggleSubscribe(mVideo);
-            });
-        }
-    }
-
-    private void toggleSubscribe(Video video) {
-        if (video == null) {
-            return;
-        }
-
-        RxHelper.disposeActions(mSubscribeAction);
-
-        Observable<Void> observable = video.isSubscribed ?
-                mMediaItemService.unsubscribeObserve(video.channelId) : mMediaItemService.subscribeObserve(video.channelId);
-
-        mSubscribeAction = RxHelper.execute(observable);
-
-        video.isSubscribed = !video.isSubscribed;
-
-        if (!video.isSubscribed && mCallback != null) {
-            mCallback.onItemAction(video, VideoMenuCallback.ACTION_UNSUBSCRIBE);
-        }
-
-        MessageHelpers.showMessage(getContext(), getContext().getString(!video.isSubscribed ? R.string.unsubscribed_from_channel : R.string.subscribed_to_channel));
     }
 
     @Override
