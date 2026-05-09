@@ -1,4 +1,4 @@
-package SmartTubeApp.core;
+package minefarts.smarttube.core;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,8 +6,8 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.AsyncTask;
 
-import SmartTubeApp.other.downloadmanager.DownloadManager;
-import SmartTubeApp.other.downloadmanager.DownloadManager.MyRequest;
+import minefarts.smarttube.other.downloadmanager.DownloadManager;
+import minefarts.smarttube.other.downloadmanager.DownloadManager.MyRequest;
 import com.liskovsoft.sharedutils.helpers.DeviceHelpers;
 import com.liskovsoft.sharedutils.locale.LocaleUtility;
 import com.liskovsoft.sharedutils.mylogger.Log;

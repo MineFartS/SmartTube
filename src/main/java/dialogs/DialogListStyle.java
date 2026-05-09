@@ -1,14 +1,14 @@
 
 
-package SmartTubeApp.dialogs;
+package minefarts.smarttube.dialogs;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 
-import SmartTubeApp.R;
-import SmartTubeApp.commons.Style;
+import minefarts.smarttube.R;
+import minefarts.smarttube.commons.Style;
 
 /**
  * Style for DialogList customization by xml attributes

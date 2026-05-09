@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.widgets.complexcardview;
+package minefarts.smarttube.ui.widgets.complexcardview;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -13,10 +13,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.utils.Utils;
-import SmartTubeApp.R;
-import SmartTubeApp.util.ViewUtil;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.R;
+import minefarts.smarttube.util.ViewUtil;
 
 import java.lang.ref.WeakReference;
 

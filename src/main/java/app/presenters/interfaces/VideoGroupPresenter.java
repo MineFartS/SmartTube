@@ -1,6 +1,6 @@
-package SmartTubeApp.app.presenters.interfaces;
+package minefarts.smarttube.app.presenters.interfaces;
 
-import SmartTubeApp.app.models.data.Video;
+import minefarts.smarttube.app.models.data.Video;
 
 public interface VideoGroupPresenter {
     void onVideoItemSelected(Video item);

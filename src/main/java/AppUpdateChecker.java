@@ -1,13 +1,13 @@
-package SmartTubeApp;
+package minefarts.smarttube;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.net.Uri;
-import SmartTubeApp.core.AppDownloader;
-import SmartTubeApp.core.AppDownloaderListener;
-import SmartTubeApp.core.AppVersionChecker;
-import SmartTubeApp.core.AppVersionCheckerListener;
-import SmartTubeApp.other.SettingsManager;
+import minefarts.smarttube.core.AppDownloader;
+import minefarts.smarttube.core.AppDownloaderListener;
+import minefarts.smarttube.core.AppVersionChecker;
+import minefarts.smarttube.core.AppVersionCheckerListener;
+import minefarts.smarttube.other.SettingsManager;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -51,19 +51,6 @@ public class AppUpdateChecker implements AppVersionCheckerListener, AppDownloade
         //FileHelpers.delete(mSettingsManager.getApkPath());
     }
 
-    /**
-     * You normally shouldn't need to call this, as {@link #checkForUpdates(String[] versionListUrls)} checks it before doing any updates.
-     *
-     * @return true if the updater should check for updates
-     */
-    private boolean isStale() {
-        if (mSettingsManager.getMinIntervalMs() < 0) {
-            return false;
-        }
-
-        return System.currentTimeMillis() - mSettingsManager.getLastCheckedMs() > mSettingsManager.getMinIntervalMs();
-    }
-
     public void checkForUpdates(String updateManifestUrl) {
         checkForUpdates(new String[]{updateManifestUrl});
     }
@@ -72,33 +59,22 @@ public class AppUpdateChecker implements AppVersionCheckerListener, AppDownloade
      * Checks for updates if updates haven't been checked for recently and if checking is enabled.
      */
     public void checkForUpdates(String[] updateManifestUrls) {
-        if (isUpdateCheckEnabled() && isStale()) {
-            checkForUpdatesInt(updateManifestUrls);
-        } else {
-            mListener.onUpdateError(new IllegalStateException(AppUpdateCheckerListener.UPDATE_CHECK_DISABLED));
-        }
-    }
+        if (isUpdateCheckEnabled() 
+            && mSettingsManager.getMinIntervalMs() >= 0 
+            && System.currentTimeMillis() - mSettingsManager.getLastCheckedMs() > mSettingsManager.getMinIntervalMs()
+        ) {
 
-    private void checkForUpdatesInt(String[] updateManifestUrls) {
-        if (!checkPostponed()) {
             Uri[] uris = new Uri[updateManifestUrls.length];
 
             for (int i = 0; i < updateManifestUrls.length; i++) {
                 uris[i] = Uri.parse(updateManifestUrls[i]);
             }
 
-            checkForUpdatesInt(uris);
-        }
-    }
+            mVersionChecker.checkForUpdates(uris);
 
-    private void checkForUpdatesInt(Uri[] updateManifestUrls) {
-        if (!checkPostponed()) {
-            mVersionChecker.checkForUpdates(updateManifestUrls);
+        } else {
+            mListener.onUpdateError(new IllegalStateException(AppUpdateCheckerListener.UPDATE_CHECK_DISABLED));
         }
-    }
-
-    private boolean checkPostponed() {
-        return false;
     }
 
     @Override

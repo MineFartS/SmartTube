@@ -1,4 +1,4 @@
-package SmartTubeApp.misc;
+package minefarts.smarttube.misc;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 

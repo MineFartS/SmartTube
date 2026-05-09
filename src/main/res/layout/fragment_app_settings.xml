@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
     <fragment
         android:id="@+id/app_settings_fragment"
-        android:name="SmartTubeApp.ui.dialogs.AppDialogFragment"
+        android:name="minefarts.smarttube.ui.dialogs.AppDialogFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </fragment>

@@ -37,7 +37,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
             AppClient.WEB_EMBED, // Restricted (18+) videos
             //AppClient.ANDROID_SDK_LESS, // doesn't require pot (hangs on cronet!)
             AppClient.ANDROID_REEL, // doesn't require pot and cipher
-            AppClient.IOS,
             AppClient.TV, // Supports auth. Fixes "please sign in" bug!
             AppClient.TV_LEGACY,
             AppClient.TV_DOWNGRADED,
@@ -237,11 +236,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
         return videoInfo.getVideoInfo();
     }
 
-    private VideoInfoHls getVideoInfoIOSHls(String videoId, String clickTrackingParams) {
-        String videoInfoQuery = VideoInfoApiHelper.getVideoInfoQuery(AppClient.IOS, videoId, clickTrackingParams);
-        return getVideoInfoHls(AppClient.IOS, videoInfoQuery);
-    }
-
     private VideoInfoHls getVideoInfoHls(AppClient client, String videoInfoQuery) {
         Call<VideoInfoHls> wrapper = mVideoInfoApi.getVideoInfoHls(videoInfoQuery, mAppService.getVisitorData());
 
@@ -249,21 +243,8 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private void applyFixesIfNeeded(VideoInfo result, String videoId, String clickTrackingParams) {
-        if (result == null || result.isUnplayable()) {
-            return;
-        }
-
-        if (shouldObtainExtendedFormats(result) || result.isStoryboardBroken()) {
-            Log.d(TAG, "Enable high bitrate formats...");
-            mAuthBlock = false;
-            VideoInfoHls videoInfoHls = getVideoInfoIOSHls(videoId, clickTrackingParams);
-            if (videoInfoHls != null && shouldObtainExtendedFormats(result)) {
-                result.setHlsManifestUrl(videoInfoHls.getHlsManifestUrl());
-            }
-            if (videoInfoHls != null && result.isStoryboardBroken()) {
-                result.setStoryboardSpec(videoInfoHls.getStoryboardSpec());
-            }
-        }
+        
+        if (result == null || result.isUnplayable()) return;
 
         // TV and others has a limited number of auto generated subtitles
         if (needMoreSubtitles(result)) {
@@ -316,10 +297,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         mVideoInfoType = mRecentInfoType;
         persistVideoInfoType();
-    }
-
-    private static boolean shouldObtainExtendedFormats(VideoInfo result) {
-        return getData().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS) && result.isExtendedHlsFormatsBroken();
     }
 
     private static boolean needMoreSubtitles(VideoInfo videoInfo) {

@@ -1,16 +1,16 @@
-package SmartTubeApp.app.presenters.dialogs.menu.providers.channelgroup;
+package minefarts.smarttube.app.presenters.dialogs.menu.providers.channelgroup;
 
 import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import SmartTubeApp.R;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.presenters.AppDialogPresenter;
-import SmartTubeApp.app.presenters.BrowsePresenter;
-import SmartTubeApp.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
-import SmartTubeApp.app.presenters.dialogs.menu.providers.ContextMenuProvider;
-import SmartTubeApp.utils.AppDialogUtil;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.presenters.AppDialogPresenter;
+import minefarts.smarttube.app.presenters.BrowsePresenter;
+import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
+import minefarts.smarttube.app.presenters.dialogs.menu.providers.ContextMenuProvider;
+import minefarts.smarttube.utils.AppDialogUtil;
 
 public class RemoveGroupMenuProvider extends ContextMenuProvider {
     private final Context mContext;

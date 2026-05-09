@@ -11,7 +11,6 @@ import android.media.MediaCodecInfo.VideoCapabilities;
 import androidx.annotation.Nullable;
 import android.util.Pair;
 import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.util.AmazonQuirks;
 import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.Log;
 import com.google.android.exoplayer2.util.MimeTypes;
@@ -142,11 +141,25 @@ public final class MediaCodecInfo {
     this.codecMimeType = codecMimeType;
     this.capabilities = capabilities;
     this.passthrough = passthrough;
-    adaptive = !forceDisableAdaptive && capabilities != null && isAdaptive(capabilities);
-    tunneling = capabilities != null && isTunneling(capabilities);
-    secure = forceSecure || (capabilities != null && isSecure(capabilities));
+    
+    adaptive = !forceDisableAdaptive 
+        && capabilities != null 
+        && Util.SDK_INT >= 19 
+        && capabilities.isFeatureSupported(CodecCapabilities.FEATURE_AdaptivePlayback);
+    
+    tunneling = capabilities != null 
+        && Util.SDK_INT >= 21 
+        && capabilities.isFeatureSupported(CodecCapabilities.FEATURE_TunneledPlayback);
+    
+    secure = forceSecure || (
+        capabilities != null 
+        && Util.SDK_INT >= 21 
+        && capabilities.isFeatureSupported(CodecCapabilities.FEATURE_SecurePlayback)
+    );
+    
     isVideo = MimeTypes.isVideo(mimeType);
-  }
+  
+}
 
   @Override
   public String toString() {
@@ -465,33 +478,6 @@ public final class MediaCodecInfo {
     Log.w(TAG, "AssumedMaxChannelAdjustment: " + name + ", [" + maxChannelCount + " to "
         + assumedMaxChannelCount + "]");
     return assumedMaxChannelCount;
-  }
-
-  private static boolean isAdaptive(CodecCapabilities capabilities) {
-    return Util.SDK_INT >= 19 && isAdaptiveV19(capabilities);
-  }
-
-  @TargetApi(19)
-  private static boolean isAdaptiveV19(CodecCapabilities capabilities) {
-    return capabilities.isFeatureSupported(CodecCapabilities.FEATURE_AdaptivePlayback);
-  }
-
-  private static boolean isTunneling(CodecCapabilities capabilities) {
-    return Util.SDK_INT >= 21 && isTunnelingV21(capabilities);
-  }
-
-  @TargetApi(21)
-  private static boolean isTunnelingV21(CodecCapabilities capabilities) {
-    return capabilities.isFeatureSupported(CodecCapabilities.FEATURE_TunneledPlayback);
-  }
-
-  private static boolean isSecure(CodecCapabilities capabilities) {
-    return Util.SDK_INT >= 21 && isSecureV21(capabilities);
-  }
-
-  @TargetApi(21)
-  private static boolean isSecureV21(CodecCapabilities capabilities) {
-    return capabilities.isFeatureSupported(CodecCapabilities.FEATURE_SecurePlayback);
   }
 
   @TargetApi(21)

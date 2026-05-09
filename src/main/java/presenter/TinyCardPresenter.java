@@ -1,10 +1,10 @@
-package SmartTubeApp.presenter;
+package minefarts.smarttube.presenter;
 
 import android.content.Context;
 import android.util.Pair;
-import SmartTubeApp.prefs.MainUIData;
-import SmartTubeApp.R;
-import SmartTubeApp.ui.browse.video.GridFragmentHelper;
+import minefarts.smarttube.prefs.MainUIData;
+import minefarts.smarttube.R;
+import minefarts.smarttube.ui.browse.video.GridFragmentHelper;
 
 public class TinyCardPresenter extends VideoCardPresenter {
     @Override

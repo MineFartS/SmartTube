@@ -1,6 +1,6 @@
 
 
-package SmartTubeApp.messages;
+package minefarts.smarttube.messages;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -14,8 +14,8 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.core.graphics.drawable.DrawableCompat;
 
-import SmartTubeApp.R;
-import SmartTubeApp.commons.Style;
+import minefarts.smarttube.R;
+import minefarts.smarttube.commons.Style;
 
 /**
  * Style for MessagesListStyle customization by xml attributes

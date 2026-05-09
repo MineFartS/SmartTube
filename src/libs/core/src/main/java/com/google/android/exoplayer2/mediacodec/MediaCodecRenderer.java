@@ -11,9 +11,11 @@ import android.media.MediaFormat;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.SystemClock;
+
 import androidx.annotation.CheckResult;
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
+
 import com.google.android.exoplayer2.BaseRenderer;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -34,6 +36,8 @@ import com.google.android.exoplayer2.util.NalUnitUtil;
 import com.google.android.exoplayer2.util.TimedValueQueue;
 import com.google.android.exoplayer2.util.TraceUtil;
 import com.google.android.exoplayer2.util.Util;
+import com.google.android.exoplayer2.util.AmazonQuirks;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -483,7 +487,7 @@ public abstract class MediaCodecRenderer extends BaseRenderer {
                                     && mediaCrypto.requiresSecureDecoderComponent(mimeType);
                 }
             }
-            if (deviceNeedsDrmKeysToConfigureCodecWorkaround()) {
+            if (AmazonQuirks.isFireTVGen1Family()) {
                 @DrmSession.State
                 int drmSessionState = codecDrmSession.getState();
                 if (drmSessionState == DrmSession.STATE_ERROR) {
@@ -1725,16 +1729,6 @@ public abstract class MediaCodecRenderer extends BaseRenderer {
         }
         cryptoInfo.numBytesOfClearData[0] += adaptiveReconfigurationBytes;
         return cryptoInfo;
-    }
-
-    /**
-     * Returns whether the device needs keys to have been loaded into the {@link DrmSession} before
-     * codec configuration.
-     */
-    private boolean deviceNeedsDrmKeysToConfigureCodecWorkaround() {
-        return "Amazon".equals(Util.MANUFACTURER) && ("AFTM".equals(Util.MODEL) // Fire TV Stick Gen
-                                                                                // 1
-                || "AFTB".equals(Util.MODEL)); // Fire TV Gen 1
     }
 
     /**

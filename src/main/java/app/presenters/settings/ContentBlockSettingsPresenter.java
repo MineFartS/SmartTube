@@ -1,21 +1,21 @@
-package SmartTubeApp.app.presenters.settings;
+package minefarts.smarttube.app.presenters.settings;
 
 import android.content.Context;
 import android.text.TextUtils;
 import androidx.core.content.ContextCompat;
-import SmartTubeApp.R;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.models.playback.controllers.ContentBlockController.SegmentAction;
-import SmartTubeApp.app.models.playback.ui.OptionItem;
-import SmartTubeApp.app.models.playback.ui.UiOptionItem;
-import SmartTubeApp.app.presenters.AppDialogPresenter;
-import SmartTubeApp.app.presenters.PlaybackPresenter;
-import SmartTubeApp.app.presenters.base.BasePresenter;
-import SmartTubeApp.app.models.playback.PlayerEngine;
-import SmartTubeApp.misc.ServiceManager;
-import SmartTubeApp.prefs.ContentBlockData;
-import SmartTubeApp.utils.AppDialogUtil;
-import SmartTubeApp.utils.Utils;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.models.playback.controllers.ContentBlockController.SegmentAction;
+import minefarts.smarttube.app.models.playback.ui.OptionItem;
+import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
+import minefarts.smarttube.app.presenters.AppDialogPresenter;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
+import minefarts.smarttube.app.presenters.base.BasePresenter;
+import minefarts.smarttube.app.models.playback.PlayerEngine;
+import minefarts.smarttube.misc.ServiceManager;
+import minefarts.smarttube.prefs.ContentBlockData;
+import minefarts.smarttube.utils.AppDialogUtil;
+import minefarts.smarttube.utils.Utils;
 
 import com.liskovsoft.sharedutils.data.SponsorSegment;
 

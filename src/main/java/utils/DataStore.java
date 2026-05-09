@@ -1,6 +1,6 @@
-package SmartTubeApp.utils;
+package minefarts.smarttube.utils;
 
-import SmartTubeApp.utils.Serializer;
+import minefarts.smarttube.utils.Serializer;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 
 import android.content.Context;

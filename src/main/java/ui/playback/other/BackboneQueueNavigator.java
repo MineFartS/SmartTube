@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.playback.other;
+package minefarts.smarttube.ui.playback.other;
 
 import android.os.Bundle;
 import android.os.ResultReceiver;

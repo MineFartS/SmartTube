@@ -1,4 +1,4 @@
-package SmartTubeApp.adapter.vineyard;
+package minefarts.smarttube.adapter.vineyard;
 
 import android.content.Context;
 import android.os.Handler;
@@ -6,11 +6,11 @@ import android.os.Handler;
 import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.PresenterSelector;
-import SmartTubeApp.R;
-import SmartTubeApp.app.models.search.vineyard.Option;
-import SmartTubeApp.presenter.vineyard.IconItemPresenter;
-import SmartTubeApp.presenter.vineyard.LoadingPresenter;
-import SmartTubeApp.ui.widgets.vineyard.LoadingCardView;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.models.search.vineyard.Option;
+import minefarts.smarttube.presenter.vineyard.IconItemPresenter;
+import minefarts.smarttube.presenter.vineyard.LoadingPresenter;
+import minefarts.smarttube.ui.widgets.vineyard.LoadingCardView;
 
 import java.util.HashMap;
 import java.util.List;

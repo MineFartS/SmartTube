@@ -1,6 +1,6 @@
 
 
-package SmartTubeApp.ui.mod.clickable;
+package minefarts.smarttube.ui.mod.clickable;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
@@ -20,7 +20,7 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Retention;

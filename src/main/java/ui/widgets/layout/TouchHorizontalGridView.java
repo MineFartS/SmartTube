@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.widgets.layout;
+package minefarts.smarttube.ui.widgets.layout;
 
 import android.content.Context;
 import android.util.AttributeSet;

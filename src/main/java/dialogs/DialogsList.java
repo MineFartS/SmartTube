@@ -1,6 +1,6 @@
 
 
-package SmartTubeApp.dialogs;
+package minefarts.smarttube.dialogs;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
-import SmartTubeApp.commons.models.IDialog;
+import minefarts.smarttube.commons.models.IDialog;
 
 /**
  * Component for displaying list of dialogs

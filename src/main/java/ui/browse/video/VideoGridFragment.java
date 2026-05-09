@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.browse.video;
+package minefarts.smarttube.ui.browse.video;
 
 import android.os.Bundle;
 import android.widget.Toast;
@@ -10,24 +10,24 @@ import androidx.leanback.widget.RowPresenter;
 import androidx.leanback.widget.VerticalGridPresenter;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.models.data.VideoGroup;
-import SmartTubeApp.app.presenters.BrowsePresenter;
-import SmartTubeApp.app.presenters.interfaces.VideoGroupPresenter;
-import SmartTubeApp.misc.TickleManager;
-import SmartTubeApp.prefs.MainUIData;
-import SmartTubeApp.utils.LoadingManager;
-import SmartTubeApp.R;
-import SmartTubeApp.adapter.VideoGroupObjectAdapter;
-import SmartTubeApp.presenter.CustomVerticalGridPresenter;
-import SmartTubeApp.presenter.ShortsCardPresenter;
-import SmartTubeApp.presenter.VideoCardPresenter;
-import SmartTubeApp.presenter.base.OnItemLongPressedListener;
-import SmartTubeApp.ui.browse.interfaces.VideoSection;
-import SmartTubeApp.ui.common.LeanbackActivity;
-import SmartTubeApp.ui.common.UriBackgroundManager;
-import SmartTubeApp.ui.mod.fragments.GridFragment;
-import SmartTubeApp.util.ViewUtil;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.models.data.VideoGroup;
+import minefarts.smarttube.app.presenters.BrowsePresenter;
+import minefarts.smarttube.app.presenters.interfaces.VideoGroupPresenter;
+import minefarts.smarttube.misc.TickleManager;
+import minefarts.smarttube.prefs.MainUIData;
+import minefarts.smarttube.utils.LoadingManager;
+import minefarts.smarttube.R;
+import minefarts.smarttube.adapter.VideoGroupObjectAdapter;
+import minefarts.smarttube.presenter.CustomVerticalGridPresenter;
+import minefarts.smarttube.presenter.ShortsCardPresenter;
+import minefarts.smarttube.presenter.VideoCardPresenter;
+import minefarts.smarttube.presenter.base.OnItemLongPressedListener;
+import minefarts.smarttube.ui.browse.interfaces.VideoSection;
+import minefarts.smarttube.ui.common.LeanbackActivity;
+import minefarts.smarttube.ui.common.UriBackgroundManager;
+import minefarts.smarttube.ui.mod.fragments.GridFragment;
+import minefarts.smarttube.util.ViewUtil;
 
 import java.util.ArrayList;
 import java.util.List;

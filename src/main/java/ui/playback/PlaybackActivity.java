@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.playback;
+package minefarts.smarttube.ui.playback;
 
 import android.annotation.TargetApi;
 import android.app.PictureInPictureParams;
@@ -12,15 +12,15 @@ import androidx.fragment.app.Fragment;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.app.models.playback.PlayerEngine;
-import SmartTubeApp.app.presenters.AppDialogPresenter;
-import SmartTubeApp.app.models.playback.PlayerEngine;
-import SmartTubeApp.prefs.GeneralData;
-import SmartTubeApp.prefs.MainUIData;
-import SmartTubeApp.prefs.PlayerData;
-import SmartTubeApp.utils.Utils;
-import SmartTubeApp.R;
-import SmartTubeApp.ui.common.LeanbackActivity;
+import minefarts.smarttube.app.models.playback.PlayerEngine;
+import minefarts.smarttube.app.presenters.AppDialogPresenter;
+import minefarts.smarttube.app.models.playback.PlayerEngine;
+import minefarts.smarttube.prefs.GeneralData;
+import minefarts.smarttube.prefs.MainUIData;
+import minefarts.smarttube.prefs.PlayerData;
+import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.R;
+import minefarts.smarttube.ui.common.LeanbackActivity;
 
 /**
  * Loads PlaybackFragment and delegates input from a game controller.

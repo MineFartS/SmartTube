@@ -1,8 +1,8 @@
-package SmartTubeApp.util.vineyard;
+package minefarts.smarttube.util.vineyard;
 
 import android.content.Context;
 import android.widget.Toast;
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 
 public class ToastFactory {
     public static Toast createWifiErrorToast(Context context) {

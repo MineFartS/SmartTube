@@ -169,7 +169,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
    * @param rendererPositionUs The playing position in renderer time, in microseconds.
    */
   public void reevaluateBuffer(long rendererPositionUs) {
-    Assertions.checkState(isLoadingMediaPeriod());
+    Assertions.checkState(next == null);
     if (prepared) {
       mediaPeriod.reevaluateBuffer(toPeriodTime(rendererPositionUs));
     }
@@ -182,7 +182,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
    * @param rendererPositionUs The load position in renderer time, in microseconds.
    */
   public void continueLoading(long rendererPositionUs) {
-    Assertions.checkState(isLoadingMediaPeriod());
+    Assertions.checkState(next == null);
     long loadingPeriodPositionUs = toPeriodTime(rendererPositionUs);
     mediaPeriod.continueLoading(loadingPeriodPositionUs);
   }
@@ -335,7 +335,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
 
   private void enableTrackSelectionsInResult() {
     TrackSelectorResult trackSelectorResult = this.trackSelectorResult;
-    if (!isLoadingMediaPeriod() || trackSelectorResult == null) {
+    if (next != null && trackSelectorResult != null) {
       return;
     }
     for (int i = 0; i < trackSelectorResult.length; i++) {
@@ -349,7 +349,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
 
   private void disableTrackSelectionsInResult() {
     TrackSelectorResult trackSelectorResult = this.trackSelectorResult;
-    if (!isLoadingMediaPeriod() || trackSelectorResult == null) {
+    if (next != null && trackSelectorResult != null) {
       return;
     }
     for (int i = 0; i < trackSelectorResult.length; i++) {
@@ -387,10 +387,6 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
         sampleStreams[i] = new EmptySampleStream();
       }
     }
-  }
-
-  private boolean isLoadingMediaPeriod() {
-    return next == null;
   }
 
   /** Returns a media period corresponding to the given {@code id}. */

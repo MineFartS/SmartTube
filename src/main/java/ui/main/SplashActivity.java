@@ -1,10 +1,10 @@
-package SmartTubeApp.ui.main;
+package minefarts.smarttube.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import SmartTubeApp.app.presenters.SplashPresenter;
-import SmartTubeApp.app.views.SplashView;
-import SmartTubeApp.misc.MotherActivity;
+import minefarts.smarttube.app.presenters.SplashPresenter;
+import minefarts.smarttube.app.views.SplashView;
+import minefarts.smarttube.misc.MotherActivity;
 
 public class SplashActivity extends MotherActivity implements SplashView {
 

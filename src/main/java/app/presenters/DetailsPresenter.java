@@ -1,11 +1,11 @@
-package SmartTubeApp.app.presenters;
+package minefarts.smarttube.app.presenters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.presenters.base.BasePresenter;
-import SmartTubeApp.app.views.DetailsView;
-import SmartTubeApp.app.views.ViewManager;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.presenters.base.BasePresenter;
+import minefarts.smarttube.app.views.DetailsView;
+import minefarts.smarttube.app.views.ViewManager;
 
 public class DetailsPresenter extends BasePresenter<DetailsView> {
     @SuppressLint("StaticFieldLeak")

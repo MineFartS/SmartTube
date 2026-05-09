@@ -1,10 +1,10 @@
-package SmartTubeApp.presenter;
+package minefarts.smarttube.presenter;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.leanback.widget.VerticalGridPresenter;
-import SmartTubeApp.util.ViewUtil;
+import minefarts.smarttube.util.ViewUtil;
 
 public class CustomVerticalGridPresenter extends VerticalGridPresenter {
     private final int mLayoutResId;

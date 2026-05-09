@@ -1,4 +1,4 @@
-package SmartTubeApp.commons.widgets;
+package minefarts.smarttube.commons.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;

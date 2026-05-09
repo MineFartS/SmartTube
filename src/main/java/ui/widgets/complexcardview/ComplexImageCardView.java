@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.widgets.complexcardview;
+package minefarts.smarttube.ui.widgets.complexcardview;
 
 import android.content.Context;
 import android.os.Handler;
@@ -8,9 +8,9 @@ import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 import androidx.leanback.widget.ImageCardView;
 
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.R;
-import SmartTubeApp.util.ViewUtil;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.R;
+import minefarts.smarttube.util.ViewUtil;
 
 public class ComplexImageCardView extends ImageCardView {
     private ComplexImageView mComplexImageView;

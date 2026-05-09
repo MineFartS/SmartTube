@@ -1,4 +1,4 @@
-package SmartTubeApp.exoplayer;
+package minefarts.smarttube.exoplayer;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -40,11 +40,11 @@ import com.liskovsoft.sharedutils.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
-import SmartTubeApp.exoplayer.errors.DashDefaultLoadErrorHandlingPolicy;
-import SmartTubeApp.exoplayer.errors.SabrDefaultLoadErrorHandlingPolicy;
-import SmartTubeApp.exoplayer.errors.TrackErrorFixer;
-import SmartTubeApp.prefs.PlayerTweaksData;
-import SmartTubeApp.utils.Utils;
+import minefarts.smarttube.exoplayer.errors.DashDefaultLoadErrorHandlingPolicy;
+import minefarts.smarttube.exoplayer.errors.SabrDefaultLoadErrorHandlingPolicy;
+import minefarts.smarttube.exoplayer.errors.TrackErrorFixer;
+import minefarts.smarttube.prefs.PlayerTweaksData;
+import minefarts.smarttube.utils.Utils;
 import com.liskovsoft.googlecommon.common.helpers.DefaultHeaders;
 
 import java.io.IOException;
@@ -57,7 +57,7 @@ public class ExoMediaSourceFactory {
     private static final String TAG = ExoMediaSourceFactory.class.getSimpleName();
 
     private static final int MAX_SEGMENTS_PER_LOAD = 3; // default - 1 (1-5)
-    private static final String USER_AGENT = DefaultHeaders.APP_USER_AGENT;
+    private static final String USER_AGENT = DefaultHeaders.USER_AGENT_TV;
 
     private final Context mContext;
     private static final Uri DASH_MANIFEST_URI = Uri.parse("https://example.com/test.mpd");

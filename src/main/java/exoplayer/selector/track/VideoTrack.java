@@ -1,8 +1,8 @@
-package SmartTubeApp.exoplayer.selector.track;
+package minefarts.smarttube.exoplayer.selector.track;
 
 import com.google.android.exoplayer2.Format;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.exoplayer.selector.TrackSelectorUtil;
+import minefarts.smarttube.exoplayer.selector.TrackSelectorUtil;
 
 public class VideoTrack extends MediaTrack {
     private static final float LOW_FPS_THRESHOLD = 10;

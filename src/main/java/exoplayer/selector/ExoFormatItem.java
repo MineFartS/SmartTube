@@ -1,12 +1,12 @@
-package SmartTubeApp.exoplayer.selector;
+package minefarts.smarttube.exoplayer.selector;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.exoplayer.selector.track.MediaTrack;
-import SmartTubeApp.exoplayer.selector.track.SubtitleTrack;
+import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
+import minefarts.smarttube.exoplayer.selector.track.SubtitleTrack;
 
 import java.util.ArrayList;
 import java.util.List;

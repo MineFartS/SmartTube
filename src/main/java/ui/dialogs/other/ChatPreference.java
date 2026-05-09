@@ -1,9 +1,9 @@
-package SmartTubeApp.ui.dialogs.other;
+package minefarts.smarttube.ui.dialogs.other;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import androidx.preference.DialogPreference;
-import SmartTubeApp.app.models.playback.ui.ChatReceiver;
+import minefarts.smarttube.app.models.playback.ui.ChatReceiver;
 
 public class ChatPreference extends DialogPreference {
     private ChatReceiver mChatReceiver;

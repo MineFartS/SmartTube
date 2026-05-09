@@ -1,9 +1,9 @@
-package SmartTubeApp.ui.playback.previewtimebar;
+package minefarts.smarttube.ui.playback.previewtimebar;
 
 import android.content.Context;
 import androidx.leanback.media.PlaybackGlue;
 import androidx.leanback.widget.PlaybackSeekDataProvider;
-import SmartTubeApp.app.models.data.Video;
+import minefarts.smarttube.app.models.data.Video;
 import androidx.leanback.media.PlaybackTransportControlGlue;
 
 public class StoryboardSeekDataProvider extends PlaybackSeekDataProvider {

@@ -1,4 +1,4 @@
-package SmartTubeApp.exoplayer.versions.renderer;
+package minefarts.smarttube.exoplayer.versions.renderer;
 
 import android.annotation.TargetApi;
 import android.content.Context;

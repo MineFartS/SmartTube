@@ -1,4 +1,4 @@
-package SmartTubeApp.app.presenters.settings;
+package minefarts.smarttube.app.presenters.settings;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -6,19 +6,19 @@ import android.util.Pair;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
-import SmartTubeApp.R;
-import SmartTubeApp.app.models.playback.ui.OptionCategory;
-import SmartTubeApp.app.models.playback.ui.OptionItem;
-import SmartTubeApp.app.models.playback.ui.UiOptionItem;
-import SmartTubeApp.app.presenters.AppDialogPresenter;
-import SmartTubeApp.app.presenters.base.BasePresenter;
-import SmartTubeApp.app.presenters.service.SidebarService;
-import SmartTubeApp.exoplayer.selector.TrackSelectorUtil;
-import SmartTubeApp.prefs.GeneralData;
-import SmartTubeApp.prefs.PlayerData;
-import SmartTubeApp.prefs.PlayerTweaksData;
-import SmartTubeApp.prefs.SearchData;
-import SmartTubeApp.utils.AppDialogUtil;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.models.playback.ui.OptionCategory;
+import minefarts.smarttube.app.models.playback.ui.OptionItem;
+import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
+import minefarts.smarttube.app.presenters.AppDialogPresenter;
+import minefarts.smarttube.app.presenters.base.BasePresenter;
+import minefarts.smarttube.app.presenters.service.SidebarService;
+import minefarts.smarttube.exoplayer.selector.TrackSelectorUtil;
+import minefarts.smarttube.prefs.GeneralData;
+import minefarts.smarttube.prefs.PlayerData;
+import minefarts.smarttube.prefs.PlayerTweaksData;
+import minefarts.smarttube.prefs.SearchData;
+import minefarts.smarttube.utils.AppDialogUtil;
 import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
 
 import java.util.ArrayList;

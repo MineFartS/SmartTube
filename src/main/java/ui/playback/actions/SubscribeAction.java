@@ -1,9 +1,9 @@
-package SmartTubeApp.ui.playback.actions;
+package minefarts.smarttube.ui.playback.actions;
 
 import android.content.Context;
 
-import SmartTubeApp.R;
-import SmartTubeApp.app.models.data.Video;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.models.data.Video;
 import com.liskovsoft.sharedutils.service.YouTubeMediaItemService;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 

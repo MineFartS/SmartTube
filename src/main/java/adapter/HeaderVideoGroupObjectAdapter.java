@@ -1,4 +1,4 @@
-package SmartTubeApp.adapter;
+package minefarts.smarttube.adapter;
 
 import android.text.TextUtils;
 
@@ -6,8 +6,8 @@ import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.PresenterSelector;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.models.data.VideoGroup;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.models.data.VideoGroup;
 
 import java.util.ArrayList;
 import java.util.Collections;

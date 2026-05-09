@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.mod.leanback.playerglue.tweaks;
+package minefarts.smarttube.ui.mod.leanback.playerglue.tweaks;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -26,15 +26,15 @@ import androidx.leanback.widget.RowPresenter;
 import androidx.leanback.widget.ControlButtonPresenterSelector;
 
 import com.liskovsoft.sharedutils.helpers.DateHelper;
-import SmartTubeApp.app.models.playback.ui.SeekBarSegment;
-import SmartTubeApp.prefs.PlayerData;
-import SmartTubeApp.prefs.PlayerTweaksData;
-import SmartTubeApp.ui.mod.leanback.misc.SeekBar;
-import SmartTubeApp.ui.mod.leanback.playerglue.tweaks.ControlBarPresenter.OnControlClickedListener;
-import SmartTubeApp.ui.mod.leanback.playerglue.tweaks.ControlBarPresenter.OnControlLongClickedListener;
-import SmartTubeApp.ui.mod.leanback.playerglue.tweaks.ControlBarPresenter.OnControlSelectedListener;
-import SmartTubeApp.ui.mod.leanback.playerglue.seekpreview.ThumbsBar;
-import SmartTubeApp.ui.mod.leanback.widget.OnActionLongClickedListener;
+import minefarts.smarttube.app.models.playback.ui.SeekBarSegment;
+import minefarts.smarttube.prefs.PlayerData;
+import minefarts.smarttube.prefs.PlayerTweaksData;
+import minefarts.smarttube.ui.mod.leanback.misc.SeekBar;
+import minefarts.smarttube.ui.mod.leanback.playerglue.tweaks.ControlBarPresenter.OnControlClickedListener;
+import minefarts.smarttube.ui.mod.leanback.playerglue.tweaks.ControlBarPresenter.OnControlLongClickedListener;
+import minefarts.smarttube.ui.mod.leanback.playerglue.tweaks.ControlBarPresenter.OnControlSelectedListener;
+import minefarts.smarttube.ui.mod.leanback.playerglue.seekpreview.ThumbsBar;
+import minefarts.smarttube.ui.mod.leanback.widget.OnActionLongClickedListener;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
@@ -409,12 +409,12 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
             mDescriptionDock = (ViewGroup) rootView.findViewById(R.id.description_dock);
             mCurrentTime = (TextView) rootView.findViewById(R.id.current_time);
             mTotalTime = (TextView) rootView.findViewById(R.id.total_time);
-            mDateTime = (TextView) rootView.findViewById(SmartTubeApp.R.id.date_time);
+            mDateTime = (TextView) rootView.findViewById(minefarts.smarttube.R.id.date_time);
 
-            mRemainingTimeFormat = rootView.getContext().getString(SmartTubeApp.R.string.player_remaining_time);
-            mAdditionalInfo = (ViewGroup) rootView.findViewById(SmartTubeApp.R.id.additional_info);
-            mTimeInfo = (ViewGroup) rootView.findViewById(SmartTubeApp.R.id.time_info);
-            mTopEdge = (ViewGroup) rootView.findViewById(SmartTubeApp.R.id.top_edge);
+            mRemainingTimeFormat = rootView.getContext().getString(minefarts.smarttube.R.string.player_remaining_time);
+            mAdditionalInfo = (ViewGroup) rootView.findViewById(minefarts.smarttube.R.id.additional_info);
+            mTimeInfo = (ViewGroup) rootView.findViewById(minefarts.smarttube.R.id.time_info);
+            mTopEdge = (ViewGroup) rootView.findViewById(minefarts.smarttube.R.id.top_edge);
             mTopEdge.setOnFocusChangeListener((v, hasFocus) -> {
                 if (hasFocus) {
                     mTopEdge.clearFocus();
@@ -521,8 +521,8 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
                 mDescriptionDock.addView(mDescriptionViewHolder.view);
             }
             mThumbsBar = (ThumbsBar) rootView.findViewById(R.id.thumbs_row);
-            mThumbsBarTitle = (TextView) rootView.findViewById(SmartTubeApp.R.id.thumbs_row_title);
-            mThumbsBarWrapper = (ViewGroup) rootView.findViewById(SmartTubeApp.R.id.thumbs_row_wrapper);
+            mThumbsBarTitle = (TextView) rootView.findViewById(minefarts.smarttube.R.id.thumbs_row_title);
+            mThumbsBarWrapper = (ViewGroup) rootView.findViewById(minefarts.smarttube.R.id.thumbs_row_wrapper);
         }
 
         /**
@@ -837,10 +837,10 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
         setHeaderPresenter(null);
         setSelectEffectEnabled(false);
 
-        mPlaybackControlsPresenter = new ControlBarPresenter(SmartTubeApp.R.layout.lb_control_bar);
+        mPlaybackControlsPresenter = new ControlBarPresenter(minefarts.smarttube.R.layout.lb_control_bar);
         mPlaybackControlsPresenter.setDefaultFocusToMiddle(false);
         mPlaybackControlsPresenter.setFocusRecovery(true);
-        mSecondaryControlsPresenter = new ControlBarPresenter(SmartTubeApp.R.layout.lb_control_bar);
+        mSecondaryControlsPresenter = new ControlBarPresenter(minefarts.smarttube.R.layout.lb_control_bar);
         mSecondaryControlsPresenter.setDefaultFocusToMiddle(false);
         mSecondaryControlsPresenter.setFocusRecovery(true);
 
@@ -957,7 +957,7 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
     @Override
     protected RowPresenter.ViewHolder createRowViewHolder(ViewGroup parent) {
         View v = LayoutInflater.from(parent.getContext()).inflate(
-                SmartTubeApp.R.layout.lb_playback_transport_controls_row, parent, false);
+                minefarts.smarttube.R.layout.lb_playback_transport_controls_row, parent, false);
         ViewHolder vh = new ViewHolder(v, mDescriptionPresenter);
         initRow(vh);
         return vh;

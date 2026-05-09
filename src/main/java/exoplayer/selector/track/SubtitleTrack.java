@@ -1,4 +1,4 @@
-package SmartTubeApp.exoplayer.selector.track;
+package minefarts.smarttube.exoplayer.selector.track;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.videoinfo.models.TranslatedCaptionTrack;

@@ -307,22 +307,6 @@ public class DefaultTrackSelector extends MappingTrackSelector {
         }
 
         /**
-         * Equivalent to calling {@link #setViewportSize(int, int, boolean)} with the viewport size
-         * obtained from {@link Util#getPhysicalDisplaySize(Context)}.
-         *
-         * @param context Any context.
-         * @param viewportOrientationMayChange Whether the viewport orientation may change during
-         *        playback.
-         * @return This builder.
-         */
-        public ParametersBuilder setViewportSizeToPhysicalDisplaySize(Context context,
-                boolean viewportOrientationMayChange) {
-            // Assume the viewport is fullscreen.
-            Point viewportSize = Util.getPhysicalDisplaySize(context);
-            return setViewportSize(viewportSize.x, viewportSize.y, viewportOrientationMayChange);
-        }
-
-        /**
          * Equivalent to {@link #setViewportSize setViewportSize(Integer.MAX_VALUE,
          * Integer.MAX_VALUE, true)}.
          *

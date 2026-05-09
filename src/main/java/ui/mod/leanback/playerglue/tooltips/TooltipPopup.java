@@ -1,6 +1,6 @@
 
 
-package SmartTubeApp.ui.mod.leanback.playerglue.tooltips;
+package minefarts.smarttube.ui.mod.leanback.playerglue.tooltips;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 import androidx.annotation.RestrictTo;
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 //import androidx.appcompat.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;

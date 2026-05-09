@@ -1,4 +1,4 @@
-package SmartTubeApp.presenter;
+package minefarts.smarttube.presenter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,14 +20,14 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.prefs.MainUIData;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.prefs.MainUIData;
 
-import SmartTubeApp.R;
-import SmartTubeApp.presenter.base.LongClickPresenter;
-import SmartTubeApp.ui.browse.video.GridFragmentHelper;
-import SmartTubeApp.ui.widgets.complexcardview.ComplexImageCardView;
-import SmartTubeApp.util.ViewUtil;
+import minefarts.smarttube.R;
+import minefarts.smarttube.presenter.base.LongClickPresenter;
+import minefarts.smarttube.ui.browse.video.GridFragmentHelper;
+import minefarts.smarttube.ui.widgets.complexcardview.ComplexImageCardView;
+import minefarts.smarttube.util.ViewUtil;
 
 import java.util.regex.Pattern;
 

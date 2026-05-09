@@ -1,4 +1,4 @@
-package SmartTubeApp.presenter;
+package minefarts.smarttube.presenter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,10 +9,10 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.Presenter;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.app.models.data.SettingsItem;
-import SmartTubeApp.prefs.MainUIData;
-import SmartTubeApp.R;
-import SmartTubeApp.util.ViewUtil;
+import minefarts.smarttube.app.models.data.SettingsItem;
+import minefarts.smarttube.prefs.MainUIData;
+import minefarts.smarttube.R;
+import minefarts.smarttube.util.ViewUtil;
 
 public class SettingsCardPresenter extends Presenter {
     private int mDefaultBackgroundColor;

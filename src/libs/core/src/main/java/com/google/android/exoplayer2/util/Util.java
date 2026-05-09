@@ -112,7 +112,6 @@ public final class Util {
     /** An empty byte array. */
     public static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
-    private static final String TAG = "Util";
     private static final Pattern XS_DATE_TIME_PATTERN = Pattern.compile(
             "(\\d\\d\\d\\d)\\-(\\d\\d)\\-(\\d\\d)[Tt]" + "(\\d\\d):(\\d\\d):(\\d\\d)([\\.,](\\d+))?"
                     + "([Zz]|((\\+|\\-)(\\d?\\d):?(\\d\\d)))?");
@@ -1706,19 +1705,21 @@ public final class Util {
         if (networkInfo == null || !networkInfo.isConnected()) {
             return C.NETWORK_TYPE_OFFLINE;
         }
+
         switch (networkInfo.getType()) {
+
             case ConnectivityManager.TYPE_WIFI:
                 return C.NETWORK_TYPE_WIFI;
+
             case ConnectivityManager.TYPE_WIMAX:
                 return C.NETWORK_TYPE_4G;
-            case ConnectivityManager.TYPE_MOBILE:
-            case ConnectivityManager.TYPE_MOBILE_DUN:
-            case ConnectivityManager.TYPE_MOBILE_HIPRI:
-                return getMobileNetworkType(networkInfo);
+
             case ConnectivityManager.TYPE_ETHERNET:
                 return C.NETWORK_TYPE_ETHERNET;
+
             default: // VPN, Bluetooth, Dummy.
                 return C.NETWORK_TYPE_OTHER;
+
         }
     }
 
@@ -1749,10 +1750,22 @@ public final class Util {
      * ordered by preference.
      */
     public static String[] getSystemLanguageCodes() {
-        String[] systemLocales = getSystemLocales();
+
+        Configuration config = Resources.getSystem().getConfiguration();
+        String[] systemLocales;
+
+        if (SDK_INT >= 24) {
+            systemLocales = Util.split(config.getLocales().toLanguageTags(), ",");
+        } else if (SDK_INT >= 21) {
+            systemLocales = new String[] {config.locale.toLanguageTag()};
+        } else {
+            systemLocales = new String[] {config.locale.toString()};
+        }
+
         for (int i = 0; i < systemLocales.length; i++) {
             systemLocales[i] = normalizeLanguageCode(systemLocales[i]);
         }
+        
         return systemLocales;
     }
 
@@ -1819,74 +1832,6 @@ public final class Util {
     }
 
     /**
-     * Gets the physical size of the default display, in pixels.
-     *
-     * @param context Any context.
-     * @return The physical display size, in pixels.
-     */
-    public static Point getPhysicalDisplaySize(Context context) {
-        WindowManager windowManager =
-                (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        return getPhysicalDisplaySize(context, windowManager.getDefaultDisplay());
-    }
-
-    /**
-     * Gets the physical size of the specified display, in pixels.
-     *
-     * @param context Any context.
-     * @param display The display whose size is to be returned.
-     * @return The physical display size, in pixels.
-     */
-    public static Point getPhysicalDisplaySize(Context context, Display display) {
-        if (Util.SDK_INT <= 28 && display.getDisplayId() == Display.DEFAULT_DISPLAY
-                && isTv(context)) {
-            // On Android TVs it is common for the UI to be configured for a lower resolution than
-            // SurfaceViews can output. Before API 26 the Display object does not provide a way to
-            // identify this case, and up to and including API 28 many devices still do not
-            // correctly set
-            // their hardware compositor output size.
-
-            // Sony Android TVs advertise support for 4k output via a system feature.
-            if ("Sony".equals(Util.MANUFACTURER) && Util.MODEL.startsWith("BRAVIA") && context
-                    .getPackageManager().hasSystemFeature("com.sony.dtv.hardware.panel.qfhd")) {
-                return new Point(3840, 2160);
-            }
-
-            // Otherwise check the system property for display size. From API 28 treble may prevent
-            // the
-            // system from writing sys.display-size so we check vendor.display-size instead.
-            String displaySize = Util.SDK_INT < 28 ? getSystemProperty("sys.display-size")
-                    : getSystemProperty("vendor.display-size");
-            // If we managed to read the display size, attempt to parse it.
-            if (!TextUtils.isEmpty(displaySize)) {
-                try {
-                    String[] displaySizeParts = split(displaySize.trim(), "x");
-                    if (displaySizeParts.length == 2) {
-                        int width = Integer.parseInt(displaySizeParts[0]);
-                        int height = Integer.parseInt(displaySizeParts[1]);
-                        if (width > 0 && height > 0) {
-                            return new Point(width, height);
-                        }
-                    }
-                } catch (NumberFormatException e) {
-                    // Do nothing.
-                }
-                Log.e(TAG, "Invalid display size: " + displaySize);
-            }
-        }
-
-        Point displaySize = new Point();
-        if (Util.SDK_INT >= 23) {
-            getDisplaySizeV23(display, displaySize);
-        } else if (Util.SDK_INT >= 17) {
-            getDisplaySizeV17(display, displaySize);
-        } else {
-            getDisplaySizeV16(display, displaySize);
-        }
-        return displaySize;
-    }
-
-    /**
      * Extract renderer capabilities for the renderers created by the provided renderers factory.
      *
      * @param renderersFactory A {@link RenderersFactory}.
@@ -1908,85 +1853,9 @@ public final class Util {
         return capabilities;
     }
 
-    @Nullable
-    private static String getSystemProperty(String name) {
-        try {
-            @SuppressLint("PrivateApi")
-            Class<?> systemProperties = Class.forName("android.os.SystemProperties");
-            Method getMethod = systemProperties.getMethod("get", String.class);
-            return (String) getMethod.invoke(systemProperties, name);
-        } catch (Exception e) {
-            Log.e(TAG, "Failed to read system property " + name, e);
-            return null;
-        }
-    }
-
-    @TargetApi(23)
-    private static void getDisplaySizeV23(Display display, Point outSize) {
-        Display.Mode mode = display.getMode();
-        outSize.x = mode.getPhysicalWidth();
-        outSize.y = mode.getPhysicalHeight();
-    }
-
-    @TargetApi(17)
-    private static void getDisplaySizeV17(Display display, Point outSize) {
-        display.getRealSize(outSize);
-    }
-
-    private static void getDisplaySizeV16(Display display, Point outSize) {
-        display.getSize(outSize);
-    }
-
-    private static String[] getSystemLocales() {
-        Configuration config = Resources.getSystem().getConfiguration();
-        return SDK_INT >= 24 ? getSystemLocalesV24(config)
-                : SDK_INT >= 21 ? getSystemLocaleV21(config)
-                        : new String[] {config.locale.toString()};
-    }
-
-    @TargetApi(24)
-    private static String[] getSystemLocalesV24(Configuration config) {
-        return Util.split(config.getLocales().toLanguageTags(), ",");
-    }
-
-    @TargetApi(21)
-    private static String[] getSystemLocaleV21(Configuration config) {
-        return new String[] {config.locale.toLanguageTag()};
-    }
-
     @TargetApi(21)
     private static String normalizeLanguageCodeSyntaxV21(String languageTag) {
         return Locale.forLanguageTag(languageTag).toLanguageTag();
-    }
-
-    private static @C.NetworkType int getMobileNetworkType(android.net.NetworkInfo networkInfo) {
-        switch (networkInfo.getSubtype()) {
-            case TelephonyManager.NETWORK_TYPE_EDGE:
-            case TelephonyManager.NETWORK_TYPE_GPRS:
-                return C.NETWORK_TYPE_2G;
-            case TelephonyManager.NETWORK_TYPE_1xRTT:
-            case TelephonyManager.NETWORK_TYPE_CDMA:
-            case TelephonyManager.NETWORK_TYPE_EVDO_0:
-            case TelephonyManager.NETWORK_TYPE_EVDO_A:
-            case TelephonyManager.NETWORK_TYPE_EVDO_B:
-            case TelephonyManager.NETWORK_TYPE_HSDPA:
-            case TelephonyManager.NETWORK_TYPE_HSPA:
-            case TelephonyManager.NETWORK_TYPE_HSUPA:
-            case TelephonyManager.NETWORK_TYPE_IDEN:
-            case TelephonyManager.NETWORK_TYPE_UMTS:
-            case TelephonyManager.NETWORK_TYPE_EHRPD:
-            case TelephonyManager.NETWORK_TYPE_HSPAP:
-            case TelephonyManager.NETWORK_TYPE_TD_SCDMA:
-                return C.NETWORK_TYPE_3G;
-            case TelephonyManager.NETWORK_TYPE_LTE:
-                return C.NETWORK_TYPE_4G;
-            case TelephonyManager.NETWORK_TYPE_IWLAN:
-                return C.NETWORK_TYPE_WIFI;
-            case TelephonyManager.NETWORK_TYPE_GSM:
-            case TelephonyManager.NETWORK_TYPE_UNKNOWN:
-            default: // Future mobile network types.
-                return C.NETWORK_TYPE_CELLULAR_UNKNOWN;
-        }
     }
 
     private static HashMap<String, String> createIso3ToIso2Map() {

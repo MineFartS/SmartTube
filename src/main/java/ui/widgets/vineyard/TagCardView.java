@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.widgets.vineyard;
+package minefarts.smarttube.ui.widgets.vineyard;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.BaseCardView;
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 
 public class TagCardView extends BaseCardView {
     TextView mTagNameText;

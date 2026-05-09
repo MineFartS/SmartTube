@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.mod.fragments;
+package minefarts.smarttube.ui.mod.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +17,7 @@ import androidx.leanback.widget.Row;
 import androidx.leanback.widget.RowPresenter;
 import androidx.leanback.widget.VerticalGridPresenter;
 import androidx.leanback.widget.VerticalGridView;
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 
 /**
  * NOTE: All code was new. It's copied from:<br/>

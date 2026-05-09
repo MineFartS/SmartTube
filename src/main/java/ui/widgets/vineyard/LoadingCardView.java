@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.widgets.vineyard;
+package minefarts.smarttube.ui.widgets.vineyard;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import androidx.leanback.widget.BaseCardView;
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 
 public class LoadingCardView extends BaseCardView {
 

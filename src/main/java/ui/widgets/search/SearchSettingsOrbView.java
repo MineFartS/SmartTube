@@ -1,10 +1,10 @@
-package SmartTubeApp.ui.widgets.search;
+package minefarts.smarttube.ui.widgets.search;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.SearchOrbView;
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 
 /**
  * Not used<br/>

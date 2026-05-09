@@ -1,9 +1,9 @@
-package SmartTubeApp.ui.common.keyhandler;
+package minefarts.smarttube.ui.common.keyhandler;
 
 import android.content.Context;
 
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 
 public class DoubleBackManager2 {
 

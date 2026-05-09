@@ -1,6 +1,6 @@
 
 
-package SmartTubeApp.messages;
+package minefarts.smarttube.messages;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
-import SmartTubeApp.commons.models.IMessage;
+import minefarts.smarttube.commons.models.IMessage;
 
 /**
  * Component for displaying list of messages

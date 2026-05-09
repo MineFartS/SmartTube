@@ -1,12 +1,12 @@
-package SmartTubeApp.prefs;
+package minefarts.smarttube.prefs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
-import SmartTubeApp.prefs.AppPrefs.ProfileChangeListener;
-import SmartTubeApp.utils.Utils;
+import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
+import minefarts.smarttube.utils.Utils;
 import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
 
 public class PlayerTweaksData implements ProfileChangeListener {

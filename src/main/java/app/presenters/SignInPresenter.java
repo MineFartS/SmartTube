@@ -1,10 +1,10 @@
-package SmartTubeApp.app.presenters;
+package minefarts.smarttube.app.presenters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import SmartTubeApp.app.presenters.base.BasePresenter;
-import SmartTubeApp.app.views.SignInView;
+import minefarts.smarttube.app.presenters.base.BasePresenter;
+import minefarts.smarttube.app.views.SignInView;
 
 public class SignInPresenter extends BasePresenter<SignInView> {
     

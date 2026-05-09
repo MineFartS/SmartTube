@@ -1,4 +1,4 @@
-package SmartTubeApp.app.models.search.vineyard;
+package minefarts.smarttube.app.models.search.vineyard;
 
 import android.os.Parcel;
 import android.os.Parcelable;

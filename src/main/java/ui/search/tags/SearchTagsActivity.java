@@ -1,9 +1,9 @@
-package SmartTubeApp.ui.search.tags;
+package minefarts.smarttube.ui.search.tags;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
-import SmartTubeApp.R;
-import SmartTubeApp.ui.common.LeanbackActivity;
+import minefarts.smarttube.R;
+import minefarts.smarttube.ui.common.LeanbackActivity;
 
 public class SearchTagsActivity extends LeanbackActivity {
     private SearchTagsFragment mFragment;

@@ -1,4 +1,4 @@
-package SmartTubeApp.exoplayer.other;
+package minefarts.smarttube.exoplayer.other;
 
 import android.media.audiofx.LoudnessEnhancer;
 import android.os.Build.VERSION;

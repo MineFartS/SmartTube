@@ -1,14 +1,14 @@
-package SmartTubeApp.misc;
+package minefarts.smarttube.misc;
 
 import android.content.Context;
 import android.view.KeyEvent;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import SmartTubeApp.R;
-import SmartTubeApp.app.presenters.PlaybackPresenter;
-import SmartTubeApp.prefs.GeneralData;
-import SmartTubeApp.prefs.PlayerData;
-import SmartTubeApp.prefs.PlayerTweaksData;
-import SmartTubeApp.utils.Utils;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
+import minefarts.smarttube.prefs.GeneralData;
+import minefarts.smarttube.prefs.PlayerData;
+import minefarts.smarttube.prefs.PlayerTweaksData;
+import minefarts.smarttube.utils.Utils;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -36,18 +36,6 @@ public class PlayerKeyTranslator extends GlobalKeyTranslator {
 
         globalKeyMapping.put(KeyEvent.KEYCODE_DEL, KeyEvent.KEYCODE_0); // reset position of the video (if enabled number key handling in the settings)
 
-    }
-
-    private void volumeUp(boolean up) {
-        PlaybackPresenter playbackPresenter = getPlaybackPresenter();
-
-        if (playbackPresenter != null && playbackPresenter.getView() != null) {
-            Utils.volumeUp(mContext, playbackPresenter.getView(), up);
-        }
-    }
-
-    private PlaybackPresenter getPlaybackPresenter() {
-        return PlaybackPresenter.instance(mContext);
     }
 
 }

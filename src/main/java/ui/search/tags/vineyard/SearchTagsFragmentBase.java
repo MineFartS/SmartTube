@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.search.tags.vineyard;
+package minefarts.smarttube.ui.search.tags.vineyard;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -18,18 +18,18 @@ import androidx.leanback.widget.SpeechRecognitionCallback;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.helpers.PermissionHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.app.models.search.SearchTagsProvider;
-import SmartTubeApp.app.models.search.vineyard.Tag;
-import SmartTubeApp.app.views.SearchView;
-import SmartTubeApp.prefs.SearchData;
-import SmartTubeApp.R;
-import SmartTubeApp.adapter.vineyard.PaginationAdapter;
-import SmartTubeApp.adapter.vineyard.TagAdapter;
-import SmartTubeApp.presenter.CustomListRowPresenter;
-import SmartTubeApp.presenter.base.OnItemLongPressedListener;
-import SmartTubeApp.presenter.vineyard.TagPresenter;
-import SmartTubeApp.ui.mod.leanback.misc.ProgressBarManager;
-import SmartTubeApp.ui.mod.leanback.search.SearchSupportFragment;
+import minefarts.smarttube.app.models.search.SearchTagsProvider;
+import minefarts.smarttube.app.models.search.vineyard.Tag;
+import minefarts.smarttube.app.views.SearchView;
+import minefarts.smarttube.prefs.SearchData;
+import minefarts.smarttube.R;
+import minefarts.smarttube.adapter.vineyard.PaginationAdapter;
+import minefarts.smarttube.adapter.vineyard.TagAdapter;
+import minefarts.smarttube.presenter.CustomListRowPresenter;
+import minefarts.smarttube.presenter.base.OnItemLongPressedListener;
+import minefarts.smarttube.presenter.vineyard.TagPresenter;
+import minefarts.smarttube.ui.mod.leanback.misc.ProgressBarManager;
+import minefarts.smarttube.ui.mod.leanback.search.SearchSupportFragment;
 
 import net.gotev.speech.GoogleVoiceTypingDisabledException;
 import net.gotev.speech.Speech;

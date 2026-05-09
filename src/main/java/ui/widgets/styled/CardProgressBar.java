@@ -1,10 +1,10 @@
-package SmartTubeApp.ui.widgets.styled;
+package minefarts.smarttube.ui.widgets.styled;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ProgressBar;
 import androidx.annotation.RequiresApi;
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 
 public class CardProgressBar extends ProgressBar {
 

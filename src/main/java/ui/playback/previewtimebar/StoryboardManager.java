@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.playback.previewtimebar;
+package minefarts.smarttube.ui.playback.previewtimebar;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,13 +11,13 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.liskovsoft.sharedutils.MediaItemService;
-import SmartTubeApp.misc.ServiceManager;
+import minefarts.smarttube.misc.ServiceManager;
 import com.liskovsoft.sharedutils.data.MediaItemStoryboard;
 import com.liskovsoft.sharedutils.data.MediaItemStoryboard.Size;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.util.ViewUtil;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.util.ViewUtil;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 

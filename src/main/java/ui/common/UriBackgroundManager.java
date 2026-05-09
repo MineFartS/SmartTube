@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.common;
+package minefarts.smarttube.ui.common;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -15,9 +15,9 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.R;
-import SmartTubeApp.util.ViewUtil;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.R;
+import minefarts.smarttube.util.ViewUtil;
 
 public class UriBackgroundManager {
 

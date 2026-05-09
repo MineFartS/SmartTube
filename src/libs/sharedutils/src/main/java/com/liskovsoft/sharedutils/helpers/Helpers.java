@@ -454,13 +454,6 @@ public final class Helpers {
 
         boolean isMicAvail = pm.hasSystemFeature(PackageManager.FEATURE_MICROPHONE);
 
-        //boolean isLeanback = false;
-        //
-        //if (VERSION.SDK_INT >= 21) {
-        //    // Android TV user likely have mics
-        //    isLeanback = isAndroidTV(context) || isAmazonFireTVDevice();
-        //}
-
         return isMicAvail || VERSION.SDK_INT >= 21;
     }
 
@@ -473,22 +466,22 @@ public final class Helpers {
 
     public static boolean isGoogleTVLauncher(Context context) {
         String pkgName = "com.google.android.apps.tv.launcherx";
-        //int pkgVersionCode = 413515; // 557827
-        //return isPackageExists(context, pkgName) && getPackageVersionCode(context, pkgName) >= pkgVersionCode;
         return isPackageExists(context, pkgName);
     }
-
-    //public static boolean isAndroidTVRecommendations(Context context) {
-    //    return isPackageExists(context, "com.google.android.leanbacklauncher.recommendations");
-    //}
 
     public static boolean isATVChannelsSupported(Context context) {
         return VERSION.SDK_INT >= 26 && isAndroidTVLauncher(context);
     }
 
     public static boolean isATVRecommendationsSupported(Context context) {
-        boolean isApiSupported = VERSION.SDK_INT >= 21 && VERSION.SDK_INT < 26;
-        return isApiSupported && (isAndroidTVLauncher(context) || isAmazonFireTVDevice());
+        
+        return VERSION.SDK_INT >= 21 
+            && VERSION.SDK_INT < 26 
+            && (
+                isAndroidTVLauncher(context) 
+                || (Build.MODEL.startsWith("AFT") && "Amazon".equalsIgnoreCase(Build.MANUFACTURER))
+            );
+
     }
 
     public static boolean isPictureInPictureSupported(Context context) {
@@ -870,17 +863,6 @@ public final class Helpers {
 
     public static KeyEvent newEvent(KeyEvent origin, int newKeyCode) {
         return KeyHelpers.newEvent(origin, newKeyCode);
-    }
-
-    /**
-     * Utility method to check if device is Amazon Fire TV device
-     * @return {@code true} true if device is Amazon Fire TV device.
-     */
-    public static boolean isAmazonFireTVDevice() {
-        String deviceName = Build.MODEL;
-        String manufacturerName = Build.MANUFACTURER;
-        return (deviceName.startsWith("AFT")
-                && "Amazon".equalsIgnoreCase(manufacturerName));
     }
 
     public static boolean isActivityExists(Intent intent, Context context) {

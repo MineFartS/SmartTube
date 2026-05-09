@@ -1,6 +1,6 @@
-package SmartTubeApp.app.models.search;
+package minefarts.smarttube.app.models.search;
 
-import SmartTubeApp.app.models.search.vineyard.Tag;
+import minefarts.smarttube.app.models.search.vineyard.Tag;
 
 import java.util.ArrayList;
 import java.util.List;

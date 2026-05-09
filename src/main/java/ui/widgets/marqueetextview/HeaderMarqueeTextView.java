@@ -1,8 +1,8 @@
-package SmartTubeApp.ui.widgets.marqueetextview;
+package minefarts.smarttube.ui.widgets.marqueetextview;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import SmartTubeApp.util.ViewUtil;
+import minefarts.smarttube.util.ViewUtil;
 
 /**
  * MarqueeTextView used in browse section headers

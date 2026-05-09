@@ -1,4 +1,4 @@
-package SmartTubeApp.presenter;
+package minefarts.smarttube.presenter;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
@@ -21,8 +21,8 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.R;
-import SmartTubeApp.util.ViewUtil;
+import minefarts.smarttube.R;
+import minefarts.smarttube.util.ViewUtil;
 
 public class IconHeaderItemPresenter extends RowHeaderPresenter {
     private static final String TAG = IconHeaderItemPresenter.class.getSimpleName();

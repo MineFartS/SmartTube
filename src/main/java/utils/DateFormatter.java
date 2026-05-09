@@ -1,6 +1,6 @@
 
 
-package SmartTubeApp.utils;
+package minefarts.smarttube.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

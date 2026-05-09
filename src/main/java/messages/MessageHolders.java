@@ -1,4 +1,4 @@
-package SmartTubeApp.messages;
+package minefarts.smarttube.messages;
 
 import android.annotation.SuppressLint;
 import android.text.Spannable;
@@ -17,13 +17,13 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 
-import SmartTubeApp.R;
-import SmartTubeApp.commons.ImageLoader;
-import SmartTubeApp.commons.ViewHolder;
-import SmartTubeApp.commons.models.IMessage;
-import SmartTubeApp.commons.models.MessageContentType;
-import SmartTubeApp.utils.DateFormatter;
-import SmartTubeApp.utils.RoundedImageView;
+import minefarts.smarttube.R;
+import minefarts.smarttube.commons.ImageLoader;
+import minefarts.smarttube.commons.ViewHolder;
+import minefarts.smarttube.commons.models.IMessage;
+import minefarts.smarttube.commons.models.MessageContentType;
+import minefarts.smarttube.utils.DateFormatter;
+import minefarts.smarttube.utils.RoundedImageView;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;

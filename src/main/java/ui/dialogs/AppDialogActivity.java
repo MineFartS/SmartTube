@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.dialogs;
+package minefarts.smarttube.ui.dialogs;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
@@ -10,15 +10,15 @@ import androidx.fragment.app.Fragment;
 
 import com.liskovsoft.sharedutils.helpers.KeyHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.app.presenters.PlaybackPresenter;
-import SmartTubeApp.app.models.playback.PlayerEngine;
-import SmartTubeApp.app.views.ViewManager;
-import SmartTubeApp.misc.GlobalKeyTranslator;
-import SmartTubeApp.misc.PlayerKeyTranslator;
-import SmartTubeApp.prefs.MainUIData;
-import SmartTubeApp.R;
-import SmartTubeApp.misc.MotherActivity;
-import SmartTubeApp.ui.playback.PlaybackActivity;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
+import minefarts.smarttube.app.models.playback.PlayerEngine;
+import minefarts.smarttube.app.views.ViewManager;
+import minefarts.smarttube.misc.GlobalKeyTranslator;
+import minefarts.smarttube.misc.PlayerKeyTranslator;
+import minefarts.smarttube.prefs.MainUIData;
+import minefarts.smarttube.R;
+import minefarts.smarttube.misc.MotherActivity;
+import minefarts.smarttube.ui.playback.PlaybackActivity;
 
 public class AppDialogActivity extends MotherActivity {
     private static final String TAG = AppDialogActivity.class.getSimpleName();

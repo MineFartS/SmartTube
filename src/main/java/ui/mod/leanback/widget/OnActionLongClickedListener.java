@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.mod.leanback.widget;
+package minefarts.smarttube.ui.mod.leanback.widget;
 
 import androidx.leanback.widget.Action;
 

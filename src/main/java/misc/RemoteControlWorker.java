@@ -1,11 +1,11 @@
-package SmartTubeApp.misc;
+package minefarts.smarttube.misc;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.app.presenters.PlaybackPresenter;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
 
 public class RemoteControlWorker extends Worker {
     private static final String TAG = RemoteControlWorker.class.getSimpleName();

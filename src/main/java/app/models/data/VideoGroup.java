@@ -1,12 +1,12 @@
-package SmartTubeApp.app.models.data;
+package minefarts.smarttube.app.models.data;
 
 import com.liskovsoft.sharedutils.data.ChapterItem;
 import com.liskovsoft.sharedutils.data.MediaGroup;
 import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.app.models.playback.service.VideoStateService;
-import SmartTubeApp.app.models.playback.service.VideoStateService.State;
+import minefarts.smarttube.app.models.playback.service.VideoStateService;
+import minefarts.smarttube.app.models.playback.service.VideoStateService.State;
 
 import java.util.ArrayList;
 import java.util.Collections;

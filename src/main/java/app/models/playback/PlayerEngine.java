@@ -1,11 +1,11 @@
-package SmartTubeApp.app.models.playback;
+package minefarts.smarttube.app.models.playback;
 
 import com.liskovsoft.sharedutils.data.MediaItemFormatInfo;
-import SmartTubeApp.exoplayer.selector.FormatItem;
-import SmartTubeApp.app.models.playback.ui.SeekBarSegment;
-import SmartTubeApp.app.models.playback.ui.ChatReceiver;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.models.data.VideoGroup;
+import minefarts.smarttube.exoplayer.selector.FormatItem;
+import minefarts.smarttube.app.models.playback.ui.SeekBarSegment;
+import minefarts.smarttube.app.models.playback.ui.ChatReceiver;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.models.data.VideoGroup;
 
 import java.util.List;
 import java.io.InputStream;

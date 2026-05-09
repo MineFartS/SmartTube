@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.browse.video;
+package minefarts.smarttube.ui.browse.video;
 
 import android.os.Bundle;
 import android.widget.Toast;
@@ -18,20 +18,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.models.data.VideoGroup;
-import SmartTubeApp.app.presenters.interfaces.VideoGroupPresenter;
-import SmartTubeApp.adapter.VideoGroupObjectAdapter;
-import SmartTubeApp.presenter.ChannelHeaderPresenter;
-import SmartTubeApp.presenter.ChannelHeaderPresenter.ChannelHeaderCallback;
-import SmartTubeApp.presenter.ShortsCardPresenter;
-import SmartTubeApp.presenter.VideoCardPresenter;
-import SmartTubeApp.presenter.CustomListRowPresenter;
-import SmartTubeApp.presenter.base.OnItemLongPressedListener;
-import SmartTubeApp.ui.browse.interfaces.VideoSection;
-import SmartTubeApp.ui.common.LeanbackActivity;
-import SmartTubeApp.ui.common.UriBackgroundManager;
-import SmartTubeApp.util.ViewUtil;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.models.data.VideoGroup;
+import minefarts.smarttube.app.presenters.interfaces.VideoGroupPresenter;
+import minefarts.smarttube.adapter.VideoGroupObjectAdapter;
+import minefarts.smarttube.presenter.ChannelHeaderPresenter;
+import minefarts.smarttube.presenter.ChannelHeaderPresenter.ChannelHeaderCallback;
+import minefarts.smarttube.presenter.ShortsCardPresenter;
+import minefarts.smarttube.presenter.VideoCardPresenter;
+import minefarts.smarttube.presenter.CustomListRowPresenter;
+import minefarts.smarttube.presenter.base.OnItemLongPressedListener;
+import minefarts.smarttube.ui.browse.interfaces.VideoSection;
+import minefarts.smarttube.ui.common.LeanbackActivity;
+import minefarts.smarttube.ui.common.UriBackgroundManager;
+import minefarts.smarttube.util.ViewUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

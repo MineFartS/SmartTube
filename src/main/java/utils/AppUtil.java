@@ -1,4 +1,4 @@
-package SmartTubeApp.utils;
+package minefarts.smarttube.utils;
 
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;

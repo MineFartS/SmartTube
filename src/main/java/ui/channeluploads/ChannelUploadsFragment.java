@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.channeluploads;
+package minefarts.smarttube.ui.channeluploads;
 
 import android.os.Bundle;
 import android.view.View;
@@ -6,11 +6,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.leanback.widget.VerticalGridView;
-import SmartTubeApp.app.presenters.ChannelUploadsPresenter;
-import SmartTubeApp.app.presenters.interfaces.VideoGroupPresenter;
-import SmartTubeApp.app.views.ChannelUploadsView;
-import SmartTubeApp.ui.browse.video.VideoGridFragment;
-import SmartTubeApp.ui.mod.leanback.misc.ProgressBarManager;
+import minefarts.smarttube.app.presenters.ChannelUploadsPresenter;
+import minefarts.smarttube.app.presenters.interfaces.VideoGroupPresenter;
+import minefarts.smarttube.app.views.ChannelUploadsView;
+import minefarts.smarttube.ui.browse.video.VideoGridFragment;
+import minefarts.smarttube.ui.mod.leanback.misc.ProgressBarManager;
 
 public class ChannelUploadsFragment extends VideoGridFragment implements ChannelUploadsView {
     private static final String SELECTED_ITEM_INDEX = "SelectedItemIndex";

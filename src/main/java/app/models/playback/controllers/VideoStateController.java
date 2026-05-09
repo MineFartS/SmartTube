@@ -1,30 +1,28 @@
-package SmartTubeApp.app.models.playback.controllers;
+package minefarts.smarttube.app.models.playback.controllers;
 
 import com.liskovsoft.sharedutils.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.R;
-import SmartTubeApp.app.models.data.Queue;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.models.playback.BasePlayerController;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.models.data.Queue;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
 import com.liskovsoft.sharedutils.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.sharedutils.videoinfo.models.VideoInfo;
 import com.liskovsoft.sharedutils.okhttp.ApiCaller;
-import SmartTubeApp.app.models.playback.service.VideoStateService;
-import SmartTubeApp.app.models.playback.service.VideoStateService.State;
-import SmartTubeApp.app.presenters.AppDialogPresenter;
-import SmartTubeApp.exoplayer.selector.FormatItem;
-import SmartTubeApp.prefs.GeneralData;
-import SmartTubeApp.utils.AppDialogUtil;
-import SmartTubeApp.utils.Utils;
+import minefarts.smarttube.app.models.playback.service.VideoStateService;
+import minefarts.smarttube.app.models.playback.service.VideoStateService.State;
+import minefarts.smarttube.app.presenters.AppDialogPresenter;
+import minefarts.smarttube.exoplayer.selector.FormatItem;
+import minefarts.smarttube.prefs.GeneralData;
+import minefarts.smarttube.utils.AppDialogUtil;
+import minefarts.smarttube.utils.Utils;
 import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
 
 public class VideoStateController extends BasePlayerController {
 
     private static final String TAG = VideoStateController.class.getSimpleName();
 
-    private static final long MUSIC_VIDEO_MAX_DURATION_MS = 6 * 60 * 1000;
-    
     private static final long RESTORE_LIVE_BUFFER_MS = 60_000;
     private static final long LIVE_BUFFER_MS = 15_000;
     private static final long LIVE_THRESH_MS = LIVE_BUFFER_MS + 5_000;

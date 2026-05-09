@@ -1,4 +1,4 @@
-package SmartTubeApp.commons;
+package minefarts.smarttube.commons;
 
 import android.os.SystemClock;
 import android.view.View;

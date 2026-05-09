@@ -1,4 +1,4 @@
-package SmartTubeApp.channels;
+package minefarts.smarttube.channels;
 
 import android.annotation.SuppressLint;
 import android.app.job.JobInfo;

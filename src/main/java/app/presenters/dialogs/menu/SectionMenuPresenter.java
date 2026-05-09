@@ -1,4 +1,4 @@
-package SmartTubeApp.app.presenters.dialogs.menu;
+package minefarts.smarttube.app.presenters.dialogs.menu;
 
 import android.content.Context;
 
@@ -7,21 +7,21 @@ import androidx.annotation.Nullable;
 import com.liskovsoft.sharedutils.data.MediaGroup;
 import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import SmartTubeApp.R;
-import SmartTubeApp.app.models.data.BrowseSection;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.models.playback.ui.UiOptionItem;
-import SmartTubeApp.app.presenters.AppDialogPresenter;
-import SmartTubeApp.app.presenters.BrowsePresenter;
-import SmartTubeApp.app.presenters.PlaybackPresenter;
-import SmartTubeApp.app.presenters.dialogs.menu.VideoMenuPresenter.MenuAction;
-import SmartTubeApp.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
-import SmartTubeApp.app.presenters.dialogs.menu.providers.ContextMenuManager;
-import SmartTubeApp.app.presenters.dialogs.menu.providers.ContextMenuProvider;
-import SmartTubeApp.app.views.SplashView;
-import SmartTubeApp.misc.ServiceManager;
-import SmartTubeApp.prefs.MainUIData;
-import SmartTubeApp.utils.SimpleEditDialog;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.models.data.BrowseSection;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
+import minefarts.smarttube.app.presenters.AppDialogPresenter;
+import minefarts.smarttube.app.presenters.BrowsePresenter;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
+import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter.MenuAction;
+import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
+import minefarts.smarttube.app.presenters.dialogs.menu.providers.ContextMenuManager;
+import minefarts.smarttube.app.presenters.dialogs.menu.providers.ContextMenuProvider;
+import minefarts.smarttube.app.views.SplashView;
+import minefarts.smarttube.misc.ServiceManager;
+import minefarts.smarttube.prefs.MainUIData;
+import minefarts.smarttube.utils.SimpleEditDialog;
 
 import java.util.HashMap;
 import java.util.Iterator;

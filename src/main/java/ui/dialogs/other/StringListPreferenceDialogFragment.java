@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.dialogs.other;
+package minefarts.smarttube.ui.dialogs.other;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
-import SmartTubeApp.R;
-import SmartTubeApp.ui.mod.leanback.preference.LeanbackListPreferenceDialogFragment;
-import SmartTubeApp.util.ViewUtil;
+import minefarts.smarttube.R;
+import minefarts.smarttube.ui.mod.leanback.preference.LeanbackListPreferenceDialogFragment;
+import minefarts.smarttube.util.ViewUtil;
 
 import java.util.Set;
 

@@ -1,8 +1,8 @@
-package SmartTubeApp.misc;
+package minefarts.smarttube.misc;
 
 import android.content.Context;
 
-import SmartTubeApp.app.models.data.VideoGroup;
+import minefarts.smarttube.app.models.data.VideoGroup;
 
 import java.util.ArrayList;
 

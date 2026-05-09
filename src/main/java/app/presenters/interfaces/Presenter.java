@@ -1,4 +1,4 @@
-package SmartTubeApp.app.presenters.interfaces;
+package minefarts.smarttube.app.presenters.interfaces;
 
 import android.content.Context;
 
