@@ -118,7 +118,7 @@ public class AppServiceInt {
     }
 
     private AppInfo getAppInfoData() {
-        return getAppInfo(DefaultHeaders.APP_USER_AGENT);
+        return getAppInfo(DefaultHeaders.USER_AGENT_TV);
     }
 
     private ClientData getClientData() {

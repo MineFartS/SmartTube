@@ -1706,19 +1706,21 @@ public final class Util {
         if (networkInfo == null || !networkInfo.isConnected()) {
             return C.NETWORK_TYPE_OFFLINE;
         }
+
         switch (networkInfo.getType()) {
+
             case ConnectivityManager.TYPE_WIFI:
                 return C.NETWORK_TYPE_WIFI;
+
             case ConnectivityManager.TYPE_WIMAX:
                 return C.NETWORK_TYPE_4G;
-            case ConnectivityManager.TYPE_MOBILE:
-            case ConnectivityManager.TYPE_MOBILE_DUN:
-            case ConnectivityManager.TYPE_MOBILE_HIPRI:
-                return getMobileNetworkType(networkInfo);
+
             case ConnectivityManager.TYPE_ETHERNET:
                 return C.NETWORK_TYPE_ETHERNET;
+
             default: // VPN, Bluetooth, Dummy.
                 return C.NETWORK_TYPE_OTHER;
+
         }
     }
 
@@ -1957,36 +1959,6 @@ public final class Util {
     @TargetApi(21)
     private static String normalizeLanguageCodeSyntaxV21(String languageTag) {
         return Locale.forLanguageTag(languageTag).toLanguageTag();
-    }
-
-    private static @C.NetworkType int getMobileNetworkType(android.net.NetworkInfo networkInfo) {
-        switch (networkInfo.getSubtype()) {
-            case TelephonyManager.NETWORK_TYPE_EDGE:
-            case TelephonyManager.NETWORK_TYPE_GPRS:
-                return C.NETWORK_TYPE_2G;
-            case TelephonyManager.NETWORK_TYPE_1xRTT:
-            case TelephonyManager.NETWORK_TYPE_CDMA:
-            case TelephonyManager.NETWORK_TYPE_EVDO_0:
-            case TelephonyManager.NETWORK_TYPE_EVDO_A:
-            case TelephonyManager.NETWORK_TYPE_EVDO_B:
-            case TelephonyManager.NETWORK_TYPE_HSDPA:
-            case TelephonyManager.NETWORK_TYPE_HSPA:
-            case TelephonyManager.NETWORK_TYPE_HSUPA:
-            case TelephonyManager.NETWORK_TYPE_IDEN:
-            case TelephonyManager.NETWORK_TYPE_UMTS:
-            case TelephonyManager.NETWORK_TYPE_EHRPD:
-            case TelephonyManager.NETWORK_TYPE_HSPAP:
-            case TelephonyManager.NETWORK_TYPE_TD_SCDMA:
-                return C.NETWORK_TYPE_3G;
-            case TelephonyManager.NETWORK_TYPE_LTE:
-                return C.NETWORK_TYPE_4G;
-            case TelephonyManager.NETWORK_TYPE_IWLAN:
-                return C.NETWORK_TYPE_WIFI;
-            case TelephonyManager.NETWORK_TYPE_GSM:
-            case TelephonyManager.NETWORK_TYPE_UNKNOWN:
-            default: // Future mobile network types.
-                return C.NETWORK_TYPE_CELLULAR_UNKNOWN;
-        }
     }
 
     private static HashMap<String, String> createIso3ToIso2Map() {

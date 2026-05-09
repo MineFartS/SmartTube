@@ -26,8 +26,6 @@ public final class AmazonQuirks {
     private static final boolean isFireTVGen1;
     private static final boolean isFireTVStick;
     private static final boolean isFireTVGen2;
-    private static final boolean isKindleTablet;
-    private static final boolean isFirePhone;
 
     // This static block must be the last
     //INIT ORDERING IS IMPORTANT IN THIS BLOCK!
@@ -36,8 +34,6 @@ public final class AmazonQuirks {
         isFireTVGen1   = isAmazonDevice && DEVICEMODEL.equalsIgnoreCase(FIRETV_GEN1_DEVICE_MODEL);
         isFireTVGen2   = isAmazonDevice && DEVICEMODEL.equalsIgnoreCase(FIRETV_GEN2_DEVICE_MODEL);
         isFireTVStick  = isAmazonDevice && DEVICEMODEL.equalsIgnoreCase(FIRETV_STICK_DEVICE_MODEL);
-        isKindleTablet = isAmazonDevice && DEVICEMODEL.startsWith(KINDLE_TABLET_DEVICE_MODEL);
-        isFirePhone = isAmazonDevice && DEVICEMODEL.startsWith(FIRE_PHONE_DEVICE_MODEL);
         loadForcedLogSettings();
     }
 
@@ -73,11 +69,6 @@ public final class AmazonQuirks {
 
         Log.i(TAG, "Using default Dolby pass-through decoder");
         return true;
-    }
-
-    public static boolean isLatencyQuirkEnabled() {
-        // Sets latency quirk for Amazon KK and JB Tablets and Fire Phone
-        return (Util.SDK_INT <= 19) && (isKindleTablet || isFirePhone);
     }
 
     public static int getAudioHWLatency() {

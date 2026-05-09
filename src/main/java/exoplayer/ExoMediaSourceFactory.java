@@ -57,7 +57,7 @@ public class ExoMediaSourceFactory {
     private static final String TAG = ExoMediaSourceFactory.class.getSimpleName();
 
     private static final int MAX_SEGMENTS_PER_LOAD = 3; // default - 1 (1-5)
-    private static final String USER_AGENT = DefaultHeaders.APP_USER_AGENT;
+    private static final String USER_AGENT = DefaultHeaders.USER_AGENT_TV;
 
     private final Context mContext;
     private static final Uri DASH_MANIFEST_URI = Uri.parse("https://example.com/test.mpd");
