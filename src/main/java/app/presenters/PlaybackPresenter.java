@@ -412,7 +412,11 @@ public class PlaybackPresenter extends BasePresenter<PlayerEngine> implements Pl
 
     @Override
     public void onButtonClicked(int buttonId, int buttonState) {
+
+        //super.onButtonClicked(buttonId, buttonState);
+
         process(listener -> listener.onButtonClicked(buttonId, buttonState));
+        
     }
 
     @Override

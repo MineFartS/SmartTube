@@ -73,11 +73,15 @@ public class ChatController extends BasePlayerController {
 
     @Override
     public void onButtonClicked(int buttonId, int buttonState) {
+
+        super.onButtonClicked(buttonId, buttonState);
+
         if (buttonId == R.id.action_chat) {
             if (mLiveChatKey != null) {
                 enableLiveChat(buttonState != 1);
             }
         }
+        
     }
 
     @Override

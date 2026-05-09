@@ -342,6 +342,8 @@ public class VideoStateController extends BasePlayerController {
     @Override
     public void onButtonClicked(int buttonId, int buttonState) {
 
+        super.onButtonClicked(buttonId, buttonState);
+
         if (buttonId != R.id.action_video_speed) return;
         
         // Pass through to long click
@@ -351,8 +353,6 @@ public class VideoStateController extends BasePlayerController {
 
     @Override
     public void onButtonLongClicked(int buttonId, int buttonState) {
-
-        fitVideoIntoDialog();
 
         AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
 
