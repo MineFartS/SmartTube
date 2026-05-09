@@ -50,7 +50,7 @@ function Invoke-Gradle {
     )
 
     & $JAVA `
-        '-classpath' ".\.gradle\wrapper\gradle-wrapper.jar" `
+        '-classpath' ".\gradle\wrapper\gradle-wrapper.jar" `
         'org.gradle.wrapper.GradleWrapperMain' `
         @cmdargs
 
@@ -66,6 +66,8 @@ function Repair-Environment {
 
     #=======================================================
     # JAVA_HOME
+
+    echo "org.gradle.java.home=$JDK" > 'local.properties'
     
     [Environment]::SetEnvironmentVariable("JAVA_HOME", $JDK, "Machine")
 
