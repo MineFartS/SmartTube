@@ -454,13 +454,6 @@ public final class Helpers {
 
         boolean isMicAvail = pm.hasSystemFeature(PackageManager.FEATURE_MICROPHONE);
 
-        //boolean isLeanback = false;
-        //
-        //if (VERSION.SDK_INT >= 21) {
-        //    // Android TV user likely have mics
-        //    isLeanback = isAndroidTV(context) || isAmazonFireTVDevice();
-        //}
-
         return isMicAvail || VERSION.SDK_INT >= 21;
     }
 
@@ -473,14 +466,8 @@ public final class Helpers {
 
     public static boolean isGoogleTVLauncher(Context context) {
         String pkgName = "com.google.android.apps.tv.launcherx";
-        //int pkgVersionCode = 413515; // 557827
-        //return isPackageExists(context, pkgName) && getPackageVersionCode(context, pkgName) >= pkgVersionCode;
         return isPackageExists(context, pkgName);
     }
-
-    //public static boolean isAndroidTVRecommendations(Context context) {
-    //    return isPackageExists(context, "com.google.android.leanbacklauncher.recommendations");
-    //}
 
     public static boolean isATVChannelsSupported(Context context) {
         return VERSION.SDK_INT >= 26 && isAndroidTVLauncher(context);

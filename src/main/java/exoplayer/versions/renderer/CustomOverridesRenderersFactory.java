@@ -2,7 +2,9 @@ package SmartTubeApp.exoplayer.versions.renderer;
 
 import android.content.Context;
 import android.os.Handler;
+
 import androidx.annotation.Nullable;
+
 import com.google.android.exoplayer2.Renderer;
 import com.google.android.exoplayer2.audio.AudioCapabilities;
 import com.google.android.exoplayer2.audio.AudioProcessor;
@@ -11,8 +13,8 @@ import com.google.android.exoplayer2.audio.DefaultAudioSink;
 import com.google.android.exoplayer2.drm.DrmSessionManager;
 import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
 import com.google.android.exoplayer2.mediacodec.MediaCodecSelector;
-import com.google.android.exoplayer2.util.AmazonQuirks;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
+
 import SmartTubeApp.exoplayer.versions.selector.BlacklistMediaCodecSelector;
 import SmartTubeApp.prefs.PlayerData;
 import SmartTubeApp.prefs.PlayerTweaksData;

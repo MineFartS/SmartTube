@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.drm;
 
 import android.annotation.SuppressLint;
@@ -9,8 +8,11 @@ import android.media.MediaDrm;
 import android.media.MediaDrmException;
 import android.media.NotProvisionedException;
 import android.media.UnsupportedSchemeException;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
+
+import androidx.annotation.Nullable;
+
+import com.google.android.exoplayer2.util.AmazonQuirks;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.drm.DrmInitData.SchemeData;
 import com.google.android.exoplayer2.extractor.mp4.PsshAtomUtil;
@@ -19,6 +21,7 @@ import com.google.android.exoplayer2.util.Log;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.ParsableByteArray;
 import com.google.android.exoplayer2.util.Util;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
@@ -281,11 +284,10 @@ public final class FrameworkMediaDrm implements ExoMediaDrm<FrameworkMediaCrypto
 
         // Prior to L the Widevine CDM required data to be extracted from the PSSH atom. Some Amazon
         // devices also required data to be extracted from the PSSH atom for PlayReady.
-        if ((Util.SDK_INT < 21 && C.WIDEVINE_UUID.equals(uuid))
-                || (C.PLAYREADY_UUID.equals(uuid) && "Amazon".equals(Util.MANUFACTURER)
-                        && ("AFTB".equals(Util.MODEL) // Fire TV Gen 1
-                                || "AFTS".equals(Util.MODEL) // Fire TV Gen 2
-                                || "AFTM".equals(Util.MODEL)))) { // Fire TV Stick Gen 1
+        if (
+            (Util.SDK_INT < 21 && C.WIDEVINE_UUID.equals(uuid))
+            || (C.PLAYREADY_UUID.equals(uuid) && AmazonQuirks.isFireTVGen1Family() || AmazonQuirks.isFireTVGen2())
+        ) {
             byte[] psshData = PsshAtomUtil.parseSchemeSpecificData(initData, uuid);
             if (psshData != null) {
                 // Extraction succeeded, so return the extracted data.

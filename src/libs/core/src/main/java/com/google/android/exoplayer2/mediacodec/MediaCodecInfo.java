@@ -11,7 +11,6 @@ import android.media.MediaCodecInfo.VideoCapabilities;
 import androidx.annotation.Nullable;
 import android.util.Pair;
 import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.util.AmazonQuirks;
 import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.Log;
 import com.google.android.exoplayer2.util.MimeTypes;

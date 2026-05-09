@@ -292,8 +292,7 @@ public final class DefaultAudioSink implements AudioSink {
     private final boolean DBG = log.allowDebug();
 
     private static final boolean isLatencyQuirkEnabled = AmazonQuirks.isLatencyQuirkEnabled();
-    private static final boolean isLegacyPassthroughQuirkEnabled =
-            AmazonQuirks.isDolbyPassthroughQuirkEnabled();
+    private static final boolean isLegacyPassthroughQuirkEnabled = AmazonQuirks.isDolbyPassthroughQuirkEnabled();
     // AMZN_CHANGE_END
 
     /**
