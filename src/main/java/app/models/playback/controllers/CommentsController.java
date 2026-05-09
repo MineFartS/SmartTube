@@ -49,8 +49,6 @@ public class CommentsController extends BasePlayerController {
     }
 
     private void openCommentsDialog() {
-        
-        fitVideoIntoDialog();
 
         onFinish();
 
@@ -124,15 +122,19 @@ public class CommentsController extends BasePlayerController {
 
     @Override
     public void onButtonClicked(int buttonId, int buttonState) {
-        if (buttonId == R.id.action_chat) {
-            if (mCommentsKey != null && mLiveChatKey == null) {
+
+        super.onButtonClicked(buttonId, buttonState);
+
+        if (buttonId == R.id.action_chat && mLiveChatKey == null) {
+
+            if (mCommentsKey == null) {
+                MessageHelpers.showMessage(getContext(), R.string.section_is_empty);
+            } else {
                 openCommentsDialog();
             }
-
-            if (mCommentsKey == null && mLiveChatKey == null) {
-                MessageHelpers.showMessage(getContext(), R.string.section_is_empty);
-            }
+            
         }
+
     }
 
     @Override

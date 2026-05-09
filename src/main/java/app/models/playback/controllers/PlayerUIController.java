@@ -196,11 +196,7 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private void onSubtitleLongClicked() {
-        if (getPlayer() == null) {
-            return;
-        }
-
-        fitVideoIntoDialog();
+        if (getPlayer() == null) return;
 
         AppDialogPresenter settingsPresenter = getAppDialogPresenter();
 
@@ -236,7 +232,6 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private void onPlaylistAddClicked() {
-        fitVideoIntoDialog();
 
         if (mPlaylistInfos == null) {
             AppDialogUtil.showAddToPlaylistDialog(getContext(), getVideo(),
@@ -392,13 +387,10 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private void onVideoInfoClicked() {
-        fitVideoIntoDialog();
 
         Video video = getVideo();
 
-        if (video == null) {
-            return;
-        }
+        if (video == null) return;
 
         String description = video.description;
 
@@ -418,6 +410,8 @@ public class PlayerUIController extends BasePlayerController {
 
     @Override
     public void onButtonClicked(int buttonId, int buttonState) {
+
+        super.onButtonClicked(buttonId, buttonState);
 
         if (!mIsMetadataLoaded) {
             MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
