@@ -123,9 +123,6 @@ public class ContentBlockController extends BasePlayerController {
     }
 
     @Override
-    public void onButtonClicked(int buttonId, int buttonState) {}
-
-    @Override
     public void onButtonLongClicked(int buttonId, int buttonState) {}
 
     private boolean checkVideo(Video video) {
