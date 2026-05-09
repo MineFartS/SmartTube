@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.browse.interfaces;
+package minefarts.smarttube.ui.browse.interfaces;
 
 public interface Section {
     void clear();

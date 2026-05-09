@@ -12,7 +12,7 @@ import androidx.leanback.widget.Action;
 import androidx.leanback.widget.PlaybackControlsRow;
 import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.PresenterSelector;
-//import SmartTubeApp.ui.playback.actions.PaddingAction;
+//import minefarts.smarttube.ui.playback.actions.PaddingAction;
 
 /**
  * Displays primary and secondary controls for a {@link PlaybackControlsRow}.
@@ -85,8 +85,8 @@ public class ControlButtonPresenterSelector extends PresenterSelector {
             return new ActionViewHolder(v);
         }
 
-        // Used inside: SmartTubeApp.ui.mod.leanback.playerglue.tweaks.ControlBarPresenter.ViewHolder.bindControlToAction()
-        // Restore focus: SmartTubeApp.ui.mod.leanback.playerglue.tweaks.ControlBar.onRequestFocusInDescendants()
+        // Used inside: minefarts.smarttube.ui.mod.leanback.playerglue.tweaks.ControlBarPresenter.ViewHolder.bindControlToAction()
+        // Restore focus: minefarts.smarttube.ui.mod.leanback.playerglue.tweaks.ControlBar.onRequestFocusInDescendants()
         @Override
         public void onBindViewHolder(ViewHolder viewHolder, Object item) {
             Action action = (Action) item;

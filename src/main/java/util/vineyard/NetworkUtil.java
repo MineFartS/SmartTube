@@ -1,4 +1,4 @@
-package SmartTubeApp.util.vineyard;
+package minefarts.smarttube.util.vineyard;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

@@ -1,4 +1,4 @@
-package SmartTubeApp.other.downloadmanager;
+package minefarts.smarttube.other.downloadmanager;
 
 import android.util.Log;
 import org.xbill.DNS.ARecord;

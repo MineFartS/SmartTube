@@ -2,6 +2,6 @@
 <fragment
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/channel_fragment"
-    android:name="SmartTubeApp.ui.channel.ChannelFragment"
+    android:name="minefarts.smarttube.ui.channel.ChannelFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />

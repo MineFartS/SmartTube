@@ -1,9 +1,9 @@
-package SmartTubeApp.media;
+package minefarts.smarttube.media;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 import com.liskovsoft.sharedutils.data.MediaGroup;
 import com.liskovsoft.sharedutils.service.ContentService;
 

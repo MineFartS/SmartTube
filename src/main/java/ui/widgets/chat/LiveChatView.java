@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.widgets.chat;
+package minefarts.smarttube.ui.widgets.chat;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
-import SmartTubeApp.app.models.playback.ui.ChatReceiver;
-import SmartTubeApp.prefs.PlayerTweaksData;
-import SmartTubeApp.util.ViewUtil;
-import SmartTubeApp.messages.MessagesListAdapter;
+import minefarts.smarttube.app.models.playback.ui.ChatReceiver;
+import minefarts.smarttube.prefs.PlayerTweaksData;
+import minefarts.smarttube.util.ViewUtil;
+import minefarts.smarttube.messages.MessagesListAdapter;
 
-public class LiveChatView extends SmartTubeApp.messages.MessagesList {
+public class LiveChatView extends minefarts.smarttube.messages.MessagesList {
     private static final String SENDER_ID = LiveChatView.class.getSimpleName();
     private ChatReceiver mChatReceiver;
     private MessagesListAdapter<ChatItemMessage> mAdapter;

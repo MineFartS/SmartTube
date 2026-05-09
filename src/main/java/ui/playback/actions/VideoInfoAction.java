@@ -1,10 +1,10 @@
-package SmartTubeApp.ui.playback.actions;
+package minefarts.smarttube.ui.playback.actions;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.Action;
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 
 /**
  * An action for displaying a PIP icon.

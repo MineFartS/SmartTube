@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="SmartTubeApp">
+          package="minefarts.smarttube">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -54,7 +54,7 @@
         android:required="true" />
 
     <application
-        android:name="SmartTubeApp.ui.main.MainApplication"
+        android:name="minefarts.smarttube.ui.main.MainApplication"
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
@@ -87,7 +87,7 @@
         </activity>
         
         <receiver
-            android:name="SmartTubeApp.misc.RemoteControlReceiver"
+            android:name="minefarts.smarttube.misc.RemoteControlReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -106,12 +106,12 @@
             </intent-filter>
         </receiver>
         <service
-            android:name="SmartTubeApp.misc.RemoteControlService"
+            android:name="minefarts.smarttube.misc.RemoteControlService"
             android:enabled="true"
             android:foregroundServiceType="connectedDevice"/>
 
         <activity
-            android:name="SmartTubeApp.ui.main.SplashActivity"
+            android:name="minefarts.smarttube.ui.main.SplashActivity"
             android:exported="true"
             android:launchMode="singleInstance"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|layoutDirection"
@@ -163,7 +163,7 @@
         <!-- noHistory is essential for dialogs. Because otherwise you'll see previous dialog content when opening. -->
         <!-- behind is important too. This fix crashes on Android 8 (api 26) and above. -->
         <!-- More info about behind: https://stackoverflow.com/a/52426009/1279056 -->
-        <activity android:name="SmartTubeApp.ui.dialogs.AppDialogActivity"
+        <activity android:name="minefarts.smarttube.ui.dialogs.AppDialogActivity"
                   android:noHistory="true"
                   android:excludeFromRecents="true"
                   android:launchMode="singleInstance"
@@ -172,19 +172,19 @@
                   android:theme="@style/App.Theme.Leanback.Preferences"/>
 
         <activity
-            android:name="SmartTubeApp.ui.browse.BrowseActivity"
+            android:name="minefarts.smarttube.ui.browse.BrowseActivity"
             android:launchMode="singleInstance"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|layoutDirection"
             android:screenOrientation="unspecified"/>
 
         <activity
-            android:name="SmartTubeApp.ui.channel.ChannelActivity"
+            android:name="minefarts.smarttube.ui.channel.ChannelActivity"
             android:launchMode="singleInstance"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|layoutDirection"
             android:screenOrientation="unspecified"/>
 
         <activity
-            android:name="SmartTubeApp.ui.channeluploads.ChannelUploadsActivity"
+            android:name="minefarts.smarttube.ui.channeluploads.ChannelUploadsActivity"
             android:launchMode="singleInstance"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|layoutDirection"
             android:screenOrientation="unspecified"/>
@@ -192,7 +192,7 @@
         <!-- Remove to fix Sony wake up bug? android:turnScreenOn="true" -->
 
         <activity
-            android:name="SmartTubeApp.ui.playback.PlaybackActivity"
+            android:name="minefarts.smarttube.ui.playback.PlaybackActivity"
             android:launchMode="singleInstance"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|layoutDirection"
             android:supportsPictureInPicture="true"
@@ -202,18 +202,18 @@
             android:theme="@style/App.Theme.Leanback.Player"/>
 
         <activity
-            android:name="SmartTubeApp.ui.search.tags.SearchTagsActivity"
+            android:name="minefarts.smarttube.ui.search.tags.SearchTagsActivity"
             android:launchMode="singleInstance"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|layoutDirection"
             android:screenOrientation="unspecified"/>
 
-        <activity android:name="SmartTubeApp.ui.signin.SignInActivity"
+        <activity android:name="minefarts.smarttube.ui.signin.SignInActivity"
                   android:launchMode="singleInstance"
                   android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|layoutDirection"
                   android:screenOrientation="unspecified"
                   android:theme="@style/App.Theme.Leanback.GuidedStep"/>
 
-        <activity android:name="SmartTubeApp.ui.adddevice.AddDeviceActivity"
+        <activity android:name="minefarts.smarttube.ui.adddevice.AddDeviceActivity"
                   android:launchMode="singleInstance"
                   android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|layoutDirection"
                   android:screenOrientation="unspecified"
@@ -222,7 +222,7 @@
         <!-- BEGIN Launchers (used inside tvQuickActions. Don't rename them or move!) -->
 
         <activity
-            android:name="SmartTubeApp.launchers.HomeLauncherActivity"
+            android:name="minefarts.smarttube.launchers.HomeLauncherActivity"
             android:logo="@drawable/icon_home"
             android:icon="@drawable/icon_home"
             android:label="Home"
@@ -232,7 +232,7 @@
             android:screenOrientation="unspecified"/>
 
         <activity
-            android:name="SmartTubeApp.launchers.ChannelsLauncherActivity"
+            android:name="minefarts.smarttube.launchers.ChannelsLauncherActivity"
             android:logo="@drawable/icon_channels"
             android:icon="@drawable/icon_channels"
             android:label="@string/header_channels"
@@ -242,7 +242,7 @@
             android:screenOrientation="unspecified"/>
 
         <activity
-            android:name="SmartTubeApp.launchers.SubscriptionsLauncherActivity"
+            android:name="minefarts.smarttube.launchers.SubscriptionsLauncherActivity"
             android:logo="@drawable/icon_subscriptions"
             android:icon="@drawable/icon_subscriptions"
             android:label="Subscriptions"
@@ -252,7 +252,7 @@
             android:screenOrientation="unspecified"/>
 
         <activity
-            android:name="SmartTubeApp.launchers.HistoryLauncherActivity"
+            android:name="minefarts.smarttube.launchers.HistoryLauncherActivity"
             android:logo="@drawable/icon_history"
             android:icon="@drawable/icon_history"
             android:label="@string/header_history"
@@ -262,7 +262,7 @@
             android:screenOrientation="unspecified"/>
 
         <activity
-            android:name="SmartTubeApp.launchers.PlaylistsLauncherActivity"
+            android:name="minefarts.smarttube.launchers.PlaylistsLauncherActivity"
             android:logo="@drawable/icon_playlist"
             android:icon="@drawable/icon_playlist"
             android:label="@string/header_playlists"

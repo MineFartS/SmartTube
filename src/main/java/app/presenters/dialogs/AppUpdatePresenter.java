@@ -1,20 +1,20 @@
-package SmartTubeApp.app.presenters.dialogs;
+package minefarts.smarttube.app.presenters.dialogs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import SmartTubeApp.AppUpdateChecker;
-import SmartTubeApp.AppUpdateCheckerListener;
+import minefarts.smarttube.AppUpdateChecker;
+import minefarts.smarttube.AppUpdateCheckerListener;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import SmartTubeApp.R;
-import SmartTubeApp.app.models.errors.ErrorFragmentData;
-import SmartTubeApp.app.models.playback.ui.OptionItem;
-import SmartTubeApp.app.models.playback.ui.UiOptionItem;
-import SmartTubeApp.app.presenters.AppDialogPresenter;
-import SmartTubeApp.app.presenters.BrowsePresenter;
-import SmartTubeApp.app.presenters.base.BasePresenter;
-import SmartTubeApp.prefs.GeneralData;
-import SmartTubeApp.utils.LoadingManager;
-import SmartTubeApp.utils.Utils;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.models.errors.ErrorFragmentData;
+import minefarts.smarttube.app.models.playback.ui.OptionItem;
+import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
+import minefarts.smarttube.app.presenters.AppDialogPresenter;
+import minefarts.smarttube.app.presenters.BrowsePresenter;
+import minefarts.smarttube.app.presenters.base.BasePresenter;
+import minefarts.smarttube.prefs.GeneralData;
+import minefarts.smarttube.utils.LoadingManager;
+import minefarts.smarttube.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;

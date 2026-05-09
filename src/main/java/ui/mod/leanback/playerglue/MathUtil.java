@@ -1,5 +1,5 @@
 
-package SmartTubeApp.ui.mod.leanback.playerglue;
+package minefarts.smarttube.ui.mod.leanback.playerglue;
 
 import androidx.annotation.RestrictTo;
 

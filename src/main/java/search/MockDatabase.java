@@ -1,4 +1,4 @@
-package SmartTubeApp.search;
+package minefarts.smarttube.search;
 
 import android.annotation.TargetApi;
 import android.app.SearchManager;

@@ -1,6 +1,6 @@
 
 
-package SmartTubeApp.messages;
+package minefarts.smarttube.messages;
 
 import android.annotation.SuppressLint;
 import android.content.ClipData;
@@ -23,12 +23,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.R;
-import SmartTubeApp.commons.DebouncedOnClickListener;
-import SmartTubeApp.commons.ImageLoader;
-import SmartTubeApp.commons.ViewHolder;
-import SmartTubeApp.commons.models.IMessage;
-import SmartTubeApp.utils.DateFormatter;
+import minefarts.smarttube.R;
+import minefarts.smarttube.commons.DebouncedOnClickListener;
+import minefarts.smarttube.commons.ImageLoader;
+import minefarts.smarttube.commons.ViewHolder;
+import minefarts.smarttube.commons.models.IMessage;
+import minefarts.smarttube.utils.DateFormatter;
 
 import java.util.ArrayList;
 import java.util.Collections;

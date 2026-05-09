@@ -1,6 +1,6 @@
-package SmartTubeApp.app.models.playback.ui;
+package minefarts.smarttube.app.models.playback.ui;
 
-import SmartTubeApp.exoplayer.selector.FormatItem;
+import minefarts.smarttube.exoplayer.selector.FormatItem;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package SmartTubeApp.exoplayer.versions.selector;
+package minefarts.smarttube.exoplayer.versions.selector;
 
 import android.util.Pair;
 import androidx.annotation.Nullable;
@@ -9,8 +9,8 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection.Definition;
 import com.google.android.exoplayer2.trackselection.TrackSelection.Factory;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.exoplayer.selector.TrackSelectorManager;
-import SmartTubeApp.exoplayer.selector.track.MediaTrack;
+import minefarts.smarttube.exoplayer.selector.TrackSelectorManager;
+import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
 
 public class RestoreTrackSelector extends DefaultTrackSelector {
     private static final String TAG = RestoreTrackSelector.class.getSimpleName();

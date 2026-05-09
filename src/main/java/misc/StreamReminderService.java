@@ -1,19 +1,19 @@
-package SmartTubeApp.misc;
+package minefarts.smarttube.misc;
 
 import android.content.Context;
 import com.liskovsoft.sharedutils.MediaItemService;
-import SmartTubeApp.misc.ServiceManager;
+import minefarts.smarttube.misc.ServiceManager;
 import com.liskovsoft.sharedutils.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import SmartTubeApp.R;
-import SmartTubeApp.app.models.data.Queue;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.presenters.PlaybackPresenter;
-import SmartTubeApp.app.views.ViewManager;
-import SmartTubeApp.misc.TickleManager.TickleListener;
-import SmartTubeApp.prefs.GeneralData;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.models.data.Queue;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
+import minefarts.smarttube.app.views.ViewManager;
+import minefarts.smarttube.misc.TickleManager.TickleListener;
+import minefarts.smarttube.prefs.GeneralData;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 

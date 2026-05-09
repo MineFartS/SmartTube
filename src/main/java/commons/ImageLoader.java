@@ -1,6 +1,6 @@
 
 
-package SmartTubeApp.commons;
+package minefarts.smarttube.commons;
 
 import android.widget.ImageView;
 

@@ -1,4 +1,4 @@
-package SmartTubeApp.app.presenters.interfaces;
+package minefarts.smarttube.app.presenters.interfaces;
 
 public interface SectionPresenter {
     void onSectionFocused(int sectionId);

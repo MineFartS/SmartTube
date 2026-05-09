@@ -1,7 +1,7 @@
-package SmartTubeApp.ui.playback.actions;
+package minefarts.smarttube.ui.playback.actions;
 
 import android.content.Context;
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 
 /**
  * An action for displaying a CC (Closed Captioning) icon.

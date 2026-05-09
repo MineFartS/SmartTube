@@ -1,4 +1,4 @@
-package SmartTubeApp.prefs.common;
+package minefarts.smarttube.prefs.common;
 
 import com.liskovsoft.sharedutils.misc.WeakHashSet;
 

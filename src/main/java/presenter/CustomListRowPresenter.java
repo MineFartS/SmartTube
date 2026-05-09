@@ -1,7 +1,7 @@
-package SmartTubeApp.presenter;
+package minefarts.smarttube.presenter;
 
 import androidx.leanback.widget.ListRowPresenter;
-import SmartTubeApp.util.ViewUtil;
+import minefarts.smarttube.util.ViewUtil;
 
 public class CustomListRowPresenter extends ListRowPresenter {
     public CustomListRowPresenter() {

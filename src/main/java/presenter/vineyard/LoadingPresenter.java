@@ -1,8 +1,8 @@
-package SmartTubeApp.presenter.vineyard;
+package minefarts.smarttube.presenter.vineyard;
 
 import android.view.ViewGroup;
 import androidx.leanback.widget.Presenter;
-import SmartTubeApp.ui.widgets.vineyard.LoadingCardView;
+import minefarts.smarttube.ui.widgets.vineyard.LoadingCardView;
 
 public class LoadingPresenter extends Presenter {
 

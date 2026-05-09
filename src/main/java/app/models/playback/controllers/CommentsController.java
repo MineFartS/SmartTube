@@ -1,4 +1,4 @@
-package SmartTubeApp.app.models.playback.controllers;
+package minefarts.smarttube.app.models.playback.controllers;
 
 import android.content.Context;
 import android.util.Pair;
@@ -10,13 +10,13 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import SmartTubeApp.R;
-import SmartTubeApp.app.models.playback.BasePlayerController;
-import SmartTubeApp.app.models.playback.ui.CommentsReceiver;
-import SmartTubeApp.app.models.playback.ui.CommentsReceiver.Backup;
-import SmartTubeApp.app.models.playback.ui.AbstractCommentsReceiver;
-import SmartTubeApp.app.models.playback.ui.UiOptionItem;
-import SmartTubeApp.app.presenters.AppDialogPresenter;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
+import minefarts.smarttube.app.models.playback.ui.CommentsReceiver;
+import minefarts.smarttube.app.models.playback.ui.CommentsReceiver.Backup;
+import minefarts.smarttube.app.models.playback.ui.AbstractCommentsReceiver;
+import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
+import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import io.reactivex.disposables.Disposable;
 
 public class CommentsController extends BasePlayerController {

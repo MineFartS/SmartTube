@@ -1,10 +1,10 @@
-package SmartTubeApp.app.models.playback.controllers;
+package minefarts.smarttube.app.models.playback.controllers;
 
 import android.annotation.SuppressLint;
 import android.util.Pair;
 
 import com.liskovsoft.sharedutils.MediaItemService;
-import SmartTubeApp.misc.ServiceManager;
+import minefarts.smarttube.misc.ServiceManager;
 import com.liskovsoft.sharedutils.data.MediaFormat;
 import com.liskovsoft.sharedutils.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.data.MediaItemMetadata;
@@ -12,21 +12,21 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import SmartTubeApp.R;
-import SmartTubeApp.app.models.data.Queue;
-import SmartTubeApp.app.models.data.SimpleMediaItem;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.models.data.VideoGroup;
-import SmartTubeApp.app.models.playback.BasePlayerController;
-import SmartTubeApp.app.models.playback.PlayerEventListener;
-import SmartTubeApp.app.models.playback.PlayerEngine;
-import SmartTubeApp.app.presenters.AppDialogPresenter;
-import SmartTubeApp.app.presenters.dialogs.VideoActionPresenter;
-import SmartTubeApp.app.models.playback.PlayerEngine;
-import SmartTubeApp.exoplayer.selector.FormatItem;
-import SmartTubeApp.prefs.PlayerData;
-import SmartTubeApp.prefs.PlayerTweaksData;
-import SmartTubeApp.utils.Utils;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.models.data.Queue;
+import minefarts.smarttube.app.models.data.SimpleMediaItem;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.models.data.VideoGroup;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
+import minefarts.smarttube.app.models.playback.PlayerEventListener;
+import minefarts.smarttube.app.models.playback.PlayerEngine;
+import minefarts.smarttube.app.presenters.AppDialogPresenter;
+import minefarts.smarttube.app.presenters.dialogs.VideoActionPresenter;
+import minefarts.smarttube.app.models.playback.PlayerEngine;
+import minefarts.smarttube.exoplayer.selector.FormatItem;
+import minefarts.smarttube.prefs.PlayerData;
+import minefarts.smarttube.prefs.PlayerTweaksData;
+import minefarts.smarttube.utils.Utils;
 
 import io.reactivex.disposables.Disposable;
 

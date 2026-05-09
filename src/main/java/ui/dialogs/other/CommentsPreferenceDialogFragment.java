@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.dialogs.other;
+package minefarts.smarttube.ui.dialogs.other;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,17 +12,17 @@ import com.bumptech.glide.Glide;
 import com.liskovsoft.sharedutils.data.CommentGroup;
 import com.liskovsoft.sharedutils.data.CommentItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.app.models.playback.ui.CommentsReceiver;
-import SmartTubeApp.app.models.playback.ui.CommentsReceiver.Backup;
-import SmartTubeApp.app.models.playback.ui.CommentsReceiver.Callback;
-import SmartTubeApp.prefs.PlayerTweaksData;
-import SmartTubeApp.R;
-import SmartTubeApp.ui.mod.leanback.preference.LeanbackPreferenceDialogFragment;
-import SmartTubeApp.ui.widgets.chat.ChatItemMessage;
-import SmartTubeApp.util.ViewUtil;
-import SmartTubeApp.commons.models.IMessage;
-import SmartTubeApp.messages.MessagesList;
-import SmartTubeApp.messages.MessagesListAdapter;
+import minefarts.smarttube.app.models.playback.ui.CommentsReceiver;
+import minefarts.smarttube.app.models.playback.ui.CommentsReceiver.Backup;
+import minefarts.smarttube.app.models.playback.ui.CommentsReceiver.Callback;
+import minefarts.smarttube.prefs.PlayerTweaksData;
+import minefarts.smarttube.R;
+import minefarts.smarttube.ui.mod.leanback.preference.LeanbackPreferenceDialogFragment;
+import minefarts.smarttube.ui.widgets.chat.ChatItemMessage;
+import minefarts.smarttube.util.ViewUtil;
+import minefarts.smarttube.commons.models.IMessage;
+import minefarts.smarttube.messages.MessagesList;
+import minefarts.smarttube.messages.MessagesListAdapter;
 
 import java.util.List;
 

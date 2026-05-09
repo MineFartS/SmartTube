@@ -1,4 +1,4 @@
-package SmartTubeApp.misc;
+package minefarts.smarttube.misc;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.os.Build.VERSION;
 
 import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.utils.Utils;
+import minefarts.smarttube.utils.Utils;
 
 public class RemoteControlReceiver extends BroadcastReceiver {
     private static final String TAG = RemoteControlReceiver.class.getSimpleName();

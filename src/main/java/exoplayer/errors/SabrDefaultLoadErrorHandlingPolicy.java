@@ -1,4 +1,4 @@
-package SmartTubeApp.exoplayer.errors;
+package minefarts.smarttube.exoplayer.errors;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 

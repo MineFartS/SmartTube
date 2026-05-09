@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.playback.mod.surface;
+package minefarts.smarttube.ui.playback.mod.surface;
 
 import android.content.Context;
 import android.view.LayoutInflater;

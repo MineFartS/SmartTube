@@ -1,12 +1,12 @@
-package SmartTubeApp.core;
+package minefarts.smarttube.core;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.webkit.URLUtil;
-import SmartTubeApp.other.downloadmanager.DownloadManager;
-import SmartTubeApp.other.downloadmanager.DownloadManager.MyRequest;
+import minefarts.smarttube.other.downloadmanager.DownloadManager;
+import minefarts.smarttube.other.downloadmanager.DownloadManager.MyRequest;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 
 import java.io.File;

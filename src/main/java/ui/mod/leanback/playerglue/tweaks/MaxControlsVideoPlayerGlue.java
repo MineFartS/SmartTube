@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.mod.leanback.playerglue.tweaks;
+package minefarts.smarttube.ui.mod.leanback.playerglue.tweaks;
 
 import android.content.Context;
 import android.view.View;
@@ -11,12 +11,12 @@ import androidx.leanback.widget.PlaybackRowPresenter;
 import androidx.leanback.media.PlaybackBaseControlGlue;
 import androidx.leanback.widget.RowPresenter;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.models.playback.ui.SeekBarSegment;
-import SmartTubeApp.exoplayer.controller.PlayerView;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.models.playback.ui.SeekBarSegment;
+import minefarts.smarttube.exoplayer.controller.PlayerView;
 import androidx.leanback.media.PlaybackTransportControlGlue;
-import SmartTubeApp.ui.mod.leanback.playerglue.tweaks.PlaybackTransportRowPresenter.TopEdgeFocusListener;
-import SmartTubeApp.ui.mod.leanback.playerglue.tweaks.PlaybackTransportRowPresenter.ViewHolder;
+import minefarts.smarttube.ui.mod.leanback.playerglue.tweaks.PlaybackTransportRowPresenter.TopEdgeFocusListener;
+import minefarts.smarttube.ui.mod.leanback.playerglue.tweaks.PlaybackTransportRowPresenter.ViewHolder;
 
 import java.lang.ref.WeakReference;
 import java.util.List;

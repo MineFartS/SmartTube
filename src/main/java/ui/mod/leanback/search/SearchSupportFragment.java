@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.mod.leanback.search;
+package minefarts.smarttube.ui.mod.leanback.search;
 
 import android.Manifest;
 import android.content.Intent;
@@ -39,9 +39,9 @@ import androidx.leanback.widget.VerticalGridView;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.KeyHelpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import SmartTubeApp.app.presenters.SearchPresenter;
-import SmartTubeApp.utils.Utils;
-import SmartTubeApp.BuildConfig;
+import minefarts.smarttube.app.presenters.SearchPresenter;
+import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.BuildConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -257,7 +257,7 @@ public class SearchSupportFragment extends Fragment {
                 startRecognition();
             } else {
                 MessageHelpers.showMessage(getContext(),
-                        SmartTubeApp.R.string.not_supported_by_device);
+                        minefarts.smarttube.R.string.not_supported_by_device);
             }
         }
     }
@@ -376,7 +376,7 @@ public class SearchSupportFragment extends Fragment {
 
         // MOD: commit search button
         mSearchOrbView = mSearchBar
-                .findViewById(SmartTubeApp.R.id.lb_search_bar_search_orb);
+                .findViewById(minefarts.smarttube.R.id.lb_search_bar_search_orb);
         mSearchOrbView.setOnFocusChangeListener((v, focused) -> {
             if (focused) {
                 Helpers.hideKeyboard(getContext(), v);
@@ -386,7 +386,7 @@ public class SearchSupportFragment extends Fragment {
 
         // MOD: search settings button
         mSearchSettingsOrbView =
-                mSearchBar.findViewById(SmartTubeApp.R.id.search_settings_orb);
+                mSearchBar.findViewById(minefarts.smarttube.R.id.search_settings_orb);
         mSearchSettingsOrbView.setOnFocusChangeListener((v, focused) -> {
             if (focused) {
                 Helpers.hideKeyboard(getContext(), v);

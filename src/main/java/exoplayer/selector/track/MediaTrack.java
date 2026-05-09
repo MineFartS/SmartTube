@@ -1,11 +1,11 @@
-package SmartTubeApp.exoplayer.selector.track;
+package minefarts.smarttube.exoplayer.selector.track;
 
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.TrackSelection.Definition;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.exoplayer.selector.TrackSelectorManager;
-import SmartTubeApp.exoplayer.selector.TrackSelectorUtil;
+import minefarts.smarttube.exoplayer.selector.TrackSelectorManager;
+import minefarts.smarttube.exoplayer.selector.TrackSelectorUtil;
 
 public abstract class MediaTrack {
     private static final int BITRATE_DIFF_PERCENTS = 7;

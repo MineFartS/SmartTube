@@ -1,4 +1,4 @@
-package SmartTubeApp.app.presenters.dialogs.menu.providers.channelgroup;
+package minefarts.smarttube.app.presenters.dialogs.menu.providers.channelgroup;
 
 import android.content.Context;
 import android.net.Uri;
@@ -9,16 +9,16 @@ import com.liskovsoft.sharedutils.data.ItemGroup;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import SmartTubeApp.R;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.models.playback.ui.OptionItem;
-import SmartTubeApp.app.models.playback.ui.UiOptionItem;
-import SmartTubeApp.app.presenters.AppDialogPresenter;
-import SmartTubeApp.app.presenters.BrowsePresenter;
-import SmartTubeApp.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
-import SmartTubeApp.app.presenters.dialogs.menu.providers.ContextMenuProvider;
-import SmartTubeApp.misc.ServiceManager;
-import SmartTubeApp.utils.SimpleEditDialog;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.models.playback.ui.OptionItem;
+import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
+import minefarts.smarttube.app.presenters.AppDialogPresenter;
+import minefarts.smarttube.app.presenters.BrowsePresenter;
+import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
+import minefarts.smarttube.app.presenters.dialogs.menu.providers.ContextMenuProvider;
+import minefarts.smarttube.misc.ServiceManager;
+import minefarts.smarttube.utils.SimpleEditDialog;
 
 import java.util.ArrayList;
 import java.util.Collections;

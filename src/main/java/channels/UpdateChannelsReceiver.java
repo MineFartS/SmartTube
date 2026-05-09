@@ -1,4 +1,4 @@
-package SmartTubeApp.channels;
+package minefarts.smarttube.channels;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

@@ -1,7 +1,7 @@
-package SmartTubeApp.app.presenters.dialogs.menu.providers;
+package minefarts.smarttube.app.presenters.dialogs.menu.providers;
 
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
 
 public abstract class ContextMenuProvider {
     public static int MENU_TYPE_ANY = 0;

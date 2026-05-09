@@ -1,4 +1,4 @@
-package SmartTubeApp.recommendations;
+package minefarts.smarttube.recommendations;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -8,10 +8,10 @@ import android.graphics.BitmapFactory;
 
 import androidx.annotation.RequiresApi;
 
-import SmartTubeApp.R;
-import SmartTubeApp.media.Clip;
-import SmartTubeApp.media.Playlist;
-import SmartTubeApp.utils.AppUtil;
+import minefarts.smarttube.R;
+import minefarts.smarttube.media.Clip;
+import minefarts.smarttube.media.Playlist;
+import minefarts.smarttube.utils.AppUtil;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
 import okhttp3.Response;

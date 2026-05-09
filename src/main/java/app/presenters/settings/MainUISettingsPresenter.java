@@ -1,19 +1,19 @@
-package SmartTubeApp.app.presenters.settings;
+package minefarts.smarttube.app.presenters.settings;
 
 import android.content.Context;
 import android.os.Build;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import SmartTubeApp.R;
-import SmartTubeApp.app.models.playback.ui.OptionItem;
-import SmartTubeApp.app.models.playback.ui.UiOptionItem;
-import SmartTubeApp.app.presenters.AppDialogPresenter;
-import SmartTubeApp.app.presenters.BrowsePresenter;
-import SmartTubeApp.app.presenters.base.BasePresenter;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.models.playback.ui.OptionItem;
+import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
+import minefarts.smarttube.app.presenters.AppDialogPresenter;
+import minefarts.smarttube.app.presenters.BrowsePresenter;
+import minefarts.smarttube.app.presenters.base.BasePresenter;
 
-import SmartTubeApp.prefs.GeneralData;
-import SmartTubeApp.prefs.MainUIData;
-import SmartTubeApp.prefs.PlayerData;
+import minefarts.smarttube.prefs.GeneralData;
+import minefarts.smarttube.prefs.MainUIData;
+import minefarts.smarttube.prefs.PlayerData;
 
 import java.util.ArrayList;
 import java.util.List;

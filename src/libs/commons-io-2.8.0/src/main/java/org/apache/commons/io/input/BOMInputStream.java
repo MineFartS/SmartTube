@@ -248,32 +248,21 @@ public class BOMInputStream extends ProxyInputStream {
      * @return The matched BOM or null if none matched
      */
     private ByteOrderMark find() {
+        
         for (final ByteOrderMark bom : boms) {
-            if (matches(bom)) {
-                return bom;
-            }
-        }
-        return null;
-    }
 
-    /**
-     * Check if the bytes match a BOM.
-     *
-     * @param bom
-     *            The BOM
-     * @return true if the bytes match the bom, otherwise false
-     */
-    private boolean matches(final ByteOrderMark bom) {
-        // if (bom.length() != fbLength) {
-        // return false;
-        // }
-        // firstBytes may be bigger than the BOM bytes
-        for (int i = 0; i < bom.length(); i++) {
-            if (bom.get(i) != firstBytes[i]) {
-                return false;
+            for (int i = 0; i < bom.length(); i++) {
+                if (bom.get(i) != firstBytes[i]) {
+                    return null;
+                }
             }
+
+            return bom;
+
         }
-        return true;
+
+        return null;
+    
     }
 
     // ----------------------------------------------------------------------------

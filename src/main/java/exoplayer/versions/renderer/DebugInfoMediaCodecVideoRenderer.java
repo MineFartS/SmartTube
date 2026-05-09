@@ -1,4 +1,4 @@
-package SmartTubeApp.exoplayer.versions.renderer;
+package minefarts.smarttube.exoplayer.versions.renderer;
 
 import android.content.Context;
 import android.media.MediaCodec;
@@ -16,7 +16,7 @@ import com.google.android.exoplayer2.mediacodec.MediaCodecSelector;
 import com.google.android.exoplayer2.video.MediaCodecVideoRenderer;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.exoplayer.versions.ExoUtils;
+import minefarts.smarttube.exoplayer.versions.ExoUtils;
 
 public class DebugInfoMediaCodecVideoRenderer extends MediaCodecVideoRenderer {
 

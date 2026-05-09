@@ -1,4 +1,4 @@
-package SmartTubeApp.presenter.base;
+package minefarts.smarttube.presenter.base;
 
 import androidx.leanback.widget.Presenter;
 

@@ -1,4 +1,4 @@
-package SmartTubeApp.prefs;
+package minefarts.smarttube.prefs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -6,9 +6,9 @@ import android.os.Build.VERSION;
 import com.liskovsoft.sharedutils.data.SponsorSegment;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
-import SmartTubeApp.R;
-import SmartTubeApp.app.models.playback.controllers.ContentBlockController.SegmentAction;
-import SmartTubeApp.utils.DataStore;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.models.playback.controllers.ContentBlockController.SegmentAction;
+import minefarts.smarttube.utils.DataStore;
 
 import java.util.Arrays;
 import java.util.Collections;

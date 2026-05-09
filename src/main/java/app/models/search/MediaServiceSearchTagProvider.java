@@ -1,11 +1,11 @@
-package SmartTubeApp.app.models.search;
+package minefarts.smarttube.app.models.search;
 
 import android.text.TextUtils;
 
 import com.liskovsoft.sharedutils.service.ContentService;
-import SmartTubeApp.misc.ServiceManager;
+import minefarts.smarttube.misc.ServiceManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.app.models.search.vineyard.Tag;
+import minefarts.smarttube.app.models.search.vineyard.Tag;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import io.reactivex.disposables.Disposable;
 

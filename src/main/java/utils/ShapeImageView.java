@@ -1,6 +1,6 @@
 
 
-package SmartTubeApp.utils;
+package minefarts.smarttube.utils;
 
 import android.content.Context;
 import android.graphics.Canvas;

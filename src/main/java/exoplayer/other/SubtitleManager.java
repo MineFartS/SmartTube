@@ -1,4 +1,4 @@
-package SmartTubeApp.exoplayer.other;
+package minefarts.smarttube.exoplayer.other;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,10 +17,10 @@ import com.google.android.exoplayer2.text.Cue;
 import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.ui.SubtitleView;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.R;
-import SmartTubeApp.prefs.AppPrefs;
-import SmartTubeApp.prefs.common.DataChangeBase.OnDataChange;
-import SmartTubeApp.prefs.PlayerData;
+import minefarts.smarttube.R;
+import minefarts.smarttube.prefs.AppPrefs;
+import minefarts.smarttube.prefs.common.DataChangeBase.OnDataChange;
+import minefarts.smarttube.prefs.PlayerData;
 
 import java.util.ArrayList;
 import java.util.List;

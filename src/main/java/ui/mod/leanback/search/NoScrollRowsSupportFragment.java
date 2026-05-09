@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.mod.leanback.search;
+package minefarts.smarttube.ui.mod.leanback.search;
 
 import androidx.leanback.app.RowsSupportFragment;
 

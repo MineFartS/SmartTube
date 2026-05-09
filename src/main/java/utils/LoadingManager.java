@@ -1,17 +1,17 @@
-package SmartTubeApp.utils;
+package minefarts.smarttube.utils;
 
 import android.content.Context;
-import SmartTubeApp.app.presenters.BrowsePresenter;
-import SmartTubeApp.app.presenters.ChannelPresenter;
-import SmartTubeApp.app.presenters.ChannelUploadsPresenter;
-import SmartTubeApp.app.presenters.PlaybackPresenter;
-import SmartTubeApp.app.presenters.SearchPresenter;
-import SmartTubeApp.app.views.BrowseView;
-import SmartTubeApp.app.views.ChannelUploadsView;
-import SmartTubeApp.app.views.ChannelView;
-import SmartTubeApp.app.models.playback.PlayerEngine;
-import SmartTubeApp.app.views.SearchView;
-import SmartTubeApp.app.views.ViewManager;
+import minefarts.smarttube.app.presenters.BrowsePresenter;
+import minefarts.smarttube.app.presenters.ChannelPresenter;
+import minefarts.smarttube.app.presenters.ChannelUploadsPresenter;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
+import minefarts.smarttube.app.presenters.SearchPresenter;
+import minefarts.smarttube.app.views.BrowseView;
+import minefarts.smarttube.app.views.ChannelUploadsView;
+import minefarts.smarttube.app.views.ChannelView;
+import minefarts.smarttube.app.models.playback.PlayerEngine;
+import minefarts.smarttube.app.views.SearchView;
+import minefarts.smarttube.app.views.ViewManager;
 
 public class LoadingManager {
     public static void showLoading(Context context, boolean show, Class<?> view) {

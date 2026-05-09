@@ -1,4 +1,4 @@
-package SmartTubeApp.app.presenters.dialogs.menu.providers.channelgroup;
+package minefarts.smarttube.app.presenters.dialogs.menu.providers.channelgroup;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -7,9 +7,9 @@ import android.net.Uri;
 import com.liskovsoft.sharedutils.ChannelGroupService;
 import com.liskovsoft.sharedutils.data.ItemGroup;
 import com.liskovsoft.sharedutils.data.ItemGroup.Item;
-import SmartTubeApp.prefs.AppPrefs;
-import SmartTubeApp.prefs.AppPrefs.ProfileChangeListener;
-import SmartTubeApp.misc.ServiceManager;
+import minefarts.smarttube.prefs.AppPrefs;
+import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
+import minefarts.smarttube.misc.ServiceManager;
 
 import java.io.File;
 import java.util.List;

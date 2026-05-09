@@ -1,4 +1,4 @@
-package SmartTubeApp.other.downloadmanager;
+package minefarts.smarttube.other.downloadmanager;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

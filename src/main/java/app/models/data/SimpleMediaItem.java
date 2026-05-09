@@ -1,4 +1,4 @@
-package SmartTubeApp.app.models.data;
+package minefarts.smarttube.app.models.data;
 
 import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.data.MediaItemMetadata;

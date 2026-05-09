@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.mod.leanback.headers;
+package minefarts.smarttube.ui.mod.leanback.headers;
 
 import android.view.KeyEvent;
 import android.view.View;

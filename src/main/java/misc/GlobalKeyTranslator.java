@@ -1,10 +1,10 @@
-package SmartTubeApp.misc;
+package minefarts.smarttube.misc;
 
 import android.content.Context;
 import android.view.KeyEvent;
-import SmartTubeApp.app.presenters.PlaybackPresenter;
-import SmartTubeApp.app.presenters.SearchPresenter;
-import SmartTubeApp.prefs.GeneralData;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
+import minefarts.smarttube.app.presenters.SearchPresenter;
+import minefarts.smarttube.prefs.GeneralData;
 
 import java.util.Map;
 

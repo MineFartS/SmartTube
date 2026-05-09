@@ -1,4 +1,4 @@
-package SmartTubeApp.app.models.data;
+package minefarts.smarttube.app.models.data;
 
 public class SettingsItem {
     public final String title;

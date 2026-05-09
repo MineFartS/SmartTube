@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.mod.clickable;
+package minefarts.smarttube.ui.mod.clickable;
 
 import android.text.Layout;
 import android.text.Spannable;

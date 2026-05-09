@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.mod.leanback.misc;
+package minefarts.smarttube.ui.mod.leanback.misc;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

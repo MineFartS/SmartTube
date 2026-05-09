@@ -26,12 +26,12 @@ internal object RetrofitOkHttpHelper {
 
     private val commonHeaders = mapOf(
         // Enable compression in production
-        "Accept-Encoding" to DefaultHeaders.ACCEPT_ENCODING,
+        "Accept-Encoding" to "gzip, deflate, br",
     )
 
     private val apiHeaders = mapOf(
-        "User-Agent" to DefaultHeaders.APP_USER_AGENT,
-        "Referer" to DefaultHeaders.REFERER
+        "User-Agent" to DefaultHeaders.USER_AGENT_TV,
+        "Referer" to "https://www.youtube.com/tv"
     )
 
     private val apiPrefixes = arrayOf(

@@ -1,4 +1,4 @@
-package SmartTubeApp.utils;
+package minefarts.smarttube.utils;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -59,27 +59,27 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.misc.WeakHashSet;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.BuildConfig;
-import SmartTubeApp.R;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.models.playback.PlayerEngine;
-import SmartTubeApp.app.models.playback.service.VideoStateService;
-import SmartTubeApp.app.presenters.PlaybackPresenter;
-import SmartTubeApp.app.presenters.SplashPresenter;
-import SmartTubeApp.app.models.playback.PlayerEngine;
-import SmartTubeApp.app.views.ViewManager;
-import SmartTubeApp.exoplayer.selector.FormatItem.VideoPreset;
-import SmartTubeApp.exoplayer.selector.TrackSelectorUtil;
-import SmartTubeApp.exoplayer.selector.track.MediaTrack;
-import SmartTubeApp.misc.MotherActivity;
-import SmartTubeApp.misc.RemoteControlService;
-import SmartTubeApp.misc.RemoteControlWorker;
-import SmartTubeApp.prefs.GeneralData;
-import SmartTubeApp.prefs.HiddenPrefs;
-import SmartTubeApp.prefs.MainUIData;
-import SmartTubeApp.prefs.PlayerData;
-import SmartTubeApp.prefs.PlayerTweaksData;
-import SmartTubeApp.prefs.RemoteControlData;
+import minefarts.smarttube.BuildConfig;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.models.playback.PlayerEngine;
+import minefarts.smarttube.app.models.playback.service.VideoStateService;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
+import minefarts.smarttube.app.presenters.SplashPresenter;
+import minefarts.smarttube.app.models.playback.PlayerEngine;
+import minefarts.smarttube.app.views.ViewManager;
+import minefarts.smarttube.exoplayer.selector.FormatItem.VideoPreset;
+import minefarts.smarttube.exoplayer.selector.TrackSelectorUtil;
+import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
+import minefarts.smarttube.misc.MotherActivity;
+import minefarts.smarttube.misc.RemoteControlService;
+import minefarts.smarttube.misc.RemoteControlWorker;
+import minefarts.smarttube.prefs.GeneralData;
+import minefarts.smarttube.prefs.HiddenPrefs;
+import minefarts.smarttube.prefs.MainUIData;
+import minefarts.smarttube.prefs.PlayerData;
+import minefarts.smarttube.prefs.PlayerTweaksData;
+import minefarts.smarttube.prefs.RemoteControlData;
 import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
 
 import java.io.UnsupportedEncodingException;
@@ -91,9 +91,9 @@ import java.util.concurrent.TimeUnit;
 public class Utils {
     private static final String UNIVERSAL_PASSWD = "smarttube";
     private static final int RANDOM_FAIL_REPEAT_TIMES = 10;
-    private static final String REMOTE_CONTROL_RECEIVER_CLASS_NAME = "SmartTubeApp.misc.RemoteControlReceiver";
-    private static final String UPDATE_CHANNELS_RECEIVER_CLASS_NAME = "SmartTubeApp.channels.UpdateChannelsReceiver";
-    private static final String BOOTSTRAP_ACTIVITY_CLASS_NAME = "SmartTubeApp.ui.main.SplashActivity";
+    private static final String REMOTE_CONTROL_RECEIVER_CLASS_NAME = "minefarts.smarttube.misc.RemoteControlReceiver";
+    private static final String UPDATE_CHANNELS_RECEIVER_CLASS_NAME = "minefarts.smarttube.channels.UpdateChannelsReceiver";
+    private static final String BOOTSTRAP_ACTIVITY_CLASS_NAME = "minefarts.smarttube.ui.main.SplashActivity";
     private static final String TASK_ID = RemoteControlWorker.class.getSimpleName();
     private static final String TAG = Utils.class.getSimpleName();
     private static final String QR_CODE_URL_TEMPLATE = "https://api.qrserver.com/v1/create-qr-code/?data=%s";
@@ -827,10 +827,6 @@ public class Utils {
         }
 
         return result;
-    }
-
-    public static boolean isOculusQuest() {
-        return Helpers.getDeviceName().startsWith("Oculus Quest");
     }
 
     public static void updateChannels(Context context) {

@@ -46,7 +46,7 @@
     <!--    android:paddingEnd="56dp"-->
     <!--    android:visibility="gone" />-->
 
-    <SmartTubeApp.messages.MessagesList
+    <minefarts.smarttube.messages.MessagesList
         android:id="@+id/messagesList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

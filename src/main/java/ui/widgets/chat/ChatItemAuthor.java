@@ -1,8 +1,8 @@
-package SmartTubeApp.ui.widgets.chat;
+package minefarts.smarttube.ui.widgets.chat;
 
 import com.liskovsoft.sharedutils.data.ChatItem;
 import com.liskovsoft.sharedutils.data.CommentItem;
-import SmartTubeApp.commons.models.IUser;
+import minefarts.smarttube.commons.models.IUser;
 
 public class ChatItemAuthor implements IUser {
     private String mId;

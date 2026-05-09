@@ -1,4 +1,4 @@
-package SmartTubeApp.app.models.data;
+package minefarts.smarttube.app.models.data;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.widgets.time;
+package minefarts.smarttube.ui.widgets.time;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.liskovsoft.sharedutils.helpers.DateHelper;
-import SmartTubeApp.misc.TickleManager;
-import SmartTubeApp.misc.TickleManager.TickleListener;
+import minefarts.smarttube.misc.TickleManager;
+import minefarts.smarttube.misc.TickleManager.TickleListener;
 
 /**
  * Note, same view is used inside player and in as global time view

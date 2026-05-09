@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.widgets.marqueetextview;
+package minefarts.smarttube.ui.widgets.marqueetextview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

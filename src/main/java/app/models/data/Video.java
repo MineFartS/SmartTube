@@ -1,4 +1,4 @@
-package SmartTubeApp.app.models.data;
+package minefarts.smarttube.app.models.data;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -19,8 +19,8 @@ import com.liskovsoft.sharedutils.data.PlaylistInfo;
 import com.liskovsoft.sharedutils.helpers.DateHelper;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import SmartTubeApp.app.models.playback.service.VideoStateService;
-import SmartTubeApp.prefs.PlayerTweaksData;
+import minefarts.smarttube.app.models.playback.service.VideoStateService;
+import minefarts.smarttube.prefs.PlayerTweaksData;
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
 

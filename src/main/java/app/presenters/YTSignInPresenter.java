@@ -1,12 +1,12 @@
-package SmartTubeApp.app.presenters;
+package minefarts.smarttube.app.presenters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import SmartTubeApp.misc.ServiceManager;
+import minefarts.smarttube.misc.ServiceManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import SmartTubeApp.app.presenters.dialogs.AccountSelectionPresenter;
+import minefarts.smarttube.app.presenters.dialogs.AccountSelectionPresenter;
 
 import io.reactivex.disposables.Disposable;
 

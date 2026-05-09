@@ -1,12 +1,12 @@
 
 
-package SmartTubeApp.ui.mod.leanback.preference;
+package minefarts.smarttube.ui.mod.leanback.preference;
 
 import android.app.Fragment;
 import android.transition.Transition;
 import android.view.Gravity;
 import androidx.annotation.RequiresApi;
-import SmartTubeApp.ui.mod.leanback.transition.FadeAndShortSlide;
+import minefarts.smarttube.ui.mod.leanback.transition.FadeAndShortSlide;
 
 /**
  * @hide

@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.dialogs.other;
+package minefarts.smarttube.ui.dialogs.other;
 
 import android.content.Context;
 import android.util.AttributeSet;

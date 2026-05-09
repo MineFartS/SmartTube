@@ -1,4 +1,4 @@
-package SmartTubeApp.app.models.playback.service;
+package minefarts.smarttube.app.models.playback.service;
 
 import android.util.Log;
 import android.annotation.SuppressLint;
@@ -7,10 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.prefs.AppPrefs;
-import SmartTubeApp.prefs.AppPrefs.ProfileChangeListener;
-import SmartTubeApp.utils.Utils;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.prefs.AppPrefs;
+import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
+import minefarts.smarttube.utils.Utils;
 
 import java.util.List;
 

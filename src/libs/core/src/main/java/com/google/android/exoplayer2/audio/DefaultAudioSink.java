@@ -291,9 +291,7 @@ public final class DefaultAudioSink implements AudioSink {
     private final Logger log = new Logger(Logger.Module.Audio, TAG);
     private final boolean DBG = log.allowDebug();
 
-    private static final boolean isLatencyQuirkEnabled = AmazonQuirks.isLatencyQuirkEnabled();
-    private static final boolean isLegacyPassthroughQuirkEnabled =
-            AmazonQuirks.isDolbyPassthroughQuirkEnabled();
+    private static final boolean isLegacyPassthroughQuirkEnabled = AmazonQuirks.isDolbyPassthroughQuirkEnabled();
     // AMZN_CHANGE_END
 
     /**
@@ -340,14 +338,18 @@ public final class DefaultAudioSink implements AudioSink {
      *        integer audio processing (for example, speed and pitch adjustment) will not be
      *        available when float output is in use.
      */
-    public DefaultAudioSink(@Nullable AudioCapabilities audioCapabilities,
-            AudioProcessorChain audioProcessorChain, boolean enableConvertHighResIntPcmToFloat) {
+    public DefaultAudioSink(
+        @Nullable AudioCapabilities audioCapabilities,
+        AudioProcessorChain audioProcessorChain, 
+        boolean enableConvertHighResIntPcmToFloat
+    ) {
+        
         this.audioCapabilities = audioCapabilities;
         this.audioProcessorChain = Assertions.checkNotNull(audioProcessorChain);
         this.enableConvertHighResIntPcmToFloat = enableConvertHighResIntPcmToFloat;
+        
         releasingConditionVariable = new ConditionVariable(true);
-        audioTrackPositionTracker =
-                new AudioTrackPositionTracker(new PositionTrackerListener(), isLatencyQuirkEnabled); // AMZN_CHANGE_ONELINE
+        audioTrackPositionTracker = new AudioTrackPositionTracker(new PositionTrackerListener()); // AMZN_CHANGE_ONELINE
         channelMappingAudioProcessor = new ChannelMappingAudioProcessor();
         trimmingAudioProcessor = new TrimmingAudioProcessor();
         ArrayList<AudioProcessor> toIntPcmAudioProcessors = new ArrayList<>();
@@ -357,10 +359,7 @@ public final class DefaultAudioSink implements AudioSink {
         toIntPcmAvailableAudioProcessors = toIntPcmAudioProcessors.toArray(new AudioProcessor[0]);
         toFloatPcmAvailableAudioProcessors =
                 new AudioProcessor[] {new FloatResamplingAudioProcessor()};
-        // AMZN_CHANGE_BEGIN
-        log.i("Amazon quirks:" + " Latency:" + (isLatencyQuirkEnabled ? "on" : "off") + "; Dolby"
-                + (isLegacyPassthroughQuirkEnabled ? "on" : "off") + ". On Sdk: " + Util.SDK_INT);
-        // AMZN_CHANGE_END
+        
         volume = 1.0f;
         startMediaTimeState = START_NOT_SET;
         audioAttributes = AudioAttributes.DEFAULT;

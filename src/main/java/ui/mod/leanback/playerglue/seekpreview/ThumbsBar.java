@@ -1,5 +1,5 @@
 
-package SmartTubeApp.ui.mod.leanback.playerglue.seekpreview;
+package minefarts.smarttube.ui.mod.leanback.playerglue.seekpreview;
 
 import android.content.Context;
 import android.graphics.Bitmap;

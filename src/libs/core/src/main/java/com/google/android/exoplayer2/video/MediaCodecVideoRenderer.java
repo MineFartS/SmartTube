@@ -11,11 +11,13 @@ import android.media.MediaCrypto;
 import android.media.MediaFormat;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.util.Pair;
+import android.view.Surface;
+
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.Pair;
-import android.view.Surface;
+
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -37,11 +39,12 @@ import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.TraceUtil;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoRendererEventListener.EventDispatcher;
+import com.google.android.exoplayer2.util.Logger;
+
 import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.List;
-import com.google.android.exoplayer2.util.Logger;
-import com.google.android.exoplayer2.util.AmazonQuirks;
+
 
 /**
  * Decodes and renders video using {@link MediaCodec}.

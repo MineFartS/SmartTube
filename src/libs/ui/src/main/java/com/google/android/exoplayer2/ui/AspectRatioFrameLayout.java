@@ -31,9 +31,7 @@ public final class AspectRatioFrameLayout extends FrameLayout {
     void onAspectRatioUpdated(
         float targetAspectRatio, float naturalAspectRatio, boolean aspectRatioMismatch);
   }
-
-  private static final float MAX_ASPECT_RATIO_DEFORMATION_FRACTION = 0.01f;
-
+  
   private final AspectRatioUpdateDispatcher aspectRatioUpdateDispatcher;
 
   @Nullable private AspectRatioListener aspectRatioListener;

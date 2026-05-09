@@ -1,4 +1,4 @@
-package SmartTubeApp.utils;
+package minefarts.smarttube.utils;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;

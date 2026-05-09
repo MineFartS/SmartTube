@@ -1,25 +1,25 @@
-package SmartTubeApp.ui.browse;
+package minefarts.smarttube.ui.browse;
 
 import androidx.fragment.app.Fragment;
 import androidx.leanback.app.BrowseSupportFragment;
 import androidx.leanback.widget.HeaderItem;
 import androidx.leanback.widget.Row;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.app.models.data.BrowseSection;
-import SmartTubeApp.app.models.data.SettingsGroup;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.models.data.VideoGroup;
-import SmartTubeApp.app.models.errors.ErrorFragmentData;
-import SmartTubeApp.utils.Utils;
-import SmartTubeApp.ui.browse.dialog.ErrorDialogFragment;
-import SmartTubeApp.ui.browse.interfaces.Section;
-import SmartTubeApp.ui.browse.interfaces.SettingsSection;
-import SmartTubeApp.ui.browse.interfaces.VideoSection;
-import SmartTubeApp.ui.browse.settings.SettingsGridFragment;
-import SmartTubeApp.ui.browse.video.MultiVideoGridFragment;
-import SmartTubeApp.ui.browse.video.ShortsGridFragment;
-import SmartTubeApp.ui.browse.video.VideoGridFragment;
-import SmartTubeApp.ui.browse.video.VideoRowsFragment;
+import minefarts.smarttube.app.models.data.BrowseSection;
+import minefarts.smarttube.app.models.data.SettingsGroup;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.models.data.VideoGroup;
+import minefarts.smarttube.app.models.errors.ErrorFragmentData;
+import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.ui.browse.dialog.ErrorDialogFragment;
+import minefarts.smarttube.ui.browse.interfaces.Section;
+import minefarts.smarttube.ui.browse.interfaces.SettingsSection;
+import minefarts.smarttube.ui.browse.interfaces.VideoSection;
+import minefarts.smarttube.ui.browse.settings.SettingsGridFragment;
+import minefarts.smarttube.ui.browse.video.MultiVideoGridFragment;
+import minefarts.smarttube.ui.browse.video.ShortsGridFragment;
+import minefarts.smarttube.ui.browse.video.VideoGridFragment;
+import minefarts.smarttube.ui.browse.video.VideoRowsFragment;
 
 public class BrowseSectionFragmentFactory extends BrowseSupportFragment.FragmentFactory<Fragment> {
     private static final String TAG = BrowseSectionFragmentFactory.class.getSimpleName();

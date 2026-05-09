@@ -1,10 +1,10 @@
 
 
-package SmartTubeApp.commons.models;
+package minefarts.smarttube.commons.models;
 
 import androidx.annotation.Nullable;
 
-import SmartTubeApp.messages.MessageHolders;
+import minefarts.smarttube.messages.MessageHolders;
 
 /*
  * Created by troy379 on 28.03.17.

@@ -1,16 +1,16 @@
-package SmartTubeApp.app.presenters.dialogs;
+package minefarts.smarttube.app.presenters.dialogs;
 
 import android.content.Context;
 
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.presenters.ChannelUploadsPresenter;
-import SmartTubeApp.app.presenters.PlaybackPresenter;
-import SmartTubeApp.app.presenters.SearchPresenter;
-import SmartTubeApp.app.presenters.base.BasePresenter;
-import SmartTubeApp.misc.ServiceManager;
-import SmartTubeApp.utils.LoadingManager;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.presenters.ChannelUploadsPresenter;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
+import minefarts.smarttube.app.presenters.SearchPresenter;
+import minefarts.smarttube.app.presenters.base.BasePresenter;
+import minefarts.smarttube.misc.ServiceManager;
+import minefarts.smarttube.utils.LoadingManager;
 
 public class VideoActionPresenter extends BasePresenter<Void> {
 

@@ -1,18 +1,18 @@
-package SmartTubeApp.misc;
+package minefarts.smarttube.misc;
 
 import android.content.Context;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.R;
-import SmartTubeApp.app.models.data.SettingsItem;
-import SmartTubeApp.app.presenters.settings.AboutSettingsPresenter;
-import SmartTubeApp.app.presenters.settings.AccountSettingsPresenter;
-import SmartTubeApp.app.presenters.settings.ContentBlockSettingsPresenter;
-import SmartTubeApp.app.presenters.settings.GeneralSettingsPresenter;
-import SmartTubeApp.app.presenters.settings.MainUISettingsPresenter;
-import SmartTubeApp.app.presenters.settings.PlayerSettingsPresenter;
-import SmartTubeApp.app.presenters.settings.RemoteControlSettingsPresenter;
-import SmartTubeApp.app.presenters.settings.SubtitleSettingsPresenter;
-import SmartTubeApp.exoplayer.selector.FormatItem.VideoPreset;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.models.data.SettingsItem;
+import minefarts.smarttube.app.presenters.settings.AboutSettingsPresenter;
+import minefarts.smarttube.app.presenters.settings.AccountSettingsPresenter;
+import minefarts.smarttube.app.presenters.settings.ContentBlockSettingsPresenter;
+import minefarts.smarttube.app.presenters.settings.GeneralSettingsPresenter;
+import minefarts.smarttube.app.presenters.settings.MainUISettingsPresenter;
+import minefarts.smarttube.app.presenters.settings.PlayerSettingsPresenter;
+import minefarts.smarttube.app.presenters.settings.RemoteControlSettingsPresenter;
+import minefarts.smarttube.app.presenters.settings.SubtitleSettingsPresenter;
+import minefarts.smarttube.exoplayer.selector.FormatItem.VideoPreset;
 
 import java.util.ArrayList;
 import java.util.List;

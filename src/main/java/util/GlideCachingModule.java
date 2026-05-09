@@ -1,4 +1,4 @@
-package SmartTubeApp.util;
+package minefarts.smarttube.util;
 
 import android.content.Context;
 

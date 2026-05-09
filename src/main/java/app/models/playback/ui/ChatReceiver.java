@@ -1,4 +1,4 @@
-package SmartTubeApp.app.models.playback.ui;
+package minefarts.smarttube.app.models.playback.ui;
 
 import com.liskovsoft.sharedutils.data.ChatItem;
 

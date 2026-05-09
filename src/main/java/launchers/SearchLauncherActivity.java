@@ -1,8 +1,8 @@
-package SmartTubeApp.launchers;
+package minefarts.smarttube.launchers;
 
 import android.os.Bundle;
-import SmartTubeApp.app.presenters.SearchPresenter;
-import SmartTubeApp.misc.MotherActivity;
+import minefarts.smarttube.app.presenters.SearchPresenter;
+import minefarts.smarttube.misc.MotherActivity;
 
 public class SearchLauncherActivity extends MotherActivity {
     @Override

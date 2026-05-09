@@ -1,12 +1,12 @@
-package SmartTubeApp.prefs;
+package minefarts.smarttube.prefs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import com.liskovsoft.sharedutils.oauth.Account;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.misc.ServiceManager;
-import SmartTubeApp.misc.ServiceManager.AccountChangeListener;
+import minefarts.smarttube.misc.ServiceManager;
+import minefarts.smarttube.misc.ServiceManager.AccountChangeListener;
 
 import java.util.HashMap;
 import java.util.Map;

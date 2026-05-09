@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.common.keyhandler;
+package minefarts.smarttube.ui.common.keyhandler;
 
 import android.view.KeyEvent;
 

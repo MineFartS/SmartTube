@@ -1,4 +1,4 @@
-package SmartTubeApp.exoplayer;
+package minefarts.smarttube.exoplayer;
 
 import android.net.Uri;
 import com.google.android.exoplayer2.C;

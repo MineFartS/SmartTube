@@ -1,4 +1,4 @@
-package SmartTubeApp.search;
+package minefarts.smarttube.search;
 
 import android.app.SearchManager;
 import android.content.ContentProvider;
@@ -10,13 +10,13 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 import com.liskovsoft.sharedutils.data.MediaGroup;
 import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.AppSchedulerProvider;
 import com.liskovsoft.sharedutils.rx.SchedulerProvider;
-import SmartTubeApp.misc.ServiceManager;
+import minefarts.smarttube.misc.ServiceManager;
 import io.reactivex.disposables.CompositeDisposable;
 
 import java.util.ArrayList;

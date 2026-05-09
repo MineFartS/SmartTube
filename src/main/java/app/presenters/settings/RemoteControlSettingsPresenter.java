@@ -1,22 +1,22 @@
-package SmartTubeApp.app.presenters.settings;
+package minefarts.smarttube.app.presenters.settings;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import SmartTubeApp.misc.ServiceManager;
+import minefarts.smarttube.misc.ServiceManager;
 import com.liskovsoft.sharedutils.RemoteControlService;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.helpers.PermissionHelpers;
-import SmartTubeApp.R;
-import SmartTubeApp.app.models.playback.ui.OptionItem;
-import SmartTubeApp.app.models.playback.ui.UiOptionItem;
-import SmartTubeApp.app.presenters.AddDevicePresenter;
-import SmartTubeApp.app.presenters.AppDialogPresenter;
-import SmartTubeApp.app.presenters.base.BasePresenter;
-import SmartTubeApp.misc.MotherActivity;
-import SmartTubeApp.prefs.RemoteControlData;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.models.playback.ui.OptionItem;
+import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
+import minefarts.smarttube.app.presenters.AddDevicePresenter;
+import minefarts.smarttube.app.presenters.AppDialogPresenter;
+import minefarts.smarttube.app.presenters.base.BasePresenter;
+import minefarts.smarttube.misc.MotherActivity;
+import minefarts.smarttube.prefs.RemoteControlData;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import SmartTubeApp.utils.AppDialogUtil;
-import SmartTubeApp.utils.Utils;
+import minefarts.smarttube.utils.AppDialogUtil;
+import minefarts.smarttube.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;

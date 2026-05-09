@@ -1,4 +1,4 @@
-package SmartTubeApp.exoplayer.errors;
+package minefarts.smarttube.exoplayer.errors;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ParserException;

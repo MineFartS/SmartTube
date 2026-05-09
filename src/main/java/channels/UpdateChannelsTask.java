@@ -1,12 +1,12 @@
-package SmartTubeApp.channels;
+package minefarts.smarttube.channels;
 
 import android.content.Context;
 
 import androidx.annotation.RequiresApi;
 
-import SmartTubeApp.media.ClipService;
-import SmartTubeApp.media.Playlist;
-import SmartTubeApp.recommendations.RecommendationsProvider;
+import minefarts.smarttube.media.ClipService;
+import minefarts.smarttube.media.Playlist;
+import minefarts.smarttube.recommendations.RecommendationsProvider;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;

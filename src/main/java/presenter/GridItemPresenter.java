@@ -1,4 +1,4 @@
-package SmartTubeApp.presenter;
+package minefarts.smarttube.presenter;
 
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.leanback.widget.Presenter;
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 
 public class GridItemPresenter extends Presenter {
     private final Fragment mainFragment;

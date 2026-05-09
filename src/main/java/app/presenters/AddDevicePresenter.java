@@ -1,11 +1,11 @@
-package SmartTubeApp.app.presenters;
+package minefarts.smarttube.app.presenters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import SmartTubeApp.misc.ServiceManager;
+import minefarts.smarttube.misc.ServiceManager;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.app.presenters.base.BasePresenter;
-import SmartTubeApp.app.views.AddDeviceView;
+import minefarts.smarttube.app.presenters.base.BasePresenter;
+import minefarts.smarttube.app.views.AddDeviceView;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import io.reactivex.disposables.Disposable;
 

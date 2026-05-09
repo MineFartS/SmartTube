@@ -1,4 +1,4 @@
-package SmartTubeApp.misc;
+package minefarts.smarttube.misc;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -21,13 +21,13 @@ import com.liskovsoft.sharedutils.helpers.KeyHelpers;
 import com.liskovsoft.sharedutils.locale.LocaleContextWrapper;
 import com.liskovsoft.sharedutils.locale.LocaleUpdater;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.R;
-import SmartTubeApp.app.presenters.PlaybackPresenter;
-import SmartTubeApp.app.views.ViewManager;
-import SmartTubeApp.prefs.GeneralData;
-import SmartTubeApp.prefs.MainUIData;
-import SmartTubeApp.prefs.PlayerData;
-import SmartTubeApp.prefs.PlayerTweaksData;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
+import minefarts.smarttube.app.views.ViewManager;
+import minefarts.smarttube.prefs.GeneralData;
+import minefarts.smarttube.prefs.MainUIData;
+import minefarts.smarttube.prefs.PlayerData;
+import minefarts.smarttube.prefs.PlayerTweaksData;
 import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
 
 import java.util.ArrayList;

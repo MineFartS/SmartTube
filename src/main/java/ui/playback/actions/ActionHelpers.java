@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.playback.actions;
+package minefarts.smarttube.ui.playback.actions;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -11,7 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
 import androidx.core.content.ContextCompat;
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 
 public class ActionHelpers {
     public static int getIconHighlightColor(Context context) {

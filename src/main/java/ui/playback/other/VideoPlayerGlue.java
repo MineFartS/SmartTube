@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.playback.other;
+package minefarts.smarttube.ui.playback.other;
 
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
@@ -21,25 +21,25 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.prefs.GeneralData;
-import SmartTubeApp.prefs.PlayerTweaksData;
-import SmartTubeApp.R;
-import SmartTubeApp.ui.mod.leanback.playerglue.tweaks.MaxControlsVideoPlayerGlue;
-import SmartTubeApp.ui.mod.leanback.playerglue.tweaks.PlaybackTransportRowPresenter;
-import SmartTubeApp.ui.mod.leanback.widget.OnActionLongClickedListener;
-import SmartTubeApp.ui.playback.actions.ActionHelpers;
-import SmartTubeApp.ui.playback.actions.ChannelAction;
-import SmartTubeApp.ui.playback.actions.ChatAction;
-import SmartTubeApp.ui.playback.actions.ClosedCaptioningAction;
-import SmartTubeApp.ui.playback.actions.VideoInfoAction;
-import SmartTubeApp.ui.playback.actions.PlaylistAddAction;
-import SmartTubeApp.ui.playback.actions.PlaybackModeAction;
-import SmartTubeApp.ui.playback.actions.SubscribeAction;
-import SmartTubeApp.ui.playback.actions.TwoStateAction;
-import SmartTubeApp.ui.playback.actions.ThumbsDownAction;
-import SmartTubeApp.ui.playback.actions.ThumbsUpAction;
-import SmartTubeApp.ui.playback.actions.VideoSpeedAction;
-import SmartTubeApp.util.ViewUtil;
+import minefarts.smarttube.prefs.GeneralData;
+import minefarts.smarttube.prefs.PlayerTweaksData;
+import minefarts.smarttube.R;
+import minefarts.smarttube.ui.mod.leanback.playerglue.tweaks.MaxControlsVideoPlayerGlue;
+import minefarts.smarttube.ui.mod.leanback.playerglue.tweaks.PlaybackTransportRowPresenter;
+import minefarts.smarttube.ui.mod.leanback.widget.OnActionLongClickedListener;
+import minefarts.smarttube.ui.playback.actions.ActionHelpers;
+import minefarts.smarttube.ui.playback.actions.ChannelAction;
+import minefarts.smarttube.ui.playback.actions.ChatAction;
+import minefarts.smarttube.ui.playback.actions.ClosedCaptioningAction;
+import minefarts.smarttube.ui.playback.actions.VideoInfoAction;
+import minefarts.smarttube.ui.playback.actions.PlaylistAddAction;
+import minefarts.smarttube.ui.playback.actions.PlaybackModeAction;
+import minefarts.smarttube.ui.playback.actions.SubscribeAction;
+import minefarts.smarttube.ui.playback.actions.TwoStateAction;
+import minefarts.smarttube.ui.playback.actions.ThumbsDownAction;
+import minefarts.smarttube.ui.playback.actions.ThumbsUpAction;
+import minefarts.smarttube.ui.playback.actions.VideoSpeedAction;
+import minefarts.smarttube.util.ViewUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -137,7 +137,7 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
 
         // MAX: 7 items. But with custom modification it supports more.
         // Origin: {@link androidx.leanback.widget.ControlBarPresenter#MAX_CONTROLS}
-        // Custom mod: {@link SmartTubeApp.ui.mod.leanback.playerglue.ControlBarPresenter#MAX_CONTROLS}
+        // Custom mod: {@link minefarts.smarttube.ui.mod.leanback.playerglue.ControlBarPresenter#MAX_CONTROLS}
 
         adapter.add(mActions.get(R.id.action_channel));
         adapter.add(mActions.get(R.id.action_thumbs_up));
@@ -267,7 +267,7 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         }
 
         // Ignore result to give a chance to handle this event in
-        // SmartTubeApp.ui.mod.leanback.playerglue.maxcontrols.PlaybackTransportRowPresenter.ViewHolder
+        // minefarts.smarttube.ui.mod.leanback.playerglue.maxcontrols.PlaybackTransportRowPresenter.ViewHolder
         return handled || super.onKey(v, keyCode, event);
     }
 

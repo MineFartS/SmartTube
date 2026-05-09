@@ -1,9 +1,9 @@
-package SmartTubeApp.exoplayer.selector;
+package minefarts.smarttube.exoplayer.selector;
 
 import androidx.annotation.NonNull;
 
-import SmartTubeApp.exoplayer.selector.track.MediaTrack;
-import SmartTubeApp.exoplayer.selector.track.VideoTrack;
+import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
+import minefarts.smarttube.exoplayer.selector.track.VideoTrack;
 
 public interface FormatItem {
     FormatItem NO_VIDEO = ExoFormatItem.from(MediaTrack.forRendererIndex(TrackSelectorManager.RENDERER_INDEX_VIDEO));
