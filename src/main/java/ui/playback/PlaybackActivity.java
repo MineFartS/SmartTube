@@ -110,7 +110,11 @@ public class PlaybackActivity extends LeanbackActivity {
             gamepadTriggerPressed = false;
         } else if ((event.getSource() & InputDevice.SOURCE_CLASS_POINTER) != 0 && event.getAction() == MotionEvent.ACTION_SCROLL) {
             // mouse wheel handling
-            Utils.volumeUp(this, getPlayerEngine(), event.getAxisValue(MotionEvent.AXIS_VSCROLL) < 0.0f);
+            Utils.volumeUp(
+                this, 
+                getPlayerEngine(), 
+                event.getAxisValue(MotionEvent.AXIS_VSCROLL) < 0.0f
+            );
             return true;
         }
         return super.onGenericMotionEvent(event);
