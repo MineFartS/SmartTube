@@ -308,7 +308,12 @@ import com.google.android.exoplayer2.util.Assertions;
           // We've loaded a next media period that is not in the new timeline.
           return !removeAfter(previousPeriodHolder);
         }
-        if (!canKeepMediaPeriodHolder(oldPeriodInfo, newPeriodInfo)) {
+
+        
+
+        if (oldPeriodInfo.startPositionUs != newPeriodInfo.startPositionUs 
+            && !oldPeriodInfo.id.equals(newPeriodInfo.id)
+        ) {
           // The new media period has a different id or start position.
           return !removeAfter(previousPeriodHolder);
         }
@@ -317,20 +322,25 @@ import com.google.android.exoplayer2.util.Assertions;
       // Use new period info, but keep old content position.
       periodHolder.info = newPeriodInfo.copyWithContentPositionUs(oldPeriodInfo.contentPositionUs);
 
-      if (!areDurationsCompatible(oldPeriodInfo.durationUs, newPeriodInfo.durationUs)) {
-        // The period duration changed. Remove all subsequent periods and check whether we read
-        // beyond the new duration.
-        long newDurationInRendererTime =
-            newPeriodInfo.durationUs == C.TIME_UNSET
-                ? Long.MAX_VALUE
-                : periodHolder.toRendererTime(newPeriodInfo.durationUs);
-        boolean isReadingAndReadBeyondNewDuration =
-            periodHolder == reading
-                && (maxRendererReadPositionUs == C.TIME_END_OF_SOURCE
-                    || maxRendererReadPositionUs >= newDurationInRendererTime);
-        boolean readingPeriodRemoved = removeAfter(periodHolder);
-        return !readingPeriodRemoved && !isReadingAndReadBeyondNewDuration;
-      }
+        if (oldPeriodInfo.durationUs != C.TIME_UNSET 
+            && oldPeriodInfo.durationUs != newPeriodInfo.durationUs
+        ) {
+            // The period duration changed. Remove all subsequent periods and check whether we read
+            // beyond the new duration.
+            long newDurationInRendererTime =
+                newPeriodInfo.durationUs == C.TIME_UNSET
+                    ? Long.MAX_VALUE
+                    : periodHolder.toRendererTime(newPeriodInfo.durationUs);
+
+            boolean isReadingAndReadBeyondNewDuration =
+                periodHolder == reading
+                    && (maxRendererReadPositionUs == C.TIME_END_OF_SOURCE
+                        || maxRendererReadPositionUs >= newDurationInRendererTime);
+            
+            boolean readingPeriodRemoved = removeAfter(periodHolder);
+            
+            return !readingPeriodRemoved && !isReadingAndReadBeyondNewDuration;
+        }
 
       previousPeriodHolder = periodHolder;
       periodHolder = periodHolder.getNext();
@@ -449,21 +459,6 @@ import com.google.android.exoplayer2.util.Assertions;
     }
     // If no match is found, create new sequence number.
     return nextWindowSequenceNumber++;
-  }
-
-  /**
-   * Returns whether a period described by {@code oldInfo} can be kept for playing the media period
-   * described by {@code newInfo}.
-   */
-  private boolean canKeepMediaPeriodHolder(MediaPeriodInfo oldInfo, MediaPeriodInfo newInfo) {
-    return oldInfo.startPositionUs == newInfo.startPositionUs && oldInfo.id.equals(newInfo.id);
-  }
-
-  /**
-   * Returns whether a duration change of a period is compatible with keeping the following periods.
-   */
-  private boolean areDurationsCompatible(long previousDurationUs, long newDurationUs) {
-    return previousDurationUs == C.TIME_UNSET || previousDurationUs == newDurationUs;
   }
 
   /**

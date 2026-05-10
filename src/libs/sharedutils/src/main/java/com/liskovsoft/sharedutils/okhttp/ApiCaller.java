@@ -2,8 +2,6 @@ package com.liskovsoft.sharedutils.okhttp;
 
 import okhttp3.*;
 
-import com.google.gson.Gson;
-
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
@@ -11,8 +9,6 @@ import android.os.StrictMode;
 import android.os.StrictMode.ThreadPolicy;
 
 public class ApiCaller {
-
-    private final Gson mGson = new Gson();
 
     private final OkHttpClient mClient = new OkHttpClient();
 

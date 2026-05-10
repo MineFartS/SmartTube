@@ -26,8 +26,6 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
     private SurfaceWrapper mVideoSurfaceWrapper;
     private AspectRatioFrameLayout mVideoSurfaceRoot;
     private int mBackgroundResId;
-    
-    private static final String TAG = "SurfacePlaybackFragment";
 
     @Override
     public View onCreateView(

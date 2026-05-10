@@ -299,10 +299,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
         persistVideoInfoType();
     }
 
-    private static boolean shouldObtainExtendedFormats(VideoInfo result) {
-        return getData().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS) && result.isExtendedHlsFormatsBroken();
-    }
-
     private static boolean needMoreSubtitles(VideoInfo videoInfo) {
         return videoInfo != null && videoInfo.hasSubtitles() && (videoInfo.getTranslationLanguages() == null || videoInfo.getTranslationLanguages().size() < 100);
     }

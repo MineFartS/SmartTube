@@ -627,16 +627,4 @@ import java.lang.reflect.Method;
     return rawPlaybackHeadPosition + (rawPlaybackHeadWrapCount << 32);
   }
 
-  private int getAudioSWLatencies() {
-    if (getLatencyMethod == null) {
-      return 0;
-    }
-
-    try {
-      Integer swLatencyMs = (Integer) getLatencyMethod.invoke(audioTrack, (Object[]) null);
-      return swLatencyMs * (outputSampleRate / 1000);
-    } catch (Exception e) {
-      return 0;
-    }
-  }
 }

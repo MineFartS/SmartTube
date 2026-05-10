@@ -38,16 +38,4 @@ public class PlayerKeyTranslator extends GlobalKeyTranslator {
 
     }
 
-    private void volumeUp(boolean up) {
-        PlaybackPresenter playbackPresenter = getPlaybackPresenter();
-
-        if (playbackPresenter != null && playbackPresenter.getView() != null) {
-            Utils.volumeUp(mContext, playbackPresenter.getView(), up);
-        }
-    }
-
-    private PlaybackPresenter getPlaybackPresenter() {
-        return PlaybackPresenter.instance(mContext);
-    }
-
 }

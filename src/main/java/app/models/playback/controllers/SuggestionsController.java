@@ -450,14 +450,6 @@ public class SuggestionsController extends BasePlayerController {
         focusAndContinueIfNeeded(video.getGroup(), () -> findNextSectionVideoIfNeeded(video));
     }
 
-    private void markAsQueueIfNeeded(Video item) {
-        List<Video> afterCurrent = Queue.getAllAfterCurrent();
-
-        if (afterCurrent != null && afterCurrent.contains(item)) {
-            item.fromQueue = true;
-        }
-    }
-
     private void focusCurrentChapter() {
         if (getPlayer() == null || !getPlayer().isControlsShown()) {
             return;

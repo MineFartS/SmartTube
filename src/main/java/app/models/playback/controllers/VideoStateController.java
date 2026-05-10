@@ -23,8 +23,6 @@ public class VideoStateController extends BasePlayerController {
 
     private static final String TAG = VideoStateController.class.getSimpleName();
 
-    private static final long MUSIC_VIDEO_MAX_DURATION_MS = 6 * 60 * 1000;
-    
     private static final long RESTORE_LIVE_BUFFER_MS = 60_000;
     private static final long LIVE_BUFFER_MS = 15_000;
     private static final long LIVE_THRESH_MS = LIVE_BUFFER_MS + 5_000;

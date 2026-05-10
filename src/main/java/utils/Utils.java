@@ -829,10 +829,6 @@ public class Utils {
         return result;
     }
 
-    public static boolean isOculusQuest() {
-        return Helpers.getDeviceName().startsWith("Oculus Quest");
-    }
-
     public static void updateChannels(Context context) {
         startReceiver(context, UPDATE_CHANNELS_RECEIVER_CLASS_NAME);
     }

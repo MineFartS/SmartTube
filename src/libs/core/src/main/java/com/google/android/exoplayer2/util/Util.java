@@ -112,7 +112,6 @@ public final class Util {
     /** An empty byte array. */
     public static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
-    private static final String TAG = "Util";
     private static final Pattern XS_DATE_TIME_PATTERN = Pattern.compile(
             "(\\d\\d\\d\\d)\\-(\\d\\d)\\-(\\d\\d)[Tt]" + "(\\d\\d):(\\d\\d):(\\d\\d)([\\.,](\\d+))?"
                     + "([Zz]|((\\+|\\-)(\\d?\\d):?(\\d\\d)))?");
@@ -1751,10 +1750,22 @@ public final class Util {
      * ordered by preference.
      */
     public static String[] getSystemLanguageCodes() {
-        String[] systemLocales = getSystemLocales();
+
+        Configuration config = Resources.getSystem().getConfiguration();
+        String[] systemLocales;
+
+        if (SDK_INT >= 24) {
+            systemLocales = Util.split(config.getLocales().toLanguageTags(), ",");
+        } else if (SDK_INT >= 21) {
+            systemLocales = new String[] {config.locale.toLanguageTag()};
+        } else {
+            systemLocales = new String[] {config.locale.toString()};
+        }
+
         for (int i = 0; i < systemLocales.length; i++) {
             systemLocales[i] = normalizeLanguageCode(systemLocales[i]);
         }
+        
         return systemLocales;
     }
 
@@ -1821,74 +1832,6 @@ public final class Util {
     }
 
     /**
-     * Gets the physical size of the default display, in pixels.
-     *
-     * @param context Any context.
-     * @return The physical display size, in pixels.
-     */
-    public static Point getPhysicalDisplaySize(Context context) {
-        WindowManager windowManager =
-                (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        return getPhysicalDisplaySize(context, windowManager.getDefaultDisplay());
-    }
-
-    /**
-     * Gets the physical size of the specified display, in pixels.
-     *
-     * @param context Any context.
-     * @param display The display whose size is to be returned.
-     * @return The physical display size, in pixels.
-     */
-    public static Point getPhysicalDisplaySize(Context context, Display display) {
-        if (Util.SDK_INT <= 28 && display.getDisplayId() == Display.DEFAULT_DISPLAY
-                && isTv(context)) {
-            // On Android TVs it is common for the UI to be configured for a lower resolution than
-            // SurfaceViews can output. Before API 26 the Display object does not provide a way to
-            // identify this case, and up to and including API 28 many devices still do not
-            // correctly set
-            // their hardware compositor output size.
-
-            // Sony Android TVs advertise support for 4k output via a system feature.
-            if ("Sony".equals(Util.MANUFACTURER) && Util.MODEL.startsWith("BRAVIA") && context
-                    .getPackageManager().hasSystemFeature("com.sony.dtv.hardware.panel.qfhd")) {
-                return new Point(3840, 2160);
-            }
-
-            // Otherwise check the system property for display size. From API 28 treble may prevent
-            // the
-            // system from writing sys.display-size so we check vendor.display-size instead.
-            String displaySize = Util.SDK_INT < 28 ? getSystemProperty("sys.display-size")
-                    : getSystemProperty("vendor.display-size");
-            // If we managed to read the display size, attempt to parse it.
-            if (!TextUtils.isEmpty(displaySize)) {
-                try {
-                    String[] displaySizeParts = split(displaySize.trim(), "x");
-                    if (displaySizeParts.length == 2) {
-                        int width = Integer.parseInt(displaySizeParts[0]);
-                        int height = Integer.parseInt(displaySizeParts[1]);
-                        if (width > 0 && height > 0) {
-                            return new Point(width, height);
-                        }
-                    }
-                } catch (NumberFormatException e) {
-                    // Do nothing.
-                }
-                Log.e(TAG, "Invalid display size: " + displaySize);
-            }
-        }
-
-        Point displaySize = new Point();
-        if (Util.SDK_INT >= 23) {
-            getDisplaySizeV23(display, displaySize);
-        } else if (Util.SDK_INT >= 17) {
-            getDisplaySizeV17(display, displaySize);
-        } else {
-            getDisplaySizeV16(display, displaySize);
-        }
-        return displaySize;
-    }
-
-    /**
      * Extract renderer capabilities for the renderers created by the provided renderers factory.
      *
      * @param renderersFactory A {@link RenderersFactory}.
@@ -1908,52 +1851,6 @@ public final class Util {
             capabilities[i] = renderers[i].getCapabilities();
         }
         return capabilities;
-    }
-
-    @Nullable
-    private static String getSystemProperty(String name) {
-        try {
-            @SuppressLint("PrivateApi")
-            Class<?> systemProperties = Class.forName("android.os.SystemProperties");
-            Method getMethod = systemProperties.getMethod("get", String.class);
-            return (String) getMethod.invoke(systemProperties, name);
-        } catch (Exception e) {
-            Log.e(TAG, "Failed to read system property " + name, e);
-            return null;
-        }
-    }
-
-    @TargetApi(23)
-    private static void getDisplaySizeV23(Display display, Point outSize) {
-        Display.Mode mode = display.getMode();
-        outSize.x = mode.getPhysicalWidth();
-        outSize.y = mode.getPhysicalHeight();
-    }
-
-    @TargetApi(17)
-    private static void getDisplaySizeV17(Display display, Point outSize) {
-        display.getRealSize(outSize);
-    }
-
-    private static void getDisplaySizeV16(Display display, Point outSize) {
-        display.getSize(outSize);
-    }
-
-    private static String[] getSystemLocales() {
-        Configuration config = Resources.getSystem().getConfiguration();
-        return SDK_INT >= 24 ? getSystemLocalesV24(config)
-                : SDK_INT >= 21 ? getSystemLocaleV21(config)
-                        : new String[] {config.locale.toString()};
-    }
-
-    @TargetApi(24)
-    private static String[] getSystemLocalesV24(Configuration config) {
-        return Util.split(config.getLocales().toLanguageTags(), ",");
-    }
-
-    @TargetApi(21)
-    private static String[] getSystemLocaleV21(Configuration config) {
-        return new String[] {config.locale.toLanguageTag()};
     }
 
     @TargetApi(21)
