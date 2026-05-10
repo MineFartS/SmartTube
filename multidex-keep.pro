@@ -25,7 +25,7 @@
     <init>(...);
     android.graphics.LinearGradient mLowFadeShader;
 }
--keepclassmembers class SmartTubeApp.ui.browse.video.MultipleRowsFragment$ItemViewClickedListener {
+-keepclassmembers class minefarts.smarttube.ui.browse.video.MultipleRowsFragment$ItemViewClickedListener {
     <init>(...);
 }
 -keepclassmembers class com.liskovsoft.sharedutils.common.helpers.PostDataHelper {
@@ -52,23 +52,23 @@
 -keepclassmembers class com.liskovsoft.sharedutils.mylogger.Log {
     static void d(java.lang.String, java.lang.Object, java.lang.Object[]);
 }
--keepclassmembers class SmartTubeApp.ui.widgets.vineyard.TagCardView {
+-keepclassmembers class minefarts.smarttube.ui.widgets.vineyard.TagCardView {
     <init>(...);
     android.widget.TextView mTagNameText;
     android.widget.ImageView mResultImage;
 }
--keepclassmembers class SmartTubeApp.ui.widgets.marqueetextview.MarqueeTextView {
+-keepclassmembers class minefarts.smarttube.ui.widgets.marqueetextview.MarqueeTextView {
     <init>(...);
     float mDefaultMarqueeSpeed;
     float mMarqueeSpeedFactor;
 }
--keepclassmembers class SmartTubeApp.ui.widgets.complexcardview.ComplexImageView {
+-keepclassmembers class minefarts.smarttube.ui.widgets.complexcardview.ComplexImageView {
     <init>(...);
     android.widget.ProgressBar mProgressBar;
     android.view.ViewGroup mProgressContainer;
     android.widget.FrameLayout mPreviewContainer;
 }
--keepclassmembers class SmartTubeApp.ui.widgets.time.DateTimeView {
+-keepclassmembers class minefarts.smarttube.ui.widgets.time.DateTimeView {
     <init>(...);
     boolean mIsDateEnabled;
     boolean mIsTimeEnabled;
@@ -86,16 +86,16 @@
 -keepclassmembers class androidx.work.impl.constraints.trackers.Trackers {
     <init>(...);
 }
--keepclassmembers class SmartTubeApp.ui.mod.leanback.misc.ProgressBarManager {
+-keepclassmembers class minefarts.smarttube.ui.mod.leanback.misc.ProgressBarManager {
     <init>(...);
     android.view.View mProgressBarView;
 }
--keepclassmembers class SmartTubeApp.misc.MotherActivity {
+-keepclassmembers class minefarts.smarttube.misc.MotherActivity {
     <init>(...);
 }
--keepclassmembers class SmartTubeApp.misc.TickleManager {
+-keepclassmembers class minefarts.smarttube.misc.TickleManager {
     <init>(...);
-    SmartTubeApp.misc.TickleManager sInstance;
+    minefarts.smarttube.misc.TickleManager sInstance;
 }
 -keepclassmembers class androidx.core.content.FileProvider {
     <init>(...);
@@ -120,7 +120,7 @@
     <init>(...);
 }
 # NoSuchMethodError: android.graphics.Canvas.drawCircle
--keepclassmembers class SmartTubeApp.ui.mod.leanback.misc.SeekBar {
+-keepclassmembers class minefarts.smarttube.ui.mod.leanback.misc.SeekBar {
     <init>(...);
     void onDraw(android.graphics.Canvas);
     int mKnobx;
@@ -133,13 +133,13 @@
 #    <init>(...);
 #    void setNestedScrollingEnabled(boolean);
 #}
--keepclassmembers class SmartTubeApp.utils.Utils {
-    boolean isFormatSupported(SmartTubeApp.exoplayer.selector.track.MediaTrack);
+-keepclassmembers class minefarts.smarttube.utils.Utils {
+    boolean isFormatSupported(minefarts.smarttube.exoplayer.selector.track.MediaTrack);
 }
 -keepclassmembers class com.google.android.exoplayer2.video.VideoRendererEventListener {
     void onVideoDisabled(com.google.android.exoplayer2.decoder.DecoderCounters);
 }
--keepclassmembers class SmartTubeApp.app.models.search.MediaServiceSearchTagProvider {
+-keepclassmembers class minefarts.smarttube.app.models.search.MediaServiceSearchTagProvider {
     <init>(...);
     boolean mIgnoreEmptyQuery;
 }
@@ -151,10 +151,10 @@
     androidx.leanback.widget.VerticalGridView mVerticalGridView;
     androidx.leanback.widget.VerticalGridView getVerticalGridView();
 }
--keepclassmembers class SmartTubeApp.app.models.playback.controllers.VideoStateController {
+-keepclassmembers class minefarts.smarttube.app.models.playback.controllers.VideoStateController {
     <init>(...);
 }
--keepclassmembers class SmartTubeApp.ui.browse.BrowseSectionFragmentFactory {
+-keepclassmembers class minefarts.smarttube.ui.browse.BrowseSectionFragmentFactory {
     <init>(...);
 }
 -keepclassmembers class androidx.room.RoomDatabase {
@@ -169,7 +169,7 @@
     <init>(...);
     void setZ(float);
 }
--keepclassmembers class SmartTubeApp.exoplayer.controller.ExoPlayerController {
+-keepclassmembers class minefarts.smarttube.exoplayer.controller.ExoPlayerController {
     <init>(...);
     boolean containsMedia();
 }
@@ -197,8 +197,8 @@
 #-keep class com.google.gson.internal.bind.TypeAdapters$7 { *; }
 #-keep class com.google.gson.internal.bind.TypeAdapters { *; }
 #-keep class androidx.leanback.widget.ItemAlignmentFacet$ItemAlignmentDef { *; }
-#-keep class SmartTubeApp.app.models.playback.ui.OptionCategory { *; }
-#-keep class SmartTubeApp.channels.UpdateChannelsReceiver { *; }
+#-keep class minefarts.smarttube.app.models.playback.ui.OptionCategory { *; }
+#-keep class minefarts.smarttube.channels.UpdateChannelsReceiver { *; }
 #-keep class androidx.core.view.ViewCompat { *; }
 #-keep class androidx.work.impl.WorkManagerInitializer { *; }
 #-keep class **$r8$backportedMethods$** { *; }
@@ -213,12 +213,12 @@
 #-keep class androidx.room.** { *; }
 
 # NOTE: Stable/Beta: VirusTotal (Google: Detected, Ikarus: Trojan.AndroidOS.Agent)
-#-keep class SmartTubeApp.ui.main.MainApplication { *; }
-#-keep class SmartTubeApp.prefs.MainUIData { *; }
-#-keep class SmartTubeApp.app.presenters.ChannelUploadsPresenter { *; }
+#-keep class minefarts.smarttube.ui.main.MainApplication { *; }
+#-keep class minefarts.smarttube.prefs.MainUIData { *; }
+#-keep class minefarts.smarttube.app.presenters.ChannelUploadsPresenter { *; }
 
 # NOTE: Fdroid: VirusTotal (Google: Detected, Ikarus: Trojan.AndroidOS.Agent)
-#-keep class SmartTubeApp.app.presenters.dialogs.menu.providers.ContextMenuProvider { *; }
+#-keep class minefarts.smarttube.app.presenters.dialogs.menu.providers.ContextMenuProvider { *; }
 #-keep class com.google.android.exoplayer2.util.Util { *; }
 #-keep class com.bumptech.glide.request.RequestOptions { *; }
-#-keep class SmartTubeApp.ui.mod.leanback.playerglue.tooltips.TooltipCompatHandler { *; }
+#-keep class minefarts.smarttube.ui.mod.leanback.playerglue.tooltips.TooltipCompatHandler { *; }

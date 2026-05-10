@@ -1,8 +1,8 @@
-package SmartTubeApp.app.presenters.dialogs;
+package minefarts.smarttube.app.presenters.dialogs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import SmartTubeApp.app.presenters.base.BasePresenter;
+import minefarts.smarttube.app.presenters.base.BasePresenter;
 
 /**
  * Shows boot dialogs one by one.

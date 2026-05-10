@@ -1,10 +1,10 @@
 
 
-package SmartTubeApp.presenter;
+package minefarts.smarttube.presenter;
 
 import androidx.leanback.widget.AbstractDetailsDescriptionPresenter;
 
-import SmartTubeApp.app.models.data.Video;
+import minefarts.smarttube.app.models.data.Video;
 
 public class DetailsDescriptionPresenter extends AbstractDetailsDescriptionPresenter {
 

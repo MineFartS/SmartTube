@@ -1,7 +1,7 @@
-package SmartTubeApp.misc;
+package minefarts.smarttube.misc;
 
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.models.data.VideoGroup;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.models.data.VideoGroup;
 
 public interface BrowseProcessor {
     interface OnItemReady {

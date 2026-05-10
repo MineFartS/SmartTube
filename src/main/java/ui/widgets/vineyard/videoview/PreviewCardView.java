@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.widgets.vineyard.videoview;
+package minefarts.smarttube.ui.widgets.vineyard.videoview;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 
 public class PreviewCardView extends FrameLayout {
     FrameLayout mMainContainer;

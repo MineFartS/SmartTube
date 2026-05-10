@@ -1,8 +1,8 @@
-package SmartTubeApp.app.models.errors;
+package minefarts.smarttube.app.models.errors;
 
 import android.content.Context;
-import SmartTubeApp.R;
-import SmartTubeApp.app.presenters.YTSignInPresenter;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.presenters.YTSignInPresenter;
 
 public class SignInError implements ErrorFragmentData {
     private final Context mContext;

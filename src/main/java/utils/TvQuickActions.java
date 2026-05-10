@@ -1,8 +1,8 @@
-package SmartTubeApp.utils;
+package minefarts.smarttube.utils;
 
 import android.content.Context;
 import android.content.Intent;
-import SmartTubeApp.exoplayer.selector.FormatItem;
+import minefarts.smarttube.exoplayer.selector.FormatItem;
 
 public class TvQuickActions {
     private final static String PACKAGE = "dev.vodik7.tvquickactions";

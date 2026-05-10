@@ -1,4 +1,4 @@
-package SmartTubeApp.app.models.search.vineyard;
+package minefarts.smarttube.app.models.search.vineyard;
 
 public class Option {
     public String title;

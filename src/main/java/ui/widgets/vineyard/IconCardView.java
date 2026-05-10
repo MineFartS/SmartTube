@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.widgets.vineyard;
+package minefarts.smarttube.ui.widgets.vineyard;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.leanback.widget.BaseCardView;
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 
 public class IconCardView extends BaseCardView {
     RelativeLayout mLayout;

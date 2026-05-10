@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.widgets.speedmarquee;
+package minefarts.smarttube.ui.widgets.speedmarquee;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,7 +10,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Scroller;
 import android.widget.TextView;
 
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 
 @SuppressLint("AppCompatCustomView")
 public class SpeedMarquee extends TextView {

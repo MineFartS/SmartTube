@@ -1,6 +1,6 @@
-package SmartTubeApp.app.views;
+package minefarts.smarttube.app.views;
 
-import SmartTubeApp.app.models.data.VideoGroup;
+import minefarts.smarttube.app.models.data.VideoGroup;
 
 public interface ChannelView {
     void update(VideoGroup videoGroup);

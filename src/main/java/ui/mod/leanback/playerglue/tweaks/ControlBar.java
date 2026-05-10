@@ -1,5 +1,5 @@
 
-package SmartTubeApp.ui.mod.leanback.playerglue.tweaks;
+package minefarts.smarttube.ui.mod.leanback.playerglue.tweaks;
 
 import android.content.Context;
 import android.graphics.Rect;

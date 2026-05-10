@@ -1,4 +1,4 @@
-package SmartTubeApp.exoplayer.selector;
+package minefarts.smarttube.exoplayer.selector;
 
 import android.text.TextUtils;
 import android.util.Pair;
@@ -6,7 +6,7 @@ import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.exoplayer.selector.track.SubtitleTrack;
+import minefarts.smarttube.exoplayer.selector.track.SubtitleTrack;
 
 import java.util.HashMap;
 

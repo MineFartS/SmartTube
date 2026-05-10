@@ -1,5 +1,5 @@
 
-package SmartTubeApp.ui.mod.leanback.playerglue.tweaks;
+package minefarts.smarttube.ui.mod.leanback.playerglue.tweaks;
 
 import android.content.Context;
 import android.graphics.drawable.ClipDrawable;
@@ -20,7 +20,7 @@ import androidx.leanback.widget.Action;
 import androidx.leanback.widget.ObjectAdapter;
 import androidx.leanback.widget.PlaybackControlsRow;
 import androidx.leanback.widget.Presenter;
-import SmartTubeApp.ui.mod.leanback.playerglue.MathUtil;
+import minefarts.smarttube.ui.mod.leanback.playerglue.MathUtil;
 
 /**
  * A presenter for a control bar that supports "more actions",

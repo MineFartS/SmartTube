@@ -1,6 +1,6 @@
 
 
-package SmartTubeApp.ui.mod.leanback.preference;
+package minefarts.smarttube.ui.mod.leanback.preference;
 
 import android.app.Fragment;
 import android.os.Build;

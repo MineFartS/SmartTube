@@ -1,4 +1,4 @@
-package SmartTubeApp.prefs;
+package minefarts.smarttube.prefs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,16 +11,16 @@ import com.google.android.exoplayer2.text.CaptionStyleCompat;
 import com.liskovsoft.sharedutils.helpers.DeviceHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.locale.LocaleUtility;
-import SmartTubeApp.R;
-import SmartTubeApp.app.models.playback.PlayerEngine;
-import SmartTubeApp.app.models.playback.PlayerEngine;
-import SmartTubeApp.exoplayer.other.SubtitleManager.SubtitleStyle;
-import SmartTubeApp.exoplayer.selector.ExoFormatItem;
-import SmartTubeApp.exoplayer.selector.FormatItem;
-import SmartTubeApp.exoplayer.selector.track.MediaTrack;
-import SmartTubeApp.prefs.AppPrefs.ProfileChangeListener;
-import SmartTubeApp.prefs.common.DataChangeBase;
-import SmartTubeApp.utils.Utils;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.models.playback.PlayerEngine;
+import minefarts.smarttube.app.models.playback.PlayerEngine;
+import minefarts.smarttube.exoplayer.other.SubtitleManager.SubtitleStyle;
+import minefarts.smarttube.exoplayer.selector.ExoFormatItem;
+import minefarts.smarttube.exoplayer.selector.FormatItem;
+import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
+import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
+import minefarts.smarttube.prefs.common.DataChangeBase;
+import minefarts.smarttube.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

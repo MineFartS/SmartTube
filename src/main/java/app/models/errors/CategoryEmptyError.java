@@ -1,13 +1,13 @@
-package SmartTubeApp.app.models.errors;
+package minefarts.smarttube.app.models.errors;
 
 import android.content.Context;
 
 import androidx.annotation.Nullable;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.R;
-import SmartTubeApp.app.presenters.YTSignInPresenter;
-import SmartTubeApp.utils.Utils;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.presenters.YTSignInPresenter;
+import minefarts.smarttube.utils.Utils;
 
 public class CategoryEmptyError implements ErrorFragmentData {
     private final Context mContext;

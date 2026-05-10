@@ -1,6 +1,6 @@
 
 
-package SmartTubeApp.ui.mod.clickable;
+package minefarts.smarttube.ui.mod.clickable;
 
 import androidx.annotation.RestrictTo;
 

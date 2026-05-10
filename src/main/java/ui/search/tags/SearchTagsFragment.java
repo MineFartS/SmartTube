@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.search.tags;
+package minefarts.smarttube.ui.search.tags;
 
 import android.os.Bundle;
 import android.speech.SpeechRecognizer;
@@ -12,19 +12,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.models.data.VideoGroup;
-import SmartTubeApp.app.models.search.MediaServiceSearchTagProvider;
-import SmartTubeApp.app.models.search.vineyard.Tag;
-import SmartTubeApp.app.presenters.SearchPresenter;
-import SmartTubeApp.prefs.SearchData;
-import SmartTubeApp.adapter.VideoGroupObjectAdapter;
-import SmartTubeApp.presenter.ShortsCardPresenter;
-import SmartTubeApp.presenter.VideoCardPresenter;
-import SmartTubeApp.presenter.base.OnItemLongPressedListener;
-import SmartTubeApp.ui.common.LeanbackActivity;
-import SmartTubeApp.ui.search.tags.vineyard.SearchTagsFragmentBase;
-import SmartTubeApp.util.ViewUtil;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.models.data.VideoGroup;
+import minefarts.smarttube.app.models.search.MediaServiceSearchTagProvider;
+import minefarts.smarttube.app.models.search.vineyard.Tag;
+import minefarts.smarttube.app.presenters.SearchPresenter;
+import minefarts.smarttube.prefs.SearchData;
+import minefarts.smarttube.adapter.VideoGroupObjectAdapter;
+import minefarts.smarttube.presenter.ShortsCardPresenter;
+import minefarts.smarttube.presenter.VideoCardPresenter;
+import minefarts.smarttube.presenter.base.OnItemLongPressedListener;
+import minefarts.smarttube.ui.common.LeanbackActivity;
+import minefarts.smarttube.ui.search.tags.vineyard.SearchTagsFragmentBase;
+import minefarts.smarttube.util.ViewUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;

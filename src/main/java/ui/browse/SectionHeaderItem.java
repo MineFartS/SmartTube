@@ -1,7 +1,7 @@
-package SmartTubeApp.ui.browse;
+package minefarts.smarttube.ui.browse;
 
 import androidx.leanback.widget.HeaderItem;
-import SmartTubeApp.app.models.data.BrowseSection;
+import minefarts.smarttube.app.models.data.BrowseSection;
 
 public class SectionHeaderItem extends HeaderItem {
     private final BrowseSection mSection;

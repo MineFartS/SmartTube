@@ -1,10 +1,10 @@
-package SmartTubeApp.prefs.common;
+package minefarts.smarttube.prefs.common;
 
 import android.content.Context;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.prefs.AppPrefs;
-import SmartTubeApp.utils.Utils;
+import minefarts.smarttube.prefs.AppPrefs;
+import minefarts.smarttube.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,6 +1,6 @@
 
 
-package SmartTubeApp.commons.models;
+package minefarts.smarttube.commons.models;
 
 import java.util.Date;
 

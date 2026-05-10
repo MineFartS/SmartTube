@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.widgets.focus;
+package minefarts.smarttube.ui.widgets.focus;
 
 import android.content.Context;
 import android.util.AttributeSet;

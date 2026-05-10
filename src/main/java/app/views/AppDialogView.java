@@ -1,6 +1,6 @@
-package SmartTubeApp.app.views;
+package minefarts.smarttube.app.views;
 
-import SmartTubeApp.app.models.playback.ui.OptionCategory;
+import minefarts.smarttube.app.models.playback.ui.OptionCategory;
 
 import java.util.List;
 

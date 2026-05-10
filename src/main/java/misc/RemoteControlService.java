@@ -1,4 +1,4 @@
-package SmartTubeApp.misc;
+package minefarts.smarttube.misc;
 
 import android.app.Notification;
 import android.app.Service;
@@ -8,10 +8,10 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.R;
-import SmartTubeApp.app.presenters.PlaybackPresenter;
-import SmartTubeApp.app.views.ViewManager;
-import SmartTubeApp.utils.Utils;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
+import minefarts.smarttube.app.views.ViewManager;
+import minefarts.smarttube.utils.Utils;
 
 public class RemoteControlService extends Service {
     private static final String TAG = RemoteControlService.class.getSimpleName();

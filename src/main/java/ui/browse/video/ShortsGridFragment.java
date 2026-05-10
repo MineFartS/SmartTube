@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.browse.video;
+package minefarts.smarttube.ui.browse.video;
 
 public class ShortsGridFragment extends VideoGridFragment {
     @Override

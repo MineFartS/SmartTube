@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.adddevice;
+package minefarts.smarttube.ui.adddevice;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -7,9 +7,9 @@ import androidx.annotation.Nullable;
 import androidx.leanback.app.GuidedStepSupportFragment;
 import androidx.leanback.widget.GuidanceStylist;
 import androidx.leanback.widget.GuidedAction;
-import SmartTubeApp.app.presenters.AddDevicePresenter;
-import SmartTubeApp.app.views.AddDeviceView;
-import SmartTubeApp.R;
+import minefarts.smarttube.app.presenters.AddDevicePresenter;
+import minefarts.smarttube.app.views.AddDeviceView;
+import minefarts.smarttube.R;
 
 import java.util.List;
 

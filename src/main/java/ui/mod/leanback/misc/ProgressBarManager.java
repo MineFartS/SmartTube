@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.mod.leanback.misc;
+package minefarts.smarttube.ui.mod.leanback.misc;
 
 import android.view.Gravity;
 import android.view.View;
@@ -10,8 +10,8 @@ import androidx.core.content.ContextCompat;
 import androidx.leanback.app.BrowseFragment;
 import androidx.leanback.app.VerticalGridFragment;
 
-import SmartTubeApp.utils.Utils;
-import SmartTubeApp.R;
+import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.R;
 
 /**
  * Manager for showing/hiding progress bar widget. This class lets user specify an initial

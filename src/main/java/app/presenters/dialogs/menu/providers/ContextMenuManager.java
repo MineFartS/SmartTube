@@ -1,10 +1,10 @@
-package SmartTubeApp.app.presenters.dialogs.menu.providers;
+package minefarts.smarttube.app.presenters.dialogs.menu.providers;
 
 import android.content.Context;
 
-import SmartTubeApp.app.presenters.dialogs.menu.providers.channelgroup.RemoveGroupMenuProvider;
-import SmartTubeApp.app.presenters.dialogs.menu.providers.channelgroup.RenameGroupMenuProvider;
-import SmartTubeApp.app.presenters.dialogs.menu.providers.channelgroup.ChannelGroupMenuProvider;
+import minefarts.smarttube.app.presenters.dialogs.menu.providers.channelgroup.RemoveGroupMenuProvider;
+import minefarts.smarttube.app.presenters.dialogs.menu.providers.channelgroup.RenameGroupMenuProvider;
+import minefarts.smarttube.app.presenters.dialogs.menu.providers.channelgroup.ChannelGroupMenuProvider;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,13 +1,13 @@
-package SmartTubeApp.app.presenters.settings;
+package minefarts.smarttube.app.presenters.settings;
 
 import android.content.Context;
-import SmartTubeApp.R;
-import SmartTubeApp.app.models.playback.ui.OptionCategory;
-import SmartTubeApp.app.models.playback.ui.UiOptionItem;
-import SmartTubeApp.app.presenters.AppDialogPresenter;
-import SmartTubeApp.app.presenters.base.BasePresenter;
-import SmartTubeApp.prefs.PlayerData;
-import SmartTubeApp.utils.AppDialogUtil;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.models.playback.ui.OptionCategory;
+import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
+import minefarts.smarttube.app.presenters.AppDialogPresenter;
+import minefarts.smarttube.app.presenters.base.BasePresenter;
+import minefarts.smarttube.prefs.PlayerData;
+import minefarts.smarttube.utils.AppDialogUtil;
 import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
 
 public class SubtitleSettingsPresenter extends BasePresenter<Void> {

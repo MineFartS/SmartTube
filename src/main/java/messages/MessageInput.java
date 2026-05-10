@@ -1,6 +1,6 @@
 
 
-package SmartTubeApp.messages;
+package minefarts.smarttube.messages;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import androidx.core.view.ViewCompat;
 
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 
 import java.lang.reflect.Field;
 

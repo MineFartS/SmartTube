@@ -1,4 +1,4 @@
-package SmartTubeApp.app.presenters;
+package minefarts.smarttube.app.presenters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -6,11 +6,11 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.liskovsoft.sharedutils.misc.WeakHashSet;
-import SmartTubeApp.app.models.playback.ui.OptionCategory;
-import SmartTubeApp.app.models.playback.ui.OptionItem;
-import SmartTubeApp.app.presenters.base.BasePresenter;
-import SmartTubeApp.app.views.AppDialogView;
-import SmartTubeApp.utils.Utils;
+import minefarts.smarttube.app.models.playback.ui.OptionCategory;
+import minefarts.smarttube.app.models.playback.ui.OptionItem;
+import minefarts.smarttube.app.presenters.base.BasePresenter;
+import minefarts.smarttube.app.views.AppDialogView;
+import minefarts.smarttube.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;

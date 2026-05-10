@@ -1,12 +1,12 @@
-package SmartTubeApp.presenter.vineyard;
+package minefarts.smarttube.presenter.vineyard;
 
 import android.content.Context;
 import android.view.ViewGroup;
 
 import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.Presenter;
-import SmartTubeApp.app.models.search.vineyard.Option;
-import SmartTubeApp.ui.widgets.vineyard.IconCardView;
+import minefarts.smarttube.app.models.search.vineyard.Option;
+import minefarts.smarttube.ui.widgets.vineyard.IconCardView;
 
 public class IconItemPresenter extends Presenter {
     

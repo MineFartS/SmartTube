@@ -1,13 +1,13 @@
 
 
-package SmartTubeApp.media;
+package minefarts.smarttube.media;
 
 import androidx.tvprovider.media.tv.TvContractCompat;
 
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
-import SmartTubeApp.media.ClipService.GroupCallback;
+import minefarts.smarttube.media.ClipService.GroupCallback;
 import com.liskovsoft.sharedutils.service.ContentService;
-import SmartTubeApp.misc.ServiceManager;
+import minefarts.smarttube.misc.ServiceManager;
 import com.liskovsoft.sharedutils.data.MediaGroup;
 import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;

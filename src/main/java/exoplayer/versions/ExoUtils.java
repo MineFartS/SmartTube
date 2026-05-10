@@ -1,4 +1,4 @@
-package SmartTubeApp.exoplayer.versions;
+package minefarts.smarttube.exoplayer.versions;
 
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.mediacodec.MediaCodecInfo;

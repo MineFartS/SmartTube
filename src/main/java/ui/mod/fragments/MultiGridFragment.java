@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.mod.fragments;
+package minefarts.smarttube.ui.mod.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -24,7 +24,7 @@ import androidx.leanback.widget.VerticalGridPresenter;
 import androidx.leanback.widget.VerticalGridView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 
 /**
  * Managing multiple grids at a time.<br/>

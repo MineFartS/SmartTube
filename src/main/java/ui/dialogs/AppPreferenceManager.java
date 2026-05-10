@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.dialogs;
+package minefarts.smarttube.ui.dialogs;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -8,13 +8,13 @@ import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.SwitchPreference;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import SmartTubeApp.app.models.playback.ui.OptionCategory;
-import SmartTubeApp.app.models.playback.ui.OptionItem;
-import SmartTubeApp.utils.Utils;
-import SmartTubeApp.R;
-import SmartTubeApp.ui.dialogs.other.ChatPreference;
-import SmartTubeApp.ui.dialogs.other.CommentsPreference;
-import SmartTubeApp.ui.dialogs.other.StringListPreference;
+import minefarts.smarttube.app.models.playback.ui.OptionCategory;
+import minefarts.smarttube.app.models.playback.ui.OptionItem;
+import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.R;
+import minefarts.smarttube.ui.dialogs.other.ChatPreference;
+import minefarts.smarttube.ui.dialogs.other.CommentsPreference;
+import minefarts.smarttube.ui.dialogs.other.StringListPreference;
 
 import java.util.HashSet;
 import java.util.List;

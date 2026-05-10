@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.dialogs.other;
+package minefarts.smarttube.ui.dialogs.other;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -9,13 +9,13 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.preference.DialogPreference;
 import com.bumptech.glide.Glide;
-import SmartTubeApp.app.models.playback.ui.ChatReceiver;
-import SmartTubeApp.R;
-import SmartTubeApp.ui.mod.leanback.preference.LeanbackPreferenceDialogFragment;
-import SmartTubeApp.ui.widgets.chat.ChatItemMessage;
-import SmartTubeApp.util.ViewUtil;
-import SmartTubeApp.messages.MessagesList;
-import SmartTubeApp.messages.MessagesListAdapter;
+import minefarts.smarttube.app.models.playback.ui.ChatReceiver;
+import minefarts.smarttube.R;
+import minefarts.smarttube.ui.mod.leanback.preference.LeanbackPreferenceDialogFragment;
+import minefarts.smarttube.ui.widgets.chat.ChatItemMessage;
+import minefarts.smarttube.util.ViewUtil;
+import minefarts.smarttube.messages.MessagesList;
+import minefarts.smarttube.messages.MessagesListAdapter;
 
 public class ChatPreferenceDialogFragment extends LeanbackPreferenceDialogFragment {
     private static final String SENDER_ID = ChatPreferenceDialogFragment.class.getSimpleName();

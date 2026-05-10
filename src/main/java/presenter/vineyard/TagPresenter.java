@@ -1,14 +1,14 @@
-package SmartTubeApp.presenter.vineyard;
+package minefarts.smarttube.presenter.vineyard;
 
 import android.view.ViewGroup;
 
 import androidx.core.content.ContextCompat;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.R;
-import SmartTubeApp.app.models.search.vineyard.Tag;
-import SmartTubeApp.app.models.search.vineyard.User;
-import SmartTubeApp.presenter.base.LongClickPresenter;
-import SmartTubeApp.ui.widgets.vineyard.TagCardView;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.models.search.vineyard.Tag;
+import minefarts.smarttube.app.models.search.vineyard.User;
+import minefarts.smarttube.presenter.base.LongClickPresenter;
+import minefarts.smarttube.ui.widgets.vineyard.TagCardView;
 
 public class TagPresenter extends LongClickPresenter {
     private static int sDefaultBackgroundColor;

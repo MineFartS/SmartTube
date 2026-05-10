@@ -1,4 +1,4 @@
-package SmartTubeApp.exoplayer.versions.renderer;
+package minefarts.smarttube.exoplayer.versions.renderer;
 
 import android.content.Context;
 import android.media.MediaCodec;

@@ -1,4 +1,4 @@
-package SmartTubeApp.exoplayer.other;
+package minefarts.smarttube.exoplayer.other;
 
 import android.content.Context;
 import android.os.Build;
@@ -22,8 +22,8 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.TransferListener;
 import com.liskovsoft.sharedutils.helpers.DeviceHelpers;
-import SmartTubeApp.prefs.PlayerData;
-import SmartTubeApp.prefs.PlayerTweaksData;
+import minefarts.smarttube.prefs.PlayerData;
+import minefarts.smarttube.prefs.PlayerTweaksData;
 
 import java.util.UUID;
 

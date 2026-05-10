@@ -1,4 +1,4 @@
-package SmartTubeApp.app.views;
+package minefarts.smarttube.app.views;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -16,19 +16,19 @@ import com.liskovsoft.sharedutils.locale.LocaleUpdater;
 import com.liskovsoft.sharedutils.misc.WeakHashSet;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import SmartTubeApp.app.presenters.AppDialogPresenter;
-import SmartTubeApp.app.presenters.BrowsePresenter;
-import SmartTubeApp.app.presenters.ChannelPresenter;
-import SmartTubeApp.app.presenters.ChannelUploadsPresenter;
-import SmartTubeApp.app.presenters.PlaybackPresenter;
-import SmartTubeApp.app.presenters.SearchPresenter;
-import SmartTubeApp.app.presenters.SplashPresenter;
-import SmartTubeApp.app.presenters.base.BasePresenter;
-import SmartTubeApp.app.presenters.dialogs.AppUpdatePresenter;
-import SmartTubeApp.misc.MotherActivity;
-import SmartTubeApp.utils.Utils;
-import SmartTubeApp.misc.ServiceManager;
-import SmartTubeApp.app.models.playback.PlayerEngine;
+import minefarts.smarttube.app.presenters.AppDialogPresenter;
+import minefarts.smarttube.app.presenters.BrowsePresenter;
+import minefarts.smarttube.app.presenters.ChannelPresenter;
+import minefarts.smarttube.app.presenters.ChannelUploadsPresenter;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
+import minefarts.smarttube.app.presenters.SearchPresenter;
+import minefarts.smarttube.app.presenters.SplashPresenter;
+import minefarts.smarttube.app.presenters.base.BasePresenter;
+import minefarts.smarttube.app.presenters.dialogs.AppUpdatePresenter;
+import minefarts.smarttube.misc.MotherActivity;
+import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.misc.ServiceManager;
+import minefarts.smarttube.app.models.playback.PlayerEngine;
 
 import java.util.HashMap;
 import java.util.Map;

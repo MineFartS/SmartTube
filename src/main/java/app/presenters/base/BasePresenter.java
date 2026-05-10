@@ -1,4 +1,4 @@
-package SmartTubeApp.app.presenters.base;
+package minefarts.smarttube.app.presenters.base;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,30 +6,30 @@ import android.view.View;
 
 import androidx.fragment.app.Fragment;
 
-import SmartTubeApp.app.models.playback.service.VideoStateService;
+import minefarts.smarttube.app.models.playback.service.VideoStateService;
 import com.liskovsoft.sharedutils.CommentsService;
 import com.liskovsoft.sharedutils.service.ContentService;
 import com.liskovsoft.sharedutils.MediaItemService;
 import com.liskovsoft.sharedutils.NotificationsService;
 import com.liskovsoft.sharedutils.SignInService;
-import SmartTubeApp.app.models.data.Queue;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.models.data.VideoGroup;
-import SmartTubeApp.app.presenters.PlaybackPresenter;
-import SmartTubeApp.app.presenters.interfaces.Presenter;
-import SmartTubeApp.app.presenters.service.SidebarService;
-import SmartTubeApp.app.views.BrowseView;
-import SmartTubeApp.app.views.ChannelUploadsView;
-import SmartTubeApp.app.views.ChannelView;
-import SmartTubeApp.app.models.playback.PlayerEngine;
-import SmartTubeApp.app.views.SearchView;
-import SmartTubeApp.app.views.ViewManager;
-import SmartTubeApp.misc.ServiceManager;
-import SmartTubeApp.misc.TickleManager;
-import SmartTubeApp.prefs.GeneralData;
-import SmartTubeApp.prefs.MainUIData;
-import SmartTubeApp.prefs.SearchData;
-import SmartTubeApp.utils.Utils;
+import minefarts.smarttube.app.models.data.Queue;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.models.data.VideoGroup;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
+import minefarts.smarttube.app.presenters.interfaces.Presenter;
+import minefarts.smarttube.app.presenters.service.SidebarService;
+import minefarts.smarttube.app.views.BrowseView;
+import minefarts.smarttube.app.views.ChannelUploadsView;
+import minefarts.smarttube.app.views.ChannelView;
+import minefarts.smarttube.app.models.playback.PlayerEngine;
+import minefarts.smarttube.app.views.SearchView;
+import minefarts.smarttube.app.views.ViewManager;
+import minefarts.smarttube.misc.ServiceManager;
+import minefarts.smarttube.misc.TickleManager;
+import minefarts.smarttube.prefs.GeneralData;
+import minefarts.smarttube.prefs.MainUIData;
+import minefarts.smarttube.prefs.SearchData;
+import minefarts.smarttube.utils.Utils;
 
 import java.lang.ref.WeakReference;
 import java.util.Collections;

@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.widgets.vineyard.videoview;
+package minefarts.smarttube.ui.widgets.vineyard.videoview;
 
 import android.content.Context;
 import android.media.MediaPlayer;

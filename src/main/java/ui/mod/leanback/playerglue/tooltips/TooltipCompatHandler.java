@@ -1,6 +1,6 @@
 
 
-package SmartTubeApp.ui.mod.leanback.playerglue.tooltips;
+package minefarts.smarttube.ui.mod.leanback.playerglue.tooltips;
 
 import android.content.Context;
 import android.text.TextUtils;

@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.widgets.chat;
+package minefarts.smarttube.ui.widgets.chat;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -6,11 +6,11 @@ import android.text.TextUtils;
 import com.liskovsoft.sharedutils.data.ChatItem;
 import com.liskovsoft.sharedutils.data.CommentItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.utils.Utils;
-import SmartTubeApp.R;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.R;
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
-import SmartTubeApp.commons.models.IMessage;
+import minefarts.smarttube.commons.models.IMessage;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,10 +1,10 @@
-package SmartTubeApp.util;
+package minefarts.smarttube.util;
 
 import android.view.KeyEvent;
 
 import com.liskovsoft.sharedutils.helpers.KeyHelpers;
-import SmartTubeApp.app.presenters.PlaybackPresenter;
-import SmartTubeApp.utils.Utils;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
+import minefarts.smarttube.utils.Utils;
 
 public class LongPressHandler {
     // Long press handler

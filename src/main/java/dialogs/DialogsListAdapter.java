@@ -1,6 +1,6 @@
 
 
-package SmartTubeApp.dialogs;
+package minefarts.smarttube.dialogs;
 
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
@@ -15,12 +15,12 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import SmartTubeApp.R;
-import SmartTubeApp.commons.ImageLoader;
-import SmartTubeApp.commons.ViewHolder;
-import SmartTubeApp.commons.models.IDialog;
-import SmartTubeApp.commons.models.IMessage;
-import SmartTubeApp.utils.DateFormatter;
+import minefarts.smarttube.R;
+import minefarts.smarttube.commons.ImageLoader;
+import minefarts.smarttube.commons.ViewHolder;
+import minefarts.smarttube.commons.models.IDialog;
+import minefarts.smarttube.commons.models.IMessage;
+import minefarts.smarttube.utils.DateFormatter;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;

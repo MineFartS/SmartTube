@@ -1,5 +1,5 @@
 
-package SmartTubeApp.ui.mod.leanback.transition;
+package minefarts.smarttube.ui.mod.leanback.transition;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;

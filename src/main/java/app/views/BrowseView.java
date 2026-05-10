@@ -1,10 +1,10 @@
-package SmartTubeApp.app.views;
+package minefarts.smarttube.app.views;
 
-import SmartTubeApp.app.models.data.SettingsGroup;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.models.errors.ErrorFragmentData;
-import SmartTubeApp.app.models.data.BrowseSection;
-import SmartTubeApp.app.models.data.VideoGroup;
+import minefarts.smarttube.app.models.data.SettingsGroup;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.models.errors.ErrorFragmentData;
+import minefarts.smarttube.app.models.data.BrowseSection;
+import minefarts.smarttube.app.models.data.VideoGroup;
 
 public interface BrowseView {
     void addSection(int index, BrowseSection section);

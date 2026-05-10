@@ -1,6 +1,6 @@
-package SmartTubeApp.exoplayer.controller;
+package minefarts.smarttube.exoplayer.controller;
 
-import SmartTubeApp.app.models.data.Video;
+import minefarts.smarttube.app.models.data.Video;
 
 public interface PlayerView {
     void setVideo(Video video);

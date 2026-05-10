@@ -1,9 +1,9 @@
-package SmartTubeApp.app.models.playback.ui;
+package minefarts.smarttube.app.models.playback.ui;
 
 import android.content.Context;
 import com.liskovsoft.sharedutils.data.CommentGroup;
 import com.liskovsoft.sharedutils.data.CommentItem;
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 
 public abstract class AbstractCommentsReceiver implements CommentsReceiver {
     private final Context mContext;

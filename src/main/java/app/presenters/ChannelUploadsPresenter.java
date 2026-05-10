@@ -1,4 +1,4 @@
-package SmartTubeApp.app.presenters;
+package minefarts.smarttube.app.presenters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,18 +11,18 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import SmartTubeApp.R;
-import SmartTubeApp.app.models.data.SimpleMediaItem;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.models.data.VideoGroup;
-import SmartTubeApp.app.presenters.base.BasePresenter;
-import SmartTubeApp.app.presenters.dialogs.VideoActionPresenter;
-import SmartTubeApp.app.presenters.dialogs.menu.VideoMenuPresenter;
-import SmartTubeApp.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
-import SmartTubeApp.app.presenters.interfaces.VideoGroupPresenter;
-import SmartTubeApp.app.views.ChannelUploadsView;
-import SmartTubeApp.misc.BrowseProcessorManager;
-import SmartTubeApp.misc.ServiceManager;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.models.data.SimpleMediaItem;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.models.data.VideoGroup;
+import minefarts.smarttube.app.presenters.base.BasePresenter;
+import minefarts.smarttube.app.presenters.dialogs.VideoActionPresenter;
+import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter;
+import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
+import minefarts.smarttube.app.presenters.interfaces.VideoGroupPresenter;
+import minefarts.smarttube.app.views.ChannelUploadsView;
+import minefarts.smarttube.misc.BrowseProcessorManager;
+import minefarts.smarttube.misc.ServiceManager;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 

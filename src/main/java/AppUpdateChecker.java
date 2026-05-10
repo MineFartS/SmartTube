@@ -1,13 +1,13 @@
-package SmartTubeApp;
+package minefarts.smarttube;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.net.Uri;
-import SmartTubeApp.core.AppDownloader;
-import SmartTubeApp.core.AppDownloaderListener;
-import SmartTubeApp.core.AppVersionChecker;
-import SmartTubeApp.core.AppVersionCheckerListener;
-import SmartTubeApp.other.SettingsManager;
+import minefarts.smarttube.core.AppDownloader;
+import minefarts.smarttube.core.AppDownloaderListener;
+import minefarts.smarttube.core.AppVersionChecker;
+import minefarts.smarttube.core.AppVersionCheckerListener;
+import minefarts.smarttube.other.SettingsManager;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;

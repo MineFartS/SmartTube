@@ -1,4 +1,4 @@
-package SmartTubeApp.recommendations;
+package minefarts.smarttube.recommendations;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -7,7 +7,7 @@ import android.graphics.Bitmap;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 
 @RequiresApi(21)
 public class RecommendationBuilder {

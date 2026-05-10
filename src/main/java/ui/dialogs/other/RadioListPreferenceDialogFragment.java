@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.dialogs.other;
+package minefarts.smarttube.ui.dialogs.other;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,8 +9,8 @@ import androidx.leanback.widget.VerticalGridView;
 import androidx.preference.ListPreference;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
-import SmartTubeApp.ui.mod.leanback.preference.LeanbackListPreferenceDialogFragment;
-import SmartTubeApp.util.ViewUtil;
+import minefarts.smarttube.ui.mod.leanback.preference.LeanbackListPreferenceDialogFragment;
+import minefarts.smarttube.util.ViewUtil;
 
 public class RadioListPreferenceDialogFragment extends LeanbackListPreferenceDialogFragment {
     private boolean mIsTransparent;

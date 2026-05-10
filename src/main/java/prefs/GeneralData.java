@@ -1,14 +1,14 @@
-package SmartTubeApp.prefs;
+package minefarts.smarttube.prefs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.prefs.AppPrefs.ProfileChangeListener;
-import SmartTubeApp.utils.Utils;
-import SmartTubeApp.utils.DataStore;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
+import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.utils.DataStore;
 
 import java.util.Collections;
 import java.util.List;

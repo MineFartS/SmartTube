@@ -1,9 +1,9 @@
-package SmartTubeApp.launchers;
+package minefarts.smarttube.launchers;
 
 import android.os.Bundle;
 import com.liskovsoft.sharedutils.data.MediaGroup;
-import SmartTubeApp.app.presenters.BrowsePresenter;
-import SmartTubeApp.misc.MotherActivity;
+import minefarts.smarttube.app.presenters.BrowsePresenter;
+import minefarts.smarttube.misc.MotherActivity;
 
 public class SubscriptionsLauncherActivity extends MotherActivity {
     @Override

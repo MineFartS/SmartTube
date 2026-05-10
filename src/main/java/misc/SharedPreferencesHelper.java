@@ -1,4 +1,4 @@
-package SmartTubeApp.misc;
+package minefarts.smarttube.misc;
 
 import android.content.Context;
 import android.content.SharedPreferences;

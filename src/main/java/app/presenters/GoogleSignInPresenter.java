@@ -1,4 +1,4 @@
-package SmartTubeApp.app.presenters;
+package minefarts.smarttube.app.presenters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

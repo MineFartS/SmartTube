@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.browse.video;
+package minefarts.smarttube.ui.browse.video;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -6,11 +6,11 @@ import android.util.DisplayMetrics;
 import android.util.Pair;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.app.models.data.VideoGroup;
-import SmartTubeApp.app.views.ViewManager;
-import SmartTubeApp.prefs.MainUIData;
-import SmartTubeApp.R;
-import SmartTubeApp.adapter.VideoGroupObjectAdapter;
+import minefarts.smarttube.app.models.data.VideoGroup;
+import minefarts.smarttube.app.views.ViewManager;
+import minefarts.smarttube.prefs.MainUIData;
+import minefarts.smarttube.R;
+import minefarts.smarttube.adapter.VideoGroupObjectAdapter;
 
 import java.util.HashMap;
 import java.util.Map;

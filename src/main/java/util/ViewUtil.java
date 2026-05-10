@@ -1,4 +1,4 @@
-package SmartTubeApp.util;
+package minefarts.smarttube.util;
 
 import android.content.Context;
 import android.graphics.ColorMatrix;
@@ -22,10 +22,10 @@ import androidx.leanback.widget.VerticalGridView;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.R;
-import SmartTubeApp.adapter.VideoGroupObjectAdapter;
-import SmartTubeApp.ui.widgets.marqueetextview.MarqueeTextView;
-import SmartTubeApp.ui.widgets.speedmarquee.SpeedMarquee;
+import minefarts.smarttube.R;
+import minefarts.smarttube.adapter.VideoGroupObjectAdapter;
+import minefarts.smarttube.ui.widgets.marqueetextview.MarqueeTextView;
+import minefarts.smarttube.ui.widgets.speedmarquee.SpeedMarquee;
 
 public class ViewUtil {
     /**

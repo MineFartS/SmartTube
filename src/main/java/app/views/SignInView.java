@@ -1,4 +1,4 @@
-package SmartTubeApp.app.views;
+package minefarts.smarttube.app.views;
 
 public interface SignInView {
     void showCode(String userCode, String signInUrl);

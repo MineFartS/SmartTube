@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.widgets.browse;
+package minefarts.smarttube.ui.widgets.browse;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,23 +20,23 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.liskovsoft.sharedutils.oauth.Account;
 import com.liskovsoft.sharedutils.locale.LocaleUtility;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.app.presenters.PlaybackPresenter;
-import SmartTubeApp.app.presenters.dialogs.AccountSelectionPresenter;
-import SmartTubeApp.app.presenters.settings.AccountSettingsPresenter;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
+import minefarts.smarttube.app.presenters.dialogs.AccountSelectionPresenter;
+import minefarts.smarttube.app.presenters.settings.AccountSettingsPresenter;
 
-import SmartTubeApp.app.views.ViewManager;
-import SmartTubeApp.misc.ServiceManager;
-import SmartTubeApp.misc.ServiceManager.AccountChangeListener;
-import SmartTubeApp.prefs.common.DataChangeBase.OnDataChange;
-import SmartTubeApp.prefs.GeneralData;
-import SmartTubeApp.prefs.MainUIData;
-import SmartTubeApp.utils.Utils;
-import SmartTubeApp.R;
-import SmartTubeApp.ui.mod.leanback.playerglue.tooltips.TooltipCompatHandler;
-import SmartTubeApp.ui.widgets.search.LongClickSearchOrbView;
-import SmartTubeApp.ui.widgets.time.DateTimeView;
-import SmartTubeApp.util.ViewUtil;
+import minefarts.smarttube.app.views.ViewManager;
+import minefarts.smarttube.misc.ServiceManager;
+import minefarts.smarttube.misc.ServiceManager.AccountChangeListener;
+import minefarts.smarttube.prefs.common.DataChangeBase.OnDataChange;
+import minefarts.smarttube.prefs.GeneralData;
+import minefarts.smarttube.prefs.MainUIData;
+import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.R;
+import minefarts.smarttube.ui.mod.leanback.playerglue.tooltips.TooltipCompatHandler;
+import minefarts.smarttube.ui.widgets.search.LongClickSearchOrbView;
+import minefarts.smarttube.ui.widgets.time.DateTimeView;
+import minefarts.smarttube.util.ViewUtil;
 
 import java.util.Locale;
 

@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.widgets.vineyard.videoview;
+package minefarts.smarttube.ui.widgets.vineyard.videoview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.leanback.widget.BaseCardView;
-import SmartTubeApp.R;
-import SmartTubeApp.util.vineyard.NetworkUtil;
+import minefarts.smarttube.R;
+import minefarts.smarttube.util.vineyard.NetworkUtil;
 
 public class VideoCardView extends BaseCardView {
     public static final int CARD_TYPE_FLAG_IMAGE_ONLY = 0;

@@ -1,4 +1,4 @@
-package SmartTubeApp.presenter;
+package minefarts.smarttube.presenter;
 
 import android.content.Context;
 import android.text.Editable;
@@ -13,10 +13,10 @@ import androidx.leanback.widget.Presenter;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.prefs.MainUIData;
-import SmartTubeApp.R;
-import SmartTubeApp.ui.browse.video.GridFragmentHelper;
-import SmartTubeApp.util.ViewUtil;
+import minefarts.smarttube.prefs.MainUIData;
+import minefarts.smarttube.R;
+import minefarts.smarttube.ui.browse.video.GridFragmentHelper;
+import minefarts.smarttube.util.ViewUtil;
 
 public class SearchFieldPresenter extends Presenter {
     private static final String TAG = SearchFieldPresenter.class.getSimpleName();

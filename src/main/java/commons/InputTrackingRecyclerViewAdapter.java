@@ -1,4 +1,4 @@
-package SmartTubeApp.commons;
+package minefarts.smarttube.commons;
 
 import android.view.KeyEvent;
 import android.view.View;

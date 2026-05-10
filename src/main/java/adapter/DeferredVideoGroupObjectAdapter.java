@@ -1,7 +1,7 @@
-package SmartTubeApp.adapter;
+package minefarts.smarttube.adapter;
 
-import SmartTubeApp.app.models.data.VideoGroup;
-import SmartTubeApp.presenter.VideoCardPresenter;
+import minefarts.smarttube.app.models.data.VideoGroup;
+import minefarts.smarttube.presenter.VideoCardPresenter;
 
 public class DeferredVideoGroupObjectAdapter extends VideoGroupObjectAdapter {
     private long mPrevAppendTimeMs;

@@ -1,7 +1,7 @@
-package SmartTubeApp.app.views;
+package minefarts.smarttube.app.views;
 
-import SmartTubeApp.app.models.data.VideoGroup;
-import SmartTubeApp.app.models.search.MediaServiceSearchTagProvider;
+import minefarts.smarttube.app.models.data.VideoGroup;
+import minefarts.smarttube.app.models.search.MediaServiceSearchTagProvider;
 
 public interface SearchView {
     void updateSearch(VideoGroup group);

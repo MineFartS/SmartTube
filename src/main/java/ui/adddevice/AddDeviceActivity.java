@@ -1,8 +1,8 @@
-package SmartTubeApp.ui.adddevice;
+package minefarts.smarttube.ui.adddevice;
 
 import android.os.Bundle;
 import androidx.leanback.app.GuidedStepSupportFragment;
-import SmartTubeApp.ui.common.LeanbackActivity;
+import minefarts.smarttube.ui.common.LeanbackActivity;
 
 public class AddDeviceActivity extends LeanbackActivity {
     @Override

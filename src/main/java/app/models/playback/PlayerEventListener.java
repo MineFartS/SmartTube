@@ -1,12 +1,12 @@
-package SmartTubeApp.app.models.playback;
+package minefarts.smarttube.app.models.playback;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 
 import com.liskovsoft.sharedutils.data.MediaItemMetadata;
-import SmartTubeApp.app.models.data.Video;
-import SmartTubeApp.misc.TickleManager.TickleListener;
-import SmartTubeApp.exoplayer.selector.FormatItem;
-import SmartTubeApp.exoplayer.selector.TrackSelectorManager;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.misc.TickleManager.TickleListener;
+import minefarts.smarttube.exoplayer.selector.FormatItem;
+import minefarts.smarttube.exoplayer.selector.TrackSelectorManager;
 
 public interface PlayerEventListener extends TickleListener {
 

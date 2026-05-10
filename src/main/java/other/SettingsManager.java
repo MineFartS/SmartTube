@@ -1,4 +1,4 @@
-package SmartTubeApp.other;
+package minefarts.smarttube.other;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -7,7 +7,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 public class SettingsManager {
     public static final long CHECK_INTERVAL_DEFAULT_MS = 60 * 1_000;
     private static final String TAG = SettingsManager.class.getSimpleName();
-    private static final String SHARED_PREFERENCES_NAME = "SmartTubeApp.preferences";
+    private static final String SHARED_PREFERENCES_NAME = "minefarts.smarttube.preferences";
     private static final String PREF_CHECK_INTERVAL_MS = "check_interval_ms";
     private static final String PREF_LAST_CHECKED_MS = "last_checked_ms";
     private static final String PREF_APK_PATH = "apk_path";

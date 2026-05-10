@@ -1,12 +1,12 @@
-package SmartTubeApp.misc;
+package minefarts.smarttube.misc;
 
 import android.view.KeyEvent;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import SmartTubeApp.app.presenters.AppDialogPresenter;
-import SmartTubeApp.app.presenters.PlaybackPresenter;
-import SmartTubeApp.utils.Utils;
+import minefarts.smarttube.app.presenters.AppDialogPresenter;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
+import minefarts.smarttube.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;

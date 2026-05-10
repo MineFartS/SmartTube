@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.browse.dialog;
+package minefarts.smarttube.ui.browse.dialog;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,11 +11,11 @@ import androidx.fragment.app.Fragment;
 import androidx.leanback.app.BrowseSupportFragment;
 import androidx.leanback.app.BrowseSupportFragment.MainFragmentAdapter;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.app.models.errors.CategoryEmptyError;
-import SmartTubeApp.app.models.errors.ErrorFragmentData;
-import SmartTubeApp.app.models.errors.SignInError;
-import SmartTubeApp.R;
-import SmartTubeApp.ui.mod.fragments.ErrorSupportFragment;
+import minefarts.smarttube.app.models.errors.CategoryEmptyError;
+import minefarts.smarttube.app.models.errors.ErrorFragmentData;
+import minefarts.smarttube.app.models.errors.SignInError;
+import minefarts.smarttube.R;
+import minefarts.smarttube.ui.mod.fragments.ErrorSupportFragment;
 
 public class ErrorDialogFragment extends ErrorSupportFragment implements BrowseSupportFragment.MainFragmentAdapterProvider {
     

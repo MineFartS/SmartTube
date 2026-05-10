@@ -1,4 +1,4 @@
-package SmartTubeApp.exoplayer.selector;
+package minefarts.smarttube.exoplayer.selector;
 
 import com.google.android.exoplayer2.Format;
 

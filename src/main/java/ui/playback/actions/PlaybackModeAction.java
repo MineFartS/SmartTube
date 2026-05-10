@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.playback.actions;
+package minefarts.smarttube.ui.playback.actions;
 
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
@@ -6,8 +6,8 @@ import android.graphics.drawable.Drawable;
 import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.PlaybackControlsRow.MultiAction;
 
-import SmartTubeApp.app.models.playback.PlayerEngine;
-import SmartTubeApp.R;
+import minefarts.smarttube.app.models.playback.PlayerEngine;
+import minefarts.smarttube.R;
 
 /**
  * An action for displaying two repeat states: none and all.

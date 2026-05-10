@@ -1,4 +1,4 @@
-package SmartTubeApp.exoplayer;
+package minefarts.smarttube.exoplayer;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -40,11 +40,11 @@ import com.liskovsoft.sharedutils.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
-import SmartTubeApp.exoplayer.errors.DashDefaultLoadErrorHandlingPolicy;
-import SmartTubeApp.exoplayer.errors.SabrDefaultLoadErrorHandlingPolicy;
-import SmartTubeApp.exoplayer.errors.TrackErrorFixer;
-import SmartTubeApp.prefs.PlayerTweaksData;
-import SmartTubeApp.utils.Utils;
+import minefarts.smarttube.exoplayer.errors.DashDefaultLoadErrorHandlingPolicy;
+import minefarts.smarttube.exoplayer.errors.SabrDefaultLoadErrorHandlingPolicy;
+import minefarts.smarttube.exoplayer.errors.TrackErrorFixer;
+import minefarts.smarttube.prefs.PlayerTweaksData;
+import minefarts.smarttube.utils.Utils;
 import com.liskovsoft.googlecommon.common.helpers.DefaultHeaders;
 
 import java.io.IOException;

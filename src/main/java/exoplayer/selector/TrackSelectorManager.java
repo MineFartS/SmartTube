@@ -1,4 +1,4 @@
-package SmartTubeApp.exoplayer.selector;
+package minefarts.smarttube.exoplayer.selector;
 
 import android.content.Context;
 import android.os.Build;
@@ -16,14 +16,14 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelection.Definition;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.exoplayer.selector.track.AudioTrack;
-import SmartTubeApp.exoplayer.selector.track.MediaTrack;
-import SmartTubeApp.exoplayer.selector.track.VideoTrack;
-import SmartTubeApp.exoplayer.versions.selector.RestoreTrackSelector;
-import SmartTubeApp.exoplayer.versions.selector.RestoreTrackSelector.TrackSelectorCallback;
-import SmartTubeApp.prefs.PlayerData;
-import SmartTubeApp.prefs.PlayerTweaksData;
-import SmartTubeApp.utils.Utils;
+import minefarts.smarttube.exoplayer.selector.track.AudioTrack;
+import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
+import minefarts.smarttube.exoplayer.selector.track.VideoTrack;
+import minefarts.smarttube.exoplayer.versions.selector.RestoreTrackSelector;
+import minefarts.smarttube.exoplayer.versions.selector.RestoreTrackSelector.TrackSelectorCallback;
+import minefarts.smarttube.prefs.PlayerData;
+import minefarts.smarttube.prefs.PlayerTweaksData;
+import minefarts.smarttube.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -157,7 +157,7 @@ public class TrackSelectorManager implements TrackSelectorCallback {
         Renderer renderer = mRenderers[rendererIndex];
         renderer.mediaTracks = new MediaTrack[renderer.trackGroups.length][];
         // Fix for java.util.ConcurrentModificationException inside of:
-        // SmartTubeApp.exoplayer.selector.ExoFormatItem.from (ExoFormatItem.java:44)
+        // minefarts.smarttube.exoplayer.selector.ExoFormatItem.from (ExoFormatItem.java:44)
         // Won't help: renderer.sortedTracks = Collections.synchronizedSortedSet(new TreeSet<>(new MediaTrackFormatComparator()));
         SortedSet<MediaTrack> sortedTracks = new TreeSet<>(new MediaTrackFormatComparator());
 

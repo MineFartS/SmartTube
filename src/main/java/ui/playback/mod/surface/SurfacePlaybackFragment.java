@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.playback.mod.surface;
+package minefarts.smarttube.ui.playback.mod.surface;
 
 import android.os.Bundle;
 import android.view.Gravity;
@@ -11,10 +11,10 @@ import android.widget.FrameLayout;
 import androidx.leanback.app.PlaybackSupportFragment;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.prefs.PlayerData;
-import SmartTubeApp.prefs.PlayerTweaksData;
-import SmartTubeApp.util.ViewUtil;
-import SmartTubeApp.R;
+import minefarts.smarttube.prefs.PlayerData;
+import minefarts.smarttube.prefs.PlayerTweaksData;
+import minefarts.smarttube.util.ViewUtil;
+import minefarts.smarttube.R;
 import android.util.Log;
 
 /**

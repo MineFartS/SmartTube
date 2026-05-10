@@ -1,29 +1,29 @@
-package SmartTubeApp.ui.main;
+package minefarts.smarttube.ui.main;
 
 import android.content.Context;
 import androidx.multidex.MultiDexApplication;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import SmartTubeApp.app.models.data.BrowseSection;
-import SmartTubeApp.app.presenters.BrowsePresenter;
-import SmartTubeApp.app.views.AddDeviceView;
-import SmartTubeApp.app.views.AppDialogView;
-import SmartTubeApp.app.views.BrowseView;
-import SmartTubeApp.app.views.ChannelUploadsView;
-import SmartTubeApp.app.views.ChannelView;
-import SmartTubeApp.app.models.playback.PlayerEngine;
-import SmartTubeApp.app.views.SearchView;
-import SmartTubeApp.app.views.SignInView;
-import SmartTubeApp.app.views.SplashView;
-import SmartTubeApp.app.views.ViewManager;
-import SmartTubeApp.ui.adddevice.AddDeviceActivity;
-import SmartTubeApp.ui.browse.BrowseActivity;
-import SmartTubeApp.ui.channel.ChannelActivity;
-import SmartTubeApp.ui.channeluploads.ChannelUploadsActivity;
-import SmartTubeApp.ui.dialogs.AppDialogActivity;
-import SmartTubeApp.ui.playback.PlaybackActivity;
-import SmartTubeApp.ui.search.tags.SearchTagsActivity;
-import SmartTubeApp.ui.signin.SignInActivity;
+import minefarts.smarttube.app.models.data.BrowseSection;
+import minefarts.smarttube.app.presenters.BrowsePresenter;
+import minefarts.smarttube.app.views.AddDeviceView;
+import minefarts.smarttube.app.views.AppDialogView;
+import minefarts.smarttube.app.views.BrowseView;
+import minefarts.smarttube.app.views.ChannelUploadsView;
+import minefarts.smarttube.app.views.ChannelView;
+import minefarts.smarttube.app.models.playback.PlayerEngine;
+import minefarts.smarttube.app.views.SearchView;
+import minefarts.smarttube.app.views.SignInView;
+import minefarts.smarttube.app.views.SplashView;
+import minefarts.smarttube.app.views.ViewManager;
+import minefarts.smarttube.ui.adddevice.AddDeviceActivity;
+import minefarts.smarttube.ui.browse.BrowseActivity;
+import minefarts.smarttube.ui.channel.ChannelActivity;
+import minefarts.smarttube.ui.channeluploads.ChannelUploadsActivity;
+import minefarts.smarttube.ui.dialogs.AppDialogActivity;
+import minefarts.smarttube.ui.playback.PlaybackActivity;
+import minefarts.smarttube.ui.search.tags.SearchTagsActivity;
+import minefarts.smarttube.ui.signin.SignInActivity;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 

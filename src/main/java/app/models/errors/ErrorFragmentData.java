@@ -1,4 +1,4 @@
-package SmartTubeApp.app.models.errors;
+package minefarts.smarttube.app.models.errors;
 
 public interface ErrorFragmentData {
     void onAction();

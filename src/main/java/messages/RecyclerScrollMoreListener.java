@@ -1,6 +1,6 @@
 
 
-package SmartTubeApp.messages;
+package minefarts.smarttube.messages;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;

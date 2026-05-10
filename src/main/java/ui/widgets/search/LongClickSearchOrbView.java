@@ -1,10 +1,10 @@
-package SmartTubeApp.ui.widgets.search;
+package minefarts.smarttube.ui.widgets.search;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import androidx.leanback.widget.SearchOrbView;
-import SmartTubeApp.prefs.GeneralData;
+import minefarts.smarttube.prefs.GeneralData;
 
 /**
  *     1) Add long click listener <br/>

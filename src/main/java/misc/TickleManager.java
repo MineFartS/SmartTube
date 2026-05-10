@@ -1,7 +1,7 @@
-package SmartTubeApp.misc;
+package minefarts.smarttube.misc;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.utils.Utils;
+import minefarts.smarttube.utils.Utils;
 import com.liskovsoft.sharedutils.misc.WeakHashSet;
 
 public class TickleManager {

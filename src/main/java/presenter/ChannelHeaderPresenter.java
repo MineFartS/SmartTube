@@ -1,4 +1,4 @@
-package SmartTubeApp.presenter;
+package minefarts.smarttube.presenter;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -27,11 +27,11 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.KeyHelpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.helpers.PermissionHelpers;
-import SmartTubeApp.misc.MotherActivity;
-import SmartTubeApp.prefs.SearchData;
-import SmartTubeApp.BuildConfig;
-import SmartTubeApp.R;
-import SmartTubeApp.util.ViewUtil;
+import minefarts.smarttube.misc.MotherActivity;
+import minefarts.smarttube.prefs.SearchData;
+import minefarts.smarttube.BuildConfig;
+import minefarts.smarttube.R;
+import minefarts.smarttube.util.ViewUtil;
 
 import net.gotev.speech.GoogleVoiceTypingDisabledException;
 import net.gotev.speech.Speech;

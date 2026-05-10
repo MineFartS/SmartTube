@@ -1,9 +1,9 @@
-package SmartTubeApp.ui.browse;
+package minefarts.smarttube.ui.browse;
 
 import android.os.Bundle;
-import SmartTubeApp.prefs.MainUIData;
-import SmartTubeApp.R;
-import SmartTubeApp.ui.common.LeanbackActivity;
+import minefarts.smarttube.prefs.MainUIData;
+import minefarts.smarttube.R;
+import minefarts.smarttube.ui.common.LeanbackActivity;
 
 public class BrowseActivity extends LeanbackActivity {
 

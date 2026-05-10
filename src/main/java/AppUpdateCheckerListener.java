@@ -1,4 +1,4 @@
-package SmartTubeApp;
+package minefarts.smarttube;
 
 import java.util.ArrayList;
 

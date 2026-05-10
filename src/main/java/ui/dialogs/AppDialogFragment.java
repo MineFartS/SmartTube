@@ -1,4 +1,4 @@
-package SmartTubeApp.ui.dialogs;
+package minefarts.smarttube.ui.dialogs;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -18,21 +18,21 @@ import androidx.preference.PreferenceFragment;
 import androidx.preference.PreferenceScreen;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.app.models.playback.ui.OptionCategory;
-import SmartTubeApp.app.presenters.AppDialogPresenter;
-import SmartTubeApp.app.views.AppDialogView;
-import SmartTubeApp.misc.MotherActivity;
-import SmartTubeApp.utils.Utils;
-import SmartTubeApp.R;
-import SmartTubeApp.ui.dialogs.other.ChatPreference;
-import SmartTubeApp.ui.dialogs.other.ChatPreferenceDialogFragment;
-import SmartTubeApp.ui.dialogs.other.CommentsPreference;
-import SmartTubeApp.ui.dialogs.other.CommentsPreferenceDialogFragment;
-import SmartTubeApp.ui.dialogs.other.RadioListPreferenceDialogFragment;
-import SmartTubeApp.ui.dialogs.other.StringListPreference;
-import SmartTubeApp.ui.dialogs.other.StringListPreferenceDialogFragment;
-import SmartTubeApp.ui.mod.leanback.preference.LeanbackListPreferenceDialogFragment;
-import SmartTubeApp.util.ViewUtil;
+import minefarts.smarttube.app.models.playback.ui.OptionCategory;
+import minefarts.smarttube.app.presenters.AppDialogPresenter;
+import minefarts.smarttube.app.views.AppDialogView;
+import minefarts.smarttube.misc.MotherActivity;
+import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.R;
+import minefarts.smarttube.ui.dialogs.other.ChatPreference;
+import minefarts.smarttube.ui.dialogs.other.ChatPreferenceDialogFragment;
+import minefarts.smarttube.ui.dialogs.other.CommentsPreference;
+import minefarts.smarttube.ui.dialogs.other.CommentsPreferenceDialogFragment;
+import minefarts.smarttube.ui.dialogs.other.RadioListPreferenceDialogFragment;
+import minefarts.smarttube.ui.dialogs.other.StringListPreference;
+import minefarts.smarttube.ui.dialogs.other.StringListPreferenceDialogFragment;
+import minefarts.smarttube.ui.mod.leanback.preference.LeanbackListPreferenceDialogFragment;
+import minefarts.smarttube.util.ViewUtil;
 
 import java.util.List;
 

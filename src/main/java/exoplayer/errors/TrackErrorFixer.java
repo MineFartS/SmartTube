@@ -1,4 +1,4 @@
-package SmartTubeApp.exoplayer.errors;
+package minefarts.smarttube.exoplayer.errors;
 
 import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -11,8 +11,8 @@ import com.google.android.exoplayer2.upstream.HttpDataSource.InvalidResponseCode
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.exoplayer.selector.TrackSelectorManager;
-import SmartTubeApp.exoplayer.selector.track.MediaTrack;
+import minefarts.smarttube.exoplayer.selector.TrackSelectorManager;
+import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
 
 import java.io.IOException;
 import java.util.HashMap;

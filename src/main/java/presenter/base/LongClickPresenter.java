@@ -1,9 +1,9 @@
-package SmartTubeApp.presenter.base;
+package minefarts.smarttube.presenter.base;
 
 import android.view.KeyEvent;
 import androidx.leanback.widget.Presenter;
 import com.liskovsoft.sharedutils.helpers.KeyHelpers;
-import SmartTubeApp.prefs.GeneralData;
+import minefarts.smarttube.prefs.GeneralData;
 
 public abstract class LongClickPresenter extends Presenter {
     private OnItemLongPressedListener mLongPressedListener;

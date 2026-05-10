@@ -1,6 +1,6 @@
 
 
-package SmartTubeApp.commons;
+package minefarts.smarttube.commons;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -16,7 +16,7 @@ import androidx.annotation.DimenRes;
 import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
 
-import SmartTubeApp.R;
+import minefarts.smarttube.R;
 
 /**
  * Base class for chat component styles

@@ -1,8 +1,8 @@
-package SmartTubeApp.ui.channeluploads;
+package minefarts.smarttube.ui.channeluploads;
 
 import android.os.Bundle;
-import SmartTubeApp.R;
-import SmartTubeApp.ui.common.LeanbackActivity;
+import minefarts.smarttube.R;
+import minefarts.smarttube.ui.common.LeanbackActivity;
 
 public class ChannelUploadsActivity extends LeanbackActivity {
     

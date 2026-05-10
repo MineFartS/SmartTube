@@ -1,20 +1,20 @@
-package SmartTubeApp.ui.common;
+package minefarts.smarttube.ui.common;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
-import SmartTubeApp.app.presenters.SearchPresenter;
-import SmartTubeApp.misc.GlobalKeyTranslator;
-import SmartTubeApp.misc.MotherActivity;
-import SmartTubeApp.misc.PlayerKeyTranslator;
-import SmartTubeApp.prefs.GeneralData;
-import SmartTubeApp.prefs.RemoteControlData;
-import SmartTubeApp.utils.Utils;
-import SmartTubeApp.ui.common.keyhandler.DoubleBackManager2;
-import SmartTubeApp.ui.playback.PlaybackActivity;
-import SmartTubeApp.ui.search.tags.SearchTagsActivity;
+import minefarts.smarttube.app.presenters.SearchPresenter;
+import minefarts.smarttube.misc.GlobalKeyTranslator;
+import minefarts.smarttube.misc.MotherActivity;
+import minefarts.smarttube.misc.PlayerKeyTranslator;
+import minefarts.smarttube.prefs.GeneralData;
+import minefarts.smarttube.prefs.RemoteControlData;
+import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.ui.common.keyhandler.DoubleBackManager2;
+import minefarts.smarttube.ui.playback.PlaybackActivity;
+import minefarts.smarttube.ui.search.tags.SearchTagsActivity;
 
 /**
  * This parent class contains common methods that run in every activity such as search.

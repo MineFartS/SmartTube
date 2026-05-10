@@ -1,6 +1,6 @@
-package SmartTubeApp.app.views;
+package minefarts.smarttube.app.views;
 
-import SmartTubeApp.app.models.data.Video;
+import minefarts.smarttube.app.models.data.Video;
 
 public interface DetailsView {
     void openVideo(Video video);

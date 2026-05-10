@@ -1,6 +1,6 @@
 
 
-package SmartTubeApp.commons.models;
+package minefarts.smarttube.commons.models;
 
 /**
  * For implementing by real user model

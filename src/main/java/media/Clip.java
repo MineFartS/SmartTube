@@ -1,6 +1,6 @@
 
 
-package SmartTubeApp.media;
+package minefarts.smarttube.media;
 
 import android.os.Parcel;
 import android.os.Parcelable;

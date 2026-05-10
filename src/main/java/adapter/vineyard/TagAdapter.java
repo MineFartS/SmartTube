@@ -1,10 +1,10 @@
-package SmartTubeApp.adapter.vineyard;
+package minefarts.smarttube.adapter.vineyard;
 
 import android.content.Context;
 
 import androidx.leanback.widget.Presenter;
-import SmartTubeApp.app.models.search.vineyard.Tag;
-import SmartTubeApp.presenter.vineyard.TagPresenter;
+import minefarts.smarttube.app.models.search.vineyard.Tag;
+import minefarts.smarttube.presenter.vineyard.TagPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
