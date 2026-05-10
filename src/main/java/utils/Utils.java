@@ -291,34 +291,6 @@ public class Utils {
         return 100;
     }
 
-    public static void initVolume(Context context) {
-        if (sGlobalVolumeFixed != null) {
-            return;
-        }
-
-        if ("D2150 (Nebula-Cosmos-Max)".equals(Helpers.getDeviceName())) { // A projector
-            sGlobalVolumeFixed = true;
-            return;
-        }
-
-        int volume = getGlobalVolume(context);
-        setGlobalVolume(context, volume > 50 ? volume - 10 : volume + 10);
-        sGlobalVolumeFixed = volume == getGlobalVolume(context);
-        setGlobalVolume(context, volume);
-    }
-
-    /**
-     * Global volume may not be supported (see FireTV Stick)
-     */
-    private static boolean isGlobalVolumeFixed(Context context) {
-        if (sGlobalVolumeFixed != null) {
-            return sGlobalVolumeFixed;
-        }
-
-        initVolume(context);
-        return sGlobalVolumeFixed;
-    }
-
     /**
      * Volume: 0 - 100
      */
@@ -349,35 +321,25 @@ public class Utils {
     /**
      * Volume: 0 - 100
      */
-    public static void setVolume(Context context, PlayerEngine player, int volume) {
+    public static void setVolume(
+        Context context, 
+        PlayerEngine player, 
+        int volume
+    ) {
+        if (context == null || player ==  null) return;
+
         Log.d(TAG, "setVolume: %s", volume);
 
-        if (volume < 0) {
+        if (volume < 0)
             volume = 0;
-        }
 
-        if (context != null) {
-            if (isGlobalVolumeFixed(context)) {
-                setPlayerVolume(context, player, volume);
-            } else {
-                try {
-                    setGlobalVolume(context, volume);
-                    showSystemVolumeUI(context);
-                } catch (SecurityException e) {
-                    // Permission denial: writing to settings requires:android.permission.WRITE_SECURE_SETTINGS
-                    setPlayerVolume(context, player, volume);
-                }
-            }
-        }
-    }
-
-    @SuppressLint("StringFormatMatches")
-    private static void setPlayerVolume(Context context, PlayerEngine player, int volume) {
-        if (player == null) {
-            return;
-        }
         player.setVolume(volume / 100f);
-        MessageHelpers.showMessage(context, context.getString(R.string.volume, getPlayerVolume(player)));
+        
+        MessageHelpers.showMessage(
+            context, 
+            context.getString(R.string.volume, getPlayerVolume(player))
+        );
+        
     }
 
     public static void volumeUp(Context context, PlayerEngine player, boolean up) {
@@ -390,34 +352,6 @@ public class Utils {
             } else {
                 setVolume(context, player, Math.max(volume - delta, 0));
             }
-        }
-    }
-
-    @SuppressLint("StringFormatMatches")
-    public static void volumeUpPlayer(Context context, PlayerEngine player, boolean up) {
-        if (player != null) {
-            int volume = (int) (player.getVolume() * 100);
-            int round = 10 - volume % 10;
-            if (round != 10) {
-                volume += round;
-            }
-            final int delta = 10; // volume step
-
-            int newVolume;
-
-            if (up) {
-                newVolume = Math.min(volume + delta, 300);
-            } else {
-                newVolume = Math.max(volume - delta, 0);
-            }
-
-            player.setVolume(newVolume / 100f);
-
-            PlayerData.instance(context).setPlayerVolume(newVolume / 100f);
-
-            // Check that volume is set.
-            // Because global value may not be supported (see FireTV Stick).
-            MessageHelpers.showMessage(context, context.getString(R.string.volume, (int) (player.getVolume() * 100)));
         }
     }
 
