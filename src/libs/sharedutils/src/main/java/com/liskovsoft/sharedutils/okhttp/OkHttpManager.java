@@ -47,6 +47,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.okhttp.interceptors.RateLimitInterceptor;
 import com.liskovsoft.sharedutils.okhttp.interceptors.UnzippingInterceptor;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
+import com.liskovsoft.sharedutils.okhttp.ApiCaller;
 
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor;
 
@@ -63,8 +64,11 @@ public class OkHttpManager {
     private OkHttpClient mClient;
 
     public static OkHttpManager instance() {
+        
         if (sInstance == null)
             sInstance = new OkHttpManager();
+        
+        ApiCaller.setBypassEnabled(true);
 
         return sInstance;
     }
