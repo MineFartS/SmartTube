@@ -277,7 +277,7 @@ public class ViewManager {
     }
 
     public boolean isPlayerOnlyModeEnabled() {
-        return mIsPlayerOnlyModeEnabled && !PlaybackPresenter.instance(mContext).isInPipMode();
+        return mIsPlayerOnlyModeEnabled;
     }
 
     public void clearCaches() {

@@ -16,7 +16,6 @@ import minefarts.smarttube.app.models.data.Queue;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.data.VideoGroup;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
-import minefarts.smarttube.app.presenters.interfaces.Presenter;
 import minefarts.smarttube.app.presenters.service.SidebarService;
 import minefarts.smarttube.app.views.BrowseView;
 import minefarts.smarttube.app.views.ChannelUploadsView;
@@ -35,30 +34,32 @@ import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class BasePresenter<T> implements Presenter<T> {
+public abstract class BasePresenter<T> {
+
     private WeakReference<T> mView = new WeakReference<>(null);
     private WeakReference<Activity> mActivity = new WeakReference<>(null);
     private WeakReference<Context> mApplicationContext = new WeakReference<>(null);
+    
+    public void onFinish() {
+        // NOP
+    }
 
     public BasePresenter(Context context) {
         setContext(context);
     }
 
-    @Override
     public void setView(T view) {
         if (checkView(view)) {
             mView = new WeakReference<>(view);
         }
     }
 
-    @Override
     public T getView() {
         T view = mView.get();
 
         return checkView(view) ? view : null;
     }
 
-    @Override
     public void setContext(Context context) {
         
         if (context == null) return;
@@ -75,7 +76,6 @@ public abstract class BasePresenter<T> implements Presenter<T> {
         mApplicationContext = new WeakReference<>(context.getApplicationContext());
     }
 
-    @Override
     public Context getContext() {
         Activity activity = null;
 
@@ -95,12 +95,10 @@ public abstract class BasePresenter<T> implements Presenter<T> {
         return Utils.checkActivity(activity) ? activity : mApplicationContext.get();
     }
 
-    @Override
     public void onViewInitialized() {
         enableSync();
     }
 
-    @Override
     public void onViewDestroyed() {
         // Multiple views with same presenter fix?
         // View stays in RAM after has been destroyed. Is it a bug?
@@ -108,12 +106,10 @@ public abstract class BasePresenter<T> implements Presenter<T> {
         //mActivity = new WeakReference<>(null);
     }
 
-    @Override
     public void onViewPaused() {
         // NOP
     }
 
-    @Override
     public void onViewResumed() {
         if (canViewBeSynced()) {
             // NOTE: don't place cleanup in the onViewResumed!!! This could cause errors when view is resumed.
@@ -123,14 +119,6 @@ public abstract class BasePresenter<T> implements Presenter<T> {
         }
 
         //showBootDialogs();
-    }
-
-    @Override
-    public void onFinish() {
-        if (getSearchData().getTempBackgroundModeClass() == this.getClass() &&
-            getPlaybackPresenter().isRunningInBackground()) {
-            getViewManager().startView(PlayerEngine.class);
-        }
     }
 
     protected void removeItem(Video item) {

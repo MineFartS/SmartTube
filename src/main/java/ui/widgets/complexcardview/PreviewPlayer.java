@@ -381,11 +381,6 @@ public class PreviewPlayer extends PlayerView implements PlayerEngine {
     }
 
     @Override
-    public Boolean isInPIPMode() {
-        return false;
-    }
-
-    @Override
     public Boolean containsMedia() {
         if (mExoPlayerController == null) {
             return false;

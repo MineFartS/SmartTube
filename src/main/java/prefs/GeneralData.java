@@ -28,7 +28,6 @@ public class GeneralData implements ProfileChangeListener {
     private final AppPrefs mPrefs;
     private final DataStore mDataStore;
 
-    private int mBackgroundShortcut;
     private String mLastPlaylistId;
     private String mLastPlaylistTitle;
     private int mVersionCode;
@@ -59,15 +58,6 @@ public class GeneralData implements ProfileChangeListener {
         }
 
         return sInstance;
-    }
-
-    public int getBackgroundPlaybackShortcut() {
-        return mBackgroundShortcut;
-    }
-
-    public void setBackgroundPlaybackShortcut(int type) {
-        mBackgroundShortcut = type;
-        persistState();
     }
 
     public boolean isRememberSubscriptionsPositionEnabled() {
@@ -212,7 +202,6 @@ public class GeneralData implements ProfileChangeListener {
 
     private synchronized void restoreState() {
 
-        /* 00 */ mBackgroundShortcut = mDataStore.get(0, BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK);
         /* 01 */ mLastPlaylistId = mDataStore.get(1);
         /* 02 */ mLastPlaylistTitle = mDataStore.get(2);
         /* 03 */ mPlaylistOrder = mDataStore.get(3);
@@ -228,7 +217,7 @@ public class GeneralData implements ProfileChangeListener {
 
     public void persistState() {
 
-        /* 00 */ mDataStore.put(0, mBackgroundShortcut); 
+        /* 00 */ mDataStore.put(0, null); 
         /* 01 */ mDataStore.put(1, mLastPlaylistId);
         /* 02 */ mDataStore.put(2, mLastPlaylistTitle);
         /* 03 */ mDataStore.put(3, mPlaylistOrder);

@@ -103,10 +103,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 option -> mPlayerTweaksData.setSectionPlaylistEnabled(option.isSelected()),
                 mPlayerTweaksData.isSectionPlaylistEnabled()));
 
-        options.add(UiOptionItem.from(getContext().getString(R.string.search_background_playback),
-                option -> mSearchData.setTempBackgroundModeEnabled(option.isSelected()),
-                mSearchData.isTempBackgroundModeEnabled()));
-
         options.add(UiOptionItem.from(getContext().getString(R.string.player_loop_shorts),
                 option -> mPlayerTweaksData.setLoopShortsEnabled(option.isSelected()),
                 mPlayerTweaksData.isLoopShortsEnabled()));

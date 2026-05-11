@@ -20,11 +20,6 @@ public interface PlayerEngine {
     int PLAYBACK_MODE_SHUFFLE = 4;
     int PLAYBACK_MODE_LIST = 5;
     int PLAYBACK_MODE_REVERSE_LIST = 6;
-
-    int BACKGROUND_MODE_DEFAULT = 0;
-    int BACKGROUND_MODE_SOUND = 1;
-    int BACKGROUND_MODE_PIP = 2;
-    int BACKGROUND_MODE_PLAY_BEHIND = 3;
     
     float ASPECT_RATIO_1_1 = 1f;
     float ASPECT_RATIO_4_3 = 1.33f;
@@ -142,10 +137,6 @@ public interface PlayerEngine {
     }
     
     default Boolean isEngineBlocked() {
-        return null;
-    }
-    
-    default Boolean isInPIPMode() {
         return null;
     }
     

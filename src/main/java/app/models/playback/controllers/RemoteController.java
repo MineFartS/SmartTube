@@ -378,14 +378,14 @@ public class RemoteController extends BasePlayerController implements OnDataChan
                 int volume = command.getVolume();
 
                 if (command.getDelta() != -1) { // using phone volume sliders
-                    volume = Utils.getVolume(getContext(), getPlayer()) + command.getDelta();
+                    volume = Utils.getVolume(getPlayer()) + command.getDelta();
                 }
 
                 Utils.setVolume(getContext(), getPlayer(), volume);
                 mVolumeSelfChangeMs = System.currentTimeMillis();
 
                 if (command.getDelta() != -1) { // using phone volume sliders
-                    postVolumeChange(Utils.getVolume(getContext(), getPlayer()));
+                    postVolumeChange(Utils.getVolume(getPlayer()));
                 } else {
                     postVolumeChange(volume);
                 }
@@ -501,13 +501,13 @@ public class RemoteController extends BasePlayerController implements OnDataChan
             @Override
             public void onChange(boolean selfChange) {
                 if (System.currentTimeMillis() - mVolumeSelfChangeMs > 1_000) {
-                    postVolumeChange(Utils.getVolume(getContext(), getPlayer()));
+                    postVolumeChange(Utils.getVolume(getPlayer()));
                 }
             }
         };
         Utils.registerAudioObserver(getContext(), mVolumeObserver);
 
-        postVolumeChange(Utils.getVolume(getContext(), getPlayer()));
+        postVolumeChange(Utils.getVolume(getPlayer()));
     }
 
     private void unregisterVolumeObserver() {

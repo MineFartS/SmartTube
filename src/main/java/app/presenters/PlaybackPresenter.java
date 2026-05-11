@@ -129,14 +129,9 @@ public class PlaybackPresenter extends BasePresenter<PlayerEngine> implements Pl
     public boolean isRunningInBackground() {
         return getView() != null &&
                 getView().isEngineBlocked() &&
-                //getView().getBackgroundMode() != PlayerEngine.BACKGROUND_MODE_DEFAULT &&
                 getView().isEngineInitialized() &&
                 !getViewManager().isPlayerInForeground() &&
                 getContext() instanceof Activity && Utils.checkActivity((Activity) getContext()); // Check that activity is not in Finishing state
-    }
-
-    public boolean isInPipMode() {
-        return getView() != null && getView().isInPIPMode();
     }
 
     public Boolean isOverlayShown() {
