@@ -38,7 +38,6 @@ public class MotherActivity extends FragmentActivity {
     private static final float DEFAULT_DENSITY = 2.0f; // xhdpi
     private static final float DEFAULT_WIDTH = 1920f; // xhdpi
     private static DisplayMetrics sCachedDisplayMetrics;
-    protected static boolean sIsInPipMode;
 
     // Make static in case Don't keep activities enabled in Developer settings
     private static List<OnPermissions> mOnPermissions;
@@ -253,7 +252,6 @@ public class MotherActivity extends FragmentActivity {
      */
     public static void invalidate() {
         sCachedDisplayMetrics = null;
-        sIsInPipMode = false;
     }
 
     public static DisplayMetrics getCachedDisplayMetrics() {

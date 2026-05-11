@@ -120,63 +120,6 @@ public class PlaybackActivity extends LeanbackActivity {
         return super.onGenericMotionEvent(event);
     }
 
-    // For N devices that support it, not "officially"
-    // More: https://medium.com/s23nyc-tech/drop-in-android-video-exoplayer2-with-picture-in-picture-e2d4f8c1eb30
-    @TargetApi(24)
-    @SuppressWarnings("deprecation")
-    private void enterPipMode() {
-        // NOTE: When exiting PIP mode onPause is called immediately after onResume
-
-        // Also, avoid enter pip on stop!
-        // More info: https://developer.android.com/guide/topics/ui/picture-in-picture#continuing_playback
-
-        if (Helpers.isPictureInPictureSupported(this)) {
-            if (wannaEnterToPip()) {
-                Log.d(TAG, "Entering PIP mode...");
-
-                try {
-                    if (Build.VERSION.SDK_INT >= 26) {
-                        PictureInPictureParams.Builder params = new PictureInPictureParams.Builder();
-                        enterPictureInPictureMode(params.build());
-                    } else {
-                        enterPictureInPictureMode();
-                    }
-                } catch (Exception e) {
-                    // Device doesn't support picture-in-picture mode
-                    Log.e(TAG, e.getMessage());
-                }
-            }
-        }
-    }
-
-    /**
-     * BACK pressed, PIP player's button pressed
-     */
-    @Override
-    public void finish() {
-        Log.d(TAG, "Finishing activity...");
-
-        // NOTE: When exiting PIP mode onPause is called immediately after onResume
-
-        // Also, avoid enter pip on stop!
-        // More info: https://developer.android.com/guide/topics/ui/picture-in-picture#continuing_playback
-
-        // NOTE: block back button for PIP.
-        // User pressed PIP button in the player.
-        if (!skipPip()) {
-            enterPipMode(); // NOTE: without this call app will hangs when pressing on PIP button
-        }
-
-        if (doNotDestroy() && !skipPip()) {
-            mPlaybackFragment.blockEngine(true);
-            // Ensure to opening this activity when the user is returning to the app
-            getViewManager().blockTop(this);
-            getViewManager().startParentView(this);
-        } else {
-            super.finish();
-        }
-    }
-
     @Override
     public void finishReally() {
         mPlaybackFragment.onFinish();
@@ -196,111 +139,15 @@ public class PlaybackActivity extends LeanbackActivity {
     }
 
     @SuppressWarnings("deprecation")
-    private void enterBackgroundPlayMode() {
-        if (Build.VERSION.SDK_INT >= 21 && Build.VERSION.SDK_INT < 26) {
-            if (Build.VERSION.SDK_INT == 21) {
-                // Playback pause fix?
-                mPlaybackFragment.showOverlay(true);
-            }
-
-            if (mPlaybackFragment.isPlaying()) {
-                // Argument equals true to notify the system that the activity
-                // wishes to be visible behind other translucent activities
-                if (!requestVisibleBehind(true)) {
-                    // App-specific method to stop playback and release resources
-                    // because call to requestVisibleBehind(true) failed
-                    mPlaybackFragment.onDestroy();
-                }
-            } else {
-                // Argument equals false because the activity is not playing
-                requestVisibleBehind(false);
-            }
-        }
-    }
-
-    @SuppressWarnings("deprecation")
     @Override
     public void onVisibleBehindCanceled() {
         // App-specific method to stop playback and release resources
         mPlaybackFragment.onDestroy();
         super.onVisibleBehindCanceled();
     }
-
-    @Override
-    public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode) {
-        super.onPictureInPictureModeChanged(isInPictureInPictureMode);
-
-        mPlaybackFragment.onPIPChanged(isInPictureInPictureMode);
-    }
-
-    /**
-     * HOME or BACK pressed
-     */
-    @Override
-    public void onUserLeaveHint() {
-        // Check that user not open dialog/search activity instead of really leaving the activity
-        // Activity may be overlapped by the dialog, back is pressed or new view started
-        if (mIsBackPressed || isFinishing() || getViewManager().isNewViewPending() || getGeneralData().getBackgroundPlaybackShortcut() == GeneralData.BACKGROUND_PLAYBACK_SHORTCUT_BACK) {
-            return;
-        }
-
-        switch (getPlayerData().getBackgroundMode()) {
-            case PlayerData.BACKGROUND_MODE_PLAY_BEHIND:
-                enterBackgroundPlayMode();
-                // Do we need to do something additional when running Play Behind?
-                break;
-            case PlayerData.BACKGROUND_MODE_PIP:
-                enterPipMode();
-                if (doNotDestroy()) {
-                    mPlaybackFragment.blockEngine(true);
-                    // Ensure to opening this activity when the user will return to the app
-                    getViewManager().blockTop(this);
-
-                }
-                break;
-            case PlayerData.BACKGROUND_MODE_SOUND:
-                if (doNotDestroy()) {
-                    // Ensure to continue a playback
-                    mPlaybackFragment.blockEngine(true);
-                    getViewManager().blockTop(this);
-
-                }
-                break;
-        }
-    }
-
-    public boolean isInPipMode() {
-        if (Build.VERSION.SDK_INT < 24) {
-            return false;
-        }
-
-        return isInPictureInPictureMode();
-    }
-
+    
     public PlayerEngine getPlayerEngine() {
         return mPlaybackFragment;
-    }
-
-    private boolean skipPip() {
-        return mIsBackPressed && getGeneralData().getBackgroundPlaybackShortcut() == GeneralData.BACKGROUND_PLAYBACK_SHORTCUT_HOME;
-    }
-
-    private boolean isEngineBlocked() {
-        return mPlaybackFragment != null && mPlaybackFragment.isEngineBlocked();
-    }
-
-    @TargetApi(24)
-    private boolean wannaEnterToPip() {
-
-        boolean isPip = getPlayerData().getBackgroundMode() == PlayerData.BACKGROUND_MODE_PIP || isEngineBlocked();
-        return isPip && !isInPictureInPictureMode();
-    }
-
-    private boolean doNotDestroy() {
-        sIsInPipMode = isInPipMode();
-
-        boolean isBackground = getPlayerData().getBackgroundMode() == PlayerEngine.BACKGROUND_MODE_SOUND || isEngineBlocked();
-        return sIsInPipMode || isBackground;
     }
 
 }

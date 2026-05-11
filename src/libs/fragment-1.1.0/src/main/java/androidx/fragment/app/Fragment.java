@@ -1775,15 +1775,6 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
     public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
     }
 
-    /**
-     * Called by the system when the activity changes to and from picture-in-picture mode. This is
-     * generally tied to {@link Activity#onPictureInPictureModeChanged} of the containing Activity.
-     *
-     * @param isInPictureInPictureMode True if the activity is in picture-in-picture mode.
-     */
-    public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode) {
-    }
-
     @Override
     @CallSuper
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
@@ -2665,11 +2656,6 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
         mChildFragmentManager.dispatchMultiWindowModeChanged(isInMultiWindowMode);
     }
 
-    void performPictureInPictureModeChanged(boolean isInPictureInPictureMode) {
-        onPictureInPictureModeChanged(isInPictureInPictureMode);
-        mChildFragmentManager.dispatchPictureInPictureModeChanged(isInPictureInPictureMode);
-    }
-
     void performConfigurationChanged(@NonNull Configuration newConfig) {
         onConfigurationChanged(newConfig);
         mChildFragmentManager.dispatchConfigurationChanged(newConfig);
@@ -2679,15 +2665,6 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
         onLowMemory();
         mChildFragmentManager.dispatchLowMemory();
     }
-
-    /*
-    void performTrimMemory(int level) {
-        onTrimMemory(level);
-        if (mChildFragmentManager != null) {
-            mChildFragmentManager.dispatchTrimMemory(level);
-        }
-    }
-    */
 
     boolean performCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         boolean show = false;

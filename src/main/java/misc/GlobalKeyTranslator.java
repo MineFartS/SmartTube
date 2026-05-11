@@ -25,12 +25,8 @@ public class GlobalKeyTranslator extends KeyTranslator {
         // Fix for the unknown usb remote controller: https://smartyoutubetv.github.io/#comment-3742343397
         globalKeyMapping.put(KeyEvent.KEYCODE_ESCAPE, KeyEvent.KEYCODE_BACK);
 
-        // May help on buggy firmwares (where Enter key is used as OK)
-        if (!getPlaybackPresenter().isInPipMode()) {
-            globalKeyMapping.put(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, KeyEvent.KEYCODE_DPAD_CENTER);
-        } else {
-            globalKeyMapping.remove(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE);
-        }
+        globalKeyMapping.put(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, KeyEvent.KEYCODE_DPAD_CENTER);
+
     }
 
     @Override

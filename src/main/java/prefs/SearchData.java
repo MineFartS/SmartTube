@@ -14,8 +14,6 @@ public class SearchData {
     private final AppPrefs mAppPrefs;
 
     private int mSearchOptions;
-    private boolean mIsTempBackgroundModeEnabled;
-    private Class<?> mTempBackgroundModeClass;
     private boolean mIsTrendingSearchesEnabled;
     private boolean mIsPopularSearchesDisabled;
 
@@ -50,23 +48,6 @@ public class SearchData {
         return mIsTrendingSearchesEnabled;
     }
 
-    public boolean isTempBackgroundModeEnabled() {
-        return mIsTempBackgroundModeEnabled;
-    }
-
-    public void setTempBackgroundModeEnabled(boolean enabled) {
-        mIsTempBackgroundModeEnabled = enabled;
-        persistState();
-    }
-
-    public Class<?> getTempBackgroundModeClass() {
-        return mTempBackgroundModeClass;
-    }
-
-    public void setTempBackgroundModeClass(Class<?> clazz) {
-        mTempBackgroundModeClass = clazz;
-    }
-
     public boolean isPopularSearchesDisabled() {
         return mIsPopularSearchesDisabled;
     }
@@ -82,7 +63,6 @@ public class SearchData {
         String[] split = Helpers.splitData(data);
 
         /* 0 */ mSearchOptions = Helpers.parseInt(split, 0, 0);
-        /* 1 */ mIsTempBackgroundModeEnabled = Helpers.parseBoolean(split, 1, false);
         /* 2 */ mIsTrendingSearchesEnabled = Helpers.parseBoolean(split, 2, true);
         /* 3 */ mIsPopularSearchesDisabled = Helpers.parseBoolean(split, 3, false);
     
@@ -93,7 +73,7 @@ public class SearchData {
             SEARCH_DATA,
             Helpers.mergeData(
             /* 0 */ mSearchOptions, 
-            /* 1 */ mIsTempBackgroundModeEnabled, 
+            /* 1 */ null, 
             /* 2 */ mIsTrendingSearchesEnabled,
             /* 3 */ mIsPopularSearchesDisabled
             )
