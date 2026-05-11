@@ -347,19 +347,21 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
     }
   }
 
-  private void disableTrackSelectionsInResult() {
-    TrackSelectorResult trackSelectorResult = this.trackSelectorResult;
-    if (next != null && trackSelectorResult != null) {
-      return;
+    private void disableTrackSelectionsInResult() {
+
+        if (next == null || this.trackSelectorResult == null) return;
+
+        for (int i = 0; i < this.trackSelectorResult.length; i++) {
+
+            TrackSelection trackSelection = this.trackSelectorResult.selections.get(i);
+
+            if (this.trackSelectorResult.isRendererEnabled(i) && trackSelection != null) {
+                trackSelection.disable();
+            }
+            
+        }
+        
     }
-    for (int i = 0; i < trackSelectorResult.length; i++) {
-      boolean rendererEnabled = trackSelectorResult.isRendererEnabled(i);
-      TrackSelection trackSelection = trackSelectorResult.selections.get(i);
-      if (rendererEnabled && trackSelection != null) {
-        trackSelection.disable();
-      }
-    }
-  }
 
   /**
    * For each renderer of type {@link C#TRACK_TYPE_NONE}, we will remove the dummy {@link
