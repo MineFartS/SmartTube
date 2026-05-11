@@ -344,10 +344,29 @@ public class BaseCardView extends FrameLayout {
      */
     @Override
     public void setSelected(boolean selected) {
-        if (selected != isSelected()) {
-            super.setSelected(selected);
-            applySelectedState(isSelected());
+
+        if (selected == isSelected()) return;
+
+        super.setSelected(selected);
+
+        removeCallbacks(mAnimationTrigger);
+
+        if (mCardType == CARD_TYPE_INFO_UNDER_WITH_EXTRA) {
+            // Focus changes for card type CARD_TYPE_INFO_UNDER_WITH_EXTRA
+            if (selected) {
+                animateInfoOffset(false);
+            } else {
+                if (!mDelaySelectedAnim) {
+                    post(mAnimationTrigger);
+                    mDelaySelectedAnim = true;
+                } else {
+                    postDelayed(mAnimationTrigger, mSelectedAnimationDelay);
+                }
+            }
+        } else if (mInfoVisibility == CARD_REGION_VISIBLE_SELECTED) {
+            setInfoViewVisibility(!selected);
         }
+
     }
 
     @Override
@@ -641,26 +660,6 @@ public class BaseCardView extends FrameLayout {
         } else if (mCardType == CARD_TYPE_INFO_OVER) {
             // Active state changes for card type CARD_TYPE_INFO_OVER
             animateInfoAlpha(visible);
-        }
-    }
-
-    private void applySelectedState(boolean focused) {
-        removeCallbacks(mAnimationTrigger);
-
-        if (mCardType == CARD_TYPE_INFO_UNDER_WITH_EXTRA) {
-            // Focus changes for card type CARD_TYPE_INFO_UNDER_WITH_EXTRA
-            if (focused) {
-                if (!mDelaySelectedAnim) {
-                    post(mAnimationTrigger);
-                    mDelaySelectedAnim = true;
-                } else {
-                    postDelayed(mAnimationTrigger, mSelectedAnimationDelay);
-                }
-            } else {
-                animateInfoOffset(false);
-            }
-        } else if (mInfoVisibility == CARD_REGION_VISIBLE_SELECTED) {
-            setInfoViewVisibility(focused);
         }
     }
 

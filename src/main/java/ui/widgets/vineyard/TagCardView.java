@@ -8,25 +8,80 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.BaseCardView;
+
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import minefarts.smarttube.R;
+import minefarts.smarttube.misc.CardColors;
 
 public class TagCardView extends BaseCardView {
+
+    private CardColors mCardColors;
+
     TextView mTagNameText;
     ImageView mResultImage;
 
     public TagCardView(Context context, int styleResId) {
-        super(new ContextThemeWrapper(context, styleResId), null, 0);
-        buildLoadingCardView(styleResId);
+        
+        super(
+            new ContextThemeWrapper(context, styleResId), 
+            null, 
+            0
+        ); 
+        
+        buildLoadingCardView(context, styleResId);
+    
     }
 
     public TagCardView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(getStyledContext(context, attrs, defStyleAttr), attrs, defStyleAttr);
-        buildLoadingCardView(getImageCardViewStyle(context, attrs, defStyleAttr));
+        
+        super(
+            getStyledContext(context, attrs, defStyleAttr), 
+            attrs, 
+            defStyleAttr
+        );
+        
+        buildLoadingCardView(
+            context,
+            getImageCardViewStyle(context, attrs, defStyleAttr)
+        );
+    
     }
 
-    private void buildLoadingCardView(int styleResId) {
+    @Override
+    public void setSelected(boolean selected) {
+        
+        setBackgroundColor(selected ? mCardColors.SelectedBackgroundColor : mCardColors.DefaultBackgroundColor);
+        setTextColor(selected ? mCardColors.SelectedTextColor : mCardColors.DefaultTextColor);
+        
+        super.setSelected(selected);
+
+    }
+
+    @Override
+    public boolean dispatchHoverEvent(android.view.MotionEvent event) {
+        
+        int action = event.getAction();
+        
+        if (action == android.view.MotionEvent.ACTION_HOVER_ENTER 
+            || action == android.view.MotionEvent.ACTION_HOVER_MOVE
+        ) {
+            setSelected(true);
+            return true;
+        } else if (action == android.view.MotionEvent.ACTION_HOVER_EXIT) {
+            setSelected(false);
+            return true;
+        }
+
+        return super.dispatchHoverEvent(event);
+    }
+
+    private void buildLoadingCardView(Context context, int styleResId) {
+
+        mCardColors = new CardColors(context);
+
         setFocusable(false);
         setFocusableInTouchMode(false);
         setCardType(CARD_TYPE_MAIN_ONLY);

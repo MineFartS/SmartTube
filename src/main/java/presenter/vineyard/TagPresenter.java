@@ -3,7 +3,6 @@ package minefarts.smarttube.presenter.vineyard;
 import android.view.ViewGroup;
 
 import androidx.core.content.ContextCompat;
-import com.liskovsoft.sharedutils.helpers.Helpers;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.search.vineyard.Tag;
 import minefarts.smarttube.app.models.search.vineyard.User;
@@ -11,10 +10,6 @@ import minefarts.smarttube.presenter.base.LongClickPresenter;
 import minefarts.smarttube.ui.widgets.vineyard.TagCardView;
 
 public class TagPresenter extends LongClickPresenter {
-    private static int sDefaultBackgroundColor;
-    private static int sDefaultTextColor;
-    private static int sSelectedBackgroundColor;
-    private static int sSelectedTextColor;
 
     private OnItemClickListener mClickListener;
     private OnItemSelectedListener mSelectedListener;
@@ -37,37 +32,14 @@ public class TagPresenter extends LongClickPresenter {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent) {
-        sDefaultBackgroundColor =
-                ContextCompat.getColor(parent.getContext(), Helpers.getThemeAttr(parent.getContext(), R.attr.cardDefaultBackground));
-        sDefaultTextColor =
-                ContextCompat.getColor(parent.getContext(), R.color.card_default_text);
-        sSelectedBackgroundColor =
-                ContextCompat.getColor(parent.getContext(), R.color.card_selected_background_white);
-        sSelectedTextColor =
-                ContextCompat.getColor(parent.getContext(), R.color.card_selected_text_grey);
-
-        TagCardView cardView = new TagCardView(parent.getContext()) {
-            @Override
-            public void setSelected(boolean selected) {
-                updateCardBackgroundColor(this, selected);
-                updateCardTextColor(this, selected);
-                super.setSelected(selected);
-            }
-        };
+        
+        TagCardView cardView = new TagCardView(parent.getContext());
 
         cardView.setFocusable(true);
         cardView.setFocusableInTouchMode(true);
-        updateCardBackgroundColor(cardView, false);
-        updateCardTextColor(cardView, false);
+        cardView.setSelected(false);
+        
         return new ViewHolder(cardView);
-    }
-
-    private static void updateCardBackgroundColor(TagCardView view, boolean selected) {
-        view.setBackgroundColor(selected ? sSelectedBackgroundColor : sDefaultBackgroundColor);
-    }
-
-    private static void updateCardTextColor(TagCardView view, boolean selected) {
-        view.setTextColor(selected ? sSelectedTextColor : sDefaultTextColor);
     }
 
     @Override
