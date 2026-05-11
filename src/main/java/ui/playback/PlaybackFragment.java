@@ -990,18 +990,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
     }
 
     @Override
-    public Boolean isInPIPMode() {
-        PlaybackActivity playbackActivity = (PlaybackActivity) getActivity();
-
-        if (playbackActivity == null) {
-            return false;
-        }
-
-        // Old api fix
-        return playbackActivity.isInPipMode();
-    }
-
-    @Override
     public Boolean containsMedia() {
         return mExoPlayerController.containsMedia();
     }
@@ -1144,28 +1132,24 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
      */
     @Override
     public void showOverlay(boolean show) {
-        if (forbidShowOverlay(show)) {
-            return;
-        }
 
         if (show) {
             showControlsOverlay(true);
         } else {
             hideControlsOverlay(true);
         }
+
     }
 
     @Override
     public void showSuggestions(boolean show) {
-        if (forbidShowOverlay(show)) {
-            return;
-        }
 
         showOverlay(show);
 
         if (show && !isSuggestionsShown() && !isSuggestionsEmpty()) {
             setPlayerRowIndex(1);
         }
+
     }
 
     /**
@@ -1173,12 +1157,7 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
      */
     @Override
     public void showControls(boolean show) {
-        if (forbidShowOverlay(show)) {
-            return;
-        }
-
         showOverlay(show);
-
         setPlayerRowIndex(0);
     }
 
@@ -1481,13 +1460,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
                 liveChat.setVisibility(show ? View.VISIBLE : View.GONE);
             }
         }
-    }
-
-    /**
-     * UI couldn't be properly displayed in PIP mode
-     */
-    private boolean forbidShowOverlay(boolean show) {
-        return show && isInPIPMode();
     }
 
     /**

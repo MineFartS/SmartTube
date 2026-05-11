@@ -294,28 +294,11 @@ public class Utils {
     /**
      * Volume: 0 - 100
      */
-    public static int getVolume(Context context, PlayerEngine player) {
-        if (context != null) {
-            if (isGlobalVolumeFixed(context)) {
-                return getPlayerVolume(player);
-            } else {
-                try {
-                    return getGlobalVolume(context);
-                } catch (SecurityException e) {
-                    // Permission denial: writing to settings requires:android.permission.WRITE_SECURE_SETTINGS
-                    return getPlayerVolume(player);
-                }
-            }
-        }
-
-        return 100;
-    }
-
-    private static int getPlayerVolume(PlayerEngine player) {
-        if (player == null) {
-            return -1;
-        }
-        return (int)(player.getVolume() * 100);
+    public static int getVolume(PlayerEngine player) {
+        
+        if (player == null) return -1;
+        
+        return (int) (player.getVolume() * 100);
     }
 
     /**
@@ -337,14 +320,14 @@ public class Utils {
         
         MessageHelpers.showMessage(
             context, 
-            context.getString(R.string.volume, getPlayerVolume(player))
+            context.getString(R.string.volume, getVolume(player))
         );
         
     }
 
     public static void volumeUp(Context context, PlayerEngine player, boolean up) {
         if (player != null) {
-            int volume = getVolume(context, player);
+            int volume = getVolume(player);
             final int delta = 1; // volume step
 
             if (up) {

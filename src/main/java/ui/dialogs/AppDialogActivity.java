@@ -85,15 +85,4 @@ public class AppDialogActivity extends MotherActivity {
         finishReally();
     }
 
-    @Override
-    protected void onUserLeaveHint() {
-        super.onUserLeaveHint();
-
-        // Respect PIP mode
-        if (ViewManager.instance(this).getTopView() == PlayerEngine.class && PlaybackPresenter.instance(this).getContext() instanceof PlaybackActivity) {
-            ((PlaybackActivity) PlaybackPresenter.instance(this).getContext()).onUserLeaveHint();
-        }
-
-        finish();
-    }
 }

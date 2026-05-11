@@ -270,22 +270,10 @@ public class PlayerUIController extends BasePlayerController {
             return;
         }
 
-        // Reset temp mode.
-        getSearchData().setTempBackgroundModeClass(null);
-
         getPlayer().showSubtitles(true);
 
         // Maybe dialog just closed. Reset timeout just in case.
         enableUiAutoHideTimeout();
-    }
-
-    @Override
-    public void onViewPaused() {
-        if (getPlayer() != null && getPlayer().isInPIPMode()) {
-            // UI couldn't be properly displayed in PIP mode
-            getPlayer().showOverlay(false);
-            getPlayer().showSubtitles(false);
-        }
     }
 
     private void resetButtonStates() {
@@ -648,22 +636,6 @@ public class PlayerUIController extends BasePlayerController {
 
     }
 
-    private void startTempBackgroundMode(Class<?> clazz) {
-        
-        SearchData searchData = getSearchData();
-        
-        if (searchData.isTempBackgroundModeEnabled()) {
-
-            searchData.setTempBackgroundModeClass(clazz);
-            
-            getPlayer().showOverlay(false);
-            getPlayer().blockEngine(true);
-            getPlayer().finish();
-        
-        }
-
-    }
-
     private boolean isSubtitleSelected() {
         if (getPlayer() == null) {
             return false;
@@ -762,7 +734,6 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private void openChannel() {
-        startTempBackgroundMode(ChannelPresenter.class);
         ChannelPresenter.instance(getContext()).openChannel(getVideo());
     }
 }

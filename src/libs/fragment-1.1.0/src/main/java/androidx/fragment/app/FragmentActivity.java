@@ -239,21 +239,6 @@ public class FragmentActivity extends ComponentActivity implements
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * <p><strong>Note:</strong> If you override this method you must call
-     * <code>super.onPictureInPictureModeChanged</code> to correctly dispatch the event
-     * to support fragments attached to this activity.</p>
-     *
-     * @param isInPictureInPictureMode True if the activity is in picture-in-picture mode.
-     */
-    @Override
-    @CallSuper
-    public void onPictureInPictureModeChanged(boolean isInPictureInPictureMode) {
-        mFragments.dispatchPictureInPictureModeChanged(isInPictureInPictureMode);
-    }
-
-    /**
      * Dispatch configuration change to all fragments.
      */
     @Override

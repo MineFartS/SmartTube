@@ -484,14 +484,6 @@ public final class Helpers {
 
     }
 
-    public static boolean isPictureInPictureSupported(Context context) {
-        if (context == null) {
-            return false;
-        }
-
-        return VERSION.SDK_INT >= 24 && context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE);
-    }
-
     public static boolean isTouchSupported(Context context) {
         if (context == null) {
             return false;

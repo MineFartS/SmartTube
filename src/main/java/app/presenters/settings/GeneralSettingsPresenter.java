@@ -81,7 +81,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
         appendEnabledSections(settingsPresenter);
         appendContextMenuItemsCategory(settingsPresenter);
         appendHideVideos(settingsPresenter);
-        appendBackgroundPlaybackCategory(settingsPresenter);
         appendMiscCategory(settingsPresenter);
 
         settingsPresenter.showDialog(
@@ -286,21 +285,6 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
         dialog.showDialog();
 
-    }
-
-    private void appendBackgroundPlaybackCategory(AppDialogPresenter settingsPresenter) {
-        
-        OptionCategory category = AppDialogUtil.createBackgroundPlaybackCategory(
-            getContext(), 
-            mPlayerData, 
-            mGeneralData
-        );
-        
-        settingsPresenter.appendRadioCategory(
-            category.title, 
-            category.options
-        );
-    
     }
 
     private void appendMiscCategory(AppDialogPresenter settingsPresenter) {

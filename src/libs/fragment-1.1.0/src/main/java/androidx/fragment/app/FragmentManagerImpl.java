@@ -2630,15 +2630,6 @@ final class FragmentManagerImpl extends FragmentManager implements LayoutInflate
         }
     }
 
-    public void dispatchPictureInPictureModeChanged(boolean isInPictureInPictureMode) {
-        for (int i = mAdded.size() - 1; i >= 0; --i) {
-            final Fragment f = mAdded.get(i);
-            if (f != null) {
-                f.performPictureInPictureModeChanged(isInPictureInPictureMode);
-            }
-        }
-    }
-
     public void dispatchConfigurationChanged(@NonNull Configuration newConfig) {
         for (int i = 0; i < mAdded.size(); i++) {
             Fragment f = mAdded.get(i);

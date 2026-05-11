@@ -40,7 +40,6 @@ public class PlayerData extends DataChangeBase implements PlayerEngine, ProfileC
     private static PlayerData sInstance;
     private final AppPrefs mPrefs;
 
-    private int mBackgroundMode;
     private FormatItem mVideoFormat;
     private FormatItem mTempVideoFormat;
     private FormatItem mAudioFormat;
@@ -113,15 +112,6 @@ public class PlayerData extends DataChangeBase implements PlayerEngine, ProfileC
         }
 
         return sInstance;
-    }
-
-    public void setBackgroundMode(int type) {
-        mBackgroundMode = type;
-        persistState();
-    }
-
-    public int getBackgroundMode() {
-        return mBackgroundMode;
     }
 
     public void setPlaybackMode(int mode) {
@@ -489,7 +479,6 @@ public class PlayerData extends DataChangeBase implements PlayerEngine, ProfileC
         String data = mPrefs.getProfileData(VIDEO_PLAYER_DATA);
         String[] split = Helpers.splitData(data);
 
-        /* 00 */ mBackgroundMode = Helpers.parseInt(split, 0, PlayerEngine.BACKGROUND_MODE_DEFAULT);
         /* 01 */ mVideoFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 1)), getDefaultVideoFormat());
         /* 02 */ mAudioFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 2)), getDefaultAudioFormat());
         /* 03 */ mSubtitleFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 3)), getDefaultSubtitleFormat());
@@ -545,7 +534,7 @@ public class PlayerData extends DataChangeBase implements PlayerEngine, ProfileC
         mPrefs.setProfileData(
             VIDEO_PLAYER_DATA, 
             Helpers.mergeData(
-            /* 00 */ mBackgroundMode,
+            /* 00 */ null,
             /* 01 */ mVideoFormat, 
             /* 02 */ mAudioFormat, 
             /* 03 */ mSubtitleFormat,
