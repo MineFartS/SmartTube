@@ -1,6 +1,8 @@
 package com.liskovsoft.sharedutils.okhttp;
 
 import android.os.Build.VERSION;
+import android.os.StrictMode;
+import android.os.StrictMode.ThreadPolicy;
 import androidx.annotation.Nullable;
 
 import okhttp3.Headers;
@@ -68,7 +70,9 @@ public class OkHttpManager {
         if (sInstance == null)
             sInstance = new OkHttpManager();
         
-        ApiCaller.setBypassEnabled(true);
+        ThreadPolicy.Builder builder = new ThreadPolicy.Builder();
+        builder = builder.permitNetwork();
+        StrictMode.setThreadPolicy(builder.build());
 
         return sInstance;
     }

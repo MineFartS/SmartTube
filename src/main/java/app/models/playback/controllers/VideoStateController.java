@@ -11,7 +11,7 @@ import com.liskovsoft.sharedutils.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.sharedutils.videoinfo.models.VideoInfo;
 import com.liskovsoft.sharedutils.okhttp.ApiCaller;
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
-import minefarts.smarttube.app.models.playback.service.VideoStateService.State;
+import minefarts.smarttube.app.models.playback.service.State;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.exoplayer.selector.FormatItem;
 import minefarts.smarttube.prefs.GeneralData;
@@ -362,9 +362,6 @@ public class VideoStateController extends BasePlayerController {
 
         }
     }
-
-    @Override
-    public void onFinish() {}
 
     private void updateHistory(Video video, long positionMs) {
 

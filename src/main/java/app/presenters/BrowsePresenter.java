@@ -23,7 +23,7 @@ import minefarts.smarttube.app.models.errors.CategoryEmptyError;
 import minefarts.smarttube.app.models.errors.ErrorFragmentData;
 import minefarts.smarttube.app.models.errors.SignInError;
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
-import minefarts.smarttube.app.models.playback.service.VideoStateService.State;
+import minefarts.smarttube.app.models.playback.service.State;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.presenters.dialogs.VideoActionPresenter;
 import minefarts.smarttube.app.presenters.dialogs.menu.ChannelUploadsMenuPresenter;

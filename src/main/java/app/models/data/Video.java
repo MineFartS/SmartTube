@@ -20,6 +20,7 @@ import com.liskovsoft.sharedutils.helpers.DateHelper;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
+import minefarts.smarttube.app.models.playback.service.State;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
@@ -869,7 +870,7 @@ public final class Video {
         return SimpleMediaItem.from(this);
     }
 
-    public void sync(VideoStateService.State state) {
+    public void sync(State state) {
         if (state != null) {
             percentWatched = state.positionMs / (state.durationMs / 100f);
         }
