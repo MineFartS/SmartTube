@@ -39,7 +39,6 @@ internal class QueryBuilder(private val client: AppClient) {
     fun setPlaylistId(playlistId: String?) = apply { this.playlistId = playlistId }
     fun setPlaylistIndex(playlistIndex: Int?) = apply { this.playlistIndex = playlistIndex }
     fun setPoToken(poToken: String?) = apply { this.poToken = poToken }
-    fun setClientPlaybackNonce(cpn: String?) = apply { this.cpn = cpn }
     fun setSignatureTimestamp(timestamp: Int?) = apply { signatureTimestamp = timestamp }
     fun setClickTrackingParams(params: String?) = apply { clickTrackingParams = params }
     fun setParams(params: String?) = apply { this.params = params }
@@ -62,8 +61,6 @@ internal class QueryBuilder(private val client: AppClient) {
         }
 
         if (playerDataCheck()) {
-            if (cpn == null)
-                cpn = appService.clientPlaybackNonce // get it somewhere else?
 
             if (signatureTimestamp == null)
                 signatureTimestamp = Helpers.parseInt(appService.signatureTimestamp) // get it somewhere else?
