@@ -13,7 +13,7 @@ import minefarts.smarttube.app.models.data.Queue;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.controllers.CommentsController;
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
-import minefarts.smarttube.app.models.playback.service.VideoStateService.State;
+import minefarts.smarttube.app.models.playback.service.State;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.BrowsePresenter;

@@ -6,7 +6,7 @@ import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
-import minefarts.smarttube.app.models.playback.service.VideoStateService.State;
+import minefarts.smarttube.app.models.playback.service.State;
 
 import java.util.ArrayList;
 import java.util.Collections;
