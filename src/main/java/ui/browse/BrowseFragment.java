@@ -26,7 +26,7 @@ import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.data.VideoGroup;
 import minefarts.smarttube.app.models.errors.ErrorFragmentData;
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
-import minefarts.smarttube.app.models.playback.service.VideoStateService.State;
+import minefarts.smarttube.app.models.playback.service.State;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.app.presenters.SearchPresenter;

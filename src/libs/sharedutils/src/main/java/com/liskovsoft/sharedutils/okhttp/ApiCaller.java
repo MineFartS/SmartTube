@@ -5,25 +5,11 @@ import okhttp3.*;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
-import android.os.StrictMode;
-import android.os.StrictMode.ThreadPolicy;
-
 public class ApiCaller {
 
     private final OkHttpClient mClient = new OkHttpClient();
 
     private HttpUrl.Builder mUrl;
-
-    public static void setBypassEnabled(boolean enabled) {
-
-        ThreadPolicy.Builder builder = new ThreadPolicy.Builder();
-
-        if (enabled)
-            builder = builder.permitNetwork();
-
-        StrictMode.setThreadPolicy(builder.build());
-
-    }
 
     public ApiCaller(String url) {
         mUrl = HttpUrl.parse(url).newBuilder();
