@@ -44,11 +44,9 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
         mVideoSurfaceRoot = root.findViewById(R.id.surface_root);
         
         mVideoSurfaceRoot.addView(mVideoSurfaceWrapper.getSurfaceView(), 0);
-        
-        mVideoSurfaceRoot.setAspectRatioListener(this::scaleIfNeeded);
-        
+
+        // Scaling/ratio calculations removed. Let layout handle video sizing.
         setBackgroundType(PlaybackSupportFragment.BG_LIGHT);
-        
         return root;
     }
 
@@ -74,34 +72,9 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
         super.onDestroyView();
     }
 
-    private void scaleIfNeeded(Object... ignored) {
+    // Removed: scaleIfNeeded() was calculating aspect ratio/scale based on container rotation.
+    // This caused incorrect fitting; now we rely on layout/Player sizing instead.
 
-        if (mVideoSurfaceRoot.getWidth() == 0 || mVideoSurfaceRoot.getHeight() == 0) {
-            return;
-        }
-
-        float angle = mVideoSurfaceRoot.getRotation();
-
-        int width, height;
-
-        if (Helpers.floatEquals(angle, 90) || Helpers.floatEquals(angle, 270)) {
-            float ratio = mVideoSurfaceRoot.getWidth() / ((float) mVideoSurfaceRoot.getHeight());
-
-            width = mVideoSurfaceRoot.getHeight();
-            height = (int) (mVideoSurfaceRoot.getHeight() / ratio);
-        } else {
-            width = mVideoSurfaceRoot.getWidth();
-            height = mVideoSurfaceRoot.getHeight();
-        }
-
-        // https://stackoverflow.com/questions/52196362/how-resize-textureview-to-fullscreen-when-rotation-90
-        View textureView = mVideoSurfaceWrapper.getSurfaceView();
-        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) textureView.getLayoutParams();
-        params.width = width;
-        params.height = height;
-        params.gravity = Gravity.CENTER;
-        textureView.setLayoutParams(params);
-    }
 
     /**
      * Setup player's background used when controls are showed.
