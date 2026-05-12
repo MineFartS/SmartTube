@@ -412,6 +412,9 @@ public class VideoStateController extends BasePlayerController {
 
         if (mVideoId == null || mVideoId != videoId) {
 
+            getAppService().resetClientPlaybackNonce();
+            apiTempl.add("cpn", getAppService().getClientPlaybackNonce());
+
             mVideoId = videoId;
             mPositionSec = 0;
 

@@ -38,7 +38,7 @@ public class ApiCaller {
     }
 
     public void add(String name, String value) {
-        mUrl = mUrl.addQueryParameter(name, value);
+        mUrl = mUrl.setQueryParameter(name, value);
     }
 
     /**
