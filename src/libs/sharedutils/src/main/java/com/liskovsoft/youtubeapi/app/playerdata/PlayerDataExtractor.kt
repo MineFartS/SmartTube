@@ -16,7 +16,6 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         get() = MediaServiceData.instance()
     private var nFuncCode: Boolean = false
     private var sFuncCode: Boolean = false
-    private var cpnCode: String? = null
     private var signatureTimestamp: String? = null
     private val fixedPlayerUrl by lazy {
         // Those are implements global helper functions. No fix. Fallback to regular.
@@ -33,13 +32,6 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         // Get the code from the cache
         restoreAllData()
         checkSigData()
-        checkCpnData()
-
-        if (cpnCode == null || signatureTimestamp == null) {
-            fetchAllData()
-            checkCpnData()
-            persistAllData()
-        }
     }
 
     fun extractNSig(nParam: String): String? {
@@ -60,17 +52,11 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         return Pair(response.first, response.second)
     }
 
-    fun createClientPlaybackNonce(): String? {
-        return cpnCode?.let { ClientPlaybackNonceExtractor.createClientPlaybackNonce(it) } ?: YouTubeHelper.generateCPNParameter()
-    }
-
     fun getSignatureTimestamp(): String? {
         return signatureTimestamp
     }
 
     fun validate(): Boolean {
-        // TODO: fix cpn code
-        // return mNFuncCode && mSigFuncCode && mCPNCode != null && mSignatureTimestamp != null
         return nFuncCode && sFuncCode && signatureTimestamp != null
     }
 
@@ -120,13 +106,12 @@ internal class PlayerDataExtractor(val playerUrl: String) {
     private fun fetchAllData() {
         val jsCode = loadPlayer()
 
-        cpnCode = jsCode?.let { ClientPlaybackNonceExtractor.extractClientPlaybackNonceCode(it) }
         signatureTimestamp = jsCode?.let { CommonExtractor.extractSignatureTimestamp(it) }
     }
 
     private fun persistAllData() {
         if (validate()) {
-            data.playerExtractorCache = PlayerExtractorCache(playerUrl, cpnCode, signatureTimestamp)
+            data.playerExtractorCache = PlayerExtractorCache(playerUrl, signatureTimestamp)
         }
     }
 
@@ -134,22 +119,9 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         val playerCache = data.playerExtractorCache
 
         if (playerCache?.playerUrl == playerUrl) {
-            cpnCode = playerCache.cpnCode
             signatureTimestamp = playerCache.signatureTimestamp
             nFuncCode = true
             sFuncCode = true
-        }
-    }
-
-    private fun checkCpnData() {
-        cpnCode?.let {
-            try {
-                val result = createClientPlaybackNonce()
-                if (result == null)
-                    cpnCode = null
-            } catch (error: V8ScriptExecutionException) {
-                cpnCode = null
-            }
         }
     }
 

@@ -11,10 +11,16 @@ import com.liskovsoft.sharedutils.auth.V1.AuthApi;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Base64;
+import java.security.SecureRandom;
 
 import kotlin.Pair;
 
 public class AppService {
+
+    private static final SecureRandom secureRandom = new SecureRandom();
+    private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder().withoutPadding();
+
     private static AppService sInstance;
     private final AppServiceInt mAppServiceInt;
     private String mClientPlaybackNonce;
@@ -101,23 +107,23 @@ public class AppService {
     }
 
     public void resetClientPlaybackNonce() {
-        mClientPlaybackNonce = null;
+
+        byte[] randomBytes = new byte[32];
+        
+        secureRandom.nextBytes(randomBytes);
+        
+        mClientPlaybackNonce = base64Encoder.encodeToString(randomBytes);
+    
     }
 
     /**
      * NOTE: Unique per video info instance<br/>
      * A nonce is a unique value chosen by an entity in a protocol, and it is used to protect that entity against attacks which fall under the very large umbrella of "replay".
      */
-    public synchronized String getClientPlaybackNonce() {
-        if (mClientPlaybackNonce != null) {
-            return mClientPlaybackNonce;
-        }
-
-        if (mAppServiceInt.getPlayerDataExtractor() == null) {
-            return null;
-        }
-
-        mClientPlaybackNonce = mAppServiceInt.getPlayerDataExtractor().createClientPlaybackNonce();
+    public String getClientPlaybackNonce() {
+        
+        if (mClientPlaybackNonce == null)
+            resetClientPlaybackNonce();
 
         return mClientPlaybackNonce;
     }
