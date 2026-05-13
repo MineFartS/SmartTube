@@ -233,45 +233,13 @@ public abstract class BasePlayerController extends ServiceManager implements Pla
 
         AppDialogPresenter settingsPresenter = getAppDialogPresenter();
 
-        settingsPresenter.setOnStart(() -> {
-        
-            if (settingsPresenter.isOverlay()) return;
+        settingsPresenter.setOnStart(
+            () -> getPlayer().setVideoGravity(Gravity.START | Gravity.CENTER_VERTICAL)
+        );
 
-            getPlayer().showControls(false);
-            
-            FormatItem videoFormat = getPlayer().getVideoFormat();
-
-            if (videoFormat == null || videoFormat.getTrack() == null) return;
-            
-            Format format = videoFormat.getTrack().format;
-
-            // Dialog takes up 37% of the screen space
-            float dialogWidth = 37 * getMainUIData().getUIScale();
-            float initialZoom = 100;
-            float totalZoom = initialZoom - dialogWidth;
-            float ratio = format.width / (float) format.height;
-            float targetRatio = 16/9f;
-            float multiplier = targetRatio / ratio;
-            
-            // skip cinema ratio
-            if (multiplier > 1) totalZoom *= multiplier;
-            
-            // shorts overzoom fix
-            if (totalZoom > 130) return;
-            
-            //getPlayer().setZoomPercents(Math.round(totalZoom));
-
-            getPlayer().setVideoGravity(Gravity.START | Gravity.CENTER_VERTICAL);
-
-        });
-
-        settingsPresenter.setOnFinish(() -> {
-
-            //getPlayer().setZoomPercents(100);
-
-            getPlayer().setVideoGravity(Gravity.CENTER);
-
-        });
+        settingsPresenter.setOnFinish(
+            () -> getPlayer().setVideoGravity(Gravity.CENTER)
+        );
 
     }
 
