@@ -363,15 +363,19 @@ public class VideoStateController extends BasePlayerController {
         }
     }
 
-    private void updateHistory(Video video, long positionMs) {
+    public void updateHistory(Video video, long positionMs) {
 
-        Queue.sync(video);
-
-        getStateService().save(new State(
+        State state = new State(
             video, 
             positionMs, 
             video.getDurationMs()
-        ));
+        );
+
+        video.sync(state);
+
+        Queue.sync(video);
+
+        getStateService().save(state);
 
         getAccountManager().checkAuth();
 
