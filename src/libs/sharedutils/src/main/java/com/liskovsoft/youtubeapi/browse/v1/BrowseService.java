@@ -2,7 +2,6 @@ package com.liskovsoft.sharedutils.browse.v1;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.app.AppService;
-import com.liskovsoft.sharedutils.auth.V1.AuthApi;
 import com.liskovsoft.sharedutils.browse.v1.models.grid.GridTab;
 import com.liskovsoft.sharedutils.browse.v1.models.grid.GridTabContinuation;
 import com.liskovsoft.sharedutils.browse.v1.models.grid.GridTabList;
@@ -22,10 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * For auth users only!<br/>
- * Wraps result from the {@link AuthApi} and {@link BrowseApi}
- */
 public class BrowseService {
     private static final String TAG = BrowseService.class.getSimpleName();
     private final BrowseApi mBrowseManagerSigned;

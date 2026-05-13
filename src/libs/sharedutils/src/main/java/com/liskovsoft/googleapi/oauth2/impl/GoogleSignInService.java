@@ -3,7 +3,6 @@ package com.liskovsoft.googleapi.oauth2.impl;
 import androidx.annotation.Nullable;
 
 import com.liskovsoft.googleapi.oauth2.manager.OAuth2AccountManager;
-import com.liskovsoft.sharedutils.oauth.SignInService;
 import com.liskovsoft.sharedutils.oauth.Account;
 import com.liskovsoft.sharedutils.oauth.SignInCode;
 import com.liskovsoft.sharedutils.rx.RxHelper;
@@ -12,7 +11,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
-public class GoogleSignInService implements SignInService {
+public class GoogleSignInService {
 
     private static GoogleSignInService sInstance;
     private final OAuth2AccountManager mAccountManager;
@@ -29,7 +28,6 @@ public class GoogleSignInService implements SignInService {
         return sInstance;
     }
 
-    @Override
     public Observable<SignInCode> signInObserve() {
         return RxHelper.createLong(emitter -> {
             SignInCode signInCode = mAccountManager.getSignInCode();
@@ -47,12 +45,10 @@ public class GoogleSignInService implements SignInService {
         });
     }
 
-    @Override
     public void signOut() {
         // TODO: not implemented
     }
 
-    @Override
     public Observable<Void> signOutObserve() {
         return RxHelper.create(emitter -> {
             signOut();
@@ -60,44 +56,36 @@ public class GoogleSignInService implements SignInService {
         });
     }
 
-    @Override
     public boolean isSigned() {
         // Condition created for the case when a device in offline mode.
         return mAccountManager.getSelectedAccount() != null;
     }
 
-    @Override
     public Observable<Boolean> isSignedObserve() {
         return RxHelper.fromCallable(this::isSigned);
     }
 
-    @Override
     public List<Account> getAccounts() {
         return mAccountManager.getAccounts();
     }
 
-    @Override
     public Observable<List<Account>> getAccountsObserve() {
         return RxHelper.fromCallable(this::getAccounts);
     }
 
     @Nullable
-    @Override
     public Account getSelectedAccount() {
         return mAccountManager.getSelectedAccount();
     }
 
-    @Override
     public void selectAccount(Account account) {
         mAccountManager.selectAccount(account);
     }
 
-    @Override
     public void removeAccount(Account account) {
         mAccountManager.removeAccount(account);
     }
 
-    @Override
     public void setOnChange(Runnable onChange) {
         mAccountManager.setOnChange(onChange);
     }

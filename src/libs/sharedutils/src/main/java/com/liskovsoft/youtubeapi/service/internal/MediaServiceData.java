@@ -81,12 +81,6 @@ public class MediaServiceData {
     }
 
     private MediaServiceData() {
-        if (Helpers.isJUnitTest()) {
-            Log.d(TAG, "JUnit test is running. Skipping data restore...");
-            mEnabledFormats = FORMATS_ALL; // Debug
-            mVideoInfoType = -1; // Required for testing
-            return;
-        }
 
         mGlobalPrefs = GlobalPreferences.sInstance;
         mCachedPrefs = new MediaServiceCache(mGlobalPrefs.getContext());
@@ -97,7 +91,7 @@ public class MediaServiceData {
 
     public static MediaServiceData instance() {
         if (sInstance == null) {
-            if (GlobalPreferences.sInstance == null && !Helpers.isJUnitTest()) {
+            if (GlobalPreferences.sInstance == null) {
                 Log.e(TAG, "Can't init MediaServiceData. GlobalPreferences isn't initialized yet.");
                 return null;
             }

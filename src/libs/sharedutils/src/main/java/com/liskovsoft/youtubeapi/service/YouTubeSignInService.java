@@ -13,6 +13,7 @@ import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
 import com.liskovsoft.googlecommon.service.oauth.YouTubeAccount;
 import com.liskovsoft.sharedutils.service.internal.YouTubeAccountManager;
+import com.liskovsoft.googleapi.oauth2.manager.OAuth2AccountManager;
 
 import io.reactivex.Observable;
 
@@ -21,17 +22,17 @@ import java.util.Map;
 
 public class YouTubeSignInService implements SignInService {
 
-    private static final String TAG = YouTubeSignInService.class.getSimpleName();
-    
-    private static final long TOKEN_REFRESH_PERIOD_MS = 60 * 60 * 1_000; // NOTE: auth token max lifetime is 60 min
-    
     private static YouTubeSignInService sInstance;
+
     private final YouTubeAccountManager mAccountManager;
+    private final OAuth2AccountManager mOAuthManager;
     private String mCachedAuthorizationHeader;
     private long mCacheUpdateTime;
 
     private YouTubeSignInService() {
+
         mAccountManager = YouTubeAccountManager.instance(this);
+        mOAuthManager = OAuth2AccountManager.instance();
 
         GlobalPreferences.setOnInit(() -> {
             mAccountManager.init();
@@ -42,6 +43,7 @@ public class YouTubeSignInService implements SignInService {
                 e.printStackTrace();
             }
         });
+
     }
 
     public static YouTubeSignInService instance() {
@@ -59,35 +61,11 @@ public class YouTubeSignInService implements SignInService {
 
     public void checkAuth() {
 
-        if (mCachedAuthorizationHeader != null && Helpers.equals(mCachedAuthorizationHeader, RetrofitOkHttpHelper.getAuthHeaders().get("Authorization"))
-                && System.currentTimeMillis() - mCacheUpdateTime < TOKEN_REFRESH_PERIOD_MS) {
-            return;
-        }
-
-        Account account = mAccountManager.getSelectedAccount();
-        String refreshToken = account != null ? ((YouTubeAccount) account).getRefreshToken() : null;
-        // get or create authorization on fly
-        mCachedAuthorizationHeader = createAuthorizationHeader(refreshToken);
-        
-        if (Helpers.isJUnitTest()) return;
-
-        Map<String, String> headers = RetrofitOkHttpHelper.getAuthHeaders();
-        headers.clear();
-
-        Account selectedAccount = getSelectedAccount();
-
-        if (mCachedAuthorizationHeader != null && selectedAccount != null) {
-            headers.put("Authorization", mCachedAuthorizationHeader);
-            String pageIdToken = ((YouTubeAccount) selectedAccount).getPageIdToken();
-            if (pageIdToken != null) {
-                // Apply branded account rights (restricted videos). Branded refresh token with current account page id.
-                headers.put("X-Goog-Pageid", pageIdToken);
-            }
-        }
+        mOAuthManager.checkAuth();
+        mCachedAuthorizationHeader = mOAuthManager.getAuthorizationHeader();
 
         mAccountManager.syncStorage();
 
-        mCacheUpdateTime = System.currentTimeMillis();
     }
 
     @Override
@@ -147,49 +125,9 @@ public class YouTubeSignInService implements SignInService {
         return String.format("name=%s;header=%s;token=%s", name, header, token);
     }
 
-    /**
-     * Authorization should be updated periodically (see expire_in field in response)
-     */
-    private String createAuthorizationHeader(String refreshToken) {
-        Log.d(TAG, "Updating authorization header...");
-
-        String authorizationHeader = null;
-
-        AccessToken token = obtainAccessToken(refreshToken);
-
-        if (token != null) {
-            authorizationHeader = String.format("%s %s", token.getTokenType(), token.getAccessToken());
-        } else {
-            Log.e(TAG, "Access token is null!");
-        }
-
-        return authorizationHeader;
-    }
-
-    private AccessToken obtainAccessToken(String refreshToken) {
-        // We don't have context, so can't create instance here.
-        // Let's hope someone already created one for us.
-        if (GlobalPreferences.sInstance == null) {
-            Log.e(TAG, "GlobalPreferences is null!");
-            return null;
-        }
-
-        AccessToken token = null;
-
-        if (refreshToken != null) {
-            token = getAuthService().updateAccessToken(refreshToken);
-        }
-
-        return token;
-    }
-
     @Override
     public void addOnAccountChange(OnAccountChange listener) {
         mAccountManager.addOnAccountChange(listener);
     }
-
-    @NonNull
-    private static AuthService getAuthService() {
-        return AuthService.instance();
-    }
+    
 }

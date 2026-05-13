@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
-import com.liskovsoft.sharedutils.auth.V1.AuthApi;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -128,16 +127,10 @@ public class AppService {
         return mClientPlaybackNonce;
     }
 
-    /**
-     * Constant used in {@link AuthApi}
-     */
     public String getClientId() {
         return mAppServiceInt.getClientId();
     }
 
-    /**
-     * Constant used in {@link AuthApi}
-     */
     public String getClientSecret() {
         return mAppServiceInt.getClientSecret();
     }

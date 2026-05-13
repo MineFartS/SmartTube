@@ -65,7 +65,6 @@ public class AppDialogUtil {
     
     private static final String TAG = AppDialogUtil.class.getSimpleName();
     
-    private static final int BACKGROUND_PLAYBACK_ID = 135;
     private static final int VIDEO_PRESETS_ID = 136;
     private static final int AUDIO_LANGUAGE_ID = 138;
     private static final int PLAYER_SPEED_LIST_ID = 141;

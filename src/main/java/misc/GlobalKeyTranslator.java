@@ -43,10 +43,6 @@ public class GlobalKeyTranslator extends KeyTranslator {
 
     }
 
-    private PlaybackPresenter getPlaybackPresenter() {
-        return PlaybackPresenter.instance(mContext);
-    }
-
     private SearchPresenter getSearchPresenter() {
         return SearchPresenter.instance(mContext);
     }

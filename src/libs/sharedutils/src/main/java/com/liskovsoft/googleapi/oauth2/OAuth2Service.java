@@ -8,6 +8,20 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import retrofit2.Call;
 
 public class OAuth2Service {
+
+    public static final String GRANT_TYPE = "urn:ietf:params:oauth:grant-type:device_code";
+    public static final String GRANT_TYPE_REFRESH = "refresh_token";
+
+    public static final String CLIENT_ID = "";
+    public static final String CLIENT_SECRET = "";
+    public static final String REFRESH_TOKEN = "";
+    public static final String DEVICE_CODE = "";
+    public static final String YOUTUBE_DATA_API_KEY = "";
+
+    public static final String DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.file";
+    public static final String YOUTUBE_SCOPE = "https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.readonly";
+    public static final String SIGN_IN_DATA_SCOPE = "email openid profile";
+
     private static final String TAG = OAuth2Service.class.getSimpleName();
     private static OAuth2Service sInstance;
     private final OAuth2Api mOAuth2Api;
@@ -32,7 +46,10 @@ public class OAuth2Service {
      * @return response with user code and device code
      */
     public UserCode getUserCode() {
-        Call<UserCode> wrapper = mOAuth2Api.getUserCode(OAuth2ApiHelper.CLIENT_ID, OAuth2ApiHelper.DRIVE_SCOPE);
+        Call<UserCode> wrapper = mOAuth2Api.getUserCode(
+            CLIENT_ID, 
+            DRIVE_SCOPE
+        );
         return RetrofitHelper.get(wrapper);
     }
 
@@ -43,7 +60,7 @@ public class OAuth2Service {
      * @return refresh token that should be stored inside the app registry for future use
      */
     private AccessToken getAccessToken(String deviceCode) {
-        Call<AccessToken> wrapper = mOAuth2Api.getAccessToken(OAuth2ApiHelper.CLIENT_ID, OAuth2ApiHelper.CLIENT_SECRET, deviceCode, OAuth2ApiHelper.GRANT_TYPE);
+        Call<AccessToken> wrapper = mOAuth2Api.getAccessToken(CLIENT_ID, CLIENT_SECRET, deviceCode, GRANT_TYPE);
         return RetrofitHelper.get(wrapper);
     }
 
@@ -53,7 +70,14 @@ public class OAuth2Service {
      * @return temporal access token
      */
     public AccessToken updateAccessToken(String refreshToken) {
-        Call<AccessToken> wrapper = mOAuth2Api.updateAccessToken(OAuth2ApiHelper.CLIENT_ID, OAuth2ApiHelper.CLIENT_SECRET, OAuth2ApiHelper.GRANT_TYPE_REFRESH, refreshToken);
+        
+        Call<AccessToken> wrapper = mOAuth2Api.updateAccessToken(
+            CLIENT_ID, 
+            CLIENT_SECRET, 
+            GRANT_TYPE_REFRESH, 
+            refreshToken
+        );
+
         return RetrofitHelper.getWithErrors(wrapper);
     }
 
@@ -84,11 +108,4 @@ public class OAuth2Service {
         }
     }
 
-    //public List<AccountInt> getAccounts() {
-    //    Call<AccountsList> wrapper = mOAuth2Api.getAccountsList(OAuth2ApiHelper.getAccountsListQuery());
-    //
-    //    AccountsList accountsList = RetrofitHelper.get(wrapper);
-    //
-    //    return accountsList != null ? accountsList.getAccounts() : null;
-    //}
 }
