@@ -27,29 +27,33 @@ public class ContentBlockData {
     @SuppressLint("StaticFieldLeak")
     private static ContentBlockData sInstance;
 
-    private final DataStore mDataStore;
-
     private boolean mIsSponsorBlockEnabled;
 
+    private final DataStore mDataStore;
     private final Set<String> mColorCategories = new LinkedHashSet<>();
-
     private final Set<SegmentAction> mActions = new LinkedHashSet<>();
-
     private final Set<String> mExcludedChannels = new LinkedHashSet<>();
-
-    private Map<String, Integer> mSegmentLocalizedMapping;
-
-    private Map<String, Integer> mSegmentColorMapping;
-
-    private Set<String> mAllCategories;
+    
+    private final Map<String, Integer> mSegmentColorMapping = new HashMap<>();
 
     private ContentBlockData(Context context) {
 
         mDataStore = new DataStore(context, "content_block_data");
         
-        initLocalizedMapping();
-        initColorMapping();
-        initAllCategories();
+        mSegmentColorMapping.put(
+            SponsorSegment.CATEGORY_SPONSOR,
+            R.color.green
+        );
+        
+        mSegmentColorMapping.put(
+            SponsorSegment.CATEGORY_SELF_PROMO,
+            R.color.orange_peel
+        );
+
+        mSegmentColorMapping.put(
+            SponsorSegment.CATEGORY_INTERACTION,
+            R.color.magenta
+        );
         
         restoreState();
     
@@ -63,57 +67,12 @@ public class ContentBlockData {
         return sInstance;
     }
 
-    private void initLocalizedMapping() {
-
-        mSegmentLocalizedMapping = new HashMap<>();
-        
-        mSegmentLocalizedMapping.put(
-            SponsorSegment.CATEGORY_SPONSOR, 
-            R.string.content_block_sponsor
-        );
-
-        mSegmentLocalizedMapping.put(
-            SponsorSegment.CATEGORY_SELF_PROMO, 
-            R.string.content_block_self_promo
-        );
-
-        mSegmentLocalizedMapping.put(
-            SponsorSegment.CATEGORY_INTERACTION, 
-            R.string.content_block_interaction
-        );
-
-    }
-
-    private void initColorMapping() {
-        mSegmentColorMapping = new HashMap<>();
-        mSegmentColorMapping.put(SponsorSegment.CATEGORY_SPONSOR, R.color.green);
-        mSegmentColorMapping.put(SponsorSegment.CATEGORY_INTRO, R.color.cyan);
-        mSegmentColorMapping.put(SponsorSegment.CATEGORY_OUTRO, R.color.blue);
-        mSegmentColorMapping.put(SponsorSegment.CATEGORY_SELF_PROMO, R.color.yellow);
-        mSegmentColorMapping.put(SponsorSegment.CATEGORY_INTERACTION, R.color.magenta);
-        mSegmentColorMapping.put(SponsorSegment.CATEGORY_MUSIC_OFF_TOPIC, R.color.orange_peel);
-        mSegmentColorMapping.put(SponsorSegment.CATEGORY_PREVIEW_RECAP, R.color.light_blue);
-        mSegmentColorMapping.put(SponsorSegment.CATEGORY_POI_HIGHLIGHT, R.color.light_pink);
-        mSegmentColorMapping.put(SponsorSegment.CATEGORY_FILLER, R.color.electric_violet);
-    }
-
-    private void initAllCategories() {
-        mAllCategories = new LinkedHashSet<>();
-        mAllCategories.add(SponsorSegment.CATEGORY_SPONSOR);
-        mAllCategories.add(SponsorSegment.CATEGORY_INTERACTION);
-        mAllCategories.add(SponsorSegment.CATEGORY_SELF_PROMO);
-    }
-
-    public Integer getLocalizedRes(String segmentCategory) {
-        return mSegmentLocalizedMapping.get(segmentCategory);
-    }
-
     public Integer getColorRes(String segmentCategory) {
         return mSegmentColorMapping.get(segmentCategory);
     }
 
     public Set<String> getAllCategories() {
-        return Collections.unmodifiableSet(mAllCategories);
+        return mSegmentColorMapping.keySet();
     }
 
     public Set<String> getEnabledCategories() {
@@ -249,12 +208,12 @@ public class ContentBlockData {
         } else {
 
             // Enable Color Marker for all Segments
-            mColorCategories.addAll(mAllCategories);
+            mColorCategories.addAll(getAllCategories());
 
         }
 
         // Easy add new segments
-        for (String segmentCategory : mAllCategories) {
+        for (String segmentCategory : getAllCategories()) {
 
             if (getAction(segmentCategory) == ACTION_UNDEFINED) {
                 

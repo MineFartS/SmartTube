@@ -5,7 +5,7 @@ import com.liskovsoft.sharedutils.oauth.Account
 import com.liskovsoft.sharedutils.misc.WeakHashSet
 import com.liskovsoft.sharedutils.prefs.SharedPreferencesBase
 import com.liskovsoft.sharedutils.app.AppService
-import com.liskovsoft.sharedutils.service.YouTubeSignInService
+import com.liskovsoft.sharedutils.SignInService
 
 private const val PREF_NAME = "yt_service_prefs"
 
@@ -19,7 +19,7 @@ internal object MediaServicePrefs: SharedPreferencesBase(AppService.instance().c
     }
 
     init {
-        val signInService = YouTubeSignInService.instance()
+        val signInService = SignInService.instance()
         setProfileName(signInService.selectedAccount)
         signInService.addOnAccountChange(this)
     }

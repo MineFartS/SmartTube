@@ -29,7 +29,7 @@ import minefarts.smarttube.ui.common.LeanbackActivity;
  * <a href="https://developer.android.com/training/game-controllers/controller-input.html">docs</href>.
  */
 public class PlaybackActivity extends LeanbackActivity {
-    private static final String TAG = PlaybackActivity.class.getSimpleName();
+
     private static final float GAMEPAD_TRIGGER_INTENSITY_ON = 0.5f;
     // Off-condition slightly smaller for button debouncing.
     private static final float GAMEPAD_TRIGGER_INTENSITY_OFF = 0.45f;

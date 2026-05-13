@@ -29,16 +29,9 @@ import java.util.concurrent.TimeUnit;
  * <a href="https://medium.com/android-news/rxjava-schedulers-what-when-and-how-to-use-it-6cfc27293add">Info about schedulers</a>
  */
 public class RxHelper {
+
     private static final String TAG = RxHelper.class.getSimpleName();
     private static @Nullable Scheduler sCachedScheduler;
-
-    private static Scheduler getCachedScheduler() {
-        if (sCachedScheduler == null) {
-            sCachedScheduler = Schedulers.from(Executors.newCachedThreadPool());
-        }
-
-        return sCachedScheduler;
-    }
 
     public static void disposeActions(Disposable... actions) {
         if (actions != null) {
@@ -258,27 +251,6 @@ public class RxHelper {
 
     public static <T> Observable<T> fromCallable(Callable<T> callback) {
         // NOTE: In stock implementation Unhandled NPE crash will happen if callable returns null
-        //return setup(Observable.fromCallable(callback));
-        return fromNullable(callback);
-    }
-
-    @SafeVarargs
-    private static <T> Observable<T> fromMultiCallable(Callable<T>... callbacks) {
-        return fromMultiNullable(callbacks);
-    }
-
-    public static <T> Observable<T> fromIterable(Iterable<T> source) {
-        return setup(Observable.fromIterable(source));
-    }
-
-    public static Observable<Void> fromRunnable(Runnable callback) {
-        return create(emitter -> {
-            callback.run();
-            emitter.onComplete();
-        });
-    }
-
-    private static <T> Observable<T> fromNullable(Callable<T> callback) {
         return create(emitter -> {
             T result = callback.call();
 
@@ -294,27 +266,14 @@ public class RxHelper {
         });
     }
 
-    @SafeVarargs
-    private static <T> Observable<T> fromMultiNullable(Callable<T>... callbacks) {
+    public static <T> Observable<T> fromIterable(Iterable<T> source) {
+        return setup(Observable.fromIterable(source));
+    }
+
+    public static Observable<Void> fromRunnable(Runnable callback) {
         return create(emitter -> {
-            boolean success = false;
-            for (Callable<T> callback : callbacks) {
-                T result = callback.call();
-
-                if (result != null) {
-                    emitter.onNext(result);
-                    success = true;
-                }
-            }
-
-            if (success) {
-                emitter.onComplete();
-            } else {
-                // Be aware of OnErrorNotImplementedException exception if error handler not implemented!
-                // Essential part to notify about problems. Don't remove!
-                onError(emitter, "fromMultiNullable result is null");
-                Log.e(TAG, "fromMultiNullable result is null");
-            }
+            callback.run();
+            emitter.onComplete();
         });
     }
 
@@ -336,11 +295,15 @@ public class RxHelper {
      * https://stackoverflow.com/questions/33370339/what-is-the-difference-between-schedulers-io-and-schedulers-computation
      */
     private static <T> Observable<T> setup(Observable<T> observable) {
+
+        if (sCachedScheduler == null)
+            sCachedScheduler = Schedulers.from(Executors.newCachedThreadPool());
+
         // NOTE: Schedulers.io() reuses blocked threads in RxJava 2
         // https://github.com/ReactiveX/RxJava/issues/6542
         return observable
-                .subscribeOn(getCachedScheduler())
-                .observeOn(AndroidSchedulers.mainThread());
+            .subscribeOn(sCachedScheduler)
+            .observeOn(AndroidSchedulers.mainThread());
     }
 
     /**
@@ -348,8 +311,6 @@ public class RxHelper {
      * https://stackoverflow.com/questions/33370339/what-is-the-difference-between-schedulers-io-and-schedulers-computation
      */
     private static <T> Observable<T> setupLong(Observable<T> observable) {
-        // NOTE: Schedulers.io() reuses blocked threads in RxJava 2
-        // https://github.com/ReactiveX/RxJava/issues/6542
         // fix blocking (e.g. SponsorBlock not responding)
         return observable
                 .subscribeOn(Schedulers.newThread())

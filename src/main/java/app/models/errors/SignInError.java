@@ -2,7 +2,7 @@ package minefarts.smarttube.app.models.errors;
 
 import android.content.Context;
 import minefarts.smarttube.R;
-import minefarts.smarttube.app.presenters.YTSignInPresenter;
+import minefarts.smarttube.app.presenters.SignInPresenter;
 
 public class SignInError implements ErrorFragmentData {
     private final Context mContext;
@@ -13,7 +13,7 @@ public class SignInError implements ErrorFragmentData {
 
     @Override
     public void onAction() {
-        YTSignInPresenter.instance(mContext).start();
+        SignInPresenter.instance(mContext).start();
     }
 
     @Override

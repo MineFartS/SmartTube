@@ -20,7 +20,7 @@ import com.liskovsoft.sharedutils.next.v2.gen.getDislikeCount
 import com.liskovsoft.sharedutils.next.v2.gen.getLikeCount
 import com.liskovsoft.sharedutils.next.v2.gen.isEmpty
 import com.liskovsoft.sharedutils.next.v2.impl.MediaItemMetadataImpl
-import com.liskovsoft.sharedutils.service.YouTubeSignInService
+import com.liskovsoft.sharedutils.SignInService
 
 internal open class WatchNextService {
     private var mWatchNextApi = RetrofitHelper.create(WatchNextApi::class.java)
@@ -48,7 +48,7 @@ internal open class WatchNextService {
         return MediaItemMetadataImpl(watchNext).apply {
             channelId?.let {
                 ChannelGroupServiceImpl.cachedChannel = ItemImpl(it, author, authorImageUrl)
-                if (!YouTubeSignInService.instance().isSigned) {
+                if (!SignInService.instance().isSigned) {
                     isSubscribedOverrideItem = ChannelGroupServiceImpl.isSubscribed(it)
                 } else if (isSubscribed != ChannelGroupServiceImpl.isSubscribed(it)) {
                     ChannelGroupServiceImpl.subscribe(isSubscribed, it, author, authorImageUrl)

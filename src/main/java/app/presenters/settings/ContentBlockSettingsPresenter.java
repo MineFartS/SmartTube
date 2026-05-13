@@ -91,7 +91,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
                 UiOptionItem.from(
 
                     getColoredString(
-                        mContentBlockData.getLocalizedRes(action.segmentCategory), 
+                        action.segmentCategory,
                         mContentBlockData.getColorRes(action.segmentCategory)
                     ),
                     
@@ -117,12 +117,10 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
                             )
                         );
 
-                        String title = getContext().getString(mContentBlockData.getLocalizedRes(action.segmentCategory));
-
-                        dialogPresenter.appendRadioCategory(title, nestedOptions);
+                        dialogPresenter.appendRadioCategory(action.segmentCategory, nestedOptions);
                         
                         dialogPresenter.showDialog(
-                            title, 
+                            action.segmentCategory, 
                             mContentBlockData::persistActions
                         );
 
@@ -146,7 +144,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
             options.add(
                 UiOptionItem.from(
                     getColoredString(
-                        mContentBlockData.getLocalizedRes(segmentCategory),
+                        segmentCategory,
                         mContentBlockData.getColorRes(segmentCategory)
                     ),
                     optionItem -> {
@@ -195,8 +193,15 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
     }
 
     private CharSequence getColoredString(int strResId, int colorResId) {
-        String origin = getContext().getString(strResId);
+        return getColoredString(
+            getContext().getString(strResId),
+            colorResId
+        );
+    }
+
+    private CharSequence getColoredString(String origin, int colorResId) {
         CharSequence colorMark = Utils.color("●", ContextCompat.getColor(getContext(), colorResId));
         return TextUtils.concat( colorMark, " ", origin);
     }
+
 }

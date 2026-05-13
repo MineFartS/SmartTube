@@ -5,16 +5,30 @@ import android.content.Context;
 
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.views.SignInView;
+import minefarts.smarttube.misc.ServiceManager;
+import com.liskovsoft.sharedutils.mylogger.Log;
+import com.liskovsoft.sharedutils.rx.RxHelper;
+import minefarts.smarttube.app.presenters.dialogs.AccountSelectionPresenter;
+import com.liskovsoft.sharedutils.SignInService;
+
+import io.reactivex.disposables.Disposable;
 
 public class SignInPresenter extends BasePresenter<SignInView> {
     
+    private static final String TAG = SignInPresenter.class.getSimpleName();
+
     @SuppressLint("StaticFieldLeak")
     private static SignInPresenter sInstance;
     private SignInPresenter mPresenter;
     private boolean mIsWaiting;
 
+    private final SignInService mSignInService;
+    private Disposable mSignInAction;
+    private Runnable mCallback;
+
     protected SignInPresenter(Context context) {
         super(context);
+        mSignInService = SignInService.instance();
     }
 
     public static SignInPresenter instance(Context context) {
@@ -28,6 +42,7 @@ public class SignInPresenter extends BasePresenter<SignInView> {
     }
 
     public void unhold() {
+        RxHelper.disposeActions(mSignInAction);
         sInstance = null;
     }
 
@@ -44,25 +59,34 @@ public class SignInPresenter extends BasePresenter<SignInView> {
             return;
         }
 
-        if (YTSignInPresenter.instance(getContext()).isWaiting()) {
-            mPresenter = YTSignInPresenter.instance(getContext());
-        } else if (GoogleSignInPresenter.instance(getContext()).isWaiting()) {
-            mPresenter = GoogleSignInPresenter.instance(getContext());
+        if (SignInPresenter.instance(getContext()).isWaiting()) {
+            mPresenter = SignInPresenter.instance(getContext());
+        } else if (SignInPresenter.instance(getContext()).isWaiting()) {
+            mPresenter = SignInPresenter.instance(getContext());
         }
 
         if (mPresenter == null) {
-            mPresenter = YTSignInPresenter.instance(getContext());
+            mPresenter = SignInPresenter.instance(getContext());
             //throw new IllegalStateException("At least one nested sign in presenter should be initialized.");
         }
 
         mPresenter.setView(getView());
         mPresenter.onViewInitialized();
+
+        RxHelper.disposeActions(mSignInAction);
+        updateUserCode();
     }
 
     public void onActionClicked() {
+        
         if (mPresenter != null) {
             mPresenter.onActionClicked();
         }
+
+        if (getView() != null) {
+            getView().close();
+        }
+
     }
 
     private void doWait(boolean doWait) {
@@ -76,5 +100,32 @@ public class SignInPresenter extends BasePresenter<SignInView> {
     public void start() {
         getViewManager().startView(SignInView.class);
         doWait(true);
+        RxHelper.disposeActions(mSignInAction);
     }
+
+    public void start(Runnable onSuccess) {
+        start();
+        mCallback = onSuccess;
+    }
+
+    private void updateUserCode() {
+        mSignInAction = ServiceManager.getSignInService().signInObserve().subscribe(
+            userCode -> getView().showCode(userCode, "https://youtube.com/tv/activate"),
+            error -> {
+                Log.e(TAG, "Sign in error: %s", error.getMessage());
+                if (getView() != null) {
+                    getView().showCode(error.getMessage(), "");
+                }
+            },
+            () -> {
+                // Success
+                if (getView() != null) {
+                    getView().close();
+                }
+
+                AccountSelectionPresenter.instance(getContext()).show(true);
+            }
+        );
+    }
+
 }

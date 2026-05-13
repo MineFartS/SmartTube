@@ -31,16 +31,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SplashPresenter extends BasePresenter<SplashView> {
+    
     private static final String TAG = SplashPresenter.class.getSimpleName();
+    
     private static final long APP_INIT_DELAY_MS = 10_000;
+    
     @SuppressLint("StaticFieldLeak")
     private static SplashPresenter sInstance;
+    
     private static boolean sRunOnce;
     private boolean mRunPerInstance;
     private final List<IntentProcessor> mIntentChain = new ArrayList<>();
     private String mBridgePackageName;
-    private final Runnable mRunBackgroundTasks = this::runBackgroundTasks;
-    private final Runnable mCheckForUpdates = this::checkForUpdates;
 
     private interface IntentProcessor {
         boolean process(Intent intent);
@@ -62,25 +64,17 @@ public class SplashPresenter extends BasePresenter<SplashView> {
 
     public static void unhold() {
         if (sInstance != null) {
-            Utils.removeCallbacks(sInstance.mRunBackgroundTasks);
+            Utils.removeCallbacks(sInstance::runBackgroundTasks);
         }
         sInstance = null;
     }
 
     @Override
     public void onViewInitialized() {
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
         Utils.cancelFinishTheApp(getContext());
 
-        runOneTimeTasks();
-        runPerInstanceTasks();
-        runPerViewTasks();
-    }
-
-    private void runOneTimeTasks() {
         if (!sRunOnce) {
             sRunOnce = true;
             RxHelper.setupGlobalErrorHandler();
@@ -88,24 +82,21 @@ public class SplashPresenter extends BasePresenter<SplashView> {
             initVideoStateService();
             initStreamReminderService();
         }
-    }
 
-    private void runPerInstanceTasks() {
         if (!mRunPerInstance) {
             mRunPerInstance = true;
-            Utils.postDelayed(mRunBackgroundTasks, APP_INIT_DELAY_MS);
+            Utils.postDelayed(this::runBackgroundTasks, APP_INIT_DELAY_MS);
             initIntentChain();
         }
-    }
 
-    private void runPerViewTasks() {
-        Utils.postDelayed(mCheckForUpdates, APP_INIT_DELAY_MS);
+        Utils.postDelayed(this::checkForUpdates, APP_INIT_DELAY_MS);
         Utils.updateRemoteControlService(getContext());
 
         applyNewIntent(getView().getNewIntent());
 
         showAccountSelectionIfNeeded(); // should be placed after Intent chain
         checkAccountPassword();
+
     }
 
     private void runBackgroundTasks() {

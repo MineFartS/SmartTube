@@ -29,9 +29,47 @@ internal class PlayerDataExtractor(val playerUrl: String) {
     }
 
     init {
-        // Get the code from the cache
-        restoreAllData()
-        checkSigData()
+
+        val playerCache = data.playerExtractorCache
+        val param = "5cNpZqIJ7ixNqU68Y7S"
+
+        if (playerCache?.playerUrl == playerUrl) {
+            signatureTimestamp = playerCache.signatureTimestamp
+            nFuncCode = true
+            sFuncCode = true
+        }
+        
+        if (nFuncCode && sFuncCode) {
+
+            V8ChallengeProvider.warmup() // enable hot start
+
+        } else {
+            try {
+                                
+                val result = V8ChallengeProvider.bulkSolve(
+                    listOf(
+                        JsChallengeRequest(JsChallengeType.N, ChallengeInput(fixedPlayerUrl, listOf(param))),
+                        JsChallengeRequest(JsChallengeType.SIG, ChallengeInput(fixedPlayerUrl, listOf(param))),
+                    )
+                )
+
+                for (item in result) {
+                    when (item.response?.type) {
+                        JsChallengeType.N ->
+                            if (item.response.output.results[param]?.let { it != param } ?: false)
+                                nFuncCode = true
+                        JsChallengeType.SIG ->
+                            if (item.response.output.results[param]?.let { it != param } ?: false)
+                                sFuncCode = true
+                        else -> {}
+                    }
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
     }
 
     fun extractNSig(nParam: String): String? {
@@ -115,43 +153,4 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         }
     }
 
-    private fun restoreAllData() {
-        val playerCache = data.playerExtractorCache
-
-        if (playerCache?.playerUrl == playerUrl) {
-            signatureTimestamp = playerCache.signatureTimestamp
-            nFuncCode = true
-            sFuncCode = true
-        }
-    }
-
-    private fun checkSigData() {
-        if (nFuncCode && sFuncCode) {
-            V8ChallengeProvider.warmup() // enable hot start
-            return
-        }
-
-        try {
-            val param = "5cNpZqIJ7ixNqU68Y7S"
-            val result = V8ChallengeProvider.bulkSolve(
-                listOf(
-                    JsChallengeRequest(JsChallengeType.N, ChallengeInput(fixedPlayerUrl, listOf(param))),
-                    JsChallengeRequest(JsChallengeType.SIG, ChallengeInput(fixedPlayerUrl, listOf(param))),
-                ))
-
-            for (item in result) {
-                when (item.response?.type) {
-                    JsChallengeType.N ->
-                        if (item.response.output.results[param]?.let { it != param } ?: false)
-                            nFuncCode = true
-                    JsChallengeType.SIG ->
-                        if (item.response.output.results[param]?.let { it != param } ?: false)
-                            sFuncCode = true
-                    else -> {}
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
 }
