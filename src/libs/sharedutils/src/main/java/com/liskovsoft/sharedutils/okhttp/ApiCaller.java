@@ -31,25 +31,31 @@ public class ApiCaller {
      * Fire-and-forget async API call (background thread via enqueue + executor-ready).
      * Non-blocking; no response handling needed.
      */
-    public String call() {
+    public CompletableFuture<Response> call() {
         
         Request request = new Request.Builder()
             .url(mUrl.toString())
             .build();
 
-        try (Response response = mClient.newCall(request).execute()) {
-
-            if (!response.isSuccessful()) 
-                throw new IOException("Unexpected code " + response);
-            
-            // Process response body
-            return response.body().string();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        CompletableFuture<Response> future = new CompletableFuture<>();
         
+        Callback cb = new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                future.completeExceptionally(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) {
+                future.complete(response);
+            }
+
+        };
+
+        mClient.newCall(request).enqueue(cb);
+        
+        return future;
     }
 
 }
