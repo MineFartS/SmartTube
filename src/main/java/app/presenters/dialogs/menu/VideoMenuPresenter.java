@@ -28,6 +28,7 @@ import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.utils.AppDialogUtil;
 import minefarts.smarttube.ui.playback.actions.SubscribeAction;
+import minefarts.smarttube.app.models.playback.controllers.VideoStateController;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -44,6 +45,7 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
     private final MediaItemService mMediaItemService;
     private final AppDialogPresenter mDialogPresenter;
     private final VideoStateService mVideoStateService;
+    private final VideoStateController mVideoStateController;
 
     private Disposable mAddToPlaylistAction;
     private Disposable mNotInterestedAction;
@@ -113,6 +115,7 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         mMediaItemService = ServiceManager.getMediaItemService();
         mDialogPresenter = AppDialogPresenter.instance(context);
         mVideoStateService = VideoStateService.instance(context);
+        mVideoStateController = new VideoStateController();
 
         initMenuMapping();
     }
@@ -438,13 +441,12 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
 
         mDialogPresenter.appendSingleButton(UiOptionItem.from(
             getContext().getString(R.string.mark_as_watched), 
-            optionItem -> {
-                mVideo.markFullyViewed();
-                mVideoStateService.save(new State(mVideo, mVideo.getDurationMs()));
-                Queue.sync(mVideo);
-                mDialogPresenter.closeDialog();
-            }
+            optionItem -> mVideoStateController.updateHistory(
+                mVideo, 
+                mVideo.getDurationMs() - 1000L
+            )
         ));
+        
     }
 
     private void appendShareLinkButton() {

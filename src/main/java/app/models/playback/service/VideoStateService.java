@@ -82,14 +82,27 @@ public class VideoStateService implements ProfileChangeListener {
 
     public void save(State state) {
 
-        if (mStates.contains(state)) {            
-            return;
-        }
+        Integer i = indexOf(state);
 
-        mStates.add(state);
+        if (i == null) {
+            mStates.add(state);
+        } else {
+            mStates.set(1, state);
+        }
         
         persistState();
     
+    }
+
+    private Integer indexOf(State state) {
+        
+        for (int i = 0; i < mStates.size(); i++) {
+            if (mStates.get(i).videoId == state.videoId) {
+                return i;
+            }
+        }
+
+        return null;
     }
 
     public void clear() {
