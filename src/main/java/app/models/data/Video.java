@@ -818,11 +818,6 @@ public final class Video {
         return nextVideo;
     }
 
-    public void markFullyViewed() {
-        percentWatched = 100;
-        startTimeSeconds = (int)(getDurationMs() / 1_000);
-    }
-
     public void markNotViewed() {
         percentWatched = 0;
         startTimeSeconds = 0;

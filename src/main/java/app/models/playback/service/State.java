@@ -19,12 +19,10 @@ public class State {
     private static final String DELIM = "&sf;";
     
     public final Video video;
-    
+    public final String videoId;
     public final long positionMs;
     public final long durationMs;
-    
     public final float speed;
-    
     public final long timestamp = System.currentTimeMillis();
 
     public State(Video video, long positionMs) {
@@ -37,6 +35,7 @@ public class State {
 
     public State(Video video, long positionMs, long durationMs, float speed) {
         this.video = video;
+        this.videoId = video.videoId;
         this.positionMs = positionMs;
         this.durationMs = durationMs;
         this.speed = speed;
@@ -62,7 +61,7 @@ public class State {
             video.videoId = videoId;
         }
 
-video.percentWatched = Math.min(100f, (positionMs * 100f) / lengthMs);
+        video.percentWatched = Math.min(100f, (positionMs * 100f) / lengthMs);
 
         return new State(video, positionMs, lengthMs, speed);
     }
