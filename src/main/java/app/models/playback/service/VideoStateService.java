@@ -11,7 +11,7 @@ import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.prefs.AppPrefs;
 import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
 import minefarts.smarttube.utils.Utils;
-
+import com.liskovsoft.sharedutils.helpers.LruList;
 import java.util.List;
 
 public class VideoStateService implements ProfileChangeListener {
@@ -29,7 +29,7 @@ public class VideoStateService implements ProfileChangeListener {
         mPrefs = AppPrefs.instance(context);
         mPrefs.addListener(this);
         
-        mStates = Helpers.createSafeLRUList(200);
+        mStates = new LruList(200);
 
         onProfileChanged();
 

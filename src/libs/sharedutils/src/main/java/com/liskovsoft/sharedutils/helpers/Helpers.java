@@ -1952,59 +1952,6 @@ public final class Helpers {
         return nextState;
     }
 
-    /**
-     * NOTE: proper item order not guaranteed!!!<br/>
-     * Limit the maximum size of a Map by removing oldest entries when limit reached
-     */
-    public static <K, V> Map<K, V> createLRUMap(final int maxEntries) {
-        return new LinkedHashMap<K, V>(maxEntries + 1, 0.75f, true) {
-            @Override
-            protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
-                return size() > maxEntries;
-            }
-        };
-    }
-
-    /**
-     * Trim playlist if one exceeds max size
-     */
-    public static <T> List<T> createLRUList(final int maxEntries) {
-        return new ArrayList<T>() {
-            @Override
-            public boolean add(T element) {
-                if (contains(element)) {
-                    remove(element);
-                }
-
-                if (size() > maxEntries) {
-                    remove(0);
-                }
-
-                return super.add(element);
-            }
-        };
-    }
-
-    /**
-     * Trim playlist if one exceeds max size
-     */
-    public static <T> List<T> createSafeLRUList(final int maxEntries) {
-        return new CopyOnWriteArrayList<T>() {
-            @Override
-            public boolean add(T element) {
-                if (contains(element)) {
-                    remove(element);
-                }
-
-                if (size() > maxEntries) {
-                    remove(0);
-                }
-
-                return super.add(element);
-            }
-        };
-    }
-
     private static String normalize(String word) {
         if (word == null || word.isEmpty()) {
             return word;
