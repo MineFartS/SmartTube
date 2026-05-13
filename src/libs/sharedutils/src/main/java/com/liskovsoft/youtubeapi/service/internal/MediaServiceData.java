@@ -19,7 +19,7 @@ import com.liskovsoft.sharedutils.app.models.cached.PlayerDataCached;
 import com.liskovsoft.sharedutils.app.playerdata.NSigData;
 import com.liskovsoft.sharedutils.app.playerdata.PlayerExtractorCache;
 import com.liskovsoft.sharedutils.app.potokencloud.PoTokenResponse;
-import com.liskovsoft.sharedutils.service.YouTubeMediaItemService;
+import com.liskovsoft.sharedutils.MediaItemService;
 
 import java.util.UUID;
 
@@ -81,12 +81,6 @@ public class MediaServiceData {
     }
 
     private MediaServiceData() {
-        if (Helpers.isJUnitTest()) {
-            Log.d(TAG, "JUnit test is running. Skipping data restore...");
-            mEnabledFormats = FORMATS_ALL; // Debug
-            mVideoInfoType = -1; // Required for testing
-            return;
-        }
 
         mGlobalPrefs = GlobalPreferences.sInstance;
         mCachedPrefs = new MediaServiceCache(mGlobalPrefs.getContext());
@@ -97,7 +91,7 @@ public class MediaServiceData {
 
     public static MediaServiceData instance() {
         if (sInstance == null) {
-            if (GlobalPreferences.sInstance == null && !Helpers.isJUnitTest()) {
+            if (GlobalPreferences.sInstance == null) {
                 Log.e(TAG, "Can't init MediaServiceData. GlobalPreferences isn't initialized yet.");
                 return null;
             }
@@ -189,7 +183,7 @@ public class MediaServiceData {
 
         persistState();
 
-        YouTubeMediaItemService.instance().invalidateCache(); // Remove current cached video
+        MediaItemService.instance().invalidateCache(); // Remove current cached video
     }
 
     public boolean isContentHidden(int content) {
@@ -266,7 +260,7 @@ public class MediaServiceData {
         mIsMoreSubtitlesUnlocked = unlock;
         persistState();
 
-        YouTubeMediaItemService.instance().invalidateCache(); // Remove current cached video
+        MediaItemService.instance().invalidateCache(); // Remove current cached video
     }
 
     public boolean isPotSupported() {

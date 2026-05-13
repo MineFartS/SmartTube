@@ -6,7 +6,12 @@ import androidx.annotation.NonNull;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
-import com.liskovsoft.sharedutils.auth.V1.AuthApi;
+import com.liskovsoft.sharedutils.app.models.AppInfo;
+import com.liskovsoft.sharedutils.app.models.ClientData;
+import com.liskovsoft.sharedutils.app.playerdata.PlayerDataExtractor;
+import com.liskovsoft.googlecommon.common.helpers.DefaultHeaders;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
+import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,23 +21,27 @@ import java.security.SecureRandom;
 
 import kotlin.Pair;
 
+import retrofit2.Call;
+import retrofit2.Response;
+
 public class AppService {
 
     private static final SecureRandom secureRandom = new SecureRandom();
     private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder().withoutPadding();
 
     private static AppService sInstance;
-    private final AppServiceInt mAppServiceInt;
+    
     private String mClientPlaybackNonce;
 
+    private final AppApi mAppApi;
+
     private AppService() {
-        mAppServiceInt = new AppServiceIntCached();
+        mAppApi = RetrofitHelper.create(AppApi.class);
     }
 
     public static AppService instance() {
-        if (sInstance == null) {
+        if (sInstance == null)
             sInstance = new AppService();
-        }
 
         return sInstance;
     }
@@ -52,31 +61,19 @@ public class AppService {
      * Extracts signature used in music videos
      */
     public List<String> extractSig(List<String> sParams) {
-        if (mAppServiceInt.getPlayerDataExtractor() == null) {
+        if (getPlayerDataExtractor() == null) {
             return null;
         }
 
-        return mAppServiceInt.getPlayerDataExtractor().extractSig(sParams);
+        return getPlayerDataExtractor().extractSig(sParams);
     }
 
     public String extractNSig(String nParam) {
-        if (nParam == null || mAppServiceInt.getPlayerDataExtractor() == null) {
+        if (nParam == null || getPlayerDataExtractor() == null) {
             return null;
         }
 
-        return mAppServiceInt.getPlayerDataExtractor().extractNSig(nParam);
-    }
-
-    /**
-     * nParams - throttle params<br/>
-     * sParams - signature used in music videos
-     */
-    public Pair<List<String>, List<String>> bulkSigExtract(List<String> nParams, List<String> sParams) {
-        if (Helpers.allNulls(nParams, sParams) || mAppServiceInt.getPlayerDataExtractor() == null) {
-            return null;
-        }
-
-        return mAppServiceInt.getPlayerDataExtractor().bulkSigExtract(nParams, sParams);
+        return getPlayerDataExtractor().extractNSig(nParam);
     }
 
     public List<String> extractNSig(List<String> nParams) {
@@ -129,55 +126,14 @@ public class AppService {
     }
 
     /**
-     * Constant used in {@link AuthApi}
-     */
-    public String getClientId() {
-        return mAppServiceInt.getClientId();
-    }
-
-    /**
-     * Constant used in {@link AuthApi}
-     */
-    public String getClientSecret() {
-        return mAppServiceInt.getClientSecret();
-    }
-
-    /**
      * Used in get_video_info
      */
     public String getSignatureTimestamp() {
-        if (mAppServiceInt.getPlayerDataExtractor() == null) {
+        if (getPlayerDataExtractor() == null) {
             return null;
         }
 
-        return mAppServiceInt.getPlayerDataExtractor().getSignatureTimestamp();
-    }
-
-    /**
-     * Used with get_video_info, anonymous search and suggestions
-     */
-    public String getVisitorData() {
-        return mAppServiceInt.getVisitorData();
-    }
-
-    public void invalidateCache() {
-        mAppServiceInt.invalidateCache();
-    }
-
-    public void refreshCacheIfNeeded() {
-        mAppServiceInt.refreshCacheIfNeeded();
-    }
-
-    /**
-     * Visitor data is bound to specific js files versions.<br/>
-     * After reset user will get the latest js file versions.
-     */
-    public void invalidateVisitorData() {
-        mAppServiceInt.invalidateVisitorData();
-    }
-
-    public boolean isPlayerCacheActual() {
-        return mAppServiceInt.isPlayerCacheActual();
+        return getPlayerDataExtractor().getSignatureTimestamp();
     }
 
     @NonNull
@@ -190,4 +146,118 @@ public class AppService {
 
         return context;
     }
+
+    /**
+     * Obtains info with respect of anonymous browsing data (visitor cookie)
+     */
+    protected AppInfo getAppInfo(String userAgent) {
+        String visitorCookie = getData().getVisitorCookie();
+        Call<AppInfo> wrapper = mAppApi.getAppInfo(userAgent, visitorCookie);
+        AppInfo result = null;
+
+        Response<AppInfo> response = RetrofitHelper.getResponse(wrapper);
+
+        if (response != null) {
+            //String visitorInfoCookie = RetrofitHelper.getCookie(response, AppConstants.VISITOR_INFO_COOKIE);
+            //String visitorPrivacyCookie = RetrofitHelper.getCookie(response, AppConstants.VISITOR_PRIVACY_COOKIE);
+            //getData().setVisitorCookie(Helpers.join("; ", visitorInfoCookie, visitorPrivacyCookie));
+            getData().setVisitorCookie(RetrofitHelper.getCookies(response));
+            result = response.body();
+        }
+
+        return result;
+    }
+
+    protected ClientData getClientData(String clientUrl) {
+        if (clientUrl == null) {
+            return null;
+        }
+
+        Call<ClientData> wrapper = mAppApi.getClientData(clientUrl);
+        ClientData clientData = RetrofitHelper.get(wrapper);
+
+        // Seems that legacy script encountered.
+        if (clientData == null) {
+            clientData = RetrofitHelper.get(mAppApi.getClientData(getLegacyClientUrl(clientUrl)));
+        }
+
+        return clientData;
+    }
+    
+    private static String getLegacyClientUrl(String clientUrl) {
+        if (clientUrl == null) {
+            return null;
+        }
+
+        return clientUrl
+                .replace("/dg=0/", "/exm=base/ed=1/")
+                .replace("/m=base", "/m=main");
+    }
+
+    public void invalidateVisitorData() {
+        getData().setVisitorCookie(null);
+    }
+
+    public void invalidateCache() {
+        // NOP
+    }
+
+    public boolean isPlayerCacheActual() {
+        return false;
+    }
+
+    public String getClientId() {
+        // TODO: NPE 1.6K!!!
+        ClientData clientData = getClientData();
+        return clientData != null ? clientData.getClientId() : null;
+    }
+
+    /**
+     * Constant used in AuthApi
+     */
+    public String getClientSecret() {
+        return getClientData() != null ? getClientData().getClientSecret() : null;
+    }
+
+    /**
+     * Used with get_video_info, anonymous search and suggestions
+     */
+    public String getVisitorData() {
+        // TODO: NPE 300!!!
+        return getAppInfoData() != null ? getAppInfoData().getVisitorData() : null;
+    }
+
+    public String getPlayerUrl() {
+        // NOTE: NPE 2.5K
+        //return getData().getPlayerUrl() != null ? getData().getPlayerUrl() : mCachedAppInfo != null ? mCachedAppInfo.getPlayerUrl() : null;
+        return getAppInfoData() != null ? getAppInfoData().getPlayerUrl() : null;
+    }
+
+    public String getClientUrl() {
+        // NOTE: NPE 143K!!!
+        return getAppInfoData() != null ? getAppInfoData().getClientUrl() : null;
+    }
+
+    private AppInfo getAppInfoData() {
+        return getAppInfo(DefaultHeaders.USER_AGENT_TV);
+    }
+
+    private ClientData getClientData() {
+        return getClientData(getClientUrl());
+    }
+
+    public PlayerDataExtractor getPlayerDataExtractor() {
+        return new PlayerDataExtractor(getPlayerUrl());
+    }
+
+    public void refreshCacheIfNeeded() {
+        getAppInfoData();
+        getClientData();
+        getPlayerDataExtractor();
+    }
+
+    protected MediaServiceData getData() {
+        return MediaServiceData.instance();
+    }
+
 }

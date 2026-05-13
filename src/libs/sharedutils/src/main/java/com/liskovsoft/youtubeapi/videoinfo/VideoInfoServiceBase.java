@@ -17,6 +17,7 @@ import com.liskovsoft.sharedutils.videoinfo.models.DashInfoUrl;
 import com.liskovsoft.sharedutils.videoinfo.models.VideoInfo;
 import com.liskovsoft.sharedutils.videoinfo.models.formats.AdaptiveVideoFormat;
 import com.liskovsoft.sharedutils.videoinfo.models.formats.VideoFormat;
+import com.liskovsoft.sharedutils.app.playerdata.PlayerDataExtractor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +25,17 @@ import java.util.List;
 import kotlin.Pair;
 
 public abstract class VideoInfoServiceBase {
+
     private static final String TAG = VideoInfoServiceBase.class.getSimpleName();
+    
+    protected final AppService mAppService;
+    private final PlayerDataExtractor mPlayerDataExtractor;
     private final DashInfoApi mDashInfoApi;
     private final FileApi mFileApi;
-    protected final AppService mAppService;
 
     protected VideoInfoServiceBase() {
         mAppService = AppService.instance();
+        mPlayerDataExtractor = mAppService.getPlayerDataExtractor();
         mDashInfoApi = RetrofitHelper.create(DashInfoApi.class);
         mFileApi = RetrofitHelper.create(FileApi.class);
     }
@@ -56,6 +61,7 @@ public abstract class VideoInfoServiceBase {
     }
 
     private void decipherFormats(VideoInfo videoInfo) {
+        
         List<? extends VideoFormat> adaptiveFormats = videoInfo.getAdaptiveFormats();
         List<? extends VideoFormat> regularFormats = videoInfo.getRegularFormats();
 
@@ -70,29 +76,29 @@ public abstract class VideoInfoServiceBase {
             }
         urlHolders.add(videoInfo.getUrlHolder());
 
-        Pair<List<String>, List<String>> result = mAppService.bulkSigExtract(extractNParams(urlHolders), extractSParams(urlHolders));
+        List<String> NParams = new ArrayList<>();
+        List<String> SParams = new ArrayList<>();
+        for (VideoUrlHolder urlHolder : urlHolders) {
+            NParams.add(urlHolder.getNParam());
+            SParams.add(urlHolder.getSParam());
+        }
+
+        Pair<List<String>, List<String>> result = mPlayerDataExtractor.bulkSigExtract(NParams, SParams);
 
         if (result != null) {
-            List<String> nParams = result.getFirst();
-            List<String> signatures = result.getSecond();
-
-            applyNParams(urlHolders, nParams);
-            applySignatures(urlHolders, signatures);
+            applyNParams(urlHolders, result.getFirst());
+            applySignatures(urlHolders, result.getSecond());
         }
 
         String poToken = PoTokenGate.getPoToken(getClient());
         videoInfo.setPoToken(poToken);
-        applySessionPoToken(urlHolders, poToken);
-    }
 
-    private static List<String> extractSParams(List<VideoUrlHolder> urlHolders) {
-        List<String> result = new ArrayList<>();
+        if (poToken == null) return;
 
-        for (VideoUrlHolder urlHolder : urlHolders) {
-            result.add(urlHolder.getSParam());
+        for (int i = 0; i < urlHolders.size(); i++) {
+            urlHolders.get(i).setPoToken(poToken);
         }
 
-        return result;
     }
 
     private static void applySignatures(List<VideoUrlHolder> urlHolders, List<String> signatures) {
@@ -109,17 +115,6 @@ public abstract class VideoInfoServiceBase {
         }
     }
 
-    private static List<String> extractNParams(List<VideoUrlHolder> urlHolders) {
-        List<String> result = new ArrayList<>();
-
-        for (VideoUrlHolder urlHolder : urlHolders) {
-            result.add(urlHolder.getNParam());
-            // All throttled strings has same values
-        }
-
-        return result;
-    }
-
     private static void applyNParams(List<VideoUrlHolder> urlHolders, List<String> nParams) {
         if (nParams == null || nParams.isEmpty()) {
             return;
@@ -130,16 +125,6 @@ public abstract class VideoInfoServiceBase {
 
         for (int i = 0; i < urlHolders.size(); i++) {
             urlHolders.get(i).setNParam(nParams.get(sameSize ? i : 0));
-        }
-    }
-
-    private static void applySessionPoToken(List<VideoUrlHolder> urlHolders, String poToken) {
-        if (poToken == null) {
-            return;
-        }
-
-        for (int i = 0; i < urlHolders.size(); i++) {
-            urlHolders.get(i).setPoToken(poToken);
         }
     }
 

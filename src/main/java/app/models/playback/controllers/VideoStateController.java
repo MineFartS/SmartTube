@@ -7,7 +7,7 @@ import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Queue;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
-import com.liskovsoft.sharedutils.service.data.YouTubeMediaItemFormatInfo;
+import com.liskovsoft.sharedutils.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.videoinfo.models.VideoInfo;
 import com.liskovsoft.sharedutils.okhttp.ApiCaller;
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
@@ -379,7 +379,7 @@ public class VideoStateController extends BasePlayerController {
 
         getAccountManager().checkAuth();
 
-        YouTubeMediaItemFormatInfo formatInfo = getMediaItemService().getFormatInfo(video.videoId);
+        MediaItemFormatInfo formatInfo = getMediaItemService().getFormatInfo(video.videoId);
 
         if (formatInfo == null) {
             Log.e(TAG, "Can't update history for video id %s. formatInfo == null", video.videoId);
@@ -393,7 +393,7 @@ public class VideoStateController extends BasePlayerController {
                 formatInfo.getClickTrackingParams()
             );
 
-            formatInfo.sync(YouTubeMediaItemFormatInfo.from(videoInfo));
+            formatInfo.sync(MediaItemFormatInfo.from(videoInfo));
         
         }
 

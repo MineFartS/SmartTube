@@ -15,7 +15,7 @@ import com.liskovsoft.sharedutils.auth.V2.AuthService;
 import com.liskovsoft.googlecommon.common.models.auth.UserCode;
 import com.liskovsoft.googlecommon.common.models.auth.info.AccountInt;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import com.liskovsoft.sharedutils.service.YouTubeSignInService;
+import com.liskovsoft.sharedutils.SignInService;
 import com.liskovsoft.googlecommon.service.oauth.YouTubeAccount;
 import com.liskovsoft.sharedutils.videoinfo.V2.VideoInfoService;
 
@@ -28,7 +28,7 @@ public class YouTubeAccountManager {
     private static final String TAG = YouTubeAccountManager.class.getSimpleName();
     private static YouTubeAccountManager sInstance;
     private boolean mStorageSynced;
-    private final YouTubeSignInService mSignInService;
+    private final SignInService mSignInService;
     private final WeakHashSet<OnAccountChange> mListeners = new WeakHashSet<>();
     /**
      * Fix ConcurrentModificationException when using {@link #getSelectedAccount()}
@@ -62,11 +62,11 @@ public class YouTubeAccountManager {
         }
     };
 
-    private YouTubeAccountManager(YouTubeSignInService signInService) {
+    private YouTubeAccountManager(SignInService signInService) {
         mSignInService = signInService;
     }
 
-    public static YouTubeAccountManager instance(YouTubeSignInService signInService) {
+    public static YouTubeAccountManager instance(SignInService signInService) {
         if (sInstance == null) {
             sInstance = new YouTubeAccountManager(signInService);
         }

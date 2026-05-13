@@ -25,6 +25,8 @@ import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
 import com.liskovsoft.sharedutils.search.SearchService;
 import com.liskovsoft.sharedutils.search.models.SearchResult;
 import com.liskovsoft.sharedutils.service.data.YouTubeMediaGroup;
+import com.liskovsoft.sharedutils.SignInService;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 
@@ -623,8 +625,8 @@ public class ContentService {
     }
 
     @NonNull
-    private static YouTubeSignInService getSignInService() {
-        return YouTubeSignInService.instance();
+    private static SignInService getSignInService() {
+        return SignInService.instance();
     }
 
     @NonNull

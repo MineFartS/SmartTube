@@ -1935,15 +1935,6 @@ public final class Helpers {
         return split;
     }
 
-    public static boolean isJUnitTest() {
-        for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
-            if (element.getClassName().startsWith("org.junit.")) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static <T> T getNextValue(T[] valueList, T currentValue) {
         T nextState = valueList[0];
         boolean found = false;

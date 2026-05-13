@@ -97,16 +97,14 @@ public class Utils {
     private static final String TASK_ID = RemoteControlWorker.class.getSimpleName();
     private static final String TAG = Utils.class.getSimpleName();
     private static final String QR_CODE_URL_TEMPLATE = "https://api.qrserver.com/v1/create-qr-code/?data=%s";
-    private static final int GLOBAL_VOLUME_TYPE = AudioManager.STREAM_MUSIC;
-    private static final String GLOBAL_VOLUME_SERVICE = Context.AUDIO_SERVICE;
+
     public static final Handler sHandler = new Handler(Looper.getMainLooper());
     public static final float[] SPEED_LIST_LONG =
             new float[]{0.25f, 0.5f, 0.75f, 0.80f, 0.85f, 0.90f, 0.95f, 1.0f, 1.05f, 1.1f, 1.15f, 1.2f, 1.25f, 1.3f, 1.4f, 1.5f, 1.75f, 2f, 2.25f, 2.5f, 2.75f, 3.0f, 3.25f, 3.5f, 3.75f, 4.0f};
     public static final float[] SPEED_LIST_EXTRA_LONG = Helpers.range(0.05f, 4f, 0.05f);
     public static final float[] SPEED_LIST_SHORT =
             new float[] {0.25f, 0.5f, 0.75f, 1.0f, 1.25f, 1.5f, 1.75f, 2.0f, 2.25f, 2.5f, 2.75f, 3.0f, 3.25f, 3.5f, 3.75f, 4.0f};
-    private static Boolean sGlobalVolumeFixed;
-    private static int sCurrentVolume = -1;
+
     private static final Runnable sForceFinishTheApp = () -> Runtime.getRuntime().exit(0);
 
     @TargetApi(17)
@@ -246,49 +244,6 @@ public class Utils {
                         ExistingPeriodicWorkPolicy.KEEP,
                         workRequest
                 );
-    }
-
-    /**
-     * Volume: 0 - 100
-     */
-    private static void setGlobalVolume(Context context, int volume) {
-        if (context != null) {
-            AudioManager audioManager = (AudioManager) context.getSystemService(GLOBAL_VOLUME_SERVICE);
-            if (audioManager != null) {
-                int streamMaxVolume = audioManager.getStreamMaxVolume(GLOBAL_VOLUME_TYPE);
-                double newVolume = streamMaxVolume / 100d * volume;
-                if (sCurrentVolume < volume) {
-                    newVolume = Math.ceil(newVolume);
-                } else {
-                    newVolume = Math.floor(newVolume);
-                }
-                try {
-                    audioManager.setStreamVolume(GLOBAL_VOLUME_TYPE, (int) newVolume, 0);
-                    sCurrentVolume = volume;
-                } catch (SecurityException | IllegalArgumentException e) {
-                    // Not allowed to change Do Not Disturb state
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    /**
-     * Volume: 0 - 100
-     */
-    private static int getGlobalVolume(Context context) {
-        if (context != null) {
-            AudioManager audioManager = (AudioManager) context.getSystemService(GLOBAL_VOLUME_SERVICE);
-            if (audioManager != null) {
-                int streamMaxVolume = audioManager.getStreamMaxVolume(GLOBAL_VOLUME_TYPE);
-                int streamVolume = audioManager.getStreamVolume(GLOBAL_VOLUME_TYPE);
-
-                int volume = (int) Math.ceil(streamVolume / (streamMaxVolume / 100f));
-                return Math.abs(sCurrentVolume - volume) == 1 ? sCurrentVolume : volume; // fix small steps (1). volume should be precise.
-            }
-        }
-
-        return 100;
     }
 
     /**

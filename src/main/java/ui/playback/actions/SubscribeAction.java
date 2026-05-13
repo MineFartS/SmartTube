@@ -4,7 +4,7 @@ import android.content.Context;
 
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Video;
-import com.liskovsoft.sharedutils.service.YouTubeMediaItemService;
+import com.liskovsoft.sharedutils.MediaItemService;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 
 /**
@@ -13,7 +13,7 @@ import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 public class SubscribeAction extends TwoStateAction {
 
     private static Context mContext;
-    private static YouTubeMediaItemService mMediaItemService;
+    private static MediaItemService mMediaItemService;
 
     public SubscribeAction(Context context) {
         
@@ -24,7 +24,7 @@ public class SubscribeAction extends TwoStateAction {
         );
 
         mContext = context;
-        mMediaItemService = YouTubeMediaItemService.instance();
+        mMediaItemService = MediaItemService.instance();
 
         String[] labels = new String[2];
         // Note, labels denote the action taken when clicked

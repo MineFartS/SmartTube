@@ -10,11 +10,13 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.sharedutils.rx.RxHelper;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class OAuth2AccountManager extends OAuth2AccountManagerBase {
+public class OAuth2AccountManager {
     
     private static final String TAG = OAuth2AccountManager.class.getSimpleName();
     
@@ -24,6 +26,11 @@ public class OAuth2AccountManager extends OAuth2AccountManagerBase {
 
     private UserCode mUserCodeResult;
     private Runnable mOnChange;
+
+    private static final long TOKEN_REFRESH_PERIOD_MS = 60 * 60 * 1_000; // NOTE: auth token max lifetime is 60 min
+    
+    private String mCachedAuthorizationHeader;
+    private long mCacheUpdateTime;
 
     /**
      * Fix ConcurrentModificationException when using {@link #getSelectedAccount()}
@@ -62,7 +69,7 @@ public class OAuth2AccountManager extends OAuth2AccountManagerBase {
         GlobalPreferences.setOnInit(() -> {
             init();
             try {
-                updateAuthHeadersIfNeeded();
+                checkAuth();
             } catch (Exception e) {
                 // Host not found
                 e.printStackTrace();
@@ -82,18 +89,15 @@ public class OAuth2AccountManager extends OAuth2AccountManagerBase {
      * The code is working limited amount of time. Need to be confirmed instantly.
      */
     public SignInCode getSignInCode() {
-        mUserCodeResult = mOAuth2Service.getUserCode();
-        return mUserCodeResult != null ? new SignInCode() {
-            @Override
-            public String getSignInCode() {
-                return mUserCodeResult.getUserCode();
-            }
 
-            @Override
-            public String getSignInUrl() {
-                return mUserCodeResult.getVerificationUrl();
-            }
-        } : null;
+        mUserCodeResult = mOAuth2Service.getUserCode();
+        
+        if (mUserCodeResult != null) {
+            return new SignInCode(mUserCodeResult);
+        } else {
+            return null;
+        }
+
     }
 
     public void waitUserCodeConfirmation() {
@@ -129,27 +133,6 @@ public class OAuth2AccountManager extends OAuth2AccountManagerBase {
         YouTubeAccount tempAccount = YouTubeAccount.fromToken(refreshToken);
         addAccount(tempAccount);
 
-        //// Use initial account to create auth header
-        //checkAuth();
-        //
-        //// Remove initial account (with only refresh key)
-        //removeAccount(tempAccount);
-        //
-        //List<AccountInt> accountsInt = mOAuth2Service.getAccounts(); // runs under auth header from above
-        //
-        //if (accountsInt != null) {
-        //    for (AccountInt accountInt : accountsInt) {
-        //        AccountImpl account = AccountImpl.from(accountInt);
-        //        account.setRefreshToken(refreshToken);
-        //        addAccount(account);
-        //    }
-        //}
-        //
-        //fixSelectedAccount();
-        //
-        //// Apply merged tokens
-        //checkAuth();
-
         Log.d(TAG, "Success. Refresh token stored successfully in registry: " + refreshToken);
     }
 
@@ -184,7 +167,6 @@ public class OAuth2AccountManager extends OAuth2AccountManagerBase {
         }
     }
 
-    @Override
     public Account getSelectedAccount() {
         for (Account account : mAccounts) {
             if (account != null && account.isSelected()) {
@@ -253,21 +235,59 @@ public class OAuth2AccountManager extends OAuth2AccountManagerBase {
         mOnChange = onChange;
     }
 
-    @Override
-    protected AccessToken obtainAccessToken(String refreshToken) {
-        // We don't have context, so can't create instance here.
-        // Let's hope someone already created one for us.
-        if (GlobalPreferences.sInstance == null) {
-            Log.e(TAG, "GlobalPreferences is null!");
-            return null;
+    public void checkAuth() {
+        if (mCachedAuthorizationHeader != null 
+            && Helpers.equals(mCachedAuthorizationHeader, RetrofitOkHttpHelper.getAuthHeaders().get("Authorization"))
+            && System.currentTimeMillis() - mCacheUpdateTime < TOKEN_REFRESH_PERIOD_MS
+        ) return;
+
+        Account account = getSelectedAccount();
+        
+        String refreshToken = account != null ? ((YouTubeAccount) account).getRefreshToken() : null;
+
+        String authHeader = null;
+
+        if (GlobalPreferences.sInstance != null) {
+    
+            AccessToken token = null;
+
+            if (refreshToken != null)
+                token = mOAuth2Service.updateAccessToken(refreshToken);
+
+            if (token != null)
+                authHeader = String.format("%s %s", token.getTokenType(), token.getAccessToken());
+
         }
 
-        AccessToken token = null;
+        setAuthorizationHeader(authHeader);
 
-        if (refreshToken != null) {
-            token = mOAuth2Service.updateAccessToken(refreshToken);
-        }
-
-        return token;
     }
+
+    public String getAuthorizationHeader() {
+        return mCachedAuthorizationHeader;
+    }
+
+    public void setAuthorizationHeader(String authorizationHeader) {
+
+        mCachedAuthorizationHeader = authorizationHeader;
+        mCacheUpdateTime = System.currentTimeMillis();
+
+        Map<String, String> headers = RetrofitOkHttpHelper.getAuthHeaders();
+        headers.clear();
+
+        if (mCachedAuthorizationHeader != null && getSelectedAccount() != null) {
+            headers.put("Authorization", mCachedAuthorizationHeader);
+            String pageIdToken = ((YouTubeAccount) getSelectedAccount()).getPageIdToken();
+            if (pageIdToken != null) {
+                // Apply branded account rights (restricted videos). Branded refresh token with current account page id.
+                headers.put("X-Goog-Pageid", pageIdToken);
+            }
+        }
+
+    }
+
+    public void invalidateCache() {
+        mCachedAuthorizationHeader = null;
+    }
+
 }

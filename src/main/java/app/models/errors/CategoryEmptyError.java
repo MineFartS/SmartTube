@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import minefarts.smarttube.R;
-import minefarts.smarttube.app.presenters.YTSignInPresenter;
+import minefarts.smarttube.app.presenters.SignInPresenter;
 import minefarts.smarttube.utils.Utils;
 
 public class CategoryEmptyError implements ErrorFragmentData {
@@ -20,7 +20,7 @@ public class CategoryEmptyError implements ErrorFragmentData {
 
     @Override
     public void onAction() {
-        YTSignInPresenter.instance(mContext).start();
+        SignInPresenter.instance(mContext).start();
     }
 
     @Override

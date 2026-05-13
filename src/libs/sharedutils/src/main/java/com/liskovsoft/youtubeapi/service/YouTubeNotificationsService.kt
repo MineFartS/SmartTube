@@ -7,6 +7,8 @@ import com.liskovsoft.sharedutils.data.NotificationState
 import com.liskovsoft.sharedutils.rx.RxHelper
 import com.liskovsoft.sharedutils.notifications.NotificationsServiceInt
 import com.liskovsoft.sharedutils.notifications.NotificationsServiceIntWrapper
+import com.liskovsoft.sharedutils.SignInService
+
 import io.reactivex.Observable
 
 internal object YouTubeNotificationsService: NotificationsService {
@@ -41,9 +43,9 @@ internal object YouTubeNotificationsService: NotificationsService {
     }
 
     private fun checkSigned() {
-        getYouTubeSignInService().checkAuth()
+        getSignInService().checkAuth()
     }
 
-    private fun getYouTubeSignInService(): YouTubeSignInService = YouTubeSignInService.instance()
+    private fun getSignInService(): SignInService = SignInService.instance()
     private fun getNotificationServiceInt(): NotificationsServiceInt = NotificationsServiceIntWrapper
 }

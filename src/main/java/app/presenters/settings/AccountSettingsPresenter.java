@@ -9,7 +9,7 @@ import minefarts.smarttube.app.models.playback.ui.OptionItem;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
-import minefarts.smarttube.app.presenters.YTSignInPresenter;
+import minefarts.smarttube.app.presenters.SignInPresenter;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.presenters.dialogs.AccountSelectionPresenter;
 import minefarts.smarttube.misc.ServiceManager;
@@ -60,7 +60,7 @@ public class AccountSettingsPresenter extends BasePresenter<Void> {
         settingsPresenter.appendSingleButton(
             UiOptionItem.from(
                 getContext().getString(R.string.dialog_add_account), 
-                option -> YTSignInPresenter.instance(getContext()).start()
+                option -> SignInPresenter.instance(getContext()).start()
             )
         );
         
