@@ -13,6 +13,7 @@ import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
 import minefarts.smarttube.utils.Utils;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public class VideoStateService implements ProfileChangeListener {
     
@@ -29,7 +30,7 @@ public class VideoStateService implements ProfileChangeListener {
         mPrefs = AppPrefs.instance(context);
         mPrefs.addListener(this);
         
-        mStates = Helpers.createSafeLRUList(200);
+        mStates = new ArrayList();
 
         restoreState();
 
