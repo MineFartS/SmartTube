@@ -387,35 +387,51 @@ public class VideoStateController extends BasePlayerController {
 
         getAccountManager().checkAuth();
 
-        MediaItemFormatInfo formatInfo = getMediaItemService().getFormatInfo(video.videoId);
+        getMediaItemService().getFormatInfoObserve(video.videoId).subscribe((MediaItemFormatInfo formatInfo) -> {
 
-        if (formatInfo == null) {
-            Log.e(TAG, "Can't update history for video id %s. formatInfo == null", video.videoId);
-            return;
-        }
+            if (formatInfo == null) {
+                Log.e(TAG, "Can't update history for video id %s. formatInfo == null", video.videoId);
+                return;
+            }
 
-        if (!formatInfo.isAuth() && !formatInfo.isUnplayable() && getSignInService().isSigned()) {
+            if (!formatInfo.isAuth() && !formatInfo.isUnplayable() && getSignInService().isSigned()) {
+                
+                VideoInfo videoInfo = getVideoInfoService().getAuthVideoInfo(
+                    formatInfo.getVideoId(), 
+                    formatInfo.getClickTrackingParams()
+                );
+
+                formatInfo.sync(MediaItemFormatInfo.from(videoInfo));
             
-            VideoInfo videoInfo = getVideoInfoService().getAuthVideoInfo(
-                formatInfo.getVideoId(), 
-                formatInfo.getClickTrackingParams()
-            );
+            }
 
-            formatInfo.sync(MediaItemFormatInfo.from(videoInfo));
-        
-        }
+            float positionSec = positionMs / 1_000f;
+            float lengthSec = Helpers.parseFloat(formatInfo.getLengthSeconds());
 
-        float positionSec = positionMs / 1_000f;
-        float lengthSec = Helpers.parseFloat(formatInfo.getLengthSeconds());
+            if (mVideoId == null || mVideoId != video.videoId) {
 
-        if (mVideoId == null || mVideoId != video.videoId) {
+                mPositionSec = 0;
 
-            mPositionSec = 0;
+                Call<TrackingApi.EmptyResult> wrapper = mTrackingApi.createWatchRecord(
+                    video.videoId, 
+                    lengthSec, 
+                    mPositionSec,
+                    getAppService().getClientPlaybackNonce(),
+                    formatInfo.getEventId(),
+                    formatInfo.getVisitorMonitoringData(),
+                    formatInfo.getOfParam()
+                );
 
-            Call<TrackingApi.EmptyResult> wrapper = mTrackingApi.createWatchRecord(
+                RetrofitHelper.get(wrapper); // execute
+            
+            }
+
+            Call<TrackingApi.EmptyResult> wrapper = mTrackingApi.updateWatchTime(
                 video.videoId, 
                 lengthSec, 
-                mPositionSec,
+                mPositionSec, 
+                positionSec, 
+                positionSec,
                 getAppService().getClientPlaybackNonce(),
                 formatInfo.getEventId(),
                 formatInfo.getVisitorMonitoringData(),
@@ -423,24 +439,10 @@ public class VideoStateController extends BasePlayerController {
             );
 
             RetrofitHelper.get(wrapper); // execute
-        
-        }
+            
+            mPositionSec = positionSec;
 
-        Call<TrackingApi.EmptyResult> wrapper = mTrackingApi.updateWatchTime(
-            video.videoId, 
-            lengthSec, 
-            mPositionSec, 
-            positionSec, 
-            positionSec,
-            getAppService().getClientPlaybackNonce(),
-            formatInfo.getEventId(),
-            formatInfo.getVisitorMonitoringData(),
-            formatInfo.getOfParam()
-        );
-
-        RetrofitHelper.get(wrapper); // execute
-        
-        mPositionSec = positionSec;
+        });
 
     }
 
