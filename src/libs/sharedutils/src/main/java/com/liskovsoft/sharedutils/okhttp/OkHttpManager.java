@@ -47,7 +47,6 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.okhttp.interceptors.RateLimitInterceptor;
 import com.liskovsoft.sharedutils.okhttp.interceptors.UnzippingInterceptor;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
-import com.liskovsoft.sharedutils.okhttp.ApiCaller;
 
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor;
 

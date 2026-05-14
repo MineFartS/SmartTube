@@ -9,7 +9,6 @@ import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
 import com.liskovsoft.sharedutils.service.data.YouTubeMediaItemFormatInfo;
 import com.liskovsoft.sharedutils.videoinfo.models.VideoInfo;
-import com.liskovsoft.sharedutils.okhttp.ApiCaller;
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
 import minefarts.smarttube.app.models.playback.service.State;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
@@ -18,6 +17,9 @@ import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.utils.AppDialogUtil;
 import minefarts.smarttube.utils.Utils;
 import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
+
+import retrofit2.Call;
 
 public class VideoStateController extends BasePlayerController {
 
@@ -36,6 +38,12 @@ public class VideoStateController extends BasePlayerController {
 
     private static float mPositionSec;
     private static String mVideoId;
+
+    private final TrackingApi mTrackingApi;
+
+    public VideoStateController() {
+        mTrackingApi = RetrofitHelper.create(TrackingApi.class);
+    }
 
     /**
      * Fired after user clicked on video in browse activity<br/>
@@ -397,39 +405,40 @@ public class VideoStateController extends BasePlayerController {
         
         }
 
-        String videoId = formatInfo.getVideoId();
-        float oldPositionSec = mPositionSec;
         float positionSec = positionMs / 1_000f;
+        float lengthSec = Helpers.parseFloat(formatInfo.getLengthSeconds());
 
-        ApiCaller apiTempl = new ApiCaller("https://www.youtube.com/api/stats/playback?ns=yt&ver=2");
-        apiTempl.add("docid", videoId);
-        apiTempl.add("len", Helpers.parseFloat(formatInfo.getLengthSeconds()));
-        apiTempl.add("cpn", getAppService().getClientPlaybackNonce());            
-        apiTempl.add("ei", formatInfo.getEventId());
-        apiTempl.add("vm", formatInfo.getVisitorMonitoringData());
-        apiTempl.add("of", formatInfo.getOfParam());
+        if (mVideoId == null || mVideoId != video.videoId) {
 
-        ApiCaller api;
-
-        if (mVideoId == null || mVideoId != videoId) {
-
-            getAppService().resetClientPlaybackNonce();
-            apiTempl.add("cpn", getAppService().getClientPlaybackNonce());
-
-            mVideoId = videoId;
             mPositionSec = 0;
 
-            api = apiTempl.copy();
-            api.add("cmt", oldPositionSec);
-            api.call();
+            Call<TrackingApi.EmptyResult> wrapper = mTrackingApi.createWatchRecord(
+                video.videoId, 
+                lengthSec, 
+                mPositionSec,
+                getAppService().getClientPlaybackNonce(),
+                formatInfo.getEventId(),
+                formatInfo.getVisitorMonitoringData(),
+                formatInfo.getOfParam()
+            );
+
+            RetrofitHelper.get(wrapper); // execute
         
         }
 
-        api = apiTempl.copy();
-        api.add("st", oldPositionSec);
-        api.add("et", positionSec);
-        api.add("cmt", positionSec);
-        api.call();
+        Call<TrackingApi.EmptyResult> wrapper = mTrackingApi.updateWatchTime(
+            video.videoId, 
+            lengthSec, 
+            mPositionSec, 
+            positionSec, 
+            positionSec,
+            getAppService().getClientPlaybackNonce(),
+            formatInfo.getEventId(),
+            formatInfo.getVisitorMonitoringData(),
+            formatInfo.getOfParam()
+        );
+
+        RetrofitHelper.get(wrapper); // execute
         
         mPositionSec = positionSec;
 

@@ -42,7 +42,6 @@ import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.utils.LoadingManager;
 import minefarts.smarttube.utils.Utils;
 import com.liskovsoft.sharedutils.playlist.PlaylistService;
-import com.liskovsoft.sharedutils.okhttp.ApiCaller;
 import com.liskovsoft.sharedutils.app.AppService;
 import com.liskovsoft.sharedutils.ChannelGroupService;
 import com.liskovsoft.sharedutils.CommentsService;
