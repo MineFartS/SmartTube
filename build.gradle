@@ -119,6 +119,9 @@ dependencies {
     implementation project(':leanback-1.0.0')
     implementation project(':sharedutils')
 
+    implementation 'com.squareup.retrofit2:retrofit:' + retrofitVersion
+    implementation 'com.squareup.retrofit2:converter-gson:' + retrofitVersion
+
     implementation 'androidx.tvprovider:tvprovider:' + leanbackXLibraryVersion
     implementation 'androidx.leanback:leanback:' + leanbackXLibraryVersion
     implementation 'androidx.leanback:leanback-preference:' + leanbackXLibraryVersion
