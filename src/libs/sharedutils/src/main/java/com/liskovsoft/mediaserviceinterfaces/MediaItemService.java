@@ -58,21 +58,7 @@ public class MediaItemService {
         return sInstance;
     }
 
-    /**
-     * Format info is cached because it's supposed to run in multiple methods
-     */
-    public MediaItemFormatInfo getFormatInfo(MediaItem item) {
-        return getFormatInfo(
-            item.getVideoId(), 
-            item.getClickTrackingParams()
-        );
-    }
-
-    public MediaItemFormatInfo getFormatInfo(String videoId) {
-        return getFormatInfo(videoId, null);
-    }
-
-    public MediaItemFormatInfo getFormatInfo(String videoId, String clickTrackingParams) {
+    private MediaItemFormatInfo getFormatInfo(String videoId) {
 
         MediaItemFormatInfo cachedFormatInfo = getCachedFormatInfo(videoId);
 
@@ -81,31 +67,17 @@ public class MediaItemService {
 
         getSignInService().checkAuth();
 
-        VideoInfo videoInfo = getVideoInfoService().getVideoInfo(
-            videoId, 
-            clickTrackingParams
-        );
+        VideoInfo videoInfo = getVideoInfoService().getVideoInfo(videoId, null);
 
         MediaItemFormatInfo formatInfo = MediaItemFormatInfo.from(videoInfo);
 
-        setCachedFormatInfo(
-            formatInfo, 
-            clickTrackingParams
-        );
+        setCachedFormatInfo(formatInfo, null);
 
         return formatInfo;
     }
 
-    public Observable<MediaItemFormatInfo> getFormatInfoObserve(MediaItem item) {
-        return RxHelper.fromCallable(() -> getFormatInfo(item));
-    }
-
     public Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId) {
         return RxHelper.fromCallable(() -> getFormatInfo(videoId));
-    }
-
-    public Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId, String clickTrackingParams) {
-        return RxHelper.fromCallable(() -> getFormatInfo(videoId, clickTrackingParams));
     }
 
     public MediaItemStoryboard getStoryboard(MediaItem item) {
