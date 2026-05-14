@@ -10,22 +10,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import androidx.leanback.widget.BaseCardView;
+
 import minefarts.smarttube.R;
-import minefarts.smarttube.util.vineyard.NetworkUtil;
 
 public class VideoCardView extends BaseCardView {
+
     public static final int CARD_TYPE_FLAG_IMAGE_ONLY = 0;
     public static final int CARD_TYPE_FLAG_TITLE = 1;
     public static final int CARD_TYPE_FLAG_CONTENT = 2;
 
     PreviewCardView mPreviewCard;
-
     ViewGroup mInfoArea;
-
     private TextView mTitleView;
     private TextView mContentView;
     private boolean mAttachedToWindow;
+    private ConnectivityManager mConnectivityManager;
 
     public VideoCardView(Context context, int styleResId) {
         super(new ContextThemeWrapper(context, styleResId), null, 0);
@@ -60,6 +64,9 @@ public class VideoCardView extends BaseCardView {
     }
 
     private void buildImageCardView(int styleResId) {
+
+        mConnectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
         // Make sure the ImageCardView is focusable.
         setFocusable(true);
         setFocusableInTouchMode(true);
@@ -165,9 +172,13 @@ public class VideoCardView extends BaseCardView {
     }
 
     public void startVideo() {
-        if (NetworkUtil.isNetworkConnected(getContext())) {
+
+        NetworkInfo activeNetwork = mConnectivityManager.getActiveNetworkInfo();
+                
+        if (activeNetwork != null && activeNetwork.isConnectedOrConnecting()) {
             mPreviewCard.setLoading();
         }
+
     }
 
     public void stopVideo() {

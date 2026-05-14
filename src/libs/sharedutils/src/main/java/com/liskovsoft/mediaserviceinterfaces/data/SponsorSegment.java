@@ -5,15 +5,11 @@ package com.liskovsoft.sharedutils.data;
  * <a href="https://wiki.sponsor.ajay.app/w/API_Docs">Segment API</a><br/>
  */
 public interface SponsorSegment {
-    String CATEGORY_SPONSOR = "sponsor";
-    String CATEGORY_INTRO = "intro";
-    String CATEGORY_OUTRO = "outro";
-    String CATEGORY_INTERACTION = "interaction";
-    String CATEGORY_SELF_PROMO = "selfpromo";
-    String CATEGORY_MUSIC_OFF_TOPIC = "music_offtopic";
-    String CATEGORY_PREVIEW_RECAP = "preview";
-    String CATEGORY_POI_HIGHLIGHT = "poi_highlight";
-    String CATEGORY_FILLER = "filler";
+
+    String CATEGORY_SPONSOR = "Sponsor";
+    String CATEGORY_INTERACTION = "Interaction reminder (subscribe)";
+    String CATEGORY_SELF_PROMO = "Unpaid/self promotion";
+
     String ACTION_SKIP = "skip";
     String ACTION_MUTE = "mute";
 
@@ -21,4 +17,5 @@ public interface SponsorSegment {
     long getEndMs();
     String getCategory();
     String getAction();
+
 }

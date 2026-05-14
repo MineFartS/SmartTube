@@ -302,9 +302,6 @@ public class ContentBlockController extends BasePlayerController {
 
         SponsorSegment lastSegment = foundSegments.get(foundSegments.size() - 1);
 
-        Integer resId = getContentBlockData().getLocalizedRes(lastSegment.getCategory());
-        String skipMessage = resId != null ? getContext().getString(resId) : lastSegment.getCategory();
-
         int type = getContentBlockData().getAction(lastSegment.getCategory());
 
         long skipPosMs = lastSegment.getEndMs();
@@ -312,7 +309,7 @@ public class ContentBlockController extends BasePlayerController {
         long skipDurationMs = Math.min(skipPosMs, getPlayer().getDurationMs()) - getPlayer().getPositionMs();
 
         if (skipDurationMs >= 10_000) {
-            messageSkip(skipPosMs, skipMessage);
+            messageSkip(skipPosMs, lastSegment.getCategory());
         }
 
         mLastSkipPosMs = skipPosMs;

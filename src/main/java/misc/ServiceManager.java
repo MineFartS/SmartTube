@@ -6,7 +6,7 @@ import android.util.Pair;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.liskovsoft.sharedutils.service.YouTubeSignInService;
+import com.liskovsoft.sharedutils.SignInService;
 import com.liskovsoft.sharedutils.service.YouTubeRemoteControlService;
 import com.liskovsoft.sharedutils.service.YouTubeLiveChatService;
 import com.liskovsoft.sharedutils.service.YouTubeCommentsService;
@@ -15,7 +15,6 @@ import com.liskovsoft.sharedutils.videoinfo.models.VideoInfo;
 import com.liskovsoft.googleapi.oauth2.manager.OAuth2AccountManager;
 import com.liskovsoft.sharedutils.videoinfo.V2.VideoInfoService;
 import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.service.YouTubeMediaItemService;
 import com.liskovsoft.sharedutils.service.ContentService;
 import com.liskovsoft.sharedutils.MediaItemService;
 import com.liskovsoft.sharedutils.NotificationsService;
@@ -46,7 +45,6 @@ import com.liskovsoft.sharedutils.app.AppService;
 import com.liskovsoft.sharedutils.ChannelGroupService;
 import com.liskovsoft.sharedutils.CommentsService;
 import com.liskovsoft.sharedutils.LiveChatService;
-import com.liskovsoft.sharedutils.MediaItemService;
 import com.liskovsoft.sharedutils.RemoteControlService;
 import com.liskovsoft.sharedutils.channelgroups.ChannelGroupServiceImpl;
 import com.liskovsoft.googlecommon.common.locale.LocaleManager;
@@ -468,8 +466,8 @@ public class ServiceManager {
         }, error -> LoadingManager.showLoading(context, false));
     }
 
-    public static YouTubeSignInService getSignInService() {
-        return YouTubeSignInService.instance();
+    public static SignInService getSignInService() {
+        return SignInService.instance();
     }
 
     public static YouTubeRemoteControlService getRemoteControlService() {
@@ -488,8 +486,8 @@ public class ServiceManager {
         return ContentService.instance();
     }
 
-    public static YouTubeMediaItemService getMediaItemService() {
-        return YouTubeMediaItemService.instance();
+    public static MediaItemService getMediaItemService() {
+        return MediaItemService.instance();
     }
 
     public static YouTubeNotificationsService getNotificationsService() {

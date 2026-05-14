@@ -46,7 +46,6 @@ import minefarts.smarttube.prefs.ContentBlockData;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.prefs.PlayerData;
 import minefarts.smarttube.prefs.PlayerTweaksData;
-import com.liskovsoft.sharedutils.service.YouTubeMediaItemService;
 import com.liskovsoft.sharedutils.playlist.impl.YouTubePlaylistInfo;
 
 import java.io.File;
@@ -492,7 +491,7 @@ public class AppDialogUtil {
             return;
         }
 
-        MediaItemService itemManager = YouTubeMediaItemService.instance();
+        MediaItemService itemManager = MediaItemService.instance();
 
         Disposable playlistsInfoAction = itemManager.getPlaylistsInfoObserve(video.videoId)
                 .subscribe(
@@ -543,7 +542,7 @@ public class AppDialogUtil {
         }
 
         Observable<Void> editObserve;
-        MediaItemService itemManager = YouTubeMediaItemService.instance();
+        MediaItemService itemManager = MediaItemService.instance();
 
         if (add) {
             editObserve = video.mediaItem != null ?
@@ -598,7 +597,7 @@ public class AppDialogUtil {
             options.add(UiOptionItem.from(context.getString(pair[0]), optionItem -> {
                 if (optionItem.isSelected()) {
                     RxHelper.execute(
-                            YouTubeMediaItemService.instance().setPlaylistOrderObserve(playlistId, pair[1]),
+                            MediaItemService.instance().setPlaylistOrderObserve(playlistId, pair[1]),
                             (error) -> MessageHelpers.showMessage(context, R.string.owned_playlist_warning),
                             () -> {
                                 generalData.setPlaylistOrder(playlistId, pair[1]);

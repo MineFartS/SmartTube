@@ -19,7 +19,7 @@ import com.liskovsoft.sharedutils.app.models.cached.PlayerDataCached;
 import com.liskovsoft.sharedutils.app.playerdata.NSigData;
 import com.liskovsoft.sharedutils.app.playerdata.PlayerExtractorCache;
 import com.liskovsoft.sharedutils.app.potokencloud.PoTokenResponse;
-import com.liskovsoft.sharedutils.service.YouTubeMediaItemService;
+import com.liskovsoft.sharedutils.MediaItemService;
 
 import java.util.UUID;
 
@@ -183,7 +183,7 @@ public class MediaServiceData {
 
         persistState();
 
-        YouTubeMediaItemService.instance().invalidateCache(); // Remove current cached video
+        MediaItemService.instance().invalidateCache(); // Remove current cached video
     }
 
     public boolean isContentHidden(int content) {
@@ -260,7 +260,7 @@ public class MediaServiceData {
         mIsMoreSubtitlesUnlocked = unlock;
         persistState();
 
-        YouTubeMediaItemService.instance().invalidateCache(); // Remove current cached video
+        MediaItemService.instance().invalidateCache(); // Remove current cached video
     }
 
     public boolean isPotSupported() {
