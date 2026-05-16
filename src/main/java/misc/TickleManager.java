@@ -13,7 +13,11 @@ public class TickleManager {
     private boolean mIsEnabled = true;
 
     public interface TickleListener {
-        void onTickle();
+        
+        default void onTickle() {
+            // NOP
+        }
+        
     }
 
     private TickleManager() {
