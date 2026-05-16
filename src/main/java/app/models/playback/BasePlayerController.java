@@ -249,11 +249,6 @@ public abstract class BasePlayerController extends ServiceManager implements Pla
     }
 
     @Override
-    public void onTickle() {
-        // NOP
-    }
-
-    @Override
     public void onMetadata(MediaItemMetadata metadata) {
         // NOP
     }

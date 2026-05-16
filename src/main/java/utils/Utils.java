@@ -872,34 +872,6 @@ public class Utils {
         return uniqueId;
     }
 
-    public static <T> boolean chainProcess(List<T> listeners, ChainProcessor<T> processor) {
-        boolean result = false;
-
-        for (T listener : listeners) {
-            result = processor.process(listener);
-
-            if (result) {
-                break;
-            }
-        }
-
-        return result;
-    }
-
-    public interface ChainProcessor<T> {
-        boolean process(T listener);
-    }
-
-    public static <T> void process(List<T> listeners, Processor<T> processor) {
-        for (T listener : listeners) {
-            processor.process(listener);
-        }
-    }
-
-    public interface Processor<T> {
-        void process(T listener);
-    }
-
     public static boolean skipCronet() {
         // Android 6 and below may crash running Cronet???
         return VERSION.SDK_INT <= 23;
