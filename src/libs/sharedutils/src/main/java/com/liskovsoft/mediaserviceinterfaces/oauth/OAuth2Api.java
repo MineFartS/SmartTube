@@ -1,4 +1,4 @@
-package com.liskovsoft.googleapi.oauth2;
+package com.liskovsoft.sharedutils.oauth;
 
 import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
 import com.liskovsoft.googlecommon.common.models.auth.UserCode;
@@ -13,7 +13,7 @@ import retrofit2.http.POST;
  * https://developers.google.com/identity/protocols/oauth2/limited-input-device
  */
 @WithJsonPath
-interface OAuth2Api {
+public interface OAuth2Api {
 
     @FormUrlEncoded
     @POST("https://oauth2.googleapis.com/device/code")
