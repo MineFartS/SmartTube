@@ -14,7 +14,6 @@ import com.liskovsoft.sharedutils.locale.LocaleUtility;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.playback.PlayerEngine;
 import minefarts.smarttube.app.models.playback.PlayerEngine;
-import minefarts.smarttube.exoplayer.other.SubtitleManager.SubtitleStyle;
 import minefarts.smarttube.exoplayer.selector.ExoFormatItem;
 import minefarts.smarttube.exoplayer.selector.FormatItem;
 import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
@@ -44,9 +43,7 @@ public class PlayerData extends DataChangeBase implements PlayerEngine, ProfileC
     private FormatItem mTempVideoFormat;
     private FormatItem mAudioFormat;
     private FormatItem mSubtitleFormat;
-    private final List<SubtitleStyle> mSubtitleStyles = new ArrayList<>();
     private final Map<String, FormatItem> mDefaultVideoFormats = new HashMap<>();
-    private int mSubtitleStyleIndex;
     private float mSpeed;
     private float mLastSpeed;
     private boolean mIsAfrEnabled;
@@ -101,7 +98,6 @@ public class PlayerData extends DataChangeBase implements PlayerEngine, ProfileC
     private PlayerData(Context context) {
         mPrefs = AppPrefs.instance(context);
         mPrefs.addListener(this);
-        initSubtitleStyles();
         initDefaultFormats();
         restoreState();
     }
@@ -250,19 +246,6 @@ public class PlayerData extends DataChangeBase implements PlayerEngine, ProfileC
             mLastSubtitleFormats.remove(mSubtitleFormat);
             mLastSubtitleFormats.add(0, mSubtitleFormat);
         }
-    }
-
-    public List<SubtitleStyle> getSubtitleStyles() {
-        return mSubtitleStyles;
-    }
-
-    public SubtitleStyle getSubtitleStyle() {
-        return mSubtitleStyles.get(mSubtitleStyleIndex);
-    }
-
-    public void setSubtitleStyle(SubtitleStyle subtitleStyle) {
-        mSubtitleStyleIndex = mSubtitleStyles.indexOf(subtitleStyle);
-        persistState();
     }
 
     public float getSubtitleScale() {
@@ -451,19 +434,6 @@ public class PlayerData extends DataChangeBase implements PlayerEngine, ProfileC
         return FormatItem.SUBTITLE_NONE;
     }
 
-    private void initSubtitleStyles() {
-        mSubtitleStyles.add(new SubtitleStyle(R.string.subtitle_white_transparent, R.color.light_grey, R.color.transparent, CaptionStyleCompat.EDGE_TYPE_DROP_SHADOW));
-        mSubtitleStyles.add(new SubtitleStyle(R.string.subtitle_white_semi_transparent, R.color.light_grey, R.color.semi_transparent, CaptionStyleCompat.EDGE_TYPE_OUTLINE));
-        mSubtitleStyles.add(new SubtitleStyle(R.string.subtitle_white_black, R.color.light_grey, R.color.black, CaptionStyleCompat.EDGE_TYPE_OUTLINE));
-        mSubtitleStyles.add(new SubtitleStyle(R.string.subtitle_yellow_transparent, R.color.yellow, R.color.transparent, CaptionStyleCompat.EDGE_TYPE_DROP_SHADOW));
-        mSubtitleStyles.add(new SubtitleStyle(R.string.subtitle_yellow_semi_transparent, R.color.yellow, R.color.semi_transparent, CaptionStyleCompat.EDGE_TYPE_OUTLINE));
-        mSubtitleStyles.add(new SubtitleStyle(R.string.subtitle_yellow_black, R.color.yellow, R.color.black, CaptionStyleCompat.EDGE_TYPE_OUTLINE));
-
-        if (VERSION.SDK_INT >= 19) {
-            mSubtitleStyles.add(new SubtitleStyle(R.string.subtitle_system));
-        }
-    }
-
     /**
      * Overrides for auto detected values
      */
@@ -482,7 +452,6 @@ public class PlayerData extends DataChangeBase implements PlayerEngine, ProfileC
         /* 01 */ mVideoFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 1)), getDefaultVideoFormat());
         /* 02 */ mAudioFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 2)), getDefaultAudioFormat());
         /* 03 */ mSubtitleFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 3)), getDefaultSubtitleFormat());
-        /* 04 */ mSubtitleStyleIndex = Helpers.parseInt(split, 4, 4); // yellow on semi bg
 
         /* 06 */ mSpeed = Helpers.parseFloat(split, 6, 1.0f);
         /* 07 */ mIsAfrEnabled = Helpers.parseBoolean(split, 7, false);
@@ -538,7 +507,7 @@ public class PlayerData extends DataChangeBase implements PlayerEngine, ProfileC
             /* 01 */ mVideoFormat, 
             /* 02 */ mAudioFormat, 
             /* 03 */ mSubtitleFormat,
-            /* 04 */ mSubtitleStyleIndex, 
+            /* 04 */ null, 
             /* 05 */ null, 
             /* 06 */ mSpeed,
             /* 07 */ mIsAfrEnabled, 

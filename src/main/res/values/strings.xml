@@ -34,10 +34,6 @@
     <string name="dialog_add_account">Sign in</string>
     <string name="default_lang">Default</string>
     <string name="dialog_select_language">Language</string>
-    <string name="subtitle_default">Default</string>
-    <string name="subtitle_white_semi_transparent">White on semitransparent background</string>
-    <string name="subtitle_style">Subtitle style</string>
-    <string name="subtitle_language">Subtitle language</string>
     <string name="settings_main_ui">User interface</string>
     <string name="dialog_main_ui">User interface</string>
     <string name="card_animated_previews">Animated previews</string>
@@ -80,9 +76,6 @@
     <string name="repeat_mode_none">Stop playback after one video (except queue)</string>
     <string name="subscribed_to_channel">Subscribed</string>
     <string name="unsubscribed_from_channel">Unsubscribed</string>
-    <string name="subtitle_yellow_transparent">Yellow on transparent background</string>
-    <string name="subtitle_white_transparent">White on transparent background</string>
-    <string name="subtitle_white_black">White on black background</string>
     <string name="channels_section_sorting">Channels section sorting</string>
     <string name="sorting_by_new_content">New content</string>
     <string name="sorting_alphabetically">Alphabetically</string>
@@ -250,7 +243,6 @@
     <string name="description_not_found">Description not found</string>
     <string name="rename_section">Rename this section</string>
     <string name="simple_edit_value_hint">Enter value</string>
-    <string name="subtitle_system">System style (Android settings &gt; Accessibility)</string>
     <string name="subtitle_scale">Subtitle scale</string>
     <string name="playback_notifications_fix_desc">Hides track change notifications. Could be useful on AOSP-based firmware.</string>
     <string name="playback_notifications_fix">Disable playback notifications</string>
@@ -325,8 +317,6 @@
     <string name="time_format_12">12 hours (AM/PM)</string>
     <string name="speech_recognizer">Speech recognizer</string>
     <string name="speech_engine">Voice search engine</string>
-    <string name="subtitle_yellow_semi_transparent">Yellow on semitransparent background</string>
-    <string name="subtitle_yellow_black">Yellow on black background</string>
     <string name="player_pixel_ratio">Pixel ratio</string>
     <string name="disable_mic_permission">Please disable microphone access for the app in order for this recognizer to work properly.</string>
     <string name="repeat_mode_shuffle">Shuffle</string>
