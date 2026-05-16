@@ -29,9 +29,6 @@ public class VideoStateController extends BasePlayerController {
     private static final long LIVE_BUFFER_MS = 15_000;
     private static final long LIVE_THRESH_MS = LIVE_BUFFER_MS + 5_000;
 
-    private static final long BEGIN_THRESHOLD_MS = 10_000;
-    private static final long STATE_SAVE_INTERVAL_MS = 10_000; // Save state every 10 seconds
-
     private boolean mIsPlayEnabled;
     private boolean mIsPlayBlocked;
     private long mNewVideoTimeMs;
@@ -96,7 +93,7 @@ public class VideoStateController extends BasePlayerController {
     @Override
     public boolean onPreviousClicked() {
         // Seek to the start on prev
-        if (getPlayer() != null && getPlayer().getPositionMs() > BEGIN_THRESHOLD_MS) {
+        if (getPlayer() != null && getPlayer().getPositionMs() > 10_000) {
             onTickle(); // in case the user wants to go to previous video
             getPlayer().setPositionMs(100);
             return true;
@@ -146,17 +143,18 @@ public class VideoStateController extends BasePlayerController {
             getPlayer().showOverlay(true);
         }
         
-        // Start periodic state saving
-        Utils.removeCallbacks(this::saveStatePeriodically);
-        Utils.postDelayed(this::saveStatePeriodically, STATE_SAVE_INTERVAL_MS);
+        Utils.post(() -> {
+            while (true) {
+                onTickle();
+                Utils.sleep(10_000);    
+            }
+        });
+
     }
 
     @Override
     public void onEngineReleased() {
         if (getPlayer() == null) return;
-
-        // Stop periodic state saving
-        Utils.removeCallbacks(this::saveStatePeriodically);
         
         // Save previous state
         if (getPlayer().containsMedia()) {
@@ -168,11 +166,7 @@ public class VideoStateController extends BasePlayerController {
     @Override
     public void onTickle() {
         
-        if (getPlayer() == null 
-            || !getPlayer().isEngineInitialized()
-            || getVideo() == null
-            || !getPlayer().containsMedia()
-        ) return;
+        if (getPlayer() == null || getVideo() == null) return;
 
         updateHistory(
             getVideo(), 
@@ -181,20 +175,6 @@ public class VideoStateController extends BasePlayerController {
 
     }
             
-    private void saveStatePeriodically() {
-        if (getPlayer() == null || !getPlayer().isEngineInitialized()) {
-            return;
-        }
-        
-        // Only save if video is playing (not paused)
-        if (getPlayer().getPlayWhenReady()) {
-            onTickle();
-        }
-        
-        // Schedule next save
-        Utils.postDelayed(this::saveStatePeriodically, STATE_SAVE_INTERVAL_MS);
-    }
-
     @Override
     public void onMetadata(MediaItemMetadata metadata) {
         // Channel info should be loaded at this point

@@ -31,7 +31,7 @@ public class VideoStateService implements ProfileChangeListener {
         
         mStates = Helpers.createSafeLRUList(200);
 
-        restoreState();
+        onProfileChanged();
 
     }
 
@@ -82,27 +82,12 @@ public class VideoStateService implements ProfileChangeListener {
 
     public void save(State state) {
 
-        Integer i = indexOf(state);
+        removeByVideoId(state.videoId);
 
-        if (i == null) {
-            mStates.add(state);
-        } else {
-            mStates.set(1, state);
-        }
+        mStates.add(state);
         
         persistState();
     
-    }
-
-    private Integer indexOf(State state) {
-        
-        for (int i = 0; i < mStates.size(); i++) {
-            if (mStates.get(i).videoId == state.videoId) {
-                return i;
-            }
-        }
-
-        return null;
     }
 
     public void clear() {
@@ -110,47 +95,8 @@ public class VideoStateService implements ProfileChangeListener {
         persistState();
     }
 
-    private void restoreState() {
-
-        mStates.clear();
-
-        String data = mPrefs.getStateUpdaterData();
-        String[] split = Helpers.splitData(data);
-
-        /* 0 */ setStateData(Helpers.parseStr(split, 0));
-    
-    }
-
     public void persistState() {
-        
-        mPrefs.setStateUpdaterData(
-            Helpers.mergeData(
-                /* 0 */ getStateData()
-            )
-        );
-        
-    }
 
-    @Override
-    public void onProfileChanged() {
-        restoreState();
-    }
-
-    private void setStateData(String data) {
-        if (data != null) {
-            String[] split = Helpers.split(data, DELIM);
-
-            for (String spec : split) {
-                State state = State.from(spec);
-
-                if (state != null) {
-                    mStates.add(state);
-                }
-            }
-        }
-    }
-
-    private String getStateData() {
         StringBuilder sb = new StringBuilder();
 
         for (State state : mStates) {
@@ -160,7 +106,41 @@ public class VideoStateService implements ProfileChangeListener {
 
             sb.append(state);
         }
-
-        return sb.toString();
+        
+        mPrefs.setStateUpdaterData(
+            Helpers.mergeData(
+                /* 0 */ sb.toString()
+            )
+        );
+        
     }
+
+    @Override
+    public void onProfileChanged() {
+        
+        mStates.clear();
+
+        String data = mPrefs.getStateUpdaterData();
+        String[] split = Helpers.splitData(data);
+
+        data = Helpers.parseStr(split, 0);
+
+        if (data != null) {
+            
+            split = Helpers.split(data, DELIM);
+
+            for (String spec : split) {
+
+                State state = State.from(spec);
+
+                if (state != null) {
+                    mStates.add(state);
+                }
+                
+            }
+
+        }
+
+    }
+
 }
