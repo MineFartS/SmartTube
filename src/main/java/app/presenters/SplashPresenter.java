@@ -20,7 +20,6 @@ import minefarts.smarttube.app.presenters.dialogs.BootDialogPresenter;
 import minefarts.smarttube.app.views.SplashView;
 import minefarts.smarttube.app.views.ViewManager;
 import minefarts.smarttube.misc.ServiceManager;
-import minefarts.smarttube.misc.StreamReminderService;
 import minefarts.smarttube.prefs.AccountsData;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.utils.IntentExtractor;
@@ -80,7 +79,6 @@ public class SplashPresenter extends BasePresenter<SplashView> {
             RxHelper.setupGlobalErrorHandler();
             initGlobalPrefs();
             initVideoStateService();
-            initStreamReminderService();
         }
 
         if (!mRunPerInstance) {
@@ -126,12 +124,6 @@ public class SplashPresenter extends BasePresenter<SplashView> {
     private void initVideoStateService() {
         if (getContext() != null) {
             VideoStateService.instance(getContext());
-        }
-    }
-
-    private void initStreamReminderService() {
-        if (getContext() != null) {
-            StreamReminderService.instance(getContext()).start();
         }
     }
 
