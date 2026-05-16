@@ -12,9 +12,9 @@ import com.liskovsoft.sharedutils.app.nsigsolver.runtime.ScriptType
 import com.liskovsoft.sharedutils.app.nsigsolver.runtime.ScriptVariant
 
 internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
+
     private val tag = V8ChallengeProvider::class.simpleName
     private val v8NpmLibFilename = listOf("${libPrefix}polyfill.js", "${libPrefix}meriyah-6.1.4.min.js", "${libPrefix}astring-1.9.0.min.js")
-    private var v8Runtime: V8? = null
     private val v8Lock = Any()
 
     override fun iterScriptSources(): Sequence<Pair<ScriptSource, (ScriptType) -> Script?>> = sequence {
@@ -35,69 +35,37 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
 
     override fun runJsRuntime(stdin: String): String {
         synchronized(v8Lock) {
-            initRuntime()
 
-            val result = runV8(stdin)
+            val runtime = V8.createV8Runtime()
+            var result: String
+            
+            try {
 
-            shutdownIfNeeded()
+                result = runtime.withLock {
+                    
+                    it.executeStringScript(constructCommonStdin())
+                    
+                    it.executeStringScript(stdin) ?: throw JsChallengeProviderError("V8 runtime error: empty response")
+                
+                }
+            
+            } catch (e: V8ScriptExecutionException) {
+                
+                if (e.message?.contains("Invalid or unexpected token") ?: false)
+                    ie.cache.clear(cacheSection) // cached data broken?
+                
+                throw JsChallengeProviderError("V8 runtime error: ${e.message}", e)
+            
+            }
+
+            // NOTE: getting lock fixes "Invalid V8 thread access: the locker has been released!"
+            runtime.withLock {
+                it.release(false)
+            }
 
             return result
+
         }
     }
 
-    private fun runV8(stdin: String): String {
-        val runtime = v8Runtime ?: throw JsChallengeProviderError("V8 runtime not initialized yet")
-        try {
-            return runtime.withLock {
-                it.executeStringScript(stdin) ?: throw JsChallengeProviderError("V8 runtime error: empty response")
-            }
-        } catch (e: V8ScriptExecutionException) {
-            if (e.message?.contains("Invalid or unexpected token") ?: false)
-                ie.cache.clear(cacheSection) // cached data broken?
-            throw JsChallengeProviderError("V8 runtime error: ${e.message}", e)
-        }
-    }
-
-    private fun initRuntime() {
-        if (v8Runtime != null)
-            return
-        v8Runtime = V8.createV8Runtime()
-        runV8(constructCommonStdin()) // ignore the result, just warm up
-    }
-
-    private fun disposeRuntime() {
-        val runtime = v8Runtime ?: return
-
-        // NOTE: getting lock fixes "Invalid V8 thread access: the locker has been released!"
-        runtime.withLock {
-            it.release(false)
-        }
-        v8Runtime = null
-    }
-    
-    fun warmup() {
-        synchronized(v8Lock) {
-            initRuntime()
-        }
-    }
-
-    fun shutdown() {
-        synchronized(v8Lock) {
-            disposeRuntime()
-        }
-    }
-
-    fun forceRecreate() {
-        synchronized(v8Lock) {
-            disposeRuntime()
-
-            initRuntime()
-        }
-    }
-
-    private fun shutdownIfNeeded() {
-        // NOTE: Possible Invalid thread access if using RxHelper runAsync
-        // NOTE: Shutdown should run on the same thread that created V8 engine.
-        disposeRuntime()
-    }
 }
