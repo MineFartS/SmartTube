@@ -11,7 +11,6 @@ import minefarts.smarttube.app.presenters.settings.GeneralSettingsPresenter;
 import minefarts.smarttube.app.presenters.settings.MainUISettingsPresenter;
 import minefarts.smarttube.app.presenters.settings.PlayerSettingsPresenter;
 import minefarts.smarttube.app.presenters.settings.RemoteControlSettingsPresenter;
-import minefarts.smarttube.app.presenters.settings.SubtitleSettingsPresenter;
 import minefarts.smarttube.exoplayer.selector.FormatItem.VideoPreset;
 
 import java.util.ArrayList;
@@ -63,13 +62,7 @@ public class AppDataSourceManager {
             () -> PlayerSettingsPresenter.instance(context).show(), 
             R.drawable.settings_player
         ));
-        
-        settingItems.add(new SettingsItem(
-            "Subtitles", 
-            () -> SubtitleSettingsPresenter.instance(context).show(),
-            R.drawable.settings_subtitles
-        ));
-                
+                        
         settingItems.add(new SettingsItem(
             context.getString(R.string.content_block_provider), 
             () -> ContentBlockSettingsPresenter.instance(context).show(), 
