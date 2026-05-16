@@ -33,7 +33,6 @@ import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
 import minefarts.smarttube.app.presenters.dialogs.menu.providers.channelgroup.ChannelGroupServiceWrapper;
 import minefarts.smarttube.app.views.ViewManager;
-import minefarts.smarttube.exoplayer.other.SubtitleManager.SubtitleStyle;
 import minefarts.smarttube.exoplayer.selector.ExoFormatItem;
 import minefarts.smarttube.exoplayer.selector.FormatItem;
 import minefarts.smarttube.exoplayer.selector.FormatItem.VideoPreset;
@@ -70,7 +69,6 @@ public class AppDialogUtil {
     private static final int PLAYER_REMEMBER_SPEED_ID = 142;
     private static final int PLAYER_SPEED_MISC_ID = 143;
     private static final int PLAYER_REPEAT_ID = 146;
-    private static final int SUBTITLE_STYLES_ID = 45;
 
     /**
      * Adds share link items to existing dialog.
@@ -281,44 +279,6 @@ public class AppDialogUtil {
             options
         );
         
-    }
-
-    public static OptionCategory createSubtitleStylesCategory(Context context) {
-
-        String subtitleStyleTitle = context.getString(R.string.subtitle_style);
-
-        return OptionCategory.from(
-            SUBTITLE_STYLES_ID, 
-            OptionCategory.TYPE_RADIO_LIST, 
-            subtitleStyleTitle, 
-            createSubtitleStyles(context)
-        );
-    
-    }
-
-    @TargetApi(19)
-    private static List<OptionItem> createSubtitleStyles(Context context) {
-
-        PlayerData playerData = PlayerData.instance(context);
-        
-        List<SubtitleStyle> subtitleStyles = playerData.getSubtitleStyles();
-        
-        List<OptionItem> styleOptions = new ArrayList<>();
-
-        for (SubtitleStyle subtitleStyle : subtitleStyles) {
-        
-            styleOptions.add(UiOptionItem.from(
-                context.getString(subtitleStyle.nameResId),
-                option -> {
-                    playerData.setSubtitleStyle(subtitleStyle);
-                    Utils.showPlayerControls(context, false);
-                },
-                subtitleStyle.equals(playerData.getSubtitleStyle())
-            ));
-        
-        }
-
-        return styleOptions;
     }
 
     public static OptionItem createExcludeFromContentBlockButton(

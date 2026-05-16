@@ -51,7 +51,7 @@ public class DateTimeView extends TextView implements TickleListener {
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
 
-        updateListener();
+        enableListener(visibility == View.VISIBLE);
     }
 
     @Override
