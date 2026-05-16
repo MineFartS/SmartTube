@@ -10,12 +10,12 @@ import retrofit2.http.Query
 @WithGson
 internal interface YouTubeDataApi {
     
-    @GET("https://www.googleapis.com/youtube/v3/channels?part=snippet&key=${SignInService.YOUTUBE_DATA_API_KEY}")
+    @GET("https://www.googleapis.com/youtube/v3/channels?part=snippet&key=")
     fun getChannelMetadata(@Query("id") ids: String): Call<SnippetResponse?>
 
-    @GET("https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&key=${SignInService.YOUTUBE_DATA_API_KEY}")
+    @GET("https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&key=")
     fun getVideoMetadata(@Query("id") ids: String): Call<SnippetResponse?>
 
-    @GET("https://www.googleapis.com/youtube/v3/playlists?part=snippet,contentDetails&key=${SignInService.YOUTUBE_DATA_API_KEY}")
+    @GET("https://www.googleapis.com/youtube/v3/playlists?part=snippet,contentDetails&key=")
     fun getPlaylistMetadata(@Query("id") ids: String): Call<SnippetResponse?>
 }
