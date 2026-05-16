@@ -29,13 +29,13 @@ public abstract class VideoInfoServiceBase {
     private static final String TAG = VideoInfoServiceBase.class.getSimpleName();
     
     protected final AppService mAppService;
-    private final PlayerDataExtractor mPlayerDataExtractor;
     private final DashInfoApi mDashInfoApi;
     private final FileApi mFileApi;
 
+    private PlayerDataExtractor mPlayerDataExtractor = null;
+
     protected VideoInfoServiceBase() {
         mAppService = AppService.instance();
-        mPlayerDataExtractor = mAppService.getPlayerDataExtractor();
         mDashInfoApi = RetrofitHelper.create(DashInfoApi.class);
         mFileApi = RetrofitHelper.create(FileApi.class);
     }
@@ -82,6 +82,9 @@ public abstract class VideoInfoServiceBase {
             NParams.add(urlHolder.getNParam());
             SParams.add(urlHolder.getSParam());
         }
+
+        if (mPlayerDataExtractor == null)
+            mPlayerDataExtractor = mAppService.getPlayerDataExtractor();
 
         Pair<List<String>, List<String>> result = mPlayerDataExtractor.bulkSigExtract(NParams, SParams);
 
