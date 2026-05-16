@@ -385,7 +385,7 @@ public class VideoStateController extends BasePlayerController {
 
         getStateService().save(state);
 
-        getAccountManager().checkAuth();
+        getSignInService().checkAuth();
 
         getMediaItemService().getFormatInfoObserve(video.videoId).subscribe((MediaItemFormatInfo formatInfo) -> {
 

@@ -12,7 +12,6 @@ import com.liskovsoft.sharedutils.service.YouTubeLiveChatService;
 import com.liskovsoft.sharedutils.service.YouTubeCommentsService;
 import com.liskovsoft.sharedutils.service.YouTubeNotificationsService;
 import com.liskovsoft.sharedutils.videoinfo.models.VideoInfo;
-import com.liskovsoft.googleapi.oauth2.manager.OAuth2AccountManager;
 import com.liskovsoft.sharedutils.videoinfo.V2.VideoInfoService;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.service.ContentService;
@@ -541,10 +540,6 @@ public class ServiceManager {
 
     public static PlaylistService getPlaylistService() {
         return new PlaylistService();
-    }
-
-    public static OAuth2AccountManager getAccountManager() {
-        return OAuth2AccountManager.instance();
     }
 
 }
