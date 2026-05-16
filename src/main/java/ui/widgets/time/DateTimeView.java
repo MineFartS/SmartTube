@@ -15,9 +15,8 @@ import minefarts.smarttube.misc.TickleManager.TickleListener;
  */
 @SuppressLint("AppCompatCustomView")
 public class DateTimeView extends TextView implements TickleListener {
+    
     private TickleManager mTickleManager;
-    private boolean mIsDateEnabled = true;
-    private boolean mIsTimeEnabled = true;
 
     public DateTimeView(Context context) {
         super(context);
@@ -36,11 +35,11 @@ public class DateTimeView extends TextView implements TickleListener {
 
     private void init() {
         mTickleManager = TickleManager.instance();
-        updateListener();
+        enableListener(true);
     }
 
-    private void updateListener() {
-        if (getVisibility() == View.VISIBLE) {
+    private void enableListener(boolean enabled) {
+        if (enabled) {
             mTickleManager.addListener(this);
         } else {
             mTickleManager.removeListener(this);
@@ -57,19 +56,7 @@ public class DateTimeView extends TextView implements TickleListener {
     @Override
     public void onTickle() {
         if (getVisibility() == View.VISIBLE) {
-            String time;
-
-            if (mIsDateEnabled && !mIsTimeEnabled) {
-                time = DateHelper.getCurrentDateShort();
-            } else if (!mIsDateEnabled && mIsTimeEnabled) {
-                time = DateHelper.getCurrentTimeShort();
-            } else {
-                time = DateHelper.getCurrentDateTimeShort();
-            }
-
-            // https://stackoverflow.com/questions/5437674/what-unicode-characters-represent-time/9454080
-            //setText(String.format("⌚ %s", time));
-            setText(time);
+            setText(DateHelper.getCurrentDateTimeShort());
         }
     }
 
@@ -77,18 +64,7 @@ public class DateTimeView extends TextView implements TickleListener {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
 
-        // Player has been closed
-        mTickleManager.removeListener(this);
+        enableListener(false);
     }
 
-    /**
-     * Note, same view is used inside player and in as global time view
-     */
-    public void showDate(boolean show) {
-        mIsDateEnabled = show;
-    }
-
-    public void showTime(boolean show) {
-        mIsTimeEnabled = show;
-    }
 }
