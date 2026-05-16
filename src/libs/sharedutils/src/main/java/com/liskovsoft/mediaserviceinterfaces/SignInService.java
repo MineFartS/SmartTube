@@ -42,12 +42,6 @@ public class SignInService {
     public static final String GRANT_TYPE = "urn:ietf:params:oauth:grant-type:device_code";
     public static final String GRANT_TYPE_REFRESH = "refresh_token";
 
-    public static final String CLIENT_ID = "";
-    public static final String CLIENT_SECRET = "";
-    public static final String REFRESH_TOKEN = "";
-    public static final String DEVICE_CODE = "";
-    public static final String YOUTUBE_DATA_API_KEY = "";
-
     public static final String DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.file";
     public static final String YOUTUBE_SCOPE = "https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.readonly";
     public static final String SIGN_IN_DATA_SCOPE = "email openid profile";
@@ -67,10 +61,12 @@ public class SignInService {
     private Runnable mOnChange;
 
     private final OAuth2Api mOAuth2Api;
+    private final AppService mAppService;
 
     private SignInService() {
 
         mOAuth2Api = RetrofitHelper.create(OAuth2Api.class);
+        mAppService = AppService.instance();
 
         GlobalPreferences.setOnInit(() -> {
             init();
@@ -522,7 +518,7 @@ public class SignInService {
      */
     public UserCode getUserCode() {
         Call<UserCode> wrapper = mOAuth2Api.getUserCode(
-            CLIENT_ID, 
+            mAppService.getClientId(), 
             DRIVE_SCOPE
         );
         return RetrofitHelper.get(wrapper);
@@ -535,7 +531,14 @@ public class SignInService {
      * @return refresh token that should be stored inside the app registry for future use
      */
     private AccessToken getAccessToken(String deviceCode) {
-        Call<AccessToken> wrapper = mOAuth2Api.getAccessToken(CLIENT_ID, CLIENT_SECRET, deviceCode, GRANT_TYPE);
+        
+        Call<AccessToken> wrapper = mOAuth2Api.getAccessToken(
+            mAppService.getClientId(), 
+            mAppService.getClientSecret(), 
+            deviceCode, 
+            GRANT_TYPE
+        );
+
         return RetrofitHelper.get(wrapper);
     }
 
@@ -547,8 +550,8 @@ public class SignInService {
     public AccessToken updateAccessToken(String refreshToken) {
         
         Call<AccessToken> wrapper = mOAuth2Api.updateAccessToken(
-            CLIENT_ID, 
-            CLIENT_SECRET, 
+            mAppService.getClientId(), 
+            mAppService.getClientSecret(), 
             GRANT_TYPE_REFRESH, 
             refreshToken
         );
