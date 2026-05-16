@@ -23,7 +23,6 @@ import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.app.presenters.dialogs.menu.providers.ContextMenuManager;
 import minefarts.smarttube.app.presenters.dialogs.menu.providers.ContextMenuProvider;
 import minefarts.smarttube.app.views.ChannelUploadsView;
-import minefarts.smarttube.misc.StreamReminderService;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.utils.AppDialogUtil;
