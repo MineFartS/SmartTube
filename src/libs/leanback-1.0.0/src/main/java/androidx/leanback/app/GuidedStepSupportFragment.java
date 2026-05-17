@@ -487,8 +487,7 @@ public class GuidedStepSupportFragment extends Fragment implements GuidedActionA
     public static int add(FragmentManager fragmentManager, GuidedStepSupportFragment fragment, int id) {
         GuidedStepSupportFragment current = getCurrentGuidedStepSupportFragment(fragmentManager);
         boolean inGuidedStep = current != null;
-        if (IS_FRAMEWORK_FRAGMENT && Build.VERSION.SDK_INT >= 21 && Build.VERSION.SDK_INT < 23
-                && !inGuidedStep) {
+        if (IS_FRAMEWORK_FRAGMENT && Build.VERSION.SDK_INT < 23 && !inGuidedStep) {
             // workaround b/22631964 for framework fragment
             fragmentManager.beginTransaction()
                 .replace(id, new DummyFragment(), TAG_LEAN_BACK_ACTIONS_FRAGMENT)
@@ -540,13 +539,13 @@ public class GuidedStepSupportFragment extends Fragment implements GuidedActionA
                 R.id.guidedactions_list_background2), "guidedactions_list_background2");
     }
 
-    private static void addNonNullSharedElementTransition (FragmentTransaction ft, View subView,
-                                                           String transitionName)
-    {
-        if (IS_FRAMEWORK_FRAGMENT && Build.VERSION.SDK_INT >= 21) {
-            if (subView != null) {
-                ft.addSharedElement(subView, transitionName);
-            }
+    private static void addNonNullSharedElementTransition(
+        FragmentTransaction ft, 
+        View subView,
+        String transitionName
+    ) {
+        if (IS_FRAMEWORK_FRAGMENT && subView != null) {
+            ft.addSharedElement(subView, transitionName);
         }
     }
 
@@ -881,7 +880,7 @@ public class GuidedStepSupportFragment extends Fragment implements GuidedActionA
      * class).
      */
     protected void onProvideFragmentTransitions() {
-        if (Build.VERSION.SDK_INT >= 21) {
+
             final int uiStyle = getUiStyle();
             if (uiStyle == UI_STYLE_REPLACE) {
                 Object enterTransition = TransitionHelper.createFadeAndShortSlide(Gravity.END);
@@ -933,7 +932,7 @@ public class GuidedStepSupportFragment extends Fragment implements GuidedActionA
             TransitionHelper.exclude(exitTransition, R.id.guidedactions_sub_list_background,
                     true);
             setExitTransition(exitTransition);
-        }
+        
     }
 
     /**

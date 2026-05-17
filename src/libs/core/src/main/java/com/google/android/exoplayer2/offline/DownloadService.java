@@ -734,7 +734,7 @@ public abstract class DownloadService extends Service {
                 foregroundNotificationUpdater.showNotificationIfNotAlready();
             }
         }
-        if (Util.SDK_INT < 28 && taskRemoved) { // See [Internal: b/74248644].
+        if (taskRemoved) { // See [Internal: b/74248644].
             stopSelf();
         } else {
             stopSelfResult(lastStartId);

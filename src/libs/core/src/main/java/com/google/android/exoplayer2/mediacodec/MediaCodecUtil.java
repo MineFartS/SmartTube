@@ -143,12 +143,9 @@ public final class MediaCodecUtil {
     if (cachedDecoderInfos != null) {
       return cachedDecoderInfos;
     }
-    MediaCodecListCompat mediaCodecList =
-        Util.SDK_INT >= 21
-            ? new MediaCodecListCompatV21(secure, tunneling)
-            : new MediaCodecListCompatV16();
+    MediaCodecListCompat mediaCodecList = new MediaCodecListCompatV21(secure, tunneling);
     ArrayList<MediaCodecInfo> decoderInfos = getDecoderInfosInternal(key, mediaCodecList);
-    if (secure && decoderInfos.isEmpty() && 21 <= Util.SDK_INT && Util.SDK_INT <= 23) {
+    if (secure && decoderInfos.isEmpty() && Util.SDK_INT <= 23) {
       // Some devices don't list secure decoders on API level 21 [Internal: b/18678462]. Try the
       // legacy path. We also try this path on API levels 22 and 23 as a defensive measure.
       mediaCodecList = new MediaCodecListCompatV16();
@@ -178,9 +175,7 @@ public final class MediaCodecUtil {
         for (CodecProfileLevel profileLevel : decoderInfo.getProfileLevels()) {
           result = Math.max(avcLevelToMaxFrameSize(profileLevel.level), result);
         }
-        // We assume support for at least 480p (SDK_INT >= 21) or 360p (SDK_INT < 21), which are
-        // the levels mandated by the Android CDD.
-        result = Math.max(result, Util.SDK_INT >= 21 ? (720 * 480) : (480 * 360));
+        result = Math.max(result, (720 * 480));
       }
       maxH264DecodableFrameSize = result;
     }
@@ -374,55 +369,6 @@ public final class MediaCodecUtil {
       return false;
     }
 
-    // Work around broken audio decoders.
-    if (Util.SDK_INT < 21
-        && ("CIPAACDecoder".equals(name)
-        || "CIPMP3Decoder".equals(name)
-        || "CIPVorbisDecoder".equals(name)
-        || "CIPAMRNBDecoder".equals(name)
-        || "AACDecoder".equals(name)
-        || "MP3Decoder".equals(name))) {
-      return false;
-    }
-
-    // Work around https://github.com/google/ExoPlayer/issues/1528 and
-    // https://github.com/google/ExoPlayer/issues/3171.
-    if (Util.SDK_INT < 18
-        && "OMX.MTK.AUDIO.DECODER.AAC".equals(name)
-        && ("a70".equals(Util.DEVICE)
-        || ("Xiaomi".equals(Util.MANUFACTURER) && Util.DEVICE.startsWith("HM")))) {
-      return false;
-    }
-
-    // Work around an issue where querying/creating a particular MP3 decoder on some devices on
-    // platform API version 16 fails.
-    if (Util.SDK_INT == 16
-        && "OMX.qcom.audio.decoder.mp3".equals(name)
-        && ("dlxu".equals(Util.DEVICE) // HTC Butterfly
-        || "protou".equals(Util.DEVICE) // HTC Desire X
-        || "ville".equals(Util.DEVICE) // HTC One S
-        || "villeplus".equals(Util.DEVICE)
-        || "villec2".equals(Util.DEVICE)
-        || Util.DEVICE.startsWith("gee") // LGE Optimus G
-        || "C6602".equals(Util.DEVICE) // Sony Xperia Z
-        || "C6603".equals(Util.DEVICE)
-        || "C6606".equals(Util.DEVICE)
-        || "C6616".equals(Util.DEVICE)
-        || "L36h".equals(Util.DEVICE)
-        || "SO-02E".equals(Util.DEVICE))) {
-      return false;
-    }
-
-    // Work around an issue where large timestamps are not propagated correctly.
-    if (Util.SDK_INT == 16
-        && "OMX.qcom.audio.decoder.aac".equals(name)
-        && ("C1504".equals(Util.DEVICE) // Sony Xperia E
-        || "C1505".equals(Util.DEVICE)
-        || "C1604".equals(Util.DEVICE) // Sony Xperia E dual
-        || "C1605".equals(Util.DEVICE))) {
-      return false;
-    }
-
     // Work around https://github.com/google/ExoPlayer/issues/3249.
     if (Util.SDK_INT < 24
         && ("OMX.SEC.aac.dec".equals(name) || "OMX.Exynos.AAC.Decoder".equals(name))
@@ -438,25 +384,6 @@ public final class MediaCodecUtil {
       return false;
     }
 
-    // Work around https://github.com/google/ExoPlayer/issues/548.
-    // VP8 decoder on Samsung Galaxy S3/S4/S4 Mini/Tab 3/Note 2 does not render video.
-    if (Util.SDK_INT <= 19
-        && "OMX.SEC.vp8.dec".equals(name)
-        && "samsung".equals(Util.MANUFACTURER)
-        && (Util.DEVICE.startsWith("d2")
-        || Util.DEVICE.startsWith("serrano")
-        || Util.DEVICE.startsWith("jflte")
-        || Util.DEVICE.startsWith("santos")
-        || Util.DEVICE.startsWith("t0"))) {
-      return false;
-    }
-
-    // VP8 decoder on Samsung Galaxy S4 cannot be queried.
-    if (Util.SDK_INT <= 19 && Util.DEVICE.startsWith("jflte")
-        && "OMX.qcom.video.decoder.vp8".equals(name)) {
-      return false;
-    }
-
     // MTK E-AC3 decoder doesn't support decoding JOC streams in 2-D. See [Internal: b/69400041].
     if (MimeTypes.AUDIO_E_AC3_JOC.equals(mimeType)
         && "OMX.MTK.AUDIO.DECODER.DSPAC3".equals(name)) {
@@ -466,29 +393,18 @@ public final class MediaCodecUtil {
     return true;
   }
 
-  /**
-   * Modifies a list of {@link MediaCodecInfo}s to apply workarounds where we know better than the
-   * platform.
-   *
-   * @param mimeType The MIME type of input media.
-   * @param decoderInfos The list to modify.
-   */
-  private static void applyWorkarounds(String mimeType, List<MediaCodecInfo> decoderInfos) {
-    if (MimeTypes.AUDIO_RAW.equals(mimeType)) {
-      Collections.sort(decoderInfos, new RawAudioCodecComparator());
-    } else if (Util.SDK_INT < 21 && decoderInfos.size() > 1) {
-      String firstCodecName = decoderInfos.get(0).name;
-      if ("OMX.SEC.mp3.dec".equals(firstCodecName)
-          || "OMX.SEC.MP3.Decoder".equals(firstCodecName)
-          || "OMX.brcm.audio.mp3.decoder".equals(firstCodecName)) {
-        // Prefer OMX.google codecs over OMX.SEC.mp3.dec, OMX.SEC.MP3.Decoder and
-        // OMX.brcm.audio.mp3.decoder on older devices. See:
-        // https://github.com/google/ExoPlayer/issues/398 and
-        // https://github.com/google/ExoPlayer/issues/4519.
-        Collections.sort(decoderInfos, new PreferOmxGoogleCodecComparator());
-      }
+    /**
+     * Modifies a list of {@link MediaCodecInfo}s to apply workarounds where we know better than the
+     * platform.
+     *
+     * @param mimeType The MIME type of input media.
+     * @param decoderInfos The list to modify.
+     */
+    private static void applyWorkarounds(String mimeType, List<MediaCodecInfo> decoderInfos) {
+        if (MimeTypes.AUDIO_RAW.equals(mimeType)) {
+            Collections.sort(decoderInfos, new RawAudioCodecComparator());
+        }
     }
-  }
 
   /**
    * Returns whether the decoder is known to fail when adapting, despite advertising itself as an
@@ -840,18 +756,6 @@ public final class MediaCodecUtil {
         return 1;
       }
       return 0;
-    }
-  }
-
-  /** Comparator for preferring OMX.google media codecs. */
-  private static final class PreferOmxGoogleCodecComparator implements Comparator<MediaCodecInfo> {
-    @Override
-    public int compare(MediaCodecInfo a, MediaCodecInfo b) {
-      return scoreMediaCodecInfo(a) - scoreMediaCodecInfo(b);
-    }
-
-    private static int scoreMediaCodecInfo(MediaCodecInfo mediaCodecInfo) {
-      return mediaCodecInfo.name.startsWith("OMX.google") ? -1 : 0;
     }
   }
 

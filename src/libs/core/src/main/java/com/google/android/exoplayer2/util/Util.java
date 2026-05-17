@@ -79,10 +79,6 @@ import org.checkerframework.checker.nullness.qual.PolyNull;
 @SuppressWarnings("deprecation")
 public final class Util {
 
-    /**
-     * Like {@link android.os.Build.VERSION#SDK_INT}, but in a place where it can be conveniently
-     * overridden for local testing.
-     */
     public static final int SDK_INT = Build.VERSION.SDK_INT;
 
     /**
@@ -444,11 +440,10 @@ public final class Util {
         // Locale data (especially for API < 21) may produce tags with '_' instead of the
         // standard-conformant '-'.
         String normalizedTag = language.replace('_', '-');
-        if (Util.SDK_INT >= 21) {
-            // Filters out ill-formed sub-tags, replaces deprecated tags and normalizes all valid
-            // tags.
-            normalizedTag = normalizeLanguageCodeSyntaxV21(normalizedTag);
-        }
+
+        // Filters out ill-formed sub-tags, replaces deprecated tags and normalizes all valid tags.
+        normalizedTag = normalizeLanguageCodeSyntaxV21(normalizedTag);
+        
         if (normalizedTag.isEmpty() || "und".equals(normalizedTag)) {
             // Tag isn't valid, keep using the original.
             normalizedTag = language;
@@ -1310,14 +1305,11 @@ public final class Util {
             case 8:
                 if (Util.SDK_INT >= 23) {
                     return AudioFormat.CHANNEL_OUT_7POINT1_SURROUND;
-                } else if (Util.SDK_INT >= 21) {
-                    // Equal to AudioFormat.CHANNEL_OUT_7POINT1_SURROUND, which is hidden before
-                    // Android M.
-                    return AudioFormat.CHANNEL_OUT_5POINT1 | AudioFormat.CHANNEL_OUT_SIDE_LEFT
-                            | AudioFormat.CHANNEL_OUT_SIDE_RIGHT;
                 } else {
-                    // 8 ch output is not supported before Android L.
-                    return AudioFormat.CHANNEL_INVALID;
+                    // Equal to AudioFormat.CHANNEL_OUT_7POINT1_SURROUND, which is hidden before Android M.
+                    return AudioFormat.CHANNEL_OUT_5POINT1 
+                        | AudioFormat.CHANNEL_OUT_SIDE_LEFT
+                        | AudioFormat.CHANNEL_OUT_SIDE_RIGHT;
                 }
             default:
                 return AudioFormat.CHANNEL_INVALID;
@@ -1756,10 +1748,8 @@ public final class Util {
 
         if (SDK_INT >= 24) {
             systemLocales = Util.split(config.getLocales().toLanguageTags(), ",");
-        } else if (SDK_INT >= 21) {
-            systemLocales = new String[] {config.locale.toLanguageTag()};
         } else {
-            systemLocales = new String[] {config.locale.toString()};
+            systemLocales = new String[] {config.locale.toLanguageTag()};
         }
 
         for (int i = 0; i < systemLocales.length; i++) {

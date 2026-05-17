@@ -123,12 +123,10 @@ public final class RequirementsWatcher {
     }
 
     private void unregisterNetworkCallback() {
-        if (Util.SDK_INT >= 21) {
-            ConnectivityManager connectivityManager =
-                    (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            connectivityManager.unregisterNetworkCallback(networkCallback);
-            networkCallback = null;
-        }
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        connectivityManager.unregisterNetworkCallback(networkCallback);
+        networkCallback = null;
     }
 
     private void checkRequirements() {

@@ -302,18 +302,10 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
     return cachedContent;
   }
 
-  @SuppressLint("GetInstance") // Suppress warning about specifying "BC" as an explicit provider.
-  private static Cipher getCipher() throws NoSuchPaddingException, NoSuchAlgorithmException {
-    // Workaround for https://issuetracker.google.com/issues/36976726
-    if (Util.SDK_INT == 18) {
-      try {
-        return Cipher.getInstance("AES/CBC/PKCS5PADDING", "BC");
-      } catch (Throwable ignored) {
-        // ignored
-      }
+    @SuppressLint("GetInstance") // Suppress warning about specifying "BC" as an explicit provider.
+    private static Cipher getCipher() throws NoSuchPaddingException, NoSuchAlgorithmException {
+        return Cipher.getInstance("AES/CBC/PKCS5PADDING");
     }
-    return Cipher.getInstance("AES/CBC/PKCS5PADDING");
-  }
 
   /**
    * Returns an id which isn't used in the given array. If the maximum id in the array is smaller

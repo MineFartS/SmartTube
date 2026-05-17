@@ -23,9 +23,6 @@ import org.json.JSONObject;
    * @return The adjusted request data.
    */
   public static byte[] adjustRequestData(byte[] request) {
-    if (Util.SDK_INT >= 27) {
-      return request;
-    }
     // Prior to O-MR1 the ClearKey CDM encoded the values in the "kids" array using Base64 encoding
     // rather than Base64Url encoding. See [Internal: b/64388098]. We know the exact request format
     // from the platform's InitDataParser.cpp. Since there aren't any "+" or "/" symbols elsewhere
@@ -41,9 +38,6 @@ import org.json.JSONObject;
    * @return The adjusted response data.
    */
   public static byte[] adjustResponseData(byte[] response) {
-    if (Util.SDK_INT >= 27) {
-      return response;
-    }
     // Prior to O-MR1 the ClearKey CDM expected Base64 encoding rather than Base64Url encoding for
     // the "k" and "kid" strings. See [Internal: b/64388098]. We know that the ClearKey CDM only
     // looks at the k, kid and kty parameters in each key, so can ignore the rest of the response.
