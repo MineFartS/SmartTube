@@ -134,105 +134,26 @@ public class MediaCodecVideoRenderer extends MediaCodecRenderer {
 
     private final Logger log = new Logger(Logger.Module.Video, TAG);
 
-    /**
-     * @param context A context.
-     * @param mediaCodecSelector A decoder selector.
-     */
-    public MediaCodecVideoRenderer(Context context, MediaCodecSelector mediaCodecSelector) {
-        this(context, mediaCodecSelector, 0);
-    }
+    public MediaCodecVideoRenderer(
+        Context context, 
+        MediaCodecSelector mediaCodecSelector,
+        long allowedJoiningTimeMs,
+        @Nullable DrmSessionManager<FrameworkMediaCrypto> drmSessionManager,
+        boolean playClearSamplesWithoutKeys, 
+        boolean enableDecoderFallback,
+        @Nullable Handler eventHandler, 
+        @Nullable VideoRendererEventListener eventListener,
+        int maxDroppedFramesToNotify
+    ) {
+        super(
+            C.TRACK_TYPE_VIDEO, 
+            mediaCodecSelector, 
+            drmSessionManager,
+            playClearSamplesWithoutKeys, 
+            enableDecoderFallback,
+            /* assumedMinimumCodecOperatingRate= */ 30
+        );
 
-    /**
-     * @param context A context.
-     * @param mediaCodecSelector A decoder selector.
-     * @param allowedJoiningTimeMs The maximum duration in milliseconds for which this video
-     *        renderer can attempt to seamlessly join an ongoing playback.
-     */
-    public MediaCodecVideoRenderer(Context context, MediaCodecSelector mediaCodecSelector,
-            long allowedJoiningTimeMs) {
-        this(context, mediaCodecSelector, allowedJoiningTimeMs, /* eventHandler= */ null,
-                /* eventListener= */ null, /* maxDroppedFramesToNotify= */ -1);
-    }
-
-    /**
-     * @param context A context.
-     * @param mediaCodecSelector A decoder selector.
-     * @param allowedJoiningTimeMs The maximum duration in milliseconds for which this video
-     *        renderer can attempt to seamlessly join an ongoing playback.
-     * @param eventHandler A handler to use when delivering events to {@code eventListener}. May be
-     *        null if delivery of events is not required.
-     * @param eventListener A listener of events. May be null if delivery of events is not required.
-     * @param maxDroppedFramesToNotify The maximum number of frames that can be dropped between
-     *        invocations of {@link VideoRendererEventListener#onDroppedFrames(int, long)}.
-     */
-    public MediaCodecVideoRenderer(Context context, MediaCodecSelector mediaCodecSelector,
-            long allowedJoiningTimeMs, @Nullable Handler eventHandler,
-            @Nullable VideoRendererEventListener eventListener, int maxDroppedFramesToNotify) {
-        this(context, mediaCodecSelector, allowedJoiningTimeMs, /* drmSessionManager= */ null,
-                /* playClearSamplesWithoutKeys= */ false, eventHandler, eventListener,
-                maxDroppedFramesToNotify);
-    }
-
-    /**
-     * @param context A context.
-     * @param mediaCodecSelector A decoder selector.
-     * @param allowedJoiningTimeMs The maximum duration in milliseconds for which this video
-     *        renderer can attempt to seamlessly join an ongoing playback.
-     * @param drmSessionManager For use with encrypted content. May be null if support for encrypted
-     *        content is not required.
-     * @param playClearSamplesWithoutKeys Encrypted media may contain clear (un-encrypted) regions.
-     *        For example a media file may start with a short clear region so as to allow playback
-     *        to begin in parallel with key acquisition. This parameter specifies whether the
-     *        renderer is permitted to play clear regions of encrypted media files before
-     *        {@code drmSessionManager} has obtained the keys necessary to decrypt encrypted regions
-     *        of the media.
-     * @param eventHandler A handler to use when delivering events to {@code eventListener}. May be
-     *        null if delivery of events is not required.
-     * @param eventListener A listener of events. May be null if delivery of events is not required.
-     * @param maxDroppedFramesToNotify The maximum number of frames that can be dropped between
-     *        invocations of {@link VideoRendererEventListener#onDroppedFrames(int, long)}.
-     */
-    public MediaCodecVideoRenderer(Context context, MediaCodecSelector mediaCodecSelector,
-            long allowedJoiningTimeMs,
-            @Nullable DrmSessionManager<FrameworkMediaCrypto> drmSessionManager,
-            boolean playClearSamplesWithoutKeys, @Nullable Handler eventHandler,
-            @Nullable VideoRendererEventListener eventListener, int maxDroppedFramesToNotify) {
-        this(context, mediaCodecSelector, allowedJoiningTimeMs, drmSessionManager,
-                playClearSamplesWithoutKeys, /* enableDecoderFallback= */ false, eventHandler,
-                eventListener, maxDroppedFramesToNotify);
-    }
-
-    /**
-     * @param context A context.
-     * @param mediaCodecSelector A decoder selector.
-     * @param allowedJoiningTimeMs The maximum duration in milliseconds for which this video
-     *        renderer can attempt to seamlessly join an ongoing playback.
-     * @param drmSessionManager For use with encrypted content. May be null if support for encrypted
-     *        content is not required.
-     * @param playClearSamplesWithoutKeys Encrypted media may contain clear (un-encrypted) regions.
-     *        For example a media file may start with a short clear region so as to allow playback
-     *        to begin in parallel with key acquisition. This parameter specifies whether the
-     *        renderer is permitted to play clear regions of encrypted media files before
-     *        {@code drmSessionManager} has obtained the keys necessary to decrypt encrypted regions
-     *        of the media.
-     * @param enableDecoderFallback Whether to enable fallback to lower-priority decoders if decoder
-     *        initialization fails. This may result in using a decoder that is slower/less efficient
-     *        than the primary decoder.
-     * @param eventHandler A handler to use when delivering events to {@code eventListener}. May be
-     *        null if delivery of events is not required.
-     * @param eventListener A listener of events. May be null if delivery of events is not required.
-     * @param maxDroppedFramesToNotify The maximum number of frames that can be dropped between
-     *        invocations of {@link VideoRendererEventListener#onDroppedFrames(int, long)}.
-     */
-    public MediaCodecVideoRenderer(Context context, MediaCodecSelector mediaCodecSelector,
-            long allowedJoiningTimeMs,
-            @Nullable DrmSessionManager<FrameworkMediaCrypto> drmSessionManager,
-            boolean playClearSamplesWithoutKeys, boolean enableDecoderFallback,
-            @Nullable Handler eventHandler, @Nullable VideoRendererEventListener eventListener,
-            int maxDroppedFramesToNotify) {
-        super(C.TRACK_TYPE_VIDEO, mediaCodecSelector, drmSessionManager,
-                playClearSamplesWithoutKeys, enableDecoderFallback,
-                /* assumedMinimumCodecOperatingRate= */ 30);
         this.allowedJoiningTimeMs = allowedJoiningTimeMs;
         this.maxDroppedFramesToNotify = maxDroppedFramesToNotify;
         this.context = context.getApplicationContext();
@@ -257,13 +178,16 @@ public class MediaCodecVideoRenderer extends MediaCodecRenderer {
     }
 
     @Override
-    protected int supportsFormat(MediaCodecSelector mediaCodecSelector,
-            DrmSessionManager<FrameworkMediaCrypto> drmSessionManager, Format format)
-            throws DecoderQueryException {
-        String mimeType = format.sampleMimeType;
-        if (!MimeTypes.isVideo(mimeType)) {
+    protected int supportsFormat(
+        MediaCodecSelector mediaCodecSelector,
+        DrmSessionManager<FrameworkMediaCrypto> drmSessionManager, 
+        Format format
+    ) throws DecoderQueryException {
+        
+        if (!MimeTypes.isVideo(format.sampleMimeType)) {
             return FORMAT_UNSUPPORTED_TYPE;
         }
+
         boolean requiresSecureDecryption = false;
         DrmInitData drmInitData = format.drmInitData;
         if (drmInitData != null) {
@@ -271,100 +195,154 @@ public class MediaCodecVideoRenderer extends MediaCodecRenderer {
                 requiresSecureDecryption |= drmInitData.get(i).requiresSecureDecryption;
             }
         }
-        List<MediaCodecInfo> decoderInfos =
-                getDecoderInfos(mediaCodecSelector, format, requiresSecureDecryption);
+
+        List<MediaCodecInfo> decoderInfos = getDecoderInfos(mediaCodecSelector, format, requiresSecureDecryption);
         if (decoderInfos.isEmpty()) {
-            return requiresSecureDecryption && !mediaCodecSelector
-                    .getDecoderInfos(format.sampleMimeType, /* requiresSecureDecoder= */ false,
-                            /* requiresTunnelingDecoder= */ false)
-                    .isEmpty() ? FORMAT_UNSUPPORTED_DRM : FORMAT_UNSUPPORTED_SUBTYPE;
+ 
+            boolean hasDecoders = !mediaCodecSelector.getDecoderInfos(
+                format.sampleMimeType, 
+                /* requiresSecureDecoder= */ false,
+                /* requiresTunnelingDecoder= */ false
+            ).isEmpty()
+
+            if (requiresSecureDecryption && hasDecoders) {
+                return FORMAT_UNSUPPORTED_DRM;
+            } else {
+                return FORMAT_UNSUPPORTED_SUBTYPE;
+            }
+
         }
+        
         if (!supportsFormatDrm(drmSessionManager, drmInitData)) {
             return FORMAT_UNSUPPORTED_DRM;
         }
+
         // Check capabilities for the first decoder in the list, which takes priority.
         MediaCodecInfo decoderInfo = decoderInfos.get(0);
-        boolean isFormatSupported = decoderInfo.isFormatSupported(format);
-        int adaptiveSupport = decoderInfo.isSeamlessAdaptationSupported(format) ? ADAPTIVE_SEAMLESS
-                : ADAPTIVE_NOT_SEAMLESS;
+        boolean isFormatSupported = decoderInfo.isFormatSupported(format);        
+
+        int adaptiveSupport = decoderInfo.isSeamlessAdaptationSupported(format) ? ADAPTIVE_SEAMLESS : ADAPTIVE_NOT_SEAMLESS;
+        
         int tunnelingSupport = TUNNELING_NOT_SUPPORTED;
+
+        int formatSupport = FORMAT_EXCEEDS_CAPABILITIES;
+        
         if (isFormatSupported) {
-            List<MediaCodecInfo> tunnelingDecoderInfos =
-                    mediaCodecSelector.getDecoderInfos(format.sampleMimeType,
-                            requiresSecureDecryption, /* requiresTunnelingDecoder= */ true);
+
+            List<MediaCodecInfo> tunnelingDecoderInfos = mediaCodecSelector.getDecoderInfos(
+                format.sampleMimeType,
+                requiresSecureDecryption, 
+                /* requiresTunnelingDecoder= */ true
+            );
+
             if (!tunnelingDecoderInfos.isEmpty()) {
                 MediaCodecInfo tunnelingDecoderInfo = tunnelingDecoderInfos.get(0);
                 if (tunnelingDecoderInfo.isFormatSupported(format)
-                        && tunnelingDecoderInfo.isSeamlessAdaptationSupported(format)) {
-                    tunnelingSupport = TUNNELING_SUPPORTED;
-                }
+                    && tunnelingDecoderInfo.isSeamlessAdaptationSupported(format)
+                ) tunnelingSupport = TUNNELING_SUPPORTED;
+                
             }
+
+            formatSupport = FORMAT_HANDLED;
+
         }
-        int formatSupport = isFormatSupported ? FORMAT_HANDLED : FORMAT_EXCEEDS_CAPABILITIES;
+
         return adaptiveSupport | tunnelingSupport | formatSupport;
     }
 
     @Override
-    protected List<MediaCodecInfo> getDecoderInfos(MediaCodecSelector mediaCodecSelector,
-            Format format, boolean requiresSecureDecoder) throws DecoderQueryException {
-        List<MediaCodecInfo> decoderInfos = mediaCodecSelector
-                .getDecoderInfos(format.sampleMimeType, requiresSecureDecoder, tunneling);
-        return Collections.unmodifiableList(decoderInfos);
+    protected List<MediaCodecInfo> getDecoderInfos(
+        MediaCodecSelector mediaCodecSelector,
+        Format format, 
+        boolean requiresSecureDecoder
+    ) throws DecoderQueryException {
+        
+        return mediaCodecSelector.getDecoderInfos(
+            format.sampleMimeType, 
+            requiresSecureDecoder, 
+            tunneling
+        );
+
     }
 
     @Override
     protected void onEnabled(boolean joining) throws ExoPlaybackException {
         super.onEnabled(joining);
+
         int oldTunnelingAudioSessionId = tunnelingAudioSessionId;
+        
         tunnelingAudioSessionId = getConfiguration().tunnelingAudioSessionId;
+        
         tunneling = tunnelingAudioSessionId != C.AUDIO_SESSION_ID_UNSET;
+        
         if (tunnelingAudioSessionId != oldTunnelingAudioSessionId) {
             releaseCodec();
         }
+
         eventDispatcher.enabled(decoderCounters);
         frameReleaseTimeHelper.enable();
+
     }
 
     @Override
     protected void onStreamChanged(Format[] formats, long offsetUs) throws ExoPlaybackException {
+
         if (outputStreamOffsetUs == C.TIME_UNSET) {
             outputStreamOffsetUs = offsetUs;
         } else {
+            
             if (pendingOutputStreamOffsetCount == pendingOutputStreamOffsetsUs.length) {
-                Log.w(TAG, "Too many stream changes, so dropping offset: "
-                        + pendingOutputStreamOffsetsUs[pendingOutputStreamOffsetCount - 1]);
+                Log.w(
+                    TAG, 
+                    "Too many stream changes, so dropping offset: " + pendingOutputStreamOffsetsUs[pendingOutputStreamOffsetCount - 1]
+                );
             } else {
                 pendingOutputStreamOffsetCount++;
             }
+
             pendingOutputStreamOffsetsUs[pendingOutputStreamOffsetCount - 1] = offsetUs;
             pendingOutputStreamSwitchTimesUs[pendingOutputStreamOffsetCount - 1] = lastInputTimeUs;
+        
         }
+
         super.onStreamChanged(formats, offsetUs);
     }
 
     @Override
     protected void onPositionReset(long positionUs, boolean joining) throws ExoPlaybackException {
         super.onPositionReset(positionUs, joining);
+        
         clearRenderedFirstFrame();
+
         initialPositionUs = C.TIME_UNSET;
-        consecutiveDroppedFrameCount = 0;
         lastInputTimeUs = C.TIME_UNSET;
+        consecutiveDroppedFrameCount = 0;
+        
         if (pendingOutputStreamOffsetCount != 0) {
             outputStreamOffsetUs = pendingOutputStreamOffsetsUs[pendingOutputStreamOffsetCount - 1];
             pendingOutputStreamOffsetCount = 0;
         }
+        
         if (joining) {
             setJoiningDeadlineMs();
         } else {
             joiningDeadlineMs = C.TIME_UNSET;
         }
+
     }
 
     @Override
     public boolean isReady() {
-        if (super.isReady()
-                && (renderedFirstFrame || (dummySurface != null && surface == dummySurface)
-                        || getCodec() == null || tunneling)) {
+
+        if (
+            super.isReady()
+            && (
+                renderedFirstFrame 
+                || (dummySurface != null && surface == dummySurface)
+                || getCodec() == null 
+                || tunneling
+            )
+        ) {
             // Ready. If we were joining then we've now joined, so clear the joining deadline.
             joiningDeadlineMs = C.TIME_UNSET;
             return true;
@@ -379,6 +357,7 @@ public class MediaCodecVideoRenderer extends MediaCodecRenderer {
             joiningDeadlineMs = C.TIME_UNSET;
             return false;
         }
+
     }
 
     @Override
@@ -446,6 +425,7 @@ public class MediaCodecVideoRenderer extends MediaCodecRenderer {
     }
 
     private void setSurface(Surface surface) throws ExoPlaybackException {
+        
         if (surface == null) {
             // Use a dummy surface if possible.
             if (dummySurface != null) {
@@ -458,6 +438,7 @@ public class MediaCodecVideoRenderer extends MediaCodecRenderer {
                 }
             }
         }
+        
         // We only need to update the codec if the surface has changed.
         if (this.surface != surface) {
             this.surface = surface;
