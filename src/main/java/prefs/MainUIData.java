@@ -178,8 +178,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
                 
     private int mCardTitleLinesNum;
     
-    private float mUIScale;
-    
     private int mChannelCategorySorting;
         
     private long mMenuItems;
@@ -220,17 +218,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         mCardTitleLinesNum = lines;
         persistState();
 
-    }
-
-    public float getUIScale() {
-        return mUIScale;
-    }
-
-    public void setUIScale(float scale) {
-        
-        mUIScale = scale;
-        persistState();
-    
     }
 
     public int getChannelCategorySorting() {
@@ -291,7 +278,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
 
     private void restoreState() {
 
-        /* 0 */ mUIScale = mDataStore.get(0, 1.0f);
         /* 1 */ mChannelCategorySorting = mDataStore.get(1, CHANNEL_SORTING_LAST_VIEWED);
         /* 2 */ mCardTitleLinesNum = mDataStore.get(2, 1);
         /* 3 */ mMenuItems = mDataStore.get(3, MENU_ITEM_DEFAULT);
@@ -335,7 +321,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
 
     public void persistState() {
 
-        /* 0 */ mDataStore.put(0, mUIScale); 
         /* 1 */ mDataStore.put(1, mChannelCategorySorting); 
         /* 2 */ mDataStore.put(2, mCardTitleLinesNum);
         /* 3 */ mDataStore.put(3, mMenuItems);

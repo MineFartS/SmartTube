@@ -171,11 +171,11 @@ public class MotherActivity extends FragmentActivity {
             // NOTE: Don't replace with getResources().getDisplayMetrics(). Shows wrong metrics here!
             DisplayMetrics displayMetrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            float uiScale = MainUIData.instance(context).getUIScale();
+            
             // Take into the account screen orientation (e.g. when running on phone)
             int widthPixels = Math.max(displayMetrics.widthPixels, displayMetrics.heightPixels);
             float widthRatio = DEFAULT_WIDTH / widthPixels;
-            float density = DEFAULT_DENSITY / widthRatio * uiScale;
+            float density = DEFAULT_DENSITY / widthRatio;
             displayMetrics.density = density;
             displayMetrics.scaledDensity = density;
             sCachedDisplayMetrics = displayMetrics;
