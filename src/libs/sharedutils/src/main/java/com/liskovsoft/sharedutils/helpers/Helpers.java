@@ -79,6 +79,7 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -1949,19 +1950,6 @@ public final class Helpers {
             }
         }
         return nextState;
-    }
-
-    /**
-     * NOTE: proper item order not guaranteed!!!<br/>
-     * Limit the maximum size of a Map by removing oldest entries when limit reached
-     */
-    public static <K, V> Map<K, V> createLRUMap(final int maxEntries) {
-        return new LinkedHashMap<K, V>(maxEntries + 1, 0.75f, true) {
-            @Override
-            protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
-                return size() > maxEntries;
-            }
-        };
     }
 
     private static String normalize(String word) {

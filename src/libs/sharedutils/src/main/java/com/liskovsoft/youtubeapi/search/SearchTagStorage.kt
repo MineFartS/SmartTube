@@ -2,14 +2,13 @@ package com.liskovsoft.sharedutils.search
 
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.sharedutils.service.internal.MediaServicePrefs
-
-import java.util.ArrayList;
+import com.liskovsoft.sharedutils.helpers.LruList
 
 internal object SearchTagStorage: MediaServicePrefs.ProfileChangeListener {
 
     private const val SEARCH_TAG_DATA = "search_tag_data"
-    
-    private val _tags: MutableList<String> = ArrayList<String>()
+
+    private val _tags: MutableList<String> = LruList(50)
 
     @JvmStatic
     val tags: List<String>
