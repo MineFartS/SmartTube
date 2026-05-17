@@ -39,8 +39,11 @@ internal class PlayerDataExtractor(val playerUrl: String) {
             sFuncCode = true
         }
         
-        if (!(nFuncCode && sFuncCode)) {
+        if (nFuncCode && sFuncCode) {
 
+            V8ChallengeProvider.warmup() // enable hot start
+
+        } else {
             try {
                                 
                 val result = V8ChallengeProvider.bulkSolve(
