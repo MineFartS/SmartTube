@@ -436,23 +436,6 @@ public class SignInService {
         }
     }
 
-    private void restoreAccounts() {
-        String data = getAccountManagerData();
-
-        if (data != null) {
-            String[] split = Helpers.splitArray(data);
-            mAccounts.clear();
-
-            for (String spec : split) {
-                mAccounts.add(YouTubeAccount.from(spec));
-            }
-        }
-
-        if (mOnChange != null) {
-            mOnChange.run();
-        }
-    }
-
     public void setOnChange(Runnable onChange) {
         mOnChange = onChange;
     }

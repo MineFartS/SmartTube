@@ -38,7 +38,6 @@ import minefarts.smarttube.exoplayer.selector.FormatItem;
 import minefarts.smarttube.exoplayer.selector.FormatItem.VideoPreset;
 import minefarts.smarttube.exoplayer.selector.TrackSelectorManager;
 import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
-import minefarts.smarttube.misc.AppDataSourceManager;
 import minefarts.smarttube.misc.ServiceManager;
 import minefarts.smarttube.misc.MotherActivity;
 import minefarts.smarttube.prefs.ContentBlockData;
@@ -63,7 +62,6 @@ public class AppDialogUtil {
     
     private static final String TAG = AppDialogUtil.class.getSimpleName();
     
-    private static final int VIDEO_PRESETS_ID = 136;
     private static final int AUDIO_LANGUAGE_ID = 138;
     private static final int PLAYER_SPEED_LIST_ID = 141;
     private static final int PLAYER_REMEMBER_SPEED_ID = 142;
@@ -153,56 +151,6 @@ public class AppDialogUtil {
                                 Utils.convertToFullVideoUrl(video.videoId, positionSec == -1 ? Utils.toSec(video.getPositionMs()) : positionSec).toString()));
                     }
                 }));
-    }
-
-    public static OptionCategory createVideoPresetsCategory(Context context) {
-        return createVideoPresetsCategory(context, () -> {});
-    }
-
-    public static OptionCategory createVideoPresetsCategory(Context context, Runnable onFormatSelected) {
-        return OptionCategory.from(
-                VIDEO_PRESETS_ID,
-                OptionCategory.TYPE_RADIO_LIST,
-                context.getString(R.string.title_video_presets),
-                fromPresets(
-                        context,
-                        AppDataSourceManager.instance().getVideoPresets(),
-                        onFormatSelected
-                )
-        );
-    }
-
-    private static List<OptionItem> fromPresets(Context context, VideoPreset[] presets, Runnable onFormatSelected) {
-        List<OptionItem> result = new ArrayList<>();
-
-        PlayerData playerData = PlayerData.instance(context);
-        PlayerTweaksData playerTweaksData = PlayerTweaksData.instance(context);
-        FormatItem selectedFormat = playerData.getFormat(FormatItem.TYPE_VIDEO);
-        boolean isPresetSelection = selectedFormat != null && selectedFormat.isPreset();
-
-        for (VideoPreset preset : presets) {
-            if (!Utils.isPresetSupported(preset)) {
-                continue;
-            }
-
-            result.add(0, UiOptionItem.from(preset.name,
-                    option -> setFormat(preset.format, playerData, onFormatSelected),
-                    isPresetSelection && preset.format.equals(selectedFormat)));
-        }
-
-        FormatItem noVideo = ExoFormatItem.from(MediaTrack.forRendererIndex(TrackSelectorManager.RENDERER_INDEX_VIDEO), true);
-        result.add(0, UiOptionItem.from(
-                context.getString(R.string.video_disabled),
-                optionItem ->
-                        setFormat(noVideo, playerData, onFormatSelected),
-                isPresetSelection && Helpers.equals(noVideo, selectedFormat)));
-
-        result.add(0, UiOptionItem.from(
-                context.getString(R.string.video_preset_disabled),
-                optionItem -> setFormat(playerData.getDefaultVideoFormat(), playerData, onFormatSelected),
-                !isPresetSelection));
-
-        return result;
     }
 
     private static void setFormat(FormatItem formatItem, PlayerData playerData, Runnable onFormatSelected) {

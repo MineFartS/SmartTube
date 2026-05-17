@@ -34,7 +34,6 @@ import minefarts.smarttube.app.presenters.dialogs.menu.providers.channelgroup.Ch
 import minefarts.smarttube.app.presenters.interfaces.SectionPresenter;
 import minefarts.smarttube.app.presenters.interfaces.VideoGroupPresenter;
 import minefarts.smarttube.app.views.BrowseView;
-import minefarts.smarttube.misc.AppDataSourceManager;
 import minefarts.smarttube.misc.BrowseProcessorManager;
 import minefarts.smarttube.misc.ServiceManager;
 import minefarts.smarttube.misc.ServiceManager.AccountChangeListener;
@@ -42,6 +41,15 @@ import minefarts.smarttube.prefs.AccountsData;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.utils.Utils;
+
+import minefarts.smarttube.app.presenters.settings.AboutSettingsPresenter;
+import minefarts.smarttube.app.presenters.settings.AccountSettingsPresenter;
+import minefarts.smarttube.app.presenters.settings.ContentBlockSettingsPresenter;
+import minefarts.smarttube.app.presenters.settings.GeneralSettingsPresenter;
+import minefarts.smarttube.app.presenters.settings.MainUISettingsPresenter;
+import minefarts.smarttube.app.presenters.settings.PlayerSettingsPresenter;
+import minefarts.smarttube.app.presenters.settings.RemoteControlSettingsPresenter;
+import minefarts.smarttube.exoplayer.selector.FormatItem.VideoPreset;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,9 +64,12 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
 public class BrowsePresenter extends BasePresenter<BrowseView> implements SectionPresenter, VideoGroupPresenter, AccountChangeListener {
+    
     private static final String TAG = BrowsePresenter.class.getSimpleName();
+    
     @SuppressLint("StaticFieldLeak")
     private static BrowsePresenter sInstance;
+    
     private final List<BrowseSection> mSections;
     private final List<BrowseSection> mErrorSections;
     private final Map<Integer, Observable<MediaGroup>> mGridMapping;
@@ -66,7 +77,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
     private final Map<Integer, Callable<List<SettingsItem>>> mSettingsGridMapping;
     private final Map<Integer, Callable<List<Video>>> mLocalGridMappings;
     private final Map<Integer, BrowseSection> mSectionsMapping;
-    private final AppDataSourceManager mDataSourcePresenter;
     private final BrowseProcessorManager mBrowseProcessor;
     private final List<Disposable> mActions;
     private final Runnable mRefreshSection = this::refresh;
@@ -78,7 +88,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
 
     private BrowsePresenter(Context context) {
         super(context);
-        mDataSourcePresenter = AppDataSourceManager.instance();
         mSections = new ArrayList<>();
         mErrorSections = new ArrayList<>();
         mGridMapping = new HashMap<>();
@@ -174,7 +183,11 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
 
         initRowAndGridMapping();
 
-        initSettingsGridMapping();
+        mSettingsGridMapping.put(
+            MediaGroup.TYPE_SETTINGS, 
+            this::getSettingItems
+        );
+
         initLocalGridMapping();
     }
 
@@ -336,11 +349,54 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         }
     }
 
-    private void initSettingsGridMapping() {
-        mSettingsGridMapping.put(
-            MediaGroup.TYPE_SETTINGS, 
-            () -> mDataSourcePresenter.getSettingItems(getContext())
-        );
+    private List<SettingsItem> getSettingItems() {
+
+        Context context = getContext();
+        List<SettingsItem> settingItems = new ArrayList<>();
+
+        settingItems.add(new SettingsItem(
+            context.getString(R.string.settings_accounts), 
+            () -> AccountSettingsPresenter.instance(context).show(), 
+            R.drawable.settings_account
+        ));
+
+        settingItems.add(new SettingsItem(
+            context.getString(R.string.settings_remote_control), 
+            () -> RemoteControlSettingsPresenter.instance(context).show(), 
+            R.drawable.settings_cast
+        ));
+
+        settingItems.add(new SettingsItem(
+            context.getString(R.string.settings_general), 
+            () -> GeneralSettingsPresenter.instance(context).show(), 
+            R.drawable.settings_app
+        ));
+
+        settingItems.add(new SettingsItem(
+            context.getString(R.string.settings_main_ui), 
+            () -> MainUISettingsPresenter.instance(context).show(), 
+            R.drawable.settings_main_ui
+        ));
+
+        settingItems.add(new SettingsItem(
+            context.getString(R.string.settings_player), 
+            () -> PlayerSettingsPresenter.instance(context).show(), 
+            R.drawable.settings_player
+        ));
+                        
+        settingItems.add(new SettingsItem(
+            context.getString(R.string.content_block_provider), 
+            () -> ContentBlockSettingsPresenter.instance(context).show(), 
+            R.drawable.settings_block
+        ));
+
+        settingItems.add(new SettingsItem(
+            "About", 
+            () -> AboutSettingsPresenter.instance(context).show(), 
+            R.drawable.settings_about
+        ));
+
+        return settingItems;
     }
 
     private void initLocalGridMapping() {
