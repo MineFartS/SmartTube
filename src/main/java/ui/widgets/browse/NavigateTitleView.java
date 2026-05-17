@@ -57,7 +57,6 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
     private int mSearchVisibility = View.INVISIBLE;
     private int mBrandingVisibility = View.INVISIBLE;
     private DateTimeView mGlobalClock;
-    private DateTimeView mGlobalDate;
     private SearchOrbView mSearchOrbView;
     private boolean mInitDone;
     private int mFlags = FULL_VIEW_VISIBLE;
@@ -66,16 +65,20 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
 
     public NavigateTitleView(Context context) {
         super(context);
+
+        mGlobalClock = new DateTimeView(context);
     }
 
     public NavigateTitleView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        mGlobalClock = new DateTimeView(context);
     }
 
     public NavigateTitleView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        // findViewById is null in constructor. Init mAccountView later.
+        mGlobalClock = new DateTimeView(context);
     }
 
     @Override
@@ -143,7 +146,6 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
         mAccountView.setVisibility(mSearchVisibility);
 
         mGlobalClock.setVisibility(mBrandingVisibility);
-        mGlobalDate.setVisibility(mBrandingVisibility);
 
     }
 
@@ -212,7 +214,6 @@ public class NavigateTitleView extends TitleView implements OnDataChange, Accoun
         mAccountView.setVisibility(View.VISIBLE);
 
         mGlobalClock.setVisibility(View.VISIBLE);
-        mGlobalDate.setVisibility(View.VISIBLE);
 
         Utils.postDelayed(this::updateAccountIcon, 1_000); // give a time to engine to fetch an updated icon url
 

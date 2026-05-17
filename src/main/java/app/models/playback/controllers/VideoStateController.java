@@ -142,13 +142,6 @@ public class VideoStateController extends BasePlayerController {
         if (!getPlayEnabled()) {
             getPlayer().showOverlay(true);
         }
-        
-        Utils.post(() -> {
-            while (true) {
-                onTickle();
-                Utils.sleep(10_000);    
-            }
-        });
 
     }
 
