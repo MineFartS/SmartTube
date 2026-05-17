@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import minefarts.smarttube.app.models.playback.service.VideoStateService;
+import minefarts.smarttube.app.models.playback.service.State;
+
 public class Queue {
 
     private static final int PLAYLIST_MAX_SIZE = 50;
 
     private static final List<Video> mQueue = new ArrayList<>();
     private static final List<Video> mSyncedItems = new ArrayList<>();
-    
     private static int mCurrentIndex = -1;
 
     /**
@@ -70,18 +72,15 @@ public class Queue {
     }
 
     public static void next(Video video) {
-        if (Video.isEmpty(video)) {
-            return;
-        }
+
+        if (Video.isEmpty(video)) return;
 
         remove(video);
 
         int nextIdx = mQueue.size() > mCurrentIndex ? mCurrentIndex + 1 : mQueue.size() - 1;
 
         // IndexOutOfBoundsException fix
-        if (nextIdx < 0) {
-            return;
-        }
+        if (nextIdx < 0) return;
 
         mQueue.add(nextIdx, video);
 
@@ -228,17 +227,29 @@ public class Queue {
      * Trim playlist if one exceeds needed size or current element not last in the list
      */
     private static void trimQueue() {
-        int size = mQueue.size();
-        boolean playlistTooBig = size > PLAYLIST_MAX_SIZE;
 
-        if (playlistTooBig) {
-            //int fromIndex = mQueue.size() - PLAYLIST_MAX_SIZE;
-            //int toIndex = mQueue.size();
-            //mQueue = mQueue.subList(fromIndex, toIndex);
+        int size = mQueue.size();
+
+        if (size > PLAYLIST_MAX_SIZE) {
             int toIndex = size - PLAYLIST_MAX_SIZE;
             mQueue.subList(0, toIndex).clear();
             mCurrentIndex -= toIndex;
         }
+
+        VideoStateService stateService = VideoStateService.instance(null);
+
+        if (stateService != null) {
+
+            for (Video video : mQueue) {
+
+                State state = stateService.getByVideoId(video.videoId);
+
+                if (state != null) remove(video);
+
+            }
+
+        }
+
     }
 
     /**
