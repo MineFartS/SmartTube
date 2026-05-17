@@ -453,19 +453,21 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
     private void initLifecycle() {
         mLifecycleRegistry = new LifecycleRegistry(this);
         mSavedStateRegistryController = SavedStateRegistryController.create(this);
-        if (Build.VERSION.SDK_INT >= 19) {
-            mLifecycleRegistry.addObserver(new LifecycleEventObserver() {
-                @Override
-                public void onStateChanged(@NonNull LifecycleOwner source,
-                        @NonNull Lifecycle.Event event) {
-                    if (event == Lifecycle.Event.ON_STOP) {
-                        if (mView != null) {
-                            mView.cancelPendingInputEvents();
-                        }
+
+        mLifecycleRegistry.addObserver(new LifecycleEventObserver() {
+            
+            @Override
+            public void onStateChanged(@NonNull LifecycleOwner source,
+                    @NonNull Lifecycle.Event event) {
+                if (event == Lifecycle.Event.ON_STOP) {
+                    if (mView != null) {
+                        mView.cancelPendingInputEvents();
                     }
                 }
-            });
-        }
+            }
+            
+        });
+
     }
 
     /**

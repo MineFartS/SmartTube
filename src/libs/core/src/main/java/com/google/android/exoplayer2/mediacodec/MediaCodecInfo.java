@@ -144,16 +144,13 @@ public final class MediaCodecInfo {
     
     adaptive = !forceDisableAdaptive 
         && capabilities != null 
-        && Util.SDK_INT >= 19 
         && capabilities.isFeatureSupported(CodecCapabilities.FEATURE_AdaptivePlayback);
     
-    tunneling = capabilities != null 
-        && Util.SDK_INT >= 21 
+    tunneling = capabilities != null
         && capabilities.isFeatureSupported(CodecCapabilities.FEATURE_TunneledPlayback);
     
     secure = forceSecure || (
         capabilities != null 
-        && Util.SDK_INT >= 21 
         && capabilities.isFeatureSupported(CodecCapabilities.FEATURE_SecurePlayback)
     );
     
@@ -189,40 +186,32 @@ public final class MediaCodecInfo {
         : getMaxSupportedInstancesV23(capabilities);
   }
 
-  /**
-   * Returns whether the decoder may support decoding the given {@code format}.
-   *
-   * @param format The input media format.
-   * @return Whether the decoder may support decoding the given {@code format}.
-   * @throws MediaCodecUtil.DecoderQueryException Thrown if an error occurs while querying decoders.
-   */
-  public boolean isFormatSupported(Format format) throws MediaCodecUtil.DecoderQueryException {
-    if (!isCodecSupported(format.codecs)) {
-      return false;
-    }
+    /**
+     * Returns whether the decoder may support decoding the given {@code format}.
+     *
+     * @param format The input media format.
+     * @return Whether the decoder may support decoding the given {@code format}.
+     * @throws MediaCodecUtil.DecoderQueryException Thrown if an error occurs while querying decoders.
+     */
+    public boolean isFormatSupported(Format format) throws MediaCodecUtil.DecoderQueryException {
+        
+        if (!isCodecSupported(format.codecs)) return false;
 
-    if (isVideo) {
-      if (format.width <= 0 || format.height <= 0) {
-        return true;
-      }
-      if (Util.SDK_INT >= 21) {
-        return isVideoSizeAndRateSupportedV21(format.width, format.height, format.frameRate);
-      } else {
-        boolean isFormatSupported =
-            format.width * format.height <= MediaCodecUtil.maxH264DecodableFrameSize();
-        if (!isFormatSupported) {
-          logNoSupport("legacyFrameSize, " + format.width + "x" + format.height);
+        if (isVideo) {
+        
+            if (format.width <= 0 || format.height <= 0) {
+                return true;
+            }
+
+            return isVideoSizeAndRateSupportedV21(format.width, format.height, format.frameRate);
+
+        } else { // Audio
+            return ((format.sampleRate == Format.NO_VALUE
+                        || isAudioSampleRateSupportedV21(format.sampleRate))
+                    && (format.channelCount == Format.NO_VALUE
+                        || isAudioChannelCountSupportedV21(format.channelCount)));
         }
-        return isFormatSupported;
-      }
-    } else { // Audio
-      return Util.SDK_INT < 21
-          || ((format.sampleRate == Format.NO_VALUE
-                  || isAudioSampleRateSupportedV21(format.sampleRate))
-              && (format.channelCount == Format.NO_VALUE
-                  || isAudioChannelCountSupportedV21(format.channelCount)));
     }
-  }
 
   /**
    * Whether the decoder supports the given {@code codec}. If there is insufficient information to
