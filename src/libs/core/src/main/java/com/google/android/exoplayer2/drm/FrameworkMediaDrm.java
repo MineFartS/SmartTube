@@ -202,50 +202,14 @@ public final class FrameworkMediaDrm implements ExoMediaDrm<FrameworkMediaCrypto
     public FrameworkMediaCrypto createMediaCrypto(byte[] initData) throws MediaCryptoException {
         // Work around a bug prior to Lollipop where L1 Widevine forced into L3 mode would still
         // indicate that it required secure video decoders [Internal ref: b/11428937].
-        boolean forceAllowInsecureDecoderComponents = Util.SDK_INT < 21
-                && C.WIDEVINE_UUID.equals(uuid) && "L3".equals(getPropertyString("securityLevel"));
-        return new FrameworkMediaCrypto(adjustUuid(uuid), initData,
-                forceAllowInsecureDecoderComponents);
+        return new FrameworkMediaCrypto(adjustUuid(uuid), initData, false);
     }
 
     private static SchemeData getSchemeData(UUID uuid, List<SchemeData> schemeDatas) {
+        
         if (!C.WIDEVINE_UUID.equals(uuid)) {
             // For non-Widevine CDMs always use the first scheme data.
             return schemeDatas.get(0);
-        }
-
-        if (Util.SDK_INT >= 28 && schemeDatas.size() > 1) {
-            // For API level 28 and above, concatenate multiple PSSH scheme datas if possible.
-            SchemeData firstSchemeData = schemeDatas.get(0);
-            int concatenatedDataLength = 0;
-            boolean canConcatenateData = true;
-            for (int i = 0; i < schemeDatas.size(); i++) {
-                SchemeData schemeData = schemeDatas.get(i);
-                byte[] schemeDataData = Util.castNonNull(schemeData.data);
-                if (schemeData.requiresSecureDecryption == firstSchemeData.requiresSecureDecryption
-                        && Util.areEqual(schemeData.mimeType, firstSchemeData.mimeType)
-                        && Util.areEqual(schemeData.licenseServerUrl,
-                                firstSchemeData.licenseServerUrl)
-                        && PsshAtomUtil.isPsshAtom(schemeDataData)) {
-                    concatenatedDataLength += schemeDataData.length;
-                } else {
-                    canConcatenateData = false;
-                    break;
-                }
-            }
-            if (canConcatenateData) {
-                byte[] concatenatedData = new byte[concatenatedDataLength];
-                int concatenatedDataPosition = 0;
-                for (int i = 0; i < schemeDatas.size(); i++) {
-                    SchemeData schemeData = schemeDatas.get(i);
-                    byte[] schemeDataData = Util.castNonNull(schemeData.data);
-                    int schemeDataLength = schemeDataData.length;
-                    System.arraycopy(schemeDataData, 0, concatenatedData, concatenatedDataPosition,
-                            schemeDataLength);
-                    concatenatedDataPosition += schemeDataLength;
-                }
-                return firstSchemeData.copyWithData(concatenatedData);
-            }
         }
 
         // For API levels 23 - 27, prefer the first V1 PSSH box. For API levels 22 and earlier,
@@ -267,7 +231,7 @@ public final class FrameworkMediaDrm implements ExoMediaDrm<FrameworkMediaCrypto
 
     private static UUID adjustUuid(UUID uuid) {
         // ClearKey had to be accessed using the Common PSSH UUID prior to API level 27.
-        return Util.SDK_INT < 27 && C.CLEARKEY_UUID.equals(uuid) ? C.COMMON_PSSH_UUID : uuid;
+        return C.CLEARKEY_UUID.equals(uuid) ? C.COMMON_PSSH_UUID : uuid;
     }
 
     private static byte[] adjustRequestInitData(UUID uuid, byte[] initData) {
@@ -284,9 +248,8 @@ public final class FrameworkMediaDrm implements ExoMediaDrm<FrameworkMediaCrypto
 
         // Prior to L the Widevine CDM required data to be extracted from the PSSH atom. Some Amazon
         // devices also required data to be extracted from the PSSH atom for PlayReady.
-        if (
-            (Util.SDK_INT < 21 && C.WIDEVINE_UUID.equals(uuid))
-            || (C.PLAYREADY_UUID.equals(uuid) && AmazonQuirks.isFireTVGen1Family() || AmazonQuirks.isFireTVGen2())
+        if (C.PLAYREADY_UUID.equals(uuid) 
+            && (AmazonQuirks.isFireTVGen1Family() || AmazonQuirks.isFireTVGen2())
         ) {
             byte[] psshData = PsshAtomUtil.parseSchemeSpecificData(initData, uuid);
             if (psshData != null) {

@@ -64,11 +64,11 @@ public final class AudioCapabilities {
     boolean isSurroundSoundEnabled = false;
 
     // read global surround sound amazon specific settings
-    if (Util.SDK_INT >= 17) {
-        ContentResolver resolver = context.getContentResolver();
-        useSurroundSoundFlag = useSurroundSoundFlagV17(resolver);
-        isSurroundSoundEnabled = isSurroundSoundEnabledV17(resolver);
-    }
+    
+    ContentResolver resolver = context.getContentResolver();
+    useSurroundSoundFlag = useSurroundSoundFlagV17(resolver);
+    isSurroundSoundEnabled = isSurroundSoundEnabledV17(resolver);
+    
     //  If use surround sound enabled flag is set, then ignore the hmdi plug
     //  encodings.  Rely only on EXTERNAL_SURROUND_SOUND_CAPABILITIES to
     //  determine if dolby is supported.
@@ -78,7 +78,7 @@ public final class AudioCapabilities {
     }
     // AMZN_CHANGE_END
 
-    if (deviceMaySetExternalSurroundSoundGlobalSetting()
+    if ("Amazon".equals(Util.MANUFACTURER)
         && Global.getInt(context.getContentResolver(), EXTERNAL_SURROUND_SOUND_KEY, 0) == 1) {
       return EXTERNAL_SURROUND_SOUND_CAPABILITIES;
     }
@@ -97,7 +97,7 @@ public final class AudioCapabilities {
    */
   @Nullable
   /* package */ static Uri getExternalSurroundSoundGlobalSettingUri() {
-    return deviceMaySetExternalSurroundSoundGlobalSetting()
+    return "Amazon".equals(Util.MANUFACTURER)
         ? Global.getUriFor(EXTERNAL_SURROUND_SOUND_KEY)
         : null;
   }
@@ -179,7 +179,4 @@ public final class AudioCapabilities {
         + ", supportedEncodings=" + Arrays.toString(supportedEncodings) + "]";
   }
 
-  private static boolean deviceMaySetExternalSurroundSoundGlobalSetting() {
-    return Util.SDK_INT >= 17 && "Amazon".equals(Util.MANUFACTURER);
-  }
 }
