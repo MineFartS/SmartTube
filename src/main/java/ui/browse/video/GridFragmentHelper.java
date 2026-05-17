@@ -57,7 +57,6 @@ public class GridFragmentHelper {
     }
 
     private static float getMaxColsNumFloatInt(Context context, int cardWidthResId, float cardScale) {
-        float uiScale = MainUIData.instance(context).getUIScale();
 
         Resources res = context.getResources();
         DisplayMetrics displayMetrics = res.getDisplayMetrics();
@@ -69,7 +68,7 @@ public class GridFragmentHelper {
         float cardSpacingPx = res.getDimensionPixelSize(R.dimen.grid_item_horizontal_spacing);
 
         // Get into consideration space from grid sides
-        return (displayWidthPx - displayWidthPx * 0.1f * uiScale) / (cardWidthPx + cardSpacingPx);
+        return (displayWidthPx - displayWidthPx * 0.1f) / (cardWidthPx + cardSpacingPx);
     }
 
     public static Pair<Integer, Integer> getCardDimensPx(Context context, int cardWidthResId, int cardHeightResId, float cardScale) {
