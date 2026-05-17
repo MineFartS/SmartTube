@@ -130,7 +130,7 @@ public class ChannelUploadsMenuPresenter extends BaseMenuPresenter {
         }
 
         mDialogPresenter.appendSingleButton(
-                UiOptionItem.from(getContext().getString(R.string.mark_channel_as_watched), optionItem -> {
+                UiOptionItem.from(getContext().getString(R.string.mark_as_watched), optionItem -> {
                     ServiceManager.loadChannelUploads(mVideo, (group) -> {});
                     MessageHelpers.showMessage(getContext(), R.string.channel_marked_as_watched);
                 }));

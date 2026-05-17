@@ -440,10 +440,13 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
 
         mDialogPresenter.appendSingleButton(UiOptionItem.from(
             getContext().getString(R.string.mark_as_watched), 
-            optionItem -> mVideoStateController.updateHistory(
-                mVideo, 
-                mVideo.getDurationMs() - 1000L
-            )
+            optionItem -> {
+                mVideoStateController.updateHistory(
+                    mVideo, 
+                    mVideo.getDurationMs() - 1000L
+                );
+                mDialogPresenter.closeDialog();
+            }
         ));
         
     }
