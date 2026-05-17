@@ -63,9 +63,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         category = AppDialogUtil.createPlaybackModeCategory(getContext());
         settingsPresenter.appendCategory(category);
         
-        category = AppDialogUtil.createVideoPresetsCategory(getContext());
-        settingsPresenter.appendCategory(category);
-        
         appendVideoSpeedCategory(settingsPresenter);
         
         category = AppDialogUtil.createAudioLanguageCategory(getContext());
