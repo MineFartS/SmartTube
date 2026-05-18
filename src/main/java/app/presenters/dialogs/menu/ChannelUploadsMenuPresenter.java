@@ -1,6 +1,7 @@
 package minefarts.smarttube.app.presenters.dialogs.menu;
 
 import android.content.Context;
+
 import com.liskovsoft.sharedutils.MediaItemService;
 import minefarts.smarttube.misc.ServiceManager;
 import com.liskovsoft.sharedutils.data.MediaItem;
@@ -13,6 +14,8 @@ import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.ChannelPresenter;
 import minefarts.smarttube.app.presenters.ChannelUploadsPresenter;
 import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
+import minefarts.smarttube.ui.playback.actions.SubscribeAction;
+
 import io.reactivex.disposables.Disposable;
 
 import java.util.List;
@@ -21,7 +24,6 @@ public class ChannelUploadsMenuPresenter extends BaseMenuPresenter {
     
     private final MediaItemService mItemManager;
     private final AppDialogPresenter mDialogPresenter;
-    private Disposable mUnsubscribeAction;
     private Video mVideo;
     private VideoMenuCallback mCallback;
 
@@ -56,13 +58,9 @@ public class ChannelUploadsMenuPresenter extends BaseMenuPresenter {
     }
 
     public void showMenu(Video video) {
-        if (video == null || !video.belongsToChannelUploads()) {
-            return;
-        }
+        if (video == null || !video.belongsToChannelUploads()) return;
 
         mVideo = video;
-
-        RxHelper.disposeActions(mUnsubscribeAction);
 
         prepareAndShowDialog();
     }
@@ -88,34 +86,12 @@ public class ChannelUploadsMenuPresenter extends BaseMenuPresenter {
     }
 
     private void appendUnsubscribeButton() {
-        if (mVideo == null) {
-            return;
-        }
+        if (mVideo == null) return;
 
-        mDialogPresenter.appendSingleButton(
-                UiOptionItem.from(getContext().getString(R.string.unsubscribe_from_channel), optionItem -> {
-                    // Maybe this is subscribed items view
-                    ChannelUploadsPresenter.instance(getContext())
-                            .obtainGroup(mVideo, group -> {
-                                // Some uploads groups doesn't contain channel button.
-                                // Use data from first item instead.
-                                if (group.getChannelId() == null) {
-                                    List<MediaItem> mediaItems = group.getMediaItems();
-
-                                    if (mediaItems != null && mediaItems.size() > 0) {
-                                        ServiceManager.loadMetadata(mediaItems.get(0), metadata -> {
-                                            unsubscribe(metadata.getChannelId());
-                                            mVideo.channelId = metadata.getChannelId();
-                                        });
-                                    }
-
-                                    return;
-                                }
-
-                                unsubscribe(group.getChannelId());
-                                mVideo.channelId = group.getChannelId();
-                            });
-                }));
+        mDialogPresenter.appendSingleButton(UiOptionItem.from(
+            "Unsubscribe", 
+            optionItem -> SubscribeAction.toggle(mVideo)
+        ));
     }
 
     private void appendMarkAsWatched() {
@@ -136,19 +112,4 @@ public class ChannelUploadsMenuPresenter extends BaseMenuPresenter {
                 }));
     }
 
-    private void unsubscribe(String channelId) {
-        if (channelId == null) {
-            return;
-        }
-
-        RxHelper.disposeActions(mUnsubscribeAction);
-        mUnsubscribeAction = RxHelper.execute(mItemManager.unsubscribeObserve(channelId));
-
-        if (mCallback != null) {
-            mDialogPresenter.closeDialog();
-            mCallback.onItemAction(mVideo, VideoMenuCallback.ACTION_UNSUBSCRIBE);
-        } else {
-            MessageHelpers.showMessage(getContext(), R.string.unsubscribed_from_channel);
-        }
-    }
 }

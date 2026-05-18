@@ -51,7 +51,7 @@ internal open class WatchNextService {
                 if (!SignInService.instance().isSigned) {
                     isSubscribedOverrideItem = ChannelGroupServiceImpl.isSubscribed(it)
                 } else if (isSubscribed != ChannelGroupServiceImpl.isSubscribed(it)) {
-                    ChannelGroupServiceImpl.subscribe(isSubscribed, it, author, authorImageUrl)
+                    ChannelGroupServiceImpl.subscribe(isSubscribed, it)
                 }
             }
         }
