@@ -19,12 +19,6 @@ import java.util.List;
 
 public class MainUIData extends DataChangeBase implements ProfileChangeListener {
     
-    public static final int CARD_PREVIEW_DISABLED = 0;
-    
-    public static final int CARD_PREVIEW_MUTED = 1;
-    
-    public static final int CARD_PREVIEW_FULL = 2;
-    
     public static final int CHANNEL_SORTING_NEW_CONTENT = 0;
     
     public static final int CHANNEL_SORTING_NAME = 1;
@@ -183,8 +177,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     private long mMenuItems;
     
     private ArrayList<Long> mMenuItemsOrdered;
-    
-    private int mCardPreviewType;
         
     private MainUIData(Context context) {
 
@@ -267,22 +259,12 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
 
     }
 
-    public int getCardPreviewType() {
-        return mCardPreviewType;
-    }
-
-    public void setCardPreviewType(int type) {
-        mCardPreviewType = type;
-        persistState();
-    }
-
     private void restoreState() {
 
         /* 1 */ mChannelCategorySorting = mDataStore.get(1, CHANNEL_SORTING_LAST_VIEWED);
         /* 2 */ mCardTitleLinesNum = mDataStore.get(2, 1);
         /* 3 */ mMenuItems = mDataStore.get(3, MENU_ITEM_DEFAULT);
         /* 4 */ mMenuItemsOrdered = mDataStore.get(4, new ArrayList());
-        /* 5 */ mCardPreviewType = mDataStore.get(5, CARD_PREVIEW_DISABLED);
 
         int idx = -1;
         for (Long menuItem : MENU_ITEM_DEFAULT_ORDER) {
@@ -325,7 +307,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         /* 2 */ mDataStore.put(2, mCardTitleLinesNum);
         /* 3 */ mDataStore.put(3, mMenuItems);
         /* 4 */ mDataStore.put(4, mMenuItemsOrdered);
-        /* 5 */ mDataStore.put(5, mCardPreviewType);
 
     }
 

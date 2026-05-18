@@ -13,7 +13,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.R;
 import minefarts.smarttube.util.ViewUtil;
@@ -21,20 +20,15 @@ import minefarts.smarttube.util.ViewUtil;
 import java.lang.ref.WeakReference;
 
 public class ComplexImageView extends RelativeLayout {
-    private static final long PLAYER_START_DELAY_MS = 2_000;
+
     private ImageView mMainImage;
     private ImageView mPreviewImage;
-    private PreviewPlayer mPreviewPlayer;
     private FrameLayout mPreviewContainer;
     private ProgressBar mProgressBar;
     private TextView mBadgeText;
     private ViewGroup mProgressContainer;
     private int mPreviewWidth;
     private int mPreviewHeight;
-    private Runnable mCreateAndStartPlayer;
-    private WeakReference<Video> mVideo;
-    private boolean mPreferSimplePreview;
-    private boolean mMute;
 
     public ComplexImageView(Context context) {
         super(context);
@@ -70,22 +64,6 @@ public class ComplexImageView extends RelativeLayout {
         if (mMainImage != null) {
             mMainImage.setVisibility(visibility);
         }
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasWindowFocus) {
-        super.onWindowFocusChanged(hasWindowFocus);
-
-        if (!hasWindowFocus) {
-            stopPlayback();
-        }
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-
-        stopPlayback();
     }
 
     /**
@@ -126,99 +104,6 @@ public class ComplexImageView extends RelativeLayout {
         }
     }
 
-    public void setPreview(Video video) {
-        if (video != null) {
-            mVideo = new WeakReference<>(video);
-        }
-    }
-
-    public void setMute(boolean mute) {
-        mMute = mute;
-    }
-
-    public void startPlayback() {
-        if (getVideo() == null) {
-            return;
-        }
-
-        if (getVideo().previewUrl != null && mPreferSimplePreview) {
-            if (mPreviewImage == null) {
-                mPreviewImage = new ImageView(getContext());
-                mPreviewImage.setScaleType(ScaleType.CENTER_CROP);
-                mPreviewImage.setAdjustViewBounds(true);
-                mPreviewContainer.addView(mPreviewImage, new FrameLayout.LayoutParams(mPreviewWidth, mPreviewHeight));
-                mPreviewContainer.setVisibility(View.VISIBLE);
-            }
-
-            Glide.with(getContext().getApplicationContext()) // FIX: "You cannot start a load for a destroyed activity"
-                    .load(getVideo().previewUrl)
-                    .apply(ViewUtil.glideOptions())
-                    .into(mPreviewImage);
-        } else if (getVideo().videoId != null) {
-            if (mCreateAndStartPlayer == null) {
-                mCreateAndStartPlayer = this::createAndStartPlayer;
-            }
-
-            Utils.postDelayed(mCreateAndStartPlayer, PLAYER_START_DELAY_MS);
-        }
-    }
-
-    private void createAndStartPlayer() {
-        if (getVideo() == null) {
-            return;
-        }
-
-        if (mPreviewPlayer == null) {
-            mPreviewPlayer = new PreviewPlayer(getContext());
-            mPreviewPlayer.setQuality(Math.min(mPreviewWidth, mPreviewHeight) < 300 ? PreviewPlayer.QUALITY_LOW : PreviewPlayer.QUALITY_NORMAL);
-            mPreviewPlayer.setUseController(false);
-            mPreviewPlayer.setMute(mMute);
-            mPreviewPlayer.setBackgroundColor(Color.BLACK);
-            mPreviewContainer.addView(mPreviewPlayer, new FrameLayout.LayoutParams(mPreviewWidth, mPreviewHeight));
-            mPreviewContainer.setVisibility(View.VISIBLE);
-        }
-
-        mPreviewPlayer.openVideo(getVideo());
-    }
-
-    public void stopPlayback() {
-        stopPlayback(false);
-    }
-
-    public void stopPlayback(boolean stopImmediately) {
-        if (getVideo() == null) {
-            return;
-        }
-
-        if (getVideo().previewUrl != null && mPreferSimplePreview) {
-            if (mPreviewImage != null) {
-                mPreviewContainer.removeView(mPreviewImage);
-                mPreviewContainer.setVisibility(View.GONE);
-                mPreviewImage.setImageDrawable(null);
-                Glide.with(getContext().getApplicationContext()).clear(mPreviewImage);
-                mPreviewImage = null;
-            }
-        } else if (getVideo().videoId != null) {
-            Utils.removeCallbacks(mCreateAndStartPlayer);
-
-            if (mPreviewPlayer != null) {
-                mPreviewContainer.setVisibility(View.GONE);
-                if (stopImmediately) {
-                    mPreviewPlayer.finish();
-                    mPreviewContainer.removeView(mPreviewPlayer);
-                } else {
-                    PreviewPlayer epv = mPreviewPlayer;
-                    epv.setMute(true);
-                    Utils.postDelayed(() -> {
-                        epv.finish();
-                        mPreviewContainer.removeView(epv);
-                    }, 500);
-                }
-                mPreviewPlayer = null;
-            }
-        }
-    }
-
     public void setMainImageAdjustViewBounds(boolean adjustViewBounds) {
         if (mPreviewImage != null) {
             mPreviewImage.setAdjustViewBounds(adjustViewBounds);
@@ -245,13 +130,6 @@ public class ComplexImageView extends RelativeLayout {
     private void setPreviewDimensions(int width, int height) {
         mPreviewWidth = width;
         mPreviewHeight = height;
-        //ViewGroup.LayoutParams lp = mPreviewImage.getLayoutParams();
-        //lp.width = width;
-        //lp.height = height;
-        //mPreviewImage.setLayoutParams(lp);
     }
 
-    private Video getVideo() {
-        return mVideo != null ? mVideo.get() : null;
-    }
 }
