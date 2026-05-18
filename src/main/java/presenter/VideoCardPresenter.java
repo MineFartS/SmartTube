@@ -43,24 +43,21 @@ public class VideoCardPresenter extends LongClickPresenter {
     private int mDefaultTextColor = -1;
     private int mSelectedBackgroundColor = -1;
     private int mSelectedTextColor = -1;
-    private int mCardPreviewType;
     private int mWidth;
     private int mHeight;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent) {
+        
         Context context = parent.getContext();
 
-        mDefaultBackgroundColor =
-            ContextCompat.getColor(context, Helpers.getThemeAttr(context, R.attr.cardDefaultBackground));
-        mDefaultTextColor =
-                ContextCompat.getColor(context, R.color.card_default_text);
-        mSelectedBackgroundColor =
-                ContextCompat.getColor(context, Helpers.getThemeAttr(context, R.attr.cardSelectedBackground));
-        mSelectedTextColor =
-                ContextCompat.getColor(context, R.color.card_selected_text_grey);
-
-        mCardPreviewType = getCardPreviewType(context);
+        mDefaultBackgroundColor = ContextCompat.getColor(context, Helpers.getThemeAttr(context, R.attr.cardDefaultBackground));
+        
+        mDefaultTextColor = ContextCompat.getColor(context, R.color.card_default_text);
+        
+        mSelectedBackgroundColor = ContextCompat.getColor(context, Helpers.getThemeAttr(context, R.attr.cardSelectedBackground));
+        
+        mSelectedTextColor = ContextCompat.getColor(context, R.color.card_selected_text_grey);
 
         updateDimensions(context);
 
@@ -129,11 +126,6 @@ public class VideoCardPresenter extends LongClickPresenter {
         cardView.setBadgeColor(video.hasNewContent || video.isLive || video.isUpcoming ?
                 ContextCompat.getColor(context, R.color.dark_red) : ContextCompat.getColor(context, R.color.black));
 
-        if (mCardPreviewType != MainUIData.CARD_PREVIEW_DISABLED) {
-            cardView.setPreview(video);
-            cardView.setMute(mCardPreviewType == MainUIData.CARD_PREVIEW_MUTED);
-        }
-
         cardView.setMainImageDimensions(mWidth, mHeight);
 
         if (context instanceof Activity && ((Activity) context).isDestroyed()) {
@@ -179,10 +171,6 @@ public class VideoCardPresenter extends LongClickPresenter {
             R.dimen.card_height, 
             1.0f //Scale
         );
-    }
-
-    protected int getCardPreviewType(Context context) {
-        return MainUIData.instance(context).getCardPreviewType();
     }
 
     protected boolean isContentEnabled() {

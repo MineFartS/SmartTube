@@ -8,11 +8,11 @@ import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 import androidx.leanback.widget.ImageCardView;
 
-import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.R;
 import minefarts.smarttube.util.ViewUtil;
 
 public class ComplexImageCardView extends ImageCardView {
+    
     private ComplexImageView mComplexImageView;
     private Handler mHandler;
 
@@ -41,14 +41,6 @@ public class ComplexImageCardView extends ImageCardView {
         mHandler = new Handler(Looper.getMainLooper());
     }
 
-    private void enableTitleAnimation(boolean enable) {
-        enableTextAnimation(findViewById(R.id.title_text), enable);
-    }
-
-    private void enableContentAnimation(boolean enable) {
-        enableTextAnimation(findViewById(R.id.content_text), enable);
-    }
-
     private void enableTextAnimation(TextView view, boolean enable) {
         if (view == null) {
             return;
@@ -70,9 +62,6 @@ public class ComplexImageCardView extends ImageCardView {
         }
     }
 
-    /**
-     * Sets the badge text.
-     */
     public void setBadgeText(String text) {
         if (mIsBadgeEnabled) {
             mComplexImageView.setBadgeText(text);
@@ -83,9 +72,6 @@ public class ComplexImageCardView extends ImageCardView {
         mComplexImageView.setBadgeColor(color);
     }
 
-    /**
-     * Sets the progress.
-     */
     public void setProgress(int percent) {
         mComplexImageView.setProgress(percent);
     }
@@ -95,41 +81,10 @@ public class ComplexImageCardView extends ImageCardView {
         
         super.setSelected(selected);
 
-        enableTitleAnimation(selected);
-        enableContentAnimation(selected);
+        enableTextAnimation(findViewById(R.id.title_text), selected);
 
-        enableVideoPreview(selected);
+        enableTextAnimation(findViewById(R.id.content_text), selected);
 
-    }
-
-    @Override
-    public boolean performClick() {
-        mComplexImageView.stopPlayback(true);
-
-        return super.performClick();
-    }
-
-    @Override
-    public boolean performLongClick() {
-        mComplexImageView.stopPlayback(true);
-
-        return super.performLongClick();
-    }
-
-    private void enableVideoPreview(boolean selected) {
-        if (selected) {
-            mComplexImageView.startPlayback();
-        } else {
-            mComplexImageView.stopPlayback();
-        }
-    }
-
-    public void setPreview(Video video) {
-        mComplexImageView.setPreview(video);
-    }
-
-    public void setMute(boolean muted) {
-        mComplexImageView.setMute(muted);
     }
 
     public void setTitleLinesNum(int lines) {
@@ -197,4 +152,5 @@ public class ComplexImageCardView extends ImageCardView {
         super.setMainImageDimensions(width, height);
         mComplexImageView.setMainImageDimensions(width, height);
     }
+    
 }

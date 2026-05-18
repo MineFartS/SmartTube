@@ -43,8 +43,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
 
         AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
 
-        appendCardPreviews(settingsPresenter);
-
         appendChannelSortingCategory(settingsPresenter);
 
         appendMiscCategory(settingsPresenter);
@@ -59,21 +57,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
             }
         );
 
-    }
-
-    private void appendCardPreviews(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
-
-        for (int[] pair : new int[][] {
-                {R.string.option_disabled, MainUIData.CARD_PREVIEW_DISABLED},
-                {R.string.card_preview_full, MainUIData.CARD_PREVIEW_FULL},
-                {R.string.card_preview_muted, MainUIData.CARD_PREVIEW_MUTED}}) {
-            options.add(UiOptionItem.from(getContext().getString(pair[0]), optionItem -> {
-                mMainUIData.setCardPreviewType(pair[1]);
-            }, mMainUIData.getCardPreviewType() == pair[1]));
-        }
-
-        settingsPresenter.appendRadioCategory(getContext().getString(R.string.card_preview), options);
     }
 
     private void appendChannelSortingCategory(AppDialogPresenter settingsPresenter) {
