@@ -160,22 +160,6 @@ public class MediaItemService {
         ));
     }
 
-    public Observable<Void> subscribeObserve(MediaItem item) {
-        return RxHelper.fromRunnable(() -> subscribe(item));
-    }
-
-    public Observable<Void> subscribeObserve(String channelId) {
-        return RxHelper.fromRunnable(() -> subscribe(channelId));
-    }
-
-    public Observable<Void> unsubscribeObserve(MediaItem item) {
-        return RxHelper.fromRunnable(() -> unsubscribe(item));
-    }
-
-    public Observable<Void> unsubscribeObserve(String channelId) {
-        return RxHelper.fromRunnable(() -> unsubscribe(channelId));
-    }
-
     public Observable<Void> setLikeObserve(MediaItem item) {
         return RxHelper.fromRunnable(() -> setLike(item));
     }
@@ -214,30 +198,6 @@ public class MediaItemService {
         getSignInService().checkAuth();
 
         getActionsService().removeDislike(item.getVideoId());
-    }
-
-    public void subscribe(MediaItem item) {
-        subscribe(item.getChannelId(), item.getParams());
-    }
-
-    public void subscribe(String channelId) {
-        subscribe(channelId, null);
-    }
-
-    private void subscribe(String channelId, String params) {
-        getSignInService().checkAuth();
-
-        getActionsService().subscribe(channelId, params);
-    }
-
-    public void unsubscribe(MediaItem item) {
-        unsubscribe(item.getChannelId());
-    }
-
-    public void unsubscribe(String channelId) {
-        getSignInService().checkAuth();
-
-        getActionsService().unsubscribe(channelId);
     }
 
     public void markAsNotInterested(String feedbackToken) {

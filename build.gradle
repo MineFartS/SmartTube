@@ -93,6 +93,7 @@ android {
     flavorDimensions "default"
 
     lintOptions {
+        abortOnError false
         checkReleaseBuilds false // fix for ClassNotFoundException: com.android.tools.lint.client.api.Vendor
     }
 

@@ -80,14 +80,6 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
         return null
     }
 
-    //fun backupSubscribedChannels(subscribedChannels: MediaGroup) {
-    //    val items = subscribedChannels.mediaItems?.map {
-    //        ItemImpl(it.channelId, it.title, it.cardImageUrl, it.videoId, it.secondTitle)
-    //    } ?: return
-    //    val group = ItemGroupImpl(SUBSCRIPTION_GROUP_ID, SUBSCRIPTION_GROUP_NAME, null, items.toMutableList())
-    //    addChannelGroup(group)
-    //}
-
     fun getSubscribedChannelGroup(): ItemGroup {
         return findOrInitGroup(SUBSCRIPTIONS_GROUP_ID, SUBSCRIPTIONS_GROUP_NAME)
     }
@@ -203,23 +195,28 @@ internal object ChannelGroupServiceImpl: MediaServicePrefs.ProfileChangeListener
     }
 
     @JvmStatic
-    fun subscribe(subscribe: Boolean, channelId: String, title: String?, iconUrl: String?) {
+    fun subscribe(subscribe: Boolean, channelId: String) {
+        
         val group: ItemGroup = getSubscribedChannelGroup()
 
         if (subscribe) {
-            val realCachedChannel = cachedChannel
-            val newChannel = if (channelId == realCachedChannel?.channelId)
-                realCachedChannel
-            else if (title == null || iconUrl == null) {
-                val channelMetadata = YouTubeDataServiceInt.getChannelMetadata(channelId)
-                val metadata = channelMetadata?.firstOrNull()
-                ItemImpl(channelId, metadata?.title ?: title, metadata?.cardImageUrl ?: iconUrl)
-            } else
-                ItemImpl(channelId, title, iconUrl)
-            group.add(newChannel)
+            
+            val metadata = YouTubeDataServiceInt.getChannelMetadata(channelId)?.firstOrNull()
+            
+            val channel = ItemImpl(
+                channelId, 
+                metadata?.title, 
+                metadata?.cardImageUrl
+            )
+
+            cachedChannel = channel
+
+            group.add(channel)
+        
         } else {
             group.remove(channelId)
         }
+
     }
 
     fun isSubscribed(channelId: String): Boolean {
