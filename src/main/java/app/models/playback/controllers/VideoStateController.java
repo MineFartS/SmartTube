@@ -163,8 +163,11 @@ public class VideoStateController extends BasePlayerController {
 
     @Override
     public void onTickle() {
-        
-        if (getPlayer() == null || getVideo() == null) return;
+
+        if (getPlayer() == null 
+            || getVideo() == null
+            || getVideo().percentWatched < 1
+        ) return;
 
         updateHistory(
             getVideo(), 
