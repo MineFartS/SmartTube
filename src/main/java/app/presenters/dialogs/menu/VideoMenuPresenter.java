@@ -1,6 +1,7 @@
 package minefarts.smarttube.app.presenters.dialogs.menu;
 
 import android.content.Context;
+
 import com.liskovsoft.sharedutils.MediaItemService;
 import minefarts.smarttube.misc.ServiceManager;
 import com.liskovsoft.sharedutils.data.PlaylistInfo;
@@ -28,6 +29,7 @@ import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.utils.AppDialogUtil;
 import minefarts.smarttube.ui.playback.actions.SubscribeAction;
 import minefarts.smarttube.app.models.playback.controllers.VideoStateController;
+import com.liskovsoft.sharedutils.data.MediaGroup;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -554,6 +556,9 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
             || mVideo.isPlaylistAsChannel() 
             || (!mVideo.isChannel() && !mVideo.hasVideo())
         ) return;
+
+        // TODO: Implement better check for whether channel is subscribed
+        // getContentService().getSubscribedChannels()
 
         mVideo.isSubscribed = mVideo.isSubscribed || mVideo.belongsToSubscriptions() || mVideo.belongsToChannelUploads();
 

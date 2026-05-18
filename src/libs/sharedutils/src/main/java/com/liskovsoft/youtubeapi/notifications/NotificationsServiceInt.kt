@@ -3,7 +3,6 @@ package com.liskovsoft.sharedutils.notifications
 import com.liskovsoft.sharedutils.data.MediaGroup
 import com.liskovsoft.sharedutils.data.MediaItem
 import com.liskovsoft.sharedutils.data.NotificationState
-import com.liskovsoft.sharedutils.actions.ActionsServiceWrapper
 import com.liskovsoft.sharedutils.common.models.impl.mediagroup.NotificationsMediaGroup
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 import com.liskovsoft.sharedutils.common.models.impl.NotificationStateImpl
@@ -26,14 +25,8 @@ internal open class NotificationsServiceInt {
 
     open fun modifyNotification(notificationState: NotificationState?) {
         if (notificationState is NotificationStateImpl) {
+
             notificationState.setSelected()
-
-            //if (!notificationState.isSubscribed) {
-            //    ActionsService.instance().subscribe(notificationState.channelId, notificationState.params)
-            //}
-
-            // Fix bug when notification cannot be modified
-            ActionsServiceWrapper.instance().subscribe(notificationState.channelId, notificationState.params)
 
             modifyNotification(notificationState.stateParams)
         }

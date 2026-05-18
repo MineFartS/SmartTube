@@ -74,8 +74,6 @@
     <string name="repeat_mode_pause">Disabled</string>
     <string name="repeat_mode_pause_alt">Play only playlist videos continuously</string>
     <string name="repeat_mode_none">Stop playback after one video (except queue)</string>
-    <string name="subscribed_to_channel">Subscribed</string>
-    <string name="unsubscribed_from_channel">Unsubscribed</string>
     <string name="channels_section_sorting">Channels section sorting</string>
     <string name="sorting_by_new_content">New content</string>
     <string name="sorting_alphabetically">Alphabetically</string>
@@ -87,7 +85,6 @@
     <string name="open_channel_uploads">Open channel uploads</string>
     <string name="player_exit_shortcut">Exit from the player</string>
     <string name="search_exit_shortcut">Exit from the search</string>
-    <string name="unsubscribe_from_channel">Unsubscribe from the channel</string>
     <string name="card_title_lines_num">Card title lines num</string>
     <string name="card_auto_scrolled_title">Auto-scroll cropped title</string>
     <string name="share_link">Share link</string>
@@ -96,6 +93,7 @@
     <string name="wait_data_loading">Please wait while data is loading…</string>
     <string name="audio_shift">Audio shift</string>
     <string name="player_remember_speed">Remember speed</string>
+    <string name="mark_channel_as_watched">Mark as watched</string>
     <string name="channel_marked_as_watched">Channel has been marked as watched</string>
     <string name="dialog_add_device">Add device</string>
     <string name="dialog_remove_all_devices">Remove all devices</string>
