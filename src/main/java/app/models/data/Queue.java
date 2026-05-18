@@ -240,7 +240,7 @@ public class Queue {
 
         if (stateService != null) {
 
-            for (Video video : mQueue) {
+            for (Video video : List.copyOf(mQueue)) {
 
                 State state = stateService.getByVideoId(video.videoId);
 
