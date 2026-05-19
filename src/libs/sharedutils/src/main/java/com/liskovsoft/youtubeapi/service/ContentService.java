@@ -129,58 +129,6 @@ public class ContentService {
     public Observable<MediaGroup> getRssFeedObserve(String... channelIds) {
         return RxHelper.fromCallable(() -> getRssFeed(channelIds));
     }
-
-    
-    public MediaGroup getSubscribedChannels() {
-        checkSigned();
-
-        return getBrowseService2().getSubscribedChannels();
-    }
-
-    
-    public MediaGroup getSubscribedChannelsByNewContent() {
-        checkSigned();
-
-        //List<GridTab> subscribedChannels = getBrowseService().getSubscribedChannelsUpdate();
-        //return YouTubeMediaGroup.fromTabs(subscribedChannels, MediaGroup.TYPE_CHANNEL_UPLOADS);
-
-        return getBrowseService2().getSubscribedChannelsByNewContent();
-    }
-
-    
-    public MediaGroup getSubscribedChannelsByName() {
-        checkSigned();
-
-        return getBrowseService2().getSubscribedChannelsByName();
-    }
-
-    
-    public MediaGroup getSubscribedChannelsByLastViewed() {
-        checkSigned();
-
-        return getBrowseService2().getSubscribedChannels();
-    }
-
-    
-    public Observable<MediaGroup> getSubscribedChannelsObserve() {
-        return RxHelper.fromCallable(this::getSubscribedChannels);
-    }
-
-    
-    public Observable<MediaGroup> getSubscribedChannelsByNewContentObserve() {
-        return RxHelper.fromCallable(this::getSubscribedChannelsByNewContent);
-    }
-
-    
-    public Observable<MediaGroup> getSubscribedChannelsByNameObserve() {
-        return RxHelper.fromCallable(this::getSubscribedChannelsByName);
-    }
-
-    
-    public Observable<MediaGroup> getSubscribedChannelsByLastViewedObserve() {
-        return RxHelper.fromCallable(this::getSubscribedChannelsByLastViewed);
-    }
-
     
     public MediaGroup getRecommended() {
         Log.d(TAG, "Getting recommended...");
