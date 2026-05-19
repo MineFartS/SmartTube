@@ -173,19 +173,7 @@ public class ServiceManager {
                         }
                 );
     }
-
-    public static void loadSubscribedChannels(OnMediaGroup onMediaGroup) {
-        RxHelper.disposeActions(mSubscribedChannelsAction);
-
-        Observable<MediaGroup> observable = getContentService().getSubscribedChannelsByNewContentObserve();
-
-        mSubscribedChannelsAction = observable
-                .subscribe(
-                        onMediaGroup::onMediaGroup,
-                        error -> Log.e(TAG, "loadSubscribedChannels error: %s", error.getMessage())
-                );
-    }
-
+    
     public static void loadChannelRows(Video item, OnMediaGroupList onMediaGroupList) {
         loadChannelRows(item, onMediaGroupList, null);
     }

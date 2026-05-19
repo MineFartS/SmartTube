@@ -95,7 +95,6 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
         appendRefreshButton();
         appendUnpinVideoFromSidebarButton();
         appendUnpinSectionFromSidebarButton();
-        appendMarkAllChannelsWatchedButton();
         appendAccountSelectionButton();
         appendMoveSectionButton();
         appendRenameSectionButton();
@@ -206,29 +205,6 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
                                 BrowsePresenter.instance(getContext()).renameSection(mSection);
                                 return true;
                             });
-                }));
-    }
-
-    private void appendMarkAllChannelsWatchedButton() {
-        if (!mIsMarkAllChannelsWatchedEnabled) {
-            return;
-        }
-
-        if (mSection == null || mSection.getId() != MediaGroup.TYPE_CHANNEL_UPLOADS) {
-            return;
-        }
-
-        mDialogPresenter.appendSingleButton(
-                UiOptionItem.from(getContext().getString(R.string.mark_all_channels_watched), optionItem -> {
-                    mDialogPresenter.closeDialog();
-
-                    MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
-
-                    ServiceManager.loadSubscribedChannels(group -> {
-                        Iterator<MediaItem> iterator = group.getMediaItems().iterator();
-
-                        processNextChannel(iterator);
-                    });
                 }));
     }
 

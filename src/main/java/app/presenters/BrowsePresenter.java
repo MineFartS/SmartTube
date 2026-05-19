@@ -41,7 +41,7 @@ import minefarts.smarttube.prefs.AccountsData;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.utils.Utils;
-
+import com.liskovsoft.sharedutils.browse.v2.BrowseService2Wrapper;
 import minefarts.smarttube.app.presenters.settings.AboutSettingsPresenter;
 import minefarts.smarttube.app.presenters.settings.AccountSettingsPresenter;
 import minefarts.smarttube.app.presenters.settings.ContentBlockSettingsPresenter;
@@ -69,6 +69,8 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
     
     @SuppressLint("StaticFieldLeak")
     private static BrowsePresenter sInstance;
+
+    private static final BrowseService2Wrapper mBrowseService = BrowseService2Wrapper.INSTANCE;
     
     private final List<BrowseSection> mSections;
     private final List<BrowseSection> mErrorSections;
@@ -101,7 +103,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         mActions = new ArrayList<>();
 
         initSectionMappings();
-        updateChannelSorting();
         updatePlaylistsStyle();
     }
 
@@ -308,7 +309,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         
         mGridMapping.put(
             MediaGroup.TYPE_CHANNEL_UPLOADS, 
-            getContentService().getSubscribedChannelsByNewContentObserve()
+            RxHelper.fromCallable(mBrowseService::getSubscribedChannels)
         );
         
         mGridMapping.put(
@@ -453,42 +454,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
     private void initPinnedData() {
         initPinnedSections();
         initPinnedCallbacks();
-    }
-
-    public void updateChannelSorting() {
-
-        switch (getMainUIData().getChannelCategorySorting()) {
-
-            case MainUIData.CHANNEL_SORTING_DEFAULT:
-                mGridMapping.put(
-                    MediaGroup.TYPE_CHANNEL_UPLOADS, 
-                    getContentService().getSubscribedChannelsObserve()
-                );
-                break;
-            
-            case MainUIData.CHANNEL_SORTING_NAME2:
-            case MainUIData.CHANNEL_SORTING_NAME:
-                mGridMapping.put(
-                    MediaGroup.TYPE_CHANNEL_UPLOADS, 
-                    getContentService().getSubscribedChannelsByNameObserve()
-                );
-                break;
-            
-            case MainUIData.CHANNEL_SORTING_NEW_CONTENT:
-                mGridMapping.put(
-                    MediaGroup.TYPE_CHANNEL_UPLOADS, 
-                    getContentService().getSubscribedChannelsByNewContentObserve()
-                );
-                break;
-            
-            case MainUIData.CHANNEL_SORTING_LAST_VIEWED:
-                mGridMapping.put(
-                    MediaGroup.TYPE_CHANNEL_UPLOADS, 
-                    getContentService().getSubscribedChannelsByLastViewedObserve()
-                );
-                break;
-        
-        }
     }
 
     public void updatePlaylistsStyle() {
@@ -1211,7 +1176,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         }
 
         initSectionMappings();
-        updateChannelSorting();
         updatePlaylistsStyle();
         updateSections();
     }
