@@ -19,16 +19,6 @@ import java.util.List;
 
 public class MainUIData extends DataChangeBase implements ProfileChangeListener {
     
-    public static final int CHANNEL_SORTING_NEW_CONTENT = 0;
-    
-    public static final int CHANNEL_SORTING_NAME = 1;
-    
-    public static final int CHANNEL_SORTING_DEFAULT = 2;
-    
-    public static final int CHANNEL_SORTING_LAST_VIEWED = 3;
-    
-    public static final int CHANNEL_SORTING_NAME2 = 4;
-    
     public static final int PLAYLISTS_STYLE_GRID = 0;
     
     public static final int PLAYLISTS_STYLE_ROWS = 1;
@@ -171,8 +161,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
     private final DataStore mDataStore;
                 
     private int mCardTitleLinesNum;
-    
-    private int mChannelCategorySorting;
         
     private long mMenuItems;
     
@@ -210,17 +198,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         mCardTitleLinesNum = lines;
         persistState();
 
-    }
-
-    public int getChannelCategorySorting() {
-        return mChannelCategorySorting;
-    }
-
-    public void setChannelCategorySorting(int type) {
-        
-        mChannelCategorySorting = type;
-        persistState();
-    
     }
 
     public boolean isMenuItemEnabled(long menuItems) {
@@ -261,7 +238,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
 
     private void restoreState() {
 
-        /* 1 */ mChannelCategorySorting = mDataStore.get(1, CHANNEL_SORTING_LAST_VIEWED);
         /* 2 */ mCardTitleLinesNum = mDataStore.get(2, 1);
         /* 3 */ mMenuItems = mDataStore.get(3, MENU_ITEM_DEFAULT);
         /* 4 */ mMenuItemsOrdered = mDataStore.get(4, new ArrayList());
@@ -303,7 +279,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
 
     public void persistState() {
 
-        /* 1 */ mDataStore.put(1, mChannelCategorySorting); 
         /* 2 */ mDataStore.put(2, mCardTitleLinesNum);
         /* 3 */ mDataStore.put(3, mMenuItems);
         /* 4 */ mDataStore.put(4, mMenuItemsOrdered);
@@ -316,14 +291,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         if (mMenuItems >>> 30 == 0b1) { // check leftmost bit (old format)
             int bits = 32 - 27;
             mMenuItems = mMenuItems << bits >>> bits; // remove auto enabled bits
-        }
-
-        if (mChannelCategorySorting == CHANNEL_SORTING_NAME2) {
-            mChannelCategorySorting = CHANNEL_SORTING_NAME;
-        }
-
-        if (mChannelCategorySorting == CHANNEL_SORTING_DEFAULT) {
-            mChannelCategorySorting = CHANNEL_SORTING_LAST_VIEWED;
         }
 
     }
