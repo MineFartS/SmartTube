@@ -295,21 +295,46 @@ public class ExoPlayerController implements Player.EventListener {
 
     @Override
     public void onPlayerError(ExoPlaybackException error) {
+        // IMPORTANT: Exo callbacks may come from a non-UI thread.
+        // Any UI/Activity transitions must be guarded.
         Log.e(TAG, "onPlayerError: " + error);
 
-        // NOTE: Player is released at this point. So, there is no sense to restore the playback here.
+        try {
+            if (error == null) {
+                mEventListener.onEngineError(-1, -1, new NullPointerException("onPlayerError: error == null"));
+                return;
+            }
 
-        Throwable nested = error.getCause() != null ? error.getCause() : error;
+            // NOTE: Player is released at this point. So, there is no sense to restore the playback here.
+            Throwable nested = error.getCause() != null ? error.getCause() : error;
 
-        if (error.type == ExoPlaybackException.TYPE_RENDERER && nested instanceof ArithmeticException 
-                && !Helpers.floatEquals(getSpeed(), 1.0f)) {
-            Log.w(TAG, "Resetting speed due to Sonic divide-by-zero error");
-            setSpeed(1.0f);
-            mEventListener.onSpeedChanged(1.0f);
+            if (error.type == ExoPlaybackException.TYPE_RENDERER
+                    && nested instanceof ArithmeticException
+                    && !Helpers.floatEquals(getSpeed(), 1.0f)) {
+                Log.w(TAG, "Resetting speed due to Sonic divide-by-zero error");
+                setSpeed(1.0f);
+                mEventListener.onSpeedChanged(1.0f);
+            }
+
+            // Extra signal for the reported failure mode.
+            String errMsg = nested != null ? nested.getMessage() : null;
+            if (errMsg != null && errMsg.toLowerCase().contains("unexpected eof")) {
+                Log.e(TAG, "Detected EOF failure during playback: " + errMsg);
+            }
+
+            // Ensure boundary safety: catch any exception thrown by controllers.
+            mEventListener.onEngineError(error.type, error.rendererIndex, nested);
+        } catch (Throwable t) {
+            Log.e(TAG, "Unhandled exception in onPlayerError boundary", t);
+            // Fall back to a safe recovery path.
+            try {
+                mEventListener.onEngineError(-1, -1, t);
+            } catch (Throwable ignored) {
+                // Swallow to avoid silent crashes; we already logged.
+            }
         }
-
-        mEventListener.onEngineError(error.type, error.rendererIndex, nested);
     }
+
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
