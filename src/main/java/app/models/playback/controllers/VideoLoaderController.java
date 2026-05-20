@@ -153,11 +153,25 @@ public class VideoLoaderController extends BasePlayerController {
 
     @Override
     public void onEngineError(int type, int rendererIndex, Throwable error) {
+        // IMPORTANT: error recovery may be invoked from a non-UI thread.
+        // Never allow UI navigation / Activity finishing to happen here without safety.
         Log.e(TAG, "Player error occurred: %s. Trying to fix…", type);
+        Log.e(TAG, "Renderer index: " + rendererIndex + ", error: " + error);
 
         mLastErrorType = type;
-        runEngineErrorAction(type, rendererIndex, error);
+        try {
+            runEngineErrorAction(type, rendererIndex, error);
+        } catch (Throwable t) {
+            Log.e(TAG, "Unhandled exception in onEngineError recovery", t);
+            // Avoid silent crashes: attempt safe reload instead of crashing.
+            try {
+                reloadVideo();
+            } catch (Throwable ignored) {
+                // last resort: do nothing
+            }
+        }
     }
+
 
     @Override
     public void onVideoLoaded(Video video) {
