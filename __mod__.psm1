@@ -17,7 +17,24 @@ function Test-ADBConnection {
     
 }
 
-function Connect-ADB {
+function Invoke-Gradle {
+    param(
+        [Parameter(ValueFromRemainingArguments)]
+        $cmdargs
+    )
+
+    & $JAVA `
+        '-classpath' ".\gradle\wrapper\gradle-wrapper.jar" `
+        'org.gradle.wrapper.GradleWrapperMain' `
+        @cmdargs
+
+}
+
+function Invoke-ADB {
+    param(
+        [Parameter(ValueFromRemainingArguments)]
+        $cmdargs
+    )
 
     if (-not (Test-ADBConnection)) {
 
@@ -35,24 +52,7 @@ function Connect-ADB {
         
     }
 
-    return $true
-
-}
-
-function Get-PID {
-    return & $ADB shell pidof $APP_ID
-}
-
-function Invoke-Gradle {
-    param(
-        [Parameter(ValueFromRemainingArguments)]
-        $cmdargs
-    )
-
-    & $JAVA `
-        '-classpath' ".\gradle\wrapper\gradle-wrapper.jar" `
-        'org.gradle.wrapper.GradleWrapperMain' `
-        @cmdargs
+    & $ADB @cmdargs
 
 }
 
@@ -74,13 +74,20 @@ function Repair-Environment {
     #=======================================================
     # Path
 
+    $dirs = @(
+        "$JDK\bin\",
+        "$ANDROID_SDK\platform-tools\"
+    )
+
+    $dirs = ($dirs | Where-Object {$Path -notcontains $_})
+
     $Path = [Environment]::GetEnvironmentVariable("Path", "Machine")
 
-    $javabin = ";$JDK\bin\"
-
-    if ($Path -notcontains $javabin) {
-        [Environment]::SetEnvironmentVariable("Path", $Path+$javabin, "Machine")
+    foreach ($dir in $dirs) {
+        $Path += ";$dir"
     }
+
+    [Environment]::SetEnvironmentVariable("Path", $Path, "Machine")
 
 }
 

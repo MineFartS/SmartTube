@@ -4,4 +4,4 @@ Clear-Host
 
 Remove-Cache
 
-& $ADB disconnect
+Invoke-ADB disconnect
