@@ -13,12 +13,16 @@ while ($true) {
     if ($null -ne $_pid) {
 
         # Clear Buffer
-        & $ADB logcat -c
+        Invoke-Logcat -c
 
-        # Start Logcat
-        & $ADB logcat `
-            "--pid=$($_pid)" `
-            -v color 
+        if ($null -eq $_pid) {
+            Invoke-Logcat `
+                "--pid=$($_pid)" `
+                -v color 
+        } else {
+            Invoke-Logcat `
+                -v color
+        }
 
     }
 

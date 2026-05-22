@@ -56,6 +56,16 @@ function Invoke-Gradle {
 
 }
 
+function Invoke-Logcat {
+    param(
+        [Parameter(ValueFromRemainingArguments)]
+        $cmdargs
+    )
+
+    & $ADB logcat @cmdargs
+    
+}
+
 function Repair-Environment {
 
     Set-Location $PSScriptRoot
