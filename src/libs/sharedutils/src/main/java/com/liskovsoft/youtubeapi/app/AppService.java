@@ -16,7 +16,7 @@ import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Base64;
+import android.util.Base64;
 import java.security.SecureRandom;
 
 import kotlin.Pair;
@@ -27,7 +27,6 @@ import retrofit2.Response;
 public class AppService {
 
     private static final SecureRandom secureRandom = new SecureRandom();
-    private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder().withoutPadding();
 
     private static AppService sInstance;
     
@@ -108,9 +107,12 @@ public class AppService {
         byte[] randomBytes = new byte[32];
         
         secureRandom.nextBytes(randomBytes);
-        
-        mClientPlaybackNonce = base64Encoder.encodeToString(randomBytes);
-    
+
+        mClientPlaybackNonce = Base64.encodeToString(
+            randomBytes, 
+            Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP
+        );
+
     }
 
     /**
