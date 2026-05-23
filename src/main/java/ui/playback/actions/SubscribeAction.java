@@ -12,6 +12,8 @@ import com.liskovsoft.sharedutils.actions.ActionsApi;
 import com.liskovsoft.sharedutils.actions.models.ActionResult;
 import com.liskovsoft.sharedutils.channelgroups.ChannelGroupServiceImpl;
 import com.liskovsoft.sharedutils.rx.RxHelper;
+import com.liskovsoft.sharedutils.next.v2.WatchNextServiceWrapper;
+import com.liskovsoft.sharedutils.data.MediaItemMetadata;
 
 import io.reactivex.Observable;
 
@@ -25,6 +27,8 @@ public class SubscribeAction extends TwoStateAction {
     private static final ActionsApi mActionsApi = RetrofitHelper.create(ActionsApi.class);
     
     private static final SignInService mSignInService = SignInService.instance();
+
+    private static final WatchNextServiceWrapper mWatchNextService = WatchNextServiceWrapper.INSTANCE;
 
     public SubscribeAction(Context context) {
         
@@ -54,9 +58,19 @@ public class SubscribeAction extends TwoStateAction {
 
     }
 
+    public static void refresh(Video video) {
+
+        MediaItemMetadata metadata = mWatchNextService.getMetadata(video.videoId);
+
+        video.isSubscribed = metadata.isSubscribed();
+
+    }
+
     private static void dotoggle(Video video) {
 
         mSignInService.checkAuth();
+
+        refresh(video);
 
         String data = "\"channelIds\":[\"" + video.channelId + "\"],\"params\":\"\"";
         String query = PostDataHelper.createQueryTV(data);
