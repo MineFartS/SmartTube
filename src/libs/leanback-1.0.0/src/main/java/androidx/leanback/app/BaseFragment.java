@@ -118,7 +118,7 @@ public class BaseFragment extends BrandedFragment {
     final Condition COND_TRANSITION_NOT_SUPPORTED = new Condition("EntranceTransitionNotSupport") {
         @Override
         public boolean canProceed() {
-            return false;
+            return !TransitionHelper.systemSupportsEntranceTransitions();
         }
     };
 

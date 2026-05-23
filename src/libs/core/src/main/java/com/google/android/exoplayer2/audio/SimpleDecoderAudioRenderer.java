@@ -212,17 +212,15 @@ public abstract class SimpleDecoderAudioRenderer extends BaseRenderer implements
 
   @Override
   public final int supportsFormat(Format format) {
-
     if (!MimeTypes.isAudio(format.sampleMimeType)) {
       return FORMAT_UNSUPPORTED_TYPE;
     }
-    
     int formatSupport = supportsFormatInternal(drmSessionManager, format);
     if (formatSupport <= FORMAT_UNSUPPORTED_DRM) {
       return formatSupport;
     }
-
-    return ADAPTIVE_NOT_SEAMLESS | TUNNELING_SUPPORTED | formatSupport;
+    int tunnelingSupport = Util.SDK_INT >= 21 ? TUNNELING_SUPPORTED : TUNNELING_NOT_SUPPORTED;
+    return ADAPTIVE_NOT_SEAMLESS | tunnelingSupport | formatSupport;
   }
 
   /**
