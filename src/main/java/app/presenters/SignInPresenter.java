@@ -19,7 +19,6 @@ public class SignInPresenter extends BasePresenter<SignInView> {
 
     @SuppressLint("StaticFieldLeak")
     private static SignInPresenter sInstance;
-    private SignInPresenter mPresenter;
     private boolean mIsWaiting;
 
     private final SignInService mSignInService;
@@ -54,24 +53,13 @@ public class SignInPresenter extends BasePresenter<SignInView> {
 
     @Override
     public void onViewInitialized() {
+        
         if (this.getClass() != SignInPresenter.class) {
             doWait(false);
             return;
         }
 
-        if (SignInPresenter.instance(getContext()).isWaiting()) {
-            mPresenter = SignInPresenter.instance(getContext());
-        } else if (SignInPresenter.instance(getContext()).isWaiting()) {
-            mPresenter = SignInPresenter.instance(getContext());
-        }
-
-        if (mPresenter == null) {
-            mPresenter = SignInPresenter.instance(getContext());
-            //throw new IllegalStateException("At least one nested sign in presenter should be initialized.");
-        }
-
-        mPresenter.setView(getView());
-        mPresenter.onViewInitialized();
+        setView(getView());
 
         RxHelper.disposeActions(mSignInAction);
         updateUserCode();
@@ -79,10 +67,6 @@ public class SignInPresenter extends BasePresenter<SignInView> {
 
     public void onActionClicked() {
         
-        if (mPresenter != null) {
-            mPresenter.onActionClicked();
-        }
-
         if (getView() != null) {
             getView().close();
         }
