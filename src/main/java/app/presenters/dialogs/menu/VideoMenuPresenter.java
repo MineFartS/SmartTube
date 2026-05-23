@@ -30,8 +30,6 @@ import minefarts.smarttube.utils.AppDialogUtil;
 import minefarts.smarttube.ui.playback.actions.SubscribeAction;
 import minefarts.smarttube.app.models.playback.controllers.VideoStateController;
 import com.liskovsoft.sharedutils.data.MediaGroup;
-import com.liskovsoft.sharedutils.next.v2.WatchNextServiceWrapper;
-import com.liskovsoft.sharedutils.data.MediaItemMetadata;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -44,8 +42,6 @@ import java.util.Map;
 public class VideoMenuPresenter extends BaseMenuPresenter {
 
     private static final String TAG = VideoMenuPresenter.class.getSimpleName();
-
-    private final static WatchNextServiceWrapper mWatchNextService = WatchNextServiceWrapper.INSTANCE;
     
     private final MediaItemService mMediaItemService;
     private final AppDialogPresenter mDialogPresenter;
@@ -561,9 +557,7 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
             || (!mVideo.isChannel() && !mVideo.hasVideo())
         ) return;
 
-        MediaItemMetadata metadata = mWatchNextService.getMetadata(mVideo.videoId);
-
-        mVideo.isSubscribed = metadata.isSubscribed();
+        SubscribeAction.refresh(mVideo);
 
         mDialogPresenter.appendSingleButton(UiOptionItem.from(
             mVideo.isSubscribed ? "Unsubscribe" : "Subscribe",
