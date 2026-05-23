@@ -12,4 +12,7 @@ class FragmentUtil {
         }
         return fragment.getActivity();
     }
+
+    private FragmentUtil() {
+    }
 }

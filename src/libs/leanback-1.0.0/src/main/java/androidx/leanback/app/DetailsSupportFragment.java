@@ -452,23 +452,22 @@ public class DetailsSupportFragment extends BaseSupportFragment {
 
         setupDpadNavigation();
 
-        // Setup adapter listener to work with ParallaxTransition (>= API 21).
-        mRowsSupportFragment.setExternalAdapterListener(new ItemBridgeAdapter.AdapterListener() {
-        
-            @Override
-            public void onCreate(ItemBridgeAdapter.ViewHolder vh) {
-                if (mDetailsParallax != null && vh.getViewHolder()
-                        instanceof FullWidthDetailsOverviewRowPresenter.ViewHolder) {
-                    FullWidthDetailsOverviewRowPresenter.ViewHolder rowVh =
-                            (FullWidthDetailsOverviewRowPresenter.ViewHolder)
-                                    vh.getViewHolder();
-                    rowVh.getOverviewView().setTag(R.id.lb_parallax_source,
-                            mDetailsParallax);
+        if (Build.VERSION.SDK_INT >= 21) {
+            // Setup adapter listener to work with ParallaxTransition (>= API 21).
+            mRowsSupportFragment.setExternalAdapterListener(new ItemBridgeAdapter.AdapterListener() {
+                @Override
+                public void onCreate(ItemBridgeAdapter.ViewHolder vh) {
+                    if (mDetailsParallax != null && vh.getViewHolder()
+                            instanceof FullWidthDetailsOverviewRowPresenter.ViewHolder) {
+                        FullWidthDetailsOverviewRowPresenter.ViewHolder rowVh =
+                                (FullWidthDetailsOverviewRowPresenter.ViewHolder)
+                                        vh.getViewHolder();
+                        rowVh.getOverviewView().setTag(R.id.lb_parallax_source,
+                                mDetailsParallax);
+                    }
                 }
-            }
-
-        });
-
+            });
+        }
         return mRootView;
     }
 

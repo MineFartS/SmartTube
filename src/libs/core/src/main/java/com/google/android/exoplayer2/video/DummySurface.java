@@ -61,23 +61,24 @@ public final class DummySurface extends Surface {
     return secureMode != SECURE_MODE_NONE;
   }
 
-    /**
-     * Returns a newly created dummy surface. The surface must be released by calling {@link #release}
-     * when it's no longer required.
-     * <p>
-     * Must only be called if {@link Util#SDK_INT} is 17 or higher.
-     *
-     * @param context Any {@link Context}.
-     * @param secure Whether a secure surface is required. Must only be requested if
-     *     {@link #isSecureSupported(Context)} returns {@code true}.
-     * @throws IllegalStateException If a secure surface is requested on a device for which
-     *     {@link #isSecureSupported(Context)} returns {@code false}.
-     */
-    public static DummySurface newInstanceV17(Context context, boolean secure) {
-        Assertions.checkState(!secure || isSecureSupported(context));
-        DummySurfaceThread thread = new DummySurfaceThread();
-        return thread.init(secure ? secureMode : SECURE_MODE_NONE);
-    }
+  /**
+   * Returns a newly created dummy surface. The surface must be released by calling {@link #release}
+   * when it's no longer required.
+   * <p>
+   * Must only be called if {@link Util#SDK_INT} is 17 or higher.
+   *
+   * @param context Any {@link Context}.
+   * @param secure Whether a secure surface is required. Must only be requested if
+   *     {@link #isSecureSupported(Context)} returns {@code true}.
+   * @throws IllegalStateException If a secure surface is requested on a device for which
+   *     {@link #isSecureSupported(Context)} returns {@code false}.
+   */
+  public static DummySurface newInstanceV17(Context context, boolean secure) {
+    assertApiLevel17OrHigher();
+    Assertions.checkState(!secure || isSecureSupported(context));
+    DummySurfaceThread thread = new DummySurfaceThread();
+    return thread.init(secure ? secureMode : SECURE_MODE_NONE);
+  }
 
   private DummySurface(DummySurfaceThread thread, SurfaceTexture surfaceTexture, boolean secure) {
     super(surfaceTexture);
@@ -97,6 +98,12 @@ public final class DummySurface extends Surface {
         thread.release();
         threadReleased = true;
       }
+    }
+  }
+
+  private static void assertApiLevel17OrHigher() {
+    if (Util.SDK_INT < 17) {
+      throw new UnsupportedOperationException("Unsupported prior to API level 17");
     }
   }
 

@@ -42,7 +42,9 @@ class FragmentTransition {
             BackStackRecord.OP_SET_MAX_LIFECYCLE
     };
 
-    private static final FragmentTransitionImpl PLATFORM_IMPL = new FragmentTransitionCompat21();
+    private static final FragmentTransitionImpl PLATFORM_IMPL = Build.VERSION.SDK_INT >= 21
+            ? new FragmentTransitionCompat21()
+            : null;
 
     private static final FragmentTransitionImpl SUPPORT_IMPL = resolveSupportImpl();
 

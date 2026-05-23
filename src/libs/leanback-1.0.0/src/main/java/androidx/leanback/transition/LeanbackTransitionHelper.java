@@ -19,11 +19,31 @@ import androidx.leanback.R;
 public class LeanbackTransitionHelper {
 
     public static Object loadTitleInTransition(Context context) {
-        return TransitionHelper.loadTransition(context, R.transition.lb_title_in);
+        if (Build.VERSION.SDK_INT < 19 || Build.VERSION.SDK_INT >= 21) {
+            return TransitionHelper.loadTransition(context, R.transition.lb_title_in);
+        }
+
+        SlideKitkat slide = new SlideKitkat();
+        slide.setSlideEdge(Gravity.TOP);
+        slide.setInterpolator(AnimationUtils.loadInterpolator(context,
+                android.R.anim.decelerate_interpolator));
+        slide.addTarget(R.id.browse_title_group);
+        return slide;
     }
 
     public static Object loadTitleOutTransition(Context context) {
-        return TransitionHelper.loadTransition(context, R.transition.lb_title_out);
+        if (Build.VERSION.SDK_INT < 19 || Build.VERSION.SDK_INT >= 21) {
+            return TransitionHelper.loadTransition(context, R.transition.lb_title_out);
+        }
+
+        SlideKitkat slide = new SlideKitkat();
+        slide.setSlideEdge(Gravity.TOP);
+        slide.setInterpolator(AnimationUtils.loadInterpolator(context,
+                R.anim.lb_decelerator_4));
+        slide.addTarget(R.id.browse_title_group);
+        return slide;
     }
 
+    private LeanbackTransitionHelper() {
+    }
 }

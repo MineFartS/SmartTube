@@ -342,7 +342,11 @@ public final class AudioFocusManager {
             // audio recording or speech recognition'.
             // Assistant is considered as both recording and notifying developer
             case C.USAGE_ASSISTANT:
-                return C.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE;
+                if (Util.SDK_INT >= 19) {
+                    return C.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE;
+                } else {
+                    return C.AUDIOFOCUS_GAIN_TRANSIENT;
+                }
 
                 // Special usages:
             case C.USAGE_ASSISTANCE_ACCESSIBILITY:

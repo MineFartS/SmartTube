@@ -111,14 +111,17 @@ public class Settings {
             mPreferStaticShadows = true;
         }
 
-        mOutlineClippingDisabled = false;
-        if (customizations != null) {
-            mOutlineClippingDisabled = customizations.getBoolean(
-                "leanback_outline_clipping_disabled", 
-                mOutlineClippingDisabled
-            );
-        }        
-
+        if (Build.VERSION.SDK_INT >= 21) {
+            mOutlineClippingDisabled = false;
+            if (customizations != null) {
+                mOutlineClippingDisabled = customizations.getBoolean(
+                    "leanback_outline_clipping_disabled", 
+                    mOutlineClippingDisabled
+                );
+            }
+        } else {
+            mOutlineClippingDisabled = true;
+        }
         if (DEBUG) Log.v(TAG, "generated preference " + PREFER_STATIC_SHADOWS + ": "
                 + mPreferStaticShadows + " "
                 + OUTLINE_CLIPPING_DISABLED + " : " + mOutlineClippingDisabled);
