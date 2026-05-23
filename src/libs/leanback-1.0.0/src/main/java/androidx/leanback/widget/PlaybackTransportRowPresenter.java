@@ -302,7 +302,8 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
                             if (keyEvent.getAction() == KeyEvent.ACTION_UP) {
                                 // SeekBar does not support cancel in accessibility mode, so always
                                 // "confirm" if accessibility is on.
-                                stopSeek(!mProgressBar.isAccessibilityFocused());
+                                stopSeek(Build.VERSION.SDK_INT >= 21
+                                        ? !mProgressBar.isAccessibilityFocused() : true);
                             }
                             return true;
                     }

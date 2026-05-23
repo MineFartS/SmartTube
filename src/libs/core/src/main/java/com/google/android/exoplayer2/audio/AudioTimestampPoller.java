@@ -82,8 +82,13 @@ import java.lang.annotation.RetentionPolicy;
    * @param audioTrack The audio track that will provide timestamps, if the platform supports it.
    */
   public AudioTimestampPoller(AudioTrack audioTrack) {
-    audioTimestamp = new AudioTimestampV19(audioTrack);
-    reset();
+    if (Util.SDK_INT >= 19) {
+      audioTimestamp = new AudioTimestampV19(audioTrack);
+      reset();
+    } else {
+      audioTimestamp = null;
+      updateState(STATE_NO_TIMESTAMP);
+    }
   }
 
   // AMZN_CHANGE_BEGIN

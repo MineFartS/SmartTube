@@ -19,7 +19,7 @@ public final class TraceUtil {
    *     Unicode code units long.
    */
     public static void beginSection(String sectionName) {
-        if (ExoPlayerLibraryInfo.TRACE_ENABLED) {
+        if (ExoPlayerLibraryInfo.TRACE_ENABLED && Util.SDK_INT >= 18) {
             android.os.Trace.beginSection(sectionName);
         }
     }
@@ -30,7 +30,7 @@ public final class TraceUtil {
      * @see android.os.Trace#endSection()
      */
     public static void endSection() {
-        if (ExoPlayerLibraryInfo.TRACE_ENABLED) {
+        if (ExoPlayerLibraryInfo.TRACE_ENABLED && Util.SDK_INT >= 18) {
             android.os.Trace.endSection();
         }
     }

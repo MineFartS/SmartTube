@@ -100,15 +100,10 @@ public abstract class MediaCodecRenderer extends BaseRenderer {
 
         public DecoderInitializationException(Format format, Throwable cause,
                 boolean secureDecoderRequired, String decoderName) {
-            this(
-                "Decoder init failed: " + decoderName + ", " + format, 
-                cause,
-                format.sampleMimeType, 
-                secureDecoderRequired, 
-                decoderName,
-                getDiagnosticInfoV21(cause),
-                /* fallbackDecoderInitializationException= */ null
-            );
+            this("Decoder init failed: " + decoderName + ", " + format, cause,
+                    format.sampleMimeType, secureDecoderRequired, decoderName,
+                    Util.SDK_INT >= 21 ? getDiagnosticInfoV21(cause) : null,
+                    /* fallbackDecoderInitializationException= */ null);
         }
 
         private DecoderInitializationException(String message, Throwable cause, String mimeType,
@@ -307,11 +302,16 @@ public abstract class MediaCodecRenderer extends BaseRenderer {
     @AdaptationWorkaroundMode
     private int codecAdaptationWorkaroundMode;
     private boolean codecNeedsReconfigureWorkaround;
+    private boolean codecNeedsDiscardToSpsWorkaround;
+    private boolean codecNeedsFlushWorkaround;
     private boolean codecNeedsEosFlushWorkaround;
     private boolean codecNeedsEosOutputExceptionWorkaround;
+    private boolean codecNeedsMonoChannelCountWorkaround;
     private boolean codecNeedsAdaptationWorkaroundBuffer;
     private boolean shouldSkipAdaptationWorkaroundOutputBuffer;
     private boolean codecNeedsEosPropagation;
+    private ByteBuffer[] inputBuffers;
+    private ByteBuffer[] outputBuffers;
     private long codecHotswapDeadlineMs;
     private int inputIndex;
     private int outputIndex;
@@ -591,6 +591,7 @@ public abstract class MediaCodecRenderer extends BaseRenderer {
         codecFormat = null;
         resetInputBuffer();
         resetOutputBuffer();
+        resetCodecBuffers();
         waitingForKeys = false;
         codecHotswapDeadlineMs = C.TIME_UNSET;
         decodeOnlyPresentationTimestamps.clear();
@@ -695,9 +696,8 @@ public abstract class MediaCodecRenderer extends BaseRenderer {
         if (codec == null) {
             return false;
         }
-        if (codecDrainAction == DRAIN_ACTION_REINITIALIZE
-            || (codecNeedsEosFlushWorkaround && codecReceivedEos)
-        ) {
+        if (codecDrainAction == DRAIN_ACTION_REINITIALIZE || codecNeedsFlushWorkaround
+                || (codecNeedsEosFlushWorkaround && codecReceivedEos)) {
             releaseCodec();
             return true;
         }
@@ -846,8 +846,10 @@ public abstract class MediaCodecRenderer extends BaseRenderer {
             codec.start();
             TraceUtil.endSection();
             codecInitializedTimestamp = SystemClock.elapsedRealtime();
+            getCodecBuffers(codec);
         } catch (Exception e) {
             if (codec != null) {
+                resetCodecBuffers();
                 codec.release();
             }
             throw e;
@@ -859,9 +861,12 @@ public abstract class MediaCodecRenderer extends BaseRenderer {
         codecFormat = inputFormat;
         codecAdaptationWorkaroundMode = codecAdaptationWorkaroundMode(codecName);
         codecNeedsReconfigureWorkaround = codecNeedsReconfigureWorkaround(codecName);
+        codecNeedsDiscardToSpsWorkaround = codecNeedsDiscardToSpsWorkaround(codecName, codecFormat);
+        codecNeedsFlushWorkaround = codecNeedsFlushWorkaround(codecName);
         codecNeedsEosFlushWorkaround = codecNeedsEosFlushWorkaround(codecName);
         codecNeedsEosOutputExceptionWorkaround = codecNeedsEosOutputExceptionWorkaround(codecName);
-
+        codecNeedsMonoChannelCountWorkaround =
+                codecNeedsMonoChannelCountWorkaround(codecName, codecFormat);
         codecNeedsEosPropagation =
                 codecNeedsEosPropagationWorkaround(codecInfo) || getCodecNeedsEosPropagation();
 
@@ -892,12 +897,34 @@ public abstract class MediaCodecRenderer extends BaseRenderer {
                 || SystemClock.elapsedRealtime() - drainStartTimeMs < renderTimeLimitMs;
     }
 
+    private void getCodecBuffers(MediaCodec codec) {
+        if (Util.SDK_INT < 21) {
+            inputBuffers = codec.getInputBuffers();
+            outputBuffers = codec.getOutputBuffers();
+        }
+    }
+
+    private void resetCodecBuffers() {
+        if (Util.SDK_INT < 21) {
+            inputBuffers = null;
+            outputBuffers = null;
+        }
+    }
+
     private ByteBuffer getInputBuffer(int inputIndex) {
-        return codec.getInputBuffer(inputIndex);
+        if (Util.SDK_INT >= 21) {
+            return codec.getInputBuffer(inputIndex);
+        } else {
+            return inputBuffers[inputIndex];
+        }
     }
 
     private ByteBuffer getOutputBuffer(int outputIndex) {
-        return codec.getOutputBuffer(outputIndex);
+        if (Util.SDK_INT >= 21) {
+            return codec.getOutputBuffer(outputIndex);
+        } else {
+            return outputBuffers[outputIndex];
+        }
     }
 
     private boolean hasOutputBuffer() {
@@ -1076,7 +1103,13 @@ public abstract class MediaCodecRenderer extends BaseRenderer {
             log.i("Waiting For Keys!!!");
             return false;
         }
-
+        if (codecNeedsDiscardToSpsWorkaround && !bufferEncrypted) {
+            NalUnitUtil.discardToSps(buffer.data);
+            if (buffer.data.position() == 0) {
+                return true;
+            }
+            codecNeedsDiscardToSpsWorkaround = false;
+        }
         try {
             long presentationTimeUs = buffer.timeUs;
             if (buffer.isDecodeOnly()) {
@@ -1446,6 +1479,7 @@ public abstract class MediaCodecRenderer extends BaseRenderer {
                     processOutputFormat();
                     return true;
                 } else if (outputIndex == MediaCodec.INFO_OUTPUT_BUFFERS_CHANGED /* (-3) */) {
+                    processOutputBuffersChanged();
                     return true;
                 }
                 /* MediaCodec.INFO_TRY_AGAIN_LATER (-1) or unknown negative return value */
@@ -1532,7 +1566,19 @@ public abstract class MediaCodecRenderer extends BaseRenderer {
             shouldSkipAdaptationWorkaroundOutputBuffer = true;
             return;
         }
+        if (codecNeedsMonoChannelCountWorkaround) {
+            format.setInteger(MediaFormat.KEY_CHANNEL_COUNT, 1);
+        }
         onOutputFormatChanged(codec, format);
+    }
+
+    /**
+     * Processes a change in the output buffers.
+     */
+    private void processOutputBuffersChanged() {
+        if (Util.SDK_INT < 21) {
+            outputBuffers = codec.getOutputBuffers();
+        }
     }
 
     /**
@@ -1686,6 +1732,25 @@ public abstract class MediaCodecRenderer extends BaseRenderer {
     }
 
     /**
+     * Returns whether the decoder is known to fail when flushed.
+     * <p>
+     * If true is returned, the renderer will work around the issue by releasing the decoder and
+     * instantiating a new one rather than flushing the current instance.
+     * <p>
+     * See [Internal: b/8347958, b/8543366].
+     *
+     * @param name The name of the decoder.
+     * @return True if the decoder is known to fail when flushed.
+     */
+    private static boolean codecNeedsFlushWorkaround(String name) {
+        return Util.SDK_INT < 18 || (Util.SDK_INT == 18
+                && ("OMX.SEC.avc.dec".equals(name) || "OMX.SEC.avc.dec.secure".equals(name)))
+                || (Util.SDK_INT == 19 && Util.MODEL.startsWith("SM-G800")
+                        && ("OMX.Exynos.avc.dec".equals(name)
+                                || "OMX.Exynos.avc.dec.secure".equals(name)));
+    }
+
+    /**
      * Returns a mode that specifies when the adaptation workaround should be enabled.
      *
      * <p>
@@ -1734,6 +1799,22 @@ public abstract class MediaCodecRenderer extends BaseRenderer {
     }
 
     /**
+     * Returns whether the decoder is an H.264/AVC decoder known to fail if NAL units are queued
+     * before the codec specific data.
+     * <p>
+     * If true is returned, the renderer will work around the issue by discarding data up to the
+     * SPS.
+     *
+     * @param name The name of the decoder.
+     * @param format The format used to configure the decoder.
+     * @return True if the decoder is known to fail if NAL units are queued before CSD.
+     */
+    private static boolean codecNeedsDiscardToSpsWorkaround(String name, Format format) {
+        return Util.SDK_INT < 21 && format.initializationData.isEmpty()
+                && "OMX.MTK.VIDEO.DECODER.AVC".equals(name);
+    }
+
+    /**
      * Returns whether the decoder is known to handle the propagation of the
      * {@link MediaCodec#BUFFER_FLAG_END_OF_STREAM} flag incorrectly on the host device.
      *
@@ -1749,6 +1830,7 @@ public abstract class MediaCodecRenderer extends BaseRenderer {
     private static boolean codecNeedsEosPropagationWorkaround(MediaCodecInfo codecInfo) {
         String name = codecInfo.name;
         return (Util.SDK_INT <= 25 && "OMX.rk.video_decoder.avc".equals(name))
+                || (Util.SDK_INT <= 17 && "OMX.allwinner.video.decoder.avc".equals(name))
                 || ("Amazon".equals(Util.MANUFACTURER) && "AFTS".equals(Util.MODEL)
                         && codecInfo.secure);
     }
@@ -1767,7 +1849,11 @@ public abstract class MediaCodecRenderer extends BaseRenderer {
      *         input buffer with {@link MediaCodec#BUFFER_FLAG_END_OF_STREAM} set. False otherwise.
      */
     private static boolean codecNeedsEosFlushWorkaround(String name) {
-        return Util.SDK_INT <= 23 && "OMX.google.vorbis.decoder".equals(name);
+        return (Util.SDK_INT <= 23 && "OMX.google.vorbis.decoder".equals(name))
+                || (Util.SDK_INT <= 19
+                        && ("hb2000".equals(Util.DEVICE) || "stvm8".equals(Util.DEVICE))
+                        && ("OMX.amlogic.avc.decoder.awesome".equals(name)
+                                || "OMX.amlogic.avc.decoder.awesome.secure".equals(name)));
     }
 
     /**
@@ -1783,6 +1869,24 @@ public abstract class MediaCodecRenderer extends BaseRenderer {
      */
     private static boolean codecNeedsEosOutputExceptionWorkaround(String name) {
         return Util.SDK_INT == 21 && "OMX.google.aac.decoder".equals(name);
+    }
+
+    /**
+     * Returns whether the decoder is known to set the number of audio channels in the output format
+     * to 2 for the given input format, whilst only actually outputting a single channel.
+     * <p>
+     * If true is returned then we explicitly override the number of channels in the output format,
+     * setting it to 1.
+     *
+     * @param name The decoder name.
+     * @param format The input format.
+     * @return True if the decoder is known to set the number of audio channels in the output format
+     *         to 2 for the given input format, whilst only actually outputting a single channel.
+     *         False otherwise.
+     */
+    private static boolean codecNeedsMonoChannelCountWorkaround(String name, Format format) {
+        return Util.SDK_INT <= 18 && format.channelCount == 1
+                && "OMX.MTK.AUDIO.DECODER.MP3".equals(name);
     }
 
 }

@@ -15,14 +15,18 @@ import androidx.annotation.RestrictTo;
  */
 @RestrictTo(LIBRARY_GROUP)
 public final class BackgroundHelper {
-    
     public static void setBackgroundPreservingAlpha(View view, Drawable drawable) {
-        
-        if (view.getBackground() != null) {
-            drawable.setAlpha(view.getBackground().getAlpha());
+        if (Build.VERSION.SDK_INT >= 19) {
+            if (view.getBackground() != null) {
+                drawable.setAlpha(view.getBackground().getAlpha());
+            }
+            view.setBackground(drawable);
+        } else {
+            // Cannot query drawable alpha
+            view.setBackground(drawable);
         }
-        view.setBackground(drawable);
-
     }
 
+    private BackgroundHelper() {
+    }
 }

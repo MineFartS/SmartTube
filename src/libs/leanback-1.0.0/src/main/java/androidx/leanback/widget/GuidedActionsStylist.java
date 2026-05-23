@@ -674,7 +674,13 @@ public class GuidedActionsStylist implements FragmentAnimationProvider {
             vh.mTitleView.setFocusable(false);
             vh.mTitleView.setClickable(false);
             vh.mTitleView.setLongClickable(false);
-            if (VERSION.SDK_INT >= 26) {
+            if (Build.VERSION.SDK_INT >= 28) {
+                if (action.isEditable()) {
+                    vh.mTitleView.setAutofillHints(action.getAutofillHints());
+                } else {
+                    vh.mTitleView.setAutofillHints((String[]) null);
+                }
+            } else if (VERSION.SDK_INT >= 26) {
                 // disable autofill below P as dpad/keyboard is not supported
                 vh.mTitleView.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO);
             }
@@ -689,7 +695,13 @@ public class GuidedActionsStylist implements FragmentAnimationProvider {
             vh.mDescriptionView.setFocusable(false);
             vh.mDescriptionView.setClickable(false);
             vh.mDescriptionView.setLongClickable(false);
-            if (VERSION.SDK_INT >= 26) {
+            if (Build.VERSION.SDK_INT >= 28) {
+                if (action.isDescriptionEditable()) {
+                    vh.mDescriptionView.setAutofillHints(action.getAutofillHints());
+                } else {
+                    vh.mDescriptionView.setAutofillHints((String[]) null);
+                }
+            } else if (VERSION.SDK_INT >= 26) {
                 // disable autofill below P as dpad/keyboard is not supported
                 vh.mTitleView.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO);
             }
@@ -1075,7 +1087,7 @@ public class GuidedActionsStylist implements FragmentAnimationProvider {
      */
     @Deprecated
     public void setExpandedViewHolder(ViewHolder avh) {
-        expandAction(avh == null ? null : avh.getAction(), true);
+        expandAction(avh == null ? null : avh.getAction(), isExpandTransitionSupported());
     }
 
     /**
@@ -1087,6 +1099,16 @@ public class GuidedActionsStylist implements FragmentAnimationProvider {
     }
 
     /**
+     * Returns if expand/collapse animation is supported.  When this method returns true,
+     * {@link #startExpandedTransition(ViewHolder)} will be used.  When this method returns false,
+     * {@link #onUpdateExpandedViewHolder(ViewHolder)} will be called.
+     * @return True if it is running an expanding or collapsing transition, false otherwise.
+     */
+    public boolean isExpandTransitionSupported() {
+        return VERSION.SDK_INT >= 21;
+    }
+
+    /**
      * Start transition to expand or collapse GuidedActionStylist.
      * @param avh When not null, the GuidedActionStylist expands the sub actions of avh.  When null
      * the GuidedActionStylist will collapse sub actions.
@@ -1095,7 +1117,7 @@ public class GuidedActionsStylist implements FragmentAnimationProvider {
      */
     @Deprecated
     public void startExpandedTransition(ViewHolder avh) {
-        expandAction(avh == null ? null : avh.getAction(), true);
+        expandAction(avh == null ? null : avh.getAction(), isExpandTransitionSupported());
     }
 
     /**
@@ -1153,10 +1175,13 @@ public class GuidedActionsStylist implements FragmentAnimationProvider {
         if (isInExpandTransition() || mExpandedAction != null) {
             return;
         }
-        int actionPosition = ((GuidedActionAdapter) getActionsGridView().getAdapter()).indexOf(action);
-        if (actionPosition < 0) return;
-
-        if (!withTransition) {
+        int actionPosition =
+                ((GuidedActionAdapter) getActionsGridView().getAdapter()).indexOf(action);
+        if (actionPosition < 0) {
+            return;
+        }
+        boolean runTransition = isExpandTransitionSupported() && withTransition;
+        if (!runTransition) {
             getActionsGridView().setSelectedPosition(actionPosition,
                     new ViewHolderTask() {
                         @Override
@@ -1200,6 +1225,7 @@ public class GuidedActionsStylist implements FragmentAnimationProvider {
         if (isInExpandTransition() || mExpandedAction == null) {
             return;
         }
+        boolean runTransition = isExpandTransitionSupported() && withTransition;
         int actionPosition =
                 ((GuidedActionAdapter) getActionsGridView().getAdapter()).indexOf(mExpandedAction);
         if (actionPosition < 0) {
@@ -1207,12 +1233,11 @@ public class GuidedActionsStylist implements FragmentAnimationProvider {
         }
         if (mExpandedAction.hasEditableActivatorView()) {
             setEditingMode(
-                ((ViewHolder) getActionsGridView().findViewHolderForPosition(actionPosition)),
-                false /*editing*/,
-                withTransition
-            );
+                    ((ViewHolder) getActionsGridView().findViewHolderForPosition(actionPosition)),
+                    false /*editing*/,
+                    runTransition);
         } else {
-            startExpanded(null, withTransition);
+            startExpanded(null, runTransition);
         }
     }
 

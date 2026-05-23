@@ -73,6 +73,7 @@ public class MediaCodecAudioRenderer extends MediaCodecRenderer implements Media
   private int codecMaxInputSize;
   private boolean passthroughEnabled;
   private boolean codecNeedsDiscardChannelsWorkaround;
+  private boolean codecNeedsEosBufferTimestampWorkaround;
   private android.media.MediaFormat passthroughMediaFormat;
   private @C.Encoding int pcmEncoding;
   private int channelCount;
@@ -296,12 +297,12 @@ public class MediaCodecAudioRenderer extends MediaCodecRenderer implements Media
     if (!MimeTypes.isAudio(mimeType)) {
       return FORMAT_UNSUPPORTED_TYPE;
     }
-
+    int tunnelingSupport = Util.SDK_INT >= 21 ? TUNNELING_SUPPORTED : TUNNELING_NOT_SUPPORTED;
     boolean supportsFormatDrm = supportsFormatDrm(drmSessionManager, format.drmInitData);
     if (supportsFormatDrm
         && allowPassthrough(format.channelCount, mimeType)
         && mediaCodecSelector.getPassthroughDecoderInfo() != null) {
-      return ADAPTIVE_NOT_SEAMLESS | TUNNELING_SUPPORTED | FORMAT_HANDLED;
+      return ADAPTIVE_NOT_SEAMLESS | tunnelingSupport | FORMAT_HANDLED;
     }
     if ((MimeTypes.AUDIO_RAW.equals(mimeType)
             && !audioSink.supportsOutput(format.channelCount, format.pcmEncoding))
@@ -341,8 +342,7 @@ public class MediaCodecAudioRenderer extends MediaCodecRenderer implements Media
             ? ADAPTIVE_SEAMLESS
             : ADAPTIVE_NOT_SEAMLESS;
     int formatSupport = isFormatSupported ? FORMAT_HANDLED : FORMAT_EXCEEDS_CAPABILITIES;
-    
-    return adaptiveSupport | TUNNELING_SUPPORTED | formatSupport;
+    return adaptiveSupport | tunnelingSupport | formatSupport;
   }
 
   @Override
@@ -384,32 +384,30 @@ public class MediaCodecAudioRenderer extends MediaCodecRenderer implements Media
     return getPassthroughEncoding(channelCount, mimeType) != C.ENCODING_INVALID;
   }
 
-    @Override
-    protected void configureCodec(
-        MediaCodecInfo codecInfo,
-        MediaCodec codec,
-        Format format,
-        MediaCrypto crypto,
-        float codecOperatingRate
-    ) {
-        
-        codecMaxInputSize = getCodecMaxInputSize(codecInfo, format, getStreamFormats());
-        log.setTAG(codecInfo.name + "-" + TAG); // AMZN_CHANGE_ONELINE
-        codecNeedsDiscardChannelsWorkaround = codecNeedsDiscardChannelsWorkaround(codecInfo.name);
-        passthroughEnabled = codecInfo.passthrough;
-        String codecMimeType = passthroughEnabled ? MimeTypes.AUDIO_RAW : codecInfo.codecMimeType;
-        MediaFormat mediaFormat = getMediaFormat(format, codecMimeType, codecMaxInputSize, codecOperatingRate);
-        codec.configure(mediaFormat, /* surface= */ null, crypto, /* flags= */ 0);
-        
-        if (passthroughEnabled) {
-            // Store the input MIME type if we're using the passthrough codec.
-            passthroughMediaFormat = mediaFormat;
-            passthroughMediaFormat.setString(MediaFormat.KEY_MIME, format.sampleMimeType);
-        } else {
-            passthroughMediaFormat = null;
-        }
-
+  @Override
+  protected void configureCodec(
+      MediaCodecInfo codecInfo,
+      MediaCodec codec,
+      Format format,
+      MediaCrypto crypto,
+      float codecOperatingRate) {
+    codecMaxInputSize = getCodecMaxInputSize(codecInfo, format, getStreamFormats());
+    log.setTAG(codecInfo.name + "-" + TAG); // AMZN_CHANGE_ONELINE
+    codecNeedsDiscardChannelsWorkaround = codecNeedsDiscardChannelsWorkaround(codecInfo.name);
+    codecNeedsEosBufferTimestampWorkaround = codecNeedsEosBufferTimestampWorkaround(codecInfo.name);
+    passthroughEnabled = codecInfo.passthrough;
+    String codecMimeType = passthroughEnabled ? MimeTypes.AUDIO_RAW : codecInfo.codecMimeType;
+    MediaFormat mediaFormat =
+        getMediaFormat(format, codecMimeType, codecMaxInputSize, codecOperatingRate);
+    codec.configure(mediaFormat, /* surface= */ null, crypto, /* flags= */ 0);
+    if (passthroughEnabled) {
+      // Store the input MIME type if we're using the passthrough codec.
+      passthroughMediaFormat = mediaFormat;
+      passthroughMediaFormat.setString(MediaFormat.KEY_MIME, format.sampleMimeType);
+    } else {
+      passthroughMediaFormat = null;
     }
+  }
 
   @Override
   protected @KeepCodecResult int canKeepCodec(
@@ -713,6 +711,12 @@ public class MediaCodecAudioRenderer extends MediaCodecRenderer implements Media
       boolean isLastBuffer,
       Format format)
       throws ExoPlaybackException {
+    if (codecNeedsEosBufferTimestampWorkaround
+        && bufferPresentationTimeUs == 0
+        && (bufferFlags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0
+        && lastInputTimeUs != C.TIME_UNSET) {
+      bufferPresentationTimeUs = lastInputTimeUs;
+    }
 
     // AMZN_CHANGE_BEGIN
     if (log.allowDebug()) {
@@ -873,7 +877,7 @@ public class MediaCodecAudioRenderer extends MediaCodecRenderer implements Media
         mediaFormat.setFloat(MediaFormat.KEY_OPERATING_RATE, codecOperatingRate);
       }
     }
-    if (MimeTypes.AUDIO_AC4.equals(format.sampleMimeType)) {
+    if (Util.SDK_INT <= 28 && MimeTypes.AUDIO_AC4.equals(format.sampleMimeType)) {
       // On some older builds, the AC-4 decoder expects to receive samples formatted as raw frames
       // not sync frames. Set a format key to override this.
       mediaFormat.setInteger("ac4-is-sync", 1);
@@ -915,6 +919,24 @@ public class MediaCodecAudioRenderer extends MediaCodecRenderer implements Media
         && "samsung".equals(Util.MANUFACTURER)
         && (Util.DEVICE.startsWith("zeroflte") || Util.DEVICE.startsWith("herolte")
         || Util.DEVICE.startsWith("heroqlte"));
+  }
+
+  /**
+   * Returns whether the decoder may output a non-empty buffer with timestamp 0 as the end of stream
+   * buffer.
+   *
+   * <p>See <a href="https://github.com/google/ExoPlayer/issues/5045">GitHub issue #5045</a>.
+   */
+  private static boolean codecNeedsEosBufferTimestampWorkaround(String codecName) {
+    return Util.SDK_INT < 21
+        && "OMX.SEC.mp3.dec".equals(codecName)
+        && "samsung".equals(Util.MANUFACTURER)
+        && (Util.DEVICE.startsWith("baffin")
+            || Util.DEVICE.startsWith("grand")
+            || Util.DEVICE.startsWith("fortuna")
+            || Util.DEVICE.startsWith("gprimelte")
+            || Util.DEVICE.startsWith("j2y18lte")
+            || Util.DEVICE.startsWith("ms01"));
   }
 
   private final class AudioSinkListener implements AudioSink.Listener {

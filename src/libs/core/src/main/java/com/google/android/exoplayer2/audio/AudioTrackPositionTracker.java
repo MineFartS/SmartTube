@@ -164,18 +164,15 @@ import java.lang.reflect.Method;
    * @param listener A listener for position tracking events.
    */
   public AudioTrackPositionTracker(Listener listener) {
-
     this.listener = Assertions.checkNotNull(listener);
-
-    try {
+    if (Util.SDK_INT >= 18) {
+      try {
         getLatencyMethod = AudioTrack.class.getMethod("getLatency", (Class<?>[]) null);
-    } catch (Throwable e) { 
-        //AMZN_CHANGE_ONELINE: Some legacy devices throw unexpected errors
+      } catch (Throwable e) { //AMZN_CHANGE_ONELINE: Some legacy devices throw unexpected errors
         // There's no guarantee this method exists. Do nothing.
+      }
     }
-    
     playheadOffsets = new long[MAX_PLAYHEAD_OFFSET_COUNT];
-  
   }
 
   /**
@@ -599,21 +596,22 @@ import java.lang.reflect.Method;
     rawPlaybackHeadPosition += passthroughWorkaroundPauseOffset;
     }
 
-    if (rawPlaybackHeadPosition == 0
-        && lastRawPlaybackHeadPosition > 0
-        && state == PLAYSTATE_PLAYING
-    ) {
+    if (Util.SDK_INT <= 29) {
+      if (rawPlaybackHeadPosition == 0
+          && lastRawPlaybackHeadPosition > 0
+          && state == PLAYSTATE_PLAYING) {
         // If connecting a Bluetooth audio device fails, the AudioTrack may be left in a state
         // where its Java API is in the playing state, but the native track is stopped. When this
         // happens the playback head position gets stuck at zero. In this case, return the old
         // playback head position and force the track to be reset after
         // {@link #FORCE_RESET_WORKAROUND_TIMEOUT_MS} has elapsed.
         if (forceResetWorkaroundTimeMs == C.TIME_UNSET) {
-            forceResetWorkaroundTimeMs = SystemClock.elapsedRealtime();
+          forceResetWorkaroundTimeMs = SystemClock.elapsedRealtime();
         }
         return lastRawPlaybackHeadPosition;
-    } else {
+      } else {
         forceResetWorkaroundTimeMs = C.TIME_UNSET;
+      }
     }
 
     // AMZN_CHANGE_BEGIN

@@ -210,6 +210,15 @@ public final class DefaultAudioSink implements AudioSink {
     private static final int START_NEED_SYNC = 2;
 
     /**
+     * Whether to enable a workaround for an issue where an audio effect does not keep its session
+     * active across releasing/initializing a new audio track, on platform builds where
+     * {@link Util#SDK_INT} &lt; 21.
+     * <p>
+     * The flag must be set before creating a player.
+     */
+    public static boolean enablePreV21AudioSessionWorkaround = false;
+
+    /**
      * Whether to throw an {@link InvalidAudioTrackTimestampException} when a spurious timestamp is
      * reported from {@link AudioTrack#getTimestamp}.
      * <p>
@@ -389,7 +398,7 @@ public final class DefaultAudioSink implements AudioSink {
             // by this
             // sink to 16-bit PCM. We assume that the audio framework will downsample any number of
             // channels to the output device's required number of channels.
-            return true;
+            return encoding != C.ENCODING_PCM_FLOAT || Util.SDK_INT >= 21;
         } else {
             return audioCapabilities != null && audioCapabilities.supportsEncoding(encoding)
                     && (channelCount == Format.NO_VALUE
@@ -408,15 +417,18 @@ public final class DefaultAudioSink implements AudioSink {
     }
 
     @Override
-    public void configure(
-        @C.Encoding int inputEncoding, 
-        int inputChannelCount, 
-        int inputSampleRate,
-        int specifiedBufferSize, 
-        @Nullable int[] outputChannels, 
-        int trimStartFrames,
-        int trimEndFrames
-    ) throws ConfigurationException {
+    public void configure(@C.Encoding int inputEncoding, int inputChannelCount, int inputSampleRate,
+            int specifiedBufferSize, @Nullable int[] outputChannels, int trimStartFrames,
+            int trimEndFrames) throws ConfigurationException {
+        if (Util.SDK_INT < 21 && inputChannelCount == 8 && outputChannels == null) {
+            // AudioTrack doesn't support 8 channel output before Android L. Discard the last two
+            // (side)
+            // channels to give a 6 channel stream that is supported.
+            outputChannels = new int[6];
+            for (int i = 0; i < outputChannels.length; i++) {
+                outputChannels[i] = i;
+            }
+        }
 
         boolean isInputPcm = Util.isEncodingLinearPcm(inputEncoding);
         boolean processingEnabled = isInputPcm && inputEncoding != C.ENCODING_PCM_FLOAT;
@@ -512,7 +524,21 @@ public final class DefaultAudioSink implements AudioSink {
         audioTrack = Assertions.checkNotNull(configuration).buildAudioTrack(tunneling,
                 audioAttributes, audioSessionId);
         int audioSessionId = audioTrack.getAudioSessionId();
-
+        if (enablePreV21AudioSessionWorkaround) {
+            if (Util.SDK_INT < 21) {
+                // The workaround creates an audio track with a two byte buffer on the same session,
+                // and
+                // does not release it until this object is released, which keeps the session
+                // active.
+                if (keepSessionIdAudioTrack != null
+                        && audioSessionId != keepSessionIdAudioTrack.getAudioSessionId()) {
+                    releaseKeepSessionIdAudioTrack();
+                }
+                if (keepSessionIdAudioTrack == null) {
+                    keepSessionIdAudioTrack = initializeKeepSessionIdAudioTrack(audioSessionId);
+                }
+            }
+        }
         if (this.audioSessionId != audioSessionId) {
             this.audioSessionId = audioSessionId;
             if (listener != null) {
@@ -722,7 +748,7 @@ public final class DefaultAudioSink implements AudioSink {
             outputBuffer = buffer;
             // AMZN: we need to copy data to temp buffer in case of dolby passthrough also
             // irrespective of SDK version.
-            if (applyDolbyPassthroughQuirk()) { // AMZN_CHANGE_ONELINE
+            if (Util.SDK_INT < 21 || applyDolbyPassthroughQuirk()) { // AMZN_CHANGE_ONELINE
                 int bytesRemaining = buffer.remaining();
                 if (preV21OutputBuffer == null || preV21OutputBuffer.length < bytesRemaining) {
                     preV21OutputBuffer = new byte[bytesRemaining];
@@ -750,6 +776,19 @@ public final class DefaultAudioSink implements AudioSink {
             if (bytesWritten > 0) {
                 preV21OutputBufferOffset += bytesWritten;
                 buffer.position(buffer.position() + bytesWritten);
+            }
+        } else if (Util.SDK_INT < 21) { // isInputPcm == true
+            // AMZN_CHANGE_END
+            // Work out how many bytes we can write without the risk of blocking.
+            int bytesToWrite = audioTrackPositionTracker.getAvailableBufferSize(writtenPcmBytes);
+            if (bytesToWrite > 0) {
+                bytesToWrite = Math.min(bytesRemaining, bytesToWrite);
+                bytesWritten = audioTrack.write(preV21OutputBuffer, preV21OutputBufferOffset,
+                        bytesToWrite);
+                if (bytesWritten > 0) {
+                    preV21OutputBufferOffset += bytesWritten;
+                    buffer.position(buffer.position() + bytesWritten);
+                }
             }
         } else if (tunneling) {
             Assertions.checkState(avSyncPresentationTimeUs != C.TIME_UNSET);
@@ -909,7 +948,7 @@ public final class DefaultAudioSink implements AudioSink {
     @Override
     public void enableTunnelingV21(int tunnelingAudioSessionId) {
         log.i("calling enableTunnelingV21 = " + tunnelingAudioSessionId);
-        Assertions.checkState(true);
+        Assertions.checkState(Util.SDK_INT >= 21);
         if (!tunneling || audioSessionId != tunnelingAudioSessionId) {
             tunneling = true;
             audioSessionId = tunnelingAudioSessionId;
@@ -936,8 +975,12 @@ public final class DefaultAudioSink implements AudioSink {
     }
 
     private void setVolumeInternal() {
-        if (isInitialized()) {
+        if (!isInitialized()) {
+            // Do nothing.
+        } else if (Util.SDK_INT >= 21) {
             setVolumeInternalV21(audioTrack, volume);
+        } else {
+            setVolumeInternalV3(audioTrack, volume);
         }
     }
 
@@ -1103,8 +1146,18 @@ public final class DefaultAudioSink implements AudioSink {
                 : writtenEncodedFrames;
     }
 
+    private static AudioTrack initializeKeepSessionIdAudioTrack(int audioSessionId) {
+        int sampleRate = 4000; // Equal to private AudioTrack.MIN_SAMPLE_RATE.
+        int channelConfig = AudioFormat.CHANNEL_OUT_MONO;
+        @C.PcmEncoding
+        int encoding = C.ENCODING_PCM_16BIT;
+        int bufferSize = 2; // Use a two byte buffer, as it is not actually used for playback.
+        return new AudioTrack(C.STREAM_TYPE_DEFAULT, sampleRate, channelConfig, encoding,
+                bufferSize, MODE_STATIC, audioSessionId);
+    }
+
     private static int getChannelConfig(int channelCount, boolean isInputPcm) {
-        if (!isInputPcm) {
+        if (Util.SDK_INT <= 28 && !isInputPcm) {
             // In passthrough mode the channel count used to configure the audio track doesn't
             // affect how
             // the stream is handled, except that some devices do overly-strict channel
@@ -1120,7 +1173,7 @@ public final class DefaultAudioSink implements AudioSink {
 
         // Workaround for Nexus Player not reporting support for mono passthrough.
         // (See [Internal: b/34268671].)
-        if ("fugu".equals(Util.DEVICE) && !isInputPcm && channelCount == 1) {
+        if (Util.SDK_INT <= 26 && "fugu".equals(Util.DEVICE) && !isInputPcm && channelCount == 1) {
             channelCount = 2;
         }
 
@@ -1224,6 +1277,10 @@ public final class DefaultAudioSink implements AudioSink {
     @TargetApi(21)
     private static void setVolumeInternalV21(AudioTrack audioTrack, float volume) {
         audioTrack.setVolume(volume);
+    }
+
+    private static void setVolumeInternalV3(AudioTrack audioTrack, float volume) {
+        audioTrack.setStereoVolume(volume, volume);
     }
 
     private void playPendingData() {
@@ -1355,14 +1412,36 @@ public final class DefaultAudioSink implements AudioSink {
             return (!isInputPcm && isLegacyPassthroughQuirkEnabled);
         }
 
-        public AudioTrack buildAudioTrack(
-            boolean tunneling, 
-            AudioAttributes audioAttributes,
-            int audioSessionId
-        ) throws InitializationException {
-
-            AudioTrack audioTrack = createAudioTrackV21(tunneling, audioAttributes, audioSessionId);
-
+        public AudioTrack buildAudioTrack(boolean tunneling, AudioAttributes audioAttributes,
+                int audioSessionId) throws InitializationException {
+            AudioTrack audioTrack;
+            if (Util.SDK_INT >= 21) {
+                audioTrack = createAudioTrackV21(tunneling, audioAttributes, audioSessionId);
+            } else {
+                // AMZN_CHANGE_BEGIN
+                int streamType = Util.getStreamTypeForAudioUsage(audioAttributes.usage);
+                if (audioSessionId == C.AUDIO_SESSION_ID_UNSET) {
+                    if (applyDolbyPassthroughQuirk()) {
+                        audioTrack = new DolbyPassthroughAudioTrack(streamType, outputSampleRate,
+                                outputChannelConfig, outputEncoding, bufferSize, MODE_STREAM);
+                    } else {
+                        audioTrack = new AudioTrack(streamType, outputSampleRate,
+                                outputChannelConfig, outputEncoding, bufferSize, MODE_STREAM);
+                    }
+                } else {
+                    // Re-attach to the same audio session.
+                    if (applyDolbyPassthroughQuirk()) {
+                        audioTrack = new DolbyPassthroughAudioTrack(streamType, outputSampleRate,
+                                outputChannelConfig, outputEncoding, bufferSize, MODE_STREAM,
+                                audioSessionId);
+                    } else {
+                        audioTrack =
+                                new AudioTrack(streamType, outputSampleRate, outputChannelConfig,
+                                        outputEncoding, bufferSize, MODE_STREAM, audioSessionId);
+                    }
+                }
+                // AMZN_CHANGE_END
+            }
             int state = audioTrack.getState();
             if (state != STATE_INITIALIZED) {
                 try {
