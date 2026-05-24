@@ -2,6 +2,7 @@ package minefarts.smarttube.app.models.playback.controllers;
 
 import android.annotation.SuppressLint;
 import android.util.Pair;
+import android.content.Context;
 
 import com.liskovsoft.sharedutils.MediaItemService;
 import minefarts.smarttube.misc.ServiceManager;
@@ -21,12 +22,16 @@ import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.app.models.playback.PlayerEventListener;
 import minefarts.smarttube.app.models.playback.PlayerEngine;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
-import minefarts.smarttube.app.presenters.dialogs.VideoActionPresenter;
 import minefarts.smarttube.app.models.playback.PlayerEngine;
 import minefarts.smarttube.exoplayer.selector.FormatItem;
 import minefarts.smarttube.prefs.PlayerData;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.app.presenters.ChannelUploadsPresenter;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
+import minefarts.smarttube.app.presenters.SearchPresenter;
+import minefarts.smarttube.app.presenters.base.BasePresenter;
+import minefarts.smarttube.utils.LoadingManager;
 
 import io.reactivex.disposables.Disposable;
 
@@ -36,6 +41,20 @@ import java.util.List;
 public class VideoLoaderController extends BasePlayerController {
     
     private static final String TAG = VideoLoaderController.class.getSimpleName();
+
+    private static Context mContext;
+    private static PlaybackPresenter mPlaybackPresenter;
+    private static ChannelUploadsPresenter mChannelUploadsPresenter;
+    private static SearchPresenter mSearchPresenter;
+
+    public VideoLoaderController(PlaybackPresenter playbackPresenter) {
+        mContext = getContext();
+
+        mPlaybackPresenter = playbackPresenter;
+        mChannelUploadsPresenter = ChannelUploadsPresenter.instance(getContext());
+        mSearchPresenter = SearchPresenter.instance(getContext());
+
+    }
    
     private static final long STREAM_END_THRESHOLD_MS = 180_000;
    
@@ -422,8 +441,33 @@ private void loadFormatInfo(Video video) {
             getMainController().onNewVideo(item);
 
         } else {
-            VideoActionPresenter.instance(getContext()).apply(item);
+            openVideo(item);
         }
+
+    }
+
+    public static void openVideo(Video item) {
+        
+        if (item.hasVideo() && !item.isPlaylistInChannel()) {
+            mPlaybackPresenter.openVideo(item);
+        
+        } else if (item.hasChannel() || item.belongsToChannelUploads()) {
+            ServiceManager.chooseChannelPresenter(mContext, item);
+        
+        } else if (item.hasPlaylist() || item.hasNestedItems()) {
+            mChannelUploadsPresenter.openChannel(item);
+        
+        } else if (item.isChapter) {
+            mPlaybackPresenter.setPosition(item.startTimeMs);
+        
+        } else if (item.searchQuery != null ) {
+            mSearchPresenter.onSearch(item.searchQuery);
+        
+        } else {
+            MessageHelpers.showMessage(mContext, "Video item doesn't contain needed data!");
+        
+        }
+        
     }
 
     private boolean isActionsRunning() {

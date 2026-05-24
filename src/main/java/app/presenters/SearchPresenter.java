@@ -2,6 +2,7 @@ package minefarts.smarttube.app.presenters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+
 import com.liskovsoft.sharedutils.service.ContentService;
 import com.liskovsoft.sharedutils.data.MediaGroup;
 import com.liskovsoft.sharedutils.data.SearchOptions;
@@ -15,7 +16,7 @@ import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.models.search.MediaServiceSearchTagProvider;
 import minefarts.smarttube.app.models.search.vineyard.Tag;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
-import minefarts.smarttube.app.presenters.dialogs.VideoActionPresenter;
+import minefarts.smarttube.app.models.playback.controllers.VideoLoaderController;
 import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter;
 import minefarts.smarttube.app.presenters.interfaces.VideoGroupPresenter;
 import minefarts.smarttube.app.views.SearchView;
@@ -23,6 +24,7 @@ import minefarts.smarttube.misc.BrowseProcessorManager;
 import minefarts.smarttube.misc.ServiceManager;
 import minefarts.smarttube.prefs.AccountsData;
 import minefarts.smarttube.utils.AppDialogUtil;
+
 import io.reactivex.disposables.Disposable;
 
 import java.util.ArrayList;
@@ -100,11 +102,9 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
 
     @Override
     public void onVideoItemClicked(Video item) {
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
-        VideoActionPresenter.instance(getContext()).apply(item);
+        VideoLoaderController.openVideo(item);
     }
 
     @Override
