@@ -29,8 +29,8 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
 
     @Override
     public View onCreateView(
-        LayoutInflater inflater, 
-        ViewGroup container, 
+        LayoutInflater inflater,
+        ViewGroup container,
         Bundle savedInstanceState
     ) {
 
@@ -42,8 +42,16 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
         mVideoSurfaceWrapper = new SurfaceViewWrapper(getContext(), root);
 
         mVideoSurfaceRoot = root.findViewById(R.id.surface_root);
-        
-        mVideoSurfaceRoot.addView(mVideoSurfaceWrapper.getSurfaceView(), 0);
+
+        View surfaceView = mVideoSurfaceWrapper.getSurfaceView();
+        FrameLayout.LayoutParams params =
+            new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                Gravity.CENTER);
+        surfaceView.setLayoutParams(params);
+
+        mVideoSurfaceRoot.addView(surfaceView, 0);
 
         // Scaling/ratio calculations removed. Let layout handle video sizing.
         setBackgroundType(PlaybackSupportFragment.BG_LIGHT);
@@ -97,4 +105,12 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
         ViewUtil.setGravity(mVideoSurfaceRoot, gravity);
     }
 
+    public void setVideoAspectRatio(int width, int height, float pixelWidthHeightRatio) {
+        if (mVideoSurfaceRoot == null || width <= 0 || height <= 0) {
+            return;
+        }
+        float videoAspectRatio = (width * pixelWidthHeightRatio) / height;
+        mVideoSurfaceRoot.setAspectRatio(videoAspectRatio);
+    }
+    
 }
