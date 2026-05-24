@@ -62,11 +62,11 @@ public class AppDialogUtil {
     
     private static final String TAG = AppDialogUtil.class.getSimpleName();
     
-    private static final int AUDIO_LANGUAGE_ID = 138;
-    private static final int PLAYER_SPEED_LIST_ID = 141;
-    private static final int PLAYER_REMEMBER_SPEED_ID = 142;
-    private static final int PLAYER_SPEED_MISC_ID = 143;
-    private static final int PLAYER_REPEAT_ID = 146;
+    public static final int AUDIO_LANGUAGE_ID = 138;
+    public static final int PLAYER_SPEED_LIST_ID = 141;
+    public static final int PLAYER_REMEMBER_SPEED_ID = 142;
+    public static final int PLAYER_SPEED_MISC_ID = 143;
+    public static final int PLAYER_REPEAT_ID = 146;
 
     /**
      * Adds share link items to existing dialog.
@@ -260,75 +260,6 @@ public class AppDialogUtil {
                         );
                     }
                 });
-    }
-
-    public static OptionCategory createSpeedListCategory(Context context, PlayerEngine playbackController) {
-        PlayerData playerData = PlayerData.instance(context);
-        List<OptionItem> items = new ArrayList<>();
-
-        PlayerTweaksData data = PlayerTweaksData.instance(context);
-        for (float speed : data.isLongSpeedListEnabled() ? Utils.SPEED_LIST_LONG :
-                data.isExtraLongSpeedListEnabled() ? Utils.SPEED_LIST_EXTRA_LONG : Utils.SPEED_LIST_SHORT) {
-            items.add(UiOptionItem.from(
-                    String.valueOf(speed),
-                    optionItem -> {
-                        if (playbackController != null) {
-                            //playerData.setSpeed(playbackController.getVideo().channelId, speed);
-                            playbackController.setSpeed(speed);
-                        } else {
-                            playerData.setSpeed(speed);
-                        }
-                    },
-                    (playbackController != null ? playbackController.getSpeed() : playerData.getSpeed()) == speed));
-        }
-
-        return OptionCategory.from(PLAYER_SPEED_LIST_ID, OptionCategory.TYPE_RADIO_LIST, context.getString(R.string.video_speed), items);
-    }
-
-    public static OptionCategory createRememberSpeedCategory(Context context) {
-        PlayerData playerData = PlayerData.instance(context);
-        List<OptionItem> options = new ArrayList<>();
-
-        options.add(UiOptionItem.from(context.getString(R.string.player_remember_speed_none),
-                optionItem -> {
-                    playerData.setAllSpeedEnabled(false);
-                    playerData.setSpeedPerVideoEnabled(false);
-                    playerData.setSpeedPerChannelEnabled(false);
-                },
-                !playerData.isAllSpeedEnabled() && !playerData.isSpeedPerVideoEnabled()));
-
-        options.add(UiOptionItem.from(context.getString(R.string.player_remember_speed_all),
-                optionItem -> playerData.setAllSpeedEnabled(true),
-                playerData.isAllSpeedEnabled()));
-
-        options.add(UiOptionItem.from(context.getString(R.string.player_remember_speed_each),
-                optionItem -> playerData.setSpeedPerVideoEnabled(true),
-                playerData.isSpeedPerVideoEnabled()));
-
-        options.add(UiOptionItem.from(context.getString(R.string.player_speed_per_channel),
-                option -> playerData.setSpeedPerChannelEnabled(option.isSelected()),
-                playerData.isSpeedPerChannelEnabled()));
-
-        String title = context.getString(R.string.player_remember_speed);
-
-        return OptionCategory.from(PLAYER_REMEMBER_SPEED_ID, OptionCategory.TYPE_RADIO_LIST, title, options);
-    }
-
-    public static OptionCategory createSpeedMiscCategory(Context context) {
-        PlayerTweaksData playerTweaksData = PlayerTweaksData.instance(context);
-        List<OptionItem> options = new ArrayList<>();
-
-        options.add(UiOptionItem.from(context.getString(R.string.player_long_speed_list),
-                option -> playerTweaksData.setLongSpeedListEnabled(option.isSelected()),
-                playerTweaksData.isLongSpeedListEnabled()));
-
-        options.add(UiOptionItem.from(context.getString(R.string.player_extra_long_speed_list),
-                option -> playerTweaksData.setExtraLongSpeedListEnabled(option.isSelected()),
-                playerTweaksData.isExtraLongSpeedListEnabled()));
-
-        String title = context.getString(R.string.player_other);
-
-        return OptionCategory.from(PLAYER_SPEED_MISC_ID, OptionCategory.TYPE_CHECKBOX_LIST, title, options);
     }
 
     public static OptionCategory createPlaybackModeCategory(Context context) {

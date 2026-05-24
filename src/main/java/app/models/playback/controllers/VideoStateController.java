@@ -18,9 +18,15 @@ import minefarts.smarttube.utils.AppDialogUtil;
 import minefarts.smarttube.utils.Utils;
 import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
+import minefarts.smarttube.app.models.playback.ui.OptionCategory;
+import minefarts.smarttube.app.models.playback.ui.OptionItem;
+import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 
@@ -87,10 +93,6 @@ public class VideoStateController extends BasePlayerController {
                 updateHistory(item, 0);
             }
 
-        }
-
-        if (!getPlayerData().isAllSpeedEnabled()) {
-            getPlayerData().setSpeed(1.0f);
         }
 
     }
@@ -285,15 +287,6 @@ public class VideoStateController extends BasePlayerController {
 
             getPlayer().setSpeed(1.0f);
 
-        } else {
-
-            State state = getStateService().getByVideoId(item.videoId);
-            float speed = Math.max(0.25f, Math.min(5.0f, getPlayerData().getSpeed(item.channelId)));
-            float stateSpeed = state != null && getPlayerData().isSpeedPerVideoEnabled() ? Math.max(0.25f, Math.min(5.0f, state.speed)) : 1.0f;
-            getPlayer().setSpeed(
-                    stateSpeed
-            );
-
         }
 
     }
@@ -319,11 +312,9 @@ public class VideoStateController extends BasePlayerController {
 
     @Override
     public void onSpeedChanged(float speed) {
-        if (getVideo() == null) {
-            return;
-        }
+        if (getVideo() == null) return;
 
-        getPlayerData().setSpeed(getVideo().channelId, speed);
+        getPlayer().setSpeed(speed);
     }
 
     @Override
@@ -331,12 +322,15 @@ public class VideoStateController extends BasePlayerController {
 
         super.onButtonClicked(buttonId, buttonState);
 
-        if (buttonId != R.id.action_video_speed) return;
-        
-        // Pass through to long click
-        onButtonLongClicked(buttonId, buttonState);
-        
+        if (buttonId == R.id.action_video_speed) {
+            onButtonLongClicked(buttonId, buttonState);
+        }
+
     }
+
+    private static final float[] SPEED_LIST = new float[] {
+        0.25f, 0.5f, 0.75f, 1.0f, 1.25f, 1.5f, 1.75f, 2.0f, 2.25f, 2.5f, 2.75f, 3.0f, 3.25f, 3.5f, 3.75f, 4.0f
+    };
 
     @Override
     public void onButtonLongClicked(int buttonId, int buttonState) {
@@ -345,11 +339,30 @@ public class VideoStateController extends BasePlayerController {
 
         if (buttonId == R.id.action_video_speed) {
 
-            settingsPresenter.appendCategory(
-                AppDialogUtil.createSpeedListCategory(getContext(), getPlayer())
-            );
+            List<OptionItem> items = new ArrayList<>();
+
+            for (float speed : SPEED_LIST) {
+                
+                items.add(UiOptionItem.from(
+                    String.valueOf(speed),
+                    optionItem -> getPlayer().setSpeed(speed),
+                    (getPlayer().getSpeed() == speed)
+                ));
+            
+            }
+
+            String title = "Video Speed";
+
+            settingsPresenter.appendCategory(OptionCategory.from(
+                AppDialogUtil.PLAYER_SPEED_LIST_ID, 
+                OptionCategory.TYPE_RADIO_LIST, 
+                title, items
+            ));
+
+            settingsPresenter.showDialog(title);
 
         }
+
     }
 
     public void updateHistory(Video video, long positionMs) {
