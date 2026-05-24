@@ -236,8 +236,11 @@ import java.util.Arrays;
         worstPeriod = period;
       }
     }
-    this.minDiff = minDiff / bestPeriod;
-    this.maxDiff = maxDiff / worstPeriod;
+
+    this.minDiff = bestPeriod==0 ? 0 : minDiff / bestPeriod;
+    
+    this.maxDiff = worstPeriod==0 ? 0 : maxDiff / worstPeriod;
+    
     return bestPeriod;
   }
 
