@@ -44,17 +44,13 @@ public class PlayerData extends DataChangeBase implements PlayerEngine, ProfileC
     private FormatItem mAudioFormat;
     private FormatItem mSubtitleFormat;
     private final Map<String, FormatItem> mDefaultVideoFormats = new HashMap<>();
-    private float mSpeed;
-    private float mLastSpeed;
     private boolean mIsAfrEnabled;
     private boolean mIsAfrFpsCorrectionEnabled;
     private boolean mIsAfrResSwitchEnabled;
     private int mAudioDelayMs;
     private String mAudioLanguage;
     private String mSubtitleLanguage;
-    private boolean mIsAllSpeedEnabled;
     private int mPlaybackMode;
-    private boolean mIsSpeedPerVideoEnabled;
     private boolean mIsTimeCorrectionEnabled;
     private boolean mIsDoubleRefreshRateEnabled;
     private float mSubtitleScale;
@@ -64,41 +60,16 @@ public class PlayerData extends DataChangeBase implements PlayerEngine, ProfileC
     private boolean mIsSkipShortsEnabled;
     private boolean mIsLiveChatEnabled;
     private List<FormatItem> mLastSubtitleFormats;
-    private boolean mIsSpeedPerChannelEnabled;
-    private final Map<String, SpeedItem> mSpeeds = new HashMap<>();
     private float mPitch;
     private List<String> mLastAudioLanguages;
 
-    private static class SpeedItem {
-        public String channelId;
-        public float speed;
-
-        public SpeedItem(String channelId, float speed) {
-            this.channelId = channelId;
-            this.speed = speed;
-        }
-
-        public static SpeedItem fromString(String specs) {
-            String[] split = Helpers.splitObj(specs);
-
-            if (split == null || split.length != 2) {
-                return new SpeedItem(null, 1);
-            }
-
-            return new SpeedItem(Helpers.parseStr(split[0]), Helpers.parseFloat(split[1]));
-        }
-
-        @NonNull
-        @Override
-        public String toString() {
-            return Helpers.mergeObj(channelId, speed);
-        }
-    }
-
     private PlayerData(Context context) {
+        
         mPrefs = AppPrefs.instance(context);
         mPrefs.addListener(this);
+        
         initDefaultFormats();
+        
         restoreState();
     }
 
@@ -117,28 +88,6 @@ public class PlayerData extends DataChangeBase implements PlayerEngine, ProfileC
 
     public int getPlaybackMode() {
         return mPlaybackMode;
-    }
-
-    public boolean isAllSpeedEnabled() {
-        return mIsAllSpeedEnabled;
-    }
-
-    public void setAllSpeedEnabled(boolean enable) {
-        mIsAllSpeedEnabled = enable;
-        mIsSpeedPerVideoEnabled = false;
-        mIsSpeedPerChannelEnabled = false;
-        persistState();
-    }
-
-    public boolean isSpeedPerVideoEnabled() {
-        return mIsSpeedPerVideoEnabled;
-    }
-
-    public void setSpeedPerVideoEnabled(boolean enable) {
-        mIsSpeedPerVideoEnabled = enable;
-        mIsAllSpeedEnabled = false;
-        mIsSpeedPerChannelEnabled = false;
-        persistState();
     }
 
     public boolean isAfrEnabled() {
@@ -266,72 +215,6 @@ public class PlayerData extends DataChangeBase implements PlayerEngine, ProfileC
         persistState();
     }
 
-    public Float getSpeed() {
-        return getSpeed(null);
-    }
-
-    public void setSpeed(float speed) {
-        setSpeed(null, speed);
-    }
-
-    public Float getSpeed(String channelId) {
-        SpeedItem speed = null;
-
-        if (isSpeedPerChannelEnabled() && channelId != null) {
-            speed = mSpeeds.get(channelId);
-            mSpeed = 1.0f; // reset speed if the channel not found
-        }
-
-        if (speed != null) {
-            mSpeed = speed.speed;
-        }
-
-        mSpeed = Math.max(0.25f, Math.min(5.0f, mSpeed));
-        return mSpeed;
-    }
-
-    public void setSpeed(String channelId, float speed) {
-        speed = Math.max(0.25f, Math.min(5.0f, speed));
-        if (mSpeed == speed && channelId == null) {
-            return;
-        }
-
-        if (isSpeedPerChannelEnabled() && channelId != null) {
-            if (Helpers.floatEquals(speed, 1.0f)) {
-                mSpeeds.remove(channelId);
-            } else {
-                mSpeeds.put(channelId, new SpeedItem(channelId, speed));
-            }
-        }
-        setLastSpeed(speed);
-        mSpeed = speed;
-        persistState();
-    }
-
-    public float getLastSpeed() {
-        return mLastSpeed;
-    }
-
-    public void setLastSpeed(float speed) {
-        speed = Math.max(0.25f, Math.min(5.0f, speed));
-        if (speed > 0.25f && !Helpers.floatEquals(speed, 1.0f)) {
-            mLastSpeed = speed;
-        } else if (mSpeed > 0.25f && !Helpers.floatEquals(mSpeed, 1.0f)) {
-            mLastSpeed = mSpeed;
-        }
-    }
-
-    public boolean isSpeedPerChannelEnabled() {
-        return mIsSpeedPerChannelEnabled;
-    }
-
-    public void setSpeedPerChannelEnabled(boolean enable) {
-        mIsSpeedPerChannelEnabled = enable;
-        mIsSpeedPerVideoEnabled = false;
-        mIsAllSpeedEnabled = false;
-        persistState();
-    }
-
     public int getAudioDelayMs() {
         return mAudioDelayMs;
     }
@@ -453,13 +336,11 @@ public class PlayerData extends DataChangeBase implements PlayerEngine, ProfileC
         /* 02 */ mAudioFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 2)), getDefaultAudioFormat());
         /* 03 */ mSubtitleFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 3)), getDefaultSubtitleFormat());
 
-        /* 06 */ mSpeed = Helpers.parseFloat(split, 6, 1.0f);
         /* 07 */ mIsAfrEnabled = Helpers.parseBoolean(split, 7, false);
         /* 08 */ mIsAfrFpsCorrectionEnabled = Helpers.parseBoolean(split, 8, true);
         /* 09 */ mIsAfrResSwitchEnabled = Helpers.parseBoolean(split, 9, false);
         /* 10 */ mAudioDelayMs = Helpers.parseInt(split, 10, 0);
-        /* 11 */ mIsAllSpeedEnabled = Helpers.parseBoolean(split, 11, false);
-        /* 12 */ mIsSpeedPerVideoEnabled = Helpers.parseBoolean(split, 12, false);
+
         /* 13 */ mIsTimeCorrectionEnabled = Helpers.parseBoolean(split, 13, true);
         /* 14 */ mIsDoubleRefreshRateEnabled = Helpers.parseBoolean(split, 14, true);
         /* 15 */ mSubtitleScale = Helpers.parseFloat(split, 15, .7f);
@@ -469,34 +350,15 @@ public class PlayerData extends DataChangeBase implements PlayerEngine, ProfileC
         /* 19 */ mIsSkip24RateEnabled = Helpers.parseBoolean(split, 19, false);
         /* 20 */ mIsLiveChatEnabled = Helpers.parseBoolean(split, 20, false);
         /* 21 */ mLastSubtitleFormats = Helpers.parseList(split, 21, ExoFormatItem::from);
-        /* 22 */ mLastSpeed = Helpers.parseFloat(split, 22, 1.0f);
 
         /* 25 */ mPlaybackMode = Helpers.parseInt(split, 25, PlayerEngine.PLAYBACK_MODE_ALL);
         /* 26 */ mAudioLanguage = Helpers.parseStr(split, 26, LocaleUtility.getCurrentLanguage(mPrefs.getContext()));
         /* 27 */ mSubtitleLanguage = Helpers.parseStr(split, 27, LocaleUtility.getCurrentLanguage(mPrefs.getContext()));
-        /* 28 */ mIsSpeedPerChannelEnabled = Helpers.parseBoolean(split, 28, true);
-        /* 29 */ String[] speeds = Helpers.parseArray(split, 29);
+
         /* 30 */ mPitch = Helpers.parseFloat(split, 30, 1.0f);
         /* 31 */ mIsSkipShortsEnabled = Helpers.parseBoolean(split, 31, false);
         /* 32 */ mLastAudioLanguages = Helpers.parseStrList(split, 32);
-
-        if (speeds != null) {
-            for (String speedSpec : speeds) {
-                SpeedItem item = SpeedItem.fromString(speedSpec);
-                mSpeeds.put(item.channelId, item);
-            }
-        }
-
-        // Clamp persisted speeds to safe range
-        for (SpeedItem item : mSpeeds.values()) {
-            item.speed = Math.max(0.25f, Math.min(5.0f, item.speed));
-        }
-        mSpeed = Math.max(0.25f, Math.min(5.0f, mSpeed));
-        mLastSpeed = Math.max(0.25f, Math.min(5.0f, mLastSpeed));
-
-        if (!mIsAllSpeedEnabled) {
-            mSpeed = 1.0f;
-        }
+        
     }
 
     public void persistState() {
@@ -509,13 +371,13 @@ public class PlayerData extends DataChangeBase implements PlayerEngine, ProfileC
             /* 03 */ mSubtitleFormat,
             /* 04 */ null, 
             /* 05 */ null, 
-            /* 06 */ mSpeed,
+            /* 06 */ null,
             /* 07 */ mIsAfrEnabled, 
             /* 08 */ mIsAfrFpsCorrectionEnabled, 
             /* 09 */ mIsAfrResSwitchEnabled, 
             /* 10 */ mAudioDelayMs, 
-            /* 11 */ mIsAllSpeedEnabled, 
-            /* 12 */ mIsSpeedPerVideoEnabled,
+            /* 11 */ null, 
+            /* 12 */ null,
             /* 13 */ mIsTimeCorrectionEnabled,
             /* 14 */ mIsDoubleRefreshRateEnabled, 
             /* 15 */ mSubtitleScale, 
@@ -525,14 +387,14 @@ public class PlayerData extends DataChangeBase implements PlayerEngine, ProfileC
             /* 19 */ mIsSkip24RateEnabled, 
             /* 20 */ mIsLiveChatEnabled, 
             /* 21 */ mLastSubtitleFormats, 
-            /* 22 */ mLastSpeed, 
+            /* 22 */ null, 
             /* 23 */ null, 
             /* 24 */ null, 
             /* 25 */ mPlaybackMode, 
             /* 26 */ mAudioLanguage, 
             /* 27 */ mSubtitleLanguage,
-            /* 28 */ mIsSpeedPerChannelEnabled, 
-            /* 29 */ Helpers.mergeArray(mSpeeds.values().toArray()), 
+            /* 28 */ null,
+            /* 29 */ null, 
             /* 30 */ mPitch, 
             /* 31 */ mIsSkipShortsEnabled, 
             /* 32 */ mLastAudioLanguages
@@ -541,12 +403,8 @@ public class PlayerData extends DataChangeBase implements PlayerEngine, ProfileC
 
     @Override
     public void onProfileChanged() {
-        
         persistState();
-
-        // reset on profile change
-        mSpeeds.clear();
-
         restoreState();
     }
+
 }

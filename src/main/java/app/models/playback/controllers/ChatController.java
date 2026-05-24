@@ -55,20 +55,24 @@ public class ChatController extends BasePlayerController {
         ChatReceiver chatReceiver = new ChatReceiverImpl();
         getPlayer().setChatReceiver(chatReceiver);
 
-        mChatAction = mChatService.openLiveChatObserve(mLiveChatKey)
-                .subscribe(
-                        chatItem -> {
-                            Log.d(TAG, chatItem.getMessage());
-                            if (checkItem(chatItem)) {
-                                chatReceiver.addChatItem(chatItem);
-                            }
-                        },
-                        error -> {
-                            Log.e(TAG, error.getMessage());
-                            error.printStackTrace();
-                        },
-                        () -> Log.e(TAG, "Live chat session has been closed")
-                );
+        mChatAction = mChatService.openLiveChatObserve(mLiveChatKey).subscribe(
+            
+            chatItem -> {
+                Log.d(TAG, chatItem.getMessage());
+                if (checkItem(chatItem)) {
+                    chatReceiver.addChatItem(chatItem);
+                }
+            },
+            
+            error -> {
+                Log.e(TAG, error.getMessage());
+                error.printStackTrace();
+            },
+            
+            () -> Log.e(TAG, "Live chat session has been closed")
+            
+        );
+
     }
 
     @Override
@@ -86,30 +90,37 @@ public class ChatController extends BasePlayerController {
 
     @Override
     public void onButtonLongClicked(int buttonId, int buttonState) {
-        if (buttonId == R.id.action_chat) {
-            String chatCategoryTitle = getContext().getString(R.string.open_chat);
+        
+        AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
 
-            AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
+        if (buttonId == R.id.action_chat) {
 
             List<OptionItem> options = new ArrayList<>();
 
-            options.add(UiOptionItem.from(getContext().getString(R.string.option_disabled),
-                    optionItem -> {
-                        enableLiveChat(false);
-                        settingsPresenter.closeDialog();
-                    },
-                    !getPlayerData().isLiveChatEnabled()));
+            options.add(UiOptionItem.from(
+                getContext().getString(R.string.option_disabled),
+                optionItem -> {
+                    enableLiveChat(false);
+                    settingsPresenter.closeDialog();
+                },
+                !getPlayerData().isLiveChatEnabled()
+            ));
 
-            options.add(UiOptionItem.from(getContext().getString(R.string.chat_right),
-                    optionItem -> {
-                        enableLiveChat(true);
-                        settingsPresenter.closeDialog();
-                    },
-                    getPlayerData().isLiveChatEnabled()));
+            options.add(UiOptionItem.from(
+                "Right",
+                optionItem -> {
+                    enableLiveChat(true);
+                    settingsPresenter.closeDialog();
+                },
+                getPlayerData().isLiveChatEnabled()
+            ));
 
-            settingsPresenter.appendRadioCategory(chatCategoryTitle, options);
+            String title = "Chat/Comments";
 
-            settingsPresenter.showDialog(chatCategoryTitle);
+            settingsPresenter.appendRadioCategory(title, options);
+
+            settingsPresenter.showDialog(title);
+
         }
     }
 
