@@ -13,7 +13,7 @@ import minefarts.smarttube.app.models.data.VideoGroup;
 import minefarts.smarttube.app.models.playback.ui.OptionItem;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
-import minefarts.smarttube.app.presenters.dialogs.VideoActionPresenter;
+import minefarts.smarttube.app.models.playback.controllers.VideoLoaderController;
 import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter;
 import minefarts.smarttube.app.presenters.interfaces.VideoGroupPresenter;
 import minefarts.smarttube.app.views.ChannelView;
@@ -38,8 +38,8 @@ public class ChannelPresenter extends BasePresenter<ChannelView> implements Vide
     @SuppressLint("StaticFieldLeak")
     private static ChannelPresenter sInstance;
     
-    private final BrowseService2 mBrowseService;
     private final BrowseProcessorManager mBrowseProcessor;
+    private final BrowseService2 mBrowseService;
     private String mChannelId;
     private final List<List<MediaGroup>> mPendingGroups = new ArrayList<>();
     private Disposable mUpdateAction;
@@ -115,7 +115,7 @@ public class ChannelPresenter extends BasePresenter<ChannelView> implements Vide
 
     @Override
     public void onVideoItemClicked(Video item) {
-        VideoActionPresenter.instance(getContext()).apply(item);
+        VideoLoaderController.openVideo(item);
     }
 
     @Override

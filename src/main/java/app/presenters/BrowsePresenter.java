@@ -25,7 +25,7 @@ import minefarts.smarttube.app.models.errors.SignInError;
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
 import minefarts.smarttube.app.models.playback.service.State;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
-import minefarts.smarttube.app.presenters.dialogs.VideoActionPresenter;
+import minefarts.smarttube.app.models.playback.controllers.VideoLoaderController;
 import minefarts.smarttube.app.presenters.dialogs.menu.ChannelUploadsMenuPresenter;
 import minefarts.smarttube.app.presenters.dialogs.menu.SectionMenuPresenter;
 import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter;
@@ -90,6 +90,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
 
     private BrowsePresenter(Context context) {
         super(context);
+
         mSections = new ArrayList<>();
         mErrorSections = new ArrayList<>();
         mGridMapping = new HashMap<>();
@@ -97,6 +98,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         mSettingsGridMapping = new HashMap<>();
         mLocalGridMappings = new HashMap<>();
         mSectionsMapping = new HashMap<>();
+
         ServiceManager.addAccountListener(this);
 
         mBrowseProcessor = new BrowseProcessorManager(getContext(), this::syncItem);
@@ -505,11 +507,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
 
     @Override
     public void onVideoItemClicked(Video item) {
-        if (getContext() == null) {
-            return;
-        }
+        if (getContext() == null) return;
 
-        VideoActionPresenter.instance(getContext()).apply(item);
+        VideoLoaderController.openVideo(item);
     }
 
     @Override
