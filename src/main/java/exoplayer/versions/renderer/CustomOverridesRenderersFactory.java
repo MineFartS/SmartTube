@@ -113,8 +113,6 @@ public class CustomOverridesRenderersFactory extends CustomRenderersFactoryBase 
             MAX_DROPPED_VIDEO_FRAME_COUNT_TO_NOTIFY
         );
 
-        videoRenderer.enableSetOutputSurfaceWorkaround(true); // Force enable?
-
         replaceVideoRenderer(out, videoRenderer);
 
     }
