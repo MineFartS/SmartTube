@@ -20,8 +20,6 @@ import minefarts.smarttube.exoplayer.versions.ExoUtils;
 
 public class DebugInfoMediaCodecVideoRenderer extends MediaCodecVideoRenderer {
 
-    private boolean mIsSetOutputSurfaceWorkaroundEnabled;
-
     // Exo 2.10, 2.11
     public DebugInfoMediaCodecVideoRenderer(Context context, MediaCodecSelector mediaCodecSelector, long allowedJoiningTimeMs,
                                             @Nullable DrmSessionManager<FrameworkMediaCrypto> drmSessionManager, boolean playClearSamplesWithoutKeys, boolean enableDecoderFallback, @Nullable Handler eventHandler, @Nullable VideoRendererEventListener eventListener, int maxDroppedFramesToNotify) {
@@ -36,20 +34,4 @@ public class DebugInfoMediaCodecVideoRenderer extends MediaCodecVideoRenderer {
         return super.getCodecMaxValues(codecInfo, format, streamFormats);
     }
 
-    @Override
-    protected boolean codecNeedsSetOutputSurfaceWorkaround(String name) {
-        // Null surface error on Android 9 (VERSION.SDK_INT >= 28) and above (appears on background audio playback)
-        // Need to be enabled on older version of ExoPlayer (e.g. 2.10.6).
-        // It's because there's no tweaks for modern devices.
-        return mIsSetOutputSurfaceWorkaroundEnabled || super.codecNeedsSetOutputSurfaceWorkaround(name);
-    }
-
-    /**
-     * Null surface error on Android 9 (VERSION.SDK_INT >= 28) and above (appears on background audio playback)<br/>
-     * Need to be enabled on older version of ExoPlayer (e.g. 2.10.6).<br/>
-     * It's because there's no tweaks for modern devices.
-     */
-    public void enableSetOutputSurfaceWorkaround(boolean enable) {
-        mIsSetOutputSurfaceWorkaroundEnabled = enable;
-    }
 }
