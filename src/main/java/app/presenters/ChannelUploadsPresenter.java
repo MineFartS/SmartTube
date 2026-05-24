@@ -16,7 +16,7 @@ import minefarts.smarttube.app.models.data.SimpleMediaItem;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.data.VideoGroup;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
-import minefarts.smarttube.app.presenters.dialogs.VideoActionPresenter;
+import minefarts.smarttube.app.models.playback.controllers.VideoLoaderController;
 import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter;
 import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
 import minefarts.smarttube.app.presenters.interfaces.VideoGroupPresenter;
@@ -86,7 +86,7 @@ public class ChannelUploadsPresenter extends BasePresenter<ChannelUploadsView> i
 
     @Override
     public void onVideoItemClicked(Video item) {
-        VideoActionPresenter.instance(getContext()).apply(item);
+        VideoLoaderController.openVideo(item);
     }
 
     @Override

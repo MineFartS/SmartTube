@@ -53,7 +53,7 @@ public class PlaybackPresenter extends BasePresenter<PlayerEngine> implements Pl
         mEventListeners.add(new VideoStateController());
         mEventListeners.add(new SuggestionsController());
         mEventListeners.add(new PlayerUIController());
-        mEventListeners.add(new VideoLoaderController());
+        mEventListeners.add(new VideoLoaderController(this));
         mEventListeners.add(new RemoteController(context));
         mEventListeners.add(new ContentBlockController());
         mEventListeners.add(new ChatController());
