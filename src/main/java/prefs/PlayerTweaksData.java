@@ -52,8 +52,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private boolean mIsSetOutputSurfaceWorkaroundEnabled;
     private boolean mIsPlaybackNotificationsDisabled;
     private boolean mIsRememberPositionOfLiveVideosEnabled;
-    private boolean mIsLongSpeedListEnabled;
-    private boolean mIsExtraLongSpeedListEnabled;
     private boolean mIsSectionPlaylistEnabled;
     private boolean mIsLoopShortsEnabled;
 
@@ -102,26 +100,6 @@ public class PlayerTweaksData implements ProfileChangeListener {
         persistState();
     }
 
-    public boolean isLongSpeedListEnabled() {
-        return mIsLongSpeedListEnabled;
-    }
-
-    public void setLongSpeedListEnabled(boolean enable) {
-        mIsExtraLongSpeedListEnabled = false;
-        mIsLongSpeedListEnabled = enable;
-        persistState();
-    }
-
-    public boolean isExtraLongSpeedListEnabled() {
-        return mIsExtraLongSpeedListEnabled;
-    }
-
-    public void setExtraLongSpeedListEnabled(boolean enable) {
-        mIsLongSpeedListEnabled = false;
-        mIsExtraLongSpeedListEnabled = enable;
-        persistState();
-    }
-
     public boolean isSectionPlaylistEnabled() {
         return mIsSectionPlaylistEnabled;
     }
@@ -149,12 +127,9 @@ public class PlayerTweaksData implements ProfileChangeListener {
         /* 1 */ mIsSetOutputSurfaceWorkaroundEnabled = Helpers.parseBoolean(split, 1, true);
         /* 2 */ mIsPlaybackNotificationsDisabled = Helpers.parseBoolean(split, 2, !Helpers.isAndroidTVLauncher(mPrefs.getContext()));
 
-        /* 4 */ mIsLongSpeedListEnabled = Helpers.parseBoolean(split, 4, true);
-
         /* 6 */ mIsSectionPlaylistEnabled = Helpers.parseBoolean(split, 6, Utils.isEnoughRam());
         /* 7 */ mIsLoopShortsEnabled = Helpers.parseBoolean(split, 7, true);
         /* 8 */ mIsRememberPositionOfLiveVideosEnabled = Helpers.parseBoolean(split, 8, true);
-        /* 9 */ mIsExtraLongSpeedListEnabled = Helpers.parseBoolean(split, 9, false);
 
     }
 
@@ -166,12 +141,12 @@ public class PlayerTweaksData implements ProfileChangeListener {
             /* 1 */ mIsSetOutputSurfaceWorkaroundEnabled, 
             /* 2 */ mIsPlaybackNotificationsDisabled, 
             /* 3 */ null,
-            /* 4 */ mIsLongSpeedListEnabled, 
+            /* 4 */ null, 
             /* 5 */ null, 
             /* 6 */ mIsSectionPlaylistEnabled,
             /* 7 */ mIsLoopShortsEnabled, 
             /* 8 */ mIsRememberPositionOfLiveVideosEnabled,
-            /* 9 */ mIsExtraLongSpeedListEnabled
+            /* 9 */ null
             )
         );
     }

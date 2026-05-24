@@ -63,8 +63,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         category = AppDialogUtil.createPlaybackModeCategory(getContext());
         settingsPresenter.appendCategory(category);
         
-        appendVideoSpeedCategory(settingsPresenter);
-        
         category = AppDialogUtil.createAudioLanguageCategory(getContext());
         settingsPresenter.appendCategory(category);
 
@@ -80,16 +78,6 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
             }
         );
 
-    }
-
-    private void appendVideoSpeedCategory(AppDialogPresenter settingsPresenter) {
-        settingsPresenter.appendSingleButton(UiOptionItem.from(getContext().getString(R.string.video_speed), optionItem -> {
-            AppDialogPresenter settingsPresenter2 = AppDialogPresenter.instance(getContext());
-            settingsPresenter2.appendCategory(AppDialogUtil.createSpeedListCategory(getContext(), null));
-            settingsPresenter2.appendCategory(AppDialogUtil.createRememberSpeedCategory(getContext()));
-            settingsPresenter2.appendCategory(AppDialogUtil.createSpeedMiscCategory(getContext()));
-            settingsPresenter2.showDialog(getContext().getString(R.string.video_speed));
-        }));
     }
 
     private void appendMiscCategory(AppDialogPresenter settingsPresenter) {
