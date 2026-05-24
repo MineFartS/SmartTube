@@ -60,7 +60,6 @@ import minefarts.smarttube.exoplayer.controller.ExoPlayerController;
 import minefarts.smarttube.exoplayer.other.ExoPlayerInitializer;
 import minefarts.smarttube.exoplayer.other.SubtitleManager;
 import minefarts.smarttube.exoplayer.selector.FormatItem;
-import minefarts.smarttube.exoplayer.versions.renderer.CustomOverridesRenderersFactory;
 import minefarts.smarttube.exoplayer.versions.selector.RestoreTrackSelector;
 import minefarts.smarttube.prefs.PlayerData;
 import minefarts.smarttube.prefs.PlayerTweaksData;
@@ -460,7 +459,7 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         DefaultTrackSelector trackSelector = new RestoreTrackSelector(new AdaptiveTrackSelection.Factory());
         mExoPlayerController.setTrackSelector(trackSelector);
 
-        DefaultRenderersFactory renderersFactory = new CustomOverridesRenderersFactory(getContext());
+        DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(getContext());
         mPlayer = mPlayerInitializer.createPlayer(getContext(), renderersFactory, trackSelector);
 
         mExoPlayerController.setPlayer(mPlayer);
