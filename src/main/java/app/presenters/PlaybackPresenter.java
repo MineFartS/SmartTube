@@ -73,8 +73,10 @@ public class PlaybackPresenter extends BasePresenter<PlayerEngine> implements Pl
     @Override
     public void onViewInitialized() {
         super.onViewInitialized();
-        
-        mEventListeners.forEach(PlayerEventListener::onInit);
+
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onInit();
+        }
     }
 
 
@@ -207,14 +209,18 @@ public class PlaybackPresenter extends BasePresenter<PlayerEngine> implements Pl
 
     @Override
     public void onNewVideo(Video video) {
-        mEventListeners.forEach(listener -> listener.onNewVideo(video));
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onNewVideo(video);
+        }
         mVideo = new WeakReference<>(video);
         mIsEmbedPlayerStarted = true;
     }
 
     @Override
     public void onFinish() {
-        mEventListeners.forEach(PlayerEventListener::onFinish);
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onFinish();
+        }
     }
 
     @Override
@@ -224,33 +230,43 @@ public class PlaybackPresenter extends BasePresenter<PlayerEngine> implements Pl
 
     @Override
     public void onMetadata(MediaItemMetadata metadata) {
-        mEventListeners.forEach(listener -> listener.onMetadata(metadata));
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onMetadata(metadata);
+        }
     }
 
     // Common events
 
     @Override
     public void onViewCreated() {
-        mEventListeners.forEach(PlayerEventListener::onViewCreated);
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onViewCreated();
+        }
     }
 
     @Override
     public void onViewDestroyed() {
-        mEventListeners.forEach(PlayerEventListener::onViewDestroyed);
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onViewDestroyed();
+        }
     }
 
     @Override
     public void onViewPaused() {
         super.onViewPaused();
 
-        mEventListeners.forEach(PlayerEventListener::onViewPaused);
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onViewPaused();
+        }
     }
 
     @Override
     public void onViewResumed() {
         super.onViewResumed();
 
-        mEventListeners.forEach(PlayerEventListener::onViewResumed);
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onViewResumed();
+        }
     }
 
     // End common events
@@ -259,71 +275,97 @@ public class PlaybackPresenter extends BasePresenter<PlayerEngine> implements Pl
 
     @Override
     public void onSourceChanged(Video item) {
-        mEventListeners.forEach(listener -> listener.onSourceChanged(item));
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onSourceChanged(item);
+        }
     }
 
     @Override
     public void onEngineInitialized() {
         getTickleManager().addListener(this);
 
-        mEventListeners.forEach(PlayerEventListener::onEngineInitialized);
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onEngineInitialized();
+        }
     }
 
     @Override
     public void onEngineReleased() {
         getTickleManager().removeListener(this);
 
-        mEventListeners.forEach(PlayerEventListener::onEngineReleased);
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onEngineReleased();
+        }
     }
 
     @Override
     public void onEngineError(int type, int rendererIndex, Throwable error) {
-        mEventListeners.forEach(listener -> listener.onEngineError(type, rendererIndex, error));
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onEngineError(type, rendererIndex, error);
+        }
     }
 
     @Override
     public void onPlay() {
-        mEventListeners.forEach(PlayerEventListener::onPlay);
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onPlay();
+        }
     }
 
     @Override
     public void onPause() {
-        mEventListeners.forEach(PlayerEventListener::onPause);
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onPause();
+        }
     }
 
     @Override
     public void onPlayClicked() {
-        mEventListeners.forEach(PlayerEventListener::onPlayClicked);
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onPlayClicked();
+        }
     }
 
     @Override
     public void onPauseClicked() {
-        mEventListeners.forEach(PlayerEventListener::onPauseClicked);
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onPauseClicked();
+        }
     }
 
     @Override
     public void onSeekEnd() {
-        mEventListeners.forEach(PlayerEventListener::onSeekEnd);
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onSeekEnd();
+        }
     }
 
     @Override
     public void onSeekPositionChanged(long positionMs) {
-        mEventListeners.forEach(listener -> listener.onSeekPositionChanged(positionMs));
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onSeekPositionChanged(positionMs);
+        }
     }
 
     @Override
     public void onSpeedChanged(float speed) {
-        mEventListeners.forEach(listener -> listener.onSpeedChanged(speed));
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onSpeedChanged(speed);
+        }
     }
 
     @Override
     public void onPlayEnd() {
-        mEventListeners.forEach(PlayerEventListener::onPlayEnd);
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onPlayEnd();
+        }
     }
 
     @Override
     public void onBuffering() {
-        mEventListeners.forEach(PlayerEventListener::onBuffering);
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onBuffering();
+        }
     }
 
     @Override
@@ -341,12 +383,16 @@ public class PlaybackPresenter extends BasePresenter<PlayerEngine> implements Pl
 
     @Override
     public void onVideoLoaded(Video item) {
-        mEventListeners.forEach(listener -> listener.onVideoLoaded(item));
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onVideoLoaded(item);
+        }
     }
 
     @Override
     public void onTickle() {
-        mEventListeners.forEach(PlayerEventListener::onTickle);
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onTickle();
+        }
     }
 
     // End engine events
@@ -355,17 +401,23 @@ public class PlaybackPresenter extends BasePresenter<PlayerEngine> implements Pl
 
     @Override
     public void onSuggestionItemClicked(Video item) {
-        mEventListeners.forEach(listener -> listener.onSuggestionItemClicked(item));
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onSuggestionItemClicked(item);
+        }
     }
 
     @Override
     public void onSuggestionItemLongClicked(Video item) {
-        mEventListeners.forEach(listener -> listener.onSuggestionItemLongClicked(item));
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onSuggestionItemLongClicked(item);
+        }
     }
 
     @Override
     public void onScrollEnd(Video item) {
-        mEventListeners.forEach(listener -> listener.onScrollEnd(item));
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onScrollEnd(item);
+        }
     }
 
     @Override
@@ -395,17 +447,23 @@ public class PlaybackPresenter extends BasePresenter<PlayerEngine> implements Pl
 
     @Override
     public void onTrackSelected(FormatItem track) {
-        mEventListeners.forEach(listener -> listener.onTrackSelected(track));
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onTrackSelected(track);
+        }
     }
 
     @Override
     public void onControlsShown(boolean shown) {
-        mEventListeners.forEach(listener -> listener.onControlsShown(shown));
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onControlsShown(shown);
+        }
     }
 
     @Override
     public void onTrackChanged(FormatItem track) {
-        mEventListeners.forEach(listener -> listener.onTrackChanged(track));
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onTrackChanged(track);
+        }
     }
 
     @Override
@@ -413,13 +471,17 @@ public class PlaybackPresenter extends BasePresenter<PlayerEngine> implements Pl
 
         //super.onButtonClicked(buttonId, buttonState);
 
-        mEventListeners.forEach(listener -> listener.onButtonClicked(buttonId, buttonState));
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onButtonClicked(buttonId, buttonState);
+        }
         
     }
 
     @Override
     public void onButtonLongClicked(int buttonId, int buttonState) {
-        mEventListeners.forEach(listener -> listener.onButtonLongClicked(buttonId, buttonState));
+        for (PlayerEventListener listener : mEventListeners) {
+            listener.onButtonLongClicked(buttonId, buttonState);
+        }
     }
 
     // End UI events
