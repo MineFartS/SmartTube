@@ -14,7 +14,7 @@ import com.liskovsoft.sharedutils.app.nsigsolver.runtime.ScriptVariant
 internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     private val tag = V8ChallengeProvider::class.simpleName
     private val v8NpmLibFilename = listOf("${libPrefix}polyfill.js", "${libPrefix}meriyah-6.1.4.min.js", "${libPrefix}astring-1.9.0.min.js")
-    private var v8Runtime: V8? = null
+    private val v8Runtime = ThreadLocal<V8>()
     private val v8Lock = Any()
 
     override fun iterScriptSources(): Sequence<Pair<ScriptSource, (ScriptType) -> Script?>> = sequence {
@@ -35,18 +35,17 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
 
     override fun runJsRuntime(stdin: String): String {
         synchronized(v8Lock) {
-            initRuntime()
-
-            val result = runV8(stdin)
-
-            shutdownIfNeeded()
-
-            return result
+            try {
+                initRuntime()
+                return runV8(stdin)
+            } finally {
+                shutdownIfNeeded()
+            }
         }
     }
 
     private fun runV8(stdin: String): String {
-        val runtime = v8Runtime ?: throw JsChallengeProviderError("V8 runtime not initialized yet")
+        val runtime = v8Runtime.get() ?: throw JsChallengeProviderError("V8 runtime not initialized yet")
         try {
             return runtime.withLock {
                 it.executeStringScript(stdin) ?: throw JsChallengeProviderError("V8 runtime error: empty response")
@@ -59,22 +58,22 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     }
 
     private fun initRuntime() {
-        if (v8Runtime != null)
+        if (v8Runtime.get() != null)
             return
-        v8Runtime = V8.createV8Runtime()
+        v8Runtime.set(V8.createV8Runtime())
         runV8(constructCommonStdin()) // ignore the result, just warm up
     }
 
     private fun disposeRuntime() {
-        val runtime = v8Runtime ?: return
+        val runtime = v8Runtime.get() ?: return
 
         // NOTE: getting lock fixes "Invalid V8 thread access: the locker has been released!"
         runtime.withLock {
             it.release(false)
         }
-        v8Runtime = null
+        v8Runtime.remove()
     }
-    
+
     fun warmup() {
         synchronized(v8Lock) {
             initRuntime()
