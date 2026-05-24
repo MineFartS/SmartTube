@@ -5,15 +5,12 @@ import com.google.android.exoplayer2.mediacodec.MediaCodecInfo;
 import com.google.android.exoplayer2.mediacodec.MediaCodecSelector;
 import com.google.android.exoplayer2.mediacodec.MediaCodecUtil;
 import com.liskovsoft.sharedutils.mylogger.Log;
-import minefarts.smarttube.exoplayer.versions.renderer.CustomOverridesRenderersFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Usage {@link CustomOverridesRenderersFactory#setMediaCodecSelector}
- */
 public class BlacklistMediaCodecSelector implements MediaCodecSelector {
+
     private static final String TAG = BlacklistMediaCodecSelector.class.getSimpleName();
 
     // list of strings used in blacklisting codecs
