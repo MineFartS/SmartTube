@@ -20,7 +20,7 @@ if ($Force) {
 
 Clear-Host
 
-if (Connect-ADB) {
+if (Test-ADBConnection) {
     $gARGS.Insert(0, ":installDebug")
 } else {
     $gARGS.Insert(0, ":build")

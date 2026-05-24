@@ -2,26 +2,23 @@ Import-Module "$PSScriptRoot/__mod__.psm1" -Force
 
 Repair-Environment
 
-Connect-ADB
-
 while ($true) {
 
     Clear-Host
 
-    $_pid = Get-PID
+    $_pid = Invoke-ADB shell pidof $APP_ID
 
     if ($null -ne $_pid) {
 
         # Clear Buffer
-        Invoke-Logcat -c
+        Invoke-ADB 'logcat' '-c'
 
         if ($null -eq $_pid) {
-            Invoke-Logcat `
-                "--pid=$($_pid)" `
-                -v color 
+            Invoke-ADB 'logcat' -v color
         } else {
-            Invoke-Logcat `
-                -v color
+            Invoke-ADB 'logcat' `
+                "--pid=$($_pid)" `
+                '-v' 'color'
         }
 
     }
