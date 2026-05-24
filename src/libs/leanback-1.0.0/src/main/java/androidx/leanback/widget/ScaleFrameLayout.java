@@ -1,4 +1,3 @@
-
 package androidx.leanback.widget;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
@@ -26,6 +25,7 @@ public class ScaleFrameLayout extends FrameLayout {
     private float mLayoutScaleY = 1f;
 
     private float mChildScale = 1f;
+    private float mAspectRatio = 0f;
 
     public ScaleFrameLayout(Context context) {
         this(context ,null);
@@ -61,6 +61,13 @@ public class ScaleFrameLayout extends FrameLayout {
                 getChildAt(i).setScaleX(scale);
                 getChildAt(i).setScaleY(scale);
             }
+        }
+    }
+
+    public void setAspectRatio(float aspectRatio) {
+        if (mAspectRatio != aspectRatio) {
+            mAspectRatio = aspectRatio;
+            requestLayout();
         }
     }
 
@@ -174,6 +181,36 @@ public class ScaleFrameLayout extends FrameLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (mAspectRatio > 0f) {
+            final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+            final int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+            final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+            final int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+
+            if (widthMode == MeasureSpec.EXACTLY && heightMode != MeasureSpec.EXACTLY) {
+                int height = (int) (widthSize / mAspectRatio + 0.5f);
+                if (heightMode == MeasureSpec.AT_MOST && height > heightSize) {
+                    height = heightSize;
+                }
+                heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+            } else if (heightMode == MeasureSpec.EXACTLY && widthMode != MeasureSpec.EXACTLY) {
+                int width = (int) (heightSize * mAspectRatio + 0.5f);
+                if (widthMode == MeasureSpec.AT_MOST && width > widthSize) {
+                    width = widthSize;
+                }
+                widthMeasureSpec = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY);
+            } else if (widthMode == MeasureSpec.AT_MOST && heightMode == MeasureSpec.AT_MOST) {
+                int width = widthSize;
+                int height = (int) (width / mAspectRatio + 0.5f);
+                if (height > heightSize) {
+                    height = heightSize;
+                    width = (int) (height * mAspectRatio + 0.5f);
+                }
+                widthMeasureSpec = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY);
+                heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+            }
+        }
+
         if (mLayoutScaleX != 1f || mLayoutScaleY != 1f) {
             final int scaledWidthMeasureSpec =
                     getScaledMeasureSpec(widthMeasureSpec, mLayoutScaleX);

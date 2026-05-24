@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.ui;
 
 import android.content.Context;
@@ -86,35 +85,32 @@ public final class AspectRatioFrameLayout extends FrameLayout {
   protected void onMeasure(
     int widthMeasureSpec,
     int heightMeasureSpec
-) {
+  ) {
 
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    
+
     // Aspect ratio not set.
     if (videoAspectRatio <= 0) return;
 
     int width = getMeasuredWidth();
     int height = getMeasuredHeight();
+    if (width == 0 || height == 0) return;
 
     float viewAspectRatio = (float) width / height;
-
-    if (videoAspectRatio / viewAspectRatio > 1) {
-        height = (int) (width / videoAspectRatio);
+    if (videoAspectRatio > viewAspectRatio) {
+      height = (int) (width / videoAspectRatio + 0.5f);
     } else {
-        width  = (int) (height * videoAspectRatio);
+      width = (int) (height * videoAspectRatio + 0.5f);
     }
 
     aspectRatioUpdateDispatcher.scheduleUpdate(
-        videoAspectRatio, 
-        viewAspectRatio, 
+        videoAspectRatio,
+        viewAspectRatio,
         true
     );
-    
-    super.onMeasure(
-        MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
-        MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
-    );
 
+    setMeasuredDimension(width, height);
+    
   }
 
   /** Dispatches updates to {@link AspectRatioListener}. */
