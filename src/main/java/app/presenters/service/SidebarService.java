@@ -257,13 +257,13 @@ public class SidebarService implements ProfileChangeListener {
         );
 
         mDefaultSections.put(
-            R.string.header_channels, 
-            MediaGroup.TYPE_CHANNEL_UPLOADS
+            R.string.header_subscriptions, 
+            MediaGroup.TYPE_SUBSCRIPTIONS
         );
 
         mDefaultSections.put(
-            R.string.header_subscriptions, 
-            MediaGroup.TYPE_SUBSCRIPTIONS
+            R.string.header_channels, 
+            MediaGroup.TYPE_CHANNEL_UPLOADS
         );
 
         mDefaultSections.put(
