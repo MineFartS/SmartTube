@@ -557,12 +557,13 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
             || (!mVideo.isChannel() && !mVideo.hasVideo())
         ) return;
 
-        SubscribeAction.refresh(mVideo);
-
-        mDialogPresenter.appendSingleButton(UiOptionItem.from(
-            mVideo.isSubscribed ? "Unsubscribe" : "Subscribe",
-            optionItem -> SubscribeAction.toggle(mVideo)
-        ));
+        SubscribeAction.refresh(
+            mVideo,
+            () -> mDialogPresenter.appendSingleButton(UiOptionItem.from(
+                mVideo.isSubscribed ? "Unsubscribe" : "Subscribe",
+                optionItem -> SubscribeAction.toggle(mVideo)
+            ))
+        );
 
     }
 

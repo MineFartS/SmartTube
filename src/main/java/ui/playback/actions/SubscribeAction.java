@@ -61,9 +61,15 @@ public class SubscribeAction extends TwoStateAction {
     public static void refresh(Video video) {
 
         MediaItemMetadata metadata = mWatchNextService.getMetadata(video.videoId);
-
         video.isSubscribed = metadata.isSubscribed();
+    
+    }
 
+    public static void refresh(Video video, Runnable callback) {
+        RxHelper.runAsync(() -> {
+            refresh(video);
+            callback.run();
+        });
     }
 
     private static void dotoggle(Video video) {
