@@ -379,8 +379,6 @@ public class VideoStateController extends BasePlayerController {
 
         getStateService().save(state);
 
-        getSignInService().checkAuth();
-
         if (mFormatInfoUpdateDisposable != null) {
             mFormatInfoUpdateDisposable.dispose();
             mFormatInfoUpdateDisposable = null;
@@ -390,50 +388,36 @@ public class VideoStateController extends BasePlayerController {
 
         mFormatInfoUpdateDisposable = observe.subscribe((MediaItemFormatInfo formatInfo) -> {
 
-                if (formatInfo == null) {
-                    Log.e(TAG, "Can't update history for video id %s. formatInfo == null", video.videoId);
-                    return;
-                }
+            getSignInService().checkAuth();
 
-                if (!formatInfo.isAuth() && !formatInfo.isUnplayable() && getSignInService().isSigned()) {
+            if (formatInfo == null) {
+                Log.e(TAG, "Can't update history for video id %s. formatInfo == null", video.videoId);
+                return;
+            }
 
-                    VideoInfo videoInfo = getVideoInfoService().getAuthVideoInfo(
-                        formatInfo.getVideoId(),
-                        formatInfo.getClickTrackingParams()
-                    );
+            if (!formatInfo.isAuth() && !formatInfo.isUnplayable() && getSignInService().isSigned()) {
 
-                    formatInfo.sync(MediaItemFormatInfo.from(videoInfo));
+                VideoInfo videoInfo = getVideoInfoService().getAuthVideoInfo(
+                    formatInfo.getVideoId(),
+                    formatInfo.getClickTrackingParams()
+                );
 
-                }
+                formatInfo.sync(MediaItemFormatInfo.from(videoInfo));
 
-                float positionSec = positionMs / 1_000f;
-                float lengthSec = Helpers.parseFloat(formatInfo.getLengthSeconds());
+            }
 
-                if (mVideoId == null || !mVideoId.equals(video.videoId)) {
+            float positionSec = positionMs / 1_000f;
+            float lengthSec = Helpers.parseFloat(formatInfo.getLengthSeconds());
 
-                    mVideoId = video.videoId;
-                    mPositionSec = 0;
+            if (mVideoId == null || !mVideoId.equals(video.videoId)) {
 
-                    Call<TrackingApi.EmptyResult> wrapper = mTrackingApi.createWatchRecord(
-                        video.videoId,
-                        lengthSec,
-                        mPositionSec,
-                        getAppService().getClientPlaybackNonce(),
-                        formatInfo.getEventId(),
-                        formatInfo.getVisitorMonitoringData(),
-                        formatInfo.getOfParam()
-                    );
+                mVideoId = video.videoId;
+                mPositionSec = 0;
 
-                    RetrofitHelper.get(wrapper); // execute
-
-                }
-
-                Call<TrackingApi.EmptyResult> wrapper = mTrackingApi.updateWatchTime(
+                Call<TrackingApi.EmptyResult> wrapper = mTrackingApi.createWatchRecord(
                     video.videoId,
                     lengthSec,
                     mPositionSec,
-                    positionSec,
-                    positionSec,
                     getAppService().getClientPlaybackNonce(),
                     formatInfo.getEventId(),
                     formatInfo.getVisitorMonitoringData(),
@@ -442,9 +426,25 @@ public class VideoStateController extends BasePlayerController {
 
                 RetrofitHelper.get(wrapper); // execute
 
-                mPositionSec = positionSec;
+            }
 
-            });
+            Call<TrackingApi.EmptyResult> wrapper = mTrackingApi.updateWatchTime(
+                video.videoId,
+                lengthSec,
+                mPositionSec,
+                positionSec,
+                positionSec,
+                getAppService().getClientPlaybackNonce(),
+                formatInfo.getEventId(),
+                formatInfo.getVisitorMonitoringData(),
+                formatInfo.getOfParam()
+            );
+
+            RetrofitHelper.get(wrapper); // execute
+
+            mPositionSec = positionSec;
+
+        });
 
     }
 
