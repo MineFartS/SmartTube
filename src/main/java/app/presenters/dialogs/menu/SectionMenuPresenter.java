@@ -79,7 +79,11 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
         mSection = section;
         mVideo = section.getData() instanceof Video ? (Video) section.getData() : null;
 
-        ServiceManager.authCheck(this::obtainPlaylistsAndShowDialogSigned, this::prepareAndShowDialogUnsigned);
+        ServiceManager.authCheck(
+            this::obtainPlaylistsAndShowDialogSigned, 
+            this::prepareAndShowDialogUnsigned
+        );
+        
     }
 
     private void obtainPlaylistsAndShowDialogSigned() {
