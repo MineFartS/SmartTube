@@ -250,19 +250,16 @@ public class ServiceManager {
     }
 
     public static void authCheck(Runnable onSuccess, Runnable onError) {
-        if (onSuccess == null && onError == null) {
-            return;
-        }
+        if (onSuccess == null && onError == null) return;
 
         if (getSignInService().isSigned()) {
             if (onSuccess != null) {
-                onSuccess.run();
+                RxHelper.runAsync(onSuccess);
             }
-        } else {
-            if (onError != null) {
-                onError.run();
-            }
+        } else if (onError != null) {
+            RxHelper.runAsync(onError);
         }
+        
     }
 
     public static void disposeActions() {
