@@ -7,7 +7,6 @@ import minefarts.smarttube.misc.ServiceManager;
 import com.liskovsoft.sharedutils.SignInService;
 import com.liskovsoft.sharedutils.oauth.Account;
 import minefarts.smarttube.R;
-import minefarts.smarttube.app.models.playback.ui.OptionItem;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
@@ -74,7 +73,7 @@ public class AccountSelectionPresenter extends BasePresenter<Void> {
     }
 
     private void appendAccountSelection(List<Account> accounts, AppDialogPresenter settingsPresenter) {
-        List<OptionItem> optionItems = new ArrayList<>();
+        List<UiOptionItem> optionItems = new ArrayList<>();
 
         optionItems.add(UiOptionItem.from(
                 getContext().getString(R.string.dialog_account_none), optionItem -> {

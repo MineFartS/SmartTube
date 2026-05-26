@@ -21,7 +21,6 @@ import minefarts.smarttube.app.models.data.VideoGroup;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.app.models.playback.PlayerEngine;
 import minefarts.smarttube.app.models.playback.ui.OptionCategory;
-import minefarts.smarttube.app.models.playback.ui.OptionItem;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.ChannelPresenter;
@@ -714,7 +713,7 @@ public class PlayerUIController extends BasePlayerController {
 
         AppDialogPresenter settingsPresenter = getAppDialogPresenter();
 
-        List<OptionItem> items = new ArrayList<>();
+        List<UiOptionItem> items = new ArrayList<>();
 
         for (NotificationState item : getVideo().notificationStates) {
             items.add(UiOptionItem.from(item.getTitle(), optionItem -> {

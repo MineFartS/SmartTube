@@ -11,7 +11,6 @@ import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.data.VideoGroup;
-import minefarts.smarttube.app.models.playback.ui.OptionItem;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.models.search.MediaServiceSearchTagProvider;
 import minefarts.smarttube.app.models.search.vineyard.Tag;
@@ -307,7 +306,7 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
     }
 
     private void appendFilterByDateCategory(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
         for (int[] pair : new int[][] {
                 {R.string.upload_date_any, 0},
@@ -328,7 +327,7 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
     }
 
     private void appendFilterByDurationCategory(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
         for (int[] pair : new int[][] {
                 {R.string.video_duration_any, 0},
@@ -347,7 +346,7 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
     }
 
     private void appendFilterByTypeCategory(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
         for (int[] pair : new int[][] {
                 {R.string.content_type_any, 0},
@@ -367,7 +366,7 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
     }
 
     private void appendFilterByFeatureCategory(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
         for (int[] pair : new int[][] {
                 {R.string.video_feature_live, SearchOptions.FEATURE_LIVE},
@@ -392,7 +391,7 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
         ritems.put("View Count",  SearchOptions.SORT_BY_VIEW_COUNT);
         ritems.put("Rating",      SearchOptions.SORT_BY_RATING);
 
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
         for (Entry<String, Integer> i : ritems.entrySet()) {
             options.add(UiOptionItem.from(

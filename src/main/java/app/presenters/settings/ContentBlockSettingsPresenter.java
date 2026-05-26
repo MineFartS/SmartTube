@@ -3,10 +3,10 @@ package minefarts.smarttube.app.presenters.settings;
 import android.content.Context;
 import android.text.TextUtils;
 import androidx.core.content.ContextCompat;
+
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.controllers.ContentBlockController.SegmentAction;
-import minefarts.smarttube.app.models.playback.ui.OptionItem;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
@@ -16,7 +16,6 @@ import minefarts.smarttube.misc.ServiceManager;
 import minefarts.smarttube.prefs.ContentBlockData;
 import minefarts.smarttube.utils.AppDialogUtil;
 import minefarts.smarttube.utils.Utils;
-
 import com.liskovsoft.sharedutils.data.SponsorSegment;
 
 import java.util.ArrayList;
@@ -70,7 +69,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
 
         boolean isChannelExcluded = ContentBlockData.instance(getContext()).isChannelExcluded(channelId);
 
-        OptionItem sponsorBlockOption = UiOptionItem.from(getContext().getString(R.string.enable),
+        UiOptionItem sponsorBlockOption = UiOptionItem.from(getContext().getString(R.string.enable),
             option -> {
                 mContentBlockData.enableSponsorBlock(option.isSelected());
                 ContentBlockData.instance(getContext()).stopExcludingChannel(channelId);
@@ -84,7 +83,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
 
     private void appendActionsSection(AppDialogPresenter settingsPresenter) {
 
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
         for (SegmentAction action : mContentBlockData.getActions()) {
             options.add(
@@ -99,7 +98,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
                     
                         AppDialogPresenter dialogPresenter = AppDialogPresenter.instance(getContext());
 
-                        List<OptionItem> nestedOptions = new ArrayList<>();
+                        List<UiOptionItem> nestedOptions = new ArrayList<>();
                         
                         nestedOptions.add(
                             UiOptionItem.from(
@@ -138,7 +137,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
 
     private void appendColorMarkersSection(AppDialogPresenter settingsPresenter) {
 
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
         for (String segmentCategory : mContentBlockData.getAllCategories()) {
             options.add(
@@ -167,10 +166,10 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendLinks(AppDialogPresenter settingsPresenter) {
-        OptionItem statsCheckOption = UiOptionItem.from(getContext().getString(R.string.content_block_status),
+        UiOptionItem statsCheckOption = UiOptionItem.from(getContext().getString(R.string.content_block_status),
                 option -> Utils.openLink(getContext(), getContext().getString(R.string.content_block_status_url)));
 
-        OptionItem webSiteOption = UiOptionItem.from(getContext().getString(R.string.about_sponsorblock),
+        UiOptionItem webSiteOption = UiOptionItem.from(getContext().getString(R.string.about_sponsorblock),
                 option -> Utils.openLink(getContext(), getContext().getString(R.string.content_block_provider_url)));
 
         settingsPresenter.appendSingleButton(statsCheckOption);

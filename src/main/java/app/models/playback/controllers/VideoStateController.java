@@ -19,7 +19,6 @@ import minefarts.smarttube.utils.Utils;
 import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import minefarts.smarttube.app.models.playback.ui.OptionCategory;
-import minefarts.smarttube.app.models.playback.ui.OptionItem;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 
 import io.reactivex.Observable;
@@ -339,7 +338,7 @@ public class VideoStateController extends BasePlayerController {
 
         if (buttonId == R.id.action_video_speed) {
 
-            List<OptionItem> items = new ArrayList<>();
+            List<UiOptionItem> items = new ArrayList<>();
 
             for (float speed : SPEED_LIST) {
                 

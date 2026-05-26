@@ -7,7 +7,6 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.locale.LocaleUtility;
 import minefarts.smarttube.R;
-import minefarts.smarttube.app.models.playback.ui.OptionItem;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.dialogs.AppUpdatePresenter;
@@ -82,7 +81,7 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendUpdateCheckButton(AppDialogPresenter settingsPresenter) {
-        OptionItem updateCheckOption = UiOptionItem.from(
+        UiOptionItem updateCheckOption = UiOptionItem.from(
             getContext().getString(R.string.check_for_updates),
             option -> AppUpdatePresenter.instance(getContext()).start(true)
         );
@@ -98,7 +97,7 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
             return;
         }
 
-        List<OptionItem> changelog = new ArrayList<>();
+        List<UiOptionItem> changelog = new ArrayList<>();
 
         for (String change : changes) {
             changelog.add(UiOptionItem.from(change));

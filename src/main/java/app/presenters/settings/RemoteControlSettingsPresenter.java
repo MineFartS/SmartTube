@@ -7,7 +7,6 @@ import com.liskovsoft.sharedutils.RemoteControlService;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.helpers.PermissionHelpers;
 import minefarts.smarttube.R;
-import minefarts.smarttube.app.models.playback.ui.OptionItem;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AddDevicePresenter;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
@@ -106,9 +105,9 @@ public class RemoteControlSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendRemoveAllDevicesButton(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
-        OptionItem confirmItem = UiOptionItem.from(
+        UiOptionItem confirmItem = UiOptionItem.from(
                 getContext().getString(R.string.btn_confirm), option -> {
                     RxHelper.execute(mRemoteManager.resetDataObserve());
                     MessageHelpers.showMessage(getContext(), R.string.msg_done);
@@ -125,7 +124,7 @@ public class RemoteControlSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendMiscCategory(AppDialogPresenter settingsPresenter) {
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
         options.add(UiOptionItem.from(getContext().getString(R.string.finish_on_disconnect),
                 option -> mRemoteControlData.enableFinishOnDisconnect(option.isSelected()),

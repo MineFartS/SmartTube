@@ -7,7 +7,7 @@ import android.os.Looper;
 
 import com.liskovsoft.sharedutils.misc.WeakHashSet;
 import minefarts.smarttube.app.models.playback.ui.OptionCategory;
-import minefarts.smarttube.app.models.playback.ui.OptionItem;
+import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.views.AppDialogView;
 import minefarts.smarttube.utils.Utils;
@@ -168,35 +168,35 @@ public class AppDialogPresenter extends BasePresenter<AppDialogView> {
         mCategories.add(category);
     }
 
-    public void appendRadioCategory(String categoryTitle, List<OptionItem> items) {
+    public void appendRadioCategory(String categoryTitle, List<UiOptionItem> items) {
         mCategories.add(OptionCategory.radioList(categoryTitle, items));
     }
 
-    public void appendCheckedCategory(String categoryTitle, List<OptionItem> items) {
+    public void appendCheckedCategory(String categoryTitle, List<UiOptionItem> items) {
         mCategories.add(OptionCategory.checkedList(categoryTitle, items));
     }
 
-    public void appendStringsCategory(String categoryTitle, List<OptionItem> items) {
+    public void appendStringsCategory(String categoryTitle, List<UiOptionItem> items) {
         mCategories.add(OptionCategory.stringList(categoryTitle, items));
     }
 
-    public void appendLongTextCategory(String categoryTitle, OptionItem item) {
+    public void appendLongTextCategory(String categoryTitle, UiOptionItem item) {
         mCategories.add(OptionCategory.longText(categoryTitle, item));
     }
 
-    public void appendChatCategory(String categoryTitle, OptionItem item) {
+    public void appendChatCategory(String categoryTitle, UiOptionItem item) {
         mCategories.add(OptionCategory.chat(categoryTitle, item));
     }
 
-    public void appendCommentsCategory(String categoryTitle, OptionItem item) {
+    public void appendCommentsCategory(String categoryTitle, UiOptionItem item) {
         mCategories.add(OptionCategory.comments(categoryTitle, item));
     }
 
-    public void appendSingleSwitch(OptionItem optionItem) {
+    public void appendSingleSwitch(UiOptionItem optionItem) {
         mCategories.add(OptionCategory.singleSwitch(optionItem));
     }
 
-    public void appendSingleButton(OptionItem optionItem) {
+    public void appendSingleButton(UiOptionItem optionItem) {
         mCategories.add(OptionCategory.singleButton(optionItem));
     }
 

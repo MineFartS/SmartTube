@@ -11,7 +11,6 @@ import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Video;
-import minefarts.smarttube.app.models.playback.ui.OptionItem;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
@@ -72,7 +71,7 @@ public class ChannelGroupMenuProvider extends ContextMenuProvider {
 
         List<ItemGroup> groups = mService.getChannelGroups();
 
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
         // Create new group or enter url
         String editDialogTitle = mContext.getString(R.string.new_subscriptions_group);
