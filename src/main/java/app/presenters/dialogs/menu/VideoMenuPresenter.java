@@ -61,7 +61,6 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
     private boolean mIsRemoveFromSubscriptionsButtonEnabled;
     private boolean mIsOpenChannelButtonEnabled;
     private boolean mIsOpenChannelUploadsButtonEnabled;
-    private boolean mIsSubscribeButtonEnabled;
     private boolean mIsShareLinkButtonEnabled;
     private boolean mIsShareQRLinkButtonEnabled;
     private boolean mIsShareEmbedLinkButtonEnabled;
@@ -199,11 +198,6 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         );
 
         mMenuMapping.put(
-            MainUIData.MENU_ITEM_SUBSCRIBE, 
-            new MenuAction(this::appendSubscribeButton, false)
-        );
-
-        mMenuMapping.put(
             MainUIData.MENU_ITEM_EXCLUDE_FROM_CONTENT_BLOCK, 
             new MenuAction(this::appendToggleExcludeFromContentBlockButton, false)
         );
@@ -291,9 +285,7 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
     }
 
     public void showMenu(Video video) {
-        if (video == null) {
-            return;
-        }
+        if (video == null) return;
 
         mVideo = video;
         sVideoHolder = new WeakReference<>(video);
@@ -333,6 +325,7 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
             }
         
         );
+
     }
 
     private void prepareAndShowDialogSigned() {
@@ -693,23 +686,6 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         mDialogPresenter.showDialog(mVideo.getTitle());
     }
 
-    private void appendSubscribeButton() {
-
-        if (!mIsSubscribeButtonEnabled 
-            || mVideo == null 
-            || mVideo.isPlaylistAsChannel() 
-            || (!mVideo.isChannel() && !mVideo.hasVideo())
-        ) return;
-
-        SubscribeAction.refresh(mVideo);
-
-        mDialogPresenter.appendSingleButton(UiOptionItem.from(
-            mVideo.isSubscribed ? "Unsubscribe" : "Subscribe",
-            oi -> SubscribeAction.toggle(mVideo)
-        ));
-
-    }
-
     private void appendAddToPlaybackQueueButton() {
         if (!mIsAddToPlaybackQueueButtonEnabled) {
             return;
@@ -838,7 +814,6 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         mIsRemoveFromSubscriptionsButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_REMOVE_FROM_SUBSCRIPTIONS);
         mIsOpenDescriptionButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_OPEN_DESCRIPTION);
         mIsPlayVideoButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_PLAY_VIDEO);
-        mIsSubscribeButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_SUBSCRIBE);
         mIsPlaylistOrderButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_PLAYLIST_ORDER);
         mIsMarkAsWatchedButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_MARK_AS_WATCHED);
         mIsOpenCommentsButtonEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_OPEN_COMMENTS);
