@@ -5,55 +5,55 @@ import java.util.Collections;
 import java.util.List;
 
 public class OptionCategory {
-    public static OptionCategory radioList(String title, List<OptionItem> items) {
+    public static OptionCategory radioList(String title, List<UiOptionItem> items) {
         return new OptionCategory(title, items, TYPE_RADIO_LIST);
     }
 
-    public static OptionCategory checkedList(String title, List<OptionItem> items) {
+    public static OptionCategory checkedList(String title, List<UiOptionItem> items) {
         return new OptionCategory(title, items, TYPE_CHECKBOX_LIST);
     }
 
-    public static OptionCategory stringList(String title, List<OptionItem> items) {
+    public static OptionCategory stringList(String title, List<UiOptionItem> items) {
         return new OptionCategory(title, items, TYPE_STRING_LIST);
     }
 
-    public static OptionCategory longText(String title, OptionItem item) {
+    public static OptionCategory longText(String title, UiOptionItem item) {
         return new OptionCategory(title, Collections.singletonList(item), TYPE_LONG_TEXT);
     }
 
-    public static OptionCategory chat(String title, OptionItem item) {
+    public static OptionCategory chat(String title, UiOptionItem item) {
         return new OptionCategory(title, Collections.singletonList(item), TYPE_CHAT);
     }
 
-    public static OptionCategory comments(String title, OptionItem item) {
+    public static OptionCategory comments(String title, UiOptionItem item) {
         return new OptionCategory(title, Collections.singletonList(item), TYPE_COMMENTS);
     }
 
-    public static OptionCategory singleSwitch(OptionItem item) {
-        ArrayList<OptionItem> items = new ArrayList<>();
+    public static OptionCategory singleSwitch(UiOptionItem item) {
+        ArrayList<UiOptionItem> items = new ArrayList<>();
         items.add(item);
         return new OptionCategory(null, items, TYPE_SINGLE_SWITCH);
     }
 
-    public static OptionCategory singleButton(OptionItem item) {
-        ArrayList<OptionItem> items = new ArrayList<>();
+    public static OptionCategory singleButton(UiOptionItem item) {
+        ArrayList<UiOptionItem> items = new ArrayList<>();
         items.add(item);
         return new OptionCategory(null, items, TYPE_SINGLE_BUTTON);
     }
 
-    public static OptionCategory from(int id, int type, String title, List<OptionItem> options) {
+    public static OptionCategory from(int id, int type, String title, List<UiOptionItem> options) {
         return new OptionCategory(title, options, type, id);
     }
 
-    public static OptionCategory from(int id, int type, String title, OptionItem option) {
+    public static OptionCategory from(int id, int type, String title, UiOptionItem option) {
         return new OptionCategory(title, Collections.singletonList(option), type, id);
     }
 
-    private OptionCategory(String title, List<OptionItem> options, int type) {
+    private OptionCategory(String title, List<UiOptionItem> options, int type) {
         this(title, options, type, -1);
     }
 
-    private OptionCategory(String title, List<OptionItem> options, int type, int id) {
+    private OptionCategory(String title, List<UiOptionItem> options, int type, int id) {
         this.id = id;
         this.type = type;
         this.title = title;
@@ -71,5 +71,5 @@ public class OptionCategory {
     public final int id;
     public final int type;
     public final String title;
-    public final List<OptionItem> options;
+    public final List<UiOptionItem> options;
 }

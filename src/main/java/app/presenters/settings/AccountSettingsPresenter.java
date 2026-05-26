@@ -5,7 +5,6 @@ import android.content.Context;
 import com.liskovsoft.sharedutils.oauth.Account;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import minefarts.smarttube.R;
-import minefarts.smarttube.app.models.playback.ui.OptionItem;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
@@ -92,7 +91,7 @@ public class AccountSettingsPresenter extends BasePresenter<Void> {
             return;
         }
 
-        List<OptionItem> optionItems = new ArrayList<>();
+        List<UiOptionItem> optionItems = new ArrayList<>();
 
         optionItems.add(UiOptionItem.from(
                 getContext().getString(R.string.dialog_account_none), optionItem -> {
@@ -124,7 +123,7 @@ public class AccountSettingsPresenter extends BasePresenter<Void> {
             return;
         }
 
-        List<OptionItem> optionItems = new ArrayList<>();
+        List<UiOptionItem> optionItems = new ArrayList<>();
 
         for (Account account : accounts) {
             optionItems.add(UiOptionItem.from(

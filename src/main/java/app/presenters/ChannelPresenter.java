@@ -10,7 +10,6 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.data.VideoGroup;
-import minefarts.smarttube.app.models.playback.ui.OptionItem;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.models.playback.controllers.VideoLoaderController;
@@ -337,7 +336,7 @@ public class ChannelPresenter extends BasePresenter<ChannelView> implements Vide
 
         AppDialogPresenter dialogPresenter = AppDialogPresenter.instance(getContext());
 
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
         AtomicInteger i = new AtomicInteger(0);
 

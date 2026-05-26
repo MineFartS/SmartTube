@@ -9,7 +9,6 @@ import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.app.models.playback.ui.ChatReceiver;
 import minefarts.smarttube.app.models.playback.ui.ChatReceiverImpl;
-import minefarts.smarttube.app.models.playback.ui.OptionItem;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.misc.ServiceManager;
@@ -95,7 +94,7 @@ public class ChatController extends BasePlayerController {
 
         if (buttonId == R.id.action_chat) {
 
-            List<OptionItem> options = new ArrayList<>();
+            List<UiOptionItem> options = new ArrayList<>();
 
             options.add(UiOptionItem.from(
                 getContext().getString(R.string.option_disabled),

@@ -7,7 +7,6 @@ import minefarts.smarttube.AppUpdateCheckerListener;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.errors.ErrorFragmentData;
-import minefarts.smarttube.app.models.playback.ui.OptionItem;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
@@ -155,8 +154,8 @@ public class AppUpdatePresenter extends BasePresenter<Void> implements AppUpdate
         });
     }
 
-    private List<OptionItem> createChangelogOptions(ArrayList<String> changelog) {
-        List<OptionItem> options = new ArrayList<>();
+    private List<UiOptionItem> createChangelogOptions(ArrayList<String> changelog) {
+        List<UiOptionItem> options = new ArrayList<>();
 
         for (String change : changelog) {
             options.add(UiOptionItem.from(change));

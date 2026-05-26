@@ -25,7 +25,6 @@ import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.PlayerEngine;
 import minefarts.smarttube.app.models.playback.PlayerEngine;
 import minefarts.smarttube.app.models.playback.ui.OptionCategory;
-import minefarts.smarttube.app.models.playback.ui.OptionItem;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
@@ -169,7 +168,7 @@ public class AppDialogUtil {
         PlayerData playerData = PlayerData.instance(context);
         String title = context.getString(R.string.audio_language);
 
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
         List<String> addedCodes = new ArrayList<>();
         List<String> lastLanguages = playerData.getLastAudioLanguages();
@@ -229,7 +228,7 @@ public class AppDialogUtil {
         
     }
 
-    public static OptionItem createExcludeFromContentBlockButton(
+    public static UiOptionItem createExcludeFromContentBlockButton(
         Context context,
         Video video, 
         Runnable onClose
@@ -268,7 +267,7 @@ public class AppDialogUtil {
 
     public static OptionCategory createPlaybackModeCategory(Context context, Runnable onModeSelected) {
         PlayerData playerData = PlayerData.instance(context);
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
         for (int[] pair : new int[][] {
                 {R.string.repeat_mode_all, PlayerEngine.PLAYBACK_MODE_ALL},
@@ -303,7 +302,7 @@ public class AppDialogUtil {
     public static void showConfirmationDialog(Context context, String title, Runnable onConfirm, Runnable onCancel) {
         AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(context);
 
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
         options.add(UiOptionItem.from(
             "Cancel",
@@ -356,7 +355,7 @@ public class AppDialogUtil {
 
     private static void appendPlaylistDialogContent(
             Context context, Video video, VideoMenuCallback callback, AppDialogPresenter dialogPresenter, List<PlaylistInfo> playlistInfos) {
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
         for (PlaylistInfo playlistInfo : playlistInfos) {
             options.add(UiOptionItem.from(
@@ -424,7 +423,7 @@ public class AppDialogUtil {
 
         GeneralData generalData = GeneralData.instance(context);
 
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
         for (int[] pair : new int[][] {
                 {R.string.playlist_order_added_date_newer_first, MediaItemService.PLAYLIST_ORDER_ADDED_DATE_NEWER_FIRST},
