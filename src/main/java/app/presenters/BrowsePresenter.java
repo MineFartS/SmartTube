@@ -26,7 +26,6 @@ import minefarts.smarttube.app.models.playback.service.VideoStateService;
 import minefarts.smarttube.app.models.playback.service.State;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.models.playback.controllers.VideoLoaderController;
-import minefarts.smarttube.app.presenters.dialogs.menu.ChannelUploadsMenuPresenter;
 import minefarts.smarttube.app.presenters.dialogs.menu.SectionMenuPresenter;
 import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter;
 import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
@@ -516,19 +515,11 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
     public void onVideoItemLongClicked(Video item) {
         if (getContext() == null) return;
 
-        if (belongsToChannelUploads(item)) { // We need to be sure we exactly on Channels section
-            
-            ChannelUploadsMenuPresenter.instance(getContext()).showMenu(item, (videoItem, action) -> {
-                if (action == VideoMenuCallback.ACTION_UNSUBSCRIBE) { // works with any uploads section look
-                    removeItem(item);
-                }
-            });
+        VideoMenuPresenter VMP = VideoMenuPresenter.instance(getContext());
 
-        } else {
-
-            VideoMenuPresenter VMP = VideoMenuPresenter.instance(getContext());
-
-            VMP.showMenu(item, (videoItem, action) -> {
+        VMP.showMenu(
+            item, 
+            (videoItem, action) -> {
                 if (action == VideoMenuCallback.ACTION_REMOVE ||
                     action == VideoMenuCallback.ACTION_REMOVE_FROM_PLAYLIST ||
                     action == VideoMenuCallback.ACTION_REMOVE_FROM_QUEUE) {
@@ -542,9 +533,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
                 } else if (action == VideoMenuCallback.ACTION_REMOVE_AUTHOR) {
                     removeItemAuthor(videoItem);
                 }
-            });
+            }
+        );
 
-        }
     }
 
     @Override
