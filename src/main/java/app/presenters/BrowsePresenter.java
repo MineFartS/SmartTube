@@ -514,32 +514,36 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
 
     @Override
     public void onVideoItemLongClicked(Video item) {
-        if (getContext() == null) {
-            return;
-        }
+        if (getContext() == null) return;
 
         if (belongsToChannelUploads(item)) { // We need to be sure we exactly on Channels section
+            
             ChannelUploadsMenuPresenter.instance(getContext()).showMenu(item, (videoItem, action) -> {
                 if (action == VideoMenuCallback.ACTION_UNSUBSCRIBE) { // works with any uploads section look
                     removeItem(item);
                 }
             });
+
         } else {
-            VideoMenuPresenter.instance(getContext()).showMenu(item, (videoItem, action) -> {
+
+            VideoMenuPresenter VMP = VideoMenuPresenter.instance(getContext());
+
+            VMP.showMenu(item, (videoItem, action) -> {
                 if (action == VideoMenuCallback.ACTION_REMOVE ||
                     action == VideoMenuCallback.ACTION_REMOVE_FROM_PLAYLIST ||
                     action == VideoMenuCallback.ACTION_REMOVE_FROM_QUEUE) {
                     removeItem(videoItem);
                 } else if (action == VideoMenuCallback.ACTION_UNSUBSCRIBE && isMultiGridChannelUploadsSection()) {
                     removeItem(mCurrentVideo);
-                    VideoMenuPresenter.instance(getContext()).closeDialog();
+                    VMP.closeDialog();
                 } else if (action == VideoMenuCallback.ACTION_UNSUBSCRIBE && isSubscriptionsSection()) {
                     removeItemAuthor(videoItem);
-                    VideoMenuPresenter.instance(getContext()).closeDialog();
+                    VMP.closeDialog();
                 } else if (action == VideoMenuCallback.ACTION_REMOVE_AUTHOR) {
                     removeItemAuthor(videoItem);
                 }
             });
+
         }
     }
 
