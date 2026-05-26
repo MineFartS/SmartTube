@@ -10,7 +10,6 @@ import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.ui.OptionCategory;
-import minefarts.smarttube.app.models.playback.ui.OptionItem;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
@@ -103,7 +102,7 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
     private void appendEnabledSections(AppDialogPresenter settingsPresenter) {
         
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
         Map<Integer, Integer> sections = mSidebarService.getDefaultSections();
 
@@ -140,7 +139,7 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
     private void appendHideVideos(AppDialogPresenter settingsPresenter) {
         
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
         options.add(
             UiOptionItem.from(
@@ -191,7 +190,7 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
     private void appendContextMenuItemsCategory(AppDialogPresenter settingsPresenter) {
 
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
         Map<Long, Integer> menuNames = getMenuNames();
 
@@ -233,7 +232,7 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
         
         AppDialogPresenter dialog = AppDialogPresenter.instance(getContext());
 
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
         Map<Long, Integer> menuNames = getMenuNames();
 
@@ -289,7 +288,7 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
     private void appendMiscCategory(AppDialogPresenter settingsPresenter) {
         
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
         options.add(
             UiOptionItem.from(

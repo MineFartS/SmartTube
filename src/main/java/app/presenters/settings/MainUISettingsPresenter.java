@@ -2,15 +2,14 @@ package minefarts.smarttube.app.presenters.settings;
 
 import android.content.Context;
 import android.os.Build;
+
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import minefarts.smarttube.R;
-import minefarts.smarttube.app.models.playback.ui.OptionItem;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
-
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.prefs.PlayerData;
@@ -59,7 +58,7 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
 
     private void appendMiscCategory(AppDialogPresenter settingsPresenter) {
        
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
         options.add(UiOptionItem.from(
             getContext().getString(R.string.time_format_24) + " " + getContext().getString(R.string.time_format),

@@ -5,7 +5,8 @@ import minefarts.smarttube.exoplayer.selector.FormatItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UiOptionItem implements OptionItem {
+public class UiOptionItem {
+    
     private int mId;
     private CharSequence mTitle;
     private CharSequence mDescription;
@@ -13,21 +14,21 @@ public class UiOptionItem implements OptionItem {
     private FormatItem mFormat;
     private OptionCallback mCallback;
     private Object mData;
-    private OptionItem[] mRequiredItems;
-    private OptionItem[] mRadioItems;
+    private UiOptionItem[] mRequiredItems;
+    private UiOptionItem[] mRadioItems;
     private ChatReceiver mChatReceiver;
     private CommentsReceiver mCommentsReceiver;
 
-    public static List<OptionItem> from(List<FormatItem> formats, OptionCallback callback) {
+    public static List<UiOptionItem> from(List<FormatItem> formats, OptionCallback callback) {
         return from(formats, callback, null);
     }
 
-    public static List<OptionItem> from(List<FormatItem> formats, OptionCallback callback, String defaultTitle) {
+    public static List<UiOptionItem> from(List<FormatItem> formats, OptionCallback callback, String defaultTitle) {
         if (formats == null) {
             return null;
         }
 
-        List<OptionItem> options = new ArrayList<>();
+        List<UiOptionItem> options = new ArrayList<>();
 
         for (FormatItem format : formats) {
             options.add(from(format, callback, defaultTitle));
@@ -36,11 +37,11 @@ public class UiOptionItem implements OptionItem {
         return options;
     }
 
-    public static OptionItem from(FormatItem format, OptionCallback callback) {
+    public static UiOptionItem from(FormatItem format, OptionCallback callback) {
         return from(format, callback, null);
     }
 
-    public static OptionItem from(FormatItem format, OptionCallback callback, String defaultTitle) {
+    public static UiOptionItem from(FormatItem format, OptionCallback callback, String defaultTitle) {
         if (format == null) {
             return null;
         }
@@ -55,27 +56,27 @@ public class UiOptionItem implements OptionItem {
         return uiOptionItem;
     }
 
-    public static OptionItem from(CharSequence title) {
+    public static UiOptionItem from(CharSequence title) {
         return from(title, (OptionCallback) null);
     }
 
-    public static OptionItem from(CharSequence title, OptionCallback callback) {
+    public static UiOptionItem from(CharSequence title, OptionCallback callback) {
         return from(title, callback, false);
     }
 
-    public static OptionItem from(CharSequence title, OptionCallback callback, boolean isChecked) {
+    public static UiOptionItem from(CharSequence title, OptionCallback callback, boolean isChecked) {
         return from(title, callback, isChecked, null);
     }
 
-    public static OptionItem from(CharSequence title, CharSequence description, OptionCallback callback, boolean isChecked) {
+    public static UiOptionItem from(CharSequence title, CharSequence description, OptionCallback callback, boolean isChecked) {
         return from(title, description, callback, isChecked, null);
     }
 
-    public static OptionItem from(CharSequence title, OptionCallback callback, boolean isChecked, Object data) {
+    public static UiOptionItem from(CharSequence title, OptionCallback callback, boolean isChecked, Object data) {
         return from(title, null, callback, isChecked, data);
     }
 
-    public static OptionItem from(CharSequence title, CharSequence description, OptionCallback callback, boolean isChecked, Object data) {
+    public static UiOptionItem from(CharSequence title, CharSequence description, OptionCallback callback, boolean isChecked, Object data) {
         UiOptionItem uiOptionItem = new UiOptionItem();
 
         uiOptionItem.mTitle = title;
@@ -87,7 +88,7 @@ public class UiOptionItem implements OptionItem {
         return uiOptionItem;
     }
 
-    public static OptionItem from(CharSequence title, ChatReceiver chatReceiver) {
+    public static UiOptionItem from(CharSequence title, ChatReceiver chatReceiver) {
         UiOptionItem uiOptionItem = new UiOptionItem();
         uiOptionItem.mTitle = title;
         uiOptionItem.mChatReceiver = chatReceiver;
@@ -95,7 +96,7 @@ public class UiOptionItem implements OptionItem {
         return uiOptionItem;
     }
 
-    public static OptionItem from(CharSequence title, CommentsReceiver commentsReceiver) {
+    public static UiOptionItem from(CharSequence title, CommentsReceiver commentsReceiver) {
         UiOptionItem uiOptionItem = new UiOptionItem();
         uiOptionItem.mTitle = title;
         uiOptionItem.mCommentsReceiver = commentsReceiver;
@@ -103,7 +104,7 @@ public class UiOptionItem implements OptionItem {
         return uiOptionItem;
     }
 
-    public static FormatItem toFormat(OptionItem option) {
+    public static FormatItem toFormat(UiOptionItem option) {
         if (option instanceof UiOptionItem) {
             return ((UiOptionItem) option).mFormat;
         }
@@ -111,27 +112,22 @@ public class UiOptionItem implements OptionItem {
         return null;
     }
 
-    @Override
     public int getId() {
         return mId;
     }
 
-    @Override
     public CharSequence getTitle() {
         return mTitle;
     }
 
-    @Override
     public CharSequence getDescription() {
         return mDescription;
     }
 
-    @Override
     public boolean isSelected() {
         return mIsSelected;
     }
 
-    @Override
     public void onSelect(boolean isSelected) {
         mIsSelected = isSelected;
 
@@ -140,13 +136,11 @@ public class UiOptionItem implements OptionItem {
         }
     }
 
-    @Override
     public Object getData() {
         return mData;
     }
 
-    @Override
-    public void setRequired(OptionItem... items) {
+    public void setRequired(UiOptionItem... items) {
         if (items == null || items.length == 0) {
             mRequiredItems = null;
         }
@@ -154,13 +148,11 @@ public class UiOptionItem implements OptionItem {
         mRequiredItems = items;
     }
 
-    @Override
-    public OptionItem[] getRequired() {
+    public UiOptionItem[] getRequired() {
         return mRequiredItems;
     }
 
-    @Override
-    public void setRadio(OptionItem... items) {
+    public void setRadio(UiOptionItem... items) {
         if (items == null || items.length == 0) {
             mRadioItems = null;
         }
@@ -168,18 +160,16 @@ public class UiOptionItem implements OptionItem {
         mRadioItems = items;
     }
 
-    @Override
-    public OptionItem[] getRadio() {
+    public UiOptionItem[] getRadio() {
         return mRadioItems;
     }
 
-    @Override
     public ChatReceiver getChatReceiver() {
         return mChatReceiver;
     }
 
-    @Override
     public CommentsReceiver getCommentsReceiver() {
         return mCommentsReceiver;
     }
+    
 }
