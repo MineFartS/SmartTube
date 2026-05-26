@@ -15,8 +15,6 @@ import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.sharedutils.next.v2.WatchNextServiceWrapper;
 import com.liskovsoft.sharedutils.data.MediaItemMetadata;
 
-import io.reactivex.Observable;
-
 import retrofit2.Call;
 
 // An action for displaying subscribe states.
@@ -52,24 +50,10 @@ public class SubscribeAction extends TwoStateAction {
 
     public static void toggle(Video video) {
 
-        if (video == null || video.channelId == null) return;
-
-        RxHelper.runAsync(() -> dotoggle(video));
-
-    }
-
-    public static void refresh(Video video) {
+        mSignInService.checkAuth();
 
         MediaItemMetadata metadata = mWatchNextService.getMetadata(video.videoId);
         video.isSubscribed = metadata.isSubscribed();
-    
-    }
-
-    private static void dotoggle(Video video) {
-
-        mSignInService.checkAuth();
-
-        refresh(video);
 
         String data = "\"channelIds\":[\"" + video.channelId + "\"],\"params\":\"\"";
         String query = PostDataHelper.createQueryTV(data);

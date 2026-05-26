@@ -254,10 +254,10 @@ public class ServiceManager {
 
         if (getSignInService().isSigned()) {
             if (onSuccess != null) {
-                RxHelper.runAsync(onSuccess);
+                onSuccess.run();
             }
         } else if (onError != null) {
-            RxHelper.runAsync(onError);
+            onError.run();
         }
         
     }

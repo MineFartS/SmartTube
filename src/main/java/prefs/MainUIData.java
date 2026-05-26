@@ -51,8 +51,6 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
    
     public static final long MENU_ITEM_ADD_TO_PLAYLIST = 1 << 13;
    
-    public static final long MENU_ITEM_SUBSCRIBE = 1 << 14;
-   
     public static final long MENU_ITEM_CREATE_PLAYLIST = 1 << 15;
       
     public static final long MENU_ITEM_ADD_TO_NEW_PLAYLIST = 1 << 17;
@@ -108,33 +106,27 @@ public class MainUIData extends DataChangeBase implements ProfileChangeListener 
         MENU_ITEM_ADD_TO_PLAYLIST | 
         MENU_ITEM_CREATE_PLAYLIST | 
         MENU_ITEM_OPEN_CHANNEL | 
-        MENU_ITEM_OPEN_PLAYLIST | 
-        MENU_ITEM_SUBSCRIBE;
+        MENU_ITEM_OPEN_PLAYLIST;
     
     private static final Long[] MENU_ITEM_DEFAULT_ORDER = {
         MENU_ITEM_MARK_AS_WATCHED,
         MENU_ITEM_NOT_INTERESTED, 
         MENU_ITEM_NOT_RECOMMEND_CHANNEL, 
-
         MENU_ITEM_EXIT_FROM_PIP, 
         MENU_ITEM_PLAY_VIDEO,  
-
         MENU_ITEM_REMOVE_FROM_HISTORY,
         MENU_ITEM_RECENT_PLAYLIST, 
         MENU_ITEM_ADD_TO_PLAYLIST, 
         MENU_ITEM_CREATE_PLAYLIST, 
         MENU_ITEM_RENAME_PLAYLIST,
         MENU_ITEM_ADD_TO_NEW_PLAYLIST, 
-
         MENU_ITEM_REMOVE_FROM_SUBSCRIPTIONS,
-         
         MENU_ITEM_PLAYLIST_ORDER, 
         MENU_ITEM_PLAY_NEXT, 
         MENU_ITEM_ADD_TO_QUEUE, 
         MENU_ITEM_SHOW_QUEUE, 
         MENU_ITEM_OPEN_CHANNEL,
         MENU_ITEM_OPEN_PLAYLIST, 
-        MENU_ITEM_SUBSCRIBE, 
         MENU_ITEM_EXCLUDE_FROM_CONTENT_BLOCK, 
         MENU_ITEM_PIN_TO_SIDEBAR, 
         MENU_ITEM_SAVE_REMOVE_PLAYLIST,
