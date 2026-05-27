@@ -3,7 +3,6 @@ package com.liskovsoft.sharedutils.service;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.liskovsoft.sharedutils.data.MediaGroup;
 import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -24,7 +23,7 @@ import com.liskovsoft.sharedutils.common.models.impl.mediagroup.BaseMediaGroup;
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
 import com.liskovsoft.sharedutils.search.SearchService;
 import com.liskovsoft.sharedutils.search.models.SearchResult;
-import com.liskovsoft.sharedutils.service.data.YouTubeMediaGroup;
+import com.liskovsoft.sharedutils.service.data.MediaGroup;
 import com.liskovsoft.sharedutils.SignInService;
 
 import io.reactivex.Observable;
@@ -55,7 +54,7 @@ public class ContentService {
         checkSigned();
 
         SearchResult search = getSearchService().getSearch(searchText);
-        return YouTubeMediaGroup.from(search, MediaGroup.TYPE_SEARCH);
+        return MediaGroup.from(search, MediaGroup.TYPE_SEARCH);
     }
 
     
@@ -63,7 +62,7 @@ public class ContentService {
         checkSigned();
 
         SearchResult search = getSearchService().getSearch(searchText, options);
-        return YouTubeMediaGroup.from(search, MediaGroup.TYPE_SEARCH);
+        return MediaGroup.from(search, MediaGroup.TYPE_SEARCH);
     }
 
     
@@ -501,7 +500,7 @@ public class ContentService {
 
         switch (mediaGroup.getType()) {
             case MediaGroup.TYPE_SEARCH:
-                return YouTubeMediaGroup.from(
+                return MediaGroup.from(
                         getSearchService().continueSearch(nextKey),
                         mediaGroup);
             case MediaGroup.TYPE_HISTORY:
@@ -509,12 +508,12 @@ public class ContentService {
             case MediaGroup.TYPE_USER_PLAYLISTS:
             case MediaGroup.TYPE_CHANNEL_UPLOADS:
             case MediaGroup.TYPE_UNDEFINED:
-                return YouTubeMediaGroup.from(
+                return MediaGroup.from(
                         getBrowseService().continueGridTab(nextKey),
                         mediaGroup
                 );
             default:
-                return YouTubeMediaGroup.from(
+                return MediaGroup.from(
                         getBrowseService().continueSection(nextKey),
                         mediaGroup
                 );

@@ -1,7 +1,7 @@
 package com.liskovsoft.sharedutils.formatbuilders.mpdbuilder;
 
 import android.util.Xml;
-import com.liskovsoft.sharedutils.data.MediaFormat;
+import com.liskovsoft.sharedutils.service.data.MediaFormat;
 import com.liskovsoft.sharedutils.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.data.MediaSubtitle;
 import com.liskovsoft.sharedutils.helpers.FileHelpers;

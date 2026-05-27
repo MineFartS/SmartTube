@@ -3,7 +3,7 @@ package minefarts.smarttube.app.presenters.service;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.liskovsoft.sharedutils.data.MediaGroup;
+import com.liskovsoft.sharedutils.service.data.MediaGroup;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Video;

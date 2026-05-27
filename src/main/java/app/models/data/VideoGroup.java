@@ -1,7 +1,7 @@
 package minefarts.smarttube.app.models.data;
 
 import com.liskovsoft.sharedutils.data.ChapterItem;
-import com.liskovsoft.sharedutils.data.MediaGroup;
+import com.liskovsoft.sharedutils.service.data.MediaGroup;
 import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;

@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 
 import com.liskovsoft.sharedutils.data.ItemGroup;
 import com.liskovsoft.sharedutils.data.MediaItem;
-import com.liskovsoft.sharedutils.data.MediaItemMetadata;
+import com.liskovsoft.sharedutils.service.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.data.PlaylistInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.browse.v2.BrowseApiHelper;

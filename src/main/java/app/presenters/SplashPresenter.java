@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.liskovsoft.sharedutils.oauth.Account;
-import com.liskovsoft.sharedutils.data.MediaGroup;
+import com.liskovsoft.sharedutils.service.data.MediaGroup;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;

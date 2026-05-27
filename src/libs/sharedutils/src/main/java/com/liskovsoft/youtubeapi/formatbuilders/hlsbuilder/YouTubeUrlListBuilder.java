@@ -1,6 +1,6 @@
 package com.liskovsoft.sharedutils.formatbuilders.hlsbuilder;
 
-import com.liskovsoft.sharedutils.data.MediaFormat;
+import com.liskovsoft.sharedutils.service.data.MediaFormat;
 import com.liskovsoft.sharedutils.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.formatbuilders.mpdbuilder.MediaFormatComparator;
 import com.liskovsoft.sharedutils.formatbuilders.utils.MediaFormatUtils;

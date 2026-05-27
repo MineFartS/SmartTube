@@ -13,7 +13,7 @@ import com.liskovsoft.sharedutils.actions.models.ActionResult;
 import com.liskovsoft.sharedutils.channelgroups.ChannelGroupServiceImpl;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.sharedutils.next.v2.WatchNextServiceWrapper;
-import com.liskovsoft.sharedutils.data.MediaItemMetadata;
+import com.liskovsoft.sharedutils.service.data.MediaItemMetadata;
 
 import retrofit2.Call;
 

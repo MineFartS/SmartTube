@@ -8,7 +8,7 @@ import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 import minefarts.smarttube.media.ClipService.GroupCallback;
 import com.liskovsoft.sharedutils.service.ContentService;
 import minefarts.smarttube.misc.ServiceManager;
-import com.liskovsoft.sharedutils.data.MediaGroup;
+import com.liskovsoft.sharedutils.service.data.MediaGroup;
 import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 

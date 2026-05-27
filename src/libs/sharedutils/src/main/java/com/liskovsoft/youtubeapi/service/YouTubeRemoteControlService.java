@@ -1,11 +1,10 @@
 package com.liskovsoft.sharedutils.service;
 
 import com.liskovsoft.sharedutils.RemoteControlService;
-import com.liskovsoft.sharedutils.data.Command;
+import com.liskovsoft.sharedutils.service.data.Command;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.sharedutils.lounge.LoungeService;
-import com.liskovsoft.sharedutils.service.data.YouTubeCommand;
 import io.reactivex.Observable;
 
 public class YouTubeRemoteControlService implements RemoteControlService {
@@ -44,7 +43,7 @@ public class YouTubeRemoteControlService implements RemoteControlService {
     public Observable<Command> getCommandObserve() {
         return RxHelper.createLong(emitter -> {
             mLoungeService.startListening(
-                    info -> emitter.onNext(YouTubeCommand.from(info))
+                    info -> emitter.onNext(Command.from(info))
             );
 
             emitter.onComplete();

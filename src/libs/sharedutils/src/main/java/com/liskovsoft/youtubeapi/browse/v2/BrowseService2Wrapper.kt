@@ -1,11 +1,10 @@
 package com.liskovsoft.sharedutils.browse.v2
 
-import com.liskovsoft.sharedutils.data.MediaGroup
 import com.liskovsoft.sharedutils.data.MediaItem
 import com.liskovsoft.sharedutils.channelgroups.ChannelGroupServiceImpl
 import com.liskovsoft.sharedutils.playlistgroups.PlaylistGroupServiceImpl
 import com.liskovsoft.sharedutils.rss.RssService
-import com.liskovsoft.sharedutils.service.data.YouTubeMediaGroup
+import com.liskovsoft.sharedutils.service.data.MediaGroup
 import com.liskovsoft.sharedutils.service.data.YouTubeMediaItem
 
 internal object BrowseService2Wrapper: BrowseService2() {
@@ -44,7 +43,7 @@ internal object BrowseService2Wrapper: BrowseService2() {
             val channelGroup = ChannelGroupServiceImpl.getSubscribedChannelGroup()
 
             return if (channelGroup.isEmpty) null else channelGroup.let {
-                YouTubeMediaGroup(MediaGroup.TYPE_CHANNEL_UPLOADS).apply {
+                MediaGroup(MediaGroup.TYPE_CHANNEL_UPLOADS).apply {
                     mediaItems = it.items?.map {
                         YouTubeMediaItem().apply {
                             title = it.title
@@ -121,7 +120,7 @@ internal object BrowseService2Wrapper: BrowseService2() {
                 }
             }
 
-            return YouTubeMediaGroup(myPlaylists?.type ?: MediaGroup.TYPE_USER_PLAYLISTS).apply {
+            return MediaGroup(myPlaylists?.type ?: MediaGroup.TYPE_USER_PLAYLISTS).apply {
                 mediaItems = result
             }
         }
@@ -144,7 +143,7 @@ internal object BrowseService2Wrapper: BrowseService2() {
     private fun getCachedGroup(reloadPageKey: String?, type: Int): MediaGroup? {
         val group = PlaylistGroupServiceImpl.findPlaylistGroup(reloadPageKey)
         if (group != null && !group.isEmpty) {
-            return YouTubeMediaGroup(type).apply {
+            return MediaGroup(type).apply {
                 title = group.title
                 mediaItems = group.items?.map {
                     YouTubeMediaItem().apply {

@@ -1,6 +1,6 @@
 package com.liskovsoft.sharedutils.formatbuilders.mpdbuilder;
 
-import com.liskovsoft.sharedutils.data.MediaFormat;
+import com.liskovsoft.sharedutils.service.data.MediaFormat;
 import com.liskovsoft.sharedutils.data.MediaSubtitle;
 
 import java.io.InputStream;

@@ -1,7 +1,6 @@
 package com.liskovsoft.sharedutils.service.data;
 
 import androidx.annotation.NonNull;
-import com.liskovsoft.sharedutils.data.MediaFormat;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.formatbuilders.utils.ITagUtils;
 import com.liskovsoft.sharedutils.videoinfo.models.formats.AdaptiveVideoFormat;
@@ -10,7 +9,12 @@ import com.liskovsoft.sharedutils.videoinfo.models.formats.VideoFormat;
 
 import java.util.List;
 
-public class YouTubeMediaFormat implements MediaFormat {
+public class MediaFormat {
+
+    public static final int FORMAT_TYPE_DASH = 0;
+    public static final int FORMAT_TYPE_REGULAR = 1;
+    public static final int FORMAT_TYPE_SABR = 2;
+
     private String mIndex;
     private String mIndexRange;
     private String mUrl;
@@ -42,7 +46,7 @@ public class YouTubeMediaFormat implements MediaFormat {
     private int mApproxDurationMs;
 
     public static MediaFormat from(AdaptiveVideoFormat format) {
-        YouTubeMediaFormat mediaFormat = createBaseFormat(format);
+        MediaFormat mediaFormat = createBaseFormat(format);
 
         mediaFormat.mFormatType = format.isBroken() ? FORMAT_TYPE_SABR : FORMAT_TYPE_DASH;
 
@@ -58,7 +62,7 @@ public class YouTubeMediaFormat implements MediaFormat {
     }
 
     public static MediaFormat from(RegularVideoFormat format) {
-        YouTubeMediaFormat mediaFormat = createBaseFormat(format);
+        MediaFormat mediaFormat = createBaseFormat(format);
 
         mediaFormat.mFormatType = FORMAT_TYPE_REGULAR;
 
@@ -67,8 +71,8 @@ public class YouTubeMediaFormat implements MediaFormat {
         return mediaFormat;
     }
 
-    private static YouTubeMediaFormat createBaseFormat(VideoFormat format) {
-        YouTubeMediaFormat mediaFormat = new YouTubeMediaFormat();
+    private static MediaFormat createBaseFormat(VideoFormat format) {
+        MediaFormat mediaFormat = new MediaFormat();
 
         mediaFormat.mUrl = format.getUrl();
         mediaFormat.mMimeType = format.getMimeType();
@@ -99,7 +103,6 @@ public class YouTubeMediaFormat implements MediaFormat {
         return mediaFormat;
     }
 
-    @Override
     public String getUrl() {
         return mUrl;
     }
@@ -108,7 +111,6 @@ public class YouTubeMediaFormat implements MediaFormat {
         mUrl = url;
     }
 
-    @Override
     public String getMimeType() {
         return mMimeType;
     }
@@ -117,7 +119,6 @@ public class YouTubeMediaFormat implements MediaFormat {
         mMimeType = mimeType;
     }
 
-    @Override
     public String getITag() {
         return mITag;
     }
@@ -126,12 +127,10 @@ public class YouTubeMediaFormat implements MediaFormat {
         mITag = itag;
     }
 
-    @Override
     public boolean isDrc() {
         return mIsDrc;
     }
 
-    @Override
     public String getClen() {
         return mClen;
     }
@@ -140,7 +139,6 @@ public class YouTubeMediaFormat implements MediaFormat {
         mClen = clen;
     }
 
-    @Override
     public String getBitrate() {
         return mBitrate;
     }
@@ -149,17 +147,14 @@ public class YouTubeMediaFormat implements MediaFormat {
         mBitrate = bitrate;
     }
 
-    @Override
     public String getProjectionType() {
         return mProjectionType;
     }
 
-    @Override
     public String getXtags() {
         return mXtags;
     }
 
-    @Override
     public int getWidth() {
         return mWidth;
     }
@@ -168,7 +163,6 @@ public class YouTubeMediaFormat implements MediaFormat {
         mWidth = width;
     }
 
-    @Override
     public int getHeight() {
         return mHeight;
     }
@@ -177,7 +171,6 @@ public class YouTubeMediaFormat implements MediaFormat {
         mHeight = height;
     }
 
-    @Override
     public String getIndex() {
         return mIndex;
     }
@@ -186,7 +179,6 @@ public class YouTubeMediaFormat implements MediaFormat {
         mIndex = index;
     }
 
-    @Override
     public String getInit() {
         return mInit;
     }
@@ -195,7 +187,6 @@ public class YouTubeMediaFormat implements MediaFormat {
         mInit = init;
     }
 
-    @Override
     public String getFps() {
         return mFps;
     }
@@ -204,42 +195,34 @@ public class YouTubeMediaFormat implements MediaFormat {
         mFps = fps;
     }
 
-    @Override
     public String getLmt() {
         return mLmt;
     }
 
-    @Override
     public String getQualityLabel() {
         return mQualityLabel;
     }
 
-    @Override
     public String getFormat() {
         return mFormat;
     }
 
-    @Override
     public boolean isOtf() {
         return mIsOtf;
     }
 
-    @Override
     public String getOtfInitUrl() {
         return mOtfInitUrl;
     }
 
-    @Override
     public String getOtfTemplateUrl() {
         return mOtfTemplateUrl;
     }
 
-    @Override
     public String getQuality() {
         return null;
     }
 
-    @Override
     public String getSignature() {
         return null;
     }
@@ -248,7 +231,6 @@ public class YouTubeMediaFormat implements MediaFormat {
 
     }
 
-    @Override
     public String getAudioSamplingRate() {
         return null;
     }
@@ -257,12 +239,10 @@ public class YouTubeMediaFormat implements MediaFormat {
         mSourceUrl = sourceUrl;
     }
 
-    @Override
     public String getSourceUrl() {
         return mSourceUrl;
     }
 
-    @Override
     public List<String> getSegmentUrlList() {
         return mSegmentUrlList;
     }
@@ -271,7 +251,6 @@ public class YouTubeMediaFormat implements MediaFormat {
         mSegmentUrlList = urls;
     }
 
-    @Override
     public List<String> getGlobalSegmentList() {
         return mGlobalSegmentList;
     }
@@ -280,22 +259,18 @@ public class YouTubeMediaFormat implements MediaFormat {
         mGlobalSegmentList = segments;
     }
 
-    @Override
     public String getLanguage() {
         return mLanguage;
     }
 
-    @Override
     public int getTargetDurationSec() {
         return mTargetDurationSec;
     }
 
-    @Override
     public int getMaxDvrDurationSec() {
         return mMaxDvrDurationSec;
     }
 
-    @Override
     public int getApproxDurationMs() {
         return mApproxDurationMs;
     }
@@ -308,7 +283,6 @@ public class YouTubeMediaFormat implements MediaFormat {
         mIndexRange = indexRange;
     }
 
-    @Override
     public int compareTo(MediaFormat format) {
         if (format == null) {
             return 1;
@@ -335,7 +309,6 @@ public class YouTubeMediaFormat implements MediaFormat {
         return mAudioQuality;
     }
 
-    @Override
     public int getFormatType() {
         return mFormatType;
     }

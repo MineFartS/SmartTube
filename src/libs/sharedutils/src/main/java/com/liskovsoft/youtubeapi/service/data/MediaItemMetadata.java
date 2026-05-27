@@ -1,9 +1,8 @@
 package com.liskovsoft.sharedutils.service.data;
 
 import com.liskovsoft.sharedutils.data.ChapterItem;
-import com.liskovsoft.sharedutils.data.MediaGroup;
+import com.liskovsoft.sharedutils.service.data.MediaGroup;
 import com.liskovsoft.sharedutils.data.MediaItem;
-import com.liskovsoft.sharedutils.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.data.NotificationState;
 import com.liskovsoft.sharedutils.data.PlaylistInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
@@ -20,9 +19,13 @@ import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class YouTubeMediaItemMetadata implements MediaItemMetadata {
+public class MediaItemMetadata {
 
-    private static final String TAG = YouTubeMediaItemMetadata.class.getSimpleName();
+    private static final String TAG = MediaItemMetadata.class.getSimpleName();
+
+    public static final int LIKE_STATUS_INDIFFERENT = 0;
+    public static final int LIKE_STATUS_LIKE = 1;
+    public static final int LIKE_STATUS_DISLIKE = 2;
     
     private String mTitle;
     private CharSequence mSecondTitle;
@@ -46,13 +49,13 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
     private boolean mIsUpcoming;
     private PlaylistInfo mPlaylistInfo;
 
-    public static YouTubeMediaItemMetadata from(WatchNextResult watchNextResult) {
+    public static MediaItemMetadata from(WatchNextResult watchNextResult) {
     
         if (watchNextResult == null) {
             return null;
         }
 
-        YouTubeMediaItemMetadata mediaItemMetadata = new YouTubeMediaItemMetadata();
+        MediaItemMetadata mediaItemMetadata = new MediaItemMetadata();
 
         VideoMetadata videoMetadata = watchNextResult.getVideoMetadata();
         VideoOwner videoOwner = watchNextResult.getVideoOwner();
@@ -155,11 +158,11 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
                 if (section.getChips() != null) {
                     // Contains multiple nested sections
                     for (Chip chip : section.getChips()) {
-                        mediaItemMetadata.mSuggestions.add(YouTubeMediaGroup.from(chip));
+                        mediaItemMetadata.mSuggestions.add(MediaGroup.from(chip));
                     }
                 }
 
-                mediaItemMetadata.mSuggestions.add(YouTubeMediaGroup.from(section));
+                mediaItemMetadata.mSuggestions.add(MediaGroup.from(section));
 
             }
         }
@@ -190,7 +193,6 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         return mediaItemMetadata;
     }
 
-    @Override
     public String getTitle() {
         return mTitle;
     }
@@ -199,7 +201,6 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         mTitle = title;
     }
 
-    @Override
     public CharSequence getSecondTitle() {
         return mSecondTitle;
     }
@@ -208,47 +209,38 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         mSecondTitle = secondTitle;
     }
 
-    @Override
     public String getDescription() {
         return mDescription;
     }
 
-    @Override
     public String getAuthor() {
         return mAuthor;
     }
 
-    @Override
     public String getAuthorImageUrl() {
         return mAuthorImageUrl;
     }
 
-    @Override
     public String getViewCount() {
         return mViewCount;
     }
 
-    @Override
     public String getLikeCount() {
         return mLikesCount;
     }
 
-    @Override
     public String getDislikeCount() {
         return mDislikesCount;
     }
 
-    @Override
     public String getSubscriberCount() {
         return null;
     }
 
-    @Override
     public String getPublishedDate() {
         return mPublishedDate;
     }
 
-    @Override
     public String getVideoId() {
         return mVideoId;
     }
@@ -257,7 +249,6 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         mVideoId = videoId;
     }
 
-    @Override
     public MediaItem getNextVideo() {
         return mNextVideo;
     }
@@ -266,57 +257,46 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         mNextVideo = nextVideo;
     }
 
-    @Override
     public MediaItem getShuffleVideo() {
         return null;
     }
 
-    @Override
     public boolean isSubscribed() {
         return mIsSubscribed;
     }
 
-    @Override
     public boolean isLive() {
         return mIsLive;
     }
 
-    @Override
     public String getLiveChatKey() {
         return null;
     }
 
-    @Override
     public String getCommentsKey() {
         return null;
     }
 
-    @Override
     public boolean isUpcoming() {
         return mIsUpcoming;
     }
 
-    @Override
     public String getChannelId() {
         return mChannelId;
     }
 
-    @Override
     public String getParams() {
         return mParams;
     }
 
-    @Override
     public int getPercentWatched() {
         return mPercentWatched;
     }
 
-    @Override
     public int getLikeStatus() {
         return mLikeStatus;
     }
 
-    @Override
     public List<MediaGroup> getSuggestions() {
         return mSuggestions;
     }
@@ -325,7 +305,6 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         mSuggestions = suggestions;
     }
 
-    @Override
     public PlaylistInfo getPlaylistInfo() {
         return mPlaylistInfo;
     }
@@ -334,22 +313,18 @@ public class YouTubeMediaItemMetadata implements MediaItemMetadata {
         mPlaylistInfo = playlistInfo;
     }
 
-    @Override
     public List<ChapterItem> getChapters() {
         return null;
     }
 
-    @Override
     public List<NotificationState> getNotificationStates() {
         return null;
     }
 
-    @Override
     public long getDurationMs() {
         return -1;
     }
 
-    @Override
     public String getBadgeText() {
         return null;
     }

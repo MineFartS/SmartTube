@@ -16,7 +16,7 @@ import com.google.android.exoplayer2.source.sabr.manifest.SegmentBase.SingleSegm
 import com.google.android.exoplayer2.source.sabr.protos.videostreaming.ClientInfo;
 import com.google.android.exoplayer2.source.sabr.protos.videostreaming.ClientName;
 import com.google.android.exoplayer2.util.MimeTypes;
-import com.liskovsoft.sharedutils.data.MediaFormat;
+import com.liskovsoft.sharedutils.service.data.MediaFormat;
 import com.liskovsoft.sharedutils.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.data.MediaSubtitle;
 import com.liskovsoft.sharedutils.helpers.Helpers;

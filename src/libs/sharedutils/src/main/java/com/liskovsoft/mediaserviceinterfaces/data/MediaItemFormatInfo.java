@@ -1,7 +1,5 @@
 package com.liskovsoft.sharedutils.data;
 
-import com.liskovsoft.sharedutils.data.MediaFormat;
-import com.liskovsoft.sharedutils.data.MediaItemStoryboard;
 import com.liskovsoft.sharedutils.data.MediaSubtitle;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -18,9 +16,9 @@ import com.liskovsoft.sharedutils.videoinfo.models.VideoDetails;
 import com.liskovsoft.sharedutils.videoinfo.models.VideoInfo;
 import com.liskovsoft.sharedutils.videoinfo.models.formats.AdaptiveVideoFormat;
 import com.liskovsoft.sharedutils.videoinfo.models.formats.RegularVideoFormat;
-import com.liskovsoft.sharedutils.service.data.YouTubeMediaFormat;
+import com.liskovsoft.sharedutils.service.data.MediaFormat;
 import com.liskovsoft.sharedutils.service.data.YouTubeMediaSubtitle;
-import com.liskovsoft.sharedutils.service.data.YouTubeMediaItemStoryboard;
+import com.liskovsoft.sharedutils.service.data.MediaItemStoryboard;
 
 import io.reactivex.Observable;
 
@@ -89,7 +87,7 @@ public class MediaItemFormatInfo {
             formatInfo.mAdaptiveFormats = new ArrayList<>();
 
             for (AdaptiveVideoFormat format : videoInfo.getAdaptiveFormats()) {
-                formatInfo.mAdaptiveFormats.add(YouTubeMediaFormat.from(format));
+                formatInfo.mAdaptiveFormats.add(MediaFormat.from(format));
             }
         }
 
@@ -97,7 +95,7 @@ public class MediaItemFormatInfo {
             formatInfo.mUrlFormats = new ArrayList<>();
 
             for (RegularVideoFormat format : videoInfo.getRegularFormats()) {
-                formatInfo.mUrlFormats.add(YouTubeMediaFormat.from(format));
+                formatInfo.mUrlFormats.add(MediaFormat.from(format));
             }
         }
 
@@ -297,7 +295,7 @@ public class MediaItemFormatInfo {
         storyParser.setStartSegmentNum(getStartSegmentNum());
         Storyboard storyboard = storyParser.extractStory();
 
-        return YouTubeMediaItemStoryboard.from(storyboard);
+        return MediaItemStoryboard.from(storyboard);
     }
 
     public boolean isUnplayable() {

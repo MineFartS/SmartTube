@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import androidx.annotation.Nullable;
 import androidx.core.text.BidiFormatter;
 
-import com.liskovsoft.sharedutils.data.MediaGroup;
+import com.liskovsoft.sharedutils.service.data.MediaGroup;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.common.helpers.AppConstants;
 
