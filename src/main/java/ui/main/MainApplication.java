@@ -3,7 +3,7 @@ package minefarts.smarttube.ui.main;
 import android.content.Context;
 import androidx.multidex.MultiDexApplication;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.Helpers;
 import minefarts.smarttube.app.models.data.BrowseSection;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
 import minefarts.smarttube.app.views.AddDeviceView;

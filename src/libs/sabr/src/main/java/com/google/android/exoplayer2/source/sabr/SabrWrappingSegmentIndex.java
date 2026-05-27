@@ -1,8 +1,7 @@
+package minefarts.exoplayer2.source.sabr;
 
-package com.google.android.exoplayer2.source.sabr;
-
-import com.google.android.exoplayer2.extractor.ChunkIndex;
-import com.google.android.exoplayer2.source.sabr.manifest.RangedUri;
+import minefarts.exoplayer2.extractor.ChunkIndex;
+import minefarts.exoplayer2.source.sabr.manifest.RangedUri;
 
 /**
  * An implementation of {@link SabrSegmentIndex} that wraps a {@link ChunkIndex} parsed from a

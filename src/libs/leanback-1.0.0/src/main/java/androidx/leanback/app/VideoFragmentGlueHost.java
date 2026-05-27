@@ -1,7 +1,5 @@
 // CHECKSTYLE:OFF Generated code
 /* This file is auto-generated from VideoSupportFragmentGlueHost.java.  DO NOT MODIFY. */
-
-
 package androidx.leanback.app;
 
 import android.view.SurfaceHolder;

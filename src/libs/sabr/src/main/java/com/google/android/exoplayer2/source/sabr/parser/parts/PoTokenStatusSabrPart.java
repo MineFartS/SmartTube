@@ -1,4 +1,4 @@
-package com.google.android.exoplayer2.source.sabr.parser.parts;
+package minefarts.exoplayer2.source.sabr.parser.parts;
 
 public class PoTokenStatusSabrPart implements SabrPart {
     public final PoTokenStatus status;

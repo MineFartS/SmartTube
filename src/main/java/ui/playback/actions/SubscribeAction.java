@@ -4,16 +4,16 @@ import android.content.Context;
 
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Video;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
-import com.liskovsoft.sharedutils.common.helpers.PostDataHelper;
-import com.liskovsoft.sharedutils.SignInService;
-import com.liskovsoft.sharedutils.actions.ActionsApi;
-import com.liskovsoft.sharedutils.actions.models.ActionResult;
-import com.liskovsoft.sharedutils.channelgroups.ChannelGroupServiceImpl;
-import com.liskovsoft.sharedutils.rx.RxHelper;
-import com.liskovsoft.sharedutils.next.v2.WatchNextServiceWrapper;
-import com.liskovsoft.sharedutils.service.data.MediaItemMetadata;
+import minefarts.sharedutils.helpers.MessageHelpers;
+import minefarts.googlecommon.common.helpers.RetrofitHelper;
+import minefarts.sharedutils.common.helpers.PostDataHelper;
+import minefarts.sharedutils.SignInService;
+import minefarts.sharedutils.actions.ActionsApi;
+import minefarts.sharedutils.actions.models.ActionResult;
+import minefarts.sharedutils.channelgroups.ChannelGroupServiceImpl;
+import minefarts.sharedutils.rx.RxHelper;
+import minefarts.sharedutils.next.v2.WatchNextServiceWrapper;
+import minefarts.sharedutils.service.data.MediaItemMetadata;
 
 import retrofit2.Call;
 

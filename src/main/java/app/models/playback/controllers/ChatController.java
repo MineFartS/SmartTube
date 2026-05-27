@@ -1,10 +1,10 @@
 package minefarts.smarttube.app.models.playback.controllers;
 
-import com.liskovsoft.sharedutils.LiveChatService;
-import com.liskovsoft.sharedutils.data.ChatItem;
-import com.liskovsoft.sharedutils.service.data.MediaItemMetadata;
-import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.rx.RxHelper;
+import minefarts.sharedutils.LiveChatService;
+import minefarts.sharedutils.data.ChatItem;
+import minefarts.sharedutils.service.data.MediaItemMetadata;
+import minefarts.sharedutils.mylogger.Log;
+import minefarts.sharedutils.rx.RxHelper;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.app.models.playback.ui.ChatReceiver;

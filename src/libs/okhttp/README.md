@@ -58,7 +58,7 @@ respectively.
 
 ## Links ##
 
-* [Javadoc][]: Classes matching `com.google.android.exoplayer2.ext.okhttp.*`
+* [Javadoc][]: Classes matching `minefarts.exoplayer2.ext.okhttp.*`
   belong to this module.
 
 [Javadoc]: https://exoplayer.dev/doc/reference/index.html

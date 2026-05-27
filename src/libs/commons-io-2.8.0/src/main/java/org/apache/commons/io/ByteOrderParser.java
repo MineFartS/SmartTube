@@ -1,5 +1,3 @@
-
-
 package org.apache.commons.io;
 
 import java.nio.ByteOrder;

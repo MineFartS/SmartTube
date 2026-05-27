@@ -1,5 +1,3 @@
-
-
 package androidx.leanback.widget;
 
 import static androidx.recyclerview.widget.RecyclerView.HORIZONTAL;

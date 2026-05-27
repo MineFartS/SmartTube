@@ -1,4 +1,3 @@
-
 package androidx.leanback.app;
 
 import static androidx.recyclerview.widget.RecyclerView.NO_POSITION;

@@ -1,7 +1,6 @@
+package minefarts.exoplayer2.source.hls.playlist;
 
-package com.google.android.exoplayer2.source.hls.playlist;
-
-import com.google.android.exoplayer2.offline.FilterableManifest;
+import minefarts.exoplayer2.offline.FilterableManifest;
 import java.util.Collections;
 import java.util.List;
 

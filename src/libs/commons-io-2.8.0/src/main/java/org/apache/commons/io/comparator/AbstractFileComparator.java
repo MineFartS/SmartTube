@@ -1,4 +1,3 @@
-
 package org.apache.commons.io.comparator;
 
 import java.io.File;

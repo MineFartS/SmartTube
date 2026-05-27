@@ -12,8 +12,8 @@ import minefarts.smarttube.R;
 import minefarts.smarttube.media.Clip;
 import minefarts.smarttube.media.Playlist;
 import minefarts.smarttube.utils.AppUtil;
-import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
+import minefarts.sharedutils.mylogger.Log;
+import minefarts.sharedutils.okhttp.OkHttpManager;
 import okhttp3.Response;
 
 @RequiresApi(21)

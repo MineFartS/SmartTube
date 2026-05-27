@@ -1,4 +1,3 @@
-
 package org.apache.commons.io.input.buffer;
 
 import java.io.IOException;

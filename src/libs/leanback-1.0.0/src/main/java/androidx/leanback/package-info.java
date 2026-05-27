@@ -42,6 +42,4 @@
  * high degree of customization.  Primary examples include the UI widget
  * {@link androidx.leanback.widget.HorizontalGridView} and
  * {@link androidx.leanback.widget.VerticalGridView}.
- */
-
-package androidx.leanback;
+ */package androidx.leanback;

@@ -1,8 +1,7 @@
+package minefarts.exoplayer2.source.sabr;
 
-package com.google.android.exoplayer2.source.sabr;
-
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.source.sabr.manifest.RangedUri;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.source.sabr.manifest.RangedUri;
 
 /**
  * Indexes the segments within a media stream.

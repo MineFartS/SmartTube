@@ -19,7 +19,7 @@ android {
 }
 
 dependencies {
-    implementation project(':exoplayer-core')
+    implementation project(':sharedutils')
     api 'androidx.media:media:1.0.1'
 }
 

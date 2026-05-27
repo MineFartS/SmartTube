@@ -1,7 +1,5 @@
 // CHECKSTYLE:OFF Generated code
 /* This file is auto-generated from BaseRowSupportFragment.java.  DO NOT MODIFY. */
-
-
 package androidx.leanback.app;
 
 import android.os.Bundle;

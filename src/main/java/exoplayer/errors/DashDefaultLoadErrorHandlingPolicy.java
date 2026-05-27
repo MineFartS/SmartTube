@@ -1,10 +1,10 @@
 package minefarts.smarttube.exoplayer.errors;
 
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.ParserException;
-import com.google.android.exoplayer2.upstream.DefaultLoadErrorHandlingPolicy;
-import com.google.android.exoplayer2.upstream.HttpDataSource.InvalidResponseCodeException;
-import com.google.android.exoplayer2.upstream.Loader.UnexpectedLoaderException;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.ParserException;
+import minefarts.exoplayer2.upstream.DefaultLoadErrorHandlingPolicy;
+import minefarts.exoplayer2.upstream.HttpDataSource.InvalidResponseCodeException;
+import minefarts.exoplayer2.upstream.Loader.UnexpectedLoaderException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

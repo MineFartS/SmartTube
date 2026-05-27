@@ -1,4 +1,4 @@
-package com.google.android.exoplayer2.source.hls;
+package minefarts.exoplayer2.source.hls;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 

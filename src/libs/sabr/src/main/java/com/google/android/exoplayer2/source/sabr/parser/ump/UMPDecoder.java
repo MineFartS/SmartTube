@@ -1,9 +1,9 @@
-package com.google.android.exoplayer2.source.sabr.parser.ump;
+package minefarts.exoplayer2.source.sabr.parser.ump;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.exoplayer2.extractor.ExtractorInput;
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.exoplayer2.extractor.ExtractorInput;
+import minefarts.sharedutils.helpers.Helpers;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

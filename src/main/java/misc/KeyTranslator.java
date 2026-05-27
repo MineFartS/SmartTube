@@ -2,8 +2,8 @@ package minefarts.smarttube.misc;
 
 import android.view.KeyEvent;
 
-import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.rx.RxHelper;
+import minefarts.sharedutils.mylogger.Log;
+import minefarts.sharedutils.rx.RxHelper;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.utils.Utils;

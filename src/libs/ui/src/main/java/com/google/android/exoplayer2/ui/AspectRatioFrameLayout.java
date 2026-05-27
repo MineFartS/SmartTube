@@ -1,4 +1,4 @@
-package com.google.android.exoplayer2.ui;
+package minefarts.exoplayer2.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;

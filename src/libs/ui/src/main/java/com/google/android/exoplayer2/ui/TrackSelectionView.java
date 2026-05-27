@@ -1,5 +1,4 @@
-
-package com.google.android.exoplayer2.ui;
+package minefarts.exoplayer2.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -12,13 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
-import com.google.android.exoplayer2.RendererCapabilities;
-import com.google.android.exoplayer2.source.TrackGroup;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.SelectionOverride;
-import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
-import com.google.android.exoplayer2.util.Assertions;
+import minefarts.exoplayer2.RendererCapabilities;
+import minefarts.exoplayer2.source.TrackGroup;
+import minefarts.exoplayer2.source.TrackGroupArray;
+import minefarts.exoplayer2.trackselection.DefaultTrackSelector;
+import minefarts.exoplayer2.trackselection.DefaultTrackSelector.SelectionOverride;
+import minefarts.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
+import minefarts.exoplayer2.util.Assertions;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

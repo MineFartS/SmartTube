@@ -54,11 +54,11 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import com.jakewharton.processphoenix.ProcessPhoenix;
-import com.liskovsoft.sharedutils.helpers.DeviceHelpers;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import com.liskovsoft.sharedutils.misc.WeakHashSet;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.helpers.DeviceHelpers;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.MessageHelpers;
+import minefarts.sharedutils.misc.WeakHashSet;
+import minefarts.sharedutils.mylogger.Log;
 import minefarts.smarttube.BuildConfig;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Video;
@@ -80,7 +80,7 @@ import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.prefs.PlayerData;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.prefs.RemoteControlData;
-import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
+import minefarts.sharedutils.service.internal.MediaServiceData;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;

@@ -1,5 +1,3 @@
-
-
 package androidx.leanback.widget;
 
 import android.animation.ObjectAnimator;

@@ -1,4 +1,3 @@
-
 package com.eclipsesource.v8.utils;
 
 import com.eclipsesource.v8.V8;

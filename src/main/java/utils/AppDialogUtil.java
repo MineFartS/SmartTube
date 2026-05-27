@@ -10,15 +10,15 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.liskovsoft.sharedutils.MediaItemService;
-import com.liskovsoft.sharedutils.data.ItemGroup;
-import com.liskovsoft.sharedutils.data.MediaItem;
-import com.liskovsoft.sharedutils.data.PlaylistInfo;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import com.liskovsoft.sharedutils.helpers.PermissionHelpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.rx.RxHelper;
+import minefarts.sharedutils.MediaItemService;
+import minefarts.sharedutils.data.ItemGroup;
+import minefarts.sharedutils.data.MediaItem;
+import minefarts.sharedutils.data.PlaylistInfo;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.MessageHelpers;
+import minefarts.sharedutils.helpers.PermissionHelpers;
+import minefarts.sharedutils.mylogger.Log;
+import minefarts.sharedutils.rx.RxHelper;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Queue;
 import minefarts.smarttube.app.models.data.Video;
@@ -43,7 +43,7 @@ import minefarts.smarttube.prefs.ContentBlockData;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.prefs.PlayerData;
 import minefarts.smarttube.prefs.PlayerTweaksData;
-import com.liskovsoft.sharedutils.playlist.impl.YouTubePlaylistInfo;
+import minefarts.sharedutils.playlist.impl.YouTubePlaylistInfo;
 
 import java.io.File;
 import java.util.ArrayList;

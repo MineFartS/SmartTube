@@ -7,8 +7,8 @@ import androidx.leanback.app.HeadersSupportFragment;
 import androidx.leanback.widget.ItemBridgeAdapter;
 import androidx.leanback.widget.Row;
 import androidx.leanback.widget.RowHeaderPresenter;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.helpers.KeyHelpers;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.KeyHelpers;
 
 public class ExtendedHeadersSupportFragment extends HeadersSupportFragment {
     public interface OnHeaderLongPressedListener {

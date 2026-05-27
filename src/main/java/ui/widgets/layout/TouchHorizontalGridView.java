@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 import androidx.leanback.widget.HorizontalGridView;
 import androidx.recyclerview.widget.RecyclerView;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.mylogger.Log;
 
 /**
  * NOT working!

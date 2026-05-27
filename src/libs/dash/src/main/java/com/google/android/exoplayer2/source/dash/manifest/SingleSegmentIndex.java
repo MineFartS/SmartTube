@@ -1,7 +1,6 @@
+package minefarts.exoplayer2.source.dash.manifest;
 
-package com.google.android.exoplayer2.source.dash.manifest;
-
-import com.google.android.exoplayer2.source.dash.DashSegmentIndex;
+import minefarts.exoplayer2.source.dash.DashSegmentIndex;
 
 /**
  * A {@link DashSegmentIndex} that defines a single segment.

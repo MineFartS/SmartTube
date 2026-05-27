@@ -13,12 +13,12 @@ import android.view.accessibility.CaptioningManager.CaptionStyle;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.exoplayer2.text.CaptionStyleCompat;
-import com.google.android.exoplayer2.text.Cue;
-import com.google.android.exoplayer2.text.TextOutput;
-import com.google.android.exoplayer2.ui.SubtitleView;
+import minefarts.exoplayer2.text.CaptionStyleCompat;
+import minefarts.exoplayer2.text.Cue;
+import minefarts.exoplayer2.text.TextOutput;
+import minefarts.exoplayer2.ui.SubtitleView;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.Helpers;
 import minefarts.smarttube.R;
 import minefarts.smarttube.prefs.AppPrefs;
 import minefarts.smarttube.prefs.common.DataChangeBase.OnDataChange;

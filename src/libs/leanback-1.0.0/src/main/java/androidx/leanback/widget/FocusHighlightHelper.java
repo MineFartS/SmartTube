@@ -1,4 +1,3 @@
-
 package androidx.leanback.widget;
 
 import static androidx.leanback.widget.FocusHighlight.ZOOM_FACTOR_LARGE;

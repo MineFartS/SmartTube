@@ -11,8 +11,8 @@ import androidx.leanback.app.HeadersSupportFragment.OnHeaderClickedListener;
 import androidx.leanback.widget.ItemBridgeAdapter;
 import androidx.leanback.widget.Row;
 import androidx.leanback.widget.RowHeaderPresenter;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.mylogger.Log;
 
 public class CustomBrowseSupportFragment extends BrowseSupportFragment {
     private static final String TAG = CustomBrowseSupportFragment.class.getSimpleName();

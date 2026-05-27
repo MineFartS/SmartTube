@@ -1,5 +1,4 @@
-
-package com.google.android.exoplayer2.source.sabr.manifest;
+package minefarts.exoplayer2.source.sabr.manifest;
 
 import java.util.Locale;
 

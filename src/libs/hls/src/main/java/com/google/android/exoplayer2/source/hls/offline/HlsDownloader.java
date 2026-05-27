@@ -1,19 +1,18 @@
-
-package com.google.android.exoplayer2.source.hls.offline;
+package minefarts.exoplayer2.source.hls.offline;
 
 import android.net.Uri;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.offline.DownloaderConstructorHelper;
-import com.google.android.exoplayer2.offline.SegmentDownloader;
-import com.google.android.exoplayer2.offline.StreamKey;
-import com.google.android.exoplayer2.source.hls.playlist.HlsMasterPlaylist;
-import com.google.android.exoplayer2.source.hls.playlist.HlsMediaPlaylist;
-import com.google.android.exoplayer2.source.hls.playlist.HlsPlaylist;
-import com.google.android.exoplayer2.source.hls.playlist.HlsPlaylistParser;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DataSpec;
-import com.google.android.exoplayer2.upstream.ParsingLoadable;
-import com.google.android.exoplayer2.util.UriUtil;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.offline.DownloaderConstructorHelper;
+import minefarts.exoplayer2.offline.SegmentDownloader;
+import minefarts.exoplayer2.offline.StreamKey;
+import minefarts.exoplayer2.source.hls.playlist.HlsMasterPlaylist;
+import minefarts.exoplayer2.source.hls.playlist.HlsMediaPlaylist;
+import minefarts.exoplayer2.source.hls.playlist.HlsPlaylist;
+import minefarts.exoplayer2.source.hls.playlist.HlsPlaylistParser;
+import minefarts.exoplayer2.upstream.DataSource;
+import minefarts.exoplayer2.upstream.DataSpec;
+import minefarts.exoplayer2.upstream.ParsingLoadable;
+import minefarts.exoplayer2.util.UriUtil;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;

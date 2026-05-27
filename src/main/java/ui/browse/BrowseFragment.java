@@ -19,7 +19,7 @@ import androidx.leanback.widget.PageRow;
 import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.PresenterSelector;
 import androidx.leanback.widget.TitleHelper;
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.Helpers;
 import minefarts.smarttube.app.models.data.BrowseSection;
 import minefarts.smarttube.app.models.data.SettingsGroup;
 import minefarts.smarttube.app.models.data.Video;

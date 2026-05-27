@@ -1,5 +1,3 @@
-
-
 package org.apache.commons.io.function;
 
 import java.io.IOException;

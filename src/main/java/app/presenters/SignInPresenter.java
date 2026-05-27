@@ -6,10 +6,10 @@ import android.content.Context;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.views.SignInView;
 import minefarts.smarttube.misc.ServiceManager;
-import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.rx.RxHelper;
+import minefarts.sharedutils.mylogger.Log;
+import minefarts.sharedutils.rx.RxHelper;
 import minefarts.smarttube.app.presenters.dialogs.AccountSelectionPresenter;
-import com.liskovsoft.sharedutils.SignInService;
+import minefarts.sharedutils.SignInService;
 
 import io.reactivex.disposables.Disposable;
 

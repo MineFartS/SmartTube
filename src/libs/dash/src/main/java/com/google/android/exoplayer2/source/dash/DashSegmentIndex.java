@@ -1,8 +1,7 @@
+package minefarts.exoplayer2.source.dash;
 
-package com.google.android.exoplayer2.source.dash;
-
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.source.dash.manifest.RangedUri;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.source.dash.manifest.RangedUri;
 
 /**
  * Indexes the segments within a media stream.

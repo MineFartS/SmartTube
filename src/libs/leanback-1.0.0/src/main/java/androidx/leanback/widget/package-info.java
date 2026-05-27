@@ -50,6 +50,4 @@
  * define a custom subclass of {@link androidx.leanback.widget.Row} and
  * {@link androidx.leanback.widget.RowPresenter}.
  * </p>
- */
-
-package androidx.leanback.widget;
+ */package androidx.leanback.widget;

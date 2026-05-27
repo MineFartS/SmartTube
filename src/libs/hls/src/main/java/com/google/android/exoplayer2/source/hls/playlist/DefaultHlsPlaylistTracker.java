@@ -1,22 +1,21 @@
-
-package com.google.android.exoplayer2.source.hls.playlist;
+package minefarts.exoplayer2.source.hls.playlist;
 
 import android.net.Uri;
 import android.os.Handler;
 import android.os.SystemClock;
 import androidx.annotation.Nullable;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.ParserException;
-import com.google.android.exoplayer2.source.MediaSourceEventListener.EventDispatcher;
-import com.google.android.exoplayer2.source.hls.HlsDataSourceFactory;
-import com.google.android.exoplayer2.source.hls.playlist.HlsMasterPlaylist.Variant;
-import com.google.android.exoplayer2.source.hls.playlist.HlsMediaPlaylist.Segment;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.LoadErrorHandlingPolicy;
-import com.google.android.exoplayer2.upstream.Loader;
-import com.google.android.exoplayer2.upstream.Loader.LoadErrorAction;
-import com.google.android.exoplayer2.upstream.ParsingLoadable;
-import com.google.android.exoplayer2.util.Assertions;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.ParserException;
+import minefarts.exoplayer2.source.MediaSourceEventListener.EventDispatcher;
+import minefarts.exoplayer2.source.hls.HlsDataSourceFactory;
+import minefarts.exoplayer2.source.hls.playlist.HlsMasterPlaylist.Variant;
+import minefarts.exoplayer2.source.hls.playlist.HlsMediaPlaylist.Segment;
+import minefarts.exoplayer2.upstream.DataSource;
+import minefarts.exoplayer2.upstream.LoadErrorHandlingPolicy;
+import minefarts.exoplayer2.upstream.Loader;
+import minefarts.exoplayer2.upstream.Loader.LoadErrorAction;
+import minefarts.exoplayer2.upstream.ParsingLoadable;
+import minefarts.exoplayer2.util.Assertions;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;

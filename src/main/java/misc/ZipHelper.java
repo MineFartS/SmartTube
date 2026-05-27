@@ -1,6 +1,6 @@
 package minefarts.smarttube.misc;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.Helpers;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

@@ -7,10 +7,10 @@ import android.os.Build.VERSION;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.exoplayer2.text.CaptionStyleCompat;
-import com.liskovsoft.sharedutils.helpers.DeviceHelpers;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.locale.LocaleUtility;
+import minefarts.exoplayer2.text.CaptionStyleCompat;
+import minefarts.sharedutils.helpers.DeviceHelpers;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.locale.LocaleUtility;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.playback.PlayerEngine;
 import minefarts.smarttube.app.models.playback.PlayerEngine;

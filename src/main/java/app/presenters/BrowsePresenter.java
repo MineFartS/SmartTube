@@ -6,12 +6,12 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
-import com.liskovsoft.sharedutils.oauth.Account;
-import com.liskovsoft.sharedutils.service.data.MediaGroup;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.locale.LocaleUtility;
-import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.rx.RxHelper;
+import minefarts.sharedutils.oauth.Account;
+import minefarts.sharedutils.service.data.MediaGroup;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.locale.LocaleUtility;
+import minefarts.sharedutils.mylogger.Log;
+import minefarts.sharedutils.rx.RxHelper;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.BrowseSection;
 import minefarts.smarttube.app.models.data.Queue;
@@ -40,7 +40,7 @@ import minefarts.smarttube.prefs.AccountsData;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.utils.Utils;
-import com.liskovsoft.sharedutils.browse.v2.BrowseService2Wrapper;
+import minefarts.sharedutils.browse.v2.BrowseService2Wrapper;
 import minefarts.smarttube.app.presenters.settings.AboutSettingsPresenter;
 import minefarts.smarttube.app.presenters.settings.AccountSettingsPresenter;
 import minefarts.smarttube.app.presenters.settings.ContentBlockSettingsPresenter;

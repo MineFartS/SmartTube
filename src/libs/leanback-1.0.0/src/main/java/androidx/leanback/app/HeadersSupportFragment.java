@@ -1,5 +1,3 @@
-
-
 package androidx.leanback.app;
 
 import android.content.Context;

@@ -1,5 +1,3 @@
-
-
 package minefarts.smarttube.ui.mod.leanback.preference;
 
 import android.content.Context;
@@ -23,7 +21,7 @@ import androidx.preference.DialogPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.MultiSelectListPreference;
 import androidx.recyclerview.widget.RecyclerView;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
+import minefarts.sharedutils.helpers.MessageHelpers;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.ui.mod.clickable.LinkifyCompat;

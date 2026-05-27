@@ -40,6 +40,9 @@ dependencies {
     implementation project(':j2v8')
     implementation project(path: ':commons-io-2.8.0')
 
+    compileOnly 'org.checkerframework:checker-qual:' + checkerframeworkVersion
+    compileOnly 'org.checkerframework:checker-compat-qual:' + checkerframeworkVersion
+
     implementation 'androidx.appcompat:appcompat:' + appCompatXLibraryVersion
     implementation 'androidx.preference:preference:' + preferenceXLibraryVersion
     implementation 'androidx.core:core-ktx:' + kotlinCoreXVersion

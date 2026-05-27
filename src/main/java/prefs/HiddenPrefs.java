@@ -3,7 +3,7 @@ package minefarts.smarttube.prefs;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.liskovsoft.sharedutils.prefs.SharedPreferencesBase;
+import minefarts.sharedutils.prefs.SharedPreferencesBase;
 import minefarts.smarttube.utils.Utils;
 
 public class HiddenPrefs extends SharedPreferencesBase {

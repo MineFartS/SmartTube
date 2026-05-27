@@ -1,5 +1,3 @@
-
-
 package androidx.leanback.widget;
 
 import static androidx.leanback.widget.BaseGridView.WINDOW_ALIGN_BOTH_EDGE;

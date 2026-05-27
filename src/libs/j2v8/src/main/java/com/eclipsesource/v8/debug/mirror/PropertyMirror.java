@@ -1,4 +1,3 @@
-
 package com.eclipsesource.v8.debug.mirror;
 
 import com.eclipsesource.v8.V8Object;

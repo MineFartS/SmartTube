@@ -1,8 +1,8 @@
 package minefarts.smarttube.misc;
 
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.mylogger.Log;
 import minefarts.smarttube.utils.Utils;
-import com.liskovsoft.sharedutils.misc.WeakHashSet;
+import minefarts.sharedutils.misc.WeakHashSet;
 
 public class TickleManager {
     private static final String TAG = TickleManager.class.getSimpleName();

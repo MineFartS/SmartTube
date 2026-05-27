@@ -3,10 +3,10 @@ package minefarts.smarttube.app.presenters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import minefarts.smarttube.misc.ServiceManager;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.mylogger.Log;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.views.AddDeviceView;
-import com.liskovsoft.sharedutils.rx.RxHelper;
+import minefarts.sharedutils.rx.RxHelper;
 import io.reactivex.disposables.Disposable;
 
 public class AddDevicePresenter extends BasePresenter<AddDeviceView> {

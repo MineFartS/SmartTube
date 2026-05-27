@@ -10,8 +10,8 @@ import android.view.MotionEvent;
 
 import androidx.fragment.app.Fragment;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.mylogger.Log;
 import minefarts.smarttube.app.models.playback.PlayerEngine;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.models.playback.PlayerEngine;

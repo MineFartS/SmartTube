@@ -87,7 +87,6 @@ dependencies {
 
     implementation project(':exoplayer-mediasession')
     implementation project(':exoplayer-okhttp')
-    implementation project(':exoplayer-core')
     implementation project(':exoplayer-dash')
     implementation project(':exoplayer-sabr')
     implementation project(':exoplayer-hls')

@@ -1,12 +1,11 @@
-
-package com.google.android.exoplayer2.ui;
+package minefarts.exoplayer2.ui;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.AttributeSet;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.SimpleExoPlayer;
+import minefarts.exoplayer2.Player;
+import minefarts.exoplayer2.SimpleExoPlayer;
 
 /** @deprecated Use {@link PlayerView}. */
 @Deprecated

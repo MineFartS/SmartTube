@@ -2,13 +2,13 @@ package minefarts.smarttube.exoplayer.versions.selector;
 
 import android.util.Pair;
 import androidx.annotation.Nullable;
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.RendererCapabilities;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection.Definition;
-import com.google.android.exoplayer2.trackselection.TrackSelection.Factory;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.exoplayer2.ExoPlaybackException;
+import minefarts.exoplayer2.RendererCapabilities;
+import minefarts.exoplayer2.source.TrackGroupArray;
+import minefarts.exoplayer2.trackselection.DefaultTrackSelector;
+import minefarts.exoplayer2.trackselection.TrackSelection.Definition;
+import minefarts.exoplayer2.trackselection.TrackSelection.Factory;
+import minefarts.sharedutils.mylogger.Log;
 import minefarts.smarttube.exoplayer.selector.TrackSelectorManager;
 import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
 

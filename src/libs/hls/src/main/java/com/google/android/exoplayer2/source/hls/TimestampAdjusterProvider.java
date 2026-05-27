@@ -1,8 +1,7 @@
-
-package com.google.android.exoplayer2.source.hls;
+package minefarts.exoplayer2.source.hls;
 
 import android.util.SparseArray;
-import com.google.android.exoplayer2.util.TimestampAdjuster;
+import minefarts.exoplayer2.util.TimestampAdjuster;
 
 /**
  * Provides {@link TimestampAdjuster} instances for use during HLS playbacks.

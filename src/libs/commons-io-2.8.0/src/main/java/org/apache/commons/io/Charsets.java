@@ -1,4 +1,3 @@
-
 package org.apache.commons.io;
 
 import org.apache.commons.io.mod.StandardCharsets;

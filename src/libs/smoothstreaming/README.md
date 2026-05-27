@@ -7,7 +7,7 @@ instantiate a `SsMediaSource` and pass it to `ExoPlayer.prepare`.
 
 * [Developer Guide][].
 * [Javadoc][]: Classes matching
-  `com.google.android.exoplayer2.source.smoothstreaming.*` belong to this
+  `minefarts.exoplayer2.source.smoothstreaming.*` belong to this
   module.
 
 [Developer Guide]: https://exoplayer.dev/smoothstreaming.html

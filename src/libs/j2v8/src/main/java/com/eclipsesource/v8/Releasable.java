@@ -1,4 +1,3 @@
-
 package com.eclipsesource.v8;
 
 import java.io.Closeable;

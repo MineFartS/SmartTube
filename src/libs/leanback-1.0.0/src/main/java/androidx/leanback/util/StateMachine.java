@@ -1,4 +1,3 @@
-
 package androidx.leanback.util;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;

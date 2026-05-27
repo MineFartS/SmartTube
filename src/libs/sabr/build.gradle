@@ -27,7 +27,6 @@ android {
 }
 
 dependencies {
-    implementation project(':exoplayer-core')
     implementation project(':sharedutils')
     compileOnly 'org.checkerframework:checker-qual:' + checkerframeworkVersion
     implementation 'androidx.annotation:annotation:1.1.0'

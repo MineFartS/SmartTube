@@ -1,13 +1,12 @@
+package minefarts.exoplayer2.ui.spherical;
 
-package com.google.android.exoplayer2.ui.spherical;
-
-import static com.google.android.exoplayer2.util.GlUtil.checkGlError;
+import static minefarts.exoplayer2.util.GlUtil.checkGlError;
 
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.util.GlUtil;
-import com.google.android.exoplayer2.video.spherical.Projection;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.util.GlUtil;
+import minefarts.exoplayer2.video.spherical.Projection;
 import java.nio.FloatBuffer;
 import org.checkerframework.checker.nullness.qual.Nullable;
 

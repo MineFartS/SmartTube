@@ -1,5 +1,4 @@
-
-package com.google.android.exoplayer2.ui.spherical;
+package minefarts.exoplayer2.ui.spherical;
 
 import android.content.Context;
 import android.graphics.PointF;
@@ -20,10 +19,10 @@ import android.util.AttributeSet;
 import android.view.Display;
 import android.view.Surface;
 import android.view.WindowManager;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.util.Assertions;
-import com.google.android.exoplayer2.util.Util;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.Player;
+import minefarts.exoplayer2.util.Assertions;
+import minefarts.exoplayer2.util.Util;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 

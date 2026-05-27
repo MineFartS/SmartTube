@@ -1,7 +1,7 @@
-package com.google.android.exoplayer2.source.sabr.parser.parts;
+package minefarts.exoplayer2.source.sabr.parser.parts;
 
-import com.google.android.exoplayer2.source.sabr.parser.models.FormatSelector;
-import com.google.android.exoplayer2.source.sabr.protos.videostreaming.FormatId;
+import minefarts.exoplayer2.source.sabr.parser.models.FormatSelector;
+import minefarts.exoplayer2.source.sabr.protos.videostreaming.FormatId;
 
 public class FormatInitializedSabrPart implements SabrPart {
     public final FormatId formatId;

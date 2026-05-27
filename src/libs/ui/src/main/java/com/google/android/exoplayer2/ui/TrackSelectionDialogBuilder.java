@@ -1,5 +1,4 @@
-
-package com.google.android.exoplayer2.ui;
+package minefarts.exoplayer2.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -7,12 +6,12 @@ import android.content.Context;
 import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.SelectionOverride;
-import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
-import com.google.android.exoplayer2.trackselection.TrackSelectionUtil;
-import com.google.android.exoplayer2.util.Assertions;
+import minefarts.exoplayer2.source.TrackGroupArray;
+import minefarts.exoplayer2.trackselection.DefaultTrackSelector;
+import minefarts.exoplayer2.trackselection.DefaultTrackSelector.SelectionOverride;
+import minefarts.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
+import minefarts.exoplayer2.trackselection.TrackSelectionUtil;
+import minefarts.exoplayer2.util.Assertions;
 import java.util.Collections;
 import java.util.List;
 

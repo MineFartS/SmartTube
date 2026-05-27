@@ -2,7 +2,7 @@ package minefarts.smarttube.prefs.common;
 
 import android.content.Context;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.Helpers;
 import minefarts.smarttube.prefs.AppPrefs;
 import minefarts.smarttube.utils.Utils;
 

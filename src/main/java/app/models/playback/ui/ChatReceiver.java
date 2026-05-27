@@ -1,6 +1,6 @@
 package minefarts.smarttube.app.models.playback.ui;
 
-import com.liskovsoft.sharedutils.data.ChatItem;
+import minefarts.sharedutils.data.ChatItem;
 
 public interface ChatReceiver {
     interface Callback {

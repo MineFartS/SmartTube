@@ -1,4 +1,3 @@
-
 package org.apache.commons.io.filefilter;
 
 import java.io.File;

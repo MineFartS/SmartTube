@@ -6,11 +6,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 
-import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
+import minefarts.googlecommon.common.helpers.ServiceHelper;
 import minefarts.smarttube.utils.AppUtil;
-import com.liskovsoft.sharedutils.data.MediaItem;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.data.MediaItem;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.mylogger.Log;
 
 import static androidx.core.content.IntentCompat.EXTRA_START_PLAYBACK;
 

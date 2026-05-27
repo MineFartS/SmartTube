@@ -1,9 +1,9 @@
 package minefarts.smarttube.exoplayer.selector.track;
 
-import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.TrackSelection.Definition;
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.exoplayer2.Format;
+import minefarts.exoplayer2.source.TrackGroupArray;
+import minefarts.exoplayer2.trackselection.TrackSelection.Definition;
+import minefarts.sharedutils.helpers.Helpers;
 import minefarts.smarttube.exoplayer.selector.TrackSelectorManager;
 import minefarts.smarttube.exoplayer.selector.TrackSelectorUtil;
 

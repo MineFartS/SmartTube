@@ -1,7 +1,7 @@
 package minefarts.smarttube.utils;
 
 import minefarts.smarttube.utils.Serializer;
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.Helpers;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -1,8 +1,6 @@
+package minefarts.exoplayer2.ui.spherical;
 
-
-package com.google.android.exoplayer2.ui.spherical;
-
-import static com.google.android.exoplayer2.util.GlUtil.checkGlError;
+import static minefarts.exoplayer2.util.GlUtil.checkGlError;
 
 import android.graphics.Canvas;
 import android.graphics.PointF;
@@ -12,8 +10,8 @@ import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import androidx.annotation.Nullable;
 import android.view.Surface;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.util.GlUtil;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.util.GlUtil;
 import java.nio.FloatBuffer;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;

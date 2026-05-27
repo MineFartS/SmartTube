@@ -1,6 +1,6 @@
-package com.google.android.exoplayer2.source.sabr.parser.ump;
+package minefarts.exoplayer2.source.sabr.parser.ump;
 
-import com.google.android.exoplayer2.extractor.ExtractorInput;
+import minefarts.exoplayer2.extractor.ExtractorInput;
 
 public class UMPPart {
     public final int partId;

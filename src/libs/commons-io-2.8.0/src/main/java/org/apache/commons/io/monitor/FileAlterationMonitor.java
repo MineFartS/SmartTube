@@ -1,4 +1,3 @@
-
 package org.apache.commons.io.monitor;
 
 import java.util.List;

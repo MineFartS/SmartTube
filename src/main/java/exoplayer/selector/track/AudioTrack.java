@@ -1,7 +1,7 @@
 package minefarts.smarttube.exoplayer.selector.track;
 
-import com.google.android.exoplayer2.Format;
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.exoplayer2.Format;
+import minefarts.sharedutils.helpers.Helpers;
 import minefarts.smarttube.exoplayer.selector.TrackSelectorUtil;
 
 public class AudioTrack extends MediaTrack {

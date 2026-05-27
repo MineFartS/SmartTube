@@ -1,6 +1,4 @@
-
-
-package com.google.android.exoplayer2.ui.spherical;
+package minefarts.exoplayer2.ui.spherical;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -14,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import com.google.android.exoplayer2.util.Assertions;
+import minefarts.exoplayer2.util.Assertions;
 
 /** This View uses standard Android APIs to render its child Views to a texture. */
 public final class GlViewGroup extends FrameLayout {

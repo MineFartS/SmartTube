@@ -1,4 +1,3 @@
-
 package androidx.leanback.app;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;

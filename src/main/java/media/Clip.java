@@ -1,5 +1,3 @@
-
-
 package minefarts.smarttube.media;
 
 import android.os.Parcel;

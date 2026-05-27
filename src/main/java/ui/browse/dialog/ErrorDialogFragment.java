@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.leanback.app.BrowseSupportFragment;
 import androidx.leanback.app.BrowseSupportFragment.MainFragmentAdapter;
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.Helpers;
 import minefarts.smarttube.app.models.errors.CategoryEmptyError;
 import minefarts.smarttube.app.models.errors.ErrorFragmentData;
 import minefarts.smarttube.app.models.errors.SignInError;

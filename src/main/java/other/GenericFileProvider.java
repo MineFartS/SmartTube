@@ -4,7 +4,7 @@ import android.content.Context;
 import androidx.core.content.FileProvider;
 
 /**
- * Usage: {@link com.liskovsoft.sharedutils.helpers.FileHelpers#getFileUri(Context, String)}
+ * Usage: {@link minefarts.sharedutils.helpers.FileHelpers#getFileUri(Context, String)}
  */
 public class GenericFileProvider extends FileProvider {
 }

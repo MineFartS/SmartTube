@@ -4,7 +4,7 @@ import android.content.Context;
 import androidx.core.content.ContextCompat;
 
 import minefarts.smarttube.R;
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.Helpers;
 
 public class CardColors {
 
