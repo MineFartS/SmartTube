@@ -12,7 +12,7 @@ import com.liskovsoft.sharedutils.service.ContentService;
 import com.liskovsoft.sharedutils.MediaItemService;
 import com.liskovsoft.sharedutils.NotificationsService;
 import com.liskovsoft.sharedutils.SignInService;
-import com.liskovsoft.sharedutils.data.MediaItemMetadata;
+import com.liskovsoft.sharedutils.service.data.MediaItemMetadata;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.PlayerEventListener;
 import minefarts.smarttube.app.models.playback.service.VideoStateService;

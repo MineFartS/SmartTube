@@ -1,6 +1,6 @@
 package minefarts.smarttube.app.models.playback.controllers;
 
-import com.liskovsoft.sharedutils.data.MediaItemMetadata;
+import com.liskovsoft.sharedutils.service.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import minefarts.smarttube.R;

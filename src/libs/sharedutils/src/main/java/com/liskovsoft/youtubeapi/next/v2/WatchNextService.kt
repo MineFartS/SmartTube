@@ -1,9 +1,9 @@
 package com.liskovsoft.sharedutils.next.v2
 
 import com.liskovsoft.sharedutils.data.DislikeData
-import com.liskovsoft.sharedutils.data.MediaGroup
+import com.liskovsoft.sharedutils.service.data.MediaGroup
 import com.liskovsoft.sharedutils.data.MediaItem
-import com.liskovsoft.sharedutils.data.MediaItemMetadata
+import com.liskovsoft.sharedutils.service.data.MediaItemMetadata
 import com.liskovsoft.sharedutils.app.AppService
 import com.liskovsoft.sharedutils.browse.v1.BrowseApiHelper
 import com.liskovsoft.sharedutils.channelgroups.ChannelGroupServiceImpl

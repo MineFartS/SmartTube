@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import com.liskovsoft.sharedutils.MediaItemService;
 import minefarts.smarttube.misc.ServiceManager;
-import com.liskovsoft.sharedutils.data.MediaItemMetadata;
+import com.liskovsoft.sharedutils.service.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.data.SponsorSegment;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;

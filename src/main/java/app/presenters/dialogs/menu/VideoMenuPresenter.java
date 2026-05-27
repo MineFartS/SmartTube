@@ -29,7 +29,7 @@ import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.utils.AppDialogUtil;
 import minefarts.smarttube.ui.playback.actions.SubscribeAction;
 import minefarts.smarttube.app.models.playback.controllers.VideoStateController;
-import com.liskovsoft.sharedutils.data.MediaGroup;
+import com.liskovsoft.sharedutils.service.data.MediaGroup;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;

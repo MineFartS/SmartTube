@@ -1,6 +1,5 @@
 package com.liskovsoft.sharedutils.service.data;
 
-import com.liskovsoft.sharedutils.data.MediaGroup;
 import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.browse.v1.models.grid.GridTab;
 import com.liskovsoft.sharedutils.browse.v1.models.grid.GridTabContinuation;
@@ -18,7 +17,32 @@ import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class YouTubeMediaGroup implements MediaGroup {
+public class MediaGroup {
+
+    public static final int TYPE_UNDEFINED = -1;
+    public static final int TYPE_HOME = 0;
+    public static final int TYPE_SEARCH = 1;
+    public static final int TYPE_RECOMMENDED = 2;
+    public static final int TYPE_HISTORY = 3;
+    public static final int TYPE_SUBSCRIPTIONS = 4;
+    public static final int TYPE_MUSIC = 5;
+    public static final int TYPE_NEWS = 6;
+    public static final int TYPE_GAMING = 7;
+    public static final int TYPE_USER_PLAYLISTS = 8;
+    public static final int TYPE_SUGGESTIONS = 9;
+    public static final int TYPE_CHANNEL = 10;
+    public static final int TYPE_SETTINGS = 11;
+    public static final int TYPE_CHANNEL_UPLOADS = 12;
+    public static final int TYPE_KIDS_HOME = 13;
+    public static final int TYPE_TRENDING = 14;
+    public static final int TYPE_SHORTS = 15;
+    public static final int TYPE_NOTIFICATIONS = 16;
+    public static final int TYPE_SPORTS = 17;
+    public static final int TYPE_MOVIES = 18;
+    public static final int TYPE_LIVE = 19;
+    public static final int TYPE_MY_VIDEOS = 20;
+    public static final int TYPE_PLAYBACK_QUEUE = 21;
+
     private final int mType;
     private String mTitle;
     private List<MediaItem> mMediaItems;
@@ -28,7 +52,7 @@ public class YouTubeMediaGroup implements MediaGroup {
     private String mParams;
     private String mReloadPageKey;
 
-    public YouTubeMediaGroup(int type) {
+    public MediaGroup(int type) {
         mType = type;
     }
 
@@ -37,15 +61,15 @@ public class YouTubeMediaGroup implements MediaGroup {
             return null;
         }
 
-        return create(new YouTubeMediaGroup(type), browseResult.getItemWrappers(), browseResult.getNextPageKey());
+        return create(new MediaGroup(type), browseResult.getItemWrappers(), browseResult.getNextPageKey());
     }
 
     public static MediaGroup from(GridTabContinuation continuation, String reloadPageKey, String groupTitle, int groupType) {
-        YouTubeMediaGroup baseGroup = new YouTubeMediaGroup(groupType);
+        MediaGroup baseGroup = new MediaGroup(groupType);
         baseGroup.mReloadPageKey = reloadPageKey;
         MediaGroup mediaGroup = from(continuation, baseGroup);
-        if (mediaGroup instanceof YouTubeMediaGroup) {
-            ((YouTubeMediaGroup) mediaGroup).setTitle(groupTitle);
+        if (mediaGroup instanceof MediaGroup) {
+            ((MediaGroup) mediaGroup).setTitle(groupTitle);
         }
         return mediaGroup;
     }
@@ -55,7 +79,7 @@ public class YouTubeMediaGroup implements MediaGroup {
             return null;
         }
 
-        YouTubeMediaGroup newGroup = new YouTubeMediaGroup(baseGroup.getType());
+        MediaGroup newGroup = new MediaGroup(baseGroup.getType());
         newGroup.mTitle = baseGroup.getTitle();
 
         // Subscribed channel view. Add details.
@@ -77,45 +101,39 @@ public class YouTubeMediaGroup implements MediaGroup {
             return null;
         }
 
-        YouTubeMediaGroup newGroup = new YouTubeMediaGroup(baseGroup.getType());
+        MediaGroup newGroup = new MediaGroup(baseGroup.getType());
         newGroup.mTitle = baseGroup.getTitle();
 
         return create(newGroup, continuation.getItemWrappers(), continuation.getNextPageKey());
     }
 
     public static MediaGroup from(Section section, int type) {
-        if (section == null) {
-            return null;
-        }
+        if (section == null) return null;
 
-        YouTubeMediaGroup youTubeMediaGroup = new YouTubeMediaGroup(type);
-        youTubeMediaGroup.mTitle = section.getTitle();
-        youTubeMediaGroup.mNextPageKey = section.getNextPageKey();
+        MediaGroup mg = new MediaGroup(type);
+        mg.mTitle = section.getTitle();
+        mg.mNextPageKey = section.getNextPageKey();
 
-        return create(youTubeMediaGroup, section.getItemWrappers(), section.getNextPageKey());
+        return create(mg, section.getItemWrappers(), section.getNextPageKey());
     }
 
     public static MediaGroup from(Chip chip, int type) {
-        if (chip == null) {
-            return null;
-        }
+        if (chip == null) return null;
 
-        YouTubeMediaGroup youTubeMediaGroup = new YouTubeMediaGroup(type);
-        youTubeMediaGroup.mTitle = chip.getTitle();
-        youTubeMediaGroup.mNextPageKey = chip.getReloadPageKey();
+        MediaGroup mg = new MediaGroup(type);
+        mg.mTitle = chip.getTitle();
+        mg.mNextPageKey = chip.getReloadPageKey();
 
-        return create(youTubeMediaGroup, null, chip.getReloadPageKey());
+        return create(mg, null, chip.getReloadPageKey());
     }
 
     public static MediaGroup from(SectionContinuation continuation, MediaGroup baseGroup) {
-        if (continuation == null || baseGroup == null) {
-            return null;
-        }
+        if (continuation == null || baseGroup == null) return null;
 
-        YouTubeMediaGroup newGroup = new YouTubeMediaGroup(baseGroup.getType());
-        newGroup.mTitle = baseGroup.getTitle();
+        MediaGroup mg = new MediaGroup(baseGroup.getType());
+        mg.mTitle = baseGroup.getTitle();
 
-        return create(newGroup, continuation.getItemWrappers(), continuation.getNextPageKey());
+        return create(mg, continuation.getItemWrappers(), continuation.getNextPageKey());
     }
 
     public static List<MediaGroup> from(SearchResult searchResult, int type) {
@@ -137,43 +155,37 @@ public class YouTubeMediaGroup implements MediaGroup {
             return null;
         }
 
-        YouTubeMediaGroup baseGroup = new YouTubeMediaGroup(type);
-        baseGroup.setTitle(searchSection.getTitle());
+        MediaGroup mg = new MediaGroup(type);
+        mg.setTitle(searchSection.getTitle());
 
-        return create(baseGroup, searchSection.getItemWrappers(), searchSection.getNextPageKey());
+        return create(mg, searchSection.getItemWrappers(), searchSection.getNextPageKey());
     }
 
     public static MediaGroup from(SearchResultContinuation continuation, MediaGroup baseGroup) {
-        if (continuation == null || baseGroup == null) {
-            return null;
-        }
+        if (continuation == null || baseGroup == null) return null;
 
-        YouTubeMediaGroup newGroup = new YouTubeMediaGroup(baseGroup.getType());
-        newGroup.mTitle = baseGroup.getTitle();
+        MediaGroup mg = new MediaGroup(baseGroup.getType());
+        mg.mTitle = baseGroup.getTitle();
 
-        return create(newGroup, continuation.getItemWrappers(), continuation.getNextPageKey());
+        return create(mg, continuation.getItemWrappers(), continuation.getNextPageKey());
     }
 
     public static MediaGroup from(Chip chip) {
-        if (chip == null) {
-            return null;
-        }
+        if (chip == null) return null;
 
-        YouTubeMediaGroup youTubeMediaGroup = new YouTubeMediaGroup(MediaGroup.TYPE_SUGGESTIONS);
-        youTubeMediaGroup.mTitle = chip.getTitle();
+        MediaGroup mg = new MediaGroup(TYPE_SUGGESTIONS);
+        mg.mTitle = chip.getTitle();
 
-        return create(youTubeMediaGroup, chip.getItemWrappers(), chip.getNextPageKey());
+        return create(mg, chip.getItemWrappers(), chip.getNextPageKey());
     }
 
     public static MediaGroup from(SuggestedSection section) {
-        if (section == null) {
-            return null;
-        }
+        if (section == null) return null;
 
-        YouTubeMediaGroup youTubeMediaGroup = new YouTubeMediaGroup(MediaGroup.TYPE_SUGGESTIONS);
-        youTubeMediaGroup.mTitle = section.getTitle();
+        MediaGroup mg = new MediaGroup(TYPE_SUGGESTIONS);
+        mg.mTitle = section.getTitle();
 
-        return create(youTubeMediaGroup, section.getItemWrappers(), section.getNextPageKey());
+        return create(mg, section.getItemWrappers(), section.getNextPageKey());
     }
 
     public static List<MediaGroup> from(List<Section> sections, int type) {
@@ -184,10 +196,10 @@ public class YouTubeMediaGroup implements MediaGroup {
                 // Section contains chips (nested sections) or items. Not both.
                 if (section.getChips() != null) {
                     for (Chip chip : section.getChips()) {
-                        result.add(YouTubeMediaGroup.from(chip, type));
+                        result.add(from(chip, type));
                     }
                 } else {
-                    result.add(YouTubeMediaGroup.from(section, type));
+                    result.add(from(section, type));
                 }
             }
         }
@@ -196,12 +208,9 @@ public class YouTubeMediaGroup implements MediaGroup {
     }
 
     public static MediaGroup fromTabs(List<GridTab> tabs, int type) {
-        YouTubeMediaGroup youTubeMediaGroup = new YouTubeMediaGroup(type);
-
-        return create(youTubeMediaGroup, tabs);
+        return create(new MediaGroup(type), tabs);
     }
 
-    @Override
     public List<MediaItem> getMediaItems() {
         return mMediaItems;
     }
@@ -210,7 +219,6 @@ public class YouTubeMediaGroup implements MediaGroup {
         mMediaItems = items;
     }
 
-    @Override
     public String getTitle() {
         return mTitle;
     }
@@ -219,42 +227,35 @@ public class YouTubeMediaGroup implements MediaGroup {
         mTitle = title;
     }
 
-    @Override
     public int getType() {
         return mType;
     }
 
-    @Override
     public String getChannelId() {
         return mChannelId;
     }
 
-    @Override
     public String getChannelUrl() {
         return mChannelUrl;
     }
 
-    @Override
     public String getParams() {
         return mParams;
     }
 
-    @Override
     public String getReloadPageKey() {
         return mReloadPageKey;
     }
 
-    @Override
     public String getNextPageKey() {
         return mNextPageKey;
     }
 
-    @Override
     public boolean isEmpty() {
         return mMediaItems == null || mMediaItems.isEmpty();
     }
 
-    private static MediaGroup create(YouTubeMediaGroup baseGroup, List<GridTab> tabs) {
+    private static MediaGroup create(MediaGroup baseGroup, List<GridTab> tabs) {
         ArrayList<MediaItem> mediaItems = new ArrayList<>();
 
         if (tabs != null) {
@@ -275,7 +276,7 @@ public class YouTubeMediaGroup implements MediaGroup {
         return baseGroup;
     }
 
-    private static MediaGroup create(YouTubeMediaGroup baseGroup, List<ItemWrapper> items, String nextPageKey) {
+    private static MediaGroup create(MediaGroup baseGroup, List<ItemWrapper> items, String nextPageKey) {
         ArrayList<MediaItem> mediaItems = new ArrayList<>();
 
         if (items != null) {

@@ -1,6 +1,6 @@
 package com.liskovsoft.sharedutils.browse.v2
 
-import com.liskovsoft.sharedutils.data.MediaGroup
+import com.liskovsoft.sharedutils.service.data.MediaGroup
 import com.liskovsoft.sharedutils.data.MediaItem
 import com.liskovsoft.sharedutils.browse.v2.gen.*
 import com.liskovsoft.sharedutils.common.helpers.AppClient

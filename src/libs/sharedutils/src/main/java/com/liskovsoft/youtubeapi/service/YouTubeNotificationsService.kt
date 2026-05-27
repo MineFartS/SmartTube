@@ -1,7 +1,7 @@
 package com.liskovsoft.sharedutils.service
 
 import com.liskovsoft.sharedutils.NotificationsService
-import com.liskovsoft.sharedutils.data.MediaGroup
+import com.liskovsoft.sharedutils.service.data.MediaGroup
 import com.liskovsoft.sharedutils.data.MediaItem
 import com.liskovsoft.sharedutils.data.NotificationState
 import com.liskovsoft.sharedutils.rx.RxHelper

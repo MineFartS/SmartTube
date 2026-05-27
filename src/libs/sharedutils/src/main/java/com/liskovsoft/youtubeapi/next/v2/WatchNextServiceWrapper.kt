@@ -1,12 +1,10 @@
 package com.liskovsoft.sharedutils.next.v2
 
-import com.liskovsoft.sharedutils.data.MediaGroup
-import com.liskovsoft.sharedutils.data.MediaItemMetadata
+import com.liskovsoft.sharedutils.service.data.MediaItemMetadata
 import com.liskovsoft.sharedutils.data.PlaylistInfo
 import com.liskovsoft.sharedutils.playlistgroups.PlaylistGroupServiceImpl
-import com.liskovsoft.sharedutils.service.data.YouTubeMediaGroup
+import com.liskovsoft.sharedutils.service.data.MediaGroup
 import com.liskovsoft.sharedutils.service.data.YouTubeMediaItem
-import com.liskovsoft.sharedutils.service.data.YouTubeMediaItemMetadata
 
 internal object WatchNextServiceWrapper: WatchNextService() {
     override fun getMetadata(videoId: String?, playlistId: String?, playlistIndex: Int, playlistParams: String?): MediaItemMetadata? {
@@ -23,7 +21,7 @@ internal object WatchNextServiceWrapper: WatchNextService() {
         getCachedGroup(playlistId)?.let { cached ->
             val currentIdx = cached.mediaItems?.indexOfFirst { it.videoId == videoId }.takeIf { it != -1 } ?: playlistIndex
             val currentItem = cached.mediaItems?.getOrNull(currentIdx)
-            YouTubeMediaItemMetadata().apply {
+            MediaItemMetadata().apply {
                 this.videoId = currentItem?.videoId
                 title = currentItem?.title
                 secondTitle = currentItem?.secondTitle
@@ -44,7 +42,7 @@ internal object WatchNextServiceWrapper: WatchNextService() {
     private fun getCachedGroup(playlistId: String?): MediaGroup? {
         val group = PlaylistGroupServiceImpl.findPlaylistGroup(playlistId)
         if (group != null && !group.isEmpty) {
-            return YouTubeMediaGroup(MediaGroup.TYPE_SUGGESTIONS).apply {
+            return MediaGroup(MediaGroup.TYPE_SUGGESTIONS).apply {
                 title = group.title
                 mediaItems = group.items?.map {
                     YouTubeMediaItem().apply {

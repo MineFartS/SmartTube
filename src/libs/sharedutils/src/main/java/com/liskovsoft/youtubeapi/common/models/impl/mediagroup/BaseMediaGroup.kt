@@ -1,32 +1,40 @@
 package com.liskovsoft.sharedutils.common.models.impl.mediagroup
 
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
-import com.liskovsoft.sharedutils.data.MediaGroup
+import com.liskovsoft.sharedutils.service.data.MediaGroup
 import com.liskovsoft.sharedutils.data.MediaItem
 import com.liskovsoft.sharedutils.browse.v2.BrowseApiHelper
 import com.liskovsoft.sharedutils.common.models.gen.*
 import com.liskovsoft.sharedutils.common.models.impl.mediaitem.WrapperMediaItem
 
-internal abstract class BaseMediaGroup(private val options: MediaGroupOptions): MediaGroup {
+internal abstract class BaseMediaGroup(
+    private val options: MediaGroupOptions
+): MediaGroup(-1) {
+    
     private val filter: ((ItemWrapper) -> Boolean) = {
         it.isEmpty() ||
         (options.removeShorts && it.isShorts()) ||
         (options.removeLive && it.isLive()) ||
         (options.removeUpcoming && it.isUpcoming()) ||
-        (options.removeWatched && (it.getPercentWatched() ?: 0) > 80 && !it.isLive()) // check if fully watched
+        (options.removeWatched && (it.getPercentWatched()?:0 > 80))
     }
 
     private var _titleItem: String? = null
         get() = field ?: titleItem
+
     private var _mediaItemList: List<MediaItem?>? = null
         get() = field ?: mediaItemList
+
     private var _nextPageKeyVal: String? = null
         get() = if (field == "") null else field ?: nextPageKeyItem
         set(value) { field = value ?: "" }
 
     private val titleItem by lazy { getTitleInt() }
-    protected open val mediaItemList: List<MediaItem?>? by lazy { getItemWrappersInt()
-        ?.mapIndexedNotNull { index, it -> it
+    
+    protected open val mediaItemList: List<MediaItem?>? by lazy { 
+        getItemWrappersInt()
+        ?.mapIndexedNotNull { 
+            index, it -> it
             ?.let { if (filter.invoke(it)) null else it }
             ?.let { WrapperMediaItem(it).apply { playlistIndex = index } }
             ?.let { it }
@@ -46,6 +54,7 @@ internal abstract class BaseMediaGroup(private val options: MediaGroupOptions): 
             mutable
         }
     }
+
     private val nextPageKeyItem by lazy { getNextPageKeyInt() }
     private val paramsItem by lazy { getParamsInt() }
     private val channelIdItem by lazy { getChannelIdInt() }
@@ -64,7 +73,7 @@ internal abstract class BaseMediaGroup(private val options: MediaGroupOptions): 
         return _mediaItemList
     }
 
-    fun setMediaItems(list: List<MediaItem?>?) {
+    override fun setMediaItems(list: List<MediaItem?>?) {
         _mediaItemList = list
     }
 
@@ -72,7 +81,7 @@ internal abstract class BaseMediaGroup(private val options: MediaGroupOptions): 
         return _titleItem
     }
 
-    fun setTitle(title: String?) {
+    override fun setTitle(title: String?) {
         _titleItem = title
     }
 
@@ -103,4 +112,5 @@ internal abstract class BaseMediaGroup(private val options: MediaGroupOptions): 
     override fun isEmpty(): Boolean {
         return _mediaItemList.isNullOrEmpty()
     }
+
 }

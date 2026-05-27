@@ -13,11 +13,14 @@ import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper
 import com.liskovsoft.sharedutils.common.models.impl.mediaitem.ShuffleMediaItem
 import com.liskovsoft.sharedutils.next.v2.gen.*
 import com.liskovsoft.sharedutils.notifications.NotificationStateImplWrapper
+import com.liskovsoft.sharedutils.service.data.MediaItemMetadata
+import com.liskovsoft.sharedutils.next.v1.models.VideoMetadata
+import com.liskovsoft.sharedutils.service.data.MediaGroup
 
 internal data class MediaItemMetadataImpl(
     val watchNextResult: WatchNextResult,
     val suggestionsResult: WatchNextResult? = null
-) : MediaItemMetadata {
+) : MediaItemMetadata() {
 
     private val channelIdItem by lazy {
         videoDetails?.getChannelId() ?: videoOwner?.getChannelId() ?: channelOwner?.getChannelId()
@@ -107,14 +110,14 @@ internal data class MediaItemMetadataImpl(
 
     private val likeStatusItem by lazy {
         when (videoMetadata?.getLikeStatus() ?: watchNextResult.getButtonStateItem()?.getLikeStatus()) {
-            LIKE_STATUS_LIKE -> MediaItemMetadata.LIKE_STATUS_LIKE
-            LIKE_STATUS_DISLIKE -> MediaItemMetadata.LIKE_STATUS_DISLIKE
-            LIKE_STATUS_INDIFFERENT -> MediaItemMetadata.LIKE_STATUS_INDIFFERENT
+            VideoMetadata.LIKE_STATUS_LIKE -> LIKE_STATUS_LIKE
+            VideoMetadata.LIKE_STATUS_DISLIKE -> LIKE_STATUS_DISLIKE
+            VideoMetadata.LIKE_STATUS_INDIFFERENT -> LIKE_STATUS_INDIFFERENT
             else -> {
                 when {
-                    watchNextResult.getButtonStateItem()?.isLikeToggled() == true -> MediaItemMetadata.LIKE_STATUS_LIKE
-                    watchNextResult.getButtonStateItem()?.isDislikeToggled() == true -> MediaItemMetadata.LIKE_STATUS_DISLIKE
-                    else -> MediaItemMetadata.LIKE_STATUS_INDIFFERENT
+                    watchNextResult.getButtonStateItem()?.isLikeToggled() == true -> LIKE_STATUS_LIKE
+                    watchNextResult.getButtonStateItem()?.isDislikeToggled() == true -> LIKE_STATUS_DISLIKE
+                    else -> LIKE_STATUS_INDIFFERENT
                 }
             }
         }

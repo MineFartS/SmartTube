@@ -18,7 +18,7 @@ import com.liskovsoft.sharedutils.data.SponsorSegment;
 import minefarts.smarttube.prefs.GeneralData;
 import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
-import com.liskovsoft.sharedutils.data.MediaGroup;
+import com.liskovsoft.sharedutils.service.data.MediaGroup;
 import minefarts.smarttube.prefs.PlayerData;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.prefs.PlayerTweaksData;
