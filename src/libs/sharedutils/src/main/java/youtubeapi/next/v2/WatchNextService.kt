@@ -21,9 +21,12 @@ import minefarts.sharedutils.next.v2.gen.getLikeCount
 import minefarts.sharedutils.next.v2.gen.isEmpty
 import minefarts.sharedutils.next.v2.impl.MediaItemMetadataImpl
 import minefarts.sharedutils.SignInService
+import minefarts.sharedutils.common.helpers.AppClient
 
 internal open class WatchNextService {
+
     private var mWatchNextApi = RetrofitHelper.create(WatchNextApi::class.java)
+    
     private val mAppService = AppService.instance()
 
     fun getMetadata(videoId: String): MediaItemMetadata? {
@@ -97,7 +100,12 @@ internal open class WatchNextService {
 
     private fun getWatchNext(videoId: String?, playlistId: String?, playlistIndex: Int, playlistParams: String?): WatchNextResult? {
         return getWatchNext(WatchNextApiHelper.getWatchNextQuery(
-            MediaGroupOptions.create(MediaGroup.TYPE_SUGGESTIONS).clientTV, videoId, playlistId, playlistIndex, playlistParams))
+            AppClient.TV, 
+            videoId, 
+            playlistId, 
+            playlistIndex, 
+            playlistParams
+        ))
     }
 
     private fun getWatchNext(query: String): WatchNextResult? {

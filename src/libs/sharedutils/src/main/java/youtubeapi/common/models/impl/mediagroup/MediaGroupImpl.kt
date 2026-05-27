@@ -217,7 +217,7 @@ internal data class ShortsMediaGroup(
 
 internal data class NotificationsMediaGroup(
     private val result: NotificationsResult
-): BaseMediaGroup(MediaGroupOptions.create(groupType = MediaGroup.TYPE_NOTIFICATIONS)) {
+): BaseMediaGroup(MediaGroupOptions(MediaGroup.TYPE_NOTIFICATIONS)) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = null
     override fun getNextPageKeyInt(): String? = null
     override fun getTitleInt(): String? = null
@@ -226,7 +226,7 @@ internal data class NotificationsMediaGroup(
 
 internal data class SubscribedShortsMediaGroup(
     private val items: List<ItemWrapper?>
-): BaseMediaGroup(MediaGroupOptions.create(groupType = MediaGroup.TYPE_SHORTS)) {
+): BaseMediaGroup(MediaGroupOptions(MediaGroup.TYPE_SHORTS)) {
     override fun getItemWrappersInt(): List<ItemWrapper?> = items
     override fun getNextPageKeyInt(): String? = null
     override fun getTitleInt(): String? = null
@@ -236,7 +236,7 @@ internal data class EmptyMediaGroup(
     private val reloadPageKey: String,
     private val type: Int,
     private val title: String? = null
-): BaseMediaGroup(MediaGroupOptions.create(groupType = type)) {
+): BaseMediaGroup(MediaGroupOptions(type)) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = null
     override fun getNextPageKeyInt(): String = reloadPageKey
     override fun getTitleInt(): String? = title

@@ -2,36 +2,30 @@ package minefarts.sharedutils.common.models.impl.mediagroup
 
 import minefarts.sharedutils.service.data.MediaGroup
 import minefarts.sharedutils.browse.v2.BrowseApiHelper
-import minefarts.sharedutils.common.helpers.AppClient
 import minefarts.sharedutils.service.internal.MediaServiceData
 
-internal class MediaGroupOptions private constructor(
-    val removeShorts: Boolean = false,
-    val removeLive: Boolean = false,
-    val removeUpcoming: Boolean = false,
-    val removeWatched: Boolean = false,
+class MediaGroupOptions (
     val groupType: Int
 ) {
 
-    val clientTV by lazy { AppClient.TV }
+    fun isHidden(type: Int): Boolean {
+        return MediaServiceData.instance().isContentHidden(type)
+    }
 
-    companion object {
-        fun create(
-            groupType: Int, 
-            channelId: String? = null
-        ): MediaGroupOptions {
-            
-            val data = MediaServiceData.instance()
+    val removeShorts: Boolean by lazy {
+        isHidden(MediaServiceData.CONTENT_SHORTS)
+    }
 
-            return MediaGroupOptions(
-                data.isContentHidden(MediaServiceData.CONTENT_SHORTS),
-                (MediaGroup.TYPE_SUBSCRIPTIONS == groupType && data.isContentHidden(MediaServiceData.CONTENT_STREAMS_SUBSCRIPTIONS)),
-                data.isContentHidden(MediaServiceData.CONTENT_UPCOMING),
-                data.isContentHidden(MediaServiceData.CONTENT_WATCHED),
-                groupType
-            )
+    val removeUpcoming: Boolean by lazy {
+        isHidden(MediaServiceData.CONTENT_UPCOMING)
+    }
 
-        }
+    val removeWatched: Boolean by lazy {
+        isHidden(MediaServiceData.CONTENT_WATCHED)
+    }
+
+    val removeLive: Boolean by lazy { 
+        (MediaGroup.TYPE_SUBSCRIPTIONS == groupType) && isHidden(MediaServiceData.CONTENT_STREAMS_SUBSCRIPTIONS)
     }
     
 }
