@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Layout for an action item displayed in the 2 pane actions fragment. -->
+<minefarts.smarttube.leanback.widget.GuidedActionItemContainer
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="?attr/guidedActionItemContainerStyle" >
+
+    <minefarts.smarttube.leanback.widget.CheckableImageView
+        android:id="@+id/guidedactions_item_checkmark"
+        style="?attr/guidedActionItemCheckmarkStyle"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/guidedactions_item_icon"
+        style="?attr/guidedActionItemIconStyle"
+        tools:ignore="ContentDescription" />
+
+    <minefarts.smarttube.leanback.widget.NonOverlappingLinearLayout
+        android:id="@+id/guidedactions_item_content"
+        style="?attr/guidedActionItemContentStyle" >
+
+        <minefarts.smarttube.leanback.widget.GuidedActionEditText
+            android:id="@+id/guidedactions_item_title"
+            style="?attr/guidedActionItemTitleStyle" />
+
+        <minefarts.smarttube.leanback.widget.GuidedActionEditText
+            android:id="@+id/guidedactions_item_description"
+            style="?attr/guidedActionItemDescriptionStyle" />
+
+    </minefarts.smarttube.leanback.widget.NonOverlappingLinearLayout>
+
+    <ImageView
+        android:id="@+id/guidedactions_item_chevron"
+        style="?attr/guidedActionItemChevronStyle"
+        tools:ignore="ContentDescription" />
+
+</minefarts.smarttube.leanback.widget.GuidedActionItemContainer>

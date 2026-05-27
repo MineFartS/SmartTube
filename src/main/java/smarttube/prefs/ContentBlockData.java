@@ -1,0 +1,250 @@
+package minefarts.smarttube.prefs;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.os.Build.VERSION;
+import minefarts.smarttube.utils.data.SponsorSegment;
+import minefarts.smarttube.utils.helpers.Helpers;
+import minefarts.smarttube.utils.prefs.GlobalPreferences;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.models.playback.controllers.ContentBlockController.SegmentAction;
+import minefarts.smarttube.utils.DataStore;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+
+public class ContentBlockData {
+
+    public static final int ACTION_UNDEFINED = -1;
+    public static final int ACTION_SKIP_WITH_TOAST = 1;
+    public static final int ACTION_DO_NOTHING = 3;
+
+    @SuppressLint("StaticFieldLeak")
+    private static ContentBlockData sInstance;
+
+    private boolean mIsSponsorBlockEnabled;
+
+    private final DataStore mDataStore;
+    private final Set<String> mColorCategories = new LinkedHashSet<>();
+    private final Set<SegmentAction> mActions = new LinkedHashSet<>();
+    private final Set<String> mExcludedChannels = new LinkedHashSet<>();
+    
+    private final Map<String, Integer> mSegmentColorMapping = new HashMap<>();
+
+    private ContentBlockData(Context context) {
+
+        mDataStore = new DataStore(context, "content_block_data");
+        
+        mSegmentColorMapping.put(
+            SponsorSegment.CATEGORY_SPONSOR,
+            R.color.green
+        );
+        
+        mSegmentColorMapping.put(
+            SponsorSegment.CATEGORY_SELF_PROMO,
+            R.color.orange_peel
+        );
+
+        mSegmentColorMapping.put(
+            SponsorSegment.CATEGORY_INTERACTION,
+            R.color.magenta
+        );
+        
+        restoreState();
+    
+    }
+
+    public static ContentBlockData instance(Context context) {
+        if (sInstance == null) {
+            sInstance = new ContentBlockData(context.getApplicationContext());
+        }
+
+        return sInstance;
+    }
+
+    public Integer getColorRes(String segmentCategory) {
+        return mSegmentColorMapping.get(segmentCategory);
+    }
+
+    public Set<String> getAllCategories() {
+        return mSegmentColorMapping.keySet();
+    }
+
+    public Set<String> getEnabledCategories() {
+        Set<String> enabledCategories = new HashSet<>();
+
+        for (SegmentAction action : mActions) {
+            if (action.actionType != ACTION_DO_NOTHING) {
+                enabledCategories.add(action.segmentCategory);
+            }
+        }
+
+        enabledCategories.addAll(mColorCategories);
+
+        return Collections.unmodifiableSet(enabledCategories);
+    }
+
+    public void enableColorMarker(String segmentCategory) {
+        mColorCategories.add(segmentCategory);
+        persistState();
+    }
+
+    public void disableColorMarker(String segmentCategory) {
+        mColorCategories.remove(segmentCategory);
+        persistState();
+    }
+
+    public boolean isColorMarkerEnabled(String segmentCategory) {
+        return mColorCategories.contains(segmentCategory);
+    }
+
+    public boolean isColorMarkersEnabled() {
+        return !mColorCategories.isEmpty();
+    }
+
+    public void excludeChannel(String channelId) {
+        mExcludedChannels.add(channelId);
+        persistState();
+    }
+
+    public void stopExcludingChannel(String channelId) {
+        mExcludedChannels.remove(channelId);
+        persistState();
+    }
+
+    public boolean isChannelExcluded(String channelId) {
+        return mExcludedChannels.contains(channelId);
+    }
+
+    public void toggleExcludeChannel(String channelId) {
+        if (channelId == null) {
+            return;
+        }
+
+        if (isChannelExcluded(channelId)) {
+            stopExcludingChannel(channelId);
+        } else {
+            excludeChannel(channelId);
+        }
+    }
+
+    public Set<SegmentAction> getActions() {
+        return Collections.unmodifiableSet(mActions);
+    }
+
+    public int getAction(String segmentCategory) {
+        for (SegmentAction action : mActions) {
+            if (Helpers.equals(action.segmentCategory, segmentCategory)) {
+                return action.actionType;
+            }
+        }
+
+        return ACTION_UNDEFINED;
+    }
+
+    public boolean isSponsorBlockEnabled() {
+        return mIsSponsorBlockEnabled;
+    }
+
+    public void enableSponsorBlock(boolean enabled) {
+        mIsSponsorBlockEnabled = enabled;
+        persistState();
+    }
+
+    public void persistActions() {
+        persistState();
+    }
+
+    public boolean isActionsEnabled() {
+        for (SegmentAction action : mActions) {
+            if (action.actionType != ACTION_DO_NOTHING) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void restoreState() {
+
+        /* 0 */ mIsSponsorBlockEnabled = mDataStore.get(0, VERSION.SDK_INT>19);
+        /* 1 */ String actions = mDataStore.get(1);
+        /* 2 */ String excludedChannels = mDataStore.get(2);
+        /* 3 */ String colorCategories = mDataStore.get(3);
+
+        if (excludedChannels != null) {
+            String[] channelsArr = Helpers.splitArray(excludedChannels);
+
+            mExcludedChannels.clear();
+
+            mExcludedChannels.addAll(Arrays.asList(channelsArr));
+        } else {
+            mExcludedChannels.clear();
+        }
+
+        if (actions != null) {
+            String[] actionsArr = Helpers.splitArray(actions);
+
+            mActions.clear();
+
+            for (String action : actionsArr) {
+                mActions.add(SegmentAction.from(action));
+            }
+        }
+
+        if (colorCategories != null) {
+            
+            String[] categoriesArr = Helpers.splitArray(colorCategories);
+
+            mColorCategories.clear();
+
+            mColorCategories.addAll(Arrays.asList(categoriesArr));
+
+        } else {
+
+            // Enable Color Marker for all Segments
+            mColorCategories.addAll(getAllCategories());
+
+        }
+
+        // Easy add new segments
+        for (String segmentCategory : getAllCategories()) {
+
+            if (getAction(segmentCategory) == ACTION_UNDEFINED) {
+                
+                // Skip sponsor by default & ignore everything else
+                if (segmentCategory == SponsorSegment.CATEGORY_SPONSOR) {
+
+                    // Skip Segment
+                    mActions.add(SegmentAction.from(segmentCategory, ACTION_SKIP_WITH_TOAST));
+                
+                } else {
+
+                    // Don't Skip Segment
+                    mActions.add(SegmentAction.from(segmentCategory, ACTION_DO_NOTHING));
+
+                }
+
+            }
+        }
+
+    }
+
+    public void persistState() {
+        
+        String colorCategories = Helpers.mergeArray(mColorCategories.toArray());
+        String actions = Helpers.mergeArray(mActions.toArray());
+        String excludedChannels = Helpers.mergeArray(mExcludedChannels.toArray());
+
+        /* 0 */ mDataStore.put(0, mIsSponsorBlockEnabled);
+        /* 1 */ mDataStore.put(1, actions);
+        /* 2 */ mDataStore.put(2, excludedChannels);
+        /* 3 */ mDataStore.put(3, colorCategories);
+            
+    }
+}

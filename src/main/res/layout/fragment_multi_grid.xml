@@ -5,7 +5,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent" >
 
-    <androidx.leanback.widget.BrowseFrameLayout
+    <minefarts.smarttube.leanback.widget.BrowseFrameLayout
             android:id="@+id/grid_frame"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -13,22 +13,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
-        <!-- Place multiple grids horizontally -->
-        <!--
-        <LinearLayout
-                android:id="@+id/browse_grid_dock"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        -->
-
         <!-- focusOutFront: allow navigating out from left side to the main menu. -->
-        <androidx.leanback.widget.HorizontalGridView
+        <minefarts.smarttube.leanback.widget.HorizontalGridView
             android:id="@+id/browse_grid_dock"
             lb:focusOutFront="true"
             lb:focusOutEnd="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </androidx.leanback.widget.BrowseFrameLayout>
+    </minefarts.smarttube.leanback.widget.BrowseFrameLayout>
 </FrameLayout>

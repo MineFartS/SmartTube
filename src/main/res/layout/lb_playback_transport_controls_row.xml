@@ -85,17 +85,6 @@
                       android:focusable="true"
                       android:layout_height="1dp"/>
 
-        <!-- Original top player row -->
-        <!--
-        <FrameLayout
-            android:id="@+id/controls_dock"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layoutDirection="ltr"
-            android:layout_marginLeft="@dimen/lb_playback_transport_controlbar_margin_start"
-        />
-        -->
-
         <RelativeLayout android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layoutDirection="ltr"

@@ -1,0 +1,57 @@
+package minefarts.smarttube.dash.manifest;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import minefarts.smarttube.utils.Utils;
+
+/**
+ * A descriptor, as defined by ISO 23009-1, 2nd edition, 5.8.2.
+ */
+public final class Descriptor {
+
+  /**
+   * The scheme URI.
+   */
+  @NonNull public final String schemeIdUri;
+  /**
+   * The value, or null.
+   */
+  @Nullable public final String value;
+  /**
+   * The identifier, or null.
+   */
+  @Nullable public final String id;
+
+  /**
+   * @param schemeIdUri The scheme URI.
+   * @param value The value, or null.
+   * @param id The identifier, or null.
+   */
+  public Descriptor(@NonNull String schemeIdUri, @Nullable String value, @Nullable String id) {
+    this.schemeIdUri = schemeIdUri;
+    this.value = value;
+    this.id = id;
+  }
+
+  @Override
+  public boolean equals(@Nullable Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
+    Descriptor other = (Descriptor) obj;
+    return Utils.areEqual(schemeIdUri, other.schemeIdUri) && Utils.areEqual(value, other.value)
+        && Utils.areEqual(id, other.id);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = (schemeIdUri != null ? schemeIdUri.hashCode() : 0);
+    result = 31 * result + (value != null ? value.hashCode() : 0);
+    result = 31 * result + (id != null ? id.hashCode() : 0);
+    return result;
+  }
+
+}

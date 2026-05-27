@@ -1,0 +1,146 @@
+package minefarts.smarttube.app.models.playback.service;
+
+import android.util.Log;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import minefarts.smarttube.utils.helpers.Helpers;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.prefs.AppPrefs;
+import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
+import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.utils.helpers.LruList;
+import java.util.List;
+
+public class VideoStateService implements ProfileChangeListener {
+    
+    @SuppressLint("StaticFieldLeak")
+    private static VideoStateService sInstance;
+
+    private final List<State> mStates;
+    private final AppPrefs mPrefs;
+
+    private static final String DELIM = "&si;";
+
+    private VideoStateService(Context context) {
+
+        mPrefs = AppPrefs.instance(context);
+        mPrefs.addListener(this);
+        
+        mStates = new LruList(200);
+
+        onProfileChanged();
+
+    }
+
+    public static VideoStateService instance(Context context) {
+        if (sInstance == null && context != null) {
+            sInstance = new VideoStateService(context.getApplicationContext());
+        }
+
+        return sInstance;
+    }
+
+    public List<State> getStates() {
+        return mStates;
+    }
+
+    public @Nullable State getLastState() {
+        if (isEmpty()) {
+            return null;
+        }
+
+        return mStates.get(mStates.size() - 1);
+    }
+
+    public State getByVideoId(String videoId) {
+        for (State state : mStates) {
+            if (Helpers.equals(videoId, state.video.videoId)) {
+                return state;
+            }
+        }
+
+        return null;
+    }
+
+    public void removeByVideoId(String videoId) {
+
+        Helpers.removeIf(
+            mStates, 
+            state -> Helpers.equals(state.video.videoId, videoId)
+        );
+        
+        persistState();
+    
+    }
+
+    public boolean isEmpty() {
+        return mStates.isEmpty();
+    }
+
+    public void save(State state) {
+
+        removeByVideoId(state.videoId);
+
+        mStates.add(state);
+        
+        persistState();
+    
+    }
+
+    public void clear() {
+        mStates.clear();
+        persistState();
+    }
+
+    public void persistState() {
+
+        StringBuilder sb = new StringBuilder();
+
+        for (State state : mStates) {
+            if (sb.length() != 0) {
+                sb.append(DELIM);
+            }
+
+            sb.append(state);
+        }
+        
+        mPrefs.setStateUpdaterData(
+            Helpers.mergeData(
+                /* 0 */ sb.toString()
+            )
+        );
+        
+    }
+
+    @Override
+    public void onProfileChanged() {
+        
+        mStates.clear();
+
+        String data = mPrefs.getStateUpdaterData();
+        String[] split = Helpers.splitData(data);
+
+        data = Helpers.parseStr(split, 0);
+
+        if (data != null) {
+            
+            split = Helpers.split(data, DELIM);
+
+            for (String spec : split) {
+
+                State state = State.from(spec);
+
+                if (state != null) {
+                    mStates.add(state);
+                }
+                
+            }
+
+        }
+
+    }
+
+}
