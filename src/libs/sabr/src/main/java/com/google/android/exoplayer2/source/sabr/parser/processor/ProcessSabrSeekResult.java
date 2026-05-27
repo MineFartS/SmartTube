@@ -1,6 +1,6 @@
-package com.google.android.exoplayer2.source.sabr.parser.processor;
+package minefarts.exoplayer2.source.sabr.parser.processor;
 
-import com.google.android.exoplayer2.source.sabr.parser.parts.MediaSeekSabrPart;
+import minefarts.exoplayer2.source.sabr.parser.parts.MediaSeekSabrPart;
 
 import java.util.ArrayList;
 import java.util.List;

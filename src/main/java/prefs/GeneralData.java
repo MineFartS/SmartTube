@@ -3,8 +3,8 @@ package minefarts.smarttube.prefs;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.prefs.GlobalPreferences;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
 import minefarts.smarttube.utils.Utils;

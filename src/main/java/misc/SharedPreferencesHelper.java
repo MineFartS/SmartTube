@@ -3,7 +3,7 @@ package minefarts.smarttube.misc;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.mylogger.Log;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

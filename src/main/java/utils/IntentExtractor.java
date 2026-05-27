@@ -3,10 +3,10 @@ package minefarts.smarttube.utils;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.liskovsoft.sharedutils.helpers.GlobalConstants;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.querystringparser.UrlQueryString;
-import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory;
+import minefarts.sharedutils.helpers.GlobalConstants;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.querystringparser.UrlQueryString;
+import minefarts.sharedutils.querystringparser.UrlQueryStringFactory;
 
 import java.util.List;
 import java.util.regex.Matcher;

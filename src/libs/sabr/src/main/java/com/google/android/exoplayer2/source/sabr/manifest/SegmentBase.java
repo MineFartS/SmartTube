@@ -1,8 +1,8 @@
-package com.google.android.exoplayer2.source.sabr.manifest;
+package minefarts.exoplayer2.source.sabr.manifest;
 
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.source.sabr.SabrSegmentIndex;
-import com.google.android.exoplayer2.util.Util;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.source.sabr.SabrSegmentIndex;
+import minefarts.exoplayer2.util.Util;
 
 import java.util.List;
 

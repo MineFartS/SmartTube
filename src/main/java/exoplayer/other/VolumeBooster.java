@@ -5,9 +5,9 @@ import android.os.Build.VERSION;
 
 import androidx.annotation.Nullable;
 
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.audio.AudioListener;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.exoplayer2.SimpleExoPlayer;
+import minefarts.exoplayer2.audio.AudioListener;
+import minefarts.sharedutils.mylogger.Log;
 
 public class VolumeBooster implements AudioListener {
     private static final String TAG = VolumeBooster.class.getSimpleName();

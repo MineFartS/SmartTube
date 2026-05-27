@@ -1,4 +1,4 @@
-package com.google.android.exoplayer2.ui.spherical;
+package minefarts.exoplayer2.ui.spherical;
 
 import android.content.Context;
 import android.graphics.PointF;

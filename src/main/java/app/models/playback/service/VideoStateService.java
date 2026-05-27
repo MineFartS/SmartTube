@@ -6,12 +6,12 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.Helpers;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.prefs.AppPrefs;
 import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
 import minefarts.smarttube.utils.Utils;
-import com.liskovsoft.sharedutils.helpers.LruList;
+import minefarts.sharedutils.helpers.LruList;
 import java.util.List;
 
 public class VideoStateService implements ProfileChangeListener {

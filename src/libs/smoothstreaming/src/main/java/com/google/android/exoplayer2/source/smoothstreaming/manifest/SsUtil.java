@@ -1,7 +1,7 @@
-package com.google.android.exoplayer2.source.smoothstreaming.manifest;
+package minefarts.exoplayer2.source.smoothstreaming.manifest;
 
 import android.net.Uri;
-import com.google.android.exoplayer2.util.Util;
+import minefarts.exoplayer2.util.Util;
 
 /** SmoothStreaming related utility methods. */
 public final class SsUtil {

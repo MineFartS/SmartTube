@@ -1,7 +1,7 @@
-package com.google.android.exoplayer2.source.dash.manifest;
+package minefarts.exoplayer2.source.dash.manifest;
 
 import androidx.annotation.Nullable;
-import com.google.android.exoplayer2.util.Util;
+import minefarts.exoplayer2.util.Util;
 
 /** A parsed program information element. */
 public class ProgramInformation {

@@ -3,9 +3,9 @@ package minefarts.smarttube.ui.common.keyhandler;
 import android.app.Activity;
 import android.os.Handler;
 import android.view.KeyEvent;
-import com.liskovsoft.sharedutils.helpers.KeyHelpers;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.helpers.KeyHelpers;
+import minefarts.sharedutils.helpers.MessageHelpers;
+import minefarts.sharedutils.mylogger.Log;
 import minefarts.smarttube.R;
 
 public class DoubleBackManager {

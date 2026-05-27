@@ -3,9 +3,9 @@ package minefarts.smarttube.ui.playback.other;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import androidx.annotation.Nullable;
-import com.google.android.exoplayer2.ControlDispatcher;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector.QueueNavigator;
+import minefarts.exoplayer2.ControlDispatcher;
+import minefarts.exoplayer2.Player;
+import minefarts.exoplayer2.ext.mediasession.MediaSessionConnector.QueueNavigator;
 
 public class BackboneQueueNavigator implements QueueNavigator {
     @Override

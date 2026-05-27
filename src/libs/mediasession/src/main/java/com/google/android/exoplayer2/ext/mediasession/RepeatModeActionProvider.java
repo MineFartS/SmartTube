@@ -1,11 +1,11 @@
-package com.google.android.exoplayer2.ext.mediasession;
+package minefarts.exoplayer2.ext.mediasession;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.media.session.PlaybackStateCompat;
-import com.google.android.exoplayer2.ControlDispatcher;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.util.RepeatModeUtil;
+import minefarts.exoplayer2.ControlDispatcher;
+import minefarts.exoplayer2.Player;
+import minefarts.exoplayer2.util.RepeatModeUtil;
 
 /** Provides a custom action for toggling repeat modes. */
 public final class RepeatModeActionProvider implements MediaSessionConnector.CustomActionProvider {

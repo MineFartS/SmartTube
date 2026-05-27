@@ -4,8 +4,8 @@ import androidx.leanback.widget.ObjectAdapter;
 import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.PresenterSelector;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.misc.WeakHashSet;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.misc.WeakHashSet;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.data.VideoGroup;
 

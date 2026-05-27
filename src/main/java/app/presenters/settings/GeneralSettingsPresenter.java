@@ -3,10 +3,10 @@ package minefarts.smarttube.app.presenters.settings;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.liskovsoft.sharedutils.service.data.MediaGroup;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
+import minefarts.sharedutils.service.data.MediaGroup;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.MessageHelpers;
+import minefarts.sharedutils.okhttp.OkHttpManager;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.ui.OptionCategory;
@@ -26,7 +26,7 @@ import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.prefs.SearchData;
 import minefarts.smarttube.utils.AppDialogUtil;
 import minefarts.smarttube.utils.SimpleEditDialog;
-import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
+import minefarts.sharedutils.service.internal.MediaServiceData;
 
 import java.util.ArrayList;
 import java.util.Collection;

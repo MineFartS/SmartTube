@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment;
 import androidx.leanback.app.BrowseSupportFragment;
 import androidx.leanback.widget.HeaderItem;
 import androidx.leanback.widget.Row;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.mylogger.Log;
 import minefarts.smarttube.app.models.data.BrowseSection;
 import minefarts.smarttube.app.models.data.SettingsGroup;
 import minefarts.smarttube.app.models.data.Video;

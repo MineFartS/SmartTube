@@ -1,10 +1,10 @@
 package minefarts.smarttube.exoplayer.versions.selector.backport;
 
 import androidx.annotation.Nullable;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.source.TrackGroup;
-import com.google.android.exoplayer2.trackselection.FixedTrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.source.TrackGroup;
+import minefarts.exoplayer2.trackselection.FixedTrackSelection;
+import minefarts.exoplayer2.trackselection.TrackSelection;
 
 // Backport from Exo 2.10 to 2.9
 /** Contains of a subset of selected tracks belonging to a {@link TrackGroup}. */

@@ -9,7 +9,7 @@ import androidx.leanback.widget.Row;
 import androidx.leanback.widget.RowPresenter;
 import androidx.leanback.widget.VerticalGridPresenter;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.Helpers;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.data.VideoGroup;
 import minefarts.smarttube.app.presenters.BrowsePresenter;

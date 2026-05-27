@@ -1,4 +1,4 @@
-package com.google.android.exoplayer2.ext.mediasession;
+package minefarts.exoplayer2.ext.mediasession;
 
 import android.os.Bundle;
 import android.os.ResultReceiver;
@@ -7,12 +7,12 @@ import androidx.annotation.Nullable;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.ControlDispatcher;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.source.ConcatenatingMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.util.Util;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.ControlDispatcher;
+import minefarts.exoplayer2.Player;
+import minefarts.exoplayer2.source.ConcatenatingMediaSource;
+import minefarts.exoplayer2.source.MediaSource;
+import minefarts.exoplayer2.util.Util;
 import java.util.List;
 
 /**

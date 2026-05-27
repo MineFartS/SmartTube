@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build.VERSION;
 
-import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.helpers.AppInfoHelpers;
+import minefarts.sharedutils.mylogger.Log;
 import minefarts.smarttube.utils.Utils;
 
 public class RemoteControlReceiver extends BroadcastReceiver {

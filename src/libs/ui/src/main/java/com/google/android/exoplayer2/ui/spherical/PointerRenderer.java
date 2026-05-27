@@ -1,10 +1,10 @@
-package com.google.android.exoplayer2.ui.spherical;
+package minefarts.exoplayer2.ui.spherical;
 
-import static com.google.android.exoplayer2.util.GlUtil.checkGlError;
+import static minefarts.exoplayer2.util.GlUtil.checkGlError;
 
 import android.opengl.GLES20;
 import android.opengl.Matrix;
-import com.google.android.exoplayer2.util.GlUtil;
+import minefarts.exoplayer2.util.GlUtil;
 import java.nio.FloatBuffer;
 
 /** Renders a pointer. */

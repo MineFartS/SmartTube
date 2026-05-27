@@ -1,7 +1,7 @@
-package com.google.android.exoplayer2.source.hls;
+package minefarts.exoplayer2.source.hls;
 
-import com.google.android.exoplayer2.source.hls.playlist.HlsMasterPlaylist;
-import com.google.android.exoplayer2.source.hls.playlist.HlsMediaPlaylist;
+import minefarts.exoplayer2.source.hls.playlist.HlsMasterPlaylist;
+import minefarts.exoplayer2.source.hls.playlist.HlsMediaPlaylist;
 
 /**
  * Holds a master playlist along with a snapshot of one of its media playlists.

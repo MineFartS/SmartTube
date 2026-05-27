@@ -25,7 +25,7 @@ import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.RowPresenter;
 import androidx.leanback.widget.ControlButtonPresenterSelector;
 
-import com.liskovsoft.sharedutils.helpers.DateHelper;
+import minefarts.sharedutils.helpers.DateHelper;
 import minefarts.smarttube.app.models.playback.ui.SeekBarSegment;
 import minefarts.smarttube.prefs.PlayerData;
 import minefarts.smarttube.prefs.PlayerTweaksData;

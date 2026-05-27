@@ -2,8 +2,8 @@ package minefarts.smarttube.app.presenters.settings;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import com.liskovsoft.sharedutils.oauth.Account;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
+import minefarts.sharedutils.oauth.Account;
+import minefarts.sharedutils.helpers.MessageHelpers;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;

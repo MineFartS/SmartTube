@@ -11,8 +11,8 @@ import android.widget.EditText;
 
 import androidx.leanback.widget.Presenter;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.mylogger.Log;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.R;
 import minefarts.smarttube.ui.browse.video.GridFragmentHelper;

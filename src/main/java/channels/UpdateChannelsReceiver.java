@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build.VERSION;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.mylogger.Log;
 
 /*
  * The receiver is automatically invoked when the app is first installed from Play

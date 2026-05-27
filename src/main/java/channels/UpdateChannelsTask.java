@@ -7,9 +7,9 @@ import androidx.annotation.RequiresApi;
 import minefarts.smarttube.media.ClipService;
 import minefarts.smarttube.media.Playlist;
 import minefarts.smarttube.recommendations.RecommendationsProvider;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.mylogger.Log;
+import minefarts.sharedutils.prefs.GlobalPreferences;
 
 @RequiresApi(21)
 public class UpdateChannelsTask {

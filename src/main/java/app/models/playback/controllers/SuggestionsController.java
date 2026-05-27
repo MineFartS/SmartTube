@@ -5,16 +5,16 @@ import android.util.Pair;
 
 import androidx.core.content.ContextCompat;
 
-import com.liskovsoft.sharedutils.service.ContentService;
-import com.liskovsoft.sharedutils.MediaItemService;
-import com.liskovsoft.sharedutils.data.ChapterItem;
-import com.liskovsoft.sharedutils.data.DislikeData;
-import com.liskovsoft.sharedutils.service.data.MediaGroup;
-import com.liskovsoft.sharedutils.service.data.MediaItemMetadata;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.rx.RxHelper;
+import minefarts.sharedutils.service.ContentService;
+import minefarts.sharedutils.MediaItemService;
+import minefarts.sharedutils.data.ChapterItem;
+import minefarts.sharedutils.data.DislikeData;
+import minefarts.sharedutils.service.data.MediaGroup;
+import minefarts.sharedutils.service.data.MediaItemMetadata;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.MessageHelpers;
+import minefarts.sharedutils.mylogger.Log;
+import minefarts.sharedutils.rx.RxHelper;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Queue;
 import minefarts.smarttube.app.models.data.Video;

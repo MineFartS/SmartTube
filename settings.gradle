@@ -14,9 +14,6 @@ project(':commons-io-2.8.0').projectDir = new File('src/libs/commons-io-2.8.0')
 include ':j2v8'
 project(':j2v8').projectDir = new File('src/libs/j2v8')
 
-include ':exoplayer-core'
-project(':exoplayer-core').projectDir = new File('src/libs/core')
-
 include ':exoplayer-dash'
 project(':exoplayer-dash').projectDir = new File('src/libs/dash')
 

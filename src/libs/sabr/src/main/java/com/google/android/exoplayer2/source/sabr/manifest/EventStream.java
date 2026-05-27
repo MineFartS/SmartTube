@@ -1,6 +1,6 @@
-package com.google.android.exoplayer2.source.sabr.manifest;
+package minefarts.exoplayer2.source.sabr.manifest;
 
-import com.google.android.exoplayer2.metadata.emsg.EventMessage;
+import minefarts.exoplayer2.metadata.emsg.EventMessage;
 
 /**
  * A DASH in-MPD EventStream element, as defined by ISO/IEC 23009-1, 2nd edition, section 5.10.

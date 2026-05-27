@@ -2,7 +2,7 @@ package minefarts.smarttube.misc;
 
 import android.content.Context;
 import android.view.KeyEvent;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
+import minefarts.sharedutils.helpers.MessageHelpers;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.prefs.GeneralData;

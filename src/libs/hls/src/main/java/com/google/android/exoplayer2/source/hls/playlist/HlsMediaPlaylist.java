@@ -1,11 +1,11 @@
-package com.google.android.exoplayer2.source.hls.playlist;
+package minefarts.exoplayer2.source.hls.playlist;
 
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.drm.DrmInitData;
-import com.google.android.exoplayer2.offline.StreamKey;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.drm.DrmInitData;
+import minefarts.exoplayer2.offline.StreamKey;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

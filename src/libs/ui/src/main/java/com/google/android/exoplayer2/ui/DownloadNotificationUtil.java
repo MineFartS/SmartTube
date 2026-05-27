@@ -1,12 +1,12 @@
-package com.google.android.exoplayer2.ui;
+package minefarts.exoplayer2.ui;
 
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
-import com.google.android.exoplayer2.offline.Download;
-import com.google.android.exoplayer2.util.Util;
+import minefarts.exoplayer2.offline.Download;
+import minefarts.exoplayer2.util.Util;
 import java.util.List;
 
 /**

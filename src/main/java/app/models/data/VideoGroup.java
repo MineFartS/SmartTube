@@ -1,10 +1,10 @@
 package minefarts.smarttube.app.models.data;
 
-import com.liskovsoft.sharedutils.data.ChapterItem;
-import com.liskovsoft.sharedutils.service.data.MediaGroup;
-import com.liskovsoft.sharedutils.data.MediaItem;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.data.ChapterItem;
+import minefarts.sharedutils.service.data.MediaGroup;
+import minefarts.sharedutils.data.MediaItem;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.mylogger.Log;
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
 import minefarts.smarttube.app.models.playback.service.State;
 

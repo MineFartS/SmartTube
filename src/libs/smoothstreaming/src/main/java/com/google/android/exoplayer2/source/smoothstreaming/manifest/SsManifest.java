@@ -1,14 +1,14 @@
-package com.google.android.exoplayer2.source.smoothstreaming.manifest;
+package minefarts.exoplayer2.source.smoothstreaming.manifest;
 
 import android.net.Uri;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.extractor.mp4.TrackEncryptionBox;
-import com.google.android.exoplayer2.offline.FilterableManifest;
-import com.google.android.exoplayer2.offline.StreamKey;
-import com.google.android.exoplayer2.util.Assertions;
-import com.google.android.exoplayer2.util.UriUtil;
-import com.google.android.exoplayer2.util.Util;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.Format;
+import minefarts.exoplayer2.extractor.mp4.TrackEncryptionBox;
+import minefarts.exoplayer2.offline.FilterableManifest;
+import minefarts.exoplayer2.offline.StreamKey;
+import minefarts.exoplayer2.util.Assertions;
+import minefarts.exoplayer2.util.UriUtil;
+import minefarts.exoplayer2.util.Util;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

@@ -1,10 +1,10 @@
-package com.google.android.exoplayer2.source.hls;
+package minefarts.exoplayer2.source.hls;
 
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.FormatHolder;
-import com.google.android.exoplayer2.decoder.DecoderInputBuffer;
-import com.google.android.exoplayer2.source.SampleStream;
-import com.google.android.exoplayer2.util.Assertions;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.FormatHolder;
+import minefarts.exoplayer2.decoder.DecoderInputBuffer;
+import minefarts.exoplayer2.source.SampleStream;
+import minefarts.exoplayer2.util.Assertions;
 import java.io.IOException;
 
 /**

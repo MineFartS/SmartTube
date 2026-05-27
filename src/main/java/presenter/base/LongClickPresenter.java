@@ -2,7 +2,7 @@ package minefarts.smarttube.presenter.base;
 
 import android.view.KeyEvent;
 import androidx.leanback.widget.Presenter;
-import com.liskovsoft.sharedutils.helpers.KeyHelpers;
+import minefarts.sharedutils.helpers.KeyHelpers;
 import minefarts.smarttube.prefs.GeneralData;
 
 public abstract class LongClickPresenter extends Presenter {

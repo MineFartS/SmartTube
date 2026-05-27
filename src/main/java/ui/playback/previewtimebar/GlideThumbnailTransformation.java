@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import androidx.annotation.NonNull;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.mylogger.Log;
 import minefarts.smarttube.BuildConfig;
 
 import java.nio.ByteBuffer;

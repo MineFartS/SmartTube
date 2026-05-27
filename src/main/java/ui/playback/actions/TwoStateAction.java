@@ -5,7 +5,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import androidx.core.content.ContextCompat;
 import androidx.leanback.widget.PlaybackControlsRow.MultiAction;
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.Helpers;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.R;
 

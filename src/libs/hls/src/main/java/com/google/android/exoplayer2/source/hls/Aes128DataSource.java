@@ -1,13 +1,13 @@
-package com.google.android.exoplayer2.source.hls;
+package minefarts.exoplayer2.source.hls;
 
 import android.net.Uri;
 import androidx.annotation.Nullable;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DataSourceInputStream;
-import com.google.android.exoplayer2.upstream.DataSpec;
-import com.google.android.exoplayer2.upstream.TransferListener;
-import com.google.android.exoplayer2.util.Assertions;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.upstream.DataSource;
+import minefarts.exoplayer2.upstream.DataSourceInputStream;
+import minefarts.exoplayer2.upstream.DataSpec;
+import minefarts.exoplayer2.upstream.TransferListener;
+import minefarts.exoplayer2.util.Assertions;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;

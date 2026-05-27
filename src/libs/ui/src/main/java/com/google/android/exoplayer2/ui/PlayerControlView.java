@@ -1,4 +1,4 @@
-package com.google.android.exoplayer2.ui;
+package minefarts.exoplayer2.ui;
 
 import androidx.core.content.ContextCompat;
 import android.annotation.SuppressLint;
@@ -18,14 +18,14 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.ExoPlayerLibraryInfo;
-import com.google.android.exoplayer2.PlaybackPreparer;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.util.Assertions;
-import com.google.android.exoplayer2.util.RepeatModeUtil;
-import com.google.android.exoplayer2.util.Util;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.ExoPlayerLibraryInfo;
+import minefarts.exoplayer2.PlaybackPreparer;
+import minefarts.exoplayer2.Player;
+import minefarts.exoplayer2.Timeline;
+import minefarts.exoplayer2.util.Assertions;
+import minefarts.exoplayer2.util.RepeatModeUtil;
+import minefarts.exoplayer2.util.Util;
 import java.util.Arrays;
 import java.util.Formatter;
 import java.util.Locale;
@@ -250,7 +250,7 @@ public class PlayerControlView extends FrameLayout {
   private final String shuffleOffContentDescription;
 
   @Nullable private Player player;
-  private com.google.android.exoplayer2.ControlDispatcher controlDispatcher;
+  private minefarts.exoplayer2.ControlDispatcher controlDispatcher;
   @Nullable private VisibilityListener visibilityListener;
   @Nullable private ProgressUpdateListener progressUpdateListener;
   @Nullable private PlaybackPreparer playbackPreparer;
@@ -330,7 +330,7 @@ public class PlayerControlView extends FrameLayout {
     extraAdGroupTimesMs = new long[0];
     extraPlayedAdGroups = new boolean[0];
     componentListener = new ComponentListener();
-    controlDispatcher = new com.google.android.exoplayer2.DefaultControlDispatcher();
+    controlDispatcher = new minefarts.exoplayer2.DefaultControlDispatcher();
     updateProgressAction = this::updateProgress;
     hideAction = this::hide;
 
@@ -520,16 +520,16 @@ public class PlayerControlView extends FrameLayout {
   }
 
   /**
-   * Sets the {@link com.google.android.exoplayer2.ControlDispatcher}.
+   * Sets the {@link minefarts.exoplayer2.ControlDispatcher}.
    *
-   * @param controlDispatcher The {@link com.google.android.exoplayer2.ControlDispatcher}, or null
-   *     to use {@link com.google.android.exoplayer2.DefaultControlDispatcher}.
+   * @param controlDispatcher The {@link minefarts.exoplayer2.ControlDispatcher}, or null
+   *     to use {@link minefarts.exoplayer2.DefaultControlDispatcher}.
    */
   public void setControlDispatcher(
-      @Nullable com.google.android.exoplayer2.ControlDispatcher controlDispatcher) {
+      @Nullable minefarts.exoplayer2.ControlDispatcher controlDispatcher) {
     this.controlDispatcher =
         controlDispatcher == null
-            ? new com.google.android.exoplayer2.DefaultControlDispatcher()
+            ? new minefarts.exoplayer2.DefaultControlDispatcher()
             : controlDispatcher;
   }
 

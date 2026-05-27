@@ -1,6 +1,6 @@
-package com.google.android.exoplayer2.source.sabr.manifest;
+package minefarts.exoplayer2.source.sabr.manifest;
 
-import com.google.android.exoplayer2.source.sabr.SabrSegmentIndex;
+import minefarts.exoplayer2.source.sabr.SabrSegmentIndex;
 
 /**
  * A {@link SabrSegmentIndex} that defines a single segment.

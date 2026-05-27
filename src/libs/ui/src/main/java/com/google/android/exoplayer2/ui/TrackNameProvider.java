@@ -1,6 +1,6 @@
-package com.google.android.exoplayer2.ui;
+package minefarts.exoplayer2.ui;
 
-import com.google.android.exoplayer2.Format;
+import minefarts.exoplayer2.Format;
 
 /** Converts {@link Format}s to user readable track names. */
 public interface TrackNameProvider {

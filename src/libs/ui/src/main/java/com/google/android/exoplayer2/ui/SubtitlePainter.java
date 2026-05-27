@@ -1,4 +1,4 @@
-package com.google.android.exoplayer2.ui;
+package minefarts.exoplayer2.ui;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -20,12 +20,12 @@ import android.text.style.AbsoluteSizeSpan;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.util.DisplayMetrics;
-import com.google.android.exoplayer2.text.CaptionStyleCompat;
-import com.google.android.exoplayer2.text.Cue;
-import com.google.android.exoplayer2.util.Log;
-import com.google.android.exoplayer2.util.Util;
-import com.liskovsoft.sharedutils.misc.PaddingBackgroundColorSpan;
-import com.liskovsoft.sharedutils.misc.RoundedBackgroundSpan;
+import minefarts.exoplayer2.text.CaptionStyleCompat;
+import minefarts.exoplayer2.text.Cue;
+import minefarts.exoplayer2.util.Log;
+import minefarts.exoplayer2.util.Util;
+import minefarts.sharedutils.misc.PaddingBackgroundColorSpan;
+import minefarts.sharedutils.misc.RoundedBackgroundSpan;
 
 /**
  * Paints subtitle {@link Cue}s.

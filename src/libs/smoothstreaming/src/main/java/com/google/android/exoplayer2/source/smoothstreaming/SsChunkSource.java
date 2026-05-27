@@ -1,11 +1,11 @@
-package com.google.android.exoplayer2.source.smoothstreaming;
+package minefarts.exoplayer2.source.smoothstreaming;
 
 import androidx.annotation.Nullable;
-import com.google.android.exoplayer2.source.chunk.ChunkSource;
-import com.google.android.exoplayer2.source.smoothstreaming.manifest.SsManifest;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.upstream.LoaderErrorThrower;
-import com.google.android.exoplayer2.upstream.TransferListener;
+import minefarts.exoplayer2.source.chunk.ChunkSource;
+import minefarts.exoplayer2.source.smoothstreaming.manifest.SsManifest;
+import minefarts.exoplayer2.trackselection.TrackSelection;
+import minefarts.exoplayer2.upstream.LoaderErrorThrower;
+import minefarts.exoplayer2.upstream.TransferListener;
 
 /**
  * A {@link ChunkSource} for SmoothStreaming.

@@ -18,8 +18,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.mylogger.Log;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.prefs.MainUIData;
 

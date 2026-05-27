@@ -2,7 +2,7 @@ package minefarts.smarttube.app.models.data;
 
 import androidx.annotation.Nullable;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.Helpers;
 
 public class BrowseSection {
     public static final int TYPE_GRID = 0;

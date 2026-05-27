@@ -1,6 +1,6 @@
-package com.google.android.exoplayer2.source.hls;
+package minefarts.exoplayer2.source.hls;
 
-import com.google.android.exoplayer2.upstream.DataSource;
+import minefarts.exoplayer2.upstream.DataSource;
 
 /**
  * Default implementation of {@link HlsDataSourceFactory}.

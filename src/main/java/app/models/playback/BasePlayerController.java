@@ -6,13 +6,13 @@ import android.view.Gravity;
 
 import androidx.annotation.Nullable;
 
-import com.google.android.exoplayer2.Format;
-import com.liskovsoft.sharedutils.CommentsService;
-import com.liskovsoft.sharedutils.service.ContentService;
-import com.liskovsoft.sharedutils.MediaItemService;
-import com.liskovsoft.sharedutils.NotificationsService;
-import com.liskovsoft.sharedutils.SignInService;
-import com.liskovsoft.sharedutils.service.data.MediaItemMetadata;
+import minefarts.exoplayer2.Format;
+import minefarts.sharedutils.CommentsService;
+import minefarts.sharedutils.service.ContentService;
+import minefarts.sharedutils.MediaItemService;
+import minefarts.sharedutils.NotificationsService;
+import minefarts.sharedutils.SignInService;
+import minefarts.sharedutils.service.data.MediaItemMetadata;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.PlayerEventListener;
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
@@ -32,7 +32,7 @@ import minefarts.smarttube.prefs.PlayerData;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.prefs.RemoteControlData;
 import minefarts.smarttube.prefs.SearchData;
-import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
+import minefarts.sharedutils.service.internal.MediaServiceData;
 
 public abstract class BasePlayerController extends ServiceManager implements PlayerEventListener {
     

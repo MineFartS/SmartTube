@@ -3,8 +3,8 @@ package minefarts.smarttube.prefs;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import androidx.annotation.NonNull;
-import com.liskovsoft.sharedutils.oauth.Account;
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.oauth.Account;
+import minefarts.sharedutils.helpers.Helpers;
 import minefarts.smarttube.misc.ServiceManager;
 import minefarts.smarttube.misc.ServiceManager.AccountChangeListener;
 

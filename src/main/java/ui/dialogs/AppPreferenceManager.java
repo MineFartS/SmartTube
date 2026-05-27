@@ -7,7 +7,7 @@ import androidx.preference.ListPreference;
 import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.SwitchPreference;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
+import minefarts.sharedutils.helpers.MessageHelpers;
 import minefarts.smarttube.app.models.playback.ui.OptionCategory;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.utils.Utils;

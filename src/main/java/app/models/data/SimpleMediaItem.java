@@ -1,7 +1,7 @@
 package minefarts.smarttube.app.models.data;
 
-import com.liskovsoft.sharedutils.data.MediaItem;
-import com.liskovsoft.sharedutils.service.data.MediaItemMetadata;
+import minefarts.sharedutils.data.MediaItem;
+import minefarts.sharedutils.service.data.MediaItemMetadata;
 
 public final class SimpleMediaItem implements MediaItem {
     private int mId;

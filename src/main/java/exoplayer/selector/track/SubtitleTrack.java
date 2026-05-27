@@ -1,7 +1,7 @@
 package minefarts.smarttube.exoplayer.selector.track;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.videoinfo.models.TranslatedCaptionTrack;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.videoinfo.models.TranslatedCaptionTrack;
 
 import java.util.regex.Pattern;
 

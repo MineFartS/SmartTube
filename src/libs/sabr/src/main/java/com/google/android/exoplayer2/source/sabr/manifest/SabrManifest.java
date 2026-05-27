@@ -1,9 +1,9 @@
-package com.google.android.exoplayer2.source.sabr.manifest;
+package minefarts.exoplayer2.source.sabr.manifest;
 
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.offline.FilterableManifest;
-import com.google.android.exoplayer2.offline.StreamKey;
-import com.google.android.exoplayer2.source.sabr.protos.videostreaming.ClientInfo;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.offline.FilterableManifest;
+import minefarts.exoplayer2.offline.StreamKey;
+import minefarts.exoplayer2.source.sabr.protos.videostreaming.ClientInfo;
 
 import java.util.List;
 

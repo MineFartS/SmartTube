@@ -1,4 +1,4 @@
-package com.google.android.exoplayer2.source.dash.manifest;
+package minefarts.exoplayer2.source.dash.manifest;
 
 /**
  * Represents a UTCTiming element.

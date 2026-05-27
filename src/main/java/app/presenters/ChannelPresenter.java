@@ -2,11 +2,11 @@ package minefarts.smarttube.app.presenters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import com.liskovsoft.sharedutils.service.data.MediaGroup;
-import com.liskovsoft.sharedutils.data.MediaItem;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.service.data.MediaGroup;
+import minefarts.sharedutils.data.MediaItem;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.MessageHelpers;
+import minefarts.sharedutils.mylogger.Log;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.data.VideoGroup;
@@ -17,9 +17,9 @@ import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter;
 import minefarts.smarttube.app.presenters.interfaces.VideoGroupPresenter;
 import minefarts.smarttube.app.views.ChannelView;
 import minefarts.smarttube.misc.BrowseProcessorManager;
-import com.liskovsoft.sharedutils.rx.RxHelper;
+import minefarts.sharedutils.rx.RxHelper;
 import minefarts.smarttube.utils.LoadingManager;
-import com.liskovsoft.sharedutils.browse.v2.BrowseService2;
+import minefarts.sharedutils.browse.v2.BrowseService2;
 import minefarts.smarttube.misc.ServiceManager;
 
 import io.reactivex.Observable;

@@ -1,10 +1,10 @@
-package com.google.android.exoplayer2.source.dash.manifest;
+package minefarts.exoplayer2.source.dash.manifest;
 
 import android.net.Uri;
 import androidx.annotation.Nullable;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.offline.FilterableManifest;
-import com.google.android.exoplayer2.offline.StreamKey;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.offline.FilterableManifest;
+import minefarts.exoplayer2.offline.StreamKey;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;

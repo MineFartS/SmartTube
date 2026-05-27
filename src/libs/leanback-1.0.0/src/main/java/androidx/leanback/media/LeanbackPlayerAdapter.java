@@ -10,18 +10,18 @@ import androidx.leanback.media.SurfaceHolderGlueHost;
 import android.util.Pair;
 import android.view.Surface;
 import android.view.SurfaceHolder;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.ControlDispatcher;
-import com.google.android.exoplayer2.DefaultControlDispatcher;
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayerLibraryInfo;
-import com.google.android.exoplayer2.PlaybackPreparer;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.Player.DiscontinuityReason;
-import com.google.android.exoplayer2.Player.TimelineChangeReason;
-import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.util.ErrorMessageProvider;
-import com.google.android.exoplayer2.video.VideoListener;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.ControlDispatcher;
+import minefarts.exoplayer2.DefaultControlDispatcher;
+import minefarts.exoplayer2.ExoPlaybackException;
+import minefarts.exoplayer2.ExoPlayerLibraryInfo;
+import minefarts.exoplayer2.PlaybackPreparer;
+import minefarts.exoplayer2.Player;
+import minefarts.exoplayer2.Player.DiscontinuityReason;
+import minefarts.exoplayer2.Player.TimelineChangeReason;
+import minefarts.exoplayer2.Timeline;
+import minefarts.exoplayer2.util.ErrorMessageProvider;
+import minefarts.exoplayer2.video.VideoListener;
 
 /** Leanback {@code PlayerAdapter} implementation for {@link Player}. */
 public final class LeanbackPlayerAdapter extends PlayerAdapter implements Runnable {

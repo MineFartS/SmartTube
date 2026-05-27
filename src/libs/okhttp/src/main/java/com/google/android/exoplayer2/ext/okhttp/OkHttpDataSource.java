@@ -1,19 +1,19 @@
-package com.google.android.exoplayer2.ext.okhttp;
+package minefarts.exoplayer2.ext.okhttp;
 
-import static com.google.android.exoplayer2.util.Util.castNonNull;
+import static minefarts.exoplayer2.util.Util.castNonNull;
 
 import android.net.Uri;
 import androidx.annotation.Nullable;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.ExoPlayerLibraryInfo;
-import com.google.android.exoplayer2.metadata.icy.IcyHeaders;
-import com.google.android.exoplayer2.upstream.BaseDataSource;
-import com.google.android.exoplayer2.upstream.DataSourceException;
-import com.google.android.exoplayer2.upstream.DataSpec;
-import com.google.android.exoplayer2.upstream.HttpDataSource;
-import com.google.android.exoplayer2.util.Assertions;
-import com.google.android.exoplayer2.util.Predicate;
-import com.google.android.exoplayer2.util.Util;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.ExoPlayerLibraryInfo;
+import minefarts.exoplayer2.metadata.icy.IcyHeaders;
+import minefarts.exoplayer2.upstream.BaseDataSource;
+import minefarts.exoplayer2.upstream.DataSourceException;
+import minefarts.exoplayer2.upstream.DataSpec;
+import minefarts.exoplayer2.upstream.HttpDataSource;
+import minefarts.exoplayer2.util.Assertions;
+import minefarts.exoplayer2.util.Predicate;
+import minefarts.exoplayer2.util.Util;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;

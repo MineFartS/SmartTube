@@ -1,7 +1,7 @@
-package com.google.android.exoplayer2.source.dash.manifest;
+package minefarts.exoplayer2.source.dash.manifest;
 
 import androidx.annotation.Nullable;
-import com.google.android.exoplayer2.C;
+import minefarts.exoplayer2.C;
 import java.util.Collections;
 import java.util.List;
 

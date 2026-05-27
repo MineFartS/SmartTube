@@ -20,7 +20,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.Helpers;
 import minefarts.smarttube.R;
 import minefarts.smarttube.commons.DebouncedOnClickListener;
 import minefarts.smarttube.commons.ImageLoader;

@@ -1,4 +1,4 @@
-package com.google.android.exoplayer2.source.sabr.parser;
+package minefarts.exoplayer2.source.sabr.parser;
 
 import android.util.Pair;
 import android.util.SparseArray;
@@ -6,32 +6,32 @@ import android.util.SparseArray;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.ParserException;
-import com.google.android.exoplayer2.drm.DrmInitData;
-import com.google.android.exoplayer2.extractor.ChunkIndex;
-import com.google.android.exoplayer2.extractor.Extractor;
-import com.google.android.exoplayer2.extractor.ExtractorInput;
-import com.google.android.exoplayer2.extractor.ExtractorOutput;
-import com.google.android.exoplayer2.extractor.MpegAudioHeader;
-import com.google.android.exoplayer2.extractor.PositionHolder;
-import com.google.android.exoplayer2.extractor.SeekMap;
-import com.google.android.exoplayer2.extractor.TrackOutput;
-import com.google.android.exoplayer2.source.sabr.parser.parts.FormatInitializedSabrPart;
-import com.google.android.exoplayer2.source.sabr.parser.parts.MediaSegmentDataSabrPart;
-import com.google.android.exoplayer2.source.sabr.parser.parts.MediaSegmentEndSabrPart;
-import com.google.android.exoplayer2.source.sabr.parser.parts.MediaSegmentInitSabrPart;
-import com.google.android.exoplayer2.source.sabr.parser.parts.SabrPart;
-import com.google.android.exoplayer2.util.Log;
-import com.google.android.exoplayer2.util.LongArray;
-import com.google.android.exoplayer2.util.MimeTypes;
-import com.google.android.exoplayer2.util.NalUnitUtil;
-import com.google.android.exoplayer2.util.ParsableByteArray;
-import com.google.android.exoplayer2.util.Util;
-import com.google.android.exoplayer2.video.AvcConfig;
-import com.google.android.exoplayer2.video.ColorInfo;
-import com.google.android.exoplayer2.video.HevcConfig;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.Format;
+import minefarts.exoplayer2.ParserException;
+import minefarts.exoplayer2.drm.DrmInitData;
+import minefarts.exoplayer2.extractor.ChunkIndex;
+import minefarts.exoplayer2.extractor.Extractor;
+import minefarts.exoplayer2.extractor.ExtractorInput;
+import minefarts.exoplayer2.extractor.ExtractorOutput;
+import minefarts.exoplayer2.extractor.MpegAudioHeader;
+import minefarts.exoplayer2.extractor.PositionHolder;
+import minefarts.exoplayer2.extractor.SeekMap;
+import minefarts.exoplayer2.extractor.TrackOutput;
+import minefarts.exoplayer2.source.sabr.parser.parts.FormatInitializedSabrPart;
+import minefarts.exoplayer2.source.sabr.parser.parts.MediaSegmentDataSabrPart;
+import minefarts.exoplayer2.source.sabr.parser.parts.MediaSegmentEndSabrPart;
+import minefarts.exoplayer2.source.sabr.parser.parts.MediaSegmentInitSabrPart;
+import minefarts.exoplayer2.source.sabr.parser.parts.SabrPart;
+import minefarts.exoplayer2.util.Log;
+import minefarts.exoplayer2.util.LongArray;
+import minefarts.exoplayer2.util.MimeTypes;
+import minefarts.exoplayer2.util.NalUnitUtil;
+import minefarts.exoplayer2.util.ParsableByteArray;
+import minefarts.exoplayer2.util.Util;
+import minefarts.exoplayer2.video.AvcConfig;
+import minefarts.exoplayer2.video.ColorInfo;
+import minefarts.exoplayer2.video.HevcConfig;
 
 import java.io.IOException;
 import java.lang.annotation.Documented;
@@ -217,7 +217,7 @@ public class SabrExtractor implements Extractor {
     private ExtractorOutput extractorOutput;
 
     /**
-     * @param trackType The type of the track. Typically one of the {@link com.google.android.exoplayer2.C}
+     * @param trackType The type of the track. Typically one of the {@link minefarts.exoplayer2.C}
      *    {@code TRACK_TYPE_*} constants.
      */
     public SabrExtractor(int trackType, @NonNull Format format, @NonNull SabrStream sabrStream) {

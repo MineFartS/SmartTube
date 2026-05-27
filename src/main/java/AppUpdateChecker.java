@@ -8,9 +8,9 @@ import minefarts.smarttube.core.AppDownloaderListener;
 import minefarts.smarttube.core.AppVersionChecker;
 import minefarts.smarttube.core.AppVersionCheckerListener;
 import minefarts.smarttube.other.SettingsManager;
-import com.liskovsoft.sharedutils.helpers.FileHelpers;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.helpers.FileHelpers;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.mylogger.Log;
 
 import java.util.Arrays;
 import java.util.List;

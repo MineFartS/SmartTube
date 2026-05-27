@@ -1,4 +1,4 @@
-package com.google.android.exoplayer2.ui;
+package minefarts.exoplayer2.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -7,15 +7,15 @@ import android.util.AttributeSet;
 @Deprecated
 public class PlaybackControlView extends PlayerControlView {
 
-  /** @deprecated Use {@link com.google.android.exoplayer2.ControlDispatcher}. */
+  /** @deprecated Use {@link minefarts.exoplayer2.ControlDispatcher}. */
   @Deprecated
-  public interface ControlDispatcher extends com.google.android.exoplayer2.ControlDispatcher {}
+  public interface ControlDispatcher extends minefarts.exoplayer2.ControlDispatcher {}
 
   @Deprecated
   @SuppressWarnings("deprecation")
   private static final class DefaultControlDispatcher
-      extends com.google.android.exoplayer2.DefaultControlDispatcher implements ControlDispatcher {}
-  /** @deprecated Use {@link com.google.android.exoplayer2.DefaultControlDispatcher}. */
+      extends minefarts.exoplayer2.DefaultControlDispatcher implements ControlDispatcher {}
+  /** @deprecated Use {@link minefarts.exoplayer2.DefaultControlDispatcher}. */
   @Deprecated
   @SuppressWarnings("deprecation")
   public static final ControlDispatcher DEFAULT_CONTROL_DISPATCHER = new DefaultControlDispatcher();

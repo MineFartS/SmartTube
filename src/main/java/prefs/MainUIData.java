@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.Helpers;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.presenters.dialogs.menu.providers.ContextMenuManager;
 import minefarts.smarttube.app.presenters.dialogs.menu.providers.ContextMenuProvider;
