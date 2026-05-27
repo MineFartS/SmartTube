@@ -1,0 +1,23 @@
+package minefarts.smarttube.prefs.common;
+
+import minefarts.smarttube.utils.misc.WeakHashSet;
+
+public abstract class DataChangeBase {
+    public interface OnDataChange {
+        void onDataChange();
+    }
+
+    private final WeakHashSet<OnDataChange> mOnChangeList = new WeakHashSet<>();
+
+    public final void setOnChange(OnDataChange callback) {
+        mOnChangeList.add(callback);
+    }
+
+    public final void removeOnChange(OnDataChange callback) {
+        mOnChangeList.remove(callback);
+    }
+
+    public final void onDataChange() {
+        mOnChangeList.forEach(OnDataChange::onDataChange);
+    }
+}

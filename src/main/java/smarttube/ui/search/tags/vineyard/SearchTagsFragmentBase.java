@@ -1,0 +1,217 @@
+package minefarts.smarttube.ui.search.tags.vineyard;
+
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import minefarts.smarttube.leanback.app.RowsSupportFragment;
+import minefarts.smarttube.leanback.widget.ArrayObjectAdapter;
+import minefarts.smarttube.leanback.widget.HeaderItem;
+import minefarts.smarttube.leanback.widget.ListRow;
+import minefarts.smarttube.leanback.widget.ListRowPresenter;
+import minefarts.smarttube.leanback.widget.ObjectAdapter;
+import minefarts.smarttube.leanback.widget.RowPresenter.ViewHolder;
+import minefarts.smarttube.leanback.widget.SpeechRecognitionCallback;
+import minefarts.smarttube.utils.helpers.MessageHelpers;
+import minefarts.smarttube.utils.helpers.PermissionHelpers;
+import minefarts.smarttube.utils.mylogger.Log;
+import minefarts.smarttube.app.models.search.SearchTagsProvider;
+import minefarts.smarttube.app.models.search.vineyard.Tag;
+import minefarts.smarttube.app.views.SearchView;
+import minefarts.smarttube.prefs.SearchData;
+import minefarts.smarttube.R;
+import minefarts.smarttube.adapter.vineyard.PaginationAdapter;
+import minefarts.smarttube.adapter.vineyard.TagAdapter;
+import minefarts.smarttube.presenter.CustomListRowPresenter;
+import minefarts.smarttube.presenter.base.OnItemLongPressedListener;
+import minefarts.smarttube.presenter.vineyard.TagPresenter;
+import minefarts.smarttube.ui.mod.leanback.misc.ProgressBarManager;
+import minefarts.smarttube.ui.mod.leanback.search.SearchSupportFragment;
+
+import net.gotev.speech.GoogleVoiceTypingDisabledException;
+import net.gotev.speech.Speech;
+import net.gotev.speech.SpeechDelegate;
+import net.gotev.speech.SpeechRecognitionNotAvailable;
+import net.gotev.speech.SpeechUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class SearchTagsFragmentBase extends SearchSupportFragment
+        implements SearchSupportFragment.SearchResultProvider, SearchView {
+
+    private TagAdapter mSearchTagsAdapter;
+    private ArrayObjectAdapter mResultsAdapter; // contains tags adapter and results adapter (see attachAdapter method)
+    private ListRowPresenter mResultsPresenter;
+    private TagPresenter mTagsPresenter;
+
+    private boolean mIsStopping;
+    private SearchTagsProvider mSearchTagsProvider;
+    private ProgressBarManager mProgressBarManager;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mProgressBarManager = new ProgressBarManager();
+        mResultsPresenter = new CustomListRowPresenter();
+        mResultsAdapter = new ArrayObjectAdapter(mResultsPresenter);
+        mTagsPresenter = new TagPresenter();
+        mTagsPresenter.setOnItemClickListener(this::onItemViewClicked);
+        mTagsPresenter.setOnItemSelectedListener(this::onItemViewSelected);
+        mSearchTagsAdapter = new TagAdapter(requireActivity(), mTagsPresenter, "");
+        setSearchResultProvider(this);
+        setupListenersAndPermissions();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = super.onCreateView(inflater, container, savedInstanceState);
+
+        mProgressBarManager.setRootView((ViewGroup) root);
+
+        return root;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mIsStopping = false;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mIsStopping = true;
+    }
+
+
+
+    @Override
+    public ObjectAdapter getResultsAdapter() {
+        return mResultsAdapter;
+    }
+
+    @Override
+    public void showProgressBar(boolean show) {
+        if (show) {
+            mProgressBarManager.show();
+        } else {
+            mProgressBarManager.hide();
+        }
+    }
+
+    protected abstract void onItemViewSelected(Object item);
+    
+    protected abstract void onItemViewClicked(Object item);
+
+    protected void setSearchTagsProvider(SearchTagsProvider provider) {
+        mSearchTagsProvider = provider;
+    }
+
+    protected void setSearchTagsLongPressListener(OnItemLongPressedListener listener) {
+        mTagsPresenter.setOnItemViewLongPressedListener(listener);
+    }
+
+    public boolean isStopping() {
+        return mIsStopping;
+    }
+
+    public boolean hasResults() {
+        return mResultsAdapter.size() > 0;
+    }
+
+    private void setupListenersAndPermissions() {
+
+        setOnItemViewClickedListener((itemViewHolder, item, rowViewHolder, row) -> onItemViewClicked(item));
+        
+        setOnItemViewSelectedListener((itemViewHolder, item, rowViewHolder, row) -> onItemViewSelected(item));
+    
+    }
+
+    protected void stopSpeechService() {}
+
+    protected void loadSearchTags(String searchQuery) {
+        searchTaggedPosts(searchQuery);
+    }
+
+    private void searchTaggedPosts(String query) {
+        mSearchTagsAdapter.setTag(query);
+        mResultsAdapter.clear();
+        mSearchTagsAdapter.clear();
+        performTagSearch(mSearchTagsAdapter);
+    }
+
+    private void performTagSearch(TagAdapter adapter) {
+        if (mSearchTagsProvider == null) {
+            return;
+        }
+
+        String query = adapter.getAdapterOptions().get(PaginationAdapter.KEY_TAG);
+        mSearchTagsProvider.search(query, results -> {
+            adapter.addAllItems(results);
+            attachAdapter(0, adapter);
+        });
+    }
+
+    /**
+     * Disable scrolling on partially updated rows. This prevent controls from misbehaving.
+     */
+    protected void freeze(boolean freeze) {
+        // Disable scrolling on partially updated rows. This prevent controls from misbehaving.
+        RowsSupportFragment rowsSupportFragment = getRowsSupportFragment();
+        if (mResultsPresenter != null && rowsSupportFragment != null) {
+            ViewHolder vh = rowsSupportFragment.getRowViewHolder(rowsSupportFragment.getSelectedPosition());
+            if (vh != null) {
+                mResultsPresenter.freeze(vh, freeze);
+            }
+        }
+    }
+
+    protected void attachAdapter(int index, ObjectAdapter adapter) {
+        if (mResultsAdapter != null) {
+            if (!containsAdapter(adapter)) {
+                index = Math.min(index, mResultsAdapter.size());
+                mResultsAdapter.add(index, new ListRow(adapter));
+            }
+        }
+    }
+
+    protected void attachAdapter(int index, HeaderItem header, ObjectAdapter adapter) {
+        if (mResultsAdapter != null) {
+            if (!containsAdapter(adapter)) {
+                index = Math.min(index, mResultsAdapter.size());
+                mResultsAdapter.add(index, new ListRow(header, adapter));
+            }
+        }
+    }
+
+    protected void detachAdapter(int index) {
+        if (mResultsAdapter != null && index < mResultsAdapter.size()) {
+            mResultsAdapter.removeItems(index, 1);
+        }
+    }
+
+    protected void clearTags() {
+        if (containsAdapter(mSearchTagsAdapter)) {
+            detachAdapter(0);
+        }
+    }
+
+    protected boolean containsAdapter(ObjectAdapter adapter) {
+        if (mResultsAdapter != null) {
+            for (int i = 0; i < mResultsAdapter.size(); i++) {
+                ListRow row = (ListRow) mResultsAdapter.get(i);
+                if (row.getAdapter() == adapter) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+}

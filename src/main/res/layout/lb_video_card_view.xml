@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         lb:layout_viewType="main" />
 
-    <androidx.leanback.widget.NonOverlappingFrameLayout
+    <minefarts.smarttube.leanback.widget.NonOverlappingFrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         lb:layout_viewType="info">
@@ -71,5 +71,5 @@
                 android:scaleType="fitCenter"
                 android:visibility="gone" />
         </RelativeLayout>
-    </androidx.leanback.widget.NonOverlappingFrameLayout>
+    </minefarts.smarttube.leanback.widget.NonOverlappingFrameLayout>
 </merge>

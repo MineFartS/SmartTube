@@ -3,7 +3,7 @@
 <!-- MOD: Enable single click touch mode (focusableInTouchMode=false) -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
        xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.leanback.widget.SpeechOrbView
+    <minefarts.smarttube.leanback.widget.SpeechOrbView
             android:id="@+id/lb_search_bar_speech_orb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -14,7 +14,7 @@
             >
         <!-- Should be commented out? Fix voice search activation after fragment restore? -->
         <requestFocus/>
-    </androidx.leanback.widget.SpeechOrbView>
+    </minefarts.smarttube.leanback.widget.SpeechOrbView>
 
     <RelativeLayout
             android:id="@+id/lb_search_bar_items"
@@ -39,7 +39,7 @@
                 android:visibility="gone"
                 style="?attr/browseTitleIconStyle"/>
 
-        <androidx.leanback.widget.SearchEditText
+        <minefarts.smarttube.leanback.widget.SearchEditText
                     android:id="@+id/lb_search_text_editor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
     </RelativeLayout>
 
     <!-- NOTE: You need to create different icon sizes to overcome icon oversize bug -->
-    <androidx.leanback.widget.SearchOrbView
+    <minefarts.smarttube.leanback.widget.SearchOrbView
         android:id="@+id/search_settings_orb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
         app:searchOrbIconColor="@color/orb_icon_color" />
 
     <!-- Start search button -->
-    <androidx.leanback.widget.SearchOrbView
+    <minefarts.smarttube.leanback.widget.SearchOrbView
         android:id="@+id/lb_search_bar_search_orb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

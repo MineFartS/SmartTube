@@ -1,0 +1,435 @@
+package minefarts.smarttube.ui.playback.other;
+
+import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.view.KeyEvent;
+import android.view.View;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import minefarts.smarttube.leanback.media.PlaybackGlueHost;
+import minefarts.smarttube.leanback.media.PlaybackTransportControlGlue;
+import minefarts.smarttube.leanback.media.PlayerAdapter;
+import minefarts.smarttube.leanback.widget.Action;
+import minefarts.smarttube.leanback.widget.ArrayObjectAdapter;
+import minefarts.smarttube.leanback.widget.ObjectAdapter;
+import minefarts.smarttube.leanback.widget.PlaybackControlsRow;
+import minefarts.smarttube.leanback.widget.PlaybackControlsRow.MultiAction;
+import minefarts.smarttube.leanback.widget.PlaybackRowPresenter;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
+import minefarts.smarttube.utils.mylogger.Log;
+import minefarts.smarttube.prefs.GeneralData;
+import minefarts.smarttube.prefs.PlayerTweaksData;
+import minefarts.smarttube.R;
+import minefarts.smarttube.ui.mod.leanback.playerglue.tweaks.MaxControlsVideoPlayerGlue;
+import minefarts.smarttube.ui.mod.leanback.playerglue.tweaks.PlaybackTransportRowPresenter;
+import minefarts.smarttube.ui.mod.leanback.widget.OnActionLongClickedListener;
+import minefarts.smarttube.ui.playback.actions.ActionHelpers;
+import minefarts.smarttube.ui.playback.actions.ChannelAction;
+import minefarts.smarttube.ui.playback.actions.ChatAction;
+import minefarts.smarttube.ui.playback.actions.ClosedCaptioningAction;
+import minefarts.smarttube.ui.playback.actions.VideoInfoAction;
+import minefarts.smarttube.ui.playback.actions.PlaylistAddAction;
+import minefarts.smarttube.ui.playback.actions.PlaybackModeAction;
+import minefarts.smarttube.ui.playback.actions.SubscribeAction;
+import minefarts.smarttube.ui.playback.actions.TwoStateAction;
+import minefarts.smarttube.ui.playback.actions.ThumbsDownAction;
+import minefarts.smarttube.ui.playback.actions.ThumbsUpAction;
+import minefarts.smarttube.ui.playback.actions.VideoSpeedAction;
+import minefarts.smarttube.utils.ViewUtil;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * Manages customizing the actions in the {@link PlaybackControlsRow}. Adds and manages the
+ * following actions to the primary and secondary controls:
+ *
+ * <ul>
+ *   <li>{@link minefarts.smarttube.leanback.widget.PlaybackControlsRow.RepeatAction}
+ *   <li>{@link minefarts.smarttube.leanback.widget.PlaybackControlsRow.ThumbsDownAction}
+ *   <li>{@link minefarts.smarttube.leanback.widget.PlaybackControlsRow.ThumbsUpAction}
+ *   <li>{@link minefarts.smarttube.leanback.widget.PlaybackControlsRow.SkipPreviousAction}
+ *   <li>{@link minefarts.smarttube.leanback.widget.PlaybackControlsRow.SkipNextAction}
+ *   <li>{@link minefarts.smarttube.leanback.widget.PlaybackControlsRow.FastForwardAction}
+ *   <li>{@link minefarts.smarttube.leanback.widget.PlaybackControlsRow.RewindAction}
+ * </ul>
+ *
+ * Note that the superclass, {@link PlaybackTransportControlGlue}, manages the playback controls
+ * row.
+ */
+public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> implements OnActionLongClickedListener {
+    private static final long TEN_SECONDS = TimeUnit.SECONDS.toMillis(10);
+    private static final String TAG = VideoPlayerGlue.class.getSimpleName();
+    private final PlaybackControlsRow.SkipPreviousAction mSkipPreviousAction;
+    private final PlaybackControlsRow.SkipNextAction mSkipNextAction;
+    private final PlaybackControlsRow.FastForwardAction mFastForwardAction;
+    private final PlaybackControlsRow.RewindAction mRewindAction;
+    private final Map<Integer, Action> mActions = new HashMap<>();
+    private final OnActionClickedListener mActionListener;
+    private final PlayerTweaksData mPlayerTweaksData;
+    private final GeneralData mGeneralData;
+    private int mPreviousAction = KeyEvent.ACTION_UP;
+
+    public VideoPlayerGlue(
+        Context context,
+        PlayerAdapter playerAdapter,
+        OnActionClickedListener actionListener
+    ) {
+        super(context, playerAdapter);
+
+        mPlayerTweaksData = PlayerTweaksData.instance(getContext());
+        mGeneralData = GeneralData.instance(getContext());
+
+        mActionListener = actionListener;
+
+        mSkipPreviousAction = new PlaybackControlsRow.SkipPreviousAction(context);
+        mSkipNextAction = new PlaybackControlsRow.SkipNextAction(context);
+        mFastForwardAction = new PlaybackControlsRow.FastForwardAction(context);
+        mRewindAction = new PlaybackControlsRow.RewindAction(context);
+
+        ThumbsUpAction thumbsUpAction = new ThumbsUpAction(context);
+        ThumbsDownAction thumbsDownAction = new ThumbsDownAction(context);
+
+        thumbsUpAction.setBoundAction(thumbsDownAction);
+        putAction(thumbsUpAction);
+
+        thumbsDownAction.setBoundAction(thumbsUpAction);
+        putAction(thumbsDownAction);
+
+        putAction(new PlaybackModeAction(context));
+        putAction(new ChannelAction(context));
+        putAction(new ClosedCaptioningAction(context));
+        putAction(new PlaylistAddAction(context));
+        putAction(new SubscribeAction(context));
+        putAction(new VideoInfoAction(context));
+        putAction(new VideoSpeedAction(context));
+        putAction(new ChatAction(context));
+
+    }
+
+    @Override
+    protected void onCreatePrimaryActions(ArrayObjectAdapter adapter) {
+        // Order matters, super.onCreatePrimaryActions() will create the play / pause action.
+        // Will display as follows:
+        // play/pause, previous, rewind, fast forward, next
+        //   > /||      |<        <<        >>         >|
+        
+        super.onCreatePrimaryActions(adapter);
+
+        adapter.add(mSkipPreviousAction);
+        adapter.add(mSkipNextAction);
+        adapter.add(mActions.get(R.id.action_repeat));
+        adapter.add(mActions.get(R.id.action_video_speed));
+        adapter.add(mActions.get(R.id.action_chat));
+
+    }
+
+    @Override
+    protected void onCreateSecondaryActions(ArrayObjectAdapter adapter) {
+
+        // Does nothing
+        super.onCreateSecondaryActions(adapter);
+
+        // MAX: 7 items. But with custom modification it supports more.
+        // Origin: {@link minefarts.smarttube.leanback.widget.ControlBarPresenter#MAX_CONTROLS}
+        // Custom mod: {@link minefarts.smarttube.ui.mod.leanback.playerglue.ControlBarPresenter#MAX_CONTROLS}
+
+        adapter.add(mActions.get(R.id.action_channel));
+        adapter.add(mActions.get(R.id.action_thumbs_up));
+        adapter.add(mActions.get(R.id.action_thumbs_down));
+        adapter.add(mActions.get(R.id.lb_control_closed_captioning));
+        adapter.add(mActions.get(R.id.action_playlist_add));
+        adapter.add(mActions.get(R.id.action_subscribe));
+        adapter.add(mActions.get(R.id.action_info));
+
+    }
+
+    @Override
+    protected PlaybackRowPresenter onCreateRowPresenter() {
+        PlaybackRowPresenter rowPresenter = super.onCreateRowPresenter();
+
+        ((PlaybackTransportRowPresenter) rowPresenter).setOnActionLongClickedListener(this);
+
+        return rowPresenter;
+    }
+
+    @Override
+    public void onActionClicked(Action action) {
+        if (!dispatchAction(action)) {
+            // Super class handles play/pause and delegates to abstract methods next()/previous().
+            super.onActionClicked(action);
+        }
+    }
+
+    @Override
+    public boolean onActionLongClicked(Action action) {
+        return dispatchLongClickAction(action);
+    }
+
+    @Override
+    public void play() {
+        super.play();
+    }
+
+    @Override
+    public void pause() {
+        super.pause();
+    }
+
+    @Override
+    public void next() {
+        mActionListener.onNext();
+    }
+
+    @Override
+    public void previous() {
+        mActionListener.onPrevious();
+    }
+
+    public void togglePlayback() {
+        if (isPlaying()) {
+            pause();
+        } else {
+            play();
+        }
+    }
+
+    /** Skips backwards 10 seconds. */
+    public void rewind() {
+        long newPosition = getCurrentPosition() - TEN_SECONDS;
+        newPosition = (newPosition < 0) ? 0 : newPosition;
+        getPlayerAdapter().seekTo(newPosition);
+    }
+
+    /** Skips forward 10 seconds. */
+    public void fastForward() {
+        if (getDuration() > -1) {
+            long newPosition = getCurrentPosition() + TEN_SECONDS;
+            newPosition = Math.min(newPosition, getDuration());
+            getPlayerAdapter().seekTo(newPosition);
+        }
+    }
+
+    public void setButtonState(int buttonId, int buttonState) {
+        setActionIndex(mActions.get(buttonId), buttonState);
+    }
+
+    public void setChannelIcon(String iconUrl) {
+        ChannelAction channelAction = (ChannelAction) mActions.get(R.id.action_channel);
+
+        if (channelAction == null) {
+            return;
+        }
+
+        if (iconUrl == null) {
+            channelAction.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.action_channel));
+            invalidateUi(channelAction);
+            return;
+        }
+
+        Drawable originIcon = channelAction.getIcon();
+        Glide.with(getContext())
+                .load(iconUrl)
+                .apply(ViewUtil.glideOptions())
+                .circleCrop() // resize image
+                .into(new SimpleTarget<Drawable>(originIcon.getIntrinsicWidth(), originIcon.getIntrinsicHeight()) {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        channelAction.setIcon(resource);
+                        channelAction.setPadding(3);
+                        invalidateUi(channelAction);
+                    }
+                });
+    }
+
+    public void setNextTitle(CharSequence title) {
+        mSkipNextAction.setLabel1(title != null ? title : getContext().getString(R.string.lb_playback_controls_skip_next));
+        invalidateUi(mSkipNextAction);
+    }
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        if (!isSingleKeyDown(event.getAction())) {
+            return false;
+        }
+
+        boolean handled = mActionListener.onKeyDown(keyCode);
+
+        if (!handled) {
+            Action action = findAction(keyCode);
+
+            handled = dispatchAction(action);
+        }
+
+        // Ignore result to give a chance to handle this event in
+        // minefarts.smarttube.ui.mod.leanback.playerglue.maxcontrols.PlaybackTransportRowPresenter.ViewHolder
+        return handled || super.onKey(v, keyCode, event);
+    }
+
+    /**
+     * Fixing sticky key press? <br/>
+     * Notify key down only when there are paired action available.
+     */
+    private boolean isSingleKeyDown(int action) {
+        boolean result = action == KeyEvent.ACTION_DOWN && mPreviousAction == KeyEvent.ACTION_UP;
+        mPreviousAction = action;
+        return result;
+    }
+
+    private boolean dispatchAction(Action action) {
+        if (action == null) {
+            return false;
+        }
+
+        boolean handled = false;
+
+        // Primary actions are handled manually.
+        if (action == mRewindAction) {
+            rewind();
+            handled = true;
+        } else if (action == mFastForwardAction) {
+            fastForward();
+            handled = true;
+        } else if (mActions.containsKey((int) action.getId())) {
+            mActionListener.onAction((int) action.getId(), getActionIndex(action));
+            handled = true;
+        }
+
+        if (handled) {
+            invalidateUi(action);
+
+            if (action instanceof TwoStateAction) {
+                invalidateUi(((TwoStateAction) action).getBoundAction());
+            }
+        }
+
+        return handled;
+    }
+
+    private boolean dispatchLongClickAction(Action action) {
+        
+        if (action == null) {
+            return false;
+        }
+
+        boolean handled = false;
+
+        if (mActions.containsKey((int) action.getId())) {
+            mActionListener.onLongAction((int) action.getId(), getActionIndex(action));
+            handled = true;
+        }
+
+        return handled;
+    }
+
+    private int getActionIndex(Action action) {
+        if (action instanceof PlaybackControlsRow.MultiAction) {
+            PlaybackControlsRow.MultiAction multiAction = (PlaybackControlsRow.MultiAction) action;
+            return multiAction.getIndex();
+        }
+
+        return 0;
+    }
+
+    /**
+     * Properly handle ui changes of multi-action buttons
+     */
+    private void invalidateUi(Action action) {
+        if (action != null) {
+            // Notify adapter of action changes to handle primary actions, such as, play/pause.
+            notifyActionChanged(
+                    action,
+                    (ArrayObjectAdapter) getControlsRow().getPrimaryActionsAdapter());
+
+            // Notify adapter of action changes to handle secondary actions, such as, thumbs up/down and repeat.
+            notifyActionChanged(
+                    action,
+                    (ArrayObjectAdapter) getControlsRow().getSecondaryActionsAdapter());
+        }
+    }
+
+    private void notifyActionChanged(
+            Action action, ArrayObjectAdapter adapter) {
+        if (adapter != null) {
+            int index = adapter.indexOf(action);
+            if (index >= 0) {
+                adapter.notifyArrayItemRangeChanged(index, 1);
+            }
+        }
+    }
+
+    private Action findAction(int keyCode) {
+        Action action = null;
+        PlaybackControlsRow controlsRow = getControlsRow();
+
+        if (controlsRow != null) {
+            final ObjectAdapter primaryActionsAdapter = controlsRow.getPrimaryActionsAdapter();
+            action = controlsRow.getActionForKeyCode(primaryActionsAdapter, keyCode);
+
+            if (action == null) {
+                action = controlsRow.getActionForKeyCode(controlsRow.getSecondaryActionsAdapter(),
+                        keyCode);
+            }
+        }
+
+        return action;
+    }
+
+    private void putAction(Action action) {
+        mActions.put((int) action.getId(), action);
+    }
+
+    private void setActionIndex(Action action, int actionIndex) {
+        if (actionIndex == -1) { // button disabled
+            disableAction(action);
+        } else if (action instanceof MultiAction) {
+            ((MultiAction) action).setIndex(actionIndex);
+            invalidateUi(action);
+        }
+    }
+
+    private void disableAction(Action action) {
+        Drawable icon = action.getIcon();
+        action.setIcon(ActionHelpers.createDrawable(getContext(), (BitmapDrawable) icon, ActionHelpers.getIconGrayedOutColor(getContext())));
+        invalidateUi(action);
+    }
+
+
+    @Override
+    protected void onAttachedToHost(PlaybackGlueHost host) {
+        super.onAttachedToHost(host);
+
+        Log.d(TAG, "On attached to host");
+    }
+
+    @Override
+    public void onTopEdgeFocused() {
+        mActionListener.onTopEdgeFocused();
+    }
+
+    /** Listens for when skip to next and previous actions have been dispatched. */
+    public interface OnActionClickedListener {
+        /** Skip to the previous item in the queue. */
+        void onPrevious();
+
+        /** Skip to the next item in the queue. */
+        void onNext();
+
+        void onPlay();
+
+        void onPause();
+
+        void onAction(int actionId, int actionIndex);
+
+        void onLongAction(int actionId, int actionIndex);
+
+        void onTopEdgeFocused();
+
+        boolean onKeyDown(int keyCode);
+    }
+}

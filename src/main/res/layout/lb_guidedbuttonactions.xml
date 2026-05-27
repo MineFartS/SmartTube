@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Layout for the settings list fragment -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/guidedactions_root2"
+    android:transitionName="guidedactions_root2"
+    android:transitionGroup="false"
+    android:layout_width="0dp"
+    android:layout_weight="?attr/guidedButtonActionsWidthWeight"
+    android:layout_height="match_parent">
+
+    <minefarts.smarttube.leanback.widget.NonOverlappingView
+        android:id="@+id/guidedactions_list_background2"
+        android:transitionName="guidedactions_list_background2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/guidedActionsBackgroundDark" />
+
+    <minefarts.smarttube.leanback.widget.NonOverlappingFrameLayout
+        android:id="@+id/guidedactions_content2"
+        android:transitionName="guidedactions_content2"
+        android:transitionGroup="false"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <minefarts.smarttube.leanback.widget.VerticalGridView
+            android:transitionGroup="true"
+            android:id="@+id/guidedactions_list2"
+            style="?attr/guidedButtonActionsListStyle" />
+
+    </minefarts.smarttube.leanback.widget.NonOverlappingFrameLayout>
+
+</RelativeLayout>

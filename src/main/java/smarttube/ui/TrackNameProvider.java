@@ -1,0 +1,10 @@
+package minefarts.smarttube.ui;
+
+import minefarts.smarttube.Format;
+
+/** Converts {@link Format}s to user readable track names. */
+public interface TrackNameProvider {
+
+  /** Returns a user readable track name for the given {@link Format}. */
+  String getTrackName(Format format);
+}
