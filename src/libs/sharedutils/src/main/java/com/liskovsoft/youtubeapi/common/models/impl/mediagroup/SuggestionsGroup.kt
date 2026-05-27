@@ -1,16 +1,21 @@
 package com.liskovsoft.sharedutils.common.models.impl.mediagroup
 
-import com.liskovsoft.sharedutils.data.MediaGroup
+import com.liskovsoft.sharedutils.service.data.MediaGroup
 import com.liskovsoft.sharedutils.data.MediaItem
 import com.liskovsoft.sharedutils.next.v2.gen.*
 import com.liskovsoft.sharedutils.common.models.impl.mediaitem.WrapperMediaItem
 import java.util.*
 
-internal data class SuggestionsGroup(val shelf: ShelfRenderer): MediaGroup {
+internal data class SuggestionsGroup(
+    val shelf: ShelfRenderer
+): MediaGroup(-1) {
+    
     private var shelves: List<ShelfRenderer>? = null
+    
     constructor(shelves: List<ShelfRenderer>): this(shelves.last()) {
         this.shelves = shelves
     }
+    
     private var _titleItem: String? = null
                     get() = field ?: titleItem
     private var _mediaItemList: List<MediaItem?>? = null
@@ -20,8 +25,10 @@ internal data class SuggestionsGroup(val shelf: ShelfRenderer): MediaGroup {
                     set(value) { field = value ?: "" }
 
     private val titleItem by lazy { shelf.getTitle() }
+    
     private val mediaItemList by lazy { (shelves?.flatMap { it.getItemWrappers() ?: emptyList() } ?: shelf.getItemWrappers())
         ?.mapIndexed { index, it -> it?.let { WrapperMediaItem(it).apply { playlistIndex = index } } } }
+    
     private val nextPageKeyVal by lazy { shelf.getContinuationToken() }
 
     override fun getType(): Int {
@@ -32,7 +39,7 @@ internal data class SuggestionsGroup(val shelf: ShelfRenderer): MediaGroup {
         return _mediaItemList
     }
 
-    fun setMediaItems(list: List<MediaItem?>?) {
+    override fun setMediaItems(list: List<MediaItem?>?) {
         _mediaItemList = list
     }
 
@@ -40,7 +47,7 @@ internal data class SuggestionsGroup(val shelf: ShelfRenderer): MediaGroup {
         return _titleItem
     }
 
-    fun setTitle(title: String?) {
+    override fun setTitle(title: String?) {
         _titleItem = title
     }
 
@@ -111,4 +118,5 @@ internal data class SuggestionsGroup(val shelf: ShelfRenderer): MediaGroup {
             return newGroup
         }
     }
+
 }

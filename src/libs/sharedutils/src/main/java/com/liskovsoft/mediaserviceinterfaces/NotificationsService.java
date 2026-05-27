@@ -1,6 +1,6 @@
 package com.liskovsoft.sharedutils;
 
-import com.liskovsoft.sharedutils.data.MediaGroup;
+import com.liskovsoft.sharedutils.service.data.MediaGroup;
 import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.data.NotificationState;
 import io.reactivex.Observable;

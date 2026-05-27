@@ -1,12 +1,11 @@
 package com.liskovsoft.sharedutils.rss
 
-import com.liskovsoft.sharedutils.data.MediaGroup
 import com.liskovsoft.sharedutils.data.MediaItem
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.sharedutils.browse.v2.BrowseService2
 import com.liskovsoft.sharedutils.browse.v2.BrowseService2Wrapper
 import com.liskovsoft.sharedutils.app.nsigsolver.common.YouTubeInfoExtractor
-import com.liskovsoft.sharedutils.service.data.YouTubeMediaGroup
+import com.liskovsoft.sharedutils.service.data.MediaGroup
 import com.liskovsoft.sharedutils.service.data.YouTubeMediaItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -27,7 +26,7 @@ internal object RssService {
 
         items.sortByDescending { it.publishedDate }
 
-        return YouTubeMediaGroup(type).apply {
+        return MediaGroup(type).apply {
             mediaItems = items
         }
     }

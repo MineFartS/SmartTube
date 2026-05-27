@@ -2,7 +2,7 @@ package minefarts.smarttube.app.presenters.dialogs.menu;
 
 import android.content.Context;
 import com.liskovsoft.sharedutils.MediaItemService;
-import com.liskovsoft.sharedutils.data.MediaGroup;
+import com.liskovsoft.sharedutils.service.data.MediaGroup;
 import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.data.PlaylistInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;

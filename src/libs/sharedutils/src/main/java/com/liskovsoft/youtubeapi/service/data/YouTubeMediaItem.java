@@ -3,7 +3,7 @@ package com.liskovsoft.sharedutils.service.data;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.liskovsoft.sharedutils.data.MediaItem;
-import com.liskovsoft.sharedutils.data.MediaItemMetadata;
+import com.liskovsoft.sharedutils.service.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.browse.v1.models.grid.GridTab;
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;

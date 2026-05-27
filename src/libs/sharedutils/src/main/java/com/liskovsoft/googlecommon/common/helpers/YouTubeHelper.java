@@ -4,7 +4,7 @@ import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.liskovsoft.sharedutils.data.MediaGroup;
+
 import com.liskovsoft.sharedutils.data.MediaItem;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
@@ -13,7 +13,7 @@ import com.liskovsoft.sharedutils.querystringparser.UrlQueryStringFactory;
 import com.liskovsoft.googlecommon.common.models.items.Thumbnail;
 import com.liskovsoft.sharedutils.common.models.gen.ThumbnailItem;
 import com.liskovsoft.sharedutils.common.models.impl.mediagroup.SuggestionsGroup;
-import com.liskovsoft.sharedutils.service.data.YouTubeMediaGroup;
+import com.liskovsoft.sharedutils.service.data.MediaGroup;
 import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
 
 import java.util.Collections;
@@ -78,8 +78,8 @@ public final class YouTubeHelper {
     public static String extractNextKey(MediaGroup mediaGroup) {
         String result = null;
 
-        if (mediaGroup instanceof YouTubeMediaGroup) {
-            result = ((YouTubeMediaGroup) mediaGroup).mNextPageKey;
+        if (mediaGroup instanceof MediaGroup) {
+            result = ((MediaGroup) mediaGroup).mNextPageKey;
         } else if (mediaGroup instanceof SuggestionsGroup) {
             result = ((SuggestionsGroup) mediaGroup).getNextPageKey();
         }

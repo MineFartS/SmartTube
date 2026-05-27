@@ -1,7 +1,7 @@
 package com.liskovsoft.sharedutils.common.models.impl.mediaitem
 
 import com.liskovsoft.sharedutils.data.MediaItem
-import com.liskovsoft.sharedutils.data.MediaItemMetadata
+import com.liskovsoft.sharedutils.service.data.MediaItemMetadata
 import com.liskovsoft.sharedutils.helpers.Helpers
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper

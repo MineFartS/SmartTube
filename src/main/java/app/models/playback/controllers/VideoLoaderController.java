@@ -6,9 +6,9 @@ import android.content.Context;
 
 import com.liskovsoft.sharedutils.MediaItemService;
 import minefarts.smarttube.misc.ServiceManager;
-import com.liskovsoft.sharedutils.data.MediaFormat;
+import com.liskovsoft.sharedutils.service.data.MediaFormat;
 import com.liskovsoft.sharedutils.data.MediaItemFormatInfo;
-import com.liskovsoft.sharedutils.data.MediaItemMetadata;
+import com.liskovsoft.sharedutils.service.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;

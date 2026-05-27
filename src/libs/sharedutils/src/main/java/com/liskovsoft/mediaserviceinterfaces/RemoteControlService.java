@@ -1,6 +1,6 @@
 package com.liskovsoft.sharedutils;
 
-import com.liskovsoft.sharedutils.data.Command;
+import com.liskovsoft.sharedutils.service.data.Command;
 import io.reactivex.Observable;
 
 public interface RemoteControlService {

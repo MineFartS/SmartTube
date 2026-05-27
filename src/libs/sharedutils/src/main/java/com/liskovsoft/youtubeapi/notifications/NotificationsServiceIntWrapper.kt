@@ -1,6 +1,6 @@
 package com.liskovsoft.sharedutils.notifications
 
-import com.liskovsoft.sharedutils.data.MediaGroup
+import com.liskovsoft.sharedutils.service.data.MediaGroup
 import com.liskovsoft.sharedutils.data.NotificationState
 import com.liskovsoft.sharedutils.common.models.gen.NotificationStateItem
 import com.liskovsoft.sharedutils.common.models.impl.NotificationStateImpl

@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import androidx.annotation.Nullable;
 
 import com.liskovsoft.sharedutils.oauth.Account;
-import com.liskovsoft.sharedutils.data.MediaGroup;
+import com.liskovsoft.sharedutils.service.data.MediaGroup;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.locale.LocaleUtility;
 import com.liskovsoft.sharedutils.mylogger.Log;

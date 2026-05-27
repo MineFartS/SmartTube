@@ -1,7 +1,7 @@
 package minefarts.smarttube.launchers;
 
 import android.os.Bundle;
-import com.liskovsoft.sharedutils.data.MediaGroup;
+import com.liskovsoft.sharedutils.service.data.MediaGroup;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
 import minefarts.smarttube.misc.MotherActivity;
 

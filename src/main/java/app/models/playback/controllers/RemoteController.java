@@ -8,7 +8,7 @@ import android.view.KeyEvent;
 import androidx.annotation.Nullable;
 import minefarts.smarttube.misc.ServiceManager;
 import com.liskovsoft.sharedutils.RemoteControlService;
-import com.liskovsoft.sharedutils.data.Command;
+import com.liskovsoft.sharedutils.service.data.Command;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;

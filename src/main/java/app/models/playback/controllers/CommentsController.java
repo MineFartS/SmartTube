@@ -5,7 +5,7 @@ import android.util.Pair;
 
 import com.liskovsoft.sharedutils.data.CommentGroup;
 import com.liskovsoft.sharedutils.data.CommentItem;
-import com.liskovsoft.sharedutils.data.MediaItemMetadata;
+import com.liskovsoft.sharedutils.service.data.MediaItemMetadata;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.sharedutils.mylogger.Log;

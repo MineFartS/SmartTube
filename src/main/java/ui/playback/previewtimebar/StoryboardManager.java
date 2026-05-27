@@ -12,8 +12,8 @@ import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.liskovsoft.sharedutils.MediaItemService;
 import minefarts.smarttube.misc.ServiceManager;
-import com.liskovsoft.sharedutils.data.MediaItemStoryboard;
-import com.liskovsoft.sharedutils.data.MediaItemStoryboard.Size;
+import com.liskovsoft.sharedutils.formatbuilders.storyboard.YouTubeStoryParser.Size;
+import com.liskovsoft.sharedutils.service.data.MediaItemStoryboard;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.app.models.data.Video;
@@ -24,11 +24,13 @@ import io.reactivex.disposables.Disposable;
 import java.util.Set;
 
 public class StoryboardManager {
+
     private static final String TAG = StoryboardManager.class.getSimpleName();
 
     private static final int MAX_PRELOADED_IMAGES = 3;
     private static final int DIRECTION_RIGHT = 0;
     private static final int DIRECTION_LEFT = 1;
+    
     private final MediaItemService mMediaItemService;
     private final Context mContext;
     private long mLengthMs;
@@ -97,9 +99,7 @@ public class StoryboardManager {
     }
 
     private long getFrameDurationMsAlt() {
-        if (mStoryboard == null) {
-            return -1;
-        }
+        if (mStoryboard == null) return -1;
 
         Size groupSize = mStoryboard.getGroupSize();
 

@@ -1,6 +1,6 @@
 package com.liskovsoft.sharedutils.formatbuilders.utils;
 
-import com.liskovsoft.sharedutils.data.MediaFormat;
+import com.liskovsoft.sharedutils.service.data.MediaFormat;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 
 import java.util.regex.Matcher;
