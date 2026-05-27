@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Layout for an action item displayed in the 2 pane actions fragment. -->
+<minefarts.smarttube.leanback.widget.GuidedActionItemContainer
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="?attr/guidedActionItemContainerStyle" >
+
+    <ImageView
+        android:id="@+id/guidedactions_item_icon"
+        style="?attr/guidedActionItemIconStyle"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/guidedactions_item_title"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_vertical"
+        style="?attr/guidedActionItemTitleStyle" />
+
+    <minefarts.smarttube.leanback.widget.picker.DatePicker
+        android:id="@+id/guidedactions_activator_item"
+        android:importantForAccessibility="yes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</minefarts.smarttube.leanback.widget.GuidedActionItemContainer>

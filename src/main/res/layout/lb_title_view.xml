@@ -13,7 +13,7 @@
                   android:layout_height="wrap_content"
                   android:orientation="horizontal"
                   android:layout_gravity="center_vertical|start">
-        <androidx.leanback.widget.SearchOrbView
+        <minefarts.smarttube.leanback.widget.SearchOrbView
             android:id="@+id/title_orb"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
             app:searchOrbIconColor="@color/orb_icon_color"
             android:visibility="gone" />
 
-        <androidx.leanback.widget.SearchOrbView
+        <minefarts.smarttube.leanback.widget.SearchOrbView
             android:id="@+id/language_orb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
             app:searchOrbIconColor="@color/orb_icon_color"
             android:visibility="gone" />
 
-        <androidx.leanback.widget.SearchOrbView
+        <minefarts.smarttube.leanback.widget.SearchOrbView
             android:id="@+id/exit_pip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

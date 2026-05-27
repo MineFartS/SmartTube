@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <minefarts.smarttube.leanback.widget.GuidanceStylingRelativeLayout
+        android:id="@+id/guidance_container"
+        style="?attr/guidanceContainerStyle" >
+
+        <ImageView
+            android:id="@+id/guidance_icon"
+            style="?attr/guidanceIconStyle"
+            tools:ignore="ContentDescription"/>
+
+        <TextView
+            android:id="@+id/guidance_breadcrumb"
+            style="?attr/guidanceBreadcrumbStyle"/>
+
+        <TextView
+            android:id="@+id/guidance_title"
+            style="?attr/guidanceTitleStyle"/>
+
+        <TextView
+            android:id="@+id/guidance_description"
+            style="?attr/guidanceDescriptionStyle"/>
+
+    </minefarts.smarttube.leanback.widget.GuidanceStylingRelativeLayout>
+
+</FrameLayout>

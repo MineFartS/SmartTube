@@ -14,17 +14,17 @@
     <!-- Original place for VideoSurfaceView -->
 
     <!-- Add subtitle view. Hides all views behind them. Should be placed at the top. -->
-    <minefarts.exoplayer2.ui.AspectRatioFrameLayout
+    <minefarts.smarttube.ui.AspectRatioFrameLayout
         android:id="@+id/surface_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center">
         <!-- Modified place for VideoSurfaceView -->
-    </minefarts.exoplayer2.ui.AspectRatioFrameLayout>
+    </minefarts.smarttube.ui.AspectRatioFrameLayout>
 
     <!-- MOD: fix subs width issues on vertical videos by placing subs outside of the aspect layout -->
     <!-- MOD: add subtitle padding -->
-    <minefarts.exoplayer2.ui.SubtitleView
+    <minefarts.smarttube.ui.SubtitleView
         android:id="@+id/leanback_subtitles"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -88,13 +88,13 @@
                  android:layout_gravity="top|right"
                  android:background="#70000000"/>
 
-    <androidx.leanback.widget.NonOverlappingFrameLayout
+    <minefarts.smarttube.leanback.widget.NonOverlappingFrameLayout
         android:id="@+id/playback_fragment_background"
         android:transitionGroup="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <androidx.leanback.widget.NonOverlappingFrameLayout
+    <minefarts.smarttube.leanback.widget.NonOverlappingFrameLayout
             android:id="@+id/playback_controls_dock"
             android:transitionGroup="true"
             android:layout_height="match_parent"

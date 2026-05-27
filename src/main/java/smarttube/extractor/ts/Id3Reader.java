@@ -1,0 +1,102 @@
+package minefarts.smarttube.extractor.ts;
+
+import static minefarts.smarttube.extractor.ts.TsPayloadReader.FLAG_DATA_ALIGNMENT_INDICATOR;
+
+import minefarts.smarttube.C;
+import minefarts.smarttube.Format;
+import minefarts.smarttube.extractor.ExtractorOutput;
+import minefarts.smarttube.extractor.TrackOutput;
+import minefarts.smarttube.extractor.ts.TsPayloadReader.TrackIdGenerator;
+import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.MimeTypes;
+import minefarts.smarttube.utils.ParsableByteArray;
+
+/**
+ * Parses ID3 data and extracts individual text information frames.
+ */
+public final class Id3Reader implements ElementaryStreamReader {
+
+  private static final String TAG = "Id3Reader";
+
+  private static final int ID3_HEADER_SIZE = 10;
+
+  private final ParsableByteArray id3Header;
+
+  private TrackOutput output;
+
+  // State that should be reset on seek.
+  private boolean writingSample;
+
+  // Per sample state that gets reset at the start of each sample.
+  private long sampleTimeUs;
+  private int sampleSize;
+  private int sampleBytesRead;
+
+  public Id3Reader() {
+    id3Header = new ParsableByteArray(ID3_HEADER_SIZE);
+  }
+
+  @Override
+  public void seek() {
+    writingSample = false;
+  }
+
+  @Override
+  public void createTracks(ExtractorOutput extractorOutput, TrackIdGenerator idGenerator) {
+    idGenerator.generateNewId();
+    output = extractorOutput.track(idGenerator.getTrackId(), C.TRACK_TYPE_METADATA);
+    output.format(Format.createSampleFormat(idGenerator.getFormatId(), MimeTypes.APPLICATION_ID3,
+        null, Format.NO_VALUE, null));
+  }
+
+  @Override
+  public void packetStarted(long pesTimeUs, @TsPayloadReader.Flags int flags) {
+    if ((flags & FLAG_DATA_ALIGNMENT_INDICATOR) == 0) {
+      return;
+    }
+    writingSample = true;
+    sampleTimeUs = pesTimeUs;
+    sampleSize = 0;
+    sampleBytesRead = 0;
+  }
+
+  @Override
+  public void consume(ParsableByteArray data) {
+    if (!writingSample) {
+      return;
+    }
+    int bytesAvailable = data.bytesLeft();
+    if (sampleBytesRead < ID3_HEADER_SIZE) {
+      // We're still reading the ID3 header.
+      int headerBytesAvailable = Math.min(bytesAvailable, ID3_HEADER_SIZE - sampleBytesRead);
+      System.arraycopy(data.data, data.getPosition(), id3Header.data, sampleBytesRead,
+          headerBytesAvailable);
+      if (sampleBytesRead + headerBytesAvailable == ID3_HEADER_SIZE) {
+        // We've finished reading the ID3 header. Extract the sample size.
+        id3Header.setPosition(0);
+        if ('I' != id3Header.readUnsignedByte() || 'D' != id3Header.readUnsignedByte()
+            || '3' != id3Header.readUnsignedByte()) {
+          Log.w(TAG, "Discarding invalid ID3 tag");
+          writingSample = false;
+          return;
+        }
+        id3Header.skipBytes(3); // version (2) + flags (1)
+        sampleSize = ID3_HEADER_SIZE + id3Header.readSynchSafeInt();
+      }
+    }
+    // Write data to the output.
+    int bytesToWrite = Math.min(bytesAvailable, sampleSize - sampleBytesRead);
+    output.sampleData(data, bytesToWrite);
+    sampleBytesRead += bytesToWrite;
+  }
+
+  @Override
+  public void packetFinished() {
+    if (!writingSample || sampleSize == 0 || sampleBytesRead != sampleSize) {
+      return;
+    }
+    output.sampleMetadata(sampleTimeUs, C.BUFFER_FLAG_KEY_FRAME, sampleSize, 0, null);
+    writingSample = false;
+  }
+
+}

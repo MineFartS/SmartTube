@@ -1,0 +1,106 @@
+package minefarts.smarttube.text;
+
+import minefarts.smarttube.Format;
+import minefarts.smarttube.text.cea.Cea608Decoder;
+import minefarts.smarttube.text.cea.Cea708Decoder;
+import minefarts.smarttube.text.dvb.DvbDecoder;
+import minefarts.smarttube.text.pgs.PgsDecoder;
+import minefarts.smarttube.text.ssa.SsaDecoder;
+import minefarts.smarttube.text.subrip.SubripDecoder;
+import minefarts.smarttube.text.ttml.TtmlDecoder;
+import minefarts.smarttube.text.tx3g.Tx3gDecoder;
+import minefarts.smarttube.text.webvtt.Mp4WebvttDecoder;
+import minefarts.smarttube.text.webvtt.WebvttDecoder;
+import minefarts.smarttube.utils.MimeTypes;
+
+/**
+ * A factory for {@link SubtitleDecoder} instances.
+ */
+public interface SubtitleDecoderFactory {
+
+  /**
+   * Returns whether the factory is able to instantiate a {@link SubtitleDecoder} for the given
+   * {@link Format}.
+   *
+   * @param format The {@link Format}.
+   * @return Whether the factory can instantiate a suitable {@link SubtitleDecoder}.
+   */
+  boolean supportsFormat(Format format);
+
+  /**
+   * Creates a {@link SubtitleDecoder} for the given {@link Format}.
+   *
+   * @param format The {@link Format}.
+   * @return A new {@link SubtitleDecoder}.
+   * @throws IllegalArgumentException If the {@link Format} is not supported.
+   */
+  SubtitleDecoder createDecoder(Format format);
+
+  /**
+   * Default {@link SubtitleDecoderFactory} implementation.
+   *
+   * <p>The formats supported by this factory are:
+   *
+   * <ul>
+   *   <li>WebVTT ({@link WebvttDecoder})
+   *   <li>WebVTT (MP4) ({@link Mp4WebvttDecoder})
+   *   <li>TTML ({@link TtmlDecoder})
+   *   <li>SubRip ({@link SubripDecoder})
+   *   <li>SSA/ASS ({@link SsaDecoder})
+   *   <li>TX3G ({@link Tx3gDecoder})
+   *   <li>Cea608 ({@link Cea608Decoder})
+   *   <li>Cea708 ({@link Cea708Decoder})
+   *   <li>DVB ({@link DvbDecoder})
+   *   <li>PGS ({@link PgsDecoder})
+   * </ul>
+   */
+  SubtitleDecoderFactory DEFAULT =
+      new SubtitleDecoderFactory() {
+
+        @Override
+        public boolean supportsFormat(Format format) {
+          String mimeType = format.sampleMimeType;
+          return MimeTypes.TEXT_VTT.equals(mimeType)
+              || MimeTypes.TEXT_SSA.equals(mimeType)
+              || MimeTypes.APPLICATION_TTML.equals(mimeType)
+              || MimeTypes.APPLICATION_MP4VTT.equals(mimeType)
+              || MimeTypes.APPLICATION_SUBRIP.equals(mimeType)
+              || MimeTypes.APPLICATION_TX3G.equals(mimeType)
+              || MimeTypes.APPLICATION_CEA608.equals(mimeType)
+              || MimeTypes.APPLICATION_MP4CEA608.equals(mimeType)
+              || MimeTypes.APPLICATION_CEA708.equals(mimeType)
+              || MimeTypes.APPLICATION_DVBSUBS.equals(mimeType)
+              || MimeTypes.APPLICATION_PGS.equals(mimeType);
+        }
+
+        @Override
+        public SubtitleDecoder createDecoder(Format format) {
+          switch (format.sampleMimeType) {
+            case MimeTypes.TEXT_VTT:
+              return new WebvttDecoder();
+            case MimeTypes.TEXT_SSA:
+              return new SsaDecoder(format.initializationData);
+            case MimeTypes.APPLICATION_MP4VTT:
+              return new Mp4WebvttDecoder();
+            case MimeTypes.APPLICATION_TTML:
+              return new TtmlDecoder();
+            case MimeTypes.APPLICATION_SUBRIP:
+              return new SubripDecoder();
+            case MimeTypes.APPLICATION_TX3G:
+              return new Tx3gDecoder(format.initializationData);
+            case MimeTypes.APPLICATION_CEA608:
+            case MimeTypes.APPLICATION_MP4CEA608:
+              return new Cea608Decoder(format.sampleMimeType, format.accessibilityChannel);
+            case MimeTypes.APPLICATION_CEA708:
+              return new Cea708Decoder(format.accessibilityChannel, format.initializationData);
+            case MimeTypes.APPLICATION_DVBSUBS:
+              return new DvbDecoder(format.initializationData);
+            case MimeTypes.APPLICATION_PGS:
+              return new PgsDecoder();
+            default:
+              throw new IllegalArgumentException(
+                  "Attempted to create decoder for unsupported format");
+          }
+        }
+      };
+}

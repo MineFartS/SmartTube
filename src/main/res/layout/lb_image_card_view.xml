@@ -4,6 +4,10 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
        xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <ImageView
+        android:id="@+id/main_image"
+        style="?attr/imageCardViewImageStyle" />
+
     <!-- NOTE: layout_viewType moved from the nested main image -->
     <minefarts.smarttube.ui.widgets.complexcardview.ComplexImageView
         android:id="@+id/main_image_wrapper"
@@ -12,9 +16,9 @@
         app:layout_viewType="main">
     </minefarts.smarttube.ui.widgets.complexcardview.ComplexImageView>
 
-    <androidx.leanback.widget.NonOverlappingRelativeLayout
+    <minefarts.smarttube.leanback.widget.NonOverlappingRelativeLayout
         android:id="@+id/info_field"
         style="?attr/imageCardViewInfoAreaStyle">
-    </androidx.leanback.widget.NonOverlappingRelativeLayout>
+    </minefarts.smarttube.leanback.widget.NonOverlappingRelativeLayout>
 
 </merge>

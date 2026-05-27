@@ -1,0 +1,129 @@
+// CHECKSTYLE:OFF Generated code
+/* This file is auto-generated from {}PlaybackSupportFragmentGlueHost.java.  DO NOT MODIFY. */
+package minefarts.smarttube.leanback.app;
+
+import android.view.View;
+
+import minefarts.smarttube.leanback.media.PlaybackGlueHost;
+import minefarts.smarttube.leanback.widget.Action;
+import minefarts.smarttube.leanback.widget.OnActionClickedListener;
+import minefarts.smarttube.leanback.widget.OnItemViewClickedListener;
+import minefarts.smarttube.leanback.widget.PlaybackRowPresenter;
+import minefarts.smarttube.leanback.widget.PlaybackSeekUi;
+import minefarts.smarttube.leanback.widget.Presenter;
+import minefarts.smarttube.leanback.widget.Row;
+import minefarts.smarttube.leanback.widget.RowPresenter;
+
+/**
+ * {@link PlaybackGlueHost} implementation
+ * the interaction between this class and {@link PlaybackFragment}.
+ * @deprecated use {@link PlaybackSupportFragmentGlueHost}
+ */
+@Deprecated
+public class PlaybackFragmentGlueHost extends PlaybackGlueHost implements PlaybackSeekUi {
+    final PlaybackFragment mFragment;
+
+    public PlaybackFragmentGlueHost(PlaybackFragment fragment) {
+        this.mFragment = fragment;
+    }
+
+    @Override
+    public void setControlsOverlayAutoHideEnabled(boolean enabled) {
+        mFragment.setControlsOverlayAutoHideEnabled(enabled);
+    }
+
+    @Override
+    public boolean isControlsOverlayAutoHideEnabled() {
+        return mFragment.isControlsOverlayAutoHideEnabled();
+    }
+
+    @Override
+    public void setOnKeyInterceptListener(View.OnKeyListener onKeyListener) {
+        mFragment.setOnKeyInterceptListener(onKeyListener);
+    }
+
+    @Override
+    public void setOnActionClickedListener(final OnActionClickedListener listener) {
+        if (listener == null) {
+            mFragment.setOnPlaybackItemViewClickedListener(null);
+        } else {
+            mFragment.setOnPlaybackItemViewClickedListener(new OnItemViewClickedListener() {
+                @Override
+                public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
+                                          RowPresenter.ViewHolder rowViewHolder, Row row) {
+                    if (item instanceof Action) {
+                        listener.onActionClicked((Action) item);
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public void setHostCallback(HostCallback callback) {
+        mFragment.setHostCallback(callback);
+    }
+
+    @Override
+    public void notifyPlaybackRowChanged() {
+        mFragment.notifyPlaybackRowChanged();
+    }
+
+    @Override
+    public void setPlaybackRowPresenter(PlaybackRowPresenter presenter) {
+        mFragment.setPlaybackRowPresenter(presenter);
+    }
+
+    @Override
+    public void setPlaybackRow(Row row) {
+        mFragment.setPlaybackRow(row);
+    }
+
+    @Override
+    public void fadeOut() {
+        mFragment.fadeOut();
+    }
+
+    @Override
+    public boolean isControlsOverlayVisible() {
+        return mFragment.isControlsOverlayVisible();
+    }
+
+    @Override
+    public void hideControlsOverlay(boolean runAnimation) {
+        mFragment.hideControlsOverlay(runAnimation);
+    }
+
+    @Override
+    public void showControlsOverlay(boolean runAnimation) {
+        mFragment.showControlsOverlay(runAnimation);
+    }
+
+    @Override
+    public void setPlaybackSeekUiClient(Client client) {
+        mFragment.setPlaybackSeekUiClient(client);
+    }
+
+    final PlayerCallback mPlayerCallback =
+            new PlayerCallback() {
+                @Override
+                public void onBufferingStateChanged(boolean start) {
+                    mFragment.onBufferingStateChanged(start);
+                }
+
+                @Override
+                public void onError(int errorCode, CharSequence errorMessage) {
+                    mFragment.onError(errorCode, errorMessage);
+                }
+
+                @Override
+                public void onVideoSizeChanged(int videoWidth, int videoHeight) {
+                    mFragment.onVideoSizeChanged(videoWidth, videoHeight);
+                }
+            };
+
+    @Override
+    public PlayerCallback getPlayerCallback() {
+        return mPlayerCallback;
+    }
+}
