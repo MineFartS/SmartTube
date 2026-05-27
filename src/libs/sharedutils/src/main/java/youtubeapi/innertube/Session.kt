@@ -10,6 +10,7 @@ import minefarts.sharedutils.innertube.models.InnertubeContext
 import minefarts.sharedutils.innertube.models.SessionArgs
 import minefarts.sharedutils.innertube.models.SessionData
 import minefarts.sharedutils.innertube.models.SessionDataResult
+
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -57,17 +58,19 @@ internal class Session private constructor(
     val poToken: String? = null
 ) {
     companion object {
+
         private val sessionApi = RetrofitHelper.create(SessionApi::class.java)
+
         private val innertubeConfigApi = RetrofitHelper.create(InnertubeConfigApi::class.java)
 
         fun create(options: SessionOptions? = null): Session {
-            val (apiKey, apiVersion, configData, context, userAgent, accountIndex) = getSessionData(options)
 
-            return Session(context, apiKey, apiVersion, accountIndex, configData, userAgent, Player.create(options?.poToken, options?.playerId))
+            val (apiKey, apiVersion, configData, context, userAgent, accountIndex) = getSessionData()
+
+            return Session(context, apiKey, apiVersion, accountIndex, configData, userAgent, Player.create(options?.playerId))
         }
 
-        fun getSessionData(options: SessionOptions? = null): SessionData {
-            // TODO: add caching
+        fun getSessionData(): SessionData {
 
             val sessionData = getSessionDataResult()
             val deviceInfo = sessionData!!.deviceInfo
@@ -91,6 +94,7 @@ internal class Session private constructor(
                     client.configInfo!!.hotHashData = hotHashData!!
                 }
             )
+
         }
 
         fun getSessionDataResult(): SessionDataResult? {

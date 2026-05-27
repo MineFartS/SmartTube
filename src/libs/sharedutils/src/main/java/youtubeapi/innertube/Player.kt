@@ -17,7 +17,7 @@ internal class Player private constructor(
     companion object {
         private val fileApi = RetrofitHelper.create(FileApi::class.java)
 
-        fun create(poToken: String?, playerId: String?): Player? {
+        fun create(playerId: String?): Player? {
             val realPLayerId = playerId ?: getPlayerId() ?: return null
             val playerUrl = getPlayerUrl(realPLayerId)
             val js = getPlayerJs(playerUrl)

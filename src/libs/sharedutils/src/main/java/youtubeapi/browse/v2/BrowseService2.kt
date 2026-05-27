@@ -81,7 +81,7 @@ internal open class BrowseService2 {
 
         return RetrofitHelper.get(browseResult)?.let {
             // Prepare to move LIVE items to the top. Multiple results should be combined first.
-            val (overrideItems, overrideKey) = continueIfNeededTV(it.getItems(), it.getContinuationToken(), options)
+            val (overrideItems, overrideKey) = continueIfNeededTV(it.getItems(), it.getContinuationToken())
 
             BrowseMediaGroupTV(it, options, overrideItems = overrideItems, overrideKey = overrideKey)
         }
@@ -150,7 +150,7 @@ internal open class BrowseService2 {
     }
 
     private fun getShortsTV(): MediaGroup? {
-        val options = MediaGroupOptions(MediaGroup.TYPE_SHORTS)
+
         val browseResult = mBrowseApi.getBrowseResultTV(BrowseApiHelper.getSubscriptionsQuery(AppClient.TV))
 
         return RetrofitHelper.get(browseResult)?.let {
@@ -479,7 +479,7 @@ internal open class BrowseService2 {
 
         return RetrofitHelper.get(continuationResult)?.let {
             // Prepare to move LIVE items to the top. Multiple results should be combined first.
-            val (overrideItems, overrideKey) = if (continueIfNeeded) continueIfNeededTV(it.getItems(), it.getContinuationToken(), options) else Pair(null, null)
+            val (overrideItems, overrideKey) = if (continueIfNeeded) continueIfNeededTV(it.getItems(), it.getContinuationToken()) else Pair(null, null)
 
             WatchNexContinuationMediaGroup(it, options, overrideItems = overrideItems, overrideKey = overrideKey).apply { title = group.title }
         }
@@ -504,7 +504,11 @@ internal open class BrowseService2 {
         }
     }
 
-    private fun getBrowseRowsTV(query: (AppClient) -> String, sectionType: Int, gridType: Int = MediaGroup.TYPE_UNDEFINED): Pair<List<MediaGroup?>?, String?>? {
+    private fun getBrowseRowsTV(
+        query: (AppClient) -> String, 
+        sectionType: Int, 
+        gridType: Int = MediaGroup.TYPE_UNDEFINED
+    ): Pair<List<MediaGroup?>?, String?>? {
         val rowsOptions = MediaGroupOptions(sectionType)
         val gridOptions = MediaGroupOptions(gridType)
         val browseResult = mBrowseApi.getBrowseResultTV(query(AppClient.TV))
@@ -534,14 +538,17 @@ internal open class BrowseService2 {
             // Prepare to move LIVE items to the top. Multiple results should be combined first.
             var continuation: Pair<List<ItemWrapper?>?, String?>? = null
             if (shouldContinue) {
-                continuation = continueIfNeededTV(it.getItems(), it.getContinuationToken(), options)
+                continuation = continueIfNeededTV(it.getItems(), it.getContinuationToken())
             }
 
             BrowseMediaGroupTV(it, options, overrideItems = continuation?.first, overrideKey = continuation?.second)
         }
     }
 
-    private fun addOrMerge(result: MutableList<MediaGroup?>, group: MediaGroup) {
+    private fun addOrMerge(
+        result: MutableList<MediaGroup?>, 
+        group: MediaGroup
+    ) {
         // Always add, merging will be done later
         result.add(group)
     }
@@ -565,14 +572,22 @@ internal open class BrowseService2 {
         return RetrofitHelper.get(browseResult)?.let { it.getShortItems()?.let { SubscribedShortsMediaGroup(it) } }?.mediaItems
     }
 
-    private fun getBrowseRedirect(browseId: String, browseExpression: (String) -> BrowseResult?): BrowseResult? {
+    private fun getBrowseRedirect(
+        browseId: String, 
+        browseExpression: (String) -> BrowseResult?
+    ): BrowseResult? {
         val result = browseExpression(browseId)
         return if (result?.getRedirectBrowseId() != null) browseExpression(result.getRedirectBrowseId()!!) else result
     }
 
-    private fun continueIfNeededTV(items: List<ItemWrapper?>?, continuationKey: String?, options: MediaGroupOptions): Pair<List<ItemWrapper?>?, String?> {
+    private fun continueIfNeededTV(
+        items: List<ItemWrapper?>?, 
+        continuationKey: String?
+    ): Pair<List<ItemWrapper?>?, String?> {
+    
         var combinedItems: List<ItemWrapper?>? = items
         var combinedKey: String? = continuationKey
+    
         for (i in 0 until 10) {
             // NOTE: bigger max value help moving live videos to the top (e.g. sorting)
             if (combinedKey == null || (combinedItems?.size ?: 0) > 60)
@@ -591,4 +606,5 @@ internal open class BrowseService2 {
 
         return Pair(combinedItems, combinedKey)
     }
+
 }
