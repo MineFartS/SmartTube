@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.offline;
 
 import static com.google.android.exoplayer2.offline.Download.STATE_QUEUED;

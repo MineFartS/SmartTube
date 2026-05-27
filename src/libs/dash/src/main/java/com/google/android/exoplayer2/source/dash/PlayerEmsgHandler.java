@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.source.dash;
 
 import static com.google.android.exoplayer2.util.Util.parseXsDateTime;

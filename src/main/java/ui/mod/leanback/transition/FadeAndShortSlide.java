@@ -1,4 +1,3 @@
-
 package minefarts.smarttube.ui.mod.leanback.transition;
 
 import android.animation.Animator;

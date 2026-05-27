@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.text.ssa;
 
 import androidx.annotation.Nullable;

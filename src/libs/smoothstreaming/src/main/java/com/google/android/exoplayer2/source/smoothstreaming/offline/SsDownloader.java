@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.source.smoothstreaming.offline;
 
 import android.net.Uri;

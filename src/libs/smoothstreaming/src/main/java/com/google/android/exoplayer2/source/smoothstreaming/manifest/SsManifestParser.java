@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.source.smoothstreaming.manifest;
 
 import android.net.Uri;

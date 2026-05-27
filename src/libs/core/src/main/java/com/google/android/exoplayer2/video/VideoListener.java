@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.video;
 
 /** A listener for metadata corresponding to video being rendered. */

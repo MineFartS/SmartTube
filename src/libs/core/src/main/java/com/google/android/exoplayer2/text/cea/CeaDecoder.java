@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.text.cea;
 
 import androidx.annotation.NonNull;

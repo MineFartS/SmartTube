@@ -1,4 +1,3 @@
-
 package org.apache.commons.io.serialization;
 
 import org.apache.commons.io.FilenameUtils;

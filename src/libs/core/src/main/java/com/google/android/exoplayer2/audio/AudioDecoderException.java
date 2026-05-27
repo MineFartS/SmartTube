@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.audio;
 
 /** Thrown when an audio decoder error occurs. */

@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.extractor.ts;
 
 import static com.google.android.exoplayer2.audio.Ac4Util.AC40_SYNCWORD;

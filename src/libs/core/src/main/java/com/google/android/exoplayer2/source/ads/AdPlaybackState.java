@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.source.ads;
 
 import android.net.Uri;

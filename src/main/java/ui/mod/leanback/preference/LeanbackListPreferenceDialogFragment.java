@@ -1,5 +1,3 @@
-
-
 package minefarts.smarttube.ui.mod.leanback.preference;
 
 import android.content.Context;

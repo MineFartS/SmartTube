@@ -1,4 +1,3 @@
-
 package minefarts.smarttube.ui.mod.fragments;
 
 import android.graphics.Paint;

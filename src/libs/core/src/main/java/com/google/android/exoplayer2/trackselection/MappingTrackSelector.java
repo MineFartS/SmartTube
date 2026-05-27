@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.trackselection;
 
 import androidx.annotation.IntDef;

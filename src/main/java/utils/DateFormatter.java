@@ -1,5 +1,3 @@
-
-
 package minefarts.smarttube.utils;
 
 import java.text.SimpleDateFormat;

@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.source.dash.offline;
 
 import android.net.Uri;

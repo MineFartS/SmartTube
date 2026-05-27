@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.metadata.emsg;
 
 import static com.google.android.exoplayer2.util.Util.castNonNull;

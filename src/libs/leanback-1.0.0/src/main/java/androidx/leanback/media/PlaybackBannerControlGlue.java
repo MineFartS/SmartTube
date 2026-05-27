@@ -1,5 +1,3 @@
-
-
 package androidx.leanback.media;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;

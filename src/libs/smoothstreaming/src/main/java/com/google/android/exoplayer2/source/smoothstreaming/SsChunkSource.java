@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.source.smoothstreaming;
 
 import androidx.annotation.Nullable;

@@ -1,5 +1,3 @@
-
-
 package androidx.fragment.app;
 
 import android.animation.Animator;

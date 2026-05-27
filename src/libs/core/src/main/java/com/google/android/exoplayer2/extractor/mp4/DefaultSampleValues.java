@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.extractor.mp4;
 
 /* package */ final class DefaultSampleValues {

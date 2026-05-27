@@ -1,4 +1,3 @@
-
 package androidx.leanback.database;
 
 import android.database.Cursor;

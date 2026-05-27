@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.extractor;
 
 /** Factory for arrays of {@link Extractor} instances. */

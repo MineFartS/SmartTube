@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.extractor.mp3;
 
 import android.util.Pair;

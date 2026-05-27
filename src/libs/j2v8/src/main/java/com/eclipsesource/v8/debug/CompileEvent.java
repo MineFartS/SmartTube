@@ -1,4 +1,3 @@
-
 package com.eclipsesource.v8.debug;
 
 import com.eclipsesource.v8.V8Object;

@@ -1,7 +1,5 @@
 // CHECKSTYLE:OFF Generated code
 /* This file is auto-generated from SearchSupportFragment.java. DO NOT MODIFY. */
-
-
 package androidx.leanback.app;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;

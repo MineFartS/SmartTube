@@ -1,4 +1,3 @@
-
 package minefarts.smarttube.ui.mod.leanback.playerglue.seekpreview;
 
 import android.content.Context;

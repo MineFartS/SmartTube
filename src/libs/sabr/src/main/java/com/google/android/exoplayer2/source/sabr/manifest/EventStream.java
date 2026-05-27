@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.source.sabr.manifest;
 
 import com.google.android.exoplayer2.metadata.emsg.EventMessage;

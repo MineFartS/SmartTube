@@ -1,5 +1,3 @@
-
-
 package minefarts.smarttube.ui.mod.clickable;
 
 import android.annotation.SuppressLint;

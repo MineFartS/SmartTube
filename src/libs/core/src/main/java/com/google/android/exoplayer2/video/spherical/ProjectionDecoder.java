@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.video.spherical;
 
 import androidx.annotation.Nullable;

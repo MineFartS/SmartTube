@@ -1,5 +1,3 @@
-
-
 package minefarts.smarttube.media;
 
 import androidx.tvprovider.media.tv.TvContractCompat;

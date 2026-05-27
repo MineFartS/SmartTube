@@ -1,5 +1,3 @@
-
-
 package minefarts.smarttube.commons.models;
 
 import java.util.List;

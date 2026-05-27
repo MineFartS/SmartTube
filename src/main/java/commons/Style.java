@@ -1,5 +1,3 @@
-
-
 package minefarts.smarttube.commons;
 
 import android.content.Context;

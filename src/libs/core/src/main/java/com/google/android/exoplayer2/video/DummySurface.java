@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.video;
 
 import static com.google.android.exoplayer2.util.EGLSurfaceTexture.SECURE_MODE_NONE;

@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2;
 
 /** Called to prepare a playback. */

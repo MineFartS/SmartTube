@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.source.dash.manifest;
 
 import java.util.Locale;

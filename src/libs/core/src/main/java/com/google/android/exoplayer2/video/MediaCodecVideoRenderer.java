@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.video;
 
 import android.annotation.SuppressLint;
@@ -78,14 +77,12 @@ public class MediaCodecVideoRenderer extends MediaCodecRenderer {
     // for
     // pending output streams that have fewer frames than the codec latency.
     private static final int MAX_PENDING_OUTPUT_STREAM_OFFSET_COUNT = 10;
+
     /**
      * Scale factor for the initial maximum input size used to configure the codec in non-adaptive
      * playbacks. See {@link #getCodecMaxValues(MediaCodecInfo, Format, Format[])}.
      */
     private static final float INITIAL_FORMAT_MAX_INPUT_SIZE_SCALE_FACTOR = 1.5f;
-
-    private static boolean evaluatedDeviceNeedsSetOutputSurfaceWorkaround;
-    private static boolean deviceNeedsSetOutputSurfaceWorkaround;
 
     private final Context context;
     private final VideoFrameReleaseTimeHelper frameReleaseTimeHelper;

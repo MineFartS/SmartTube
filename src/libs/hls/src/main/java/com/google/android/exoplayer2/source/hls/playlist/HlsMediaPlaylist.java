@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.source.hls.playlist;
 
 import androidx.annotation.IntDef;

@@ -1,4 +1,3 @@
-
 package org.apache.commons.io.input.buffer;
 
 import org.apache.commons.io.mod.Objects;

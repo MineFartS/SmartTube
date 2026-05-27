@@ -1,7 +1,5 @@
 // CHECKSTYLE:OFF Generated code
 /* This file is auto-generated from GuidedStepSupportFragment.java.  DO NOT MODIFY. */
-
-
 package androidx.leanback.app;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;

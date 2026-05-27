@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.metadata.icy;
 
 import android.os.Parcel;

@@ -1,4 +1,3 @@
-
 package org.apache.commons.io;
 
 import java.io.File;

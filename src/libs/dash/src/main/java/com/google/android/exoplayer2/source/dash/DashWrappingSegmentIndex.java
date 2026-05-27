@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.source.dash;
 
 import com.google.android.exoplayer2.extractor.ChunkIndex;

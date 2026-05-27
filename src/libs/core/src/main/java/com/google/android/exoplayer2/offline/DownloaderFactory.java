@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.offline;
 
 /** Creates {@link Downloader Downloaders} for given {@link DownloadRequest DownloadRequests}. */

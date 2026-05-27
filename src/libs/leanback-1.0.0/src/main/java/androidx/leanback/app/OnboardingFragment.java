@@ -1,8 +1,6 @@
 // CHECKSTYLE:OFF Generated code
 /* This file is auto-generated from OnboardingSupportFragment.java.  DO NOT MODIFY. */
 
-
-
 package androidx.leanback.app;
 
 import android.animation.Animator;

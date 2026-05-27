@@ -1,4 +1,3 @@
-
 package com.google.android.exoplayer2.upstream.cache;
 
 /** Metadata associated with a cache file. */

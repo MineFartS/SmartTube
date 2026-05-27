@@ -1,4 +1,3 @@
-
 package org.apache.commons.io.output;
 
 import org.apache.commons.io.input.UnsynchronizedByteArrayInputStream;
