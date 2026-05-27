@@ -1,5 +1,3 @@
-
-
 package minefarts.smarttube.ui.mod.leanback.playerglue.tooltips;
 
 import android.app.Activity;

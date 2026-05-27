@@ -2,11 +2,11 @@ package minefarts.smarttube.app.models.search;
 
 import android.text.TextUtils;
 
-import com.liskovsoft.sharedutils.service.ContentService;
+import minefarts.sharedutils.service.ContentService;
 import minefarts.smarttube.misc.ServiceManager;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.mylogger.Log;
 import minefarts.smarttube.app.models.search.vineyard.Tag;
-import com.liskovsoft.sharedutils.rx.RxHelper;
+import minefarts.sharedutils.rx.RxHelper;
 import io.reactivex.disposables.Disposable;
 
 public class MediaServiceSearchTagProvider implements SearchTagsProvider {

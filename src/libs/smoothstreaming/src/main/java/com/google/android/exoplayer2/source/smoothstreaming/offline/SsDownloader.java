@@ -1,18 +1,17 @@
-
-package com.google.android.exoplayer2.source.smoothstreaming.offline;
+package minefarts.exoplayer2.source.smoothstreaming.offline;
 
 import android.net.Uri;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.offline.DownloaderConstructorHelper;
-import com.google.android.exoplayer2.offline.SegmentDownloader;
-import com.google.android.exoplayer2.offline.StreamKey;
-import com.google.android.exoplayer2.source.smoothstreaming.manifest.SsManifest;
-import com.google.android.exoplayer2.source.smoothstreaming.manifest.SsManifest.StreamElement;
-import com.google.android.exoplayer2.source.smoothstreaming.manifest.SsManifestParser;
-import com.google.android.exoplayer2.source.smoothstreaming.manifest.SsUtil;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DataSpec;
-import com.google.android.exoplayer2.upstream.ParsingLoadable;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.offline.DownloaderConstructorHelper;
+import minefarts.exoplayer2.offline.SegmentDownloader;
+import minefarts.exoplayer2.offline.StreamKey;
+import minefarts.exoplayer2.source.smoothstreaming.manifest.SsManifest;
+import minefarts.exoplayer2.source.smoothstreaming.manifest.SsManifest.StreamElement;
+import minefarts.exoplayer2.source.smoothstreaming.manifest.SsManifestParser;
+import minefarts.exoplayer2.source.smoothstreaming.manifest.SsUtil;
+import minefarts.exoplayer2.upstream.DataSource;
+import minefarts.exoplayer2.upstream.DataSpec;
+import minefarts.exoplayer2.upstream.ParsingLoadable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

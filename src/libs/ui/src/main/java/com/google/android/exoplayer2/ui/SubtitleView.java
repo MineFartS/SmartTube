@@ -1,5 +1,4 @@
-
-package com.google.android.exoplayer2.ui;
+package minefarts.exoplayer2.ui;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -10,10 +9,10 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.accessibility.CaptioningManager;
-import com.google.android.exoplayer2.text.CaptionStyleCompat;
-import com.google.android.exoplayer2.text.Cue;
-import com.google.android.exoplayer2.text.TextOutput;
-import com.google.android.exoplayer2.util.Util;
+import minefarts.exoplayer2.text.CaptionStyleCompat;
+import minefarts.exoplayer2.text.Cue;
+import minefarts.exoplayer2.text.TextOutput;
+import minefarts.exoplayer2.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 

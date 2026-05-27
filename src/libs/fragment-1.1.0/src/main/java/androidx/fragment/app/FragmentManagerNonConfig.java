@@ -1,6 +1,4 @@
 
-
-
 package androidx.fragment.app;
 
 import android.os.Parcelable;

@@ -12,8 +12,8 @@ import android.os.Build.VERSION;
 
 import androidx.annotation.RequiresApi;
 
-import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
+import minefarts.sharedutils.mylogger.Log;
+import minefarts.sharedutils.prefs.GlobalPreferences;
 
 /**
  * JobScheduler task to synchronize the TV provider database with the desired list of channels and

@@ -2,7 +2,7 @@ package minefarts.smarttube.other;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.mylogger.Log;
 
 public class SettingsManager {
     public static final long CHECK_INTERVAL_DEFAULT_MS = 60 * 1_000;

@@ -1,5 +1,3 @@
-
-
 package minefarts.smarttube.presenter;
 
 import androidx.leanback.widget.AbstractDetailsDescriptionPresenter;

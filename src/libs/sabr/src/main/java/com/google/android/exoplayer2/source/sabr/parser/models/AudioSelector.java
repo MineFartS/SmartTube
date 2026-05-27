@@ -1,6 +1,6 @@
-package com.google.android.exoplayer2.source.sabr.parser.models;
+package minefarts.exoplayer2.source.sabr.parser.models;
 
-import com.google.android.exoplayer2.source.sabr.protos.videostreaming.FormatId;
+import minefarts.exoplayer2.source.sabr.protos.videostreaming.FormatId;
 
 public class AudioSelector extends FormatSelector {
     public AudioSelector(String displayName, boolean discardMedia) {

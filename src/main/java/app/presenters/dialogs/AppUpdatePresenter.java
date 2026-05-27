@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import minefarts.smarttube.AppUpdateChecker;
 import minefarts.smarttube.AppUpdateCheckerListener;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
+import minefarts.sharedutils.helpers.MessageHelpers;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.errors.ErrorFragmentData;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;

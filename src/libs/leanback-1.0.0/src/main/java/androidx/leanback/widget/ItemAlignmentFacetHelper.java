@@ -1,4 +1,3 @@
-
 package androidx.leanback.widget;
 
 import static androidx.leanback.widget.ItemAlignmentFacet.ITEM_ALIGN_OFFSET_PERCENT_DISABLED;

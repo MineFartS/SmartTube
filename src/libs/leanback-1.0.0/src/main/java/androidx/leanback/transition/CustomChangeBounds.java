@@ -1,5 +1,3 @@
-
-
 package androidx.leanback.transition;
 
 import android.animation.Animator;

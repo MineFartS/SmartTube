@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.mylogger.Log;
 import minefarts.smarttube.app.presenters.SearchPresenter;
 import minefarts.smarttube.misc.GlobalKeyTranslator;
 import minefarts.smarttube.misc.MotherActivity;

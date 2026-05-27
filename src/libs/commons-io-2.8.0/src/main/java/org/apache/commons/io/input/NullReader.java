@@ -1,4 +1,3 @@
-
 package org.apache.commons.io.input;
 
 import static org.apache.commons.io.IOUtils.EOF;

@@ -1,0 +1,6 @@
+package minefarts.sharedutils.next.v2.gen
+
+import minefarts.googlecommon.common.helpers.ServiceHelper
+
+internal fun DislikesResult.getDislikeCount() = dislikes?.let { if (it > 0) ServiceHelper.prettyCount(it) else null }
+internal fun DislikesResult.getLikeCount() = likes?.let { if (it > 0) ServiceHelper.prettyCount(it) else null }

@@ -1,5 +1,3 @@
-
-
 package androidx.fragment.app;
 
 import static androidx.core.util.Preconditions.checkNotNull;

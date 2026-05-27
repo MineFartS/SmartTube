@@ -1,7 +1,5 @@
 // CHECKSTYLE:OFF Generated code
 /* This file is auto-generated from RowsSupportFragment.java.  DO NOT MODIFY. */
-
-
 package androidx.leanback.app;
 
 import android.animation.TimeAnimator;

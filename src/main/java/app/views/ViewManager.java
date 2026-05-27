@@ -10,12 +10,12 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
 
-import com.liskovsoft.sharedutils.helpers.FileHelpers;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import com.liskovsoft.sharedutils.locale.LocaleUpdater;
-import com.liskovsoft.sharedutils.misc.WeakHashSet;
-import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.rx.RxHelper;
+import minefarts.sharedutils.helpers.FileHelpers;
+import minefarts.sharedutils.helpers.MessageHelpers;
+import minefarts.sharedutils.locale.LocaleUpdater;
+import minefarts.sharedutils.misc.WeakHashSet;
+import minefarts.sharedutils.mylogger.Log;
+import minefarts.sharedutils.rx.RxHelper;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
 import minefarts.smarttube.app.presenters.ChannelPresenter;

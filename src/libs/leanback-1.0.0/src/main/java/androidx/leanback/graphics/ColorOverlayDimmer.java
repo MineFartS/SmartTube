@@ -1,4 +1,3 @@
-
 package androidx.leanback.graphics;
 
 import android.content.Context;

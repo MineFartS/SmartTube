@@ -1,8 +1,7 @@
+package minefarts.exoplayer2.source.hls;
 
-package com.google.android.exoplayer2.source.hls;
-
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.upstream.DataSource;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.upstream.DataSource;
 
 /**
  * Creates {@link DataSource}s for HLS playlists, encryption and media chunks.

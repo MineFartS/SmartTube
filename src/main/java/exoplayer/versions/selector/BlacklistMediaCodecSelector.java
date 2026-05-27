@@ -1,10 +1,10 @@
 package minefarts.smarttube.exoplayer.versions.selector;
 
 import androidx.annotation.Nullable;
-import com.google.android.exoplayer2.mediacodec.MediaCodecInfo;
-import com.google.android.exoplayer2.mediacodec.MediaCodecSelector;
-import com.google.android.exoplayer2.mediacodec.MediaCodecUtil;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.exoplayer2.mediacodec.MediaCodecInfo;
+import minefarts.exoplayer2.mediacodec.MediaCodecSelector;
+import minefarts.exoplayer2.mediacodec.MediaCodecUtil;
+import minefarts.sharedutils.mylogger.Log;
 
 import java.util.ArrayList;
 import java.util.List;

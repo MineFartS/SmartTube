@@ -8,10 +8,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 
-import com.liskovsoft.sharedutils.configparser.AssetPropertyParser2;
-import com.liskovsoft.sharedutils.configparser.ConfigParser;
-import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
-import com.liskovsoft.sharedutils.helpers.GlobalConstants;
+import minefarts.sharedutils.configparser.AssetPropertyParser2;
+import minefarts.sharedutils.configparser.ConfigParser;
+import minefarts.sharedutils.helpers.AppInfoHelpers;
+import minefarts.sharedutils.helpers.GlobalConstants;
 
 public class AppUtil {
     private final Context mContext;

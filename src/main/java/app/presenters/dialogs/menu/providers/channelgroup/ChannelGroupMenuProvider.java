@@ -5,10 +5,10 @@ import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
-import com.liskovsoft.sharedutils.data.ItemGroup;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import com.liskovsoft.sharedutils.rx.RxHelper;
+import minefarts.sharedutils.data.ItemGroup;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.MessageHelpers;
+import minefarts.sharedutils.rx.RxHelper;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;

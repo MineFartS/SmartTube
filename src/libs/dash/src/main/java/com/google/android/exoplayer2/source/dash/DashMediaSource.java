@@ -1,5 +1,4 @@
-
-package com.google.android.exoplayer2.source.dash;
+package minefarts.exoplayer2.source.dash;
 
 import android.net.Uri;
 import android.os.Handler;
@@ -7,38 +6,38 @@ import android.os.SystemClock;
 import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.SparseArray;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.ExoPlayerLibraryInfo;
-import com.google.android.exoplayer2.ParserException;
-import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.offline.FilteringManifestParser;
-import com.google.android.exoplayer2.offline.StreamKey;
-import com.google.android.exoplayer2.source.BaseMediaSource;
-import com.google.android.exoplayer2.source.CompositeSequenceableLoaderFactory;
-import com.google.android.exoplayer2.source.DefaultCompositeSequenceableLoaderFactory;
-import com.google.android.exoplayer2.source.MediaPeriod;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.MediaSourceEventListener;
-import com.google.android.exoplayer2.source.MediaSourceEventListener.EventDispatcher;
-import com.google.android.exoplayer2.source.SequenceableLoader;
-import com.google.android.exoplayer2.source.ads.AdsMediaSource;
-import com.google.android.exoplayer2.source.dash.PlayerEmsgHandler.PlayerEmsgCallback;
-import com.google.android.exoplayer2.source.dash.manifest.AdaptationSet;
-import com.google.android.exoplayer2.source.dash.manifest.DashManifest;
-import com.google.android.exoplayer2.source.dash.manifest.DashManifestParser;
-import com.google.android.exoplayer2.source.dash.manifest.UtcTimingElement;
-import com.google.android.exoplayer2.upstream.Allocator;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultLoadErrorHandlingPolicy;
-import com.google.android.exoplayer2.upstream.LoadErrorHandlingPolicy;
-import com.google.android.exoplayer2.upstream.Loader;
-import com.google.android.exoplayer2.upstream.Loader.LoadErrorAction;
-import com.google.android.exoplayer2.upstream.LoaderErrorThrower;
-import com.google.android.exoplayer2.upstream.ParsingLoadable;
-import com.google.android.exoplayer2.upstream.TransferListener;
-import com.google.android.exoplayer2.util.Assertions;
-import com.google.android.exoplayer2.util.Log;
-import com.google.android.exoplayer2.util.Util;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.ExoPlayerLibraryInfo;
+import minefarts.exoplayer2.ParserException;
+import minefarts.exoplayer2.Timeline;
+import minefarts.exoplayer2.offline.FilteringManifestParser;
+import minefarts.exoplayer2.offline.StreamKey;
+import minefarts.exoplayer2.source.BaseMediaSource;
+import minefarts.exoplayer2.source.CompositeSequenceableLoaderFactory;
+import minefarts.exoplayer2.source.DefaultCompositeSequenceableLoaderFactory;
+import minefarts.exoplayer2.source.MediaPeriod;
+import minefarts.exoplayer2.source.MediaSource;
+import minefarts.exoplayer2.source.MediaSourceEventListener;
+import minefarts.exoplayer2.source.MediaSourceEventListener.EventDispatcher;
+import minefarts.exoplayer2.source.SequenceableLoader;
+import minefarts.exoplayer2.source.ads.AdsMediaSource;
+import minefarts.exoplayer2.source.dash.PlayerEmsgHandler.PlayerEmsgCallback;
+import minefarts.exoplayer2.source.dash.manifest.AdaptationSet;
+import minefarts.exoplayer2.source.dash.manifest.DashManifest;
+import minefarts.exoplayer2.source.dash.manifest.DashManifestParser;
+import minefarts.exoplayer2.source.dash.manifest.UtcTimingElement;
+import minefarts.exoplayer2.upstream.Allocator;
+import minefarts.exoplayer2.upstream.DataSource;
+import minefarts.exoplayer2.upstream.DefaultLoadErrorHandlingPolicy;
+import minefarts.exoplayer2.upstream.LoadErrorHandlingPolicy;
+import minefarts.exoplayer2.upstream.Loader;
+import minefarts.exoplayer2.upstream.Loader.LoadErrorAction;
+import minefarts.exoplayer2.upstream.LoaderErrorThrower;
+import minefarts.exoplayer2.upstream.ParsingLoadable;
+import minefarts.exoplayer2.upstream.TransferListener;
+import minefarts.exoplayer2.util.Assertions;
+import minefarts.exoplayer2.util.Log;
+import minefarts.exoplayer2.util.Util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -108,8 +107,8 @@ public final class DashMediaSource extends BaseMediaSource {
 
         /**
          * Sets a tag for the media source which will be published in the
-         * {@link com.google.android.exoplayer2.Timeline} of the source as
-         * {@link com.google.android.exoplayer2.Timeline.Window#tag}.
+         * {@link minefarts.exoplayer2.Timeline} of the source as
+         * {@link minefarts.exoplayer2.Timeline.Window#tag}.
          *
          * @param tag A tag for the media source.
          * @return This factory, for convenience.
@@ -970,7 +969,7 @@ public final class DashMediaSource extends BaseMediaSource {
     private static final class PeriodSeekInfo {
 
         public static PeriodSeekInfo createPeriodSeekInfo(
-                com.google.android.exoplayer2.source.dash.manifest.Period period, long durationUs) {
+                minefarts.exoplayer2.source.dash.manifest.Period period, long durationUs) {
             int adaptationSetCount = period.adaptationSets.size();
             long availableStartTimeUs = 0;
             long availableEndTimeUs = Long.MAX_VALUE;
@@ -1130,7 +1129,7 @@ public final class DashMediaSource extends BaseMediaSource {
                 periodIndex++;
                 periodDurationUs = manifest.getPeriodDurationUs(periodIndex);
             }
-            com.google.android.exoplayer2.source.dash.manifest.Period period =
+            minefarts.exoplayer2.source.dash.manifest.Period period =
                     manifest.getPeriod(periodIndex);
             int videoAdaptationSetIndex = period.getAdaptationSetIndex(C.TRACK_TYPE_VIDEO);
             if (videoAdaptationSetIndex == C.INDEX_UNSET) {

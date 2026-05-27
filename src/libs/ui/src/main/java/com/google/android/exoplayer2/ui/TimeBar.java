@@ -1,5 +1,4 @@
-
-package com.google.android.exoplayer2.ui;
+package minefarts.exoplayer2.ui;
 
 import androidx.annotation.Nullable;
 import android.view.View;

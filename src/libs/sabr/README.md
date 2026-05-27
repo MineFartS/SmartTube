@@ -7,7 +7,7 @@ play SABR content, instantiate a `SabrMediaSource` and pass it to
 ## Links ##
 
 * [Developer Guide][].
-* [Javadoc][]: Classes matching `com.google.android.exoplayer2.source.sabr.*`
+* [Javadoc][]: Classes matching `minefarts.exoplayer2.source.sabr.*`
   belong to this module.
 
 [Developer Guide]: https://exoplayer.dev/sabr.html

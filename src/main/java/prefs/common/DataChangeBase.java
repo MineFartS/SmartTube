@@ -1,6 +1,6 @@
 package minefarts.smarttube.prefs.common;
 
-import com.liskovsoft.sharedutils.misc.WeakHashSet;
+import minefarts.sharedutils.misc.WeakHashSet;
 
 public abstract class DataChangeBase {
     public interface OnDataChange {

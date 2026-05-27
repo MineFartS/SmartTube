@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.liskovsoft.sharedutils.misc.WeakHashSet;
+import minefarts.sharedutils.misc.WeakHashSet;
 import minefarts.smarttube.app.models.playback.ui.OptionCategory;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.base.BasePresenter;

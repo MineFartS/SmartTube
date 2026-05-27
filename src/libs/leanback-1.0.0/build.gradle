@@ -34,7 +34,6 @@ dependencies {
     
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(':exoplayer-core')
     implementation project(':fragment-1.1.0')
     implementation project(':sharedutils')
 

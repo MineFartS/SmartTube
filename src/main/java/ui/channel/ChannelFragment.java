@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.Helpers;
 import minefarts.smarttube.app.presenters.ChannelPresenter;
 import minefarts.smarttube.app.presenters.interfaces.VideoGroupPresenter;
 import minefarts.smarttube.app.views.ChannelView;
@@ -13,7 +13,7 @@ import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.presenter.ChannelHeaderPresenter.ChannelHeaderCallback;
 import minefarts.smarttube.ui.browse.video.MultipleRowsFragment;
 import minefarts.smarttube.ui.mod.leanback.misc.ProgressBarManager;
-import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
+import minefarts.googlecommon.common.helpers.YouTubeHelper;
 
 public class ChannelFragment extends MultipleRowsFragment implements ChannelView {
     

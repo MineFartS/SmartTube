@@ -1,16 +1,16 @@
 package minefarts.smarttube.exoplayer.errors;
 
 import androidx.annotation.Nullable;
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.mediacodec.MediaCodecRenderer.DecoderInitializationException;
-import com.google.android.exoplayer2.source.DefaultMediaSourceEventListener;
-import com.google.android.exoplayer2.source.MediaSource.MediaPeriodId;
-import com.google.android.exoplayer2.source.chunk.Chunk;
-import com.google.android.exoplayer2.source.chunk.ContainerMediaChunk;
-import com.google.android.exoplayer2.upstream.HttpDataSource.InvalidResponseCodeException;
-import com.google.android.exoplayer2.util.MimeTypes;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.exoplayer2.ExoPlaybackException;
+import minefarts.exoplayer2.mediacodec.MediaCodecRenderer.DecoderInitializationException;
+import minefarts.exoplayer2.source.DefaultMediaSourceEventListener;
+import minefarts.exoplayer2.source.MediaSource.MediaPeriodId;
+import minefarts.exoplayer2.source.chunk.Chunk;
+import minefarts.exoplayer2.source.chunk.ContainerMediaChunk;
+import minefarts.exoplayer2.upstream.HttpDataSource.InvalidResponseCodeException;
+import minefarts.exoplayer2.util.MimeTypes;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.mylogger.Log;
 import minefarts.smarttube.exoplayer.selector.TrackSelectorManager;
 import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
 

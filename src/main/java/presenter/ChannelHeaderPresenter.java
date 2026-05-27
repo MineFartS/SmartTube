@@ -23,10 +23,10 @@ import androidx.leanback.widget.SearchOrbView;
 import androidx.leanback.widget.SpeechOrbView;
 import androidx.leanback.widget.SpeechRecognitionCallback;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.helpers.KeyHelpers;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import com.liskovsoft.sharedutils.helpers.PermissionHelpers;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.KeyHelpers;
+import minefarts.sharedutils.helpers.MessageHelpers;
+import minefarts.sharedutils.helpers.PermissionHelpers;
 import minefarts.smarttube.misc.MotherActivity;
 import minefarts.smarttube.prefs.SearchData;
 import minefarts.smarttube.BuildConfig;
@@ -271,13 +271,13 @@ public class ChannelHeaderPresenter extends RowPresenter {
                 Speech.getInstance().startListening(new SpeechDelegate() {
                     @Override
                     public void onStartOfSpeech() {
-                        com.liskovsoft.sharedutils.mylogger.Log.i(TAG, "speech recognition is now active");
+                        minefarts.sharedutils.mylogger.Log.i(TAG, "speech recognition is now active");
                         showListening(mSpeechOrbView);
                     }
 
                     @Override
                     public void onSpeechRmsChanged(float value) {
-                        com.liskovsoft.sharedutils.mylogger.Log.d(TAG, "rms is now: " + value);
+                        minefarts.sharedutils.mylogger.Log.d(TAG, "rms is now: " + value);
                     }
 
                     @Override
@@ -288,7 +288,7 @@ public class ChannelHeaderPresenter extends RowPresenter {
                         }
 
                         String result = str.toString().trim();
-                        com.liskovsoft.sharedutils.mylogger.Log.i(TAG, "partial result: " + result);
+                        minefarts.sharedutils.mylogger.Log.i(TAG, "partial result: " + result);
                         applyExternalQuery(mProvider, mSearchBar, result, true);
 
                         showNotListening(mSpeechOrbView);
@@ -296,14 +296,14 @@ public class ChannelHeaderPresenter extends RowPresenter {
 
                     @Override
                     public void onSpeechResult(String result) {
-                        com.liskovsoft.sharedutils.mylogger.Log.i(TAG, "result: " + result);
+                        minefarts.sharedutils.mylogger.Log.i(TAG, "result: " + result);
                         applyExternalQuery(mProvider, mSearchBar, result, true);
 
                         showNotListening(mSpeechOrbView);
                     }
                 });
             } catch (SpeechRecognitionNotAvailable | GoogleVoiceTypingDisabledException exc) {
-                com.liskovsoft.sharedutils.mylogger.Log.e(TAG, "Speech recognition is not available on this device!");
+                minefarts.sharedutils.mylogger.Log.e(TAG, "Speech recognition is not available on this device!");
                 // You can prompt the user if he wants to install Google App to have
                 // speech recognition, and then you can simply call:
                 try {

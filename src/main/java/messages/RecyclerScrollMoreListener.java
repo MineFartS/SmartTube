@@ -1,5 +1,3 @@
-
-
 package minefarts.smarttube.messages;
 
 import androidx.recyclerview.widget.GridLayoutManager;

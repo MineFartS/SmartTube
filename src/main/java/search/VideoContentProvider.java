@@ -11,11 +11,11 @@ import android.provider.BaseColumns;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import minefarts.smarttube.R;
-import com.liskovsoft.sharedutils.service.data.MediaGroup;
-import com.liskovsoft.sharedutils.data.MediaItem;
-import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.rx.AppSchedulerProvider;
-import com.liskovsoft.sharedutils.rx.SchedulerProvider;
+import minefarts.sharedutils.service.data.MediaGroup;
+import minefarts.sharedutils.data.MediaItem;
+import minefarts.sharedutils.mylogger.Log;
+import minefarts.sharedutils.rx.AppSchedulerProvider;
+import minefarts.sharedutils.rx.SchedulerProvider;
 import minefarts.smarttube.misc.ServiceManager;
 import io.reactivex.disposables.CompositeDisposable;
 

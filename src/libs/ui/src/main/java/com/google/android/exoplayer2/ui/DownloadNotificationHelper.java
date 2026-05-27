@@ -1,5 +1,4 @@
-
-package com.google.android.exoplayer2.ui;
+package minefarts.exoplayer2.ui;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -8,8 +7,8 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.app.NotificationCompat;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.offline.Download;
+import minefarts.exoplayer2.C;
+import minefarts.exoplayer2.offline.Download;
 import java.util.List;
 
 /** Helper for creating download notifications. */

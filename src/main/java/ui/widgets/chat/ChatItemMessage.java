@@ -3,13 +3,13 @@ package minefarts.smarttube.ui.widgets.chat;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.liskovsoft.sharedutils.data.ChatItem;
-import com.liskovsoft.sharedutils.data.CommentItem;
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.data.ChatItem;
+import minefarts.sharedutils.data.CommentItem;
+import minefarts.sharedutils.helpers.Helpers;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.R;
-import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
+import minefarts.googlecommon.common.helpers.ServiceHelper;
 import minefarts.smarttube.commons.models.IMessage;
 
 import java.util.ArrayList;

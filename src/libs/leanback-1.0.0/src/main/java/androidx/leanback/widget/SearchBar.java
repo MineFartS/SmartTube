@@ -1,4 +1,3 @@
-
 package androidx.leanback.widget;
 
 import android.Manifest;

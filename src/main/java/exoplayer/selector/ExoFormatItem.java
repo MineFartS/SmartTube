@@ -2,9 +2,9 @@ package minefarts.smarttube.exoplayer.selector;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.util.MimeTypes;
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.exoplayer2.Format;
+import minefarts.exoplayer2.util.MimeTypes;
+import minefarts.sharedutils.helpers.Helpers;
 import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
 import minefarts.smarttube.exoplayer.selector.track.SubtitleTrack;
 

@@ -1,5 +1,3 @@
-
-
 package androidx.leanback.widget.picker;
 
 import android.content.res.Resources;

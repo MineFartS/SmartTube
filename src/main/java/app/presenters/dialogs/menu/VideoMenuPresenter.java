@@ -2,13 +2,13 @@ package minefarts.smarttube.app.presenters.dialogs.menu;
 
 import android.content.Context;
 
-import com.liskovsoft.sharedutils.MediaItemService;
+import minefarts.sharedutils.MediaItemService;
 import minefarts.smarttube.misc.ServiceManager;
-import com.liskovsoft.sharedutils.data.PlaylistInfo;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.rx.RxHelper;
+import minefarts.sharedutils.data.PlaylistInfo;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.MessageHelpers;
+import minefarts.sharedutils.mylogger.Log;
+import minefarts.sharedutils.rx.RxHelper;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Queue;
 import minefarts.smarttube.app.models.data.Video;
@@ -29,7 +29,7 @@ import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.utils.AppDialogUtil;
 import minefarts.smarttube.ui.playback.actions.SubscribeAction;
 import minefarts.smarttube.app.models.playback.controllers.VideoStateController;
-import com.liskovsoft.sharedutils.service.data.MediaGroup;
+import minefarts.sharedutils.service.data.MediaGroup;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;

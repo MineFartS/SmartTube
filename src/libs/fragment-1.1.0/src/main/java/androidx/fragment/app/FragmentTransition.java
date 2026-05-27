@@ -1,4 +1,3 @@
-
 package androidx.fragment.app;
 
 import android.graphics.Rect;

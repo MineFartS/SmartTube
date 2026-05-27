@@ -1,4 +1,4 @@
-package com.google.android.exoplayer2.source.sabr.parser.ump;
+package minefarts.exoplayer2.source.sabr.parser.ump;
 
 public class UMPPartId {
     public static final int UNKNOWN = -1;

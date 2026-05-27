@@ -1,6 +1,6 @@
 package minefarts.smarttube.exoplayer.selector;
 
-import com.google.android.exoplayer2.Format;
+import minefarts.exoplayer2.Format;
 
 public class TrackInfoFormatter2 {
     private String mResolutionStr;

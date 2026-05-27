@@ -8,7 +8,7 @@ import android.view.WindowManager.BadTokenException;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import androidx.appcompat.app.AlertDialog;
-import com.liskovsoft.sharedutils.helpers.KeyHelpers;
+import minefarts.sharedutils.helpers.KeyHelpers;
 import minefarts.smarttube.R;
 
 public class SimpleEditDialog {

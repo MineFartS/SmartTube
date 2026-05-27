@@ -1,5 +1,3 @@
-
-
 package minefarts.smarttube.dialogs;
 
 import android.graphics.Typeface;

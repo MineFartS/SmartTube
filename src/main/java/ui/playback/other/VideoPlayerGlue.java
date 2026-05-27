@@ -20,7 +20,7 @@ import androidx.leanback.widget.PlaybackRowPresenter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.mylogger.Log;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.R;

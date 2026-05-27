@@ -1,4 +1,3 @@
-
 package org.apache.commons.io.serialization;
 
 import java.util.Arrays;

@@ -1,5 +1,4 @@
-
-package com.google.android.exoplayer2.source.dash;
+package minefarts.exoplayer2.source.dash;
 
 import java.io.IOException;
 

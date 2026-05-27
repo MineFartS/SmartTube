@@ -26,8 +26,8 @@ import minefarts.smarttube.media.Clip;
 import minefarts.smarttube.media.Playlist;
 import minefarts.smarttube.media.scheduler.ClipData;
 import minefarts.smarttube.utils.AppUtil;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.mylogger.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;

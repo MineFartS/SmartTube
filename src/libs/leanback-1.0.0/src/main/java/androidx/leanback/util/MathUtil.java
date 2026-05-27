@@ -1,4 +1,3 @@
-
 package androidx.leanback.util;
 
 import androidx.annotation.RestrictTo;

@@ -1,4 +1,3 @@
-
 package androidx.leanback.app;
 
 import android.animation.TimeAnimator;

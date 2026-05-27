@@ -1,4 +1,3 @@
-
 package androidx.leanback.transition;
 
 import android.graphics.Rect;

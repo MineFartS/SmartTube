@@ -4,7 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.Nullable;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.Helpers;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.presenters.SignInPresenter;
 import minefarts.smarttube.utils.Utils;

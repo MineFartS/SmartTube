@@ -11,8 +11,8 @@ import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.liskovsoft.sharedutils.mylogger.Log;
-import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
+import minefarts.sharedutils.mylogger.Log;
+import minefarts.sharedutils.prefs.GlobalPreferences;
 
 import java.util.concurrent.TimeUnit;
 

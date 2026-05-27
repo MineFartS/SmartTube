@@ -1,9 +1,8 @@
-
-package com.google.android.exoplayer2.source.hls;
+package minefarts.exoplayer2.source.hls;
 
 import androidx.annotation.Nullable;
-import com.google.android.exoplayer2.source.SampleQueue;
-import com.google.android.exoplayer2.source.TrackGroup;
+import minefarts.exoplayer2.source.SampleQueue;
+import minefarts.exoplayer2.source.TrackGroup;
 import java.io.IOException;
 
 /** Thrown when it is not possible to map a {@link TrackGroup} to a {@link SampleQueue}. */

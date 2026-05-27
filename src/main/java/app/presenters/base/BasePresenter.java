@@ -7,11 +7,11 @@ import android.view.View;
 import androidx.fragment.app.Fragment;
 
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
-import com.liskovsoft.sharedutils.CommentsService;
-import com.liskovsoft.sharedutils.service.ContentService;
-import com.liskovsoft.sharedutils.MediaItemService;
-import com.liskovsoft.sharedutils.NotificationsService;
-import com.liskovsoft.sharedutils.SignInService;
+import minefarts.sharedutils.CommentsService;
+import minefarts.sharedutils.service.ContentService;
+import minefarts.sharedutils.MediaItemService;
+import minefarts.sharedutils.NotificationsService;
+import minefarts.sharedutils.SignInService;
 import minefarts.smarttube.app.models.data.Queue;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.data.VideoGroup;

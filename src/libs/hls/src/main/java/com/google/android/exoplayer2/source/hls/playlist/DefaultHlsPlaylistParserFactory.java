@@ -1,7 +1,6 @@
+package minefarts.exoplayer2.source.hls.playlist;
 
-package com.google.android.exoplayer2.source.hls.playlist;
-
-import com.google.android.exoplayer2.upstream.ParsingLoadable;
+import minefarts.exoplayer2.upstream.ParsingLoadable;
 
 /** Default implementation for {@link HlsPlaylistParserFactory}. */
 public final class DefaultHlsPlaylistParserFactory implements HlsPlaylistParserFactory {

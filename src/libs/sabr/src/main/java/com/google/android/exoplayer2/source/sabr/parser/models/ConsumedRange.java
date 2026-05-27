@@ -1,4 +1,4 @@
-package com.google.android.exoplayer2.source.sabr.parser.models;
+package minefarts.exoplayer2.source.sabr.parser.models;
 
 public class ConsumedRange {
     public int startSequenceNumber;

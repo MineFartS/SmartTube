@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
-import com.liskovsoft.sharedutils.helpers.DateHelper;
+import minefarts.sharedutils.helpers.DateHelper;
 import minefarts.smarttube.misc.TickleManager;
 import minefarts.smarttube.misc.TickleManager.TickleListener;
 

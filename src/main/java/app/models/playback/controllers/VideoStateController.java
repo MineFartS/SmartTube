@@ -1,14 +1,14 @@
 package minefarts.smarttube.app.models.playback.controllers;
 
-import com.liskovsoft.sharedutils.service.data.MediaItemMetadata;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.sharedutils.mylogger.Log;
+import minefarts.sharedutils.service.data.MediaItemMetadata;
+import minefarts.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.mylogger.Log;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Queue;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
-import com.liskovsoft.sharedutils.data.MediaItemFormatInfo;
-import com.liskovsoft.sharedutils.videoinfo.models.VideoInfo;
+import minefarts.sharedutils.data.MediaItemFormatInfo;
+import minefarts.sharedutils.videoinfo.models.VideoInfo;
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
 import minefarts.smarttube.app.models.playback.service.State;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
@@ -16,8 +16,8 @@ import minefarts.smarttube.exoplayer.selector.FormatItem;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.utils.AppDialogUtil;
 import minefarts.smarttube.utils.Utils;
-import com.liskovsoft.sharedutils.service.internal.MediaServiceData;
-import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
+import minefarts.sharedutils.service.internal.MediaServiceData;
+import minefarts.googlecommon.common.helpers.RetrofitHelper;
 import minefarts.smarttube.app.models.playback.ui.OptionCategory;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 

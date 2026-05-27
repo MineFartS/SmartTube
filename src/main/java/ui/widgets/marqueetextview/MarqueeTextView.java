@@ -6,7 +6,7 @@ import android.os.Build.VERSION;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.sharedutils.helpers.Helpers;
 
 @SuppressLint("AppCompatCustomView")
 public class MarqueeTextView extends TextView implements View.OnLayoutChangeListener {

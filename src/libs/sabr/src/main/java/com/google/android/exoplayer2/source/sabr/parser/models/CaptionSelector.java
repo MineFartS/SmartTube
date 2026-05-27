@@ -1,6 +1,6 @@
-package com.google.android.exoplayer2.source.sabr.parser.models;
+package minefarts.exoplayer2.source.sabr.parser.models;
 
-import com.google.android.exoplayer2.source.sabr.protos.videostreaming.FormatId;
+import minefarts.exoplayer2.source.sabr.protos.videostreaming.FormatId;
 
 public class CaptionSelector extends FormatSelector {
     public CaptionSelector(String displayName, boolean discardMedia) {
