@@ -108,7 +108,7 @@ public class AppUpdatePresenter extends BasePresenter<Void> implements AppUpdate
         );
 
         mSettingsPresenter.appendStringsCategory(
-            getContext().getString(R.string.update_changelog), 
+            "Changelog", 
             createChangelogOptions(changelog)
         );
 
@@ -143,8 +143,7 @@ public class AppUpdatePresenter extends BasePresenter<Void> implements AppUpdate
             @Override
             public String getMessage() {
                 return String.format("%s %s", getContext().getString(R.string.app_name), versionName) + " " +
-                        getContext().getString(R.string.update_changelog) + ":\n" +
-                        createChangelog(changelog);
+                        "Changelog" + ":\n" + createChangelog(changelog);
             }
 
             @Override

@@ -1256,25 +1256,25 @@ public class PlayerNotificationManager {
         ACTION_PLAY,
         new NotificationCompat.Action(
             R.drawable.exo_notification_play,
-            context.getString(R.string.exo_controls_play_description),
+            "Play",
             createBroadcastIntent(ACTION_PLAY, context, instanceId)));
     actions.put(
         ACTION_PAUSE,
         new NotificationCompat.Action(
             R.drawable.exo_notification_pause,
-            context.getString(R.string.exo_controls_pause_description),
+            "Pause",
             createBroadcastIntent(ACTION_PAUSE, context, instanceId)));
     actions.put(
         ACTION_STOP,
         new NotificationCompat.Action(
             R.drawable.exo_notification_stop,
-            context.getString(R.string.exo_controls_stop_description),
+            "Stop",
             createBroadcastIntent(ACTION_STOP, context, instanceId)));
     actions.put(
         ACTION_REWIND,
         new NotificationCompat.Action(
             R.drawable.exo_notification_rewind,
-            context.getString(R.string.exo_controls_rewind_description),
+            "Rewind",
             createBroadcastIntent(ACTION_REWIND, context, instanceId)));
     actions.put(
         ACTION_FAST_FORWARD,
@@ -1286,13 +1286,13 @@ public class PlayerNotificationManager {
         ACTION_PREVIOUS,
         new NotificationCompat.Action(
             R.drawable.exo_notification_previous,
-            context.getString(R.string.exo_controls_previous_description),
+            "Previous track",
             createBroadcastIntent(ACTION_PREVIOUS, context, instanceId)));
     actions.put(
         ACTION_NEXT,
         new NotificationCompat.Action(
             R.drawable.exo_notification_next,
-            context.getString(R.string.exo_controls_next_description),
+            "Next track",
             createBroadcastIntent(ACTION_NEXT, context, instanceId)));
     return actions;
   }

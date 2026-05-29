@@ -45,9 +45,9 @@ public final class RepeatModeActionProvider implements MediaSessionConnector.Cus
   public RepeatModeActionProvider(
       Context context, @RepeatModeUtil.RepeatToggleModes int repeatToggleModes) {
     this.repeatToggleModes = repeatToggleModes;
-    repeatAllDescription = context.getString(R.string.exo_media_action_repeat_all_description);
-    repeatOneDescription = context.getString(R.string.exo_media_action_repeat_one_description);
-    repeatOffDescription = context.getString(R.string.exo_media_action_repeat_off_description);
+    repeatAllDescription = "Repeat all";
+    repeatOneDescription = "Repeat one";
+    repeatOffDescription = "Repeat none";
   }
 
   @Override
