@@ -1,5 +1,4 @@
 param (
-    [Switch] $Clean,
     [Switch] $Force
 )
 
@@ -7,23 +6,31 @@ Import-Module "$PSScriptRoot/__mod__.psm1" -Force
 
 Repair-Environment
 
-[System.Collections.ArrayList] $gARGS = @()
-
-if ($Clean) {
-    Invoke-Gradle 'clean'
-}
-
-if ($Force) {
-    taskkill.exe /im java.exe /f
-    $gARGS += '--no-daemon'
-}
-
 Clear-Host
 
+$gARGS = @()
+
+if ($Force) {
+
+    Remove-Item `
+        ".gradle" `
+        -Force -Recurse -Verbose
+
+    Remove-Item `
+        "$env:USERPROFILE\.gradle\caches" `
+        -Force -Recurse -Verbose
+
+    $gARGS += 'clean'
+    $gARGS += '--refresh-dependencies'
+
+}
+
+taskkill.exe /im java.exe /f
+
 if (Test-ADBConnection) {
-    $gARGS.Insert(0, ":installDebug")
+    $gARGS += ":installDebug"
 } else {
-    $gARGS.Insert(0, ":build")
+    $gARGS += ":build"
 }
 
 Clear-Host
