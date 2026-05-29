@@ -8,13 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.app.models.data.Video;
@@ -23,13 +26,20 @@ import minefarts.smarttube.R;
 import minefarts.smarttube.presenter.base.LongClickPresenter;
 import minefarts.smarttube.ui.browse.video.GridFragmentHelper;
 import minefarts.smarttube.utils.ViewUtil;
-import minefarts.smarttube.utils.CardColors;
+import minefarts.smarttube.utils.Utils;
 
 public class ChannelCardPresenter extends LongClickPresenter {
     
     private static final String TAG = VideoCardPresenter.class.getSimpleName();
     
-    private CardColors mCardColors;
+    static final int DefaultBackgroundColor  = -16757933;
+    static final int SelectedBackgroundColor = -1;
+
+    static final int DefaultTextColor  = -1;
+    static final int SelectedTextColor = -13355980;
+
+    static final int NewContentBackgroundColor = -5041641;
+
     private int mWidth;
     private int mHeight;
 
@@ -38,21 +48,25 @@ public class ChannelCardPresenter extends LongClickPresenter {
 
         Context context = parent.getContext();
 
-        mCardColors = new CardColors(context);
-
         updateDimensions(context);
 
         View container = LayoutInflater.from(context).inflate(R.layout.channel_card, null);
-        container.setBackgroundColor(mCardColors.DefaultBackgroundColor);
+        container.setBackgroundColor(DefaultBackgroundColor);
 
         TextView textView = container.findViewById(R.id.channel_title);
-        textView.setBackgroundColor(mCardColors.DefaultBackgroundColor);
-        textView.setTextColor(mCardColors.DefaultTextColor);
+        textView.setBackgroundColor(DefaultBackgroundColor);
+        textView.setTextColor(DefaultTextColor);
 
         container.setOnFocusChangeListener((v, hasFocus) -> {
-            int backgroundColor = hasFocus ? mCardColors.SelectedBackgroundColor :
-                    textView.getTag(R.id.channel_new_content) != null ? mCardColors.NewContentBackgroundColor : mCardColors.DefaultBackgroundColor;
-            int textColor = hasFocus ? mCardColors.SelectedTextColor : mCardColors.DefaultTextColor;
+
+            int backgroundColor = DefaultBackgroundColor;
+            if (hasFocus) {
+                backgroundColor = SelectedBackgroundColor;
+            } else if (textView.getTag(R.id.channel_new_content) != null) {
+                backgroundColor = NewContentBackgroundColor;
+            }
+
+            int textColor = hasFocus ? SelectedTextColor : DefaultTextColor;
             
             textView.setBackgroundColor(backgroundColor);
             textView.setTextColor(textColor);
@@ -80,7 +94,7 @@ public class ChannelCardPresenter extends LongClickPresenter {
         textView.setText(video.getTitle());
 
         // We should setup props each time because object may be reused by the underlying RecyclerView
-        textView.setBackgroundColor(video.hasNewContent ? mCardColors.NewContentBackgroundColor : mCardColors.DefaultBackgroundColor);
+        textView.setBackgroundColor(video.hasNewContent ? NewContentBackgroundColor : DefaultBackgroundColor);
         textView.setTag(R.id.channel_new_content, video.hasNewContent ? true : null);
 
 
