@@ -39,7 +39,7 @@ import minefarts.smarttube.presenter.IconHeaderItemPresenter;
 import minefarts.smarttube.ui.browse.dialog.ErrorDialogFragment;
 import minefarts.smarttube.ui.mod.leanback.headers.ExtendedHeadersSupportFragment;
 import minefarts.smarttube.ui.mod.leanback.misc.ProgressBarManager;
-import minefarts.smarttube.ui.widgets.browse.NavigateTitleView;
+import minefarts.smarttube.leanback.widget.TitleView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,7 +58,7 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
     private BrowseSectionFragmentFactory mSectionFragmentFactory;
     private Handler mHandler;
     private ProgressBarManager mProgressBarManager;
-    private NavigateTitleView mTitleView;
+    private TitleView mTitleView;
     private boolean mIsFragmentCreated;
     private int mSelectedHeaderIndex = -1;
     private Video mSelectedVideo;
