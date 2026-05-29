@@ -10,15 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
-import minefarts.smarttube.leanback.widget.BaseCardView;
 
+import minefarts.smarttube.leanback.widget.BaseCardView;
 import minefarts.smarttube.utils.helpers.Helpers;
+import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.R;
-import minefarts.smarttube.utils.CardColors;
 
 public class TagCardView extends BaseCardView {
-
-    private CardColors mCardColors;
 
     TextView mTagNameText;
     ImageView mResultImage;
@@ -52,9 +50,10 @@ public class TagCardView extends BaseCardView {
 
     @Override
     public void setSelected(boolean selected) {
-        
-        setBackgroundColor(selected ? mCardColors.SelectedBackgroundColor : mCardColors.DefaultBackgroundColor);
-        setTextColor(selected ? mCardColors.SelectedTextColor : mCardColors.DefaultTextColor);
+
+        setBackgroundColor(selected ? -1 : -16757933);
+
+        setTextColor(selected ? -13355980 : -1);
         
         super.setSelected(selected);
 
@@ -80,14 +79,13 @@ public class TagCardView extends BaseCardView {
 
     private void buildLoadingCardView(Context context, int styleResId) {
 
-        mCardColors = new CardColors(context);
-
-        setFocusable(false);
-        setFocusableInTouchMode(false);
+        setFocusable(true);
+        setFocusableInTouchMode(true);
         setCardType(CARD_TYPE_MAIN_ONLY);
         setBackgroundResource(R.color.primary_light);
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
+
         View view = inflater.inflate(R.layout.view_tag_card, this);
 
         mTagNameText = view.findViewById(R.id.text_tag_name);
@@ -146,4 +144,5 @@ public class TagCardView extends BaseCardView {
             mTagNameText.setTextColor(color);
         }
     }
+    
 }
