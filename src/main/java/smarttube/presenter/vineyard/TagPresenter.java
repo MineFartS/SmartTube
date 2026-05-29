@@ -46,28 +46,32 @@ public class TagPresenter extends LongClickPresenter {
     public void onBindViewHolder(ViewHolder viewHolder, Object item) {
         super.onBindViewHolder(viewHolder, item);
 
+        TagCardView cardView = (TagCardView) viewHolder.view;
+
         viewHolder.view.setOnClickListener(v -> {
             if (mClickListener != null) {
                 mClickListener.onItemClicked(item);
             }
         });
+        
         viewHolder.view.setOnFocusChangeListener((v, hasFocus) -> {
+            
+            cardView.setSelected(hasFocus);
+
             if (hasFocus && mSelectedListener != null) {
+                viewHolder.view.setSelected(true);
                 mSelectedListener.onItemSelected(item);
             }
         });
 
         if (item instanceof Tag) {
             Tag post = (Tag) item;
-            TagCardView cardView = (TagCardView) viewHolder.view;
 
             if (post.tag != null) {
                 cardView.setCardText(post.tag);
-                //cardView.setCardIcon(R.drawable.ic_tag);
             }
         } else if (item instanceof User) {
             User post = (User) item;
-            TagCardView cardView = (TagCardView) viewHolder.view;
 
             if (post.username != null) {
                 cardView.setCardText(post.username);
