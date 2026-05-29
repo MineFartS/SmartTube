@@ -11,8 +11,8 @@ public class YesNoDialog {
         builder
                 .setMessage(msgResId)
                 .setTitle(context.getApplicationInfo().labelRes)
-                .setPositiveButton(R.string.yes_btn, listener)
-                .setNegativeButton(R.string.no_btn, listener)
+                .setPositiveButton("Yes", listener)
+                .setNegativeButton("No", listener)
                 .show();
     }
 
@@ -21,8 +21,8 @@ public class YesNoDialog {
         builder
                 .setMessage(message)
                 .setTitle(context.getApplicationInfo().labelRes)
-                .setPositiveButton(R.string.yes_btn, listener)
-                .setNegativeButton(R.string.no_btn, listener)
+                .setPositiveButton("Yes", listener)
+                .setNegativeButton("No", listener)
                 .show();
     }
 }

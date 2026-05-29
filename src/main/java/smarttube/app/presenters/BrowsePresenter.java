@@ -387,7 +387,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         ));
                         
         settingItems.add(new SettingsItem(
-            context.getString(R.string.content_block_provider), 
+            "SponsorBlock", 
             () -> ContentBlockSettingsPresenter.instance(context).show(), 
             R.drawable.settings_block
         ));

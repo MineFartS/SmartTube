@@ -105,7 +105,7 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
 
         String title = String.format(
             "%s %s",
-            getContext().getString(R.string.update_changelog),
+            "Changelog",
             AppInfoHelpers.getAppVersionName(getContext())
         );
 

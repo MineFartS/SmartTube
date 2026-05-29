@@ -256,8 +256,7 @@ public class SearchSupportFragment extends Fragment {
                     && grantResults[0] == PERMISSION_GRANTED) {
                 startRecognition();
             } else {
-                MessageHelpers.showMessage(getContext(),
-                        minefarts.smarttube.R.string.not_supported_by_device);
+                MessageHelpers.showMessage(getContext(), "The device does not support this feature");
             }
         }
     }

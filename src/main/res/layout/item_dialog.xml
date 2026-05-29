@@ -27,7 +27,7 @@
             android:layout_toRightOf="@id/dialogAvatar"
             android:layout_toStartOf="@id/dialogDate"
             android:ellipsize="end"
-            android:fontFamily="@string/font_fontFamily_medium"
+            android:fontFamily="sans-serif"
             android:includeFontPadding="false"
             android:maxLines="1" />
 
@@ -86,7 +86,7 @@
             android:layout_marginTop="-5dp"
             android:background="@drawable/bubble_circle"
             android:ellipsize="end"
-            android:fontFamily="@string/font_fontFamily_medium"
+            android:fontFamily="sans-serif"
             android:gravity="center"
             android:lines="1" />
 
