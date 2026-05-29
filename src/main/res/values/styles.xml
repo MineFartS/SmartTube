@@ -9,12 +9,12 @@
 
     <style name="ExoMediaButton.Previous">
         <item name="android:src">@drawable/exo_controls_previous</item>
-        <item name="android:contentDescription">@string/exo_controls_previous_description</item>
+        <item name="android:contentDescription">Previous track</item>
     </style>
 
     <style name="ExoMediaButton.Next">
         <item name="android:src">@drawable/exo_controls_next</item>
-        <item name="android:contentDescription">@string/exo_controls_next_description</item>
+        <item name="android:contentDescription">Next track</item>
     </style>
 
     <style name="ExoMediaButton.FastForward">
@@ -24,17 +24,17 @@
 
     <style name="ExoMediaButton.Rewind">
         <item name="android:src">@drawable/exo_controls_rewind</item>
-        <item name="android:contentDescription">@string/exo_controls_rewind_description</item>
+        <item name="android:contentDescription">Rewind</item>
     </style>
 
     <style name="ExoMediaButton.Play">
         <item name="android:src">@drawable/exo_controls_play</item>
-        <item name="android:contentDescription">@string/exo_controls_play_description</item>
+        <item name="android:contentDescription">Play</item>
     </style>
 
     <style name="ExoMediaButton.Pause">
         <item name="android:src">@drawable/exo_controls_pause</item>
-        <item name="android:contentDescription">@string/exo_controls_pause_description</item>
+        <item name="android:contentDescription">Pause</item>
     </style>
 
     <style name="ExoMediaButton.VR">

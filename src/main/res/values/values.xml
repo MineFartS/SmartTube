@@ -3,8 +3,7 @@
 <resources 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"
->
-    
+>    
     <dimen name="lb_basic_card_info_padding">6dp</dimen>
     <dimen name="message_incoming_bubble_margin_right">0dp</dimen>
     <dimen name="message_outcoming_bubble_margin_left">88dp</dimen>
@@ -40,12 +39,12 @@
     <dimen name="message_padding_top">16dp</dimen>
     <dimen name="message_padding_bottom">16dp</dimen>
     <!-- Incoming/Outcoming text message size -->
-    <!-- MODIFIED: message_text_size: "17sp"->"14sp" -->
+
     <dimen name="message_text_size">16sp</dimen>
     <dimen name="message_time_text_size">14sp</dimen>
     <dimen name="message_date_header_text_size">16sp</dimen>
     <dimen name="message_date_header_padding">16dp</dimen>
-    <!--<dimen name="message_incoming_bubble_margin_right">40dp</dimen>-->
+
     <!-- Make messages to stick exactly to the right edge -->
 
     <dimen name="exo_media_button_height">60dp</dimen>
@@ -122,28 +121,10 @@
     <dimen name="lb_preference_decor_title_margin_bottom">10dp</dimen>
     <dimen name="lb_preference_decor_title_margin_end">24dp</dimen>
 
-    <!-- Make in-app logo smaller -->
-    Making my card's corner rounded. More info:
-    https://stackoverflow.com/questions/42623677/android-tv-verticalgridfragment-shadow-dimension-and-color
-    https://developer.android.com/reference/androidx/leanback/widget/ShadowOverlayHelper
-    https://developer.android.com/reference/kotlin/androidx/leanback/widget/ListRowPresenter#arechildroundedcornersenabled
-    You can also override ShadowOverlayHelper.Options createShadowOverlayOptions() in
-    ListRowPresenter which gives you some ability to change corner radius and focused and unfocused z.
-    -->
-    <!--<dimen name="lb_rounded_rect_corner_radius">5dp</dimen>-->
-
-    <!--
-    Space between cards. Origin: 8dp More info:
-    https://stackoverflow.com/questions/32402209/set-margins-between-items-on-browsefragment
-    -->
-    <!--<dimen name="lb_browse_item_horizontal_spacing">15dp</dimen>-->
-    <!--<dimen name="lb_browse_item_vertical_spacing">15dp</dimen>-->
     <dimen name="grid_item_horizontal_spacing">15dp</dimen>
     <dimen name="grid_item_vertical_spacing">15dp</dimen>
     <dimen name="grid_horizontal_margin">25dp</dimen>
 
-    <!-- Browse headers spacing. Origin: 21dp -->
-    <!--<dimen name="lb_browse_headers_vertical_spacing">10dp</dimen>-->
     <dimen name="browse_headers_vertical_spacing">10dp</dimen>
 
     <!-- Vine card widget values -->
@@ -173,34 +154,7 @@
 
     <color name="exo_error_message_background_color">#AA000000</color>
     <color name="exo_edit_mode_background_color">#FFF4F3F0</color>
-
-    <string name="log_stored_in_path">Log enabled: %s</string>
-    <string name="log_to_file_started">Starting log: %s</string>
-    <string name="yes_btn">Yes</string>
-    <string name="no_btn">No</string>
-
-    <string name="dump_debug_info">Error occurred. Please, send this file to the support team: %s</string>
-    <string name="section_trending">Trending</string>
-
-    <!-- Description for a button that controls the repeat mode of a media playback. In this mode media is not repeated. [CHAR LIMIT=30] -->
-    <string name="exo_media_action_repeat_off_description">Repeat none</string>
-    <!-- Description for a button that controls the repeat mode of a media playback. In this mode the current piece of media is repeated. [CHAR LIMIT=30] -->
-    <string name="exo_media_action_repeat_one_description">Repeat one</string>
-    <!-- Description for a button that controls the repeat mode of a media playback. In this mode the entire playlist is repeated. [CHAR LIMIT=30] -->
-    <string name="exo_media_action_repeat_all_description">Repeat all</string>
     
-    <!-- Description for a media control button that causes the previous track to be played. [CHAR LIMIT=30] -->
-    <string name="exo_controls_previous_description">Previous track</string>
-    <!-- Description for a media control button that causes the next track to be played. [CHAR LIMIT=30] -->
-    <string name="exo_controls_next_description">Next track</string>
-    <!-- Description for a media control button that causes playback to be paused. [CHAR LIMIT=30] -->
-    <string name="exo_controls_pause_description">Pause</string>
-    <!-- Description for a media control button that causes playback to be started. [CHAR LIMIT=30] -->
-    <string name="exo_controls_play_description">Play</string>
-    <!-- Description for a media control button that causes playback to be stopped. [CHAR LIMIT=30] -->
-    <string name="exo_controls_stop_description">Stop</string>
-    <!-- Description for a media control button that causes playback to be rewound. [CHAR LIMIT=30] -->
-    <string name="exo_controls_rewind_description">Rewind</string>
     <!-- Description for a media control button that causes playback to be fast-forwarded. [CHAR LIMIT=30] -->
     <string name="exo_controls_fastforward_description">Fast forward</string>
     <!-- Description for a button that controls the repeat mode of a media playback. In this mode media is not repeated. [CHAR LIMIT=30] -->
@@ -275,13 +229,6 @@
     <string name="header_channels">Channels</string>
     <string name="playback_queue_category_title">Playback queue</string>
 
-    <string name="not_supported_by_device">The device does not support this feature</string>
-    <string name="option_background_playback_off">Disabled</string>
-    <string name="option_background_playback_pip">Picture in picture</string>
-    <string name="option_background_playback_only_audio">Only audio</string>
-    <string name="playback_settings">Playback quality settings</string>
-    <string name="video_speed">Video speed</string>
-    <string name="update_changelog">Changelog</string>
     <string name="install_update">Install update</string>
     <string name="section_is_empty">Oops! There is nothing in here</string>
     <string name="dialog_add_to_playlist">Add/Remove from playlist</string>
@@ -1441,7 +1388,7 @@
     <dimen name="lb_basic_card_content_text_size">12sp</dimen>
     <dimen name="lb_basic_card_info_badge_margin">4dp</dimen>
     <dimen name="lb_basic_card_info_badge_size">16dp</dimen>
-    <dimen name="lb_basic_card_info_height">52dp</dimen>
+
     <dimen name="lb_basic_card_info_height_no_content">34dp</dimen>
     <dimen name="lb_basic_card_info_padding_bottom">8dp</dimen>
     <dimen name="lb_basic_card_info_padding_horizontal">11dp</dimen>
@@ -1869,6 +1816,7 @@
     </style>
     <style name="TextAppearance.LeanbackBase" parent="android:TextAppearance.Holo">
     </style>
+    
     <style name="Theme.Leanback" parent="Theme.LeanbackBase">
 
         <item name="baseCardViewStyle">@style/Widget.Leanback.BaseCardViewStyle</item>
@@ -2437,16 +2385,18 @@
         <item name="closed_captioning">@drawable/lb_ic_cc</item>
         <item name="picture_in_picture">@drawable/lb_ic_pip</item>
     </style>
+
     <style name="Widget.Leanback.PlaybackControlsButtonStyle">
         <item name="android:focusable">true</item>
         <!-- MOD: Enable single click touch mode -->
         <item name="android:focusableInTouchMode">false</item>
-        <!--<item name="android:focusableInTouchMode">true</item>-->
     </style>
+
     <style name="Widget.Leanback.PlaybackControlsTimeStyle">
         <item name="android:textAlignment">viewStart</item>
         <item name="android:textAppearance">@style/TextAppearance.Leanback.PlaybackControlsTime</item>
     </style>
+
     <style name="Widget.Leanback.PlaybackMediaItemDetailsStyle">
         <item name="android:paddingStart">?attr/playbackMediaItemPaddingStart</item>
         <item name="android:layout_width">0dp</item>
@@ -2455,6 +2405,7 @@
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
     </style>
+
     <style name="Widget.Leanback.PlaybackMediaItemDurationStyle">
         <item name="android:layout_width">56dp</item>
         <item name="android:layout_height">match_parent</item>
@@ -2463,6 +2414,7 @@
         <item name="android:visibility">gone</item>
         <item name="android:textAppearance">@style/TextAppearance.Leanback.PlaybackMediaItemDuration</item>
     </style>
+
     <style name="Widget.Leanback.PlaybackMediaItemNameStyle">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
@@ -2471,6 +2423,7 @@
         <item name="android:gravity">center_vertical</item>"
         <item name="android:textAppearance">@style/TextAppearance.Leanback.PlaybackMediaItemName</item>
     </style>
+
     <style name="Widget.Leanback.PlaybackMediaItemNumberStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
@@ -2478,26 +2431,31 @@
         <item name="android:visibility">gone</item>
         <item name="android:textAppearance">@style/TextAppearance.Leanback.PlaybackMediaItemNumber</item>
     </style>
+
     <style name="Widget.Leanback.PlaybackMediaItemNumberViewFlipperStyle">
         <item name="android:layout_width">56dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:visibility">gone</item>
     </style>
+
     <style name="Widget.Leanback.PlaybackMediaItemRowStyle" parent="Widget.Leanback.PlaybackRow">
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
     </style>
+
     <style name="Widget.Leanback.PlaybackMediaItemSeparatorStyle" parent="Widget.Leanback.PlaybackRow">
         <item name="android:background">@color/lb_media_background_color</item>
         <item name="android:src">@color/lb_playback_media_row_separator_highlight_color</item>
         <item name="android:layout_height">@dimen/lb_playback_media_row_separator_height</item>"
     </style>
+
     <style name="Widget.Leanback.PlaybackMediaListHeaderStyle" parent="Widget.Leanback.PlaybackRow">
         <item name="android:background">#263238</item>
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
     </style>
+
     <style name="Widget.Leanback.PlaybackMediaListHeaderTitleStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
@@ -2507,6 +2465,7 @@
         <item name="android:paddingLeft">?attr/playbackMediaItemPaddingStart</item>
         <item name="android:textAppearance">@style/TextAppearance.Leanback.PlaybackMediaListHeaderTitle</item>
     </style>
+
     <style name="Widget.Leanback.PlaybackRow">
         <item name="android:layout_marginStart">?attr/playbackPaddingStart</item>
         <item name="android:layout_marginEnd">?attr/playbackPaddingEnd</item>
@@ -2517,17 +2476,22 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
     </style>
+
     <style name="Widget.Leanback.Row">
     </style>
+
     <style name="Widget.Leanback.Row.Header" parent="Widget.Leanback.Header">
         <item name="android:textAppearance">@style/TextAppearance.Leanback.Row.Header</item>
     </style>
+
     <style name="Widget.Leanback.Row.Header.Description" parent="Widget.Leanback.Header">
         <item name="android:textAppearance">@style/TextAppearance.Leanback.Row.Header.Description</item>
     </style>
+
     <style name="Widget.Leanback.Row.HeaderDock">
         <item name="android:paddingStart">?attr/browsePaddingStart</item>
     </style>
+
     <style name="Widget.Leanback.Row.HorizontalGridView">
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
@@ -2539,6 +2503,7 @@
         <item name="android:verticalSpacing">@dimen/lb_browse_item_vertical_spacing</item>
         <item name="focusOutFront">true</item>
     </style>
+
     <style name="Widget.Leanback.Row.HoverCardDescription">
         <item name="android:textAlignment">viewStart</item>
         <item name="android:textAppearance">@style/TextAppearance.Leanback.Row.HoverCardDescription</item>
@@ -2546,6 +2511,7 @@
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">4</item>
     </style>
+
     <style name="Widget.Leanback.Row.HoverCardTitle">
         <item name="android:textAlignment">viewStart</item>
         <item name="android:textAppearance">@style/TextAppearance.Leanback.Row.HoverCardTitle</item>
@@ -2553,8 +2519,10 @@
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
     </style>
+
     <style name="Widget.Leanback.Rows">
     </style>
+
     <style name="Widget.Leanback.Rows.VerticalGridView">
         <item name="android:paddingBottom">?attr/browsePaddingBottom</item>
         <item name="focusOutFront">true</item>
@@ -2562,15 +2530,19 @@
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
     </style>
+
     <style name="Widget.Leanback.SearchOrbViewStyle">
         <item name="searchOrbIcon">?attr/defaultSearchIcon</item>
         <item name="searchOrbColor">?attr/defaultSearchColor</item>
         <item name="searchOrbIconColor">?attr/defaultSearchIconColor</item>
         <item name="searchOrbBrightColor">?attr/defaultSearchBrightColor</item>
     </style>
+
     <style name="Widget.Leanback.Title"/>
+
     <style name="Widget.Leanback.Title.Icon">
     </style>
+
     <style name="Widget.Leanback.Title.Text">
         <item name="android:singleLine">true</item>
         <item name="android:gravity">end</item>
@@ -2578,11 +2550,14 @@
         <item name="android:textAlignment">viewStart</item>
         <item name="android:textAppearance">@style/TextAppearance.Leanback.Title</item>
     </style>
+
     <style name="Widget.Leanback.TitleView">
         <item name="android:paddingTop">?attr/browsePaddingTop</item>
         <item name="android:paddingBottom">?attr/browsePaddingTop</item>
         <item name="android:paddingStart">?attr/browsePaddingStart</item>
         <item name="android:paddingEnd">?attr/browsePaddingEnd</item>
     </style>
+
     <style name="Widget.LeanbackBase" parent="android:Widget.Holo"/>
+
 </resources>

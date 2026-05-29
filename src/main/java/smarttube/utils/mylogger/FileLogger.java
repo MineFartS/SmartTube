@@ -35,8 +35,9 @@ class FileLogger extends MyLogger {
         PermissionHelpers.verifyStoragePermissions(context);
 
         MessageHelpers.showLongMessage(
-                mContext,
-                mContext.getString(R.string.log_stored_in_path, getLogPath(mContext)));
+            mContext,
+            "Log enabled: " + getLogPath(mContext)
+        );
     }
 
     @Override
@@ -88,7 +89,11 @@ class FileLogger extends MyLogger {
             mWriter = new BufferedWriter(new FileWriter(logFile, false));
             writeLogHeader();
 
-            MessageHelpers.showLongMessage(mContext, mContext.getString(R.string.log_to_file_started, getLogPath(mContext)));
+            MessageHelpers.showLongMessage(
+                mContext, 
+                "Starting log: " + getLogPath(mContext)
+            );
+            
         }
 
         return mWriter;

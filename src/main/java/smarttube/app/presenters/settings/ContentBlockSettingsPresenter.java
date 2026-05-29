@@ -46,10 +46,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
 
         appendLinks(settingsPresenter);
 
-        settingsPresenter.showDialog(
-            getContext().getString(R.string.content_block_provider), 
-            onFinish
-        );
+        settingsPresenter.showDialog("SponsorBlock", onFinish);
 
     }
 
@@ -166,11 +163,16 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendLinks(AppDialogPresenter settingsPresenter) {
-        UiOptionItem statsCheckOption = UiOptionItem.from(getContext().getString(R.string.content_block_status),
-                option -> Utils.openLink(getContext(), getContext().getString(R.string.content_block_status_url)));
+        
+        UiOptionItem statsCheckOption = UiOptionItem.from(
+            getContext().getString(R.string.content_block_status),
+            option -> Utils.openLink(getContext(), "https://status.sponsor.ajay.app")
+        );
 
-        UiOptionItem webSiteOption = UiOptionItem.from(getContext().getString(R.string.about_sponsorblock),
-                option -> Utils.openLink(getContext(), getContext().getString(R.string.content_block_provider_url)));
+        UiOptionItem webSiteOption = UiOptionItem.from(
+            getContext().getString(R.string.about_sponsorblock),
+            option -> Utils.openLink(getContext(), "https://sponsor.ajay.app")
+        );
 
         settingsPresenter.appendSingleButton(statsCheckOption);
         settingsPresenter.appendSingleButton(webSiteOption);
