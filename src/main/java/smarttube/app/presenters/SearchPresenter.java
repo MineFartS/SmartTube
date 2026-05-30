@@ -274,11 +274,17 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
     }
 
     public void onSearchSettingsClicked() {
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
-        showSettingsDialog();
+        AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
+
+        appendFilterByDateCategory(settingsPresenter);
+        appendFilterByDurationCategory(settingsPresenter);
+        appendFilterByTypeCategory(settingsPresenter);
+        appendFilterByFeatureCategory(settingsPresenter);
+        appendSortByCategory(settingsPresenter);
+
+        settingsPresenter.showDialog("Search");
     }
 
     public void disposeActions() {
@@ -291,18 +297,6 @@ public class SearchPresenter extends BasePresenter<SearchView> implements VideoG
 
         mBrowseProcessor.dispose();
 
-    }
-
-    private void showSettingsDialog() {
-        AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(getContext());
-
-        appendFilterByDateCategory(settingsPresenter);
-        appendFilterByDurationCategory(settingsPresenter);
-        appendFilterByTypeCategory(settingsPresenter);
-        appendFilterByFeatureCategory(settingsPresenter);
-        appendSortByCategory(settingsPresenter);
-
-        settingsPresenter.showDialog(getContext().getString(R.string.settings_search));
     }
 
     private void appendFilterByDateCategory(AppDialogPresenter settingsPresenter) {
