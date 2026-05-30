@@ -237,11 +237,6 @@ public class SearchTagsFragment extends SearchTagsFragmentBase {
         super.submitQuery(query);
     }
 
-    @Override
-    public void onSearchSettingsClicked() {
-        mSearchPresenter.onSearchSettingsClicked();
-    }
-
     private void checkScrollEnd(Video item) {
         VideoGroupObjectAdapter resultsAdapter = getItemResultsAdapter(item);
 

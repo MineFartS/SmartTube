@@ -299,36 +299,6 @@ open class BrowseService2 {
         return RetrofitHelper.get(live)?.let { LiveMediaGroup(it, MediaGroupOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)) }
     }
 
-    fun getChannelSearch(channelId: String?, query: String?): MediaGroup? {
-        return getChannelSearchWeb(channelId, query)
-    }
-
-    private fun getChannelSearchWeb(channelId: String?, query: String?, auth: Boolean = false): MediaGroup? {
-        if (channelId == null || query == null) {
-            return null
-        }
-
-        val options = MediaGroupOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)
-        val search = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelSearchQuery(AppClient.WEB, channelId, query))
-
-        return RetrofitHelper.get(search, auth)?.let { BrowseMediaGroup(it, options) }
-    }
-
-    fun getChannelSorting(channelId: String?): List<MediaGroup?>? {
-        return getChannelSortingWeb(channelId)
-    }
-
-    private fun getChannelSortingWeb(channelId: String?, auth: Boolean = false): List<MediaGroup?>? {
-        if (channelId == null) {
-            return null
-        }
-
-        val options = MediaGroupOptions(MediaGroup.TYPE_CHANNEL_UPLOADS)
-        val videos = mBrowseApi.getBrowseResult(BrowseApiHelper.getChannelVideosQuery(AppClient.WEB, channelId))
-
-        return RetrofitHelper.get(videos, auth)?.let { it.getChips()?.mapNotNull { if (it != null) ChipMediaGroup(it, options) else null } }
-    }
-
     open fun getChannel(channelId: String?, params: String?): Pair<List<MediaGroup?>?, String?>? {
         return getChannelTV(channelId, params) ?: getChannelWeb(channelId)?.let { Pair(it, null) }
     }

@@ -276,7 +276,6 @@
     <string name="not_recommend_channel">Don\'t recommend channel</string>
     <string name="you_wont_see_this_video">Video has been removed from recommended</string>
     <string name="you_wont_see_this_channel">You won\'t see this channel in recommendations</string>
-    <string name="settings_search">Search</string>
     <string name="dialog_search">Search</string>
     <string name="option_background_playback_behind">Play behind</string>
     <string name="next_video_info_is_not_loaded_yet">Next video info is not loaded yet</string>
@@ -559,7 +558,6 @@
     <string name="video_feature_live">Live</string>
     <string name="video_feature_4k">4K</string>
     <string name="video_feature_hdr">HDR</string>
-    <string name="search_sorting">Sort by</string>
     <string name="sort_by_relevance">Relevance</string>
     <string name="sort_by_views">View count</string>
     <string name="sort_by_date">Upload date</string>
