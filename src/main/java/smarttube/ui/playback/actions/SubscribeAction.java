@@ -15,6 +15,8 @@ import minefarts.smarttube.utils.rx.RxHelper;
 import minefarts.smarttube.utils.next.v2.WatchNextServiceWrapper;
 import minefarts.smarttube.utils.service.data.MediaItemMetadata;
 
+import io.reactivex.Observable;
+
 import retrofit2.Call;
 
 // An action for displaying subscribe states.
@@ -50,10 +52,24 @@ public class SubscribeAction extends TwoStateAction {
 
     public static void toggle(Video video) {
 
-        mSignInService.checkAuth();
+        if (video == null || video.channelId == null) return;
+
+        RxHelper.runAsync(() -> dotoggle(video));
+
+    }
+
+    public static void refresh(Video video) {
 
         MediaItemMetadata metadata = mWatchNextService.getMetadata(video.videoId);
         video.isSubscribed = metadata.isSubscribed();
+    
+    }
+
+    private static void dotoggle(Video video) {
+
+        mSignInService.checkAuth();
+
+        refresh(video);
 
         String data = "\"channelIds\":[\"" + video.channelId + "\"],\"params\":\"\"";
         String query = PostDataHelper.createQueryTV(data);
