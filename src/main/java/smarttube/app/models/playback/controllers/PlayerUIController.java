@@ -404,16 +404,12 @@ public class PlayerUIController extends BasePlayerController {
         
         if (buttonId == R.id.action_subscribe) {
 
-            RxHelper.runAsync(() -> {
+            SubscribeAction.toggle(getVideo());
 
-                SubscribeAction.toggle(getVideo());
-                    
-                getPlayer().setButtonState(
-                    R.id.action_subscribe, 
-                    getVideo().isSubscribed ? 1 : 0
-                );
-
-            });
+            getPlayer().setButtonState(
+                R.id.action_subscribe, 
+                getVideo().isSubscribed ? 1 : 0
+            );
 
         } else if (buttonId == R.id.action_repeat) {
             applyRepeatMode(buttonState);
