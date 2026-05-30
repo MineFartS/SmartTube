@@ -383,15 +383,7 @@ public class SearchSupportFragment extends Fragment {
         });
         mSearchOrbView.setOnOrbClickedListener(v -> submitQuery(getSearchBarText()));
 
-        // MOD: search settings button
-        mSearchSettingsOrbView =
-                mSearchBar.findViewById(minefarts.smarttube.R.id.search_settings_orb);
-        mSearchSettingsOrbView.setOnFocusChangeListener((v, focused) -> {
-            if (focused) {
-                Helpers.hideKeyboard(getContext(), v);
-            }
-        });
-        mSearchSettingsOrbView.setOnOrbClickedListener(v -> onSearchSettingsClicked());
+        mSearchSettingsOrbView = mSearchBar.findViewById(minefarts.smarttube.R.id.search_settings_orb);
 
         mSpeechOrbView = mSearchBar.findViewById(R.id.lb_search_bar_speech_orb);
         OnFocusChangeListener previousListener = mSpeechOrbView.getOnFocusChangeListener();
@@ -750,10 +742,6 @@ public class SearchSupportFragment extends Fragment {
         }
         recognizerIntent.putExtra(EXTRA_LEANBACK_BADGE_PRESENT, mBadgeDrawable != null);
         return recognizerIntent;
-    }
-
-    public void onSearchSettingsClicked() {
-        // NOP
     }
 
     public void focusOnSearchField() {

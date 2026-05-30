@@ -341,18 +341,6 @@ public class ContentService {
         });
     }
 
-    
-    public MediaGroup getChannelSearch(String channelId, String query) {
-        checkSigned();
-
-        return getBrowseService2().getChannelSearch(channelId, query);
-    }
-
-    
-    public Observable<MediaGroup> getChannelSearchObserve(String channelId, String query) {
-        return RxHelper.fromCallable(() -> getChannelSearch(channelId, query));
-    }
-
     private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, kotlin.Pair<List<MediaGroup>, String> groupsAndKey) {
         emitGroupsPartial(emitter, groupsAndKey);
 

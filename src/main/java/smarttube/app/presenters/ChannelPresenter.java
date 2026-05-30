@@ -2,6 +2,7 @@ package minefarts.smarttube.app.presenters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+
 import minefarts.smarttube.utils.service.data.MediaGroup;
 import minefarts.smarttube.utils.data.MediaItem;
 import minefarts.smarttube.utils.helpers.Helpers;
@@ -21,14 +22,36 @@ import minefarts.smarttube.utils.rx.RxHelper;
 import minefarts.smarttube.utils.LoadingManager;
 import minefarts.smarttube.utils.browse.BrowseService2;
 import minefarts.smarttube.utils.ServiceManager;
+import minefarts.smarttube.utils.common.models.impl.mediagroup.MediaGroupOptions;
+import minefarts.smarttube.utils.browse.gen.BrowseResult;
+import minefarts.smarttube.utils.browse.BrowseApiHelper;
+import minefarts.smarttube.utils.common.helpers.AppClient;
+import minefarts.smarttube.google.common.helpers.RetrofitHelper;
+import minefarts.smarttube.utils.browse.BrowseApi2;
+import minefarts.smarttube.utils.common.models.impl.mediagroup.BrowseMediaGroup;
+
+import retrofit2.Call;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Comparator;
 
-import java.util.concurrent.atomic.AtomicInteger;
+enum SortType {
+
+    POPULARITY((a, b) -> 0),
+    OLDEST((a, b) -> 0),
+    NEWEST((a, b) -> 0);
+
+    final Comparator<Video> func;
+
+    SortType(Comparator<Video> func) {
+        this.func = func;
+    }
+
+}
 
 public class ChannelPresenter extends BasePresenter<ChannelView> implements VideoGroupPresenter {
 
@@ -39,11 +62,14 @@ public class ChannelPresenter extends BasePresenter<ChannelView> implements Vide
     
     private final BrowseProcessorManager mBrowseProcessor;
     private final BrowseService2 mBrowseService;
+    private final BrowseApi2 mBrowseApi;
+    private final BrowseApiHelper mBrowseApiHelper;
+    
     private String mChannelId;
     private final List<List<MediaGroup>> mPendingGroups = new ArrayList<>();
     private Disposable mUpdateAction;
     private Disposable mScrollAction;
-    private int mSortIdx;
+    private SortType mSortType;
     private Video mChannel;
 
     private interface OnChannelId {
@@ -61,6 +87,10 @@ public class ChannelPresenter extends BasePresenter<ChannelView> implements Vide
         mBrowseProcessor = new BrowseProcessorManager(getContext(), this::syncItem);
 
         mBrowseService = getContentService().getBrowseService2();
+
+        mBrowseApi = RetrofitHelper.create(BrowseApi2.class);
+
+        mBrowseApiHelper = BrowseApiHelper.INSTANCE;
 
     }
 
@@ -197,7 +227,7 @@ public class ChannelPresenter extends BasePresenter<ChannelView> implements Vide
     private void disposeActions() {
         RxHelper.disposeActions(mUpdateAction, mScrollAction);
         ServiceManager.disposeActions();
-        mSortIdx = 0;
+        mSortType = SortType.NEWEST;
         mBrowseProcessor.dispose();
     }
 
@@ -338,53 +368,56 @@ public class ChannelPresenter extends BasePresenter<ChannelView> implements Vide
 
         List<UiOptionItem> options = new ArrayList<>();
 
-        AtomicInteger i = new AtomicInteger(0);
+        options.add(UiOptionItem.from(
+            "Popularity",
+            item -> this.mSortType = SortType.POPULARITY,
+            mSortType == SortType.POPULARITY
+        ));
 
-        List<MediaGroup> groups = mBrowseService.getChannelSorting(getChannelId());
+        options.add(UiOptionItem.from(
+            "Oldest",
+            item -> this.mSortType = SortType.OLDEST,
+            mSortType == SortType.OLDEST
+        ));
 
-        for (MediaGroup group : groups) {
-            
-            options.add(UiOptionItem.from(
-                group.getTitle(), 
-                item -> this.mSortIdx = i.get(),
-                mSortIdx == i.getAndIncrement()
-            ));
-        
-        }
+        options.add(UiOptionItem.from(
+            "Newest",
+            item -> this.mSortType = SortType.NEWEST,
+            mSortType == SortType.NEWEST
+        ));
 
-        dialogPresenter.appendRadioCategory(
-            getContext().getString(R.string.search_sorting), 
-            options
-        );
-
+        dialogPresenter.appendRadioCategory("Sort by", options);
         dialogPresenter.showDialog();
-    
     }
 
     public boolean onSearchSubmit(String query) {
-        Observable<MediaGroup> search = getContentService().getChannelSearchObserve(getChannelId(), query);
-        Disposable result = search.subscribe(
-                items -> {
-                    if (getView() == null) {
-                        return;
-                    }
 
-                    VideoGroup update = VideoGroup.from(items);
+        RxHelper.runAsync(() -> {
+        
+            Call<BrowseResult> search = mBrowseApi.getBrowseResult(
+                mBrowseApiHelper.getChannelSearchQuery(AppClient.WEB, getChannelId(), query)
+            );
 
-                    if (update.isEmpty()) {
-                        MessageHelpers.showMessage(getContext(), R.string.nothing_found);
-                        return;
-                    }
+            BrowseMediaGroup items = new BrowseMediaGroup(
+                RetrofitHelper.get(search, false), 
+                new MediaGroupOptions(MediaGroup.TYPE_CHANNEL_UPLOADS),
+                null
+            );
 
-                    update.setId(112);
-                    update.setPosition(0);
-                    update.setAction(VideoGroup.ACTION_REPLACE);
-                    getView().update(update);
-                    getView().setPosition(1);
-                },
-                error -> Log.e(TAG, "onSearchSubmit error: %s", error.getMessage())
-        );
+            VideoGroup update = VideoGroup.from(items);
+
+            if (getView() == null || update.isEmpty()) return;
+
+            update.sort(mSortType.func);
+            update.setId(112);
+            update.setPosition(0);
+            update.setAction(VideoGroup.ACTION_REPLACE);
+            getView().update(update);
+            getView().setPosition(1);
+        
+        });
 
         return true;
     }
+
 }

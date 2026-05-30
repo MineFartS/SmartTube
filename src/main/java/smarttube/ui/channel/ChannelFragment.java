@@ -35,35 +35,33 @@ public class ChannelFragment extends MultipleRowsFragment implements ChannelView
         mProgressBarManager = new ProgressBarManager();
         
         // Channel Seach Bar
-        addHeader(
-            new ChannelHeaderCallback() {
+        addHeader(new ChannelHeaderCallback() {
             
-                @Override
-                public void onSearchSettingsClicked() {
-                    mChannelPresenter.onSearchSettingsClicked();
-                }
-
-                @Override
-                public boolean onSearchSubmit(String query) {
-                    return mChannelPresenter.onSearchSubmit(query);
-                }
-
-                @Override
-                public String getChannelTitle() {
-
-                    if (mChannelPresenter.getChannel() == null) {
-                        return Helpers.startsWith(mChannelPresenter.getChannelId(), "@") ? mChannelPresenter.getChannelId() : null;
-                    }
-
-                    String author = mChannelPresenter.getChannel().getAuthor();
-                    String title = mChannelPresenter.getChannel().getTitle();
-                    String subs = mChannelPresenter.getChannel().subscriberCount;
-
-                    return Helpers.toString(YouTubeHelper.createInfo(Helpers.firstNonNull(author, title), subs));
-                }
-            
+            @Override
+            public void onSearchSettingsClicked() {
+                mChannelPresenter.onSearchSettingsClicked();
             }
-        );
+
+            @Override
+            public boolean onSearchSubmit(String query) {
+                return mChannelPresenter.onSearchSubmit(query);
+            }
+
+            @Override
+            public String getChannelTitle() {
+
+                if (mChannelPresenter.getChannel() == null) {
+                    return Helpers.startsWith(mChannelPresenter.getChannelId(), "@") ? mChannelPresenter.getChannelId() : null;
+                }
+
+                String author = mChannelPresenter.getChannel().getAuthor();
+                String title = mChannelPresenter.getChannel().getTitle();
+                String subs = mChannelPresenter.getChannel().subscriberCount;
+
+                return Helpers.toString(YouTubeHelper.createInfo(Helpers.firstNonNull(author, title), subs));
+            }
+            
+        });
 
     }
 

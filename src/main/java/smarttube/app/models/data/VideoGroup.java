@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.List;
+import java.util.Comparator;
 
 public class VideoGroup {
     /**
@@ -464,4 +465,9 @@ public class VideoGroup {
 
         mVideos.add(idx, video);
     }
+
+    public void sort(final Comparator<Video> func) {
+        mVideos.sort(func);
+    }
+
 }

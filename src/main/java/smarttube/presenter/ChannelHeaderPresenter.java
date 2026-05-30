@@ -47,40 +47,28 @@ public class ChannelHeaderPresenter extends RowPresenter {
     private static final String EXTRA_LEANBACK_BADGE_PRESENT = "LEANBACK_BADGE_PRESENT";
     private static final int REQUEST_SPEECH = 0x00000010;
 
-    private static final int QUERY_COMPLETE = 0x2;
-
-
     private Drawable mBadgeDrawable;
     private int mStatus;
     private String mTitle;
 
-    public interface ChannelHeaderProvider {
-        boolean onSearchChange(String newQuery);
-        boolean onSearchSubmit(String query);
-        void onSearchSettingsClicked();
-        String getChannelTitle();
-    }
+    public static class ChannelHeaderCallback extends Row {
 
-    public static class ChannelHeaderCallback extends Row implements ChannelHeaderProvider {
-        @Override
         public boolean onSearchChange(String newQuery) {
             return false;
         }
 
-        @Override
         public boolean onSearchSubmit(String query) {
             return false;
         }
 
-        @Override
         public void onSearchSettingsClicked() {
-
+            // NOP
         }
 
-        @Override
         public String getChannelTitle() {
             return null;
         }
+
     }
 
     @Override
@@ -144,7 +132,7 @@ public class ChannelHeaderPresenter extends RowPresenter {
     protected void onBindRowViewHolder(ViewHolder vh, Object item) {
         super.onBindRowViewHolder(vh, item);
 
-        ChannelHeaderProvider provider = (ChannelHeaderProvider) item;
+        ChannelHeaderCallback provider = (ChannelHeaderCallback) item;
         SearchBar searchBar = vh.view.findViewById(R.id.lb_search_bar);
         Context context = searchBar.getContext();
         SearchOrbView searchOrbView = searchBar.findViewById(R.id.lb_search_bar_search_orb);
@@ -206,10 +194,10 @@ public class ChannelHeaderPresenter extends RowPresenter {
 
     private final class RecognizerIntentCallback implements SpeechRecognitionCallback {
         private final Context mContext;
-        private final ChannelHeaderProvider mProvider;
+        private final ChannelHeaderCallback mProvider;
         private final SearchBar mSearchBar;
 
-        public RecognizerIntentCallback(Context context, ChannelHeaderProvider provider, SearchBar searchBar) {
+        public RecognizerIntentCallback(Context context, ChannelHeaderCallback provider, SearchBar searchBar) {
             mContext = context;
             mProvider = provider;
             mSearchBar = searchBar;
@@ -250,71 +238,6 @@ public class ChannelHeaderPresenter extends RowPresenter {
         }
     }
 
-    private final class GotevCallback implements SpeechRecognitionCallback {
-        private final Context mContext;
-        private final ChannelHeaderProvider mProvider;
-        private final SearchBar mSearchBar;
-        private final SpeechOrbView mSpeechOrbView;
-
-        public GotevCallback(Context context, ChannelHeaderProvider provider, SearchBar searchBar, SpeechOrbView speechOrbView) {
-            mContext = context;
-            mProvider = provider;
-            mSearchBar = searchBar;
-            mSpeechOrbView = speechOrbView;
-        }
-
-        @Override
-        public void recognizeSpeech() {
-            try {
-                // you must have android.permission.RECORD_AUDIO granted at this point
-                PermissionHelpers.verifyMicPermissions(mContext);
-                Speech.getInstance().startListening(new SpeechDelegate() {
-                    @Override
-                    public void onStartOfSpeech() {
-                        minefarts.smarttube.utils.mylogger.Log.i(TAG, "speech recognition is now active");
-                        showListening(mSpeechOrbView);
-                    }
-
-                    @Override
-                    public void onSpeechRmsChanged(float value) {
-                        minefarts.smarttube.utils.mylogger.Log.d(TAG, "rms is now: " + value);
-                    }
-
-                    @Override
-                    public void onSpeechPartialResults(List<String> results) {
-                        StringBuilder str = new StringBuilder();
-                        for (String res : results) {
-                            str.append(res).append(" ");
-                        }
-
-                        String result = str.toString().trim();
-                        minefarts.smarttube.utils.mylogger.Log.i(TAG, "partial result: " + result);
-                        applyExternalQuery(mProvider, mSearchBar, result, true);
-
-                        showNotListening(mSpeechOrbView);
-                    }
-
-                    @Override
-                    public void onSpeechResult(String result) {
-                        minefarts.smarttube.utils.mylogger.Log.i(TAG, "result: " + result);
-                        applyExternalQuery(mProvider, mSearchBar, result, true);
-
-                        showNotListening(mSpeechOrbView);
-                    }
-                });
-            } catch (SpeechRecognitionNotAvailable | GoogleVoiceTypingDisabledException exc) {
-                minefarts.smarttube.utils.mylogger.Log.e(TAG, "Speech recognition is not available on this device!");
-                // You can prompt the user if he wants to install Google App to have
-                // speech recognition, and then you can simply call:
-                try {
-                    SpeechUtil.redirectUserToGoogleAppOnPlayStore(mContext);
-                } catch (ActivityNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
     /**
      * Returns an intent that can be used to request speech recognition.
      * Built from the base {@link RecognizerIntent#ACTION_RECOGNIZE_SPEECH} plus
@@ -344,7 +267,7 @@ public class ChannelHeaderPresenter extends RowPresenter {
         return matches != null && matches.size() > 0 ? matches.get(0) : null;
     }
 
-    private void submitQuery(ChannelHeaderProvider provider, String query) {
+    private void submitQuery(ChannelHeaderCallback provider, String query) {
         if (query == null) {
             return;
         }
@@ -358,10 +281,10 @@ public class ChannelHeaderPresenter extends RowPresenter {
         return searchTextEditor.getText().toString();
     }
 
-    private void retrieveResults(ChannelHeaderProvider provider, String searchQuery) {
+    private void retrieveResults(ChannelHeaderCallback provider, String searchQuery) {
         if (BuildConfig.DEBUG) Log.v(TAG, "retrieveResults " + searchQuery);
         if (provider.onSearchChange(searchQuery)) {
-            mStatus &= ~QUERY_COMPLETE;
+            mStatus &= ~0x2;
         }
     }
 
@@ -381,7 +304,7 @@ public class ChannelHeaderPresenter extends RowPresenter {
         }
     }
 
-    private void applyExternalQuery(ChannelHeaderProvider provider, SearchBar mSearchBar, String query, boolean submit) {
+    private void applyExternalQuery(ChannelHeaderCallback provider, SearchBar mSearchBar, String query, boolean submit) {
         if (query == null || mSearchBar == null) {
             return;
         }
