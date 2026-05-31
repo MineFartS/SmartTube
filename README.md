@@ -12,8 +12,6 @@ SmartTube is a free and open-source advanced media player for Android TVs and TV
 
 - Install the following applications:
 
-    - [Android Studio](https://developer.android.com/studio#:~:text=Download%20Android%20Studio)
-
     - [Git](https://git-scm.com/install/windows#:~:text=Windows/x64)
 
     - [OpenJDK 14](https://github.com/MineFartS/SmartTube/raw/refs/heads/master/.github/Java14.exe)
