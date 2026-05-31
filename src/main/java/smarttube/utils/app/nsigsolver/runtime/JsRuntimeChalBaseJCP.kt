@@ -111,11 +111,12 @@ internal abstract class JsRuntimeChalBaseJCP: JsChallengeProvider() {
     }
 
     protected fun constructCommonStdin(): String {
+        // V8 executes the whole stdin as a single JS compilation unit.
+        // Avoid wrapping the scripts in extra quotes/semicolons that would break JS parsing.
         return """
-        ${libScript.code}
-        ${coreScript.code}
-        "";
-        """
+${libScript.code}
+${coreScript.code}
+""".trimIndent()
     }
 
     // region: challenge solver script
@@ -154,8 +155,13 @@ internal abstract class JsRuntimeChalBaseJCP: JsChallengeProvider() {
 
     private fun cachedSource(scriptType: ScriptType): Script? {
         val data = ie.cache.load(cacheSection, scriptType.value) ?: return null
-        return Script(scriptType,
-            ScriptVariant.valueOf(data.variant ?: "unknown"), ScriptSource.CACHE, data.version ?: "unknown", data.code)
+        return Script(
+            scriptType,
+            ScriptVariant.valueOf(data.variant ?: "unknown"),
+            ScriptSource.CACHE,
+            data.version ?: "unknown",
+            data.code
+        )
     }
 
     private fun builtinSource(scriptType: ScriptType): Script? {
@@ -167,7 +173,7 @@ internal abstract class JsRuntimeChalBaseJCP: JsChallengeProvider() {
     private fun webReleaseSource(scriptType: ScriptType): Script? {
         val fileName = minScriptFilenames[scriptType] ?: return null
         val url = "https://github.com/$repository/releases/download/$scriptVersion/$fileName"
-        val code = ie.downloadWebpageWithRetries(url, "[${tag}] Failed to download challenge solver ${scriptType.value} script")
+        val code = ie.downloadWebpageWithRetries(url, "[${tag}] Failed to download challenge solver ${scriptType.value}")
         Log.d(tag, "[${tag}] Downloading challenge solver ${scriptType.value} script from $url")
         ie.cache.store(cacheSection, scriptType.value, CachedData(code))
         return Script(scriptType, ScriptVariant.MINIFIED, ScriptSource.WEB, scriptVersion, code)
@@ -175,3 +181,4 @@ internal abstract class JsRuntimeChalBaseJCP: JsChallengeProvider() {
 
     // endregion: challenge solver script
 }
+
