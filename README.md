@@ -14,7 +14,7 @@ SmartTube is a free and open-source advanced media player for Android TVs and TV
 
     - [Git](https://git-scm.com/install/windows#:~:text=Windows/x64)
 
-    - [OpenJDK 14](https://github.com/MineFartS/SmartTube/raw/refs/heads/master/.github/Java14.exe)
+    - [JDK 17](https://download.oracle.com/java/17/archive/jdk-17.0.12_windows-x64_bin.exe)
 
 - Run the following in Powershell:
         
