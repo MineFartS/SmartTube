@@ -1,5 +1,5 @@
 
-$ANDROID_SDK = "$env:USERPROFILE\AppData\Local\Android\SDK"
+$ANDROID_SDK = "$PSScriptRoot\SDK"
 $ADB = "$ANDROID_SDK\platform-tools\adb.exe"
 
 $JDK = "C:\Program Files\Java\jdk-14"
@@ -52,7 +52,9 @@ function Invoke-ADB {
         
     }
 
-    & $ADB @cmdargs
+    if ($cmdargs.Count -gt 0) {
+        & $ADB @cmdargs
+    }
 
 }
 
@@ -61,13 +63,20 @@ function Repair-Environment {
     Set-Location $PSScriptRoot
 
     #=======================================================
+    # ANDROID_SDK
 
     [Environment]::SetEnvironmentVariable("ANDROID_HOME", $ANDROID_SDK, "Machine")
+
+    git.exe submodule update --init --recursive --remote
+    
+    if (-not (Test-Path "$ANDROID_SDK\.knownPackages")) {
+        & "$ANDROID_SDK\Accept.ps1"
+    }
 
     #=======================================================
     # JAVA_HOME
 
-    echo "org.gradle.java.home=$JDK" > 'local.properties'
+    Write-Output "org.gradle.java.home=$JDK" > 'local.properties'
     
     [Environment]::SetEnvironmentVariable("JAVA_HOME", $JDK, "Machine")
 
@@ -79,9 +88,9 @@ function Repair-Environment {
         "$ANDROID_SDK\platform-tools\"
     )
 
-    $dirs = ($dirs | Where-Object {$Path -notcontains $_})
-
     $Path = [Environment]::GetEnvironmentVariable("Path", "Machine")
+
+    $dirs = ($dirs | Where-Object {$Path -notlike "*$_*"})
 
     foreach ($dir in $dirs) {
         $Path += ";$dir"
