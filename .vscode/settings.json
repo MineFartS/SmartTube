@@ -15,5 +15,11 @@
     "java.dependency.enableDependencyCheckup": false,
     "kotlin.inlayHints.parameterHints": false,
     "kotlin.inlayHints.typeHints": false,
-    "java.import.maven.enabled": false
+    "java.import.maven.enabled": false,
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-17",
+            "path": "${workspaceFolder}/jdk"
+        }
+    ],
 }

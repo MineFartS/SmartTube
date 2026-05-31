@@ -2,7 +2,7 @@
 $ANDROID_SDK = "$PSScriptRoot\SDK"
 $ADB = "$ANDROID_SDK\platform-tools\adb.exe"
 
-$JDK = "C:\Program Files\Java\jdk-17"
+$JDK = "$PSScriptRoot\JDK"
 $JAVA = "$JDK\bin\java.exe"
 
 $APP_ID = "minefarts.smarttube"
