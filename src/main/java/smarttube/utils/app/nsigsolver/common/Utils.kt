@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.app.nsigsolver.common
 
-import minefarts.smarttube.v8.V8
+import com.eclipsesource.v8.V8
 import minefarts.smarttube.utils.app.AppService
 
 internal class ScriptLoaderError(message: String, cause: Exception? = null): Exception(message, cause)

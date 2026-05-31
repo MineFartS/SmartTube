@@ -2,9 +2,9 @@ package minefarts.smarttube.google.common.js;
 
 import androidx.annotation.Nullable;
 
-import minefarts.smarttube.v8.V8;
-import minefarts.smarttube.v8.V8ResultUndefined;
-import minefarts.smarttube.v8.V8ScriptExecutionException;
+import com.eclipsesource.v8.V8;
+import com.eclipsesource.v8.V8ResultUndefined;
+import com.eclipsesource.v8.V8ScriptExecutionException;
 import minefarts.smarttube.utils.mylogger.Log;
 
 import java.util.List;
