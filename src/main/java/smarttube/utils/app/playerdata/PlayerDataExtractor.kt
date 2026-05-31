@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.app.playerdata
 
-import minefarts.smarttube.v8.V8ScriptExecutionException
+import com.eclipsesource.v8.V8ScriptExecutionException
 import minefarts.smarttube.google.common.helpers.YouTubeHelper
 import minefarts.smarttube.utils.helpers.Helpers
 import minefarts.smarttube.utils.app.nsigsolver.common.YouTubeInfoExtractor

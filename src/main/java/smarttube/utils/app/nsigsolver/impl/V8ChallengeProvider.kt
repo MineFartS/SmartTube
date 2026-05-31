@@ -1,7 +1,7 @@
 package minefarts.smarttube.utils.app.nsigsolver.impl
 
-import minefarts.smarttube.v8.V8
-import minefarts.smarttube.v8.V8ScriptExecutionException
+import com.eclipsesource.v8.V8
+import com.eclipsesource.v8.V8ScriptExecutionException
 import minefarts.smarttube.utils.app.nsigsolver.common.loadScript
 import minefarts.smarttube.utils.app.nsigsolver.common.withLock
 import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeProviderError

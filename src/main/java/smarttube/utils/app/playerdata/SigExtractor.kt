@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.app.playerdata
 
-import minefarts.smarttube.v8.V8ScriptExecutionException
+import com.eclipsesource.v8.V8ScriptExecutionException
 import minefarts.smarttube.utils.mylogger.Log
 import minefarts.smarttube.google.common.js.JSInterpret
 import java.util.regex.Pattern
