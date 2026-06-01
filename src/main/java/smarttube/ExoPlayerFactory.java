@@ -109,7 +109,7 @@ public final class ExoPlayerFactory {
    */
   public static SimpleExoPlayer newSimpleInstance(
       Context context, RenderersFactory renderersFactory, TrackSelector trackSelector) {
-    return newSimpleInstance(context, renderersFactory, trackSelector, new DefaultLoadControl());
+    return newSimpleInstance(context, renderersFactory, trackSelector, new RampingLoadControl());
   }
 
   /**
@@ -154,12 +154,12 @@ public final class ExoPlayerFactory {
    *     will not be used for DRM protected playbacks.
    */
   public static SimpleExoPlayer newSimpleInstance(
-      Context context,
+      Context context, 
       RenderersFactory renderersFactory,
       TrackSelector trackSelector,
       @Nullable DrmSessionManager<FrameworkMediaCrypto> drmSessionManager) {
     return newSimpleInstance(
-        context, renderersFactory, trackSelector, new DefaultLoadControl(), drmSessionManager);
+        context, renderersFactory, trackSelector, new RampingLoadControl(), drmSessionManager);
   }
 
   /**
@@ -367,7 +367,7 @@ public final class ExoPlayerFactory {
    */
   public static ExoPlayer newInstance(
       Context context, Renderer[] renderers, TrackSelector trackSelector) {
-    return newInstance(context, renderers, trackSelector, new DefaultLoadControl());
+    return newInstance(context, renderers, trackSelector, new RampingLoadControl());
   }
 
   /**
