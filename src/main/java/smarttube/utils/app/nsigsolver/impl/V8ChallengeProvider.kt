@@ -46,34 +46,14 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
 
     private fun runV8(stdin: String): String {
         val runtime = v8Runtime.get() ?: throw JsChallengeProviderError("V8 runtime not initialized yet")
-
-        // V8 sometimes throws on completely empty/whitespace input.
-        // Downstream code expects valid outputs, so fail fast here.
-        val preparedStdin = stdin.trim()
-        if (preparedStdin.isEmpty()) {
-            throw JsChallengeProviderError("V8 runtime error: empty stdin")
-        }
-
         try {
             return runtime.withLock {
-                it.executeStringScript(preparedStdin) ?: throw JsChallengeProviderError("V8 runtime error: empty response")
+                it.executeStringScript(stdin) ?: throw JsChallengeProviderError("V8 runtime error: empty response")
             }
         } catch (e: V8ScriptExecutionException) {
-            // Debugging aid: dump a prefix of the generated JS so we can spot which fragment breaks compilation.
-            // Keep it bounded to avoid log spam.
-            val msg = e.message ?: ""
-            val prefixLen = 2048
-            val stdinPrefix = if (stdin.length <= prefixLen) stdin else stdin.substring(0, prefixLen)
-            val stdinHash = stdin.hashCode()
-            try {
-                android.util.Log.e(tag, "V8 compile error: ${msg} (stdinHash=$stdinHash, prefixLen=$prefixLen)\n${stdinPrefix}")
-            } catch (_: Throwable) {
-                // Ignore logging failures
-            }
-
-            if (msg.contains("Invalid or unexpected token"))
+            if (e.message?.contains("Invalid or unexpected token") ?: false)
                 ie.cache.clear(cacheSection) // cached data broken?
-            throw JsChallengeProviderError("V8 runtime error: $msg", e)
+            throw JsChallengeProviderError("V8 runtime error: ${e.message}", e)
         }
     }
 

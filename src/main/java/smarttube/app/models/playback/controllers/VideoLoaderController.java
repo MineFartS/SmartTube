@@ -287,7 +287,6 @@ public class VideoLoaderController extends BasePlayerController {
      * Force load and play!
      */
     private void loadVideo(Video item) {
-
         if (getPlayer() != null && item != null) {
             Queue.setCurrent(item);
             getPlayer().setVideo(item);
@@ -326,10 +325,9 @@ public class VideoLoaderController extends BasePlayerController {
         }
     }
 
-    private void loadFormatInfo(Video video) {
-
-        if (getPlayer() == null) return;
-
+private void loadFormatInfo(Video video) {
+        
+    if (getPlayer() == null) return;
 
         getPlayer().showProgressBar(true);
         onEngineReleased();
@@ -338,20 +336,9 @@ public class VideoLoaderController extends BasePlayerController {
         
         mFormatInfoAction = mediaItemManager.getFormatInfoObserve(video.videoId)
             .subscribe(
-                formatInfo -> {
-                    try {
-                        this.processFormatInfo(formatInfo);
-                    } catch (Throwable t) {
-                        if (getPlayer() != null) {
-                            getPlayer().showProgressBar(false);
-                        }
-                        runFormatErrorAction(t);
-                    }
-                },
+                this::processFormatInfo,
                 error -> {
-                    if (getPlayer() != null) {
-                        getPlayer().showProgressBar(false);
-                    }
+                    getPlayer().showProgressBar(false);
                     runFormatErrorAction(error);
                 }
             );
@@ -495,18 +482,7 @@ public class VideoLoaderController extends BasePlayerController {
             return;
         }
 
-        if (error == null) {
-            scheduleReloadVideoTimer(1_000);
-            return;
-        }
-
-        if (error instanceof IllegalStateException || (error.getCause() instanceof IllegalStateException)) {
-            ServiceManager.invalidateCache();
-            reloadVideo();
-            return;
-        }
-
-        String message = error.getMessage() != null ? error.getMessage() : "";
+        String message = error.getMessage();
         String className = error.getClass().getSimpleName();
         String fullMsg = String.format("loadFormatInfo error: %s: %s", className, Utils.getStackTraceAsString(error));
         Log.e(TAG, fullMsg);
@@ -516,7 +492,6 @@ public class VideoLoaderController extends BasePlayerController {
         }
 
         if (Helpers.containsAny(message, "Unexpected token", "Syntax error", "invalid argument") || // temporal fix
-                Helpers.containsAny(message, "Unexpected token {", "Invalid or unexpected token") ||
                 Helpers.equalsAny(className, "PoTokenException", "BadWebViewException")) {
             ServiceManager.applyNoPlaybackFix();
             reloadVideo();
