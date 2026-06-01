@@ -5,7 +5,7 @@ import minefarts.smarttube.C;
 import minefarts.smarttube.metadata.Metadata;
 import minefarts.smarttube.metadata.MetadataDecoder;
 import minefarts.smarttube.metadata.MetadataInputBuffer;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.ParsableBitArray;
 import minefarts.smarttube.utils.ParsableByteArray;
 import minefarts.smarttube.utils.Utils;

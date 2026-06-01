@@ -19,7 +19,7 @@ import minefarts.smarttube.metadata.MetadataRenderer;
 import minefarts.smarttube.text.TextOutput;
 import minefarts.smarttube.text.TextRenderer;
 import minefarts.smarttube.trackselection.TrackSelector;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.video.MediaCodecVideoRenderer;
 import minefarts.smarttube.video.VideoRendererEventListener;
 import minefarts.smarttube.video.spherical.CameraMotionRenderer;

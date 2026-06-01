@@ -23,7 +23,7 @@ import minefarts.smarttube.upstream.BandwidthMeter;
 import minefarts.smarttube.utils.Assertions;
 import minefarts.smarttube.utils.Clock;
 import minefarts.smarttube.utils.HandlerWrapper;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.TraceUtil;
 import minefarts.smarttube.utils.Utils;
 import java.io.IOException;
@@ -193,15 +193,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
     handler.obtainMessage(MSG_STOP, reset ? 1 : 0, 0).sendToTarget();
   }
 
-  @Override
-  public synchronized void sendMessage(PlayerMessage message) {
-    if (released) {
-      Log.w(TAG, "Ignoring messages sent after release.");
-      message.markAsProcessed(/* isDelivered= */ false);
-      return;
+    @Override
+    public synchronized void sendMessage(PlayerMessage message) {
+        if (released) {
+            message.markAsProcessed(/* isDelivered= */ false);
+        } else {
+            handler.obtainMessage(MSG_SEND_MESSAGE, message).sendToTarget();
+        }
     }
-    handler.obtainMessage(MSG_SEND_MESSAGE, message).sendToTarget();
-  }
 
   public synchronized void setForegroundMode(boolean foregroundMode) {
     if (foregroundMode) {

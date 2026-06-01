@@ -3,7 +3,7 @@ package minefarts.smarttube.extractor.ts;
 import minefarts.smarttube.C;
 import minefarts.smarttube.ParserException;
 import minefarts.smarttube.extractor.ExtractorOutput;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.ParsableBitArray;
 import minefarts.smarttube.utils.ParsableByteArray;
 import minefarts.smarttube.utils.TimestampAdjuster;

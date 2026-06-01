@@ -4,7 +4,7 @@ import minefarts.smarttube.extractor.DummyTrackOutput;
 import minefarts.smarttube.extractor.TrackOutput;
 import minefarts.smarttube.source.SampleQueue;
 import minefarts.smarttube.source.chunk.ChunkExtractorWrapper.TrackOutputProvider;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 
 /** An output for {@link BaseMediaChunk}s. */
 public final class BaseMediaChunkOutput implements TrackOutputProvider {

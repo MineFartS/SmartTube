@@ -19,7 +19,7 @@ import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
 import android.text.style.UnderlineSpan;
 import minefarts.smarttube.text.Cue;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.ParsableByteArray;
 import minefarts.smarttube.utils.Utils;
 import java.util.ArrayDeque;

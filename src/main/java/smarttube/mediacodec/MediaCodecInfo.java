@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import android.util.Pair;
 import minefarts.smarttube.Format;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.MimeTypes;
 import minefarts.smarttube.utils.Utils;
 

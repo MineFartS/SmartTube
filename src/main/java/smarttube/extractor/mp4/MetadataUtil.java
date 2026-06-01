@@ -10,7 +10,7 @@ import minefarts.smarttube.metadata.id3.CommentFrame;
 import minefarts.smarttube.metadata.id3.Id3Frame;
 import minefarts.smarttube.metadata.id3.InternalFrame;
 import minefarts.smarttube.metadata.id3.TextInformationFrame;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.ParsableByteArray;
 import minefarts.smarttube.utils.Utils;
 import java.nio.ByteBuffer;

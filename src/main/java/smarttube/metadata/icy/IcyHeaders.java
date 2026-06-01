@@ -7,7 +7,7 @@ import minefarts.smarttube.C;
 import minefarts.smarttube.Format;
 import minefarts.smarttube.metadata.Metadata;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.Utils;
 import java.util.List;
 import java.util.Map;

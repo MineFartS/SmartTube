@@ -1,86 +1,120 @@
 package minefarts.smarttube.utils.mylogger;
 
-import android.content.Context;
+import com.google.gson.Gson;
 
-public class Log {
-    public static final String LOG_TYPE_FILE = "log_type_file";
-    public static final String LOG_TYPE_SYSTEM = "log_type_system";
+import androidx.annotation.Nullable;
 
-    private static MyLogger sLogger = new SystemLogger();
+import java.util.Arrays;
 
-    public static void d(String tag, Object msg, Object... formatArgs) {
-        sLogger.d(tag, formatMsg(msg, formatArgs));
+/** Wrapper around {@link android.util.Log} which allows to set the log level. */
+public final class Log {
+
+    private static final Gson sGson = new Gson();
+
+    public static void d(
+        String tag, 
+        @Nullable Object message,
+        Object... formatArgs
+    ) {
+        d(tag, message, null, formatArgs);
     }
 
-    public static void i(String tag, Object msg, Object... formatArgs) {
-        sLogger.i(tag, formatMsg(msg, formatArgs));
+    public static void d(
+        String tag, 
+        @Nullable Object message,
+        @Nullable Throwable throwable,
+        Object... formatArgs
+    ) {
+        String msg = formatMsg(message, formatArgs);
+        android.util.Log.d(tag, msg, throwable);
     }
 
-    public static void w(String tag, Object msg, Object... formatArgs) {
-        sLogger.w(tag, formatMsg(msg, formatArgs));
+    public static void i(
+        String tag, 
+        @Nullable Object message,
+        Object... formatArgs
+    ) {
+        i(tag, message, null, formatArgs);
     }
 
-    public static void e(String tag, Object msg, Object... formatArgs) {
-        sLogger.e(tag, formatMsg(msg, formatArgs));
+    public static void i(
+        String tag, 
+        @Nullable Object message,
+        @Nullable Throwable throwable,
+        Object... formatArgs
+    ) {
+        String msg = formatMsg(message, formatArgs);
+        android.util.Log.i(tag, msg, throwable);
     }
 
-    public static void i(String tag, Object msg, Throwable ex) {
-        i(tag, msg + " " + ex.getMessage());
+    public static void w(
+        String tag, 
+        @Nullable Object message,
+        Object... formatArgs
+    ) {
+        w(tag, message, Traceback(), formatArgs);
     }
 
-    public static void e(String tag, Object msg, Throwable ex) {
-        if (msg != null && ex != null) {
-            e(tag, msg + " " + ex.getMessage());
-        }
+    public static void w(
+        String tag, 
+        @Nullable Object message,
+        @Nullable Throwable throwable,
+        Object... formatArgs
+    ) {
+        String msg = formatMsg(message, formatArgs);
+        android.util.Log.w(tag, msg, throwable);
     }
 
-    public static void d(String tag, Object msg, Throwable ex) {
-        d(tag, msg + " " + ex.getMessage());
+    public static void e(
+        String tag, 
+        @Nullable Object message,
+        Object... formatArgs
+    ) {
+        e(tag, message, Traceback(), formatArgs);
     }
 
-    public static void w(String tag, Object msg, Throwable ex) {
-        w(tag, msg + " " + ex.getMessage());
-    }
-
-    /**
-     * In case of file, flushes all data to disk
-     */
-    public static void flush() {
-        sLogger.flush();
-    }
-
-    public static void init(Context context, String logType, String customLabel) {
-        if (sLogger.getLogType().equals(logType)) {
-            return;
-        }
-
-        switch (logType) {
-            case LOG_TYPE_FILE:
-                sLogger = new FileLogger(context, customLabel);
-                break;
-            case LOG_TYPE_SYSTEM:
-                sLogger = new SystemLogger();
-                break;
-        }
-    }
-
-    public static String getLogType() {
-        if (sLogger != null) {
-            return sLogger.getLogType();
-        }
-
-        return LOG_TYPE_SYSTEM;
+    public static void e(
+        String tag, 
+        @Nullable Object message,
+        @Nullable Throwable throwable,
+        Object... formatArgs
+    ) {
+        String msg = formatMsg(message, formatArgs);
+        android.util.Log.e(tag, msg, throwable);
     }
 
     private static String formatMsg(Object msg, Object... formatArgs) {
-        String result = null;
 
-        if (msg != null && formatArgs != null && formatArgs.length > 0) {
-            result = String.format(msg.toString(), formatArgs);
-        } else if (msg != null) {
-            result = msg.toString();
+        if (msg == null) return "";
+
+        String fmsg = "\n";
+
+        if (formatArgs != null && formatArgs.length > 0) {
+
+            fmsg += String.format(msg.toString(), formatArgs);
+
+        } else {
+            try {
+                fmsg += msg.toString();
+            } catch (Exception e) {
+                fmsg += sGson.toJson(msg);
+            }
         }
 
-        return result;
+        return fmsg + "\n";
     }
+
+    private static Throwable Traceback() {
+
+        StackTraceElement[] traceback = Arrays.stream(Thread.currentThread().getStackTrace())
+            .filter(ste -> !ste.getClassName().contains("utils.mylogger.Log"))
+            .toArray(StackTraceElement[]::new);
+
+        Throwable ex = new Throwable();
+
+        ex.setStackTrace(traceback);
+    
+        return ex;
+    }
+
 }

@@ -11,7 +11,7 @@ import android.util.Log;
 import minefarts.smarttube.C;
 import minefarts.smarttube.utils.AmazonQuirks;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Logger;
+import minefarts.smarttube.utils.mylogger.Logger;
 import minefarts.smarttube.utils.Utils;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

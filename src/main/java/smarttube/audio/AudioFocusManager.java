@@ -14,7 +14,7 @@ import minefarts.smarttube.ExoPlayer;
 import minefarts.smarttube.Player;
 import minefarts.smarttube.source.MediaSource;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.Utils;
 
 import java.lang.annotation.Documented;

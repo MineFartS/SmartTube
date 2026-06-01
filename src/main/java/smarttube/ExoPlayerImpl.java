@@ -17,7 +17,7 @@ import minefarts.smarttube.trackselection.TrackSelectorResult;
 import minefarts.smarttube.upstream.BandwidthMeter;
 import minefarts.smarttube.utils.Assertions;
 import minefarts.smarttube.utils.Clock;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.Utils;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
