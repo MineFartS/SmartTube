@@ -24,7 +24,7 @@ import minefarts.smarttube.metadata.emsg.EventMessage;
 import minefarts.smarttube.metadata.emsg.EventMessageEncoder;
 import minefarts.smarttube.text.cea.CeaUtil;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.MimeTypes;
 import minefarts.smarttube.utils.NalUnitUtil;
 import minefarts.smarttube.utils.ParsableByteArray;

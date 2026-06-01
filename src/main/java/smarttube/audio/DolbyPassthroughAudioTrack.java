@@ -1,7 +1,7 @@
 package minefarts.smarttube.audio;
 
 import android.media.*;
-import minefarts.smarttube.utils.Logger;
+import minefarts.smarttube.utils.mylogger.Logger;
 import android.os.ConditionVariable;
 import android.os.HandlerThread;
 import android.os.Handler;

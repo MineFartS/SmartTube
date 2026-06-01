@@ -5,8 +5,11 @@ import static android.opengl.GLU.gluErrorString;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import android.text.TextUtils;
+
 import minefarts.smarttube.C;
 import minefarts.smarttube.ExoPlayerLibraryInfo;
+import minefarts.smarttube.utils.mylogger.Log;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;

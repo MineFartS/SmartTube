@@ -1,6 +1,6 @@
 package minefarts.smarttube.drm;
 
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.Utils;
 import org.json.JSONArray;
 import org.json.JSONException;

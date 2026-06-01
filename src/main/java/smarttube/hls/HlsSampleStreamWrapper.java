@@ -33,7 +33,7 @@ import minefarts.smarttube.upstream.LoadErrorHandlingPolicy;
 import minefarts.smarttube.upstream.Loader;
 import minefarts.smarttube.upstream.Loader.LoadErrorAction;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.MimeTypes;
 import minefarts.smarttube.utils.ParsableByteArray;
 import minefarts.smarttube.utils.Utils;

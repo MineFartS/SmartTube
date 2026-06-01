@@ -36,7 +36,7 @@ import minefarts.smarttube.upstream.LoaderErrorThrower;
 import minefarts.smarttube.upstream.ParsingLoadable;
 import minefarts.smarttube.upstream.TransferListener;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.Utils;
 import java.io.BufferedReader;
 import java.io.IOException;

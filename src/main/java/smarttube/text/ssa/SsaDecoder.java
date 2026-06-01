@@ -6,7 +6,7 @@ import minefarts.smarttube.C;
 import minefarts.smarttube.text.Cue;
 import minefarts.smarttube.text.SimpleSubtitleDecoder;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.LongArray;
 import minefarts.smarttube.utils.ParsableByteArray;
 import minefarts.smarttube.utils.Utils;

@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.R;
 
 import java.util.ArrayList;
@@ -61,6 +62,9 @@ public class MessageHelpers {
         Runnable toast = () -> {
             try {
                 String finalMsg = Helpers.ellipsize(msg, MAX_LEN);
+
+                Log.d("MessageHelpers", finalMsg);
+
                 Toast currentToast = Toast.makeText(context, finalMsg, Toast.LENGTH_LONG);
                 fixTextSize(currentToast, context);
                 addAndCancelPrevIfNeeded(new Pair<>(currentToast, finalMsg), isLong);

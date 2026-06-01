@@ -33,12 +33,12 @@ import minefarts.smarttube.mediacodec.MediaCodecUtil;
 import minefarts.smarttube.mediacodec.MediaCodecUtil.DecoderQueryException;
 import minefarts.smarttube.mediacodec.MediaFormatUtil;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.MimeTypes;
 import minefarts.smarttube.utils.TraceUtil;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.video.VideoRendererEventListener.EventDispatcher;
-import minefarts.smarttube.utils.Logger;
+import minefarts.smarttube.utils.mylogger.Logger;
 
 import java.nio.ByteBuffer;
 import java.util.Collections;

@@ -8,7 +8,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.SparseArray;
 import minefarts.smarttube.text.Cue;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.ParsableBitArray;
 import minefarts.smarttube.utils.Utils;
 import java.util.ArrayList;

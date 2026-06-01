@@ -35,7 +35,7 @@ import minefarts.smarttube.trackselection.TrackSelector;
 import minefarts.smarttube.upstream.BandwidthMeter;
 import minefarts.smarttube.utils.Assertions;
 import minefarts.smarttube.utils.Clock;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.PriorityTaskManager;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.video.VideoFrameMetadataListener;

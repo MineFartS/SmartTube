@@ -17,7 +17,7 @@ import minefarts.smarttube.C;
 import minefarts.smarttube.drm.DrmInitData.SchemeData;
 import minefarts.smarttube.extractor.mp4.PsshAtomUtil;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.MimeTypes;
 import minefarts.smarttube.utils.ParsableByteArray;
 import minefarts.smarttube.utils.Utils;

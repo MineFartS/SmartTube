@@ -9,7 +9,7 @@ import minefarts.smarttube.extractor.ExtractorOutput;
 import minefarts.smarttube.extractor.TrackOutput;
 import minefarts.smarttube.extractor.ts.TsPayloadReader.TrackIdGenerator;
 import minefarts.smarttube.utils.CodecSpecificDataUtil;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.MimeTypes;
 import minefarts.smarttube.utils.ParsableBitArray;
 import minefarts.smarttube.utils.ParsableByteArray;

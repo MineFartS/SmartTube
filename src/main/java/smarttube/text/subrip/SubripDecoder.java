@@ -6,7 +6,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import minefarts.smarttube.text.Cue;
 import minefarts.smarttube.text.SimpleSubtitleDecoder;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.LongArray;
 import minefarts.smarttube.utils.ParsableByteArray;
 import java.util.ArrayList;

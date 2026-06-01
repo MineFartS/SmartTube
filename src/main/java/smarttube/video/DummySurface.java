@@ -19,7 +19,7 @@ import android.view.Surface;
 import minefarts.smarttube.utils.Assertions;
 import minefarts.smarttube.utils.EGLSurfaceTexture;
 import minefarts.smarttube.utils.EGLSurfaceTexture.SecureMode;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.Utils;
 import javax.microedition.khronos.egl.EGL10;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;

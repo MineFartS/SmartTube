@@ -5,7 +5,7 @@ import minefarts.smarttube.upstream.DataSink;
 import minefarts.smarttube.upstream.DataSpec;
 import minefarts.smarttube.upstream.cache.Cache.CacheException;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.ReusableBufferedOutputStream;
 import minefarts.smarttube.utils.Utils;
 import java.io.File;

@@ -1,4 +1,4 @@
-package minefarts.smarttube.utils;
+package minefarts.smarttube.utils.mylogger;
 
 import java.lang.IllegalArgumentException;
 import android.util.Log;

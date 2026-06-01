@@ -4,7 +4,7 @@ import androidx.annotation.Nullable;
 import minefarts.smarttube.C;
 import minefarts.smarttube.extractor.TrackOutput;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 
 /**
  * Encapsulates information parsed from a track encryption (tenc) box or sample group description 

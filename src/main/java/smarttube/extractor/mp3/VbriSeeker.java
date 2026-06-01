@@ -4,7 +4,7 @@ import androidx.annotation.Nullable;
 import minefarts.smarttube.C;
 import minefarts.smarttube.extractor.MpegAudioHeader;
 import minefarts.smarttube.extractor.SeekPoint;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.ParsableByteArray;
 import minefarts.smarttube.utils.Utils;
 

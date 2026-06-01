@@ -5,7 +5,7 @@ import minefarts.smarttube.ParserException;
 import minefarts.smarttube.audio.WavUtil;
 import minefarts.smarttube.extractor.ExtractorInput;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.ParsableByteArray;
 import java.io.IOException;
 

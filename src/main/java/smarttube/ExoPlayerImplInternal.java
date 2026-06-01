@@ -23,7 +23,7 @@ import minefarts.smarttube.upstream.BandwidthMeter;
 import minefarts.smarttube.utils.Assertions;
 import minefarts.smarttube.utils.Clock;
 import minefarts.smarttube.utils.HandlerWrapper;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.TraceUtil;
 import minefarts.smarttube.utils.Utils;
 import java.io.IOException;

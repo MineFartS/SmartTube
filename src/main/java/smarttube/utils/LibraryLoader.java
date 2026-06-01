@@ -2,6 +2,8 @@ package minefarts.smarttube.utils;
 
 import java.util.Arrays;
 
+import minefarts.smarttube.utils.mylogger.Log;
+
 /**
  * Configurable loader for native libraries.
  */

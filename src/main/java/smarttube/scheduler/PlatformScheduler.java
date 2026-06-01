@@ -11,7 +11,7 @@ import android.content.Intent;
 import android.os.PersistableBundle;
 import androidx.annotation.RequiresPermission;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.Utils;
 
 /**

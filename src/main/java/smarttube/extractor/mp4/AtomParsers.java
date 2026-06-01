@@ -14,7 +14,7 @@ import minefarts.smarttube.extractor.GaplessInfoHolder;
 import minefarts.smarttube.metadata.Metadata;
 import minefarts.smarttube.utils.Assertions;
 import minefarts.smarttube.utils.CodecSpecificDataUtil;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.MimeTypes;
 import minefarts.smarttube.utils.ParsableByteArray;
 import minefarts.smarttube.utils.Utils;

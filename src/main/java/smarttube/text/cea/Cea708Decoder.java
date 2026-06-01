@@ -18,7 +18,7 @@ import minefarts.smarttube.text.Subtitle;
 import minefarts.smarttube.text.SubtitleDecoder;
 import minefarts.smarttube.text.SubtitleInputBuffer;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.ParsableBitArray;
 import minefarts.smarttube.utils.ParsableByteArray;
 import java.util.ArrayList;
