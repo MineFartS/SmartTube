@@ -34,11 +34,19 @@ internal abstract class JsChallengeProvider {
      */
     protected abstract fun realBulkSolve(requests: List<JsChallengeRequest>): Sequence<JsChallengeProviderResponse>
 
-    protected fun getPlayer(playerUrl: String): String {
+    protected fun getPlayer(playerUrl: String?): String {
+
+        var mPlayerUrl = playerUrl
+        
+        if (mPlayerUrl == null)
+            mPlayerUrl = ""
+
         return try {
-            ie.loadPlayer(playerUrl)
+            ie.loadPlayer(mPlayerUrl)
         } catch (e: Exception) {
             throw JsChallengeProviderError("Failed to load player for JS challenge: $playerUrl", e)
         }
+
     }
+    
 }
