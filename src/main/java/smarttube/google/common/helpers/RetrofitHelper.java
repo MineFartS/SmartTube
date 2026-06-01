@@ -101,7 +101,7 @@ public class RetrofitHelper {
             && (response.code() == 400 || response.code() == 403 || response.code() == 428)
         ) {
 
-            Gson gson = new GsonBuilder().create();
+            Gson gson = new GsonBuilder().setLenient().create();
 
             try (ResponseBody body = response.errorBody()) {
                 String errorMsg;
@@ -143,7 +143,10 @@ public class RetrofitHelper {
             // InterruptedIOException - Thread interrupted. Thread died!!
             // UnknownHostException: Unable to resolve host (DNS error) Thread died?
             e.printStackTrace();
-            throw new IllegalStateException(e); // notify caller about network condition
+
+            if (!e.getMessage().contains("malformed JSON"))
+                throw new IllegalStateException(e); // notify caller about network condition
+
         }
 
         return null;
