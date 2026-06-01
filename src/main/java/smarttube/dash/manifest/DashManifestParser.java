@@ -18,7 +18,7 @@ import minefarts.smarttube.dash.manifest.SegmentBase.SegmentTimelineElement;
 import minefarts.smarttube.dash.manifest.SegmentBase.SingleSegmentBase;
 import minefarts.smarttube.upstream.ParsingLoadable;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.MimeTypes;
 import minefarts.smarttube.utils.UriUtil;
 import minefarts.smarttube.utils.Utils;

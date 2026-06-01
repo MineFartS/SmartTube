@@ -14,7 +14,7 @@ import minefarts.smarttube.trackselection.TrackSelector;
 import minefarts.smarttube.trackselection.TrackSelectorResult;
 import minefarts.smarttube.upstream.Allocator;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import org.checkerframework.checker.nullness.compatqual.NullableType;
 
 /** Holds a {@link MediaPeriod} with information required to play it as part of a timeline. */

@@ -7,7 +7,7 @@ import minefarts.smarttube.C;
 import minefarts.smarttube.metadata.icy.IcyHeaders;
 import minefarts.smarttube.upstream.DataSpec.HttpMethod;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.Predicate;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.utils.helpers.NetworkHelpers;

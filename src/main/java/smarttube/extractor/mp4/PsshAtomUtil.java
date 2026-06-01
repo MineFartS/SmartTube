@@ -1,7 +1,7 @@
 package minefarts.smarttube.extractor.mp4;
 
 import androidx.annotation.Nullable;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.ParsableByteArray;
 import java.nio.ByteBuffer;
 import java.util.UUID;

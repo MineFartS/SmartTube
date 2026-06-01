@@ -3,7 +3,7 @@ package minefarts.smarttube.audio;
 import androidx.annotation.Nullable;
 import minefarts.smarttube.C;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.Utils;
 import java.io.IOException;
 import java.io.RandomAccessFile;

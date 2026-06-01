@@ -7,7 +7,7 @@ import minefarts.smarttube.C;
 import minefarts.smarttube.database.DatabaseIOException;
 import minefarts.smarttube.database.DatabaseProvider;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.Utils;
 import java.io.File;
 import java.io.IOException;

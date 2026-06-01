@@ -29,7 +29,7 @@ import minefarts.smarttube.drm.FrameworkMediaCrypto;
 import minefarts.smarttube.mediacodec.MediaCodecUtil.DecoderQueryException;
 import minefarts.smarttube.source.MediaPeriod;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.MimeTypes;
 import minefarts.smarttube.utils.NalUnitUtil;
 import minefarts.smarttube.utils.TimedValueQueue;
@@ -45,7 +45,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
-import minefarts.smarttube.utils.Logger;
+import minefarts.smarttube.utils.mylogger.Logger;
 
 /**
  * An abstract renderer that uses {@link MediaCodec} to decode samples for rendering.

@@ -23,7 +23,7 @@ import minefarts.smarttube.sabr.parser.parts.MediaSegmentDataSabrPart;
 import minefarts.smarttube.sabr.parser.parts.MediaSegmentEndSabrPart;
 import minefarts.smarttube.sabr.parser.parts.MediaSegmentInitSabrPart;
 import minefarts.smarttube.sabr.parser.parts.SabrPart;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.LongArray;
 import minefarts.smarttube.utils.MimeTypes;
 import minefarts.smarttube.utils.NalUnitUtil;

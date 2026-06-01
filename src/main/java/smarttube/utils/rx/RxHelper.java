@@ -252,17 +252,14 @@ public class RxHelper {
     public static <T> Observable<T> fromCallable(Callable<T> callback) {
         // NOTE: In stock implementation Unhandled NPE crash will happen if callable returns null
         return create(emitter -> {
+            
             T result = callback.call();
 
             if (result != null) {
                 emitter.onNext(result);
                 emitter.onComplete();
-            } else {
-                // Be aware of OnErrorNotImplementedException exception if error handler not implemented!
-                // Essential part to notify about problems. Don't remove!
-                onError(emitter, "fromNullable result is null");
-                Log.e(TAG, "fromNullable result is null");
             }
+
         });
     }
 

@@ -2,7 +2,7 @@ package minefarts.smarttube.upstream.cache;
 
 import androidx.annotation.Nullable;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import java.io.File;
 import java.util.TreeSet;
 

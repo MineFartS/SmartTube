@@ -3,7 +3,7 @@ package minefarts.smarttube.text.webvtt;
 import android.text.Layout.Alignment;
 import android.text.SpannableStringBuilder;
 import minefarts.smarttube.text.Cue;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 
 /**
  * A representation of a WebVTT cue.

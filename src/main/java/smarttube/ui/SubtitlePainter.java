@@ -22,7 +22,7 @@ import android.text.style.RelativeSizeSpan;
 import android.util.DisplayMetrics;
 import minefarts.smarttube.text.CaptionStyleCompat;
 import minefarts.smarttube.text.Cue;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.utils.misc.PaddingBackgroundColorSpan;
 import minefarts.smarttube.utils.misc.RoundedBackgroundSpan;

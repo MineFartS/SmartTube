@@ -1,7 +1,7 @@
 package minefarts.smarttube.extractor.ogg;
 
 import minefarts.smarttube.ParserException;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.ParsableByteArray;
 import java.util.Arrays;
 

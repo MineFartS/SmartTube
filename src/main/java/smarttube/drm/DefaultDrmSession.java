@@ -15,7 +15,7 @@ import minefarts.smarttube.drm.ExoMediaDrm.KeyRequest;
 import minefarts.smarttube.drm.ExoMediaDrm.ProvisionRequest;
 import minefarts.smarttube.utils.Assertions;
 import minefarts.smarttube.utils.EventDispatcher;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.Utils;
 import java.util.Arrays;
 import java.util.Collections;

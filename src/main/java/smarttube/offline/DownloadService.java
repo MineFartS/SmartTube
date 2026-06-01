@@ -14,7 +14,7 @@ import androidx.annotation.StringRes;
 import minefarts.smarttube.scheduler.Requirements;
 import minefarts.smarttube.scheduler.Scheduler;
 import minefarts.smarttube.utils.Assertions;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.NotificationUtil;
 import minefarts.smarttube.utils.Utils;
 import java.util.HashMap;

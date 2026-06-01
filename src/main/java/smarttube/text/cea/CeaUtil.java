@@ -2,7 +2,7 @@ package minefarts.smarttube.text.cea;
 
 import minefarts.smarttube.C;
 import minefarts.smarttube.extractor.TrackOutput;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.ParsableByteArray;
 import minefarts.smarttube.utils.Utils;
 

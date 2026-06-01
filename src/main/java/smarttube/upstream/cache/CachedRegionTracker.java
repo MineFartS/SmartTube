@@ -2,7 +2,7 @@ package minefarts.smarttube.upstream.cache;
 
 import androidx.annotation.NonNull;
 import minefarts.smarttube.extractor.ChunkIndex;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.Utils;
 import java.util.Arrays;
 import java.util.Iterator;

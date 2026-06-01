@@ -6,7 +6,7 @@ import minefarts.smarttube.text.Cue;
 import minefarts.smarttube.text.SimpleSubtitleDecoder;
 import minefarts.smarttube.text.SubtitleDecoderException;
 import minefarts.smarttube.utils.ColorParser;
-import minefarts.smarttube.utils.Log;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.utils.XmlPullParserUtil;
 import java.io.ByteArrayInputStream;
