@@ -791,16 +791,10 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
     controller.setExtraAdGroupMarkers(extraAdGroupTimesMs, extraPlayedAdGroups);
   }
 
-  /**
-   * Set the {@link AspectRatioFrameLayout.AspectRatioListener}.
-   *
-   * @param listener The listener to be notified about aspect ratios changes of the video content or
-   *     the content frame.
-   */
-  public void setAspectRatioListener(AspectRatioFrameLayout.AspectRatioListener listener) {
-    Assertions.checkState(contentFrame != null);
-    contentFrame.setAspectRatioListener(listener);
-  }
+    public void setAspectRatioListener(AspectRatioListener listener) {
+        Assertions.checkState(contentFrame != null);
+        contentFrame.aspectRatioListener = listener;
+    }
 
   /**
    * Gets the view onto which video is rendered. This is a:
