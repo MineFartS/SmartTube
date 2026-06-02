@@ -15,7 +15,6 @@ public final class RampingLoadControl implements LoadControl {
     private final long rampDurationMs = 60_000;
 
     private volatile long startupWallClockMs = 0;
-    private volatile long lastElapsed = -1;
     private volatile DefaultLoadControl delegate;
 
     public RampingLoadControl() {

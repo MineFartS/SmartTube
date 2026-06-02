@@ -844,28 +844,36 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
             return;
         }
 
-        Disposable updateAction = group
-                .subscribe(
-                        mediaGroup -> {
-                            getView().showProgressBar(false);
+        Disposable updateAction = group.subscribe(
+        
+            mediaGroup -> {
+                getView().showProgressBar(false);
 
-                            if (getView() == null) {
-                                Log.e(TAG, "Browse view has been unloaded from the memory. Low RAM?");
-                                getViewManager().startView(BrowseView.class);
-                                return;
-                            }
+                if (getView() == null) {
+                    Log.e(TAG, "Browse view has been unloaded from the memory. Low RAM?");
+                    getViewManager().startView(BrowseView.class);
+                    return;
+                }
 
-                            VideoGroup videoGroup = VideoGroup.from(baseGroup, mediaGroup);
-                            appendLocalHistory(videoGroup);
-                            getView().updateSection(videoGroup);
-                            mBrowseProcessor.process(videoGroup);
+                VideoGroup videoGroup = VideoGroup.from(baseGroup, mediaGroup);
 
-                            continueGroupIfNeeded(videoGroup);
-                        },
-                        error -> {
-                            Log.e(TAG, "updateGridHeader error: %s", error.getMessage());
-                            handleLoadError(error);
-                        }, () -> handleLoadError(null));
+                if (isHistorySection())
+                    appendLocalHistory(videoGroup);
+
+                getView().updateSection(videoGroup);
+                mBrowseProcessor.process(videoGroup);
+
+                continueGroupIfNeeded(videoGroup);
+            },
+
+            error -> {
+                Log.e(TAG, "updateGridHeader error: %s", error.getMessage());
+                handleLoadError(error);
+            }, 
+            
+            () -> handleLoadError(null)
+        
+        );
 
         mActions.add(updateAction);
     }
@@ -1232,32 +1240,16 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
 
     private void appendLocalHistory(VideoGroup videoGroup) {
         
-        if (!isHistorySection()) {
-            return;
-        }
-
         VideoStateService stateService = VideoStateService.instance(getContext());
 
-        if (stateService.isEmpty() || videoGroup.isEmpty()) {
-            return;
-        }
+        if (stateService.isEmpty() || videoGroup.isEmpty()) return;
 
-        Video lastHistoryItem = videoGroup.get(0);
         State lastState = stateService.getLastState();
 
-        if (lastState == null || Helpers.equals(lastHistoryItem, lastState.video)) {
-            return;
-        }
+        if (lastState == null || videoGroup.get(0) == lastState.video) return;
 
-        List<Video> remote = videoGroup.getVideos();
-
-        List<Video> local = new ArrayList<>();
         for (State state: stateService.getStates()) {
-            local.add(state.video);
-        }
-
-        for (Video video : local) {
-            videoGroup.add(0, video);
+            videoGroup.add(0, state.video);
         }
 
     }
