@@ -22,8 +22,7 @@ import minefarts.smarttube.utils.rx.RxHelper;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Queue;
 import minefarts.smarttube.app.models.data.Video;
-import minefarts.smarttube.app.models.playback.PlayerEngine;
-import minefarts.smarttube.app.models.playback.PlayerEngine;
+import minefarts.smarttube.ui.playback.PlaybackFragment;
 import minefarts.smarttube.app.models.playback.ui.OptionCategory;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
@@ -41,7 +40,6 @@ import minefarts.smarttube.utils.ServiceManager;
 import minefarts.smarttube.utils.MotherActivity;
 import minefarts.smarttube.prefs.ContentBlockData;
 import minefarts.smarttube.prefs.GeneralData;
-import minefarts.smarttube.prefs.PlayerData;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.utils.playlist.impl.YouTubePlaylistInfo;
 
@@ -152,7 +150,7 @@ public class AppDialogUtil {
                 }));
     }
 
-    private static void setFormat(FormatItem formatItem, PlayerData playerData, Runnable onFormatSelected) {
+    private static void setFormat(FormatItem formatItem, PlaybackFragment playerData, Runnable onFormatSelected) {
         
         playerData.setFormat(formatItem);
     
@@ -165,7 +163,7 @@ public class AppDialogUtil {
     }
 
     public static OptionCategory createAudioLanguageCategory(Context context, Runnable onSetCallback) {
-        PlayerData playerData = PlayerData.instance(context);
+        PlaybackFragment playerData = PlaybackFragment.instance(context);
         String title = context.getString(R.string.audio_language);
 
         List<UiOptionItem> options = new ArrayList<>();
@@ -266,17 +264,17 @@ public class AppDialogUtil {
     }
 
     public static OptionCategory createPlaybackModeCategory(Context context, Runnable onModeSelected) {
-        PlayerData playerData = PlayerData.instance(context);
+        PlaybackFragment playerData = PlaybackFragment.instance(context);
         List<UiOptionItem> options = new ArrayList<>();
 
         for (int[] pair : new int[][] {
-                {R.string.repeat_mode_all, PlayerEngine.PLAYBACK_MODE_ALL},
-                {R.string.repeat_mode_one, PlayerEngine.PLAYBACK_MODE_ONE},
-                {R.string.repeat_mode_shuffle, PlayerEngine.PLAYBACK_MODE_SHUFFLE},
-                {R.string.repeat_mode_pause_alt, PlayerEngine.PLAYBACK_MODE_LIST},
-                {R.string.repeat_mode_reverse_list, PlayerEngine.PLAYBACK_MODE_REVERSE_LIST},
-                {R.string.repeat_mode_pause, PlayerEngine.PLAYBACK_MODE_PAUSE},
-                {R.string.repeat_mode_none, PlayerEngine.PLAYBACK_MODE_CLOSE}
+                {R.string.repeat_mode_all, PlaybackFragment.PLAYBACK_MODE_ALL},
+                {R.string.repeat_mode_one, PlaybackFragment.PLAYBACK_MODE_ONE},
+                {R.string.repeat_mode_shuffle, PlaybackFragment.PLAYBACK_MODE_SHUFFLE},
+                {R.string.repeat_mode_pause_alt, PlaybackFragment.PLAYBACK_MODE_LIST},
+                {R.string.repeat_mode_reverse_list, PlaybackFragment.PLAYBACK_MODE_REVERSE_LIST},
+                {R.string.repeat_mode_pause, PlaybackFragment.PLAYBACK_MODE_PAUSE},
+                {R.string.repeat_mode_none, PlaybackFragment.PLAYBACK_MODE_CLOSE}
         }) {
             options.add(UiOptionItem.from(context.getString(pair[0]),
                     optionItem -> {

@@ -21,7 +21,7 @@ import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
 import minefarts.smarttube.exoplayer.selector.track.VideoTrack;
 import minefarts.smarttube.exoplayer.versions.selector.RestoreTrackSelector;
 import minefarts.smarttube.exoplayer.versions.selector.RestoreTrackSelector.TrackSelectorCallback;
-import minefarts.smarttube.prefs.PlayerData;
+import minefarts.smarttube.ui.playback.PlaybackFragment;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.utils.Utils;
 
@@ -559,7 +559,7 @@ public class TrackSelectorManager implements TrackSelectorCallback {
             return trackGroupList;
         }
 
-        String audioLanguage = fixLangCode(PlayerData.instance(mContext).getAudioLanguage());
+        String audioLanguage = fixLangCode(PlaybackFragment.instance(mContext).getAudioLanguage());
 
         String resultLanguage = null;
         String originLanguage = null;

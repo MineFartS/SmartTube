@@ -1,6 +1,7 @@
 package minefarts.smarttube.ui.playback;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.support.v4.media.MediaMetadataCompat;
@@ -15,10 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Handler;
 import android.view.InputEvent;
+import android.annotation.SuppressLint;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+
 import minefarts.smarttube.leanback.app.RowsSupportFragment;
 import minefarts.smarttube.leanback.media.PlayerAdapter;
 import minefarts.smarttube.leanback.widget.ArrayObjectAdapter;
@@ -34,10 +38,8 @@ import minefarts.smarttube.leanback.widget.RowPresenter;
 import minefarts.smarttube.leanback.widget.RowPresenter.ViewHolder;
 import minefarts.smarttube.leanback.widget.PlaybackSeekDataProvider;
 import minefarts.smarttube.leanback.widget.PlaybackSeekUi;
-import minefarts.smarttube.leanback.app.PlaybackSupportFragment;
 import minefarts.smarttube.leanback.widget.VerticalGridView;
 import minefarts.smarttube.leanback.media.LeanbackPlayerAdapter;
-
 import minefarts.smarttube.ControlDispatcher;
 import minefarts.smarttube.DefaultControlDispatcher;
 import minefarts.smarttube.DefaultRenderersFactory;
@@ -55,14 +57,11 @@ import minefarts.smarttube.app.models.data.VideoGroup;
 import minefarts.smarttube.app.models.playback.ui.ChatReceiver;
 import minefarts.smarttube.app.models.playback.ui.SeekBarSegment;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
-import minefarts.smarttube.app.models.playback.PlayerEngine;
 import minefarts.smarttube.exoplayer.controller.ExoPlayerController;
 import minefarts.smarttube.exoplayer.other.ExoPlayerInitializer;
 import minefarts.smarttube.exoplayer.other.SubtitleManager;
 import minefarts.smarttube.exoplayer.selector.FormatItem;
 import minefarts.smarttube.exoplayer.versions.selector.RestoreTrackSelector;
-import minefarts.smarttube.prefs.PlayerData;
-import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.R;
 import minefarts.smarttube.adapter.VideoGroupObjectAdapter;
 import minefarts.smarttube.presenter.CustomListRowPresenter;
@@ -79,9 +78,15 @@ import minefarts.smarttube.ui.playback.other.VideoPlayerGlue;
 import minefarts.smarttube.ui.playback.other.VideoPlayerGlue.OnActionClickedListener;
 import minefarts.smarttube.ui.playback.previewtimebar.StoryboardSeekDataProvider;
 import minefarts.smarttube.ui.widgets.chat.LiveChatView;
-import minefarts.smarttube.ui.widgets.time.DateTimeView;
 import minefarts.smarttube.google.common.helpers.YouTubeHelper;
 import minefarts.smarttube.ui.playback.mod.surface.SurfacePlaybackFragment;
+import minefarts.smarttube.text.CaptionStyleCompat;
+import minefarts.smarttube.utils.helpers.DeviceHelpers;
+import minefarts.smarttube.utils.locale.LocaleUtility;
+import minefarts.smarttube.exoplayer.selector.ExoFormatItem;
+import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
+import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
+import minefarts.smarttube.prefs.AppPrefs;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -90,7 +95,29 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerEngine {
+public class PlaybackFragment 
+    extends SurfacePlaybackFragment 
+    implements ProfileChangeListener
+{
+
+    public static final int PLAYBACK_MODE_PAUSE = 0;
+    public static final int PLAYBACK_MODE_CLOSE = 1;
+    public static final int PLAYBACK_MODE_ALL = 2;
+    public static final int PLAYBACK_MODE_ONE = 3;
+    public static final int PLAYBACK_MODE_SHUFFLE = 4;
+    public static final int PLAYBACK_MODE_LIST = 5;
+    public static final int PLAYBACK_MODE_REVERSE_LIST = 6;
+    
+    public static final float ASPECT_RATIO_1_1 = 1f;
+    public static final float ASPECT_RATIO_4_3 = 1.33f;
+    public static final float ASPECT_RATIO_5_4 = 1.25f;
+    public static final float ASPECT_RATIO_16_9 = 1.77f;
+    public static final float ASPECT_RATIO_16_10 = 1.6f;
+    public static final float ASPECT_RATIO_21_9 = 2.33f;
+    public static final float ASPECT_RATIO_64_27 = 2.37f;
+    public static final float ASPECT_RATIO_221_1 = 2.21f;
+    public static final float ASPECT_RATIO_235_1 = 2.35f;
+    public static final float ASPECT_RATIO_239_1 = 2.39f;
 
     private static final String TAG = PlaybackFragment.class.getSimpleName();
 
@@ -122,7 +149,59 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
     private long mProgressShowTimeMs;
     private String mSelectedVideoId;
 
-    @Override
+    private static final String VIDEO_PLAYER_DATA = "video_player_data";
+
+    public static final int ONLY_UI = 0;
+    public static final int UI_AND_PAUSE = 1;
+    public static final int ONLY_PAUSE = 2;
+    public static final int AUTO_HIDE_NEVER = 0;
+
+    @SuppressLint("StaticFieldLeak")
+    private static PlaybackFragment sInstance;
+    private AppPrefs mPrefs;
+
+    private FormatItem mVideoFormat;
+    private FormatItem mAudioFormat;
+    private FormatItem mSubtitleFormat;
+    private boolean mIsAfrEnabled;
+    private boolean mIsAfrFpsCorrectionEnabled;
+    private boolean mIsAfrResSwitchEnabled;
+    private int mAudioDelayMs;
+    private String mAudioLanguage;
+    private String mSubtitleLanguage;
+    private int mPlaybackMode;
+    private boolean mIsTimeCorrectionEnabled;
+    private boolean mIsDoubleRefreshRateEnabled;
+    private float mSubtitleScale;
+    private float mPlayerVolume;
+    private float mSubtitlePosition;
+    private boolean mIsSkip24RateEnabled;
+    private boolean mIsSkipShortsEnabled;
+    private boolean mIsLiveChatEnabled;
+    private List<FormatItem> mLastSubtitleFormats;
+    private float mPitch;
+    private List<String> mLastAudioLanguages;
+
+    // Required for Android XML fragment inflation
+    public PlaybackFragment() {
+        this(null);
+    }
+
+    private PlaybackFragment(Context context) {
+        
+        mPrefs = AppPrefs.instance(context);
+        mPrefs.addListener(this);
+
+        restoreState();
+    }
+
+    public static PlaybackFragment instance(Context context) {
+        if (sInstance == null)
+            sInstance = new PlaybackFragment(context.getApplicationContext());
+
+        return sInstance;
+    }
+
     public void onCreate(Bundle savedInstanceState) {
         
         super.onCreate(savedInstanceState);
@@ -164,7 +243,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         setupEventListeners();
     }
 
-    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -175,7 +253,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         }
     }
 
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
 
@@ -186,7 +263,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         return root;
     }
 
-    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -208,7 +284,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
     /**
      * Not called when using PIP or Dialogs on API >= 24
      */
-    @Override
     public void onStart() {
         super.onStart();
 
@@ -224,7 +299,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
     /**
      * Not called when using PIP or Dialogs on API >= 24
      */
-    @Override
     public void onStop() {
         super.onStop();
 
@@ -233,7 +307,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         }
     }
 
-    @Override
     public void onResume() {
         super.onResume();
 
@@ -249,7 +322,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         //ExoPlayerInitializer.enableAudioFocus(mPlayer, true); // Restore focus after PIP
     }
 
-    @Override
     public void onPause() {
         super.onPause();
 
@@ -360,7 +432,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         }
     }
 
-    @Override
     public void restartEngine() {
         if (isDetached() || getContext() == null) {
             Log.e(TAG, "Can't restart engine. Seems that player activity is being destroyed.");
@@ -373,7 +444,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         initializePlayer();
     }
 
-    @Override
     public void reloadPlayback() {
         if (mPlayer != null) {
             mPlaybackPresenter.onEngineReleased();
@@ -528,17 +598,14 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         });
 
         mMediaSessionConnector.setQueueNavigator(new BackboneQueueNavigator() {
-            @Override
             public long getSupportedQueueNavigatorActions(Player player) {
                 return PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS | PlaybackStateCompat.ACTION_SKIP_TO_NEXT;
             }
 
-            @Override
             public void onSkipToPrevious(Player player, ControlDispatcher controlDispatcher) {
                 mPlaybackPresenter.onPreviousClicked();
             }
 
-            @Override
             public void onSkipToNext(Player player, ControlDispatcher controlDispatcher) {
                 mPlaybackPresenter.onNextClicked();
             }
@@ -574,14 +641,12 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
 
     private void initPresenters() {
         mRowPresenter = new CustomListRowPresenter() {
-            @Override
             protected void onBindRowViewHolder(RowPresenter.ViewHolder holder, Object item) {
                 super.onBindRowViewHolder(holder, item);
 
                 focusPendingSuggestedItem(holder);
             }
 
-            @Override
             protected void onRowViewSelected(RowPresenter.ViewHolder holder, boolean selected) {
                 super.onRowViewSelected(holder, selected);
 
@@ -602,7 +667,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
     }
 
     private final class ItemViewLongPressedListener implements OnItemLongPressedListener {
-        @Override
         public void onItemLongPressed(
                 Presenter.ViewHolder itemViewHolder,
                 Object item) {
@@ -614,7 +678,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
     }
 
     private final class ItemViewClickedListener implements minefarts.smarttube.leanback.widget.OnItemViewClickedListener {
-        @Override
         public void onItemClicked(
                 Presenter.ViewHolder itemViewHolder,
                 Object item,
@@ -628,7 +691,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
     }
 
     private final class ItemViewSelectedListener implements OnItemViewSelectedListener {
-        @Override
         public void onItemSelected(Presenter.ViewHolder itemViewHolder, Object item,
                                    RowPresenter.ViewHolder rowViewHolder, Row row) {
             if (item instanceof Video) {
@@ -655,42 +717,34 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
     }
 
     private class PlayerActionListener implements VideoPlayerGlue.OnActionClickedListener {
-        @Override
         public void onPrevious() {
             mPlaybackPresenter.onPreviousClicked();
         }
 
-        @Override
         public void onNext() {
             mPlaybackPresenter.onNextClicked();
         }
 
-        @Override
         public void onPlay() {
             mPlaybackPresenter.onPlayClicked();
         }
 
-        @Override
         public void onPause() {
             mPlaybackPresenter.onPauseClicked();
         }
 
-        @Override
         public void onAction(int actionId, int actionIndex) {
             mPlaybackPresenter.onButtonClicked(actionId, actionIndex);
         }
 
-        @Override
         public void onLongAction(int actionId, int actionIndex) {
             mPlaybackPresenter.onButtonLongClicked(actionId, actionIndex);
         }
 
-        @Override
         public void onTopEdgeFocused() {
             showOverlay(false);
         }
 
-        @Override
         public boolean onKeyDown(int keyCode) {
             return mPlaybackPresenter.onKeyDown(keyCode);
         }
@@ -698,7 +752,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
 
     // Begin Ui events
 
-    @Override
     public void setVideo(Video video) {
         mExoPlayerController.setVideo(video);
 
@@ -710,12 +763,10 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         }
     }
 
-    @Override
     public void showBackground(String url) {
         mBackgroundManager.showBackground(url);
     }
 
-    @Override
     public void showBackgroundColor(int colorResId) {
         mBackgroundManager.showBackgroundColor(colorResId);
     }
@@ -798,19 +849,16 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         return result;
     }
 
-    @Override
     public void loadStoryboard() {
         if (mPlayerGlue.getSeekProvider() instanceof StoryboardSeekDataProvider) {
             ((StoryboardSeekDataProvider) mPlayerGlue.getSeekProvider()).init(getVideo(), mExoPlayerController.getDurationMs());
         }
     }
 
-    @Override
     public void setTitle(String title) {
         mPlayerGlue.setTitle(title);
     }
 
-    @Override
     public void showProgressBar(boolean show) {
         if (getProgressBarManager() == null) {
             return;
@@ -824,7 +872,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         }
     }
 
-    @Override
     protected void onBufferingStateChanged(boolean start) {
         // Fix progress stop when playing videos non-stop (stop buffer event from previous video called)
         if (!start && System.currentTimeMillis() - mProgressShowTimeMs < 100) {
@@ -834,14 +881,12 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         super.onBufferingStateChanged(start);
     }
 
-    @Override
     public void setSeekBarSegments(List<SeekBarSegment> segments) {
         if (mPlayerGlue != null) {
             mPlayerGlue.setSeekBarSegments(segments);
         }
     }
 
-    @Override
     public void setChatReceiver(ChatReceiver chatReceiver) {
         if (getActivity() != null) {
             LiveChatView liveChat = getActivity().findViewById(R.id.live_chat);
@@ -853,57 +898,46 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
 
     // Begin Engine Events
 
-    @Override
     public void openSabr(MediaItemFormatInfo formatInfo) {
         mExoPlayerController.openSabr(formatInfo);
     }
 
-    @Override
     public void openDash(MediaItemFormatInfo formatInfo) {
         mExoPlayerController.openDash(formatInfo);
     }
 
-    @Override
     public void openDash(InputStream dashManifest) {
         mExoPlayerController.openDash(dashManifest);
     }
 
-    @Override
     public void openDashUrl(String dashManifestUrl) {
         mExoPlayerController.openDashUrl(dashManifestUrl);
     }
 
-    @Override
     public void openHlsUrl(String hlsPlaylistUrl) {
         mExoPlayerController.openHlsUrl(hlsPlaylistUrl);
     }
 
-    @Override
     public void openUrlList(List<String> urlList) {
         mExoPlayerController.openUrlList(urlList);
     }
 
-    @Override
     public void openMerged(MediaItemFormatInfo formatInfo, String hlsPlaylistUrl) {
         mExoPlayerController.openMerged(formatInfo, hlsPlaylistUrl);
     }
 
-    @Override
     public void openMerged(InputStream dashManifest, String hlsPlaylistUrl) {
         mExoPlayerController.openMerged(dashManifest, hlsPlaylistUrl);
     }
 
-    @Override
     public Long getPositionMs() {
         return mExoPlayerController.getPositionMs();
     }
 
-    @Override
     public void setPositionMs(long positionMs) {
         mExoPlayerController.setPositionMs(positionMs);
     }
 
-    @Override
     public Long getDurationMs() {
         long durationMs = mExoPlayerController.getDurationMs();
 
@@ -916,112 +950,86 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         return durationMs;
     }
 
-    @Override
     public void setPlayWhenReady(boolean play) {
         mExoPlayerController.setPlayWhenReady(play);
     }
 
-    @Override
     public Boolean getPlayWhenReady() {
         return mExoPlayerController.getPlayWhenReady();
     }
 
-    @Override
     public Boolean isPlaying() {
         return mExoPlayerController.isPlaying();
     }
 
-    @Override
     public Boolean isLoading() {
         return mExoPlayerController.isLoading();
     }
 
-    @Override
     public List<FormatItem> getVideoFormats() {
         return mExoPlayerController.getVideoFormats();
     }
 
-    @Override
     public List<FormatItem> getAudioFormats() {
         return mExoPlayerController.getAudioFormats();
     }
 
-    @Override
     public List<FormatItem> getSubtitleFormats() {
         return mExoPlayerController.getSubtitleFormats();
     }
 
-    @Override
-    public void setFormat(FormatItem option) {
-        // Android 4.4 fix for format selection dialog (player destroyed when dialog is focused)
-        mExoPlayerController.selectFormat(option);
-    }
-
-    @Override
     public FormatItem getVideoFormat() {
         return mExoPlayerController.getVideoFormat();
     }
 
-    @Override
     public FormatItem getAudioFormat() {
         return mExoPlayerController.getAudioFormat();
     }
 
-    @Override
     public FormatItem getSubtitleFormat() {
         return mExoPlayerController.getSubtitleFormat();
     }
 
-    @Override
     public Boolean isEngineInitialized() {
         return mPlayer != null;
     }
 
-    @Override
     public void blockEngine(boolean block) {
         mIsEngineBlocked = block;
     }
 
-    @Override
     public Boolean isEngineBlocked() {
         return mIsEngineBlocked;
     }
 
-    @Override
     public Boolean containsMedia() {
         return mExoPlayerController.containsMedia();
     }
 
-    @Override
     public Float getSpeed() {
         return mExoPlayerController.getSpeed();
     }
 
-    @Override
     public void setSpeed(float speed) {
         mExoPlayerController.setSpeed(speed);
         // NOTE: Real speed isn't changed immediately, so use supplied speed data
         setButtonState(R.id.action_video_speed, speed != 1.0f ? 1 : 0);
     }
 
-    @Override
     public Float getVolume() {
         return mExoPlayerController.getVolume();
     }
 
-    @Override
     public void setVolume(float volume) {
         mExoPlayerController.setVolume(volume);
     }
 
-    @Override
     public void setVideoGravity(int gravity) {
         setGravity(gravity);
     }
 
     // End Engine Events
 
-    @Override
     public void onDestroy() {
         super.onDestroy();
 
@@ -1036,7 +1044,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         }
     }
 
-    @Override
     public Video getVideo() {
         if (mExoPlayerController == null) {
             return null;
@@ -1045,7 +1052,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         return mExoPlayerController.getVideo();
     }
 
-    @Override
     public void finish() {
         LeanbackActivity activity = getLeanbackActivity();
 
@@ -1057,7 +1063,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
     /**
      * Force finish (PIP etc)
      */
-    @Override
     public void finishReally() {
         LeanbackActivity activity = getLeanbackActivity();
 
@@ -1066,22 +1071,18 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         }
     }
 
-    @Override
     public Boolean isOverlayShown() {
         return isControlsOverlayVisible();
     }
 
-    @Override
     public Boolean isSuggestionsShown() {
         return isControlsOverlayVisible() && getPlayerRowIndex() != 0;
     }
 
-    @Override
     public Boolean isControlsShown() {
         return isControlsOverlayVisible() && getPlayerRowIndex() == 0;
     }
 
-    @Override
     public void showControlsOverlay(boolean runAnimation) {
         
         super.showControlsOverlay(true);
@@ -1104,7 +1105,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         mIsControlsShownPreviously = true;
     }
 
-    @Override
     public void hideControlsOverlay(boolean runAnimation) {
         
         super.hideControlsOverlay(true);
@@ -1128,7 +1128,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
     /**
      * Show controls or suggestions: depending what has been shown last.
      */
-    @Override
     public void showOverlay(boolean show) {
 
         if (show) {
@@ -1139,7 +1138,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
 
     }
 
-    @Override
     public void showSuggestions(boolean show) {
 
         showOverlay(show);
@@ -1153,27 +1151,23 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
     /**
      * The same as {@link #showOverlay(boolean)} but scrolls from suggestions to controls if needed.
      */
-    @Override
     public void showControls(boolean show) {
         showOverlay(show);
         setPlayerRowIndex(0);
     }
 
-    @Override
     public void setButtonState(int buttonId, int buttonState) {
         if (mPlayerGlue != null) {
             mPlayerGlue.setButtonState(buttonId, buttonState);
         }
     }
 
-    @Override
     public void setChannelIcon(String iconUrl) {
         if (mPlayerGlue != null) {
             mPlayerGlue.setChannelIcon(iconUrl);
         }
     }
 
-    @Override
     public void setSeekPreviewTitle(String title) {
         if (mPlayerGlue != null) {
             mPlayerGlue.setSeekPreviewTitle(title); // seeking ui
@@ -1182,21 +1176,18 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         }
     }
 
-    @Override
     public void setNextTitle(Video nextVideo) {
         if (mPlayerGlue != null) {
             mPlayerGlue.setNextTitle(createNextTitle(nextVideo));
         }
     }
 
-    @Override
     public void showSubtitles(boolean show) {
         if (mSubtitleManager != null) {
             mSubtitleManager.show(show);
         }
     }
 
-    @Override
     public void updateSuggestions(VideoGroup group) {
         if (mRowsAdapter == null) {
             Log.e(TAG, "Related videos row not initialized yet.");
@@ -1252,7 +1243,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         }
     }
 
-    @Override
     public void removeSuggestions(VideoGroup group) {
         if (group == null) {
             return;
@@ -1273,7 +1263,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         }
     }
 
-    @Override
     public Integer getSuggestionsIndex(VideoGroup group) {
         if (mRowsAdapter == null) {
             Log.e(TAG, "Related videos row not initialized yet.");
@@ -1306,7 +1295,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         return index;
     }
 
-    @Override
     public VideoGroup getSuggestionsByIndex(int rowIndex) {
         if (getVideo() == null || !getVideo().hasVideo()) {
             return null;
@@ -1326,7 +1314,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         return result;
     }
 
-    @Override
     public void focusSuggestedItem(int index) {
         if (mRowsSupportFragment != null) {
             ViewHolder vh = mRowsSupportFragment.getRowViewHolder(SUGGESTIONS_START_INDEX);
@@ -1337,7 +1324,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         }
     }
 
-    @Override
     public void focusSuggestedItem(Video video) {
         if (mPendingFocus != null || video == null || video.getGroup() == null) {
             return;
@@ -1377,12 +1363,10 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         }
     }
 
-    @Override
     public void resetSuggestedPosition() {
         setPlayerRowIndex(0);
     }
 
-    @Override
     public void clearSuggestions() {
         if (mRowsAdapter != null && mRowsAdapter.size() > 1) {
             mRowsAdapter.removeItems(SUGGESTIONS_START_INDEX, mRowsAdapter.size() - 1);
@@ -1392,7 +1376,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         mPendingFocus = null;
     }
 
-    @Override
     public Boolean isSuggestionsEmpty() {
         // Ignore first row. It's player controls row.
         return mRowsAdapter == null || mRowsAdapter.size() <= SUGGESTIONS_START_INDEX;
@@ -1424,7 +1407,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
      * Also could help with memory leaks(??)<br/>
      * Without this also you'll have problems with track quality switching(??).
      */
-    @Override
     public void resetPlayerState() {
         mExoPlayerController.resetPlayerState();
         // Hide last frame of the previous video
@@ -1434,7 +1416,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
         setSeekPreviewTitle(null);
     }
 
-    @Override
     public Boolean isEmbed() {
         return false;
     }
@@ -1463,18 +1444,15 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
     /**
      * Interface to be implemented by UI widget to support PlaybackSeekUi.
      */
-    @Override
     public void setPlaybackSeekUiClient(PlaybackSeekUi.Client client) {
         mSeekUiClient2 = client;
     }
 
     private final PlaybackSeekUi.Client mChainedClient2 = new PlaybackSeekUi.Client() {
-        @Override
         public boolean isSeekEnabled() {
             return mSeekUiClient2 == null ? false : mSeekUiClient2.isSeekEnabled();
         }
 
-        @Override
         public void onSeekStarted() {
             if (mSeekUiClient2 != null) {
                 mSeekUiClient2.onSeekStarted();
@@ -1482,12 +1460,10 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
             setSeekMode(true);
         }
 
-        @Override
         public PlaybackSeekDataProvider getPlaybackSeekDataProvider() {
             return mSeekUiClient2 == null ? null : mSeekUiClient2.getPlaybackSeekDataProvider();
         }
 
-        @Override
         public void onSeekPositionChanged(long positionMs) {
             if (mSeekUiClient2 != null) {
                 mSeekUiClient2.onSeekPositionChanged(positionMs);
@@ -1495,7 +1471,6 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
             PlaybackFragment.this.onSeekPositionChanged(positionMs);
         }
 
-        @Override
         public void onSeekFinished(boolean cancelled) {
             if (mSeekUiClient2 != null) {
                 mSeekUiClient2.onSeekFinished(cancelled);
@@ -1600,6 +1575,320 @@ public class PlaybackFragment extends SurfacePlaybackFragment implements PlayerE
     private boolean isInSeek() {
         Object mInSeek = Helpers.getField(this, "mInSeek");
         return mInSeek != null && (boolean) mInSeek;
+    }
+
+    public void setPlaybackMode(int mode) {
+        mPlaybackMode = mode;
+        persistState();
+    }
+
+    public int getPlaybackMode() {
+        return mPlaybackMode;
+    }
+
+    public boolean isAfrEnabled() {
+        return mIsAfrEnabled;
+    }
+
+    public void setAfrEnabled(boolean enabled) {
+        mIsAfrEnabled = enabled;
+        persistState();
+    }
+
+    public boolean isAfrFpsCorrectionEnabled() {
+        return mIsAfrFpsCorrectionEnabled;
+    }
+
+    public void setAfrFpsCorrectionEnabled(boolean enabled) {
+        mIsAfrFpsCorrectionEnabled = enabled;
+        persistState();
+    }
+
+    public boolean isAfrResSwitchEnabled() {
+        return mIsAfrResSwitchEnabled;
+    }
+
+    public void setAfrResSwitchEnabled(boolean enabled) {
+        mIsAfrResSwitchEnabled = enabled;
+        persistState();
+    }
+
+    public boolean isDoubleRefreshRateEnabled() {
+        return mIsDoubleRefreshRateEnabled;
+    }
+
+    public void setDoubleRefreshRateEnabled(boolean enabled) {
+        mIsDoubleRefreshRateEnabled = enabled;
+        persistState();
+    }
+
+    public FormatItem getFormat(int type) {
+        FormatItem format = null;
+
+        switch (type) {
+            case FormatItem.TYPE_VIDEO:
+                format = mVideoFormat;
+                break;
+            case FormatItem.TYPE_AUDIO:
+                format = mAudioFormat;
+                break;
+            case FormatItem.TYPE_SUBTITLE:
+                format = mSubtitleFormat;
+                break;
+        }
+
+        MediaTrack track = FormatItem.toMediaTrack(format);
+        if (track != null) {
+            track.isSaved = true;
+        }
+
+        return FormatItem.checkFormat(format, type);
+    }
+
+    public void setFormat(FormatItem format) {
+
+        if (format == null) return;
+
+        // Android 4.4 fix for format selection dialog (player destroyed when dialog is focused)
+        mExoPlayerController.selectFormat(format);
+
+        switch (format.getType()) {
+            
+            case FormatItem.TYPE_VIDEO:
+                mVideoFormat = format;
+                break;
+            
+            case FormatItem.TYPE_AUDIO:
+                mAudioFormat = format;
+                break;
+
+            case FormatItem.TYPE_SUBTITLE:
+                setLastSubtitleFormat(format);
+                mSubtitleFormat = format;
+                break;
+            
+        }
+        
+        persistState();
+    }
+
+    public FormatItem getLastSubtitleFormat() {
+        return !mLastSubtitleFormats.isEmpty() ? mLastSubtitleFormats.get(0) : FormatItem.SUBTITLE_NONE;
+    }
+
+    public List<FormatItem> getLastSubtitleFormats() {
+        return mLastSubtitleFormats;
+    }
+
+    private void setLastSubtitleFormat(FormatItem format) {
+        if (format != null && !format.isDefault()) {
+            mLastSubtitleFormats.remove(format);
+            mLastSubtitleFormats.add(0, format);
+        } else if (mSubtitleFormat != null && !mSubtitleFormat.isDefault()) {
+            mLastSubtitleFormats.remove(mSubtitleFormat);
+            mLastSubtitleFormats.add(0, mSubtitleFormat);
+        }
+    }
+
+    public float getSubtitleScale() {
+        return mSubtitleScale;
+    }
+
+    public void setSubtitleScale(float scale) {
+        mSubtitleScale = scale;
+        persistState();
+    }
+
+    public float getPlayerVolume() {
+        return mPlayerVolume;
+    }
+
+    public void setPlayerVolume(float scale) {
+        mPlayerVolume = scale;
+        persistState();
+    }
+
+    public int getAudioDelayMs() {
+        return mAudioDelayMs;
+    }
+
+    public void setAudioDelayMs(int delayMs) {
+        mAudioDelayMs = delayMs;
+        persistState();
+    }
+
+    public String getAudioLanguage() {
+        return mAudioLanguage;
+    }
+
+    public void setAudioLanguage(String language) {
+        mAudioLanguage = language;
+        setLastAudioLanguage(language);
+        persistState();
+    }
+
+    public List<String> getLastAudioLanguages() {
+        return mLastAudioLanguages;
+    }
+
+    private void setLastAudioLanguage(String language) {
+        mLastAudioLanguages.remove(language);
+        mLastAudioLanguages.add(0, language);
+    }
+
+    public String getSubtitleLanguage() {
+        return mSubtitleLanguage;
+    }
+
+    public void setSubtitleLanguage(String language) {
+        mSubtitleLanguage = language;
+        persistState();
+    }
+
+    public boolean isTimeCorrectionEnabled() {
+        return mIsTimeCorrectionEnabled;
+    }
+
+    public void setTimeCorrectionEnabled(boolean enable) {
+        mIsTimeCorrectionEnabled = enable;
+        persistState();
+    }
+
+    public boolean isSkip24RateEnabled() {
+        return mIsSkip24RateEnabled;
+    }
+
+    public void setSkip24RateEnabled(boolean enable) {
+        mIsSkip24RateEnabled = enable;
+        persistState();
+    }
+
+    public boolean isSkipShortsEnabled() {
+        return mIsSkipShortsEnabled;
+    }
+
+    public void setSkipShortsEnabled(boolean enable) {
+        mIsSkipShortsEnabled = enable;
+        persistState();
+    }
+
+    public boolean isLiveChatEnabled() {
+        return mIsLiveChatEnabled;
+    }
+
+    public void setLiveChatEnabled(boolean enable) {
+        mIsLiveChatEnabled = enable;
+        persistState();
+    }
+
+    public FormatItem getDefaultAudioFormat() {
+        // Android 4 (probably some others) doesn't support opus (ac3 will be reverted to opus)
+        // Note, 5.1 mp4a doesn't work in 5.1 mode
+        // Use opus (ac3 fallback) on modern devices. vp9 and opus should be supported at the same time?
+        return DeviceHelpers.isVP9ResolutionSupported(2160) ? FormatItem.AUDIO_51_AC3 : FormatItem.AUDIO_HQ_MP4A;
+    }
+
+    public FormatItem getDefaultVideoFormat() {
+
+        if (VERSION.SDK_INT <= 19) { // Android 4 playback crash fix (memory leak?)
+            return FormatItem.VIDEO_SD_AVC_30;
+        } else if (VERSION.SDK_INT <= 23 && DeviceHelpers.isVP9ResolutionSupported(1080)) {
+            return FormatItem.VIDEO_FHD_VP9_60;
+        } else if (DeviceHelpers.isVP9ResolutionSupported(2160)) {
+            return FormatItem.VIDEO_4K_VP9_60;
+        } else if (DeviceHelpers.isVP9ResolutionSupported(1080)) {
+            return FormatItem.VIDEO_FHD_VP9_60;
+        } else {
+            return FormatItem.VIDEO_HD_AVC_30;
+        }
+
+    }
+
+    public FormatItem getDefaultSubtitleFormat() {
+        return FormatItem.SUBTITLE_NONE;
+    }
+
+    private void restoreState() {
+        if (mPrefs == null) return;
+
+        String data = mPrefs.getProfileData(VIDEO_PLAYER_DATA);
+        String[] split = Helpers.splitData(data);
+
+        /* 01 */ mVideoFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 1)), getDefaultVideoFormat());
+        /* 02 */ mAudioFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 2)), getDefaultAudioFormat());
+        /* 03 */ mSubtitleFormat = Helpers.firstNonNull(ExoFormatItem.from(Helpers.parseStr(split, 3)), getDefaultSubtitleFormat());
+
+        /* 07 */ mIsAfrEnabled = Helpers.parseBoolean(split, 7, false);
+        /* 08 */ mIsAfrFpsCorrectionEnabled = Helpers.parseBoolean(split, 8, true);
+        /* 09 */ mIsAfrResSwitchEnabled = Helpers.parseBoolean(split, 9, false);
+        /* 10 */ mAudioDelayMs = Helpers.parseInt(split, 10, 0);
+
+        /* 13 */ mIsTimeCorrectionEnabled = Helpers.parseBoolean(split, 13, true);
+        /* 14 */ mIsDoubleRefreshRateEnabled = Helpers.parseBoolean(split, 14, true);
+        /* 15 */ mSubtitleScale = Helpers.parseFloat(split, 15, .7f);
+        /* 16 */ mPlayerVolume = Helpers.parseFloat(split, 16, 1.0f);
+
+        /* 18 */ mSubtitlePosition = Helpers.parseFloat(split, 18, 0.1f);
+        /* 19 */ mIsSkip24RateEnabled = Helpers.parseBoolean(split, 19, false);
+        /* 20 */ mIsLiveChatEnabled = Helpers.parseBoolean(split, 20, false);
+        /* 21 */ mLastSubtitleFormats = Helpers.parseList(split, 21, ExoFormatItem::from);
+
+        /* 25 */ mPlaybackMode = Helpers.parseInt(split, 25, PlaybackFragment.PLAYBACK_MODE_ALL);
+        /* 26 */ mAudioLanguage = Helpers.parseStr(split, 26, LocaleUtility.getCurrentLanguage(mPrefs.getContext()));
+        /* 27 */ mSubtitleLanguage = Helpers.parseStr(split, 27, LocaleUtility.getCurrentLanguage(mPrefs.getContext()));
+
+        /* 30 */ mPitch = Helpers.parseFloat(split, 30, 1.0f);
+        /* 31 */ mIsSkipShortsEnabled = Helpers.parseBoolean(split, 31, false);
+        /* 32 */ mLastAudioLanguages = Helpers.parseStrList(split, 32);
+        
+    }
+
+    public void persistState() {
+        if (mPrefs == null) return;
+
+        mPrefs.setProfileData(
+            VIDEO_PLAYER_DATA, 
+            Helpers.mergeData(
+            /* 00 */ null,
+            /* 01 */ mVideoFormat, 
+            /* 02 */ mAudioFormat, 
+            /* 03 */ mSubtitleFormat,
+            /* 04 */ null, 
+            /* 05 */ null, 
+            /* 06 */ null,
+            /* 07 */ mIsAfrEnabled, 
+            /* 08 */ mIsAfrFpsCorrectionEnabled, 
+            /* 09 */ mIsAfrResSwitchEnabled, 
+            /* 10 */ mAudioDelayMs, 
+            /* 11 */ null, 
+            /* 12 */ null,
+            /* 13 */ mIsTimeCorrectionEnabled,
+            /* 14 */ mIsDoubleRefreshRateEnabled, 
+            /* 15 */ mSubtitleScale, 
+            /* 16 */ mPlayerVolume, 
+            /* 17 */ null,
+            /* 18 */ mSubtitlePosition, 
+            /* 19 */ mIsSkip24RateEnabled, 
+            /* 20 */ mIsLiveChatEnabled, 
+            /* 21 */ mLastSubtitleFormats, 
+            /* 22 */ null, 
+            /* 23 */ null, 
+            /* 24 */ null, 
+            /* 25 */ mPlaybackMode, 
+            /* 26 */ mAudioLanguage, 
+            /* 27 */ mSubtitleLanguage,
+            /* 28 */ null,
+            /* 29 */ null, 
+            /* 30 */ mPitch, 
+            /* 31 */ mIsSkipShortsEnabled, 
+            /* 32 */ mLastAudioLanguages
+        ));
+    }
+
+    @Override
+    public void onProfileChanged() {
+        persistState();
+        restoreState();
     }
 
 }

@@ -94,11 +94,10 @@ import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.BuildConfig;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Video;
-import minefarts.smarttube.app.models.playback.PlayerEngine;
+import minefarts.smarttube.ui.playback.PlaybackFragment;
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.app.presenters.SplashPresenter;
-import minefarts.smarttube.app.models.playback.PlayerEngine;
 import minefarts.smarttube.app.views.ViewManager;
 import minefarts.smarttube.exoplayer.selector.FormatItem.VideoPreset;
 import minefarts.smarttube.exoplayer.selector.TrackSelectorUtil;
@@ -109,7 +108,6 @@ import minefarts.smarttube.utils.RemoteControlWorker;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.prefs.HiddenPrefs;
 import minefarts.smarttube.prefs.MainUIData;
-import minefarts.smarttube.prefs.PlayerData;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.prefs.RemoteControlData;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
@@ -328,7 +326,7 @@ public class Utils {
     /**
      * Volume: 0 - 100
      */
-    public static int getVolume(PlayerEngine player) {
+    public static int getVolume(PlaybackFragment player) {
         
         if (player == null) return -1;
         
@@ -340,7 +338,7 @@ public class Utils {
      */
     public static void setVolume(
         Context context, 
-        PlayerEngine player, 
+        PlaybackFragment player, 
         int volume
     ) {
         if (context == null || player ==  null) return;
@@ -359,7 +357,7 @@ public class Utils {
         
     }
 
-    public static void volumeUp(Context context, PlayerEngine player, boolean up) {
+    public static void volumeUp(Context context, PlaybackFragment player, boolean up) {
         if (player != null) {
             int volume = getVolume(player);
             final int delta = 1; // volume step
@@ -626,19 +624,19 @@ public class Utils {
 
     public static void showRepeatInfo(Context context, int modeIndex) {
         switch (modeIndex) {
-            case PlayerEngine.PLAYBACK_MODE_ALL:
+            case PlaybackFragment.PLAYBACK_MODE_ALL:
                 MessageHelpers.showMessage(context, R.string.repeat_mode_all);
                 break;
-            case PlayerEngine.PLAYBACK_MODE_ONE:
+            case PlaybackFragment.PLAYBACK_MODE_ONE:
                 MessageHelpers.showMessage(context, R.string.repeat_mode_one);
                 break;
-            case PlayerEngine.PLAYBACK_MODE_PAUSE:
+            case PlaybackFragment.PLAYBACK_MODE_PAUSE:
                 MessageHelpers.showMessage(context, R.string.repeat_mode_pause);
                 break;
-            case PlayerEngine.PLAYBACK_MODE_LIST:
+            case PlaybackFragment.PLAYBACK_MODE_LIST:
                 MessageHelpers.showMessage(context, R.string.repeat_mode_pause_alt);
                 break;
-            case PlayerEngine.PLAYBACK_MODE_CLOSE:
+            case PlaybackFragment.PLAYBACK_MODE_CLOSE:
                 MessageHelpers.showMessage(context, R.string.repeat_mode_none);
                 break;
         }
@@ -699,7 +697,7 @@ public class Utils {
     }
 
     public static void showPlayerControls(Context context, boolean show) {
-        PlayerEngine view = PlaybackPresenter.instance(context).getView();
+        PlaybackFragment view = PlaybackPresenter.instance(context).getView();
         if (view != null) {
             view.showOverlay(show);
         }

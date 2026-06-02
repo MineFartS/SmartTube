@@ -21,7 +21,7 @@ import minefarts.smarttube.utils.ServiceManager;
 import minefarts.smarttube.prefs.AppPrefs;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.prefs.MainUIData;
-import minefarts.smarttube.prefs.PlayerData;
+import minefarts.smarttube.ui.playback.PlaybackFragment;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.prefs.SearchData;
 import minefarts.smarttube.utils.AppDialogUtil;
@@ -39,7 +39,7 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
     private final GeneralData mGeneralData;
 
-    private final PlayerData mPlayerData;
+    private final PlaybackFragment mPlayerData;
 
     private final PlayerTweaksData mPlayerTweaksData;
 
@@ -57,7 +57,7 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
         
         mGeneralData = GeneralData.instance(context);
         
-        mPlayerData = PlayerData.instance(context);
+        mPlayerData = PlaybackFragment.instance(context);
         
         mPlayerTweaksData = PlayerTweaksData.instance(context);
         

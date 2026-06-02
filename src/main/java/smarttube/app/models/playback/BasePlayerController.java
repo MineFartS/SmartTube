@@ -19,7 +19,7 @@ import minefarts.smarttube.app.models.playback.service.VideoStateService;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.app.presenters.SearchPresenter;
-import minefarts.smarttube.app.models.playback.PlayerEngine;
+import minefarts.smarttube.ui.playback.PlaybackFragment;
 import minefarts.smarttube.app.views.ViewManager;
 import minefarts.smarttube.exoplayer.selector.FormatItem;
 import minefarts.smarttube.exoplayer.selector.TrackSelectorUtil;
@@ -28,7 +28,6 @@ import minefarts.smarttube.utils.MotherActivity;
 import minefarts.smarttube.prefs.ContentBlockData;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.prefs.MainUIData;
-import minefarts.smarttube.prefs.PlayerData;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.prefs.RemoteControlData;
 import minefarts.smarttube.prefs.SearchData;
@@ -52,7 +51,7 @@ public abstract class BasePlayerController extends ServiceManager implements Pla
     }
 
     @Nullable
-    public PlayerEngine getPlayer() {
+    public PlaybackFragment getPlayer() {
         return mMainController != null ? mMainController.getPlayer() : null;
     }
 
@@ -253,8 +252,8 @@ public abstract class BasePlayerController extends ServiceManager implements Pla
         // NOP
     }
 
-    protected PlayerData getPlayerData() {
-        return PlayerData.instance(getContext());
+    protected PlaybackFragment getPlayerData() {
+        return PlaybackFragment.instance(getContext());
     }
 
     protected GeneralData getGeneralData() {

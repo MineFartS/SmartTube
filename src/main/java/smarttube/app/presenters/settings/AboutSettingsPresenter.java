@@ -19,7 +19,7 @@ import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
 import minefarts.smarttube.utils.service.data.MediaGroup;
-import minefarts.smarttube.prefs.PlayerData;
+import minefarts.smarttube.ui.playback.PlaybackFragment;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 

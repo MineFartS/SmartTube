@@ -33,7 +33,7 @@ import minefarts.smarttube.exoplayer.selector.TrackSelectorUtil;
 import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
 import minefarts.smarttube.exoplayer.selector.track.VideoTrack;
 import minefarts.smarttube.exoplayer.versions.ExoUtils;
-import minefarts.smarttube.prefs.PlayerData;
+import minefarts.smarttube.ui.playback.PlaybackFragment;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 
 import java.io.InputStream;
@@ -73,7 +73,7 @@ public class ExoPlayerController implements Player.EventListener {
     }
 
     private void applyShield720pFix() {
-        PlayerData playerData = PlayerData.instance(mContext);
+        PlaybackFragment playerData = PlaybackFragment.instance(mContext);
         mTrackSelectorManager.selectTrack(FormatItem.toMediaTrack(playerData.getFormat(FormatItem.TYPE_VIDEO)));
         mTrackSelectorManager.selectTrack(FormatItem.toMediaTrack(playerData.getFormat(FormatItem.TYPE_AUDIO)));
         mTrackSelectorManager.selectTrack(FormatItem.toMediaTrack(playerData.getFormat(FormatItem.TYPE_SUBTITLE)));

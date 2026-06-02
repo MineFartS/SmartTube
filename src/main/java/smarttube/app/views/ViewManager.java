@@ -28,7 +28,7 @@ import minefarts.smarttube.app.presenters.dialogs.AppUpdatePresenter;
 import minefarts.smarttube.utils.MotherActivity;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.utils.ServiceManager;
-import minefarts.smarttube.app.models.playback.PlayerEngine;
+import minefarts.smarttube.ui.playback.PlaybackFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -438,7 +438,7 @@ public class ViewManager {
     }
 
     public boolean isPlayerInForeground() {
-        return Utils.isAppInForegroundFixed() && getTopView() == PlayerEngine.class;
+        return Utils.isAppInForegroundFixed() && getTopView() == PlaybackFragment.class;
     }
 
     public void moveAppToForeground() {
@@ -451,7 +451,7 @@ public class ViewManager {
         Utils.turnScreenOn(mContext);
 
         if (!isPlayerInForeground()) {
-            startView(PlayerEngine.class);
+            startView(PlaybackFragment.class);
         }
     }
 
@@ -466,7 +466,7 @@ public class ViewManager {
             return ChannelPresenter.instance(mContext);
         } else if (topView == ChannelUploadsView.class) {
             return ChannelUploadsPresenter.instance(mContext);
-        } else if (topView == PlayerEngine.class) {
+        } else if (topView == PlaybackFragment.class) {
             return PlaybackPresenter.instance(mContext);
         }
 
