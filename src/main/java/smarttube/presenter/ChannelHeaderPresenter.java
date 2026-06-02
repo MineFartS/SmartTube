@@ -304,16 +304,6 @@ public class ChannelHeaderPresenter extends RowPresenter {
         }
     }
 
-    private void applyExternalQuery(ChannelHeaderCallback provider, SearchBar mSearchBar, String query, boolean submit) {
-        if (query == null || mSearchBar == null) {
-            return;
-        }
-        mSearchBar.setSearchQuery(query);
-        if (submit) {
-            submitQuery(provider, query);
-        }
-    }
-
     private void showListening(SpeechOrbView speechOrbView) {
         if (speechOrbView != null) {
             speechOrbView.showListening();
@@ -325,4 +315,5 @@ public class ChannelHeaderPresenter extends RowPresenter {
             speechOrbView.showNotListening();
         }
     }
+    
 }
