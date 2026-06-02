@@ -49,15 +49,14 @@
         <attr name="hide_during_ads" format="boolean"/>
         <attr name="auto_show" format="boolean"/>
         <attr name="show_buffering" format="enum">
-        <enum name="never" value="0"/>
-        <enum name="when_playing" value="1"/>
-        <enum name="always" value="2"/>
+            <enum name="never" value="0"/>
+            <enum name="when_playing" value="1"/>
+            <enum name="always" value="2"/>
         </attr>
         <attr name="keep_content_on_player_reset" format="boolean"/>
         <attr name="player_layout_id" format="reference"/>
 
         <attr name="surface_type"/>
-        <!-- AspectRatioFrameLayout attributes -->
 
         <!-- PlayerControlView attributes -->
         <attr name="show_timeout"/>
