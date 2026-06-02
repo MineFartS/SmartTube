@@ -3,6 +3,7 @@ package minefarts.smarttube.prefs.common;
 import minefarts.smarttube.utils.misc.WeakHashSet;
 
 public abstract class DataChangeBase {
+
     public interface OnDataChange {
         void onDataChange();
     }
@@ -20,4 +21,5 @@ public abstract class DataChangeBase {
     public final void onDataChange() {
         mOnChangeList.forEach(OnDataChange::onDataChange);
     }
+    
 }

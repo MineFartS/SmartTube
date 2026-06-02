@@ -20,7 +20,7 @@ import minefarts.smarttube.app.presenters.service.SidebarService;
 import minefarts.smarttube.app.views.BrowseView;
 import minefarts.smarttube.app.views.ChannelUploadsView;
 import minefarts.smarttube.app.views.ChannelView;
-import minefarts.smarttube.app.models.playback.PlayerEngine;
+import minefarts.smarttube.ui.playback.PlaybackFragment;
 import minefarts.smarttube.app.views.SearchView;
 import minefarts.smarttube.app.views.ViewManager;
 import minefarts.smarttube.utils.ServiceManager;
@@ -174,8 +174,8 @@ public abstract class BasePresenter<T> {
             ((ChannelUploadsView) view).update(group);
         } else if (view instanceof SearchView) {
             ((SearchView) view).updateSearch(group);
-        } else if (view instanceof PlayerEngine) {
-            ((PlayerEngine) view).updateSuggestions(group);
+        } else if (view instanceof PlaybackFragment) {
+            ((PlaybackFragment) view).updateSuggestions(group);
         } else {
             return false;
         }

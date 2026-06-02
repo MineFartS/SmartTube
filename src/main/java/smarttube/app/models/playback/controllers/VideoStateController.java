@@ -70,8 +70,6 @@ public class VideoStateController extends BasePlayerController {
 
         setPlayEnabled(true); // video just added
 
-        getPlayerData().setTempVideoFormat(null);
-
         // Don't do reset on videoLoaded state because this will influences minimized music videos.
         if (getStateService() != null && item != null) {
 
@@ -295,12 +293,7 @@ public class VideoStateController extends BasePlayerController {
 
         if (getPlayer() == null) return;
 
-        if (getPlayerData().getTempVideoFormat() != null) {
-            getPlayer().setFormat(getPlayerData().getTempVideoFormat());
-        } else {
-            getPlayer().setFormat(getPlayerData().getFormat(FormatItem.TYPE_VIDEO));
-        }
-        
+        getPlayer().setFormat(getPlayerData().getFormat(FormatItem.TYPE_VIDEO));
         getPlayer().setFormat(getPlayerData().getFormat(FormatItem.TYPE_AUDIO));
 
         // We don't know yet do we really need a subs.

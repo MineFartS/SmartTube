@@ -6,20 +6,20 @@ import android.graphics.drawable.Drawable;
 import androidx.core.content.ContextCompat;
 import minefarts.smarttube.leanback.widget.PlaybackControlsRow.MultiAction;
 
-import minefarts.smarttube.app.models.playback.PlayerEngine;
+import minefarts.smarttube.ui.playback.PlaybackFragment;
 import minefarts.smarttube.R;
 
 /**
  * An action for displaying two repeat states: none and all.
  */
 public class PlaybackModeAction extends MultiAction {
-    private static final int INDEX_NONE = PlayerEngine.PLAYBACK_MODE_CLOSE;
-    private static final int INDEX_ONE = PlayerEngine.PLAYBACK_MODE_ONE;
-    private static final int INDEX_ALL = PlayerEngine.PLAYBACK_MODE_ALL;
-    private static final int INDEX_PAUSE = PlayerEngine.PLAYBACK_MODE_PAUSE;
-    private static final int INDEX_LIST = PlayerEngine.PLAYBACK_MODE_LIST;
-    private static final int INDEX_SHUFFLE = PlayerEngine.PLAYBACK_MODE_SHUFFLE;
-    private static final int INDEX_REVERSE_LIST = PlayerEngine.PLAYBACK_MODE_REVERSE_LIST;
+    private static final int INDEX_NONE = PlaybackFragment.PLAYBACK_MODE_CLOSE;
+    private static final int INDEX_ONE = PlaybackFragment.PLAYBACK_MODE_ONE;
+    private static final int INDEX_ALL = PlaybackFragment.PLAYBACK_MODE_ALL;
+    private static final int INDEX_PAUSE = PlaybackFragment.PLAYBACK_MODE_PAUSE;
+    private static final int INDEX_LIST = PlaybackFragment.PLAYBACK_MODE_LIST;
+    private static final int INDEX_SHUFFLE = PlaybackFragment.PLAYBACK_MODE_SHUFFLE;
+    private static final int INDEX_REVERSE_LIST = PlaybackFragment.PLAYBACK_MODE_REVERSE_LIST;
     private final Context mContext;
 
     /**

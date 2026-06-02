@@ -15,7 +15,7 @@ import minefarts.smarttube.utils.rx.RxHelper;
 import minefarts.smarttube.utils.app.PoTokenGate;
 import minefarts.smarttube.utils.app.models.cached.AppInfoCached;
 import minefarts.smarttube.utils.app.models.cached.ClientDataCached;
-import minefarts.smarttube.utils.app.models.cached.PlayerDataCached;
+import minefarts.smarttube.utils.app.models.PlayerData;
 import minefarts.smarttube.utils.app.playerdata.NSigData;
 import minefarts.smarttube.utils.app.playerdata.PlayerExtractorCache;
 import minefarts.smarttube.utils.app.potokencloud.PoTokenResponse;
@@ -24,6 +24,7 @@ import minefarts.smarttube.utils.MediaItemService;
 import java.util.UUID;
 
 import io.reactivex.disposables.Disposable;
+
 import kotlin.Triple;
 
 public class MediaServiceData {
@@ -56,7 +57,7 @@ public class MediaServiceData {
     private PoTokenResponse mPoToken;
     private AppInfoCached mAppInfo;
     private AppInfoCached mFailedAppInfo;
-    private PlayerDataCached mPlayerData;
+    private PlayerData mPlayerData;
     private PlayerExtractorCache mPlayerExtractorCache;
     private ClientDataCached mClientData;
     private NSigData mNSigData;
@@ -136,11 +137,11 @@ public class MediaServiceData {
         persistState();
     }
 
-    public Triple<NSigData, NSigData, PlayerDataCached> getPlayerExtractorData() {
+    public Triple<NSigData, NSigData, PlayerData> getPlayerExtractorData() {
         return new Triple<>(mNSigData, mSigData, mPlayerData);
     }
 
-    public void setPlayerExtractorData(NSigData nSigData, NSigData sigData, PlayerDataCached playerData) {
+    public void setPlayerExtractorData(NSigData nSigData, NSigData sigData, PlayerData playerData) {
         mNSigData = nSigData;
         mSigData = sigData;
         mPlayerData = playerData;
@@ -281,7 +282,7 @@ public class MediaServiceData {
         /* 04 */ mEnabledFormats = Helpers.parseInt(split, 4, FORMATS_DASH | FORMATS_URL);
         /* 05 */ mPoToken = Helpers.parseItem(split, 5, PoTokenResponse::fromString);
         /* 06 */ mAppInfo = Helpers.parseItem(split, 6, AppInfoCached::fromString);
-        /* 07 */ mPlayerData = Helpers.parseItem(split, 7, PlayerDataCached::fromString);
+        /* 07 */ mPlayerData = Helpers.parseItem(split, 7, PlayerData::fromString);
         /* 08 */ mClientData = Helpers.parseItem(split, 8, ClientDataCached::fromString);
         /* 09 */ mHiddenContent = Helpers.parseInt(split, 9, CONTENT_SHORTS | CONTENT_UPCOMING);
         /* 10 */ mIsMoreSubtitlesUnlocked = Helpers.parseBoolean(split, 10);
