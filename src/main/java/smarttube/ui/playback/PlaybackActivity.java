@@ -12,12 +12,10 @@ import minefarts.smarttube.fragment.app.Fragment;
 
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
-import minefarts.smarttube.app.models.playback.PlayerEngine;
+import minefarts.smarttube.ui.playback.PlaybackFragment;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
-import minefarts.smarttube.app.models.playback.PlayerEngine;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.prefs.MainUIData;
-import minefarts.smarttube.prefs.PlayerData;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.R;
 import minefarts.smarttube.ui.common.LeanbackActivity;
@@ -112,7 +110,7 @@ public class PlaybackActivity extends LeanbackActivity {
             // mouse wheel handling
             Utils.volumeUp(
                 this, 
-                getPlayerEngine(), 
+                getPlaybackFragment(), 
                 event.getAxisValue(MotionEvent.AXIS_VSCROLL) < 0.0f
             );
             return true;
@@ -146,7 +144,7 @@ public class PlaybackActivity extends LeanbackActivity {
         super.onVisibleBehindCanceled();
     }
     
-    public PlayerEngine getPlayerEngine() {
+    public PlaybackFragment getPlaybackFragment() {
         return mPlaybackFragment;
     }
 

@@ -22,19 +22,19 @@ import minefarts.smarttube.trackselection.DefaultTrackSelector;
 import minefarts.smarttube.upstream.BandwidthMeter;
 import minefarts.smarttube.upstream.TransferListener;
 import minefarts.smarttube.utils.helpers.DeviceHelpers;
-import minefarts.smarttube.prefs.PlayerData;
+import minefarts.smarttube.ui.playback.PlaybackFragment;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 
 import java.util.UUID;
 
 public class ExoPlayerInitializer {
     private final int mMaxBufferBytes;
-    private final PlayerData mPlayerData;
+    private final PlaybackFragment mPlayerData;
     private final PlayerTweaksData mPlayerTweaksData;
     private static AudioAttributes sAudioAttributes;
 
     public ExoPlayerInitializer(Context context) {
-        mPlayerData = PlayerData.instance(context);
+        mPlayerData = PlaybackFragment.instance(context);
         mPlayerTweaksData = PlayerTweaksData.instance(context);
 
         long deviceRam = DeviceHelpers.getDeviceRam(context);

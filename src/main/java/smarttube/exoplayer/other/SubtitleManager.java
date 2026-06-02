@@ -22,7 +22,7 @@ import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.R;
 import minefarts.smarttube.prefs.AppPrefs;
 import minefarts.smarttube.prefs.common.DataChangeBase.OnDataChange;
-import minefarts.smarttube.prefs.PlayerData;
+import minefarts.smarttube.ui.playback.PlaybackFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class SubtitleManager implements TextOutput, OnDataChange {
     private final Context mContext;
 
     private final AppPrefs mPrefs;
-    private final PlayerData mPlayerData;
+    private final PlaybackFragment mPlayerData;
     private CharSequence subsBuffer;
 
     public SubtitleManager(Activity activity, int subViewId) {
@@ -44,8 +44,7 @@ public class SubtitleManager implements TextOutput, OnDataChange {
 
         mPrefs = AppPrefs.instance(activity);
         
-        mPlayerData = PlayerData.instance(activity);
-        mPlayerData.setOnChange(this);
+        mPlayerData = PlaybackFragment.instance(activity);
         
         onDataChange();
 

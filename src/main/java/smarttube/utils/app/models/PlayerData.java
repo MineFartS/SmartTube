@@ -1,5 +1,7 @@
 package minefarts.smarttube.utils.app.models;
 
+import androidx.annotation.NonNull;
+
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.google.common.converters.FieldNullable;
 import minefarts.smarttube.google.common.converters.regexp.RegExp;
@@ -14,6 +16,19 @@ public class PlayerData {
     // Begin DecipherFunction
 
     private static final Pattern SIGNATURE_DECIPHER = Pattern.compile("function [$\\w]+\\(([\\w])\\)");
+
+    private static final String DELIM = "%pdc%";
+    private final String mPlayerUrl;
+
+    public PlayerData(
+        String playerUrl,
+        String decipherFunction,
+        String signatureTimestamp
+    ) {
+        mPlayerUrl = playerUrl;
+        mDecipherFunction = decipherFunction;
+        mSignatureTimestamp = signatureTimestamp;
+    }
 
     /**
      * Return JS decipher function as string.<br/>
@@ -59,4 +74,44 @@ public class PlayerData {
     }
 
     // End SignatureTimestamp
+
+    public static PlayerData fromString(String spec) {
+        
+        if (spec == null) return null;
+
+        String[] split = Helpers.split(spec, DELIM);
+
+        return new PlayerData(
+            Helpers.parseStr(split, 0),
+            Helpers.parseStr(split, 3),
+            Helpers.parseStr(split, 4)
+        );
+        
+    }
+    
+    @NonNull
+    @Override
+    public String toString() {
+        return Helpers.merge(DELIM, mPlayerUrl, mDecipherFunction, mSignatureTimestamp);
+    }
+
+    public static PlayerData from(String playerUrl, PlayerData playerData) {
+        
+        if (playerData == null) return null;
+
+        return new PlayerData(
+            playerUrl,
+            playerData.getDecipherFunction(),
+            playerData.getSignatureTimestamp()
+        );
+
+    }
+
+    public String getPlayerUrl() {
+        return mPlayerUrl;
+    }
+
+    public boolean validate() {
+        return mDecipherFunction != null && mSignatureTimestamp != null;
+    }
 }

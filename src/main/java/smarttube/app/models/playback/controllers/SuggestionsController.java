@@ -20,7 +20,7 @@ import minefarts.smarttube.app.models.data.Queue;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.data.VideoGroup;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
-import minefarts.smarttube.app.models.playback.PlayerEngine;
+import minefarts.smarttube.ui.playback.PlaybackFragment;
 import minefarts.smarttube.app.models.playback.ui.SeekBarSegment;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
@@ -555,7 +555,7 @@ public class SuggestionsController extends BasePlayerController {
     }
 
     private void findNextSectionVideoIfNeeded(Video video) {
-        if (getPlayerData().getPlaybackMode() == PlayerEngine.PLAYBACK_MODE_SHUFFLE) {
+        if (getPlayerData().getPlaybackMode() == PlaybackFragment.PLAYBACK_MODE_SHUFFLE) {
             findRandomSectionVideo(video);
         } else {
             findNextSectionVideo(video);
