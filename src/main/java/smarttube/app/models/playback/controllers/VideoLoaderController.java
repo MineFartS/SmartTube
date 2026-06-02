@@ -371,21 +371,34 @@ private void loadFormatInfo(Video video) {
 
         } else if (acceptAdaptiveFormats(formatInfo) && formatInfo.containsDashFormats()) {
             Log.d(TAG, "Loading regular video in dash format...");
-
-                player.openDash(formatInfo);
-            
+            player.openDash(formatInfo);
         } else if (acceptAdaptiveFormats(formatInfo) && formatInfo.containsSabrFormats()) {
             Log.d(TAG, "Loading video in sabr format...");
             player.openSabr(formatInfo);
         } else if (acceptDashLive(formatInfo)) {
+            String dashUrl = formatInfo.getDashManifestUrl();
+            if (dashUrl == null) {
+                runFormatErrorAction(new IllegalStateException("Dash manifest url is null"));
+                return;
+            }
             Log.d(TAG, "Loading live video (current or past live stream) in dash format...");
-            player.openDashUrl(formatInfo.getDashManifestUrl());
+            player.openDashUrl(dashUrl);
         } else if (formatInfo.isLive() && formatInfo.containsHlsUrl()) {
+            String hlsUrl = formatInfo.getHlsManifestUrl();
+            if (hlsUrl == null) {
+                runFormatErrorAction(new IllegalStateException("Hls manifest url is null"));
+                return;
+            }
             Log.d(TAG, "Loading live video (current or past live stream) in hls format...");
-            player.openHlsUrl(formatInfo.getHlsManifestUrl());
+            player.openHlsUrl(hlsUrl);
         } else if (formatInfo.containsUrlFormats()) {
+            List<String> urlList = formatInfo.createUrlList();
+            if (urlList == null || urlList.isEmpty()) {
+                runFormatErrorAction(new IllegalStateException("Url list is null or empty"));
+                return;
+            }
             Log.d(TAG, "Loading url list video. This is always LQ...");
-            player.openUrlList(applyFix(formatInfo.createUrlList()));
+            player.openUrlList(applyFix(urlList));
         } else {
             Log.d(TAG, "Empty format info received. Seems future live translation. No video data to pass to the player.");
             player.setTitle(formatInfo.getPlayabilityStatus());
@@ -491,6 +504,14 @@ private void loadFormatInfo(Video video) {
             MessageHelpers.showLongMessage(getContext(), fullMsg);
         }
 
+        // Kotlin non-null parameter received null (e.g. `playerUrl`)
+        // Treat it as a temporary unavailability instead of an unrecoverable failure.
+        boolean isNullPlayerUrl = message != null && (
+                (message.contains("parameter specified as non-null is null") && message.contains("playerUrl"))
+                        || message.contains("playerUrl")
+                        || message.contains("player url")
+        );
+
         if (Helpers.containsAny(message, "Unexpected token", "Syntax error", "invalid argument") || // temporal fix
                 Helpers.equalsAny(className, "PoTokenException", "BadWebViewException")) {
             ServiceManager.applyNoPlaybackFix();
@@ -498,10 +519,15 @@ private void loadFormatInfo(Video video) {
         } else if (Helpers.containsAny(message, "is not defined")) {
             ServiceManager.invalidateCache();
             reloadVideo();
+        } else if (isNullPlayerUrl) {
+            // Avoid tight retry loop when upstream returns partial/empty data.
+            Log.e(TAG, "playerUrl is null, scheduling delayed reload...");
+            scheduleReloadVideoTimer(3_000);
         } else {
             Log.e(TAG, "Probably no internet connection");
             scheduleReloadVideoTimer(1_000);
         }
+
     }
     
     private void runEngineErrorAction(int type, int rendererIndex, Throwable error) {

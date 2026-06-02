@@ -117,7 +117,16 @@ public class RetrofitHelper {
 
                 errorMsg = errorMsg != null ? errorMsg : String.format("Unknown %s error", response.code());
 
-                Log.e(TAG, errorMsg);
+                // Extra context for debugging OAuth/token issues (no secrets)
+                String safeErrorBody = errorData != null ? errorData : "";
+                // Truncate large bodies to keep logs usable.
+                if (safeErrorBody.length() > 2000) {
+                    safeErrorBody = safeErrorBody.substring(0, 2000) + "…";
+                }
+
+                String codeMsg = String.format("HTTP %s", response.code());
+                Log.e(TAG, String.format("%s; %s; body=%s", codeMsg, errorMsg, safeErrorBody));
+
                 throw new IllegalStateException(errorMsg);
             } catch (IOException e) {}
             
