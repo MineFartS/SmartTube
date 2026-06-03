@@ -47,33 +47,35 @@ public class MediaItemService {
     
     private MediaItemFormatInfo mCachedFormatInfo;
 
-    private MediaItemService() {}
-
     public static MediaItemService instance() {
 
-        if (sInstance == null) {
+        if (sInstance == null)
             sInstance = new MediaItemService();
-        }
 
         return sInstance;
     }
 
+    public void invalidateCache() {
+        mCachedFormatInfo = null;
+    }
+
     private MediaItemFormatInfo getFormatInfo(String videoId) {
 
-        MediaItemFormatInfo cachedFormatInfo = getCachedFormatInfo(videoId);
+        if (mCachedFormatInfo == null || 
+            mCachedFormatInfo.getVideoId() != videoId
+        ) {
+            
+            getSignInService().checkAuth();
+            
+            VideoInfo videoInfo = getVideoInfoService().getVideoInfo(videoId, null);
+            
+            MediaItemFormatInfo formatInfo = MediaItemFormatInfo.from(videoInfo);
+            
+            mCachedFormatInfo = formatInfo;
 
-        if (cachedFormatInfo != null)
-            return cachedFormatInfo;
+        }
 
-        getSignInService().checkAuth();
-
-        VideoInfo videoInfo = getVideoInfoService().getVideoInfo(videoId, null);
-
-        MediaItemFormatInfo formatInfo = MediaItemFormatInfo.from(videoInfo);
-
-        setCachedFormatInfo(formatInfo, null);
-
-        return formatInfo;
+        return mCachedFormatInfo;
     }
 
     public Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId) {
@@ -349,25 +351,6 @@ public class MediaItemService {
 
     public Observable<String> getUnlocalizedTitleObserve(String videoId) {
         return RxHelper.fromCallable(() -> getWatchNextService().getUnlocalizedTitle(videoId));
-    }
-
-    public void invalidateCache() {
-        mCachedFormatInfo = null;
-    }
-
-    private MediaItemFormatInfo getCachedFormatInfo(String videoId) {
-        return  mCachedFormatInfo != null &&
-                mCachedFormatInfo.getVideoId() != null &&
-                mCachedFormatInfo.getVideoId().equals(videoId) &&
-                mCachedFormatInfo.isCacheActual() ? mCachedFormatInfo : null;
-    }
-
-    private void setCachedFormatInfo(MediaItemFormatInfo formatInfo, String clickTrackingParams) {
-        mCachedFormatInfo = formatInfo;
-
-        if (formatInfo != null) {
-            formatInfo.setClickTrackingParams(clickTrackingParams);
-        }
     }
 
     @NonNull
