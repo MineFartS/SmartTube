@@ -12,7 +12,6 @@ import minefarts.smarttube.source.MergingMediaSource;
 import minefarts.smarttube.source.ProgressiveMediaSource;
 import minefarts.smarttube.source.SingleSampleMediaSource;
 import minefarts.smarttube.text.TextRenderer;
-import minefarts.smarttube.trackselection.DefaultTrackSelector;
 import minefarts.smarttube.trackselection.TrackSelector;
 import minefarts.smarttube.upstream.DataSource;
 import minefarts.smarttube.video.MediaCodecVideoRenderer;

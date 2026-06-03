@@ -13,32 +13,30 @@ import minefarts.smarttube.exoplayer.selector.TrackSelectorManager;
 import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
 
 public class RestoreTrackSelector extends DefaultTrackSelector {
+
     private static final String TAG = RestoreTrackSelector.class.getSimpleName();
 
-    private TrackSelectorCallback mCallback;
-
-    public interface TrackSelectorCallback {
-        Pair<Definition, MediaTrack> onSelectVideoTrack(TrackGroupArray groups, Parameters params);
-        Pair<Definition, MediaTrack> onSelectAudioTrack(TrackGroupArray groups, Parameters params);
-        Pair<Definition, MediaTrack> onSelectSubtitleTrack(TrackGroupArray groups, Parameters params);
-        void updateVideoTrackSelection(TrackGroupArray groups, Parameters params, Definition definition);
-        void updateAudioTrackSelection(TrackGroupArray groups, Parameters params, Definition definition);
-        void updateSubtitleTrackSelection(TrackGroupArray groups, Parameters params, Definition definition);
-    }
+    private TrackSelectorManager mCallback;
 
     public RestoreTrackSelector(Factory trackSelectionFactory) {
         super(trackSelectionFactory);
     }
 
-    public void setOnTrackSelectCallback(TrackSelectorCallback callback) {
+    public void setOnTrackSelectCallback(TrackSelectorManager callback) {
         mCallback = callback;
     }
 
     // Exo 2.10 and up
     @Nullable
     @Override
-    protected Definition selectVideoTrack(TrackGroupArray groups, int[][] formatSupports, int mixedMimeTypeAdaptationSupports,
-                                              Parameters params, boolean enableAdaptiveTrackSelection) throws ExoPlaybackException {
+    protected Definition selectVideoTrack(
+        TrackGroupArray groups, 
+        int[][] formatSupports, 
+        int mixedMimeTypeAdaptationSupports,
+        Parameters params, 
+        boolean enableAdaptiveTrackSelection
+    ) throws ExoPlaybackException {
+
         if (mCallback != null) {
             Pair<Definition, MediaTrack> resultPair = mCallback.onSelectVideoTrack(groups, params);
 
@@ -65,8 +63,14 @@ public class RestoreTrackSelector extends DefaultTrackSelector {
     // Exo 2.10 and up
     @Nullable
     @Override
-    protected Pair<Definition, AudioTrackScore> selectAudioTrack(TrackGroupArray groups, int[][] formatSupports,
-                                                                 int mixedMimeTypeAdaptationSupports, Parameters params, boolean enableAdaptiveTrackSelection) throws ExoPlaybackException {
+    protected Pair<Definition, AudioTrackScore> selectAudioTrack(
+        TrackGroupArray groups, 
+        int[][] formatSupports,
+        int mixedMimeTypeAdaptationSupports, 
+        Parameters params, 
+        boolean enableAdaptiveTrackSelection
+    ) throws ExoPlaybackException {
+    
         if (mCallback != null) {
             Pair<Definition, MediaTrack> resultPair = mCallback.onSelectAudioTrack(groups, params);
             if (resultPair != null) {
@@ -79,8 +83,11 @@ public class RestoreTrackSelector extends DefaultTrackSelector {
 
         Log.d(TAG, "selectAudioTrack: choose default audio processing");
 
-        Pair<Definition, AudioTrackScore> definitionPair = super.selectAudioTrack(groups, formatSupports,
-                mixedMimeTypeAdaptationSupports, params, false);
+        Pair<Definition, AudioTrackScore> definitionPair = super.selectAudioTrack(
+            groups, formatSupports,
+            mixedMimeTypeAdaptationSupports, 
+            params, false
+        );
 
         // Don't invoke if track already has been selected by the app
         if (mCallback != null && definitionPair != null) {
@@ -93,8 +100,13 @@ public class RestoreTrackSelector extends DefaultTrackSelector {
     // Exo 2.10 and up
     @Nullable
     @Override
-    protected Pair<Definition, TextTrackScore> selectTextTrack(TrackGroupArray groups, int[][] formatSupport, Parameters params,
-                                                               @Nullable String selectedAudioLanguage) throws ExoPlaybackException {
+    protected Pair<Definition, TextTrackScore> selectTextTrack(
+        TrackGroupArray groups, 
+        int[][] formatSupport, 
+        Parameters params,
+        @Nullable String selectedAudioLanguage
+    ) throws ExoPlaybackException {
+        
         if (mCallback != null) {
             Pair<Definition, MediaTrack> resultPair = mCallback.onSelectSubtitleTrack(groups, params);
             if (resultPair != null) {

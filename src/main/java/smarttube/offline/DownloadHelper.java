@@ -92,13 +92,9 @@ public final class DownloadHelper {
     void onPrepareError(DownloadHelper helper, IOException e);
   }
 
-  private static final MediaSourceFactory DASH_FACTORY =
-      getMediaSourceFactory("minefarts.smarttube.dash.DashMediaSource$Factory");
-  private static final MediaSourceFactory SS_FACTORY =
-      getMediaSourceFactory(
-          "minefarts.smarttube.ss.SsMediaSource$Factory");
-  private static final MediaSourceFactory HLS_FACTORY =
-      getMediaSourceFactory("minefarts.smarttube.hls.HlsMediaSource$Factory");
+  private static final MediaSourceFactory DASH_FACTORY = getMediaSourceFactory("minefarts.smarttube.dash.DashMediaSource$Factory");
+  private static final MediaSourceFactory SS_FACTORY = getMediaSourceFactory("minefarts.smarttube.ss.SsMediaSource$Factory");
+  private static final MediaSourceFactory HLS_FACTORY = getMediaSourceFactory("minefarts.smarttube.hls.HlsMediaSource$Factory");
 
   /**
    * Creates a {@link DownloadHelper} for progressive streams.

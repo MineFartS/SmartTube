@@ -87,6 +87,7 @@ import minefarts.smarttube.exoplayer.selector.ExoFormatItem;
 import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
 import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
 import minefarts.smarttube.prefs.AppPrefs;
+import minefarts.smarttube.exoplayer.selector.TrackSelectorManager;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -137,6 +138,7 @@ public class PlaybackFragment
     private ShortsCardPresenter mShortsPresenter;
     private Map<Integer, VideoGroupObjectAdapter> mVideoGroupAdapters;
     private ExoPlayerController mExoPlayerController;
+    private TrackSelectorManager mTrackSelectorManager;
     private ExoPlayerInitializer mPlayerInitializer;
     private SubtitleManager mSubtitleManager;
     private UriBackgroundManager mBackgroundManager;
@@ -233,6 +235,7 @@ public class PlaybackFragment
         mPlaybackPresenter = PlaybackPresenter.instance(getContext());
         mPlaybackPresenter.setView(this);
         mExoPlayerController = new ExoPlayerController(getContext(), mPlaybackPresenter);
+        mTrackSelectorManager = mExoPlayerController.mTrackSelectorManager;
 
         // Fix open previous video
         if (mPlaybackPresenter.getVideo() != null) {
@@ -467,74 +470,45 @@ public class PlaybackFragment
         if (mPlayer != null) {
             Log.d(TAG, "releasePlayer: Start releasing player engine...");
             mPlaybackPresenter.onEngineReleased();
-            destroyPlayerObjects();
+            
+            // Fix access calls when player isn't initialized
+            mExoPlayerController.release();
+            if (mMediaSessionConnector != null) {
+                mMediaSessionConnector.setPlayer(null);
+            }
+            if (mMediaSession != null) {
+                mMediaSession.release();
+            }
+            if (mRowsAdapter != null) {
+                mRowsAdapter.clear();
+            }
+
+            setAdapter(null); // PlayerGlue->LeanbackPlayerAdapter->Context memory leak fix
+
+            mPlayer = null;
+            mPlayerGlue = null;
+            mRowsAdapter = null;
+            mSubtitleManager = null;
+            mMediaSessionConnector = null;
+            mMediaSession = null;
+
         }
     }
 
     private void initializePlayer() {
-        if (mPlayer != null) {
-            Log.d(TAG, "Skip player initialization.");
-            return;
-        }
+        if (mPlayer != null) return;
 
-        createPlayerObjects();
-
-        mPlaybackPresenter.setView(this); // replaced by the embed player?
-        mPlaybackPresenter.onEngineInitialized();
-    }
-
-    private void destroyPlayerObjects() {
-        // Fix access calls when player isn't initialized
-        mExoPlayerController.release();
-        if (mMediaSessionConnector != null) {
-            mMediaSessionConnector.setPlayer(null);
-        }
-        if (mMediaSession != null) {
-            mMediaSession.release();
-        }
-        if (mRowsAdapter != null) {
-            mRowsAdapter.clear();
-        }
-
-        setAdapter(null); // PlayerGlue->LeanbackPlayerAdapter->Context memory leak fix
-
-        mPlayer = null;
-        mPlayerGlue = null;
-        mRowsAdapter = null;
-        mSubtitleManager = null;
-        mMediaSessionConnector = null;
-        mMediaSession = null;
-    }
-
-    private void createPlayerObjects() {
-        // NOTE: position matters!
-
-        createPlayer();
-
-        createPlayerGlue();
-
-        createSubtitleManager();
-
-        createMediaSession();
-
-        initializePlayerRows();
-
-    }
-
-    private void createPlayer() {
-        //mExoPlayerController.setEventListener(mPlaybackPresenter);
-
+        // -------- Create Player --------
         // Use default or pass your bandwidthMeter here: bandwidthMeter = new DefaultBandwidthMeter.Builder(getContext()).build()
         DefaultTrackSelector trackSelector = new RestoreTrackSelector(new AdaptiveTrackSelection.Factory());
-        mExoPlayerController.setTrackSelector(trackSelector);
+        mTrackSelectorManager.setTrackSelector(trackSelector);
 
         DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(getContext());
         mPlayer = mPlayerInitializer.createPlayer(getContext(), renderersFactory, trackSelector);
 
         mExoPlayerController.setPlayer(mPlayer);
-    }
 
-    private void createPlayerGlue() {
+        // -------- Create Player Glue --------
         PlayerAdapter playerAdapter = new LeanbackPlayerAdapter(getContext(), mPlayer, UPDATE_DELAY_MS); // NOTE: possible context memory leak
 
         OnActionClickedListener playerActionListener = new PlayerActionListener();
@@ -546,15 +520,35 @@ public class PlaybackFragment
         hideControlsOverlay(true); // fix player ui not synced correctly
 
         mExoPlayerController.setPlayerView(mPlayerGlue);
-    }
-
-    private void createSubtitleManager() {
+    
+        // -------- Create Subtitle Manager --------
         mSubtitleManager = new SubtitleManager(getActivity(), R.id.leanback_subtitles);
 
-        // subs renderer
-        if (mPlayer.getTextComponent() != null) {
+        if (mPlayer.getTextComponent() != null) 
             mPlayer.getTextComponent().addTextOutput(mSubtitleManager);
-        }
+
+        // -------- Create Media Session --------
+        createMediaSession();
+
+        // -------- Initialize Player Rows --------
+
+        mRowsSupportFragment = (RowsSupportFragment) getChildFragmentManager().findFragmentById(R.id.playback_controls_dock);
+
+        ClassPresenterSelector presenterSelector = new ClassPresenterSelector();
+        presenterSelector.addClassPresenter(
+                mPlayerGlue.getControlsRow().getClass(), 
+                mPlayerGlue.getPlaybackRowPresenter()
+        );
+        presenterSelector.addClassPresenter(ListRow.class, mRowPresenter);
+
+        mRowsAdapter = new ArrayObjectAdapter(presenterSelector);
+
+        mRowsAdapter.add(mPlayerGlue.getControlsRow());
+
+        setAdapter(mRowsAdapter);
+
+        mPlaybackPresenter.setView(this); // replaced by the embed player?
+        mPlaybackPresenter.onEngineInitialized();
     }
 
     private void createMediaSession() {
@@ -613,30 +607,6 @@ public class PlaybackFragment
 
         mMediaSessionConnector.setControlDispatcher(new DefaultControlDispatcher());
 
-    }
-
-    private void initializePlayerRows() {
-        mRowsSupportFragment = (RowsSupportFragment) getChildFragmentManager().findFragmentById(
-                R.id.playback_controls_dock);
-
-        /*
-         * To add a new row to the mPlayerAdapter and not lose the controls row that is provided by the
-         * glue, we need to compose a new row with the controls row and our related videos row.
-         *
-         * We start by creating a new {@link ClassPresenterSelector}. Then add the controls row from
-         * the media player glue, then add the related videos row.
-         */
-        ClassPresenterSelector presenterSelector = new ClassPresenterSelector();
-        presenterSelector.addClassPresenter(
-                mPlayerGlue.getControlsRow().getClass(), mPlayerGlue.getPlaybackRowPresenter());
-        presenterSelector.addClassPresenter(ListRow.class, mRowPresenter);
-
-        mRowsAdapter = new ArrayObjectAdapter(presenterSelector);
-
-        // player controls row
-        mRowsAdapter.add(mPlayerGlue.getControlsRow());
-
-        setAdapter(mRowsAdapter);
     }
 
     private void initPresenters() {

@@ -13,7 +13,6 @@ import minefarts.smarttube.SimpleExoPlayer;
 import minefarts.smarttube.source.MediaSource;
 import minefarts.smarttube.source.MergingMediaSource;
 import minefarts.smarttube.source.TrackGroupArray;
-import minefarts.smarttube.trackselection.DefaultTrackSelector;
 import minefarts.smarttube.trackselection.TrackSelection;
 import minefarts.smarttube.trackselection.TrackSelectionArray;
 import minefarts.smarttube.utils.data.MediaItemFormatInfo;
@@ -44,7 +43,7 @@ public class ExoPlayerController implements Player.EventListener {
     private static final String TAG = ExoPlayerController.class.getSimpleName();
     private final Context mContext;
     private final ExoMediaSourceFactory mMediaSourceFactory;
-    private final TrackSelectorManager mTrackSelectorManager;
+    public  final TrackSelectorManager mTrackSelectorManager;
     private final TrackInfoFormatter2 mTrackFormatter;
     private final TrackErrorFixer mTrackErrorFixer;
     private boolean mOnSourceChanged;
@@ -68,15 +67,6 @@ public class ExoPlayerController implements Player.EventListener {
         mMediaSourceFactory.setTrackErrorFixer(mTrackErrorFixer);
         mEventListener = eventListener;
         
-        applyShield720pFix();
-        
-    }
-
-    private void applyShield720pFix() {
-        PlaybackFragment playerData = PlaybackFragment.instance(mContext);
-        mTrackSelectorManager.selectTrack(FormatItem.toMediaTrack(playerData.getFormat(FormatItem.TYPE_VIDEO)));
-        mTrackSelectorManager.selectTrack(FormatItem.toMediaTrack(playerData.getFormat(FormatItem.TYPE_AUDIO)));
-        mTrackSelectorManager.selectTrack(FormatItem.toMediaTrack(playerData.getFormat(FormatItem.TYPE_SUBTITLE)));
     }
 
     public void openSabr(MediaItemFormatInfo formatInfo) {
@@ -122,9 +112,10 @@ public class ExoPlayerController implements Player.EventListener {
     }
 
     private void openMediaSource(MediaSource mediaSource) {
+        
         resetPlayerState(); // fixes occasional video artifacts and problems with quality switching
 
-        mTrackSelectorManager.setMergedSource(mediaSource instanceof MergingMediaSource);
+        mTrackSelectorManager.mIsMergedSource = (mediaSource instanceof MergingMediaSource);
         mTrackSelectorManager.invalidate();
         mOnSourceChanged = true;
         mEventListener.onSourceChanged(getVideo());
@@ -132,9 +123,7 @@ public class ExoPlayerController implements Player.EventListener {
     }
 
     public long getPositionMs() {
-        if (mPlayer == null) {
-            return -1;
-        }
+        if (mPlayer == null) return -1;
 
         return mPlayer.getCurrentPosition();
     }
@@ -151,9 +140,7 @@ public class ExoPlayerController implements Player.EventListener {
     }
 
     public long getDurationMs() {
-        if (mPlayer == null) {
-            return -1;
-        }
+        if (mPlayer == null) return -1;
 
         long duration = mPlayer.getDuration();
         return duration != C.TIME_UNSET ? duration : -1;
@@ -166,9 +153,7 @@ public class ExoPlayerController implements Player.EventListener {
     }
 
     public Boolean getPlayWhenReady() {
-        if (mPlayer == null) {
-            return false;
-        }
+        if (mPlayer == null) return false;
 
         return mPlayer.getPlayWhenReady();
     }
@@ -182,20 +167,31 @@ public class ExoPlayerController implements Player.EventListener {
     }
     
     public Boolean containsMedia() {
-        if (mPlayer == null) {
+        if (mPlayer == null)
             return false;
-        }
 
         return mPlayer.getPlaybackState() != Player.STATE_IDLE;
     }
     
     public void release() {
+
         mTrackSelectorManager.release();
         mMediaSourceFactory.release();
-        releasePlayer();
+        
         mPlayerView = null;
-        // Don't destroy it (needed inside the bridge)!
-        //mEventListener = null;
+
+        if (mPlayer == null) return;
+
+        try {
+            mPlayer.removeListener(this);
+            mPlayer.stop(true); // Cause input lags due to high cpu load?
+            mPlayer.clearVideoSurface();
+            mPlayer.release();
+            mPlayer = null;
+        } catch (ArrayIndexOutOfBoundsException e) { // thrown on stop()
+            e.printStackTrace();
+        }
+
     }
     
     public void setPlayer(SimpleExoPlayer player) {
@@ -205,10 +201,6 @@ public class ExoPlayerController implements Player.EventListener {
     
     public void setPlayerView(PlayerView playerView) {
         mPlayerView = playerView;
-    }
-    
-    public void setTrackSelector(DefaultTrackSelector trackSelector) {
-        mTrackSelectorManager.setTrackSelector(trackSelector);
     }
     
     public void setVideo(Video video) {
@@ -252,6 +244,7 @@ public class ExoPlayerController implements Player.EventListener {
 
     @Override
     public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+        
         Log.d(TAG, "onTracksChanged: start: groups length: " + trackGroups.length);
 
         if (trackGroups.length == 0) {
@@ -259,7 +252,16 @@ public class ExoPlayerController implements Player.EventListener {
             return;
         }
 
-        notifyOnVideoLoad();
+        if (mOnSourceChanged) {
+
+            mOnSourceChanged = false;
+
+            mEventListener.onVideoLoaded(getVideo());
+
+            if (mOnVideoLoaded != null)
+                mOnVideoLoaded.run();
+            
+        }
 
         for (TrackSelection selection : trackSelections.getAll()) {
             if (selection != null) {
@@ -275,22 +277,6 @@ public class ExoPlayerController implements Player.EventListener {
             }
         }
         
-    }
-
-    private void notifyOnVideoLoad() {
-        if (mOnSourceChanged) {
-            mOnSourceChanged = false;
-
-            mEventListener.onVideoLoaded(getVideo());
-
-            if (mOnVideoLoaded != null) {
-                mOnVideoLoaded.run();
-            }
-
-            // Produce thread sync problems
-            // Attempt to read from field 'java.util.TreeMap$Node java.util.TreeMap$Node.left' on a null object reference
-            //mTrackSelectorManager.fixTracksSelection();
-        }
     }
 
     @Override
@@ -436,19 +422,4 @@ public class ExoPlayerController implements Player.EventListener {
         mOnVideoLoaded = onVideoLoaded;
     }
 
-    private void releasePlayer() {
-        if (mPlayer == null) {
-            return;
-        }
-
-        try {
-            mPlayer.removeListener(this);
-            mPlayer.stop(true); // Cause input lags due to high cpu load?
-            mPlayer.clearVideoSurface();
-            mPlayer.release();
-            mPlayer = null;
-        } catch (ArrayIndexOutOfBoundsException e) { // thrown on stop()
-            e.printStackTrace();
-        }
-    }
 }
