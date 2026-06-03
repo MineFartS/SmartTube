@@ -20,7 +20,6 @@ import minefarts.smarttube.exoplayer.selector.track.AudioTrack;
 import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
 import minefarts.smarttube.exoplayer.selector.track.VideoTrack;
 import minefarts.smarttube.exoplayer.versions.selector.RestoreTrackSelector;
-import minefarts.smarttube.exoplayer.versions.selector.RestoreTrackSelector.TrackSelectorCallback;
 import minefarts.smarttube.ui.playback.PlaybackFragment;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.utils.Utils;
@@ -35,7 +34,8 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public class TrackSelectorManager implements TrackSelectorCallback {
+public class TrackSelectorManager {
+
     private final Context mContext;
     public static final int RENDERER_INDEX_UNKNOWN = -1;
     public static final int RENDERER_INDEX_VIDEO = 0;
@@ -49,7 +49,7 @@ public class TrackSelectorManager implements TrackSelectorCallback {
 
     private final Renderer[] mRenderers = new Renderer[3];
     private final MediaTrack[] mSelectedTracks = new MediaTrack[3];
-    private boolean mIsMergedSource;
+    public boolean mIsMergedSource;
 
     public TrackSelectorManager(Context context) {
         mContext = context.getApplicationContext();
@@ -90,22 +90,6 @@ public class TrackSelectorManager implements TrackSelectorCallback {
         }
 
         initTrackGroups(rendererIndex, mTrackSelector.getCurrentMappedTrackInfo(), mTrackSelector.getParameters());
-        initMediaTracks(rendererIndex);
-    }
-
-    /**
-     * Creates renderer structure.
-     * @param rendererIndex The index of the renderer. <br/>
-     *                      One of the {@link #RENDERER_INDEX_VIDEO}, {@link #RENDERER_INDEX_AUDIO}, {@link #RENDERER_INDEX_SUBTITLE}
-     * @param trackInfo supplied externally from {@link RestoreTrackSelector}
-     * @param parameters supplied externally from {@link RestoreTrackSelector}
-     */
-    private void initRenderer(int rendererIndex, MappedTrackInfo trackInfo, Parameters parameters) {
-        if (mRenderers[rendererIndex] != null && mRenderers[rendererIndex].mediaTracks != null) {
-            return;
-        }
-
-        initTrackGroups(rendererIndex, trackInfo, parameters);
         initMediaTracks(rendererIndex);
     }
 
@@ -322,40 +306,32 @@ public class TrackSelectorManager implements TrackSelectorCallback {
         return definition;
     }
 
-    @Override
     public Pair<Definition, MediaTrack> onSelectVideoTrack(TrackGroupArray groups, Parameters params) {
         return createRendererSelection(RENDERER_INDEX_VIDEO, groups, params);
     }
 
-    @Override
     public Pair<Definition, MediaTrack> onSelectAudioTrack(TrackGroupArray groups, Parameters params) {
         return createRendererSelection(RENDERER_INDEX_AUDIO, groups, params);
     }
 
-    @Override
     public Pair<Definition, MediaTrack> onSelectSubtitleTrack(TrackGroupArray groups, Parameters params) {
         return createRendererSelection(RENDERER_INDEX_SUBTITLE, groups, params);
     }
 
-    @Override
     public void updateVideoTrackSelection(TrackGroupArray groups, Parameters params, Definition definition) {
         updateRendererSelection(RENDERER_INDEX_VIDEO, groups, params, definition);
     }
 
-    @Override
     public void updateAudioTrackSelection(TrackGroupArray groups, Parameters params, Definition definition) {
         updateRendererSelection(RENDERER_INDEX_AUDIO, groups, params, definition);
     }
 
-    @Override
     public void updateSubtitleTrackSelection(TrackGroupArray groups, Parameters params, Definition definition) {
         updateRendererSelection(RENDERER_INDEX_SUBTITLE, groups, params, definition);
     }
 
     public void selectTrack(MediaTrack track) {
-        if (track == null) {
-            return;
-        }
+        if (track == null) return;
 
         int rendererIndex = track.rendererIndex;
 
@@ -427,10 +403,6 @@ public class TrackSelectorManager implements TrackSelectorCallback {
         }
 
         invalidate();
-    }
-
-    public void setMergedSource(boolean mergedSource) {
-        mIsMergedSource = mergedSource;
     }
 
     private MediaTrack findBestMatch(MediaTrack originTrack) {
@@ -638,7 +610,6 @@ public class TrackSelectorManager implements TrackSelectorCallback {
     }
 
     private static class MediaTrackFormatComparator implements Comparator<MediaTrack> {
-        @Override
         public int compare(MediaTrack mediaTrack1, MediaTrack mediaTrack2) {
             Format format1 = mediaTrack1.format;
             Format format2 = mediaTrack2.format;
@@ -731,6 +702,7 @@ public class TrackSelectorManager implements TrackSelectorCallback {
     }
 
     private MediaTrack getTrack(int rendererIndex) {
+        
         initRenderer(rendererIndex);
 
         Renderer renderer = mRenderers[rendererIndex];
@@ -741,4 +713,5 @@ public class TrackSelectorManager implements TrackSelectorCallback {
 
         return renderer.selectedTrack;
     }
+
 }
