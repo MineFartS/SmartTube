@@ -2,12 +2,13 @@ package minefarts.smarttube.ui.channel;
 
 import android.os.Bundle;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.app.presenters.ChannelPresenter;
-import minefarts.smarttube.app.presenters.interfaces.VideoGroupPresenter;
+import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.views.ChannelView;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.presenter.ChannelHeaderPresenter.ChannelHeaderCallback;
@@ -88,7 +89,7 @@ public class ChannelFragment extends MultipleRowsFragment implements ChannelView
     }
 
     @Override
-    protected VideoGroupPresenter getMainPresenter() {
+    protected BasePresenter getMainPresenter() {
         return ChannelPresenter.instance(getContext());
     }
 

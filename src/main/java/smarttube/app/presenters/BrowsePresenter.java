@@ -31,8 +31,6 @@ import minefarts.smarttube.app.presenters.dialogs.menu.SectionMenuPresenter;
 import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter;
 import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
 import minefarts.smarttube.app.presenters.dialogs.menu.providers.channelgroup.ChannelGroupServiceWrapper;
-import minefarts.smarttube.app.presenters.interfaces.SectionPresenter;
-import minefarts.smarttube.app.presenters.interfaces.VideoGroupPresenter;
 import minefarts.smarttube.app.views.BrowseView;
 import minefarts.smarttube.utils.BrowseProcessorManager;
 import minefarts.smarttube.utils.ServiceManager;
@@ -63,7 +61,7 @@ import java.util.stream.Collectors;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
-public class BrowsePresenter extends BasePresenter<BrowseView> implements SectionPresenter, VideoGroupPresenter, AccountChangeListener {
+public class BrowsePresenter extends BasePresenter<BrowseView> implements AccountChangeListener {
     
     private static final String TAG = BrowsePresenter.class.getSimpleName();
     
@@ -80,6 +78,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
     private final Map<Integer, Callable<List<Video>>> mLocalGridMappings;
     private final Map<Integer, BrowseSection> mSectionsMapping;
     private final BrowseProcessorManager mBrowseProcessor;
+    private final ChannelUploadsPresenter mChannelUploadsPresenter;
     private final List<Disposable> mActions;
     private final Runnable mRefreshSection = this::refresh;
     private BrowseSection mCurrentSection;
@@ -102,6 +101,8 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         ServiceManager.addAccountListener(this);
 
         mBrowseProcessor = new BrowseProcessorManager(getContext(), this::syncItem);
+        mChannelUploadsPresenter = ChannelUploadsPresenter.instance(getContext());
+        
         mActions = new ArrayList<>();
 
         initSectionMappings();
@@ -498,7 +499,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
             return;
         }
 
-        if (belongsToChannelUploadsMultiGrid(item)) {
+        if (isMultiGridChannelUploadsSection() && belongsToChannelUploads(item)) {
             updateChannelUploadsMultiGrid(item);
         }
 
@@ -554,12 +555,9 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
             return;
         }
 
-        VideoGroup group = item.getGroup();
-
-        continueGroup(group);
+        continueGroup(item.getGroup(), true, true);
     }
 
-    @Override
     public void onSectionFocused(int sectionId) {
         saveSelectedItems(); // save previous state
         mCurrentSection = findSectionById(sectionId);
@@ -568,7 +566,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         restoreSelectedItems(); // Don't place anywhere else
     }
 
-    @Override
     public void onSectionLongPressed(int sectionId) {
         SectionMenuPresenter.instance(getContext()).showMenu(findSectionById(sectionId));
     }
@@ -704,28 +701,42 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
 
     private void updateSection(BrowseSection section) {
         switch (section.getType()) {
+
             case BrowseSection.TYPE_GRID:
             case BrowseSection.TYPE_SHORTS_GRID:
                 if (mGridMapping.containsKey(section.getId())) {
                     Observable<MediaGroup> group = mGridMapping.get(section.getId());
-                    updateVideoGrid(section, group, section.isAuthOnly());
+                    updateVideoGrid(section, group, -1, section.isAuthOnly());
                 } else if (mLocalGridMappings.containsKey(section.getId())) {
+                    
                     Callable<List<Video>> localVideos = mLocalGridMappings.get(section.getId());
-                    updateLocalGrid(section, localVideos);
+
+                    VideoGroup videoGroup = VideoGroup.from(Helpers.get(localVideos), section);
+                    videoGroup.setAction(VideoGroup.ACTION_REPLACE);
+                    videoGroup.setId(videoGroup.hashCode());
+                    videoGroup.setTitle(section.getTitle());
+                    getView().updateSection(videoGroup);
+                    getView().showProgressBar(false);
+
                 }
                 break;
+
             case BrowseSection.TYPE_ROW:
                 Observable<List<MediaGroup>> groups = mRowMapping.get(section.getId());
                 updateVideoRows(section, groups, section.isAuthOnly());
                 break;
+
             case BrowseSection.TYPE_SETTINGS_GRID:
                 Callable<List<SettingsItem>> items = mSettingsGridMapping.get(section.getId());
-                updateSettingsGrid(section, items);
+                getView().updateSection(SettingsGroup.from(Helpers.get(items), section));
+                getView().showProgressBar(false);
                 break;
+
             case BrowseSection.TYPE_MULTI_GRID:
                 Observable<MediaGroup> group2 = mGridMapping.get(section.getId());
                 updateVideoGrid(section, group2, 0, section.isAuthOnly());
                 break;
+
             case BrowseSection.TYPE_ERROR:
                 getView().showProgressBar(false);
                 break;
@@ -734,201 +745,186 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         updateRefreshTime();
     }
 
-    private void updateSettingsGrid(BrowseSection section, Callable<List<SettingsItem>> items) {
-        getView().updateSection(SettingsGroup.from(Helpers.get(items), section));
-        getView().showProgressBar(false);
-    }
-
-    private void updateLocalGrid(BrowseSection section, Callable<List<Video>> items) {
-        VideoGroup videoGroup = VideoGroup.from(Helpers.get(items), section);
-        videoGroup.setAction(VideoGroup.ACTION_REPLACE);
-        videoGroup.setId(videoGroup.hashCode());
-        videoGroup.setTitle(section.getTitle());
-        getView().updateSection(videoGroup);
-        getView().showProgressBar(false);
-    }
-
     private void updateVideoRows(BrowseSection section, Observable<List<MediaGroup>> groups, boolean authCheck) {
         Log.d(TAG, "loadRowsHeader: Start loading section: " + section.getTitle());
 
-        authCheck(authCheck, () -> updateVideoRows(section, groups));
-    }
+        authCheck(authCheck, () -> {
+            Log.d(TAG, "updateRowsHeader: Start loading section: " + section.getTitle());
 
-    private void updateVideoGrid(BrowseSection section, Observable<MediaGroup> group, boolean authCheck) {
-        updateVideoGrid(section, group, -1, authCheck);
+            disposeActions();
+
+            if (getView() == null) {
+                Log.e(TAG, "Browse view has been unloaded from the memory. Low RAM?");
+                getViewManager().startView(BrowseView.class);
+                return;
+            }
+            
+            getView().showProgressBar(true);
+
+            VideoGroup firstGroup = VideoGroup.from(section);
+            firstGroup.setAction(VideoGroup.ACTION_REPLACE);
+            getView().updateSection(firstGroup);
+
+            if (groups == null) {
+                // No group. Maybe just clear.
+                getView().showProgressBar(false);
+                return;
+            }
+
+            Disposable updateAction = groups.subscribe(
+
+                mediaGroups -> {
+
+                    getView().showProgressBar(false);
+
+                    if (isHomeSection()) {
+                        Helpers.removeIf(
+                            mediaGroups, 
+                            value -> Helpers.containsAny(
+                                value.getTitle(),
+                                "Primetime", // Free movies and shows row
+                                "News", // Top news
+                                "news", // Top news
+                                "NBA TV", // Sports
+                                "The Life of a Showgirl"
+                            )
+                        );
+                    }
+
+                    for (MediaGroup mediaGroup : mediaGroups) {
+                        
+                        if (mediaGroup.isEmpty()) continue;
+
+                        VideoGroup videoGroup = VideoGroup.from(mediaGroup, section);
+
+                        if (TextUtils.isEmpty(videoGroup.getTitle())) {
+                            videoGroup.setTitle(getContext().getString(R.string.suggestions));
+                        }
+
+                        getView().updateSection(videoGroup);
+                        mBrowseProcessor.process(videoGroup);
+
+                        continueGroup(videoGroup, false, false);
+                    }
+
+                },
+
+                error -> {
+                    Log.e(TAG, "updateRowsHeader error: %s", error.getMessage());
+                    handleLoadError(error);
+                }, 
+
+                () -> handleLoadError(null)
+
+            );
+
+            mActions.add(updateAction);
+        });
+
     }
 
     private void updateVideoGrid(BrowseSection section, Observable<MediaGroup> group, int column, boolean authCheck) {
+        
         Log.d(TAG, "loadMultiGridHeader: Start loading section: " + section.getTitle());
 
-        authCheck(authCheck, () -> updateVideoGrid(section, group, column));
-    }
+        authCheck(authCheck, () -> {
+            disposeActions();
 
-    private void updateVideoRows(BrowseSection section, Observable<List<MediaGroup>> groups) {
-        Log.d(TAG, "updateRowsHeader: Start loading section: " + section.getTitle());
+            if (getView() == null) {
+                Log.e(TAG, "Browse view has been unloaded from the memory. Low RAM?");
+                getViewManager().startView(BrowseView.class);
+                return;
+            }
 
-        disposeActions();
+            Log.d(TAG, "updateGridHeader: Start loading section: " + section.getTitle());
 
-        if (getView() == null) {
-            Log.e(TAG, "Browse view has been unloaded from the memory. Low RAM?");
-            getViewManager().startView(BrowseView.class);
-            return;
-        }
-        
-        getView().showProgressBar(true);
+            getView().showProgressBar(true);
 
-        VideoGroup firstGroup = VideoGroup.from(section);
-        firstGroup.setAction(VideoGroup.ACTION_REPLACE);
-        getView().updateSection(firstGroup);
+            // Stay on the same group in case of multiple subscribe calls
+            VideoGroup baseGroup = VideoGroup.from(section, column);
+            baseGroup.setAction(VideoGroup.ACTION_REPLACE);
+            getView().updateSection(baseGroup);
 
-        if (groups == null) {
-            // No group. Maybe just clear.
-            getView().showProgressBar(false);
-            return;
-        }
-
-        Disposable updateAction = groups
-                .subscribe(
-                        mediaGroups -> {
-                            getView().showProgressBar(false);
-
-                            filterHomeIfNeeded(mediaGroups);
-
-                            for (MediaGroup mediaGroup : mediaGroups) {
-                                if (mediaGroup.isEmpty()) {
-                                    Log.e(TAG, "loadRowsHeader: MediaGroup is empty. Group Name: " + mediaGroup.getTitle());
-                                    continue;
-                                }
-
-                                VideoGroup videoGroup = VideoGroup.from(mediaGroup, section);
-
-                                if (TextUtils.isEmpty(videoGroup.getTitle())) {
-                                    videoGroup.setTitle(getContext().getString(R.string.suggestions));
-                                }
-
-                                getView().updateSection(videoGroup);
-                                mBrowseProcessor.process(videoGroup);
-
-                                continueGroupIfNeeded(videoGroup, false);
-                            }
-                        },
-                        error -> {
-                            Log.e(TAG, "updateRowsHeader error: %s", error.getMessage());
-                            handleLoadError(error);
-                        }, () -> handleLoadError(null));
-
-        mActions.add(updateAction);
-    }
-
-    private void updateVideoGrid(BrowseSection section, Observable<MediaGroup> group, int column) {
-        disposeActions();
-
-        if (getView() == null) {
-            Log.e(TAG, "Browse view has been unloaded from the memory. Low RAM?");
-            getViewManager().startView(BrowseView.class);
-            return;
-        }
-
-        Log.d(TAG, "updateGridHeader: Start loading section: " + section.getTitle());
-
-        getView().showProgressBar(true);
-
-        // Stay on the same group in case of multiple subscribe calls
-        VideoGroup baseGroup = VideoGroup.from(section, column);
-        baseGroup.setAction(VideoGroup.ACTION_REPLACE);
-        getView().updateSection(baseGroup);
-
-        if (group == null) {
-            // No group. Maybe just clear.
-            getView().showProgressBar(false);
-            return;
-        }
-
-        Disposable updateAction = group.subscribe(
-        
-            mediaGroup -> {
+            if (group == null) {
+                // No group. Maybe just clear.
                 getView().showProgressBar(false);
+                return;
+            }
 
-                if (getView() == null) {
-                    Log.e(TAG, "Browse view has been unloaded from the memory. Low RAM?");
-                    getViewManager().startView(BrowseView.class);
-                    return;
-                }
-
-                VideoGroup videoGroup = VideoGroup.from(baseGroup, mediaGroup);
-
-                if (isHistorySection())
-                    appendLocalHistory(videoGroup);
-
-                getView().updateSection(videoGroup);
-                mBrowseProcessor.process(videoGroup);
-
-                continueGroupIfNeeded(videoGroup);
-            },
-
-            error -> {
-                Log.e(TAG, "updateGridHeader error: %s", error.getMessage());
-                handleLoadError(error);
-            }, 
+            Disposable updateAction = group.subscribe(
             
-            () -> handleLoadError(null)
-        
-        );
+                mediaGroup -> {
+                    getView().showProgressBar(false);
 
-        mActions.add(updateAction);
+                    if (getView() == null) {
+                        Log.e(TAG, "Browse view has been unloaded from the memory. Low RAM?");
+                        getViewManager().startView(BrowseView.class);
+                        return;
+                    }
+
+                    VideoGroup videoGroup = VideoGroup.from(baseGroup, mediaGroup);
+
+                    if (isHistorySection())
+                        appendLocalHistory(videoGroup);
+
+                    getView().updateSection(videoGroup);
+                    mBrowseProcessor.process(videoGroup);
+
+                    continueGroup(videoGroup, true, false);
+                },
+
+                error -> {
+                    Log.e(TAG, "updateGridHeader error: %s", error.getMessage());
+                    handleLoadError(error);
+                }, 
+                
+                () -> handleLoadError(null)
+            
+            );
+
+            mActions.add(updateAction);
+        });
+    
     }
 
-    private void continueGroup(VideoGroup group) {
-        continueGroup(group, true);
-    }
-
-    private void continueGroup(VideoGroup group, boolean showLoading) {
-        if (getView() == null) {
-            Log.e(TAG, "Can't continue group. The view is null.");
-            return;
-        }
-
-        if (group == null) {
-            Log.e(TAG, "Can't continue group. The group is null.");
-            return;
-        }
-
-        if (getCurrentSection() != null && mLocalGridMappings.containsKey(getCurrentSection().getId())) {
-            Log.d(TAG, "Local grid section doesn't assume a continuation...");
-            return;
-        }
+    private void continueGroup(
+        VideoGroup group, 
+        boolean showLoading, 
+        boolean force
+    ) {
+        if (
+            getView() == null 
+            || group == null
+            || (getCurrentSection() != null && mLocalGridMappings.containsKey(getCurrentSection().getId()))
+            || (!force && !ServiceManager.shouldContinueTheGroup(getContext(), group, isGridSection()))
+        ) return;
 
         Log.d(TAG, "continueGroup: start continue group: " + group.getTitle());
 
         // Small amount of items == small load time. Loading bar are useless?
-        if (showLoading) {
+        if (showLoading) 
             getView().showProgressBar(true);
-        }
 
-        MediaGroup mediaGroup = group.getMediaGroup();
+        Disposable continueAction = getContentService().continueGroupObserve(group.getMediaGroup()).subscribe(
+            
+            contGroup -> {
+                getView().showProgressBar(false);
 
-        Observable<MediaGroup> continuation;
+                VideoGroup videoGroup = VideoGroup.from(group, contGroup);
+                getView().updateSection(videoGroup);
+                mBrowseProcessor.process(videoGroup);
 
-        continuation = getContentService().continueGroupObserve(mediaGroup);
+                continueGroup(videoGroup, showLoading, false);
+            },
+            
+            error -> {
+                Log.e(TAG, "continueGroup error: %s", error.getMessage());
+                if (getView() != null) {
+                    getView().showProgressBar(false);
+                }
+            }
 
-        Disposable continueAction = continuation
-                .subscribe(
-                        continueGroup -> {
-                            getView().showProgressBar(false);
-
-                            VideoGroup videoGroup = VideoGroup.from(group, continueGroup);
-                            getView().updateSection(videoGroup);
-                            mBrowseProcessor.process(videoGroup);
-
-                            continueGroupIfNeeded(videoGroup, showLoading);
-                        },
-                        error -> {
-                            Log.e(TAG, "continueGroup error: %s", error.getMessage());
-                            if (getView() != null) {
-                                getView().showProgressBar(false);
-                            }
-                        }
-                );
+        );
 
         mActions.add(continueAction);
     }
@@ -956,22 +952,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         }
     }
 
-    /**
-     * Most tiny ui has 8 cards in a row or 24 in grid.
-     */
-    private void continueGroupIfNeeded(VideoGroup group) {
-        continueGroupIfNeeded(group, true);
-    }
-
-    /**
-     * Most tiny ui has 8 cards in a row or 24 in grid.
-     */
-    private void continueGroupIfNeeded(VideoGroup group, boolean showLoading) {
-        if (ServiceManager.shouldContinueTheGroup(getContext(), group, isGridSection())) {
-            continueGroup(group, showLoading);
-        }
-    }
-
     private void disposeActions() {
         RxHelper.disposeActions(mActions);
         Utils.removeCallbacks(mRefreshSection);
@@ -980,15 +960,14 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
     }
 
     private void updateChannelUploadsMultiGrid(Video item) {
-        if (mCurrentSection == null) {
-            return;
-        }
+        if (mCurrentSection == null) return;
 
-        updateVideoGrid(mCurrentSection, ChannelUploadsPresenter.instance(getContext()).obtainUploadsObservable(item), 1, false);
-    }
-
-    private boolean belongsToChannelUploadsMultiGrid(Video item) {
-        return isMultiGridChannelUploadsSection() && belongsToChannelUploads(item);
+        updateVideoGrid(
+            mCurrentSection, 
+            mChannelUploadsPresenter.obtainUploadsObservable(item), 
+            1, 
+            false
+        );
     }
 
     private boolean belongsToChannelUploads(Video item) {
@@ -1075,32 +1054,12 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
         return result != null ? result : previousSection;
     }
 
-    private void filterHomeIfNeeded(List<MediaGroup> mediaGroups) {
-        
-        if (mediaGroups == null || !isHomeSection()) {
-            return;
-        }
-
-        Helpers.removeIf(
-            mediaGroups, 
-            value -> Helpers.containsAny(
-                value.getTitle(),
-                "Primetime", // Free movies and shows row
-                "News", // Top news
-                "news", // Top news
-                "NBA TV", // Sports
-                "The Life of a Showgirl"
-            )
-        );
-        
-    }
-
     private Observable<MediaGroup> createPinnedGridAction(Video item) {
         if (item.channelGroupId != null) {
             return getContentService().getRssFeedObserve(ChannelGroupServiceWrapper.instance(getContext()).findChannelIdsForGroup(item.channelGroupId));
         }
 
-        return ChannelUploadsPresenter.instance(getContext()).obtainUploadsObservable(item);
+        return mChannelUploadsPresenter.obtainUploadsObservable(item);
     }
 
     private Observable<List<MediaGroup>> createPinnedRowAction(Video item) {
