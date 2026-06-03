@@ -13,7 +13,13 @@ import minefarts.smarttube.utils.app.nsigsolver.runtime.ScriptVariant
 
 internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     private val tag = V8ChallengeProvider::class.simpleName
-    private val v8NpmLibFilename = listOf("${libPrefix}polyfill.js", "${libPrefix}meriyah-6.1.4.min.js", "${libPrefix}astring-1.9.0.min.js")
+    
+    private val v8NpmLibFilename = listOf(
+        "nsigsolver/polyfill.js", 
+        "nsigsolver/meriyah-6.1.4.min.js", 
+        "nsigsolver/astring-1.9.0.min.js"
+    )
+    
     private val v8Runtime = ThreadLocal<V8>()
     private val v8Lock = Any()
 
@@ -26,11 +32,23 @@ internal object V8ChallengeProvider: JsRuntimeChalBaseJCP() {
     }
 
     private fun v8NpmSource(scriptType: ScriptType): Script? {
+        
         if (scriptType != ScriptType.LIB)
             return null
         // V8-specific lib scripts that uses Deno NPM imports
-        val code = loadScript(v8NpmLibFilename, "Failed to read v8 challenge solver lib script")
-        return Script(scriptType, ScriptVariant.V8_NPM, ScriptSource.BUILTIN, scriptVersion, code)
+        
+        val code = loadScript(
+            v8NpmLibFilename, 
+            "Failed to read v8 challenge solver lib script"
+        )
+
+        return Script(
+            scriptType, 
+            ScriptVariant.V8_NPM,
+            ScriptSource.BUILTIN, 
+            scriptVersion, 
+            code
+        )
     }
 
     override fun runJsRuntime(stdin: String): String {

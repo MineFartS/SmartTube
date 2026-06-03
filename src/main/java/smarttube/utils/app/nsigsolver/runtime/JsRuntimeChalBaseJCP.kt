@@ -14,7 +14,10 @@ import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeRequest
 import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeResponse
 import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeType
 
+val sGson = Gson()
+
 internal abstract class JsRuntimeChalBaseJCP: JsChallengeProvider() {
+
     private val tag = JsRuntimeChalBaseJCP::class.simpleName
     protected val cacheSection = "challenge-solver"
 
@@ -22,11 +25,10 @@ internal abstract class JsRuntimeChalBaseJCP: JsChallengeProvider() {
     private val repository = "yt-dlp/ejs"
     override val supportedTypes = listOf(JsChallengeType.N, JsChallengeType.SIG)
     protected val scriptVersion = "0.0.1"
-    protected val libPrefix = "nsigsolver/"
 
     private val scriptFilenames = mapOf(
-        ScriptType.LIB to "${libPrefix}yt.solver.lib.js",
-        ScriptType.CORE to "${libPrefix}yt.solver.core.js"
+        ScriptType.LIB to "nsigsolver/yt.solver.lib.js",
+        ScriptType.CORE to "nsigsolver/yt.solver.core.js"
     )
 
     private val minScriptFilenames = mapOf(
@@ -53,9 +55,8 @@ internal abstract class JsRuntimeChalBaseJCP: JsChallengeProvider() {
             val stdin = constructStdin(player, cached, groupedRequests)
             val stdout = runJsRuntime(stdin)
 
-            val gson = Gson()
             val output: SolverOutput = try {
-                gson.fromJson(stdout, solverOutputType)
+                sGson.fromJson(stdout, solverOutputType)
             } catch (e: JsonSyntaxException) {
                 throw JsChallengeProviderError("Cannot parse solver output", e)
             }
@@ -80,7 +81,12 @@ internal abstract class JsRuntimeChalBaseJCP: JsChallengeProvider() {
         }
     }
 
-    private fun constructStdin(player: String, preprocessed: Boolean, requests: List<JsChallengeRequest>): String {
+    private fun constructStdin(
+        player: String, 
+        preprocessed: Boolean, 
+        requests: List<JsChallengeRequest>
+    ): String {
+        
         val jsonRequests = requests.map { request ->
             mapOf(
                 // TODO: i despise nsig name
@@ -89,6 +95,7 @@ internal abstract class JsRuntimeChalBaseJCP: JsChallengeProvider() {
                 "challenges" to request.input.challenges
             )
         }
+
         val data = if (preprocessed) {
             mapOf(
                 "type" to "preprocessed",
@@ -103,11 +110,10 @@ internal abstract class JsRuntimeChalBaseJCP: JsChallengeProvider() {
                 "output_preprocessed" to true
             )
         }
-        val gson = Gson()
-        val jsonData = gson.toJson(data)
-        return """
-        JSON.stringify(jsc($jsonData));
-        """
+        
+        val jsonData = sGson.toJson(data)
+        
+        return "JSON.stringify(jsc($jsonData));"
     }
 
     protected fun constructCommonStdin(): String {
