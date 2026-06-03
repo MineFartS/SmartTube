@@ -17,7 +17,6 @@ import minefarts.smarttube.app.models.search.vineyard.Tag;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.models.playback.controllers.VideoLoaderController;
 import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter;
-import minefarts.smarttube.app.presenters.interfaces.VideoGroupPresenter;
 import minefarts.smarttube.app.views.SearchView;
 import minefarts.smarttube.utils.BrowseProcessorManager;
 import minefarts.smarttube.utils.ServiceManager;
@@ -32,7 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class SearchPresenter extends BasePresenter<SearchView> implements VideoGroupPresenter {
+public class SearchPresenter extends BasePresenter<SearchView> {
     private static final String TAG = SearchPresenter.class.getSimpleName();
     @SuppressLint("StaticFieldLeak")
     private static SearchPresenter sInstance;
