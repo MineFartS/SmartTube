@@ -25,8 +25,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.lang.IndexOutOfBoundsException;
 
-/** An {@link ExoPlayer} implementation. Instances can be obtained from {@link ExoPlayerFactory}. */
-/* package */ final class ExoPlayerImpl extends BasePlayer implements ExoPlayer {
+final class ExoPlayerImpl extends BasePlayer implements ExoPlayer {
 
   private static final String TAG = "ExoPlayerImpl";
 
@@ -37,7 +36,7 @@ import java.lang.IndexOutOfBoundsException;
    * TrackSelector#selectTracks(RendererCapabilities[], TrackGroupArray, MediaPeriodId, Timeline)}
    * operation.
    */
-  /* package */ final TrackSelectorResult emptyTrackSelectorResult;
+  final TrackSelectorResult emptyTrackSelectorResult;
 
   private final Renderer[] renderers;
   private final TrackSelector trackSelector;

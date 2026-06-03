@@ -122,7 +122,7 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
      * @param looper The {@link Looper} which must be used for all calls to the player and which is
      *        used to call listeners on.
      */
-    protected SimpleExoPlayer(Context context, RenderersFactory renderersFactory,
+    public SimpleExoPlayer(Context context, RenderersFactory renderersFactory,
             TrackSelector trackSelector, LoadControl loadControl, BandwidthMeter bandwidthMeter,
             @Nullable DrmSessionManager<FrameworkMediaCrypto> drmSessionManager, Looper looper) {
         this(context, renderersFactory, trackSelector, loadControl, drmSessionManager,
@@ -142,7 +142,7 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
      * @param looper The {@link Looper} which must be used for all calls to the player and which is
      *        used to call listeners on.
      */
-    protected SimpleExoPlayer(Context context, RenderersFactory renderersFactory,
+    public SimpleExoPlayer(Context context, RenderersFactory renderersFactory,
             TrackSelector trackSelector, LoadControl loadControl,
             @Nullable DrmSessionManager<FrameworkMediaCrypto> drmSessionManager,
             BandwidthMeter bandwidthMeter, AnalyticsCollector.Factory analyticsCollectorFactory,
@@ -166,7 +166,7 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
      * @param looper The {@link Looper} which must be used for all calls to the player and which is
      *        used to call listeners on.
      */
-    protected SimpleExoPlayer(Context context, RenderersFactory renderersFactory,
+    public SimpleExoPlayer(Context context, RenderersFactory renderersFactory,
             TrackSelector trackSelector, LoadControl loadControl,
             @Nullable DrmSessionManager<FrameworkMediaCrypto> drmSessionManager,
             BandwidthMeter bandwidthMeter, AnalyticsCollector.Factory analyticsCollectorFactory,

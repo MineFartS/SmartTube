@@ -2,7 +2,6 @@ package minefarts.smarttube.trackselection;
 
 import androidx.annotation.Nullable;
 import minefarts.smarttube.C;
-import minefarts.smarttube.ExoPlayerFactory;
 import minefarts.smarttube.Format;
 import minefarts.smarttube.source.TrackGroup;
 import minefarts.smarttube.source.chunk.MediaChunk;
@@ -48,10 +47,6 @@ public class AdaptiveTrackSelection extends BaseTrackSelection {
           Clock.DEFAULT);
     }
 
-    /**
-     * @deprecated Use {@link #Factory()} instead. Custom bandwidth meter should be directly passed
-     *     to the player in {@link ExoPlayerFactory}.
-     */
     @Deprecated
     @SuppressWarnings("deprecation")
     public Factory(BandwidthMeter bandwidthMeter) {
@@ -96,10 +91,6 @@ public class AdaptiveTrackSelection extends BaseTrackSelection {
           Clock.DEFAULT);
     }
 
-    /**
-     * @deprecated Use {@link #Factory(int, int, int, float)} instead. Custom bandwidth meter should
-     *     be directly passed to the player in {@link ExoPlayerFactory}.
-     */
     @Deprecated
     @SuppressWarnings("deprecation")
     public Factory(
@@ -165,10 +156,6 @@ public class AdaptiveTrackSelection extends BaseTrackSelection {
           clock);
     }
 
-    /**
-     * @deprecated Use {@link #Factory(int, int, int, float, float, long, Clock)} instead. Custom
-     *     bandwidth meter should be directly passed to the player in {@link ExoPlayerFactory}.
-     */
     @Deprecated
     public Factory(
         @Nullable BandwidthMeter bandwidthMeter,
