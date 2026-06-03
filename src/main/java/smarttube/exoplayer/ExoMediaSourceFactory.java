@@ -71,15 +71,44 @@ public class ExoMediaSourceFactory {
     }
 
     public MediaSource fromSabrFormatInfo(MediaItemFormatInfo formatInfo) {
-        return buildSabrMediaSource(formatInfo);
+
+        SabrManifestParser parser = new SabrManifestParser();
+
+        // Are you using FrameworkSampleSource or ExtractorSampleSource when you build your player?
+        SabrMediaSource sabrSource = new SabrMediaSource.Factory(getSabrChunkSourceFactory(), null)
+            .setLoadErrorHandlingPolicy(new SabrDefaultLoadErrorHandlingPolicy())
+            .createMediaSource(parser.parse(formatInfo));
+        
+        if (mTrackErrorFixer != null)
+            sabrSource.addEventListener(Utils.sHandler, mTrackErrorFixer);
+        
+        return sabrSource;
     }
 
     public MediaSource fromDashFormatInfo(MediaItemFormatInfo formatInfo) {
-        return buildDashMediaSource(formatInfo);
+        
+        // Are you using FrameworkSampleSource or ExtractorSampleSource when you build your player?
+        DashMediaSource dashSource = new DashMediaSource.Factory(getDashChunkSourceFactory(), null)
+            .setLoadErrorHandlingPolicy(new DashDefaultLoadErrorHandlingPolicy())
+            .createMediaSource(getManifest(formatInfo));
+
+        if (mTrackErrorFixer != null)
+            dashSource.addEventListener(Utils.sHandler, mTrackErrorFixer);
+
+        return dashSource;
     }
 
     public MediaSource fromDashManifest(InputStream dashManifest) {
-        return buildMPDMediaSource(DASH_MANIFEST_URI, dashManifest);
+
+        // Are you using FrameworkSampleSource or ExtractorSampleSource when you build your player?
+        DashMediaSource dashSource = new DashMediaSource.Factory(getDashChunkSourceFactory(), null)
+            .setLoadErrorHandlingPolicy(new DashDefaultLoadErrorHandlingPolicy())
+            .createMediaSource(getManifest(DASH_MANIFEST_URI, dashManifest));
+
+        if (mTrackErrorFixer != null)
+            dashSource.addEventListener(Utils.sHandler, mTrackErrorFixer);
+        
+        return dashSource;
     }
 
     public MediaSource fromDashManifestUrl(String dashManifestUrl) {
@@ -91,50 +120,58 @@ public class ExoMediaSourceFactory {
     }
 
     public MediaSource fromUrlList(List<String> urlList) {
+
         MediaSource[] mediaSources = new MediaSource[urlList.size()];
 
         for (int i = 0; i < urlList.size(); i++) {
             mediaSources[i] = buildMediaSource(Uri.parse(urlList.get(i)), null);
         }
 
-        //return mediaSources.length == 1 ? mediaSources[0] : new ConcatenatingMediaSource(mediaSources); // or playlist
         return mediaSources[0]; // item with max resolution
     }
 
-    @SuppressWarnings("deprecation")
     private MediaSource buildMediaSource(Uri uri, String overrideExtension) {
-        int type = TextUtils.isEmpty(overrideExtension) ? Utils.inferContentType(uri) : Utils.inferContentType("." + overrideExtension);
+
+        int type = TextUtils.isEmpty(overrideExtension) ? 
+            Utils.inferContentType(uri) : 
+            Utils.inferContentType("." + overrideExtension);
+        
         switch (type) {
+
             case C.TYPE_SS:
-                SsMediaSource ssSource =
-                        new SsMediaSource.Factory(
-                                getSsChunkSourceFactory(),
-                                getMediaDataSourceFactory()
-                        )
-                                .createMediaSource(uri);
-                if (mTrackErrorFixer != null) {
+                SsMediaSource ssSource = new SsMediaSource.Factory(
+                    new DefaultSsChunkSource.Factory(getMediaDataSourceFactory()),
+                    getMediaDataSourceFactory()
+                ).createMediaSource(uri);
+                
+                if (mTrackErrorFixer != null) 
                     ssSource.addEventListener(Utils.sHandler, mTrackErrorFixer);
-                }
+                
                 return ssSource;
+            
             case C.TYPE_DASH:
-                DashMediaSource dashSource =
-                        new DashMediaSource.Factory(
-                                getDashChunkSourceFactory(),
-                                getMediaDataSourceFactory()
-                        )
-                                .setManifestParser(new LiveDashManifestParser()) // Don't make static! Need state reset for each live source.
-                                .setLoadErrorHandlingPolicy(new DashDefaultLoadErrorHandlingPolicy())
-                                .createMediaSource(uri);
-                if (mTrackErrorFixer != null) {
+                DashMediaSource dashSource = new DashMediaSource.Factory(
+                    getDashChunkSourceFactory(),
+                    getMediaDataSourceFactory()
+                )
+                    .setManifestParser(new LiveDashManifestParser()) // Don't make static! Need state reset for each live source.
+                    .setLoadErrorHandlingPolicy(new DashDefaultLoadErrorHandlingPolicy())
+                    .createMediaSource(uri);
+
+                if (mTrackErrorFixer != null)
                     dashSource.addEventListener(Utils.sHandler, mTrackErrorFixer);
-                }
+                
                 return dashSource;
+                
             case C.TYPE_HLS:
+                
                 HlsMediaSource hlsSource = new HlsMediaSource.Factory(getMediaDataSourceFactory()).createMediaSource(uri);
-                if (mTrackErrorFixer != null) {
+                
+                if (mTrackErrorFixer != null)
                     hlsSource.addEventListener(Utils.sHandler, mTrackErrorFixer);
-                }
+                
                 return hlsSource;
+
             case C.TYPE_OTHER:
                 ExtractorMediaSource extractorSource = new ExtractorMediaSource.Factory(getMediaDataSourceFactory())
                         .setExtractorsFactory(new DefaultExtractorsFactory())
@@ -143,75 +180,13 @@ public class ExoMediaSourceFactory {
                     extractorSource.addEventListener(Utils.sHandler, mTrackErrorFixer);
                 }
                 return extractorSource;
+
             default: {
                 throw new IllegalStateException("Unsupported type: " + type);
             }
-        }
-    }
 
-    private MediaSource buildSabrMediaSource(MediaItemFormatInfo formatInfo) {
-        // Are you using FrameworkSampleSource or ExtractorSampleSource when you build your player?
-        SabrMediaSource sabrSource = new SabrMediaSource.Factory(
-                getSabrChunkSourceFactory(),
-                null
-        )
-                .setLoadErrorHandlingPolicy(new SabrDefaultLoadErrorHandlingPolicy())
-                .createMediaSource(getSabrManifest(formatInfo));
-        if (mTrackErrorFixer != null) {
-            sabrSource.addEventListener(Utils.sHandler, mTrackErrorFixer);
-        }
-        return sabrSource;
-    }
-
-    private MediaSource buildDashMediaSource(MediaItemFormatInfo formatInfo) {
-        // Are you using FrameworkSampleSource or ExtractorSampleSource when you build your player?
-        DashMediaSource dashSource = new DashMediaSource.Factory(
-                getDashChunkSourceFactory(),
-                null
-        )
-                .setLoadErrorHandlingPolicy(new DashDefaultLoadErrorHandlingPolicy())
-                .createMediaSource(getManifest(formatInfo));
-        if (mTrackErrorFixer != null) {
-            dashSource.addEventListener(Utils.sHandler, mTrackErrorFixer);
-        }
-        return dashSource;
-    }
-
-    private MediaSource buildMPDMediaSource(Uri uri, InputStream mpdContent) {
-        // Are you using FrameworkSampleSource or ExtractorSampleSource when you build your player?
-        DashMediaSource dashSource = new DashMediaSource.Factory(
-                getDashChunkSourceFactory(),
-                null
-        )
-                .setLoadErrorHandlingPolicy(new DashDefaultLoadErrorHandlingPolicy())
-                .createMediaSource(getManifest(uri, mpdContent));
-        if (mTrackErrorFixer != null) {
-            dashSource.addEventListener(Utils.sHandler, mTrackErrorFixer);
-        }
-        return dashSource;
-    }
-
-    private MediaSource buildMPDMediaSource(Uri uri, String mpdContent) {
-        if (mpdContent == null || mpdContent.isEmpty()) {
-            Log.e(TAG, "Can't build media source. MpdContent is null or empty. " + mpdContent);
-            return null;
         }
 
-        // Are you using FrameworkSampleSource or ExtractorSampleSource when you build your player?
-        DashMediaSource dashSource = new DashMediaSource.Factory(
-                new DefaultDashChunkSource.Factory(getMediaDataSourceFactory()),
-                null
-        )
-                .createMediaSource(getManifest(uri, mpdContent));
-        if (mTrackErrorFixer != null) {
-            dashSource.addEventListener(Utils.sHandler, mTrackErrorFixer);
-        }
-        return dashSource;
-    }
-
-    private SabrManifest getSabrManifest(MediaItemFormatInfo formatInfo) {
-        SabrManifestParser parser = new SabrManifestParser();
-        return parser.parse(formatInfo);
     }
 
     private DashManifest getManifest(MediaItemFormatInfo formatInfo) {
@@ -247,11 +222,6 @@ public class ExoMediaSourceFactory {
 
     public void release() {
         mMediaDataSourceFactory = null;
-    }
-
-    @NonNull
-    private DefaultSsChunkSource.Factory getSsChunkSourceFactory() {
-        return new DefaultSsChunkSource.Factory(getMediaDataSourceFactory());
     }
 
     @NonNull
