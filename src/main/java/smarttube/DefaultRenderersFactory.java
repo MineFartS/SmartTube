@@ -87,10 +87,6 @@ public class DefaultRenderersFactory implements RenderersFactory {
     mediaCodecSelector = MediaCodecSelector.DEFAULT;
   }
 
-  /**
-   * @deprecated Use {@link #DefaultRenderersFactory(Context)} and pass {@link DrmSessionManager}
-   *     directly to {@link SimpleExoPlayer} or {@link ExoPlayerFactory}.
-   */
   @Deprecated
   @SuppressWarnings("deprecation")
   public DefaultRenderersFactory(
@@ -109,11 +105,6 @@ public class DefaultRenderersFactory implements RenderersFactory {
     this(context, extensionRendererMode, DEFAULT_ALLOWED_VIDEO_JOINING_TIME_MS);
   }
 
-  /**
-   * @deprecated Use {@link #DefaultRenderersFactory(Context)} and {@link
-   *     #setExtensionRendererMode(int)}, and pass {@link DrmSessionManager} directly to {@link
-   *     SimpleExoPlayer} or {@link ExoPlayerFactory}.
-   */
   @Deprecated
   @SuppressWarnings("deprecation")
   public DefaultRenderersFactory(
@@ -136,11 +127,6 @@ public class DefaultRenderersFactory implements RenderersFactory {
     this(context, null, extensionRendererMode, allowedVideoJoiningTimeMs);
   }
 
-  /**
-   * @deprecated Use {@link #DefaultRenderersFactory(Context)}, {@link
-   *     #setExtensionRendererMode(int)} and {@link #setAllowedVideoJoiningTimeMs(long)}, and pass
-   *     {@link DrmSessionManager} directly to {@link SimpleExoPlayer} or {@link ExoPlayerFactory}.
-   */
   @Deprecated
   public DefaultRenderersFactory(
       Context context,
