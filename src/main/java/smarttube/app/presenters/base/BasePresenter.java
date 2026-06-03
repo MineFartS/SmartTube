@@ -5,7 +5,6 @@ import android.content.Context;
 import android.view.View;
 
 import minefarts.smarttube.fragment.app.Fragment;
-
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
 import minefarts.smarttube.utils.CommentsService;
 import minefarts.smarttube.utils.service.ContentService;
@@ -35,6 +34,26 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class BasePresenter<T> {
+
+    public void onVideoItemSelected(Video item) {
+        // NOP
+    }
+
+    public void onVideoItemClicked(Video item) {
+        // NOP
+    }
+
+    public void onVideoItemLongClicked(Video item) {
+        // NOP
+    }
+
+    public void onScrollEnd(Video item) {
+        // NOP
+    }
+    
+    public boolean hasPendingActions() {
+        return false;
+    }
 
     private WeakReference<T> mView = new WeakReference<>(null);
     private WeakReference<Activity> mActivity = new WeakReference<>(null);

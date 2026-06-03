@@ -20,7 +20,7 @@ import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.data.VideoGroup;
-import minefarts.smarttube.app.presenters.interfaces.VideoGroupPresenter;
+import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.adapter.VideoGroupObjectAdapter;
 import minefarts.smarttube.presenter.ChannelHeaderPresenter;
 import minefarts.smarttube.presenter.ChannelHeaderPresenter.ChannelHeaderCallback;
@@ -46,7 +46,7 @@ public abstract class MultipleRowsFragment extends RowsSupportFragment implement
     private ListRowPresenter mRowPresenter;
     private Map<Integer, VideoGroupObjectAdapter> mVideoGroupAdapters;
     private final List<VideoGroup> mPendingUpdates = new ArrayList<>();
-    private VideoGroupPresenter mMainPresenter;
+    private BasePresenter mMainPresenter;
     private VideoCardPresenter mCardPresenter;
     private ShortsCardPresenter mShortsPresenter;
     private int mSelectedRowIndex = -1;
@@ -70,7 +70,7 @@ public abstract class MultipleRowsFragment extends RowsSupportFragment implement
         mChannelHeaderCallback = callback;
     }
 
-    protected abstract VideoGroupPresenter getMainPresenter();
+    protected abstract BasePresenter getMainPresenter();
 
     private void applyPendingUpdates() {
         // prevent modification within update method

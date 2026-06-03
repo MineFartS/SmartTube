@@ -15,7 +15,6 @@ import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.models.playback.controllers.VideoLoaderController;
 import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter;
-import minefarts.smarttube.app.presenters.interfaces.VideoGroupPresenter;
 import minefarts.smarttube.app.views.ChannelView;
 import minefarts.smarttube.utils.BrowseProcessorManager;
 import minefarts.smarttube.utils.rx.RxHelper;
@@ -53,7 +52,7 @@ enum SortType {
 
 }
 
-public class ChannelPresenter extends BasePresenter<ChannelView> implements VideoGroupPresenter {
+public class ChannelPresenter extends BasePresenter<ChannelView> {
 
     private static final String TAG = ChannelPresenter.class.getSimpleName();
     

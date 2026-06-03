@@ -17,7 +17,7 @@ import minefarts.smarttube.leanback.widget.VerticalGridView;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.data.VideoGroup;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
-import minefarts.smarttube.app.presenters.interfaces.VideoGroupPresenter;
+import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.utils.TickleManager;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.R;
@@ -46,7 +46,7 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
     private final List<VideoGroup> mPendingUpdates1 = new ArrayList<>();
     private final List<VideoGroup> mPendingUpdates2 = new ArrayList<>();
     private UriBackgroundManager mBackgroundManager;
-    private VideoGroupPresenter mMainPresenter;
+    private BasePresenter mMainPresenter;
     private LongClickPresenter mCardPresenter1;
     private LongClickPresenter mCardPresenter2;
     private int mSelectedItemIndex1 = -1;
@@ -162,7 +162,7 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
         }
     }
 
-    protected VideoGroupPresenter getMainPresenter() {
+    protected BasePresenter getMainPresenter() {
         return BrowsePresenter.instance(getContext());
     }
 

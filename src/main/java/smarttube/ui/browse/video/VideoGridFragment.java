@@ -2,18 +2,19 @@ package minefarts.smarttube.ui.browse.video;
 
 import android.os.Bundle;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
+
 import minefarts.smarttube.leanback.widget.OnItemViewSelectedListener;
 import minefarts.smarttube.leanback.widget.Presenter;
 import minefarts.smarttube.leanback.widget.Row;
 import minefarts.smarttube.leanback.widget.RowPresenter;
 import minefarts.smarttube.leanback.widget.VerticalGridPresenter;
-
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.data.VideoGroup;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
-import minefarts.smarttube.app.presenters.interfaces.VideoGroupPresenter;
+import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.utils.TickleManager;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.utils.LoadingManager;
@@ -38,7 +39,7 @@ public class VideoGridFragment extends GridFragment implements VideoSection {
     private VideoGroupObjectAdapter mGridAdapter;
     private final List<VideoGroup> mPendingUpdates = new ArrayList<>();
     private UriBackgroundManager mBackgroundManager;
-    private VideoGroupPresenter mMainPresenter;
+    private BasePresenter mMainPresenter;
     private VideoCardPresenter mCardPresenter;
     private int mSelectedItemIndex = -1;
     private Video mSelectedItem;
@@ -61,7 +62,7 @@ public class VideoGridFragment extends GridFragment implements VideoSection {
         }
     }
 
-    protected VideoGroupPresenter getMainPresenter() {
+    protected BasePresenter getMainPresenter() {
         return BrowsePresenter.instance(getContext());
     }
 
