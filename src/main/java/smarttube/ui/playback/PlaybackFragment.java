@@ -227,9 +227,13 @@ public class PlaybackFragment
     }
 
     public static PlaybackFragment instance(Context context) {
-        if (sInstance == null)
-            sInstance = new PlaybackFragment(context.getApplicationContext());
+        
+        if (context != null) 
+            context = context.getApplicationContext();
 
+        if (sInstance == null)
+            sInstance = new PlaybackFragment(context);
+        
         return sInstance;
     }
 
