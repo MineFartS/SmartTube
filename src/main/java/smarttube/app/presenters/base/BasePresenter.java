@@ -28,6 +28,7 @@ import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.prefs.SearchData;
 import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.ContextManager;
 
 import java.lang.ref.WeakReference;
 import java.util.Collections;
@@ -83,6 +84,8 @@ public abstract class BasePresenter<T> {
         
         if (context == null) return;
 
+        ContextManager.set(context);
+
         // Update the VideoStateService context
         VideoStateService.instance(context);
 
@@ -111,7 +114,10 @@ public abstract class BasePresenter<T> {
 
         // In case view was disposed like SplashView does
         // Fallback to non-localized ApplicationContext if others fail
-        return Utils.checkActivity(activity) ? activity : mApplicationContext.get();
+        return ContextManager.set(
+            Utils.checkActivity(activity) ? activity : mApplicationContext.get()
+        );
+
     }
 
     public void onViewInitialized() {

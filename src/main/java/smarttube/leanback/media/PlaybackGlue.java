@@ -7,6 +7,8 @@ import androidx.annotation.CallSuper;
 import java.util.ArrayList;
 import java.util.List;
 
+import minefarts.smarttube.ContextManager;
+
 /**
  * Base class for abstraction of media play/pause feature. A subclass of PlaybackGlue will contain
  * implementation of Media Player or a connection to playback Service. App initializes
@@ -64,11 +66,8 @@ public abstract class PlaybackGlue {
         this.mContext = context;
     }
 
-    /**
-     * Returns the context.
-     */
     public Context getContext() {
-        return mContext;
+        return ContextManager.set(mContext);
     }
 
     /**

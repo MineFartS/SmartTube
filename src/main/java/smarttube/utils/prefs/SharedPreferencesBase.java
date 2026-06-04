@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
 import minefarts.smarttube.utils.mylogger.Log;
+import minefarts.smarttube.ContextManager;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -79,11 +80,12 @@ public class SharedPreferencesBase {
 
     @Nullable
     public Context getContext() {
-        return mContext.get();
+        return ContextManager.set(mContext.get());
     }
 
     private void setContext(Context context) {
         if (context != null) {
+            ContextManager.set(context);
             mContext = new WeakReference<>(context);
         }
     }
