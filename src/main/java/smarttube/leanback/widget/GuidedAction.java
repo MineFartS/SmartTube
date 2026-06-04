@@ -9,7 +9,9 @@ import android.text.InputType;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
+
 import minefarts.smarttube.R;
+import minefarts.smarttube.ContextManager;
 
 import java.util.List;
 
@@ -129,12 +131,8 @@ public class GuidedAction extends Action {
             mActionFlags = PF_ENABLED | PF_FOCUSABLE | PF_AUTORESTORE;
         }
 
-        /**
-         * Returns Context of this Builder.
-         * @return Context of this Builder.
-         */
         public Context getContext() {
-            return mContext;
+            return ContextManager.set(mContext);
         }
 
         private void setFlags(int flag, int mask) {

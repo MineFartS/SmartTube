@@ -61,6 +61,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import minefarts.smarttube.ContextManager;
+
 /**
  * Static library support version of the framework's {@link android.app.Fragment}.
  * Used to write apps that run on platforms prior to Android 3.0.  When running
@@ -742,7 +744,9 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
      */
     @Nullable
     public Context getContext() {
-        return mHost == null ? null : mHost.getContext();
+        return ContextManager.set(
+            mHost == null ? null : mHost.getContext()
+        );
     }
 
     /**
