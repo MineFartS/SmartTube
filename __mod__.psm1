@@ -1,9 +1,8 @@
 
-$ANDROID_SDK = "$PSScriptRoot\SDK"
+$ANDROID_SDK = "$PSScriptRoot\sdk"
 $ADB = "$ANDROID_SDK\platform-tools\adb.exe"
 
-$JDK = "$PSScriptRoot\JDK"
-$JAVA = "$JDK\bin\java.exe"
+$JAVA_HOME = "$PSScriptRoot\jdk"
 
 $APP_ID = "minefarts.smarttube"
 
@@ -23,10 +22,7 @@ function Invoke-Gradle {
         $cmdargs
     )
 
-    & $JAVA `
-        '-classpath' ".\gradle\wrapper\gradle-wrapper.jar" `
-        'org.gradle.wrapper.GradleWrapperMain' `
-        @cmdargs
+    ."$PSScriptRoot\gradlew.bat" @cmdargs
 
 }
 
@@ -62,41 +58,17 @@ function Repair-Environment {
 
     Set-Location $PSScriptRoot
 
-    #=======================================================
-    # ANDROID_SDK
-
-    [Environment]::SetEnvironmentVariable("ANDROID_HOME", $ANDROID_SDK, "Machine")
-
     git.exe submodule update --init --recursive --remote
     
     if (-not (Test-Path "$ANDROID_SDK\.knownPackages")) {
+        $env:JAVA_HOME = $JAVA_HOME
         & "$ANDROID_SDK\Accept.ps1"
     }
 
-    #=======================================================
-    # JAVA_HOME
+    Write-Output "org.gradle.java.home=$JAVA_HOME" > 'local.properties'
+    Write-Output "sdk.dir=$ANDROID_SDK" >> 'local.properties'
 
-    Write-Output "org.gradle.java.home=$JDK" > 'local.properties'
-    
-    [Environment]::SetEnvironmentVariable("JAVA_HOME", $JDK, "Machine")
-
-    #=======================================================
-    # Path
-
-    $dirs = @(
-        "$JDK\bin\",
-        "$ANDROID_SDK\platform-tools\"
-    )
-
-    $Path = [Environment]::GetEnvironmentVariable("Path", "Machine")
-
-    $dirs = ($dirs | Where-Object {$Path -notlike "*$_*"})
-
-    foreach ($dir in $dirs) {
-        $Path += ";$dir"
-    }
-
-    [Environment]::SetEnvironmentVariable("Path", $Path, "Machine")
+    (Get-Content -Path "local.properties") -replace '\\', '/' | Set-Content -Encoding utf8 "local.properties"
 
 }
 
