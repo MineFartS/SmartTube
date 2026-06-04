@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.view.InputEvent;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -58,7 +59,6 @@ import minefarts.smarttube.app.models.playback.ui.ChatReceiver;
 import minefarts.smarttube.app.models.playback.ui.SeekBarSegment;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.exoplayer.controller.ExoPlayerController;
-import minefarts.smarttube.exoplayer.other.ExoPlayerInitializer;
 import minefarts.smarttube.exoplayer.other.SubtitleManager;
 import minefarts.smarttube.exoplayer.selector.FormatItem;
 import minefarts.smarttube.exoplayer.versions.selector.RestoreTrackSelector;
@@ -88,6 +88,16 @@ import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
 import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
 import minefarts.smarttube.prefs.AppPrefs;
 import minefarts.smarttube.exoplayer.selector.TrackSelectorManager;
+import minefarts.smarttube.C;
+import minefarts.smarttube.DefaultLoadControl;
+import minefarts.smarttube.audio.AudioAttributes;
+import minefarts.smarttube.upstream.BandwidthMeter;
+import minefarts.smarttube.ui.playback.PlaybackFragment;
+import minefarts.smarttube.prefs.PlayerTweaksData;
+import minefarts.smarttube.analytics.AnalyticsCollector;
+import minefarts.smarttube.trackselection.DefaultTrackSelector;
+import minefarts.smarttube.upstream.DefaultBandwidthMeter;
+import minefarts.smarttube.exoplayer.other.VolumeBooster;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -95,6 +105,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.UUID;
 
 public class PlaybackFragment 
     extends SurfacePlaybackFragment 
@@ -139,7 +150,6 @@ public class PlaybackFragment
     private Map<Integer, VideoGroupObjectAdapter> mVideoGroupAdapters;
     private ExoPlayerController mExoPlayerController;
     private TrackSelectorManager mTrackSelectorManager;
-    private ExoPlayerInitializer mPlayerInitializer;
     private SubtitleManager mSubtitleManager;
     private UriBackgroundManager mBackgroundManager;
     private RowsSupportFragment mRowsSupportFragment;
@@ -184,6 +194,13 @@ public class PlaybackFragment
     private float mPitch;
     private List<String> mLastAudioLanguages;
 
+    private final int mMaxBufferBytes;
+    private final PlaybackFragment mPlayerData;
+    private final PlayerTweaksData mPlayerTweaksData;
+    private static AudioAttributes sAudioAttributes;
+
+    private static BandwidthMeter mBandwidthMeter;
+
     // Required for Android XML fragment inflation
     public PlaybackFragment() {
         this(null);
@@ -193,6 +210,18 @@ public class PlaybackFragment
         
         mPrefs = AppPrefs.instance(context);
         mPrefs.addListener(this);
+
+        mPlayerData = PlaybackFragment.instance(context);
+        mPlayerTweaksData = PlayerTweaksData.instance(context);
+
+        mBandwidthMeter = new DefaultBandwidthMeter.Builder(context).build();
+
+        long deviceRam = DeviceHelpers.getDeviceRam(context);
+
+        // If ram is too big, bigger then max int value DeviceRam will return a negative number...
+        // use 196MB as that can only happens if device has more than 17GB of RAM, so 196 is enough and safe
+        // https://github.com/yuliskov/SmartYouTubeTV/issues/532
+        mMaxBufferBytes = deviceRam <= 0 ? 196_000_000 : (int)(deviceRam / 18);
 
         restoreState();
     }
@@ -230,7 +259,6 @@ public class PlaybackFragment
         mVideoGroupAdapters = new HashMap<>();
         mBackgroundManager = getLeanbackActivity().getBackgroundManager();
         mBackgroundManager.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.player_background));
-        mPlayerInitializer = new ExoPlayerInitializer(getContext());
 
         mPlaybackPresenter = PlaybackPresenter.instance(getContext());
         mPlaybackPresenter.setView(this);
@@ -322,7 +350,6 @@ public class PlaybackFragment
 
         showHideWidgets(true); // PIP mode fix
         blockEngine(false); // reset bg mode
-        //ExoPlayerInitializer.enableAudioFocus(mPlayer, true); // Restore focus after PIP
     }
 
     public void onPause() {
@@ -336,7 +363,6 @@ public class PlaybackFragment
         }
 
         showHideWidgets(false); // PIP mode fix
-        //ExoPlayerInitializer.enableAudioFocus(mPlayer, false); // Disable focus in PIP
     }
 
     public void onDispatchKeyEvent(KeyEvent event) {
@@ -495,6 +521,71 @@ public class PlaybackFragment
         }
     }
 
+    public SimpleExoPlayer createPlayer(
+        DefaultRenderersFactory renderersFactory, 
+        DefaultTrackSelector trackSelector
+    ) {
+        DefaultLoadControl.Builder baseBuilder = new DefaultLoadControl.Builder();
+
+        int bufferForPlaybackMs = 2_500;
+        int bufferForPlaybackAfterRebufferMs = 5_000;
+
+        int minBufferMs = 50_000;
+        int maxBufferMs = 100_000;
+        
+        baseBuilder.setTargetBufferBytes(mMaxBufferBytes);
+        
+        baseBuilder.setBackBuffer(minBufferMs, true);
+
+        baseBuilder.setBufferDurationsMs(
+            minBufferMs, 
+            maxBufferMs, 
+            bufferForPlaybackMs, 
+            bufferForPlaybackAfterRebufferMs
+        );
+
+        DefaultLoadControl loadControl = baseBuilder.createDefaultLoadControl();
+
+        SimpleExoPlayer player = new SimpleExoPlayer(
+            getContext(),
+            renderersFactory,
+            trackSelector,
+            loadControl,
+            null, // drmSessionManager
+            mBandwidthMeter,
+            new AnalyticsCollector.Factory(),
+            Utils.getLooper()
+        );
+
+        if (player != null) {
+            try {
+                player.setAudioAttributes(getAudioAttributes(), true);
+            } catch (SecurityException e) { // uid 10390 not allowed to perform TAKE_AUDIO_FOCUS
+                e.printStackTrace();
+            }
+        }
+
+        float volume = 2.0f;
+
+        if (volume > 1f && Build.VERSION.SDK_INT >= 19) {
+            VolumeBooster mVolumeBooster = new VolumeBooster(true, volume, player);
+            player.addAudioListener(mVolumeBooster);
+        }
+
+        return player;
+    }
+
+    private static AudioAttributes getAudioAttributes() {
+        if (sAudioAttributes == null) {
+            sAudioAttributes = new AudioAttributes.Builder()
+                    .setUsage(C.USAGE_MEDIA)
+                    .setContentType(C.CONTENT_TYPE_MOVIE)
+                    .build();
+        }
+
+        return sAudioAttributes;
+    }
+
     private void initializePlayer() {
         if (mPlayer != null) return;
 
@@ -504,7 +595,7 @@ public class PlaybackFragment
         mTrackSelectorManager.setTrackSelector(trackSelector);
 
         DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(getContext());
-        mPlayer = mPlayerInitializer.createPlayer(getContext(), renderersFactory, trackSelector);
+        mPlayer = createPlayer(renderersFactory, trackSelector);
 
         mExoPlayerController.setPlayer(mPlayer);
 

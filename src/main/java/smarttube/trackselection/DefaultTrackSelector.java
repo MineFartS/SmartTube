@@ -12,7 +12,6 @@ import android.util.SparseBooleanArray;
 
 import minefarts.smarttube.C;
 import minefarts.smarttube.ExoPlaybackException;
-import minefarts.smarttube.ExoPlayerFactory;
 import minefarts.smarttube.Format;
 import minefarts.smarttube.Player;
 import minefarts.smarttube.Renderer;
@@ -1355,10 +1354,6 @@ public class DefaultTrackSelector extends MappingTrackSelector {
         this(new AdaptiveTrackSelection.Factory());
     }
 
-    /**
-     * @deprecated Use {@link #DefaultTrackSelector()} instead. Custom bandwidth meter should be
-     *             directly passed to the player in {@link ExoPlayerFactory}.
-     */
     @Deprecated
     @SuppressWarnings("deprecation")
     public DefaultTrackSelector(BandwidthMeter bandwidthMeter) {
