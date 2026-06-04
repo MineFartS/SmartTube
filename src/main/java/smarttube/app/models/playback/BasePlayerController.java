@@ -32,6 +32,7 @@ import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.prefs.RemoteControlData;
 import minefarts.smarttube.prefs.SearchData;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
+import minefarts.smarttube.ContextManager;
 
 public abstract class BasePlayerController extends ServiceManager implements PlayerEventListener {
     
@@ -65,7 +66,9 @@ public abstract class BasePlayerController extends ServiceManager implements Pla
     }
 
     public Context getContext() {
-        return mMainController != null ? mMainController.getContext() : mContext;
+        return ContextManager.set(
+            mMainController != null ? mMainController.getContext() : mContext
+        );
     }
 
     public Activity getActivity() {

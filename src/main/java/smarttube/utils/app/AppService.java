@@ -13,6 +13,7 @@ import minefarts.smarttube.utils.app.playerdata.PlayerDataExtractor;
 import minefarts.smarttube.exoplayer.ExoMediaSourceFactory;
 import minefarts.smarttube.google.common.helpers.RetrofitHelper;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
+import minefarts.smarttube.ContextManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -140,13 +141,14 @@ public class AppService {
 
     @NonNull
     public Context getContext() {
-        Context context = GlobalPreferences.isInitialized() ? GlobalPreferences.sInstance.getContext() : null;
 
-        if (context == null) {
+        if (GlobalPreferences.isInitialized())
+            ContextManager.set(GlobalPreferences.sInstance.getContext());
+
+        if (ContextManager.get() == null)
             throw new IllegalStateException("The Context isn't initialized yet");
-        }
 
-        return context;
+        return ContextManager.get();
     }
 
     /**

@@ -18,6 +18,8 @@ import androidx.core.util.Preconditions;
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
 
+import minefarts.smarttube.ContextManager;
+
 /**
  * Integration points with the Fragment host.
  * <p>
@@ -180,7 +182,7 @@ public abstract class FragmentHostCallback<E> extends FragmentContainer {
 
     @NonNull
     Context getContext() {
-        return mContext;
+        return ContextManager.set(mContext);
     }
 
     @NonNull
