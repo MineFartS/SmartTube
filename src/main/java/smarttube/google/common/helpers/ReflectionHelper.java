@@ -97,11 +97,6 @@ public class ReflectionHelper {
         File destination = new File(filesDir, fileName);
         FileHelpers.streamToFile(content, destination);
 
-        // NOTE: Send file from crashlytics is useless. All strings are truncated!
-        //FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
-        //crashlytics.log(fileName + ": " + Helpers.toString(content));
-        //crashlytics.recordException(new Exception(fileName));
-        //crashlytics.sendUnsentReports();
     }
 
     public static boolean isNullable(Field field) {
