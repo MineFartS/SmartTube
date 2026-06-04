@@ -27,7 +27,7 @@ import minefarts.smarttube.ui.signin.SignInActivity;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 
-public class MainApplication extends MultiDexApplication { // fix: Didn't find class "com.google.firebase.provider.FirebaseInitProvider"
+public class MainApplication extends MultiDexApplication {
     
     static {
         // fix youtube bandwidth throttling (best - false)???
