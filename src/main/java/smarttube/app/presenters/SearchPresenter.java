@@ -120,12 +120,10 @@ public class SearchPresenter extends BasePresenter<SearchView> {
         }
 
         AppDialogUtil.showConfirmationDialog(
-                getContext(),
-                getContext().getString(R.string.clear_search_history),
-                () -> {
-                    ServiceManager.clearSearchHistory();
-                    getView().clearSearchTags();
-                });
+            getContext(),
+            getContext().getString(R.string.clear_search_history),
+            () -> getView().clearSearchTags()
+        );
     }
 
     @Override
