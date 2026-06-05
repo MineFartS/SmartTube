@@ -58,10 +58,31 @@ public class SurfaceViewWrapper implements SurfaceWrapper {
 
         if (callback != null) {
             if (mState == SURFACE_CREATED) {
-                mMediaPlaybackCallback.surfaceCreated(mVideoSurface.getHolder());
+                SurfaceHolder holder = mVideoSurface.getHolder();
+                // Ensure we re-fire both events when the callback is attached late.
+                // Some renderers (and devices) can remain black if only surfaceCreated is sent
+                // but surfaceChanged (width/height) isn't delivered.
+                mMediaPlaybackCallback.surfaceCreated(holder);
+
+                // Provide current surface size if possible.
+                // getSurfaceFrame() isn't always reliable; try holder.getSurfaceFrame() then fall back.
+                android.graphics.Rect frame = holder.getSurfaceFrame();
+                int width = frame != null ? frame.width() : 0;
+                int height = frame != null ? frame.height() : 0;
+
+                // Fallback to current view size if surface frame is empty.
+                if (width <= 0 || height <= 0) {
+                    width = mVideoSurface.getWidth();
+                    height = mVideoSurface.getHeight();
+                }
+
+                if (width > 0 && height > 0) {
+                    mMediaPlaybackCallback.surfaceChanged(holder, /* format= */ 0, width, height);
+                }
             }
         }
     }
+
 
     @Override
     public View getSurfaceView() {
