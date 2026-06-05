@@ -4,13 +4,11 @@ import androidx.annotation.NonNull;
 
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.app.AppService;
-import minefarts.smarttube.utils.browse.BrowseService;
 import minefarts.smarttube.google.common.helpers.RetrofitHelper;
 import minefarts.smarttube.google.common.locale.LocaleManager;
 import minefarts.smarttube.utils.search.models.SearchResult;
 import minefarts.smarttube.utils.search.models.SearchResultContinuation;
 import minefarts.smarttube.utils.search.models.SearchTags;
-import minefarts.smarttube.utils.common.helpers.AppClient;
 
 import retrofit2.Call;
 
@@ -20,11 +18,15 @@ import java.util.List;
  * Wraps result from the {@link SearchApi}
  */
 public class SearchService {
+
     private static final String TAG = SearchService.class.getSimpleName();
+    
     private final SearchApi mSearchApi;
+    private final LocaleManager mLocaleManager;
 
     public SearchService() {
         mSearchApi = RetrofitHelper.create(SearchApi.class);
+        mLocaleManager = LocaleManager.instance();
     }
 
     public SearchResult getSearch(String searchText) {
@@ -63,33 +65,21 @@ public class SearchService {
         return searchResult;
     }
 
-    public List<String> getSearchTags(String searchText) {
-        String country = null;
-        String language = null;
-
-        LocaleManager localeManager = LocaleManager.instance();
-        country = localeManager.getCountry();
-        // fix empty popular searches (country and language should match or use only country)
-        //language = localeManager.getLanguage();
-
-        return getSearchTags(searchText, null, country, language);
-    }
-
-    private List<String> getSearchTags(String searchText, String suggestToken, String country, String language) {
-        if (searchText == null) {
+    public List<String> getSearchTags(
+        String searchText, 
+        String suggestToken, 
+        String country, 
+        String language
+    ) {
+        
+        if (searchText == null)
             searchText = "";
-        }
 
-        Call<SearchTags> wrapper =
-                mSearchApi.getSearchTags(
-                        searchText,
-                        suggestToken,
-                        country,
-                        language
-                );
+        Call<SearchTags> wrapper = mSearchApi.getSearchTags(searchText);
+
         SearchTags searchTags = RetrofitHelper.get(wrapper);
 
-        if (searchTags != null && searchTags.getSearchTags() != null) {
+        if (searchTags != null) {
             return searchTags.getSearchTags();
         }
 

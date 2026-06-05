@@ -36,25 +36,7 @@ public interface SearchApi {
 
     @GET(TAGS_URL + "&hl=en&gl=us")
     Call<SearchTags> getSearchTags(
-        @Query("q") String searchQuery, 
-        @Query("tok") String suggestToken
-    );
-
-    @GET(TAGS_URL)
-    Call<SearchTags> getSearchTags(
-        @Query("q") String searchQuery,
-        @Query("tok") String suggestToken,
-        @Query("gl") String country,
-        @Query("hl") String language
-    );
-
-    @GET(TAGS_URL)
-    Call<SearchTags> getSearchTags(
-        @Query("q") String searchQuery,
-        @Query("tok") String suggestToken,
-        @Query("gl") String country,
-        @Query("hl") String language,
-        @Header("X-Goog-Visitor-Id") String visitorId
+        @Query("q") String searchQuery
     );
     
 }
