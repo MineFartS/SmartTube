@@ -3,17 +3,26 @@ package minefarts.smarttube.google.common.js
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
+
+import com.eclipsesource.v8.V8
+import com.eclipsesource.v8.V8ScriptExecutionException
+
 import java.util.regex.Pattern
 
 internal object JSInterpret {
+
+    private val v8ExecLock = Any()
+
     private val MATCHING_PARENS = mapOf('(' to ')', '{' to '}', '[' to ']')
     private val QUOTES = setOf('\'', '"', '/')
 
+    private val gson = Gson()
+
     fun extractFunctionFromCode(argNames: List<String>, code: String): (List<String>) -> String? {
         return { args: List<String> ->
-            val fullCode =
+            evaluateWithErrors(
                 "(function (${argNames.joinToString(separator = ",")}) { $code })(${args.joinToString(separator = ",", prefix = "'", postfix = "'")})"
-            V8Runtime.instance().evaluateWithErrors(fullCode)
+            )
         }
     }
 
@@ -46,9 +55,8 @@ internal object JSInterpret {
     }
 
     fun interpretExpression(jsCode: String): List<String>? {
-        val result = V8Runtime.instance().evaluate("JSON.stringify($jsCode)")
+        val result = evaluate("JSON.stringify($jsCode)")
 
-        val gson = Gson()
         val listType = object : TypeToken<List<String>>() {}.type
 
         val response: List<String>? = try {
@@ -171,4 +179,29 @@ internal object JSInterpret {
 
         return null
     }
+
+    private fun evaluate(source: String): String? {
+        return try {
+            evaluateWithErrors(source)
+        } catch (e: V8ScriptExecutionException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    @Throws(V8ScriptExecutionException::class)
+    private fun evaluateWithErrors(source: String): String {
+        var runtime: V8? = null
+        val result: String
+
+        try {
+            runtime = V8.createV8Runtime()
+            result = runtime.executeStringScript(source)
+        } finally {
+            runtime?.release(false)
+        }
+
+        return result
+    }
+
 }

@@ -195,7 +195,6 @@ public class PlaybackFragment
     private List<String> mLastAudioLanguages;
 
     private final int mMaxBufferBytes;
-    private final PlaybackFragment mPlayerData;
     private final PlayerTweaksData mPlayerTweaksData;
     private static AudioAttributes sAudioAttributes;
 
@@ -211,7 +210,6 @@ public class PlaybackFragment
         mPrefs = AppPrefs.instance(context);
         mPrefs.addListener(this);
 
-        mPlayerData = PlaybackFragment.instance(context);
         mPlayerTweaksData = PlayerTweaksData.instance(context);
 
         mBandwidthMeter = new DefaultBandwidthMeter.Builder(context).build();
@@ -499,10 +497,17 @@ public class PlaybackFragment
     private void releasePlayer() {
         if (mPlayer != null) {
             Log.d(TAG, "releasePlayer: Start releasing player engine...");
-            mPlaybackPresenter.onEngineReleased();
-            
-            // Fix access calls when player isn't initialized
-            mExoPlayerController.release();
+
+            // Guard against partially-initialized controller state.
+            if (mPlaybackPresenter != null) {
+                mPlaybackPresenter.onEngineReleased();
+            }
+
+            // Fix access calls when player isn't initialized.
+            if (mExoPlayerController != null) {
+                mExoPlayerController.release();
+            }
+
             if (mMediaSessionConnector != null) {
                 mMediaSessionConnector.setPlayer(null);
             }

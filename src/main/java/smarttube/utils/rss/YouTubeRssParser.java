@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class YouTubeRssParser {
+
     // We don't use namespaces
     private static final String ns = null;
     private static final String TAG_MEDIA_ITEM = "entry";
@@ -56,34 +57,22 @@ public class YouTubeRssParser {
         mParser.nextTag();
     }
 
-    public List<MediaItem> parse() {
+    public List<MediaItem> parse() throws IOException {
         if (mContent == null) {
             return new ArrayList<>();
         }
-        List<MediaItem> result;
         try {
-            result = readMediaGroup();
-        } catch (Exception e) {
+            return readMediaGroup();
+        } catch (XmlPullParserException e) {
+            // Feed might be malformed due to broken HTML/XML entities.
+            // Return partial/empty results instead of crashing the entire service.
+            String msg = e.getMessage();
+            if (msg != null && msg.contains("unterminated entity ref")) {
+                return new ArrayList<>();
+            }
             throw new IllegalStateException(e);
         }
-        return result;
     }
-
-    //private List<MediaItem> readRssFeed() throws IOException, XmlPullParserException {
-    //    List<MediaItem> mediaItems = new ArrayList<>();
-    //
-    //    while (mParser.next() != XmlPullParser.END_TAG) {
-    //        if (mParser.getEventType() != XmlPullParser.START_TAG) {
-    //            continue;
-    //        }
-    //        String name = mParser.getName();
-    //        // Starts by looking for the entry tag
-    //        if (name.equals(TAG_MEDIA_GROUP)) {
-    //            mediaItems.addAll(readMediaGroup());
-    //        }
-    //    }
-    //    return mediaItems;
-    //}
 
     private void skip() throws XmlPullParserException, IOException {
         if (mParser.getEventType() != XmlPullParser.START_TAG) {
@@ -244,10 +233,20 @@ public class YouTubeRssParser {
 
     private String readText() throws IOException, XmlPullParserException {
         String result = "";
-        if (mParser.next() == XmlPullParser.TEXT) {
-            result = mParser.getText();
-            mParser.nextTag();
+        try {
+            if (mParser.next() == XmlPullParser.TEXT) {
+                result = mParser.getText();
+                mParser.nextTag();
+            }
+        } catch (XmlPullParserException e) {
+            // YouTube sometimes returns malformed entities (unterminated &...).
+            // Don't abort the whole feed; just treat this text node as empty.
+            if (e.getMessage() != null && e.getMessage().contains("unterminated entity ref")) {
+                return "";
+            }
+            throw e;
         }
         return result;
     }
+
 }

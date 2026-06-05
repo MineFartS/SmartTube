@@ -170,23 +170,39 @@ internal object V8ChallengeProvider {
                 )
             }
 
-            data["requests"] = groupedRequests.map { request ->
+val jsonRequests = groupedRequests.map { request ->
+                    mapOf(
+                        "type" to request.type.value,
+                        "challenges" to request.input.challenges
+                    )
+                }
                 mapOf(
                     "type" to request.type.value,
                     "challenges" to request.input.challenges
                 )
             }
 
+val data2 = if (cached) {
+                mapOf(
+                    "type" to "preprocessed",
+                    "preprocessed_player" to player,
+                    "requests" to jsonRequests
+                )
+            } else {
+                mapOf(
+                    "type" to "player",
+                    "player" to player,
+                    "requests" to jsonRequests,
+                    "output_preprocessed" to true
+                )
+            }
+
+            val jsonData = sGson.toJson(data2)
+
             val stdout = synchronized(v8Lock) {
-                
                 initRuntime()
-
-                runV8("""
-                    JSON.stringify(
-                        jsc(${sGson.toJson(data)})
-                    );
-                """)
-
+                runV8("JSON.stringify((jsc.default ?? jsc)($jsonData));")
+            }
             }
 
             val output: SolverOutput = try {

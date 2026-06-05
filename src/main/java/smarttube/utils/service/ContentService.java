@@ -342,16 +342,16 @@ public class ContentService {
     }
 
     private void emitGroups(ObservableEmitter<List<MediaGroup>> emitter, kotlin.Pair<List<MediaGroup>, String> groupsAndKey) {
-        emitGroupsPartial(emitter, groupsAndKey);
+        
+        if (groupsAndKey != null)
+            emitGroupsPartial(emitter, groupsAndKey);
 
         emitter.onComplete();
     }
 
     private void emitGroupsPartial(ObservableEmitter<List<MediaGroup>> emitter, kotlin.Pair<List<MediaGroup>, String> groupsAndKey) {
-        if (groupsAndKey == null) {
-            Log.e(TAG, "emitGroupsPartial: groupsAndKey is null");
-            return;
-        }
+        
+        if (groupsAndKey == null) return;
 
         List<MediaGroup> groups = groupsAndKey.getFirst();
         String nextKey = groupsAndKey.getSecond();

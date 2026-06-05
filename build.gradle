@@ -167,7 +167,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp-dnsoverhttps:3.12.13'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.13'
     implementation 'com.squareup.okhttp3:okhttp-brotli:4.1.0'
-    implementation('com.localebro:okhttpprofiler:1.0.8')
+    implementation 'com.localebro:okhttpprofiler:1.0.8'
 
     implementation 'org.chromium.net:cronet-api:98.4758.101'
     implementation 'org.chromium.net:cronet-embedded:98.4758.101'
