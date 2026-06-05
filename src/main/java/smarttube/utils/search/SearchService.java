@@ -96,10 +96,6 @@ public class SearchService {
         return null;
     }
 
-    public void clearSearchHistory() {
-        // NOP
-    }
-
     @NonNull
     private static AppService getAppService() {
         return AppService.instance();

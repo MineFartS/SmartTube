@@ -553,12 +553,6 @@ public class ContentService {
         return getBrowseService2().getMyPlaylists();
     }
 
-    
-    public void clearSearchHistory() {
-        getActionsService().clearSearchHistory();
-        getSearchService().clearSearchHistory();
-    }
-
     @NonNull
     private static SignInService getSignInService() {
         return SignInService.instance();
