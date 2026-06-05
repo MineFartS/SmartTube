@@ -1,7 +1,8 @@
 package minefarts.smarttube.utils.app.nsigsolver.common
 
-import com.eclipsesource.v8.V8
+import com.caoccao.javet.interop.V8Runtime
 import minefarts.smarttube.utils.app.AppService
+
 
 internal class ScriptLoaderError(message: String, cause: Exception? = null): Exception(message, cause)
 
@@ -30,11 +31,10 @@ internal fun loadScript(filenames: List<String>, errorMsg: String? = null): Stri
 
 internal fun formatError(firstMsg: String?, secondMsg: String) = firstMsg?.let { "$it: $secondMsg" } ?: secondMsg
 
-internal inline fun <T> V8.withLock(block: (V8) -> T): T {
-    locker.acquire()
-    try {
+internal inline fun <T> V8Runtime.withLock(block: (V8Runtime) -> T): T {
+    synchronized(this) {
         return block(this)
-    } finally {
-        locker.release()
     }
 }
+
+

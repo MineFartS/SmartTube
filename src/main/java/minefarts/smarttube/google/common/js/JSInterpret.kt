@@ -3,9 +3,20 @@ package minefarts.smarttube.google.common.js
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
+
 import java.util.regex.Pattern
 
+import androidx.annotation.Nullable;
+
+import com.caoccao.javet.interop.V8Runtime;
+import com.caoccao.javet.interop.V8Host
+
+import minefarts.smarttube.utils.mylogger.Log;
+
 internal object JSInterpret {
+
+    private val TAG = V8Runtime::class.java.simpleName
+
     private val MATCHING_PARENS = mapOf('(' to ')', '{' to '}', '[' to ']')
     private val QUOTES = setOf('\'', '"', '/')
 
@@ -13,7 +24,7 @@ internal object JSInterpret {
         return { args: List<String> ->
             val fullCode =
                 "(function (${argNames.joinToString(separator = ",")}) { $code })(${args.joinToString(separator = ",", prefix = "'", postfix = "'")})"
-            V8Runtime.instance().evaluateWithErrors(fullCode)
+            evaluateWithErrors(fullCode)
         }
     }
 
@@ -46,7 +57,7 @@ internal object JSInterpret {
     }
 
     fun interpretExpression(jsCode: String): List<String>? {
-        val result = V8Runtime.instance().evaluate("JSON.stringify($jsCode)")
+        val result = evaluate("JSON.stringify($jsCode)")
 
         val gson = Gson()
         val listType = object : TypeToken<List<String>>() {}.type
@@ -171,4 +182,53 @@ internal object JSInterpret {
 
         return null
     }
+
+    @Nullable
+    private fun evaluate(source: String): String? {
+        return try {
+            evaluateWithErrors(source)
+        } catch (e: RuntimeException) {
+            Log.e(TAG, e.message ?: "")
+            e.printStackTrace()
+            null
+        }
+    }
+
+    @Nullable
+    private fun evaluateWithErrors(source: String): String? {
+        var runtime: V8Runtime? = null
+        return try {
+            runtime = V8Host.getV8Instance().createV8Runtime()
+            runtime.getExecutor(source).executeString()
+        } finally {
+            runtime?.close()
+        }
+    }
+
+    @Nullable
+    private fun evaluate(sources: List<String>): String? {
+        return try {
+            evaluateWithErrors(sources)
+        } catch (e: RuntimeException) {
+            Log.e(TAG, e.message ?: "")
+            e.printStackTrace()
+            null
+        }
+    }
+
+    @Nullable
+    private fun evaluateWithErrors(sources: List<String>): String? {
+        var runtime: V8Runtime? = null
+        return try {
+            runtime = V8Host.getV8Instance().createV8Runtime()
+            var result: String? = null
+            for (source in sources) {
+                result = runtime.getExecutor(source).executeString()
+            }
+            result
+        } finally {
+            runtime?.close()
+        }
+    }
+
 }

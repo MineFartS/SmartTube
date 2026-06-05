@@ -1,6 +1,7 @@
 package minefarts.smarttube.utils.app.playerdata
 
-import com.eclipsesource.v8.V8ScriptExecutionException
+import com.caoccao.javet.exceptions.JavetExecutionException
+
 import minefarts.smarttube.utils.mylogger.Log
 import minefarts.smarttube.google.common.js.JSInterpret
 import java.util.regex.Pattern
@@ -62,7 +63,8 @@ internal object SigExtractor {
         // Test the function works
         try {
             extractSig(fixedFuncCode, "5cNpZqIJ7ixNqU68Y7S")
-        } catch (error: V8ScriptExecutionException) {
+        } catch (error: JavetExecutionException) {
+
             if (nestedCount > 1)
                 return null
 
