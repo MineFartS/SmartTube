@@ -13,8 +13,6 @@ import minefarts.smarttube.utils.data.SponsorSegment;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.rx.RxHelper;
-import minefarts.smarttube.utils.actions.ActionsService;
-import minefarts.smarttube.utils.actions.ActionsServiceWrapper;
 import minefarts.smarttube.utils.block.SponsorBlockService;
 import minefarts.smarttube.utils.block.data.SegmentList;
 import minefarts.smarttube.utils.common.models.impl.mediaitem.BaseMediaItem;
@@ -29,11 +27,20 @@ import minefarts.smarttube.utils.service.data.YouTubeSponsorSegment;
 import minefarts.smarttube.utils.videoinfo.V2.VideoInfoService;
 import minefarts.smarttube.utils.videoinfo.models.VideoInfo;
 import minefarts.smarttube.utils.SignInService;
+import minefarts.smarttube.utils.actions.models.ActionResult;
+import minefarts.smarttube.utils.browse.BrowseService;
+import minefarts.smarttube.google.common.helpers.RetrofitHelper;
+import minefarts.smarttube.utils.channelgroups.ChannelGroupServiceImpl;
+import minefarts.smarttube.utils.notifications.NotificationStorage;
+import minefarts.smarttube.utils.common.helpers.PostDataHelper;
+import minefarts.smarttube.utils.actions.ActionsApi;
 
 import io.reactivex.Observable;
 
 import java.util.List;
 import java.util.Set;
+
+import retrofit2.Call;
 
 public class MediaItemService {
     
@@ -46,6 +53,11 @@ public class MediaItemService {
     private static MediaItemService sInstance;
     
     private MediaItemFormatInfo mCachedFormatInfo;
+    private final ActionsApi mActionsApi;
+
+    private MediaItemService() {
+        mActionsApi = RetrofitHelper.create(ActionsApi.class);
+    }
 
     public static MediaItemService instance() {
 
@@ -177,29 +189,58 @@ public class MediaItemService {
     public Observable<Void> removeDislikeObserve(MediaItem item) {
         return RxHelper.fromRunnable(() -> removeDislike(item));
     }
+    
+    public static String getLikeActionQuery(String videoId) {
+        String likeTemplate = String.format("\"target\":{\"videoId\":\"%s\"}", videoId);
+        return PostDataHelper.createQueryTV(likeTemplate);
+    }
 
     public void setLike(MediaItem item) {
         getSignInService().checkAuth();
 
-        getActionsService().setLike(item.getVideoId());
+        Call<ActionResult> wrapper = mActionsApi.setLike(
+            getLikeActionQuery(item.getVideoId())
+        );
+
+        RetrofitHelper.get(wrapper); // ignore result
+
+        NotificationStorage.setLike(true);
     }
 
     public void removeLike(MediaItem item) {
         getSignInService().checkAuth();
 
-        getActionsService().removeLike(item.getVideoId());
+        Call<ActionResult> wrapper = mActionsApi.removeLike(
+            getLikeActionQuery(item.getVideoId())
+        );
+
+        RetrofitHelper.get(wrapper); // ignore result
+
+        NotificationStorage.setLike(false);
     }
 
     public void setDislike(MediaItem item) {
         getSignInService().checkAuth();
 
-        getActionsService().setDislike(item.getVideoId());
+        Call<ActionResult> wrapper = mActionsApi.setDislike(
+            getLikeActionQuery(item.getVideoId())
+        );
+
+        RetrofitHelper.get(wrapper); // ignore result
+
+        NotificationStorage.setLike(false);
     }
 
     public void removeDislike(MediaItem item) {
         getSignInService().checkAuth();
 
-        getActionsService().removeDislike(item.getVideoId());
+        Call<ActionResult> wrapper = mActionsApi.removeDislike(
+            getLikeActionQuery(item.getVideoId())
+        );
+
+        RetrofitHelper.get(wrapper); // ignore result
+
+        NotificationStorage.setLike(true);
     }
 
     public void markAsNotInterested(String feedbackToken) {
@@ -366,11 +407,6 @@ public class MediaItemService {
     @NonNull
     private static VideoInfoService getVideoInfoService() {
         return VideoInfoService.instance();
-    }
-
-    @NonNull
-    private static ActionsService getActionsService() {
-        return ActionsServiceWrapper.instance();
     }
 
     @NonNull

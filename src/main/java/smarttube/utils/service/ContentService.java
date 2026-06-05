@@ -6,15 +6,12 @@ import androidx.annotation.Nullable;
 import minefarts.smarttube.utils.data.MediaItem;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
-import minefarts.smarttube.utils.actions.ActionsService;
-import minefarts.smarttube.utils.actions.ActionsServiceWrapper;
 import minefarts.smarttube.utils.browse.BrowseService2;
 import minefarts.smarttube.utils.browse.BrowseService2Wrapper;
 import minefarts.smarttube.utils.common.models.impl.mediagroup.SuggestionsGroup;
 import minefarts.smarttube.utils.next.v2.WatchNextService;
 import minefarts.smarttube.utils.next.v2.WatchNextServiceWrapper;
 import minefarts.smarttube.utils.rss.RssService;
-import minefarts.smarttube.utils.search.SearchServiceWrapper;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
 import minefarts.smarttube.utils.UtilsService;
 import minefarts.smarttube.utils.browse.BrowseService;
@@ -559,13 +556,8 @@ public class ContentService {
     }
 
     @NonNull
-    private static ActionsService getActionsService() {
-        return ActionsServiceWrapper.instance();
-    }
-
-    @NonNull
     private static SearchService getSearchService() {
-        return SearchServiceWrapper.instance();
+        return SearchService.instance();
     }
 
     @NonNull

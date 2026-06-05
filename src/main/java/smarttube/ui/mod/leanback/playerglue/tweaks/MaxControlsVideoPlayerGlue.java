@@ -13,7 +13,6 @@ import minefarts.smarttube.leanback.widget.RowPresenter;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.ui.SeekBarSegment;
-import minefarts.smarttube.exoplayer.controller.PlayerView;
 import minefarts.smarttube.leanback.media.PlaybackTransportControlGlue;
 import minefarts.smarttube.ui.mod.leanback.playerglue.tweaks.PlaybackTransportRowPresenter.TopEdgeFocusListener;
 import minefarts.smarttube.ui.mod.leanback.playerglue.tweaks.PlaybackTransportRowPresenter.ViewHolder;
@@ -22,7 +21,7 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 public abstract class MaxControlsVideoPlayerGlue<T extends PlayerAdapter>
-        extends PlaybackTransportControlGlue<T> implements TopEdgeFocusListener, PlayerView {
+        extends PlaybackTransportControlGlue<T> implements TopEdgeFocusListener {
 
     private Video mVideo;
     private WeakReference<PlaybackTransportRowPresenter.ViewHolder> mTransportViewHolder;
@@ -115,7 +114,6 @@ public abstract class MaxControlsVideoPlayerGlue<T extends PlayerAdapter>
         }
     }
 
-    @Override
     public void setVideo(Video video) {
         mVideo = video;
     }
