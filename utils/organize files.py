@@ -1,7 +1,7 @@
-from philh_myftp_biz.pc import Path
+from philh_myftp_biz.pc import Path, loc
 from dataclasses import dataclass
 
-p = Path('C:/Users/administrator.PHILH/Documents/GitHub/SmartTube/src/main/')
+p = loc.script.parent.child('/src/main/')
 
 @dataclass
 class Item:
