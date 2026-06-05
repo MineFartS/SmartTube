@@ -329,10 +329,6 @@ public class ServiceManager {
         return groupTooSmall;
     }
 
-    public static void clearSearchHistory() {
-        RxHelper.runAsyncUser(getContentService()::clearSearchHistory);
-    }
-
     public static void hideNotification(Video item) {
         if (item != null && item.belongsToNotifications()) {
             RxHelper.execute(getNotificationsService().hideNotificationObserve(item.mediaItem));

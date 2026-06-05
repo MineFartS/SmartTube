@@ -34,9 +34,5 @@ public interface ActionsApi {
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/subscription/unsubscribe")
     Call<ActionResult> unsubscribe(@Body String actionQuery);
-
-    @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/history/clear_search_history")
-    Call<Void> clearSearchHistory(@Body String historyQuery);
     
 }
