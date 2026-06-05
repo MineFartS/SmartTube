@@ -529,10 +529,17 @@ public class PlaybackFragment2
     private void releasePlayer() {
         if (mPlayer != null) {
             Log.d(TAG, "releasePlayer: Start releasing player engine...");
-            mPlaybackPresenter.onEngineReleased();
-            
-            // Fix access calls when player isn't initialized
-            mExoPlayerController.release();
+
+            // Guard against partially-initialized controller state.
+            if (mPlaybackPresenter != null) {
+                mPlaybackPresenter.onEngineReleased();
+            }
+
+            // Fix access calls when player isn't initialized.
+            if (mExoPlayerController != null) {
+                mExoPlayerController.release();
+            }
+
             if (mMediaSessionConnector != null) {
                 mMediaSessionConnector.setPlayer(null);
             }
