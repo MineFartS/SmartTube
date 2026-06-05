@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.SurfaceHolder;
 import android.os.Handler;
 import android.view.InputEvent;
 import android.annotation.SuppressLint;
@@ -72,7 +73,6 @@ import minefarts.smarttube.ui.browse.video.GridFragmentHelper;
 import minefarts.smarttube.ui.common.LeanbackActivity;
 import minefarts.smarttube.ui.common.UriBackgroundManager;
 import minefarts.smarttube.ui.mod.leanback.misc.ProgressBarManager;
-import minefarts.smarttube.ui.playback.mod.surface.SurfacePlaybackFragmentGlueHost;
 import minefarts.smarttube.ui.playback.other.BackboneQueueNavigator;
 import minefarts.smarttube.ui.playback.other.VideoPlayerGlue;
 import minefarts.smarttube.ui.playback.other.VideoPlayerGlue.OnActionClickedListener;
@@ -98,6 +98,10 @@ import minefarts.smarttube.analytics.AnalyticsCollector;
 import minefarts.smarttube.trackselection.DefaultTrackSelector;
 import minefarts.smarttube.upstream.DefaultBandwidthMeter;
 import minefarts.smarttube.exoplayer.other.VolumeBooster;
+import minefarts.smarttube.leanback.app.PlaybackSupportFragmentGlueHost;
+import minefarts.smarttube.leanback.media.PlaybackGlue;
+import minefarts.smarttube.leanback.media.PlaybackGlueHost;
+import minefarts.smarttube.leanback.media.SurfaceHolderGlueHost;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -106,6 +110,32 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
+
+/**
+ * {@link PlaybackGlueHost} implementation
+ * the interaction between {@link PlaybackGlue} and {@link minefarts.smarttube.leanback.app.VideoSupportFragment}.
+ */
+class SurfacePlaybackFragmentGlueHost extends PlaybackSupportFragmentGlueHost implements SurfaceHolderGlueHost {
+
+    @SuppressWarnings("HidingField") // Supertype field is package scope to avoid synthetic accessor
+    private final SurfacePlaybackFragment mFragment;
+
+    public SurfacePlaybackFragmentGlueHost(SurfacePlaybackFragment fragment) {
+        super(fragment);
+        this.mFragment = fragment;
+    }
+
+    /**
+     * Sets the {@link SurfaceHolder.Callback} on the host.
+     * {@link PlaybackGlueHost} is assumed to either host the {@link SurfaceHolder} or
+     * have a reference to the component hosting it for rendering the video.
+     */
+    @Override
+    public void setSurfaceHolderCallback(SurfaceHolder.Callback callback) {
+        mFragment.setSurfaceHolderCallback(callback);
+    }
+
+}
 
 public class PlaybackFragment 
     extends SurfacePlaybackFragment 
