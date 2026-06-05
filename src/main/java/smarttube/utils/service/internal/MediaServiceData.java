@@ -28,7 +28,9 @@ import io.reactivex.disposables.Disposable;
 import kotlin.Triple;
 
 public class MediaServiceData {
+
     private static final String TAG = MediaServiceData.class.getSimpleName();
+    
     public static final int FORMATS_NONE = 0;
     public static final int FORMATS_ALL = Integer.MAX_VALUE;
     public static final int FORMATS_DASH = 1;
@@ -49,7 +51,7 @@ public class MediaServiceData {
     private String mDeviceId;
     private String mOldAppVersion;
     private int mVideoInfoType;
-    private String mVisitorCookie;
+    public String mVisitorCookie;
     private int mEnabledFormats;
     private int mHiddenContent;
     private MediaServiceCache mCachedPrefs;
@@ -156,10 +158,6 @@ public class MediaServiceData {
     public void setPlayerExtractorCache(PlayerExtractorCache playerCache) {
         mPlayerExtractorCache = playerCache;
         persistState();
-    }
-
-    public String getVisitorCookie() {
-        return mVisitorCookie;
     }
 
     public void setVisitorCookie(String visitorCookie) {

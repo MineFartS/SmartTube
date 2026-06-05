@@ -6,10 +6,12 @@ import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.app.models.AppInfo;
 
 public class AppInfoCached extends AppInfo {
+    
     private static final String DELIM = "%aic%";
+    
     private final String mPlayerUrl;
     private final String mClientUrl;
-    private final String mVisitorData;
+    public final String mVisitorData;
 
     private AppInfoCached(String playerUrl, String clientUrl, String visitorData) {
         mPlayerUrl = playerUrl;
@@ -18,9 +20,7 @@ public class AppInfoCached extends AppInfo {
     }
 
     public static AppInfoCached fromString(String spec) {
-        if (spec == null) {
-            return null;
-        }
+        if (spec == null) return null;
 
         String[] split = Helpers.split(spec, DELIM);
 
@@ -32,11 +32,13 @@ public class AppInfoCached extends AppInfo {
     }
 
     public static AppInfoCached from(AppInfo appInfo) {
-        if (appInfo == null) {
-            return null;
-        }
+        if (appInfo == null) return null;
 
-        return new AppInfoCached(appInfo.getPlayerUrl(), appInfo.getClientUrl(), appInfo.getVisitorData());
+        return new AppInfoCached(
+            appInfo.getPlayerUrl(), 
+            appInfo.getClientUrl(), 
+            appInfo.mVisitorData
+        );
     }
 
     @NonNull
@@ -55,12 +57,8 @@ public class AppInfoCached extends AppInfo {
         return mClientUrl;
     }
 
-    @Override
-    public String getVisitorData() {
-        return mVisitorData;
-    }
-
     public boolean validate() {
         return mPlayerUrl != null && mClientUrl != null && mVisitorData != null;
     }
+
 }

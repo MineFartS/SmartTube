@@ -480,14 +480,16 @@ public class ServiceManager {
     public static void invalidateCache() {
         LocaleManager.unhold();
         getSignInService().invalidateCache(); // sections infinite loading fix (request timed out fix)
-        getAppService().invalidateCache();
-        //AppService.instance().invalidateVisitorData();
         getMediaItemService().invalidateCache();
         getVideoInfoService().resetInfoType();
     }
 
     public static void refreshCacheIfNeeded() {
-        refreshCacheIfNeededInt();
+        if (RxHelper.isAnyActionRunning(mRefreshCoreDataAction)) return;
+
+        mRefreshCoreDataAction = RxHelper.execute(
+            RxHelper.fromRunnable(getAppService()::refreshCacheIfNeeded)
+        );
     }
 
     public static void applyNoPlaybackFix() {
@@ -498,14 +500,6 @@ public class ServiceManager {
     public static void applySubtitleFix() {
         getMediaItemService().invalidateCache();
         getVideoInfoService().switchNextSubtitle();
-    }
-
-    private static void refreshCacheIfNeededInt() {
-        if (RxHelper.isAnyActionRunning(mRefreshCoreDataAction)) {
-            return;
-        }
-
-        mRefreshCoreDataAction = RxHelper.execute(RxHelper.fromRunnable(getAppService()::refreshCacheIfNeeded));
     }
 
     @NonNull

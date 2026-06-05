@@ -171,8 +171,9 @@ public class MediaItemFormatInfo {
     }
 
     public String getLengthSeconds() {
-        ensureLengthIsSet();
-
+        if (mLengthSeconds == null) // try to get duration from video url
+            mLengthSeconds = extractDurationFromTrack();
+        
         return mLengthSeconds;
     }
 
@@ -213,7 +214,7 @@ public class MediaItemFormatInfo {
     }
 
     public boolean containsMedia() {
-        return containsDashUrl() || containsHlsUrl() || containsAdaptiveVideoFormats() || containsUrlFormats();
+        return containsDashUrl() || containsHlsUrl() || mContainsAdaptiveVideoFormats || containsUrlFormats();
     }
 
     public boolean containsSabrFormats() {
@@ -222,10 +223,6 @@ public class MediaItemFormatInfo {
 
     public boolean containsDashFormats() {
         return mContainsAdaptiveVideoFormats && mAdaptiveFormats.get(0).getFormatType() == MediaFormat.FORMAT_TYPE_DASH;
-    }
-    
-    private boolean containsAdaptiveVideoFormats() {
-        return mContainsAdaptiveVideoFormats;
     }
 
     public boolean containsHlsUrl() {
@@ -383,18 +380,6 @@ public class MediaItemFormatInfo {
     }
 
     /**
-     * Format is used between multiple functions. Do a little cache.
-     */
-    public boolean isCacheActual() {
-        // NOTE: Musical live streams are ciphered too!
-
-        // Check app cipher first. It's not robust check (cipher may be updated not by us).
-        // So, also check internal cache state.
-        // Future translations (no media) should be polled constantly.
-        return containsMedia() && AppService.instance().isPlayerCacheActual() && !PoTokenGate.isWebPotExpired();
-    }
-
-    /**
      * Sync history data<br/>
      * Intended to merge signed and unsigned infos (no-playback fix)
      */
@@ -410,18 +395,6 @@ public class MediaItemFormatInfo {
         mVisitorMonitoringData = formatInfo.getVisitorMonitoringData();
         mOfParam = formatInfo.getOfParam();
         mIsAuth = formatInfo.isAuth();
-    }
-
-    /**
-     * MPD file is not valid without duration
-     */
-    private void ensureLengthIsSet() {
-        if (mLengthSeconds != null) {
-            return;
-        }
-
-        // try to get duration from video url
-        mLengthSeconds = extractDurationFromTrack();
     }
 
     /**

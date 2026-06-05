@@ -33,15 +33,14 @@ public class AppService {
     
     private String mClientPlaybackNonce;
 
-    private final AppApi mAppApi;
-
-    private AppService() {
-        mAppApi = RetrofitHelper.create(AppApi.class);
-    }
+    AppApi mAppApi;
 
     public static AppService instance() {
-        if (sInstance == null)
+ 
+        if (sInstance == null) {
             sInstance = new AppService();
+            sInstance.mAppApi = RetrofitHelper.create(AppApi.class);
+        }
 
         return sInstance;
     }
@@ -50,9 +49,7 @@ public class AppService {
      * Extracts signature used in music videos
      */
     public String extractSig(String sParam) {
-        if (sParam == null) {
-            return null;
-        }
+        if (sParam == null) return null;
 
         return extractSig(Collections.singletonList(sParam)).get(0);
     }
@@ -61,25 +58,19 @@ public class AppService {
      * Extracts signature used in music videos
      */
     public List<String> extractSig(List<String> sParams) {
-        if (getPlayerDataExtractor() == null) {
-            return null;
-        }
+        if (getPlayerDataExtractor() == null) return null;
 
         return getPlayerDataExtractor().extractSig(sParams);
     }
 
     public String extractNSig(String nParam) {
-        if (nParam == null || getPlayerDataExtractor() == null) {
-            return null;
-        }
+        if (nParam == null || getPlayerDataExtractor() == null) return null;
 
         return getPlayerDataExtractor().extractNSig(nParam);
     }
 
     public List<String> extractNSig(List<String> nParams) {
-        if (Helpers.allNulls(nParams)) {
-            return null;
-        }
+        if (Helpers.allNulls(nParams)) return null;
 
         List<String> result = new ArrayList<>();
 
@@ -132,9 +123,7 @@ public class AppService {
      * Used in get_video_info
      */
     public String getSignatureTimestamp() {
-        if (getPlayerDataExtractor() == null) {
-            return null;
-        }
+        if (getPlayerDataExtractor() == null) return null;
 
         return getPlayerDataExtractor().getSignatureTimestamp();
     }
@@ -151,68 +140,28 @@ public class AppService {
         return ContextManager.get();
     }
 
-    /**
-     * Obtains info with respect of anonymous browsing data (visitor cookie)
-     */
-    protected AppInfo getAppInfo(String userAgent) {
-        String visitorCookie = getData().getVisitorCookie();
-        Call<AppInfo> wrapper = mAppApi.getAppInfo(userAgent, visitorCookie);
-        AppInfo result = null;
-
-        Response<AppInfo> response = RetrofitHelper.getResponse(wrapper);
-
-        if (response != null) {
-            //String visitorInfoCookie = RetrofitHelper.getCookie(response, AppConstants.VISITOR_INFO_COOKIE);
-            //String visitorPrivacyCookie = RetrofitHelper.getCookie(response, AppConstants.VISITOR_PRIVACY_COOKIE);
-            //getData().setVisitorCookie(Helpers.join("; ", visitorInfoCookie, visitorPrivacyCookie));
-            getData().setVisitorCookie(RetrofitHelper.getCookies(response));
-            result = response.body();
-        }
-
-        return result;
-    }
-
     protected ClientData getClientData(String clientUrl) {
-        if (clientUrl == null) {
-            return null;
-        }
+        if (clientUrl == null) return null;
 
         Call<ClientData> wrapper = mAppApi.getClientData(clientUrl);
         ClientData clientData = RetrofitHelper.get(wrapper);
 
+        String legacyClientUrl = clientUrl
+            .replace("/dg=0/", "/exm=base/ed=1/")
+            .replace("/m=base", "/m=main");
+
         // Seems that legacy script encountered.
         if (clientData == null) {
-            clientData = RetrofitHelper.get(mAppApi.getClientData(getLegacyClientUrl(clientUrl)));
+            clientData = RetrofitHelper.get(
+                mAppApi.getClientData(legacyClientUrl)
+            );
         }
 
         return clientData;
     }
-    
-    private static String getLegacyClientUrl(String clientUrl) {
-        if (clientUrl == null) {
-            return null;
-        }
-
-        return clientUrl
-                .replace("/dg=0/", "/exm=base/ed=1/")
-                .replace("/m=base", "/m=main");
-    }
-
-    public void invalidateVisitorData() {
-        getData().setVisitorCookie(null);
-    }
-
-    public void invalidateCache() {
-        // NOP
-    }
-
-    public boolean isPlayerCacheActual() {
-        return false;
-    }
 
     public String getClientId() {
-        // TODO: NPE 1.6K!!!
-        ClientData clientData = getClientData();
+        ClientData clientData = getClientData(getClientUrl());
         return clientData != null ? clientData.getClientId() : null;
     }
 
@@ -220,34 +169,45 @@ public class AppService {
      * Constant used in AuthApi
      */
     public String getClientSecret() {
-        return getClientData() != null ? getClientData().getClientSecret() : null;
+        ClientData clientData = getClientData(getClientUrl());
+        return clientData != null ? clientData.getClientSecret() : null;
     }
 
     /**
      * Used with get_video_info, anonymous search and suggestions
      */
     public String getVisitorData() {
-        // TODO: NPE 300!!!
-        return getAppInfoData() != null ? getAppInfoData().getVisitorData() : null;
+        AppInfo appInfo = getAppInfoData();
+        return appInfo != null ? appInfo.mVisitorData : null;
     }
 
     public String getPlayerUrl() {
-        // NOTE: NPE 2.5K
-        //return getData().getPlayerUrl() != null ? getData().getPlayerUrl() : mCachedAppInfo != null ? mCachedAppInfo.getPlayerUrl() : null;
-        return getAppInfoData() != null ? getAppInfoData().getPlayerUrl() : null;
+        AppInfo appInfo = getAppInfoData();
+        return appInfo != null ? appInfo.getPlayerUrl() : null;
     }
 
     public String getClientUrl() {
-        // NOTE: NPE 143K!!!
-        return getAppInfoData() != null ? getAppInfoData().getClientUrl() : null;
+        AppInfo appInfo = getAppInfoData();
+        return appInfo != null ? appInfo.getClientUrl() : null;
     }
 
     private AppInfo getAppInfoData() {
-        return getAppInfo(ExoMediaSourceFactory.USER_AGENT_TV);
-    }
+        
+        Call<AppInfo> wrapper = mAppApi.getAppInfo(
+            ExoMediaSourceFactory.USER_AGENT_TV, 
+            getData().mVisitorCookie
+        );
 
-    private ClientData getClientData() {
-        return getClientData(getClientUrl());
+        Response<AppInfo> response = RetrofitHelper.getResponse(wrapper);
+
+        if (response != null) {
+            getData().setVisitorCookie(
+                RetrofitHelper.getCookies(response)
+            );
+            return response.body();
+        }
+
+        return null;
     }
 
     public PlayerDataExtractor getPlayerDataExtractor() {
@@ -256,7 +216,7 @@ public class AppService {
 
     public void refreshCacheIfNeeded() {
         getAppInfoData();
-        getClientData();
+        getClientData(getClientUrl());
         getPlayerDataExtractor();
     }
 

@@ -354,7 +354,6 @@ public class SignInService {
 
     private void onAccountChanged() {
         invalidateCache();
-        AppService.instance().invalidateCache(); // regenerate visitor data
         VideoInfoService.instance().resetInfoType(); // reset to the default format
 
         notifyListeners();
