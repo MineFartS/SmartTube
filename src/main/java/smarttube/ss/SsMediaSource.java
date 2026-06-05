@@ -18,7 +18,6 @@ import minefarts.smarttube.source.MediaSourceEventListener;
 import minefarts.smarttube.source.MediaSourceEventListener.EventDispatcher;
 import minefarts.smarttube.source.SequenceableLoader;
 import minefarts.smarttube.source.SinglePeriodTimeline;
-import minefarts.smarttube.source.ads.AdsMediaSource;
 import minefarts.smarttube.ss.manifest.SsManifest;
 import minefarts.smarttube.ss.manifest.SsManifest.StreamElement;
 import minefarts.smarttube.ss.manifest.SsManifestParser;
@@ -46,7 +45,7 @@ public final class SsMediaSource extends BaseMediaSource
     }
 
     /** Factory for {@link SsMediaSource}. */
-    public static final class Factory implements AdsMediaSource.MediaSourceFactory {
+    public static final class Factory {
 
         private final SsChunkSource.Factory chunkSourceFactory;
         @Nullable
@@ -252,7 +251,6 @@ public final class SsMediaSource extends BaseMediaSource
          * @param manifestUri The manifest {@link Uri}.
          * @return The new {@link SsMediaSource}.
          */
-        @Override
         public SsMediaSource createMediaSource(Uri manifestUri) {
             isCreateCalled = true;
             if (manifestParser == null) {
@@ -281,7 +279,6 @@ public final class SsMediaSource extends BaseMediaSource
             return mediaSource;
         }
 
-        @Override
         public int[] getSupportedTypes() {
             return new int[] {C.TYPE_SS};
         }

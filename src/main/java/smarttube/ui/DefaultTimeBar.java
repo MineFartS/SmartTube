@@ -464,17 +464,6 @@ public class DefaultTimeBar extends View implements TimeBar {
         : duration / timeBarWidthDp;
   }
 
-  @Override
-  public void setAdGroupTimesMs(@Nullable long[] adGroupTimesMs, @Nullable boolean[] playedAdGroups,
-      int adGroupCount) {
-    Assertions.checkArgument(adGroupCount == 0
-        || (adGroupTimesMs != null && playedAdGroups != null));
-    this.adGroupCount = adGroupCount;
-    this.adGroupTimesMs = adGroupTimesMs;
-    this.playedAdGroups = playedAdGroups;
-    update();
-  }
-
   // View methods.
 
   @Override

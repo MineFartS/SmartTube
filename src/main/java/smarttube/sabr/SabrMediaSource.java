@@ -16,7 +16,6 @@ import minefarts.smarttube.source.MediaPeriod;
 import minefarts.smarttube.source.MediaSource;
 import minefarts.smarttube.source.MediaSourceEventListener;
 import minefarts.smarttube.source.MediaSourceEventListener.EventDispatcher;
-import minefarts.smarttube.source.ads.AdsMediaSource;
 import minefarts.smarttube.sabr.PlayerEmsgHandler.PlayerEmsgCallback;
 import minefarts.smarttube.sabr.manifest.AdaptationSet;
 import minefarts.smarttube.sabr.manifest.SabrManifest;
@@ -221,7 +220,7 @@ public final class SabrMediaSource extends BaseMediaSource {
         }
     }
 
-    public static final class Factory implements AdsMediaSource.MediaSourceFactory {
+    public static final class Factory {
         private final SabrChunkSource.Factory chunkSourceFactory;
         @Nullable private final DataSource.Factory manifestDataSourceFactory;
         private LoadErrorHandlingPolicy loadErrorHandlingPolicy;
@@ -250,7 +249,6 @@ public final class SabrMediaSource extends BaseMediaSource {
             compositeSequenceableLoaderFactory = new DefaultCompositeSequenceableLoaderFactory();
         }
 
-        @Override
         public MediaSource createMediaSource(Uri uri) {
             return null;
         }
@@ -292,7 +290,6 @@ public final class SabrMediaSource extends BaseMediaSource {
             return mediaSource;
         }
 
-        @Override
         public int[] getSupportedTypes() {
             return new int[0];
         }

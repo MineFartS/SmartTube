@@ -6,7 +6,6 @@ import minefarts.smarttube.C;
 import minefarts.smarttube.extractor.DefaultExtractorsFactory;
 import minefarts.smarttube.extractor.Extractor;
 import minefarts.smarttube.extractor.ExtractorsFactory;
-import minefarts.smarttube.source.ads.AdsMediaSource;
 import minefarts.smarttube.upstream.Allocator;
 import minefarts.smarttube.upstream.DataSource;
 import minefarts.smarttube.upstream.DefaultLoadErrorHandlingPolicy;
@@ -30,7 +29,7 @@ public final class ProgressiveMediaSource extends BaseMediaSource
     implements ProgressiveMediaPeriod.Listener {
 
   /** Factory for {@link ProgressiveMediaSource}s. */
-  public static final class Factory implements AdsMediaSource.MediaSourceFactory {
+  public static final class Factory {
 
     private final DataSource.Factory dataSourceFactory;
 
@@ -151,7 +150,6 @@ public final class ProgressiveMediaSource extends BaseMediaSource
      * @param uri The {@link Uri}.
      * @return The new {@link ProgressiveMediaSource}.
      */
-    @Override
     public ProgressiveMediaSource createMediaSource(Uri uri) {
       isCreateCalled = true;
       return new ProgressiveMediaSource(
@@ -164,7 +162,6 @@ public final class ProgressiveMediaSource extends BaseMediaSource
           tag);
     }
 
-    @Override
     public int[] getSupportedTypes() {
       return new int[] {C.TYPE_OTHER};
     }

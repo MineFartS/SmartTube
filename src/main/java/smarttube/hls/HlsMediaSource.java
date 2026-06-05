@@ -16,7 +16,6 @@ import minefarts.smarttube.source.MediaSourceEventListener;
 import minefarts.smarttube.source.MediaSourceEventListener.EventDispatcher;
 import minefarts.smarttube.source.SequenceableLoader;
 import minefarts.smarttube.source.SinglePeriodTimeline;
-import minefarts.smarttube.source.ads.AdsMediaSource;
 import minefarts.smarttube.hls.playlist.DefaultHlsPlaylistParserFactory;
 import minefarts.smarttube.hls.playlist.DefaultHlsPlaylistTracker;
 import minefarts.smarttube.hls.playlist.FilteringHlsPlaylistParserFactory;
@@ -41,7 +40,7 @@ public final class HlsMediaSource extends BaseMediaSource
   }
 
   /** Factory for {@link HlsMediaSource}s. */
-  public static final class Factory implements AdsMediaSource.MediaSourceFactory {
+  public static final class Factory {
 
     private final HlsDataSourceFactory hlsDataSourceFactory;
 
@@ -268,7 +267,6 @@ public final class HlsMediaSource extends BaseMediaSource
      *
      * @return The new {@link HlsMediaSource}.
      */
-    @Override
     public HlsMediaSource createMediaSource(Uri playlistUri) {
       isCreateCalled = true;
       if (streamKeys != null) {
@@ -305,7 +303,6 @@ public final class HlsMediaSource extends BaseMediaSource
       return mediaSource;
     }
 
-    @Override
     public int[] getSupportedTypes() {
       return new int[] {C.TYPE_HLS};
     }

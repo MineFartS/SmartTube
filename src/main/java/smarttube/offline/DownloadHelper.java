@@ -893,7 +893,7 @@ public final class DownloadHelper {
       for (int i = 0; i < mediaPeriods.length; i++) {
         MediaPeriod mediaPeriod =
             mediaSource.createPeriod(
-                new MediaPeriodId(timeline.getUidOfPeriod(/* periodIndex= */ i)),
+                new MediaPeriodId(timeline.getUidOfPeriod(i)),
                 allocator,
                 /* startPositionUs= */ 0);
         mediaPeriods[i] = mediaPeriod;

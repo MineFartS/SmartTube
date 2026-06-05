@@ -608,11 +608,7 @@ public class AnalyticsCollector
     long eventPositionMs;
     boolean isInCurrentWindow =
         timeline == player.getCurrentTimeline() && windowIndex == player.getCurrentWindowIndex();
-    if (mediaPeriodId != null && mediaPeriodId.isAd()) {
-      boolean isCurrentAd = false;
-      // Assume start position of 0 for future ads.
-      eventPositionMs = isCurrentAd ? player.getCurrentPosition() : 0;
-    } else if (isInCurrentWindow) {
+    if (isInCurrentWindow) {
       eventPositionMs = player.getContentPosition();
     } else {
       // Assume default start position for future content windows. If timeline is not available yet,

@@ -849,42 +849,23 @@ public class PlayerControlView extends FrameLayout {
       int currentWindowIndex = player.getCurrentWindowIndex();
       int firstWindowIndex = multiWindowTimeBar ? 0 : currentWindowIndex;
       int lastWindowIndex = multiWindowTimeBar ? timeline.getWindowCount() - 1 : currentWindowIndex;
+      
       for (int i = firstWindowIndex; i <= lastWindowIndex; i++) {
+        
         if (i == currentWindowIndex) {
           currentWindowOffset = C.usToMs(durationUs);
         }
+        
         timeline.getWindow(i, window);
+        
         if (window.durationUs == C.TIME_UNSET) {
           Assertions.checkState(!multiWindowTimeBar);
           break;
         }
-        for (int j = window.firstPeriodIndex; j <= window.lastPeriodIndex; j++) {
-          timeline.getPeriod(j, period);
-          int periodAdGroupCount = period.getAdGroupCount();
-          for (int adGroupIndex = 0; adGroupIndex < periodAdGroupCount; adGroupIndex++) {
-            long adGroupTimeInPeriodUs = period.getAdGroupTimeUs(adGroupIndex);
-            if (adGroupTimeInPeriodUs == C.TIME_END_OF_SOURCE) {
-              if (period.durationUs == C.TIME_UNSET) {
-                // Don't show ad markers for postrolls in periods with unknown duration.
-                continue;
-              }
-              adGroupTimeInPeriodUs = period.durationUs;
-            }
-            long adGroupTimeInWindowUs = adGroupTimeInPeriodUs + period.getPositionInWindowUs();
-            if (adGroupTimeInWindowUs >= 0 && adGroupTimeInWindowUs <= window.durationUs) {
-              if (adGroupCount == adGroupTimesMs.length) {
-                int newLength = adGroupTimesMs.length == 0 ? 1 : adGroupTimesMs.length * 2;
-                adGroupTimesMs = Arrays.copyOf(adGroupTimesMs, newLength);
-                playedAdGroups = Arrays.copyOf(playedAdGroups, newLength);
-              }
-              adGroupTimesMs[adGroupCount] = C.usToMs(durationUs + adGroupTimeInWindowUs);
-              playedAdGroups[adGroupCount] = period.hasPlayedAdGroup(adGroupIndex);
-              adGroupCount++;
-            }
-          }
-        }
+
         durationUs += window.durationUs;
       }
+      
     }
     long durationMs = C.usToMs(durationUs);
     if (durationView != null) {
@@ -892,15 +873,6 @@ public class PlayerControlView extends FrameLayout {
     }
     if (timeBar != null) {
       timeBar.setDuration(durationMs);
-      int extraAdGroupCount = extraAdGroupTimesMs.length;
-      int totalAdGroupCount = adGroupCount + extraAdGroupCount;
-      if (totalAdGroupCount > adGroupTimesMs.length) {
-        adGroupTimesMs = Arrays.copyOf(adGroupTimesMs, totalAdGroupCount);
-        playedAdGroups = Arrays.copyOf(playedAdGroups, totalAdGroupCount);
-      }
-      System.arraycopy(extraAdGroupTimesMs, 0, adGroupTimesMs, adGroupCount, extraAdGroupCount);
-      System.arraycopy(extraPlayedAdGroups, 0, playedAdGroups, adGroupCount, extraAdGroupCount);
-      timeBar.setAdGroupTimesMs(adGroupTimesMs, playedAdGroups, totalAdGroupCount);
     }
     updateProgress();
   }

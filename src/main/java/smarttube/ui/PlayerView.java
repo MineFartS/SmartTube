@@ -41,7 +41,6 @@ import minefarts.smarttube.metadata.Metadata;
 import minefarts.smarttube.metadata.flac.PictureFrame;
 import minefarts.smarttube.metadata.id3.ApicFrame;
 import minefarts.smarttube.source.TrackGroupArray;
-import minefarts.smarttube.source.ads.AdsLoader;
 import minefarts.smarttube.text.Cue;
 import minefarts.smarttube.text.TextOutput;
 import minefarts.smarttube.trackselection.TrackSelection;
@@ -60,7 +59,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider {
+public class PlayerView extends FrameLayout {
 
   // LINT.IfChange
   /**
@@ -916,26 +915,6 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
       contentFrame.setAspectRatio(
           contentView instanceof SphericalSurfaceView ? 0 : contentAspectRatio);
     }
-  }
-
-  // AdsLoader.AdViewProvider implementation.
-
-  @Override
-  public ViewGroup getAdViewGroup() {
-    return Assertions.checkNotNull(
-        adOverlayFrameLayout, "exo_ad_overlay must be present for ad playback");
-  }
-
-  @Override
-  public View[] getAdOverlayViews() {
-    ArrayList<View> overlayViews = new ArrayList<>();
-    if (overlayFrameLayout != null) {
-      overlayViews.add(overlayFrameLayout);
-    }
-    if (controller != null) {
-      overlayViews.add(controller);
-    }
-    return overlayViews.toArray(new View[0]);
   }
 
   // Internal methods.

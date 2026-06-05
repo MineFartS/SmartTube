@@ -2,7 +2,6 @@ package minefarts.smarttube;
 
 import androidx.annotation.Nullable;
 import android.util.Pair;
-import minefarts.smarttube.source.ads.AdPlaybackState;
 import minefarts.smarttube.utils.Assertions;
 
 /**
@@ -273,12 +272,8 @@ public abstract class Timeline {
     public long durationUs;
 
     private long positionInWindowUs;
-    private AdPlaybackState adPlaybackState;
 
-    /** Creates a new instance with no ad playback state. */
-    public Period() {
-      adPlaybackState = AdPlaybackState.NONE;
-    }
+    public Period() {}
 
     /**
      * Sets the data held by this period.
@@ -300,40 +295,13 @@ public abstract class Timeline {
         @Nullable Object uid,
         int windowIndex,
         long durationUs,
-        long positionInWindowUs) {
-      return set(id, uid, windowIndex, durationUs, positionInWindowUs, AdPlaybackState.NONE);
-    }
-
-    /**
-     * Sets the data held by this period.
-     *
-     * @param id An identifier for the period. Not necessarily unique. May be null if the ids of the
-     *     period are not required.
-     * @param uid A unique identifier for the period. May be null if the ids of the period are not
-     *     required.
-     * @param windowIndex The index of the window to which this period belongs.
-     * @param durationUs The duration of this period in microseconds, or {@link C#TIME_UNSET} if
-     *     unknown.
-     * @param positionInWindowUs The position of the start of this period relative to the start of
-     *     the window to which it belongs, in milliseconds. May be negative if the start of the
-     *     period is not within the window.
-     * @param adPlaybackState The state of the period's ads, or {@link AdPlaybackState#NONE} if
-     *     there are no ads.
-     * @return This period, for convenience.
-     */
-    public Period set(
-        @Nullable Object id,
-        @Nullable Object uid,
-        int windowIndex,
-        long durationUs,
-        long positionInWindowUs,
-        AdPlaybackState adPlaybackState) {
+        long positionInWindowUs
+    ) {
       this.id = id;
       this.uid = uid;
       this.windowIndex = windowIndex;
       this.durationUs = durationUs;
       this.positionInWindowUs = positionInWindowUs;
-      this.adPlaybackState = adPlaybackState;
       return this;
     }
 
@@ -367,128 +335,6 @@ public abstract class Timeline {
      */
     public long getPositionInWindowUs() {
       return positionInWindowUs;
-    }
-
-    /**
-     * Returns the number of ad groups in the period.
-     */
-    public int getAdGroupCount() {
-      return adPlaybackState.adGroupCount;
-    }
-
-    /**
-     * Returns the time of the ad group at index {@code adGroupIndex} in the period, in
-     * microseconds.
-     *
-     * @param adGroupIndex The ad group index.
-     * @return The time of the ad group at the index, in microseconds.
-     */
-    public long getAdGroupTimeUs(int adGroupIndex) {
-      return adPlaybackState.adGroupTimesUs[adGroupIndex];
-    }
-
-    /**
-     * Returns the index of the first ad in the specified ad group that should be played, or the
-     * number of ads in the ad group if no ads should be played.
-     *
-     * @param adGroupIndex The ad group index.
-     * @return The index of the first ad that should be played, or the number of ads in the ad group
-     *     if no ads should be played.
-     */
-    public int getFirstAdIndexToPlay(int adGroupIndex) {
-      return adPlaybackState.adGroups[adGroupIndex].getFirstAdIndexToPlay();
-    }
-
-    /**
-     * Returns the index of the next ad in the specified ad group that should be played after
-     * playing {@code adIndexInAdGroup}, or the number of ads in the ad group if no later ads should
-     * be played.
-     *
-     * @param adGroupIndex The ad group index.
-     * @param lastPlayedAdIndex The last played ad index in the ad group.
-     * @return The index of the next ad that should be played, or the number of ads in the ad group
-     *     if the ad group does not have any ads remaining to play.
-     */
-    public int getNextAdIndexToPlay(int adGroupIndex, int lastPlayedAdIndex) {
-      return adPlaybackState.adGroups[adGroupIndex].getNextAdIndexToPlay(lastPlayedAdIndex);
-    }
-
-    /**
-     * Returns whether the ad group at index {@code adGroupIndex} has been played.
-     *
-     * @param adGroupIndex The ad group index.
-     * @return Whether the ad group at index {@code adGroupIndex} has been played.
-     */
-    public boolean hasPlayedAdGroup(int adGroupIndex) {
-      return !adPlaybackState.adGroups[adGroupIndex].hasUnplayedAds();
-    }
-
-    /**
-     * Returns the index of the ad group at or before {@code positionUs}, if that ad group is
-     * unplayed. Returns {@link C#INDEX_UNSET} if the ad group at or before {@code positionUs} has
-     * no ads remaining to be played, or if there is no such ad group.
-     *
-     * @param positionUs The position at or before which to find an ad group, in microseconds.
-     * @return The index of the ad group, or {@link C#INDEX_UNSET}.
-     */
-    public int getAdGroupIndexForPositionUs(long positionUs) {
-      return adPlaybackState.getAdGroupIndexForPositionUs(positionUs);
-    }
-
-    /**
-     * Returns the index of the next ad group after {@code positionUs} that has ads remaining to be
-     * played. Returns {@link C#INDEX_UNSET} if there is no such ad group.
-     *
-     * @param positionUs The position after which to find an ad group, in microseconds.
-     * @return The index of the ad group, or {@link C#INDEX_UNSET}.
-     */
-    public int getAdGroupIndexAfterPositionUs(long positionUs) {
-      return adPlaybackState.getAdGroupIndexAfterPositionUs(positionUs, durationUs);
-    }
-
-    /**
-     * Returns the number of ads in the ad group at index {@code adGroupIndex}, or
-     * {@link C#LENGTH_UNSET} if not yet known.
-     *
-     * @param adGroupIndex The ad group index.
-     * @return The number of ads in the ad group, or {@link C#LENGTH_UNSET} if not yet known.
-     */
-    public int getAdCountInAdGroup(int adGroupIndex) {
-      return adPlaybackState.adGroups[adGroupIndex].count;
-    }
-
-    /**
-     * Returns whether the URL for the specified ad is known.
-     *
-     * @param adGroupIndex The ad group index.
-     * @param adIndexInAdGroup The ad index in the ad group.
-     * @return Whether the URL for the specified ad is known.
-     */
-    public boolean isAdAvailable(int adGroupIndex, int adIndexInAdGroup) {
-      AdPlaybackState.AdGroup adGroup = adPlaybackState.adGroups[adGroupIndex];
-      return adGroup.count != C.LENGTH_UNSET
-          && adGroup.states[adIndexInAdGroup] != AdPlaybackState.AD_STATE_UNAVAILABLE;
-    }
-
-    /**
-     * Returns the duration of the ad at index {@code adIndexInAdGroup} in the ad group at
-     * {@code adGroupIndex}, in microseconds, or {@link C#TIME_UNSET} if not yet known.
-     *
-     * @param adGroupIndex The ad group index.
-     * @param adIndexInAdGroup The ad index in the ad group.
-     * @return The duration of the ad, or {@link C#TIME_UNSET} if not yet known.
-     */
-    public long getAdDurationUs(int adGroupIndex, int adIndexInAdGroup) {
-      AdPlaybackState.AdGroup adGroup = adPlaybackState.adGroups[adGroupIndex];
-      return adGroup.count != C.LENGTH_UNSET ? adGroup.durationsUs[adIndexInAdGroup] : C.TIME_UNSET;
-    }
-
-    /**
-     * Returns the position offset in the first unplayed ad at which to begin playback, in
-     * microseconds.
-     */
-    public long getAdResumePositionUs() {
-      return adPlaybackState.adResumePositionUs;
     }
 
   }

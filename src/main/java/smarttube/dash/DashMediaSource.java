@@ -20,7 +20,6 @@ import minefarts.smarttube.source.MediaSource;
 import minefarts.smarttube.source.MediaSourceEventListener;
 import minefarts.smarttube.source.MediaSourceEventListener.EventDispatcher;
 import minefarts.smarttube.source.SequenceableLoader;
-import minefarts.smarttube.source.ads.AdsMediaSource;
 import minefarts.smarttube.dash.PlayerEmsgHandler.PlayerEmsgCallback;
 import minefarts.smarttube.dash.manifest.AdaptationSet;
 import minefarts.smarttube.dash.manifest.DashManifest;
@@ -59,7 +58,7 @@ public final class DashMediaSource extends BaseMediaSource {
     }
 
     /** Factory for {@link DashMediaSource}s. */
-    public static final class Factory implements AdsMediaSource.MediaSourceFactory {
+    public static final class Factory {
 
         private final DashChunkSource.Factory chunkSourceFactory;
         @Nullable
@@ -284,7 +283,6 @@ public final class DashMediaSource extends BaseMediaSource {
          * @param manifestUri The manifest {@link Uri}.
          * @return The new {@link DashMediaSource}.
          */
-        @Override
         public DashMediaSource createMediaSource(Uri manifestUri) {
             isCreateCalled = true;
             if (manifestParser == null) {
@@ -313,7 +311,6 @@ public final class DashMediaSource extends BaseMediaSource {
             return mediaSource;
         }
 
-        @Override
         public int[] getSupportedTypes() {
             return new int[] {C.TYPE_DASH};
         }

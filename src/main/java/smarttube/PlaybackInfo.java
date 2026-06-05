@@ -15,8 +15,7 @@ import minefarts.smarttube.trackselection.TrackSelectorResult;
    * Dummy media period id used while the timeline is empty and no period id is specified. This id
    * is used when playback infos are created with {@link #createDummy(long, TrackSelectorResult)}.
    */
-  private static final MediaPeriodId DUMMY_MEDIA_PERIOD_ID =
-      new MediaPeriodId(/* periodUid= */ new Object());
+  private static final MediaPeriodId DUMMY_MEDIA_PERIOD_ID = new MediaPeriodId(new Object());
 
   /** The current {@link Timeline}. */
   public final Timeline timeline;
@@ -160,8 +159,7 @@ import minefarts.smarttube.trackselection.TrackSelectorResult;
    *
    * @param periodId New playing and loading {@link MediaPeriodId}.
    * @param startPositionUs New start position. See {@link #startPositionUs}.
-   * @param contentPositionUs New content position. See {@link #contentPositionUs}. Value is ignored
-   *     if {@code periodId.isAd()} is true.
+   * @param contentPositionUs New content position. Value is ignored
    * @return Copied playback info with reset position.
    */
   @CheckResult
@@ -172,7 +170,7 @@ import minefarts.smarttube.trackselection.TrackSelectorResult;
         manifest,
         periodId,
         startPositionUs,
-        periodId.isAd() ? contentPositionUs : C.TIME_UNSET,
+        C.TIME_UNSET,
         playbackState,
         isLoading,
         trackGroups,
@@ -188,8 +186,7 @@ import minefarts.smarttube.trackselection.TrackSelectorResult;
    *
    * @param periodId New playing media period. See {@link #periodId}.
    * @param positionUs New position. See {@link #positionUs}.
-   * @param contentPositionUs New content position. See {@link #contentPositionUs}. Value is ignored
-   *     if {@code periodId.isAd()} is true.
+   * @param contentPositionUs New content position. Value is ignored
    * @param totalBufferedDurationUs New buffered duration. See {@link #totalBufferedDurationUs}.
    * @return Copied playback info with new playing position.
    */
@@ -204,7 +201,7 @@ import minefarts.smarttube.trackselection.TrackSelectorResult;
         manifest,
         periodId,
         positionUs,
-        periodId.isAd() ? contentPositionUs : C.TIME_UNSET,
+        C.TIME_UNSET,
         playbackState,
         isLoading,
         trackGroups,
