@@ -85,27 +85,28 @@ internal object V8ChallengeProvider {
         )
     }
 
+    private fun runJsRuntime(stdin: String): String {
+        synchronized(v8Lock) {
+            try {
+                initRuntime()
+                return runV8(stdin)
+            } finally {
+                disposeRuntime()
+            }
+        }
+    }
+
     private fun runV8(stdin: String): String {
-        
         val runtime = v8Runtime.get() ?: throw JsChallengeProviderError("V8 runtime not initialized yet")
-        
         try {
             return runtime.withLock {
                 it.executeStringScript(stdin) ?: throw JsChallengeProviderError("V8 runtime error: empty response")
             }
         } catch (e: V8ScriptExecutionException) {
-            
             if (e.message?.contains("Invalid or unexpected token") ?: false)
                 YouTubeInfoExtractor.cache.clear(cacheSection) // cached data broken?
-
-            var msg: String = e.message ?: ""
-
-            if (e.message?.contains("ReferenceError: jsc is not defined") ?: false)
-                msg = "jsc is not defined"
-            
-            throw JsChallengeProviderError("V8 runtime error: ${msg}", e)
+            throw JsChallengeProviderError("V8 runtime error: ${e.message}", e)
         }
-
     }
 
     private fun initRuntime() {
@@ -118,9 +119,7 @@ internal object V8ChallengeProvider {
     private fun disposeRuntime() {
         val runtime = v8Runtime.get() ?: return
 
-        Log.d(tag, "V8 dispose: thread=${Thread.currentThread().name}, runtime=${System.identityHashCode(runtime)}")
-
-        // NOTE: getting lock fixes "Invalid V8 thread access" issues.
+        // NOTE: getting lock fixes "Invalid V8 thread access: the locker has been released!"
         runtime.withLock {
             it.release(false)
         }
@@ -151,59 +150,18 @@ internal object V8ChallengeProvider {
         val grouped: Map<String, List<JsChallengeRequest>> = requests.groupBy { it.input.playerUrl }
 
         for ((playerUrl, groupedRequests) in grouped) {
+            val data = YouTubeInfoExtractor.cache.load(cacheSection, "player:$playerUrl")
+            var player = data?.code
 
-            val player = YouTubeInfoExtractor.cache.load(
-                cacheSection, 
-                "player:$playerUrl"
-            )?.code
-
-            val data: MutableMap<String, Any> = if (player == null) {
-                mutableMapOf(
-                    "type" to "player",
-                    "player" to getPlayer(playerUrl),
-                    "output_preprocessed" to true
-                )
+            val cached = if (player != null) {
+                true
             } else {
-                mutableMapOf(
-                    "type" to "preprocessed",
-                    "preprocessed_player" to player,
-                )
+                player = getPlayer(playerUrl)
+                false
             }
 
-val jsonRequests = groupedRequests.map { request ->
-                    mapOf(
-                        "type" to request.type.value,
-                        "challenges" to request.input.challenges
-                    )
-                }
-                mapOf(
-                    "type" to request.type.value,
-                    "challenges" to request.input.challenges
-                )
-            }
-
-val data2 = if (cached) {
-                mapOf(
-                    "type" to "preprocessed",
-                    "preprocessed_player" to player,
-                    "requests" to jsonRequests
-                )
-            } else {
-                mapOf(
-                    "type" to "player",
-                    "player" to player,
-                    "requests" to jsonRequests,
-                    "output_preprocessed" to true
-                )
-            }
-
-            val jsonData = sGson.toJson(data2)
-
-            val stdout = synchronized(v8Lock) {
-                initRuntime()
-                runV8("JSON.stringify((jsc.default ?? jsc)($jsonData));")
-            }
-            }
+            val stdin = constructStdin(player, cached, groupedRequests)
+            val stdout = runJsRuntime(stdin)
 
             val output: SolverOutput = try {
                 sGson.fromJson(stdout, solverOutputType)
