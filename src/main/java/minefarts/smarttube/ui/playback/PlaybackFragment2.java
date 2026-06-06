@@ -225,7 +225,6 @@ public class PlaybackFragment2
     private List<String> mLastAudioLanguages;
 
     private final int mMaxBufferBytes;
-    private final PlaybackFragment2 mPlayerData;
     private final PlayerTweaksData mPlayerTweaksData;
     private static AudioAttributes sAudioAttributes;
 
@@ -241,7 +240,6 @@ public class PlaybackFragment2
         mPrefs = AppPrefs.instance(context);
         mPrefs.addListener(this);
 
-        mPlayerData = PlaybackFragment2.instance(context);
         mPlayerTweaksData = PlayerTweaksData.instance(context);
 
         mBandwidthMeter = new DefaultBandwidthMeter.Builder(context).build();

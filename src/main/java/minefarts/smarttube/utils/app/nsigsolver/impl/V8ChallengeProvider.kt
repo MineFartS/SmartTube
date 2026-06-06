@@ -110,6 +110,9 @@ internal object V8ChallengeProvider {
 
     private fun disposeRuntime() {
         val runtime = v8Runtime.get() ?: return
+
+        Log.d(tag, "V8 dispose: thread=${Thread.currentThread().name}, runtime=${System.identityHashCode(runtime)}")
+
         // NOTE: getting lock fixes "Invalid V8 thread access" issues.
         runtime.withLock {
             it.release(false)
@@ -176,12 +179,8 @@ internal object V8ChallengeProvider {
             val jsonData = sGson.toJson(data2)
 
             val stdout = synchronized(v8Lock) {
-                try {
-                    initRuntime()
-                    runV8("JSON.stringify(jsc($jsonData));")
-                } finally {
-                    disposeRuntime()
-                }
+                initRuntime()
+                runV8("JSON.stringify(jsc($jsonData));")
             }
 
             val output: SolverOutput = try {
