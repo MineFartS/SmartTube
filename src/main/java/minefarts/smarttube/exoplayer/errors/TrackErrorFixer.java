@@ -61,15 +61,14 @@ public class TrackErrorFixer extends DefaultMediaSourceEventListener {
     }
 
     private boolean selectDifferentCodec(boolean isAudio) {
-        if (System.currentTimeMillis() - mSelectionTimeMs < BLACKLIST_CLEAR_MS) {
+        if (System.currentTimeMillis() - mSelectionTimeMs < BLACKLIST_CLEAR_MS)
             return false;
-        }
 
-        Set<MediaTrack> tracks = isAudio ? mTrackSelectorManager.getAudioTracks() : mTrackSelectorManager.getVideoTracks();
+        Set<MediaTrack> tracks = isAudio ? 
+            mTrackSelectorManager.getAvailableTracks(mTrackSelectorManager.RENDERER_INDEX_AUDIO) : 
+            mTrackSelectorManager.getAvailableTracks(mTrackSelectorManager.RENDERER_INDEX_VIDEO);
 
-        if (tracks == null) {
-            return false;
-        }
+        if (tracks == null) return false;
 
         MediaTrack currentTrack = null;
 
@@ -80,9 +79,8 @@ public class TrackErrorFixer extends DefaultMediaSourceEventListener {
             }
         }
 
-        if (currentTrack == null || currentTrack.format == null || currentTrack.format.codecs == null) {
+        if (currentTrack == null || currentTrack.format == null || currentTrack.format.codecs == null)
             return false;
-        }
 
         String currentCodec = currentTrack.format.codecs;
         int width = currentTrack.format.width;
@@ -90,9 +88,8 @@ public class TrackErrorFixer extends DefaultMediaSourceEventListener {
         MediaTrack nextTrack = null;
 
         for (MediaTrack track : tracks) {
-            if (track.format == null) {
+            if (track.format == null)
                 continue;
-            }
 
             if (!currentCodec.equals(track.format.codecs) && track.format.width <= width) {
                 nextTrack = track;

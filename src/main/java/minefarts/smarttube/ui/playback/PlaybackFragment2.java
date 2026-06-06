@@ -109,6 +109,7 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
+import java.util.Set;
 
 /**
  * {@link PlaybackGlueHost} implementation
@@ -1065,16 +1066,13 @@ public class PlaybackFragment2
         return mExoPlayerController.isLoading();
     }
 
-    public List<FormatItem> getVideoFormats() {
-        return mExoPlayerController.getVideoFormats();
-    }
-
-    public List<FormatItem> getAudioFormats() {
-        return mExoPlayerController.getAudioFormats();
-    }
-
     public List<FormatItem> getSubtitleFormats() {
-        return mExoPlayerController.getSubtitleFormats();
+
+        Set<MediaTrack> tracks = mTrackSelectorManager.getAvailableTracks(
+            mTrackSelectorManager.RENDERER_INDEX_SUBTITLE
+        );
+        
+        return ExoFormatItem.from(tracks);
     }
 
     public FormatItem getVideoFormat() {

@@ -210,18 +210,6 @@ public class ExoPlayerController implements Player.EventListener {
         return mVideo != null ? mVideo.get() : null;
     }
     
-    public List<FormatItem> getVideoFormats() {
-        return ExoFormatItem.from(mTrackSelectorManager.getVideoTracks());
-    }
-    
-    public List<FormatItem> getAudioFormats() {
-        return ExoFormatItem.from(mTrackSelectorManager.getAudioTracks());
-    }
-    
-    public List<FormatItem> getSubtitleFormats() {
-        return ExoFormatItem.from(mTrackSelectorManager.getSubtitleTracks());
-    }
-    
     public void selectFormat(FormatItem formatItem) {
         if (formatItem != null) {
             mEventListener.onTrackSelected(formatItem);
@@ -230,15 +218,28 @@ public class ExoPlayerController implements Player.EventListener {
     }
     
     public FormatItem getVideoFormat() {
-        return ExoFormatItem.from(mTrackSelectorManager.getVideoTrack());
+        MediaTrack track = mTrackSelectorManager.getTrack(
+            mTrackSelectorManager.RENDERER_INDEX_VIDEO
+        );
+        
+        return ExoFormatItem.from(track);
     }
     
     public FormatItem getAudioFormat() {
-        return ExoFormatItem.from(mTrackSelectorManager.getAudioTrack());
+        MediaTrack track = mTrackSelectorManager.getTrack(
+            mTrackSelectorManager.RENDERER_INDEX_AUDIO
+        );
+        
+        return ExoFormatItem.from(track);
     }
     
     public FormatItem getSubtitleFormat() {
-        return ExoFormatItem.from(mTrackSelectorManager.getSubtitleTrack());
+        
+        MediaTrack track = mTrackSelectorManager.getTrack(
+            mTrackSelectorManager.RENDERER_INDEX_SUBTITLE
+        );
+        
+        return ExoFormatItem.from(track);
     }
 
     @Override

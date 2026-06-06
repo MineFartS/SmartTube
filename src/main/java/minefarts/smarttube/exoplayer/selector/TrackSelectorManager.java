@@ -37,10 +37,12 @@ import java.util.TreeSet;
 public class TrackSelectorManager {
 
     private final Context mContext;
+
     public static final int RENDERER_INDEX_UNKNOWN = -1;
     public static final int RENDERER_INDEX_VIDEO = 0;
     public static final int RENDERER_INDEX_AUDIO = 1;
     public static final int RENDERER_INDEX_SUBTITLE = 2;
+    
     private static final String TAG = TrackSelectorManager.class.getSimpleName();
     private static final String DEFAULT_LANGUAGE = "original"; // original, descriptive, dubbed, secondary
     private final Map<String, Integer> mBlacklist = new HashMap<>();
@@ -64,12 +66,10 @@ public class TrackSelectorManager {
      * @param rendererIndex The index of the renderer. <br/>
      *                      One of the {@link #RENDERER_INDEX_VIDEO}, {@link #RENDERER_INDEX_AUDIO}, {@link #RENDERER_INDEX_SUBTITLE}
      */
-    private Set<MediaTrack> getAvailableTracks(int rendererIndex) {
+    public Set<MediaTrack> getAvailableTracks(int rendererIndex) {
         initRenderer(rendererIndex);
 
-        if (mRenderers[rendererIndex] == null) {
-            return null;
-        }
+        if (mRenderers[rendererIndex] == null) return null;
 
         return mRenderers[rendererIndex].sortedTracks;
     }
@@ -233,18 +233,6 @@ public class TrackSelectorManager {
         renderer.selectedTrack = renderer.selectedTrack == null ? noMediaTrack : renderer.selectedTrack;
    }
 
-    public Set<MediaTrack> getVideoTracks() {
-        return getAvailableTracks(RENDERER_INDEX_VIDEO);
-    }
-
-    public Set<MediaTrack> getAudioTracks() {
-        return getAvailableTracks(RENDERER_INDEX_AUDIO);
-    }
-
-    public Set<MediaTrack> getSubtitleTracks() {
-        return getAvailableTracks(RENDERER_INDEX_SUBTITLE);
-    }
-
     private Pair<Definition, MediaTrack> createSelection(TrackGroupArray groups, MediaTrack selectedTrack) {
         if (selectedTrack == null) {
             Log.e(TAG, "Can't create selection. Selected track is null.");
@@ -353,35 +341,6 @@ public class TrackSelectorManager {
 
         // save immediately
         applyOverride(rendererIndex);
-    }
-
-    public MediaTrack getVideoTrack() {
-        return getTrack(RENDERER_INDEX_VIDEO);
-    }
-
-    public MediaTrack getAudioTrack() {
-        return getTrack(RENDERER_INDEX_AUDIO);
-    }
-
-    public MediaTrack getSubtitleTrack() {
-        return getTrack(RENDERER_INDEX_SUBTITLE);
-    }
-
-    /**
-     *  Video/audio tracks should be selected at this point.<br/>
-     *  Reselect if not done yet.
-     */
-    public void fixTracksSelection() {
-        for (MediaTrack track : mSelectedTracks) {
-            if (track == null || track.rendererIndex == RENDERER_INDEX_SUBTITLE) {
-                continue;
-            }
-
-            if (!hasSelection(track.rendererIndex)) {
-                Log.e(TAG, "Oops. Track %s isn't selected before. Fixing...", track.rendererIndex);
-                selectTrack(track);
-            }
-        }
     }
 
     public void setTrackSelector(DefaultTrackSelector selector) {
@@ -701,7 +660,7 @@ public class TrackSelectorManager {
         }
     }
 
-    private MediaTrack getTrack(int rendererIndex) {
+    public MediaTrack getTrack(int rendererIndex) {
         
         initRenderer(rendererIndex);
 
