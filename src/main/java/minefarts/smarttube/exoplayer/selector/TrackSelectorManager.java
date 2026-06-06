@@ -332,11 +332,41 @@ public class TrackSelectorManager {
             return;
         }
 
+        MediaTrack matchedTrack = findBestMatch(track);
+
+        // If the restored/selected subtitle track is no longer present in the current TrackGroupArray,
+        // don't try to apply an override (ExoPlayer will fail to find the selection).
+        if (matchedTrack == null || matchedTrack.groupIndex == -1) {
+            Log.e(TAG, "selectTrack: Can't match selected track. renderer=%s origin=%s matched=%s. Clearing subtitle selection override.",
+                    rendererIndex,
+                    track.format,
+                    matchedTrack == null ? null : matchedTrack.format);
+
+            // Ensure we stay in a valid state: renderer will be using the first (auto/none) option.
+            Renderer renderer = mRenderers[rendererIndex];
+            if (renderer != null && renderer.sortedTracks != null && !renderer.sortedTracks.isEmpty()) {
+                MediaTrack noMediaTrack = renderer.sortedTracks.first();
+                renderer.selectedTrack = noMediaTrack;
+                renderer.isDisabled = false; // renderer should remain enabled; track selector will pick auto/none
+
+                // also clear any previous selection markers
+                for (MediaTrack[] trackGroup : renderer.mediaTracks) {
+                    if (trackGroup == null) continue;
+                    for (MediaTrack t : trackGroup) {
+                        if (t != null) t.isSelected = false;
+                    }
+                }
+
+                noMediaTrack.isSelected = true;
+            }
+
+            mTrackSelector.setParameters(mTrackSelector.buildUponParameters().clearSelectionOverrides(rendererIndex));
+            return;
+        }
+
         // enable renderer
         mRenderers[rendererIndex].isDisabled = false;
 
-        MediaTrack matchedTrack = findBestMatch(track);
-        
         setSelection(matchedTrack.rendererIndex, matchedTrack.groupIndex, matchedTrack.trackIndex);
 
         // save immediately
