@@ -94,7 +94,7 @@ import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.BuildConfig;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Video;
-import minefarts.smarttube.ui.playback.PlaybackFragment;
+import minefarts.smarttube.ui.playback.PlaybackFragment2;
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.app.presenters.SplashPresenter;
@@ -326,7 +326,7 @@ public class Utils {
     /**
      * Volume: 0 - 100
      */
-    public static int getVolume(PlaybackFragment player) {
+    public static int getVolume(PlaybackFragment2 player) {
         
         if (player == null) return -1;
         
@@ -338,7 +338,7 @@ public class Utils {
      */
     public static void setVolume(
         Context context, 
-        PlaybackFragment player, 
+        PlaybackFragment2 player, 
         int volume
     ) {
         if (context == null || player ==  null) return;
@@ -357,7 +357,7 @@ public class Utils {
         
     }
 
-    public static void volumeUp(Context context, PlaybackFragment player, boolean up) {
+    public static void volumeUp(Context context, PlaybackFragment2 player, boolean up) {
         if (player != null) {
             int volume = getVolume(player);
             final int delta = 1; // volume step
@@ -624,19 +624,19 @@ public class Utils {
 
     public static void showRepeatInfo(Context context, int modeIndex) {
         switch (modeIndex) {
-            case PlaybackFragment.PLAYBACK_MODE_ALL:
+            case PlaybackFragment2.PLAYBACK_MODE_ALL:
                 MessageHelpers.showMessage(context, R.string.repeat_mode_all);
                 break;
-            case PlaybackFragment.PLAYBACK_MODE_ONE:
+            case PlaybackFragment2.PLAYBACK_MODE_ONE:
                 MessageHelpers.showMessage(context, R.string.repeat_mode_one);
                 break;
-            case PlaybackFragment.PLAYBACK_MODE_PAUSE:
+            case PlaybackFragment2.PLAYBACK_MODE_PAUSE:
                 MessageHelpers.showMessage(context, R.string.repeat_mode_pause);
                 break;
-            case PlaybackFragment.PLAYBACK_MODE_LIST:
+            case PlaybackFragment2.PLAYBACK_MODE_LIST:
                 MessageHelpers.showMessage(context, R.string.repeat_mode_pause_alt);
                 break;
-            case PlaybackFragment.PLAYBACK_MODE_CLOSE:
+            case PlaybackFragment2.PLAYBACK_MODE_CLOSE:
                 MessageHelpers.showMessage(context, R.string.repeat_mode_none);
                 break;
         }
@@ -697,7 +697,7 @@ public class Utils {
     }
 
     public static void showPlayerControls(Context context, boolean show) {
-        PlaybackFragment view = PlaybackPresenter.instance(context).getView();
+        PlaybackFragment2 view = PlaybackPresenter.instance(context).getView();
         if (view != null) {
             view.showOverlay(show);
         }

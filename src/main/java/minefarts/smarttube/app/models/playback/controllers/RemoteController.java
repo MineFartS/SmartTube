@@ -15,7 +15,7 @@ import minefarts.smarttube.utils.rx.RxHelper;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
-import minefarts.smarttube.ui.playback.PlaybackFragment;
+import minefarts.smarttube.ui.playback.PlaybackFragment2;
 import minefarts.smarttube.exoplayer.selector.FormatItem;
 import minefarts.smarttube.prefs.common.DataChangeBase.OnDataChange;
 import minefarts.smarttube.prefs.RemoteControlData;
@@ -105,12 +105,12 @@ public class RemoteController extends BasePlayerController implements OnDataChan
     @Override
     public void onPlayEnd() {
         switch (getPlayerData().getPlaybackMode()) {
-            case PlaybackFragment.PLAYBACK_MODE_CLOSE:
-            case PlaybackFragment.PLAYBACK_MODE_PAUSE:
-            case PlaybackFragment.PLAYBACK_MODE_ALL:
+            case PlaybackFragment2.PLAYBACK_MODE_CLOSE:
+            case PlaybackFragment2.PLAYBACK_MODE_PAUSE:
+            case PlaybackFragment2.PLAYBACK_MODE_ALL:
                 postPlay(false);
                 break;
-            case PlaybackFragment.PLAYBACK_MODE_ONE:
+            case PlaybackFragment2.PLAYBACK_MODE_ONE:
                 postStartPlaying(getVideo(), true);
                 break;
         }

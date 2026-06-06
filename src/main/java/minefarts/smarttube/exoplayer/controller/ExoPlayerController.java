@@ -32,7 +32,6 @@ import minefarts.smarttube.exoplayer.selector.TrackSelectorUtil;
 import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
 import minefarts.smarttube.exoplayer.selector.track.VideoTrack;
 import minefarts.smarttube.exoplayer.versions.ExoUtils;
-import minefarts.smarttube.ui.playback.PlaybackFragment;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.ui.mod.leanback.playerglue.tweaks.MaxControlsVideoPlayerGlue;
 import java.io.InputStream;

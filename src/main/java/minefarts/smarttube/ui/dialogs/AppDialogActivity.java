@@ -11,7 +11,7 @@ import minefarts.smarttube.fragment.app.Fragment;
 import minefarts.smarttube.utils.helpers.KeyHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
-import minefarts.smarttube.ui.playback.PlaybackFragment;
+import minefarts.smarttube.ui.playback.PlaybackFragment2;
 import minefarts.smarttube.app.views.ViewManager;
 import minefarts.smarttube.utils.GlobalKeyTranslator;
 import minefarts.smarttube.utils.PlayerKeyTranslator;
@@ -60,7 +60,7 @@ public class AppDialogActivity extends MotherActivity {
             if (event.getAction() == KeyEvent.ACTION_DOWN) {
                 finish();
             }
-            PlaybackFragment view = PlaybackPresenter.instance(this).getView();
+            PlaybackFragment2 view = PlaybackPresenter.instance(this).getView();
             if (view instanceof Fragment) {
                 Activity activity = ((Fragment) view).getActivity();
                 if (activity != null) {

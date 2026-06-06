@@ -11,7 +11,7 @@ import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
-import minefarts.smarttube.ui.playback.PlaybackFragment;
+import minefarts.smarttube.ui.playback.PlaybackFragment2;
 import minefarts.smarttube.utils.ServiceManager;
 import minefarts.smarttube.prefs.ContentBlockData;
 import minefarts.smarttube.utils.AppDialogUtil;
@@ -58,7 +58,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
         
         Video video = null;
 
-        if (getViewManager().getTopView() == PlaybackFragment.class) {
+        if (getViewManager().getTopView() == PlaybackFragment2.class) {
             video = PlaybackPresenter.instance(getContext()).getVideo();
         }
 
@@ -181,7 +181,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
     private void appendExcludeChannelButton(AppDialogPresenter settingsPresenter) {
         Video video = PlaybackPresenter.instance(getContext()).getVideo();
 
-        if (video == null || getViewManager().getTopView() != PlaybackFragment.class) {
+        if (video == null || getViewManager().getTopView() != PlaybackFragment2.class) {
             return;
         }
 

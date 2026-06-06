@@ -9,7 +9,7 @@ import minefarts.smarttube.app.presenters.SearchPresenter;
 import minefarts.smarttube.app.views.BrowseView;
 import minefarts.smarttube.app.views.ChannelUploadsView;
 import minefarts.smarttube.app.views.ChannelView;
-import minefarts.smarttube.ui.playback.PlaybackFragment;
+import minefarts.smarttube.ui.playback.PlaybackFragment2;
 import minefarts.smarttube.app.views.SearchView;
 import minefarts.smarttube.app.views.ViewManager;
 
@@ -44,8 +44,8 @@ public class LoadingManager {
             if (uploadsView != null) {
                 uploadsView.showProgressBar(show);
             }
-        } else if (topView == PlaybackFragment.class) {
-            PlaybackFragment playbackView = PlaybackPresenter.instance(context).getView();
+        } else if (topView == PlaybackFragment2.class) {
+            PlaybackFragment2 playbackView = PlaybackPresenter.instance(context).getView();
             if (playbackView != null) {
                 playbackView.showProgressBar(show);
             }

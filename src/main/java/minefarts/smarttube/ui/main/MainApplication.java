@@ -11,7 +11,7 @@ import minefarts.smarttube.app.views.AppDialogView;
 import minefarts.smarttube.app.views.BrowseView;
 import minefarts.smarttube.app.views.ChannelUploadsView;
 import minefarts.smarttube.app.views.ChannelView;
-import minefarts.smarttube.ui.playback.PlaybackFragment;
+import minefarts.smarttube.ui.playback.PlaybackFragment2;
 import minefarts.smarttube.app.views.SearchView;
 import minefarts.smarttube.app.views.SignInView;
 import minefarts.smarttube.app.views.SplashView;
@@ -55,7 +55,7 @@ public class MainApplication extends MultiDexApplication {
 
         viewManager.register(BrowseView.class, BrowseActivity.class); // no parent, because it's root activity
 
-        viewManager.register(PlaybackFragment.class, PlaybackActivity.class, BrowseActivity.class);
+        viewManager.register(PlaybackFragment2.class, PlaybackActivity.class, BrowseActivity.class);
 
         viewManager.register(AppDialogView.class, AppDialogActivity.class, BrowseActivity.class);
 

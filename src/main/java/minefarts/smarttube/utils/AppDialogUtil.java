@@ -22,7 +22,7 @@ import minefarts.smarttube.utils.rx.RxHelper;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Queue;
 import minefarts.smarttube.app.models.data.Video;
-import minefarts.smarttube.ui.playback.PlaybackFragment;
+import minefarts.smarttube.ui.playback.PlaybackFragment2;
 import minefarts.smarttube.app.models.playback.ui.OptionCategory;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
@@ -150,7 +150,7 @@ public class AppDialogUtil {
                 }));
     }
 
-    private static void setFormat(FormatItem formatItem, PlaybackFragment playerData, Runnable onFormatSelected) {
+    private static void setFormat(FormatItem formatItem, PlaybackFragment2 playerData, Runnable onFormatSelected) {
         
         playerData.setFormat(formatItem);
     
@@ -163,7 +163,7 @@ public class AppDialogUtil {
     }
 
     public static OptionCategory createAudioLanguageCategory(Context context, Runnable onSetCallback) {
-        PlaybackFragment playerData = PlaybackFragment.instance(context);
+        PlaybackFragment2 playerData = PlaybackFragment2.instance(context);
         String title = context.getString(R.string.audio_language);
 
         List<UiOptionItem> options = new ArrayList<>();
@@ -264,17 +264,17 @@ public class AppDialogUtil {
     }
 
     public static OptionCategory createPlaybackModeCategory(Context context, Runnable onModeSelected) {
-        PlaybackFragment playerData = PlaybackFragment.instance(context);
+        PlaybackFragment2 playerData = PlaybackFragment2.instance(context);
         List<UiOptionItem> options = new ArrayList<>();
 
         for (int[] pair : new int[][] {
-                {R.string.repeat_mode_all, PlaybackFragment.PLAYBACK_MODE_ALL},
-                {R.string.repeat_mode_one, PlaybackFragment.PLAYBACK_MODE_ONE},
-                {R.string.repeat_mode_shuffle, PlaybackFragment.PLAYBACK_MODE_SHUFFLE},
-                {R.string.repeat_mode_pause_alt, PlaybackFragment.PLAYBACK_MODE_LIST},
-                {R.string.repeat_mode_reverse_list, PlaybackFragment.PLAYBACK_MODE_REVERSE_LIST},
-                {R.string.repeat_mode_pause, PlaybackFragment.PLAYBACK_MODE_PAUSE},
-                {R.string.repeat_mode_none, PlaybackFragment.PLAYBACK_MODE_CLOSE}
+                {R.string.repeat_mode_all, PlaybackFragment2.PLAYBACK_MODE_ALL},
+                {R.string.repeat_mode_one, PlaybackFragment2.PLAYBACK_MODE_ONE},
+                {R.string.repeat_mode_shuffle, PlaybackFragment2.PLAYBACK_MODE_SHUFFLE},
+                {R.string.repeat_mode_pause_alt, PlaybackFragment2.PLAYBACK_MODE_LIST},
+                {R.string.repeat_mode_reverse_list, PlaybackFragment2.PLAYBACK_MODE_REVERSE_LIST},
+                {R.string.repeat_mode_pause, PlaybackFragment2.PLAYBACK_MODE_PAUSE},
+                {R.string.repeat_mode_none, PlaybackFragment2.PLAYBACK_MODE_CLOSE}
         }) {
             options.add(UiOptionItem.from(context.getString(pair[0]),
                     optionItem -> {

@@ -19,7 +19,7 @@ import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.data.VideoGroup;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
-import minefarts.smarttube.ui.playback.PlaybackFragment;
+import minefarts.smarttube.ui.playback.PlaybackFragment2;
 import minefarts.smarttube.app.models.playback.ui.OptionCategory;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
@@ -676,8 +676,8 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private int getNextRepeatMode(int buttonState) {
-        Integer[] modeList = {PlaybackFragment.PLAYBACK_MODE_ALL, PlaybackFragment.PLAYBACK_MODE_ONE, PlaybackFragment.PLAYBACK_MODE_SHUFFLE,
-                PlaybackFragment.PLAYBACK_MODE_LIST, PlaybackFragment.PLAYBACK_MODE_REVERSE_LIST, PlaybackFragment.PLAYBACK_MODE_PAUSE, PlaybackFragment.PLAYBACK_MODE_CLOSE};
+        Integer[] modeList = {PlaybackFragment2.PLAYBACK_MODE_ALL, PlaybackFragment2.PLAYBACK_MODE_ONE, PlaybackFragment2.PLAYBACK_MODE_SHUFFLE,
+                PlaybackFragment2.PLAYBACK_MODE_LIST, PlaybackFragment2.PLAYBACK_MODE_REVERSE_LIST, PlaybackFragment2.PLAYBACK_MODE_PAUSE, PlaybackFragment2.PLAYBACK_MODE_CLOSE};
         int nextMode = Helpers.getNextValue(modeList, buttonState);
         return nextMode;
     }

@@ -6,7 +6,6 @@ import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.prefs.GeneralData;
-import minefarts.smarttube.ui.playback.PlaybackFragment;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.utils.Utils;
 

@@ -92,7 +92,6 @@ import minefarts.smarttube.C;
 import minefarts.smarttube.DefaultLoadControl;
 import minefarts.smarttube.audio.AudioAttributes;
 import minefarts.smarttube.upstream.BandwidthMeter;
-import minefarts.smarttube.ui.playback.PlaybackFragment;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.analytics.AnalyticsCollector;
 import minefarts.smarttube.trackselection.DefaultTrackSelector;
@@ -137,7 +136,7 @@ class SurfacePlaybackFragmentGlueHost extends PlaybackSupportFragmentGlueHost im
 
 }
 
-public class PlaybackFragment 
+public class PlaybackFragment2
     extends SurfacePlaybackFragment 
     implements ProfileChangeListener
 {
@@ -161,7 +160,7 @@ public class PlaybackFragment
     public static final float ASPECT_RATIO_235_1 = 2.35f;
     public static final float ASPECT_RATIO_239_1 = 2.39f;
 
-    private static final String TAG = PlaybackFragment.class.getSimpleName();
+    private static final String TAG = PlaybackFragment2.class.getSimpleName();
 
     private static final String SELECTED_VIDEO_ID = "SelectedVideoId";
     private static final int UPDATE_DELAY_MS = 100;
@@ -199,7 +198,7 @@ public class PlaybackFragment
     public static final int AUTO_HIDE_NEVER = 0;
 
     @SuppressLint("StaticFieldLeak")
-    private static PlaybackFragment sInstance;
+    private static PlaybackFragment2 sInstance;
     private AppPrefs mPrefs;
 
     private FormatItem mVideoFormat;
@@ -225,23 +224,23 @@ public class PlaybackFragment
     private List<String> mLastAudioLanguages;
 
     private final int mMaxBufferBytes;
-    private final PlaybackFragment mPlayerData;
+    private final PlaybackFragment2 mPlayerData;
     private final PlayerTweaksData mPlayerTweaksData;
     private static AudioAttributes sAudioAttributes;
 
     private static BandwidthMeter mBandwidthMeter;
 
     // Required for Android XML fragment inflation
-    public PlaybackFragment() {
+    public PlaybackFragment2() {
         this(null);
     }
 
-    private PlaybackFragment(Context context) {
+    private PlaybackFragment2(Context context) {
         
         mPrefs = AppPrefs.instance(context);
         mPrefs.addListener(this);
 
-        mPlayerData = PlaybackFragment.instance(context);
+        mPlayerData = PlaybackFragment2.instance(context);
         mPlayerTweaksData = PlayerTweaksData.instance(context);
 
         mBandwidthMeter = new DefaultBandwidthMeter.Builder(context).build();
@@ -256,13 +255,13 @@ public class PlaybackFragment
         restoreState();
     }
 
-    public static PlaybackFragment instance(Context context) {
+    public static PlaybackFragment2 instance(Context context) {
         
         if (context != null) 
             context = context.getApplicationContext();
 
         if (sInstance == null)
-            sInstance = new PlaybackFragment(context);
+            sInstance = new PlaybackFragment2(context);
         
         return sInstance;
     }
@@ -1135,7 +1134,7 @@ public class PlaybackFragment
     public void onDestroy() {
         super.onDestroy();
 
-        Log.d(TAG, "Destroying PlaybackFragment...");
+        Log.d(TAG, "Destroying PlaybackFragment2...");
 
         // Fix situations when engine didn't properly destroyed.
         // E.g. after closing dialogs.
@@ -1570,7 +1569,7 @@ public class PlaybackFragment
             if (mSeekUiClient2 != null) {
                 mSeekUiClient2.onSeekPositionChanged(positionMs);
             }
-            PlaybackFragment.this.onSeekPositionChanged(positionMs);
+            PlaybackFragment2.this.onSeekPositionChanged(positionMs);
         }
 
         public void onSeekFinished(boolean cancelled) {
@@ -1935,7 +1934,7 @@ public class PlaybackFragment
         /* 20 */ mIsLiveChatEnabled = Helpers.parseBoolean(split, 20, false);
         /* 21 */ mLastSubtitleFormats = Helpers.parseList(split, 21, ExoFormatItem::from);
 
-        /* 25 */ mPlaybackMode = Helpers.parseInt(split, 25, PlaybackFragment.PLAYBACK_MODE_ALL);
+        /* 25 */ mPlaybackMode = Helpers.parseInt(split, 25, PlaybackFragment2.PLAYBACK_MODE_ALL);
         /* 26 */ mAudioLanguage = Helpers.parseStr(split, 26, LocaleUtility.getCurrentLanguage(mPrefs.getContext()));
         /* 27 */ mSubtitleLanguage = Helpers.parseStr(split, 27, LocaleUtility.getCurrentLanguage(mPrefs.getContext()));
 

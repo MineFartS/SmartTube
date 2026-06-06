@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.ColorInt;
+
 import minefarts.smarttube.R;
 import minefarts.smarttube.leanback.widget.AbstractDetailsDescriptionPresenter;
 import minefarts.smarttube.leanback.widget.Action;
@@ -24,10 +26,9 @@ import minefarts.smarttube.leanback.widget.PlaybackSeekUi;
 import minefarts.smarttube.leanback.widget.Presenter;
 import minefarts.smarttube.leanback.widget.RowPresenter;
 import minefarts.smarttube.leanback.widget.ControlButtonPresenterSelector;
-
 import minefarts.smarttube.utils.helpers.DateHelper;
 import minefarts.smarttube.app.models.playback.ui.SeekBarSegment;
-import minefarts.smarttube.ui.playback.PlaybackFragment;
+import minefarts.smarttube.ui.playback.PlaybackFragment2;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.ui.mod.leanback.misc.SeekBar;
 import minefarts.smarttube.ui.mod.leanback.playerglue.tweaks.ControlBarPresenter.OnControlClickedListener;
@@ -112,7 +113,7 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
         int mPositionsLength;
         long mSeekIncrementMs = -1;
         long mSeekStartTimeMs;
-        final PlaybackFragment mPlayerData;
+        final PlaybackFragment2 mPlayerData;
 
         // MOD: update quality info
         private WeakReference<TopEdgeFocusListener> mTopEdgeFocusListener = null;
@@ -400,7 +401,7 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
 
             super(rootView);
 
-            mPlayerData = PlaybackFragment.instance(rootView.getContext());
+            mPlayerData = PlaybackFragment2.instance(rootView.getContext());
 
             PlaybackTransportRowPresenter.this.mPlaybackControlsPresenter.setSyncedFocusIndexEnabled(true);
             PlaybackTransportRowPresenter.this.mSecondaryControlsPresenter.setSyncedFocusIndexEnabled(true);

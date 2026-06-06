@@ -19,7 +19,7 @@ import minefarts.smarttube.app.models.playback.controllers.VideoStateController;
 import minefarts.smarttube.app.models.playback.PlayerEventListener;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter;
-import minefarts.smarttube.ui.playback.PlaybackFragment;
+import minefarts.smarttube.ui.playback.PlaybackFragment2;
 import minefarts.smarttube.exoplayer.selector.FormatItem;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.google.common.helpers.ServiceHelper;
@@ -28,7 +28,7 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class PlaybackPresenter extends BasePresenter<PlaybackFragment> implements PlayerEventListener {
+public class PlaybackPresenter extends BasePresenter<PlaybackFragment2> implements PlayerEventListener {
     
     @SuppressLint("StaticFieldLeak")
     private static PlaybackPresenter sInstance;
@@ -43,7 +43,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackFragment> implement
     };
     private WeakReference<Video> mVideo;
     // Fix for using destroyed view
-    private WeakReference<PlaybackFragment> mPlayer = new WeakReference<>(null);
+    private WeakReference<PlaybackFragment2> mPlayer = new WeakReference<>(null);
     private boolean mIsEmbedPlayerStarted;
 
     private PlaybackPresenter(Context context) {
@@ -114,7 +114,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackFragment> implement
 
         onNewVideo(video);
 
-        getViewManager().startView(PlaybackFragment.class);
+        getViewManager().startView(PlaybackFragment2.class);
         mIsEmbedPlayerStarted = false;
     }
 
@@ -174,7 +174,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackFragment> implement
     // Controller methods
 
     @Override
-    public void setView(PlaybackFragment view) {
+    public void setView(PlaybackFragment2 view) {
         super.setView(view);
         mPlayer = new WeakReference<>(view);
 
@@ -186,7 +186,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackFragment> implement
         }
     }
 
-    public PlaybackFragment getPlayer() {
+    public PlaybackFragment2 getPlayer() {
         return mPlayer.get(); // return view even if the one is destroyed
     }
 

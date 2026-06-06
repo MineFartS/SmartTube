@@ -15,7 +15,7 @@ import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.presenters.service.SidebarService;
 import minefarts.smarttube.exoplayer.selector.TrackSelectorUtil;
 import minefarts.smarttube.prefs.GeneralData;
-import minefarts.smarttube.ui.playback.PlaybackFragment;
+import minefarts.smarttube.ui.playback.PlaybackFragment2;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.prefs.SearchData;
 import minefarts.smarttube.utils.AppDialogUtil;
@@ -26,7 +26,7 @@ import java.util.List;
 
 public class PlayerSettingsPresenter extends BasePresenter<Void> {
     
-    private final PlaybackFragment mPlayerData;
+    private final PlaybackFragment2 mPlayerData;
 
     private final PlayerTweaksData mPlayerTweaksData;
 
@@ -42,7 +42,7 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
     private PlayerSettingsPresenter(Context context) {
         super(context);
-        mPlayerData = PlaybackFragment.instance(context);
+        mPlayerData = PlaybackFragment2.instance(context);
         mPlayerTweaksData = PlayerTweaksData.instance(context);
         mSearchData = SearchData.instance(context);
         mGeneralData = GeneralData.instance(context);

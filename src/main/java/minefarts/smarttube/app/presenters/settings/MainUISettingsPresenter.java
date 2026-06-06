@@ -12,7 +12,7 @@ import minefarts.smarttube.app.presenters.BrowsePresenter;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.prefs.MainUIData;
-import minefarts.smarttube.ui.playback.PlaybackFragment;
+import minefarts.smarttube.ui.playback.PlaybackFragment2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
 
     private final GeneralData mGeneralData;
 
-    private final PlaybackFragment mPlayerData;
+    private final PlaybackFragment2 mPlayerData;
 
     private boolean mRestartApp;
 
@@ -31,7 +31,7 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
         super(context);
         mMainUIData = MainUIData.instance(context);
         mGeneralData = GeneralData.instance(context);
-        mPlayerData = PlaybackFragment.instance(context);
+        mPlayerData = PlaybackFragment2.instance(context);
     }
 
     public static MainUISettingsPresenter instance(Context context) {

@@ -9,10 +9,9 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 import minefarts.smarttube.fragment.app.Fragment;
-
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
-import minefarts.smarttube.ui.playback.PlaybackFragment;
+import minefarts.smarttube.ui.playback.PlaybackFragment2;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.prefs.MainUIData;
@@ -21,7 +20,7 @@ import minefarts.smarttube.R;
 import minefarts.smarttube.ui.common.LeanbackActivity;
 
 /**
- * Loads PlaybackFragment and delegates input from a game controller.
+ * Loads PlaybackFragment2 and delegates input from a game controller.
  * <br>
  * For more information on game controller capabilities with leanback, review the
  * <a href="https://developer.android.com/training/game-controllers/controller-input.html">docs</href>.
@@ -32,7 +31,7 @@ public class PlaybackActivity extends LeanbackActivity {
     // Off-condition slightly smaller for button debouncing.
     private static final float GAMEPAD_TRIGGER_INTENSITY_OFF = 0.45f;
     private boolean gamepadTriggerPressed = false;
-    private PlaybackFragment mPlaybackFragment;
+    private PlaybackFragment2 mPlaybackFragment;
     private boolean mIsBackPressed;
 
     @Override
@@ -41,8 +40,8 @@ public class PlaybackActivity extends LeanbackActivity {
         setContentView(R.layout.fragment_playback);
         Fragment fragment =
                 getSupportFragmentManager().findFragmentByTag(getString(R.string.playback_tag));
-        if (fragment instanceof PlaybackFragment) {
-            mPlaybackFragment = (PlaybackFragment) fragment;
+        if (fragment instanceof PlaybackFragment2) {
+            mPlaybackFragment = (PlaybackFragment2) fragment;
         }
     }
 
@@ -144,7 +143,7 @@ public class PlaybackActivity extends LeanbackActivity {
         super.onVisibleBehindCanceled();
     }
     
-    public PlaybackFragment getPlaybackFragment() {
+    public PlaybackFragment2 getPlaybackFragment() {
         return mPlaybackFragment;
     }
 

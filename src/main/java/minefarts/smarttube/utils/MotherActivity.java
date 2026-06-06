@@ -26,7 +26,7 @@ import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.app.views.ViewManager;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.prefs.MainUIData;
-import minefarts.smarttube.ui.playback.PlaybackFragment;
+import minefarts.smarttube.ui.playback.PlaybackFragment2;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
 
@@ -295,8 +295,8 @@ public class MotherActivity extends FragmentActivity {
         return PlayerTweaksData.instance(this);
     }
 
-    protected PlaybackFragment getPlayerData() {
-        return PlaybackFragment.instance(this);
+    protected PlaybackFragment2 getPlayerData() {
+        return PlaybackFragment2.instance(this);
     }
 
     protected MainUIData getMainUIData() {

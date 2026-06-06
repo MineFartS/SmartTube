@@ -11,7 +11,6 @@ import android.widget.FrameLayout;
 import minefarts.smarttube.leanback.app.PlaybackSupportFragment;
 import minefarts.smarttube.ui.AspectRatioFrameLayout;
 import minefarts.smarttube.utils.helpers.Helpers;
-import minefarts.smarttube.ui.playback.PlaybackFragment;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.utils.ViewUtil;
 import minefarts.smarttube.R;
