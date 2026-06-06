@@ -180,7 +180,7 @@ internal object V8ChallengeProvider {
 
             val stdout = synchronized(v8Lock) {
                 initRuntime()
-                runV8("JSON.stringify(jsc($jsonData));")
+                runV8("JSON.stringify((jsc.default ?? jsc)($jsonData));")
             }
 
             val output: SolverOutput = try {
