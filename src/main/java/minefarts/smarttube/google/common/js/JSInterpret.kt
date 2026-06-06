@@ -16,6 +16,7 @@ import minefarts.smarttube.utils.mylogger.Log;
 internal object JSInterpret {
 
     private val TAG = V8Runtime::class.java.simpleName
+    private val v8ExecLock = Any()
 
     private val MATCHING_PARENS = mapOf('(' to ')', '{' to '}', '[' to ']')
     private val QUOTES = setOf('\'', '"', '/')
@@ -199,7 +200,11 @@ internal object JSInterpret {
         var runtime: V8Runtime? = null
         return try {
             runtime = V8Host.getV8Instance().createV8Runtime()
-            runtime.getExecutor(source).executeString()
+            synchronized(v8ExecLock) {
+                runtime.v8Locker.use {
+                    runtime.getExecutor(source).executeString()
+                }
+            }
         } finally {
             runtime?.close()
         }
@@ -221,11 +226,15 @@ internal object JSInterpret {
         var runtime: V8Runtime? = null
         return try {
             runtime = V8Host.getV8Instance().createV8Runtime()
-            var result: String? = null
-            for (source in sources) {
-                result = runtime.getExecutor(source).executeString()
+            synchronized(v8ExecLock) {
+                runtime.v8Locker.use {
+                    var result: String? = null
+                    for (source in sources) {
+                        result = runtime.getExecutor(source).executeString()
+                    }
+                    result
+                }
             }
-            result
         } finally {
             runtime?.close()
         }

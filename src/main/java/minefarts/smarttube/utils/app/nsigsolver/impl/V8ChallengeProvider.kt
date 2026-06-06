@@ -87,8 +87,12 @@ internal object V8ChallengeProvider {
 
         val runtime = v8Runtime.get() ?: throw JsChallengeProviderError("V8 runtime not initialized yet")
 
-        val value = runtime.getExecutor(stdin).executeString()
-            
+        Log.d(tag, "V8 run: thread=${Thread.currentThread().name}, runtime=${System.identityHashCode(runtime)}")
+
+        val value = runtime.v8Locker.use {
+            runtime.getExecutor(stdin).executeString()
+        }
+
         try {
             return value?.toString() ?: throw JsChallengeProviderError("V8 runtime error: empty response")
 
@@ -106,6 +110,9 @@ internal object V8ChallengeProvider {
     private fun initRuntime() {
         if (v8Runtime.get() != null)
             return
+
+        Log.d(tag, "V8 init: thread=${Thread.currentThread().name} (create runtime)")
+
         v8Runtime.set(V8Host.getV8Instance().createV8Runtime())
 
         runV8("""
@@ -117,6 +124,9 @@ internal object V8ChallengeProvider {
 
     private fun disposeRuntime() {
         val runtime = v8Runtime.get() ?: return
+
+        Log.d(tag, "V8 dispose: thread=${Thread.currentThread().name}, runtime=${System.identityHashCode(runtime)}")
+
         // NOTE: getting lock fixes "Invalid V8 thread access" issues.
         runtime.v8Locker.use {
             runtime.close()
@@ -183,12 +193,8 @@ internal object V8ChallengeProvider {
             val jsonData = sGson.toJson(data2)
 
             val stdout = synchronized(v8Lock) {
-                try {
-                    initRuntime()
-                    runV8("JSON.stringify(jsc($jsonData));")
-                } finally {
-                    disposeRuntime()
-                }
+                initRuntime()
+                runV8("JSON.stringify(jsc($jsonData));")
             }
 
             val output: SolverOutput = try {
