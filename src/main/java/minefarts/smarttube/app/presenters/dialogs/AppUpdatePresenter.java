@@ -2,8 +2,9 @@ package minefarts.smarttube.app.presenters.dialogs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import minefarts.smarttube.AppUpdateChecker;
-import minefarts.smarttube.AppUpdateCheckerListener;
+
+import minefarts.smarttube.update.AppUpdateChecker;
+import minefarts.smarttube.update.AppUpdateCheckerListener;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.errors.ErrorFragmentData;

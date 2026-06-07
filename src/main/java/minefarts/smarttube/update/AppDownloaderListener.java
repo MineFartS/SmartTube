@@ -1,4 +1,4 @@
-package minefarts.smarttube.core;
+package minefarts.smarttube.update;
 
 public interface AppDownloaderListener {
     void onApkDownloaded(String path);

@@ -1,4 +1,4 @@
-package minefarts.smarttube.core;
+package minefarts.smarttube.update;
 
 import android.net.Uri;
 

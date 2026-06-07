@@ -21,6 +21,7 @@ public class YouTubeRssParser {
 
     // We don't use namespaces
     private static final String ns = null;
+
     private static final String TAG_MEDIA_ITEM = "entry";
     private static final String TAG_VIDEO_ID = "yt:videoId";
     private static final String TAG_CHANNEL_ID = "yt:channelId";
@@ -34,6 +35,7 @@ public class YouTubeRssParser {
     private static final String TAG_STATISTICS = "media:statistics";
     private static final String TAG_AUTHOR = "author";
     private static final String TAG_AUTHOR_NAME = "name";
+
     private InputStream mContent;
     private XmlPullParser mParser;
 
@@ -46,9 +48,7 @@ public class YouTubeRssParser {
     }
 
     private void initParser(InputStream content) throws XmlPullParserException, IOException {
-        if (content == null) {
-            return;
-        }
+        if (content == null) return;
 
         mContent = content;
         mParser = Xml.newPullParser();
@@ -58,9 +58,9 @@ public class YouTubeRssParser {
     }
 
     public List<MediaItem> parse() throws IOException {
-        if (mContent == null) {
+        if (mContent == null)
             return new ArrayList<>();
-        }
+        
         try {
             return readMediaGroup();
         } catch (XmlPullParserException e) {
@@ -72,12 +72,13 @@ public class YouTubeRssParser {
             }
             throw new IllegalStateException(e);
         }
+
     }
 
     private void skip() throws XmlPullParserException, IOException {
-        if (mParser.getEventType() != XmlPullParser.START_TAG) {
+        if (mParser.getEventType() != XmlPullParser.START_TAG)
             throw new IllegalStateException();
-        }
+        
         int depth = 1;
         while (depth != 0) {
             switch (mParser.next()) {
@@ -89,14 +90,17 @@ public class YouTubeRssParser {
                     break;
             }
         }
+
     }
     
     private List<MediaItem> readMediaGroup() throws IOException, XmlPullParserException {
+        
         List<MediaItem> mediaItems = new ArrayList<>();
+        
         while (mParser.next() != XmlPullParser.END_TAG) {
-            if (mParser.getEventType() != XmlPullParser.START_TAG) {
+            if (mParser.getEventType() != XmlPullParser.START_TAG)
                 continue;
-            }
+            
             String name = mParser.getName();
             if (name.equals(TAG_MEDIA_ITEM)) {
                 mediaItems.add(readMediaItem());
@@ -104,10 +108,12 @@ public class YouTubeRssParser {
                 skip();
             }
         }
+
         return mediaItems;
     }
 
     private MediaItem readMediaItem() throws IOException, XmlPullParserException {
+        
         mParser.require(XmlPullParser.START_TAG, ns, TAG_MEDIA_ITEM);
         YouTubeMediaItem item = new YouTubeMediaItem();
 
@@ -157,9 +163,9 @@ public class YouTubeRssParser {
         mParser.require(XmlPullParser.START_TAG, ns, TAG_MEDIA_GROUP);
 
         while (mParser.next() != XmlPullParser.END_TAG) {
-            if (mParser.getEventType() != XmlPullParser.START_TAG) {
+            if (mParser.getEventType() != XmlPullParser.START_TAG)
                 continue;
-            }
+            
             String name = mParser.getName();
             switch (name) {
                 case TAG_THUMBNAIL:
@@ -183,9 +189,9 @@ public class YouTubeRssParser {
         mParser.require(XmlPullParser.START_TAG, ns, TAG_COMMUNITY);
 
         while (mParser.next() != XmlPullParser.END_TAG) {
-            if (mParser.getEventType() != XmlPullParser.START_TAG) {
+            if (mParser.getEventType() != XmlPullParser.START_TAG)
                 continue;
-            }
+            
             String name = mParser.getName();
             switch (name) {
                 case TAG_STATISTICS:
@@ -203,9 +209,9 @@ public class YouTubeRssParser {
         mParser.require(XmlPullParser.START_TAG, ns, TAG_AUTHOR);
 
         while (mParser.next() != XmlPullParser.END_TAG) {
-            if (mParser.getEventType() != XmlPullParser.START_TAG) {
+            if (mParser.getEventType() != XmlPullParser.START_TAG)
                 continue;
-            }
+            
             String name = mParser.getName();
             switch (name) {
                 case TAG_AUTHOR_NAME:

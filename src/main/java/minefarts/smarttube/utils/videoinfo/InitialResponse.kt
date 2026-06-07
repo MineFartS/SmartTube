@@ -22,7 +22,7 @@ internal object InitialResponse {
         result?.content?.let {
             val jsonStr = JSInterpret.searchJson(YT_INITIAL_PLAYER_RESPONSE_RE, it)
 
-            val factory = JsonPathConverterFactory.create()
+            val factory = JsonPathConverterFactory()
             val converter = factory.responseBodyConverter(VideoInfo::class.java, null, null)
             converter as JsonPathResponseBodyConverter<VideoInfo>
             return converter.convert(Helpers.toStream(jsonStr))

@@ -508,10 +508,6 @@ public class TrackSelectorManager {
         return MediaTrack.forRendererIndex(rendererIndex);
     }
 
-    private boolean hasSelection(int rendererIndex) {
-        return mRenderers[rendererIndex] != null && mRenderers[rendererIndex].selectedTrack != null;
-    }
-
     /**
      * Trying to filter languages preferred by the user
      */

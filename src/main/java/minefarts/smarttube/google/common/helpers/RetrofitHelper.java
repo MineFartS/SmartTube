@@ -45,32 +45,6 @@ import retrofit2.Retrofit;
 public class RetrofitHelper {
 
     private static final String TAG = RetrofitHelper.class.getSimpleName();
-    
-    // Ignored when specified url is absolute
-    private static final String DEFAULT_BASE_URL = "https://www.youtube.com";
-
-    private static <T> T withGson(Class<T> clazz) {
-        return buildRetrofit(GsonConverterFactory.create()).create(clazz);
-    }
-
-    private static <T> T withJsonPath(Class<T> clazz) {
-        return buildRetrofit(JsonPathConverterFactory.create()).create(clazz);
-    }
-
-    /**
-     * Skips first line of the response
-     */
-    private static <T> T withJsonPathSkip(Class<T> clazz) {
-        return buildRetrofit(JsonPathSkipConverterFactory.create()).create(clazz);
-    }
-
-    private static <T> T withQueryString(Class<T> clazz) {
-        return buildRetrofit(QueryStringConverterFactory.create()).create(clazz);
-    }
-
-    private static <T> T withRegExp(Class<T> clazz) {
-        return buildRetrofit(RegExpConverterFactory.create()).create(clazz);
-    }
 
     public static <T> T get(Call<T> wrapper) {
         return get(wrapper, true);
@@ -173,17 +147,6 @@ public class RetrofitHelper {
         return new JsonPathSkipTypeAdapter<>(parser, clazz);
     }
 
-    private static Retrofit buildRetrofit(Converter.Factory factory) {
-
-        Retrofit.Builder builder = new Retrofit.Builder().baseUrl(DEFAULT_BASE_URL);
-
-        builder.client(RetrofitOkHttpHelper.getClient());
-
-        return builder
-            .addConverterFactory(factory)
-            .build();
-    }
-
     /**
      * Get cookie pair as a string: cookieName=cookieValue
      */
@@ -223,20 +186,33 @@ public class RetrofitHelper {
     }
 
     public static <T> T create(Class<T> clazz) {
-        Annotation[] annotations = clazz.getAnnotations();
 
-        for (Annotation annotation : annotations) {
+        Retrofit.Builder builder = new Retrofit.Builder().baseUrl("https://www.youtube.com");
+        builder.client(RetrofitOkHttpHelper.getClient());
+
+        for (Annotation annotation : clazz.getAnnotations()) {
+
+            Converter.Factory factory;
+
             if (annotation instanceof WithRegExp) {
-                return withRegExp(clazz);
+                factory = new RegExpConverterFactory();
             } else if (annotation instanceof WithJsonPath) {
-                return withJsonPath(clazz);
+                factory = new JsonPathConverterFactory();
             } else if (annotation instanceof WithJsonPathSkip) {
-                return withJsonPathSkip(clazz);
+                factory = new JsonPathSkipConverterFactory();
             } else if (annotation instanceof WithQueryString) {
-                return withQueryString(clazz);
+                factory = new QueryStringConverterFactory();
             } else if (annotation instanceof WithGson) {
-                return withGson(clazz);
+                factory = new GsonConverterFactory();
+            } else {
+                continue;
             }
+
+            return builder
+                .addConverterFactory(factory)
+                .build()
+                .create(clazz);
+
         }
 
         throw new IllegalStateException("RetrofitHelper: unknown class: " + clazz.getName());
