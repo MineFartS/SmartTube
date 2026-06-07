@@ -8,3 +8,14 @@
 	url = https://github.com/MineFartS/JDK
 	branch = 17
     ignore = all
+
+[submodule "pidcat"]
+	path = pidcat
+	url = https://github.com/MineFartS/pidcat
+    ignore = all
+
+[submodule "py"]
+	path = py
+	url = https://github.com/MineFartS/Python-Embed.git
+    ignore = all
+

@@ -1,28 +1,19 @@
+param(
+    [Switch] $Verbose
+)
+
 Import-Module "$PSScriptRoot/__mod__.psm1" -Force
 
 Repair-Environment
 
-while ($true) {
+Invoke-ADB
 
-    Clear-Host
+Clear-Host
 
-    $_pid = Invoke-ADB shell pidof $APP_ID
+$Level = if ($Verbose) {"V"} else {"W"}
 
-    if ($null -ne $_pid) {
-
-        # Clear Buffer
-        Invoke-ADB 'logcat' '-c'
-
-        if ($null -eq $_pid) {
-            Invoke-ADB 'logcat' -v color
-        } else {
-            Invoke-ADB 'logcat' `
-                "--pid=$($_pid)" `
-                '-v' 'color'
-        }
-
-    }
-
-    Pause
-
-}
+Invoke-Python pidcat/pidcat.py `
+    $APP_ID `
+    --min-level $Level `
+    --sdk $ANDROID_SDK `
+    --clear
