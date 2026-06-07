@@ -11,23 +11,19 @@ import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeRequest
 import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeType
 import minefarts.smarttube.utils.service.internal.MediaServiceData
 
-internal class PlayerDataExtractor(val playerUrl: String) {
+internal class PlayerDataExtractor(val playerUrl: String?) {
+
+    private val fixedPlayerUrl: String = playerUrl?.replace("-es6", "-ias").orEmpty()
+    
     private val tag = PlayerDataExtractor::class.java.simpleName
+    
     private val data
         get() = MediaServiceData.instance()
+    
     private var nFuncCode: Boolean = false
     private var sFuncCode: Boolean = false
-    private var signatureTimestamp: String? = null
-    private val fixedPlayerUrl by lazy {
-        // Those are implements global helper functions. No fix. Fallback to regular.
-        // See https://github.com/yt-dlp/yt-dlp/issues/12398
-        // tv url: https://www.youtube.com/s/player/69b31e11/tv-player-es6-tce.vflset/tv-player-es6-tce.js
-        // web url: https://www.youtube.com/s/player/e12fbea4/player_ias_tce.vflset/en_US/base.js
-        playerUrl
-            //.replace("_tce", "") // global helper functions, web url
-            //.replace("/player_ias.vflset/en_US/base.js", "/tv-player-ias.vflset/tv-player-ias.js") // does not validates cpn
-            .replace("-es6", "-ias") // es6 no supported
-    }
+    
+    private var signatureTimestamp: String? = null    
 
     init {
 
@@ -35,7 +31,7 @@ internal class PlayerDataExtractor(val playerUrl: String) {
         val param = "5cNpZqIJ7ixNqU68Y7S"
 
         if (playerCache?.playerUrl == playerUrl) {
-            signatureTimestamp = playerCache.signatureTimestamp
+            signatureTimestamp = playerCache?.signatureTimestamp
             nFuncCode = true
             sFuncCode = true
         }
