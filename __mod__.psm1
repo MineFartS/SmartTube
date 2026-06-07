@@ -54,6 +54,16 @@ function Invoke-ADB {
 
 }
 
+function Invoke-Python {
+    param(
+        [Parameter(ValueFromRemainingArguments)]
+        $cmdargs
+    )
+
+    & "$PSScriptRoot\py\python.exe" @cmdargs
+
+}
+
 function Repair-Environment {
 
     Set-Location $PSScriptRoot
