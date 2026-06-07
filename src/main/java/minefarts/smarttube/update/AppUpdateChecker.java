@@ -1,12 +1,9 @@
-package minefarts.smarttube;
+package minefarts.smarttube.update;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.net.Uri;
-import minefarts.smarttube.core.AppDownloader;
-import minefarts.smarttube.core.AppDownloaderListener;
-import minefarts.smarttube.core.AppVersionChecker;
-import minefarts.smarttube.core.AppVersionCheckerListener;
+
 import minefarts.smarttube.other.SettingsManager;
 import minefarts.smarttube.utils.helpers.FileHelpers;
 import minefarts.smarttube.utils.helpers.Helpers;

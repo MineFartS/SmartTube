@@ -1,10 +1,11 @@
-package minefarts.smarttube.core;
+package minefarts.smarttube.update;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.webkit.URLUtil;
+
 import minefarts.smarttube.other.downloadmanager.DownloadManager;
 import minefarts.smarttube.other.downloadmanager.DownloadManager.MyRequest;
 import minefarts.smarttube.utils.helpers.FileHelpers;
@@ -19,8 +20,9 @@ import java.io.File;
  * </pre>
  */
 public class AppDownloader {
+
     private static final String TAG = AppDownloader.class.getSimpleName();
-    private static final String CURRENT_APK = "update.apk";
+
     private final Context mContext;
     private boolean mInProgress;
     private final AppDownloaderListener mListener;
@@ -87,7 +89,7 @@ public class AppDownloader {
             if (cacheDir == null) {
                 return null;
             }
-            File outputFile = new File(cacheDir, CURRENT_APK);
+            File outputFile = new File(cacheDir, "update.apk");
             String path = null;
             try {
                 DownloadManager manager = new DownloadManager(mContext);
@@ -119,4 +121,5 @@ public class AppDownloader {
     public boolean isInProgress() {
         return mInProgress;
     }
+    
 }

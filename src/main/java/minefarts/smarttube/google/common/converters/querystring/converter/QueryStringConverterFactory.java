@@ -18,44 +18,38 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
 public final class QueryStringConverterFactory extends Converter.Factory {
+
     private final ParseContext mParser;
 
-    private QueryStringConverterFactory(ParseContext parser) {
-        mParser = parser;
-    }
-
-    public static QueryStringConverterFactory create() {
+    public QueryStringConverterFactory() {
+        
         Configuration conf = Configuration
                 .builder()
                 .mappingProvider(new GsonMappingProvider())
                 .jsonProvider(new GsonJsonProvider())
                 .build();
 
-        ParseContext parser = JsonPath.using(conf);
+        mParser = JsonPath.using(conf);
 
-        return create(parser);
-    }
-
-    private static QueryStringConverterFactory create(ParseContext parser) {
-        if (parser == null) {
-            throw new NullPointerException("Improper initialization of converter factory");
-        }
-
-        return new QueryStringConverterFactory(parser);
     }
 
     @Override
-    public Converter<ResponseBody, ?> responseBodyConverter(Type type,
-                                                            Annotation[] annotations,
-                                                            Retrofit retrofit) {
+    public Converter<ResponseBody, ?> responseBodyConverter(
+        Type type,
+        Annotation[] annotations,
+        Retrofit retrofit
+    ) {
         return new QueryStringResponseBodyConverter<>(new JsonPathTypeAdapter<>(mParser, type));
     }
 
     @Override
-    public Converter<?, RequestBody> requestBodyConverter(Type type,
-                                                          Annotation[] parameterAnnotations,
-                                                          Annotation[] methodAnnotations,
-                                                          Retrofit retrofit) {
+    public Converter<?, RequestBody> requestBodyConverter(
+        Type type,
+        Annotation[] parameterAnnotations,
+        Annotation[] methodAnnotations,
+        Retrofit retrofit
+    ) {
         return new QueryStringRequestBodyConverter<>(new JsonPathTypeAdapter<>(mParser, type));
     }
+    
 }

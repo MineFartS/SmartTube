@@ -1,7 +1,8 @@
 package minefarts.smarttube.app.presenters.settings;
 
 import android.content.Context;
-import minefarts.smarttube.AppUpdateChecker;
+
+import minefarts.smarttube.update.AppUpdateChecker;
 import minefarts.smarttube.utils.helpers.AppInfoHelpers;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
