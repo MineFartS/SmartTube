@@ -5,12 +5,11 @@ import android.graphics.Canvas;
 import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 
-/**
- * ImageView with mask what described with Bézier Curves
- */
-
-public class ShapeImageView extends androidx.appcompat.widget.AppCompatImageView {
+// ImageView with mask what described with Bézier Curves
+public class ShapeImageView extends ImageView {
+    
     private Path path;
 
     public ShapeImageView(Context context) {
