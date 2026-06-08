@@ -3,20 +3,21 @@ package minefarts.smarttube.utils.block.data;
 import minefarts.smarttube.google.common.converters.jsonpath.JsonPath;
 
 public class Segment {
+    
     @JsonPath("$.category")
-    private String mCategory;
+    public String mCategory;
 
     @JsonPath("$.actionType")
-    private String mActionType;
+    public String mActionType;
 
     @JsonPath("$.segment[0]")
-    private float mStart;
+    public float mStart;
 
     @JsonPath("$.segment[1]")
-    private float mEnd;
+    public float mEnd;
 
     @JsonPath("$.UUID")
-    private String mUuid;
+    public String mUuid;
 
     public String getCategory() {
         return mCategory;
@@ -37,4 +38,5 @@ public class Segment {
     public String getActionType() {
         return mActionType;
     }
+    
 }

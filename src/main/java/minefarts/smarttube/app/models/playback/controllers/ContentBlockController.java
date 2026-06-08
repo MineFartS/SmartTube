@@ -2,6 +2,7 @@ package minefarts.smarttube.app.models.playback.controllers;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+
 import minefarts.smarttube.utils.MediaItemService;
 import minefarts.smarttube.utils.ServiceManager;
 import minefarts.smarttube.utils.service.data.MediaItemMetadata;
@@ -20,24 +21,39 @@ import minefarts.smarttube.prefs.ContentBlockData;
 import minefarts.smarttube.utils.rx.RxHelper;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.utils.block.SponsorBlockApi;
+import minefarts.smarttube.utils.prefs.GlobalPreferences;
+import minefarts.smarttube.utils.block.data.SegmentList;
+import minefarts.smarttube.google.common.helpers.RetrofitHelper;
+import minefarts.smarttube.google.common.helpers.ServiceHelper;
+import minefarts.smarttube.utils.block.data.Segment;
+
+import retrofit2.Call;
+
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.Set;
 
 public class ContentBlockController extends BasePlayerController {
+
     private static final String TAG = ContentBlockController.class.getSimpleName();
+    
     private static final long POLL_INTERVAL_MS = 1_000;
     private static final int CONTENT_BLOCK_ID = 144;
+    
     private MediaItemService mMediaItemService;
+    private SponsorBlockApi mSponsorBlockApi;
+
     private List<SponsorSegment> mOriginalSegments;
     private List<SponsorSegment> mActiveSegments;
     private long mLastSkipPosMs;
     private boolean mSkipExclude;
     private Disposable mSegmentsAction;
-    private Observable<List<SponsorSegment>> mCachedSegmentsAction;
+
     private String mVideoId;
 
     public static class SegmentAction {
@@ -79,6 +95,7 @@ public class ContentBlockController extends BasePlayerController {
     @Override
     public void onInit() {
         mMediaItemService = ServiceManager.getMediaItemService();
+        mSponsorBlockApi = RetrofitHelper.create(SponsorBlockApi.class);
     }
 
     @Override
@@ -94,23 +111,78 @@ public class ContentBlockController extends BasePlayerController {
         
         onEngineReleased();
 
-        if (getPlayer() == null) return;
+        if (getPlayer() == null
+            || !getContentBlockData().isSponsorBlockEnabled()
+            || item == null
+            || isChannelExcluded(item.channelId)
+        ) return;
+        
+        if (item == null 
+            || item.videoId == null 
+            || item.isLive 
+            || getContentBlockData().getEnabledCategories().isEmpty()
+        ) {
+            mActiveSegments = null;
+            mOriginalSegments = null;
+            return;
+        }
+            
+        mVideoId = item.videoId;
 
-        if (getContentBlockData().isSponsorBlockEnabled() && checkVideo(item) && !isChannelExcluded(item.channelId)) {
-            updateSponsorSegmentsAndWatch(item);
+        mSegmentsAction = RxHelper.fromCallable(this::loadSegments)
+            .flatMap(this::startSponsorWatcher)
+            .subscribe(
+                this::skipSegment,
+                error -> Log.d(TAG, "It's ok. Nothing to block in this video. Error msg: %s", error.getMessage())
+            );
+        
+    }
+
+    private List<SponsorSegment> loadSegments() {
+
+        SegmentList segments;
+
+        try {
+            
+            Call<SegmentList> wrapper = mSponsorBlockApi.getSegments(
+                mVideoId,
+                ServiceHelper.toJsonArrayString(
+                    getContentBlockData().getEnabledCategories()
+                )
+            );
+            
+            segments = RetrofitHelper.get(wrapper);
+            
+        } catch (Throwable e) {
+            segments = null;
         }
 
+        if (segments == null || segments.mSegments == null)
+            return null;
+
+        List<SponsorSegment> result = new ArrayList<>();
+
+        for (Segment segment : segments.mSegments) {
+            SponsorSegment sponsorSegment = new SponsorSegment();
+            sponsorSegment.mStartMs = (long) (segment.mStart * 1_000);
+            sponsorSegment.mEndMs = (long) (segment.mEnd * 1_000);
+            sponsorSegment.mCategory = segment.mCategory;
+            sponsorSegment.mAction = segment.mActionType;
+            result.add(sponsorSegment);
+        }
+
+        return result;
     }
 
     @Override
     public void onMetadata(MediaItemMetadata metadata) {
         // Disable sponsor for the live streams.
         // Fix when using remote control.
-        if (!getContentBlockData().isSponsorBlockEnabled() || !checkVideo(getPlayer().getVideo())) {
-            onEngineReleased();
-        } else if (isChannelExcluded(metadata.getChannelId())) { // got channel id. check the exclusions
-            onEngineReleased();
-        }
+        if (!getContentBlockData().isSponsorBlockEnabled() 
+            || getPlayer().getVideo() == null
+            || isChannelExcluded(metadata.getChannelId())
+        ) onEngineReleased();
+        
     }
 
     @Override
@@ -119,37 +191,6 @@ public class ContentBlockController extends BasePlayerController {
 
         // Reset previously found segment (fix no dialog popup)
         mLastSkipPosMs = 0;
-    }
-
-    @Override
-    public void onButtonLongClicked(int buttonId, int buttonState) {}
-
-    private boolean checkVideo(Video video) {
-
-        return video != null;
-    }
-
-    private void updateSponsorSegmentsAndWatch(Video item) {
-        if (item == null || item.videoId == null || item.isLive || getContentBlockData().getEnabledCategories().isEmpty()) {
-            mActiveSegments = mOriginalSegments = null;
-            mCachedSegmentsAction = null;
-            return;
-        }
-
-        if (!Helpers.equals(mVideoId, item.videoId) || mCachedSegmentsAction == null) {
-            // NOTE: SponsorBlock (when happened java.net.SocketTimeoutException) could block whole application with Schedulers.io()
-            // Because Schedulers.io() reuses blocked threads in RxJava 2: https://github.com/ReactiveX/RxJava/issues/6542
-            mCachedSegmentsAction = mMediaItemService.getSponsorSegmentsObserve(item.videoId, getContentBlockData().getEnabledCategories())
-                    .cache();
-            mVideoId = item.videoId;
-        }
-
-        mSegmentsAction = mCachedSegmentsAction
-                .flatMap(this::startSponsorWatcher)
-                .subscribe(
-                        this::skipSegment,
-                        error -> Log.d(TAG, "It's ok. Nothing to block in this video. Error msg: %s", error.getMessage())
-                );
     }
 
     private Observable<Long> startSponsorWatcher(List<SponsorSegment> segments) {
