@@ -16,7 +16,6 @@ import minefarts.smarttube.utils.ServiceManager;
 import minefarts.smarttube.prefs.ContentBlockData;
 import minefarts.smarttube.utils.AppDialogUtil;
 import minefarts.smarttube.utils.Utils;
-import minefarts.smarttube.utils.data.SponsorSegment;
 
 import java.util.ArrayList;
 import java.util.List;

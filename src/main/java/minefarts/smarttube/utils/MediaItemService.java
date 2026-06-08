@@ -13,8 +13,6 @@ import minefarts.smarttube.utils.data.SponsorSegment;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.rx.RxHelper;
-import minefarts.smarttube.utils.block.SponsorBlockService;
-import minefarts.smarttube.utils.block.data.SegmentList;
 import minefarts.smarttube.utils.common.models.impl.mediaitem.BaseMediaItem;
 import minefarts.smarttube.utils.feedback.FeedbackService;
 import minefarts.smarttube.utils.next.v2.WatchNextService;
@@ -23,7 +21,6 @@ import minefarts.smarttube.utils.playlist.PlaylistService;
 import minefarts.smarttube.utils.playlist.PlaylistServiceWrapper;
 import minefarts.smarttube.utils.playlistgroups.PlaylistGroupServiceImpl;
 import minefarts.smarttube.utils.service.data.YouTubeMediaItem;
-import minefarts.smarttube.utils.service.data.YouTubeSponsorSegment;
 import minefarts.smarttube.utils.videoinfo.V2.VideoInfoService;
 import minefarts.smarttube.utils.videoinfo.models.VideoInfo;
 import minefarts.smarttube.utils.SignInService;
@@ -322,18 +319,6 @@ public class MediaItemService {
         getPlaylistService().createPlaylist(playlistName, item != null ? item.getVideoId() : null);
     }
 
-    public List<SponsorSegment> getSponsorSegments(String videoId) {
-        SegmentList segmentList = getSponsorBlockService().getSegmentList(videoId);
-
-        return YouTubeSponsorSegment.from(segmentList);
-    }
-
-    public List<SponsorSegment> getSponsorSegments(String videoId, Set<String> categories) {
-        SegmentList segmentList = getSponsorBlockService().getSegmentList(videoId, categories);
-
-        return YouTubeSponsorSegment.from(segmentList);
-    }
-
     public Observable<List<PlaylistInfo>> getPlaylistsInfoObserve(String videoId) {
         return RxHelper.fromCallable(() -> getPlaylistsInfo(videoId));
     }
@@ -378,14 +363,6 @@ public class MediaItemService {
         return RxHelper.fromRunnable(() -> createPlaylist(playlistName, item));
     }
 
-    public Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId) {
-        return RxHelper.fromCallable(() -> getSponsorSegments(videoId));
-    }
-
-    public Observable<List<SponsorSegment>> getSponsorSegmentsObserve(String videoId, Set<String> categories) {
-        return RxHelper.fromCallable(() -> getSponsorSegments(videoId, categories));
-    }
-
     public Observable<DislikeData> getDislikeDataObserve(String videoId) {
         return RxHelper.fromCallable(() -> getWatchNextService().getDislikeData(videoId));
     }
@@ -397,11 +374,6 @@ public class MediaItemService {
     @NonNull
     private static SignInService getSignInService() {
         return SignInService.instance();
-    }
-
-    @NonNull
-    private static SponsorBlockService getSponsorBlockService() {
-        return SponsorBlockService.instance();
     }
 
     @NonNull
