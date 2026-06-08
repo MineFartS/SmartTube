@@ -11,11 +11,14 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 final public class GlobalPreferences extends SharedPreferencesBase {
+
+    @SuppressLint("StaticFieldLeak")
+    public static GlobalPreferences sInstance;
+
     public static final String PLAYLIST_TYPE_RECOMMENDATIONS = "playlist_type_recommendations";
     public static final String PLAYLIST_TYPE_SUBSCRIPTIONS = "playlist_type_subscriptions";
     public static final String PLAYLIST_TYPE_HISTORY = "playlist_type_history";
-    @SuppressLint("StaticFieldLeak")
-    public static GlobalPreferences sInstance;
+
     private static final String SHARED_PREFERENCES_NAME = GlobalPreferences.class.getName();
     private final static String MEDIA_SERVICE_ACCOUNT_DATA = "media_service_account_data";
     private final static String OAUTH2_ACCOUNT_DATA = "oauth2_account_data";
@@ -25,7 +28,6 @@ final public class GlobalPreferences extends SharedPreferencesBase {
     private static final String PREFERRED_COUNTRY_DATA = "preferred_country_data";
 
     private static final String PREFER_IPV_4_DNS = "prefer_ipv4_dns";
-    private static final String CONTENT_BLOCK_ALT_SERVER = "content_block_alt_server";
     private static final String IS_24_HOUR_LOCALE_ENABLED = "is_24_hour_locale_enabled";
     private static final List<Runnable> sCallbacks = new CopyOnWriteArrayList<>(); // fix ConcurrentModificationException
 
@@ -120,14 +122,6 @@ final public class GlobalPreferences extends SharedPreferencesBase {
 
     public void setIPv4DnsPreferred(boolean enable) {
         putBoolean(PREFER_IPV_4_DNS, enable);
-    }
-
-    public boolean isContentBlockAltServerEnabled() {
-        return getBoolean(CONTENT_BLOCK_ALT_SERVER, false);
-    }
-
-    public void setContentBlockAltServerEnabled(boolean enable) {
-        putBoolean(CONTENT_BLOCK_ALT_SERVER, enable);
     }
 
     public boolean is24HourLocaleEnabled() {

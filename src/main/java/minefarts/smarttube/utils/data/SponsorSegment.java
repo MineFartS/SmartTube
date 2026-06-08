@@ -1,21 +1,37 @@
 package minefarts.smarttube.utils.data;
 
-/**
- * <a href="https://wiki.sponsor.ajay.app/w/Segment_Categories">Segment specs</a><br/>
- * <a href="https://wiki.sponsor.ajay.app/w/API_Docs">Segment API</a><br/>
- */
-public interface SponsorSegment {
+import java.util.ArrayList;
+import java.util.List;
 
-    String CATEGORY_SPONSOR = "Sponsor";
-    String CATEGORY_INTERACTION = "Interaction reminder (subscribe)";
-    String CATEGORY_SELF_PROMO = "Unpaid/self promotion";
+public class SponsorSegment {
+    
+    public static final String CATEGORY_SPONSOR = "Sponsor";
+    public static final String CATEGORY_INTERACTION = "Interaction reminder (subscribe)";
+    public static final String CATEGORY_SELF_PROMO = "Unpaid/self promotion";
 
-    String ACTION_SKIP = "skip";
-    String ACTION_MUTE = "mute";
+    public static final String ACTION_SKIP = "skip";
+    public static final String ACTION_MUTE = "mute";
+    
+    public long mStartMs;
+    public long mEndMs;
+    
+    public String mCategory;
+    public String mAction;
 
-    long getStartMs();
-    long getEndMs();
-    String getCategory();
-    String getAction();
+    public long getStartMs() {
+        return mStartMs;
+    }
+
+    public long getEndMs() {
+        return mEndMs;
+    }
+
+    public String getCategory() {
+        return mCategory;
+    }
+
+    public String getAction() {
+        return mAction;
+    }
 
 }

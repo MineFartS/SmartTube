@@ -15,7 +15,6 @@ import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.prefs.ContentBlockData;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.utils.Utils;
-import minefarts.smarttube.utils.data.SponsorSegment;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
