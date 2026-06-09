@@ -4,14 +4,9 @@ Repair-Environment
 
 Invoke-ADB
 
-while ($true) {
+Clear-Host
 
-    Clear-Host
-
-    Invoke-Python pidcat/pidcat.py `
-        $APP_ID `
-        --sdk $ANDROID_SDK
-
-    Pause
-
-}
+Invoke-Python pidcat/pidcat.py `
+    $APP_ID `
+    --sdk $ANDROID_SDK `
+    --clear
