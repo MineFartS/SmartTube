@@ -150,18 +150,43 @@ internal object V8ChallengeProvider {
         val grouped: Map<String, List<JsChallengeRequest>> = requests.groupBy { it.input.playerUrl }
 
         for ((playerUrl, groupedRequests) in grouped) {
-            val data = YouTubeInfoExtractor.cache.load(cacheSection, "player:$playerUrl")
-            var player = data?.code
 
-            val cached = if (player != null) {
-                true
+            val player = YouTubeInfoExtractor.cache.load(
+                cacheSection, 
+                "player:$playerUrl"
+            )?.code
+
+            val data: MutableMap<String, Any> = if (player == null) {
+                mutableMapOf(
+                    "type" to "player",
+                    "player" to getPlayer(playerUrl),
+                    "output_preprocessed" to true
+                )
             } else {
-                player = getPlayer(playerUrl)
-                false
+                mutableMapOf(
+                    "type" to "preprocessed",
+                    "preprocessed_player" to player,
+                )
             }
 
-            val stdin = constructStdin(player, cached, groupedRequests)
-            val stdout = runJsRuntime(stdin)
+            data["requests"] = groupedRequests.map { request ->
+                mapOf(
+                    "type" to request.type.value,
+                    "challenges" to request.input.challenges
+                )
+            }
+
+            val stdout = synchronized(v8Lock) {
+                
+                initRuntime()
+
+                runV8("""
+                    JSON.stringify(
+                        jsc(${sGson.toJson(data)})
+                    );
+                """)
+
+            }
 
             val output: SolverOutput = try {
                 sGson.fromJson(stdout, solverOutputType)
