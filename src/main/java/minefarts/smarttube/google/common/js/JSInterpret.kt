@@ -4,28 +4,25 @@ import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
 
+import com.eclipsesource.v8.V8
+import com.eclipsesource.v8.V8ScriptExecutionException
+
 import java.util.regex.Pattern
-
-import androidx.annotation.Nullable;
-
-import com.caoccao.javet.interop.V8Runtime;
-import com.caoccao.javet.interop.V8Host
-
-import minefarts.smarttube.utils.mylogger.Log;
 
 internal object JSInterpret {
 
-    private val TAG = V8Runtime::class.java.simpleName
     private val v8ExecLock = Any()
 
     private val MATCHING_PARENS = mapOf('(' to ')', '{' to '}', '[' to ']')
     private val QUOTES = setOf('\'', '"', '/')
 
+    private val gson = Gson()
+
     fun extractFunctionFromCode(argNames: List<String>, code: String): (List<String>) -> String? {
         return { args: List<String> ->
-            val fullCode =
+            evaluateWithErrors(
                 "(function (${argNames.joinToString(separator = ",")}) { $code })(${args.joinToString(separator = ",", prefix = "'", postfix = "'")})"
-            evaluateWithErrors(fullCode)
+            )
         }
     }
 
@@ -60,7 +57,6 @@ internal object JSInterpret {
     fun interpretExpression(jsCode: String): List<String>? {
         val result = evaluate("JSON.stringify($jsCode)")
 
-        val gson = Gson()
         val listType = object : TypeToken<List<String>>() {}.type
 
         val response: List<String>? = try {
@@ -184,60 +180,28 @@ internal object JSInterpret {
         return null
     }
 
-    @Nullable
     private fun evaluate(source: String): String? {
         return try {
             evaluateWithErrors(source)
-        } catch (e: RuntimeException) {
-            Log.e(TAG, e.message ?: "")
+        } catch (e: V8ScriptExecutionException) {
             e.printStackTrace()
             null
         }
     }
 
-    @Nullable
-    private fun evaluateWithErrors(source: String): String? {
-        var runtime: V8Runtime? = null
-        return try {
-            runtime = V8Host.getV8Instance().createV8Runtime()
-            synchronized(v8ExecLock) {
-                runtime.v8Locker.use {
-                    runtime.getExecutor(source).executeString()
-                }
-            }
-        } finally {
-            runtime?.close()
-        }
-    }
+    @Throws(V8ScriptExecutionException::class)
+    private fun evaluateWithErrors(source: String): String {
+        var runtime: V8? = null
+        val result: String
 
-    @Nullable
-    private fun evaluate(sources: List<String>): String? {
-        return try {
-            evaluateWithErrors(sources)
-        } catch (e: RuntimeException) {
-            Log.e(TAG, e.message ?: "")
-            e.printStackTrace()
-            null
-        }
-    }
-
-    @Nullable
-    private fun evaluateWithErrors(sources: List<String>): String? {
-        var runtime: V8Runtime? = null
-        return try {
-            runtime = V8Host.getV8Instance().createV8Runtime()
-            synchronized(v8ExecLock) {
-                runtime.v8Locker.use {
-                    var result: String? = null
-                    for (source in sources) {
-                        result = runtime.getExecutor(source).executeString()
-                    }
-                    result
-                }
-            }
+        try {
+            runtime = V8.createV8Runtime()
+            result = runtime.executeStringScript(source)
         } finally {
-            runtime?.close()
+            runtime?.release(false)
         }
+
+        return result
     }
 
 }
