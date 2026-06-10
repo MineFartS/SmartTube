@@ -79,6 +79,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     private final Map<Integer, BrowseSection> mSectionsMapping;
     private final BrowseProcessorManager mBrowseProcessor;
     private final ChannelUploadsPresenter mChannelUploadsPresenter;
+    private final VideoStateService mVideoStateService;
     private final List<Disposable> mActions;
     private final Runnable mRefreshSection = this::refresh;
     private BrowseSection mCurrentSection;
@@ -102,6 +103,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
 
         mBrowseProcessor = new BrowseProcessorManager(getContext(), this::syncItem);
         mChannelUploadsPresenter = ChannelUploadsPresenter.instance(getContext());
+        mVideoStateService = VideoStateService.instance(getContext());
         
         mActions = new ArrayList<>();
 
@@ -172,32 +174,10 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
         }
     }
 
-    private void restoreSelectedItems() {
-        if (getView() == null) {
-            return;
-        }
-
-        if (isSubscriptionsSection() && getGeneralData().isRememberSubscriptionsPositionEnabled()) {
-            getView().selectSectionItem(getGeneralData().getSelectedItem(mCurrentSection.getId()));
-        }
-    }
-
     private void initSectionMappings() {
-        initSectionMapping();
-
-        initRowAndGridMapping();
-
-        mSettingsGridMapping.put(
-            MediaGroup.TYPE_SETTINGS, 
-            this::getSettingItems
-        );
-
-        initLocalGridMapping();
-    }
-
-    private void initSectionMapping() {
-
-        String country = LocaleUtility.getCurrentLocale(getContext()).getCountry();
+        
+        //===================================================================
+        // mSectionsMapping
 
         mSectionsMapping.put(
             MediaGroup.TYPE_HOME, 
@@ -285,11 +265,10 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
                 R.drawable.icon_settings
             )
         );
-        
-    }
 
-    private void initRowAndGridMapping() {
-        
+        //===================================================================
+        // mRowMapping
+
         mRowMapping.put(
             MediaGroup.TYPE_HOME, 
             getContentService().getHomeObserve()
@@ -319,7 +298,23 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
             MediaGroup.TYPE_NOTIFICATIONS, 
             getNotificationsService().getNotificationItemsObserve()
         );
-        
+
+        //===================================================================
+        // mSettingsGridMapping
+
+        mSettingsGridMapping.put(
+            MediaGroup.TYPE_SETTINGS, 
+            this::getSettingItems
+        );
+
+        //===================================================================
+        // mLocalGridMappings
+        mLocalGridMappings.put(
+            MediaGroup.TYPE_PLAYBACK_QUEUE, 
+            Queue::getAll
+        );
+
+        //===================================================================
     }
 
     private void initPinnedSections() {
@@ -403,19 +398,11 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
         return settingItems;
     }
 
-    private void initLocalGridMapping() {
-        mLocalGridMappings.put(
-            MediaGroup.TYPE_PLAYBACK_QUEUE, 
-            Queue::getAll
-        );
-    }
-
     public void updateSections() {
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
-        initPinnedData();
+        initPinnedSections();
+        initPinnedCallbacks();
 
         refreshSections();
     }
@@ -454,11 +441,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
         getView().selectSection(selectedSectionIndex != -1 ? selectedSectionIndex : mBootSectionIndex, false);
     }
 
-    private void initPinnedData() {
-        initPinnedSections();
-        initPinnedCallbacks();
-    }
-
     public void updatePlaylistsStyle() {
 
         mRowMapping.remove(MediaGroup.TYPE_USER_PLAYLISTS);
@@ -495,14 +477,19 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
 
     @Override
     public void onVideoItemSelected(Video item) {
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
-        if (isMultiGridChannelUploadsSection() && belongsToChannelUploads(item)) {
-            updateChannelUploadsMultiGrid(item);
-        }
-
+        if (
+            isMultiGridChannelUploadsSection() 
+            && belongsToChannelUploads(item)
+            && mCurrentSection != null
+        ) updateVideoGrid(
+            mCurrentSection, 
+            mChannelUploadsPresenter.obtainUploadsObservable(item), 
+            1, 
+            false
+        );
+        
         mCurrentVideo = item;
     }
 
@@ -559,11 +546,20 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     }
 
     public void onSectionFocused(int sectionId) {
+        
         saveSelectedItems(); // save previous state
+        
         mCurrentSection = findSectionById(sectionId);
         mCurrentVideo = null; // fast scroll through the sections (fix empty selected item)
         updateCurrentSection();
-        restoreSelectedItems(); // Don't place anywhere else
+
+        if (getView() != null 
+            && isSubscriptionsSection() 
+            && getGeneralData().isRememberSubscriptionsPositionEnabled()
+        ) getView().selectSectionItem(
+            getGeneralData().getSelectedItem(mCurrentSection.getId())
+        );
+        
     }
 
     public void onSectionLongPressed(int sectionId) {
@@ -747,48 +743,45 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
 
     private void updateVideoRows(BrowseSection section, Observable<List<MediaGroup>> groups, boolean authCheck) {
 
-        authCheck(authCheck, () -> {
+        if (authCheck && !getSignInService().isSigned()) return;
 
-            disposeActions();
+        disposeActions();
 
-            if (getView() == null)
-                getViewManager().startView(BrowseView.class);
+        if (getView() == null)
+            getViewManager().startView(BrowseView.class);
 
-            VideoGroup firstGroup = VideoGroup.from(section);
-            firstGroup.setAction(VideoGroup.ACTION_REPLACE);
-            getView().updateSection(firstGroup);
+        VideoGroup firstGroup = VideoGroup.from(section);
+        firstGroup.setAction(VideoGroup.ACTION_REPLACE);
+        getView().updateSection(firstGroup);
 
-            if (groups == null) return;
+        if (groups == null) return;
 
-            Disposable updateAction = groups.subscribe(
+        Disposable updateAction = groups.subscribe(
 
-                mediaGroups -> {
+            mediaGroups -> {
 
-                    for (MediaGroup mediaGroup : mediaGroups) {
-                        
-                        //if (mediaGroup.isEmpty()) continue;
+                for (MediaGroup mediaGroup : mediaGroups) {
 
-                        VideoGroup videoGroup = VideoGroup.from(mediaGroup, section);
+                    VideoGroup videoGroup = VideoGroup.from(mediaGroup, section);
 
-                        getView().updateSection(videoGroup);
-                        mBrowseProcessor.process(videoGroup);
+                    getView().updateSection(videoGroup);
+                    mBrowseProcessor.process(videoGroup);
 
-                        continueGroup(videoGroup, false, false);
-                    }
+                    continueGroup(videoGroup, false, false);
+                }
 
-                },
+            },
 
-                error -> {
-                    Log.e(TAG, "updateRowsHeader error: %s", error.getMessage());
-                    handleLoadError(error);
-                }, 
+            error -> {
+                Log.e(TAG, "updateRowsHeader error: %s", error.getMessage());
+                handleLoadError(error);
+            }, 
 
-                () -> handleLoadError(null)
+            () -> handleLoadError(null)
 
-            );
+        );
 
-            mActions.add(updateAction);
-        });
+        mActions.add(updateAction);
 
     }
 
@@ -801,61 +794,70 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
         
         Log.d(TAG, "loadMultiGridHeader: Start loading section: " + section.getTitle());
 
-        authCheck(authCheck, () -> {
-            disposeActions();
+        if (authCheck && !getSignInService().isSigned()) return;
+        
+        disposeActions();
 
-            if (getView() == null) {
-                Log.e(TAG, "Browse view has been unloaded from the memory. Low RAM?");
-                getViewManager().startView(BrowseView.class);
-                return;
-            }
+        if (getView() == null) {
+            Log.e(TAG, "Browse view has been unloaded from the memory. Low RAM?");
+            getViewManager().startView(BrowseView.class);
+            return;
+        }
 
-            Log.d(TAG, "updateGridHeader: Start loading section: " + section.getTitle());
+        Log.d(TAG, "updateGridHeader: Start loading section: " + section.getTitle());
 
-            getView().showProgressBar(true);
+        getView().showProgressBar(true);
 
-            // Stay on the same group in case of multiple subscribe calls
-            VideoGroup baseGroup = VideoGroup.from(section, column);
-            baseGroup.setAction(VideoGroup.ACTION_REPLACE);
-            getView().updateSection(baseGroup);
+        // Stay on the same group in case of multiple subscribe calls
+        VideoGroup baseGroup = VideoGroup.from(section, column);
+        baseGroup.setAction(VideoGroup.ACTION_REPLACE);
+        getView().updateSection(baseGroup);
 
-            if (group == null) {
-                // No group. Maybe just clear.
+        if (group == null) {
+            // No group. Maybe just clear.
+            getView().showProgressBar(false);
+            return;
+        }
+
+        Disposable updateAction = group.subscribe(
+        
+            mediaGroup -> {
+
                 getView().showProgressBar(false);
-                return;
-            }
 
-            Disposable updateAction = group.subscribe(
+                if (getView() == null)
+                    getViewManager().startView(BrowseView.class);
+
+                VideoGroup videoGroup = VideoGroup.from(baseGroup, mediaGroup);
+
+                State lastState = mVideoStateService.getLastState();
+
+                if (isHistorySection()
+                    && !mVideoStateService.isEmpty() 
+                    && !videoGroup.isEmpty()
+                    && videoGroup.get(0) != lastState.video
+                ) {
+                    for (State state: mVideoStateService.getStates()) {
+                        videoGroup.add(0, state.video);
+                    }
+                }
+
+                getView().updateSection(videoGroup);
+                mBrowseProcessor.process(videoGroup);
+
+                continueGroup(videoGroup, true, false);
+            },
+
+            error -> {
+                Log.e(TAG, "updateGridHeader error: %s", error.getMessage());
+                handleLoadError(error);
+            }, 
             
-                mediaGroup -> {
+            () -> handleLoadError(null)
+        
+        );
 
-                    getView().showProgressBar(false);
-
-                    if (getView() == null)
-                        getViewManager().startView(BrowseView.class);
-
-                    VideoGroup videoGroup = VideoGroup.from(baseGroup, mediaGroup);
-
-                    if (isHistorySection())
-                        appendLocalHistory(videoGroup);
-
-                    getView().updateSection(videoGroup);
-                    mBrowseProcessor.process(videoGroup);
-
-                    continueGroup(videoGroup, true, false);
-                },
-
-                error -> {
-                    Log.e(TAG, "updateGridHeader error: %s", error.getMessage());
-                    handleLoadError(error);
-                }, 
-                
-                () -> handleLoadError(null)
-            
-            );
-
-            mActions.add(updateAction);
-        });
+        mActions.add(updateAction);
     
     }
 
@@ -873,7 +875,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
 
         Log.d(TAG, "continueGroup: start continue group: " + group.getTitle());
 
-        // Small amount of items == small load time. Loading bar are useless?
         if (showLoading) 
             getView().showProgressBar(true);
 
@@ -901,45 +902,11 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
         mActions.add(continueAction);
     }
 
-    private void authCheck(boolean check, Runnable callback) {
-        if (!check) {
-            callback.run();
-            return;
-        }
-
-        getView().showProgressBar(true);
-
-        if (getSignInService().isSigned()) {
-            callback.run();
-        } else if (getView() != null) {
-            if (isHistorySection() && !VideoStateService.instance(getContext()).isEmpty()) {
-                getView().showProgressBar(false);
-                VideoGroup videoGroup = VideoGroup.from(getCurrentSection());
-                appendLocalHistory(videoGroup);
-                getView().updateSection(videoGroup);
-            } else {
-                getView().showProgressBar(false);
-                getView().showError(new SignInError(getContext()));
-            }
-        }
-    }
-
     private void disposeActions() {
         RxHelper.disposeActions(mActions);
         Utils.removeCallbacks(mRefreshSection);
         mLastUpdateTimeMs = -1;
         mBrowseProcessor.dispose();
-    }
-
-    private void updateChannelUploadsMultiGrid(Video item) {
-        if (mCurrentSection == null) return;
-
-        updateVideoGrid(
-            mCurrentSection, 
-            mChannelUploadsPresenter.obtainUploadsObservable(item), 
-            1, 
-            false
-        );
     }
 
     private boolean belongsToChannelUploads(Video item) {
@@ -1167,22 +1134,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
             Utils.postDelayed(mRefreshSection, 30_000);
             
         }
-    }
-
-    private void appendLocalHistory(VideoGroup videoGroup) {
-        
-        VideoStateService stateService = VideoStateService.instance(getContext());
-
-        if (stateService.isEmpty() || videoGroup.isEmpty()) return;
-
-        State lastState = stateService.getLastState();
-
-        if (lastState == null || videoGroup.get(0) == lastState.video) return;
-
-        for (State state: stateService.getStates()) {
-            videoGroup.add(0, state.video);
-        }
-
     }
 
 }
