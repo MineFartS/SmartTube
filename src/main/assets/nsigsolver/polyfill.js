@@ -11,7 +11,7 @@ if (typeof URL === "undefined") {
     this.href = url;
 
     // naive parsing for hostname
-    const match = url.match(
+    var match = url.match(
       /^(https?:)\/\/([^\/?#:]+)(?::(\d+))?([^?#]*)?(\?[^#]*)?(#.*)?$/
     );
     this.protocol = match ? match[1] : "";
@@ -29,7 +29,7 @@ if (typeof self === "undefined") {
   globalThis.self = globalThis;
 }
 if (!window.location) {
-  const defaultHost = "https://localhost/";
+  var defaultHost = "https://localhost/";
   window.location = {
     _url: defaultHost,
     _parsed: new URL(defaultHost),
