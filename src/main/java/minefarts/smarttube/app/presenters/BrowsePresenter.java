@@ -746,60 +746,29 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     }
 
     private void updateVideoRows(BrowseSection section, Observable<List<MediaGroup>> groups, boolean authCheck) {
-        Log.d(TAG, "loadRowsHeader: Start loading section: " + section.getTitle());
 
         authCheck(authCheck, () -> {
-            Log.d(TAG, "updateRowsHeader: Start loading section: " + section.getTitle());
 
             disposeActions();
 
-            if (getView() == null) {
-                Log.e(TAG, "Browse view has been unloaded from the memory. Low RAM?");
+            if (getView() == null)
                 getViewManager().startView(BrowseView.class);
-                return;
-            }
-            
-            getView().showProgressBar(true);
 
             VideoGroup firstGroup = VideoGroup.from(section);
             firstGroup.setAction(VideoGroup.ACTION_REPLACE);
             getView().updateSection(firstGroup);
 
-            if (groups == null) {
-                // No group. Maybe just clear.
-                getView().showProgressBar(false);
-                return;
-            }
+            if (groups == null) return;
 
             Disposable updateAction = groups.subscribe(
 
                 mediaGroups -> {
 
-                    getView().showProgressBar(false);
-
-                    if (isHomeSection()) {
-                        Helpers.removeIf(
-                            mediaGroups, 
-                            value -> Helpers.containsAny(
-                                value.getTitle(),
-                                "Primetime", // Free movies and shows row
-                                "News", // Top news
-                                "news", // Top news
-                                "NBA TV", // Sports
-                                "The Life of a Showgirl"
-                            )
-                        );
-                    }
-
                     for (MediaGroup mediaGroup : mediaGroups) {
                         
-                        if (mediaGroup.isEmpty()) continue;
+                        //if (mediaGroup.isEmpty()) continue;
 
                         VideoGroup videoGroup = VideoGroup.from(mediaGroup, section);
-
-                        if (TextUtils.isEmpty(videoGroup.getTitle())) {
-                            videoGroup.setTitle(getContext().getString(R.string.suggestions));
-                        }
 
                         getView().updateSection(videoGroup);
                         mBrowseProcessor.process(videoGroup);
@@ -823,7 +792,12 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
 
     }
 
-    private void updateVideoGrid(BrowseSection section, Observable<MediaGroup> group, int column, boolean authCheck) {
+    private void updateVideoGrid(
+        BrowseSection section, 
+        Observable<MediaGroup> group, 
+        int column, 
+        boolean authCheck
+    ) {
         
         Log.d(TAG, "loadMultiGridHeader: Start loading section: " + section.getTitle());
 
@@ -854,13 +828,11 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
             Disposable updateAction = group.subscribe(
             
                 mediaGroup -> {
+
                     getView().showProgressBar(false);
 
-                    if (getView() == null) {
-                        Log.e(TAG, "Browse view has been unloaded from the memory. Low RAM?");
+                    if (getView() == null)
                         getViewManager().startView(BrowseView.class);
-                        return;
-                    }
 
                     VideoGroup videoGroup = VideoGroup.from(baseGroup, mediaGroup);
 
