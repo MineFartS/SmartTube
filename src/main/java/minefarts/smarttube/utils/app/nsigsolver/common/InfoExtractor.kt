@@ -2,8 +2,23 @@ package minefarts.smarttube.utils.app.nsigsolver.common
 
 import minefarts.smarttube.utils.okhttp.OkHttpManager
 import minefarts.smarttube.utils.app.nsigsolver.provider.InfoExtractorError
+
 import kotlinx.coroutines.delay
+
 import okhttp3.Request
+
+import com.eclipsesource.v8.V8
+
+internal fun formatError(firstMsg: String?, secondMsg: String) = firstMsg?.let { "$it: $secondMsg" } ?: secondMsg
+
+internal inline fun <T> V8.withLock(block: (V8) -> T): T {
+    locker.acquire()
+    try {
+        return block(this)
+    } finally {
+        locker.release()
+    }
+}
 
 internal abstract class InfoExtractor {
     suspend fun downloadWebpage(url: String, tries: Int = 1, timeoutMs: Long = 1_000, errorMsg: String? = null): String {
