@@ -6,12 +6,8 @@ import com.google.gson.JsonSyntaxException
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8ScriptExecutionException
 
+import minefarts.smarttube.ContextManager
 import minefarts.smarttube.utils.mylogger.Log
-import minefarts.smarttube.utils.app.nsigsolver.runtime.Script
-import minefarts.smarttube.utils.app.nsigsolver.runtime.ScriptSource
-import minefarts.smarttube.utils.app.nsigsolver.runtime.ScriptType
-import minefarts.smarttube.utils.app.nsigsolver.runtime.ScriptVariant
-import minefarts.smarttube.utils.app.nsigsolver.common.loadScript
 import minefarts.smarttube.utils.app.nsigsolver.common.withLock
 import minefarts.smarttube.utils.app.nsigsolver.common.YouTubeInfoExtractor
 import minefarts.smarttube.utils.app.nsigsolver.common.CachedData
@@ -30,29 +26,6 @@ val sGson = Gson()
 internal object V8ChallengeProvider {
 
     private val tag = V8ChallengeProvider::class.simpleName
-    
-    private val v8NpmLibFilename = listOf(
-        "nsigsolver/polyfill.js", 
-        "nsigsolver/meriyah-6.1.4.min.js", 
-        "nsigsolver/astring-1.9.0.min.js"
-    )
-
-    val cacheSection = "challenge-solver"
-
-    private val jcpGuideUrl = "https://github.com/yt-dlp/yt-dlp/wiki/YouTube-JS-Challenges"
-    private val repository = "yt-dlp/ejs"
-    private val supportedTypes = listOf(JsChallengeType.N, JsChallengeType.SIG)
-    val scriptVersion = "0.0.1"
-
-    private val scriptFilenames = mapOf(
-        ScriptType.LIB to "nsigsolver/yt.solver.lib.js",
-        ScriptType.CORE to "nsigsolver/yt.solver.core.js"
-    )
-
-    private val minScriptFilenames = mapOf(
-        ScriptType.LIB to "yt.solver.lib.min.js",
-        ScriptType.CORE to "yt.solver.core.min.js"
-    )
     
     private val v8Runtime = ThreadLocal<V8>()
     private val v8Lock = Any()
@@ -103,23 +76,44 @@ internal object V8ChallengeProvider {
                 it.executeStringScript(stdin) ?: throw JsChallengeProviderError("V8 runtime error: empty response")
             }
         } catch (e: V8ScriptExecutionException) {
+            
             if (e.message?.contains("Invalid or unexpected token") ?: false)
-                YouTubeInfoExtractor.cache.clear(cacheSection) // cached data broken?
-            throw JsChallengeProviderError("V8 runtime error: ${e.message}", e)
+                YouTubeInfoExtractor.cache.clear("challenge-solver") // cached data broken?
+
+            var msg: String = e.message ?: ""
+
+            if (e.message?.contains("ReferenceError: jsc is not defined") ?: false)
+                msg = "jsc is not defined"
+            
+            throw JsChallengeProviderError("V8 runtime error: ${msg}", e)
         }
     }
 
     private fun initRuntime() {
-        if (v8Runtime.get() != null)
-            return
+        if (v8Runtime.get() != null) return
+
         v8Runtime.set(V8.createV8Runtime())
-        runV8(constructCommonStdin()) // ignore the result, just warm up
+
+        val assets = ContextManager.get()?.assets
+
+        for (name in listOf("lib", "core")) {
+
+            val path = "nsigsolver/yt.solver.$name.js"
+
+            assets!!.open(path).bufferedReader().use { 
+                runV8(it.readText())
+            }
+            
+        }
+    
     }
 
     private fun disposeRuntime() {
+
         val runtime = v8Runtime.get() ?: return
 
         // NOTE: getting lock fixes "Invalid V8 thread access: the locker has been released!"
+
         runtime.withLock {
             it.release(false)
         }
@@ -152,7 +146,7 @@ internal object V8ChallengeProvider {
         for ((playerUrl, groupedRequests) in grouped) {
 
             val player = YouTubeInfoExtractor.cache.load(
-                cacheSection, 
+                "challenge-solver", 
                 "player:$playerUrl"
             )?.code
 
@@ -199,7 +193,7 @@ internal object V8ChallengeProvider {
 
             val preprocessed = output.preprocessed_player
             if (preprocessed != null)
-                YouTubeInfoExtractor.cache.store(cacheSection, "player:$playerUrl", CachedData(preprocessed))
+                YouTubeInfoExtractor.cache.store("challenge-solver", "player:$playerUrl", CachedData(preprocessed))
 
             for ((request, responseData) in groupedRequests.zip(output.responses)) {
                 if (responseData.type == "error") {
@@ -214,140 +208,6 @@ internal object V8ChallengeProvider {
         }
     }
 
-    private fun constructStdin(
-        player: String, 
-        preprocessed: Boolean, 
-        requests: List<JsChallengeRequest>
-    ): String {
-        
-        val jsonRequests = requests.map { request ->
-            mapOf(
-                // TODO: i despise nsig name
-                //"type" to if (request.type.value == "n") "nsig" else request.type.value,
-                "type" to request.type.value,
-                "challenges" to request.input.challenges
-            )
-        }
-
-        val data = if (preprocessed) {
-            mapOf(
-                "type" to "preprocessed",
-                "preprocessed_player" to player,
-                "requests" to jsonRequests
-            )
-        } else {
-            mapOf(
-                "type" to "player",
-                "player" to player,
-                "requests" to jsonRequests,
-                "output_preprocessed" to true
-            )
-        }
-        
-        val jsonData = sGson.toJson(data)
-        
-        return "JSON.stringify(jsc($jsonData));"
-    }
-
-    fun constructCommonStdin(): String {
-        return """
-        ${libScript.code}
-        ${coreScript.code}
-        "";
-        """
-    }
-
-    // region: challenge solver script
-
-    private val libScript: Script by lazy {
-        getScript(ScriptType.LIB)
-    }
-
-    private val coreScript: Script by lazy {
-        getScript(ScriptType.CORE)
-    }
-
-    private fun getScript(scriptType: ScriptType): Script {
-        for ((_, fromSource) in iterScriptSources2()) {
-            val script = fromSource(scriptType)
-            if (script == null)
-                continue
-            if (script.version != scriptVersion)
-                Log.w(tag, "Challenge solver ${scriptType.value} script version ${script.version} " +
-                        "is not supported (source: ${script.source.value}, supported version: $scriptVersion)")
-
-            Log.d(tag, "Using challenge solver ${script.type.value} script v${script.version} " +
-                    "(source: ${script.source.value}, variant: ${script.variant.value})")
-            return script
-        }
-        throw JsChallengeProviderRejectedRequest("No usable challenge solver ${scriptType.value} script available")
-    }
-
-    private fun iterScriptSources2(): Sequence<Pair<ScriptSource, (scriptType: ScriptType) -> Script?>> = sequence {
-        yieldAll(listOf(
-            Pair(ScriptSource.CACHE, ::cachedSource),
-            Pair(ScriptSource.BUILTIN, ::builtinSource),
-            Pair(ScriptSource.WEB, ::webReleaseSource)
-        ))
-    }
-
-    private fun cachedSource(scriptType: ScriptType): Script? {
-        val data = YouTubeInfoExtractor.cache.load(cacheSection, scriptType.value) ?: return null
-        return Script(
-            scriptType,
-            ScriptVariant.valueOf(data.variant ?: "unknown"), 
-            ScriptSource.CACHE, 
-            data.version ?: "unknown", 
-            data.code
-        )
-    }
-
-    private fun builtinSource(scriptType: ScriptType): Script? {
-        val fileName = scriptFilenames[scriptType] ?: return null
-        
-        return Script(
-            scriptType, 
-            ScriptVariant.UNMINIFIED, 
-            ScriptSource.BUILTIN, 
-            scriptVersion, 
-            loadScript(fileName, "Failed to read builtin challenge solver ${scriptType.value}")
-        )
-    }
-
-    private fun webReleaseSource(scriptType: ScriptType): Script? {
-        
-        val fileName = minScriptFilenames[scriptType] ?: return null
-
-        val code = YouTubeInfoExtractor.downloadWebpageWithRetries(
-            "https://github.com/$repository/releases/download/$scriptVersion/$fileName", 
-            "[${tag}] Failed to download challenge solver ${scriptType.value} script"
-        )
-
-        YouTubeInfoExtractor.cache.store(
-            cacheSection, 
-            scriptType.value, 
-            CachedData(code)
-        )
-
-        return Script(
-            scriptType, 
-            ScriptVariant.MINIFIED, 
-            ScriptSource.WEB, 
-            scriptVersion, 
-            code
-        )
-
-    }
-
-    // endregion: challenge solver script
-
-    private fun validateRequest(request: JsChallengeRequest) {
-        // Validate request using built-in settings
-        if (request.type !in supportedTypes) {
-            throw JsChallengeProviderRejectedRequest("JS Challenge type ${request.type} is not supported by the provider ${this::class.simpleName}")
-        }
-    }
-
     /**
      * Solve multiple JS challenges and return the results
      */
@@ -355,7 +215,10 @@ internal object V8ChallengeProvider {
         val validatedRequests: MutableList<JsChallengeRequest> = mutableListOf()
         for (request in requests) {
             try {
-                validateRequest(request)
+                // Validate request using built-in settings
+                if (request.type !in listOf(JsChallengeType.N, JsChallengeType.SIG)) {
+                    throw JsChallengeProviderRejectedRequest("JS Challenge type ${request.type} is not supported by the provider ${this::class.simpleName}")
+                }
                 validatedRequests.add(request)
             } catch (e: JsChallengeProviderRejectedRequest) {
                 yield(JsChallengeProviderResponse(request=request, error=e))

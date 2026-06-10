@@ -1,3 +1,353 @@
+function _slicedToArray(r, e) {
+  return (
+    _arrayWithHoles(r) ||
+    _iterableToArrayLimit(r, e) ||
+    _unsupportedIterableToArray(r, e) ||
+    _nonIterableRest()
+  );
+}
+function _nonIterableRest() {
+  throw new TypeError(
+    "Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."
+  );
+}
+function _iterableToArrayLimit(r, l) {
+  var t =
+    null == r
+      ? null
+      : ("undefined" != typeof Symbol && r[Symbol.iterator]) || r["@@iterator"];
+  if (null != t) {
+    var e,
+      n,
+      i,
+      u,
+      a = [],
+      f = !0,
+      o = !1;
+    try {
+      if (((i = (t = t.call(r)).next), 0 === l)) {
+        if (Object(t) !== t) return;
+        f = !1;
+      } else
+        for (
+          ;
+          !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l);
+          f = !0
+        );
+    } catch (r) {
+      (o = !0), (n = r);
+    } finally {
+      try {
+        if (!f && null != t["return"] && ((u = t["return"]()), Object(u) !== u))
+          return;
+      } finally {
+        if (o) throw n;
+      }
+    }
+    return a;
+  }
+}
+function _arrayWithHoles(r) {
+  if (Array.isArray(r)) return r;
+}
+function ownKeys(e, r) {
+  var t = Object.keys(e);
+  if (Object.getOwnPropertySymbols) {
+    var o = Object.getOwnPropertySymbols(e);
+    r &&
+      (o = o.filter(function (r) {
+        return Object.getOwnPropertyDescriptor(e, r).enumerable;
+      })),
+      t.push.apply(t, o);
+  }
+  return t;
+}
+function _objectSpread(e) {
+  for (var r = 1; r < arguments.length; r++) {
+    var t = null != arguments[r] ? arguments[r] : {};
+    r % 2
+      ? ownKeys(Object(t), !0).forEach(function (r) {
+          _defineProperty2(e, r, t[r]);
+        })
+      : Object.getOwnPropertyDescriptors
+      ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t))
+      : ownKeys(Object(t)).forEach(function (r) {
+          Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
+        });
+  }
+  return e;
+}
+function _toConsumableArray(r) {
+  return (
+    _arrayWithoutHoles(r) ||
+    _iterableToArray(r) ||
+    _unsupportedIterableToArray(r) ||
+    _nonIterableSpread()
+  );
+}
+function _nonIterableSpread() {
+  throw new TypeError(
+    "Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."
+  );
+}
+function _iterableToArray(r) {
+  if (
+    ("undefined" != typeof Symbol && null != r[Symbol.iterator]) ||
+    null != r["@@iterator"]
+  )
+    return Array.from(r);
+}
+function _arrayWithoutHoles(r) {
+  if (Array.isArray(r)) return _arrayLikeToArray(r);
+}
+function _callSuper(t, o, e) {
+  return (
+    (o = _getPrototypeOf(o)),
+    _possibleConstructorReturn(
+      t,
+      _isNativeReflectConstruct()
+        ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor)
+        : o.apply(t, e)
+    )
+  );
+}
+function _possibleConstructorReturn(t, e) {
+  if (e && ("object" == _typeof(e) || "function" == typeof e)) return e;
+  if (void 0 !== e)
+    throw new TypeError(
+      "Derived constructors may only return object or undefined"
+    );
+  return _assertThisInitialized(t);
+}
+function _assertThisInitialized(e) {
+  if (void 0 === e)
+    throw new ReferenceError(
+      "this hasn't been initialised - super() hasn't been called"
+    );
+  return e;
+}
+function _inherits(t, e) {
+  if ("function" != typeof e && null !== e)
+    throw new TypeError("Super expression must either be null or a function");
+  (t.prototype = Object.create(e && e.prototype, {
+    constructor: { value: t, writable: !0, configurable: !0 }
+  })),
+    Object.defineProperty(t, "prototype", { writable: !1 }),
+    e && _setPrototypeOf(t, e);
+}
+function _wrapNativeSuper(t) {
+  var r = "function" == typeof Map ? new Map() : void 0;
+  return (
+    (_wrapNativeSuper = function _wrapNativeSuper(t) {
+      if (null === t || !_isNativeFunction(t)) return t;
+      if ("function" != typeof t)
+        throw new TypeError(
+          "Super expression must either be null or a function"
+        );
+      if (void 0 !== r) {
+        if (r.has(t)) return r.get(t);
+        r.set(t, Wrapper);
+      }
+      function Wrapper() {
+        return _construct(t, arguments, _getPrototypeOf(this).constructor);
+      }
+      return (
+        (Wrapper.prototype = Object.create(t.prototype, {
+          constructor: {
+            value: Wrapper,
+            enumerable: !1,
+            writable: !0,
+            configurable: !0
+          }
+        })),
+        _setPrototypeOf(Wrapper, t)
+      );
+    }),
+    _wrapNativeSuper(t)
+  );
+}
+function _construct(t, e, r) {
+  if (_isNativeReflectConstruct())
+    return Reflect.construct.apply(null, arguments);
+  var o = [null];
+  o.push.apply(o, e);
+  var p = new (t.bind.apply(t, o))();
+  return r && _setPrototypeOf(p, r.prototype), p;
+}
+function _isNativeReflectConstruct() {
+  try {
+    var t = !Boolean.prototype.valueOf.call(
+      Reflect.construct(Boolean, [], function () {})
+    );
+  } catch (t) {}
+  return (_isNativeReflectConstruct = function _isNativeReflectConstruct() {
+    return !!t;
+  })();
+}
+function _isNativeFunction(t) {
+  try {
+    return -1 !== Function.toString.call(t).indexOf("[native code]");
+  } catch (n) {
+    return "function" == typeof t;
+  }
+}
+function _setPrototypeOf(t, e) {
+  return (
+    (_setPrototypeOf = Object.setPrototypeOf
+      ? Object.setPrototypeOf.bind()
+      : function (t, e) {
+          return (t.__proto__ = e), t;
+        }),
+    _setPrototypeOf(t, e)
+  );
+}
+function _getPrototypeOf(t) {
+  return (
+    (_getPrototypeOf = Object.setPrototypeOf
+      ? Object.getPrototypeOf.bind()
+      : function (t) {
+          return t.__proto__ || Object.getPrototypeOf(t);
+        }),
+    _getPrototypeOf(t)
+  );
+}
+function _defineProperty2(e, r, t) {
+  return (
+    (r = _toPropertyKey2(r)) in e
+      ? Object.defineProperty(e, r, {
+          value: t,
+          enumerable: !0,
+          configurable: !0,
+          writable: !0
+        })
+      : (e[r] = t),
+    e
+  );
+}
+function _classCallCheck(a, n) {
+  if (!(a instanceof n))
+    throw new TypeError("Cannot call a class as a function");
+}
+function _defineProperties(e, r) {
+  for (var t = 0; t < r.length; t++) {
+    var o = r[t];
+    (o.enumerable = o.enumerable || !1),
+      (o.configurable = !0),
+      "value" in o && (o.writable = !0),
+      Object.defineProperty(e, _toPropertyKey2(o.key), o);
+  }
+}
+function _createClass(e, r, t) {
+  return (
+    r && _defineProperties(e.prototype, r),
+    t && _defineProperties(e, t),
+    Object.defineProperty(e, "prototype", { writable: !1 }),
+    e
+  );
+}
+function _toPropertyKey2(t) {
+  var i = _toPrimitive2(t, "string");
+  return "symbol" == _typeof(i) ? i : i + "";
+}
+function _toPrimitive2(t, r) {
+  if ("object" != _typeof(t) || !t) return t;
+  var e = t[Symbol.toPrimitive];
+  if (void 0 !== e) {
+    var i = e.call(t, r || "default");
+    if ("object" != _typeof(i)) return i;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return ("string" === r ? String : Number)(t);
+}
+function _createForOfIteratorHelper(r, e) {
+  var t =
+    ("undefined" != typeof Symbol && r[Symbol.iterator]) || r["@@iterator"];
+  if (!t) {
+    if (
+      Array.isArray(r) ||
+      (t = _unsupportedIterableToArray(r)) ||
+      (e && r && "number" == typeof r.length)
+    ) {
+      t && (r = t);
+      var _n2 = 0,
+        F = function F() {};
+      return {
+        s: F,
+        n: function n() {
+          return _n2 >= r.length ? { done: !0 } : { done: !1, value: r[_n2++] };
+        },
+        e: function e(r) {
+          throw r;
+        },
+        f: F
+      };
+    }
+    throw new TypeError(
+      "Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."
+    );
+  }
+  var o,
+    a = !0,
+    u = !1;
+  return {
+    s: function s() {
+      t = t.call(r);
+    },
+    n: function n() {
+      var r = t.next();
+      return (a = r.done), r;
+    },
+    e: function e(r) {
+      (u = !0), (o = r);
+    },
+    f: function f() {
+      try {
+        a || null == t["return"] || t["return"]();
+      } finally {
+        if (u) throw o;
+      }
+    }
+  };
+}
+function _unsupportedIterableToArray(r, a) {
+  if (r) {
+    if ("string" == typeof r) return _arrayLikeToArray(r, a);
+    var t = {}.toString.call(r).slice(8, -1);
+    return (
+      "Object" === t && r.constructor && (t = r.constructor.name),
+      "Map" === t || "Set" === t
+        ? Array.from(r)
+        : "Arguments" === t ||
+          /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t)
+        ? _arrayLikeToArray(r, a)
+        : void 0
+    );
+  }
+}
+function _arrayLikeToArray(r, a) {
+  (null == a || a > r.length) && (a = r.length);
+  for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e];
+  return n;
+}
+function _typeof(o) {
+  "@babel/helpers - typeof";
+  return (
+    (_typeof =
+      "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
+        ? function (o) {
+            return typeof o;
+          }
+        : function (o) {
+            return o &&
+              "function" == typeof Symbol &&
+              o.constructor === Symbol &&
+              o !== Symbol.prototype
+              ? "symbol"
+              : typeof o;
+          }),
+    _typeof(o)
+  );
+}
 /*
  * SPDX-License-Identifier: Unlicense
  * This file was automatically generated by https://github.com/yt-dlp/ejs
@@ -30,56 +380,74 @@ function _defineProperty(e, r, t) {
 }
 function _toPropertyKey(t) {
   var i = _toPrimitive(t, "string");
-  return "symbol" == typeof i ? i : i + "";
+  return "symbol" == _typeof(i) ? i : i + "";
 }
 function _toPrimitive(t, r) {
-  if ("object" != typeof t || !t) return t;
+  if ("object" != _typeof(t) || !t) return t;
   var e = t[Symbol.toPrimitive];
   if (void 0 !== e) {
     var i = e.call(t, r || "default");
-    if ("object" != typeof i) return i;
+    if ("object" != _typeof(i)) return i;
     throw new TypeError("@@toPrimitive must return a primitive value.");
   }
   return ("string" === r ? String : Number)(t);
 }
-
-var lib = (() => {
+var lib = (function (_errorMessages) {
   var __defProp = Object.defineProperty;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
   var __getOwnPropNames = Object.getOwnPropertyNames;
   var __hasOwnProp = Object.prototype.hasOwnProperty;
-  var __export = (target, all) => {
+  var __export = function __export(target, all) {
     for (var name in all)
       __defProp(target, name, {
         get: all[name],
         enumerable: true
       });
   };
-  var __copyProps = (to, from, except, desc) => {
-    if ((from && typeof from === "object") || typeof from === "function") {
-      for (let key of __getOwnPropNames(from))
-        if (!__hasOwnProp.call(to, key) && key !== except)
-          __defProp(to, key, {
-            get: () => from[key],
-            enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
-          });
+  var __copyProps = function __copyProps(to, from, except, desc) {
+    if ((from && _typeof(from) === "object") || typeof from === "function") {
+      var _iterator = _createForOfIteratorHelper(__getOwnPropNames(from)),
+        _step;
+      try {
+        var _loop = function _loop() {
+          var key = _step.value;
+          if (!__hasOwnProp.call(to, key) && key !== except)
+            __defProp(to, key, {
+              get: function get() {
+                return from[key];
+              },
+              enumerable:
+                !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+            });
+        };
+        for (_iterator.s(); !(_step = _iterator.n()).done; ) {
+          _loop();
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
     }
     return to;
   };
-  var __toCommonJS = (mod) =>
-    __copyProps(
+  var __toCommonJS = function __toCommonJS(mod) {
+    return __copyProps(
       __defProp({}, "__esModule", {
         value: true
       }),
       mod
     );
+  };
 
   // src/yt/solver/lib.ts
   var lib_exports = {};
   __export(lib_exports, {
-    lib: () => lib
+    lib: function lib() {
+      return _lib;
+    }
   });
-  var { stringify } = JSON;
+  var stringify = JSON.stringify;
   if (!String.prototype.repeat) {
     throw new Error(
       "String.prototype.repeat is undefined, see https://github.com/davidbonnet/astring#installation"
@@ -151,13 +519,13 @@ var lib = (() => {
     RestElement: 1
   };
   function formatSequence(state, nodes) {
-    const { generator } = state;
+    var generator = state.generator;
     state.write("(");
     if (nodes != null && nodes.length > 0) {
       generator[nodes[0].type](nodes[0], state);
-      const { length } = nodes;
-      for (let i = 1; i < length; i++) {
-        const param = nodes[i];
+      var length = nodes.length;
+      for (var i = 1; i < length; i++) {
+        var param = nodes[i];
         state.write(", ");
         generator[param.type](param, state);
       }
@@ -165,11 +533,11 @@ var lib = (() => {
     state.write(")");
   }
   function expressionNeedsParenthesis(state, node, parentNode, isRightHand) {
-    const nodePrecedence = state.expressionsPrecedence[node.type];
+    var nodePrecedence = state.expressionsPrecedence[node.type];
     if (nodePrecedence === NEEDS_PARENTHESES) {
       return true;
     }
-    const parentNodePrecedence = state.expressionsPrecedence[parentNode.type];
+    var parentNodePrecedence = state.expressionsPrecedence[parentNode.type];
     if (nodePrecedence !== parentNodePrecedence) {
       return (
         (!isRightHand &&
@@ -204,7 +572,7 @@ var lib = (() => {
     );
   }
   function formatExpression(state, node, parentNode, isRightHand) {
-    const { generator } = state;
+    var generator = state.generator;
     if (expressionNeedsParenthesis(state, node, parentNode, isRightHand)) {
       state.write("(");
       generator[node.type](node, state);
@@ -214,21 +582,21 @@ var lib = (() => {
     }
   }
   function reindent(state, text, indent, lineEnd) {
-    const lines = text.split("\n");
-    const end = lines.length - 1;
+    var lines = text.split("\n");
+    var end = lines.length - 1;
     state.write(lines[0].trim());
     if (end > 0) {
       state.write(lineEnd);
-      for (let i = 1; i < end; i++) {
+      for (var i = 1; i < end; i++) {
         state.write(indent + lines[i].trim() + lineEnd);
       }
       state.write(indent + lines[end].trim());
     }
   }
   function formatComments(state, comments, indent, lineEnd) {
-    const { length } = comments;
-    for (let i = 0; i < length; i++) {
-      const comment = comments[i];
+    var length = comments.length;
+    for (var i = 0; i < length; i++) {
+      var comment = comments[i];
       state.write(indent);
       if (comment.type[0] === "L") {
         state.write("// " + comment.value.trim() + "\n", comment);
@@ -240,9 +608,10 @@ var lib = (() => {
     }
   }
   function hasCallExpression(node) {
-    let currentNode = node;
+    var currentNode = node;
     while (currentNode != null) {
-      const { type } = currentNode;
+      var _currentNode = currentNode,
+        type = _currentNode.type;
       if (type[0] === "C" && type[1] === "a") {
         return true;
       } else if (type[0] === "M" && type[1] === "e" && type[2] === "m") {
@@ -253,13 +622,13 @@ var lib = (() => {
     }
   }
   function formatVariableDeclaration(state, node) {
-    const { generator } = state;
-    const { declarations } = node;
+    var generator = state.generator;
+    var declarations = node.declarations;
     state.write(node.kind + " ");
-    const { length } = declarations;
+    var length = declarations.length;
     if (length > 0) {
       generator.VariableDeclarator(declarations[0], state);
-      for (let i = 1; i < length; i++) {
+      for (var i = 1; i < length; i++) {
         state.write(", ");
         generator.VariableDeclarator(declarations[i], state);
       }
@@ -275,16 +644,17 @@ var lib = (() => {
     /*
     Default generator.
     */
-    Program(node, state) {
-      const indent = state.indent.repeat(state.indentLevel);
-      const { lineEnd, writeComments } = state;
+    Program: function Program(node, state) {
+      var indent = state.indent.repeat(state.indentLevel);
+      var lineEnd = state.lineEnd,
+        writeComments = state.writeComments;
       if (writeComments && node.comments != null) {
         formatComments(state, node.comments, indent, lineEnd);
       }
-      const statements = node.body;
-      const { length } = statements;
-      for (let i = 0; i < length; i++) {
-        const statement = statements[i];
+      var statements = node.body;
+      var length = statements.length;
+      for (var i = 0; i < length; i++) {
+        var statement = statements[i];
         if (writeComments && statement.comments != null) {
           formatComments(state, statement.comments, indent, lineEnd);
         }
@@ -296,20 +666,21 @@ var lib = (() => {
         formatComments(state, node.trailingComments, indent, lineEnd);
       }
     },
-    BlockStatement: (BlockStatement = function (node, state) {
-      const indent = state.indent.repeat(state.indentLevel++);
-      const { lineEnd, writeComments } = state;
-      const statementIndent = indent + state.indent;
+    BlockStatement: (BlockStatement = function BlockStatement(node, state) {
+      var indent = state.indent.repeat(state.indentLevel++);
+      var lineEnd = state.lineEnd,
+        writeComments = state.writeComments;
+      var statementIndent = indent + state.indent;
       state.write("{");
-      const statements = node.body;
+      var statements = node.body;
       if (statements != null && statements.length > 0) {
         state.write(lineEnd);
         if (writeComments && node.comments != null) {
           formatComments(state, node.comments, statementIndent, lineEnd);
         }
-        const { length } = statements;
-        for (let i = 0; i < length; i++) {
-          const statement = statements[i];
+        var length = statements.length;
+        for (var i = 0; i < length; i++) {
+          var statement = statements[i];
           if (writeComments && statement.comments != null) {
             formatComments(state, statement.comments, statementIndent, lineEnd);
           }
@@ -332,15 +703,15 @@ var lib = (() => {
       state.indentLevel--;
     }),
     ClassBody: BlockStatement,
-    StaticBlock(node, state) {
+    StaticBlock: function StaticBlock(node, state) {
       state.write("static ");
       this.BlockStatement(node, state);
     },
-    EmptyStatement(node, state) {
+    EmptyStatement: function EmptyStatement(node, state) {
       state.write(";");
     },
-    ExpressionStatement(node, state) {
-      const precedence = state.expressionsPrecedence[node.expression.type];
+    ExpressionStatement: function ExpressionStatement(node, state) {
+      var precedence = state.expressionsPrecedence[node.expression.type];
       if (
         precedence === NEEDS_PARENTHESES ||
         (precedence === 3 && node.expression.left.type[0] === "O")
@@ -353,7 +724,7 @@ var lib = (() => {
       }
       state.write(";");
     },
-    IfStatement(node, state) {
+    IfStatement: function IfStatement(node, state) {
       state.write("if (");
       this[node.test.type](node.test, state);
       state.write(") ");
@@ -363,12 +734,12 @@ var lib = (() => {
         this[node.alternate.type](node.alternate, state);
       }
     },
-    LabeledStatement(node, state) {
+    LabeledStatement: function LabeledStatement(node, state) {
       this[node.label.type](node.label, state);
       state.write(": ");
       this[node.body.type](node.body, state);
     },
-    BreakStatement(node, state) {
+    BreakStatement: function BreakStatement(node, state) {
       state.write("break");
       if (node.label != null) {
         state.write(" ");
@@ -376,7 +747,7 @@ var lib = (() => {
       }
       state.write(";");
     },
-    ContinueStatement(node, state) {
+    ContinueStatement: function ContinueStatement(node, state) {
       state.write("continue");
       if (node.label != null) {
         state.write(" ");
@@ -384,25 +755,26 @@ var lib = (() => {
       }
       state.write(";");
     },
-    WithStatement(node, state) {
+    WithStatement: function WithStatement(node, state) {
       state.write("with (");
       this[node.object.type](node.object, state);
       state.write(") ");
       this[node.body.type](node.body, state);
     },
-    SwitchStatement(node, state) {
-      const indent = state.indent.repeat(state.indentLevel++);
-      const { lineEnd, writeComments } = state;
+    SwitchStatement: function SwitchStatement(node, state) {
+      var indent = state.indent.repeat(state.indentLevel++);
+      var lineEnd = state.lineEnd,
+        writeComments = state.writeComments;
       state.indentLevel++;
-      const caseIndent = indent + state.indent;
-      const statementIndent = caseIndent + state.indent;
+      var caseIndent = indent + state.indent;
+      var statementIndent = caseIndent + state.indent;
       state.write("switch (");
       this[node.discriminant.type](node.discriminant, state);
       state.write(") {" + lineEnd);
-      const { cases: occurences } = node;
-      const { length: occurencesCount } = occurences;
-      for (let i = 0; i < occurencesCount; i++) {
-        const occurence = occurences[i];
+      var occurences = node.cases;
+      var occurencesCount = occurences.length;
+      for (var i = 0; i < occurencesCount; i++) {
+        var occurence = occurences[i];
         if (writeComments && occurence.comments != null) {
           formatComments(state, occurence.comments, caseIndent, lineEnd);
         }
@@ -413,10 +785,10 @@ var lib = (() => {
         } else {
           state.write(caseIndent + "default:" + lineEnd);
         }
-        const { consequent } = occurence;
-        const { length: consequentCount } = consequent;
-        for (let i2 = 0; i2 < consequentCount; i2++) {
-          const statement = consequent[i2];
+        var consequent = occurence.consequent;
+        var consequentCount = consequent.length;
+        for (var i2 = 0; i2 < consequentCount; i2++) {
+          var statement = consequent[i2];
           if (writeComments && statement.comments != null) {
             formatComments(state, statement.comments, statementIndent, lineEnd);
           }
@@ -428,7 +800,7 @@ var lib = (() => {
       state.indentLevel -= 2;
       state.write(indent + "}");
     },
-    ReturnStatement(node, state) {
+    ReturnStatement: function ReturnStatement(node, state) {
       state.write("return");
       if (node.argument) {
         state.write(" ");
@@ -436,16 +808,16 @@ var lib = (() => {
       }
       state.write(";");
     },
-    ThrowStatement(node, state) {
+    ThrowStatement: function ThrowStatement(node, state) {
       state.write("throw ");
       this[node.argument.type](node.argument, state);
       state.write(";");
     },
-    TryStatement(node, state) {
+    TryStatement: function TryStatement(node, state) {
       state.write("try ");
       this[node.block.type](node.block, state);
       if (node.handler) {
-        const { handler } = node;
+        var handler = node.handler;
         if (handler.param == null) {
           state.write(" catch ");
         } else {
@@ -460,23 +832,23 @@ var lib = (() => {
         this[node.finalizer.type](node.finalizer, state);
       }
     },
-    WhileStatement(node, state) {
+    WhileStatement: function WhileStatement(node, state) {
       state.write("while (");
       this[node.test.type](node.test, state);
       state.write(") ");
       this[node.body.type](node.body, state);
     },
-    DoWhileStatement(node, state) {
+    DoWhileStatement: function DoWhileStatement(node, state) {
       state.write("do ");
       this[node.body.type](node.body, state);
       state.write(" while (");
       this[node.test.type](node.test, state);
       state.write(");");
     },
-    ForStatement(node, state) {
+    ForStatement: function ForStatement(node, state) {
       state.write("for (");
       if (node.init != null) {
-        const { init } = node;
+        var init = node.init;
         if (init.type[0] === "V") {
           formatVariableDeclaration(state, init);
         } else {
@@ -494,9 +866,9 @@ var lib = (() => {
       state.write(") ");
       this[node.body.type](node.body, state);
     },
-    ForInStatement: (ForInStatement = function (node, state) {
-      state.write(`for ${node.await ? "await " : ""}(`);
-      const { left } = node;
+    ForInStatement: (ForInStatement = function ForInStatement(node, state) {
+      state.write("for ".concat(node["await"] ? "await " : "", "("));
+      var left = node.left;
       if (left.type[0] === "V") {
         formatVariableDeclaration(state, left);
       } else {
@@ -508,10 +880,13 @@ var lib = (() => {
       this[node.body.type](node.body, state);
     }),
     ForOfStatement: ForInStatement,
-    DebuggerStatement(node, state) {
+    DebuggerStatement: function DebuggerStatement(node, state) {
       state.write("debugger;", node);
     },
-    FunctionDeclaration: (FunctionDeclaration = function (node, state) {
+    FunctionDeclaration: (FunctionDeclaration = function FunctionDeclaration(
+      node,
+      state
+    ) {
       state.write(
         (node.async ? "async " : "") +
           (node.generator ? "function* " : "function ") +
@@ -523,24 +898,27 @@ var lib = (() => {
       this[node.body.type](node.body, state);
     }),
     FunctionExpression: FunctionDeclaration,
-    VariableDeclaration(node, state) {
+    VariableDeclaration: function VariableDeclaration(node, state) {
       formatVariableDeclaration(state, node);
       state.write(";");
     },
-    VariableDeclarator(node, state) {
+    VariableDeclarator: function VariableDeclarator(node, state) {
       this[node.id.type](node.id, state);
       if (node.init != null) {
         state.write(" = ");
         this[node.init.type](node.init, state);
       }
     },
-    ClassDeclaration(node, state) {
-      state.write("class " + (node.id ? `${node.id.name} ` : ""), node);
+    ClassDeclaration: function ClassDeclaration(node, state) {
+      state.write(
+        "class " + (node.id ? "".concat(node.id.name, " ") : ""),
+        node
+      );
       if (node.superClass) {
         state.write("extends ");
-        const { superClass } = node;
-        const { type } = superClass;
-        const precedence = state.expressionsPrecedence[type];
+        var superClass = node.superClass;
+        var type = superClass.type;
+        var precedence = state.expressionsPrecedence[type];
         if (
           (type[0] !== "C" || type[1] !== "l" || type[5] !== "E") &&
           (precedence === NEEDS_PARENTHESES ||
@@ -556,18 +934,19 @@ var lib = (() => {
       }
       this.ClassBody(node.body, state);
     },
-    ImportDeclaration(node, state) {
+    ImportDeclaration: function ImportDeclaration(node, state) {
       state.write("import ");
-      const { specifiers, attributes } = node;
-      const { length } = specifiers;
-      let i = 0;
+      var specifiers = node.specifiers,
+        attributes = node.attributes;
+      var length = specifiers.length;
+      var i = 0;
       if (length > 0) {
         for (; i < length; ) {
           if (i > 0) {
             state.write(", ");
           }
-          const specifier = specifiers[i];
-          const type = specifier.type[6];
+          var specifier = specifiers[i];
+          var type = specifier.type[6];
           if (type === "D") {
             state.write(specifier.local.name, specifier);
             i++;
@@ -581,11 +960,11 @@ var lib = (() => {
         if (i < length) {
           state.write("{");
           for (;;) {
-            const specifier = specifiers[i];
-            const { name } = specifier.imported;
-            state.write(name, specifier);
-            if (name !== specifier.local.name) {
-              state.write(" as " + specifier.local.name);
+            var _specifier = specifiers[i];
+            var name = _specifier.imported.name;
+            state.write(name, _specifier);
+            if (name !== _specifier.local.name) {
+              state.write(" as " + _specifier.local.name);
             }
             if (++i < length) {
               state.write(", ");
@@ -600,7 +979,7 @@ var lib = (() => {
       this.Literal(node.source, state);
       if (attributes && attributes.length > 0) {
         state.write(" with { ");
-        for (let i2 = 0; i2 < attributes.length; i2++) {
+        for (var i2 = 0; i2 < attributes.length; i2++) {
           this.ImportAttribute(attributes[i2], state);
           if (i2 < attributes.length - 1) state.write(", ");
         }
@@ -608,17 +987,17 @@ var lib = (() => {
       }
       state.write(";");
     },
-    ImportAttribute(node, state) {
+    ImportAttribute: function ImportAttribute(node, state) {
       this.Identifier(node.key, state);
       state.write(": ");
       this.Literal(node.value, state);
     },
-    ImportExpression(node, state) {
+    ImportExpression: function ImportExpression(node, state) {
       state.write("import(");
       this[node.source.type](node.source, state);
       state.write(")");
     },
-    ExportDefaultDeclaration(node, state) {
+    ExportDefaultDeclaration: function ExportDefaultDeclaration(node, state) {
       state.write("export default ");
       this[node.declaration.type](node.declaration, state);
       if (
@@ -628,18 +1007,18 @@ var lib = (() => {
         state.write(";");
       }
     },
-    ExportNamedDeclaration(node, state) {
+    ExportNamedDeclaration: function ExportNamedDeclaration(node, state) {
       state.write("export ");
       if (node.declaration) {
         this[node.declaration.type](node.declaration, state);
       } else {
         state.write("{");
-        const { specifiers } = node,
-          { length } = specifiers;
+        var specifiers = node.specifiers,
+          length = specifiers.length;
         if (length > 0) {
-          for (let i = 0; ; ) {
-            const specifier = specifiers[i];
-            const { name } = specifier.local;
+          for (var i = 0; ; ) {
+            var specifier = specifiers[i];
+            var name = specifier.local.name;
             state.write(name, specifier);
             if (name !== specifier.exported.name) {
               state.write(" as " + specifier.exported.name);
@@ -658,16 +1037,16 @@ var lib = (() => {
         }
         if (node.attributes && node.attributes.length > 0) {
           state.write(" with { ");
-          for (let i = 0; i < node.attributes.length; i++) {
-            this.ImportAttribute(node.attributes[i], state);
-            if (i < node.attributes.length - 1) state.write(", ");
+          for (var _i = 0; _i < node.attributes.length; _i++) {
+            this.ImportAttribute(node.attributes[_i], state);
+            if (_i < node.attributes.length - 1) state.write(", ");
           }
           state.write(" }");
         }
         state.write(";");
       }
     },
-    ExportAllDeclaration(node, state) {
+    ExportAllDeclaration: function ExportAllDeclaration(node, state) {
       if (node.exported != null) {
         state.write("export * as " + node.exported.name + " from ");
       } else {
@@ -676,7 +1055,7 @@ var lib = (() => {
       this.Literal(node.source, state);
       if (node.attributes && node.attributes.length > 0) {
         state.write(" with { ");
-        for (let i = 0; i < node.attributes.length; i++) {
+        for (var i = 0; i < node.attributes.length; i++) {
           this.ImportAttribute(node.attributes[i], state);
           if (i < node.attributes.length - 1) state.write(", ");
         }
@@ -684,11 +1063,11 @@ var lib = (() => {
       }
       state.write(";");
     },
-    MethodDefinition(node, state) {
-      if (node.static) {
+    MethodDefinition: function MethodDefinition(node, state) {
+      if (node["static"]) {
         state.write("static ");
       }
-      const kind = node.kind[0];
+      var kind = node.kind[0];
       if (kind === "g" || kind === "s") {
         state.write(node.kind + " ");
       }
@@ -709,12 +1088,12 @@ var lib = (() => {
       state.write(" ");
       this[node.value.body.type](node.value.body, state);
     },
-    ClassExpression(node, state) {
+    ClassExpression: function ClassExpression(node, state) {
       this.ClassDeclaration(node, state);
     },
-    ArrowFunctionExpression(node, state) {
+    ArrowFunctionExpression: function ArrowFunctionExpression(node, state) {
       state.write(node.async ? "async " : "", node);
-      const { params } = node;
+      var params = node.params;
       if (params != null) {
         if (params.length === 1 && params[0].type[0] === "I") {
           state.write(params[0].name, params[0]);
@@ -731,58 +1110,59 @@ var lib = (() => {
         this[node.body.type](node.body, state);
       }
     },
-    ThisExpression(node, state) {
+    ThisExpression: function ThisExpression(node, state) {
       state.write("this", node);
     },
-    Super(node, state) {
+    Super: function Super(node, state) {
       state.write("super", node);
     },
-    RestElement: (RestElement = function (node, state) {
+    RestElement: (RestElement = function RestElement(node, state) {
       state.write("...");
       this[node.argument.type](node.argument, state);
     }),
     SpreadElement: RestElement,
-    YieldExpression(node, state) {
+    YieldExpression: function YieldExpression(node, state) {
       state.write(node.delegate ? "yield*" : "yield");
       if (node.argument) {
         state.write(" ");
         this[node.argument.type](node.argument, state);
       }
     },
-    AwaitExpression(node, state) {
+    AwaitExpression: function AwaitExpression(node, state) {
       state.write("await ", node);
       formatExpression(state, node.argument, node);
     },
-    TemplateLiteral(node, state) {
-      const { quasis, expressions } = node;
+    TemplateLiteral: function TemplateLiteral(node, state) {
+      var quasis = node.quasis,
+        expressions = node.expressions;
       state.write("`");
-      const { length } = expressions;
-      for (let i = 0; i < length; i++) {
-        const expression = expressions[i];
-        const quasi2 = quasis[i];
+      var length = expressions.length;
+      for (var i = 0; i < length; i++) {
+        var expression = expressions[i];
+        var quasi2 = quasis[i];
         state.write(quasi2.value.raw, quasi2);
         state.write("${");
         this[expression.type](expression, state);
         state.write("}");
       }
-      const quasi = quasis[quasis.length - 1];
+      var quasi = quasis[quasis.length - 1];
       state.write(quasi.value.raw, quasi);
       state.write("`");
     },
-    TemplateElement(node, state) {
+    TemplateElement: function TemplateElement(node, state) {
       state.write(node.value.raw, node);
     },
-    TaggedTemplateExpression(node, state) {
+    TaggedTemplateExpression: function TaggedTemplateExpression(node, state) {
       formatExpression(state, node.tag, node);
       this[node.quasi.type](node.quasi, state);
     },
-    ArrayExpression: (ArrayExpression = function (node, state) {
+    ArrayExpression: (ArrayExpression = function ArrayExpression(node, state) {
       state.write("[");
       if (node.elements.length > 0) {
-        const { elements } = node,
-          { length } = elements;
-        for (let i = 0; ; ) {
-          const element = elements[i];
+        var elements = node.elements,
+          length = elements.length;
+        for (var i = 0; ; ) {
+          var element = elements[i];
           if (element != null) {
             this[element.type](element, state);
           }
@@ -799,21 +1179,22 @@ var lib = (() => {
       state.write("]");
     }),
     ArrayPattern: ArrayExpression,
-    ObjectExpression(node, state) {
-      const indent = state.indent.repeat(state.indentLevel++);
-      const { lineEnd, writeComments } = state;
-      const propertyIndent = indent + state.indent;
+    ObjectExpression: function ObjectExpression(node, state) {
+      var indent = state.indent.repeat(state.indentLevel++);
+      var lineEnd = state.lineEnd,
+        writeComments = state.writeComments;
+      var propertyIndent = indent + state.indent;
       state.write("{");
       if (node.properties.length > 0) {
         state.write(lineEnd);
         if (writeComments && node.comments != null) {
           formatComments(state, node.comments, propertyIndent, lineEnd);
         }
-        const comma = "," + lineEnd;
-        const { properties } = node,
-          { length } = properties;
-        for (let i = 0; ; ) {
-          const property = properties[i];
+        var comma = "," + lineEnd;
+        var properties = node.properties,
+          length = properties.length;
+        for (var i = 0; ; ) {
+          var property = properties[i];
           if (writeComments && property.comments != null) {
             formatComments(state, property.comments, propertyIndent, lineEnd);
           }
@@ -855,7 +1236,7 @@ var lib = (() => {
       }
       state.indentLevel--;
     },
-    Property(node, state) {
+    Property: function Property(node, state) {
       if (node.method || node.kind[0] !== "i") {
         this.MethodDefinition(node, state);
       } else {
@@ -872,8 +1253,8 @@ var lib = (() => {
         this[node.value.type](node.value, state);
       }
     },
-    PropertyDefinition(node, state) {
-      if (node.static) {
+    PropertyDefinition: function PropertyDefinition(node, state) {
+      if (node["static"]) {
         state.write("static ");
       }
       if (node.computed) {
@@ -893,12 +1274,12 @@ var lib = (() => {
       this[node.value.type](node.value, state);
       state.write(";");
     },
-    ObjectPattern(node, state) {
+    ObjectPattern: function ObjectPattern(node, state) {
       state.write("{");
       if (node.properties.length > 0) {
-        const { properties } = node,
-          { length } = properties;
-        for (let i = 0; ; ) {
+        var properties = node.properties,
+          length = properties.length;
+        for (var i = 0; ; ) {
           this[properties[i].type](properties[i], state);
           if (++i < length) {
             state.write(", ");
@@ -909,18 +1290,16 @@ var lib = (() => {
       }
       state.write("}");
     },
-    SequenceExpression(node, state) {
+    SequenceExpression: function SequenceExpression(node, state) {
       formatSequence(state, node.expressions);
     },
-    UnaryExpression(node, state) {
+    UnaryExpression: function UnaryExpression(node, state) {
       if (node.prefix) {
-        const {
-          operator,
-          argument,
-          argument: { type }
-        } = node;
+        var operator = node.operator,
+          argument = node.argument,
+          type = node.argument.type;
         state.write(operator);
-        const needsParentheses = expressionNeedsParenthesis(
+        var needsParentheses = expressionNeedsParenthesis(
           state,
           argument,
           node
@@ -948,7 +1327,7 @@ var lib = (() => {
         state.write(node.operator);
       }
     },
-    UpdateExpression(node, state) {
+    UpdateExpression: function UpdateExpression(node, state) {
       if (node.prefix) {
         state.write(node.operator);
         this[node.argument.type](node.argument, state);
@@ -957,18 +1336,21 @@ var lib = (() => {
         state.write(node.operator);
       }
     },
-    AssignmentExpression(node, state) {
+    AssignmentExpression: function AssignmentExpression(node, state) {
       this[node.left.type](node.left, state);
       state.write(" " + node.operator + " ");
       this[node.right.type](node.right, state);
     },
-    AssignmentPattern(node, state) {
+    AssignmentPattern: function AssignmentPattern(node, state) {
       this[node.left.type](node.left, state);
       state.write(" = ");
       this[node.right.type](node.right, state);
     },
-    BinaryExpression: (BinaryExpression = function (node, state) {
-      const isIn = node.operator === "in";
+    BinaryExpression: (BinaryExpression = function BinaryExpression(
+      node,
+      state
+    ) {
+      var isIn = node.operator === "in";
       if (isIn) {
         state.write("(");
       }
@@ -980,9 +1362,9 @@ var lib = (() => {
       }
     }),
     LogicalExpression: BinaryExpression,
-    ConditionalExpression(node, state) {
-      const { test } = node;
-      const precedence = state.expressionsPrecedence[test.type];
+    ConditionalExpression: function ConditionalExpression(node, state) {
+      var test = node.test;
+      var precedence = state.expressionsPrecedence[test.type];
       if (
         precedence === NEEDS_PARENTHESES ||
         precedence <= state.expressionsPrecedence.ConditionalExpression
@@ -998,9 +1380,9 @@ var lib = (() => {
       state.write(" : ");
       this[node.alternate.type](node.alternate, state);
     },
-    NewExpression(node, state) {
+    NewExpression: function NewExpression(node, state) {
       state.write("new ");
-      const precedence = state.expressionsPrecedence[node.callee.type];
+      var precedence = state.expressionsPrecedence[node.callee.type];
       if (
         precedence === NEEDS_PARENTHESES ||
         precedence < state.expressionsPrecedence.CallExpression ||
@@ -1014,8 +1396,8 @@ var lib = (() => {
       }
       formatSequence(state, node["arguments"]);
     },
-    CallExpression(node, state) {
-      const precedence = state.expressionsPrecedence[node.callee.type];
+    CallExpression: function CallExpression(node, state) {
+      var precedence = state.expressionsPrecedence[node.callee.type];
       if (
         precedence === NEEDS_PARENTHESES ||
         precedence < state.expressionsPrecedence.CallExpression
@@ -1031,11 +1413,11 @@ var lib = (() => {
       }
       formatSequence(state, node["arguments"]);
     },
-    ChainExpression(node, state) {
+    ChainExpression: function ChainExpression(node, state) {
       this[node.expression.type](node.expression, state);
     },
-    MemberExpression(node, state) {
-      const precedence = state.expressionsPrecedence[node.object.type];
+    MemberExpression: function MemberExpression(node, state) {
+      var precedence = state.expressionsPrecedence[node.object.type];
       if (
         precedence === NEEDS_PARENTHESES ||
         precedence < state.expressionsPrecedence.MemberExpression
@@ -1062,16 +1444,16 @@ var lib = (() => {
         this[node.property.type](node.property, state);
       }
     },
-    MetaProperty(node, state) {
+    MetaProperty: function MetaProperty(node, state) {
       state.write(node.meta.name + "." + node.property.name, node);
     },
-    Identifier(node, state) {
+    Identifier: function Identifier(node, state) {
       state.write(node.name, node);
     },
-    PrivateIdentifier(node, state) {
-      state.write(`#${node.name}`, node);
+    PrivateIdentifier: function PrivateIdentifier(node, state) {
+      state.write("#".concat(node.name), node);
     },
-    Literal(node, state) {
+    Literal: function Literal(node, state) {
       if (node.raw != null) {
         state.write(node.raw, node);
       } else if (node.regex != null) {
@@ -1082,15 +1464,16 @@ var lib = (() => {
         state.write(stringify(node.value), node);
       }
     },
-    RegExpLiteral(node, state) {
-      const { regex } = node;
-      state.write(`/${regex.pattern}/${regex.flags}`, node);
+    RegExpLiteral: function RegExpLiteral(node, state) {
+      var regex = node.regex;
+      state.write("/".concat(regex.pattern, "/").concat(regex.flags), node);
     }
   };
   var EMPTY_OBJECT = {};
-  var State = class {
-    constructor(options) {
-      const setup = options == null ? EMPTY_OBJECT : options;
+  var State = /*#__PURE__*/ (function () {
+    function State(options) {
+      _classCallCheck(this, State);
+      var setup = options == null ? EMPTY_OBJECT : options;
       this.output = "";
       if (setup.output != null) {
         this.output = setup.output;
@@ -1124,88 +1507,111 @@ var lib = (() => {
         };
       }
     }
-    write(code) {
-      this.output += code;
-    }
-    writeToStream(code) {
-      this.output.write(code);
-    }
-    writeAndMap(code, node) {
-      this.output += code;
-      this.map(code, node);
-    }
-    writeToStreamAndMap(code, node) {
-      this.output.write(code);
-      this.map(code, node);
-    }
-    map(code, node) {
-      if (node != null) {
-        const { type } = node;
-        if (type[0] === "L" && type[2] === "n") {
-          this.column = 0;
-          this.line++;
-          return;
+    return _createClass(State, [
+      {
+        key: "write",
+        value: function write(code) {
+          this.output += code;
         }
-        if (node.loc != null) {
-          const { mapping } = this;
-          mapping.original = node.loc.start;
-          mapping.name = node.name;
-          this.sourceMap.addMapping(mapping);
+      },
+      {
+        key: "writeToStream",
+        value: function writeToStream(code) {
+          this.output.write(code);
         }
-        if (
-          (type[0] === "T" && type[8] === "E") ||
-          (type[0] === "L" && type[1] === "i" && typeof node.value === "string")
-        ) {
-          const { length: length2 } = code;
-          let { column, line } = this;
-          for (let i = 0; i < length2; i++) {
-            if (code[i] === "\n") {
-              column = 0;
-              line++;
-            } else {
-              column++;
+      },
+      {
+        key: "writeAndMap",
+        value: function writeAndMap(code, node) {
+          this.output += code;
+          this.map(code, node);
+        }
+      },
+      {
+        key: "writeToStreamAndMap",
+        value: function writeToStreamAndMap(code, node) {
+          this.output.write(code);
+          this.map(code, node);
+        }
+      },
+      {
+        key: "map",
+        value: function map(code, node) {
+          if (node != null) {
+            var type = node.type;
+            if (type[0] === "L" && type[2] === "n") {
+              this.column = 0;
+              this.line++;
+              return;
+            }
+            if (node.loc != null) {
+              var mapping = this.mapping;
+              mapping.original = node.loc.start;
+              mapping.name = node.name;
+              this.sourceMap.addMapping(mapping);
+            }
+            if (
+              (type[0] === "T" && type[8] === "E") ||
+              (type[0] === "L" &&
+                type[1] === "i" &&
+                typeof node.value === "string")
+            ) {
+              var length2 = code.length;
+              var column = this.column,
+                line = this.line;
+              for (var i = 0; i < length2; i++) {
+                if (code[i] === "\n") {
+                  column = 0;
+                  line++;
+                } else {
+                  column++;
+                }
+              }
+              this.column = column;
+              this.line = line;
+              return;
             }
           }
-          this.column = column;
-          this.line = line;
-          return;
+          var length = code.length;
+          var lineEnd = this.lineEnd;
+          if (length > 0) {
+            if (
+              this.lineEndSize > 0 &&
+              (lineEnd.length === 1
+                ? code[length - 1] === lineEnd
+                : code.endsWith(lineEnd))
+            ) {
+              this.line += this.lineEndSize;
+              this.column = 0;
+            } else {
+              this.column += length;
+            }
+          }
+        }
+      },
+      {
+        key: "toString",
+        value: function toString() {
+          return this.output;
         }
       }
-      const { length } = code;
-      const { lineEnd } = this;
-      if (length > 0) {
-        if (
-          this.lineEndSize > 0 &&
-          (lineEnd.length === 1
-            ? code[length - 1] === lineEnd
-            : code.endsWith(lineEnd))
-        ) {
-          this.line += this.lineEndSize;
-          this.column = 0;
-        } else {
-          this.column += length;
-        }
-      }
-    }
-    toString() {
-      return this.output;
-    }
-  };
+    ]);
+  })();
   function generate(node, options) {
-    const state = new State(options);
+    var state = new State(options);
     state.generator[node.type](node, state);
     return state.output;
   }
-  var unicodeLookup = ((compressed, lookup) => {
-    const result = new Uint32Array(69632);
-    let index = 0;
-    let subIndex = 0;
+  var unicodeLookup = (function (compressed, lookup) {
+    var result = new Uint32Array(69632);
+    var index = 0;
+    var subIndex = 0;
     while (index < 2571) {
-      const inst = compressed[index++];
+      var inst = compressed[index++];
       if (inst < 0) {
         subIndex -= inst;
       } else {
-        let code = compressed[index++];
+        var code = compressed[index++];
         if (inst & 2) code = lookup[code];
         if (inst & 1) {
           result.fill(code, subIndex, (subIndex += compressed[index++]));
@@ -1389,18 +1795,20 @@ var lib = (() => {
       1593309078, 268434431, 268434414, 4294901763, 4294901761
     ]
   );
-  var isIDContinue = (code) =>
-    ((unicodeLookup[(code >>> 5) + 0] >>> code) & 31 & 1) !== 0;
-  var isIDStart = (code) =>
-    ((unicodeLookup[(code >>> 5) + 34816] >>> code) & 31 & 1) !== 0;
+  var isIDContinue = function isIDContinue(code) {
+    return ((unicodeLookup[(code >>> 5) + 0] >>> code) & 31 & 1) !== 0;
+  };
+  var isIDStart = function isIDStart(code) {
+    return ((unicodeLookup[(code >>> 5) + 34816] >>> code) & 31 & 1) !== 0;
+  };
   function advanceChar(parser) {
     parser.column++;
     return (parser.currentChar = parser.source.charCodeAt(++parser.index));
   }
   function consumePossibleSurrogatePair(parser) {
-    const hi = parser.currentChar;
+    var hi = parser.currentChar;
     if ((hi & 64512) !== 55296) return 0;
-    const lo = parser.source.charCodeAt(parser.index + 1);
+    var lo = parser.source.charCodeAt(parser.index + 1);
     if ((lo & 64512) !== 56320) return 0;
     return 65536 + ((hi & 1023) << 10) + (lo & 1023);
   }
@@ -1620,7 +2028,7 @@ var lib = (() => {
     "HashbangComment"
   ];
   function skipHashBang(parser) {
-    const { source } = parser;
+    var source = parser.source;
     if (
       parser.currentChar === 35 &&
       source.charCodeAt(parser.index + 1) === 33
@@ -1635,13 +2043,13 @@ var lib = (() => {
     return skipSingleLineComment(parser, source, state, type, start);
   }
   function skipSingleLineComment(parser, source, state, type, start) {
-    const { index } = parser;
+    var index = parser.index;
     parser.tokenIndex = parser.index;
     parser.tokenLine = parser.line;
     parser.tokenColumn = parser.column;
     while (parser.index < parser.end) {
       if (CharTypes[parser.currentChar] & 8) {
-        const isCR = parser.currentChar === 13;
+        var isCR = parser.currentChar === 13;
         scanNewLine(parser);
         if (isCR && parser.index < parser.end && parser.currentChar === 10)
           parser.currentChar = source.charCodeAt(++parser.index);
@@ -1656,7 +2064,7 @@ var lib = (() => {
       parser.tokenColumn = parser.column;
     }
     if (parser.options.onComment) {
-      const loc = {
+      var loc = {
         start: {
           line: start.line,
           column: start.column
@@ -1677,10 +2085,10 @@ var lib = (() => {
     return state | 1;
   }
   function skipMultiLineComment(parser, source, state) {
-    const { index } = parser;
+    var index = parser.index;
     while (parser.index < parser.end) {
       if (parser.currentChar < 43) {
-        let skippedOneAsterisk = false;
+        var skippedOneAsterisk = false;
         while (parser.currentChar === 42) {
           if (!skippedOneAsterisk) {
             state &= -5;
@@ -1689,7 +2097,7 @@ var lib = (() => {
           if (advanceChar(parser) === 47) {
             advanceChar(parser);
             if (parser.options.onComment) {
-              const loc = {
+              var loc = {
                 start: {
                   line: parser.tokenLine,
                   column: parser.tokenColumn
@@ -1756,10 +2164,10 @@ var lib = (() => {
     RegexFlags2[(RegexFlags2["UnicodeSets"] = 128)] = "UnicodeSets";
   })(RegexFlags || (RegexFlags = {}));
   function scanRegularExpression(parser) {
-    const bodyStart = parser.index;
-    let preparseState = RegexState.Empty;
+    var bodyStart = parser.index;
+    var preparseState = RegexState.Empty;
     loop: while (true) {
-      const ch = parser.currentChar;
+      var ch = parser.currentChar;
       advanceChar(parser);
       if (preparseState & RegexState.Escape) {
         preparseState &= ~RegexState.Escape;
@@ -1786,12 +2194,12 @@ var lib = (() => {
         return parser.report(34);
       }
     }
-    const bodyEnd = parser.index - 1;
-    let mask = RegexFlags.Empty;
-    let char = parser.currentChar;
-    const { index: flagStart } = parser;
-    while (isIdentifierPart(char)) {
-      switch (char) {
+    var bodyEnd = parser.index - 1;
+    var mask = RegexFlags.Empty;
+    var _char = parser.currentChar;
+    var flagStart = parser.index;
+    while (isIdentifierPart(_char)) {
+      switch (_char) {
         case 103:
           if (mask & RegexFlags.Global) parser.report(36, "g");
           mask |= RegexFlags.Global;
@@ -1829,13 +2237,13 @@ var lib = (() => {
         default:
           parser.report(35);
       }
-      char = advanceChar(parser);
+      _char = advanceChar(parser);
     }
-    const flags = parser.source.slice(flagStart, parser.index);
-    const pattern = parser.source.slice(bodyStart, bodyEnd);
+    var flags = parser.source.slice(flagStart, parser.index);
+    var pattern = parser.source.slice(bodyStart, bodyEnd);
     parser.tokenRegExp = {
-      pattern,
-      flags
+      pattern: pattern,
+      flags: flags
     };
     if (parser.options.raw)
       parser.tokenRaw = parser.source.slice(parser.tokenIndex, parser.index);
@@ -1845,22 +2253,22 @@ var lib = (() => {
   function validate(parser, pattern, flags) {
     try {
       return new RegExp(pattern, flags);
-    } catch {
+    } catch (_unused) {
       try {
         new RegExp(pattern, flags);
         return null;
-      } catch {
+      } catch (_unused2) {
         parser.report(34);
       }
     }
   }
   function scanString(parser, context, quote) {
-    const { index: start } = parser;
-    let ret = "";
-    let char = advanceChar(parser);
-    let marker = parser.index;
-    while ((CharTypes[char] & 8) === 0) {
-      if (char === quote) {
+    var start = parser.index;
+    var ret = "";
+    var _char2 = advanceChar(parser);
+    var marker = parser.index;
+    while ((CharTypes[_char2] & 8) === 0) {
+      if (_char2 === quote) {
         ret += parser.source.slice(marker, parser.index);
         advanceChar(parser);
         if (parser.options.raw)
@@ -1868,27 +2276,29 @@ var lib = (() => {
         parser.tokenValue = ret;
         return 134283267;
       }
-      if ((char & 8) === 8 && char === 92) {
+      if ((_char2 & 8) === 8 && _char2 === 92) {
         ret += parser.source.slice(marker, parser.index);
-        char = advanceChar(parser);
-        if (char < 127 || char === 8232 || char === 8233) {
-          const code = parseEscape(parser, context, char);
+        _char2 = advanceChar(parser);
+        if (_char2 < 127 || _char2 === 8232 || _char2 === 8233) {
+          var code = parseEscape(parser, context, _char2);
           if (code >= 0) ret += String.fromCodePoint(code);
           else handleStringError(parser, code, 0);
         } else {
-          ret += String.fromCodePoint(char);
+          ret += String.fromCodePoint(_char2);
         }
         marker = parser.index + 1;
-      } else if (char === 8232 || char === 8233) {
+      } else if (_char2 === 8232 || _char2 === 8233) {
         parser.column = -1;
         parser.line++;
       }
       if (parser.index >= parser.end) parser.report(16);
-      char = advanceChar(parser);
+      _char2 = advanceChar(parser);
     }
     parser.report(16);
   }
-  function parseEscape(parser, context, first, isTemplate = 0) {
+  function parseEscape(parser, context, first) {
+    var isTemplate =
+      arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
     switch (first) {
       case 98:
         return 8;
@@ -1904,7 +2314,7 @@ var lib = (() => {
         return 11;
       case 13: {
         if (parser.index < parser.end) {
-          const nextChar = parser.source.charCodeAt(parser.index + 1);
+          var nextChar = parser.source.charCodeAt(parser.index + 1);
           if (nextChar === 10) {
             parser.index = parser.index + 1;
             parser.currentChar = nextChar;
@@ -1921,11 +2331,11 @@ var lib = (() => {
       case 49:
       case 50:
       case 51: {
-        let code = first - 48;
-        let index = parser.index + 1;
-        let column = parser.column + 1;
+        var code = first - 48;
+        var index = parser.index + 1;
+        var column = parser.column + 1;
         if (index < parser.end) {
-          const next = parser.source.charCodeAt(index);
+          var next = parser.source.charCodeAt(index);
           if ((CharTypes[next] & 32) === 0) {
             if (code !== 0 || CharTypes[next] & 512) {
               if (context & 1 || isTemplate) return -2;
@@ -1939,7 +2349,7 @@ var lib = (() => {
             index++;
             column++;
             if (index < parser.end) {
-              const next2 = parser.source.charCodeAt(index);
+              var next2 = parser.source.charCodeAt(index);
               if (CharTypes[next2] & 32) {
                 parser.currentChar = next2;
                 code = (code << 3) | (next2 - 48);
@@ -1959,56 +2369,56 @@ var lib = (() => {
       case 54:
       case 55: {
         if (isTemplate || context & 1) return -2;
-        let code = first - 48;
-        const index = parser.index + 1;
-        const column = parser.column + 1;
-        if (index < parser.end) {
-          const next = parser.source.charCodeAt(index);
-          if (CharTypes[next] & 32) {
-            code = (code << 3) | (next - 48);
-            parser.currentChar = next;
-            parser.index = index;
-            parser.column = column;
+        var _code = first - 48;
+        var _index = parser.index + 1;
+        var _column = parser.column + 1;
+        if (_index < parser.end) {
+          var _next = parser.source.charCodeAt(_index);
+          if (CharTypes[_next] & 32) {
+            _code = (_code << 3) | (_next - 48);
+            parser.currentChar = _next;
+            parser.index = _index;
+            parser.column = _column;
           }
         }
         parser.flags |= 64;
-        return code;
+        return _code;
       }
       case 120: {
-        const ch1 = advanceChar(parser);
+        var ch1 = advanceChar(parser);
         if ((CharTypes[ch1] & 64) === 0) return -4;
-        const hi = toHex(ch1);
-        const ch2 = advanceChar(parser);
+        var hi = toHex(ch1);
+        var ch2 = advanceChar(parser);
         if ((CharTypes[ch2] & 64) === 0) return -4;
-        const lo = toHex(ch2);
+        var lo = toHex(ch2);
         return (hi << 4) | lo;
       }
       case 117: {
-        const ch = advanceChar(parser);
+        var ch = advanceChar(parser);
         if (parser.currentChar === 123) {
-          let code = 0;
+          var _code2 = 0;
           while ((CharTypes[advanceChar(parser)] & 64) !== 0) {
-            code = (code << 4) | toHex(parser.currentChar);
-            if (code > 1114111) return -5;
+            _code2 = (_code2 << 4) | toHex(parser.currentChar);
+            if (_code2 > 1114111) return -5;
           }
           if (parser.currentChar < 1 || parser.currentChar !== 125) {
             return -4;
           }
-          return code;
+          return _code2;
         } else {
           if ((CharTypes[ch] & 64) === 0) return -4;
-          const ch2 = parser.source.charCodeAt(parser.index + 1);
-          if ((CharTypes[ch2] & 64) === 0) return -4;
-          const ch3 = parser.source.charCodeAt(parser.index + 2);
+          var _ch = parser.source.charCodeAt(parser.index + 1);
+          if ((CharTypes[_ch] & 64) === 0) return -4;
+          var ch3 = parser.source.charCodeAt(parser.index + 2);
           if ((CharTypes[ch3] & 64) === 0) return -4;
-          const ch4 = parser.source.charCodeAt(parser.index + 3);
+          var ch4 = parser.source.charCodeAt(parser.index + 3);
           if ((CharTypes[ch4] & 64) === 0) return -4;
           parser.index += 3;
           parser.column += 3;
           parser.currentChar = parser.source.charCodeAt(parser.index);
           return (
             (toHex(ch) << 12) |
-            (toHex(ch2) << 8) |
+            (toHex(_ch) << 8) |
             (toHex(ch3) << 4) |
             toHex(ch4)
           );
@@ -2037,22 +2447,24 @@ var lib = (() => {
     }
   }
   function scanTemplate(parser, context) {
-    const { index: start } = parser;
-    let token = 67174409;
-    let ret = "";
-    let char = advanceChar(parser);
-    while (char !== 96) {
-      if (char === 36 && parser.source.charCodeAt(parser.index + 1) === 123) {
+    var start = parser.index;
+    var token = 67174409;
+    var ret = "";
+    var _char3 = advanceChar(parser);
+    while (_char3 !== 96) {
+      if (_char3 === 36 && parser.source.charCodeAt(parser.index + 1) === 123) {
         advanceChar(parser);
         token = 67174408;
         break;
-      } else if (char === 92) {
-        char = advanceChar(parser);
-        if (char > 126) {
-          ret += String.fromCodePoint(char);
+      } else if (_char3 === 92) {
+        _char3 = advanceChar(parser);
+        if (_char3 > 126) {
+          ret += String.fromCodePoint(_char3);
         } else {
-          const { index, line, column } = parser;
-          const code = parseEscape(parser, context | 1, char, 1);
+          var index = parser.index,
+            line = parser.line,
+            column = parser.column;
+          var code = parseEscape(parser, context | 1, _char3, 1);
           if (code >= 0) {
             ret += String.fromCodePoint(code);
           } else if (code !== -1 && context & 64) {
@@ -2060,26 +2472,26 @@ var lib = (() => {
             parser.line = line;
             parser.column = column;
             ret = null;
-            char = scanBadTemplate(parser, char);
-            if (char < 0) token = 67174408;
+            _char3 = scanBadTemplate(parser, _char3);
+            if (_char3 < 0) token = 67174408;
             break;
           } else {
             handleStringError(parser, code, 1);
           }
         }
       } else if (parser.index < parser.end) {
-        if (char === 13 && parser.source.charCodeAt(parser.index) === 10) {
-          ret += String.fromCodePoint(char);
+        if (_char3 === 13 && parser.source.charCodeAt(parser.index) === 10) {
+          ret += String.fromCodePoint(_char3);
           parser.currentChar = parser.source.charCodeAt(++parser.index);
         }
-        if (((char & 83) < 3 && char === 10) || (char ^ 8232) <= 1) {
+        if (((_char3 & 83) < 3 && _char3 === 10) || (_char3 ^ 8232) <= 1) {
           parser.column = -1;
           parser.line++;
         }
-        ret += String.fromCodePoint(char);
+        ret += String.fromCodePoint(_char3);
       }
       if (parser.index >= parser.end) parser.report(17);
-      char = advanceChar(parser);
+      _char3 = advanceChar(parser);
     }
     advanceChar(parser);
     parser.tokenValue = ret;
@@ -2093,7 +2505,7 @@ var lib = (() => {
     while (ch !== 96) {
       switch (ch) {
         case 36: {
-          const index = parser.index + 1;
+          var index = parser.index + 1;
           if (index < parser.end && parser.source.charCodeAt(index) === 123) {
             parser.index = index;
             parser.column++;
@@ -2118,201 +2530,747 @@ var lib = (() => {
     parser.column--;
     return scanTemplate(parser, context);
   }
-  var errorMessages = {
-    [0]: "Unexpected token",
-    [30]: "Unexpected token: '%0'",
-    [1]: "Octal escape sequences are not allowed in strict mode",
-    [2]: "Octal escape sequences are not allowed in template strings",
-    [3]: "\\8 and \\9 are not allowed in template strings",
-    [4]: "Private identifier #%0 is not defined",
-    [5]: "Illegal Unicode escape sequence",
-    [6]: "Invalid code point %0",
-    [7]: "Invalid hexadecimal escape sequence",
-    [9]: "Octal literals are not allowed in strict mode",
-    [8]: "Decimal integer literals with a leading zero are forbidden in strict mode",
-    [10]: "Expected number in radix %0",
-    [151]:
-      "Invalid left-hand side assignment to a destructible right-hand side",
-    [11]: "Non-number found after exponent indicator",
-    [12]: "Invalid BigIntLiteral",
-    [13]: "No identifiers allowed directly after numeric literal",
-    [14]: "Escapes \\8 or \\9 are not syntactically valid escapes",
-    [15]: "Escapes \\8 or \\9 are not allowed in strict mode",
-    [16]: "Unterminated string literal",
-    [17]: "Unterminated template literal",
-    [18]: "Multiline comment was not closed properly",
-    [19]: "The identifier contained dynamic unicode escape that was not closed",
-    [20]: "Illegal character '%0'",
-    [21]: "Missing hexadecimal digits",
-    [22]: "Invalid implicit octal",
-    [23]: "Invalid line break in string literal",
-    [24]: "Only unicode escapes are legal in identifier names",
-    [25]: "Expected '%0'",
-    [26]: "Invalid left-hand side in assignment",
-    [27]: "Invalid left-hand side in async arrow",
-    [28]: 'Calls to super must be in the "constructor" method of a class expression or class declaration that has a superclass',
-    [29]: "Member access on super must be in a method",
-    [31]: "Await expression not allowed in formal parameter",
-    [32]: "Yield expression not allowed in formal parameter",
-    [95]: "Unexpected token: 'escaped keyword'",
-    [33]: "Unary expressions as the left operand of an exponentiation expression must be disambiguated with parentheses",
-    [123]:
-      "Async functions can only be declared at the top level or inside a block",
-    [34]: "Unterminated regular expression",
-    [35]: "Unexpected regular expression flag",
-    [36]: "Duplicate regular expression flag '%0'",
-    [37]: "%0 functions must have exactly %1 argument%2",
-    [38]: "Setter function argument must not be a rest parameter",
-    [39]: "%0 declaration must have a name in this context",
-    [40]: "Function name may not contain any reserved words or be eval or arguments in strict mode",
-    [41]: "The rest operator is missing an argument",
-    [42]: "A getter cannot be a generator",
-    [43]: "A setter cannot be a generator",
-    [44]: "A computed property name must be followed by a colon or paren",
-    [134]:
-      "Object literal keys that are strings or numbers must be a method or have a colon",
-    [46]: "Found `* async x(){}` but this should be `async * x(){}`",
-    [45]: "Getters and setters can not be generators",
-    [47]: "'%0' can not be generator method",
-    [48]: "No line break is allowed after '=>'",
-    [49]: "The left-hand side of the arrow can only be destructed through assignment",
-    [50]: "The binding declaration is not destructible",
-    [51]: "Async arrow can not be followed by new expression",
-    [52]: "Classes may not have a static property named 'prototype'",
-    [53]: "Class constructor may not be a %0",
-    [54]: "Duplicate constructor method in class",
-    [55]: "Invalid increment/decrement operand",
-    [56]: "Invalid use of `new` keyword on an increment/decrement expression",
-    [57]: "`=>` is an invalid assignment target",
-    [58]: "Rest element may not have a trailing comma",
-    [59]: "Missing initializer in %0 declaration",
-    [60]: "'for-%0' loop head declarations can not have an initializer",
-    [61]: "Invalid left-hand side in for-%0 loop: Must have a single binding",
-    [62]: "Invalid shorthand property initializer",
-    [63]: "Property name __proto__ appears more than once in object literal",
-    [64]: "Let is disallowed as a lexically bound name",
-    [65]: "Invalid use of '%0' inside new expression",
-    [66]: "Illegal 'use strict' directive in function with non-simple parameter list",
-    [67]: 'Identifier "let" disallowed as left-hand side expression in strict mode',
-    [68]: "Illegal continue statement",
-    [69]: "Illegal break statement",
-    [70]: "Cannot have `let[...]` as a var name in strict mode",
-    [71]: "Invalid destructuring assignment target",
-    [72]: "Rest parameter may not have a default initializer",
-    [73]: "The rest argument must the be last parameter",
-    [74]: "Invalid rest argument",
-    [76]: "In strict mode code, functions can only be declared at top level or inside a block",
-    [77]: "In non-strict mode code, functions can only be declared at top level, inside a block, or as the body of an if statement",
-    [78]: "Without web compatibility enabled functions can not be declared at top level, inside a block, or as the body of an if statement",
-    [79]: "Class declaration can't appear in single-statement context",
-    [80]: "Invalid left-hand side in for-%0",
-    [81]: "Invalid assignment in for-%0",
-    [82]: "for await (... of ...) is only valid in async functions and async generators",
-    [83]: "The first token after the template expression should be a continuation of the template",
-    [85]: "`let` declaration not allowed here and `let` cannot be a regular var name in strict mode",
-    [84]: "`let \n [` is a restricted production at the start of a statement",
-    [86]: "Catch clause requires exactly one parameter, not more (and no trailing comma)",
-    [87]: "Catch clause parameter does not support default values",
-    [88]: "Missing catch or finally after try",
-    [89]: "More than one default clause in switch statement",
-    [90]: "Illegal newline after throw",
-    [91]: "Strict mode code may not include a with statement",
-    [92]: "Illegal return statement",
-    [93]: "The left hand side of the for-header binding declaration is not destructible",
-    [94]: "new.target only allowed within functions or static blocks",
-    [96]: "'#' not followed by identifier",
-    [102]: "Invalid keyword",
-    [101]: "Can not use 'let' as a class name",
-    [100]: "'A lexical declaration can't define a 'let' binding",
-    [99]: "Can not use `let` as variable name in strict mode",
-    [97]: "'%0' may not be used as an identifier in this context",
-    [98]: "Await is only valid in async functions",
-    [103]: "The %0 keyword can only be used with the module goal",
-    [104]: "Unicode codepoint must not be greater than 0x10FFFF",
-    [105]: "%0 source must be string",
-    [106]: "Only a identifier or string can be used to indicate alias",
-    [107]: "Only '*' or '{...}' can be imported after default",
-    [108]: "Trailing decorator may be followed by method",
-    [109]: "Decorators can't be used with a constructor",
-    [110]: "Can not use `await` as identifier in module or async func",
-    [111]: "Can not use `await` as identifier in module",
-    [112]: "HTML comments are only allowed with web compatibility (Annex B)",
-    [113]:
-      "The identifier 'let' must not be in expression position in strict mode",
-    [114]: "Cannot assign to `eval` and `arguments` in strict mode",
-    [115]: "The left-hand side of a for-of loop may not start with 'let'",
-    [116]: "Block body arrows can not be immediately invoked without a group",
-    [117]: "Block body arrows can not be immediately accessed without a group",
-    [118]: "Unexpected strict mode reserved word",
-    [119]: "Unexpected eval or arguments in strict mode",
-    [120]: "Decorators must not be followed by a semicolon",
-    [121]: "Calling delete on expression not allowed in strict mode",
-    [122]: "Pattern can not have a tail",
-    [124]: "Can not have a `yield` expression on the left side of a ternary",
-    [125]: "An arrow function can not have a postfix update operator",
-    [126]: "Invalid object literal key character after generator star",
-    [127]: "Private fields can not be deleted",
-    [129]: "Classes may not have a field called constructor",
-    [128]: "Classes may not have a private element named constructor",
-    [130]:
-      "A class field initializer or static block may not contain arguments",
-    [131]: "Generators can only be declared at the top level or inside a block",
-    [132]:
-      "Async methods are a restricted production and cannot have a newline following it",
-    [133]: "Unexpected character after object literal property name",
-    [135]: "Invalid key token",
-    [136]: "Label '%0' has already been declared",
-    [137]: "continue statement must be nested within an iteration statement",
-    [138]: "Undefined label '%0'",
-    [139]: "Trailing comma is disallowed inside import(...) arguments",
-    [140]: "Invalid binding in JSON import",
-    [141]: "import() requires exactly one argument",
-    [142]: "Cannot use new with import(...)",
-    [143]: "... is not allowed in import()",
-    [144]: "Expected '=>'",
-    [145]: "Duplicate binding '%0'",
-    [146]: "Duplicate private identifier #%0",
-    [147]: "Cannot export a duplicate name '%0'",
-    [150]: "Duplicate %0 for-binding",
-    [148]:
-      "Exported binding '%0' needs to refer to a top-level declared variable",
-    [149]: "Unexpected private field",
-    [153]: "Numeric separators are not allowed at the end of numeric literals",
-    [152]: "Only one underscore is allowed as numeric separator",
-    [154]: "JSX value should be either an expression or a quoted JSX text",
-    [155]: "Expected corresponding JSX closing tag for %0",
-    [156]: "Adjacent JSX elements must be wrapped in an enclosing tag",
-    [157]: "JSX attributes must only be assigned a non-empty 'expression'",
-    [158]: "'%0' has already been declared",
-    [159]: "'%0' shadowed a catch clause binding",
-    [160]: "Dot property must be an identifier",
-    [161]: "Encountered invalid input after spread/rest argument",
-    [162]: "Catch without try",
-    [163]: "Finally without try",
-    [164]: "Expected corresponding closing tag for JSX fragment",
-    [165]:
-      "Coalescing and logical operators used together in the same expression must be disambiguated with parentheses",
-    [166]: "Invalid tagged template on optional chain",
-    [167]: "Invalid optional chain from super property",
-    [168]: "Invalid optional chain from new expression",
-    [169]: 'Cannot use "import.meta" outside a module',
-    [170]: "Leading decorators must be attached to a class declaration",
-    [171]: "An export name cannot include a lone surrogate, found %0",
-    [172]:
-      "A string literal cannot be used as an exported binding without `from`",
-    [173]: "Private fields can't be accessed on super",
-    [174]: "The only valid meta property for import is 'import.meta'",
-    [175]: "'import.meta' must not contain escaped characters",
-    [176]: 'cannot use "await" as identifier inside an async function',
-    [177]: 'cannot use "await" in static blocks'
-  };
-  var ParseError = class ParseError extends SyntaxError {
-    constructor(start, end, type, ...params) {
-      const description = errorMessages[type].replace(
-        /%(\d+)/g,
-        (_, i) => params[i]
-      );
-      const message =
+  var errorMessages =
+    ((_errorMessages = {}),
+    _defineProperty2(
+      _defineProperty2(
+        _defineProperty2(
+          _defineProperty2(
+            _defineProperty2(
+              _defineProperty2(
+                _defineProperty2(
+                  _defineProperty2(
+                    _defineProperty2(
+                      _defineProperty2(_errorMessages, 0, "Unexpected token"),
+                      30,
+                      "Unexpected token: '%0'"
+                    ),
+                    1,
+                    "Octal escape sequences are not allowed in strict mode"
+                  ),
+                  2,
+                  "Octal escape sequences are not allowed in template strings"
+                ),
+                3,
+                "\\8 and \\9 are not allowed in template strings"
+              ),
+              4,
+              "Private identifier #%0 is not defined"
+            ),
+            5,
+            "Illegal Unicode escape sequence"
+          ),
+          6,
+          "Invalid code point %0"
+        ),
+        7,
+        "Invalid hexadecimal escape sequence"
+      ),
+      9,
+      "Octal literals are not allowed in strict mode"
+    ),
+    _defineProperty2(
+      _defineProperty2(
+        _defineProperty2(
+          _defineProperty2(
+            _defineProperty2(
+              _defineProperty2(
+                _defineProperty2(
+                  _defineProperty2(
+                    _defineProperty2(
+                      _defineProperty2(
+                        _errorMessages,
+                        8,
+                        "Decimal integer literals with a leading zero are forbidden in strict mode"
+                      ),
+                      10,
+                      "Expected number in radix %0"
+                    ),
+                    151,
+                    "Invalid left-hand side assignment to a destructible right-hand side"
+                  ),
+                  11,
+                  "Non-number found after exponent indicator"
+                ),
+                12,
+                "Invalid BigIntLiteral"
+              ),
+              13,
+              "No identifiers allowed directly after numeric literal"
+            ),
+            14,
+            "Escapes \\8 or \\9 are not syntactically valid escapes"
+          ),
+          15,
+          "Escapes \\8 or \\9 are not allowed in strict mode"
+        ),
+        16,
+        "Unterminated string literal"
+      ),
+      17,
+      "Unterminated template literal"
+    ),
+    _defineProperty2(
+      _defineProperty2(
+        _defineProperty2(
+          _defineProperty2(
+            _defineProperty2(
+              _defineProperty2(
+                _defineProperty2(
+                  _defineProperty2(
+                    _defineProperty2(
+                      _defineProperty2(
+                        _errorMessages,
+                        18,
+                        "Multiline comment was not closed properly"
+                      ),
+                      19,
+                      "The identifier contained dynamic unicode escape that was not closed"
+                    ),
+                    20,
+                    "Illegal character '%0'"
+                  ),
+                  21,
+                  "Missing hexadecimal digits"
+                ),
+                22,
+                "Invalid implicit octal"
+              ),
+              23,
+              "Invalid line break in string literal"
+            ),
+            24,
+            "Only unicode escapes are legal in identifier names"
+          ),
+          25,
+          "Expected '%0'"
+        ),
+        26,
+        "Invalid left-hand side in assignment"
+      ),
+      27,
+      "Invalid left-hand side in async arrow"
+    ),
+    _defineProperty2(
+      _defineProperty2(
+        _defineProperty2(
+          _defineProperty2(
+            _defineProperty2(
+              _defineProperty2(
+                _defineProperty2(
+                  _defineProperty2(
+                    _defineProperty2(
+                      _defineProperty2(
+                        _errorMessages,
+                        28,
+                        'Calls to super must be in the "constructor" method of a class expression or class declaration that has a superclass'
+                      ),
+                      29,
+                      "Member access on super must be in a method"
+                    ),
+                    31,
+                    "Await expression not allowed in formal parameter"
+                  ),
+                  32,
+                  "Yield expression not allowed in formal parameter"
+                ),
+                95,
+                "Unexpected token: 'escaped keyword'"
+              ),
+              33,
+              "Unary expressions as the left operand of an exponentiation expression must be disambiguated with parentheses"
+            ),
+            123,
+            "Async functions can only be declared at the top level or inside a block"
+          ),
+          34,
+          "Unterminated regular expression"
+        ),
+        35,
+        "Unexpected regular expression flag"
+      ),
+      36,
+      "Duplicate regular expression flag '%0'"
+    ),
+    _defineProperty2(
+      _defineProperty2(
+        _defineProperty2(
+          _defineProperty2(
+            _defineProperty2(
+              _defineProperty2(
+                _defineProperty2(
+                  _defineProperty2(
+                    _defineProperty2(
+                      _defineProperty2(
+                        _errorMessages,
+                        37,
+                        "%0 functions must have exactly %1 argument%2"
+                      ),
+                      38,
+                      "Setter function argument must not be a rest parameter"
+                    ),
+                    39,
+                    "%0 declaration must have a name in this context"
+                  ),
+                  40,
+                  "Function name may not contain any reserved words or be eval or arguments in strict mode"
+                ),
+                41,
+                "The rest operator is missing an argument"
+              ),
+              42,
+              "A getter cannot be a generator"
+            ),
+            43,
+            "A setter cannot be a generator"
+          ),
+          44,
+          "A computed property name must be followed by a colon or paren"
+        ),
+        134,
+        "Object literal keys that are strings or numbers must be a method or have a colon"
+      ),
+      46,
+      "Found `* async x(){}` but this should be `async * x(){}`"
+    ),
+    _defineProperty2(
+      _defineProperty2(
+        _defineProperty2(
+          _defineProperty2(
+            _defineProperty2(
+              _defineProperty2(
+                _defineProperty2(
+                  _defineProperty2(
+                    _defineProperty2(
+                      _defineProperty2(
+                        _errorMessages,
+                        45,
+                        "Getters and setters can not be generators"
+                      ),
+                      47,
+                      "'%0' can not be generator method"
+                    ),
+                    48,
+                    "No line break is allowed after '=>'"
+                  ),
+                  49,
+                  "The left-hand side of the arrow can only be destructed through assignment"
+                ),
+                50,
+                "The binding declaration is not destructible"
+              ),
+              51,
+              "Async arrow can not be followed by new expression"
+            ),
+            52,
+            "Classes may not have a static property named 'prototype'"
+          ),
+          53,
+          "Class constructor may not be a %0"
+        ),
+        54,
+        "Duplicate constructor method in class"
+      ),
+      55,
+      "Invalid increment/decrement operand"
+    ),
+    _defineProperty2(
+      _defineProperty2(
+        _defineProperty2(
+          _defineProperty2(
+            _defineProperty2(
+              _defineProperty2(
+                _defineProperty2(
+                  _defineProperty2(
+                    _defineProperty2(
+                      _defineProperty2(
+                        _errorMessages,
+                        56,
+                        "Invalid use of `new` keyword on an increment/decrement expression"
+                      ),
+                      57,
+                      "`=>` is an invalid assignment target"
+                    ),
+                    58,
+                    "Rest element may not have a trailing comma"
+                  ),
+                  59,
+                  "Missing initializer in %0 declaration"
+                ),
+                60,
+                "'for-%0' loop head declarations can not have an initializer"
+              ),
+              61,
+              "Invalid left-hand side in for-%0 loop: Must have a single binding"
+            ),
+            62,
+            "Invalid shorthand property initializer"
+          ),
+          63,
+          "Property name __proto__ appears more than once in object literal"
+        ),
+        64,
+        "Let is disallowed as a lexically bound name"
+      ),
+      65,
+      "Invalid use of '%0' inside new expression"
+    ),
+    _defineProperty2(
+      _defineProperty2(
+        _defineProperty2(
+          _defineProperty2(
+            _defineProperty2(
+              _defineProperty2(
+                _defineProperty2(
+                  _defineProperty2(
+                    _defineProperty2(
+                      _defineProperty2(
+                        _errorMessages,
+                        66,
+                        "Illegal 'use strict' directive in function with non-simple parameter list"
+                      ),
+                      67,
+                      'Identifier "let" disallowed as left-hand side expression in strict mode'
+                    ),
+                    68,
+                    "Illegal continue statement"
+                  ),
+                  69,
+                  "Illegal break statement"
+                ),
+                70,
+                "Cannot have `let[...]` as a var name in strict mode"
+              ),
+              71,
+              "Invalid destructuring assignment target"
+            ),
+            72,
+            "Rest parameter may not have a default initializer"
+          ),
+          73,
+          "The rest argument must the be last parameter"
+        ),
+        74,
+        "Invalid rest argument"
+      ),
+      76,
+      "In strict mode code, functions can only be declared at top level or inside a block"
+    ),
+    _defineProperty2(
+      _defineProperty2(
+        _defineProperty2(
+          _defineProperty2(
+            _defineProperty2(
+              _defineProperty2(
+                _defineProperty2(
+                  _defineProperty2(
+                    _defineProperty2(
+                      _defineProperty2(
+                        _errorMessages,
+                        77,
+                        "In non-strict mode code, functions can only be declared at top level, inside a block, or as the body of an if statement"
+                      ),
+                      78,
+                      "Without web compatibility enabled functions can not be declared at top level, inside a block, or as the body of an if statement"
+                    ),
+                    79,
+                    "Class declaration can't appear in single-statement context"
+                  ),
+                  80,
+                  "Invalid left-hand side in for-%0"
+                ),
+                81,
+                "Invalid assignment in for-%0"
+              ),
+              82,
+              "for await (... of ...) is only valid in async functions and async generators"
+            ),
+            83,
+            "The first token after the template expression should be a continuation of the template"
+          ),
+          85,
+          "`let` declaration not allowed here and `let` cannot be a regular var name in strict mode"
+        ),
+        84,
+        "`let \n [` is a restricted production at the start of a statement"
+      ),
+      86,
+      "Catch clause requires exactly one parameter, not more (and no trailing comma)"
+    ),
+    _defineProperty2(
+      _defineProperty2(
+        _defineProperty2(
+          _defineProperty2(
+            _defineProperty2(
+              _defineProperty2(
+                _defineProperty2(
+                  _defineProperty2(
+                    _defineProperty2(
+                      _defineProperty2(
+                        _errorMessages,
+                        87,
+                        "Catch clause parameter does not support default values"
+                      ),
+                      88,
+                      "Missing catch or finally after try"
+                    ),
+                    89,
+                    "More than one default clause in switch statement"
+                  ),
+                  90,
+                  "Illegal newline after throw"
+                ),
+                91,
+                "Strict mode code may not include a with statement"
+              ),
+              92,
+              "Illegal return statement"
+            ),
+            93,
+            "The left hand side of the for-header binding declaration is not destructible"
+          ),
+          94,
+          "new.target only allowed within functions or static blocks"
+        ),
+        96,
+        "'#' not followed by identifier"
+      ),
+      102,
+      "Invalid keyword"
+    ),
+    _defineProperty2(
+      _defineProperty2(
+        _defineProperty2(
+          _defineProperty2(
+            _defineProperty2(
+              _defineProperty2(
+                _defineProperty2(
+                  _defineProperty2(
+                    _defineProperty2(
+                      _defineProperty2(
+                        _errorMessages,
+                        101,
+                        "Can not use 'let' as a class name"
+                      ),
+                      100,
+                      "'A lexical declaration can't define a 'let' binding"
+                    ),
+                    99,
+                    "Can not use `let` as variable name in strict mode"
+                  ),
+                  97,
+                  "'%0' may not be used as an identifier in this context"
+                ),
+                98,
+                "Await is only valid in async functions"
+              ),
+              103,
+              "The %0 keyword can only be used with the module goal"
+            ),
+            104,
+            "Unicode codepoint must not be greater than 0x10FFFF"
+          ),
+          105,
+          "%0 source must be string"
+        ),
+        106,
+        "Only a identifier or string can be used to indicate alias"
+      ),
+      107,
+      "Only '*' or '{...}' can be imported after default"
+    ),
+    _defineProperty2(
+      _defineProperty2(
+        _defineProperty2(
+          _defineProperty2(
+            _defineProperty2(
+              _defineProperty2(
+                _defineProperty2(
+                  _defineProperty2(
+                    _defineProperty2(
+                      _defineProperty2(
+                        _errorMessages,
+                        108,
+                        "Trailing decorator may be followed by method"
+                      ),
+                      109,
+                      "Decorators can't be used with a constructor"
+                    ),
+                    110,
+                    "Can not use `await` as identifier in module or async func"
+                  ),
+                  111,
+                  "Can not use `await` as identifier in module"
+                ),
+                112,
+                "HTML comments are only allowed with web compatibility (Annex B)"
+              ),
+              113,
+              "The identifier 'let' must not be in expression position in strict mode"
+            ),
+            114,
+            "Cannot assign to `eval` and `arguments` in strict mode"
+          ),
+          115,
+          "The left-hand side of a for-of loop may not start with 'let'"
+        ),
+        116,
+        "Block body arrows can not be immediately invoked without a group"
+      ),
+      117,
+      "Block body arrows can not be immediately accessed without a group"
+    ),
+    _defineProperty2(
+      _defineProperty2(
+        _defineProperty2(
+          _defineProperty2(
+            _defineProperty2(
+              _defineProperty2(
+                _defineProperty2(
+                  _defineProperty2(
+                    _defineProperty2(
+                      _defineProperty2(
+                        _errorMessages,
+                        118,
+                        "Unexpected strict mode reserved word"
+                      ),
+                      119,
+                      "Unexpected eval or arguments in strict mode"
+                    ),
+                    120,
+                    "Decorators must not be followed by a semicolon"
+                  ),
+                  121,
+                  "Calling delete on expression not allowed in strict mode"
+                ),
+                122,
+                "Pattern can not have a tail"
+              ),
+              124,
+              "Can not have a `yield` expression on the left side of a ternary"
+            ),
+            125,
+            "An arrow function can not have a postfix update operator"
+          ),
+          126,
+          "Invalid object literal key character after generator star"
+        ),
+        127,
+        "Private fields can not be deleted"
+      ),
+      129,
+      "Classes may not have a field called constructor"
+    ),
+    _defineProperty2(
+      _defineProperty2(
+        _defineProperty2(
+          _defineProperty2(
+            _defineProperty2(
+              _defineProperty2(
+                _defineProperty2(
+                  _defineProperty2(
+                    _defineProperty2(
+                      _defineProperty2(
+                        _errorMessages,
+                        128,
+                        "Classes may not have a private element named constructor"
+                      ),
+                      130,
+                      "A class field initializer or static block may not contain arguments"
+                    ),
+                    131,
+                    "Generators can only be declared at the top level or inside a block"
+                  ),
+                  132,
+                  "Async methods are a restricted production and cannot have a newline following it"
+                ),
+                133,
+                "Unexpected character after object literal property name"
+              ),
+              135,
+              "Invalid key token"
+            ),
+            136,
+            "Label '%0' has already been declared"
+          ),
+          137,
+          "continue statement must be nested within an iteration statement"
+        ),
+        138,
+        "Undefined label '%0'"
+      ),
+      139,
+      "Trailing comma is disallowed inside import(...) arguments"
+    ),
+    _defineProperty2(
+      _defineProperty2(
+        _defineProperty2(
+          _defineProperty2(
+            _defineProperty2(
+              _defineProperty2(
+                _defineProperty2(
+                  _defineProperty2(
+                    _defineProperty2(
+                      _defineProperty2(
+                        _errorMessages,
+                        140,
+                        "Invalid binding in JSON import"
+                      ),
+                      141,
+                      "import() requires exactly one argument"
+                    ),
+                    142,
+                    "Cannot use new with import(...)"
+                  ),
+                  143,
+                  "... is not allowed in import()"
+                ),
+                144,
+                "Expected '=>'"
+              ),
+              145,
+              "Duplicate binding '%0'"
+            ),
+            146,
+            "Duplicate private identifier #%0"
+          ),
+          147,
+          "Cannot export a duplicate name '%0'"
+        ),
+        150,
+        "Duplicate %0 for-binding"
+      ),
+      148,
+      "Exported binding '%0' needs to refer to a top-level declared variable"
+    ),
+    _defineProperty2(
+      _defineProperty2(
+        _defineProperty2(
+          _defineProperty2(
+            _defineProperty2(
+              _defineProperty2(
+                _defineProperty2(
+                  _defineProperty2(
+                    _defineProperty2(
+                      _defineProperty2(
+                        _errorMessages,
+                        149,
+                        "Unexpected private field"
+                      ),
+                      153,
+                      "Numeric separators are not allowed at the end of numeric literals"
+                    ),
+                    152,
+                    "Only one underscore is allowed as numeric separator"
+                  ),
+                  154,
+                  "JSX value should be either an expression or a quoted JSX text"
+                ),
+                155,
+                "Expected corresponding JSX closing tag for %0"
+              ),
+              156,
+              "Adjacent JSX elements must be wrapped in an enclosing tag"
+            ),
+            157,
+            "JSX attributes must only be assigned a non-empty 'expression'"
+          ),
+          158,
+          "'%0' has already been declared"
+        ),
+        159,
+        "'%0' shadowed a catch clause binding"
+      ),
+      160,
+      "Dot property must be an identifier"
+    ),
+    _defineProperty2(
+      _defineProperty2(
+        _defineProperty2(
+          _defineProperty2(
+            _defineProperty2(
+              _defineProperty2(
+                _defineProperty2(
+                  _defineProperty2(
+                    _defineProperty2(
+                      _defineProperty2(
+                        _errorMessages,
+                        161,
+                        "Encountered invalid input after spread/rest argument"
+                      ),
+                      162,
+                      "Catch without try"
+                    ),
+                    163,
+                    "Finally without try"
+                  ),
+                  164,
+                  "Expected corresponding closing tag for JSX fragment"
+                ),
+                165,
+                "Coalescing and logical operators used together in the same expression must be disambiguated with parentheses"
+              ),
+              166,
+              "Invalid tagged template on optional chain"
+            ),
+            167,
+            "Invalid optional chain from super property"
+          ),
+          168,
+          "Invalid optional chain from new expression"
+        ),
+        169,
+        'Cannot use "import.meta" outside a module'
+      ),
+      170,
+      "Leading decorators must be attached to a class declaration"
+    ),
+    _defineProperty2(
+      _defineProperty2(
+        _defineProperty2(
+          _defineProperty2(
+            _defineProperty2(
+              _defineProperty2(
+                _defineProperty2(
+                  _errorMessages,
+                  171,
+                  "An export name cannot include a lone surrogate, found %0"
+                ),
+                172,
+                "A string literal cannot be used as an exported binding without `from`"
+              ),
+              173,
+              "Private fields can't be accessed on super"
+            ),
+            174,
+            "The only valid meta property for import is 'import.meta'"
+          ),
+          175,
+          "'import.meta' must not contain escaped characters"
+        ),
+        176,
+        'cannot use "await" as identifier inside an async function'
+      ),
+      177,
+      'cannot use "await" in static blocks'
+    ));
+  var ParseError = /*#__PURE__*/ (function (_SyntaxError) {
+    function ParseError(start, end, type) {
+      var _this;
+      for (
+        var _len = arguments.length,
+          params = new Array(_len > 3 ? _len - 3 : 0),
+          _key = 3;
+        _key < _len;
+        _key++
+      ) {
+        params[_key - 3] = arguments[_key];
+      }
+      _classCallCheck(this, ParseError);
+      var description = errorMessages[type].replace(/%(\d+)/g, function (_, i) {
+        return params[i];
+      });
+      var message =
         "[" +
         start.line +
         ":" +
@@ -2323,16 +3281,16 @@ var lib = (() => {
         end.column +
         "]: " +
         description;
-      super(message);
-      _defineProperty(this, "start", void 0);
-      _defineProperty(this, "end", void 0);
-      _defineProperty(this, "range", void 0);
-      _defineProperty(this, "loc", void 0);
-      _defineProperty(this, "description", void 0);
-      this.start = start.index;
-      this.end = end.index;
-      this.range = [start.index, end.index];
-      this.loc = {
+      _this = _callSuper(this, ParseError, [message]);
+      _defineProperty(_this, "start", void 0);
+      _defineProperty(_this, "end", void 0);
+      _defineProperty(_this, "range", void 0);
+      _defineProperty(_this, "loc", void 0);
+      _defineProperty(_this, "description", void 0);
+      _this.start = start.index;
+      _this.end = end.index;
+      _this.range = [start.index, end.index];
+      _this.loc = {
         start: {
           line: start.line,
           column: start.column
@@ -2342,107 +3300,110 @@ var lib = (() => {
           column: end.column
         }
       };
-      this.description = description;
+      _this.description = description;
+      return _this;
     }
-  };
+    _inherits(ParseError, _SyntaxError);
+    return _createClass(ParseError);
+  })(/*#__PURE__*/ _wrapNativeSuper(SyntaxError));
   function scanNumber(parser, context, kind) {
-    let char = parser.currentChar;
-    let value = 0;
-    let digit = 9;
-    let atStart = kind & 64 ? 0 : 1;
-    let digits = 0;
-    let allowSeparator = 0;
+    var _char4 = parser.currentChar;
+    var value = 0;
+    var digit = 9;
+    var atStart = kind & 64 ? 0 : 1;
+    var digits = 0;
+    var allowSeparator = 0;
     if (kind & 64) {
-      value = "." + scanDecimalDigitsOrSeparator(parser, char);
-      char = parser.currentChar;
-      if (char === 110) parser.report(12);
+      value = "." + scanDecimalDigitsOrSeparator(parser, _char4);
+      _char4 = parser.currentChar;
+      if (_char4 === 110) parser.report(12);
     } else {
-      if (char === 48) {
-        char = advanceChar(parser);
-        if ((char | 32) === 120) {
+      if (_char4 === 48) {
+        _char4 = advanceChar(parser);
+        if ((_char4 | 32) === 120) {
           kind = 8 | 128;
-          char = advanceChar(parser);
-          while (CharTypes[char] & (64 | 4096)) {
-            if (char === 95) {
+          _char4 = advanceChar(parser);
+          while (CharTypes[_char4] & (64 | 4096)) {
+            if (_char4 === 95) {
               if (!allowSeparator) parser.report(152);
               allowSeparator = 0;
-              char = advanceChar(parser);
+              _char4 = advanceChar(parser);
               continue;
             }
             allowSeparator = 1;
-            value = value * 16 + toHex(char);
+            value = value * 16 + toHex(_char4);
             digits++;
-            char = advanceChar(parser);
+            _char4 = advanceChar(parser);
           }
           if (digits === 0 || !allowSeparator) {
             parser.report(digits === 0 ? 21 : 153);
           }
-        } else if ((char | 32) === 111) {
+        } else if ((_char4 | 32) === 111) {
           kind = 4 | 128;
-          char = advanceChar(parser);
-          while (CharTypes[char] & (32 | 4096)) {
-            if (char === 95) {
+          _char4 = advanceChar(parser);
+          while (CharTypes[_char4] & (32 | 4096)) {
+            if (_char4 === 95) {
               if (!allowSeparator) {
                 parser.report(152);
               }
               allowSeparator = 0;
-              char = advanceChar(parser);
+              _char4 = advanceChar(parser);
               continue;
             }
             allowSeparator = 1;
-            value = value * 8 + (char - 48);
+            value = value * 8 + (_char4 - 48);
             digits++;
-            char = advanceChar(parser);
+            _char4 = advanceChar(parser);
           }
           if (digits === 0 || !allowSeparator) {
             parser.report(digits === 0 ? 0 : 153);
           }
-        } else if ((char | 32) === 98) {
+        } else if ((_char4 | 32) === 98) {
           kind = 2 | 128;
-          char = advanceChar(parser);
-          while (CharTypes[char] & (128 | 4096)) {
-            if (char === 95) {
+          _char4 = advanceChar(parser);
+          while (CharTypes[_char4] & (128 | 4096)) {
+            if (_char4 === 95) {
               if (!allowSeparator) {
                 parser.report(152);
               }
               allowSeparator = 0;
-              char = advanceChar(parser);
+              _char4 = advanceChar(parser);
               continue;
             }
             allowSeparator = 1;
-            value = value * 2 + (char - 48);
+            value = value * 2 + (_char4 - 48);
             digits++;
-            char = advanceChar(parser);
+            _char4 = advanceChar(parser);
           }
           if (digits === 0 || !allowSeparator) {
             parser.report(digits === 0 ? 0 : 153);
           }
-        } else if (CharTypes[char] & 32) {
+        } else if (CharTypes[_char4] & 32) {
           if (context & 1) parser.report(1);
           kind = 1;
-          while (CharTypes[char] & 16) {
-            if (CharTypes[char] & 512) {
+          while (CharTypes[_char4] & 16) {
+            if (CharTypes[_char4] & 512) {
               kind = 32;
               atStart = 0;
               break;
             }
-            value = value * 8 + (char - 48);
-            char = advanceChar(parser);
+            value = value * 8 + (_char4 - 48);
+            _char4 = advanceChar(parser);
           }
-        } else if (CharTypes[char] & 512) {
+        } else if (CharTypes[_char4] & 512) {
           if (context & 1) parser.report(1);
           parser.flags |= 64;
           kind = 32;
-        } else if (char === 95) {
+        } else if (_char4 === 95) {
           parser.report(0);
         }
       }
       if (kind & 48) {
         if (atStart) {
-          while (digit >= 0 && CharTypes[char] & (16 | 4096)) {
-            if (char === 95) {
-              char = advanceChar(parser);
-              if (char === 95 || kind & 32) {
+          while (digit >= 0 && CharTypes[_char4] & (16 | 4096)) {
+            if (_char4 === 95) {
+              _char4 = advanceChar(parser);
+              if (_char4 === 95 || kind & 32) {
                 throw new ParseError(
                   parser.currentLocation,
                   {
@@ -2457,8 +3418,8 @@ var lib = (() => {
               continue;
             }
             allowSeparator = 0;
-            value = 10 * value + (char - 48);
-            char = advanceChar(parser);
+            value = 10 * value + (_char4 - 48);
+            _char4 = advanceChar(parser);
             --digit;
           }
           if (allowSeparator) {
@@ -2472,7 +3433,7 @@ var lib = (() => {
               153
             );
           }
-          if (digit >= 0 && !isIdentifierStart(char) && char !== 46) {
+          if (digit >= 0 && !isIdentifierStart(_char4) && _char4 !== 46) {
             parser.tokenValue = value;
             if (parser.options.raw)
               parser.tokenRaw = parser.source.slice(
@@ -2482,37 +3443,37 @@ var lib = (() => {
             return 134283266;
           }
         }
-        value += scanDecimalDigitsOrSeparator(parser, char);
-        char = parser.currentChar;
-        if (char === 46) {
+        value += scanDecimalDigitsOrSeparator(parser, _char4);
+        _char4 = parser.currentChar;
+        if (_char4 === 46) {
           if (advanceChar(parser) === 95) parser.report(0);
           kind = 64;
           value +=
             "." + scanDecimalDigitsOrSeparator(parser, parser.currentChar);
-          char = parser.currentChar;
+          _char4 = parser.currentChar;
         }
       }
     }
-    const end = parser.index;
-    let isBigInt = 0;
-    if (char === 110 && kind & 128) {
+    var end = parser.index;
+    var isBigInt = 0;
+    if (_char4 === 110 && kind & 128) {
       isBigInt = 1;
-      char = advanceChar(parser);
+      _char4 = advanceChar(parser);
     } else {
-      if ((char | 32) === 101) {
-        char = advanceChar(parser);
-        if (CharTypes[char] & 256) char = advanceChar(parser);
-        const { index } = parser;
-        if ((CharTypes[char] & 16) === 0) parser.report(11);
+      if ((_char4 | 32) === 101) {
+        _char4 = advanceChar(parser);
+        if (CharTypes[_char4] & 256) _char4 = advanceChar(parser);
+        var index = parser.index;
+        if ((CharTypes[_char4] & 16) === 0) parser.report(11);
         value +=
           parser.source.substring(end, index) +
-          scanDecimalDigitsOrSeparator(parser, char);
-        char = parser.currentChar;
+          scanDecimalDigitsOrSeparator(parser, _char4);
+        _char4 = parser.currentChar;
       }
     }
     if (
-      (parser.index < parser.end && CharTypes[char] & 16) ||
-      isIdentifierStart(char)
+      (parser.index < parser.end && CharTypes[_char4] & 16) ||
+      isIdentifierStart(_char4)
     ) {
       parser.report(13);
     }
@@ -2533,15 +3494,15 @@ var lib = (() => {
       parser.tokenRaw = parser.source.slice(parser.tokenIndex, parser.index);
     return 134283266;
   }
-  function scanDecimalDigitsOrSeparator(parser, char) {
-    let allowSeparator = 0;
-    let start = parser.index;
-    let ret = "";
-    while (CharTypes[char] & (16 | 4096)) {
-      if (char === 95) {
-        const { index } = parser;
-        char = advanceChar(parser);
-        if (char === 95) {
+  function scanDecimalDigitsOrSeparator(parser, _char5) {
+    var allowSeparator = 0;
+    var start = parser.index;
+    var ret = "";
+    while (CharTypes[_char5] & (16 | 4096)) {
+      if (_char5 === 95) {
+        var index = parser.index;
+        _char5 = advanceChar(parser);
+        if (_char5 === 95) {
           throw new ParseError(
             parser.currentLocation,
             {
@@ -2558,7 +3519,7 @@ var lib = (() => {
         continue;
       }
       allowSeparator = 0;
-      char = advanceChar(parser);
+      _char5 = advanceChar(parser);
     }
     if (allowSeparator) {
       throw new ParseError(
@@ -2811,18 +3772,18 @@ var lib = (() => {
     switch (node.type) {
       case "ArrayExpression": {
         node.type = "ArrayPattern";
-        const { elements } = node;
-        for (let i = 0, n = elements.length; i < n; ++i) {
-          const element = elements[i];
+        var elements = node.elements;
+        for (var i = 0, n = elements.length; i < n; ++i) {
+          var element = elements[i];
           if (element) reinterpretToPattern(parser, element);
         }
         return;
       }
       case "ObjectExpression": {
         node.type = "ObjectPattern";
-        const { properties } = node;
-        for (let i = 0, n = properties.length; i < n; ++i) {
-          reinterpretToPattern(parser, properties[i]);
+        var properties = node.properties;
+        for (var _i2 = 0, _n = properties.length; _i2 < _n; ++_i2) {
+          reinterpretToPattern(parser, properties[_i2]);
         }
         return;
       }
@@ -2916,7 +3877,7 @@ var lib = (() => {
     return 0;
   }
   function validateAndDeclareLabel(parser, labels, name) {
-    let set = labels;
+    var set = labels;
     while (set) {
       if (set["$" + name]) parser.report(136, name);
       set = set["$"];
@@ -2969,7 +3930,7 @@ var lib = (() => {
       : scanIdentifierSlowCase(parser, context, 0, isValidAsKeyword);
   }
   function scanUnicodeIdentifier(parser, context) {
-    const cookedChar = scanIdentifierUnicodeEscape(parser);
+    var cookedChar = scanIdentifierUnicodeEscape(parser);
     if (!isIdentifierStart(cookedChar)) parser.report(5);
     parser.tokenValue = String.fromCodePoint(cookedChar);
     return scanIdentifierSlowCase(
@@ -2985,18 +3946,18 @@ var lib = (() => {
     hasEscape,
     isValidAsKeyword
   ) {
-    let start = parser.index;
+    var start = parser.index;
     while (parser.index < parser.end) {
       if (parser.currentChar === 92) {
         parser.tokenValue += parser.source.slice(start, parser.index);
         hasEscape = 1;
-        const code = scanIdentifierUnicodeEscape(parser);
+        var code = scanIdentifierUnicodeEscape(parser);
         if (!isIdentifierPart(code)) parser.report(5);
         isValidAsKeyword = isValidAsKeyword && CharTypes[code] & 4;
         parser.tokenValue += String.fromCodePoint(code);
         start = parser.index;
       } else {
-        const merged = consumePossibleSurrogatePair(parser);
+        var merged = consumePossibleSurrogatePair(parser);
         if (merged > 0) {
           if (!isIdentifierPart(merged)) {
             parser.report(20, String.fromCodePoint(merged));
@@ -3013,9 +3974,9 @@ var lib = (() => {
     if (parser.index <= parser.end) {
       parser.tokenValue += parser.source.slice(start, parser.index);
     }
-    const { length } = parser.tokenValue;
+    var length = parser.tokenValue.length;
     if (isValidAsKeyword && length >= 2 && length <= 11) {
-      const token = getOwnProperty(descKeywordTable, parser.tokenValue);
+      var token = getOwnProperty(descKeywordTable, parser.tokenValue);
       if (token === void 0) return 208897 | (hasEscape ? -2147483648 : 0);
       if (!hasEscape) return token;
       if (token === 209006) {
@@ -3065,11 +4026,11 @@ var lib = (() => {
     return 208897 | (hasEscape ? -2147483648 : 0);
   }
   function scanPrivateIdentifier(parser) {
-    let char = advanceChar(parser);
-    if (char === 92) return 130;
-    const merged = consumePossibleSurrogatePair(parser);
-    if (merged) char = merged;
-    if (!isIdentifierStart(char)) parser.report(96);
+    var _char6 = advanceChar(parser);
+    if (_char6 === 92) return 130;
+    var merged = consumePossibleSurrogatePair(parser);
+    if (merged) _char6 = merged;
+    if (!isIdentifierStart(_char6)) parser.report(96);
     return 130;
   }
   function scanIdentifierUnicodeEscape(parser) {
@@ -3081,10 +4042,10 @@ var lib = (() => {
     return scanUnicodeEscape(parser);
   }
   function scanUnicodeEscape(parser) {
-    let codePoint = 0;
-    const char = parser.currentChar;
-    if (char === 123) {
-      const begin = parser.index - 2;
+    var codePoint = 0;
+    var _char7 = parser.currentChar;
+    if (_char7 === 123) {
+      var begin = parser.index - 2;
       while (CharTypes[advanceChar(parser)] & 64) {
         codePoint = (codePoint << 4) | toHex(parser.currentChar);
         if (codePoint > 1114111)
@@ -3112,15 +4073,15 @@ var lib = (() => {
       advanceChar(parser);
       return codePoint;
     }
-    if ((CharTypes[char] & 64) === 0) parser.report(7);
-    const char2 = parser.source.charCodeAt(parser.index + 1);
+    if ((CharTypes[_char7] & 64) === 0) parser.report(7);
+    var char2 = parser.source.charCodeAt(parser.index + 1);
     if ((CharTypes[char2] & 64) === 0) parser.report(7);
-    const char3 = parser.source.charCodeAt(parser.index + 2);
+    var char3 = parser.source.charCodeAt(parser.index + 2);
     if ((CharTypes[char3] & 64) === 0) parser.report(7);
-    const char4 = parser.source.charCodeAt(parser.index + 3);
+    var char4 = parser.source.charCodeAt(parser.index + 3);
     if ((CharTypes[char4] & 64) === 0) parser.report(7);
     codePoint =
-      (toHex(char) << 12) |
+      (toHex(_char7) << 12) |
       (toHex(char2) << 8) |
       (toHex(char3) << 4) |
       toHex(char4);
@@ -3151,16 +4112,16 @@ var lib = (() => {
     parser.setToken(scanSingleToken(parser, context, 0));
   }
   function scanSingleToken(parser, context, state) {
-    const isStartOfLine = parser.index === 0;
-    const { source } = parser;
-    let start = parser.currentLocation;
+    var isStartOfLine = parser.index === 0;
+    var source = parser.source;
+    var start = parser.currentLocation;
     while (parser.index < parser.end) {
       parser.tokenIndex = parser.index;
       parser.tokenColumn = parser.column;
       parser.tokenLine = parser.line;
-      let char = parser.currentChar;
-      if (char <= 126) {
-        const token = TokenLookup[char];
+      var _char8 = parser.currentChar;
+      if (_char8 <= 126) {
+        var token = TokenLookup[_char8];
         switch (token) {
           case 67174411:
           case 16:
@@ -3183,7 +4144,7 @@ var lib = (() => {
           case 134283266:
             return scanNumber(parser, context, 16 | 128);
           case 134283267:
-            return scanString(parser, context, char);
+            return scanString(parser, context, _char8);
           case 131:
             return scanTemplate(parser, context);
           case 136:
@@ -3202,7 +4163,7 @@ var lib = (() => {
             state = (state & -5) | 1;
             break;
           case 8456256: {
-            const ch = advanceChar(parser);
+            var ch = advanceChar(parser);
             if (parser.index < parser.end) {
               if (ch === 60) {
                 if (parser.index < parser.end && advanceChar(parser) === 61) {
@@ -3215,7 +4176,7 @@ var lib = (() => {
                 return 8390718;
               }
               if (ch === 33) {
-                const index = parser.index + 1;
+                var index = parser.index + 1;
                 if (
                   index + 1 < parser.end &&
                   source.charCodeAt(index) === 45 &&
@@ -3241,15 +4202,15 @@ var lib = (() => {
           }
           case 1077936155: {
             advanceChar(parser);
-            const ch = parser.currentChar;
-            if (ch === 61) {
+            var _ch2 = parser.currentChar;
+            if (_ch2 === 61) {
               if (advanceChar(parser) === 61) {
                 advanceChar(parser);
                 return 8390458;
               }
               return 8390460;
             }
-            if (ch === 62) {
+            if (_ch2 === 62) {
               advanceChar(parser);
               return 10;
             }
@@ -3271,12 +4232,12 @@ var lib = (() => {
           case 8391476: {
             advanceChar(parser);
             if (parser.index >= parser.end) return 8391476;
-            const ch = parser.currentChar;
-            if (ch === 61) {
+            var _ch3 = parser.currentChar;
+            if (_ch3 === 61) {
               advanceChar(parser);
               return 4194338;
             }
-            if (ch !== 42) return 8391476;
+            if (_ch3 !== 42) return 8391476;
             if (advanceChar(parser) !== 61) return 8391735;
             advanceChar(parser);
             return 4194335;
@@ -3287,12 +4248,12 @@ var lib = (() => {
             return 4194341;
           case 25233968: {
             advanceChar(parser);
-            const ch = parser.currentChar;
-            if (ch === 43) {
+            var _ch4 = parser.currentChar;
+            if (_ch4 === 43) {
               advanceChar(parser);
               return 33619993;
             }
-            if (ch === 61) {
+            if (_ch4 === 61) {
               advanceChar(parser);
               return 4194336;
             }
@@ -3300,8 +4261,8 @@ var lib = (() => {
           }
           case 25233969: {
             advanceChar(parser);
-            const ch = parser.currentChar;
-            if (ch === 45) {
+            var _ch5 = parser.currentChar;
+            if (_ch5 === 45) {
               advanceChar(parser);
               if ((state & 1 || isStartOfLine) && parser.currentChar === 62) {
                 if (!parser.options.webcompat) parser.report(112);
@@ -3319,7 +4280,7 @@ var lib = (() => {
               }
               return 33619994;
             }
-            if (ch === 61) {
+            if (_ch5 === 61) {
               advanceChar(parser);
               return 4194337;
             }
@@ -3328,8 +4289,8 @@ var lib = (() => {
           case 8457014: {
             advanceChar(parser);
             if (parser.index < parser.end) {
-              const ch = parser.currentChar;
-              if (ch === 47) {
+              var _ch6 = parser.currentChar;
+              if (_ch6 === 47) {
                 advanceChar(parser);
                 state = skipSingleLineComment(
                   parser,
@@ -3341,7 +4302,7 @@ var lib = (() => {
                 start = parser.tokenStart;
                 continue;
               }
-              if (ch === 42) {
+              if (_ch6 === 42) {
                 advanceChar(parser);
                 state = skipMultiLineComment(parser, source, state);
                 start = parser.tokenStart;
@@ -3350,7 +4311,7 @@ var lib = (() => {
               if (context & 32) {
                 return scanRegularExpression(parser);
               }
-              if (ch === 61) {
+              if (_ch6 === 61) {
                 advanceChar(parser);
                 return 4259875;
               }
@@ -3358,12 +4319,12 @@ var lib = (() => {
             return 8457014;
           }
           case 67108877: {
-            const next = advanceChar(parser);
+            var next = advanceChar(parser);
             if (next >= 48 && next <= 57)
               return scanNumber(parser, context, 64 | 16);
             if (next === 46) {
-              const index = parser.index + 1;
-              if (index < parser.end && source.charCodeAt(index) === 46) {
+              var _index2 = parser.index + 1;
+              if (_index2 < parser.end && source.charCodeAt(_index2) === 46) {
                 parser.column += 2;
                 parser.currentChar = source.charCodeAt((parser.index += 2));
                 return 14;
@@ -3373,8 +4334,8 @@ var lib = (() => {
           }
           case 8389702: {
             advanceChar(parser);
-            const ch = parser.currentChar;
-            if (ch === 124) {
+            var _ch7 = parser.currentChar;
+            if (_ch7 === 124) {
               advanceChar(parser);
               if (parser.currentChar === 61) {
                 advanceChar(parser);
@@ -3382,7 +4343,7 @@ var lib = (() => {
               }
               return 8913465;
             }
-            if (ch === 61) {
+            if (_ch7 === 61) {
               advanceChar(parser);
               return 4194342;
             }
@@ -3390,15 +4351,15 @@ var lib = (() => {
           }
           case 8390721: {
             advanceChar(parser);
-            const ch = parser.currentChar;
-            if (ch === 61) {
+            var _ch8 = parser.currentChar;
+            if (_ch8 === 61) {
               advanceChar(parser);
               return 8390719;
             }
-            if (ch !== 62) return 8390721;
+            if (_ch8 !== 62) return 8390721;
             advanceChar(parser);
             if (parser.index < parser.end) {
-              const ch2 = parser.currentChar;
+              var ch2 = parser.currentChar;
               if (ch2 === 62) {
                 if (advanceChar(parser) === 61) {
                   advanceChar(parser);
@@ -3415,8 +4376,8 @@ var lib = (() => {
           }
           case 8390213: {
             advanceChar(parser);
-            const ch = parser.currentChar;
-            if (ch === 38) {
+            var _ch9 = parser.currentChar;
+            if (_ch9 === 38) {
               advanceChar(parser);
               if (parser.currentChar === 61) {
                 advanceChar(parser);
@@ -3424,15 +4385,15 @@ var lib = (() => {
               }
               return 8913720;
             }
-            if (ch === 61) {
+            if (_ch9 === 61) {
               advanceChar(parser);
               return 4194343;
             }
             return 8390213;
           }
           case 22: {
-            let ch = advanceChar(parser);
-            if (ch === 63) {
+            var _ch0 = advanceChar(parser);
+            if (_ch0 === 63) {
               advanceChar(parser);
               if (parser.currentChar === 61) {
                 advanceChar(parser);
@@ -3440,11 +4401,11 @@ var lib = (() => {
               }
               return 276824445;
             }
-            if (ch === 46) {
-              const index = parser.index + 1;
-              if (index < parser.end) {
-                ch = source.charCodeAt(index);
-                if (!(ch >= 48 && ch <= 57)) {
+            if (_ch0 === 46) {
+              var _index3 = parser.index + 1;
+              if (_index3 < parser.end) {
+                _ch0 = source.charCodeAt(_index3);
+                if (!(_ch0 >= 48 && _ch0 <= 57)) {
                   advanceChar(parser);
                   return 67108990;
                 }
@@ -3454,22 +4415,22 @@ var lib = (() => {
           }
         }
       } else {
-        if ((char ^ 8232) <= 1) {
+        if ((_char8 ^ 8232) <= 1) {
           state = (state & -5) | 1;
           scanNewLine(parser);
           continue;
         }
-        const merged = consumePossibleSurrogatePair(parser);
-        if (merged > 0) char = merged;
-        if (isIDStart(char)) {
+        var merged = consumePossibleSurrogatePair(parser);
+        if (merged > 0) _char8 = merged;
+        if (isIDStart(_char8)) {
           parser.tokenValue = "";
           return scanIdentifierSlowCase(parser, context, 0, 0);
         }
-        if (isExoticECMAScriptWhitespace(char)) {
+        if (isExoticECMAScriptWhitespace(_char8)) {
           advanceChar(parser);
           continue;
         }
-        parser.report(20, String.fromCodePoint(char));
+        parser.report(20, String.fromCodePoint(_char8));
       }
     }
     return 1048576;
@@ -3481,16 +4442,16 @@ var lib = (() => {
     Abreve: "\u0102",
     Acirc: "\xC2",
     Acy: "\u0410",
-    Afr: "\u{1D504}",
+    Afr: "\uD835\uDD04",
     Agrave: "\xC0",
     Alpha: "\u0391",
     Amacr: "\u0100",
     And: "\u2A53",
     Aogon: "\u0104",
-    Aopf: "\u{1D538}",
+    Aopf: "\uD835\uDD38",
     ApplyFunction: "\u2061",
     Aring: "\xC5",
-    Ascr: "\u{1D49C}",
+    Ascr: "\uD835\uDC9C",
     Assign: "\u2254",
     Atilde: "\xC3",
     Auml: "\xC4",
@@ -3501,8 +4462,8 @@ var lib = (() => {
     Because: "\u2235",
     Bernoullis: "\u212C",
     Beta: "\u0392",
-    Bfr: "\u{1D505}",
-    Bopf: "\u{1D539}",
+    Bfr: "\uD835\uDD05",
+    Bopf: "\uD835\uDD39",
     Breve: "\u02D8",
     Bscr: "\u212C",
     Bumpeq: "\u224E",
@@ -3537,7 +4498,7 @@ var lib = (() => {
     Coproduct: "\u2210",
     CounterClockwiseContourIntegral: "\u2233",
     Cross: "\u2A2F",
-    Cscr: "\u{1D49E}",
+    Cscr: "\uD835\uDC9E",
     Cup: "\u22D3",
     CupCap: "\u224D",
     DD: "\u2145",
@@ -3552,7 +4513,7 @@ var lib = (() => {
     Dcy: "\u0414",
     Del: "\u2207",
     Delta: "\u0394",
-    Dfr: "\u{1D507}",
+    Dfr: "\uD835\uDD07",
     DiacriticalAcute: "\xB4",
     DiacriticalDot: "\u02D9",
     DiacriticalDoubleAcute: "\u02DD",
@@ -3560,7 +4521,7 @@ var lib = (() => {
     DiacriticalTilde: "\u02DC",
     Diamond: "\u22C4",
     DifferentialD: "\u2146",
-    Dopf: "\u{1D53B}",
+    Dopf: "\uD835\uDD3B",
     Dot: "\xA8",
     DotDot: "\u20DC",
     DotEqual: "\u2250",
@@ -3592,7 +4553,7 @@ var lib = (() => {
     DownTee: "\u22A4",
     DownTeeArrow: "\u21A7",
     Downarrow: "\u21D3",
-    Dscr: "\u{1D49F}",
+    Dscr: "\uD835\uDC9F",
     Dstrok: "\u0110",
     ENG: "\u014A",
     ETH: "\xD0",
@@ -3601,14 +4562,14 @@ var lib = (() => {
     Ecirc: "\xCA",
     Ecy: "\u042D",
     Edot: "\u0116",
-    Efr: "\u{1D508}",
+    Efr: "\uD835\uDD08",
     Egrave: "\xC8",
     Element: "\u2208",
     Emacr: "\u0112",
     EmptySmallSquare: "\u25FB",
     EmptyVerySmallSquare: "\u25AB",
     Eogon: "\u0118",
-    Eopf: "\u{1D53C}",
+    Eopf: "\uD835\uDD3C",
     Epsilon: "\u0395",
     Equal: "\u2A75",
     EqualTilde: "\u2242",
@@ -3620,10 +4581,10 @@ var lib = (() => {
     Exists: "\u2203",
     ExponentialE: "\u2147",
     Fcy: "\u0424",
-    Ffr: "\u{1D509}",
+    Ffr: "\uD835\uDD09",
     FilledSmallSquare: "\u25FC",
     FilledVerySmallSquare: "\u25AA",
-    Fopf: "\u{1D53D}",
+    Fopf: "\uD835\uDD3D",
     ForAll: "\u2200",
     Fouriertrf: "\u2131",
     Fscr: "\u2131",
@@ -3636,9 +4597,9 @@ var lib = (() => {
     Gcirc: "\u011C",
     Gcy: "\u0413",
     Gdot: "\u0120",
-    Gfr: "\u{1D50A}",
+    Gfr: "\uD835\uDD0A",
     Gg: "\u22D9",
-    Gopf: "\u{1D53E}",
+    Gopf: "\uD835\uDD3E",
     GreaterEqual: "\u2265",
     GreaterEqualLess: "\u22DB",
     GreaterFullEqual: "\u2267",
@@ -3646,7 +4607,7 @@ var lib = (() => {
     GreaterLess: "\u2277",
     GreaterSlantEqual: "\u2A7E",
     GreaterTilde: "\u2273",
-    Gscr: "\u{1D4A2}",
+    Gscr: "\uD835\uDCA2",
     Gt: "\u226B",
     HARDcy: "\u042A",
     Hacek: "\u02C7",
@@ -3679,7 +4640,7 @@ var lib = (() => {
     InvisibleComma: "\u2063",
     InvisibleTimes: "\u2062",
     Iogon: "\u012E",
-    Iopf: "\u{1D540}",
+    Iopf: "\uD835\uDD40",
     Iota: "\u0399",
     Iscr: "\u2110",
     Itilde: "\u0128",
@@ -3687,9 +4648,9 @@ var lib = (() => {
     Iuml: "\xCF",
     Jcirc: "\u0134",
     Jcy: "\u0419",
-    Jfr: "\u{1D50D}",
-    Jopf: "\u{1D541}",
-    Jscr: "\u{1D4A5}",
+    Jfr: "\uD835\uDD0D",
+    Jopf: "\uD835\uDD41",
+    Jscr: "\uD835\uDCA5",
     Jsercy: "\u0408",
     Jukcy: "\u0404",
     KHcy: "\u0425",
@@ -3697,9 +4658,9 @@ var lib = (() => {
     Kappa: "\u039A",
     Kcedil: "\u0136",
     Kcy: "\u041A",
-    Kfr: "\u{1D50E}",
-    Kopf: "\u{1D542}",
-    Kscr: "\u{1D4A6}",
+    Kfr: "\uD835\uDD0E",
+    Kopf: "\uD835\uDD42",
+    Kscr: "\uD835\uDCA6",
     LJcy: "\u0409",
     LT: "<",
     Lacute: "\u0139",
@@ -3742,7 +4703,7 @@ var lib = (() => {
     LessLess: "\u2AA1",
     LessSlantEqual: "\u2A7D",
     LessTilde: "\u2272",
-    Lfr: "\u{1D50F}",
+    Lfr: "\uD835\uDD0F",
     Ll: "\u22D8",
     Lleftarrow: "\u21DA",
     Lmidot: "\u013F",
@@ -3752,7 +4713,7 @@ var lib = (() => {
     Longleftarrow: "\u27F8",
     Longleftrightarrow: "\u27FA",
     Longrightarrow: "\u27F9",
-    Lopf: "\u{1D543}",
+    Lopf: "\uD835\uDD43",
     LowerLeftArrow: "\u2199",
     LowerRightArrow: "\u2198",
     Lscr: "\u2112",
@@ -3763,9 +4724,9 @@ var lib = (() => {
     Mcy: "\u041C",
     MediumSpace: "\u205F",
     Mellintrf: "\u2133",
-    Mfr: "\u{1D510}",
+    Mfr: "\uD835\uDD10",
     MinusPlus: "\u2213",
-    Mopf: "\u{1D544}",
+    Mopf: "\uD835\uDD44",
     Mscr: "\u2133",
     Mu: "\u039C",
     NJcy: "\u040A",
@@ -3780,7 +4741,7 @@ var lib = (() => {
     NestedGreaterGreater: "\u226B",
     NestedLessLess: "\u226A",
     NewLine: "\n",
-    Nfr: "\u{1D511}",
+    Nfr: "\uD835\uDD11",
     NoBreak: "\u2060",
     NonBreakingSpace: "\xA0",
     Nopf: "\u2115",
@@ -3836,7 +4797,7 @@ var lib = (() => {
     NotTildeFullEqual: "\u2247",
     NotTildeTilde: "\u2249",
     NotVerticalBar: "\u2224",
-    Nscr: "\u{1D4A9}",
+    Nscr: "\uD835\uDCA9",
     Ntilde: "\xD1",
     Nu: "\u039D",
     OElig: "\u0152",
@@ -3844,16 +4805,16 @@ var lib = (() => {
     Ocirc: "\xD4",
     Ocy: "\u041E",
     Odblac: "\u0150",
-    Ofr: "\u{1D512}",
+    Ofr: "\uD835\uDD12",
     Ograve: "\xD2",
     Omacr: "\u014C",
     Omega: "\u03A9",
     Omicron: "\u039F",
-    Oopf: "\u{1D546}",
+    Oopf: "\uD835\uDD46",
     OpenCurlyDoubleQuote: "\u201C",
     OpenCurlyQuote: "\u2018",
     Or: "\u2A54",
-    Oscr: "\u{1D4AA}",
+    Oscr: "\uD835\uDCAA",
     Oslash: "\xD8",
     Otilde: "\xD5",
     Otimes: "\u2A37",
@@ -3864,7 +4825,7 @@ var lib = (() => {
     OverParenthesis: "\u23DC",
     PartialD: "\u2202",
     Pcy: "\u041F",
-    Pfr: "\u{1D513}",
+    Pfr: "\uD835\uDD13",
     Phi: "\u03A6",
     Pi: "\u03A0",
     PlusMinus: "\xB1",
@@ -3879,12 +4840,12 @@ var lib = (() => {
     Product: "\u220F",
     Proportion: "\u2237",
     Proportional: "\u221D",
-    Pscr: "\u{1D4AB}",
+    Pscr: "\uD835\uDCAB",
     Psi: "\u03A8",
     QUOT: '"',
-    Qfr: "\u{1D514}",
+    Qfr: "\uD835\uDD14",
     Qopf: "\u211A",
-    Qscr: "\u{1D4AC}",
+    Qscr: "\uD835\uDCAC",
     RBarr: "\u2910",
     REG: "\xAE",
     Racute: "\u0154",
@@ -3938,14 +4899,14 @@ var lib = (() => {
     Scedil: "\u015E",
     Scirc: "\u015C",
     Scy: "\u0421",
-    Sfr: "\u{1D516}",
+    Sfr: "\uD835\uDD16",
     ShortDownArrow: "\u2193",
     ShortLeftArrow: "\u2190",
     ShortRightArrow: "\u2192",
     ShortUpArrow: "\u2191",
     Sigma: "\u03A3",
     SmallCircle: "\u2218",
-    Sopf: "\u{1D54A}",
+    Sopf: "\uD835\uDD4A",
     Sqrt: "\u221A",
     Square: "\u25A1",
     SquareIntersection: "\u2293",
@@ -3954,7 +4915,7 @@ var lib = (() => {
     SquareSuperset: "\u2290",
     SquareSupersetEqual: "\u2292",
     SquareUnion: "\u2294",
-    Sscr: "\u{1D4AE}",
+    Sscr: "\uD835\uDCAE",
     Star: "\u22C6",
     Sub: "\u22D0",
     Subset: "\u22D0",
@@ -3978,7 +4939,7 @@ var lib = (() => {
     Tcaron: "\u0164",
     Tcedil: "\u0162",
     Tcy: "\u0422",
-    Tfr: "\u{1D517}",
+    Tfr: "\uD835\uDD17",
     Therefore: "\u2234",
     Theta: "\u0398",
     ThickSpace: "\u205F\u200A",
@@ -3987,9 +4948,9 @@ var lib = (() => {
     TildeEqual: "\u2243",
     TildeFullEqual: "\u2245",
     TildeTilde: "\u2248",
-    Topf: "\u{1D54B}",
+    Topf: "\uD835\uDD4B",
     TripleDot: "\u20DB",
-    Tscr: "\u{1D4AF}",
+    Tscr: "\uD835\uDCAF",
     Tstrok: "\u0166",
     Uacute: "\xDA",
     Uarr: "\u219F",
@@ -3999,7 +4960,7 @@ var lib = (() => {
     Ucirc: "\xDB",
     Ucy: "\u0423",
     Udblac: "\u0170",
-    Ufr: "\u{1D518}",
+    Ufr: "\uD835\uDD18",
     Ugrave: "\xD9",
     Umacr: "\u016A",
     UnderBar: "_",
@@ -4009,7 +4970,7 @@ var lib = (() => {
     Union: "\u22C3",
     UnionPlus: "\u228E",
     Uogon: "\u0172",
-    Uopf: "\u{1D54C}",
+    Uopf: "\uD835\uDD4C",
     UpArrow: "\u2191",
     UpArrowBar: "\u2912",
     UpArrowDownArrow: "\u21C5",
@@ -4024,7 +4985,7 @@ var lib = (() => {
     Upsi: "\u03D2",
     Upsilon: "\u03A5",
     Uring: "\u016E",
-    Uscr: "\u{1D4B0}",
+    Uscr: "\uD835\uDCB0",
     Utilde: "\u0168",
     Uuml: "\xDC",
     VDash: "\u22AB",
@@ -4040,28 +5001,28 @@ var lib = (() => {
     VerticalSeparator: "\u2758",
     VerticalTilde: "\u2240",
     VeryThinSpace: "\u200A",
-    Vfr: "\u{1D519}",
-    Vopf: "\u{1D54D}",
-    Vscr: "\u{1D4B1}",
+    Vfr: "\uD835\uDD19",
+    Vopf: "\uD835\uDD4D",
+    Vscr: "\uD835\uDCB1",
     Vvdash: "\u22AA",
     Wcirc: "\u0174",
     Wedge: "\u22C0",
-    Wfr: "\u{1D51A}",
-    Wopf: "\u{1D54E}",
-    Wscr: "\u{1D4B2}",
-    Xfr: "\u{1D51B}",
+    Wfr: "\uD835\uDD1A",
+    Wopf: "\uD835\uDD4E",
+    Wscr: "\uD835\uDCB2",
+    Xfr: "\uD835\uDD1B",
     Xi: "\u039E",
-    Xopf: "\u{1D54F}",
-    Xscr: "\u{1D4B3}",
+    Xopf: "\uD835\uDD4F",
+    Xscr: "\uD835\uDCB3",
     YAcy: "\u042F",
     YIcy: "\u0407",
     YUcy: "\u042E",
     Yacute: "\xDD",
     Ycirc: "\u0176",
     Ycy: "\u042B",
-    Yfr: "\u{1D51C}",
-    Yopf: "\u{1D550}",
-    Yscr: "\u{1D4B4}",
+    Yfr: "\uD835\uDD1C",
+    Yopf: "\uD835\uDD50",
+    Yscr: "\uD835\uDCB4",
     Yuml: "\u0178",
     ZHcy: "\u0416",
     Zacute: "\u0179",
@@ -4072,7 +5033,7 @@ var lib = (() => {
     Zeta: "\u0396",
     Zfr: "\u2128",
     Zopf: "\u2124",
-    Zscr: "\u{1D4B5}",
+    Zscr: "\uD835\uDCB5",
     aacute: "\xE1",
     abreve: "\u0103",
     ac: "\u223E",
@@ -4083,7 +5044,7 @@ var lib = (() => {
     acy: "\u0430",
     aelig: "\xE6",
     af: "\u2061",
-    afr: "\u{1D51E}",
+    afr: "\uD835\uDD1E",
     agrave: "\xE0",
     alefsym: "\u2135",
     aleph: "\u2135",
@@ -4115,7 +5076,7 @@ var lib = (() => {
     angst: "\xC5",
     angzarr: "\u237C",
     aogon: "\u0105",
-    aopf: "\u{1D552}",
+    aopf: "\uD835\uDD52",
     ap: "\u2248",
     apE: "\u2A70",
     apacir: "\u2A6F",
@@ -4125,7 +5086,7 @@ var lib = (() => {
     approx: "\u2248",
     approxeq: "\u224A",
     aring: "\xE5",
-    ascr: "\u{1D4B6}",
+    ascr: "\uD835\uDCB6",
     ast: "*",
     asymp: "\u2248",
     asympeq: "\u224D",
@@ -4155,7 +5116,7 @@ var lib = (() => {
     beta: "\u03B2",
     beth: "\u2136",
     between: "\u226C",
-    bfr: "\u{1D51F}",
+    bfr: "\uD835\uDD1F",
     bigcap: "\u22C2",
     bigcirc: "\u25EF",
     bigcup: "\u22C3",
@@ -4184,7 +5145,7 @@ var lib = (() => {
     bne: "=\u20E5",
     bnequiv: "\u2261\u20E5",
     bnot: "\u2310",
-    bopf: "\u{1D553}",
+    bopf: "\uD835\uDD53",
     bot: "\u22A5",
     bottom: "\u22A5",
     bowtie: "\u22C8",
@@ -4235,7 +5196,7 @@ var lib = (() => {
     bprime: "\u2035",
     breve: "\u02D8",
     brvbar: "\xA6",
-    bscr: "\u{1D4B7}",
+    bscr: "\uD835\uDCB7",
     bsemi: "\u204F",
     bsim: "\u223D",
     bsime: "\u22CD",
@@ -4269,7 +5230,7 @@ var lib = (() => {
     cemptyv: "\u29B2",
     cent: "\xA2",
     centerdot: "\xB7",
-    cfr: "\u{1D520}",
+    cfr: "\uD835\uDD20",
     chcy: "\u0447",
     check: "\u2713",
     checkmark: "\u2713",
@@ -4303,13 +5264,13 @@ var lib = (() => {
     cong: "\u2245",
     congdot: "\u2A6D",
     conint: "\u222E",
-    copf: "\u{1D554}",
+    copf: "\uD835\uDD54",
     coprod: "\u2210",
     copy: "\xA9",
     copysr: "\u2117",
     crarr: "\u21B5",
     cross: "\u2717",
-    cscr: "\u{1D4B8}",
+    cscr: "\uD835\uDCB8",
     csub: "\u2ACF",
     csube: "\u2AD1",
     csup: "\u2AD0",
@@ -4361,7 +5322,7 @@ var lib = (() => {
     delta: "\u03B4",
     demptyv: "\u29B1",
     dfisht: "\u297F",
-    dfr: "\u{1D521}",
+    dfr: "\uD835\uDD21",
     dharl: "\u21C3",
     dharr: "\u21C2",
     diam: "\u22C4",
@@ -4379,7 +5340,7 @@ var lib = (() => {
     dlcorn: "\u231E",
     dlcrop: "\u230D",
     dollar: "$",
-    dopf: "\u{1D555}",
+    dopf: "\uD835\uDD55",
     dot: "\u02D9",
     doteq: "\u2250",
     doteqdot: "\u2251",
@@ -4394,7 +5355,7 @@ var lib = (() => {
     drbkarow: "\u2910",
     drcorn: "\u231F",
     drcrop: "\u230C",
-    dscr: "\u{1D4B9}",
+    dscr: "\uD835\uDCB9",
     dscy: "\u0455",
     dsol: "\u29F6",
     dstrok: "\u0111",
@@ -4418,7 +5379,7 @@ var lib = (() => {
     edot: "\u0117",
     ee: "\u2147",
     efDot: "\u2252",
-    efr: "\u{1D522}",
+    efr: "\uD835\uDD22",
     eg: "\u2A9A",
     egrave: "\xE8",
     egs: "\u2A96",
@@ -4438,7 +5399,7 @@ var lib = (() => {
     eng: "\u014B",
     ensp: "\u2002",
     eogon: "\u0119",
-    eopf: "\u{1D556}",
+    eopf: "\uD835\uDD56",
     epar: "\u22D5",
     eparsl: "\u29E3",
     eplus: "\u2A71",
@@ -4474,14 +5435,14 @@ var lib = (() => {
     ffilig: "\uFB03",
     fflig: "\uFB00",
     ffllig: "\uFB04",
-    ffr: "\u{1D523}",
+    ffr: "\uD835\uDD23",
     filig: "\uFB01",
     fjlig: "fj",
     flat: "\u266D",
     fllig: "\uFB02",
     fltns: "\u25B1",
     fnof: "\u0192",
-    fopf: "\u{1D557}",
+    fopf: "\uD835\uDD57",
     forall: "\u2200",
     fork: "\u22D4",
     forkv: "\u2AD9",
@@ -4503,7 +5464,7 @@ var lib = (() => {
     frac78: "\u215E",
     frasl: "\u2044",
     frown: "\u2322",
-    fscr: "\u{1D4BB}",
+    fscr: "\uD835\uDCBB",
     gE: "\u2267",
     gEl: "\u2A8C",
     gacute: "\u01F5",
@@ -4526,7 +5487,7 @@ var lib = (() => {
     gesdotol: "\u2A84",
     gesl: "\u22DB\uFE00",
     gesles: "\u2A94",
-    gfr: "\u{1D524}",
+    gfr: "\uD835\uDD24",
     gg: "\u226B",
     ggg: "\u22D9",
     gimel: "\u2137",
@@ -4542,7 +5503,7 @@ var lib = (() => {
     gneq: "\u2A88",
     gneqq: "\u2269",
     gnsim: "\u22E7",
-    gopf: "\u{1D558}",
+    gopf: "\uD835\uDD58",
     grave: "`",
     gscr: "\u210A",
     gsim: "\u2273",
@@ -4577,16 +5538,16 @@ var lib = (() => {
     heartsuit: "\u2665",
     hellip: "\u2026",
     hercon: "\u22B9",
-    hfr: "\u{1D525}",
+    hfr: "\uD835\uDD25",
     hksearow: "\u2925",
     hkswarow: "\u2926",
     hoarr: "\u21FF",
     homtht: "\u223B",
     hookleftarrow: "\u21A9",
     hookrightarrow: "\u21AA",
-    hopf: "\u{1D559}",
+    hopf: "\uD835\uDD59",
     horbar: "\u2015",
-    hscr: "\u{1D4BD}",
+    hscr: "\uD835\uDCBD",
     hslash: "\u210F",
     hstrok: "\u0127",
     hybull: "\u2043",
@@ -4598,7 +5559,7 @@ var lib = (() => {
     iecy: "\u0435",
     iexcl: "\xA1",
     iff: "\u21D4",
-    ifr: "\u{1D526}",
+    ifr: "\uD835\uDD26",
     igrave: "\xEC",
     ii: "\u2148",
     iiiint: "\u2A0C",
@@ -4626,11 +5587,11 @@ var lib = (() => {
     intprod: "\u2A3C",
     iocy: "\u0451",
     iogon: "\u012F",
-    iopf: "\u{1D55A}",
+    iopf: "\uD835\uDD5A",
     iota: "\u03B9",
     iprod: "\u2A3C",
     iquest: "\xBF",
-    iscr: "\u{1D4BE}",
+    iscr: "\uD835\uDCBE",
     isin: "\u2208",
     isinE: "\u22F9",
     isindot: "\u22F5",
@@ -4643,22 +5604,22 @@ var lib = (() => {
     iuml: "\xEF",
     jcirc: "\u0135",
     jcy: "\u0439",
-    jfr: "\u{1D527}",
+    jfr: "\uD835\uDD27",
     jmath: "\u0237",
-    jopf: "\u{1D55B}",
-    jscr: "\u{1D4BF}",
+    jopf: "\uD835\uDD5B",
+    jscr: "\uD835\uDCBF",
     jsercy: "\u0458",
     jukcy: "\u0454",
     kappa: "\u03BA",
     kappav: "\u03F0",
     kcedil: "\u0137",
     kcy: "\u043A",
-    kfr: "\u{1D528}",
+    kfr: "\uD835\uDD28",
     kgreen: "\u0138",
     khcy: "\u0445",
     kjcy: "\u045C",
-    kopf: "\u{1D55C}",
-    kscr: "\u{1D4C0}",
+    kopf: "\uD835\uDD5C",
+    kscr: "\uD835\uDCC0",
     lAarr: "\u21DA",
     lArr: "\u21D0",
     lAtail: "\u291B",
@@ -4736,7 +5697,7 @@ var lib = (() => {
     lesssim: "\u2272",
     lfisht: "\u297C",
     lfloor: "\u230A",
-    lfr: "\u{1D529}",
+    lfr: "\uD835\uDD29",
     lg: "\u2276",
     lgE: "\u2A91",
     lhard: "\u21BD",
@@ -4769,7 +5730,7 @@ var lib = (() => {
     looparrowleft: "\u21AB",
     looparrowright: "\u21AC",
     lopar: "\u2985",
-    lopf: "\u{1D55D}",
+    lopf: "\uD835\uDD5D",
     loplus: "\u2A2D",
     lotimes: "\u2A34",
     lowast: "\u2217",
@@ -4786,7 +5747,7 @@ var lib = (() => {
     lrm: "\u200E",
     lrtri: "\u22BF",
     lsaquo: "\u2039",
-    lscr: "\u{1D4C1}",
+    lscr: "\uD835\uDCC1",
     lsh: "\u21B0",
     lsim: "\u2272",
     lsime: "\u2A8D",
@@ -4826,7 +5787,7 @@ var lib = (() => {
     mcy: "\u043C",
     mdash: "\u2014",
     measuredangle: "\u2221",
-    mfr: "\u{1D52A}",
+    mfr: "\uD835\uDD2A",
     mho: "\u2127",
     micro: "\xB5",
     mid: "\u2223",
@@ -4841,9 +5802,9 @@ var lib = (() => {
     mldr: "\u2026",
     mnplus: "\u2213",
     models: "\u22A7",
-    mopf: "\u{1D55E}",
+    mopf: "\uD835\uDD5E",
     mp: "\u2213",
-    mscr: "\u{1D4C2}",
+    mscr: "\uD835\uDCC2",
     mstpos: "\u223E",
     mu: "\u03BC",
     multimap: "\u22B8",
@@ -4892,7 +5853,7 @@ var lib = (() => {
     nesim: "\u2242\u0338",
     nexist: "\u2204",
     nexists: "\u2204",
-    nfr: "\u{1D52B}",
+    nfr: "\uD835\uDD2B",
     ngE: "\u2267\u0338",
     nge: "\u2271",
     ngeq: "\u2271",
@@ -4927,7 +5888,7 @@ var lib = (() => {
     nltri: "\u22EA",
     nltrie: "\u22EC",
     nmid: "\u2224",
-    nopf: "\u{1D55F}",
+    nopf: "\uD835\uDD5F",
     not: "\xAC",
     notin: "\u2209",
     notinE: "\u22F9\u0338",
@@ -4959,7 +5920,7 @@ var lib = (() => {
     nsc: "\u2281",
     nsccue: "\u22E1",
     nsce: "\u2AB0\u0338",
-    nscr: "\u{1D4C3}",
+    nscr: "\uD835\uDCC3",
     nshortmid: "\u2224",
     nshortparallel: "\u2226",
     nsim: "\u2241",
@@ -5026,7 +5987,7 @@ var lib = (() => {
     odsold: "\u29BC",
     oelig: "\u0153",
     ofcir: "\u29BF",
-    ofr: "\u{1D52C}",
+    ofr: "\uD835\uDD2C",
     ogon: "\u02DB",
     ograve: "\xF2",
     ogt: "\u29C1",
@@ -5043,7 +6004,7 @@ var lib = (() => {
     omicron: "\u03BF",
     omid: "\u29B6",
     ominus: "\u2296",
-    oopf: "\u{1D560}",
+    oopf: "\uD835\uDD60",
     opar: "\u29B7",
     operp: "\u29B9",
     oplus: "\u2295",
@@ -5078,7 +6039,7 @@ var lib = (() => {
     permil: "\u2030",
     perp: "\u22A5",
     pertenk: "\u2031",
-    pfr: "\u{1D52D}",
+    pfr: "\uD835\uDD2D",
     phi: "\u03C6",
     phiv: "\u03D5",
     phmmat: "\u2133",
@@ -5101,7 +6062,7 @@ var lib = (() => {
     plustwo: "\u2A27",
     pm: "\xB1",
     pointint: "\u2A15",
-    popf: "\u{1D561}",
+    popf: "\uD835\uDD61",
     pound: "\xA3",
     pr: "\u227A",
     prE: "\u2AB3",
@@ -5129,14 +6090,14 @@ var lib = (() => {
     propto: "\u221D",
     prsim: "\u227E",
     prurel: "\u22B0",
-    pscr: "\u{1D4C5}",
+    pscr: "\uD835\uDCC5",
     psi: "\u03C8",
     puncsp: "\u2008",
-    qfr: "\u{1D52E}",
+    qfr: "\uD835\uDD2E",
     qint: "\u2A0C",
-    qopf: "\u{1D562}",
+    qopf: "\uD835\uDD62",
     qprime: "\u2057",
-    qscr: "\u{1D4C6}",
+    qscr: "\uD835\uDCC6",
     quaternions: "\u210D",
     quatint: "\u2A16",
     quest: "?",
@@ -5196,7 +6157,7 @@ var lib = (() => {
     reg: "\xAE",
     rfisht: "\u297D",
     rfloor: "\u230B",
-    rfr: "\u{1D52F}",
+    rfr: "\uD835\uDD2F",
     rhard: "\u21C1",
     rharu: "\u21C0",
     rharul: "\u296C",
@@ -5223,7 +6184,7 @@ var lib = (() => {
     roarr: "\u21FE",
     robrk: "\u27E7",
     ropar: "\u2986",
-    ropf: "\u{1D563}",
+    ropf: "\uD835\uDD63",
     roplus: "\u2A2E",
     rotimes: "\u2A35",
     rpar: ")",
@@ -5231,7 +6192,7 @@ var lib = (() => {
     rppolint: "\u2A12",
     rrarr: "\u21C9",
     rsaquo: "\u203A",
-    rscr: "\u{1D4C7}",
+    rscr: "\uD835\uDCC7",
     rsh: "\u21B1",
     rsqb: "]",
     rsquo: "\u2019",
@@ -5273,7 +6234,7 @@ var lib = (() => {
     setminus: "\u2216",
     setmn: "\u2216",
     sext: "\u2736",
-    sfr: "\u{1D530}",
+    sfr: "\uD835\uDD30",
     sfrown: "\u2322",
     sharp: "\u266F",
     shchcy: "\u0449",
@@ -5308,7 +6269,7 @@ var lib = (() => {
     sol: "/",
     solb: "\u29C4",
     solbar: "\u233F",
-    sopf: "\u{1D564}",
+    sopf: "\uD835\uDD64",
     spades: "\u2660",
     spadesuit: "\u2660",
     spar: "\u2225",
@@ -5329,7 +6290,7 @@ var lib = (() => {
     squarf: "\u25AA",
     squf: "\u25AA",
     srarr: "\u2192",
-    sscr: "\u{1D4C8}",
+    sscr: "\uD835\uDCC8",
     ssetmn: "\u2216",
     ssmile: "\u2323",
     sstarf: "\u22C6",
@@ -5404,7 +6365,7 @@ var lib = (() => {
     tcy: "\u0442",
     tdot: "\u20DB",
     telrec: "\u2315",
-    tfr: "\u{1D531}",
+    tfr: "\uD835\uDD31",
     there4: "\u2234",
     therefore: "\u2234",
     theta: "\u03B8",
@@ -5426,7 +6387,7 @@ var lib = (() => {
     top: "\u22A4",
     topbot: "\u2336",
     topcir: "\u2AF1",
-    topf: "\u{1D565}",
+    topf: "\uD835\uDD65",
     topfork: "\u2ADA",
     tosa: "\u2929",
     tprime: "\u2034",
@@ -5445,7 +6406,7 @@ var lib = (() => {
     trisb: "\u29CD",
     tritime: "\u2A3B",
     trpezium: "\u23E2",
-    tscr: "\u{1D4C9}",
+    tscr: "\uD835\uDCC9",
     tscy: "\u0446",
     tshcy: "\u045B",
     tstrok: "\u0167",
@@ -5464,7 +6425,7 @@ var lib = (() => {
     udblac: "\u0171",
     udhar: "\u296E",
     ufisht: "\u297E",
-    ufr: "\u{1D532}",
+    ufr: "\uD835\uDD32",
     ugrave: "\xF9",
     uharl: "\u21BF",
     uharr: "\u21BE",
@@ -5476,7 +6437,7 @@ var lib = (() => {
     umacr: "\u016B",
     uml: "\xA8",
     uogon: "\u0173",
-    uopf: "\u{1D566}",
+    uopf: "\uD835\uDD66",
     uparrow: "\u2191",
     updownarrow: "\u2195",
     upharpoonleft: "\u21BF",
@@ -5491,7 +6452,7 @@ var lib = (() => {
     urcrop: "\u230E",
     uring: "\u016F",
     urtri: "\u25F9",
-    uscr: "\u{1D4CA}",
+    uscr: "\uD835\uDCCA",
     utdot: "\u22F0",
     utilde: "\u0169",
     utri: "\u25B5",
@@ -5528,14 +6489,14 @@ var lib = (() => {
     vellip: "\u22EE",
     verbar: "|",
     vert: "|",
-    vfr: "\u{1D533}",
+    vfr: "\uD835\uDD33",
     vltri: "\u22B2",
     vnsub: "\u2282\u20D2",
     vnsup: "\u2283\u20D2",
-    vopf: "\u{1D567}",
+    vopf: "\uD835\uDD67",
     vprop: "\u221D",
     vrtri: "\u22B3",
-    vscr: "\u{1D4CB}",
+    vscr: "\uD835\uDCCB",
     vsubnE: "\u2ACB\uFE00",
     vsubne: "\u228A\uFE00",
     vsupnE: "\u2ACC\uFE00",
@@ -5546,17 +6507,17 @@ var lib = (() => {
     wedge: "\u2227",
     wedgeq: "\u2259",
     weierp: "\u2118",
-    wfr: "\u{1D534}",
-    wopf: "\u{1D568}",
+    wfr: "\uD835\uDD34",
+    wopf: "\uD835\uDD68",
     wp: "\u2118",
     wr: "\u2240",
     wreath: "\u2240",
-    wscr: "\u{1D4CC}",
+    wscr: "\uD835\uDCCC",
     xcap: "\u22C2",
     xcirc: "\u25EF",
     xcup: "\u22C3",
     xdtri: "\u25BD",
-    xfr: "\u{1D535}",
+    xfr: "\uD835\uDD35",
     xhArr: "\u27FA",
     xharr: "\u27F7",
     xi: "\u03BE",
@@ -5565,12 +6526,12 @@ var lib = (() => {
     xmap: "\u27FC",
     xnis: "\u22FB",
     xodot: "\u2A00",
-    xopf: "\u{1D569}",
+    xopf: "\uD835\uDD69",
     xoplus: "\u2A01",
     xotime: "\u2A02",
     xrArr: "\u27F9",
     xrarr: "\u27F6",
-    xscr: "\u{1D4CD}",
+    xscr: "\uD835\uDCCD",
     xsqcup: "\u2A06",
     xuplus: "\u2A04",
     xutri: "\u25B3",
@@ -5581,10 +6542,10 @@ var lib = (() => {
     ycirc: "\u0177",
     ycy: "\u044B",
     yen: "\xA5",
-    yfr: "\u{1D536}",
+    yfr: "\uD835\uDD36",
     yicy: "\u0457",
-    yopf: "\u{1D56A}",
-    yscr: "\u{1D4CE}",
+    yopf: "\uD835\uDD6A",
+    yscr: "\uD835\uDCCE",
     yucy: "\u044E",
     yuml: "\xFF",
     zacute: "\u017A",
@@ -5593,11 +6554,11 @@ var lib = (() => {
     zdot: "\u017C",
     zeetrf: "\u2128",
     zeta: "\u03B6",
-    zfr: "\u{1D537}",
+    zfr: "\uD835\uDD37",
     zhcy: "\u0436",
     zigrarr: "\u21DD",
-    zopf: "\u{1D56B}",
-    zscr: "\u{1D4CF}",
+    zopf: "\uD835\uDD6B",
+    zscr: "\uD835\uDCCF",
     zwj: "\u200D",
     zwnj: "\u200C"
   };
@@ -5632,21 +6593,26 @@ var lib = (() => {
     159: 376
   };
   function decodeHTMLStrict(text) {
-    return text.replace(/&(?:[a-zA-Z]+|#[xX][\da-fA-F]+|#\d+);/g, (key) => {
-      var _getOwnProperty2;
-      if (key.charAt(1) === "#") {
-        const secondChar = key.charAt(2);
-        const codePoint =
-          secondChar === "X" || secondChar === "x"
-            ? parseInt(key.slice(3), 16)
-            : parseInt(key.slice(2), 10);
-        return decodeCodePoint(codePoint);
+    return text.replace(
+      /&(?:[a-zA-Z]+|#[xX][\da-fA-F]+|#\d+);/g,
+      function (key) {
+        var _getOwnProperty2;
+        if (key.charAt(1) === "#") {
+          var secondChar = key.charAt(2);
+          var codePoint =
+            secondChar === "X" || secondChar === "x"
+              ? parseInt(key.slice(3), 16)
+              : parseInt(key.slice(2), 10);
+          return decodeCodePoint(codePoint);
+        }
+        return (_getOwnProperty2 = getOwnProperty(
+          entities,
+          key.slice(1, -1)
+        )) !== null && _getOwnProperty2 !== void 0
+          ? _getOwnProperty2
+          : key;
       }
-      return (_getOwnProperty2 = getOwnProperty(entities, key.slice(1, -1))) !==
-        null && _getOwnProperty2 !== void 0
-        ? _getOwnProperty2
-        : key;
-    });
+    );
   }
   function decodeCodePoint(codePoint) {
     var _getOwnProperty3;
@@ -5672,14 +6638,14 @@ var lib = (() => {
     return parser.getToken();
   }
   function scanJSXString(parser) {
-    const quote = parser.currentChar;
-    let char = advanceChar(parser);
-    const start = parser.index;
-    while (char !== quote) {
+    var quote = parser.currentChar;
+    var _char9 = advanceChar(parser);
+    var start = parser.index;
+    while (_char9 !== quote) {
       if (parser.index >= parser.end) parser.report(16);
-      char = advanceChar(parser);
+      _char9 = advanceChar(parser);
     }
-    if (char !== quote) parser.report(16);
+    if (_char9 !== quote) parser.report(16);
     parser.tokenValue = parser.source.slice(start, parser.index);
     advanceChar(parser);
     if (parser.options.raw)
@@ -5704,9 +6670,9 @@ var lib = (() => {
       parser.setToken(2162700);
       return;
     }
-    let state = 0;
+    var state = 0;
     while (parser.index < parser.end) {
-      const type = CharTypes[parser.source.charCodeAt(parser.index)];
+      var type = CharTypes[parser.source.charCodeAt(parser.index)];
       if (type & 1024) {
         state |= 1 | 4;
         scanNewLine(parser);
@@ -5719,25 +6685,29 @@ var lib = (() => {
       if (CharTypes[parser.currentChar] & 16384) break;
     }
     if (parser.tokenIndex === parser.index) parser.report(0);
-    const raw = parser.source.slice(parser.tokenIndex, parser.index);
+    var raw = parser.source.slice(parser.tokenIndex, parser.index);
     if (parser.options.raw) parser.tokenRaw = raw;
     parser.tokenValue = decodeHTMLStrict(raw);
     parser.setToken(137);
   }
   function rescanJSXIdentifier(parser) {
     if ((parser.getToken() & 143360) === 143360) {
-      const { index } = parser;
-      let char = parser.currentChar;
-      while (CharTypes[char] & (32768 | 2)) {
-        char = advanceChar(parser);
+      var index = parser.index;
+      var _char0 = parser.currentChar;
+      while (CharTypes[_char0] & (32768 | 2)) {
+        _char0 = advanceChar(parser);
       }
       parser.tokenValue += parser.source.slice(index, parser.index);
       parser.setToken(208897, true);
     }
     return parser.getToken();
   }
-  var Scope = class _Scope {
-    constructor(parser, type = 2, parent) {
+  var Scope = /*#__PURE__*/ (function () {
+    function _Scope(parser) {
+      var type =
+        arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 2;
+      var parent = arguments.length > 2 ? arguments[2] : undefined;
+      _classCallCheck(this, _Scope);
       _defineProperty(this, "parser", void 0);
       _defineProperty(this, "type", void 0);
       _defineProperty(this, "parent", void 0);
@@ -5747,119 +6717,153 @@ var lib = (() => {
       this.type = type;
       this.parent = parent;
     }
-    createChildScope(type) {
-      return new _Scope(this.parser, type, this);
-    }
-    addVarOrBlock(context, name, kind, origin) {
-      if (kind & 4) {
-        this.addVarName(context, name, kind);
-      } else {
-        this.addBlockName(context, name, kind, origin);
-      }
-      if (origin & 64) {
-        this.parser.declareUnboundVariable(name);
-      }
-    }
-    addVarName(context, name, kind) {
-      const { parser } = this;
-      let currentScope = this;
-      while (currentScope && (currentScope.type & 128) === 0) {
-        const { variableBindings } = currentScope;
-        const value = variableBindings.get(name);
-        if (value && value & 248) {
+    return _createClass(_Scope, [
+      {
+        key: "createChildScope",
+        value: function createChildScope(type) {
+          return new _Scope(this.parser, type, this);
+        }
+      },
+      {
+        key: "addVarOrBlock",
+        value: function addVarOrBlock(context, name, kind, origin) {
+          if (kind & 4) {
+            this.addVarName(context, name, kind);
+          } else {
+            this.addBlockName(context, name, kind, origin);
+          }
+          if (origin & 64) {
+            this.parser.declareUnboundVariable(name);
+          }
+        }
+      },
+      {
+        key: "addVarName",
+        value: function addVarName(context, name, kind) {
+          var parser = this.parser;
+          var currentScope = this;
+          while (currentScope && (currentScope.type & 128) === 0) {
+            var _currentScope = currentScope,
+              variableBindings = _currentScope.variableBindings;
+            var value = variableBindings.get(name);
+            if (value && value & 248) {
+              if (
+                parser.options.webcompat &&
+                (context & 1) === 0 &&
+                ((kind & 128 && value & 68) || (value & 128 && kind & 68))
+              );
+              else {
+                parser.report(145, name);
+              }
+            }
+            if (currentScope === this) {
+              if (value && value & 1 && kind & 1) {
+                currentScope.recordScopeError(145, name);
+              }
+            }
+            if (
+              value &&
+              (value & 256 || (value & 512 && !parser.options.webcompat))
+            ) {
+              parser.report(145, name);
+            }
+            currentScope.variableBindings.set(name, kind);
+            currentScope = currentScope.parent;
+          }
+        }
+      },
+      {
+        key: "hasVariable",
+        value: function hasVariable(name) {
+          return this.variableBindings.has(name);
+        }
+      },
+      {
+        key: "addBlockName",
+        value: function addBlockName(context, name, kind, origin) {
+          var _this$parent;
+          var parser = this.parser;
+          var value = this.variableBindings.get(name);
+          if (value && (value & 2) === 0) {
+            if (kind & 1) {
+              this.recordScopeError(145, name);
+            } else if (
+              parser.options.webcompat &&
+              (context & 1) === 0 &&
+              origin & 2 &&
+              value === 64 &&
+              kind === 64
+            );
+            else {
+              parser.report(145, name);
+            }
+          }
           if (
-            parser.options.webcompat &&
-            (context & 1) === 0 &&
-            ((kind & 128 && value & 68) || (value & 128 && kind & 68))
-          );
-          else {
+            this.type & 64 &&
+            (_this$parent = this.parent) !== null &&
+            _this$parent !== void 0 &&
+            _this$parent.hasVariable(name) &&
+            (this.parent.variableBindings.get(name) & 2) === 0
+          ) {
             parser.report(145, name);
           }
-        }
-        if (currentScope === this) {
-          if (value && value & 1 && kind & 1) {
-            currentScope.recordScopeError(145, name);
+          if (this.type & 512 && value && (value & 2) === 0) {
+            if (kind & 1) {
+              this.recordScopeError(145, name);
+            }
           }
+          if (this.type & 32) {
+            if (this.parent.variableBindings.get(name) & 768)
+              parser.report(159, name);
+          }
+          this.variableBindings.set(name, kind);
         }
-        if (
-          value &&
-          (value & 256 || (value & 512 && !parser.options.webcompat))
-        ) {
-          parser.report(145, name);
+      },
+      {
+        key: "recordScopeError",
+        value: function recordScopeError(type) {
+          for (
+            var _len2 = arguments.length,
+              params = new Array(_len2 > 1 ? _len2 - 1 : 0),
+              _key2 = 1;
+            _key2 < _len2;
+            _key2++
+          ) {
+            params[_key2 - 1] = arguments[_key2];
+          }
+          this.scopeError = {
+            type: type,
+            params: params,
+            start: this.parser.tokenStart,
+            end: this.parser.currentLocation
+          };
         }
-        currentScope.variableBindings.set(name, kind);
-        currentScope = currentScope.parent;
-      }
-    }
-    hasVariable(name) {
-      return this.variableBindings.has(name);
-    }
-    addBlockName(context, name, kind, origin) {
-      var _this$parent;
-      const { parser } = this;
-      const value = this.variableBindings.get(name);
-      if (value && (value & 2) === 0) {
-        if (kind & 1) {
-          this.recordScopeError(145, name);
-        } else if (
-          parser.options.webcompat &&
-          (context & 1) === 0 &&
-          origin & 2 &&
-          value === 64 &&
-          kind === 64
-        );
-        else {
-          parser.report(145, name);
-        }
-      }
-      if (
-        this.type & 64 &&
-        (_this$parent = this.parent) !== null &&
-        _this$parent !== void 0 &&
-        _this$parent.hasVariable(name) &&
-        (this.parent.variableBindings.get(name) & 2) === 0
-      ) {
-        parser.report(145, name);
-      }
-      if (this.type & 512 && value && (value & 2) === 0) {
-        if (kind & 1) {
-          this.recordScopeError(145, name);
+      },
+      {
+        key: "reportScopeError",
+        value: function reportScopeError() {
+          var scopeError = this.scopeError;
+          if (!scopeError) {
+            return;
+          }
+          throw _construct(
+            ParseError,
+            [scopeError.start, scopeError.end, scopeError.type].concat(
+              _toConsumableArray(scopeError.params)
+            )
+          );
         }
       }
-      if (this.type & 32) {
-        if (this.parent.variableBindings.get(name) & 768)
-          parser.report(159, name);
-      }
-      this.variableBindings.set(name, kind);
-    }
-    recordScopeError(type, ...params) {
-      this.scopeError = {
-        type,
-        params,
-        start: this.parser.tokenStart,
-        end: this.parser.currentLocation
-      };
-    }
-    reportScopeError() {
-      const { scopeError } = this;
-      if (!scopeError) {
-        return;
-      }
-      throw new ParseError(
-        scopeError.start,
-        scopeError.end,
-        scopeError.type,
-        ...scopeError.params
-      );
-    }
-  };
+    ]);
+  })();
   function createArrowHeadParsingScope(parser, context, value) {
-    const scope = parser.createScope().createChildScope(512);
+    var scope = parser.createScope().createChildScope(512);
     scope.addBlockName(context, value, 1, 0);
     return scope;
   }
-  var PrivateScope = class PrivateScope {
-    constructor(parser, parent) {
+  var PrivateScope = /*#__PURE__*/ (function () {
+    function PrivateScope(parser, parent) {
+      _classCallCheck(this, PrivateScope);
       _defineProperty(this, "parser", void 0);
       _defineProperty(this, "parent", void 0);
       _defineProperty(this, "refs", /* @__PURE__ */ Object.create(null));
@@ -5867,68 +6871,91 @@ var lib = (() => {
       this.parser = parser;
       this.parent = parent;
     }
-    addPrivateIdentifier(name, kind) {
-      const { privateIdentifiers } = this;
-      let focusKind = kind & (32 | 768);
-      if (!(focusKind & 768)) focusKind |= 768;
-      const value = privateIdentifiers.get(name);
-      if (
-        this.hasPrivateIdentifier(name) &&
-        ((value & 32) !== (focusKind & 32) || value & focusKind & 768)
-      ) {
-        this.parser.report(146, name);
-      }
-      privateIdentifiers.set(
-        name,
-        this.hasPrivateIdentifier(name) ? value | focusKind : focusKind
-      );
-    }
-    addPrivateIdentifierRef(name) {
-      var _this$refs, _this$refs$name;
-      (_this$refs$name = (_this$refs = this.refs)[name]) !== null &&
-      _this$refs$name !== void 0
-        ? _this$refs$name
-        : (_this$refs[name] = []);
-      this.refs[name].push(this.parser.tokenStart);
-    }
-    isPrivateIdentifierDefined(name) {
-      var _this$parent2;
-      return (
-        this.hasPrivateIdentifier(name) ||
-        Boolean(
-          (_this$parent2 = this.parent) === null || _this$parent2 === void 0
-            ? void 0
-            : _this$parent2.isPrivateIdentifierDefined(name)
-        )
-      );
-    }
-    validatePrivateIdentifierRefs() {
-      for (const name in this.refs) {
-        if (!this.isPrivateIdentifierDefined(name)) {
-          const { index, line, column } = this.refs[name][0];
-          throw new ParseError(
-            {
-              index,
-              line,
-              column
-            },
-            {
-              index: index + name.length,
-              line,
-              column: column + name.length
-            },
-            4,
-            name
+    return _createClass(PrivateScope, [
+      {
+        key: "addPrivateIdentifier",
+        value: function addPrivateIdentifier(name, kind) {
+          var privateIdentifiers = this.privateIdentifiers;
+          var focusKind = kind & (32 | 768);
+          if (!(focusKind & 768)) focusKind |= 768;
+          var value = privateIdentifiers.get(name);
+          if (
+            this.hasPrivateIdentifier(name) &&
+            ((value & 32) !== (focusKind & 32) || value & focusKind & 768)
+          ) {
+            this.parser.report(146, name);
+          }
+          privateIdentifiers.set(
+            name,
+            this.hasPrivateIdentifier(name) ? value | focusKind : focusKind
           );
         }
+      },
+      {
+        key: "addPrivateIdentifierRef",
+        value: function addPrivateIdentifierRef(name) {
+          var _this$refs, _this$refs$name;
+          (_this$refs$name = (_this$refs = this.refs)[name]) !== null &&
+          _this$refs$name !== void 0
+            ? _this$refs$name
+            : (_this$refs[name] = []);
+          this.refs[name].push(this.parser.tokenStart);
+        }
+      },
+      {
+        key: "isPrivateIdentifierDefined",
+        value: function isPrivateIdentifierDefined(name) {
+          var _this$parent2;
+          return (
+            this.hasPrivateIdentifier(name) ||
+            Boolean(
+              (_this$parent2 = this.parent) === null || _this$parent2 === void 0
+                ? void 0
+                : _this$parent2.isPrivateIdentifierDefined(name)
+            )
+          );
+        }
+      },
+      {
+        key: "validatePrivateIdentifierRefs",
+        value: function validatePrivateIdentifierRefs() {
+          for (var name in this.refs) {
+            if (!this.isPrivateIdentifierDefined(name)) {
+              var _this$refs$name$ = this.refs[name][0],
+                index = _this$refs$name$.index,
+                line = _this$refs$name$.line,
+                column = _this$refs$name$.column;
+              throw new ParseError(
+                {
+                  index: index,
+                  line: line,
+                  column: column
+                },
+                {
+                  index: index + name.length,
+                  line: line,
+                  column: column + name.length
+                },
+                4,
+                name
+              );
+            }
+          }
+        }
+      },
+      {
+        key: "hasPrivateIdentifier",
+        value: function hasPrivateIdentifier(name) {
+          return this.privateIdentifiers.has(name);
+        }
       }
-    }
-    hasPrivateIdentifier(name) {
-      return this.privateIdentifiers.has(name);
-    }
-  };
-  var Parser = class Parser {
-    constructor(source, options = {}) {
+    ]);
+  })();
+  var Parser = /*#__PURE__*/ (function () {
+    function Parser(source) {
+      var options =
+        arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      _classCallCheck(this, Parser);
       _defineProperty(this, "source", void 0);
       _defineProperty(this, "options", void 0);
       _defineProperty(this, "lastOnToken", null);
@@ -5960,124 +6987,170 @@ var lib = (() => {
       this.end = source.length;
       this.currentChar = source.charCodeAt(0);
     }
-    getToken() {
-      return this.token;
-    }
-    setToken(value, replaceLast = false) {
-      this.token = value;
-      const { onToken } = this.options;
-      if (onToken) {
-        if (value !== 1048576) {
-          const loc = {
-            start: {
-              line: this.tokenLine,
-              column: this.tokenColumn
-            },
-            end: {
-              line: this.line,
-              column: this.column
+    return _createClass(Parser, [
+      {
+        key: "getToken",
+        value: function getToken() {
+          return this.token;
+        }
+      },
+      {
+        key: "setToken",
+        value: function setToken(value) {
+          var replaceLast =
+            arguments.length > 1 && arguments[1] !== undefined
+              ? arguments[1]
+              : false;
+          this.token = value;
+          var onToken = this.options.onToken;
+          if (onToken) {
+            if (value !== 1048576) {
+              var loc = {
+                start: {
+                  line: this.tokenLine,
+                  column: this.tokenColumn
+                },
+                end: {
+                  line: this.line,
+                  column: this.column
+                }
+              };
+              if (!replaceLast && this.lastOnToken) {
+                onToken.apply(void 0, _toConsumableArray(this.lastOnToken));
+              }
+              this.lastOnToken = [
+                convertTokenType(value),
+                this.tokenIndex,
+                this.index,
+                loc
+              ];
+            } else {
+              if (this.lastOnToken) {
+                onToken.apply(void 0, _toConsumableArray(this.lastOnToken));
+                this.lastOnToken = null;
+              }
             }
+          }
+          return value;
+        }
+      },
+      {
+        key: "tokenStart",
+        get: function get() {
+          return {
+            index: this.tokenIndex,
+            line: this.tokenLine,
+            column: this.tokenColumn
           };
-          if (!replaceLast && this.lastOnToken) {
-            onToken(...this.lastOnToken);
+        }
+      },
+      {
+        key: "currentLocation",
+        get: function get() {
+          return {
+            index: this.index,
+            line: this.line,
+            column: this.column
+          };
+        }
+      },
+      {
+        key: "finishNode",
+        value: function finishNode(node, start, end) {
+          if (this.options.ranges) {
+            node.start = start.index;
+            var endIndex = end ? end.index : this.startIndex;
+            node.end = endIndex;
+            node.range = [start.index, endIndex];
           }
-          this.lastOnToken = [
-            convertTokenType(value),
-            this.tokenIndex,
-            this.index,
-            loc
-          ];
-        } else {
-          if (this.lastOnToken) {
-            onToken(...this.lastOnToken);
-            this.lastOnToken = null;
+          if (this.options.loc) {
+            node.loc = {
+              start: {
+                line: start.line,
+                column: start.column
+              },
+              end: end
+                ? {
+                    line: end.line,
+                    column: end.column
+                  }
+                : {
+                    line: this.startLine,
+                    column: this.startColumn
+                  }
+            };
+            if (this.options.source) {
+              node.loc.source = this.options.source;
+            }
           }
+          return node;
+        }
+      },
+      {
+        key: "addBindingToExports",
+        value: function addBindingToExports(name) {
+          this.exportedBindings.add(name);
+        }
+      },
+      {
+        key: "declareUnboundVariable",
+        value: function declareUnboundVariable(name) {
+          var exportedNames = this.exportedNames;
+          if (exportedNames.has(name)) {
+            this.report(147, name);
+          }
+          exportedNames.add(name);
+        }
+      },
+      {
+        key: "report",
+        value: function report(type) {
+          for (
+            var _len3 = arguments.length,
+              params = new Array(_len3 > 1 ? _len3 - 1 : 0),
+              _key3 = 1;
+            _key3 < _len3;
+            _key3++
+          ) {
+            params[_key3 - 1] = arguments[_key3];
+          }
+          throw _construct(
+            ParseError,
+            [this.tokenStart, this.currentLocation, type].concat(params)
+          );
+        }
+      },
+      {
+        key: "createScopeIfLexical",
+        value: function createScopeIfLexical(type, parent) {
+          if (this.options.lexical) {
+            return this.createScope(type, parent);
+          }
+          return void 0;
+        }
+      },
+      {
+        key: "createScope",
+        value: function createScope(type, parent) {
+          return new Scope(this, type, parent);
+        }
+      },
+      {
+        key: "createPrivateScopeIfLexical",
+        value: function createPrivateScopeIfLexical(parent) {
+          if (this.options.lexical) {
+            return new PrivateScope(this, parent);
+          }
+          return void 0;
         }
       }
-      return value;
-    }
-    get tokenStart() {
-      return {
-        index: this.tokenIndex,
-        line: this.tokenLine,
-        column: this.tokenColumn
-      };
-    }
-    get currentLocation() {
-      return {
-        index: this.index,
-        line: this.line,
-        column: this.column
-      };
-    }
-    finishNode(node, start, end) {
-      if (this.options.ranges) {
-        node.start = start.index;
-        const endIndex = end ? end.index : this.startIndex;
-        node.end = endIndex;
-        node.range = [start.index, endIndex];
-      }
-      if (this.options.loc) {
-        node.loc = {
-          start: {
-            line: start.line,
-            column: start.column
-          },
-          end: end
-            ? {
-                line: end.line,
-                column: end.column
-              }
-            : {
-                line: this.startLine,
-                column: this.startColumn
-              }
-        };
-        if (this.options.source) {
-          node.loc.source = this.options.source;
-        }
-      }
-      return node;
-    }
-    addBindingToExports(name) {
-      this.exportedBindings.add(name);
-    }
-    declareUnboundVariable(name) {
-      const { exportedNames } = this;
-      if (exportedNames.has(name)) {
-        this.report(147, name);
-      }
-      exportedNames.add(name);
-    }
-    report(type, ...params) {
-      throw new ParseError(
-        this.tokenStart,
-        this.currentLocation,
-        type,
-        ...params
-      );
-    }
-    createScopeIfLexical(type, parent) {
-      if (this.options.lexical) {
-        return this.createScope(type, parent);
-      }
-      return void 0;
-    }
-    createScope(type, parent) {
-      return new Scope(this, type, parent);
-    }
-    createPrivateScopeIfLexical(parent) {
-      if (this.options.lexical) {
-        return new PrivateScope(this, parent);
-      }
-      return void 0;
-    }
-  };
+    ]);
+  })();
   function pushComment(comments, options) {
     return function (type, value, start, end, loc) {
-      const comment = {
-        type,
-        value
+      var comment = {
+        type: type,
+        value: value
       };
       if (options.ranges) {
         comment.start = start;
@@ -6092,7 +7165,7 @@ var lib = (() => {
   }
   function pushToken(tokens, options) {
     return function (type, start, end, loc) {
-      const token = {
+      var token = {
         token: type
       };
       if (options.ranges) {
@@ -6107,9 +7180,7 @@ var lib = (() => {
     };
   }
   function normalizeOptions(rawOptions) {
-    const options = {
-      ...rawOptions
-    };
+    var options = _objectSpread({}, rawOptions);
     if (options.onComment) {
       options.onComment = Array.isArray(options.onComment)
         ? pushComment(options.onComment, options)
@@ -6122,22 +7193,35 @@ var lib = (() => {
     }
     return options;
   }
-  function parseSource(source, rawOptions = {}, context = 0) {
-    const options = normalizeOptions(rawOptions);
+  function parseSource(source) {
+    var rawOptions =
+      arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var context =
+      arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+    var options = normalizeOptions(rawOptions);
     if (options.module) context |= 2 | 1;
     if (options.globalReturn) context |= 4096;
     if (options.impliedStrict) context |= 1;
-    const parser = new Parser(source, options);
+    var parser = new Parser(source, options);
     skipHashBang(parser);
-    const scope = parser.createScopeIfLexical();
-    let body = [];
-    let sourceType = "script";
+    var scope = parser.createScopeIfLexical();
+    var body = [];
+    var sourceType = "script";
     if (context & 2) {
       sourceType = "module";
       body = parseModuleItemList(parser, context | 8, scope);
       if (scope) {
-        for (const name of parser.exportedBindings) {
-          if (!scope.hasVariable(name)) parser.report(148, name);
+        var _iterator2 = _createForOfIteratorHelper(parser.exportedBindings),
+          _step2;
+        try {
+          for (_iterator2.s(); !(_step2 = _iterator2.n()).done; ) {
+            var name = _step2.value;
+            if (!scope.hasVariable(name)) parser.report(148, name);
+          }
+        } catch (err) {
+          _iterator2.e(err);
+        } finally {
+          _iterator2.f();
         }
       }
     } else {
@@ -6146,8 +7230,8 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "Program",
-        sourceType,
-        body
+        sourceType: sourceType,
+        body: body
       },
       {
         index: 0,
@@ -6159,11 +7243,14 @@ var lib = (() => {
   }
   function parseStatementList(parser, context, scope) {
     nextToken(parser, context | 32 | 262144);
-    const statements = [];
+    var statements = [];
     while (parser.getToken() === 134283267) {
-      const { index, tokenValue, tokenStart, tokenIndex } = parser;
-      const token = parser.getToken();
-      const expr = parseLiteral(parser, context);
+      var index = parser.index,
+        tokenValue = parser.tokenValue,
+        tokenStart = parser.tokenStart,
+        tokenIndex = parser.tokenIndex;
+      var token = parser.getToken();
+      var expr = parseLiteral(parser, context);
       if (isValidStrictMode(parser, index, tokenIndex, tokenValue)) {
         context |= 1;
         if (parser.flags & 64) {
@@ -6184,10 +7271,10 @@ var lib = (() => {
   }
   function parseModuleItemList(parser, context, scope) {
     nextToken(parser, context | 32);
-    const statements = [];
+    var statements = [];
     while (parser.getToken() === 134283267) {
-      const { tokenStart } = parser;
-      const token = parser.getToken();
+      var tokenStart = parser.tokenStart;
+      var token = parser.getToken();
       statements.push(
         parseDirective(
           parser,
@@ -6211,7 +7298,7 @@ var lib = (() => {
         decorators: parseDecorators(parser, context, void 0)
       });
     }
-    let moduleItem;
+    var moduleItem;
     switch (parser.getToken()) {
       case 20564:
         moduleItem = parseExportDeclaration(parser, context, scope);
@@ -6246,7 +7333,7 @@ var lib = (() => {
     origin,
     labels
   ) {
-    const start = parser.tokenStart;
+    var start = parser.tokenStart;
     switch (parser.getToken()) {
       case 86104:
         return parseFunctionDeclaration(
@@ -6425,9 +7512,10 @@ var lib = (() => {
     labels,
     allowFuncDecl
   ) {
-    const { tokenValue, tokenStart } = parser;
-    const token = parser.getToken();
-    let expr;
+    var tokenValue = parser.tokenValue,
+      tokenStart = parser.tokenStart;
+    var token = parser.getToken();
+    var expr;
     switch (token) {
       case 241737:
         expr = parseIdentifier(parser, context);
@@ -6492,16 +7580,16 @@ var lib = (() => {
     }
     return parseExpressionStatement(parser, context, expr, tokenStart);
   }
-  function parseBlock(
-    parser,
-    context,
-    scope,
-    privateScope,
-    labels,
-    start = parser.tokenStart,
-    type = "BlockStatement"
-  ) {
-    const body = [];
+  function parseBlock(parser, context, scope, privateScope, labels) {
+    var start =
+      arguments.length > 5 && arguments[5] !== undefined
+        ? arguments[5]
+        : parser.tokenStart;
+    var type =
+      arguments.length > 6 && arguments[6] !== undefined
+        ? arguments[6]
+        : "BlockStatement";
+    var body = [];
     consume(parser, context | 32, 2162700);
     while (parser.getToken() !== 1074790415) {
       body.push(
@@ -6513,17 +7601,17 @@ var lib = (() => {
     consume(parser, context | 32, 1074790415);
     return parser.finishNode(
       {
-        type,
-        body
+        type: type,
+        body: body
       },
       start
     );
   }
   function parseReturnStatement(parser, context, privateScope) {
     if ((context & 4096) === 0) parser.report(92);
-    const start = parser.tokenStart;
+    var start = parser.tokenStart;
     nextToken(parser, context | 32);
-    const argument =
+    var argument =
       parser.flags & 1 || parser.getToken() & 1048576
         ? null
         : parseExpressions(
@@ -6538,7 +7626,7 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "ReturnStatement",
-        argument
+        argument: argument
       },
       start
     );
@@ -6548,7 +7636,7 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "ExpressionStatement",
-        expression
+        expression: expression
       },
       start
     );
@@ -6569,7 +7657,7 @@ var lib = (() => {
     validateBindingIdentifier(parser, context, 0, token, 1);
     validateAndDeclareLabel(parser, labels, value);
     nextToken(parser, context | 32);
-    const body =
+    var body =
       allowFuncDecl &&
       (context & 1) === 0 &&
       parser.options.webcompat &&
@@ -6600,7 +7688,7 @@ var lib = (() => {
       {
         type: "LabeledStatement",
         label: expr,
-        body
+        body: body
       },
       start
     );
@@ -6614,9 +7702,10 @@ var lib = (() => {
     labels,
     allowFuncDecl
   ) {
-    const { tokenValue, tokenStart: start } = parser;
-    const token = parser.getToken();
-    let expr = parseIdentifier(parser, context);
+    var tokenValue = parser.tokenValue,
+      start = parser.tokenStart;
+    var token = parser.getToken();
+    var expr = parseIdentifier(parser, context);
     if (parser.getToken() === 21) {
       return parseLabelledStatement(
         parser,
@@ -6632,7 +7721,7 @@ var lib = (() => {
         start
       );
     }
-    const asyncNewLine = parser.flags & 1;
+    var asyncNewLine = parser.flags & 1;
     if (!asyncNewLine) {
       if (parser.getToken() === 86104) {
         if (!allowFuncDecl) parser.report(123);
@@ -6732,7 +7821,7 @@ var lib = (() => {
     return parseExpressionStatement(parser, context, expr, start);
   }
   function parseDirective(parser, context, expression, token, start) {
-    const endIndex = parser.startIndex;
+    var endIndex = parser.startIndex;
     if (token !== 1074790417) {
       parser.assignable = 2;
       expression = parseMemberOrUpdateExpression(
@@ -6767,9 +7856,9 @@ var lib = (() => {
       }
       matchOrInsertSemicolon(parser, context | 32);
     }
-    const node = {
+    var node = {
       type: "ExpressionStatement",
-      expression
+      expression: expression
     };
     if (expression.type === "Literal" && typeof expression.value === "string") {
       node.directive = parser.source.slice(start.index + 1, endIndex - 1);
@@ -6777,7 +7866,7 @@ var lib = (() => {
     return parser.finishNode(node, start);
   }
   function parseEmptyStatement(parser, context) {
-    const start = parser.tokenStart;
+    var start = parser.tokenStart;
     nextToken(parser, context | 32);
     return parser.finishNode(
       {
@@ -6787,10 +7876,10 @@ var lib = (() => {
     );
   }
   function parseThrowStatement(parser, context, privateScope) {
-    const start = parser.tokenStart;
+    var start = parser.tokenStart;
     nextToken(parser, context | 32);
     if (parser.flags & 1) parser.report(90);
-    const argument = parseExpressions(
+    var argument = parseExpressions(
       parser,
       context,
       privateScope,
@@ -6802,17 +7891,17 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "ThrowStatement",
-        argument
+        argument: argument
       },
       start
     );
   }
   function parseIfStatement(parser, context, scope, privateScope, labels) {
-    const start = parser.tokenStart;
+    var start = parser.tokenStart;
     nextToken(parser, context);
     consume(parser, context | 32, 67174411);
     parser.assignable = 1;
-    const test = parseExpressions(
+    var test = parseExpressions(
       parser,
       context,
       privateScope,
@@ -6821,14 +7910,14 @@ var lib = (() => {
       parser.tokenStart
     );
     consume(parser, context | 32, 16);
-    const consequent = parseConsequentOrAlternative(
+    var consequent = parseConsequentOrAlternative(
       parser,
       context,
       scope,
       privateScope,
       labels
     );
-    let alternate = null;
+    var alternate = null;
     if (parser.getToken() === 20563) {
       nextToken(parser, context | 32);
       alternate = parseConsequentOrAlternative(
@@ -6842,9 +7931,9 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "IfStatement",
-        test,
-        consequent,
-        alternate
+        test: test,
+        consequent: consequent,
+        alternate: alternate
       },
       start
     );
@@ -6856,7 +7945,7 @@ var lib = (() => {
     privateScope,
     labels
   ) {
-    const { tokenStart } = parser;
+    var tokenStart = parser.tokenStart;
     return context & 1 ||
       !parser.options.webcompat ||
       parser.getToken() !== 86104
@@ -6887,10 +7976,10 @@ var lib = (() => {
   }
   function parseSwitchStatement(parser, context, scope, privateScope, labels) {
     var _scope;
-    const start = parser.tokenStart;
+    var start = parser.tokenStart;
     nextToken(parser, context);
     consume(parser, context | 32, 67174411);
-    const discriminant = parseExpressions(
+    var discriminant = parseExpressions(
       parser,
       context,
       privateScope,
@@ -6900,16 +7989,16 @@ var lib = (() => {
     );
     consume(parser, context, 16);
     consume(parser, context, 2162700);
-    const cases = [];
-    let seenDefault = 0;
+    var cases = [];
+    var seenDefault = 0;
     scope =
       (_scope = scope) === null || _scope === void 0
         ? void 0
         : _scope.createChildScope(8);
     while (parser.getToken() !== 1074790415) {
-      const { tokenStart } = parser;
-      let test = null;
-      const consequent = [];
+      var tokenStart = parser.tokenStart;
+      var test = null;
+      var consequent = [];
       if (consumeOpt(parser, context | 32, 20556)) {
         test = parseExpressions(
           parser,
@@ -6940,8 +8029,8 @@ var lib = (() => {
         parser.finishNode(
           {
             type: "SwitchCase",
-            test,
-            consequent
+            test: test,
+            consequent: consequent
           },
           tokenStart
         )
@@ -6951,17 +8040,17 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "SwitchStatement",
-        discriminant,
-        cases
+        discriminant: discriminant,
+        cases: cases
       },
       start
     );
   }
   function parseWhileStatement(parser, context, scope, privateScope, labels) {
-    const start = parser.tokenStart;
+    var start = parser.tokenStart;
     nextToken(parser, context);
     consume(parser, context | 32, 67174411);
-    const test = parseExpressions(
+    var test = parseExpressions(
       parser,
       context,
       privateScope,
@@ -6970,7 +8059,7 @@ var lib = (() => {
       parser.tokenStart
     );
     consume(parser, context | 32, 16);
-    const body = parseIterationStatementBody(
+    var body = parseIterationStatementBody(
       parser,
       context,
       scope,
@@ -6980,8 +8069,8 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "WhileStatement",
-        test,
-        body
+        test: test,
+        body: body
       },
       start
     );
@@ -7008,11 +8097,11 @@ var lib = (() => {
   }
   function parseContinueStatement(parser, context, labels) {
     if ((context & 128) === 0) parser.report(68);
-    const start = parser.tokenStart;
+    var start = parser.tokenStart;
     nextToken(parser, context);
-    let label = null;
+    var label = null;
     if ((parser.flags & 1) === 0 && parser.getToken() & 143360) {
-      const { tokenValue } = parser;
+      var tokenValue = parser.tokenValue;
       label = parseIdentifier(parser, context | 32);
       if (!isValidLabel(parser, labels, tokenValue, 1))
         parser.report(138, tokenValue);
@@ -7021,17 +8110,17 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "ContinueStatement",
-        label
+        label: label
       },
       start
     );
   }
   function parseBreakStatement(parser, context, labels) {
-    const start = parser.tokenStart;
+    var start = parser.tokenStart;
     nextToken(parser, context | 32);
-    let label = null;
+    var label = null;
     if ((parser.flags & 1) === 0 && parser.getToken() & 143360) {
-      const { tokenValue } = parser;
+      var tokenValue = parser.tokenValue;
       label = parseIdentifier(parser, context | 32);
       if (!isValidLabel(parser, labels, tokenValue, 0))
         parser.report(138, tokenValue);
@@ -7042,17 +8131,17 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "BreakStatement",
-        label
+        label: label
       },
       start
     );
   }
   function parseWithStatement(parser, context, scope, privateScope, labels) {
-    const start = parser.tokenStart;
+    var start = parser.tokenStart;
     nextToken(parser, context);
     if (context & 1) parser.report(91);
     consume(parser, context | 32, 67174411);
-    const object = parseExpressions(
+    var object = parseExpressions(
       parser,
       context,
       privateScope,
@@ -7061,7 +8150,7 @@ var lib = (() => {
       parser.tokenStart
     );
     consume(parser, context | 32, 16);
-    const body = parseStatement(
+    var body = parseStatement(
       parser,
       context,
       scope,
@@ -7073,14 +8162,14 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "WithStatement",
-        object,
-        body
+        object: object,
+        body: body
       },
       start
     );
   }
   function parseDebuggerStatement(parser, context) {
-    const start = parser.tokenStart;
+    var start = parser.tokenStart;
     nextToken(parser, context | 32);
     matchOrInsertSemicolon(parser, context | 32);
     return parser.finishNode(
@@ -7091,15 +8180,15 @@ var lib = (() => {
     );
   }
   function parseTryStatement(parser, context, scope, privateScope, labels) {
-    const start = parser.tokenStart;
+    var start = parser.tokenStart;
     nextToken(parser, context | 32);
-    const firstScope =
+    var firstScope =
       scope === null || scope === void 0 ? void 0 : scope.createChildScope(16);
-    const block = parseBlock(parser, context, firstScope, privateScope, {
+    var block = parseBlock(parser, context, firstScope, privateScope, {
       $: labels
     });
-    const { tokenStart } = parser;
-    const handler = consumeOpt(parser, context | 32, 20557)
+    var tokenStart = parser.tokenStart;
+    var handler = consumeOpt(parser, context | 32, 20557)
       ? parseCatchBlock(
           parser,
           context,
@@ -7109,12 +8198,12 @@ var lib = (() => {
           tokenStart
         )
       : null;
-    let finalizer = null;
+    var finalizer = null;
     if (parser.getToken() === 20566) {
       nextToken(parser, context | 32);
-      const finalizerScope =
+      var finalizerScope =
         scope === null || scope === void 0 ? void 0 : scope.createChildScope(4);
-      const block2 = parseBlock(parser, context, finalizerScope, privateScope, {
+      var block2 = parseBlock(parser, context, finalizerScope, privateScope, {
         $: labels
       });
       finalizer = block2;
@@ -7125,9 +8214,9 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "TryStatement",
-        block,
-        handler,
-        finalizer
+        block: block,
+        handler: handler,
+        finalizer: finalizer
       },
       start
     );
@@ -7141,8 +8230,8 @@ var lib = (() => {
     start
   ) {
     var _scope3;
-    let param = null;
-    let additionalScope = scope;
+    var param = null;
+    var additionalScope = scope;
     if (consumeOpt(parser, context, 67174411)) {
       var _scope2;
       scope =
@@ -7168,14 +8257,14 @@ var lib = (() => {
       (_scope3 = scope) === null || _scope3 === void 0
         ? void 0
         : _scope3.createChildScope(32);
-    const body = parseBlock(parser, context, additionalScope, privateScope, {
+    var body = parseBlock(parser, context, additionalScope, privateScope, {
       $: labels
     });
     return parser.finishNode(
       {
         type: "CatchClause",
-        param,
-        body
+        param: param,
+        body: body
       },
       start
     );
@@ -7186,7 +8275,7 @@ var lib = (() => {
       (_scope4 = scope) === null || _scope4 === void 0
         ? void 0
         : _scope4.createChildScope();
-    const ctorContext = 512 | 4096 | 1024 | 4 | 128;
+    var ctorContext = 512 | 4096 | 1024 | 4 | 128;
     context =
       ((context | ctorContext) ^ ctorContext) | 256 | 2048 | 524288 | 65536;
     return parseBlock(
@@ -7200,9 +8289,9 @@ var lib = (() => {
     );
   }
   function parseDoWhileStatement(parser, context, scope, privateScope, labels) {
-    const start = parser.tokenStart;
+    var start = parser.tokenStart;
     nextToken(parser, context | 32);
-    const body = parseIterationStatementBody(
+    var body = parseIterationStatementBody(
       parser,
       context,
       scope,
@@ -7211,7 +8300,7 @@ var lib = (() => {
     );
     consume(parser, context, 20578);
     consume(parser, context | 32, 67174411);
-    const test = parseExpressions(
+    var test = parseExpressions(
       parser,
       context,
       privateScope,
@@ -7224,8 +8313,8 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "DoWhileStatement",
-        body,
-        test
+        body: body,
+        test: test
       },
       start
     );
@@ -7237,11 +8326,12 @@ var lib = (() => {
     privateScope,
     origin
   ) {
-    const { tokenValue, tokenStart } = parser;
-    const token = parser.getToken();
-    let expr = parseIdentifier(parser, context);
+    var tokenValue = parser.tokenValue,
+      tokenStart = parser.tokenStart;
+    var token = parser.getToken();
+    var expr = parseIdentifier(parser, context);
     if (parser.getToken() & (143360 | 2097152)) {
-      const declarations = parseVariableDeclarationList(
+      var declarations = parseVariableDeclarationList(
         parser,
         context,
         scope,
@@ -7254,7 +8344,7 @@ var lib = (() => {
         {
           type: "VariableDeclaration",
           kind: "let",
-          declarations
+          declarations: declarations
         },
         tokenStart
       );
@@ -7277,7 +8367,7 @@ var lib = (() => {
       );
     }
     if (parser.getToken() === 10) {
-      let scope2 = void 0;
+      var scope2 = void 0;
       if (parser.options.lexical)
         scope2 = createArrowHeadParsingScope(parser, context, tokenValue);
       parser.flags = (parser.flags | 128) ^ 128;
@@ -7330,9 +8420,9 @@ var lib = (() => {
     kind,
     origin
   ) {
-    const start = parser.tokenStart;
+    var start = parser.tokenStart;
     nextToken(parser, context);
-    const declarations = parseVariableDeclarationList(
+    var declarations = parseVariableDeclarationList(
       parser,
       context,
       scope,
@@ -7345,7 +8435,7 @@ var lib = (() => {
       {
         type: "VariableDeclaration",
         kind: kind & 8 ? "let" : "const",
-        declarations
+        declarations: declarations
       },
       start
     );
@@ -7357,9 +8447,9 @@ var lib = (() => {
     privateScope,
     origin
   ) {
-    const start = parser.tokenStart;
+    var start = parser.tokenStart;
     nextToken(parser, context);
-    const declarations = parseVariableDeclarationList(
+    var declarations = parseVariableDeclarationList(
       parser,
       context,
       scope,
@@ -7372,7 +8462,7 @@ var lib = (() => {
       {
         type: "VariableDeclaration",
         kind: "var",
-        declarations
+        declarations: declarations
       },
       start
     );
@@ -7385,8 +8475,8 @@ var lib = (() => {
     kind,
     origin
   ) {
-    let bindingCount = 1;
-    const list = [
+    var bindingCount = 1;
+    var list = [
       parseVariableDeclaration(
         parser,
         context,
@@ -7422,10 +8512,10 @@ var lib = (() => {
     kind,
     origin
   ) {
-    const { tokenStart } = parser;
-    const token = parser.getToken();
-    let init = null;
-    const id = parseBindingPattern(
+    var tokenStart = parser.tokenStart;
+    var token = parser.getToken();
+    var init = null;
+    var id = parseBindingPattern(
       parser,
       context,
       scope,
@@ -7466,17 +8556,17 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "VariableDeclarator",
-        id,
-        init
+        id: id,
+        init: init
       },
       tokenStart
     );
   }
   function parseForStatement(parser, context, scope, privateScope, labels) {
     var _scope5;
-    const start = parser.tokenStart;
+    var start = parser.tokenStart;
     nextToken(parser, context);
-    const forAwait =
+    var forAwait =
       ((context & 2048) > 0 || ((context & 2) > 0 && (context & 8) > 0)) &&
       consumeOpt(parser, context, 209006);
     consume(parser, context | 32, 67174411);
@@ -7484,17 +8574,17 @@ var lib = (() => {
       (_scope5 = scope) === null || _scope5 === void 0
         ? void 0
         : _scope5.createChildScope(1);
-    let test = null;
-    let update = null;
-    let destructible = 0;
-    let init = null;
-    let isVarDecl =
+    var test = null;
+    var update = null;
+    var destructible = 0;
+    var init = null;
+    var isVarDecl =
       parser.getToken() === 86088 ||
       parser.getToken() === 241737 ||
       parser.getToken() === 86090;
-    let right;
-    const { tokenStart } = parser;
-    const token = parser.getToken();
+    var right;
+    var tokenStart = parser.tokenStart;
+    var token = parser.getToken();
     if (isVarDecl) {
       if (token === 241737) {
         init = parseIdentifier(parser, context);
@@ -7570,7 +8660,7 @@ var lib = (() => {
     } else if (token === 1074790417) {
       if (forAwait) parser.report(82);
     } else if ((token & 2097152) === 2097152) {
-      const patternStart = parser.tokenStart;
+      var patternStart = parser.tokenStart;
       init =
         token === 2162700
           ? parseObjectLiteralOrPattern(
@@ -7633,7 +8723,7 @@ var lib = (() => {
           parser.tokenStart
         );
         consume(parser, context | 32, 16);
-        const body3 = parseIterationStatementBody(
+        var body3 = parseIterationStatementBody(
           parser,
           context,
           scope,
@@ -7644,7 +8734,7 @@ var lib = (() => {
           {
             type: "ForOfStatement",
             left: init,
-            right,
+            right: right,
             body: body3,
             await: forAwait
           },
@@ -7664,7 +8754,7 @@ var lib = (() => {
         parser.tokenStart
       );
       consume(parser, context | 32, 16);
-      const body2 = parseIterationStatementBody(
+      var body2 = parseIterationStatementBody(
         parser,
         context,
         scope,
@@ -7676,7 +8766,7 @@ var lib = (() => {
           type: "ForInStatement",
           body: body2,
           left: init,
-          right
+          right: right
         },
         start
       );
@@ -7726,7 +8816,7 @@ var lib = (() => {
         parser.tokenStart
       );
     consume(parser, context | 32, 16);
-    const body = parseIterationStatementBody(
+    var body = parseIterationStatementBody(
       parser,
       context,
       scope,
@@ -7736,10 +8826,10 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "ForStatement",
-        init,
-        test,
-        update,
-        body
+        init: init,
+        test: test,
+        update: update,
+        body: body
       },
       start
     );
@@ -7753,21 +8843,21 @@ var lib = (() => {
     return parseIdentifier(parser, context);
   }
   function parseImportDeclaration(parser, context, scope) {
-    const start = parser.tokenStart;
+    var start = parser.tokenStart;
     nextToken(parser, context);
-    let source = null;
-    const { tokenStart } = parser;
-    let specifiers = [];
+    var source = null;
+    var tokenStart = parser.tokenStart;
+    var specifiers = [];
     if (parser.getToken() === 134283267) {
       source = parseLiteral(parser, context);
     } else {
       if (parser.getToken() & 143360) {
-        const local = parseRestrictedIdentifier(parser, context, scope);
+        var local = parseRestrictedIdentifier(parser, context, scope);
         specifiers = [
           parser.finishNode(
             {
               type: "ImportDefaultSpecifier",
-              local
+              local: local
             },
             tokenStart
           )
@@ -7816,18 +8906,18 @@ var lib = (() => {
       }
       source = parseModuleSpecifier(parser, context);
     }
-    const attributes = parseImportAttributes(parser, context);
-    const node = {
+    var attributes = parseImportAttributes(parser, context);
+    var node = {
       type: "ImportDeclaration",
-      specifiers,
-      source,
-      attributes
+      specifiers: specifiers,
+      source: source,
+      attributes: attributes
     };
     matchOrInsertSemicolon(parser, context | 32);
     return parser.finishNode(node, start);
   }
   function parseImportNamespaceSpecifier(parser, context, scope) {
-    const { tokenStart } = parser;
+    var tokenStart = parser.tokenStart;
     nextToken(parser, context);
     consume(parser, context, 77932);
     if ((parser.getToken() & 134217728) === 134217728) {
@@ -7859,10 +8949,11 @@ var lib = (() => {
   ) {
     nextToken(parser, context);
     while (parser.getToken() & 143360 || parser.getToken() === 134283267) {
-      let { tokenValue, tokenStart } = parser;
-      const token = parser.getToken();
-      const imported = parseModuleExportName(parser, context);
-      let local;
+      var tokenValue = parser.tokenValue,
+        tokenStart = parser.tokenStart;
+      var token = parser.getToken();
+      var imported = parseModuleExportName(parser, context);
+      var local = void 0;
       if (consumeOpt(parser, context, 77932)) {
         if (
           (parser.getToken() & 134217728) === 134217728 ||
@@ -7887,8 +8978,8 @@ var lib = (() => {
         parser.finishNode(
           {
             type: "ImportSpecifier",
-            local,
-            imported
+            local: local,
+            imported: imported
           },
           tokenStart
         )
@@ -7899,7 +8990,7 @@ var lib = (() => {
     return specifiers;
   }
   function parseImportMetaDeclaration(parser, context, start) {
-    let expr = parseImportMetaExpression(
+    var expr = parseImportMetaExpression(
       parser,
       context,
       parser.finishNode(
@@ -7935,7 +9026,7 @@ var lib = (() => {
     return parseExpressionStatement(parser, context, expr, start);
   }
   function parseImportCallDeclaration(parser, context, privateScope, start) {
-    let expr = parseImportExpression(parser, context, privateScope, 0, start);
+    var expr = parseImportExpression(parser, context, privateScope, 0, start);
     expr = parseMemberOrUpdateExpression(
       parser,
       context,
@@ -7958,14 +9049,14 @@ var lib = (() => {
     return parseExpressionStatement(parser, context, expr, start);
   }
   function parseExportDeclaration(parser, context, scope) {
-    const start = parser.leadingDecorators.decorators.length
+    var start = parser.leadingDecorators.decorators.length
       ? parser.leadingDecorators.start
       : parser.tokenStart;
     nextToken(parser, context | 32);
-    const specifiers = [];
-    let declaration = null;
-    let source = null;
-    let attributes = [];
+    var specifiers = [];
+    var declaration = null;
+    var source = null;
+    var attributes = [];
     if (consumeOpt(parser, context | 32, 20561)) {
       switch (parser.getToken()) {
         case 86104: {
@@ -7993,9 +9084,9 @@ var lib = (() => {
           );
           break;
         case 209005: {
-          const { tokenStart } = parser;
+          var tokenStart = parser.tokenStart;
           declaration = parseIdentifier(parser, context);
-          const { flags } = parser;
+          var flags = parser.flags;
           if ((flags & 1) === 0) {
             if (parser.getToken() === 86104) {
               declaration = parseFunctionDeclaration(
@@ -8077,7 +9168,7 @@ var lib = (() => {
       return parser.finishNode(
         {
           type: "ExportDefaultDeclaration",
-          declaration
+          declaration: declaration
         },
         start
       );
@@ -8085,8 +9176,8 @@ var lib = (() => {
     switch (parser.getToken()) {
       case 8391476: {
         nextToken(parser, context);
-        let exported = null;
-        const isNamedDeclaration = consumeOpt(parser, context, 77932);
+        var exported = null;
+        var isNamedDeclaration = consumeOpt(parser, context, 77932);
         if (isNamedDeclaration) {
           if (scope) parser.declareUnboundVariable(parser.tokenValue);
           exported = parseModuleExportName(parser, context);
@@ -8094,11 +9185,11 @@ var lib = (() => {
         consume(parser, context, 209011);
         if (parser.getToken() !== 134283267) parser.report(105, "Export");
         source = parseLiteral(parser, context);
-        const attributes2 = parseImportAttributes(parser, context);
-        const node2 = {
+        var attributes2 = parseImportAttributes(parser, context);
+        var node2 = {
           type: "ExportAllDeclaration",
-          source,
-          exported,
+          source: source,
+          exported: exported,
           attributes: attributes2
         };
         matchOrInsertSemicolon(parser, context | 32);
@@ -8106,16 +9197,17 @@ var lib = (() => {
       }
       case 2162700: {
         nextToken(parser, context);
-        const tmpExportedNames = [];
-        const tmpExportedBindings = [];
-        let hasLiteralLocal = 0;
+        var tmpExportedNames = [];
+        var tmpExportedBindings = [];
+        var hasLiteralLocal = 0;
         while (parser.getToken() & 143360 || parser.getToken() === 134283267) {
-          const { tokenStart, tokenValue } = parser;
-          const local = parseModuleExportName(parser, context);
+          var _tokenStart = parser.tokenStart,
+            tokenValue = parser.tokenValue;
+          var local = parseModuleExportName(parser, context);
           if (local.type === "Literal") {
             hasLiteralLocal = 1;
           }
-          let exported;
+          var _exported = void 0;
           if (parser.getToken() === 77932) {
             nextToken(parser, context);
             if (
@@ -8128,22 +9220,22 @@ var lib = (() => {
               tmpExportedNames.push(parser.tokenValue);
               tmpExportedBindings.push(tokenValue);
             }
-            exported = parseModuleExportName(parser, context);
+            _exported = parseModuleExportName(parser, context);
           } else {
             if (scope) {
               tmpExportedNames.push(parser.tokenValue);
               tmpExportedBindings.push(parser.tokenValue);
             }
-            exported = local;
+            _exported = local;
           }
           specifiers.push(
             parser.finishNode(
               {
                 type: "ExportSpecifier",
-                local,
-                exported
+                local: local,
+                exported: _exported
               },
-              tokenStart
+              _tokenStart
             )
           );
           if (parser.getToken() !== 1074790415) consume(parser, context, 18);
@@ -8154,15 +9246,21 @@ var lib = (() => {
           source = parseLiteral(parser, context);
           attributes = parseImportAttributes(parser, context);
           if (scope) {
-            tmpExportedNames.forEach((n) => parser.declareUnboundVariable(n));
+            tmpExportedNames.forEach(function (n) {
+              return parser.declareUnboundVariable(n);
+            });
           }
         } else {
           if (hasLiteralLocal) {
             parser.report(172);
           }
           if (scope) {
-            tmpExportedNames.forEach((n) => parser.declareUnboundVariable(n));
-            tmpExportedBindings.forEach((b) => parser.addBindingToExports(b));
+            tmpExportedNames.forEach(function (n) {
+              return parser.declareUnboundVariable(n);
+            });
+            tmpExportedBindings.forEach(function (b) {
+              return parser.addBindingToExports(b);
+            });
           }
         }
         matchOrInsertSemicolon(parser, context | 32);
@@ -8215,7 +9313,7 @@ var lib = (() => {
         );
         break;
       case 209005: {
-        const { tokenStart } = parser;
+        var _tokenStart2 = parser.tokenStart;
         nextToken(parser, context);
         if ((parser.flags & 1) === 0 && parser.getToken() === 86104) {
           declaration = parseFunctionDeclaration(
@@ -8227,7 +9325,7 @@ var lib = (() => {
             1,
             2,
             1,
-            tokenStart
+            _tokenStart2
           );
           break;
         }
@@ -8235,12 +9333,12 @@ var lib = (() => {
       default:
         parser.report(30, KeywordDescTable[parser.getToken() & 255]);
     }
-    const node = {
+    var node = {
       type: "ExportNamedDeclaration",
-      declaration,
-      specifiers,
-      source,
-      attributes
+      declaration: declaration,
+      specifiers: specifiers,
+      source: source,
+      attributes: attributes
     };
     return parser.finishNode(node, start);
   }
@@ -8252,7 +9350,7 @@ var lib = (() => {
     inGroup,
     start
   ) {
-    let expr = parsePrimaryExpression(
+    var expr = parsePrimaryExpression(
       parser,
       context,
       privateScope,
@@ -8290,7 +9388,7 @@ var lib = (() => {
     start,
     expr
   ) {
-    const expressions = [expr];
+    var expressions = [expr];
     while (consumeOpt(parser, context | 32, 18)) {
       expressions.push(
         parseExpression(
@@ -8306,7 +9404,7 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "SequenceExpression",
-        expressions
+        expressions: expressions
       },
       start
     );
@@ -8319,7 +9417,7 @@ var lib = (() => {
     canAssign,
     start
   ) {
-    const expr = parseExpression(
+    var expr = parseExpression(
       parser,
       context,
       privateScope,
@@ -8347,7 +9445,7 @@ var lib = (() => {
     start,
     left
   ) {
-    const token = parser.getToken();
+    var token = parser.getToken();
     if ((token & 4194304) === 4194304) {
       if (parser.assignable & 2) parser.report(26);
       if (
@@ -8359,7 +9457,7 @@ var lib = (() => {
         reinterpretToPattern(parser, left);
       }
       nextToken(parser, context | 32);
-      const right = parseExpression(
+      var right = parseExpression(
         parser,
         context,
         privateScope,
@@ -8372,14 +9470,14 @@ var lib = (() => {
         isPattern
           ? {
               type: "AssignmentPattern",
-              left,
-              right
+              left: left,
+              right: right
             }
           : {
               type: "AssignmentExpression",
-              left,
+              left: left,
               operator: KeywordDescTable[token & 255],
-              right
+              right: right
             },
         start
       );
@@ -8416,9 +9514,9 @@ var lib = (() => {
     start,
     left
   ) {
-    const token = parser.getToken();
+    var token = parser.getToken();
     nextToken(parser, context | 32);
-    const right = parseExpression(
+    var right = parseExpression(
       parser,
       context,
       privateScope,
@@ -8430,14 +9528,14 @@ var lib = (() => {
       isPattern
         ? {
             type: "AssignmentPattern",
-            left,
-            right
+            left: left,
+            right: right
           }
         : {
             type: "AssignmentExpression",
-            left,
+            left: left,
             operator: KeywordDescTable[token & 255],
-            right
+            right: right
           },
       start
     );
@@ -8451,7 +9549,7 @@ var lib = (() => {
     test,
     start
   ) {
-    const consequent = parseExpression(
+    var consequent = parseExpression(
       parser,
       (context | 131072) ^ 131072,
       privateScope,
@@ -8461,7 +9559,7 @@ var lib = (() => {
     );
     consume(parser, context | 32, 21);
     parser.assignable = 1;
-    const alternate = parseExpression(
+    var alternate = parseExpression(
       parser,
       context,
       privateScope,
@@ -8473,9 +9571,9 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "ConditionalExpression",
-        test,
-        consequent,
-        alternate
+        test: test,
+        consequent: consequent,
+        alternate: alternate
       },
       start
     );
@@ -8490,9 +9588,9 @@ var lib = (() => {
     operator,
     left
   ) {
-    const bit = -((context & 131072) > 0) & 8673330;
-    let t;
-    let precedence;
+    var bit = -((context & 131072) > 0) & 8673330;
+    var t;
+    var precedence;
     parser.assignable = 2;
     while (parser.getToken() & 8388608) {
       t = parser.getToken();
@@ -8515,7 +9613,7 @@ var lib = (() => {
             t & 524288 || t & 268435456
               ? "LogicalExpression"
               : "BinaryExpression",
-          left,
+          left: left,
           right: parseBinaryExpression(
             parser,
             context,
@@ -8543,10 +9641,10 @@ var lib = (() => {
   }
   function parseUnaryExpression(parser, context, privateScope, isLHS, inGroup) {
     if (!isLHS) parser.report(0);
-    const { tokenStart } = parser;
-    const unaryOperator = parser.getToken();
+    var tokenStart = parser.tokenStart;
+    var unaryOperator = parser.getToken();
     nextToken(parser, context | 32);
-    const arg = parseLeftHandSideExpression(
+    var arg = parseLeftHandSideExpression(
       parser,
       context,
       privateScope,
@@ -8583,9 +9681,9 @@ var lib = (() => {
     inNew,
     start
   ) {
-    const token = parser.getToken();
-    const expr = parseIdentifier(parser, context);
-    const { flags } = parser;
+    var token = parser.getToken();
+    var expr = parseIdentifier(parser, context);
+    var flags = parser.flags;
     if ((flags & 1) === 0) {
       if (parser.getToken() === 86104) {
         return parseFunctionExpression(
@@ -8659,8 +9757,8 @@ var lib = (() => {
       if (context & 8192) parser.report(32);
       if (!canAssign) parser.report(26);
       if (parser.getToken() === 22) parser.report(124);
-      let argument = null;
-      let delegate = false;
+      var argument = null;
+      var delegate = false;
       if ((parser.flags & 1) === 0) {
         delegate = consumeOpt(parser, context | 32, 8391476);
         if (parser.getToken() & (12288 | 65536) || delegate) {
@@ -8680,8 +9778,8 @@ var lib = (() => {
       return parser.finishNode(
         {
           type: "YieldExpression",
-          argument,
-          delegate
+          argument: argument,
+          delegate: delegate
         },
         start
       );
@@ -8699,12 +9797,12 @@ var lib = (() => {
   ) {
     if (inGroup) parser.destructible |= 128;
     if (context & 524288) parser.report(177);
-    const possibleIdentifierOrArrowFunc = parseIdentifierOrArrow(
+    var possibleIdentifierOrArrowFunc = parseIdentifierOrArrow(
       parser,
       context,
       privateScope
     );
-    const isIdentifier =
+    var isIdentifier =
       possibleIdentifierOrArrowFunc.type === "ArrowFunctionExpression" ||
       (parser.getToken() & 65536) === 0;
     if (isIdentifier) {
@@ -8762,7 +9860,7 @@ var lib = (() => {
           },
           0
         );
-      const argument = parseLeftHandSideExpression(
+      var argument = parseLeftHandSideExpression(
         parser,
         context,
         privateScope,
@@ -8775,7 +9873,7 @@ var lib = (() => {
       return parser.finishNode(
         {
           type: "AwaitExpression",
-          argument
+          argument: argument
         },
         start
       );
@@ -8801,19 +9899,17 @@ var lib = (() => {
     funcNameToken,
     functionScope
   ) {
-    const { tokenStart } = parser;
+    var tokenStart = parser.tokenStart;
     consume(parser, context | 32, 2162700);
-    const body = [];
+    var body = [];
     if (parser.getToken() !== 1074790415) {
       while (parser.getToken() === 134283267) {
-        const {
-          index,
-          tokenStart: tokenStart2,
-          tokenIndex,
-          tokenValue
-        } = parser;
-        const token = parser.getToken();
-        const expr = parseLiteral(parser, context);
+        var index = parser.index,
+          tokenStart2 = parser.tokenStart,
+          tokenIndex = parser.tokenIndex,
+          tokenValue = parser.tokenValue;
+        var token = parser.getToken();
+        var expr = parseLiteral(parser, context);
         if (isValidStrictMode(parser, index, tokenIndex, tokenValue)) {
           context |= 1;
           if (parser.flags & 128) {
@@ -8858,13 +9954,13 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "BlockStatement",
-        body
+        body: body
       },
       tokenStart
     );
   }
   function parseSuperExpression(parser, context) {
-    const { tokenStart } = parser;
+    var tokenStart = parser.tokenStart;
     nextToken(parser, context);
     switch (parser.getToken()) {
       case 67108990:
@@ -8898,8 +9994,8 @@ var lib = (() => {
     inGroup,
     isLHS
   ) {
-    const start = parser.tokenStart;
-    const expression = parsePrimaryExpression(
+    var start = parser.tokenStart;
+    var expression = parsePrimaryExpression(
       parser,
       context,
       privateScope,
@@ -8922,7 +10018,7 @@ var lib = (() => {
   }
   function parseUpdateExpression(parser, context, expr, start) {
     if (parser.assignable & 2) parser.report(55);
-    const token = parser.getToken();
+    var token = parser.getToken();
     nextToken(parser, context);
     parser.assignable = 2;
     return parser.finishNode(
@@ -8962,7 +10058,7 @@ var lib = (() => {
             parser.report(173);
           }
           parser.assignable = 1;
-          const property = parsePropertyOrPrivatePropertyName(
+          var property = parsePropertyOrPrivatePropertyName(
             parser,
             context | 64,
             privateScope
@@ -8972,7 +10068,7 @@ var lib = (() => {
               type: "MemberExpression",
               object: expr,
               computed: false,
-              property,
+              property: property,
               optional: false
             },
             start
@@ -8980,14 +10076,14 @@ var lib = (() => {
           break;
         }
         case 69271571: {
-          let restoreHasOptionalChaining = false;
+          var restoreHasOptionalChaining = false;
           if ((parser.flags & 2048) === 2048) {
             restoreHasOptionalChaining = true;
             parser.flags = (parser.flags | 2048) ^ 2048;
           }
           nextToken(parser, context | 32);
-          const { tokenStart } = parser;
-          const property = parseExpressions(
+          var tokenStart = parser.tokenStart;
+          var _property = parseExpressions(
             parser,
             context,
             privateScope,
@@ -9002,7 +10098,7 @@ var lib = (() => {
               type: "MemberExpression",
               object: expr,
               computed: true,
-              property,
+              property: _property,
               optional: false
             },
             start
@@ -9017,12 +10113,12 @@ var lib = (() => {
             parser.flags = (parser.flags | 1024) ^ 1024;
             return expr;
           }
-          let restoreHasOptionalChaining = false;
+          var _restoreHasOptionalChaining = false;
           if ((parser.flags & 2048) === 2048) {
-            restoreHasOptionalChaining = true;
+            _restoreHasOptionalChaining = true;
             parser.flags = (parser.flags | 2048) ^ 2048;
           }
-          const args = parseArguments(parser, context, privateScope, inGroup);
+          var args = parseArguments(parser, context, privateScope, inGroup);
           parser.assignable = 2;
           expr = parser.finishNode(
             {
@@ -9033,7 +10129,7 @@ var lib = (() => {
             },
             start
           );
-          if (restoreHasOptionalChaining) {
+          if (_restoreHasOptionalChaining) {
             parser.flags |= 2048;
           }
           break;
@@ -9085,8 +10181,8 @@ var lib = (() => {
     return expr;
   }
   function parseOptionalChain(parser, context, privateScope, expr, start) {
-    let restoreHasOptionalChaining = false;
-    let node;
+    var restoreHasOptionalChaining = false;
+    var node;
     if (parser.getToken() === 69271571 || parser.getToken() === 67174411) {
       if ((parser.flags & 2048) === 2048) {
         restoreHasOptionalChaining = true;
@@ -9095,8 +10191,8 @@ var lib = (() => {
     }
     if (parser.getToken() === 69271571) {
       nextToken(parser, context | 32);
-      const { tokenStart } = parser;
-      const property = parseExpressions(
+      var tokenStart = parser.tokenStart;
+      var property = parseExpressions(
         parser,
         context,
         privateScope,
@@ -9112,12 +10208,12 @@ var lib = (() => {
           object: expr,
           computed: true,
           optional: true,
-          property
+          property: property
         },
         start
       );
     } else if (parser.getToken() === 67174411) {
-      const args = parseArguments(parser, context, privateScope, 0);
+      var args = parseArguments(parser, context, privateScope, 0);
       parser.assignable = 2;
       node = parser.finishNode(
         {
@@ -9129,7 +10225,7 @@ var lib = (() => {
         start
       );
     } else {
-      const property = parsePropertyOrPrivatePropertyName(
+      var _property2 = parsePropertyOrPrivatePropertyName(
         parser,
         context,
         privateScope
@@ -9141,7 +10237,7 @@ var lib = (() => {
           object: expr,
           computed: false,
           optional: true,
-          property
+          property: _property2
         },
         start
       );
@@ -9174,9 +10270,9 @@ var lib = (() => {
   ) {
     if (inNew) parser.report(56);
     if (!isLHS) parser.report(0);
-    const token = parser.getToken();
+    var token = parser.getToken();
     nextToken(parser, context | 32);
-    const arg = parseLeftHandSideExpression(
+    var arg = parseLeftHandSideExpression(
       parser,
       context,
       privateScope,
@@ -9241,9 +10337,9 @@ var lib = (() => {
             start
           );
       }
-      const { tokenValue } = parser;
-      const token = parser.getToken();
-      const expr = parseIdentifier(parser, context | 64);
+      var tokenValue = parser.tokenValue;
+      var token = parser.getToken();
+      var expr = parseIdentifier(parser, context | 64);
       if (parser.getToken() === 10) {
         if (!isLHS) parser.report(0);
         classifyIdentifier(parser, context, token);
@@ -9401,7 +10497,7 @@ var lib = (() => {
     inGroup,
     start
   ) {
-    let expr = parseIdentifier(parser, context);
+    var expr = parseIdentifier(parser, context);
     if (parser.getToken() === 67108877) {
       return parseImportMetaExpression(parser, context, expr, start);
     }
@@ -9421,7 +10517,7 @@ var lib = (() => {
   function parseImportMetaExpression(parser, context, meta, start) {
     if ((context & 2) === 0) parser.report(169);
     nextToken(parser, context);
-    const token = parser.getToken();
+    var token = parser.getToken();
     if (token !== 209030 && parser.tokenValue !== "meta") {
       parser.report(174);
     } else if (token & -2147483648) {
@@ -9431,7 +10527,7 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "MetaProperty",
-        meta,
+        meta: meta,
         property: parseIdentifier(parser, context)
       },
       start
@@ -9446,7 +10542,7 @@ var lib = (() => {
   ) {
     consume(parser, context | 32, 67174411);
     if (parser.getToken() === 14) parser.report(143);
-    const source = parseExpression(
+    var source = parseExpression(
       parser,
       context,
       privateScope,
@@ -9454,11 +10550,11 @@ var lib = (() => {
       inGroup,
       parser.tokenStart
     );
-    let options = null;
+    var options = null;
     if (parser.getToken() === 18) {
       consume(parser, context, 18);
       if (parser.getToken() !== 16) {
-        const expContext = (context | 131072) ^ 131072;
+        var expContext = (context | 131072) ^ 131072;
         options = parseExpression(
           parser,
           expContext,
@@ -9470,10 +10566,10 @@ var lib = (() => {
       }
       consumeOpt(parser, context, 18);
     }
-    const node = {
+    var node = {
       type: "ImportExpression",
-      source,
-      options
+      source: source,
+      options: options
     };
     consume(parser, context, 16);
     return parser.finishNode(node, start);
@@ -9481,24 +10577,24 @@ var lib = (() => {
   function parseImportAttributes(parser, context) {
     if (!consumeOpt(parser, context, 20579)) return [];
     consume(parser, context, 2162700);
-    const attributes = [];
-    const keysContent = /* @__PURE__ */ new Set();
+    var attributes = [];
+    var keysContent = /* @__PURE__ */ new Set();
     while (parser.getToken() !== 1074790415) {
-      const start = parser.tokenStart;
-      const key = parseIdentifierOrStringLiteral(parser, context);
+      var start = parser.tokenStart;
+      var key = parseIdentifierOrStringLiteral(parser, context);
       consume(parser, context, 21);
-      const value = parseStringLiteral(parser, context);
-      const keyContent = key.type === "Literal" ? key.value : key.name;
+      var value = parseStringLiteral(parser, context);
+      var keyContent = key.type === "Literal" ? key.value : key.name;
       if (keysContent.has(keyContent)) {
-        parser.report(145, `${keyContent}`);
+        parser.report(145, "".concat(keyContent));
       }
       keysContent.add(keyContent);
       attributes.push(
         parser.finishNode(
           {
             type: "ImportAttribute",
-            key,
-            value
+            key: key,
+            value: value
           },
           start
         )
@@ -9527,9 +10623,9 @@ var lib = (() => {
     }
   }
   function validateStringWellFormed(parser, str) {
-    const len = str.length;
-    for (let i = 0; i < len; i++) {
-      const code = str.charCodeAt(i);
+    var len = str.length;
+    for (var i = 0; i < len; i++) {
+      var code = str.charCodeAt(i);
       if ((code & 64512) !== 55296) continue;
       if (code > 56319 || ++i >= len || (str.charCodeAt(i) & 64512) !== 56320) {
         parser.report(171, JSON.stringify(str.charAt(i--)));
@@ -9547,10 +10643,12 @@ var lib = (() => {
     }
   }
   function parseBigIntLiteral(parser, context) {
-    const { tokenRaw, tokenValue, tokenStart } = parser;
+    var tokenRaw = parser.tokenRaw,
+      tokenValue = parser.tokenValue,
+      tokenStart = parser.tokenStart;
     nextToken(parser, context);
     parser.assignable = 2;
-    const node = {
+    var node = {
       type: "Literal",
       value: tokenValue,
       bigint: String(tokenValue)
@@ -9562,28 +10660,32 @@ var lib = (() => {
   }
   function parseTemplateLiteral(parser, context) {
     parser.assignable = 2;
-    const { tokenValue, tokenRaw, tokenStart } = parser;
+    var tokenValue = parser.tokenValue,
+      tokenRaw = parser.tokenRaw,
+      tokenStart = parser.tokenStart;
     consume(parser, context, 67174409);
-    const quasis = [
+    var quasis = [
       parseTemplateElement(parser, tokenValue, tokenRaw, tokenStart, true)
     ];
     return parser.finishNode(
       {
         type: "TemplateLiteral",
         expressions: [],
-        quasis
+        quasis: quasis
       },
       tokenStart
     );
   }
   function parseTemplate(parser, context, privateScope) {
     context = (context | 131072) ^ 131072;
-    const { tokenValue, tokenRaw, tokenStart } = parser;
+    var tokenValue = parser.tokenValue,
+      tokenRaw = parser.tokenRaw,
+      tokenStart = parser.tokenStart;
     consume(parser, (context & -65) | 32, 67174408);
-    const quasis = [
+    var quasis = [
       parseTemplateElement(parser, tokenValue, tokenRaw, tokenStart, false)
     ];
-    const expressions = [
+    var expressions = [
       parseExpressions(
         parser,
         context & -65,
@@ -9597,11 +10699,9 @@ var lib = (() => {
     while (
       parser.setToken(scanTemplateTail(parser, context), true) !== 67174409
     ) {
-      const {
-        tokenValue: tokenValue2,
-        tokenRaw: tokenRaw2,
-        tokenStart: tokenStart2
-      } = parser;
+      var tokenValue2 = parser.tokenValue,
+        tokenRaw2 = parser.tokenRaw,
+        tokenStart2 = parser.tokenStart;
       consume(parser, (context & -65) | 32, 67174408);
       quasis.push(
         parseTemplateElement(parser, tokenValue2, tokenRaw2, tokenStart2, false)
@@ -9612,38 +10712,36 @@ var lib = (() => {
       if (parser.getToken() !== 1074790415) parser.report(83);
     }
     {
-      const {
-        tokenValue: tokenValue2,
-        tokenRaw: tokenRaw2,
-        tokenStart: tokenStart2
-      } = parser;
+      var _tokenValue = parser.tokenValue,
+        _tokenRaw = parser.tokenRaw,
+        _tokenStart3 = parser.tokenStart;
       consume(parser, context, 67174409);
       quasis.push(
-        parseTemplateElement(parser, tokenValue2, tokenRaw2, tokenStart2, true)
+        parseTemplateElement(parser, _tokenValue, _tokenRaw, _tokenStart3, true)
       );
     }
     return parser.finishNode(
       {
         type: "TemplateLiteral",
-        expressions,
-        quasis
+        expressions: expressions,
+        quasis: quasis
       },
       tokenStart
     );
   }
   function parseTemplateElement(parser, cooked, raw, start, tail) {
-    const node = parser.finishNode(
+    var node = parser.finishNode(
       {
         type: "TemplateElement",
         value: {
-          cooked,
-          raw
+          cooked: cooked,
+          raw: raw
         },
-        tail
+        tail: tail
       },
       start
     );
-    const tailSize = tail ? 1 : 2;
+    var tailSize = tail ? 1 : 2;
     if (parser.options.ranges) {
       node.start += 1;
       node.range[0] += 1;
@@ -9657,10 +10755,10 @@ var lib = (() => {
     return node;
   }
   function parseSpreadElement(parser, context, privateScope) {
-    const start = parser.tokenStart;
+    var start = parser.tokenStart;
     context = (context | 131072) ^ 131072;
     consume(parser, context | 32, 14);
-    const argument = parseExpression(
+    var argument = parseExpression(
       parser,
       context,
       privateScope,
@@ -9672,14 +10770,14 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "SpreadElement",
-        argument
+        argument: argument
       },
       start
     );
   }
   function parseArguments(parser, context, privateScope, inGroup) {
     nextToken(parser, context | 32);
-    const args = [];
+    var args = [];
     if (parser.getToken() === 16) {
       nextToken(parser, context | 64);
       return args;
@@ -9707,8 +10805,9 @@ var lib = (() => {
     return args;
   }
   function parseIdentifier(parser, context) {
-    const { tokenValue, tokenStart } = parser;
-    const allowRegex =
+    var tokenValue = parser.tokenValue,
+      tokenStart = parser.tokenStart;
+    var allowRegex =
       tokenValue === "await" && (parser.getToken() & -2147483648) === 0;
     nextToken(parser, context | (allowRegex ? 32 : 0));
     return parser.finishNode(
@@ -9720,7 +10819,9 @@ var lib = (() => {
     );
   }
   function parseLiteral(parser, context) {
-    const { tokenValue, tokenRaw, tokenStart } = parser;
+    var tokenValue = parser.tokenValue,
+      tokenRaw = parser.tokenRaw,
+      tokenStart = parser.tokenStart;
     if (parser.getToken() === 134283388) {
       return parseBigIntLiteral(parser, context);
     }
@@ -9741,27 +10842,27 @@ var lib = (() => {
     );
   }
   function parseNullOrTrueOrFalseLiteral(parser, context) {
-    const start = parser.tokenStart;
-    const raw = KeywordDescTable[parser.getToken() & 255];
-    const value = parser.getToken() === 86023 ? null : raw === "true";
+    var start = parser.tokenStart;
+    var raw = KeywordDescTable[parser.getToken() & 255];
+    var value = parser.getToken() === 86023 ? null : raw === "true";
     nextToken(parser, context);
     parser.assignable = 2;
     return parser.finishNode(
       parser.options.raw
         ? {
             type: "Literal",
-            value,
-            raw
+            value: value,
+            raw: raw
           }
         : {
             type: "Literal",
-            value
+            value: value
           },
       start
     );
   }
   function parseThisExpression(parser, context) {
-    const { tokenStart } = parser;
+    var tokenStart = parser.tokenStart;
     nextToken(parser, context);
     parser.assignable = 2;
     return parser.finishNode(
@@ -9784,14 +10885,14 @@ var lib = (() => {
   ) {
     var _functionScope2, _functionScope3;
     nextToken(parser, context | 32);
-    const isGenerator = allowGen ? optionalBit(parser, context, 8391476) : 0;
-    let id = null;
-    let funcNameToken;
-    let functionScope = scope ? parser.createScope() : void 0;
+    var isGenerator = allowGen ? optionalBit(parser, context, 8391476) : 0;
+    var id = null;
+    var funcNameToken;
+    var functionScope = scope ? parser.createScope() : void 0;
     if (parser.getToken() === 67174411) {
       if ((flags & 1) === 0) parser.report(39, "Function");
     } else {
-      const kind =
+      var kind =
         origin & 4 && ((context & 8) === 0 || (context & 2) === 0)
           ? 4
           : 64 | (isAsync ? 1024 : 0) | (isGenerator ? 1024 : 0);
@@ -9821,7 +10922,7 @@ var lib = (() => {
       }
     }
     {
-      const modifierFlags2 = 256 | 512 | 1024 | 2048 | 8192 | 16384;
+      var modifierFlags2 = 256 | 512 | 1024 | 2048 | 8192 | 16384;
       context =
         ((context | modifierFlags2) ^ modifierFlags2) |
         65536 |
@@ -9833,7 +10934,7 @@ var lib = (() => {
       (_functionScope2 = functionScope) === null || _functionScope2 === void 0
         ? void 0
         : _functionScope2.createChildScope(256);
-    const params = parseFormalParametersOrFormalList(
+    var params = parseFormalParametersOrFormalList(
       parser,
       (context | 8192) & -524289,
       functionScope,
@@ -9841,8 +10942,8 @@ var lib = (() => {
       0,
       1
     );
-    const modifierFlags = 8 | 4 | 128 | 524288;
-    const body = parseFunctionBody(
+    var modifierFlags = 8 | 4 | 128 | 524288;
+    var body = parseFunctionBody(
       parser,
       ((context | modifierFlags) ^ modifierFlags) | 32768 | 4096,
       (_functionScope3 = functionScope) === null || _functionScope3 === void 0
@@ -9856,9 +10957,9 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "FunctionDeclaration",
-        id,
-        params,
-        body,
+        id: id,
+        params: params,
+        body: body,
         async: isAsync === 1,
         generator: isGenerator === 1
       },
@@ -9875,13 +10976,13 @@ var lib = (() => {
   ) {
     var _scope7, _scope8;
     nextToken(parser, context | 32);
-    const isGenerator = optionalBit(parser, context, 8391476);
-    const generatorAndAsyncFlags =
+    var isGenerator = optionalBit(parser, context, 8391476);
+    var generatorAndAsyncFlags =
       (isAsync ? 2048 : 0) | (isGenerator ? 1024 : 0);
-    let id = null;
-    let funcNameToken;
-    let scope = parser.createScopeIfLexical();
-    const modifierFlags = 256 | 512 | 1024 | 2048 | 8192 | 16384 | 524288;
+    var id = null;
+    var funcNameToken;
+    var scope = parser.createScopeIfLexical();
+    var modifierFlags = 256 | 512 | 1024 | 2048 | 8192 | 16384 | 524288;
     if (parser.getToken() & 143360) {
       var _scope6;
       validateFunctionName(
@@ -9905,7 +11006,7 @@ var lib = (() => {
       (_scope7 = scope) === null || _scope7 === void 0
         ? void 0
         : _scope7.createChildScope(256);
-    const params = parseFormalParametersOrFormalList(
+    var params = parseFormalParametersOrFormalList(
       parser,
       (context | 8192) & -524289,
       scope,
@@ -9913,7 +11014,7 @@ var lib = (() => {
       inGroup,
       1
     );
-    const body = parseFunctionBody(
+    var body = parseFunctionBody(
       parser,
       (context & -131229) | 32768 | 4096,
       (_scope8 = scope) === null || _scope8 === void 0
@@ -9928,9 +11029,9 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "FunctionExpression",
-        id,
-        params,
-        body,
+        id: id,
+        params: params,
+        body: body,
         async: isAsync === 1,
         generator: isGenerator === 1
       },
@@ -9944,7 +11045,7 @@ var lib = (() => {
     skipInitializer,
     inGroup
   ) {
-    const expr = parseArrayExpressionOrPattern(
+    var expr = parseArrayExpressionOrPattern(
       parser,
       context,
       void 0,
@@ -9974,18 +11075,19 @@ var lib = (() => {
     kind,
     origin
   ) {
-    const { tokenStart: start } = parser;
+    var start = parser.tokenStart;
     nextToken(parser, context | 32);
-    const elements = [];
-    let destructible = 0;
+    var elements = [];
+    var destructible = 0;
     context = (context | 131072) ^ 131072;
     while (parser.getToken() !== 20) {
       if (consumeOpt(parser, context | 32, 18)) {
         elements.push(null);
       } else {
-        let left;
-        const { tokenStart, tokenValue } = parser;
-        const token = parser.getToken();
+        var left = void 0;
+        var tokenStart = parser.tokenStart,
+          tokenValue = parser.tokenValue;
+        var token = parser.getToken();
         if (token & 143360) {
           left = parsePrimaryExpression(
             parser,
@@ -10004,7 +11106,7 @@ var lib = (() => {
             scope === null ||
               scope === void 0 ||
               scope.addVarOrBlock(context, tokenValue, kind, origin);
-            const right = parseExpression(
+            var right = parseExpression(
               parser,
               context,
               privateScope,
@@ -10016,14 +11118,14 @@ var lib = (() => {
               isPattern
                 ? {
                     type: "AssignmentPattern",
-                    left,
-                    right
+                    left: left,
+                    right: right
                   }
                 : {
                     type: "AssignmentExpression",
                     operator: "=",
-                    left,
-                    right
+                    left: left,
+                    right: right
                   },
               tokenStart
             );
@@ -10181,10 +11283,10 @@ var lib = (() => {
       }
     }
     consume(parser, context, 20);
-    const node = parser.finishNode(
+    var node = parser.finishNode(
       {
         type: isPattern ? "ArrayPattern" : "ArrayExpression",
-        elements
+        elements: elements
       },
       start
     );
@@ -10217,8 +11319,8 @@ var lib = (() => {
     nextToken(parser, context | 32);
     if (destructible & 16) parser.report(26);
     if (!isPattern) reinterpretToPattern(parser, node);
-    const { tokenStart } = parser;
-    const right = parseExpression(
+    var tokenStart = parser.tokenStart;
+    var right = parseExpression(
       parser,
       context,
       privateScope,
@@ -10235,13 +11337,13 @@ var lib = (() => {
         ? {
             type: "AssignmentPattern",
             left: node,
-            right
+            right: right
           }
         : {
             type: "AssignmentExpression",
             left: node,
             operator: "=",
-            right
+            right: right
           },
       start
     );
@@ -10258,12 +11360,13 @@ var lib = (() => {
     inGroup,
     isPattern
   ) {
-    const { tokenStart: start } = parser;
+    var start = parser.tokenStart;
     nextToken(parser, context | 32);
-    let argument = null;
-    let destructible = 0;
-    const { tokenValue, tokenStart } = parser;
-    let token = parser.getToken();
+    var argument = null;
+    var destructible = 0;
+    var tokenValue = parser.tokenValue,
+      tokenStart = parser.tokenStart;
+    var token = parser.getToken();
     if (token & 143360) {
       parser.assignable = 1;
       argument = parsePrimaryExpression(
@@ -10402,8 +11505,8 @@ var lib = (() => {
         inGroup,
         1
       );
-      const { tokenStart: tokenStart2 } = parser;
-      const token2 = parser.getToken();
+      var tokenStart2 = parser.tokenStart;
+      var token2 = parser.getToken();
       if (token2 === 1077936155) {
         if (parser.assignable & 2) parser.report(26);
         argument = parseAssignmentExpression(
@@ -10438,7 +11541,7 @@ var lib = (() => {
       return parser.finishNode(
         {
           type: isPattern ? "RestElement" : "SpreadElement",
-          argument
+          argument: argument
         },
         start
       );
@@ -10448,7 +11551,7 @@ var lib = (() => {
       if (consumeOpt(parser, context | 32, 1077936155)) {
         if (destructible & 16) parser.report(26);
         reinterpretToPattern(parser, argument);
-        const right = parseExpression(
+        var right = parseExpression(
           parser,
           context,
           privateScope,
@@ -10461,13 +11564,13 @@ var lib = (() => {
             ? {
                 type: "AssignmentPattern",
                 left: argument,
-                right
+                right: right
               }
             : {
                 type: "AssignmentExpression",
                 left: argument,
                 operator: "=",
-                right
+                right: right
               },
           tokenStart
         );
@@ -10480,7 +11583,7 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: isPattern ? "RestElement" : "SpreadElement",
-        argument
+        argument: argument
       },
       start
     );
@@ -10494,7 +11597,7 @@ var lib = (() => {
     start
   ) {
     var _scope9, _scope0;
-    const modifierFlags =
+    var modifierFlags =
       1024 | 2048 | 8192 | ((kind & 64) === 0 ? 512 | 16384 : 0);
     context =
       ((context | modifierFlags) ^ modifierFlags) |
@@ -10504,8 +11607,8 @@ var lib = (() => {
       256 |
       32768 |
       65536;
-    let scope = parser.createScopeIfLexical(256);
-    const params = parseMethodFormals(
+    var scope = parser.createScopeIfLexical(256);
+    var params = parseMethodFormals(
       parser,
       (context | 8192) & -524289,
       scope,
@@ -10518,7 +11621,7 @@ var lib = (() => {
       (_scope9 = scope) === null || _scope9 === void 0
         ? void 0
         : _scope9.createChildScope(64);
-    const body = parseFunctionBody(
+    var body = parseFunctionBody(
       parser,
       (context & -655373) | 32768 | 4096,
       scope,
@@ -10530,8 +11633,8 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "FunctionExpression",
-        params,
-        body,
+        params: params,
+        body: body,
         async: (kind & 16) > 0,
         generator: (kind & 8) > 0,
         id: null
@@ -10546,7 +11649,7 @@ var lib = (() => {
     skipInitializer,
     inGroup
   ) {
-    const expr = parseObjectLiteralOrPattern(
+    var expr = parseObjectLiteralOrPattern(
       parser,
       context,
       void 0,
@@ -10576,15 +11679,16 @@ var lib = (() => {
     kind,
     origin
   ) {
-    const { tokenStart: start } = parser;
+    var start = parser.tokenStart;
     nextToken(parser, context);
-    const properties = [];
-    let destructible = 0;
-    let prototypeCount = 0;
+    var properties = [];
+    var destructible = 0;
+    var prototypeCount = 0;
     context = (context | 131072) ^ 131072;
     while (parser.getToken() !== 1074790415) {
-      const { tokenValue, tokenStart } = parser;
-      const token = parser.getToken();
+      var tokenValue = parser.tokenValue,
+        tokenStart = parser.tokenStart;
+      var token = parser.getToken();
       if (token === 14) {
         properties.push(
           parseSpreadOrRestElement(
@@ -10601,9 +11705,9 @@ var lib = (() => {
           )
         );
       } else {
-        let state = 0;
-        let key = null;
-        let value;
+        var state = 0;
+        var key = null;
+        var value = void 0;
         if (
           parser.getToken() & 143360 ||
           parser.getToken() === -2147483528 ||
@@ -10627,7 +11731,7 @@ var lib = (() => {
               scope.addVarOrBlock(context, tokenValue, kind, origin);
             if (consumeOpt(parser, context | 32, 1077936155)) {
               destructible |= 8;
-              const right = parseExpression(
+              var right = parseExpression(
                 parser,
                 context,
                 privateScope,
@@ -10647,7 +11751,7 @@ var lib = (() => {
                   left: parser.options.uniqueKeyInPattern
                     ? Object.assign({}, key)
                     : key,
-                  right
+                  right: right
                 },
                 tokenStart
               );
@@ -10659,11 +11763,11 @@ var lib = (() => {
                 : key;
             }
           } else if (consumeOpt(parser, context | 32, 21)) {
-            const { tokenStart: tokenStart2 } = parser;
+            var tokenStart2 = parser.tokenStart;
             if (tokenValue === "__proto__") prototypeCount++;
             if (parser.getToken() & 143360) {
-              const tokenAfterColon = parser.getToken();
-              const valueAfterColon = parser.tokenValue;
+              var tokenAfterColon = parser.getToken();
+              var valueAfterColon = parser.tokenValue;
               value = parsePrimaryExpression(
                 parser,
                 context,
@@ -10675,7 +11779,7 @@ var lib = (() => {
                 1,
                 tokenStart2
               );
-              const token2 = parser.getToken();
+              var token2 = parser.getToken();
               value = parseMemberOrUpdateExpression(
                 parser,
                 context,
@@ -10980,7 +12084,7 @@ var lib = (() => {
           key = parseLiteral(parser, context);
           if (parser.getToken() === 21) {
             consume(parser, context | 32, 21);
-            const { tokenStart: tokenStart2 } = parser;
+            var _tokenStart4 = parser.tokenStart;
             if (tokenValue === "__proto__") prototypeCount++;
             if (parser.getToken() & 143360) {
               value = parsePrimaryExpression(
@@ -10992,10 +12096,10 @@ var lib = (() => {
                 1,
                 inGroup,
                 1,
-                tokenStart2
+                _tokenStart4
               );
-              const { tokenValue: valueAfterColon } = parser;
-              const token2 = parser.getToken();
+              var _valueAfterColon = parser.tokenValue;
+              var _token = parser.getToken();
               value = parseMemberOrUpdateExpression(
                 parser,
                 context,
@@ -11003,16 +12107,16 @@ var lib = (() => {
                 value,
                 inGroup,
                 0,
-                tokenStart2
+                _tokenStart4
               );
               if (
                 parser.getToken() === 18 ||
                 parser.getToken() === 1074790415
               ) {
                 if (
-                  token2 === 1077936155 ||
-                  token2 === 1074790415 ||
-                  token2 === 18
+                  _token === 1077936155 ||
+                  _token === 1074790415 ||
+                  _token === 18
                 ) {
                   if (parser.assignable & 2) {
                     destructible |= 16;
@@ -11021,7 +12125,7 @@ var lib = (() => {
                       scope === void 0 ||
                       scope.addVarOrBlock(
                         context,
-                        valueAfterColon,
+                        _valueAfterColon,
                         kind,
                         origin
                       );
@@ -11037,7 +12141,7 @@ var lib = (() => {
                   privateScope,
                   inGroup,
                   isPattern,
-                  tokenStart2,
+                  _tokenStart4,
                   value
                 );
               } else {
@@ -11048,7 +12152,7 @@ var lib = (() => {
                   privateScope,
                   inGroup,
                   isPattern,
-                  tokenStart2,
+                  _tokenStart4,
                   value
                 );
               }
@@ -11094,7 +12198,7 @@ var lib = (() => {
                   value,
                   inGroup,
                   0,
-                  tokenStart2
+                  _tokenStart4
                 );
                 destructible = parser.assignable & 2 ? 16 : 0;
                 if ((parser.getToken() & 4194304) === 4194304) {
@@ -11104,7 +12208,7 @@ var lib = (() => {
                     privateScope,
                     inGroup,
                     isPattern,
-                    tokenStart2,
+                    _tokenStart4,
                     value
                   );
                 } else {
@@ -11114,7 +12218,7 @@ var lib = (() => {
                       context,
                       privateScope,
                       1,
-                      tokenStart2,
+                      _tokenStart4,
                       4,
                       token,
                       value
@@ -11126,7 +12230,7 @@ var lib = (() => {
                       context,
                       privateScope,
                       value,
-                      tokenStart2
+                      _tokenStart4
                     );
                   }
                   destructible |= parser.assignable & 2 ? 16 : 32;
@@ -11157,7 +12261,7 @@ var lib = (() => {
                   value,
                   inGroup,
                   0,
-                  tokenStart2
+                  _tokenStart4
                 );
                 destructible = parser.assignable & 1 ? 0 : 16;
                 if (
@@ -11171,7 +12275,7 @@ var lib = (() => {
                     privateScope,
                     inGroup,
                     isPattern,
-                    tokenStart2,
+                    _tokenStart4,
                     value
                   );
                 }
@@ -11202,8 +12306,9 @@ var lib = (() => {
           state |= 2;
           if (parser.getToken() === 21) {
             nextToken(parser, context | 32);
-            const { tokenStart: tokenStart2, tokenValue: tokenValue2 } = parser;
-            const tokenAfterColon = parser.getToken();
+            var _tokenStart5 = parser.tokenStart,
+              tokenValue2 = parser.tokenValue;
+            var _tokenAfterColon = parser.getToken();
             if (parser.getToken() & 143360) {
               value = parsePrimaryExpression(
                 parser,
@@ -11214,9 +12319,9 @@ var lib = (() => {
                 1,
                 inGroup,
                 1,
-                tokenStart2
+                _tokenStart5
               );
-              const token2 = parser.getToken();
+              var _token2 = parser.getToken();
               value = parseMemberOrUpdateExpression(
                 parser,
                 context,
@@ -11224,18 +12329,18 @@ var lib = (() => {
                 value,
                 inGroup,
                 0,
-                tokenStart2
+                _tokenStart5
               );
               if ((parser.getToken() & 4194304) === 4194304) {
                 destructible |=
-                  parser.assignable & 2 ? 16 : token2 === 1077936155 ? 0 : 32;
+                  parser.assignable & 2 ? 16 : _token2 === 1077936155 ? 0 : 32;
                 value = parseAssignmentExpressionOrPattern(
                   parser,
                   context,
                   privateScope,
                   inGroup,
                   isPattern,
-                  tokenStart2,
+                  _tokenStart5,
                   value
                 );
               } else if (
@@ -11243,13 +12348,13 @@ var lib = (() => {
                 parser.getToken() === 1074790415
               ) {
                 if (
-                  token2 === 1077936155 ||
-                  token2 === 1074790415 ||
-                  token2 === 18
+                  _token2 === 1077936155 ||
+                  _token2 === 1074790415 ||
+                  _token2 === 18
                 ) {
                   if (parser.assignable & 2) {
                     destructible |= 16;
-                  } else if ((tokenAfterColon & 143360) === 143360) {
+                  } else if ((_tokenAfterColon & 143360) === 143360) {
                     scope === null ||
                       scope === void 0 ||
                       scope.addVarOrBlock(context, tokenValue2, kind, origin);
@@ -11265,7 +12370,7 @@ var lib = (() => {
                   privateScope,
                   inGroup,
                   isPattern,
-                  tokenStart2,
+                  _tokenStart5,
                   value
                 );
               }
@@ -11311,7 +12416,7 @@ var lib = (() => {
                   value,
                   inGroup,
                   0,
-                  tokenStart2
+                  _tokenStart5
                 );
                 destructible = parser.assignable & 2 ? destructible | 16 : 0;
                 if ((parser.getToken() & 4194304) === 4194304) {
@@ -11322,7 +12427,7 @@ var lib = (() => {
                     privateScope,
                     inGroup,
                     isPattern,
-                    tokenStart2,
+                    _tokenStart5,
                     value
                   );
                 } else {
@@ -11332,7 +12437,7 @@ var lib = (() => {
                       context,
                       privateScope,
                       1,
-                      tokenStart2,
+                      _tokenStart5,
                       4,
                       token,
                       value
@@ -11344,7 +12449,7 @@ var lib = (() => {
                       context,
                       privateScope,
                       value,
-                      tokenStart2
+                      _tokenStart5
                     );
                   }
                   destructible |= parser.assignable & 2 ? 16 : 32;
@@ -11373,7 +12478,7 @@ var lib = (() => {
                   value,
                   inGroup,
                   0,
-                  tokenStart2
+                  _tokenStart5
                 );
                 destructible = parser.assignable & 1 ? 0 : 16;
                 if (
@@ -11387,7 +12492,7 @@ var lib = (() => {
                     privateScope,
                     inGroup,
                     isPattern,
-                    tokenStart2,
+                    _tokenStart5,
                     value
                   );
                 }
@@ -11411,7 +12516,7 @@ var lib = (() => {
           consume(parser, context | 32, 8391476);
           state |= 8;
           if (parser.getToken() & 143360) {
-            const token2 = parser.getToken();
+            var _token3 = parser.getToken();
             key = parseIdentifier(parser, context);
             state |= 1;
             if (parser.getToken() === 67174411) {
@@ -11428,12 +12533,12 @@ var lib = (() => {
               throw new ParseError(
                 parser.tokenStart,
                 parser.currentLocation,
-                token2 === 209005
+                _token3 === 209005
                   ? 46
-                  : token2 === 209008 || parser.getToken() === 209009
+                  : _token3 === 209008 || parser.getToken() === 209009
                   ? 45
                   : 47,
-                KeywordDescTable[token2 & 255]
+                KeywordDescTable[_token3 & 255]
               );
             }
           } else if ((parser.getToken() & 134217728) === 134217728) {
@@ -11477,8 +12582,8 @@ var lib = (() => {
           parser.finishNode(
             {
               type: "Property",
-              key,
-              value,
+              key: key,
+              value: value,
               kind: !(state & 768) ? "init" : state & 512 ? "set" : "get",
               computed: (state & 2) > 0,
               method: (state & 1) > 0,
@@ -11494,10 +12599,10 @@ var lib = (() => {
     }
     consume(parser, context, 1074790415);
     if (prototypeCount > 1) destructible |= 64;
-    const node = parser.finishNode(
+    var node = parser.finishNode(
       {
         type: isPattern ? "ObjectPattern" : "ObjectExpression",
-        properties
+        properties: properties
       },
       start
     );
@@ -11526,7 +12631,7 @@ var lib = (() => {
     inGroup
   ) {
     consume(parser, context, 67174411);
-    const params = [];
+    var params = [];
     parser.flags = (parser.flags | 128) ^ 128;
     if (parser.getToken() === 16) {
       if (kind & 512) {
@@ -11542,11 +12647,11 @@ var lib = (() => {
       parser.report(38);
     }
     context = (context | 131072) ^ 131072;
-    let setterArgs = 0;
-    let isNonSimpleParameterList = 0;
+    var setterArgs = 0;
+    var isNonSimpleParameterList = 0;
     while (parser.getToken() !== 18) {
-      let left = null;
-      const { tokenStart } = parser;
+      var left = null;
+      var tokenStart = parser.tokenStart;
       if (parser.getToken() & 143360) {
         if ((context & 1) === 0) {
           if ((parser.getToken() & 36864) === 36864) {
@@ -11602,7 +12707,7 @@ var lib = (() => {
       if (parser.getToken() === 1077936155) {
         nextToken(parser, context | 32);
         isNonSimpleParameterList = 1;
-        const right = parseExpression(
+        var right = parseExpression(
           parser,
           context,
           privateScope,
@@ -11613,8 +12718,8 @@ var lib = (() => {
         left = parser.finishNode(
           {
             type: "AssignmentPattern",
-            left,
-            right
+            left: left,
+            right: right
           },
           tokenStart
         );
@@ -11636,7 +12741,7 @@ var lib = (() => {
   }
   function parseComputedPropertyName(parser, context, privateScope, inGroup) {
     nextToken(parser, context | 32);
-    const key = parseExpression(
+    var key = parseExpression(
       parser,
       (context | 131072) ^ 131072,
       privateScope,
@@ -11658,9 +12763,9 @@ var lib = (() => {
   ) {
     var _parser$createScopeIf;
     parser.flags = (parser.flags | 128) ^ 128;
-    const parenthesesStart = parser.tokenStart;
+    var parenthesesStart = parser.tokenStart;
     nextToken(parser, context | 32 | 262144);
-    const scope =
+    var scope =
       (_parser$createScopeIf = parser.createScopeIfLexical()) === null ||
       _parser$createScopeIf === void 0
         ? void 0
@@ -11678,18 +12783,18 @@ var lib = (() => {
         start
       );
     }
-    let destructible = 0;
+    var destructible = 0;
     parser.destructible &= -385;
-    let expr;
-    let expressions = [];
-    let isSequence = 0;
-    let isNonSimpleParameterList = 0;
-    let hasStrictReserved = 0;
-    const tokenAfterParenthesesStart = parser.tokenStart;
+    var expr;
+    var expressions = [];
+    var isSequence = 0;
+    var isNonSimpleParameterList = 0;
+    var hasStrictReserved = 0;
+    var tokenAfterParenthesesStart = parser.tokenStart;
     parser.assignable = 1;
     while (parser.getToken() !== 16) {
-      const { tokenStart } = parser;
-      const token = parser.getToken();
+      var tokenStart = parser.tokenStart;
+      var token = parser.getToken();
       if (token & 143360) {
         scope === null ||
           scope === void 0 ||
@@ -11849,7 +12954,7 @@ var lib = (() => {
           expr = parser.finishNode(
             {
               type: "SequenceExpression",
-              expressions
+              expressions: expressions
             },
             tokenAfterParenthesesStart
           );
@@ -11887,7 +12992,7 @@ var lib = (() => {
       expr = parser.finishNode(
         {
           type: "SequenceExpression",
-          expressions
+          expressions: expressions
         },
         tokenAfterParenthesesStart
       );
@@ -11937,19 +13042,19 @@ var lib = (() => {
       : expr;
   }
   function parseIdentifierOrArrow(parser, context, privateScope) {
-    const { tokenStart: start } = parser;
-    const { tokenValue } = parser;
-    let isNonSimpleParameterList = 0;
-    let hasStrictReserved = 0;
+    var start = parser.tokenStart;
+    var tokenValue = parser.tokenValue;
+    var isNonSimpleParameterList = 0;
+    var hasStrictReserved = 0;
     if ((parser.getToken() & 537079808) === 537079808) {
       isNonSimpleParameterList = 1;
     } else if ((parser.getToken() & 36864) === 36864) {
       hasStrictReserved = 1;
     }
-    const expr = parseIdentifier(parser, context);
+    var expr = parseIdentifier(parser, context);
     parser.assignable = 1;
     if (parser.getToken() === 10) {
-      const scope = parser.options.lexical
+      var scope = parser.options.lexical
         ? createArrowHeadParsingScope(parser, context, tokenValue)
         : void 0;
       if (isNonSimpleParameterList) parser.flags |= 128;
@@ -11980,7 +13085,7 @@ var lib = (() => {
     if (!canAssign) parser.report(57);
     if (inNew) parser.report(51);
     parser.flags &= -129;
-    const scope = parser.options.lexical
+    var scope = parser.options.lexical
       ? createArrowHeadParsingScope(parser, context, value)
       : void 0;
     return parseArrowFunctionExpression(
@@ -12004,7 +13109,7 @@ var lib = (() => {
     start
   ) {
     if (!canAssign) parser.report(57);
-    for (let i = 0; i < params.length; ++i)
+    for (var i = 0; i < params.length; ++i)
       reinterpretToPattern(parser, params[i]);
     return parseArrowFunctionExpression(
       parser,
@@ -12028,11 +13133,11 @@ var lib = (() => {
     var _scope1;
     if (parser.flags & 1) parser.report(48);
     consume(parser, context | 32, 10);
-    const modifierFlags = 1024 | 2048 | 8192 | 524288;
+    var modifierFlags = 1024 | 2048 | 8192 | 524288;
     context =
       ((context | modifierFlags) ^ modifierFlags) | (isAsync ? 2048 : 0);
-    const expression = parser.getToken() !== 2162700;
-    let body;
+    var expression = parser.getToken() !== 2162700;
+    var body;
     (_scope1 = scope) === null ||
       _scope1 === void 0 ||
       _scope1.reportScopeError();
@@ -12053,7 +13158,7 @@ var lib = (() => {
         (_scope10 = scope) === null || _scope10 === void 0
           ? void 0
           : _scope10.createChildScope(64);
-      const modifierFlags2 = 4 | 131072 | 8;
+      var modifierFlags2 = 4 | 131072 | 8;
       body = parseFunctionBody(
         parser,
         ((context | modifierFlags2) ^ modifierFlags2) | 4096,
@@ -12088,10 +13193,10 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "ArrowFunctionExpression",
-        params,
-        body,
+        params: params,
+        body: body,
         async: isAsync === 1,
-        expression,
+        expression: expression,
         generator: false
       },
       start
@@ -12107,14 +13212,14 @@ var lib = (() => {
   ) {
     consume(parser, context, 67174411);
     parser.flags = (parser.flags | 128) ^ 128;
-    const params = [];
+    var params = [];
     if (consumeOpt(parser, context, 16)) return params;
     context = (context | 131072) ^ 131072;
-    let isNonSimpleParameterList = 0;
+    var isNonSimpleParameterList = 0;
     while (parser.getToken() !== 18) {
-      let left;
-      const { tokenStart } = parser;
-      const token = parser.getToken();
+      var left = void 0;
+      var tokenStart = parser.tokenStart;
+      var token = parser.getToken();
       if (token & 143360) {
         if ((context & 1) === 0) {
           if ((token & 36864) === 36864) {
@@ -12174,7 +13279,7 @@ var lib = (() => {
       if (parser.getToken() === 1077936155) {
         nextToken(parser, context | 32);
         isNonSimpleParameterList = 1;
-        const right = parseExpression(
+        var right = parseExpression(
           parser,
           context,
           privateScope,
@@ -12185,8 +13290,8 @@ var lib = (() => {
         left = parser.finishNode(
           {
             type: "AssignmentPattern",
-            left,
-            right
+            left: left,
+            right: right
           },
           tokenStart
         );
@@ -12212,12 +13317,12 @@ var lib = (() => {
     inGroup,
     start
   ) {
-    const token = parser.getToken();
+    var token = parser.getToken();
     if (token & 67108864) {
       if (token === 67108877) {
         nextToken(parser, context | 262144);
         parser.assignable = 1;
-        const property = parsePropertyOrPrivatePropertyName(
+        var property = parsePropertyOrPrivatePropertyName(
           parser,
           context,
           privateScope
@@ -12231,7 +13336,7 @@ var lib = (() => {
               type: "MemberExpression",
               object: expr,
               computed: false,
-              property,
+              property: property,
               optional: false
             },
             start
@@ -12241,8 +13346,8 @@ var lib = (() => {
         );
       } else if (token === 69271571) {
         nextToken(parser, context | 32);
-        const { tokenStart } = parser;
-        const property = parseExpressions(
+        var tokenStart = parser.tokenStart;
+        var _property3 = parseExpressions(
           parser,
           context,
           privateScope,
@@ -12261,7 +13366,7 @@ var lib = (() => {
               type: "MemberExpression",
               object: expr,
               computed: true,
-              property,
+              property: _property3,
               optional: false
             },
             start
@@ -12294,9 +13399,9 @@ var lib = (() => {
     return expr;
   }
   function parseNewExpression(parser, context, privateScope, inGroup) {
-    const { tokenStart: start } = parser;
-    const id = parseIdentifier(parser, context | 32);
-    const { tokenStart } = parser;
+    var start = parser.tokenStart;
+    var id = parseIdentifier(parser, context | 32);
+    var tokenStart = parser.tokenStart;
     if (consumeOpt(parser, context, 67108877)) {
       if (context & 65536 && parser.getToken() === 209029) {
         parser.assignable = 2;
@@ -12308,7 +13413,7 @@ var lib = (() => {
     if ((parser.getToken() & 16842752) === 16842752) {
       parser.report(65, KeywordDescTable[parser.getToken() & 255]);
     }
-    const expr = parsePrimaryExpression(
+    var expr = parsePrimaryExpression(
       parser,
       context,
       privateScope,
@@ -12321,7 +13426,7 @@ var lib = (() => {
     );
     context = (context | 131072) ^ 131072;
     if (parser.getToken() === 67108990) parser.report(168);
-    const callee = parseMemberExpressionNoCall(
+    var callee = parseMemberExpressionNoCall(
       parser,
       context,
       privateScope,
@@ -12333,7 +13438,7 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "NewExpression",
-        callee,
+        callee: callee,
         arguments:
           parser.getToken() === 67174411
             ? parseArguments(parser, context, privateScope, inGroup)
@@ -12343,12 +13448,12 @@ var lib = (() => {
     );
   }
   function parseMetaProperty(parser, context, meta, start) {
-    const property = parseIdentifier(parser, context);
+    var property = parseIdentifier(parser, context);
     return parser.finishNode(
       {
         type: "MetaProperty",
-        meta,
-        property
+        meta: meta,
+        property: property
       },
       start
     );
@@ -12393,7 +13498,7 @@ var lib = (() => {
   ) {
     var _parser$createScopeIf2;
     nextToken(parser, context | 32);
-    const scope =
+    var scope =
       (_parser$createScopeIf2 = parser.createScopeIfLexical()) === null ||
       _parser$createScopeIf2 === void 0
         ? void 0
@@ -12416,21 +13521,21 @@ var lib = (() => {
       return parser.finishNode(
         {
           type: "CallExpression",
-          callee,
+          callee: callee,
           arguments: [],
           optional: false
         },
         start
       );
     }
-    let destructible = 0;
-    let expr = null;
-    let isNonSimpleParameterList = 0;
+    var destructible = 0;
+    var expr = null;
+    var isNonSimpleParameterList = 0;
     parser.destructible = (parser.destructible | 256 | 128) ^ (256 | 128);
-    const params = [];
+    var params = [];
     while (parser.getToken() !== 16) {
-      const { tokenStart } = parser;
-      const token = parser.getToken();
+      var tokenStart = parser.tokenStart;
+      var token = parser.getToken();
       if (token & 143360) {
         scope === null ||
           scope === void 0 ||
@@ -12576,7 +13681,7 @@ var lib = (() => {
         return parser.finishNode(
           {
             type: "CallExpression",
-            callee,
+            callee: callee,
             arguments: params,
             optional: false
           },
@@ -12620,7 +13725,7 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "CallExpression",
-        callee,
+        callee: callee,
         arguments: params,
         optional: false
       },
@@ -12628,10 +13733,13 @@ var lib = (() => {
     );
   }
   function parseRegExpLiteral(parser, context) {
-    const { tokenRaw, tokenRegExp, tokenValue, tokenStart } = parser;
+    var tokenRaw = parser.tokenRaw,
+      tokenRegExp = parser.tokenRegExp,
+      tokenValue = parser.tokenValue,
+      tokenStart = parser.tokenStart;
     nextToken(parser, context);
     parser.assignable = 2;
-    const node = {
+    var node = {
       type: "Literal",
       value: tokenValue,
       regex: tokenRegExp
@@ -12642,14 +13750,14 @@ var lib = (() => {
     return parser.finishNode(node, tokenStart);
   }
   function parseClassDeclaration(parser, context, scope, privateScope, flags) {
-    let start;
-    let decorators;
+    var start;
+    var decorators;
     if (parser.leadingDecorators.decorators.length) {
       if (parser.getToken() === 132) {
         parser.report(30, "@");
       }
       start = parser.leadingDecorators.start;
-      decorators = [...parser.leadingDecorators.decorators];
+      decorators = _toConsumableArray(parser.leadingDecorators.decorators);
       parser.leadingDecorators.decorators.length = 0;
     } else {
       start = parser.tokenStart;
@@ -12657,9 +13765,9 @@ var lib = (() => {
     }
     context = (context | 16384 | 1) ^ 16384;
     nextToken(parser, context);
-    let id = null;
-    let superClass = null;
-    const { tokenValue } = parser;
+    var id = null;
+    var superClass = null;
+    var tokenValue = parser.tokenValue;
     if (parser.getToken() & 4096 && parser.getToken() !== 20565) {
       if (isStrictReservedWord(parser, context, parser.getToken())) {
         parser.report(118);
@@ -12679,7 +13787,7 @@ var lib = (() => {
     } else {
       if ((flags & 1) === 0) parser.report(39, "Class");
     }
-    let inheritedContext = context;
+    var inheritedContext = context;
     if (consumeOpt(parser, context | 32, 20565)) {
       superClass = parseLeftHandSideExpression(
         parser,
@@ -12693,7 +13801,7 @@ var lib = (() => {
     } else {
       inheritedContext = (inheritedContext | 512) ^ 512;
     }
-    const body = parseClassBody(
+    var body = parseClassBody(
       parser,
       inheritedContext,
       context,
@@ -12704,24 +13812,26 @@ var lib = (() => {
       0
     );
     return parser.finishNode(
-      {
-        type: "ClassDeclaration",
-        id,
-        superClass,
-        body,
-        ...(parser.options.next
+      _objectSpread(
+        {
+          type: "ClassDeclaration",
+          id: id,
+          superClass: superClass,
+          body: body
+        },
+        parser.options.next
           ? {
-              decorators
+              decorators: decorators
             }
-          : null)
-      },
+          : null
+      ),
       start
     );
   }
   function parseClassExpression(parser, context, privateScope, inGroup, start) {
-    let id = null;
-    let superClass = null;
-    const decorators = parseDecorators(parser, context, privateScope);
+    var id = null;
+    var superClass = null;
+    var decorators = parseDecorators(parser, context, privateScope);
     context = (context | 1 | 16384) ^ 16384;
     nextToken(parser, context);
     if (parser.getToken() & 4096 && parser.getToken() !== 20565) {
@@ -12732,7 +13842,7 @@ var lib = (() => {
       }
       id = parseIdentifier(parser, context);
     }
-    let inheritedContext = context;
+    var inheritedContext = context;
     if (consumeOpt(parser, context | 32, 20565)) {
       superClass = parseLeftHandSideExpression(
         parser,
@@ -12746,7 +13856,7 @@ var lib = (() => {
     } else {
       inheritedContext = (inheritedContext | 512) ^ 512;
     }
-    const body = parseClassBody(
+    var body = parseClassBody(
       parser,
       inheritedContext,
       context,
@@ -12758,22 +13868,24 @@ var lib = (() => {
     );
     parser.assignable = 2;
     return parser.finishNode(
-      {
-        type: "ClassExpression",
-        id,
-        superClass,
-        body,
-        ...(parser.options.next
+      _objectSpread(
+        {
+          type: "ClassExpression",
+          id: id,
+          superClass: superClass,
+          body: body
+        },
+        parser.options.next
           ? {
-              decorators
+              decorators: decorators
             }
-          : null)
-      },
+          : null
+      ),
       start
     );
   }
   function parseDecorators(parser, context, privateScope) {
-    const list = [];
+    var list = [];
     if (parser.options.next) {
       while (parser.getToken() === 132) {
         list.push(parseDecoratorList(parser, context, privateScope));
@@ -12782,9 +13894,9 @@ var lib = (() => {
     return list;
   }
   function parseDecoratorList(parser, context, privateScope) {
-    const start = parser.tokenStart;
+    var start = parser.tokenStart;
     nextToken(parser, context | 32);
-    let expression = parsePrimaryExpression(
+    var expression = parsePrimaryExpression(
       parser,
       context,
       privateScope,
@@ -12807,7 +13919,7 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "Decorator",
-        expression
+        expression: expression
       },
       start
     );
@@ -12822,17 +13934,17 @@ var lib = (() => {
     origin,
     inGroup
   ) {
-    const { tokenStart } = parser;
-    const privateScope = parser.createPrivateScopeIfLexical(parentScope);
+    var tokenStart = parser.tokenStart;
+    var privateScope = parser.createPrivateScopeIfLexical(parentScope);
     consume(parser, context | 32, 2162700);
-    const modifierFlags = 131072 | 524288;
+    var modifierFlags = 131072 | 524288;
     context = (context | modifierFlags) ^ modifierFlags;
-    const hasConstr = parser.flags & 32;
+    var hasConstr = parser.flags & 32;
     parser.flags = (parser.flags | 32) ^ 32;
-    const body = [];
+    var body = [];
     while (parser.getToken() !== 1074790415) {
-      const decoratorStart = parser.tokenStart;
-      const decorators = parseDecorators(parser, context, privateScope);
+      var decoratorStart = parser.tokenStart;
+      var decorators = parseDecorators(parser, context, privateScope);
       if (decorators.length > 0 && parser.tokenValue === "constructor") {
         parser.report(109);
       }
@@ -12864,7 +13976,7 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "ClassBody",
-        body
+        body: body
       },
       tokenStart
     );
@@ -12881,9 +13993,9 @@ var lib = (() => {
     inGroup,
     start
   ) {
-    let kind = isStatic ? 32 : 0;
-    let key = null;
-    const token = parser.getToken();
+    var kind = isStatic ? 32 : 0;
+    var key = null;
+    var token = parser.getToken();
     if (token & (143360 | 36864) || token === -2147483528) {
       key = parseIdentifier(parser, context);
       switch (token) {
@@ -13049,7 +14161,7 @@ var lib = (() => {
         start
       );
     }
-    const value = parseMethodDefinition(
+    var value = parseMethodDefinition(
       parser,
       context | 16,
       privateScope,
@@ -13058,33 +14170,35 @@ var lib = (() => {
       parser.tokenStart
     );
     return parser.finishNode(
-      {
-        type: "MethodDefinition",
-        kind:
-          (kind & 32) === 0 && kind & 64
-            ? "constructor"
-            : kind & 256
-            ? "get"
-            : kind & 512
-            ? "set"
-            : "method",
-        static: (kind & 32) > 0,
-        computed: (kind & 2) > 0,
-        key,
-        value,
-        ...(parser.options.next
+      _objectSpread(
+        {
+          type: "MethodDefinition",
+          kind:
+            (kind & 32) === 0 && kind & 64
+              ? "constructor"
+              : kind & 256
+              ? "get"
+              : kind & 512
+              ? "set"
+              : "method",
+          static: (kind & 32) > 0,
+          computed: (kind & 2) > 0,
+          key: key,
+          value: value
+        },
+        parser.options.next
           ? {
-              decorators
+              decorators: decorators
             }
-          : null)
-      },
+          : null
+      ),
       start
     );
   }
   function parsePrivateIdentifier(parser, context, privateScope, kind) {
-    const { tokenStart } = parser;
+    var tokenStart = parser.tokenStart;
     nextToken(parser, context);
-    const { tokenValue } = parser;
+    var tokenValue = parser.tokenValue;
     if (tokenValue === "constructor") parser.report(128);
     if (parser.options.lexical) {
       if (!privateScope) parser.report(4, tokenValue);
@@ -13112,13 +14226,13 @@ var lib = (() => {
     decorators,
     start
   ) {
-    let value = null;
+    var value = null;
     if (state & 8) parser.report(0);
     if (parser.getToken() === 1077936155) {
       nextToken(parser, context | 32);
-      const { tokenStart } = parser;
+      var tokenStart = parser.tokenStart;
       if (parser.getToken() === 537079927) parser.report(119);
-      const modifierFlags =
+      var modifierFlags =
         1024 | 2048 | 8192 | ((state & 64) === 0 ? 512 | 16384 : 0);
       context =
         ((context | modifierFlags) ^ modifierFlags) |
@@ -13164,18 +14278,20 @@ var lib = (() => {
     }
     matchOrInsertSemicolon(parser, context);
     return parser.finishNode(
-      {
-        type: state & 1024 ? "AccessorProperty" : "PropertyDefinition",
-        key,
-        value,
-        static: (state & 32) > 0,
-        computed: (state & 2) > 0,
-        ...(parser.options.next
+      _objectSpread(
+        {
+          type: state & 1024 ? "AccessorProperty" : "PropertyDefinition",
+          key: key,
+          value: value,
+          static: (state & 32) > 0,
+          computed: (state & 2) > 0
+        },
+        parser.options.next
           ? {
-              decorators
+              decorators: decorators
             }
-          : null)
-      },
+          : null
+      ),
       start
     );
   }
@@ -13194,7 +14310,7 @@ var lib = (() => {
       return parseAndClassifyIdentifier(parser, context, scope, type, origin);
     if ((parser.getToken() & 2097152) !== 2097152)
       parser.report(30, KeywordDescTable[parser.getToken() & 255]);
-    const left =
+    var left =
       parser.getToken() === 69271571
         ? parseArrayExpressionOrPattern(
             parser,
@@ -13223,7 +14339,7 @@ var lib = (() => {
     return left;
   }
   function parseAndClassifyIdentifier(parser, context, scope, kind, origin) {
-    const token = parser.getToken();
+    var token = parser.getToken();
     if (context & 1) {
       if ((token & 537079808) === 537079808) {
         parser.report(119);
@@ -13245,7 +14361,8 @@ var lib = (() => {
       if (context & 2048) parser.report(176);
       if (context & 2) parser.report(110);
     }
-    const { tokenValue, tokenStart: start } = parser;
+    var tokenValue = parser.tokenValue,
+      start = parser.tokenStart;
     nextToken(parser, context);
     scope === null ||
       scope === void 0 ||
@@ -13267,28 +14384,31 @@ var lib = (() => {
   ) {
     if (!inJSXChild) consume(parser, context, 8456256);
     if (parser.getToken() === 8390721) {
-      const openingFragment = parseJSXOpeningFragment(parser, start);
-      const [children2, closingFragment] = parseJSXChildrenAndClosingFragment(
-        parser,
-        context,
-        privateScope,
-        inJSXChild
-      );
+      var openingFragment = parseJSXOpeningFragment(parser, start);
+      var _parseJSXChildrenAndC = parseJSXChildrenAndClosingFragment(
+          parser,
+          context,
+          privateScope,
+          inJSXChild
+        ),
+        _parseJSXChildrenAndC2 = _slicedToArray(_parseJSXChildrenAndC, 2),
+        children2 = _parseJSXChildrenAndC2[0],
+        closingFragment = _parseJSXChildrenAndC2[1];
       return parser.finishNode(
         {
           type: "JSXFragment",
-          openingFragment,
+          openingFragment: openingFragment,
           children: children2,
-          closingFragment
+          closingFragment: closingFragment
         },
         start
       );
     }
     if (parser.getToken() === 8457014)
       parser.report(30, KeywordDescTable[parser.getToken() & 255]);
-    let closingElement = null;
-    let children = [];
-    const openingElement = parseJSXOpeningElementOrSelfCloseElement(
+    var closingElement = null;
+    var children = [];
+    var openingElement = parseJSXOpeningElementOrSelfCloseElement(
       parser,
       context,
       privateScope,
@@ -13296,22 +14416,25 @@ var lib = (() => {
       start
     );
     if (!openingElement.selfClosing) {
-      [children, closingElement] = parseJSXChildrenAndClosingElement(
+      var _parseJSXChildrenAndC3 = parseJSXChildrenAndClosingElement(
         parser,
         context,
         privateScope,
         inJSXChild
       );
-      const close = isEqualTagName(closingElement.name);
+      var _parseJSXChildrenAndC4 = _slicedToArray(_parseJSXChildrenAndC3, 2);
+      children = _parseJSXChildrenAndC4[0];
+      closingElement = _parseJSXChildrenAndC4[1];
+      var close = isEqualTagName(closingElement.name);
       if (isEqualTagName(openingElement.name) !== close)
         parser.report(155, close);
     }
     return parser.finishNode(
       {
         type: "JSXElement",
-        children,
-        openingElement,
-        closingElement
+        children: children,
+        openingElement: openingElement,
+        closingElement: closingElement
       },
       start
     );
@@ -13327,7 +14450,7 @@ var lib = (() => {
   }
   function parseJSXClosingElement(parser, context, inJSXChild, start) {
     consume(parser, context, 8457014);
-    const name = parseJSXElementName(parser, context);
+    var name = parseJSXElementName(parser, context);
     if (parser.getToken() !== 8390721) {
       parser.report(25, KeywordDescTable[8390721 & 255]);
     }
@@ -13339,7 +14462,7 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "JSXClosingElement",
-        name
+        name: name
       },
       start
     );
@@ -13367,9 +14490,9 @@ var lib = (() => {
     privateScope,
     inJSXChild
   ) {
-    const children = [];
+    var children = [];
     while (true) {
-      const child = parseJSXChildOrClosingElement(
+      var child = parseJSXChildOrClosingElement(
         parser,
         context,
         privateScope,
@@ -13387,9 +14510,9 @@ var lib = (() => {
     privateScope,
     inJSXChild
   ) {
-    const children = [];
+    var children = [];
     while (true) {
-      const child = parseJSXChildOrClosingFragment(
+      var child = parseJSXChildOrClosingFragment(
         parser,
         context,
         privateScope,
@@ -13411,7 +14534,7 @@ var lib = (() => {
     if (parser.getToken() === 2162700)
       return parseJSXExpressionContainer(parser, context, privateScope, 1, 0);
     if (parser.getToken() === 8456256) {
-      const { tokenStart } = parser;
+      var tokenStart = parser.tokenStart;
       nextToken(parser, context);
       if (parser.getToken() === 8457014)
         return parseJSXClosingElement(parser, context, inJSXChild, tokenStart);
@@ -13435,7 +14558,7 @@ var lib = (() => {
     if (parser.getToken() === 2162700)
       return parseJSXExpressionContainer(parser, context, privateScope, 1, 0);
     if (parser.getToken() === 8456256) {
-      const { tokenStart } = parser;
+      var tokenStart = parser.tokenStart;
       nextToken(parser, context);
       if (parser.getToken() === 8457014)
         return parseJSXClosingFragment(parser, context, inJSXChild, tokenStart);
@@ -13450,9 +14573,9 @@ var lib = (() => {
     parser.report(0);
   }
   function parseJSXText(parser, context) {
-    const start = parser.tokenStart;
+    var start = parser.tokenStart;
     nextToken(parser, context);
-    const node = {
+    var node = {
       type: "JSXText",
       value: parser.tokenValue
     };
@@ -13473,9 +14596,9 @@ var lib = (() => {
       (parser.getToken() & 4096) !== 4096
     )
       parser.report(0);
-    const tagName = parseJSXElementName(parser, context);
-    const attributes = parseJSXAttributes(parser, context, privateScope);
-    const selfClosing = parser.getToken() === 8457014;
+    var tagName = parseJSXElementName(parser, context);
+    var attributes = parseJSXAttributes(parser, context, privateScope);
+    var selfClosing = parser.getToken() === 8457014;
     if (selfClosing) consume(parser, context, 8457014);
     if (parser.getToken() !== 8390721) {
       parser.report(25, KeywordDescTable[8390721 & 255]);
@@ -13489,16 +14612,16 @@ var lib = (() => {
       {
         type: "JSXOpeningElement",
         name: tagName,
-        attributes,
-        selfClosing
+        attributes: attributes,
+        selfClosing: selfClosing
       },
       start
     );
   }
   function parseJSXElementName(parser, context) {
-    const { tokenStart } = parser;
+    var tokenStart = parser.tokenStart;
     rescanJSXIdentifier(parser);
-    let key = parseJSXIdentifier(parser, context);
+    var key = parseJSXIdentifier(parser, context);
     if (parser.getToken() === 21)
       return parseJSXNamespacedName(parser, context, key, tokenStart);
     while (consumeOpt(parser, context, 67108877)) {
@@ -13508,18 +14631,18 @@ var lib = (() => {
     return key;
   }
   function parseJSXMemberExpression(parser, context, object, start) {
-    const property = parseJSXIdentifier(parser, context);
+    var property = parseJSXIdentifier(parser, context);
     return parser.finishNode(
       {
         type: "JSXMemberExpression",
-        object,
-        property
+        object: object,
+        property: property
       },
       start
     );
   }
   function parseJSXAttributes(parser, context, privateScope) {
-    const attributes = [];
+    var attributes = [];
     while (
       parser.getToken() !== 8457014 &&
       parser.getToken() !== 8390721 &&
@@ -13530,10 +14653,10 @@ var lib = (() => {
     return attributes;
   }
   function parseJSXSpreadAttribute(parser, context, privateScope) {
-    const start = parser.tokenStart;
+    var start = parser.tokenStart;
     nextToken(parser, context);
     consume(parser, context, 14);
-    const expression = parseExpression(
+    var expression = parseExpression(
       parser,
       context,
       privateScope,
@@ -13551,17 +14674,17 @@ var lib = (() => {
     );
   }
   function parseJsxAttribute(parser, context, privateScope) {
-    const { tokenStart } = parser;
+    var tokenStart = parser.tokenStart;
     if (parser.getToken() === 2162700)
       return parseJSXSpreadAttribute(parser, context, privateScope);
     rescanJSXIdentifier(parser);
-    let value = null;
-    let name = parseJSXIdentifier(parser, context);
+    var value = null;
+    var name = parseJSXIdentifier(parser, context);
     if (parser.getToken() === 21) {
       name = parseJSXNamespacedName(parser, context, name, tokenStart);
     }
     if (parser.getToken() === 1077936155) {
-      const token = scanJSXAttributeValue(parser, context);
+      var token = scanJSXAttributeValue(parser, context);
       switch (token) {
         case 134283267:
           value = parseLiteral(parser, context);
@@ -13591,20 +14714,20 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "JSXAttribute",
-        value,
-        name
+        value: value,
+        name: name
       },
       tokenStart
     );
   }
   function parseJSXNamespacedName(parser, context, namespace, start) {
     consume(parser, context, 21);
-    const name = parseJSXIdentifier(parser, context);
+    var name = parseJSXIdentifier(parser, context);
     return parser.finishNode(
       {
         type: "JSXNamespacedName",
-        namespace,
-        name
+        namespace: namespace,
+        name: name
       },
       start
     );
@@ -13616,12 +14739,12 @@ var lib = (() => {
     inJSXChild,
     isAttr
   ) {
-    const { tokenStart: start } = parser;
+    var start = parser.tokenStart;
     nextToken(parser, context | 32);
-    const { tokenStart } = parser;
+    var tokenStart = parser.tokenStart;
     if (parser.getToken() === 14)
       return parseJSXSpreadChild(parser, context, privateScope, start);
-    let expression = null;
+    var expression = null;
     if (parser.getToken() === 1074790415) {
       if (isAttr) parser.report(157);
       expression = parseJSXEmptyExpression(parser, {
@@ -13650,14 +14773,14 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "JSXExpressionContainer",
-        expression
+        expression: expression
       },
       start
     );
   }
   function parseJSXSpreadChild(parser, context, privateScope, start) {
     consume(parser, context, 14);
-    const expression = parseExpression(
+    var expression = parseExpression(
       parser,
       context,
       privateScope,
@@ -13669,7 +14792,7 @@ var lib = (() => {
     return parser.finishNode(
       {
         type: "JSXSpreadChild",
-        expression
+        expression: expression
       },
       start
     );
@@ -13684,11 +14807,11 @@ var lib = (() => {
     );
   }
   function parseJSXIdentifier(parser, context) {
-    const start = parser.tokenStart;
+    var start = parser.tokenStart;
     if (!(parser.getToken() & 143360)) {
       parser.report(30, KeywordDescTable[parser.getToken() & 255]);
     }
-    const { tokenValue } = parser;
+    var tokenValue = parser.tokenValue;
     nextToken(parser, context);
     return parser.finishNode(
       {
@@ -13703,12 +14826,12 @@ var lib = (() => {
   }
 
   // src/yt/solver/lib.ts
-  var lib = {
+  var _lib = {
     meriyah: {
-      parse
+      parse: parse
     },
     astring: {
-      generate
+      generate: generate
     }
   };
   return __toCommonJS(lib_exports);
