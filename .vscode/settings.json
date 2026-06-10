@@ -1,4 +1,5 @@
 {
+    
     "deadCodeDetector.exclude": [
         ".gradle",
         "**/build",
@@ -6,20 +7,31 @@
     ],
     "deadCodeDetector.analyzeOnSave": false,
     "deadCodeDetector.confidenceThreshold": "high",
+
     "files.exclude": {
         ".gradle": true,
+        ".vscode": true,
         "**/build": true,
-        ".vscode": true
+        "lib": true
     },
-    "java.configuration.updateBuildConfiguration": "automatic",
-    "java.dependency.enableDependencyCheckup": false,
+
     "kotlin.inlayHints.parameterHints": false,
     "kotlin.inlayHints.typeHints": false,
+    
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.dependency.enableDependencyCheckup": false,
     "java.import.maven.enabled": false,
-    "java.configuration.runtimes": [
-        {
-            "name": "JavaSE-17",
-            "path": "${workspaceFolder}/jdk"
-        }
-    ],
+    "java.configuration.detectJdksAtStart": true,
+    "java.configuration.runtimes": [{
+        "name": "JavaSE-17",
+        "path": "${workspaceFolder}/jdk/",
+        "default": true
+    }],
+
+    "terminal.integrated.env.windows": {
+        "JAVA_HOME": "${workspaceFolder}/jdk",
+        "PATH": "${workspaceFolder}/jdk/bin;${workspaceFolder}/sdk/platform-tools;${env:PATH}"
+    },
+    "notebook.defaultFormatter": "redhat.java",
+
 }
