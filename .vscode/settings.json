@@ -8,8 +8,12 @@
     "deadCodeDetector.confidenceThreshold": "high",
     "files.exclude": {
         ".gradle": true,
+        ".vscode": true,
         "**/build": true,
-        ".vscode": true
+        "jdk": true,
+        "pidcat": true,
+        "py": true,
+        "sdk": true
     },
     "java.configuration.updateBuildConfiguration": "automatic",
     "java.dependency.enableDependencyCheckup": false,
