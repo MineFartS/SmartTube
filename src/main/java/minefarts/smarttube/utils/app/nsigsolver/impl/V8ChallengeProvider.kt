@@ -94,9 +94,16 @@ internal object V8ChallengeProvider {
                 it.executeStringScript(stdin) ?: throw JsChallengeProviderError("V8 runtime error: empty response")
             }
         } catch (e: V8ScriptExecutionException) {
+            
             if (e.message?.contains("Invalid or unexpected token") ?: false)
                 YouTubeInfoExtractor.cache.clear(cacheSection) // cached data broken?
-            throw JsChallengeProviderError("V8 runtime error: ${e.message}", e)
+
+            var msg: String = e.message ?: ""
+
+            if (e.message?.contains("ReferenceError: jsc is not defined") ?: false)
+                msg = "jsc is not defined"
+            
+            throw JsChallengeProviderError("V8 runtime error: ${msg}", e)
         }
 
     }

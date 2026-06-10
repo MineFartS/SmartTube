@@ -192,15 +192,14 @@ final class ExoPlayerImplInternal
     handler.obtainMessage(MSG_STOP, reset ? 1 : 0, 0).sendToTarget();
   }
 
-  @Override
-  public synchronized void sendMessage(PlayerMessage message) {
-    if (released) {
-      Log.w(TAG, "Ignoring messages sent after release.");
-      message.markAsProcessed(/* isDelivered= */ false);
-      return;
+    @Override
+    public synchronized void sendMessage(PlayerMessage message) {
+        if (released) {
+            message.markAsProcessed(/* isDelivered= */ false);
+        } else {
+            handler.obtainMessage(MSG_SEND_MESSAGE, message).sendToTarget();
+        }
     }
-    handler.obtainMessage(MSG_SEND_MESSAGE, message).sendToTarget();
-  }
 
   public synchronized void setForegroundMode(boolean foregroundMode) {
     if (foregroundMode) {
