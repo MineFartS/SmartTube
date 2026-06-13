@@ -45,10 +45,12 @@ internal object V8ChallengeProvider {
 
             var msg: String = e.message ?: ""
 
-            if (e.message?.contains("ReferenceError: jsc is not defined") ?: false)
-                msg = "jsc is not defined"
+            if (e.message?.contains("ReferenceError: jsc is not defined") ?: false) {
+                throw JsChallengeProviderError("jsc is still loading")
+            } else {
+                throw JsChallengeProviderError("V8 runtime error: ${msg}", e)
+            }
             
-            throw JsChallengeProviderError("V8 runtime error: ${msg}", e)
         }
 
     }
