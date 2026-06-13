@@ -164,10 +164,26 @@ public class VideoLoaderController extends BasePlayerController {
 
     @Override
     public void onEngineReleased() {
+        
         mBufferingCount = null;
-        ServiceManager.disposeActions();
+
         RxHelper.disposeActions(mFormatInfoAction, mMpdStreamAction);
         Utils.removeCallbacks(mReloadVideo, mLoadNext, mRestartEngine, mMetadataSync, mOnLongBuffering, mRebootApp);
+
+        // Clear player-side leftovers (UI metadata/next title/chat/seek UI handled inside the view).
+        if (getPlayer() != null) {
+            getPlayer().resetPlayerState(); // Stops current stream (fix artifacts / flush decoders)
+            getPlayer().setNextTitle(null); // Reset suggestions/next metadata display.
+            getPlayer().setChatReceiver(null);
+            getPlayer().showProgressBar(false);
+        }
+
+        // Make sure current video doesn't keep metadata pointers that could leak into next.
+        if (getVideo() != null) {
+            getVideo().nextMediaItem = null;
+            getVideo().playlistInfo = null;
+        }
+
     }
 
     @Override
@@ -191,12 +207,9 @@ public class VideoLoaderController extends BasePlayerController {
         }
     }
 
-
     @Override
     public void onVideoLoaded(Video video) {
-        if (getPlayer() == null) {
-            return;
-        }
+        if (getPlayer() == null) return;
 
         mLastErrorType = -1;
         getPlayer().setButtonState(R.id.action_repeat, video.finishOnEnded ? PlaybackFragment2.PLAYBACK_MODE_CLOSE : getPlayerData().getPlaybackMode());
@@ -230,8 +243,7 @@ public class VideoLoaderController extends BasePlayerController {
         
     }
 
-    public void loadNext() {
-        
+    public void loadNext() {   
         if (getPlayer() == null || getVideo() == null) return;
 
         Video next = mSuggestionsController.getNext();
