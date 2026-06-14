@@ -152,12 +152,23 @@ public class CommentsController extends BasePlayerController {
 
         onFinish();
 
+        // Cancel any in-flight comments request for the previous video.
+        RxHelper.disposeActions(mCommentsAction);
+
         mCommentsAction = getCommentsService().getCommentsObserve(commentsKey)
                 .subscribe(
                         receiver::addCommentGroup,
                         error -> {
-                            Log.e(TAG, error.getMessage());
-                            receiver.addCommentGroup(null); // remove loading message
+                            // Gson may receive an unexpected payload (e.g. plain string/HTML) causing:
+                            // "Expected BEGIN_OBJECT but was STRING at path $." This can happen during
+                            // fast video transitions.
+                            String message = error != null ? error.getMessage() : null;
+                            Log.e(TAG, message);
+
+                            // Ensure UI doesn't keep the loading state.
+                            receiver.addCommentGroup(null);
+
+                            // Do not rethrow - keep playback/suggestions working for next videos.
                         }
                 );
     }
