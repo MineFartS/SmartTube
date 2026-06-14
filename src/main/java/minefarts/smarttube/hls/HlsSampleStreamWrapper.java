@@ -387,9 +387,7 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
     }
 
     public void discardBuffer(long positionUs, boolean toKeyframe) {
-        if (!sampleQueuesBuilt || isPendingReset()) {
-            return;
-        }
+        if (!sampleQueuesBuilt || isPendingReset()) return;
         int sampleQueueCount = sampleQueues.length;
         for (int i = 0; i < sampleQueueCount; i++) {
             sampleQueues[i].discardTo(positionUs, toKeyframe, sampleQueuesEnabledStates[i]);
@@ -890,9 +888,7 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
     }
 
     private void maybeFinishPrepare() {
-        if (released || trackGroupToSampleQueueIndex != null || !sampleQueuesBuilt) {
-            return;
-        }
+        if (released || trackGroupToSampleQueueIndex != null || !sampleQueuesBuilt) return;
         for (SampleQueue sampleQueue : sampleQueues) {
             if (sampleQueue.getUpstreamFormat() == null) {
                 return;

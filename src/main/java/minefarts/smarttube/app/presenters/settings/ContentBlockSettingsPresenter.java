@@ -23,15 +23,15 @@ import java.util.Set;
 
 public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
     
-    private final ContentBlockData mContentBlockData;
-
-    public ContentBlockSettingsPresenter(Context context) {
-        super(context);
-        mContentBlockData = ContentBlockData.instance(context);
-    }
+    ContentBlockData mContentBlockData;
 
     public static ContentBlockSettingsPresenter instance(Context context) {
-        return new ContentBlockSettingsPresenter(context);
+        ContentBlockSettingsPresenter pres = new ContentBlockSettingsPresenter();
+
+        pres.mContentBlockData = ContentBlockData.instance(context);
+        pres.setContext(context);
+
+        return pres;
     }
 
     public void show(Runnable onFinish) {
@@ -180,9 +180,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
     private void appendExcludeChannelButton(AppDialogPresenter settingsPresenter) {
         Video video = PlaybackPresenter.instance(getContext()).getVideo();
 
-        if (video == null || getViewManager().getTopView() != PlaybackFragment2.class) {
-            return;
-        }
+        if (video == null || getViewManager().getTopView() != PlaybackFragment2.class) return;
 
         settingsPresenter.appendSingleButton(AppDialogUtil.createExcludeFromContentBlockButton(
             getContext(), 

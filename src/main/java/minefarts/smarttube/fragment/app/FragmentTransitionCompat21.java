@@ -74,9 +74,7 @@ class FragmentTransitionCompat21 extends FragmentTransitionImpl {
     @Override
     public void addTargets(Object transitionObj, ArrayList<View> views) {
         Transition transition = (Transition) transitionObj;
-        if (transition == null) {
-            return;
-        }
+        if (transition == null) return;
         if (transition instanceof TransitionSet) {
             TransitionSet set = (TransitionSet) transition;
             int numTransitions = set.getTransitionCount();

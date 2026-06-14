@@ -109,9 +109,7 @@ public class AppUpdateChecker implements AppVersionCheckerListener, AppDownloade
     @Override
     public void onApkDownloaded(String path) {
 
-        if (!checkApk(path)) {
-            return;
-        }
+        if (!checkApk(path)) return;
 
         mSettingsManager.setApkPath(path);
         mSettingsManager.setLatestVersionName(mLatestVersionName);
@@ -142,9 +140,7 @@ public class AppUpdateChecker implements AppVersionCheckerListener, AppDownloade
     public void processDownloadUrls(Uri[] downloadUrls) {
         String preferredHost = getPreferredHost();
 
-        if (preferredHost == null) {
-            return;
-        }
+        if (preferredHost == null) return;
 
         Arrays.sort(downloadUrls, ((o1, o2) -> {
             boolean firstMatch = o1 != null && Helpers.equals(preferredHost, o1.getHost());

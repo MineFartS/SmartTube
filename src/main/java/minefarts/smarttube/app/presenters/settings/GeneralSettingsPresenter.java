@@ -37,40 +37,28 @@ import java.util.Map.Entry;
 
 public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
-    private final GeneralData mGeneralData;
-
-    private final PlaybackFragment2 mPlayerData;
-
-    private final PlayerTweaksData mPlayerTweaksData;
-
-    private final MainUIData mMainUIData;
-
-    private final MediaServiceData mMediaServiceData;
-
-    private final SidebarService mSidebarService;
+    GeneralData mGeneralData;
+    PlaybackFragment2 mPlayerData;
+    PlayerTweaksData mPlayerTweaksData;
+    MainUIData mMainUIData;
+    MediaServiceData mMediaServiceData;
+    SidebarService mSidebarService;
 
     private boolean mRestartApp;
 
-    private GeneralSettingsPresenter(Context context) {
-
-        super(context);
-        
-        mGeneralData = GeneralData.instance(context);
-        
-        mPlayerData = PlaybackFragment2.instance(context);
-        
-        mPlayerTweaksData = PlayerTweaksData.instance(context);
-        
-        mMainUIData = MainUIData.instance(context);
-        
-        mMediaServiceData = MediaServiceData.instance();
-        
-        mSidebarService = SidebarService.instance(context);
-
-    }
-
     public static GeneralSettingsPresenter instance(Context context) {
-        return new GeneralSettingsPresenter(context);
+        GeneralSettingsPresenter pres = new GeneralSettingsPresenter();
+
+        pres.mGeneralData = GeneralData.instance(context);
+        pres.mPlayerData = PlaybackFragment2.instance(context);
+        pres.mPlayerTweaksData = PlayerTweaksData.instance(context);
+        pres.mMainUIData = MainUIData.instance(context);
+        pres.mMediaServiceData = MediaServiceData.instance();
+        pres.mSidebarService = SidebarService.instance(context);
+        
+        pres.setContext(context);
+
+        return pres;
     }
 
     public void show() {
@@ -238,9 +226,7 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
         Integer currentNameResId = menuNames.get(menuItem);
 
-        if (currentNameResId == null) {
-            return;
-        }
+        if (currentNameResId == null) return;
 
         List<Long> menuItemsOrdered = mMainUIData.getMenuItemsOrdered();
 

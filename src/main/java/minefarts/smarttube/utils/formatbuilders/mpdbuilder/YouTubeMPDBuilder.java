@@ -187,9 +187,7 @@ public class YouTubeMPDBuilder implements MPDBuilder {
     }
 
     private void writeMediaTagsForGroup(List<MediaSubtitle> subs) {
-        if (subs.size() == 0) {
-            return;
-        }
+        if (subs.size() == 0) return;
 
         for (MediaSubtitle sub : subs) {
             writeMediaListPrologue(sub);
@@ -201,15 +199,11 @@ public class YouTubeMPDBuilder implements MPDBuilder {
     }
 
     private void writeMediaTagsForGroup(Set<MediaFormat> items) {
-        if (items.size() == 0) {
-            return;
-        }
+        if (items.size() == 0) return;
 
         List<MediaFormat> filtered = filterOtfItems(items);
 
-        if (filtered.size() == 0) {
-            return;
-        }
+        if (filtered.size() == 0) return;
 
         MediaFormat firstItem = null;
         for (MediaFormat item : filtered) {
@@ -352,9 +346,7 @@ public class YouTubeMPDBuilder implements MPDBuilder {
         }
 
         // NOTE: FORMAT_STREAM_TYPE_OTF not supported
-        if (!MediaFormatUtils.isDash(mediaItem)) {
-            return;
-        }
+        if (!MediaFormatUtils.isDash(mediaItem)) return;
 
         //fixOTF(mediaItem);
 

@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import minefarts.smarttube.Player;
-import minefarts.smarttube.SimpleExoPlayer;
+import minefarts.smarttube.ui.playback.SimpleExoPlayer;
 
 /** @deprecated Use {@link PlayerView}. */
 @Deprecated

@@ -128,18 +128,14 @@ public class GeneralData implements ProfileChangeListener {
     }
 
     public void addPendingStream(Video video) {
-        if (video == null || video.videoId == null || containsPendingStream(video)) {
-            return;
-        }
+        if (video == null || video.videoId == null || containsPendingStream(video)) return;
 
         mPendingStreams.add(video);
         persistState();
     }
 
     public void removePendingStream(Video video) {
-        if (video == null || video.videoId == null || !containsPendingStream(video)) {
-            return;
-        }
+        if (video == null || video.videoId == null || !containsPendingStream(video)) return;
 
         Helpers.removeIf(mPendingStreams, item -> video.videoId.equals(item.videoId));
         persistState();
@@ -169,9 +165,7 @@ public class GeneralData implements ProfileChangeListener {
     }
 
     public void setSelectedItem(int sectionId, Video item) {
-        if (item == null) {
-            return;
-        }
+        if (item == null) return;
 
         mSelectedItems.put(sectionId, item);
 

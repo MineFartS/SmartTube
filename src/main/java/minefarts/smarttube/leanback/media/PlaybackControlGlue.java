@@ -580,9 +580,7 @@ public abstract class PlaybackControlGlue extends PlaybackGlue
     }
 
     private void updateRowMetadata() {
-        if (mControlsRow == null) {
-            return;
-        }
+        if (mControlsRow == null) return;
 
         if (DEBUG) Log.v(TAG, "updateRowMetadata");
 
@@ -652,9 +650,7 @@ public abstract class PlaybackControlGlue extends PlaybackGlue
     }
 
     private void updatePlaybackState(int playbackSpeed) {
-        if (mControlsRow == null) {
-            return;
-        }
+        if (mControlsRow == null) return;
 
         final SparseArrayObjectAdapter primaryActionsAdapter = (SparseArrayObjectAdapter)
                 getControlsRow().getPrimaryActionsAdapter();
@@ -790,9 +786,7 @@ public abstract class PlaybackControlGlue extends PlaybackGlue
         if (DEBUG) Log.v(TAG, "onStateChanged");
         // If a pending control button update is present, delay
         // the update until the state settles.
-        if (!hasValidMedia()) {
-            return;
-        }
+        if (!hasValidMedia()) return;
         if (sHandler.hasMessages(MSG_UPDATE_PLAYBACK_STATE, mGlueWeakReference)) {
             sHandler.removeMessages(MSG_UPDATE_PLAYBACK_STATE, mGlueWeakReference);
             if (getCurrentSpeedId() != mPlaybackSpeed) {

@@ -80,9 +80,7 @@ public class TrackSelectorManager {
      *                      One of the {@link #RENDERER_INDEX_VIDEO}, {@link #RENDERER_INDEX_AUDIO}, {@link #RENDERER_INDEX_SUBTITLE}
      */
     private void initRenderer(int rendererIndex) {
-        if (mRenderers[rendererIndex] != null && mRenderers[rendererIndex].mediaTracks != null) {
-            return;
-        }
+        if (mRenderers[rendererIndex] != null && mRenderers[rendererIndex].mediaTracks != null) return;
 
         if (mTrackSelector == null) {
             Log.e(TAG, "Can't init renderer %s. TrackSelector is null!", rendererIndex);
@@ -101,9 +99,7 @@ public class TrackSelectorManager {
      * @param parameters supplied externally from {@link RestoreTrackSelector}
      */
     private void initRenderer(int rendererIndex, TrackGroupArray groups, Parameters parameters) {
-        if (mRenderers[rendererIndex] != null && mRenderers[rendererIndex].mediaTracks != null) {
-            return;
-        }
+        if (mRenderers[rendererIndex] != null && mRenderers[rendererIndex].mediaTracks != null) return;
 
         initTrackGroups(rendererIndex, groups, parameters);
         initMediaTracks(rendererIndex);
@@ -134,9 +130,7 @@ public class TrackSelectorManager {
     }
 
     private void initMediaTracks(int rendererIndex) {
-        if (mRenderers[rendererIndex] == null) {
-            return;
-        }
+        if (mRenderers[rendererIndex] == null) return;
 
         Renderer renderer = mRenderers[rendererIndex];
         renderer.mediaTracks = new MediaTrack[renderer.trackGroups.length][];
@@ -194,9 +188,7 @@ public class TrackSelectorManager {
      * We need to circle through the tracks to remove previously selected marks
      */
     private void setSelection(int rendererIndex, int trackGroupIndex, int... trackIndexes) {
-        if (mRenderers[rendererIndex] == null) {
-            return;
-        }
+        if (mRenderers[rendererIndex] == null) return;
 
         // Adaptive selection should be disabled in RestoreTrackSelector (e.g trackIndexes.length == 1)
 
@@ -484,9 +476,7 @@ public class TrackSelectorManager {
     private void applyOverride(int rendererIndex) {
         Renderer renderer = mRenderers[rendererIndex];
 
-        if (renderer == null) {
-            return;
-        }
+        if (renderer == null) return;
 
         mTrackSelector.setParameters(mTrackSelector.buildUponParameters().setRendererDisabled(rendererIndex, renderer.isDisabled));
 

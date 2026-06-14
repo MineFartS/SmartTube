@@ -288,9 +288,7 @@ public class BaseFragment extends BrandedFragment {
 
     void internalCreateEntranceTransition() {
         mEntranceTransition = createEntranceTransition();
-        if (mEntranceTransition == null) {
-            return;
-        }
+        if (mEntranceTransition == null) return;
         TransitionHelper.addTransitionListener(mEntranceTransition, new TransitionListener() {
             @Override
             public void onTransitionEnd(Object transition) {

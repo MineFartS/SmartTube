@@ -137,9 +137,7 @@ public class VerticalGridSupportFragment extends BaseSupportFragment {
 
     void showOrHideTitle() {
         if (mGridViewHolder.getGridView().findViewHolderForAdapterPosition(mSelectedPosition)
-                == null) {
-            return;
-        }
+                == null) return;
         if (!mGridViewHolder.getGridView().hasPreviousViewInSameRow(mSelectedPosition)) {
             showTitle(true);
         } else {

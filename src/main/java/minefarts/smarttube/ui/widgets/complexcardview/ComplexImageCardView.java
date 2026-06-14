@@ -42,9 +42,7 @@ public class ComplexImageCardView extends ImageCardView {
     }
 
     private void enableTextAnimation(TextView view, boolean enable) {
-        if (view == null) {
-            return;
-        }
+        if (view == null) return;
 
         if (enable) {
             Runnable enableMarquee = () -> ViewUtil.enableMarquee(view);
@@ -90,9 +88,7 @@ public class ComplexImageCardView extends ImageCardView {
     public void setTitleLinesNum(int lines) {
         TextView titleView = findViewById(R.id.title_text);
 
-        if (titleView == null || lines <= 0) {
-            return;
-        }
+        if (titleView == null || lines <= 0) return;
 
         titleView.setMaxLines(lines);
         titleView.setLines(lines);
@@ -101,9 +97,7 @@ public class ComplexImageCardView extends ImageCardView {
     public void setContentLinesNum(int lines) {
         TextView contentView = findViewById(R.id.content_text);
 
-        if (contentView == null || lines <= 0) {
-            return;
-        }
+        if (contentView == null || lines <= 0) return;
 
         contentView.setMaxLines(lines);
         contentView.setLines(lines);

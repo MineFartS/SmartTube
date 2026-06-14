@@ -271,9 +271,7 @@ public class PagingIndicator extends View {
      * Called when the page has been selected.
      */
     public void onPageSelected(int pageIndex, boolean withAnimation) {
-        if (mCurrentPage == pageIndex) {
-            return;
-        }
+        if (mCurrentPage == pageIndex) return;
         if (mAnimator.isStarted()) {
             mAnimator.end();
         }
@@ -401,9 +399,7 @@ public class PagingIndicator extends View {
     }
 
     private void setSelectedPage(int now) {
-        if (now == mCurrentPage) {
-            return;
-        }
+        if (now == mCurrentPage) return;
 
         mCurrentPage = now;
         adjustDotPosition();

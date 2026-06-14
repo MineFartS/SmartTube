@@ -268,9 +268,7 @@ public class ChannelHeaderPresenter extends RowPresenter {
     }
 
     private void submitQuery(ChannelHeaderCallback provider, String query) {
-        if (query == null) {
-            return;
-        }
+        if (query == null) return;
         
         if (null != provider) {
             provider.onSearchSubmit(query);

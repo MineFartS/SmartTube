@@ -128,9 +128,7 @@ public class VideoCardPresenter extends LongClickPresenter {
 
         cardView.setMainImageDimensions(mWidth, mHeight);
 
-        if (context instanceof Activity && ((Activity) context).isDestroyed()) {
-            return;
-        }
+        if (context instanceof Activity && ((Activity) context).isDestroyed()) return;
 
         Glide.with(context)
             .load(video.getCardImageUrl())

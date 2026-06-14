@@ -262,9 +262,7 @@ public class DefaultSabrChunkSource implements SabrChunkSource {
 
     @Override
     public void getNextChunk(long playbackPositionUs, long loadPositionUs, List<? extends MediaChunk> queue, ChunkHolder out) {
-        if (fatalError != null) {
-            return;
-        }
+        if (fatalError != null) return;
 
         long bufferedDurationUs = loadPositionUs - playbackPositionUs;
         long timeToLiveEdgeUs = resolveTimeToLiveEdgeUs(playbackPositionUs);
@@ -275,9 +273,7 @@ public class DefaultSabrChunkSource implements SabrChunkSource {
 
         if (playerTrackEmsgHandler != null
                 && playerTrackEmsgHandler.maybeRefreshManifestBeforeLoadingNextChunk(
-                presentationPositionUs)) {
-            return;
-        }
+                presentationPositionUs)) return;
 
         long nowUnixTimeUs = getNowUnixTimeUs();
         MediaChunk previous = queue.isEmpty() ? null : queue.get(queue.size() - 1);

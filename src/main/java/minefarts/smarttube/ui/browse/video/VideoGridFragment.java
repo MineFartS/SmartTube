@@ -107,9 +107,7 @@ public class VideoGridFragment extends GridFragment implements VideoSection {
 
     @Override
     public void setPosition(int index) {
-        if (index < 0) {
-            return;
-        }
+        if (index < 0) return;
 
         mSelectedItemIndex = index;
         mSelectedItem = null;
@@ -122,9 +120,7 @@ public class VideoGridFragment extends GridFragment implements VideoSection {
 
     @Override
     public void selectItem(Video item) {
-        if (item == null) {
-            return;
-        }
+        if (item == null) return;
 
         mSelectedItem = item;
         mSelectedItemIndex = -1;
@@ -144,9 +140,7 @@ public class VideoGridFragment extends GridFragment implements VideoSection {
         int action = group.getAction();
 
         // Attempt to fix: IllegalStateException: Cannot call this method while RecyclerView is computing a layout or scrolling
-        if ((action == VideoGroup.ACTION_SYNC || action == VideoGroup.ACTION_REPLACE) && getBrowseGrid() != null && getBrowseGrid().isComputingLayout()) {
-            return;
-        }
+        if ((action == VideoGroup.ACTION_SYNC || action == VideoGroup.ACTION_REPLACE) && getBrowseGrid() != null && getBrowseGrid().isComputingLayout()) return;
 
         // Smooth remove animation
         if (action == VideoGroup.ACTION_REMOVE || action == VideoGroup.ACTION_REMOVE_AUTHOR) {
@@ -182,9 +176,7 @@ public class VideoGridFragment extends GridFragment implements VideoSection {
             return;
         }
 
-        if (group.isEmpty()) {
-            return;
-        }
+        if (group.isEmpty()) return;
 
         mGridAdapter.add(group);
 

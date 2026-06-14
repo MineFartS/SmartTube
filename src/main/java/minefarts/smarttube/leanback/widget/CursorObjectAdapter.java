@@ -43,9 +43,7 @@ public class CursorObjectAdapter extends ObjectAdapter {
      * @param cursor The new cursor to be used.
      */
     public void changeCursor(Cursor cursor) {
-        if (cursor == mCursor) {
-            return;
-        }
+        if (cursor == mCursor) return;
         if (mCursor != null) {
             mCursor.close();
         }

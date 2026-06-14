@@ -5,7 +5,7 @@ import android.os.Build.VERSION;
 
 import androidx.annotation.Nullable;
 
-import minefarts.smarttube.SimpleExoPlayer;
+import minefarts.smarttube.ui.playback.SimpleExoPlayer;
 import minefarts.smarttube.audio.AudioListener;
 import minefarts.smarttube.utils.mylogger.Log;
 
@@ -26,14 +26,10 @@ public class VolumeBooster implements AudioListener {
 
     @Override
     public void onAudioSessionId(int audioSessionId) {
-        if (VERSION.SDK_INT < 19 || mVolume <= 1) {
-            return;
-        }
+        if (VERSION.SDK_INT < 19 || mVolume <= 1) return;
 
         // NOTE: 5.1 audio cannot be boosted (format isn't supported error)
-        if (mPlayer != null && mPlayer.getAudioFormat() != null && mPlayer.getAudioFormat().channelCount > 2) {
-            return;
-        }
+        if (mPlayer != null && mPlayer.getAudioFormat() != null && mPlayer.getAudioFormat().channelCount > 2) return;
 
         Log.d(TAG, "Audio session id is %s, supported gain %s", audioSessionId, LoudnessEnhancer.PARAM_TARGET_GAIN_MB);
 

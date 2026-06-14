@@ -90,9 +90,7 @@ public class SearchTagsFragment extends SearchTagsFragmentBase {
 
     @Override
     public void updateSearch(VideoGroup group) {
-        if (isComputingLayout(group)) {
-            return;
-        }
+        if (isComputingLayout(group)) return;
 
         freeze(true);
 
@@ -113,9 +111,7 @@ public class SearchTagsFragment extends SearchTagsFragmentBase {
 
         ObjectAdapter resultsAdapter = getResultsAdapter();
 
-        if (resultsAdapter == null) {
-            return;
-        }
+        if (resultsAdapter == null) return;
 
         int size = resultsAdapter.size();
         int index = 0;
@@ -240,9 +236,7 @@ public class SearchTagsFragment extends SearchTagsFragmentBase {
     private void checkScrollEnd(Video item) {
         VideoGroupObjectAdapter resultsAdapter = getItemResultsAdapter(item);
 
-        if (resultsAdapter == null) {
-            return;
-        }
+        if (resultsAdapter == null) return;
 
         int size = resultsAdapter.size();
         int index = resultsAdapter.indexOf(item);
@@ -310,9 +304,7 @@ public class SearchTagsFragment extends SearchTagsFragmentBase {
             return;
         }
 
-        if (group.isEmpty()) {
-            return;
-        }
+        if (group.isEmpty()) return;
 
         HeaderItem rowHeader = new HeaderItem(group.getTitle());
         int mediaGroupId = group.getId(); // Create unique int from category.

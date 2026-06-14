@@ -32,9 +32,7 @@ public class LocaleUtility {
     }
 
     private static void initScriptsByLocale() {
-        if (!scriptsByLocale.isEmpty()) {
-            return;
-        }
+        if (!scriptsByLocale.isEmpty()) return;
 
         scriptsByLocale.put("aa", getScriptsMap("", "Latn"));
         scriptsByLocale.put("ab", getScriptsMap("", "Cyrl"));

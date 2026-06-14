@@ -48,6 +48,7 @@ import minefarts.smarttube.app.presenters.settings.MainUISettingsPresenter;
 import minefarts.smarttube.app.presenters.settings.PlayerSettingsPresenter;
 import minefarts.smarttube.app.presenters.settings.RemoteControlSettingsPresenter;
 import minefarts.smarttube.exoplayer.selector.FormatItem.VideoPreset;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -67,53 +68,52 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     
     @SuppressLint("StaticFieldLeak")
     private static BrowsePresenter sInstance;
-
-    private static final BrowseService2Wrapper mBrowseService = BrowseService2Wrapper.INSTANCE;
     
-    private final List<BrowseSection> mSections;
-    private final List<BrowseSection> mErrorSections;
-    private final Map<Integer, Observable<MediaGroup>> mGridMapping;
-    private final Map<Integer, Observable<List<MediaGroup>>> mRowMapping;
-    private final Map<Integer, Callable<List<SettingsItem>>> mSettingsGridMapping;
-    private final Map<Integer, Callable<List<Video>>> mLocalGridMappings;
-    private final Map<Integer, BrowseSection> mSectionsMapping;
-    private final BrowseProcessorManager mBrowseProcessor;
-    private final ChannelUploadsPresenter mChannelUploadsPresenter;
-    private final VideoStateService mVideoStateService;
-    private final List<Disposable> mActions;
-    private final Runnable mRefreshSection = this::refresh;
-    private BrowseSection mCurrentSection;
-    private Video mCurrentVideo;
-    private long mLastUpdateTimeMs = -1;
-    private int mBootSectionIndex;
-    private int mBootstrapSectionId = -1;
-
-    private BrowsePresenter(Context context) {
-        super(context);
-
-        mSections = new ArrayList<>();
-        mErrorSections = new ArrayList<>();
-        mGridMapping = new HashMap<>();
-        mRowMapping = new HashMap<>();
-        mSettingsGridMapping = new HashMap<>();
-        mLocalGridMappings = new HashMap<>();
-        mSectionsMapping = new HashMap<>();
-
-        ServiceManager.addAccountListener(this);
-
-        mBrowseProcessor = new BrowseProcessorManager(getContext(), this::syncItem);
-        mChannelUploadsPresenter = ChannelUploadsPresenter.instance(getContext());
-        mVideoStateService = VideoStateService.instance(getContext());
-        
-        mActions = new ArrayList<>();
-
-        initSectionMappings();
-        updatePlaylistsStyle();
-    }
+    List<BrowseSection> mSections;
+    List<BrowseSection> mErrorSections;
+    Map<Integer, Observable<MediaGroup>> mGridMapping;
+    Map<Integer, Observable<List<MediaGroup>>> mRowMapping;
+    Map<Integer, Callable<List<SettingsItem>>> mSettingsGridMapping;
+    Map<Integer, Callable<List<Video>>> mLocalGridMappings;
+    Map<Integer, BrowseSection> mSectionsMapping;
+    
+    static final BrowseService2Wrapper mBrowseService = BrowseService2Wrapper.INSTANCE;
+    BrowseProcessorManager mBrowseProcessor;
+    ChannelUploadsPresenter mChannelUploadsPresenter;
+    VideoStateService mVideoStateService;
+    VideoLoaderController mVideoLoaderController;
+    
+    List<Disposable> mActions;
+    Runnable mRefreshSection = this::refresh;
+    BrowseSection mCurrentSection;
+    Video mCurrentVideo;
+    long mLastUpdateTimeMs = -1;
+    int mBootSectionIndex;
+    int mBootstrapSectionId = -1;
 
     public static BrowsePresenter instance(Context context) {
         if (sInstance == null) {
-            sInstance = new BrowsePresenter(context);
+            sInstance = new BrowsePresenter();
+
+            sInstance.mSections = new ArrayList<>();
+            sInstance.mErrorSections = new ArrayList<>();
+            sInstance.mGridMapping = new HashMap<>();
+            sInstance.mRowMapping = new HashMap<>();
+            sInstance.mSettingsGridMapping = new HashMap<>();
+            sInstance.mLocalGridMappings = new HashMap<>();
+            sInstance.mSectionsMapping = new HashMap<>();
+
+            ServiceManager.addAccountListener(sInstance);
+
+            sInstance.mBrowseProcessor = new BrowseProcessorManager(context, sInstance::syncItem);
+            sInstance.mChannelUploadsPresenter = ChannelUploadsPresenter.instance(context);
+            sInstance.mVideoStateService = VideoStateService.instance(context);
+            sInstance.mVideoLoaderController = PlaybackPresenter.instance(context).getController(VideoLoaderController.class);
+            
+            sInstance.mActions = new ArrayList<>();
+
+            sInstance.initSectionMappings();
+            sInstance.updatePlaylistsStyle();
         }
 
         sInstance.setContext(context);
@@ -129,9 +129,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     public void onViewInitialized() {
         super.onViewInitialized();
 
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
         updateSections();
 
@@ -156,25 +154,21 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     }
 
     private void refreshIfNeeded() {
-        if (getView() == null || !isHomeSection() || mLastUpdateTimeMs == -1 || System.currentTimeMillis() - mLastUpdateTimeMs < 3 * 60 * 60 * 1_000) {
-            return;
-        }
+        if (getView() == null || !isHomeSection() || mLastUpdateTimeMs == -1 || System.currentTimeMillis() - mLastUpdateTimeMs < 3 * 60 * 60 * 1_000) return;
 
         refresh(false);
     }
 
     private void saveSelectedItems() {
         // Fix position reset when jumping between sections
-        if (mCurrentVideo != null && mCurrentVideo.getPositionInsideGroup() == 0 && (System.currentTimeMillis() - mCurrentVideo.timestamp) < 10_000) {
-            return;
-        }
+        if (mCurrentVideo != null && mCurrentVideo.getPositionInsideGroup() == 0 && (System.currentTimeMillis() - mCurrentVideo.timestamp) < 10_000) return;
 
         if (isSubscriptionsSection() && getGeneralData().isRememberSubscriptionsPositionEnabled()) {
             getGeneralData().setSelectedItem(mCurrentSection.getId(), mCurrentVideo);
         }
     }
 
-    private void initSectionMappings() {
+    void initSectionMappings() {
         
         //===================================================================
         // mSectionsMapping
@@ -408,9 +402,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     }
 
     private void refreshSections() {
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
         // clean up (profile changed etc)
         getView().removeAllSections();
@@ -450,9 +442,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     }
 
     private void updateCategoryType(int categoryId, int categoryType) {
-        if (categoryType == -1 || categoryId == -1 || mSections == null) {
-            return;
-        }
+        if (categoryType == -1 || categoryId == -1 || mSections == null) return;
 
         BrowseSection section = mSectionsMapping.get(categoryId);
 
@@ -497,7 +487,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     public void onVideoItemClicked(Video item) {
         if (getContext() == null) return;
 
-        VideoLoaderController.openVideo(item);
+        mVideoLoaderController.openVideo(item);
     }
 
     @Override
@@ -622,9 +612,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     }
 
     public void pinItem(Video item) {
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
         getSidebarService().addPinnedItem(item);
 
@@ -639,9 +627,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     }
 
     public void pinItem(String title, int resId, ErrorFragmentData data) {
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
         BrowseSection newSection = new BrowseSection(title.hashCode(), title, BrowseSection.TYPE_ERROR, resId, false, data);
         Helpers.removeIf(mErrorSections, section -> section.getId() == newSection.getId());
@@ -687,9 +673,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     private void updateCurrentSection() {
         disposeActions();
 
-        if (getView() == null || mCurrentSection == null) {
-            return;
-        }
+        if (getView() == null || mCurrentSection == null) return;
 
         Log.d(TAG, "Update section %s", mCurrentSection.getTitle());
         updateSection(mCurrentSection);
@@ -1081,9 +1065,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     public void onAccountChanged(Account account) {
         Log.d(TAG, "On account changed");
 
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
         initSectionMappings();
         updatePlaylistsStyle();
@@ -1112,9 +1094,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     }
 
     private void handleLoadError(Throwable error) {
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
         getView().showProgressBar(false);
 

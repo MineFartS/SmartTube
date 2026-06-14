@@ -19,23 +19,22 @@ import java.util.List;
 
 public class MainUISettingsPresenter extends BasePresenter<Void> {
     
-    private final MainUIData mMainUIData;
-
-    private final GeneralData mGeneralData;
-
-    private final PlaybackFragment2 mPlayerData;
+    MainUIData mMainUIData;
+    GeneralData mGeneralData;
+    PlaybackFragment2 mPlayerData;
 
     private boolean mRestartApp;
 
-    private MainUISettingsPresenter(Context context) {
-        super(context);
-        mMainUIData = MainUIData.instance(context);
-        mGeneralData = GeneralData.instance(context);
-        mPlayerData = PlaybackFragment2.instance(context);
-    }
-
     public static MainUISettingsPresenter instance(Context context) {
-        return new MainUISettingsPresenter(context);
+        MainUISettingsPresenter pres = new MainUISettingsPresenter();
+
+        pres.mMainUIData = MainUIData.instance(context);
+        pres.mGeneralData = GeneralData.instance(context);
+        pres.mPlayerData = PlaybackFragment2.instance(context);
+
+        pres.setContext(context);
+
+        return pres;
     }
 
     public void show() {

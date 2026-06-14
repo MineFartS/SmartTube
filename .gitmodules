@@ -1,21 +1,21 @@
-[submodule "sdk"]
-	path = sdk
+[submodule "lib/sdk"]
+	path = lib/sdk
 	url = https://github.com/MineFartS/Android-SDK
     ignore = all
 
-[submodule "jdk"]
-	path = jdk
+[submodule "lib/jdk17"]
+	path = lib/jdk17
 	url = https://github.com/MineFartS/JDK
 	branch = 17
     ignore = all
 
-[submodule "pidcat"]
-	path = pidcat
+[submodule "lib/pidcat"]
+	path = lib/pidcat
 	url = https://github.com/MineFartS/pidcat
     ignore = all
 
-[submodule "py"]
-	path = py
+[submodule "lib/py314"]
+	path = lib/py314
 	url = https://github.com/MineFartS/Python-Embed.git
+    branch = 3.14.5
     ignore = all
-

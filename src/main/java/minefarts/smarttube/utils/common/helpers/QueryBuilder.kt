@@ -60,10 +60,10 @@ internal class QueryBuilder(private val client: AppClient) {
                 visitorData = appService.visitorData
         }
 
-        if (playerDataCheck()) {
-
-            if (signatureTimestamp == null)
-                signatureTimestamp = Helpers.parseInt(appService.signatureTimestamp) // get it somewhere else?
+        if (playerDataCheck() && signatureTimestamp == null) {
+            signatureTimestamp = Helpers.parseInt(
+                appService.getPlayerDataExtractor()?.signatureTimestamp
+            )
         }
 
         val json = """

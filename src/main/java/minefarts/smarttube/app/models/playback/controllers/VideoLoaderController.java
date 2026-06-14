@@ -53,36 +53,29 @@ public class VideoLoaderController extends BasePlayerController {
         mChannelUploadsPresenter = ChannelUploadsPresenter.instance(getContext());
         mSearchPresenter = SearchPresenter.instance(getContext());
         mMediaItemService = ServiceManager.getMediaItemService();
-
     }
-   
-    private static final long STREAM_END_THRESHOLD_MS = 180_000;
-   
-    private static final long BUFFERING_THRESHOLD_MS = 3_000;
-    private static final long BUFFERING_WINDOW_MS = 60_000;
-    private static final long BUFFERING_RECURRENCE_COUNT = 5;
-    private static final long BUFFERING_CONTINUATION_MS = 20_000;
     
     private Video mPendingVideo;
     private int mLastErrorType = -1;
     private SuggestionsController mSuggestionsController;
     private Disposable mFormatInfoAction;
     private Disposable mMpdStreamAction;
+
     private final Runnable mReloadVideo = () -> {
         getMainController().onNewVideo(getVideo());
     };
-    private final Runnable mLoadNext = this::loadNext;
+    
     private final Runnable mMetadataSync = () -> {
         if (getPlayer() != null) {
             waitMetadataSync(getVideo(), false);
         }
     };
+
     private final Runnable mRestartEngine = () -> {
         if (getPlayer() != null) {
             getPlayer().restartEngine(); // properly save position of the current track
         }
     };
-    private final Runnable mOnLongBuffering = this::updateBufferingCountIfNeeded;
 
     private final Runnable mRebootApp = () -> {
         Video video = getVideo();
@@ -90,11 +83,7 @@ public class VideoLoaderController extends BasePlayerController {
             Utils.restartTheApp(getContext(), video, getPlayer().getPositionMs());
         }
     };
-    private final Runnable mOnApplyPlaybackMode = () -> {
-        if (getPlayer() != null && getPlayer().getPositionMs() >= getPlayer().getDurationMs()) {
-            applyPlaybackMode(getPlaybackMode());
-        }
-    };
+
     private Pair<Integer, Long> mBufferingCount;
 
     @Override
@@ -104,9 +93,7 @@ public class VideoLoaderController extends BasePlayerController {
 
     @Override
     public void onNewVideo(Video item) {
-        if (item == null) {
-            return;
-        }
+        if (item == null) return;
 
         if (!item.fromQueue && !item.belongsToPlaybackQueue()) {
             Queue.add(item);
@@ -124,37 +111,17 @@ public class VideoLoaderController extends BasePlayerController {
 
     @Override
     public void onBuffering() {
-        Utils.postDelayed(mOnLongBuffering, BUFFERING_THRESHOLD_MS);
+        Utils.postDelayed(this::updateBufferingCountIfNeeded, BUFFERING_THRESHOLD_MS);
     }
 
     @Override
     public void onSeekEnd() {
-        // Reset buffering stats
         mBufferingCount = null;
-    }
-
-    private void onLongBuffering() {
-        if (getPlayer() == null || getVideo() == null) {
-            return;
-        }
-
-        // Stream end check (hangs on buffering)
-        if ((!getVideo().isLive || getVideo().isLiveEnd)
-                && getPlayer().getDurationMs() - getPlayer().getPositionMs() < STREAM_END_THRESHOLD_MS) {
-            getMainController().onPlayEnd();
-        } else if (!getVideo().isLive && !getVideo().isLiveEnd) {
-            MessageHelpers.showLongMessage(getContext(), R.string.playback_buffering_fix);
-            ServiceManager.invalidateCache();
-            restartEngine();
-        }
     }
 
     @Override
     public void onEngineInitialized() {
-        
-        if (getPlayer() == null) {
-            return;
-        }
+        if (getPlayer() == null) return;
         
         loadVideo(Helpers.firstNonNull(mPendingVideo, getVideo()));
         getPlayer().setButtonState(R.id.action_repeat, getPlayerData().getPlaybackMode());
@@ -168,21 +135,7 @@ public class VideoLoaderController extends BasePlayerController {
         mBufferingCount = null;
 
         RxHelper.disposeActions(mFormatInfoAction, mMpdStreamAction);
-        Utils.removeCallbacks(mReloadVideo, mLoadNext, mRestartEngine, mMetadataSync, mOnLongBuffering, mRebootApp);
-
-        // Clear player-side leftovers (UI metadata/next title/chat/seek UI handled inside the view).
-        if (getPlayer() != null) {
-            getPlayer().resetPlayerState(); // Stops current stream (fix artifacts / flush decoders)
-            getPlayer().setNextTitle(null); // Reset suggestions/next metadata display.
-            getPlayer().setChatReceiver(null);
-            getPlayer().showProgressBar(false);
-        }
-
-        // Make sure current video doesn't keep metadata pointers that could leak into next.
-        if (getVideo() != null) {
-            getVideo().nextMediaItem = null;
-            getVideo().playlistInfo = null;
-        }
+        Utils.removeCallbacks(mReloadVideo, this::onNextClicked, mRestartEngine, mMetadataSync, this::updateBufferingCountIfNeeded, mRebootApp);
 
     }
 
@@ -200,10 +153,8 @@ public class VideoLoaderController extends BasePlayerController {
             Log.e(TAG, "Unhandled exception in onEngineError recovery", t);
             // Avoid silent crashes: attempt safe reload instead of crashing.
             try {
-                reloadVideo();
-            } catch (Throwable ignored) {
-                // last resort: do nothing
-            }
+                scheduleReloadVideoTimer(1_000);
+            } catch (Throwable ignored) {}
         }
     }
 
@@ -212,39 +163,28 @@ public class VideoLoaderController extends BasePlayerController {
         if (getPlayer() == null) return;
 
         mLastErrorType = -1;
-        getPlayer().setButtonState(R.id.action_repeat, video.finishOnEnded ? PlaybackFragment2.PLAYBACK_MODE_CLOSE : getPlayerData().getPlaybackMode());
+
+        getPlayer().setButtonState(
+            R.id.action_repeat, 
+            video.finishOnEnded ? PlaybackFragment2.PLAYBACK_MODE_CLOSE : getPlayerData().getPlaybackMode()
+        );
 
     }
 
     @Override
     public boolean onPreviousClicked() {
-        loadPrevious();
+        if (getPlayer() == null) return true;
+
+        openVideoInt(mSuggestionsController.getPrevious());
+
+        getPlayer().showOverlay(true);
 
         return true;
     }
 
     @Override
     public boolean onNextClicked() {
-
-        loadNext();
-
-        return true;
-    }
-
-    public void loadPrevious() {
-        
-        if (getPlayer() == null) {
-            return;
-        }
-
-        openVideoInt(mSuggestionsController.getPrevious());
-
-        getPlayer().showOverlay(true);
-        
-    }
-
-    public void loadNext() {   
-        if (getPlayer() == null || getVideo() == null) return;
+        if (getPlayer() == null || getVideo() == null) return true;
 
         Video next = mSuggestionsController.getNext();
 
@@ -257,6 +197,7 @@ public class VideoLoaderController extends BasePlayerController {
 
         getPlayer().showOverlay(true);
 
+        return true;
     }
 
     @Override
@@ -266,7 +207,12 @@ public class VideoLoaderController extends BasePlayerController {
         // Stop the playback if the user is browsing options or reading comments
         int playbackMode = getPlaybackMode();
         if (getAppDialogPresenter().isDialogShown() && !getAppDialogPresenter().isOverlay() && playbackMode != PlaybackFragment2.PLAYBACK_MODE_ONE) {
-            getAppDialogPresenter().setOnFinish(mOnApplyPlaybackMode);
+            
+            getAppDialogPresenter().setOnFinish(() -> {
+                if (getPlayer() == null || getPlayer().getPositionMs() < getPlayer().getDurationMs()) return;
+                applyPlaybackMode(getPlaybackMode());
+            });
+
         } else {
             applyPlaybackMode(playbackMode);
         }
@@ -312,17 +258,6 @@ public class VideoLoaderController extends BasePlayerController {
         }
     }
 
-    /**
-     * Force load suggestions.
-     */
-    private void loadSuggestions(Video item) {
-        if (item != null) {
-            Queue.setCurrent(item);
-            getPlayer().setVideo(item);
-            mSuggestionsController.loadSuggestions(item);
-        }
-    }
-
     private void waitMetadataSync(Video current, boolean showLoadingMsg) {
         
         if (current == null) return;
@@ -352,10 +287,6 @@ public class VideoLoaderController extends BasePlayerController {
         getVideo().sync(formatInfo);
 
         if (formatInfo.isUnplayable()) {
-            if (isEmbedPlayer()) {
-                player.finish();
-                return;
-            }
 
             player.setTitle(formatInfo.getPlayabilityStatus());
             player.showProgressBar(false);
@@ -363,15 +294,20 @@ public class VideoLoaderController extends BasePlayerController {
             bgImageUrl = getVideo().getBackgroundUrl();
 
             // 18+ video or the video is hidden/removed
-            scheduleNextVideoTimer(5_000);
+            if (getPlayer() != null && getPlayer().isEngineInitialized()) {
+                getPlayer().showOverlay(true);
+                Utils.postDelayed(this::onNextClicked, 5_000);
+            }
 
         } else if (acceptAdaptiveFormats(formatInfo) && formatInfo.containsDashFormats()) {
             Log.d(TAG, "Loading regular video in dash format...");
             player.openDash(formatInfo);
+        
         } else if (acceptAdaptiveFormats(formatInfo) && formatInfo.containsSabrFormats()) {
             Log.d(TAG, "Loading video in sabr format...");
             player.openSabr(formatInfo);
-        } else if (acceptDashLive(formatInfo)) {
+
+        } else if (formatInfo.isLive() && formatInfo.containsDashUrl()) {
             String dashUrl = formatInfo.getDashManifestUrl();
             if (dashUrl == null) {
                 runFormatErrorAction(new IllegalStateException("Dash manifest url is null"));
@@ -379,6 +315,7 @@ public class VideoLoaderController extends BasePlayerController {
             }
             Log.d(TAG, "Loading live video (current or past live stream) in dash format...");
             player.openDashUrl(dashUrl);
+        
         } else if (formatInfo.isLive() && formatInfo.containsHlsUrl()) {
             String hlsUrl = formatInfo.getHlsManifestUrl();
             if (hlsUrl == null) {
@@ -387,6 +324,7 @@ public class VideoLoaderController extends BasePlayerController {
             }
             Log.d(TAG, "Loading live video (current or past live stream) in hls format...");
             player.openHlsUrl(hlsUrl);
+        
         } else if (formatInfo.containsUrlFormats()) {
             List<String> urlList = formatInfo.createUrlList();
             if (urlList == null || urlList.isEmpty()) {
@@ -394,49 +332,38 @@ public class VideoLoaderController extends BasePlayerController {
                 return;
             }
             Log.d(TAG, "Loading url list video. This is always LQ...");
-            player.openUrlList(applyFix(urlList));
+            
+            if (mLastErrorType == PlayerEventListener.ERROR_TYPE_SOURCE)
+                Collections.reverse(urlList);
+
+            player.openUrlList(urlList);
+            
         } else {
             Log.d(TAG, "Empty format info received. Seems future live translation. No video data to pass to the player.");
             player.setTitle(formatInfo.getPlayabilityStatus());
             player.showProgressBar(false);
             mSuggestionsController.loadSuggestions(getVideo());
             bgImageUrl = getVideo().getBackgroundUrl();
-            scheduleReloadVideoTimer(30 * 1_000);
+            scheduleReloadVideoTimer(30_000);
         }
 
         player.showBackground(bgImageUrl); // remove bg (if video playing) or set another bg
+
     }
 
     private void scheduleReloadVideoTimer(int delayMs) {
-        if (getPlayer() == null) {
-            return;
-        }
+        if (getPlayer() == null || !getPlayer().isEngineInitialized()) return;
 
-        if (getPlayer().isEngineInitialized()) {
-            Log.d(TAG, "Reloading the video...");
-            getPlayer().showOverlay(true);
-            Utils.postDelayed(mReloadVideo, delayMs);
-        }
-    }
-
-    private void scheduleNextVideoTimer(int delayMs) {
-        if (getPlayer() == null) {
-            return;
-        }
-
-        if (getPlayer().isEngineInitialized()) {
-            Log.d(TAG, "Starting the next video...");
-            getPlayer().showOverlay(true);
-            Utils.postDelayed(mLoadNext, delayMs);
-        }
+        Log.d(TAG, "Reloading the video...");
+        getPlayer().showOverlay(true);
+        Utils.postDelayed(mReloadVideo, delayMs);
     }
 
     private void scheduleRestartEngineTimer(int delayMs) {
-        if (getPlayer() != null) {
-            Log.d(TAG, "Restarting the engine...");
-            getPlayer().showOverlay(true);
-            Utils.postDelayed(mRestartEngine, delayMs);
-        }
+        if (getPlayer() == null) return;
+        Log.d(TAG, "Restarting the engine...");
+        getPlayer().showOverlay(true);
+        Utils.postDelayed(mRestartEngine, delayMs);
     }
 
     private void openVideoInt(Video item) {
@@ -446,9 +373,7 @@ public class VideoLoaderController extends BasePlayerController {
 
         if (item.hasVideo()) {
             // NOTE: Next clicked: instant playback even a mix
-            // NOTE: Bypass PIP fullscreen on next caused by startView
             getMainController().onNewVideo(item);
-
         } else {
             openVideo(item);
         }
@@ -471,25 +396,11 @@ public class VideoLoaderController extends BasePlayerController {
         
         } else if (item.searchQuery != null ) {
             mSearchPresenter.onSearch(item.searchQuery);
-        
-        } else {
-            MessageHelpers.showMessage(mContext, "Video item doesn't contain needed data!");
-        
         }
         
-    }
-
-    private boolean isActionsRunning() {
-        return RxHelper.isAnyActionRunning(mFormatInfoAction, mMpdStreamAction);
     }
 
     private void runFormatErrorAction(Throwable error) {
-        if (isEmbedPlayer()) {
-            if (getPlayer() != null) {
-                getPlayer().finish();
-            }
-            return;
-        }
 
         String message = error.getMessage();
         String className = error.getClass().getSimpleName();
@@ -511,14 +422,17 @@ public class VideoLoaderController extends BasePlayerController {
         if (Helpers.containsAny(message, "Unexpected token", "Syntax error", "invalid argument") || // temporal fix
                 Helpers.equalsAny(className, "PoTokenException", "BadWebViewException")) {
             ServiceManager.applyNoPlaybackFix();
-            reloadVideo();
+            scheduleReloadVideoTimer(1_000);
+
         } else if (Helpers.containsAny(message, "is not defined")) {
             ServiceManager.invalidateCache();
-            reloadVideo();
+            scheduleReloadVideoTimer(1_000);
+        
         } else if (isNullPlayerUrl) {
             // Avoid tight retry loop when upstream returns partial/empty data.
             Log.e(TAG, "playerUrl is null, scheduling delayed reload...");
             scheduleReloadVideoTimer(3_000);
+        
         } else {
             Log.e(TAG, "Probably no internet connection");
             scheduleReloadVideoTimer(1_000);
@@ -527,11 +441,6 @@ public class VideoLoaderController extends BasePlayerController {
     }
     
     private void runEngineErrorAction(int type, int rendererIndex, Throwable error) {
-        // Hide begin errors in embed mode (e.g. wrong date/time: unable to connect to...)
-        if (isEmbedPlayer() && getPlayer() != null && getPlayer().getPositionMs() == 0) {
-            getPlayer().finish();
-            return;
-        }
 
         if (getVideo() != null && getVideo().isLiveEnd) {
             // Url no longer works (e.g. live stream ended)
@@ -539,17 +448,6 @@ public class VideoLoaderController extends BasePlayerController {
             return;
         }
 
-        boolean restart = applyEngineErrorAction(type, rendererIndex, error);
-
-        if (restart) {
-            restartEngine();
-        } else {
-            reloadVideo();
-        }
-    }
-
-    private boolean applyEngineErrorAction(int type, int rendererIndex, Throwable error) {
-        
         boolean restartEngine = true;
         boolean showMessage = true;
         String errorContent = error != null ? error.getMessage() : null;
@@ -582,17 +480,13 @@ public class VideoLoaderController extends BasePlayerController {
             // "Response code: 404", "Response code: 429", "Invalid integer size",
             // "Unexpected ArrayIndexOutOfBoundsException", "Unexpected IndexOutOfBoundsException"
             if (Helpers.startsWithAny(errorContent, "Response code: 403")) {
-            
                 ServiceManager.applyNoPlaybackFix();
             
             } else if (getPlayer() != null && !FormatItem.SUBTITLE_NONE.equals(getPlayer().getSubtitleFormat())) {
-            
-                disableSubtitles(); // Response code: 429
+                getPlayerData().setFormat(FormatItem.SUBTITLE_NONE); // Response code: 429
             
             } else {
-            
                 ServiceManager.applyNoPlaybackFix(); // Response code: 403
-            
             }
             
             restartEngine = false;
@@ -602,7 +496,7 @@ public class VideoLoaderController extends BasePlayerController {
             
             // "Response code: 429" (subtitle error)
             // "Response code: 500" (subtitle error)
-            disableSubtitles();
+            getPlayerData().setFormat(FormatItem.SUBTITLE_NONE);
             restartEngine = false;
 
         } else if (type == PlayerEventListener.ERROR_TYPE_RENDERER && rendererIndex == PlayerEventListener.RENDERER_INDEX_VIDEO) {
@@ -620,11 +514,15 @@ public class VideoLoaderController extends BasePlayerController {
             showMessage = false;
         }
 
-        if (showMessage) {
+        if (showMessage)
             MessageHelpers.showLongMessage(getContext(), errorMessage);
+
+        if (restartEngine) {
+            scheduleRestartEngineTimer(1_000);
+        } else {
+            scheduleReloadVideoTimer(1_000);
         }
 
-        return restartEngine;
     }
 
     @SuppressLint("StringFormatMatches")
@@ -678,37 +576,12 @@ public class VideoLoaderController extends BasePlayerController {
         return errorTitle;
     }
 
-    private void restartEngine() {
-        scheduleRestartEngineTimer(1_000);
-    }
-
-    private void reloadVideo() {
-        scheduleReloadVideoTimer(1_000);
-    }
-
-    private List<String> applyFix(List<String> urlList) {
-        // Sometimes top url cannot be played
-        if (mLastErrorType == PlayerEventListener.ERROR_TYPE_SOURCE) {
-            Collections.reverse(urlList);
-        }
-
-        return urlList;
-    }
-
     private void applyPlaybackMode(int playbackMode) {
-        if (getPlayer() == null) {
-            return;
-        }
+        if (getPlayer() == null) return;
 
         Video video = getVideo();
         // Fix simultaneous videos loading (e.g. when playback ends and user opens new video)
-        if (video == null || isActionsRunning()) {
-            return;
-        }
-
-        if (isEmbedPlayer()) {
-            playbackMode = PlaybackFragment2.PLAYBACK_MODE_CLOSE;
-        }
+        if (video == null || RxHelper.isAnyActionRunning(mFormatInfoAction, mMpdStreamAction)) return;
 
         switch (playbackMode) {
             case PlaybackFragment2.PLAYBACK_MODE_REVERSE_LIST:
@@ -719,18 +592,21 @@ public class VideoLoaderController extends BasePlayerController {
                     }
                     break;
                 }
+            
             case PlaybackFragment2.PLAYBACK_MODE_ALL:
             case PlaybackFragment2.PLAYBACK_MODE_SHUFFLE:
-                loadNext();
+                onNextClicked();
                 break;
+
             case PlaybackFragment2.PLAYBACK_MODE_ONE:
                 getPlayer().setPositionMs(100); // fix frozen image on Android 4?
                 break;
+
             case PlaybackFragment2.PLAYBACK_MODE_CLOSE:
                 // Close player if suggestions not shown
                 // Except when playing from queue
                 if (Queue.getNext() != null) {
-                    loadNext();
+                    onNextClicked();
                 } else {
                     AppDialogPresenter dialog = getAppDialogPresenter();
                     if (!getPlayer().isSuggestionsShown() && (!dialog.isDialogShown() || dialog.isOverlay())) {
@@ -739,45 +615,37 @@ public class VideoLoaderController extends BasePlayerController {
                     }
                 }
                 break;
+
             case PlaybackFragment2.PLAYBACK_MODE_PAUSE:
                 // Stop player after each video.
                 // Except when playing from queue
                 if (Queue.getNext() != null) {
-                    loadNext();
+                    onNextClicked();
                 } else {
                     getPlayer().setPositionMs(getPlayer().getDurationMs());
                     getPlayer().setPlayWhenReady(false);
                     getPlayer().showSuggestions(true);
                 }
                 break;
+
             case PlaybackFragment2.PLAYBACK_MODE_LIST:
                 // if video has a playlist load next or restart playlist
                 if (video.hasNextPlaylist() || Queue.getNext() != null) {
-                    loadNext();
+                    onNextClicked();
                 } else {
-                    restartPlaylistIfNeeded();
+                    VideoGroup group = getVideo().getGroup(); // Get the VideoGroup (playlist)
+
+                    if (group != null && !group.isEmpty() && getVideo().belongsToSamePlaylistGroup()) {
+                        openVideoInt(group.get(0));
+                    } else {
+                        Log.e(TAG, "VideoGroup is null or empty. Can't restart playlist.");
+                        getPlayer().setPositionMs(getPlayer().getDurationMs());
+                        getPlayer().setPlayWhenReady(false);
+                        getPlayer().showSuggestions(true);
+                    }
                 }
                 break;
-            default:
-                Log.e(TAG, "Undetected repeat mode " + playbackMode);
-                break;
-        }
-    }
 
-    private void restartPlaylistIfNeeded() {
-        if (getPlayer() == null || getVideo() == null) {
-            return;
-        }
-        
-        VideoGroup group = getVideo().getGroup(); // Get the VideoGroup (playlist)
-
-        if (group != null && !group.isEmpty() && getVideo().belongsToSamePlaylistGroup()) {
-            openVideoInt(group.get(0));
-        } else {
-            Log.e(TAG, "VideoGroup is null or empty. Can't restart playlist.");
-            getPlayer().setPositionMs(getPlayer().getDurationMs());
-            getPlayer().setPlayWhenReady(false);
-            getPlayer().showSuggestions(true);
         }
     }
 
@@ -790,19 +658,13 @@ public class VideoLoaderController extends BasePlayerController {
         return !(isLive && atStart);
     }
 
-    private boolean acceptDashLive(MediaItemFormatInfo formatInfo) {
-        return formatInfo.isLive() && formatInfo.containsDashUrl();
-    }
-
     @Override
     public void onMetadata(MediaItemMetadata metadata) {
 
         ServiceManager.disposeActions();
 
         if (getPlayer() == null || getPlayerData() == null || getVideo() == null || getVideo().playlistInfo == null ||
-                getPlayerData().getPlaybackMode() != PlaybackFragment2.PLAYBACK_MODE_SHUFFLE) {
-            return;
-        }
+                getPlayerData().getPlaybackMode() != PlaybackFragment2.PLAYBACK_MODE_SHUFFLE) return;
 
         if (getVideo().playlistInfo.getSize() != -1) {
 
@@ -838,26 +700,16 @@ public class VideoLoaderController extends BasePlayerController {
 
     @Override
     public void onPlay() {
-        Utils.removeCallbacks(mOnLongBuffering);
+        Utils.removeCallbacks(this::updateBufferingCountIfNeeded);
     }
 
     @Override
     public void onPause() {
-        Utils.removeCallbacks(mOnLongBuffering);
+        Utils.removeCallbacks(this::updateBufferingCountIfNeeded);
     }
 
     private void updateBufferingCountIfNeeded() {
-        updateBufferingCount();
-        if (isBufferingRecurrent()) {
-            mBufferingCount = null;
-            onLongBuffering();
-        } else {
-            // Count continuous buffering as a new occurrences....
-            Utils.postDelayed(mOnLongBuffering, BUFFERING_CONTINUATION_MS);
-        }
-    }
-
-    private void updateBufferingCount() {
+        
         final long currentTimeMs = System.currentTimeMillis();
         int bufferingCount = 0;
         long previousTimeMs = 0;
@@ -874,10 +726,27 @@ public class VideoLoaderController extends BasePlayerController {
         }
 
         mBufferingCount = new Pair<>(bufferingCount, currentTimeMs);
-    }
 
-    private boolean isBufferingRecurrent() {
-        return mBufferingCount != null && mBufferingCount.first > BUFFERING_RECURRENCE_COUNT;
+        if (mBufferingCount != null && mBufferingCount.first > BUFFERING_RECURRENCE_COUNT) {
+
+            mBufferingCount = null;
+            if (getPlayer() == null || getVideo() == null) return;
+
+            // Stream end check (hangs on buffering)
+            if ((!getVideo().isLive || getVideo().isLiveEnd)
+                    && getPlayer().getDurationMs() - getPlayer().getPositionMs() < STREAM_END_THRESHOLD_MS) {
+                getMainController().onPlayEnd();
+            } else if (!getVideo().isLive && !getVideo().isLiveEnd) {
+                MessageHelpers.showLongMessage(getContext(), "Playback buffering fix");
+                ServiceManager.invalidateCache();
+                restartEngine();
+            }
+
+        } else {
+            // Count continuous buffering as a new occurrences....
+            Utils.postDelayed(this::updateBufferingCountIfNeeded, BUFFERING_CONTINUATION_MS);
+        }
+
     }
 
     private int getPlaybackMode() {
@@ -892,7 +761,4 @@ public class VideoLoaderController extends BasePlayerController {
         return playbackMode;
     }
 
-    private void disableSubtitles() {
-        getPlayerData().setFormat(FormatItem.SUBTITLE_NONE);
-    }
 }

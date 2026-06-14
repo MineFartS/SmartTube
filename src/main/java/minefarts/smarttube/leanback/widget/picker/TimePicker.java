@@ -244,9 +244,7 @@ public class TimePicker extends Picker {
 
     private void updateColumns() {
         String timePickerFormat = getBestHourMinutePattern();
-        if (TextUtils.equals(timePickerFormat, mTimePickerFormat)) {
-            return;
-        }
+        if (TextUtils.equals(timePickerFormat, mTimePickerFormat)) return;
         mTimePickerFormat = timePickerFormat;
 
         String timeFieldsPattern = extractTimeFields();
@@ -388,9 +386,7 @@ public class TimePicker extends Picker {
      * @see #is24Hour()
      */
     public void setIs24Hour(boolean is24Hour) {
-        if (mIs24hFormat == is24Hour) {
-            return;
-        }
+        if (mIs24hFormat == is24Hour) return;
         // the ordering of these statements is important
         int currentHour = getHour();
         int currentMinute = getMinute();

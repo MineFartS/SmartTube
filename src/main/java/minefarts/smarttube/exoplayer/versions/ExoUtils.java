@@ -45,9 +45,7 @@ public class ExoUtils {
     }
 
     public static void updateVideoDecoderInfo(MediaCodecInfo codecInfo) {
-        if (codecInfo == null) {
-            return;
-        }
+        if (codecInfo == null) return;
 
         sVideoDecoderName = codecInfo.name;
     }

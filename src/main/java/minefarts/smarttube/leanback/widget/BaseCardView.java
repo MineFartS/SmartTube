@@ -728,9 +728,7 @@ public class BaseCardView extends FrameLayout {
         }
 
         float targetFraction = shown ? 1.0f : 0f;
-        if (mInfoVisFraction == targetFraction) {
-            return;
-        }
+        if (mInfoVisFraction == targetFraction) return;
         mAnim = new InfoHeightAnimation(mInfoVisFraction, targetFraction);
         mAnim.setDuration(mSelectedAnimDuration);
         mAnim.setInterpolator(new AccelerateDecelerateInterpolator());
@@ -769,9 +767,7 @@ public class BaseCardView extends FrameLayout {
             }
         }
         float targetAlpha = shown ? 1.0f : 0.0f;
-        if (targetAlpha == mInfoAlpha) {
-            return;
-        }
+        if (targetAlpha == mInfoAlpha) return;
 
         mAnim = new InfoAlphaAnimation(mInfoAlpha, shown ? 1.0f : 0.0f);
         mAnim.setDuration(mActivatedAnimDuration);

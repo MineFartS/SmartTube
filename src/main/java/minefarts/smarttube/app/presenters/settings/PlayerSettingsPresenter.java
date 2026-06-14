@@ -26,32 +26,28 @@ import java.util.List;
 
 public class PlayerSettingsPresenter extends BasePresenter<Void> {
     
-    private final PlaybackFragment2 mPlayerData;
-
-    private final PlayerTweaksData mPlayerTweaksData;
-
-    private final SearchData mSearchData;
-
-    private final GeneralData mGeneralData;
-
-    private final SidebarService mSidebarService;
-
-    private final MediaServiceData mMediaServiceData;
+    PlaybackFragment2 mPlayerData;
+    PlayerTweaksData mPlayerTweaksData;
+    SearchData mSearchData;
+    GeneralData mGeneralData;
+    SidebarService mSidebarService;
+    MediaServiceData mMediaServiceData;
     
     private boolean mRestartApp;;
 
-    private PlayerSettingsPresenter(Context context) {
-        super(context);
-        mPlayerData = PlaybackFragment2.instance(context);
-        mPlayerTweaksData = PlayerTweaksData.instance(context);
-        mSearchData = SearchData.instance(context);
-        mGeneralData = GeneralData.instance(context);
-        mSidebarService = SidebarService.instance(context);
-        mMediaServiceData = MediaServiceData.instance();
-    }
-
     public static PlayerSettingsPresenter instance(Context context) {
-        return new PlayerSettingsPresenter(context);
+        PlayerSettingsPresenter pres = new PlayerSettingsPresenter();
+
+        pres.mPlayerData = PlaybackFragment2.instance(context);
+        pres.mPlayerTweaksData = PlayerTweaksData.instance(context);
+        pres.mSearchData = SearchData.instance(context);
+        pres.mGeneralData = GeneralData.instance(context);
+        pres.mSidebarService = SidebarService.instance(context);
+        pres.mMediaServiceData = MediaServiceData.instance();
+
+        pres.setContext(context);
+
+        return pres;
     }
 
     public void show() {

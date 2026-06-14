@@ -55,9 +55,7 @@ public class ErrorDialogFragment extends ErrorSupportFragment implements BrowseS
     }
 
     private void setDialogContent() {
-        if (mDialogData == null || getActivity() == null) {
-            return;
-        }
+        if (mDialogData == null || getActivity() == null) return;
 
         if (mDialogData instanceof CategoryEmptyError || mDialogData instanceof SignInError) {
             setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.lb_ic_sad_cloud));

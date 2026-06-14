@@ -109,9 +109,7 @@ public class GuidedActionAdapterGroup {
     public void openIme(GuidedActionAdapter adapter, GuidedActionsStylist.ViewHolder avh) {
         adapter.getGuidedActionsStylist().setEditingMode(avh, true);
         View v = avh.getEditingView();
-        if (v == null || !avh.isInEditingText()) {
-            return;
-        }
+        if (v == null || !avh.isInEditingText()) return;
         InputMethodManager mgr = (InputMethodManager)
                 v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         // Make the TextView focusable during editing, avoid the TextView gets accessibility focus

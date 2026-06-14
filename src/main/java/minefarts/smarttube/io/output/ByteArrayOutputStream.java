@@ -43,9 +43,7 @@ public class ByteArrayOutputStream extends AbstractByteArrayOutputStream {
                 || ((off + len) > b.length)
                 || ((off + len) < 0)) {
             throw new IndexOutOfBoundsException();
-        } else if (len == 0) {
-            return;
-        }
+        } else if (len == 0) return;
         synchronized (this) {
             writeImpl(b, off, len);
         }

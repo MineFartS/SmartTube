@@ -169,9 +169,7 @@ public class ViewUtil {
     }
 
     public static void enableTransparentDialog(Context context, View rootView) {
-        if (context == null || rootView == null || VERSION.SDK_INT <= 19) {
-            return;
-        }
+        if (context == null || rootView == null || VERSION.SDK_INT <= 19) return;
 
         // Usually null. Present only on parent fragment.
         View mainContainer = rootView.findViewById(R.id.settings_preference_fragment_container);
@@ -203,9 +201,7 @@ public class ViewUtil {
     }
 
     public static void enableLeftDialog(Context context, View rootView) {
-        if (context == null || rootView == null || VERSION.SDK_INT <= 19) {
-            return;
-        }
+        if (context == null || rootView == null || VERSION.SDK_INT <= 19) return;
 
         // Usually null. Present only on parent fragment.
         View mainContainer = rootView.findViewById(R.id.settings_preference_fragment_container);
@@ -223,9 +219,7 @@ public class ViewUtil {
     }
 
     public static void setGravity(FrameLayout frameLayout, int gravity) {
-        if (frameLayout == null) {
-            return;
-        }
+        if (frameLayout == null) return;
 
         ViewGroup.LayoutParams lp = frameLayout.getLayoutParams();
         if (lp instanceof FrameLayout.LayoutParams) {

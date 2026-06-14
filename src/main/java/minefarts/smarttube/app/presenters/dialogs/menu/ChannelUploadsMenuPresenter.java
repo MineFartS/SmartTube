@@ -22,19 +22,20 @@ import java.util.List;
 
 public class ChannelUploadsMenuPresenter extends BaseMenuPresenter {
     
-    private final MediaItemService mItemManager;
-    private final AppDialogPresenter mDialogPresenter;
+    MediaItemService mItemManager;
+    AppDialogPresenter mDialogPresenter;
+    
     private Video mVideo;
     private VideoMenuCallback mCallback;
 
-    private ChannelUploadsMenuPresenter(Context context) {
-        super(context);
-        mItemManager = ServiceManager.getMediaItemService();
-        mDialogPresenter = AppDialogPresenter.instance(context);
-    }
-
     public static ChannelUploadsMenuPresenter instance(Context context) {
-        return new ChannelUploadsMenuPresenter(context);
+        ChannelUploadsMenuPresenter pres = new ChannelUploadsMenuPresenter();
+
+        pres.mItemManager = ServiceManager.getMediaItemService();
+        pres.mDialogPresenter = AppDialogPresenter.instance(context);
+        pres.setContext(context);
+
+        return pres;
     }
 
     @Override
@@ -71,9 +72,7 @@ public class ChannelUploadsMenuPresenter extends BaseMenuPresenter {
     }
 
     private void appendOpenChannelButton() {
-        if (!ChannelPresenter.canOpenChannel(mVideo)) {
-            return;
-        }
+        if (!ChannelPresenter.canOpenChannel(mVideo)) return;
 
         mDialogPresenter.appendSingleButton(
                 UiOptionItem.from(getContext().getString(R.string.open_channel), optionItem -> ChannelPresenter.instance(getContext()).openChannel(mVideo)));
@@ -89,15 +88,11 @@ public class ChannelUploadsMenuPresenter extends BaseMenuPresenter {
     }
 
     private void appendMarkAsWatched() {
-        if (mVideo == null || !mVideo.hasNewContent) {
-            return;
-        }
+        if (mVideo == null || !mVideo.hasNewContent) return;
 
         boolean contentAlreadyLoaded = mVideo.groupPosition == 0;
 
-        if (contentAlreadyLoaded) {
-            return;
-        }
+        if (contentAlreadyLoaded) return;
 
         mDialogPresenter.appendSingleButton(
                 UiOptionItem.from(getContext().getString(R.string.mark_as_watched), optionItem -> {

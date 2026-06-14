@@ -612,18 +612,14 @@ public final class SsMediaSource extends BaseMediaSource
     }
 
     private void scheduleManifestRefresh() {
-        if (!manifest.isLive) {
-            return;
-        }
+        if (!manifest.isLive) return;
         long nextLoadTimestamp = manifestLoadStartTimestamp + MINIMUM_MANIFEST_REFRESH_PERIOD_MS;
         long delayUntilNextLoad = Math.max(0, nextLoadTimestamp - SystemClock.elapsedRealtime());
         manifestRefreshHandler.postDelayed(this::startLoadingManifest, delayUntilNextLoad);
     }
 
     private void startLoadingManifest() {
-        if (manifestLoader.hasFatalError()) {
-            return;
-        }
+        if (manifestLoader.hasFatalError()) return;
         ParsingLoadable<SsManifest> loadable = new ParsingLoadable<>(manifestDataSource,
                 manifestUri, C.DATA_TYPE_MANIFEST, manifestParser);
         long elapsedRealtimeMs = manifestLoader.startLoading(loadable, this,

@@ -45,9 +45,7 @@ public class LiveDashManifestParser extends DashManifestParser {
     }
 
     private void appendManifest(DashManifest newManifest) {
-        if (newManifest == null) {
-            return;
-        }
+        if (newManifest == null) return;
 
         // Optimize ram usage on short streams (< 2 hours)
         if (getFirstSegmentNum(newManifest) == 0) { // Short stream. No need to do something special.
@@ -114,9 +112,7 @@ public class LiveDashManifestParser extends DashManifestParser {
     }
 
     private static void appendRepresentation(Representation oldRepresentation, Representation newRepresentation, long segmentNumShift) {
-        if (segmentNumShift <= 0) {
-            return;
-        }
+        if (segmentNumShift <= 0) return;
 
         MultiSegmentRepresentation oldMultiRepresentation = (MultiSegmentRepresentation) oldRepresentation;
         MultiSegmentRepresentation newMultiRepresentation = (MultiSegmentRepresentation) newRepresentation;
@@ -181,9 +177,7 @@ public class LiveDashManifestParser extends DashManifestParser {
         long limitDiff = secondSegmentLimit - firstSegmentLimit;
 
         // Skip variable segment limit (huge limit diff values)
-        if (firstSegmentNum <= 0 || limitDiff > 100) {
-            return;
-        }
+        if (firstSegmentNum <= 0 || limitDiff > 100) return;
 
         long presentationTimeOffsetUs = oldRepresentation.presentationTimeOffsetUs;
         Helpers.setField(oldRepresentation, "presentationTimeOffsetUs", presentationTimeOffsetUs - (segmentCount * minUpdatePeriodMs * 1_000));

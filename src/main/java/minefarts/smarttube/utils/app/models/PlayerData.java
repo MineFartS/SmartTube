@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.google.common.converters.FieldNullable;
 import minefarts.smarttube.google.common.converters.regexp.RegExp;
+import minefarts.smarttube.utils.app.playerdata.PlayerDataExtractor;
 
 import java.util.regex.Pattern;
 
@@ -67,11 +68,7 @@ public class PlayerData {
     // Begin SignatureTimestamp
 
     @RegExp("signatureTimestamp:(\\d+)")
-    private String mSignatureTimestamp;
-
-    public String getSignatureTimestamp() {
-        return mSignatureTimestamp;
-    }
+    String mSignatureTimestamp;
 
     // End SignatureTimestamp
 
@@ -96,13 +93,12 @@ public class PlayerData {
     }
 
     public static PlayerData from(String playerUrl, PlayerData playerData) {
-        
         if (playerData == null) return null;
 
         return new PlayerData(
             playerUrl,
             playerData.getDecipherFunction(),
-            playerData.getSignatureTimestamp()
+            playerData.mSignatureTimestamp
         );
 
     }

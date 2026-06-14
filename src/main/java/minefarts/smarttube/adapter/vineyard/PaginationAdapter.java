@@ -95,9 +95,7 @@ public abstract class PaginationAdapter extends ArrayObjectAdapter {
     }
 
     public void addPosts(List<?> posts) {
-        if (posts == null) {
-            return;
-        }
+        if (posts == null) return;
 
         if (posts.size() > 0) {
             addAll(size(), posts);

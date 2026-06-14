@@ -1,8 +1,8 @@
 
-$ANDROID_SDK = "$PSScriptRoot\sdk"
+$ANDROID_SDK = "$PSScriptRoot\lib\sdk"
 $ADB = "$ANDROID_SDK\platform-tools\adb.exe"
 
-$JAVA_HOME = "$PSScriptRoot\jdk"
+$JAVA_HOME = "$PSScriptRoot\lib\jdk17"
 
 $APP_ID = "minefarts.smarttube"
 
@@ -60,7 +60,7 @@ function Invoke-Python {
         $cmdargs
     )
 
-    & "$PSScriptRoot\py\python.exe" @cmdargs
+    & "$PSScriptRoot\lib\py314\python.exe" @cmdargs
 
 }
 

@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.lang.IndexOutOfBoundsException;
 
-final class ExoPlayerImpl extends BasePlayer implements ExoPlayer {
+public final class ExoPlayerImpl extends BasePlayer implements ExoPlayer {
 
   private static final String TAG = "ExoPlayerImpl";
 

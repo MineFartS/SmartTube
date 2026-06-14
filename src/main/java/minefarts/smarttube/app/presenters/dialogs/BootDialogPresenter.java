@@ -2,23 +2,20 @@ package minefarts.smarttube.app.presenters.dialogs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 
 /**
  * Shows boot dialogs one by one.
  */
 public class BootDialogPresenter extends BasePresenter<Void> {
+
     @SuppressLint("StaticFieldLeak")
     private static BootDialogPresenter sInstance;
 
-    public BootDialogPresenter(Context context) {
-        super(context);
-    }
-
     public static BootDialogPresenter instance(Context context) {
-        if (sInstance == null) {
-            sInstance = new BootDialogPresenter(context);
-        }
+        if (sInstance == null)
+            sInstance = new BootDialogPresenter();
 
         sInstance.setContext(context);
 

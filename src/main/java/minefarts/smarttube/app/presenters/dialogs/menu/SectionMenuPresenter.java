@@ -29,7 +29,8 @@ import java.util.Map;
 
 public class SectionMenuPresenter extends BaseMenuPresenter {
 
-    private final AppDialogPresenter mDialogPresenter;
+    AppDialogPresenter mDialogPresenter;
+    
     private Video mVideo;
     private BrowseSection mSection;
     private boolean mIsMarkAllChannelsWatchedEnabled;
@@ -38,15 +39,14 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
     private boolean mIsRenameSectionEnabled;
     private final Map<Long, MenuAction> mMenuMapping = new HashMap<>();
 
-    private SectionMenuPresenter(Context context) {
-        super(context);
-        mDialogPresenter = AppDialogPresenter.instance(context);
-
-        initMenuMapping();
-    }
-
     public static SectionMenuPresenter instance(Context context) {
-        return new SectionMenuPresenter(context);
+        SectionMenuPresenter pres = new SectionMenuPresenter();
+
+        pres.mDialogPresenter = AppDialogPresenter.instance(context);
+        pres.initMenuMapping();
+        pres.setContext(context);
+
+        return pres;
     }
 
     @Override
@@ -70,9 +70,7 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
     }
 
     public void showMenu(BrowseSection section) {
-        if (section == null) {
-            return;
-        }
+        if (section == null) return;
 
         disposeActions();
 
@@ -92,9 +90,7 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
 
     private void prepareAndShowDialogSigned() {
 
-        if (getContext() == null) {
-            return;
-        }
+        if (getContext() == null) return;
 
         appendRefreshButton();
         appendUnpinVideoFromSidebarButton();
@@ -121,9 +117,7 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
 
     private void prepareAndShowDialogUnsigned() {
 
-        if (getContext() == null) {
-            return;
-        }
+        if (getContext() == null) return;
 
         appendRefreshButton();
         appendUnpinVideoFromSidebarButton();
@@ -147,13 +141,9 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
     }
 
     private void appendRefreshButton() {
-        if (!mIsRefreshEnabled) {
-            return;
-        }
+        if (!mIsRefreshEnabled) return;
 
-        if (mSection == null || mSection.getId() == MediaGroup.TYPE_SETTINGS) {
-            return;
-        }
+        if (mSection == null || mSection.getId() == MediaGroup.TYPE_SETTINGS) return;
 
         mDialogPresenter.appendSingleButton(
                 UiOptionItem.from(getContext().getString(R.string.refresh_section), optionItem -> {
@@ -166,13 +156,9 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
     }
 
     private void appendMoveSectionButton() {
-        if (!mIsMoveSectionEnabled) {
-            return;
-        }
+        if (!mIsMoveSectionEnabled) return;
 
-        if (mSection == null) {
-            return;
-        }
+        if (mSection == null) return;
 
         mDialogPresenter.appendSingleButton(
                 UiOptionItem.from(getContext().getString(R.string.move_section_up), optionItem -> {
@@ -188,14 +174,10 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
     }
 
     private void appendRenameSectionButton() {
-        if (!mIsRenameSectionEnabled) {
-            return;
-        }
+        if (!mIsRenameSectionEnabled) return;
 
         if (mSection == null || mSection.isDefault() || getVideo() == null ||
-                (!getVideo().hasPlaylist() && !getVideo().hasReloadPageKey() && !getVideo().hasChannel())) {
-            return;
-        }
+                (!getVideo().hasPlaylist() && !getVideo().hasReloadPageKey() && !getVideo().hasChannel())) return;
 
         mDialogPresenter.appendSingleButton(
                 UiOptionItem.from(getContext().getString(R.string.rename_section), optionItem -> {
@@ -250,7 +232,7 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
     
     }
 
-    private void initMenuMapping() {
+    void initMenuMapping() {
         mMenuMapping.clear();
 
         for (ContextMenuProvider provider : new ContextMenuManager(getContext()).getProviders()) {

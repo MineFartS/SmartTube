@@ -297,9 +297,7 @@ public final class DefaultBandwidthMeter implements BandwidthMeter, TransferList
     @Override
     public synchronized void onTransferStart(DataSource source, DataSpec dataSpec,
             boolean isNetwork) {
-        if (!isNetwork) {
-            return;
-        }
+        if (!isNetwork) return;
         if (streamCount == 0) {
             sampleStartTimeMs = clock.elapsedRealtime();
         }
@@ -309,18 +307,14 @@ public final class DefaultBandwidthMeter implements BandwidthMeter, TransferList
     @Override
     public synchronized void onBytesTransferred(DataSource source, DataSpec dataSpec,
             boolean isNetwork, int bytes) {
-        if (!isNetwork) {
-            return;
-        }
+        if (!isNetwork) return;
         sampleBytesTransferred += bytes;
     }
 
     @Override
     public synchronized void onTransferEnd(DataSource source, DataSpec dataSpec,
             boolean isNetwork) {
-        if (!isNetwork) {
-            return;
-        }
+        if (!isNetwork) return;
         Assertions.checkState(streamCount > 0);
         long nowMs = clock.elapsedRealtime();
         int sampleElapsedTimeMs = (int) (nowMs - sampleStartTimeMs);
@@ -344,9 +338,7 @@ public final class DefaultBandwidthMeter implements BandwidthMeter, TransferList
     private synchronized void onConnectivityAction() {
         int networkType = networkTypeOverrideSet ? networkTypeOverride
                 : (context == null ? C.NETWORK_TYPE_UNKNOWN : Utils.getNetworkType(context));
-        if (this.networkType == networkType) {
-            return;
-        }
+        if (this.networkType == networkType) return;
 
         this.networkType = networkType;
         if (networkType == C.NETWORK_TYPE_OFFLINE || networkType == C.NETWORK_TYPE_UNKNOWN
@@ -372,9 +364,7 @@ public final class DefaultBandwidthMeter implements BandwidthMeter, TransferList
     private void maybeNotifyBandwidthSample(int elapsedMs, long bytesTransferred,
             long bitrateEstimate) {
         if (elapsedMs == 0 && bytesTransferred == 0
-                && bitrateEstimate == lastReportedBitrateEstimate) {
-            return;
-        }
+                && bitrateEstimate == lastReportedBitrateEstimate) return;
         lastReportedBitrateEstimate = bitrateEstimate;
         eventDispatcher.dispatch(listener -> listener.onBandwidthSample(elapsedMs, bytesTransferred,
                 bitrateEstimate));

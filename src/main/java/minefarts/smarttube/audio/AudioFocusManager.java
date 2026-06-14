@@ -226,9 +226,7 @@ public final class AudioFocusManager {
     }
 
     private void abandonAudioFocus(boolean forceAbandon) {
-        if (focusGain == C.AUDIOFOCUS_NONE && audioFocusState == AUDIO_FOCUS_STATE_NO_FOCUS) {
-            return;
-        }
+        if (focusGain == C.AUDIOFOCUS_NONE && audioFocusState == AUDIO_FOCUS_STATE_NO_FOCUS) return;
 
         if (focusGain != C.AUDIOFOCUS_GAIN || audioFocusState == AUDIO_FOCUS_STATE_LOST_FOCUS
                 || forceAbandon) {

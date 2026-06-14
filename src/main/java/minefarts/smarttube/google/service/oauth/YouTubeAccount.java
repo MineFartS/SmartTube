@@ -157,9 +157,7 @@ public class YouTubeAccount implements Account {
     }
 
     public void merge(Account account) {
-        if (!equals(account)) {
-            return;
-        }
+        if (!equals(account)) return;
 
         YouTubeAccount originAccount = (YouTubeAccount) account;
 

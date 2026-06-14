@@ -26,9 +26,7 @@ public class UpdateChannelsReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "Synchronizing database");
 
-        if (VERSION.SDK_INT < 21) {
-            return;
-        }
+        if (VERSION.SDK_INT < 21) return;
 
         if (Helpers.isATVChannelsSupported(context) || Helpers.isATVRecommendationsSupported(context)) {
             UpdateChannelsWorker.schedule(context);

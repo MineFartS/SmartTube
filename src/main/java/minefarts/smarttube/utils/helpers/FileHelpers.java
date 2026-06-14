@@ -220,15 +220,11 @@ public class FileHelpers {
     }
 
     public static void deleteByPrefix(File directory, String prefix) {
-        if (directory == null) {
-            return;
-        }
+        if (directory == null) return;
 
         File[] files = directory.listFiles();
 
-        if (files == null) {
-            return;
-        }
+        if (files == null) return;
 
         for (File file : files) {
             if (file != null && file.isDirectory()) {
@@ -305,9 +301,7 @@ public class FileHelpers {
     }
 
     public static void streamToFile(InputStream is, File destination) {
-        if (is == null || destination == null) {
-            return;
-        }
+        if (is == null || destination == null) return;
 
         FileOutputStream fos = null;
 
@@ -547,9 +541,7 @@ public class FileHelpers {
     }
 
     public static void ensureFileExists(File file) {
-        if (file == null) {
-            return;
-        }
+        if (file == null) return;
 
         try {
             if (!file.exists()) {

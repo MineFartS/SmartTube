@@ -257,9 +257,7 @@ public class SignInService {
     }
 
     public void selectAccount(Account newAccount) {
-        if (Helpers.equals(newAccount, getSelectedAccount())) {
-            return;
-        }
+        if (Helpers.equals(newAccount, getSelectedAccount())) return;
 
         for (Account account : mAccounts) {
             ((YouTubeAccount) account).setSelected(newAccount != null && newAccount.equals(account));
@@ -343,9 +341,7 @@ public class SignInService {
      * Mark first one as selected.
      */
     private void fixSelectedAccount() {
-        if (mAccounts.isEmpty()) {
-            return;
-        }
+        if (mAccounts.isEmpty()) return;
 
         if (getSelectedAccount() == null) {
             selectAccount(mAccounts.get(0));
@@ -420,9 +416,7 @@ public class SignInService {
     }
 
     public void waitUserCodeConfirmation() {
-        if (mUserCodeResult == null) {
-            return;
-        }
+        if (mUserCodeResult == null) return;
 
         try {
             AccessToken token = getAccessTokenWait(mUserCodeResult.getDeviceCode());

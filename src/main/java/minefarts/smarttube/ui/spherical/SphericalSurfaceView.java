@@ -115,9 +115,7 @@ public final class SphericalSurfaceView extends GLSurfaceView {
 
     /** Sets the {@link Player.VideoComponent} to use. */
     public void setVideoComponent(@Nullable Player.VideoComponent newVideoComponent) {
-        if (newVideoComponent == videoComponent) {
-            return;
-        }
+        if (newVideoComponent == videoComponent) return;
         if (videoComponent != null) {
             if (surface != null) {
                 videoComponent.clearVideoSurface(surface);

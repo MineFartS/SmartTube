@@ -152,9 +152,7 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
      * @param scroll  {@code true} if need to scroll list to bottom when message added.
      */
     public void addToStart(MESSAGE message, boolean scroll) {
-        if (!IMessage.checkMessage(message)) {
-            return;
-        }
+        if (!IMessage.checkMessage(message)) return;
 
         removeLoadingMessageIfNeeded();
 
@@ -424,9 +422,7 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
     public void setLoadingMessage(String message) {
         removeLoadingMessageIfNeeded();
 
-        if (message == null || !items.isEmpty()) {
-            return;
-        }
+        if (message == null || !items.isEmpty()) return;
 
         items.add(new Wrapper<>(message));
         notifyItemInserted(0);

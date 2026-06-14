@@ -318,21 +318,15 @@ public class VideoGroup {
     }
 
     public void removeAllBefore(Video video) {
-        if (mVideos == null) {
-            return;
-        }
+        if (mVideos == null) return;
 
         removeAllBefore(mVideos.indexOf(video));
     }
 
     public void removeAllBefore(int index) {
-        if (mVideos == null) {
-            return;
-        }
+        if (mVideos == null) return;
 
-        if (index <= 0 || index >= mVideos.size()) {
-            return;
-        }
+        if (index <= 0 || index >= mVideos.size()) return;
 
         mVideos = mVideos.subList(index, mVideos.size());
     }
@@ -341,9 +335,7 @@ public class VideoGroup {
      * Remove playlist id from all videos
      */
     public void stripPlaylistInfo() {
-        if (mVideos == null) {
-            return;
-        }
+        if (mVideos == null) return;
 
         for (Video video : mVideos) {
             video.playlistId = null;
@@ -369,9 +361,7 @@ public class VideoGroup {
     }
 
     public void clear() {
-        if (mVideos == null) {
-            return;
-        }
+        if (mVideos == null) return;
 
         mVideos.clear();
     }
@@ -409,9 +399,7 @@ public class VideoGroup {
     }
 
     public void remove(Video video) {
-        if (mVideos == null) {
-            return;
-        }
+        if (mVideos == null) return;
 
         try {
             // ConcurrentModificationException fix?
@@ -436,18 +424,14 @@ public class VideoGroup {
         // Dirty hack for avoiding group duplication.
         // Duplicated items suddenly appeared in Home, Subscriptions and History.
         // See: VideoGroupObjectAdapter.mVideoItems
-        if (mVideos != null && mVideos.contains(video)) {
-            return;
-        }
+        if (mVideos != null && mVideos.contains(video)) return;
 
         int size = getSize();
         add(size != -1 ? size : 0, video);
     }
 
     public void add(int idx, Video video) {
-        if (video == null || video.isEmpty()) {
-            return;
-        }
+        if (video == null || video.isEmpty()) return;
 
         if (mVideos == null) {
             mVideos = new ArrayList<>();

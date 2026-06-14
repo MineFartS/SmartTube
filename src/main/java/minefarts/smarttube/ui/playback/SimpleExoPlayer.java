@@ -1,4 +1,4 @@
-package minefarts.smarttube;
+package minefarts.smarttube.ui.playback;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -8,11 +8,13 @@ import android.media.MediaCodec;
 import android.media.PlaybackParams;
 import android.os.Handler;
 import android.os.Looper;
-import androidx.annotation.Nullable;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.TextureView;
+
+import androidx.annotation.Nullable;
+
 import minefarts.smarttube.audio.AudioAttributes;
 import minefarts.smarttube.audio.AudioFocusManager;
 import minefarts.smarttube.audio.AudioListener;
@@ -39,23 +41,31 @@ import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.video.VideoFrameMetadataListener;
 import minefarts.smarttube.video.VideoRendererEventListener;
 import minefarts.smarttube.video.spherical.CameraMotionListener;
+import minefarts.smarttube.video.VideoListener;
+import minefarts.smarttube.ExoPlayerImpl;
+import minefarts.smarttube.BasePlayer;
+import minefarts.smarttube.ExoPlayer;
+import minefarts.smarttube.Player;
+import minefarts.smarttube.Renderer;
+import minefarts.smarttube.Format;
+import minefarts.smarttube.RenderersFactory;
+import minefarts.smarttube.LoadControl;
+import minefarts.smarttube.ExoPlaybackException;
+import minefarts.smarttube.PlaybackParameters;
+import minefarts.smarttube.SeekParameters;
+import minefarts.smarttube.PlayerMessage;
+import minefarts.smarttube.Timeline;
+import minefarts.smarttube.C;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-/**
- * An {@link ExoPlayer} implementation that uses default {@link Renderer} components. Instances can
- * be obtained from {@link ExoPlayerFactory}.
- */
-@SuppressWarnings("deprecation")
-public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.AudioComponent,
-        Player.VideoComponent, Player.TextComponent, Player.MetadataComponent {
-
-    /** @deprecated Use {@link minefarts.smarttube.video.VideoListener}. */
-    @Deprecated
-    public interface VideoListener extends minefarts.smarttube.video.VideoListener {
-    }
+public class SimpleExoPlayer 
+    extends BasePlayer 
+    implements ExoPlayer, Player.AudioComponent, Player.VideoComponent, Player.TextComponent, Player.MetadataComponent 
+{
 
     private static final String TAG = "SimpleExoPlayer";
 
@@ -64,7 +74,7 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
     private final ExoPlayerImpl player;
     private final Handler eventHandler;
     private final ComponentListener componentListener;
-    private final CopyOnWriteArraySet<minefarts.smarttube.video.VideoListener> videoListeners;
+    private final CopyOnWriteArraySet<VideoListener> videoListeners;
     private final CopyOnWriteArraySet<AudioListener> audioListeners;
     private final CopyOnWriteArraySet<TextOutput> textOutputs;
     private final CopyOnWriteArraySet<MetadataOutput> metadataOutputs;
@@ -370,9 +380,7 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
     public void setVolume(float audioVolume) {
         verifyApplicationThread();
         audioVolume = Utils.constrainValue(audioVolume, /* min= */ 0, /* max= */ 1);
-        if (this.audioVolume == audioVolume) {
-            return;
-        }
+        if (this.audioVolume == audioVolume) return;
         this.audioVolume = audioVolume;
         sendVolumeToRenderers();
         for (AudioListener audioListener : audioListeners) {
@@ -429,9 +437,7 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
      */
     public void setPriorityTaskManager(@Nullable PriorityTaskManager priorityTaskManager) {
         verifyApplicationThread();
-        if (Utils.areEqual(this.priorityTaskManager, priorityTaskManager)) {
-            return;
-        }
+        if (Utils.areEqual(this.priorityTaskManager, priorityTaskManager)) return;
         if (isPriorityTaskManagerRegistered) {
             Assertions.checkNotNull(this.priorityTaskManager).remove(C.PRIORITY_PLAYBACK);
         }
@@ -488,12 +494,12 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
     }
 
     @Override
-    public void addVideoListener(minefarts.smarttube.video.VideoListener listener) {
+    public void addVideoListener(VideoListener listener) {
         videoListeners.add(listener);
     }
 
     @Override
-    public void removeVideoListener(minefarts.smarttube.video.VideoListener listener) {
+    public void removeVideoListener(VideoListener listener) {
         videoListeners.remove(listener);
     }
 
@@ -512,9 +518,7 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
     @Override
     public void clearVideoFrameMetadataListener(VideoFrameMetadataListener listener) {
         verifyApplicationThread();
-        if (videoFrameMetadataListener != listener) {
-            return;
-        }
+        if (videoFrameMetadataListener != listener) return;
         for (Renderer renderer : renderers) {
             if (renderer.getTrackType() == C.TRACK_TYPE_VIDEO) {
                 player.createMessage(renderer).setType(C.MSG_SET_VIDEO_FRAME_METADATA_LISTENER)
@@ -538,9 +542,7 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
     @Override
     public void clearCameraMotionListener(CameraMotionListener listener) {
         verifyApplicationThread();
-        if (cameraMotionListener != listener) {
-            return;
-        }
+        if (cameraMotionListener != listener) return;
         for (Renderer renderer : renderers) {
             if (renderer.getTrackType() == C.TRACK_TYPE_CAMERA_MOTION) {
                 player.createMessage(renderer).setType(C.MSG_SET_CAMERA_MOTION_LISTENER)
@@ -553,7 +555,7 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
      * Sets a listener to receive video events, removing all existing listeners.
      *
      * @param listener The listener.
-     * @deprecated Use {@link #addVideoListener(minefarts.smarttube.video.VideoListener)}.
+     * @deprecated Use {@link #addVideoListener(VideoListener)}.
      */
     @Deprecated
     @SuppressWarnings("deprecation")
@@ -566,11 +568,11 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
 
     /**
      * Equivalent to
-     * {@link #removeVideoListener(minefarts.smarttube.video.VideoListener)}.
+     * {@link #removeVideoListener(VideoListener)}.
      *
      * @param listener The listener to clear.
      * @deprecated Use
-     *             {@link #removeVideoListener(minefarts.smarttube.video.VideoListener)}.
+     *             {@link #removeVideoListener(VideoListener)}.
      */
     @Deprecated
     @SuppressWarnings("deprecation")
@@ -987,7 +989,7 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
         if (width != surfaceWidth || height != surfaceHeight) {
             surfaceWidth = width;
             surfaceHeight = height;
-            for (minefarts.smarttube.video.VideoListener videoListener : videoListeners) {
+            for (VideoListener videoListener : videoListeners) {
                 videoListener.onSurfaceSizeChanged(width, height);
             }
         }
@@ -1067,7 +1069,7 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
         @Override
         public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees,
                 float pixelWidthHeightRatio) {
-            for (minefarts.smarttube.video.VideoListener videoListener : videoListeners) {
+            for (VideoListener videoListener : videoListeners) {
                 // Prevent duplicate notification if a listener is both a VideoRendererEventListener
                 // and
                 // a VideoListener, as they have the same method signature.
@@ -1085,7 +1087,7 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
         @Override
         public void onRenderedFirstFrame(Surface surface) {
             if (SimpleExoPlayer.this.surface == surface) {
-                for (minefarts.smarttube.video.VideoListener videoListener : videoListeners) {
+                for (VideoListener videoListener : videoListeners) {
                     videoListener.onRenderedFirstFrame();
                 }
             }

@@ -12,7 +12,7 @@ Clear-Host
 
 $Level = if ($Verbose) {"V"} else {"W"}
 
-Invoke-Python pidcat/pidcat.py `
+Invoke-Python lib/pidcat/pidcat.py `
     $APP_ID `
     --min-level $Level `
     --sdk $ANDROID_SDK `

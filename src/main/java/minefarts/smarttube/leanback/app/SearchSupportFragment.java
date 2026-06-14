@@ -597,9 +597,7 @@ public class SearchSupportFragment extends Fragment {
     public void setSearchQuery(String query, boolean submit) {
         if (DEBUG)
             Log.v(TAG, "setSearchQuery " + query + " submit " + submit);
-        if (query == null) {
-            return;
-        }
+        if (query == null) return;
         mExternalQuery = new ExternalQuery(query, submit);
         applyExternalQuery();
         if (mAutoStartRecognition) {
@@ -680,9 +678,7 @@ public class SearchSupportFragment extends Fragment {
     }
 
     void updateSearchBarNextFocusId() {
-        if (mSearchBar == null || mResultAdapter == null) {
-            return;
-        }
+        if (mSearchBar == null || mResultAdapter == null) return;
         final int viewId = (mResultAdapter.size() == 0 || mRowsSupportFragment == null
                 || mRowsSupportFragment.getVerticalGridView() == null) ? 0
                         : mRowsSupportFragment.getVerticalGridView().getId();
@@ -700,9 +696,7 @@ public class SearchSupportFragment extends Fragment {
 
     private void focusOnResults() {
         if (mRowsSupportFragment == null || mRowsSupportFragment.getVerticalGridView() == null
-                || mResultAdapter.size() == 0) {
-            return;
-        }
+                || mResultAdapter.size() == 0) return;
         if (mRowsSupportFragment.getVerticalGridView().requestFocus()) {
             mStatus &= ~RESULTS_CHANGED;
         }
@@ -729,9 +723,7 @@ public class SearchSupportFragment extends Fragment {
     }
 
     private void applyExternalQuery() {
-        if (mExternalQuery == null || mSearchBar == null) {
-            return;
-        }
+        if (mExternalQuery == null || mSearchBar == null) return;
         mSearchBar.setSearchQuery(mExternalQuery.mQuery);
         if (mExternalQuery.mSubmit) {
             submitQuery(mExternalQuery.mQuery);
@@ -740,9 +732,7 @@ public class SearchSupportFragment extends Fragment {
     }
 
     private void readArguments(Bundle args) {
-        if (null == args) {
-            return;
-        }
+        if (null == args) return;
         if (args.containsKey(ARG_QUERY)) {
             setSearchQuery(args.getString(ARG_QUERY));
         }

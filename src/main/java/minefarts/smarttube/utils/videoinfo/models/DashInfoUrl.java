@@ -143,9 +143,7 @@ public class DashInfoUrl implements DashInfo {
     }
 
     private void calculateTimings() {
-        if (mStartTimeMs != -1 && mStartSegmentNum != -1) {
-            return;
-        }
+        if (mStartTimeMs != -1 && mStartSegmentNum != -1) return;
 
         mStartTimeMs = getPeriodStartTimeMs();
         mStartSegmentNum = getSequenceStartNumber();

@@ -29,16 +29,15 @@ import java.util.Map.Entry;
 
 public class AboutSettingsPresenter extends BasePresenter<Void> {
 
-    private final AppUpdateChecker mUpdateChecker;
-
-    public AboutSettingsPresenter(Context context) {
-        super(context);
-
-        mUpdateChecker = new AppUpdateChecker(getContext(), null);
-    }
+    AppUpdateChecker mUpdateChecker;
 
     public static AboutSettingsPresenter instance(Context context) {
-        return new AboutSettingsPresenter(context);
+        AboutSettingsPresenter pres = new AboutSettingsPresenter();
+
+        pres.setContext(context);
+        pres.mUpdateChecker = new AppUpdateChecker(context, null);
+
+        return pres;
     }
 
     public void show() {
@@ -92,9 +91,7 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
         
         List<String> changes = GeneralData.instance(getContext()).getChangelog();
 
-        if (changes == null || changes.isEmpty()) {
-            return;
-        }
+        if (changes == null || changes.isEmpty()) return;
 
         List<UiOptionItem> changelog = new ArrayList<>();
 

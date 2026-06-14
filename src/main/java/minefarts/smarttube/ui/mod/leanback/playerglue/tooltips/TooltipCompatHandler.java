@@ -72,9 +72,7 @@ public class TooltipCompatHandler implements View.OnLongClickListener, View.OnHo
         // action menu item views are recycled). Instead, the tooltip is
         // canceled/hidden. This might still be the wrong tooltip,
         // but hiding a wrong tooltip is less disruptive UX.
-        if (view == null) {
-            return;
-        }
+        if (view == null) return;
 
         if (sPendingHandler != null && sPendingHandler.mAnchor == view) {
             setPendingHandler(null);
@@ -175,9 +173,7 @@ public class TooltipCompatHandler implements View.OnLongClickListener, View.OnHo
     }
 
     void show(boolean fromTouch) {
-        if (!ViewCompat.isAttachedToWindow(mAnchor)) {
-            return;
-        }
+        if (!ViewCompat.isAttachedToWindow(mAnchor)) return;
         setPendingHandler(null);
         if (sActiveHandler != null) {
             sActiveHandler.hide();

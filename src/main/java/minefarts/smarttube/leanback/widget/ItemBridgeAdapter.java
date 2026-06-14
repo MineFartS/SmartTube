@@ -191,9 +191,7 @@ public class ItemBridgeAdapter extends RecyclerView.Adapter implements FacetProv
      * Sets the {@link ObjectAdapter}.
      */
     public void setAdapter(ObjectAdapter adapter) {
-        if (adapter == mAdapter) {
-            return;
-        }
+        if (adapter == mAdapter) return;
         if (mAdapter != null) {
             mAdapter.unregisterObserver(mDataObserver);
         }

@@ -8,18 +8,15 @@ import minefarts.smarttube.app.views.DetailsView;
 import minefarts.smarttube.app.views.ViewManager;
 
 public class DetailsPresenter extends BasePresenter<DetailsView> {
+
     @SuppressLint("StaticFieldLeak")
     private static DetailsPresenter sInstance;
+
     private Video mVideo;
 
-    private DetailsPresenter(Context context) {
-        super(context);
-    }
-
     public static DetailsPresenter instance(Context context) {
-        if (sInstance == null) {
-            sInstance = new DetailsPresenter(context);
-        }
+        if (sInstance == null)
+            sInstance = new DetailsPresenter();
 
         sInstance.setContext(context);
 

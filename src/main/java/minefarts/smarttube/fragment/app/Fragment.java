@@ -2819,9 +2819,7 @@ public class Fragment implements ComponentCallbacks, OnCreateContextMenuListener
 
     void setOnStartEnterTransitionListener(OnStartEnterTransitionListener listener) {
         ensureAnimationInfo();
-        if (listener == mAnimationInfo.mStartEnterTransitionListener) {
-            return;
-        }
+        if (listener == mAnimationInfo.mStartEnterTransitionListener) return;
         if (listener != null && mAnimationInfo.mStartEnterTransitionListener != null) {
             throw new IllegalStateException("Trying to set a replacement "
                     + "startPostponedEnterTransition on " + this);

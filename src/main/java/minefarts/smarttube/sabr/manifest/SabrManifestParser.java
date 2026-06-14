@@ -629,9 +629,7 @@ public class SabrManifestParser {
     private void append(MediaFormat mediaItem) {
 
         // NOTE: FORMAT_STREAM_TYPE_OTF not supported
-        if (!MediaFormatUtils.isDash(mediaItem)) {
-            return;
-        }
+        if (!MediaFormatUtils.isDash(mediaItem)) return;
 
         Set<MediaFormat> placeholder = null;
         String mimeType = MediaFormatUtils.extractMimeType(mediaItem);

@@ -104,9 +104,7 @@ public class ChannelUploadsFragment extends VideoGridFragment implements Channel
     private void removeTopPadding() {
         VerticalGridView browseGrid = getBrowseGrid();
 
-        if (browseGrid == null) {
-            return;
-        }
+        if (browseGrid == null) return;
 
         browseGrid.setPadding(browseGrid.getPaddingLeft(), browseGrid.getPaddingTop() / 3, browseGrid.getPaddingRight(), browseGrid.getPaddingBottom());
     }

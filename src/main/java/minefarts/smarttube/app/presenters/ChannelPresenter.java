@@ -28,6 +28,7 @@ import minefarts.smarttube.utils.common.helpers.AppClient;
 import minefarts.smarttube.google.common.helpers.RetrofitHelper;
 import minefarts.smarttube.utils.browse.BrowseApi2;
 import minefarts.smarttube.utils.common.models.impl.mediagroup.BrowseMediaGroup;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
 
 import retrofit2.Call;
 
@@ -59,10 +60,11 @@ public class ChannelPresenter extends BasePresenter<ChannelView> {
     @SuppressLint("StaticFieldLeak")
     private static ChannelPresenter sInstance;
     
-    private final BrowseProcessorManager mBrowseProcessor;
-    private final BrowseService2 mBrowseService;
-    private final BrowseApi2 mBrowseApi;
-    private final BrowseApiHelper mBrowseApiHelper;
+    BrowseProcessorManager mBrowseProcessor;
+    BrowseService2 mBrowseService;
+    BrowseApi2 mBrowseApi;
+    BrowseApiHelper mBrowseApiHelper;
+    VideoLoaderController mVideoLoaderController;
     
     private String mChannelId;
     private final List<List<MediaGroup>> mPendingGroups = new ArrayList<>();
@@ -79,23 +81,14 @@ public class ChannelPresenter extends BasePresenter<ChannelView> {
         void onUploadsRow(Observable<MediaGroup> row);
     }
 
-    public ChannelPresenter(Context context) {
-        
-        super(context);
-        
-        mBrowseProcessor = new BrowseProcessorManager(getContext(), this::syncItem);
-
-        mBrowseService = getContentService().getBrowseService2();
-
-        mBrowseApi = RetrofitHelper.create(BrowseApi2.class);
-
-        mBrowseApiHelper = BrowseApiHelper.INSTANCE;
-
-    }
-
     public static ChannelPresenter instance(Context context) {
         if (sInstance == null) {
-            sInstance = new ChannelPresenter(context);
+            sInstance = new ChannelPresenter();
+            sInstance.mBrowseProcessor = new BrowseProcessorManager(context, sInstance::syncItem);
+            sInstance.mBrowseService = sInstance.getContentService().getBrowseService2();
+            sInstance.mBrowseApi = RetrofitHelper.create(BrowseApi2.class);
+            sInstance.mBrowseApiHelper = BrowseApiHelper.INSTANCE;
+            sInstance.mVideoLoaderController = PlaybackPresenter.instance(context).getController(VideoLoaderController.class);
         }
 
         sInstance.setContext(context);
@@ -137,13 +130,8 @@ public class ChannelPresenter extends BasePresenter<ChannelView> {
     }
 
     @Override
-    public void onVideoItemSelected(Video item) {
-        // NOP
-    }
-
-    @Override
     public void onVideoItemClicked(Video item) {
-        VideoLoaderController.openVideo(item);
+        mVideoLoaderController.openVideo(item);
     }
 
     @Override
@@ -189,9 +177,7 @@ public class ChannelPresenter extends BasePresenter<ChannelView> {
     }
 
     public void openChannel(String channelId) {
-        if (channelId == null) {
-            return;
-        }
+        if (channelId == null) return;
 
         disposeActions();
 
@@ -279,9 +265,7 @@ public class ChannelPresenter extends BasePresenter<ChannelView> {
     private void continueGroup(VideoGroup group) {
         boolean scrollInProgress = mScrollAction != null && !mScrollAction.isDisposed();
 
-        if (scrollInProgress) {
-            return;
-        }
+        if (scrollInProgress) return;
 
         if (getView() == null) {
             Log.e(TAG, "Can't continue group. The view is null.");

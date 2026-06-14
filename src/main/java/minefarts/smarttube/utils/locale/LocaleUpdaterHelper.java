@@ -60,15 +60,11 @@ class LocaleUpdaterHelper {
 
     // short lang code. ex: "ru"
     public static void forceLocale(Context context, String langCode) {
-        if (langCode == null || langCode.isEmpty()) {
-            return;
-        }
+        if (langCode == null || langCode.isEmpty()) return;
 
         Locale locale = parseLangCode(langCode);
         Locale oldLocale = Locale.getDefault();
-        if (oldLocale.equals(locale)) {
-            return;
-        }
+        if (oldLocale.equals(locale)) return;
 
         Locale.setDefault(locale);
         Resources resources = context.getResources();

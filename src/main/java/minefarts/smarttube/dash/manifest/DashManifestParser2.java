@@ -629,9 +629,7 @@ public class DashManifestParser2 {
         }
 
         // NOTE: FORMAT_STREAM_TYPE_OTF not supported
-        if (!MediaFormatUtils.isDash(mediaItem)) {
-            return;
-        }
+        if (!MediaFormatUtils.isDash(mediaItem)) return;
 
         //fixOTF(mediaItem);
 

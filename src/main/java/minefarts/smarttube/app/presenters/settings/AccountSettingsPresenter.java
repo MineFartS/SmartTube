@@ -26,14 +26,9 @@ public class AccountSettingsPresenter extends BasePresenter<Void> {
     @SuppressLint("StaticFieldLeak")
     private static AccountSettingsPresenter sInstance;
 
-    public AccountSettingsPresenter(Context context) {
-        super(context);
-    }
-
     public static AccountSettingsPresenter instance(Context context) {
-        if (sInstance == null) {
-            sInstance = new AccountSettingsPresenter(context);
-        }
+        if (sInstance == null)
+            sInstance = new AccountSettingsPresenter();
 
         sInstance.setContext(context);
 
@@ -87,9 +82,7 @@ public class AccountSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendSelectAccountSection(List<Account> accounts, AppDialogPresenter settingsPresenter) {
-        if (accounts == null || accounts.isEmpty()) {
-            return;
-        }
+        if (accounts == null || accounts.isEmpty()) return;
 
         List<UiOptionItem> optionItems = new ArrayList<>();
 
@@ -119,9 +112,7 @@ public class AccountSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendSignOutSection(List<Account> accounts, AppDialogPresenter settingsPresenter) {
-        if (accounts == null || accounts.isEmpty()) {
-            return;
-        }
+        if (accounts == null || accounts.isEmpty()) return;
 
         List<UiOptionItem> optionItems = new ArrayList<>();
 

@@ -17,13 +17,9 @@ public class AddDevicePresenter extends BasePresenter<AddDeviceView> {
     private static AddDevicePresenter sInstance;
     private Disposable mDeviceCodeAction;
 
-    private AddDevicePresenter(Context context) {
-        super(context);
-    }
-
     public static AddDevicePresenter instance(Context context) {
         if (sInstance == null)
-            sInstance = new AddDevicePresenter(context);
+            sInstance = new AddDevicePresenter();
 
         sInstance.setContext(context);
 

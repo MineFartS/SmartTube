@@ -14,15 +14,13 @@ internal class PlayerDataExtractor(val playerUrl: String?) {
 
     private val fixedPlayerUrl: String = playerUrl?.replace("-es6", "-ias").orEmpty()
     
-    private val tag = PlayerDataExtractor::class.java.simpleName
-    
     private val data
         get() = MediaServiceData.instance()
     
     private var nFuncCode: Boolean = false
     private var sFuncCode: Boolean = false
     
-    private var signatureTimestamp: String? = null    
+    var signatureTimestamp: String? = null    
 
     init {
 
@@ -39,10 +37,8 @@ internal class PlayerDataExtractor(val playerUrl: String?) {
             try {
                                 
                 val result = V8ChallengeProvider.bulkSolve(
-                    listOf(
-                        JsChallengeRequest(JsChallengeType.N, ChallengeInput(fixedPlayerUrl, listOf(param))),
-                        JsChallengeRequest(JsChallengeType.SIG, ChallengeInput(fixedPlayerUrl, listOf(param))),
-                    )
+                    JsChallengeRequest(JsChallengeType.N, ChallengeInput(fixedPlayerUrl, listOf(param))),
+                    JsChallengeRequest(JsChallengeType.SIG, ChallengeInput(fixedPlayerUrl, listOf(param)))
                 )
 
                 for (item in result) {
@@ -82,39 +78,37 @@ internal class PlayerDataExtractor(val playerUrl: String?) {
         return Pair(response.first, response.second)
     }
 
-    fun getSignatureTimestamp(): String? {
-        return signatureTimestamp
-    }
-
     fun validate(): Boolean {
         return nFuncCode && sFuncCode && signatureTimestamp != null
     }
 
-    private fun extractNSigReal(nParam: String): String? {
-        return bulkSigExtractReal(listOf(nParam), null).first?.firstOrNull()
-    }
-
-    private fun extractSigReal(sParam: List<String>): List<String?>? {
-        return bulkSigExtractReal(null, sParam).second
-    }
-
-    private fun bulkSigExtractReal(nParams: List<String?>?, sParams: List<String?>?): Pair<List<String?>?, List<String?>?> {
-        if (Helpers.allNulls(nParams, sParams)) {
-            return Pair(null, null)
+    private fun buildRequest(
+        params: List<String?>?,
+        funcCode: Boolean,
+        type: JsChallengeType
+    ): JsChallengeRequest? {
+        return params?.takeIf { funcCode }?.filterNotNull()?.takeIf { it.isNotEmpty() }?.distinct()?.let {
+            JsChallengeRequest(type, ChallengeInput(fixedPlayerUrl, it))
         }
+    }
 
+    private fun bulkSigExtractReal(
+        nParams: List<String?>?, 
+        sParams: List<String?>?
+    ): Pair<List<String?>?, List<String?>?> {
+
+        if (Helpers.allNulls(nParams, sParams))
+            return Pair(null, null)
+    
+        val requests = listOfNotNull(
+            buildRequest(nParams, nFuncCode, JsChallengeType.N),
+            buildRequest(sParams, sFuncCode, JsChallengeType.SIG)
+        ).toTypedArray()
+                
+        val result = V8ChallengeProvider.bulkSolve(*requests)
+                
         var nProcessed: List<String?>? = null
         var sProcessed: List<String?>? = null
-
-        val nRequest = nParams?.takeIf { nFuncCode }?.filterNotNull()?.takeIf { it.isNotEmpty() }?.distinct()?.let {
-            JsChallengeRequest(JsChallengeType.N, ChallengeInput(fixedPlayerUrl, it))
-        }
-
-        val sRequest = sParams?.takeIf { sFuncCode }?.filterNotNull()?.takeIf { it.isNotEmpty() }?.distinct()?.let {
-            JsChallengeRequest(JsChallengeType.SIG, ChallengeInput(fixedPlayerUrl, it))
-        }
-
-        val result = V8ChallengeProvider.bulkSolve(listOfNotNull(nRequest, sRequest))
 
         for (item in result) {
             when (item.response?.type) {
@@ -127,22 +121,6 @@ internal class PlayerDataExtractor(val playerUrl: String?) {
         }
 
         return Pair(nProcessed, sProcessed)
-    }
-
-    private fun loadPlayer(): String? {
-        return YouTubeInfoExtractor.loadPlayerSilent(fixedPlayerUrl)
-    }
-
-    private fun fetchAllData() {
-        val jsCode = loadPlayer()
-
-        signatureTimestamp = jsCode?.let { CommonExtractor.extractSignatureTimestamp(it) }
-    }
-
-    private fun persistAllData() {
-        if (validate()) {
-            data.playerExtractorCache = PlayerExtractorCache(playerUrl, signatureTimestamp)
-        }
     }
 
 }

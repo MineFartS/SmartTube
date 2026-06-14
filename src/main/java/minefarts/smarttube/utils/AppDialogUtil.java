@@ -76,13 +76,9 @@ public class AppDialogUtil {
      * Adds share link items to existing dialog.
      */
     public static void appendShareLinkDialogItem(Context context, AppDialogPresenter dialogPresenter, Video video, int positionSec) {
-        if (video == null) {
-            return;
-        }
+        if (video == null) return;
 
-        if (video.videoId == null && video.channelId == null) {
-            return;
-        }
+        if (video.videoId == null && video.channelId == null) return;
 
         dialogPresenter.appendSingleButton(
                 UiOptionItem.from(context.getString(R.string.share_link), optionItem -> {
@@ -105,13 +101,9 @@ public class AppDialogUtil {
      * Adds share link items to existing dialog.
      */
     public static void appendShareEmbedLinkDialogItem(Context context, AppDialogPresenter dialogPresenter, Video video, int positionSec) {
-        if (video == null) {
-            return;
-        }
+        if (video == null) return;
 
-        if (video.videoId == null) {
-            return;
-        }
+        if (video.videoId == null) return;
 
         dialogPresenter.appendSingleButton(
                 UiOptionItem.from(context.getString(R.string.share_embed_link), optionItem -> {
@@ -132,13 +124,9 @@ public class AppDialogUtil {
      * Adds QR code item to existing dialog.
      */
     public static void appendShareQRLinkDialogItem(Context context, AppDialogPresenter dialogPresenter, Video video, int positionSec) {
-        if (video == null) {
-            return;
-        }
+        if (video == null) return;
 
-        if (video.videoId == null) {
-            return;
-        }
+        if (video.videoId == null) return;
 
         dialogPresenter.appendSingleButton(
                 UiOptionItem.from(context.getString(R.string.share_qr_link), optionItem -> {
@@ -323,9 +311,7 @@ public class AppDialogUtil {
 
     public static void showAddToPlaylistDialog(Context context, Video video, VideoMenuCallback callback) {
 
-        if (video == null) {
-            return;
-        }
+        if (video == null) return;
 
         MediaItemService itemManager = MediaItemService.instance();
 
@@ -373,9 +359,7 @@ public class AppDialogUtil {
     }
 
     private static void addRemoveFromPlaylist(Context context, Video video, VideoMenuCallback callback, String playlistId, boolean add) {
-        if (video == null) {
-            return;
-        }
+        if (video == null) return;
 
         Observable<Void> editObserve;
         MediaItemService itemManager = MediaItemService.instance();
@@ -396,9 +380,7 @@ public class AppDialogUtil {
     }
 
     public static void showPlaylistOrderDialog(Context context, Video video, Runnable onClose) {
-        if (video == null) {
-            return;
-        }
+        if (video == null) return;
 
         if (video.hasPlaylist()) {
             showPlaylistOrderDialog(context, video.playlistId, onClose);

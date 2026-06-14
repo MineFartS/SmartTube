@@ -33,7 +33,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackFragment2> implemen
     @SuppressLint("StaticFieldLeak")
     private static PlaybackPresenter sInstance;
     
-    private final List<PlayerEventListener> mEventListeners = new CopyOnWriteArrayList<PlayerEventListener>() {
+    List<PlayerEventListener> mEventListeners = new CopyOnWriteArrayList<PlayerEventListener>() {
         @Override
         public boolean add(PlayerEventListener listener) {
             ((BasePlayerController) listener).setMainController(PlaybackPresenter.this);
@@ -46,23 +46,17 @@ public class PlaybackPresenter extends BasePresenter<PlaybackFragment2> implemen
     private WeakReference<PlaybackFragment2> mPlayer = new WeakReference<>(null);
     private boolean mIsEmbedPlayerStarted;
 
-    private PlaybackPresenter(Context context) {
-        super(context);
-
-        // NOTE: position matters!!!
-        mEventListeners.add(new VideoStateController());
-        mEventListeners.add(new SuggestionsController());
-        mEventListeners.add(new PlayerUIController());
-        mEventListeners.add(new VideoLoaderController(this));
-        mEventListeners.add(new RemoteController(context));
-        mEventListeners.add(new ContentBlockController());
-        mEventListeners.add(new ChatController());
-        mEventListeners.add(new CommentsController());
-    }
-
     public static PlaybackPresenter instance(Context context) {
         if (sInstance == null) {
-            sInstance = new PlaybackPresenter(context);
+            sInstance = new PlaybackPresenter();
+            sInstance.mEventListeners.add(new VideoStateController());
+            sInstance.mEventListeners.add(new SuggestionsController());
+            sInstance.mEventListeners.add(new PlayerUIController());
+            sInstance.mEventListeners.add(new VideoLoaderController(sInstance));
+            sInstance.mEventListeners.add(new RemoteController(context));
+            sInstance.mEventListeners.add(new ContentBlockController());
+            sInstance.mEventListeners.add(new ChatController());
+            sInstance.mEventListeners.add(new CommentsController());
         }
 
         sInstance.setContext(context);
@@ -88,9 +82,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackFragment2> implemen
      * Opens video item from splash view
      */
     public void openVideo(String videoId, boolean finishOnEnded, long timeMs) {
-        if (videoId == null) {
-            return;
-        }
+        if (videoId == null) return;
 
         Video video = Video.from(videoId);
         video.finishOnEnded = finishOnEnded;
@@ -100,16 +92,13 @@ public class PlaybackPresenter extends BasePresenter<PlaybackFragment2> implemen
     }
 
     public void openVideo(Video video) {
-        if (video == null) {
-            return;
-        }
+        if (video == null) return;
 
         if (getView() != null && getView().isEmbed()) { // switching from the embed player to the fullscreen one
             // The embed player doesn't disposed properly
             // NOTE: don't release after init check because this depends on timings
             getView().finishReally();
             setView(null);
-            //getController(VideoStateController.class).saveState();
         }
 
         onNewVideo(video);

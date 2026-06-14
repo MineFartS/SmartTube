@@ -1375,9 +1375,7 @@ public abstract class MediaCodecRenderer extends BaseRenderer {
      * @throws ExoPlaybackException If an error occurs releasing or initializing a codec.
      */
     private void updateCodecOperatingRate() throws ExoPlaybackException {
-        if (Utils.SDK_INT < 23) {
-            return;
-        }
+        if (Utils.SDK_INT < 23) return;
 
         float newCodecOperatingRate =
                 getCodecOperatingRateV23(rendererOperatingRate, codecFormat, getStreamFormats());

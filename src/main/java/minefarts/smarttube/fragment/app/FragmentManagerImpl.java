@@ -1175,9 +1175,7 @@ final class FragmentManagerImpl extends FragmentManager implements LayoutInflate
      * @param f The fragment to change.
      */
     void moveFragmentToExpectedState(Fragment f) {
-        if (f == null) {
-            return;
-        }
+        if (f == null) return;
         if (!mActive.containsKey(f.mWho)) {
             if (DEBUG) {
                 Log.v(TAG, "Ignoring moving " + f + " to state " + mCurState
@@ -1248,9 +1246,7 @@ final class FragmentManagerImpl extends FragmentManager implements LayoutInflate
             throw new IllegalStateException("No activity");
         }
 
-        if (!always && newState == mCurState) {
-            return;
-        }
+        if (!always && newState == mCurState) return;
 
         mCurState = newState;
 
@@ -1286,9 +1282,7 @@ final class FragmentManagerImpl extends FragmentManager implements LayoutInflate
     }
 
     void makeActive(Fragment f) {
-        if (mActive.get(f.mWho) != null) {
-            return;
-        }
+        if (mActive.get(f.mWho) != null) return;
 
         mActive.put(f.mWho, f);
         if (f.mRetainInstanceChangedWhileDetached) {
@@ -1303,9 +1297,7 @@ final class FragmentManagerImpl extends FragmentManager implements LayoutInflate
     }
 
     void makeInactive(Fragment f) {
-        if (mActive.get(f.mWho) == null) {
-            return;
-        }
+        if (mActive.get(f.mWho) == null) return;
 
         if (DEBUG) Log.v(TAG, "Removed fragment from active set " + f);
         // Ensure that any Fragment that had this Fragment as its
@@ -1750,9 +1742,7 @@ final class FragmentManagerImpl extends FragmentManager implements LayoutInflate
      */
     private void removeRedundantOperationsAndExecute(ArrayList<BackStackRecord> records,
                                                      ArrayList<Boolean> isRecordPop) {
-        if (records == null || records.isEmpty()) {
-            return;
-        }
+        if (records == null || records.isEmpty()) return;
 
         if (isRecordPop == null || records.size() != isRecordPop.size()) {
             throw new IllegalStateException("Internal error with the back stack records");
@@ -2047,9 +2037,7 @@ final class FragmentManagerImpl extends FragmentManager implements LayoutInflate
      * invisible (by setting their alpha to 0) if they have been removed when postponed.
      */
     private void addAddedFragments(ArraySet<Fragment> added) {
-        if (mCurState < Fragment.CREATED) {
-            return;
-        }
+        if (mCurState < Fragment.CREATED) return;
         // We want to leave the fragment in the started state
         final int state = Math.min(mCurState, Fragment.STARTED);
         final int numAdded = mAdded.size();
@@ -2224,9 +2212,7 @@ final class FragmentManagerImpl extends FragmentManager implements LayoutInflate
     }
 
     void saveFragmentViewState(Fragment f) {
-        if (f.mInnerView == null) {
-            return;
-        }
+        if (f.mInnerView == null) return;
         if (mStateArray == null) {
             mStateArray = new SparseArray<Parcelable>();
         } else {
@@ -2726,9 +2712,7 @@ final class FragmentManagerImpl extends FragmentManager implements LayoutInflate
     }
 
     public void dispatchOptionsMenuClosed(@NonNull Menu menu) {
-        if (mCurState < Fragment.CREATED) {
-            return;
-        }
+        if (mCurState < Fragment.CREATED) return;
         for (int i = 0; i < mAdded.size(); i++) {
             Fragment f = mAdded.get(i);
             if (f != null) {

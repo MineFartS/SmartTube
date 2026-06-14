@@ -23,9 +23,7 @@ public class TrackInfoFormatter2 {
     }
 
     public void setVideoFormat(Format format) {
-        if (format == null) {
-            return;
-        }
+        if (format == null) return;
 
         mResolutionStr = TrackSelectorUtil.getShortResolutionLabel(format);
 
@@ -46,9 +44,7 @@ public class TrackInfoFormatter2 {
     }
 
     public void setAudioFormat(Format format) {
-        if (format == null) {
-            return;
-        }
+        if (format == null) return;
 
         mChannelsStr = TrackSelectorUtil.buildChannels(format);
 
