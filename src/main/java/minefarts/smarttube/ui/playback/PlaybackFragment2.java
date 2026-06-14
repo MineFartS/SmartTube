@@ -46,7 +46,6 @@ import minefarts.smarttube.ControlDispatcher;
 import minefarts.smarttube.DefaultControlDispatcher;
 import minefarts.smarttube.DefaultRenderersFactory;
 import minefarts.smarttube.Player;
-import minefarts.smarttube.SimpleExoPlayer;
 import minefarts.smarttube.ms.MediaSessionConnector;
 import minefarts.smarttube.trackselection.AdaptiveTrackSelection;
 import minefarts.smarttube.trackselection.DefaultTrackSelector;

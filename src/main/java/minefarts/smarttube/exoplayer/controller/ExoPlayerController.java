@@ -9,7 +9,7 @@ import minefarts.smarttube.ExoPlaybackException;
 import minefarts.smarttube.Format;
 import minefarts.smarttube.PlaybackParameters;
 import minefarts.smarttube.Player;
-import minefarts.smarttube.SimpleExoPlayer;
+import minefarts.smarttube.ui.playback.SimpleExoPlayer;
 import minefarts.smarttube.source.MediaSource;
 import minefarts.smarttube.source.MergingMediaSource;
 import minefarts.smarttube.source.TrackGroupArray;
