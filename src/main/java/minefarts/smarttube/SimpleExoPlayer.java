@@ -13,8 +13,6 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.TextureView;
-import minefarts.smarttube.analytics.AnalyticsCollector;
-import minefarts.smarttube.analytics.AnalyticsListener;
 import minefarts.smarttube.audio.AudioAttributes;
 import minefarts.smarttube.audio.AudioFocusManager;
 import minefarts.smarttube.audio.AudioListener;
@@ -73,7 +71,6 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
     private final CopyOnWriteArraySet<VideoRendererEventListener> videoDebugListeners;
     private final CopyOnWriteArraySet<AudioRendererEventListener> audioDebugListeners;
     private final BandwidthMeter bandwidthMeter;
-    private final AnalyticsCollector analyticsCollector;
 
     private final AudioFocusManager audioFocusManager;
 
@@ -117,60 +114,17 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
      * @param trackSelector The {@link TrackSelector} that will be used by the instance.
      * @param loadControl The {@link LoadControl} that will be used by the instance.
      * @param bandwidthMeter The {@link BandwidthMeter} that will be used by the instance.
-     * @param drmSessionManager An optional {@link DrmSessionManager}. May be null if the instance
-     *        will not be used for DRM protected playbacks.
-     * @param looper The {@link Looper} which must be used for all calls to the player and which is
-     *        used to call listeners on.
      */
-    public SimpleExoPlayer(Context context, RenderersFactory renderersFactory,
-            TrackSelector trackSelector, LoadControl loadControl, BandwidthMeter bandwidthMeter,
-            @Nullable DrmSessionManager<FrameworkMediaCrypto> drmSessionManager, Looper looper) {
-        this(context, renderersFactory, trackSelector, loadControl, drmSessionManager,
-                bandwidthMeter, new AnalyticsCollector.Factory(), looper);
-    }
+    public SimpleExoPlayer(
+        Context context, 
+        RenderersFactory renderersFactory,
+        TrackSelector trackSelector, 
+        LoadControl loadControl,
+        BandwidthMeter bandwidthMeter
+    ) {
 
-    /**
-     * @param context A {@link Context}.
-     * @param renderersFactory A factory for creating {@link Renderer}s to be used by the instance.
-     * @param trackSelector The {@link TrackSelector} that will be used by the instance.
-     * @param loadControl The {@link LoadControl} that will be used by the instance.
-     * @param drmSessionManager An optional {@link DrmSessionManager}. May be null if the instance
-     *        will not be used for DRM protected playbacks.
-     * @param bandwidthMeter The {@link BandwidthMeter} that will be used by the instance.
-     * @param analyticsCollectorFactory A factory for creating the {@link AnalyticsCollector} that
-     *        will collect and forward all player events.
-     * @param looper The {@link Looper} which must be used for all calls to the player and which is
-     *        used to call listeners on.
-     */
-    public SimpleExoPlayer(Context context, RenderersFactory renderersFactory,
-            TrackSelector trackSelector, LoadControl loadControl,
-            @Nullable DrmSessionManager<FrameworkMediaCrypto> drmSessionManager,
-            BandwidthMeter bandwidthMeter, AnalyticsCollector.Factory analyticsCollectorFactory,
-            Looper looper) {
-        this(context, renderersFactory, trackSelector, loadControl, drmSessionManager,
-                bandwidthMeter, analyticsCollectorFactory, Clock.DEFAULT, looper);
-    }
+        Looper looper = Utils.getLooper();
 
-    /**
-     * @param context A {@link Context}.
-     * @param renderersFactory A factory for creating {@link Renderer}s to be used by the instance.
-     * @param trackSelector The {@link TrackSelector} that will be used by the instance.
-     * @param loadControl The {@link LoadControl} that will be used by the instance.
-     * @param drmSessionManager An optional {@link DrmSessionManager}. May be null if the instance
-     *        will not be used for DRM protected playbacks.
-     * @param bandwidthMeter The {@link BandwidthMeter} that will be used by the instance.
-     * @param analyticsCollectorFactory A factory for creating the {@link AnalyticsCollector} that
-     *        will collect and forward all player events.
-     * @param clock The {@link Clock} that will be used by the instance. Should always be
-     *        {@link Clock#DEFAULT}, unless the player is being used from a test.
-     * @param looper The {@link Looper} which must be used for all calls to the player and which is
-     *        used to call listeners on.
-     */
-    public SimpleExoPlayer(Context context, RenderersFactory renderersFactory,
-            TrackSelector trackSelector, LoadControl loadControl,
-            @Nullable DrmSessionManager<FrameworkMediaCrypto> drmSessionManager,
-            BandwidthMeter bandwidthMeter, AnalyticsCollector.Factory analyticsCollectorFactory,
-            Clock clock, Looper looper) {
         this.bandwidthMeter = bandwidthMeter;
         componentListener = new ComponentListener();
         videoListeners = new CopyOnWriteArraySet<>();
@@ -180,8 +134,11 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
         videoDebugListeners = new CopyOnWriteArraySet<>();
         audioDebugListeners = new CopyOnWriteArraySet<>();
         eventHandler = new Handler(looper);
-        renderers = renderersFactory.createRenderers(eventHandler, componentListener,
-                componentListener, componentListener, componentListener, drmSessionManager);
+        renderers = renderersFactory.createRenderers(
+            eventHandler, componentListener,
+            componentListener, componentListener, 
+            componentListener, null
+        );
 
         // Set initial values.
         audioVolume = 1;
@@ -191,21 +148,12 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
         currentCues = Collections.emptyList();
 
         // Build the player and associated objects.
-        player = new ExoPlayerImpl(renderers, trackSelector, loadControl, bandwidthMeter, clock,
-                looper);
-        analyticsCollector = analyticsCollectorFactory.createAnalyticsCollector(player, clock);
-        addListener(analyticsCollector);
+        player = new ExoPlayerImpl(
+            renderers, trackSelector, 
+            loadControl, bandwidthMeter, 
+            Clock.DEFAULT, looper
+        );
         addListener(componentListener);
-        videoDebugListeners.add(analyticsCollector);
-        videoListeners.add(analyticsCollector);
-        audioDebugListeners.add(analyticsCollector);
-        audioListeners.add(analyticsCollector);
-        addMetadataOutput(analyticsCollector);
-        bandwidthMeter.addEventListener(eventHandler, analyticsCollector);
-        if (drmSessionManager instanceof DefaultDrmSessionManager) {
-            ((DefaultDrmSessionManager) drmSessionManager).addListener(eventHandler,
-                    analyticsCollector);
-        }
         audioFocusManager = new AudioFocusManager(context, componentListener);
     }
 
@@ -470,31 +418,6 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
         return Utils.getStreamTypeForAudioUsage(audioAttributes.usage);
     }
 
-    /** Returns the {@link AnalyticsCollector} used for collecting analytics events. */
-    public AnalyticsCollector getAnalyticsCollector() {
-        return analyticsCollector;
-    }
-
-    /**
-     * Adds an {@link AnalyticsListener} to receive analytics events.
-     *
-     * @param listener The listener to be added.
-     */
-    public void addAnalyticsListener(AnalyticsListener listener) {
-        verifyApplicationThread();
-        analyticsCollector.addListener(listener);
-    }
-
-    /**
-     * Removes an {@link AnalyticsListener}.
-     *
-     * @param listener The listener to be removed.
-     */
-    public void removeAnalyticsListener(AnalyticsListener listener) {
-        verifyApplicationThread();
-        analyticsCollector.removeListener(listener);
-    }
-
     /**
      * Sets a {@link PriorityTaskManager}, or null to clear a previously set priority task manager.
      *
@@ -711,7 +634,6 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
      */
     @Deprecated
     public void setMetadataOutput(MetadataOutput output) {
-        metadataOutputs.retainAll(Collections.singleton(analyticsCollector));
         if (output != null) {
             addMetadataOutput(output);
         }
@@ -726,70 +648,6 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
     @Deprecated
     public void clearMetadataOutput(MetadataOutput output) {
         removeMetadataOutput(output);
-    }
-
-    /**
-     * @deprecated Use {@link #addAnalyticsListener(AnalyticsListener)} to get more detailed debug
-     *             information.
-     */
-    @Deprecated
-    @SuppressWarnings("deprecation")
-    public void setVideoDebugListener(VideoRendererEventListener listener) {
-        videoDebugListeners.retainAll(Collections.singleton(analyticsCollector));
-        if (listener != null) {
-            addVideoDebugListener(listener);
-        }
-    }
-
-    /**
-     * @deprecated Use {@link #addAnalyticsListener(AnalyticsListener)} to get more detailed debug
-     *             information.
-     */
-    @Deprecated
-    public void addVideoDebugListener(VideoRendererEventListener listener) {
-        videoDebugListeners.add(listener);
-    }
-
-    /**
-     * @deprecated Use {@link #addAnalyticsListener(AnalyticsListener)} and
-     *             {@link #removeAnalyticsListener(AnalyticsListener)} to get more detailed debug
-     *             information.
-     */
-    @Deprecated
-    public void removeVideoDebugListener(VideoRendererEventListener listener) {
-        videoDebugListeners.remove(listener);
-    }
-
-    /**
-     * @deprecated Use {@link #addAnalyticsListener(AnalyticsListener)} to get more detailed debug
-     *             information.
-     */
-    @Deprecated
-    @SuppressWarnings("deprecation")
-    public void setAudioDebugListener(AudioRendererEventListener listener) {
-        audioDebugListeners.retainAll(Collections.singleton(analyticsCollector));
-        if (listener != null) {
-            addAudioDebugListener(listener);
-        }
-    }
-
-    /**
-     * @deprecated Use {@link #addAnalyticsListener(AnalyticsListener)} to get more detailed debug
-     *             information.
-     */
-    @Deprecated
-    public void addAudioDebugListener(AudioRendererEventListener listener) {
-        audioDebugListeners.add(listener);
-    }
-
-    /**
-     * @deprecated Use {@link #addAnalyticsListener(AnalyticsListener)} and
-     *             {@link #removeAnalyticsListener(AnalyticsListener)} to get more detailed debug
-     *             information.
-     */
-    @Deprecated
-    public void removeAudioDebugListener(AudioRendererEventListener listener) {
-        audioDebugListeners.remove(listener);
     }
 
     // ExoPlayer implementation
@@ -852,14 +710,11 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
     @Override
     public void prepare(MediaSource mediaSource, boolean resetPosition, boolean resetState) {
         verifyApplicationThread();
-        if (this.mediaSource != null) {
-            this.mediaSource.removeEventListener(analyticsCollector);
-            analyticsCollector.resetForNewMediaSource();
-        }
         this.mediaSource = mediaSource;
-        mediaSource.addEventListener(eventHandler, analyticsCollector);
+
         @AudioFocusManager.PlayerCommand
         int playerCommand = audioFocusManager.handlePrepare(getPlayWhenReady());
+        
         updatePlayWhenReady(getPlayWhenReady(), playerCommand);
         player.prepare(mediaSource, resetPosition, resetState);
     }
@@ -912,7 +767,6 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
     @Override
     public void seekTo(int windowIndex, long positionMs) {
         verifyApplicationThread();
-        analyticsCollector.notifySeekStarted();
         player.seekTo(windowIndex, positionMs);
     }
 
@@ -949,12 +803,8 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
     public void stop(boolean reset) {
         verifyApplicationThread();
         player.stop(reset);
-        if (mediaSource != null) {
-            mediaSource.removeEventListener(analyticsCollector);
-            analyticsCollector.resetForNewMediaSource();
-            if (reset) {
-                mediaSource = null;
-            }
+        if (mediaSource != null && reset) {
+            mediaSource = null;
         }
         audioFocusManager.handleStop();
         currentCues = Collections.emptyList();
@@ -973,14 +823,12 @@ public class SimpleExoPlayer extends BasePlayer implements ExoPlayer, Player.Aud
             surface = null;
         }
         if (mediaSource != null) {
-            mediaSource.removeEventListener(analyticsCollector);
             mediaSource = null;
         }
         if (isPriorityTaskManagerRegistered) {
             Assertions.checkNotNull(priorityTaskManager).remove(C.PRIORITY_PLAYBACK);
             isPriorityTaskManagerRegistered = false;
         }
-        bandwidthMeter.removeEventListener(analyticsCollector);
         currentCues = Collections.emptyList();
     }
 
