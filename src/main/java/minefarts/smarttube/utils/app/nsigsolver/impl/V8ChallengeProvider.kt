@@ -24,8 +24,6 @@ import minefarts.smarttube.utils.app.nsigsolver.runtime.SolverOutput
 val sGson = Gson()
 
 internal object V8ChallengeProvider {
-
-    private val tag = V8ChallengeProvider::class.simpleName
     
     private val v8Runtime = ThreadLocal<V8>()
     private val v8Lock = Any()
@@ -69,6 +67,9 @@ internal object V8ChallengeProvider {
         }
     }
 
+    /**
+     * Execute a JavaScript string in the V8 runtime
+     */
     private fun runV8(stdin: String): String {
         val runtime = v8Runtime.get() ?: throw JsChallengeProviderError("V8 runtime not initialized yet")
         try {
@@ -91,21 +92,25 @@ internal object V8ChallengeProvider {
         }
     }
 
-    private fun initRuntime() {
-        if (v8Runtime.get() != null) return
+    /**
+     * Solve multiple JS challenges and return the results
+     */
+    fun bulkSolve(requests: List<JsChallengeRequest>): Sequence<JsChallengeProviderResponse> = sequence {
 
-        v8Runtime.set(V8.createV8Runtime())
+        if (v8Runtime.get() == null) {
+            v8Runtime.set(V8.createV8Runtime())
 
-        val assets = ContextManager.get()?.assets
+            val assets = ContextManager.get()?.assets
 
-        for (name in listOf("lib", "core")) {
+            for (name in listOf("lib", "core")) {
 
-            val path = "nsigsolver/yt.solver.$name.js"
+                val path = "nsigsolver/yt.solver.$name.js"
 
-            assets!!.open(path).bufferedReader().use { 
-                runV8(it.readText())
+                assets!!.open(path).bufferedReader().use { 
+                    runV8(it.readText())
+                }
+                
             }
-            
         }
     
     }
@@ -119,30 +124,19 @@ internal object V8ChallengeProvider {
         runtime.withLock {
             it.release(false)
         }
-        v8Runtime.remove()
-    }
-
-    fun warmup() {
-        synchronized(v8Lock) {
-            initRuntime()
+        
+        for (request in requests) {
+            try {
+                // Validate request using built-in settings
+                if (request.type !in listOf(JsChallengeType.N, JsChallengeType.SIG)) {
+                    throw JsChallengeProviderRejectedRequest("JS Challenge type ${request.type} is not supported by the provider ${this::class.simpleName}")
+                }
+                validatedRequests.add(request)
+            } catch (e: JsChallengeProviderRejectedRequest) {
+                yield(JsChallengeProviderResponse(request=request, error=e))
+            }
         }
-    }
-
-    fun shutdown() {
-        synchronized(v8Lock) {
-            disposeRuntime()
-        }
-    }
-
-    fun forceRecreate() {
-        synchronized(v8Lock) {
-            disposeRuntime()
-
-            initRuntime()
-        }
-    }
-
-    fun realBulkSolve(requests: List<JsChallengeRequest>): Sequence<JsChallengeProviderResponse> = sequence {
+        
         val grouped: Map<String, List<JsChallengeRequest>> = requests.groupBy { it.input.playerUrl }
 
         for ((playerUrl, groupedRequests) in grouped) {
@@ -172,17 +166,11 @@ internal object V8ChallengeProvider {
                 )
             }
 
-            val stdout = synchronized(v8Lock) {
-                
-                initRuntime()
-
-                runV8("""
-                    JSON.stringify(
-                        jsc(${sGson.toJson(data)})
-                    );
-                """)
-
-            }
+            val stdout = runV8("""
+                JSON.stringify(
+                    jsc(${sGson.toJson(data)})
+                );
+            """)
 
             val output: SolverOutput = try {
                 sGson.fromJson(stdout, solverOutputType)
@@ -208,25 +196,7 @@ internal object V8ChallengeProvider {
                 }
             }
         }
-    }
 
-    /**
-     * Solve multiple JS challenges and return the results
-     */
-    fun bulkSolve(requests: List<JsChallengeRequest>): Sequence<JsChallengeProviderResponse> = sequence {
-        val validatedRequests: MutableList<JsChallengeRequest> = mutableListOf()
-        for (request in requests) {
-            try {
-                // Validate request using built-in settings
-                if (request.type !in listOf(JsChallengeType.N, JsChallengeType.SIG)) {
-                    throw JsChallengeProviderRejectedRequest("JS Challenge type ${request.type} is not supported by the provider ${this::class.simpleName}")
-                }
-                validatedRequests.add(request)
-            } catch (e: JsChallengeProviderRejectedRequest) {
-                yield(JsChallengeProviderResponse(request=request, error=e))
-            }
-        }
-        yieldAll(realBulkSolve(validatedRequests))
     }
 
     fun getPlayer(playerUrl: String?): String {
