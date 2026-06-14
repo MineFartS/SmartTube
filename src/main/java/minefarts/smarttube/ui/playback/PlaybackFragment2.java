@@ -93,7 +93,6 @@ import minefarts.smarttube.DefaultLoadControl;
 import minefarts.smarttube.audio.AudioAttributes;
 import minefarts.smarttube.upstream.BandwidthMeter;
 import minefarts.smarttube.prefs.PlayerTweaksData;
-import minefarts.smarttube.analytics.AnalyticsCollector;
 import minefarts.smarttube.trackselection.DefaultTrackSelector;
 import minefarts.smarttube.upstream.DefaultBandwidthMeter;
 import minefarts.smarttube.exoplayer.other.VolumeBooster;
@@ -590,10 +589,7 @@ public class PlaybackFragment2
             renderersFactory,
             trackSelector,
             loadControl,
-            null, // drmSessionManager
-            mBandwidthMeter,
-            new AnalyticsCollector.Factory(),
-            Utils.getLooper()
+            mBandwidthMeter
         );
 
         if (player != null) {
