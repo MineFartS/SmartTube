@@ -5,7 +5,7 @@ import android.os.Build.VERSION;
 
 import androidx.annotation.Nullable;
 
-import minefarts.smarttube.SimpleExoPlayer;
+import minefarts.smarttube.ui.playback.SimpleExoPlayer;
 import minefarts.smarttube.audio.AudioListener;
 import minefarts.smarttube.utils.mylogger.Log;
 
