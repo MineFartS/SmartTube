@@ -12,10 +12,7 @@
         ".gradle": true,
         ".vscode": true,
         "**/build": true,
-        "jdk": true,
-        "pidcat": true,
-        "py": true,
-        "sdk": true
+        "lib": true
     },
 
     "kotlin.inlayHints.parameterHints": false,
@@ -35,5 +32,6 @@
         "JAVA_HOME": "${workspaceFolder}/jdk",
         "PATH": "${workspaceFolder}/jdk/bin;${workspaceFolder}/sdk/platform-tools;${env:PATH}"
     },
+    "notebook.defaultFormatter": "redhat.java",
 
 }

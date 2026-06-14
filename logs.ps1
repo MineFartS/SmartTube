@@ -6,7 +6,7 @@ Invoke-ADB
 
 Clear-Host
 
-Invoke-Python pidcat/pidcat.py `
+Invoke-Python lib/pidcat/pidcat.py `
     $APP_ID `
     --sdk $ANDROID_SDK `
     --clear
