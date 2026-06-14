@@ -24,88 +24,60 @@ import minefarts.smarttube.utils.app.nsigsolver.runtime.SolverOutput
 val sGson = Gson()
 
 internal object V8ChallengeProvider {
-
-    private val tag = V8ChallengeProvider::class.simpleName
     
     private val v8Runtime = ThreadLocal<V8>()
     private val v8Lock = Any()
 
-    private fun runV8(stdin: String): String {
+    /**
+     * Execute a JavaScript string in the V8 runtime
+     */
+    private fun runV8(stdin: String): String { synchronized(v8Lock) {
         
         val runtime = v8Runtime.get() ?: throw JsChallengeProviderError("V8 runtime not initialized yet")
         
-        try {
-            return runtime.withLock {
-                it.executeStringScript(stdin) ?: throw JsChallengeProviderError("V8 runtime error: empty response")
-            }
-        } catch (e: V8ScriptExecutionException) {
-            
-            if (e.message?.contains("Invalid or unexpected token") ?: false)
-                YouTubeInfoExtractor.cache.clear("challenge-solver") // cached data broken?
-
-            var msg: String = e.message ?: ""
-
-            if (e.message?.contains("ReferenceError: jsc is not defined") ?: false) {
-                throw JsChallengeProviderError("jsc is still loading")
-            } else {
-                throw JsChallengeProviderError("V8 runtime error: ${msg}", e)
-            }
-            
+        return runtime.withLock {
+            it.executeStringScript(stdin) ?: throw JsChallengeProviderError("V8 runtime error: empty response")
         }
 
-    }
+    }}
 
-    private fun initRuntime() {
-        if (v8Runtime.get() != null) return
+    /**
+     * Solve multiple JS challenges and return the results
+     */
+    fun bulkSolve(requests: List<JsChallengeRequest>): Sequence<JsChallengeProviderResponse> = sequence {
 
-        v8Runtime.set(V8.createV8Runtime())
-
-        val assets = ContextManager.get()?.assets
-
-        for (name in listOf("lib", "core")) {
-
-            val path = "nsigsolver/yt.solver.$name.js"
-
-            assets!!.open(path).bufferedReader().use { 
-                runV8(it.readText())
-            }
-            
-        }
-    
-    }
-
-    private fun disposeRuntime() {
-
-        val runtime = v8Runtime.get() ?: return
+        val validatedRequests: MutableList<JsChallengeRequest> = mutableListOf()
         
-        // NOTE: getting lock fixes "Invalid V8 thread access" issues.
-        runtime.withLock {
-            it.release(false)
+        if (v8Runtime.get() == null) {
+            
+            v8Runtime.set(V8.createV8Runtime())
+
+            val assets = ContextManager.get()?.assets
+
+            for (name in listOf("lib", "core")) {
+
+                val path = "nsigsolver/yt.solver.$name.js"
+
+                assets!!.open(path).bufferedReader().use { 
+                    runV8(it.readText())
+                }
+                
+            }
+
         }
-        v8Runtime.remove()
-    }
-
-    fun warmup() {
-        synchronized(v8Lock) {
-            initRuntime()
+        
+        for (request in requests) {
+            try {
+                // Validate request using built-in settings
+                if (request.type !in listOf(JsChallengeType.N, JsChallengeType.SIG)) {
+                    throw JsChallengeProviderRejectedRequest("JS Challenge type ${request.type} is not supported by the provider ${this::class.simpleName}")
+                }
+                validatedRequests.add(request)
+            } catch (e: JsChallengeProviderRejectedRequest) {
+                yield(JsChallengeProviderResponse(request=request, error=e))
+            }
         }
-    }
-
-    fun shutdown() {
-        synchronized(v8Lock) {
-            disposeRuntime()
-        }
-    }
-
-    fun forceRecreate() {
-        synchronized(v8Lock) {
-            disposeRuntime()
-
-            initRuntime()
-        }
-    }
-
-    fun realBulkSolve(requests: List<JsChallengeRequest>): Sequence<JsChallengeProviderResponse> = sequence {
+        
         val grouped: Map<String, List<JsChallengeRequest>> = requests.groupBy { it.input.playerUrl }
 
         for ((playerUrl, groupedRequests) in grouped) {
@@ -135,17 +107,11 @@ internal object V8ChallengeProvider {
                 )
             }
 
-            val stdout = synchronized(v8Lock) {
-                
-                initRuntime()
-
-                runV8("""
-                    JSON.stringify(
-                        jsc(${sGson.toJson(data)})
-                    );
-                """)
-
-            }
+            val stdout = runV8("""
+                JSON.stringify(
+                    jsc(${sGson.toJson(data)})
+                );
+            """)
 
             val output: SolverOutput = try {
                 sGson.fromJson(stdout, solverOutputType)
@@ -171,25 +137,7 @@ internal object V8ChallengeProvider {
                 }
             }
         }
-    }
 
-    /**
-     * Solve multiple JS challenges and return the results
-     */
-    fun bulkSolve(requests: List<JsChallengeRequest>): Sequence<JsChallengeProviderResponse> = sequence {
-        val validatedRequests: MutableList<JsChallengeRequest> = mutableListOf()
-        for (request in requests) {
-            try {
-                // Validate request using built-in settings
-                if (request.type !in listOf(JsChallengeType.N, JsChallengeType.SIG)) {
-                    throw JsChallengeProviderRejectedRequest("JS Challenge type ${request.type} is not supported by the provider ${this::class.simpleName}")
-                }
-                validatedRequests.add(request)
-            } catch (e: JsChallengeProviderRejectedRequest) {
-                yield(JsChallengeProviderResponse(request=request, error=e))
-            }
-        }
-        yieldAll(realBulkSolve(validatedRequests))
     }
 
     fun getPlayer(playerUrl: String?): String {
