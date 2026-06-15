@@ -191,4 +191,6 @@ dependencies {
 
     implementation 'com.eclipsesource.j2v8:j2v8:4.6.0@aar'
 
+    implementation 'org.jsoup:jsoup:1.14.1'
+
 }
