@@ -235,9 +235,7 @@ public class MultiGridFragment extends Fragment implements BrowseSupportFragment
     private void showOrHideTitle1() {
         if (mGridViewHolder1 == null
                 || mGridViewHolder1.getGridView().findViewHolderForAdapterPosition(mSelectedPosition1) == null
-                || mMainFragmentAdapter.getFragmentHost() == null) {
-            return;
-        }
+                || mMainFragmentAdapter.getFragmentHost() == null) return;
 
         // TODO: set value depending on card size. Current settings for small cards.
         mMainFragmentAdapter.getFragmentHost().showTitleView(mSelectedPosition1 < 4);
@@ -247,9 +245,7 @@ public class MultiGridFragment extends Fragment implements BrowseSupportFragment
     private void showOrHideTitle2() {
         if (mGridViewHolder2 == null
                 || mGridViewHolder2.getGridView().findViewHolderForAdapterPosition(mSelectedPosition2) == null
-                || mMainFragmentAdapter.getFragmentHost() == null) {
-            return;
-        }
+                || mMainFragmentAdapter.getFragmentHost() == null) return;
         if (!mGridViewHolder2.getGridView().hasPreviousViewInSameRow(mSelectedPosition2)) {
             mMainFragmentAdapter.getFragmentHost().showTitleView(true);
         } else {

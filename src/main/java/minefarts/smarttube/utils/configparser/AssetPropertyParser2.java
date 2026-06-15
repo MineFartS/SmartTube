@@ -31,9 +31,7 @@ public class AssetPropertyParser2 implements ConfigParser {
     }
 
     private void initProperties() {
-        if (mProperties != null) {
-            return;
-        }
+        if (mProperties != null) return;
         try {
             mProperties = new Properties();
             mProperties.load(mAssetStream);

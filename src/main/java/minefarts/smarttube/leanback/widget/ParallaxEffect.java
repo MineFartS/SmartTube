@@ -186,9 +186,7 @@ public abstract class ParallaxEffect {
      * Perform mapping from {@link Parallax} to list of {@link ParallaxTarget}.
      */
     public final void performMapping(Parallax source) {
-        if (mMarkerValues.size() < 2) {
-            return;
-        }
+        if (mMarkerValues.size() < 2) return;
         if (this instanceof IntEffect) {
             source.verifyIntProperties();
         } else {

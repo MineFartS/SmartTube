@@ -93,9 +93,7 @@ public class AppUpdatePresenter extends BasePresenter<Void> implements AppUpdate
     ) {
         
         // Don't show update dialog if the player opened or the app is collapsed
-        if (getContext() == null || getViewManager().isPlayerInForeground() || !Utils.isAppInForegroundFixed()) {
-            return;
-        }
+        if (getContext() == null || getViewManager().isPlayerInForeground() || !Utils.isAppInForegroundFixed()) return;
 
         mSettingsPresenter.appendSingleButton(
             UiOptionItem.from(
@@ -130,9 +128,7 @@ public class AppUpdatePresenter extends BasePresenter<Void> implements AppUpdate
         String apkPath
     ) {
         // Don't show update dialog if the player opened or the app is collapsed
-        if (getContext() == null) {
-            return;
-        }
+        if (getContext() == null) return;
 
         BrowsePresenter.instance(getContext()).pinItem(getContext().getString(R.string.update_found), R.drawable.action_info, new ErrorFragmentData() {
             @Override

@@ -56,15 +56,11 @@ public class PlayerUIController extends BasePlayerController {
     private boolean mIsMetadataLoaded;
     private long mOverlayHideTimeMs;
     private final Runnable mSuggestionsResetHandler = () -> {
-        if (getPlayer() == null) {
-            return;
-        }
+        if (getPlayer() == null) return;
         getPlayer().resetSuggestedPosition();
     };
     private final Runnable mUiAutoHideHandler = () -> {
-        if (getPlayer() == null) {
-            return;
-        }
+        if (getPlayer() == null) return;
 
         // Playing the video and dialog overlay isn't shown
         if (getPlayer().isPlaying() && !getAppDialogPresenter().isDialogShown()) {
@@ -140,9 +136,7 @@ public class PlayerUIController extends BasePlayerController {
     private void onSubtitleClicked(boolean enabled) {
 
         // Only default in the list
-        if (getPlayer().getSubtitleFormats() == null || getPlayer().getSubtitleFormats().size() == 1) {
-            return;
-        }
+        if (getPlayer().getSubtitleFormats() == null || getPlayer().getSubtitleFormats().size() == 1) return;
 
         FormatItem matchedFormat = null;
 
@@ -242,10 +236,6 @@ public class PlayerUIController extends BasePlayerController {
 
         mEngineReady = true;
 
-        if (isEmbedPlayer()) {
-            return;
-        }
-
         if (getAppDialogPresenter().isDialogShown()) {
             getPlayer().showOverlay(true);
         }
@@ -254,16 +244,12 @@ public class PlayerUIController extends BasePlayerController {
 
     @Override
     public void onSeekEnd() {
-        if (getPlayer() == null) {
-            return;
-        }
+        if (getPlayer() == null) return;
     }
 
     @Override
     public void onViewResumed() {
-        if (getPlayer() == null) {
-            return;
-        }
+        if (getPlayer() == null) return;
 
         getPlayer().showSubtitles(true);
 
@@ -581,9 +567,7 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private void setPlaylistAddButtonStateCached() {
-        if (getVideo() == null) {
-            return;
-        }
+        if (getVideo() == null) return;
 
         String videoId = getVideo().videoId;
         mPlaylistInfos = null;
@@ -599,9 +583,7 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private void setPlaylistAddButtonState() {
-        if (mPlaylistInfos == null || getPlayer() == null) {
-            return;
-        }
+        if (mPlaylistInfos == null || getPlayer() == null) return;
 
         boolean isSelected = false;
         for (PlaylistInfo playlistInfo : mPlaylistInfos) {
@@ -683,9 +665,7 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private void reorderSubtitles(List<FormatItem> subtitleFormats) {
-        if (subtitleFormats == null || subtitleFormats.isEmpty()) {
-            return;
-        }
+        if (subtitleFormats == null || subtitleFormats.isEmpty()) return;
 
         // Move last format to the top
         int begin = subtitleFormats.get(0).isDefault() ? 1 : 0;
@@ -706,9 +686,7 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private void showNotificationsDialog(int buttonState) {
-        if (getVideo() == null || getVideo().notificationStates == null) {
-            return;
-        }
+        if (getVideo() == null || getVideo().notificationStates == null) return;
 
         AppDialogPresenter settingsPresenter = getAppDialogPresenter();
 

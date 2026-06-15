@@ -38,9 +38,7 @@ public class YouTubeMPDParser implements MPDParser {
     }
 
     private void initParser(InputStream mpdContent) throws XmlPullParserException, IOException {
-        if (mpdContent == null) {
-            return;
-        }
+        if (mpdContent == null) return;
 
         mMpdContent = mpdContent;
         mParser = Xml.newPullParser();

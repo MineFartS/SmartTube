@@ -234,9 +234,7 @@ public class PlaybackTransportControlGlue<T extends PlayerAdapter>
     }
 
     private void updatePlaybackState(boolean isPlaying) {
-        if (mControlsRow == null) {
-            return;
-        }
+        if (mControlsRow == null) return;
 
         if (!isPlaying) {
             onUpdateProgress();

@@ -747,9 +747,7 @@ public class PlaybackFragment extends Fragment {
     }
 
     void setVerticalGridViewLayout(VerticalGridView listview) {
-        if (listview == null) {
-            return;
-        }
+        if (listview == null) return;
 
         // we set the base line of alignment to -paddingBottom
         listview.setWindowAlignmentOffset(-mPaddingBottom);
@@ -1035,9 +1033,7 @@ public class PlaybackFragment extends Fragment {
      * Updates the ui when the row data changes.
      */
     public void notifyPlaybackRowChanged() {
-        if (mAdapter == null) {
-            return;
-        }
+        if (mAdapter == null) return;
         mAdapter.notifyItemRangeChanged(0, 1);
     }
 
@@ -1134,9 +1130,7 @@ public class PlaybackFragment extends Fragment {
      * @param inSeek True to make other rows visible, false to make other rows invisible.
      */
     void setSeekMode(boolean inSeek) {
-        if (mInSeek == inSeek) {
-            return;
-        }
+        if (mInSeek == inSeek) return;
         mInSeek = inSeek;
         getVerticalGridView().setSelectedPosition(0);
         if (mInSeek) {

@@ -2099,9 +2099,7 @@ public class DefaultTrackSelector extends MappingTrackSelector {
             int[][][] renderererFormatSupports,
             @NullableType RendererConfiguration[] rendererConfigurations,
             @NullableType TrackSelection[] trackSelections, int tunnelingAudioSessionId) {
-        if (tunnelingAudioSessionId == C.AUDIO_SESSION_ID_UNSET) {
-            return;
-        }
+        if (tunnelingAudioSessionId == C.AUDIO_SESSION_ID_UNSET) return;
         // Check whether we can enable tunneling. To enable tunneling we require exactly one audio
         // and
         // one video renderer to support tunneling and have a selection.

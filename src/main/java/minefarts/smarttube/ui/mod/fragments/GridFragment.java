@@ -130,9 +130,7 @@ public class GridFragment extends Fragment implements BrowseSupportFragment.Main
 
     protected void showOrHideTitle() {
         if (mGridViewHolder.getGridView().findViewHolderForAdapterPosition(mSelectedPosition)
-                == null || mMainFragmentAdapter.getFragmentHost() == null) {
-            return;
-        }
+                == null || mMainFragmentAdapter.getFragmentHost() == null) return;
         if (!mGridViewHolder.getGridView().hasPreviousViewInSameRow(mSelectedPosition)) {
             mMainFragmentAdapter.getFragmentHost().showTitleView(true);
         } else {

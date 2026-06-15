@@ -334,9 +334,7 @@ public class ExoPlayerController implements Player.EventListener {
         boolean isBuffering = Player.STATE_BUFFERING == playbackState && playWhenReady;
 
         // Fix chapters (seek and play) after playback ends
-        if (isPlaybackEnded && mIsEnded) {
-            return;
-        }
+        if (isPlaybackEnded && mIsEnded) return;
 
         if (isPlayPressed) {
             mEventListener.onPlay();

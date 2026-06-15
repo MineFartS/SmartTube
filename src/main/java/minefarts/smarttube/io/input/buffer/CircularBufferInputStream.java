@@ -51,9 +51,7 @@ public class CircularBufferInputStream extends InputStream {
      * @throws IOException in case of an error while reading from the input stream.
      */
     protected void fillBuffer() throws IOException {
-        if (eofSeen) {
-            return;
-        }
+        if (eofSeen) return;
         int space = buffer.getSpace();
         final byte[] buf = new byte[space];
         while (space > 0) {

@@ -1182,9 +1182,7 @@ public class FileUtils {
      * @throws IllegalArgumentException if {@code directory} does not exist or is not a directory
      */
     public static void deleteDirectory(final File directory) throws IOException {
-        if (!directory.exists()) {
-            return;
-        }
+        if (!directory.exists()) return;
 
         if (!isSymlink(directory)) {
             cleanDirectory(directory);
@@ -1205,9 +1203,7 @@ public class FileUtils {
      * @throws IOException          in case deletion is unsuccessful
      */
     private static void deleteDirectoryOnExit(final File directory) throws IOException {
-        if (!directory.exists()) {
-            return;
-        }
+        if (!directory.exists()) return;
 
         directory.deleteOnExit();
         if (!isSymlink(directory)) {
@@ -1476,9 +1472,7 @@ public class FileUtils {
      */
     public static void forceMkdirParent(final File file) throws IOException {
         final File parent = file.getParentFile();
-        if (parent == null) {
-            return;
-        }
+        if (parent == null) return;
         forceMkdir(parent);
     }
 

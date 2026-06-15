@@ -61,9 +61,7 @@ public class AccountSelectionPresenter extends BasePresenter<Void> {
     }
 
     private void createAndShowDialog(List<Account> accounts, boolean force) {
-        if (accounts.size() <= 1 && !force) {
-            return;
-        }
+        if (accounts.size() <= 1 && !force) return;
 
         AppDialogPresenter dialogPresenter = AppDialogPresenter.instance(getContext());
 

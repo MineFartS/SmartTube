@@ -88,9 +88,7 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
      * @param resId background
      */
     protected void setBackgroundResource(int resId) {
-        if (resId <= 0 || mBackgroundResId == resId) {
-            return;
-        }
+        if (resId <= 0 || mBackgroundResId == resId) return;
 
         View backgroundView = (View) Helpers.getField(this, "mBackgroundView");
 
@@ -105,9 +103,7 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
     }
 
     public void setVideoAspectRatio(int width, int height, float pixelWidthHeightRatio) {
-        if (mVideoSurfaceRoot == null || width <= 0 || height <= 0) {
-            return;
-        }
+        if (mVideoSurfaceRoot == null || width <= 0 || height <= 0) return;
         float videoAspectRatio = (width * pixelWidthHeightRatio) / height;
         mVideoSurfaceRoot.setAspectRatio(videoAspectRatio);
     }

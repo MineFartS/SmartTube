@@ -517,9 +517,7 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
      * @param cover The drawable representing cover image.
      */
     public void setArt(Drawable cover) {
-        if (mCover == cover) {
-            return;
-        }
+        if (mCover == cover) return;
         this.mCover = cover;
         mControlsRow.setImageDrawable(mCover);
         if (getHost() != null) {
@@ -540,9 +538,7 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
      * @param body Body to set.
      */
     public void setBody(CharSequence body) {
-        if (TextUtils.equals(body, mBody)) {
-            return;
-        }
+        if (TextUtils.equals(body, mBody)) return;
         mBody = body;
         if (getHost() != null) {
             getHost().notifyPlaybackRowChanged();
@@ -562,9 +558,7 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
      * @param subtitle Subtitle to set.
      */
     public void setSubtitle(CharSequence subtitle) {
-        if (TextUtils.equals(subtitle, mSubtitle)) {
-            return;
-        }
+        if (TextUtils.equals(subtitle, mSubtitle)) return;
         mSubtitle = subtitle;
         if (getHost() != null) {
             getHost().notifyPlaybackRowChanged();
@@ -583,9 +577,7 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
      * {@link PlaybackTransportRowPresenter#setDescriptionPresenter(Presenter)}.
      */
     public void setTitle(CharSequence title) {
-        if (TextUtils.equals(title, mTitle)) {
-            return;
-        }
+        if (TextUtils.equals(title, mTitle)) return;
         mTitle = title;
         if (getHost() != null) {
             getHost().notifyPlaybackRowChanged();
@@ -603,9 +595,7 @@ public abstract class PlaybackBaseControlGlue<T extends PlayerAdapter> extends P
      * Event when metadata changed
      */
     protected void onMetadataChanged() {
-        if (mControlsRow == null) {
-            return;
-        }
+        if (mControlsRow == null) return;
 
         if (DEBUG) Log.v(TAG, "updateRowMetadata");
 

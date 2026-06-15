@@ -326,9 +326,7 @@ public class GuidedActionAdapter extends RecyclerView.Adapter {
      */
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (position >= mActions.size()) {
-            return;
-        }
+        if (position >= mActions.size()) return;
         final GuidedActionsStylist.ViewHolder avh = (GuidedActionsStylist.ViewHolder)holder;
         GuidedAction action = mActions.get(position);
         mStylist.onBindViewHolder(avh, action);

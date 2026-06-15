@@ -17,9 +17,7 @@ public class UrlEncodedQueryString implements UrlQueryString {
     private String mUrl;
 
     private UrlEncodedQueryString(String url) {
-        if (url == null) {
-            return;
-        }
+        if (url == null) return;
 
         mUrl = url;
 

@@ -67,9 +67,7 @@ public class FullWidthDetailsOverviewSharedElementHelper extends
             throw new IllegalArgumentException();
         }
         if (activity == mActivityToRunTransition
-                && TextUtils.equals(sharedElementName, mSharedElementName)) {
-            return;
-        }
+                && TextUtils.equals(sharedElementName, mSharedElementName)) return;
         mActivityToRunTransition = activity;
         mSharedElementName = sharedElementName;
         if (DEBUG) {
@@ -109,9 +107,7 @@ public class FullWidthDetailsOverviewSharedElementHelper extends
             Log.d(TAG, "onBindLogo, could start transition of " + mActivityToRunTransition);
         }
         mViewHolder = vh;
-        if (!mAutoStartSharedElementTransition) {
-            return;
-        }
+        if (!mAutoStartSharedElementTransition) return;
         if (mViewHolder != null) {
             if (DEBUG) {
                 Log.d(TAG, "rebind? clear transitionName on current viewHolder "

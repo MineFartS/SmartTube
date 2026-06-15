@@ -217,9 +217,7 @@ public class OkHttpManager {
      */
     @SuppressWarnings("deprecation")
     private static void configureToIgnoreCertificate(OkHttpClient.Builder builder) {
-        if (VERSION.SDK_INT > 19) {
-            return;
-        }
+        if (VERSION.SDK_INT > 19) return;
 
         Log.w(TAG, "Ignore Ssl Certificate");
         try {

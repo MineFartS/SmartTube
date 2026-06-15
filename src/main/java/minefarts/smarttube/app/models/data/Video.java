@@ -690,17 +690,13 @@ public final class Video {
     }
 
     public void sync(Video video) {
-        if (video == null) {
-            return;
-        }
+        if (video == null) return;
 
         percentWatched = video.percentWatched;
     }
 
     public void sync(MediaItemMetadata metadata) {
-        if (metadata == null) {
-            return;
-        }
+        if (metadata == null) return;
 
         if (isLive && !metadata.isLive()) {
             isLiveEnd = true;
@@ -733,9 +729,7 @@ public final class Video {
     }
 
     public void sync(MediaItemFormatInfo formatInfo) {
-        if (formatInfo == null) {
-            return;
-        }
+        if (formatInfo == null) return;
         
         isLive = formatInfo.isLive();
 
@@ -754,9 +748,7 @@ public final class Video {
     }
 
     public void sync(DislikeData dislikeData) {
-        if (dislikeData == null) {
-            return;
-        }
+        if (dislikeData == null) return;
 
         String likeCountNew = dislikeData.getLikeCount();
         String dislikeCountNew = dislikeData.getDislikeCount();

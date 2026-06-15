@@ -373,9 +373,7 @@ public class GuidedStepFragment extends Fragment implements GuidedActionAdapter.
      * @see #expandAction(GuidedAction, boolean)
      */
     public void expandSubActions(GuidedAction action) {
-        if (!action.hasSubActions()) {
-            return;
-        }
+        if (!action.hasSubActions()) return;
         expandAction(action, true);
     }
 
@@ -1280,9 +1278,7 @@ public class GuidedStepFragment extends Fragment implements GuidedActionAdapter.
      * @param flags Either 0 or {@link FragmentManager#POP_BACK_STACK_INCLUSIVE}.
      */
     public void popBackStackToGuidedStepFragment(Class guidedStepFragmentClass, int flags) {
-        if (!GuidedStepFragment.class.isAssignableFrom(guidedStepFragmentClass)) {
-            return;
-        }
+        if (!GuidedStepFragment.class.isAssignableFrom(guidedStepFragmentClass)) return;
         final FragmentManager fragmentManager = getFragmentManager();
         final int entryCount = fragmentManager.getBackStackEntryCount();
         String className = guidedStepFragmentClass.getName();

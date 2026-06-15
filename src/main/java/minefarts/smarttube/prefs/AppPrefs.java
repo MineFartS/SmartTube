@@ -59,9 +59,7 @@ public class AppPrefs extends SharedPreferencesBase implements AccountChangeList
     }
 
     public void enableMultiProfiles(boolean enabled) {
-        if (isMultiProfilesEnabled() == enabled) {
-            return;
-        }
+        if (isMultiProfilesEnabled() == enabled) return;
 
         putBoolean(MULTI_PROFILES, enabled);
         onProfileChanged();

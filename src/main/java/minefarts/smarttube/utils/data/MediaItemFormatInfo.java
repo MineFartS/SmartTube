@@ -386,9 +386,7 @@ public class MediaItemFormatInfo {
     public void sync(MediaItemFormatInfo formatInfo) {
         mIsSynced = true;
 
-        if (formatInfo == null || Helpers.anyNull(formatInfo.getEventId(), formatInfo.getVisitorMonitoringData(), formatInfo.getOfParam())) {
-            return;
-        }
+        if (formatInfo == null || Helpers.anyNull(formatInfo.getEventId(), formatInfo.getVisitorMonitoringData(), formatInfo.getOfParam())) return;
 
         // Intended to merge signed and unsigned infos (no-playback fix)
         mEventId = formatInfo.getEventId();

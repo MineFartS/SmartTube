@@ -741,9 +741,7 @@ public class ConcatenatingMediaSource extends CompositeMediaSource<MediaSourceHo
             throw new IllegalArgumentException();
         }
         DeferredTimeline deferredTimeline = mediaSourceHolder.timeline;
-        if (deferredTimeline.getTimeline() == timeline) {
-            return;
-        }
+        if (deferredTimeline.getTimeline() == timeline) return;
         int windowOffsetUpdate = timeline.getWindowCount() - deferredTimeline.getWindowCount();
         int periodOffsetUpdate = timeline.getPeriodCount() - deferredTimeline.getPeriodCount();
         if (windowOffsetUpdate != 0 || periodOffsetUpdate != 0) {

@@ -156,9 +156,7 @@ public class BrandedSupportFragment extends Fragment {
      */
     public void showTitle(boolean show) {
         // TODO: handle interruptions?
-        if (show == mShowingTitle) {
-            return;
-        }
+        if (show == mShowingTitle) return;
         mShowingTitle = show;
         if (mTitleHelper != null) {
             mTitleHelper.showTitle(show);

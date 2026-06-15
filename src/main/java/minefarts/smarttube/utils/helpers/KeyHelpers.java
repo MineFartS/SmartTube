@@ -127,9 +127,7 @@ public class KeyHelpers {
      * More info: https://stackoverflow.com/questions/1489852/android-handle-enter-in-an-edittext
      */
     public static void fixEnterKey(EditText... editFields) {
-        if (editFields == null || editFields.length == 0) {
-            return;
-        }
+        if (editFields == null || editFields.length == 0) return;
 
         for (EditText editField : editFields) {
             editField.setOnKeyListener((v, keyCode, event) -> {
@@ -151,9 +149,7 @@ public class KeyHelpers {
     }
 
     public static void fixShowKeyboard(EditText... editFields) {
-        if (editFields == null || editFields.length == 0) {
-            return;
-        }
+        if (editFields == null || editFields.length == 0) return;
 
         for (EditText editField : editFields) {
             if (editField.getOnFocusChangeListener() != null) {

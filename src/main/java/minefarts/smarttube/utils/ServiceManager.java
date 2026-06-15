@@ -344,9 +344,7 @@ public class ServiceManager {
     }
 
     public static void removeFromWatchLaterPlaylist(Video video, Runnable onSuccess) {
-        if (video == null || !getSignInService().isSigned()) {
-            return;
-        }
+        if (video == null || !getSignInService().isSigned()) return;
 
         Disposable playlistsInfoAction = getMediaItemService().getPlaylistsInfoObserve(video.videoId)
                 .subscribe(

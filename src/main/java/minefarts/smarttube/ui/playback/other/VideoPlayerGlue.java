@@ -222,9 +222,7 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
     public void setChannelIcon(String iconUrl) {
         ChannelAction channelAction = (ChannelAction) mActions.get(R.id.action_channel);
 
-        if (channelAction == null) {
-            return;
-        }
+        if (channelAction == null) return;
 
         if (iconUrl == null) {
             channelAction.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.action_channel));

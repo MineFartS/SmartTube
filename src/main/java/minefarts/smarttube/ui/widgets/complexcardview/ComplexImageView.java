@@ -71,9 +71,7 @@ public class ComplexImageView extends RelativeLayout {
      * Sets the badge text.
      */
     public void setBadgeText(String text) {
-        if (mBadgeText == null) {
-            return;
-        }
+        if (mBadgeText == null) return;
         if (text != null) {
             mBadgeText.setText(text);
             mBadgeText.setVisibility(View.VISIBLE);
@@ -83,9 +81,7 @@ public class ComplexImageView extends RelativeLayout {
     }
 
     public void setBadgeColor(int color) {
-        if (mBadgeText == null) {
-            return;
-        }
+        if (mBadgeText == null) return;
 
         mBadgeText.setBackgroundColor(color);
     }
@@ -94,9 +90,7 @@ public class ComplexImageView extends RelativeLayout {
      * Sets the progress.
      */
     public void setProgress(int percent) {
-        if (mProgressBar == null) {
-            return;
-        }
+        if (mProgressBar == null) return;
         if (percent > 0) {
             mProgressBar.setProgress(percent);
             mProgressBar.setVisibility(View.VISIBLE);

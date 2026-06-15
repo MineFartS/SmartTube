@@ -41,13 +41,9 @@ class PathQueryString implements UrlQueryString {
 
     @Override
     public void set(String key, String value) {
-        if (mUrl == null) {
-            return;
-        }
+        if (mUrl == null) return;
 
-        if (value == null) {
-            return;
-        }
+        if (value == null) return;
 
         if (!replace(key, value)) {
             String pattern = mUrl.endsWith("/") ? "%s/%s" : "/%s/%s";
@@ -82,9 +78,7 @@ class PathQueryString implements UrlQueryString {
 
     @Override
     public void remove(String key) {
-        if (mUrl == null) {
-            return;
-        }
+        if (mUrl == null) return;
 
         final String template = "\\/%s\\/[^\\/]*";
         mUrl = mUrl.replaceAll(String.format(template, key), "");

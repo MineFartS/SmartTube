@@ -69,9 +69,7 @@ final class DetailsBackgroundVideoHelper {
     }
 
     void startParallax() {
-        if (mParallaxEffect != null) {
-            return;
-        }
+        if (mParallaxEffect != null) return;
         Parallax.IntProperty frameTop = mDetailsParallax.getOverviewRowTop();
         final float maxFrameTop = 1f;
         final float minFrameTop = 0f;
@@ -102,9 +100,7 @@ final class DetailsBackgroundVideoHelper {
 
     @SuppressWarnings("WeakerAccess") /* synthetic access */
     void updateState(int state) {
-        if (state == mCurrentState) {
-            return;
-        }
+        if (state == mCurrentState) return;
         mCurrentState = state;
         applyState();
     }
@@ -181,9 +177,7 @@ final class DetailsBackgroundVideoHelper {
         float startAlpha = crossFadeToVideo ? 1f : 0f;
         float endAlpha = crossFadeToVideo ? 0f : 1f;
 
-        if (mBackgroundDrawable == null) {
-            return;
-        }
+        if (mBackgroundDrawable == null) return;
         if (immediate) {
             mBackgroundDrawable.setAlpha(crossFadeToVideo ? 0 : 255);
             return;

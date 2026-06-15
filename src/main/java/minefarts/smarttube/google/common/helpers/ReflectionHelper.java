@@ -73,15 +73,11 @@ public class ReflectionHelper {
 
     public static void dumpDebugInfo(Class<?> type, InputStream content) {
         // Thread probably has been interrupted. Do skip.
-        if (content == null || !GlobalPreferences.isInitialized()) {
-            return;
-        }
+        if (content == null || !GlobalPreferences.isInitialized()) return;
 
         Context context = GlobalPreferences.sInstance.getContext();
 
-        if (context == null) {
-            return;
-        }
+        if (context == null) return;
 
         String fileName = String.format("%s_%s", type.getSimpleName(), AppInfoHelpers.getAppVersionName(context));
 

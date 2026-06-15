@@ -380,9 +380,7 @@ public class SimpleExoPlayer
     public void setVolume(float audioVolume) {
         verifyApplicationThread();
         audioVolume = Utils.constrainValue(audioVolume, /* min= */ 0, /* max= */ 1);
-        if (this.audioVolume == audioVolume) {
-            return;
-        }
+        if (this.audioVolume == audioVolume) return;
         this.audioVolume = audioVolume;
         sendVolumeToRenderers();
         for (AudioListener audioListener : audioListeners) {
@@ -439,9 +437,7 @@ public class SimpleExoPlayer
      */
     public void setPriorityTaskManager(@Nullable PriorityTaskManager priorityTaskManager) {
         verifyApplicationThread();
-        if (Utils.areEqual(this.priorityTaskManager, priorityTaskManager)) {
-            return;
-        }
+        if (Utils.areEqual(this.priorityTaskManager, priorityTaskManager)) return;
         if (isPriorityTaskManagerRegistered) {
             Assertions.checkNotNull(this.priorityTaskManager).remove(C.PRIORITY_PLAYBACK);
         }
@@ -522,9 +518,7 @@ public class SimpleExoPlayer
     @Override
     public void clearVideoFrameMetadataListener(VideoFrameMetadataListener listener) {
         verifyApplicationThread();
-        if (videoFrameMetadataListener != listener) {
-            return;
-        }
+        if (videoFrameMetadataListener != listener) return;
         for (Renderer renderer : renderers) {
             if (renderer.getTrackType() == C.TRACK_TYPE_VIDEO) {
                 player.createMessage(renderer).setType(C.MSG_SET_VIDEO_FRAME_METADATA_LISTENER)
@@ -548,9 +542,7 @@ public class SimpleExoPlayer
     @Override
     public void clearCameraMotionListener(CameraMotionListener listener) {
         verifyApplicationThread();
-        if (cameraMotionListener != listener) {
-            return;
-        }
+        if (cameraMotionListener != listener) return;
         for (Renderer renderer : renderers) {
             if (renderer.getTrackType() == C.TRACK_TYPE_CAMERA_MOTION) {
                 player.createMessage(renderer).setType(C.MSG_SET_CAMERA_MOTION_LISTENER)

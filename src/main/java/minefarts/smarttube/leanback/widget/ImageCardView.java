@@ -314,9 +314,7 @@ public class ImageCardView extends BaseCardView {
      * Sets the image drawable with optional fade-in animation.
      */
     public void setMainImage(Drawable drawable, boolean fade) {
-        if (mImageView == null) {
-            return;
-        }
+        if (mImageView == null) return;
 
         mImageView.setImageDrawable(drawable);
         if (drawable == null) {
@@ -387,9 +385,7 @@ public class ImageCardView extends BaseCardView {
      * Sets the title text.
      */
     public void setTitleText(CharSequence text) {
-        if (mTitleView == null) {
-            return;
-        }
+        if (mTitleView == null) return;
         mTitleView.setText(text);
     }
 
@@ -408,9 +404,7 @@ public class ImageCardView extends BaseCardView {
      * Sets the content text.
      */
     public void setContentText(CharSequence text) {
-        if (mContentView == null) {
-            return;
-        }
+        if (mContentView == null) return;
         mContentView.setText(text);
     }
 
@@ -429,9 +423,7 @@ public class ImageCardView extends BaseCardView {
      * Sets the badge image drawable.
      */
     public void setBadgeImage(Drawable drawable) {
-        if (mBadgeImage == null) {
-            return;
-        }
+        if (mBadgeImage == null) return;
         mBadgeImage.setImageDrawable(drawable);
         if (drawable != null) {
             mBadgeImage.setVisibility(View.VISIBLE);

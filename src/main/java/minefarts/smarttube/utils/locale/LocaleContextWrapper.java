@@ -59,19 +59,13 @@ public class LocaleContextWrapper extends ContextWrapper {
     }
 
     public static void applySavedLocale(Context context, Locale newLocale, DisplayMetrics customMetrics) {
-        if (context == null) {
-            return;
-        }
+        if (context == null) return;
 
-        if (newLocale == null) {
-            return;
-        }
+        if (newLocale == null) return;
 
         Resources res = context.getResources();
 
-        if (res == null) {
-            return;
-        }
+        if (res == null) return;
 
         Configuration configuration = res.getConfiguration();
 

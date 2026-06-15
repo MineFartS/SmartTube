@@ -155,9 +155,7 @@ public abstract class BasePresenter<T> {
     }
 
     private void removeItem(List<Video> items, int action) {
-        if (items.isEmpty()) {
-            return;
-        }
+        if (items.isEmpty()) return;
 
         VideoGroup removedGroup = VideoGroup.from(items);
         removedGroup.setAction(action);

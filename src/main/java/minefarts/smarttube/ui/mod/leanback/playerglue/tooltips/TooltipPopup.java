@@ -71,9 +71,7 @@ class TooltipPopup {
     }
 
     void hide() {
-        if (!isShowing()) {
-            return;
-        }
+        if (!isShowing()) return;
 
         WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
         wm.removeView(mContentView);

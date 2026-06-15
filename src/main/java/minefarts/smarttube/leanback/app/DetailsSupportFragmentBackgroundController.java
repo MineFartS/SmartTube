@@ -171,9 +171,7 @@ public class DetailsSupportFragmentBackgroundController {
     public void enableParallax(@NonNull Drawable coverDrawable, @NonNull Drawable bottomDrawable,
                                @Nullable ParallaxTarget.PropertyValuesHolderTarget
                                        coverDrawableParallaxTarget) {
-        if (mParallaxDrawable != null) {
-            return;
-        }
+        if (mParallaxDrawable != null) return;
         // if bitmap is set before enableParallax, use it as initial value.
         if (mCoverBitmap != null && coverDrawable instanceof FitWidthBitmapDrawable) {
             ((FitWidthBitmapDrawable) coverDrawable).setBitmap(mCoverBitmap);
@@ -214,9 +212,7 @@ public class DetailsSupportFragmentBackgroundController {
      */
     @SuppressWarnings("ReferenceEquality")
     public void setupVideoPlayback(@NonNull PlaybackGlue playbackGlue) {
-        if (mPlaybackGlue == playbackGlue) {
-            return;
-        }
+        if (mPlaybackGlue == playbackGlue) return;
 
         PlaybackGlueHost playbackGlueHost = null;
         if (mPlaybackGlue != null) {

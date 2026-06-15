@@ -398,9 +398,7 @@ public final class WebvttCueParser {
 
     private static void applyStyleToText(SpannableStringBuilder spannedText, WebvttCssStyle style,
             int start, int end) {
-        if (style == null) {
-            return;
-        }
+        if (style == null) return;
         if (style.getStyle() != WebvttCssStyle.UNSPECIFIED) {
             spannedText.setSpan(new StyleSpan(style.getStyle()), start, end,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

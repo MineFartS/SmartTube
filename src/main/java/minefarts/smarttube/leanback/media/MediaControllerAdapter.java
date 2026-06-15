@@ -256,9 +256,7 @@ public class MediaControllerAdapter extends PlayerAdapter {
     @Override
     public void setProgressUpdatingEnabled(boolean enabled) {
         mHandler.removeCallbacks(mPositionUpdaterRunnable);
-        if (!enabled) {
-            return;
-        }
+        if (!enabled) return;
         mHandler.postDelayed(mPositionUpdaterRunnable, getUpdatePeriod());
     }
 

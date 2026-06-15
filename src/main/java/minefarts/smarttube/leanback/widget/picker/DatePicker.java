@@ -207,9 +207,7 @@ public class DatePicker extends Picker {
             datePickerFormat = new String(
                     android.text.format.DateFormat.getDateFormatOrder(getContext()));
         }
-        if (TextUtils.equals(mDatePickerFormat, datePickerFormat)) {
-            return;
-        }
+        if (TextUtils.equals(mDatePickerFormat, datePickerFormat)) return;
         mDatePickerFormat = datePickerFormat;
         List<CharSequence> separators = extractSeparators();
         if (separators.size() != (datePickerFormat.length() + 1)) {
@@ -308,9 +306,7 @@ public class DatePicker extends Picker {
     public void setMinDate(long minDate) {
         mTempDate.setTimeInMillis(minDate);
         if (mTempDate.get(Calendar.YEAR) == mMinDate.get(Calendar.YEAR)
-                && mTempDate.get(Calendar.DAY_OF_YEAR) != mMinDate.get(Calendar.DAY_OF_YEAR)) {
-            return;
-        }
+                && mTempDate.get(Calendar.DAY_OF_YEAR) != mMinDate.get(Calendar.DAY_OF_YEAR)) return;
         mMinDate.setTimeInMillis(minDate);
         if (mCurrentDate.before(mMinDate)) {
             mCurrentDate.setTimeInMillis(mMinDate.getTimeInMillis());
@@ -343,9 +339,7 @@ public class DatePicker extends Picker {
     public void setMaxDate(long maxDate) {
         mTempDate.setTimeInMillis(maxDate);
         if (mTempDate.get(Calendar.YEAR) == mMaxDate.get(Calendar.YEAR)
-                && mTempDate.get(Calendar.DAY_OF_YEAR) != mMaxDate.get(Calendar.DAY_OF_YEAR)) {
-            return;
-        }
+                && mTempDate.get(Calendar.DAY_OF_YEAR) != mMaxDate.get(Calendar.DAY_OF_YEAR)) return;
         mMaxDate.setTimeInMillis(maxDate);
         if (mCurrentDate.after(mMaxDate)) {
             mCurrentDate.setTimeInMillis(mMaxDate.getTimeInMillis());
@@ -395,9 +389,7 @@ public class DatePicker extends Picker {
      * @param animation True to run animation to scroll the column.
      */
     public void updateDate(int year, int month, int dayOfMonth, boolean animation) {
-        if (!isNewDate(year, month, dayOfMonth)) {
-            return;
-        }
+        if (!isNewDate(year, month, dayOfMonth)) return;
         setDate(year, month, dayOfMonth);
         updateSpinners(animation);
     }

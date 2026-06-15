@@ -56,9 +56,7 @@ public class DoubleBackManager {
 
         showMsg();
 
-        if (mEnableDoubleBackExit) {
-            return;
-        }
+        if (mEnableDoubleBackExit) return;
 
         resetBackPressed();
         mEnableDoubleBackExit = true;

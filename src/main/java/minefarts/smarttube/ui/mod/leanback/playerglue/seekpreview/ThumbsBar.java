@@ -129,9 +129,7 @@ public class ThumbsBar extends LinearLayout {
     public void setNumberOfThumbs(int numOfThumbs) {
         int newNumOfThumbs = numOfThumbs != -1 ? numOfThumbs : mMeasuredNumOfThumbs;
 
-        if (newNumOfThumbs == mNumOfThumbs) {
-            return;
-        }
+        if (newNumOfThumbs == mNumOfThumbs) return;
 
         mIsUserSets = true;
         mNumOfThumbs = newNumOfThumbs;

@@ -89,9 +89,7 @@ class FragmentTransition {
     static void startTransitions(FragmentManagerImpl fragmentManager,
             ArrayList<BackStackRecord> records, ArrayList<Boolean> isRecordPop,
             int startIndex, int endIndex, boolean isReordered) {
-        if (fragmentManager.mCurState < Fragment.CREATED) {
-            return;
-        }
+        if (fragmentManager.mCurState < Fragment.CREATED) return;
 
         SparseArray<FragmentContainerTransition> transitioningFragments =
                 new SparseArray<>();
@@ -200,15 +198,11 @@ class FragmentTransition {
         if (fragmentManager.mContainer.onHasView()) {
             sceneRoot = (ViewGroup) fragmentManager.mContainer.onFindViewById(containerId);
         }
-        if (sceneRoot == null) {
-            return;
-        }
+        if (sceneRoot == null) return;
         final Fragment inFragment = fragments.lastIn;
         final Fragment outFragment = fragments.firstOut;
         final FragmentTransitionImpl impl = chooseImpl(outFragment, inFragment);
-        if (impl == null) {
-            return;
-        }
+        if (impl == null) return;
         final boolean inIsPop = fragments.lastInIsPop;
         final boolean outIsPop = fragments.firstOutIsPop;
 
@@ -298,15 +292,11 @@ class FragmentTransition {
         if (fragmentManager.mContainer.onHasView()) {
             sceneRoot = (ViewGroup) fragmentManager.mContainer.onFindViewById(containerId);
         }
-        if (sceneRoot == null) {
-            return;
-        }
+        if (sceneRoot == null) return;
         final Fragment inFragment = fragments.lastIn;
         final Fragment outFragment = fragments.firstOut;
         final FragmentTransitionImpl impl = chooseImpl(outFragment, inFragment);
-        if (impl == null) {
-            return;
-        }
+        if (impl == null) return;
         final boolean inIsPop = fragments.lastInIsPop;
         final boolean outIsPop = fragments.firstOutIsPop;
 
@@ -1008,9 +998,7 @@ class FragmentTransition {
      */
     @SuppressWarnings("WeakerAccess") /* synthetic access */
     static void setViewVisibility(ArrayList<View> views, int visibility) {
-        if (views == null) {
-            return;
-        }
+        if (views == null) return;
         for (int i = views.size() - 1; i >= 0; i--) {
             final View view = views.get(i);
             view.setVisibility(visibility);

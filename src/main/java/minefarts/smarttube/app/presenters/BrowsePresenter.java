@@ -129,9 +129,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     public void onViewInitialized() {
         super.onViewInitialized();
 
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
         updateSections();
 
@@ -156,18 +154,14 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     }
 
     private void refreshIfNeeded() {
-        if (getView() == null || !isHomeSection() || mLastUpdateTimeMs == -1 || System.currentTimeMillis() - mLastUpdateTimeMs < 3 * 60 * 60 * 1_000) {
-            return;
-        }
+        if (getView() == null || !isHomeSection() || mLastUpdateTimeMs == -1 || System.currentTimeMillis() - mLastUpdateTimeMs < 3 * 60 * 60 * 1_000) return;
 
         refresh(false);
     }
 
     private void saveSelectedItems() {
         // Fix position reset when jumping between sections
-        if (mCurrentVideo != null && mCurrentVideo.getPositionInsideGroup() == 0 && (System.currentTimeMillis() - mCurrentVideo.timestamp) < 10_000) {
-            return;
-        }
+        if (mCurrentVideo != null && mCurrentVideo.getPositionInsideGroup() == 0 && (System.currentTimeMillis() - mCurrentVideo.timestamp) < 10_000) return;
 
         if (isSubscriptionsSection() && getGeneralData().isRememberSubscriptionsPositionEnabled()) {
             getGeneralData().setSelectedItem(mCurrentSection.getId(), mCurrentVideo);
@@ -408,9 +402,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     }
 
     private void refreshSections() {
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
         // clean up (profile changed etc)
         getView().removeAllSections();
@@ -450,9 +442,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     }
 
     private void updateCategoryType(int categoryId, int categoryType) {
-        if (categoryType == -1 || categoryId == -1 || mSections == null) {
-            return;
-        }
+        if (categoryType == -1 || categoryId == -1 || mSections == null) return;
 
         BrowseSection section = mSectionsMapping.get(categoryId);
 
@@ -622,9 +612,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     }
 
     public void pinItem(Video item) {
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
         getSidebarService().addPinnedItem(item);
 
@@ -639,9 +627,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     }
 
     public void pinItem(String title, int resId, ErrorFragmentData data) {
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
         BrowseSection newSection = new BrowseSection(title.hashCode(), title, BrowseSection.TYPE_ERROR, resId, false, data);
         Helpers.removeIf(mErrorSections, section -> section.getId() == newSection.getId());
@@ -687,9 +673,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     private void updateCurrentSection() {
         disposeActions();
 
-        if (getView() == null || mCurrentSection == null) {
-            return;
-        }
+        if (getView() == null || mCurrentSection == null) return;
 
         Log.d(TAG, "Update section %s", mCurrentSection.getTitle());
         updateSection(mCurrentSection);
@@ -1081,9 +1065,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     public void onAccountChanged(Account account) {
         Log.d(TAG, "On account changed");
 
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
         initSectionMappings();
         updatePlaylistsStyle();
@@ -1112,9 +1094,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     }
 
     private void handleLoadError(Throwable error) {
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
         getView().showProgressBar(false);
 

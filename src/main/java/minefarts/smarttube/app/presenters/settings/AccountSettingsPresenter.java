@@ -87,9 +87,7 @@ public class AccountSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendSelectAccountSection(List<Account> accounts, AppDialogPresenter settingsPresenter) {
-        if (accounts == null || accounts.isEmpty()) {
-            return;
-        }
+        if (accounts == null || accounts.isEmpty()) return;
 
         List<UiOptionItem> optionItems = new ArrayList<>();
 
@@ -119,9 +117,7 @@ public class AccountSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendSignOutSection(List<Account> accounts, AppDialogPresenter settingsPresenter) {
-        if (accounts == null || accounts.isEmpty()) {
-            return;
-        }
+        if (accounts == null || accounts.isEmpty()) return;
 
         List<UiOptionItem> optionItems = new ArrayList<>();
 

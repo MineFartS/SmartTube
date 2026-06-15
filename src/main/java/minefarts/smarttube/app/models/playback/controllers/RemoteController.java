@@ -49,13 +49,11 @@ public class RemoteController extends BasePlayerController implements OnDataChan
         mRemoteControlData = RemoteControlData.instance(context);
         mRemoteControlData.setOnChange(this);
         
-        tryListening();
+        onInit();
     }
 
     @Override
-    public void onDataChange() {
-        tryListening();
-    }
+    public void onDataChange() { onInit(); }
 
     @Override
     public void onNewVideo(Video item) {
@@ -67,19 +65,22 @@ public class RemoteController extends BasePlayerController implements OnDataChan
 
     @Override
     public void onInit() {
-        tryListening();
+        if (mRemoteControlData.isDeviceLinkEnabled()) {
+            if (mListeningAction != null && !mListeningAction.isDisposed()) return;
+            Utils.postDelayed(mStartListeningInt, APP_INIT_DELAY_MS);
+        } else {
+            RxHelper.disposeActions(mListeningAction, mPostStartPlayAction, mPostStateAction, mPostVolumeAction);
+            unregisterVolumeObserver();
+            Utils.removeCallbacks(mStartListeningInt);
+        }
     }
 
     @Override
-    public void onViewResumed() {
-        tryListening();
-    }
+    public void onViewResumed() { onInit(); }
 
     @Override
     public void onVideoLoaded(Video item) {
-        if (getPlayer() == null) {
-            return;
-        }
+        if (getPlayer() == null) return;
 
         if (mNewVideoPositionMs > 0) {
             getPlayer().setPositionMs(mNewVideoPositionMs);
@@ -130,9 +131,7 @@ public class RemoteController extends BasePlayerController implements OnDataChan
     }
 
     private void postStartPlaying(@Nullable Video item, boolean isPlaying) {
-        if (isRemoteDisabled()) {
-            return;
-        }
+        if (isRemoteDisabled()) return;
 
         String videoId = null;
         long positionMs = -1;
@@ -148,9 +147,7 @@ public class RemoteController extends BasePlayerController implements OnDataChan
     }
 
     private void postStartPlaying(String videoId, long positionMs, long durationMs, boolean isPlaying) {
-        if (isRemoteDisabled()) {
-            return;
-        }
+        if (isRemoteDisabled()) return;
 
         RxHelper.disposeActions(mPostStartPlayAction);
 
@@ -160,9 +157,7 @@ public class RemoteController extends BasePlayerController implements OnDataChan
     }
 
     private void postState(long positionMs, long durationMs, boolean isPlaying) {
-        if (isRemoteDisabled()) {
-            return;
-        }
+        if (isRemoteDisabled()) return;
 
         RxHelper.disposeActions(mPostStateAction);
 
@@ -172,9 +167,7 @@ public class RemoteController extends BasePlayerController implements OnDataChan
     }
 
     private void postVolumeChange(int volume) {
-        if (isRemoteDisabled()) {
-            return;
-        }
+        if (isRemoteDisabled()) return;
 
         RxHelper.disposeActions(mPostVolumeAction);
 
@@ -184,37 +177,13 @@ public class RemoteController extends BasePlayerController implements OnDataChan
     }
 
     private void postPlay(boolean isPlaying) {
-        if (getPlayer() == null) {
-            return;
-        }
+        if (getPlayer() == null) return;
 
         postState(getPlayer().getPositionMs(), getPlayer().getDurationMs(), isPlaying);
     }
 
-    private void postSeek(long positionMs) {
-        postState(positionMs, getPlayer().getDurationMs(), getPlayer().isPlaying());
-    }
-
-    private void tryListening() {
-        if (mRemoteControlData.isDeviceLinkEnabled()) {
-            startListening();
-        } else {
-            stopListening();
-        }
-    }
-
-    private void startListening() {
-        if (mListeningAction != null && !mListeningAction.isDisposed()) {
-            return;
-        }
-
-        Utils.postDelayed(mStartListeningInt, APP_INIT_DELAY_MS);
-    }
-
     private void startListeningInt() {
-        if (mListeningAction != null && !mListeningAction.isDisposed()) {
-            return;
-        }
+        if (mListeningAction != null && !mListeningAction.isDisposed()) return;
 
         mListeningAction = mRemoteControlService.getCommandObserve()
                 .subscribe(
@@ -231,12 +200,6 @@ public class RemoteController extends BasePlayerController implements OnDataChan
                             //MessageHelpers.showMessage(getActivity(), R.string.remote_session_closed);
                         }
                 );
-    }
-
-    private void stopListening() {
-        RxHelper.disposeActions(mListeningAction, mPostStartPlayAction, mPostStateAction, mPostVolumeAction);
-        unregisterVolumeObserver();
-        Utils.removeCallbacks(mStartListeningInt);
     }
 
     private void processCommand(Command command) {
@@ -322,7 +285,11 @@ public class RemoteController extends BasePlayerController implements OnDataChan
                     getPlayer().showOverlay(false);
                     movePlayerToForeground();
                     getPlayer().setPositionMs(command.getCurrentTimeMs());
-                    postSeek(command.getCurrentTimeMs());
+                    postState(
+                        command.getCurrentTimeMs(), 
+                        getPlayer().getDurationMs(), 
+                        getPlayer().isPlaying()
+                    );
                 } else {
                     openNewVideo(getVideo());
                 }
@@ -352,7 +319,7 @@ public class RemoteController extends BasePlayerController implements OnDataChan
             case Command.TYPE_NEXT:
                 if (getMainController() != null) {
                     movePlayerToForeground();
-                    getController(VideoLoaderController.class).loadNext();
+                    getController(VideoLoaderController.class).onNextClicked();
                 } else {
                     openNewVideo(getVideo());
                 }
@@ -361,7 +328,7 @@ public class RemoteController extends BasePlayerController implements OnDataChan
                 if (getMainController() != null && getPlayer() != null) {
                     movePlayerToForeground();
                     // Switch immediately. Skip position reset logic.
-                    getController(VideoLoaderController.class).loadPrevious();
+                    getController(VideoLoaderController.class).onPreviousClicked();
                 } else {
                     openNewVideo(getVideo());
                 }
@@ -493,9 +460,7 @@ public class RemoteController extends BasePlayerController implements OnDataChan
     }
 
     private void registerVolumeObserver() {
-        if (mVolumeObserver != null) {
-            return;
-        }
+        if (mVolumeObserver != null) return;
 
         mVolumeObserver = new ContentObserver(Utils.sHandler) {
             @Override
@@ -522,6 +487,6 @@ public class RemoteController extends BasePlayerController implements OnDataChan
     }
 
     private boolean isRemoteDisabled() {
-        return !mRemoteControlData.isDeviceLinkEnabled() || !isConnectedBefore() || isEmbedPlayer();
+        return !mRemoteControlData.isDeviceLinkEnabled() || !isConnectedBefore();
     }
 }

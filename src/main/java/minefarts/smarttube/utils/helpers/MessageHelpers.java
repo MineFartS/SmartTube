@@ -37,9 +37,7 @@ public class MessageHelpers {
 
     public static void showMessageThrottled(final Context ctx, final String msg) {
         // throttle msg calls
-        if (System.currentTimeMillis() - sExitMsgTimeMS < LONG_MSG_TIMEOUT_MS) {
-            return;
-        }
+        if (System.currentTimeMillis() - sExitMsgTimeMS < LONG_MSG_TIMEOUT_MS) return;
         sExitMsgTimeMS = System.currentTimeMillis();
         showMessage(ctx, msg);
     }
@@ -53,9 +51,7 @@ public class MessageHelpers {
     }
 
     public static void showMessage(final Context ctx, final String msg, final boolean isLong) {
-        if (ctx == null || msg == null || msg.isEmpty()) {
-            return;
-        }
+        if (ctx == null || msg == null || msg.isEmpty()) return;
 
         final Context context = ctx.getApplicationContext(); // memory leak fix
 

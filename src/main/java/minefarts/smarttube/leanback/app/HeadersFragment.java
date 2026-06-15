@@ -161,9 +161,7 @@ public class HeadersFragment extends BaseRowFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final VerticalGridView listView = getVerticalGridView();
-        if (listView == null) {
-            return;
-        }
+        if (listView == null) return;
         if (mBackgroundColorSet) {
             listView.setBackgroundColor(mBackgroundColor);
             updateFadingEdgeToBrandColor(mBackgroundColor);

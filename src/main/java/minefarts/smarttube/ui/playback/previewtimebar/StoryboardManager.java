@@ -58,9 +58,7 @@ public class StoryboardManager {
 
         RxHelper.disposeActions(mFormatAction);
 
-        if (video == null || video.isUpcoming) {
-            return;
-        }
+        if (video == null || video.isUpcoming) return;
 
         Observable<MediaItemStoryboard> storyboardObserve;
 
@@ -81,15 +79,11 @@ public class StoryboardManager {
     }
 
     private void initSeekPositions() {
-        if (mLengthMs <= 0 || mStoryboard == null) {
-            return;
-        }
+        if (mLengthMs <= 0 || mStoryboard == null) return;
 
         long frameDurationMS = getFrameDurationMsAlt();
 
-        if (frameDurationMS <= 100) {
-            return;
-        }
+        if (frameDurationMS <= 100) return;
 
         int size = (int) (mLengthMs / frameDurationMS);
         mSeekPositions = new long[size];
@@ -116,17 +110,13 @@ public class StoryboardManager {
     }
 
     public void getBitmap(int index, Callback callback) {
-        if (mStoryboard == null || mSeekPositions == null || index >= mSeekPositions.length) {
-            return;
-        }
+        if (mStoryboard == null || mSeekPositions == null || index >= mSeekPositions.length) return;
 
         loadPreview(mSeekPositions[index], callback);
     }
 
     private void loadPreview(long currentPosition, Callback callback) {
-        if (mStoryboard == null || mStoryboard.getGroupDurationMS() == 0) {
-            return;
-        }
+        if (mStoryboard == null || mStoryboard.getGroupDurationMS() == 0) return;
 
         int groupNum = (int) currentPosition / mStoryboard.getGroupDurationMS();
         long realPosMS = currentPosition % mStoryboard.getGroupDurationMS();
@@ -165,9 +155,7 @@ public class StoryboardManager {
     }
 
     private void preloadNextImage() {
-        if (mStoryboard == null) {
-            return;
-        }
+        if (mStoryboard == null) return;
 
         for (int i = 1; i <= MAX_PRELOADED_IMAGES; i++) {
             int imgNum = mSeekDirection == DIRECTION_RIGHT ? mCurrentImgNum + i : mCurrentImgNum - i; // get next image
@@ -176,9 +164,7 @@ public class StoryboardManager {
     }
 
     private void preloadImage(int imgNum) {
-        if (mCachedImageNums.contains(imgNum) || imgNum < 0) {
-            return;
-        }
+        if (mCachedImageNums.contains(imgNum) || imgNum < 0) return;
 
         Log.d(TAG, "Oops, image #" + imgNum + " didn't cached yet");
 

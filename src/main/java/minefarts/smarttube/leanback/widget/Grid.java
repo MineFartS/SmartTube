@@ -197,9 +197,7 @@ abstract class Grid {
         if (numRows <= 0) {
             throw new IllegalArgumentException();
         }
-        if (mNumRows == numRows) {
-            return;
-        }
+        if (mNumRows == numRows) return;
         mNumRows = numRows;
         mTmpItemPositionsInRows = new CircularIntArray[mNumRows];
         for (int i = 0; i < mNumRows; i++) {
@@ -237,12 +235,8 @@ abstract class Grid {
      * be called because the index might be invalidated.
      */
     public void invalidateItemsAfter(int index) {
-        if (index < 0) {
-            return;
-        }
-        if (mLastVisibleIndex < 0) {
-            return;
-        }
+        if (index < 0) return;
+        if (mLastVisibleIndex < 0) return;
         if (mLastVisibleIndex >= index) {
             mLastVisibleIndex = index - 1;
         }

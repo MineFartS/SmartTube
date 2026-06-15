@@ -88,9 +88,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackFragment2> implemen
      * Opens video item from splash view
      */
     public void openVideo(String videoId, boolean finishOnEnded, long timeMs) {
-        if (videoId == null) {
-            return;
-        }
+        if (videoId == null) return;
 
         Video video = Video.from(videoId);
         video.finishOnEnded = finishOnEnded;
@@ -100,9 +98,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackFragment2> implemen
     }
 
     public void openVideo(Video video) {
-        if (video == null) {
-            return;
-        }
+        if (video == null) return;
 
         if (getView() != null && getView().isEmbed()) { // switching from the embed player to the fullscreen one
             // The embed player doesn't disposed properly

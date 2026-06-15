@@ -130,21 +130,15 @@ public class LocaleUpdater {
 
     @SuppressWarnings("deprecation")
     public static void applySavedLocale(Context context) {
-        if (context == null) {
-            return;
-        }
+        if (context == null) return;
 
         Locale newLocale = LocaleUpdater.getSavedLocale(context);
 
-        if (newLocale == null) {
-            return;
-        }
+        if (newLocale == null) return;
 
         Resources res = context.getResources();
 
-        if (res == null) {
-            return;
-        }
+        if (res == null) return;
 
         Configuration configuration = res.getConfiguration();
 

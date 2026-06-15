@@ -88,9 +88,7 @@ public final class YouTubeHelper {
     }
 
     public static void filterIfNeeded(MediaGroup mediaGroup) {
-        if (mediaGroup == null || mediaGroup.getMediaItems() == null) {
-            return;
-        }
+        if (mediaGroup == null || mediaGroup.getMediaItems() == null) return;
 
         if (mediaGroup.getType() == MediaGroup.TYPE_SUBSCRIPTIONS) {
             // LIVE & UPCOMING videos always on top

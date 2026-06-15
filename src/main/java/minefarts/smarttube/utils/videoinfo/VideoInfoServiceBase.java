@@ -46,9 +46,7 @@ public abstract class VideoInfoServiceBase {
     }
 
     protected void transformFormats(VideoInfo videoInfo) {
-        if (videoInfo == null || videoInfo.isUnplayable()) {
-            return;
-        }
+        if (videoInfo == null || videoInfo.isUnplayable()) return;
 
         decipherFormats(videoInfo);
 
@@ -105,9 +103,7 @@ public abstract class VideoInfoServiceBase {
     }
 
     private static void applySignatures(List<VideoUrlHolder> urlHolders, List<String> signatures) {
-        if (signatures == null) {
-            return;
-        }
+        if (signatures == null) return;
 
         if (signatures.size() != urlHolders.size()) {
             throw new IllegalStateException("Sizes of urlHolders and signatures should match!");
@@ -119,9 +115,7 @@ public abstract class VideoInfoServiceBase {
     }
 
     private static void applyNParams(List<VideoUrlHolder> urlHolders, List<String> nParams) {
-        if (nParams == null || nParams.isEmpty()) {
-            return;
-        }
+        if (nParams == null || nParams.isEmpty()) return;
 
         // All throttled strings has same values
         boolean sameSize = nParams.size() == urlHolders.size();
