@@ -177,15 +177,13 @@ public class VideoStateController extends BasePlayerController {
             
     @Override
     public void onMetadata(MediaItemMetadata metadata) {
-        // Channel info should be loaded at this point
-        restoreSubtitleFormat();
-
         // Need to contain channel id
         onBuffering();
 
         // NOTE: needed for the restore after oom crash?
         onTickle(); // start watching?
     }
+
 
     @Override
     public void onEngineError(int type, int rendererIndex, Throwable error) {
@@ -201,8 +199,9 @@ public class VideoStateController extends BasePlayerController {
 
     @Override
     public void onVideoLoaded(Video item) {
-        // In this state video length is not undefined.
         if (getPlayer() == null|| item == null) return;
+        
+        restoreSubtitleFormat();
 
         State state = getStateService().getByVideoId(item.videoId);
 
@@ -296,11 +295,10 @@ public class VideoStateController extends BasePlayerController {
         getPlayer().setFormat(getPlayerData().getFormat(FormatItem.TYPE_VIDEO));
         getPlayer().setFormat(getPlayerData().getFormat(FormatItem.TYPE_AUDIO));
 
-        // We don't know yet do we really need a subs.
-        // NOTE: Some subs can hang the app.
-        restoreSubtitleFormat();
-
+        // Subtitle restoration must wait until ExoPlayer has prepared mapped track info.
+        // Restoring too early causes TrackSelectorManager failures.
     }
+
 
     @Override
     public void onSpeedChanged(float speed) {
