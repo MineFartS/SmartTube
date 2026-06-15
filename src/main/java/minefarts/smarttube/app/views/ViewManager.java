@@ -105,9 +105,7 @@ public class ViewManager {
      */
     public void startView(Class<?> viewClass, boolean forceStart) {
         // Skip starting activity twice to get rid of pausing/resuming activity cycle
-        if (Utils.isAppInForegroundFixed() && getTopView() == viewClass) {
-            return;
-        }
+        if (Utils.isAppInForegroundFixed() && getTopView() == viewClass) return;
 
         mIsMoveToBackEnabled = false; // Essential part or new view will be pause immediately
 
@@ -269,9 +267,7 @@ public class ViewManager {
 
     public void enablePlayerOnlyMode(boolean enable) {
         // Ensure that we're not opening tube link from description dialog
-        if (enable && AppDialogPresenter.instance(mContext).isDialogShown()) {
-            return;
-        }
+        if (enable && AppDialogPresenter.instance(mContext).isDialogShown()) return;
 
         mIsPlayerOnlyModeEnabled = enable;
     }
@@ -488,9 +484,7 @@ public class ViewManager {
     }
 
     private void runOnFinish() {
-        if (mOnFinish == null) {
-            return;
-        }
+        if (mOnFinish == null) return;
 
         mOnFinish.forEach(Runnable::run);
     }

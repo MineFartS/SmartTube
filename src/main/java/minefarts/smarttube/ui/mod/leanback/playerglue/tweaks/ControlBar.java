@@ -115,9 +115,7 @@ class ControlBar extends LinearLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (mChildMarginFromCenter <= 0) {
-            return;
-        }
+        if (mChildMarginFromCenter <= 0) return;
 
         int totalExtraMargin = 0;
         for (int i = 0; i < getChildCount() - 1; i++) {

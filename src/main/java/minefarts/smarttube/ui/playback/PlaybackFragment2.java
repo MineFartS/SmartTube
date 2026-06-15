@@ -296,12 +296,31 @@ public class PlaybackFragment2
         mTrackSelectorManager = mExoPlayerController.mTrackSelectorManager;
 
         // Fix open previous video
-        if (mPlaybackPresenter.getVideo() != null) {
+        if (mPlaybackPresenter.getVideo() != null)
             mSelectedVideoId = null;
-        }
 
-        initPresenters();
-        setupEventListeners();
+        mRowPresenter = new CustomListRowPresenter() {
+            protected void onBindRowViewHolder(RowPresenter.ViewHolder holder, Object item) {
+                super.onBindRowViewHolder(holder, item);
+
+                focusPendingSuggestedItem(holder);
+            }
+
+            protected void onRowViewSelected(RowPresenter.ViewHolder holder, boolean selected) {
+                super.onRowViewSelected(holder, selected);
+
+                updatePlayerBackground();
+
+            }
+        };
+
+        mCardPresenter = new VideoCardPresenter();
+        mShortsPresenter = new ShortsCardPresenter();
+
+        setOnItemViewClickedListener(new ItemViewClickedListener());
+        setOnItemViewSelectedListener(new ItemViewSelectedListener());
+        mCardPresenter.setOnItemViewLongPressedListener(new ItemViewLongPressedListener());
+        mShortsPresenter.setOnItemViewLongPressedListener(new ItemViewLongPressedListener());
     }
 
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -411,9 +430,7 @@ public class PlaybackFragment2
         int gestureAreaWidthPx = 100;
 
         // Reserve left area for gestures
-        if (event.getAxisValue(MotionEvent.AXIS_X) < gestureAreaWidthPx) {
-            return;
-        }
+        if (event.getAxisValue(MotionEvent.AXIS_X) < gestureAreaWidthPx) return;
 
         // Reserve right area for gestures
         if (getActivity() != null) {
@@ -593,7 +610,16 @@ public class PlaybackFragment2
 
         if (player != null) {
             try {
-                player.setAudioAttributes(getAudioAttributes(), true);
+
+                if (sAudioAttributes == null) {
+                    sAudioAttributes = new AudioAttributes.Builder()
+                        .setUsage(C.USAGE_MEDIA)
+                        .setContentType(C.CONTENT_TYPE_MOVIE)
+                        .build();
+                }
+
+                player.setAudioAttributes(sAudioAttributes, true);
+
             } catch (SecurityException e) { // uid 10390 not allowed to perform TAKE_AUDIO_FOCUS
                 e.printStackTrace();
             }
@@ -607,17 +633,6 @@ public class PlaybackFragment2
         }
 
         return player;
-    }
-
-    private static AudioAttributes getAudioAttributes() {
-        if (sAudioAttributes == null) {
-            sAudioAttributes = new AudioAttributes.Builder()
-                    .setUsage(C.USAGE_MEDIA)
-                    .setContentType(C.CONTENT_TYPE_MOVIE)
-                    .build();
-        }
-
-        return sAudioAttributes;
     }
 
     private void initializePlayer() {
@@ -653,56 +668,15 @@ public class PlaybackFragment2
             mPlayer.getTextComponent().addTextOutput(mSubtitleManager);
 
         // -------- Create Media Session --------
-        createMediaSession();
-
-        // -------- Initialize Player Rows --------
-
-        mRowsSupportFragment = (RowsSupportFragment) getChildFragmentManager().findFragmentById(R.id.playback_controls_dock);
-
-        ClassPresenterSelector presenterSelector = new ClassPresenterSelector();
-        presenterSelector.addClassPresenter(
-                mPlayerGlue.getControlsRow().getClass(), 
-                mPlayerGlue.getPlaybackRowPresenter()
-        );
-        presenterSelector.addClassPresenter(ListRow.class, mRowPresenter);
-
-        mRowsAdapter = new ArrayObjectAdapter(presenterSelector);
-
-        mRowsAdapter.add(mPlayerGlue.getControlsRow());
-
-        setAdapter(mRowsAdapter);
-
-        mPlaybackPresenter.setView(this); // replaced by the embed player?
-        mPlaybackPresenter.onEngineInitialized();
-    }
-
-    private void createMediaSession() {
-        if (VERSION.SDK_INT <= 19 || getContext() == null) {
-            // Fix Android 4.4 bug: java.lang.IllegalArgumentException: MediaButtonReceiver component may not be null
-            return;
-        }
-
-        // NOTE: No way to disable only a notifications. We need to disable the media session instead.
-
         mMediaSession = new MediaSessionCompat(getContext(), getContext().getPackageName());
 
         mMediaSession.setActive(Helpers.isAndroidTVLauncher(getContext()));
         mMediaSessionConnector = new MediaSessionConnector(mMediaSession);
-
-        try {
-            mMediaSessionConnector.setPlayer(mPlayer);
-        } catch (NoSuchMethodError e) {
-            // Android 9, Sony
-            // No virtual method setState(IJFJ)Landroid/media/session/PlaybackState$Builder;
-            // in class Landroid/media/session/PlaybackState$Builder;
-            return;
-        }
+        mMediaSessionConnector.setPlayer(mPlayer);
 
         // NOTE: Don't set to null. This won't disable a notifications but makes them empty.
         mMediaSessionConnector.setMediaMetadataProvider(player -> {
-            if (getVideo() == null) {
-                return null;
-            }
+            if (getVideo() == null) return null;
 
             MediaMetadataCompat.Builder metadataBuilder = new MediaMetadataCompat.Builder();
 
@@ -732,33 +706,25 @@ public class PlaybackFragment2
 
         mMediaSessionConnector.setControlDispatcher(new DefaultControlDispatcher());
 
-    }
+        // -------- Initialize Player Rows --------
 
-    private void initPresenters() {
-        mRowPresenter = new CustomListRowPresenter() {
-            protected void onBindRowViewHolder(RowPresenter.ViewHolder holder, Object item) {
-                super.onBindRowViewHolder(holder, item);
+        mRowsSupportFragment = (RowsSupportFragment) getChildFragmentManager().findFragmentById(R.id.playback_controls_dock);
 
-                focusPendingSuggestedItem(holder);
-            }
+        ClassPresenterSelector presenterSelector = new ClassPresenterSelector();
+        presenterSelector.addClassPresenter(
+            mPlayerGlue.getControlsRow().getClass(), 
+            mPlayerGlue.getPlaybackRowPresenter()
+        );
+        presenterSelector.addClassPresenter(ListRow.class, mRowPresenter);
 
-            protected void onRowViewSelected(RowPresenter.ViewHolder holder, boolean selected) {
-                super.onRowViewSelected(holder, selected);
+        mRowsAdapter = new ArrayObjectAdapter(presenterSelector);
 
-                updatePlayerBackground();
+        mRowsAdapter.add(mPlayerGlue.getControlsRow());
 
-            }
-        };
+        setAdapter(mRowsAdapter);
 
-        mCardPresenter = new VideoCardPresenter();
-        mShortsPresenter = new ShortsCardPresenter();
-    }
-
-    private void setupEventListeners() {
-        setOnItemViewClickedListener(new ItemViewClickedListener());
-        setOnItemViewSelectedListener(new ItemViewSelectedListener());
-        mCardPresenter.setOnItemViewLongPressedListener(new ItemViewLongPressedListener());
-        mShortsPresenter.setOnItemViewLongPressedListener(new ItemViewLongPressedListener());
+        mPlaybackPresenter.setView(this); // replaced by the embed player?
+        mPlaybackPresenter.onEngineInitialized();
     }
 
     private final class ItemViewLongPressedListener implements OnItemLongPressedListener {
@@ -955,9 +921,7 @@ public class PlaybackFragment2
     }
 
     public void showProgressBar(boolean show) {
-        if (getProgressBarManager() == null) {
-            return;
-        }
+        if (getProgressBarManager() == null) return;
 
         if (show) {
             getProgressBarManager().show();
@@ -969,9 +933,7 @@ public class PlaybackFragment2
 
     protected void onBufferingStateChanged(boolean start) {
         // Fix progress stop when playing videos non-stop (stop buffer event from previous video called)
-        if (!start && System.currentTimeMillis() - mProgressShowTimeMs < 100) {
-            return;
-        }
+        if (!start && System.currentTimeMillis() - mProgressShowTimeMs < 100) return;
 
         super.onBufferingStateChanged(start);
     }
@@ -1180,9 +1142,7 @@ public class PlaybackFragment2
         super.showControlsOverlay(true);
 
         // Do throttle. Called so many times. Rely on boxing because initial state is unknown.
-        if (mIsControlsShownPreviously != null && mIsControlsShownPreviously) {
-            return;
-        }
+        if (mIsControlsShownPreviously != null && mIsControlsShownPreviously) return;
 
         updatePlayerBackground();
 
@@ -1202,9 +1162,7 @@ public class PlaybackFragment2
         super.hideControlsOverlay(true);
 
         // Do throttle. Called so many times. Rely on boxing because initial state is unknown.
-        if (mIsControlsShownPreviously != null && !mIsControlsShownPreviously) {
-            return;
-        }
+        if (mIsControlsShownPreviously != null && !mIsControlsShownPreviously) return;
 
         if (mPlayerGlue != null) {
             mPlayerGlue.setControlsVisibility(false);
@@ -1336,9 +1294,7 @@ public class PlaybackFragment2
     }
 
     public void removeSuggestions(VideoGroup group) {
-        if (group == null) {
-            return;
-        }
+        if (group == null) return;
 
         VideoGroupObjectAdapter adapter = mVideoGroupAdapters.get(group.getId());
 
@@ -1417,9 +1373,7 @@ public class PlaybackFragment2
     }
 
     public void focusSuggestedItem(Video video) {
-        if (mPendingFocus != null || video == null || video.getGroup() == null) {
-            return;
-        }
+        if (mPendingFocus != null || video == null || video.getGroup() == null) return;
 
         mPendingFocus = video;
 
@@ -1427,9 +1381,7 @@ public class PlaybackFragment2
     }
 
     private void focusPendingSuggestedItem(ViewHolder holder) {
-        if (mPendingFocus == null || mPendingFocus.getGroup() == null || mRowsSupportFragment == null) {
-            return;
-        }
+        if (mPendingFocus == null || mPendingFocus.getGroup() == null || mRowsSupportFragment == null) return;
 
         VideoGroupObjectAdapter existingAdapter = mVideoGroupAdapters.get(mPendingFocus.getGroup().getId());
 
@@ -1577,9 +1529,7 @@ public class PlaybackFragment2
      * @param inSeek True to make other rows visible, false to make other rows invisible.
      */
     private void setSeekMode(boolean inSeek) {
-        if (mInSeek == inSeek) {
-            return;
-        }
+        if (mInSeek == inSeek) return;
         mInSeek = inSeek;
         if (mInSeek) {
             stopFadeTimer();

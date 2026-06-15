@@ -359,9 +359,7 @@ public class VideoInfo {
      * Sync live data
      */
     public void sync(DashInfo dashInfo) {
-        if (dashInfo == null) {
-            return;
-        }
+        if (dashInfo == null) return;
 
         mSegmentDurationUs = dashInfo.getSegmentDurationUs();
         mStartTimeMs = dashInfo.getStartTimeMs();

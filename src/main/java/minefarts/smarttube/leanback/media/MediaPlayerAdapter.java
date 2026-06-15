@@ -231,9 +231,7 @@ public class MediaPlayerAdapter extends PlayerAdapter {
     void setDisplay(SurfaceHolder surfaceHolder) {
         boolean hadDisplay = mHasDisplay;
         mHasDisplay = surfaceHolder != null;
-        if (hadDisplay == mHasDisplay) {
-            return;
-        }
+        if (hadDisplay == mHasDisplay) return;
         mPlayer.setDisplay(surfaceHolder);
         if (mHasDisplay) {
             if (mInitialized) {
@@ -250,9 +248,7 @@ public class MediaPlayerAdapter extends PlayerAdapter {
     @Override
     public void setProgressUpdatingEnabled(final boolean enabled) {
         mHandler.removeCallbacks(mRunnable);
-        if (!enabled) {
-            return;
-        }
+        if (!enabled) return;
         mHandler.postDelayed(mRunnable, getProgressUpdatingInterval());
     }
 
@@ -282,9 +278,7 @@ public class MediaPlayerAdapter extends PlayerAdapter {
 
     @Override
     public void play() {
-        if (!mInitialized || mPlayer.isPlaying()) {
-            return;
-        }
+        if (!mInitialized || mPlayer.isPlaying()) return;
         mPlayer.start();
         getCallback().onPlayStateChanged(MediaPlayerAdapter.this);
         getCallback().onCurrentPositionChanged(MediaPlayerAdapter.this);
@@ -300,9 +294,7 @@ public class MediaPlayerAdapter extends PlayerAdapter {
 
     @Override
     public void seekTo(long newPosition) {
-        if (!mInitialized) {
-            return;
-        }
+        if (!mInitialized) return;
         mPlayer.seekTo((int) newPosition);
     }
 

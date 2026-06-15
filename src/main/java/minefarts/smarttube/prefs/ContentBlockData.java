@@ -122,9 +122,7 @@ public class ContentBlockData {
     }
 
     public void toggleExcludeChannel(String channelId) {
-        if (channelId == null) {
-            return;
-        }
+        if (channelId == null) return;
 
         if (isChannelExcluded(channelId)) {
             stopExcludingChannel(channelId);

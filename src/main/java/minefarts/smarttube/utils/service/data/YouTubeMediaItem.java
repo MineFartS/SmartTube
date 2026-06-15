@@ -549,9 +549,7 @@ public class YouTubeMediaItem implements MediaItem {
     }
 
     public void sync(MediaItemMetadata metadata) {
-        if (metadata == null) {
-            return;
-        }
+        if (metadata == null) return;
 
         mTitle = metadata.getTitle();
         mSecondTitle = metadata.getSecondTitle();

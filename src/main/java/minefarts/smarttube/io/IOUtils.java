@@ -434,9 +434,7 @@ public class IOUtils {
      */
     @Deprecated
     public static void closeQuietly(final Closeable... closeables) {
-        if (closeables == null) {
-            return;
-        }
+        if (closeables == null) return;
         for (final Closeable closeable : closeables) {
             closeQuietly(closeable);
         }
@@ -3266,9 +3264,7 @@ public class IOUtils {
      */
     public static void writeLines(final Collection<?> lines, String lineEnding, final OutputStream output,
                                   final Charset charset) throws IOException {
-        if (lines == null) {
-            return;
-        }
+        if (lines == null) return;
         if (lineEnding == null) {
             lineEnding = System.lineSeparator();
         }
@@ -3318,9 +3314,7 @@ public class IOUtils {
      */
     public static void writeLines(final Collection<?> lines, String lineEnding,
                                   final Writer writer) throws IOException {
-        if (lines == null) {
-            return;
-        }
+        if (lines == null) return;
         if (lineEnding == null) {
             lineEnding = System.lineSeparator();
         }

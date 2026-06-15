@@ -92,9 +92,7 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
         
         List<String> changes = GeneralData.instance(getContext()).getChangelog();
 
-        if (changes == null || changes.isEmpty()) {
-            return;
-        }
+        if (changes == null || changes.isEmpty()) return;
 
         List<UiOptionItem> changelog = new ArrayList<>();
 

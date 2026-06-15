@@ -307,8 +307,4 @@ public abstract class BasePlayerController extends ServiceManager implements Pla
         return PlaybackPresenter.instance(getContext());
     }
 
-    protected boolean isEmbedPlayer() {
-        return getPlayer() != null && getPlayer().isEmbed();
-    }
-
 }

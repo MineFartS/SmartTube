@@ -637,7 +637,6 @@
     <string name="paid_content_notification">Paid content notification</string>
     <string name="you_liked">you liked</string>
     <string name="premium_users_only">Premium users only. Fix for incomplete video format list</string>
-    <string name="playback_buffering_fix">Playback buffering fix</string>
     <string name="card_preview_muted">Video without sound</string>
     <string name="card_preview_full">Video with sound</string>
     <string name="card_preview">Card preview</string>

@@ -469,9 +469,7 @@ public abstract class Parallax<PropertyT extends android.util.Property> {
      * each other.
      */
     void verifyIntProperties() throws IllegalStateException {
-        if (mProperties.size() < 2) {
-            return;
-        }
+        if (mProperties.size() < 2) return;
         int last = getIntPropertyValue(0);
         for (int i = 1; i < mProperties.size(); i++) {
             int v = getIntPropertyValue(i);
@@ -491,9 +489,7 @@ public abstract class Parallax<PropertyT extends android.util.Property> {
     }
 
     final void verifyFloatProperties() throws IllegalStateException {
-        if (mProperties.size() < 2) {
-            return;
-        }
+        if (mProperties.size() < 2) return;
         float last = getFloatPropertyValue(0);
         for (int i = 1; i < mProperties.size(); i++) {
             float v = getFloatPropertyValue(i);

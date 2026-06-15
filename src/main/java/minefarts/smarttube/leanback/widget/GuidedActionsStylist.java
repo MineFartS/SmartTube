@@ -754,9 +754,7 @@ public class GuidedActionsStylist implements FragmentAnimationProvider {
         final GuidedActionAdapter guidedActionAdapter =
                 (GuidedActionAdapter) getActionsGridView().getAdapter();
         int actionIndex = guidedActionAdapter.getActions().indexOf(action);
-        if (actionIndex < 0 || !action.isEditable()) {
-            return;
-        }
+        if (actionIndex < 0 || !action.isEditable()) return;
 
         getActionsGridView().setSelectedPosition(actionIndex, new ViewHolderTask() {
             @Override
@@ -1171,14 +1169,10 @@ public class GuidedActionsStylist implements FragmentAnimationProvider {
      * @param withTransition True to run transition animation, false otherwsie.
      */
     public void expandAction(GuidedAction action, final boolean withTransition) {
-        if (isInExpandTransition() || mExpandedAction != null) {
-            return;
-        }
+        if (isInExpandTransition() || mExpandedAction != null) return;
         int actionPosition =
                 ((GuidedActionAdapter) getActionsGridView().getAdapter()).indexOf(action);
-        if (actionPosition < 0) {
-            return;
-        }
+        if (actionPosition < 0) return;
         boolean runTransition = isExpandTransitionSupported() && withTransition;
         if (!runTransition) {
             getActionsGridView().setSelectedPosition(actionPosition,
@@ -1221,15 +1215,11 @@ public class GuidedActionsStylist implements FragmentAnimationProvider {
      * @param withTransition True to run transition animation, false otherwsie.
      */
     public void collapseAction(boolean withTransition) {
-        if (isInExpandTransition() || mExpandedAction == null) {
-            return;
-        }
+        if (isInExpandTransition() || mExpandedAction == null) return;
         boolean runTransition = isExpandTransitionSupported() && withTransition;
         int actionPosition =
                 ((GuidedActionAdapter) getActionsGridView().getAdapter()).indexOf(mExpandedAction);
-        if (actionPosition < 0) {
-            return;
-        }
+        if (actionPosition < 0) return;
         if (mExpandedAction.hasEditableActivatorView()) {
             setEditingMode(
                     ((ViewHolder) getActionsGridView().findViewHolderForPosition(actionPosition)),

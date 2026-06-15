@@ -55,9 +55,7 @@ public class SignInFragment extends GuidedStepSupportFragment implements SignInV
     }
 
     private void setTitle(String userCode, String signInUrl) {
-        if (TextUtils.isEmpty(userCode)) {
-            return;
-        }
+        if (TextUtils.isEmpty(userCode)) return;
 
         getGuidanceStylist().getTitleView().setText(userCode);
 

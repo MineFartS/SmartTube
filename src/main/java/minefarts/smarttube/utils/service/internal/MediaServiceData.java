@@ -218,9 +218,7 @@ public class MediaServiceData {
             mFailedAppInfo = null;
         }
 
-        if (Helpers.equals(mAppInfo, appInfo)) {
-            return;
-        }
+        if (Helpers.equals(mAppInfo, appInfo)) return;
 
         mAppInfo = appInfo;
 
@@ -232,9 +230,7 @@ public class MediaServiceData {
     }
 
     public void setFailedAppInfo(AppInfoCached appInfo) {
-        if (Helpers.equals(mFailedAppInfo, appInfo)) {
-            return;
-        }
+        if (Helpers.equals(mFailedAppInfo, appInfo)) return;
 
         mFailedAppInfo = appInfo;
 
@@ -301,9 +297,7 @@ public class MediaServiceData {
 
     public void persistState() {
 
-        if (mGlobalPrefs == null) {
-            return;
-        }
+        if (mGlobalPrefs == null) return;
 
         mGlobalPrefs.setMediaServiceData(Helpers.mergeData(
         /* 00 */ mScreenId, 

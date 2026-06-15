@@ -85,9 +85,7 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
     public void onPreferenceStartInitialScreen() {
         // FIX: Can not perform this action after onSaveInstanceState
 
-        if (!Utils.checkActivity(getActivity())) {
-            return;
-        }
+        if (!Utils.checkActivity(getActivity())) return;
 
         try {
             // Fix mPresenter in null after init stage.
@@ -122,9 +120,7 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
 
     @Override
     public void show(List<OptionCategory> categories, String title, boolean isExpandable, boolean isTransparent, boolean isOverlay, int id) {
-        if (!Utils.checkActivity(getActivity())) {
-            return;
-        }
+        if (!Utils.checkActivity(getActivity())) return;
 
         // Only root fragment could make other fragments in the stack transparent
         boolean stackIsEmpty = getChildFragmentManager() != null && getChildFragmentManager().getBackStackEntryCount() == 0;

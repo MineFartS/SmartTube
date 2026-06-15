@@ -188,9 +188,7 @@ public class MediaPlayerGlue extends PlaybackControlGlue implements OnItemViewSe
     public void enableProgressUpdating(final boolean enabled) {
         if (mRunnable != null)
             mHandler.removeCallbacks(mRunnable);
-        if (!enabled) {
-            return;
-        }
+        if (!enabled) return;
         if (mRunnable == null) {
             mRunnable = new Runnable() {
                 @Override
@@ -314,9 +312,7 @@ public class MediaPlayerGlue extends PlaybackControlGlue implements OnItemViewSe
 
     @Override
     public void play(int speed) {
-        if (!mInitialized || mPlayer.isPlaying()) {
-            return;
-        }
+        if (!mInitialized || mPlayer.isPlaying()) return;
         mPlayer.start();
         onMetadataChanged();
         onStateChanged();
@@ -371,9 +367,7 @@ public class MediaPlayerGlue extends PlaybackControlGlue implements OnItemViewSe
      * @param newPosition The new position of the media track in milliseconds.
      */
     protected void seekTo(int newPosition) {
-        if (!mInitialized) {
-            return;
-        }
+        if (!mInitialized) return;
         mPlayer.seekTo(newPosition);
     }
 

@@ -41,9 +41,7 @@ public class Queue {
      * @param video to be added to the playlist.
      */
     public static void add(Video video) {
-        if (Video.isEmpty(video)) {
-            return;
-        }
+        if (Video.isEmpty(video)) return;
 
         Video current = getCurrent();
 
@@ -91,9 +89,7 @@ public class Queue {
     }
 
     public static void remove(Video video) {
-        if (Video.isEmpty(video)) {
-            return;
-        }
+        if (Video.isEmpty(video)) return;
 
         int index = mQueue.indexOf(video);
 
@@ -163,9 +159,7 @@ public class Queue {
     }
 
     public static void setCurrent(Video video) {
-        if (Video.isEmpty(video)) {
-            return;
-        }
+        if (Video.isEmpty(video)) return;
 
         int currentPosition = mQueue.indexOf(video);
 
@@ -211,9 +205,7 @@ public class Queue {
     }
 
     public static void removeAllAfterCurrent() {
-        if (mCurrentIndex == -1) {
-            return;
-        }
+        if (mCurrentIndex == -1) return;
 
         int fromIndex = mCurrentIndex + 1;
         int size = mQueue.size();
@@ -256,9 +248,7 @@ public class Queue {
      * Do some cleanup to prevent possible OOM exception
      */
     private static void stripPrevItem() {
-        if (mCurrentIndex == -1) {
-            return;
-        }
+        if (mCurrentIndex == -1) return;
 
         int prevPosition = mCurrentIndex - 1;
 
@@ -288,9 +278,7 @@ public class Queue {
      * Since all items are clones (saves memory) we need to sync sometimes.
      */
     public static void sync(Video origin) {
-        if (origin == null) {
-            return;
-        }
+        if (origin == null) return;
 
         // Sync to maintain order. Item may be cloned.
         for (Video video : mQueue) {

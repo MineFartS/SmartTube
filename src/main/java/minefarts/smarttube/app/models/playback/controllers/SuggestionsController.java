@@ -133,9 +133,7 @@ public class SuggestionsController extends BasePlayerController {
     @Override
     public void onSeekEnd() {
 
-        if (getPlayer() == null) {
-            return;
-        }
+        if (getPlayer() == null) return;
 
         if (getPlayer().isControlsShown()) {
             focusCurrentChapter();
@@ -214,9 +212,7 @@ public class SuggestionsController extends BasePlayerController {
 
         // NOTE: Skip upcoming or unplayable (no media) because default title more informative (e.g. has scheduled time).
         // NOTE: Upcoming videos metadata wrongly reported as live
-        if (!getPlayer().containsMedia()) {
-            return;
-        }
+        if (!getPlayer().containsMedia()) return;
 
         video.sync(mediaItemMetadata);
         getPlayer().setVideo(video);
@@ -227,9 +223,13 @@ public class SuggestionsController extends BasePlayerController {
     }
 
     public void loadSuggestions(Video video) {
-        if (isEmbedPlayer()) return;
+        if (video == null || getPlayer() == null) return;
 
-        clearSuggestionsIfNeeded(video);
+        // Frees a lot of memory
+        if (video.isRemote || !getPlayer().isSuggestionsShown()) {
+            getPlayer().clearSuggestions();
+        }
+        
         loadMetadata2(video, metadata -> updateSuggestions(metadata, video));
     }
 
@@ -331,17 +331,6 @@ public class SuggestionsController extends BasePlayerController {
         return result;
     }
 
-    private void clearSuggestionsIfNeeded(Video video) {
-        if (video == null || getPlayer() == null) {
-            return;
-        }
-
-        // Frees a lot of memory
-        if (video.isRemote || !getPlayer().isSuggestionsShown()) {
-            getPlayer().clearSuggestions();
-        }
-    }
-
     private void updateSuggestions(MediaItemMetadata mediaItemMetadata, Video video) {
         syncCurrentVideo(mediaItemMetadata, video);
 
@@ -352,9 +341,7 @@ public class SuggestionsController extends BasePlayerController {
     }
 
     private void appendSuggestions(Video video, MediaItemMetadata mediaItemMetadata) {
-        if (video == null || getPlayer() == null) {
-            return;
-        }
+        if (video == null || getPlayer() == null) return;
 
         if (!video.isRemote && getPlayer().isSuggestionsShown()) {
             Log.d(TAG, "Suggestions is opened. Seems that user want to stay here.");
@@ -409,17 +396,13 @@ public class SuggestionsController extends BasePlayerController {
         }
     }
     private void addChapterMarkersIfNeeded() {
-        if (getPlayer() == null || mChapters == null) {
-            return;
-        }
+        if (getPlayer() == null || mChapters == null) return;
 
         getPlayer().setSeekBarSegments(toSeekBarSegments(mChapters));
     }
 
     private void appendChapterSuggestionsIfNeeded() {
-        if (getPlayer() == null || mChapters == null) {
-            return;
-        }
+        if (getPlayer() == null || mChapters == null) return;
 
         VideoGroup videoGroup = VideoGroup.fromChapters(mChapters, getContext().getString(R.string.chapters));
 
@@ -435,9 +418,7 @@ public class SuggestionsController extends BasePlayerController {
     }
 
     private void appendSectionPlaylistIfNeeded(Video video) {
-        if (getPlayer() == null) {
-            return;
-        }
+        if (getPlayer() == null) return;
 
         if (!video.isSectionPlaylistEnabled(getContext())) {
             // Important fix. Gives priority to playlist or suggestion.
@@ -450,15 +431,11 @@ public class SuggestionsController extends BasePlayerController {
     }
 
     private void focusCurrentChapter() {
-        if (getPlayer() == null || !getPlayer().isControlsShown()) {
-            return;
-        }
+        if (getPlayer() == null || !getPlayer().isControlsShown()) return;
 
         VideoGroup group = getPlayer().getSuggestionsByIndex(0);
 
-        if (group == null || group.isEmpty() || !group.getVideos().get(0).isChapter) {
-            return;
-        }
+        if (group == null || group.isEmpty() || !group.getVideos().get(0).isChapter) return;
 
         Pair<ChapterItem, Integer> currentChapter = getCurrentChapter();
 
@@ -469,9 +446,7 @@ public class SuggestionsController extends BasePlayerController {
     }
 
     private void updateSeekPreviewTitle(long positionMs) {
-        if (getPlayer() == null || !getPlayer().isControlsShown()) {
-            return;
-        }
+        if (getPlayer() == null || !getPlayer().isControlsShown()) return;
 
         Pair<ChapterItem, Integer> currentChapter = getCurrentChapter(positionMs);
 
@@ -509,9 +484,7 @@ public class SuggestionsController extends BasePlayerController {
      * Most tiny ui has 8 cards in a row or 24 in grid.
      */
     private void continueGroupIfNeeded(VideoGroup group) {
-        if (getPlayer() == null) {
-            return;
-        }
+        if (getPlayer() == null) return;
 
         if (ServiceManager.shouldContinueRowGroup(getContext(), group)) {
             continueGroup(group, getPlayer().isSuggestionsShown());
@@ -523,15 +496,11 @@ public class SuggestionsController extends BasePlayerController {
     }
 
     private void focusAndContinueIfNeeded(VideoGroup group, Runnable onDone) {
-        if (getPlayer() == null) {
-            return;
-        }
+        if (getPlayer() == null) return;
 
         Video video = getPlayer().getVideo();
 
-        if (group == null || group.isEmpty() || video == null || !video.hasVideo()) {
-            return;
-        }
+        if (group == null || group.isEmpty() || video == null || !video.hasVideo()) return;
 
         int index = group.getVideos().indexOf(video);
 
@@ -567,9 +536,7 @@ public class SuggestionsController extends BasePlayerController {
 
         VideoGroup group = video.getGroup();
 
-        if (group == null || group.isEmpty()) {
-            return;
-        }
+        if (group == null || group.isEmpty()) return;
 
         int currentIdx = group.indexOf(video);
 
@@ -584,9 +551,7 @@ public class SuggestionsController extends BasePlayerController {
 
         VideoGroup group = video.getGroup();
 
-        if (group == null || group.isEmpty()) {
-            return;
-        }
+        if (group == null || group.isEmpty()) return;
 
         List<Video> videos = group.getVideos();
         boolean found = false;
@@ -646,9 +611,7 @@ public class SuggestionsController extends BasePlayerController {
     }
 
     private void appendDislikes(Video video) {
-        if (video == null) {
-            return;
-        }
+        if (video == null) return;
 
         Observable<DislikeData> dislikeDataObserve = mMediaItemService.getDislikeDataObserve(video.videoId);
 

@@ -131,9 +131,7 @@ public class ChannelUploadsPresenter extends BasePresenter<ChannelUploadsView> {
 
     public void openChannel(Video item) {
         // Working with uploads or playlists
-        if (item == null || (!item.hasNestedItems() && !item.hasPlaylist())) {
-            return;
-        }
+        if (item == null || (!item.hasNestedItems() && !item.hasPlaylist())) return;
 
         clear();
 
@@ -271,9 +269,7 @@ public class ChannelUploadsPresenter extends BasePresenter<ChannelUploadsView> {
     private void update(VideoGroup group) {
         disposeActions();
 
-        if (getView() == null || group == null) {
-            return;
-        }
+        if (getView() == null || group == null) return;
 
         getView().update(group);
         mBrowseProcessor.process(group);
@@ -333,9 +329,7 @@ public class ChannelUploadsPresenter extends BasePresenter<ChannelUploadsView> {
     }
 
     public void refresh() {
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
         if (mPendingGroup != null) {
             getView().clear();

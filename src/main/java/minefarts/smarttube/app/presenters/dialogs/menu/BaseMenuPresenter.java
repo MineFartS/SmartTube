@@ -56,15 +56,11 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
     }
 
     protected void appendTogglePinVideoToSidebarButton() {
-        if (!mIsPinToSidebarEnabled) {
-            return;
-        }
+        if (!mIsPinToSidebarEnabled) return;
 
         Video original = getVideo();
 
-        if (original == null || (!original.hasPlaylist() && !original.hasVideo() && !original.hasReloadPageKey() && !original.hasChannel())) {
-            return;
-        }
+        if (original == null || (!original.hasPlaylist() && !original.hasVideo() && !original.hasReloadPageKey() && !original.hasChannel())) return;
 
         boolean isPlaylist = original.hasPlaylist() || original.isPlaylistAsChannel() || (original.hasNestedItems() && original.belongsToUserPlaylists());
         getDialogPresenter().appendSingleButton(
@@ -131,15 +127,11 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
     }
 
     protected void appendUnpinVideoFromSidebarButton() {
-        if (!mIsPinToSidebarEnabled) {
-            return;
-        }
+        if (!mIsPinToSidebarEnabled) return;
 
         Video video = getVideo();
 
-        if (video == null || (!video.hasPlaylist() && !video.hasReloadPageKey() && !video.hasChannel())) {
-            return;
-        }
+        if (video == null || (!video.hasPlaylist() && !video.hasReloadPageKey() && !video.hasChannel())) return;
 
         getDialogPresenter().appendSingleButton(
                 UiOptionItem.from(getContext().getString(R.string.unpin_from_sidebar),
@@ -150,15 +142,11 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
     }
 
     protected void appendUnpinSectionFromSidebarButton() {
-        if (!mIsPinToSidebarEnabled) {
-            return;
-        }
+        if (!mIsPinToSidebarEnabled) return;
 
         BrowseSection section = getSection();
 
-        if (section == null || section.getId() == MediaGroup.TYPE_SETTINGS || getVideo() != null) {
-            return;
-        }
+        if (section == null || section.getId() == MediaGroup.TYPE_SETTINGS || getVideo() != null) return;
 
         getDialogPresenter().appendSingleButton(
                 UiOptionItem.from(getContext().getString(R.string.unpin_from_sidebar),
@@ -169,9 +157,7 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
     }
 
     protected void appendAccountSelectionButton() {
-        if (!mIsAccountSelectionEnabled) {
-            return;
-        }
+        if (!mIsAccountSelectionEnabled) return;
 
         getDialogPresenter().appendSingleButton(
                 UiOptionItem.from(
@@ -181,15 +167,11 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
     }
 
     protected void appendSaveRemovePlaylistButton() {
-        if (!mIsSavePlaylistEnabled) {
-            return;
-        }
+        if (!mIsSavePlaylistEnabled) return;
 
         Video original = getVideo();
 
-        if (original == null || (!original.hasPlaylist() && !original.isPlaylistAsChannel() && !original.belongsToUserPlaylists())) {
-            return;
-        }
+        if (original == null || (!original.hasPlaylist() && !original.isPlaylistAsChannel() && !original.belongsToUserPlaylists())) return;
 
         getDialogPresenter().appendSingleButton(
                 UiOptionItem.from(
@@ -312,17 +294,13 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
     }
 
     protected void appendCreatePlaylistButton() {
-        if (!mIsCreatePlaylistEnabled) {
-            return;
-        }
+        if (!mIsCreatePlaylistEnabled) return;
 
         Video original = getVideo() != null ? getVideo() : new Video();
 
         BrowsePresenter presenter = BrowsePresenter.instance(getContext());
 
-        if (original.hasVideo() || !(presenter.isPlaylistsSection() && presenter.inForeground())) {
-            return;
-        }
+        if (original.hasVideo() || !(presenter.isPlaylistsSection() && presenter.inForeground())) return;
 
         getDialogPresenter().appendSingleButton(
                 UiOptionItem.from(
@@ -332,15 +310,11 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
     }
 
     protected void appendAddToNewPlaylistButton() {
-        if (!mIsAddToNewPlaylistEnabled) {
-            return;
-        }
+        if (!mIsAddToNewPlaylistEnabled) return;
 
         Video original = getVideo() != null ? getVideo() : new Video();
 
-        if (!original.hasVideo()) {
-            return;
-        }
+        if (!original.hasVideo()) return;
 
         getDialogPresenter().appendSingleButton(
                 UiOptionItem.from(
@@ -376,17 +350,13 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
     }
 
     protected void appendRenamePlaylistButton() {
-        if (!mIsRenamePlaylistEnabled) {
-            return;
-        }
+        if (!mIsRenamePlaylistEnabled) return;
 
         Video original = getVideo();
 
         BrowsePresenter presenter = BrowsePresenter.instance(getContext());
 
-        if (original == null || !(presenter.isPlaylistsSection() && presenter.inForeground())) {
-            return;
-        }
+        if (original == null || !(presenter.isPlaylistsSection() && presenter.inForeground())) return;
 
         getDialogPresenter().appendSingleButton(
                 UiOptionItem.from(
@@ -448,9 +418,7 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
     }
 
     protected void appendUpdateCheckButton() {
-        if (!mIsUpdateCheckEnabled) {
-            return;
-        }
+        if (!mIsUpdateCheckEnabled) return;
 
         getDialogPresenter().appendSingleButton(UiOptionItem.from(
                 getContext().getString(R.string.check_for_updates),
@@ -458,15 +426,11 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
     }
 
     protected void appendToggleExcludeFromContentBlockButton() {
-        if (!mIsExcludeFromContentBlockEnabled) {
-            return;
-        }
+        if (!mIsExcludeFromContentBlockEnabled) return;
 
         Video original = getVideo();
 
-        if (original == null || !(original.hasChannel() || original.hasVideo())) {
-            return;
-        }
+        if (original == null || !(original.hasChannel() || original.hasVideo())) return;
 
         getDialogPresenter().appendSingleButton(AppDialogUtil.createExcludeFromContentBlockButton(
             getContext(), 

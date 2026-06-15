@@ -816,9 +816,7 @@ public class BrowseFragment extends BaseFragment {
         if (adapterPresenter == null) {
             throw new IllegalArgumentException("Adapter.getPresenterSelector() is null");
         }
-        if (adapterPresenter == mAdapterPresenter) {
-            return;
-        }
+        if (adapterPresenter == mAdapterPresenter) return;
         mAdapterPresenter = adapterPresenter;
 
         Presenter[] presenters = adapterPresenter.getPresenters();
@@ -857,18 +855,14 @@ public class BrowseFragment extends BaseFragment {
     public void setAdapter(ObjectAdapter adapter) {
         mAdapter = adapter;
         updateWrapperPresenter();
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
         updateMainFragmentRowsAdapter();
         mHeadersFragment.setAdapter(mAdapter);
     }
 
     void setMainFragmentRowsAdapter(MainFragmentRowsAdapter mainFragmentRowsAdapter) {
-        if (mainFragmentRowsAdapter == mMainFragmentRowsAdapter) {
-            return;
-        }
+        if (mainFragmentRowsAdapter == mMainFragmentRowsAdapter) return;
         // first clear previous mMainFragmentRowsAdapter and set a new mMainFragmentRowsAdapter
         if (mMainFragmentRowsAdapter != null) {
             // RowsFragment cannot change click/select listeners after view created.
@@ -990,9 +984,7 @@ public class BrowseFragment extends BaseFragment {
         if (!mCanShowHeaders) {
             throw new IllegalStateException("Cannot start headers transition");
         }
-        if (isInHeadersTransition() || mShowingHeaders == withHeaders) {
-            return;
-        }
+        if (isInHeadersTransition() || mShowingHeaders == withHeaders) return;
         startHeadersTransitionInternal(withHeaders);
     }
 
@@ -1042,12 +1034,8 @@ public class BrowseFragment extends BaseFragment {
     }
 
     void startHeadersTransitionInternal(final boolean withHeaders) {
-        if (getFragmentManager().isDestroyed()) {
-            return;
-        }
-        if (!isHeadersDataReady()) {
-            return;
-        }
+        if (getFragmentManager().isDestroyed()) return;
+        if (!isHeadersDataReady()) return;
         mShowingHeaders = withHeaders;
         mMainFragmentAdapter.onTransitionPrepare();
         mMainFragmentAdapter.onTransitionStart();
@@ -1538,9 +1526,7 @@ public class BrowseFragment extends BaseFragment {
     }
 
     void setSelection(int position, boolean smooth) {
-        if (position == NO_POSITION) {
-            return;
-        }
+        if (position == NO_POSITION) return;
 
         mSelectedPosition = position;
         if (mHeadersFragment == null || mMainFragmentAdapter == null) {
@@ -1588,9 +1574,7 @@ public class BrowseFragment extends BaseFragment {
     };
 
     private void swapToMainFragment() {
-        if (mStopped) {
-            return;
-        }
+        if (mStopped) return;
         final VerticalGridView gridView = mHeadersFragment.getVerticalGridView();
         if (isShowingHeaders() && gridView != null
                 && gridView.getScrollState() != RecyclerView.SCROLL_STATE_IDLE) {
@@ -1654,9 +1638,7 @@ public class BrowseFragment extends BaseFragment {
      */
     public void setSelectedPosition(int rowPosition, boolean smooth,
             final Presenter.ViewHolderTask rowHolderTask) {
-        if (mMainFragmentAdapterRegistry == null) {
-            return;
-        }
+        if (mMainFragmentAdapterRegistry == null) return;
         if (rowHolderTask != null) {
             startHeadersTransition(false);
         }
@@ -1741,9 +1723,7 @@ public class BrowseFragment extends BaseFragment {
     }
 
     private void readArguments(Bundle args) {
-        if (args == null) {
-            return;
-        }
+        if (args == null) return;
         if (args.containsKey(ARG_TITLE)) {
             setTitle(args.getString(ARG_TITLE));
         }

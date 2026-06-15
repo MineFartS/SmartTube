@@ -188,9 +188,7 @@ public class DialogFragment extends Fragment
     }
 
     void dismissInternal(boolean allowStateLoss, boolean fromOnDismiss) {
-        if (mDismissed) {
-            return;
-        }
+        if (mDismissed) return;
         mDismissed = true;
         mShownByMe = false;
         if (mDialog != null) {
@@ -424,9 +422,7 @@ public class DialogFragment extends Fragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (!mShowsDialog) {
-            return;
-        }
+        if (!mShowsDialog) return;
 
         View view = getView();
         if (view != null) {

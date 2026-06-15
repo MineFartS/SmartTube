@@ -408,9 +408,7 @@ public final class Helpers {
      */
     public static void adjustFontScale(Configuration configuration, Activity ctx) {
         WindowManager wm = (WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE);
-        if (wm == null) {
-            return;
-        }
+        if (wm == null) return;
 
         configuration.fontScale = (float) 1.0; // normal size
         DisplayMetrics metrics = ctx.getResources().getDisplayMetrics();
@@ -772,15 +770,11 @@ public final class Helpers {
 
     // NOTE: as of Oreo you must also add the REQUEST_INSTALL_PACKAGES permission to your manifest. Otherwise it just silently fails
     public static void installPackage(Context context, String packagePath) {
-        if (packagePath == null || context == null) {
-            return;
-        }
+        if (packagePath == null || context == null) return;
 
         Uri file = FileHelpers.getFileUri(context, packagePath);
 
-        if (file == null) {
-            return;
-        }
+        if (file == null) return;
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(file, "application/vnd.android.package-archive");
@@ -949,9 +943,7 @@ public final class Helpers {
      * https://stackoverflow.com/questions/5105354/how-to-show-soft-keyboard-when-edittext-is-focused
      */
     public static void showKeyboard(@Nullable Context context) {
-        if (context == null) {
-            return;
-        }
+        if (context == null) return;
 
         InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
@@ -961,18 +953,14 @@ public final class Helpers {
      * Sometimes doesn't work. IDK why.
      */
     public static void showKeyboardAlt(@Nullable Context context, View view) {
-        if (context == null) {
-            return;
-        }
+        if (context == null) return;
 
         InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.showSoftInput(view, 0);
     }
 
     public static void hideKeyboard(@Nullable Context context, View view) {
-        if (context == null) {
-            return;
-        }
+        if (context == null) return;
 
         InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);

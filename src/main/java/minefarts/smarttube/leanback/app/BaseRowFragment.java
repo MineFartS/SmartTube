@@ -213,9 +213,7 @@ abstract class BaseRowFragment extends Fragment {
      * Sets the selected row position.
      */
     public void setSelectedPosition(int position, boolean smooth) {
-        if (mSelectedPosition == position) {
-            return;
-        }
+        if (mSelectedPosition == position) return;
         mSelectedPosition = position;
         if (mVerticalGridView != null) {
             if (mLateSelectionObserver.mIsLateSelection) {

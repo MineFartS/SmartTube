@@ -440,27 +440,21 @@ public class Utils {
     }
 
     public static void postDelayed(Runnable callback, long delayMs) {
-        if (callback == null) {
-            return;
-        }
+        if (callback == null) return;
 
         sHandler.removeCallbacks(callback);
         sHandler.postDelayed(callback, delayMs);
     }
 
     public static void post(Runnable callback) {
-        if (callback == null) {
-            return;
-        }
+        if (callback == null) return;
 
         sHandler.removeCallbacks(callback);
         sHandler.post(callback);
     }
 
     public static void removeCallbacks(Runnable... callbacks) {
-        if (callbacks == null) {
-            return;
-        }
+        if (callbacks == null) return;
 
         for (Runnable callback : callbacks) {
             if (callback != null) {
@@ -598,9 +592,7 @@ public class Utils {
     }
 
     public static void startService(Context context, Class<? extends Service> serviceCls) {
-        if (isServiceRunning(context, serviceCls)) {
-            return;
-        }
+        if (isServiceRunning(context, serviceCls)) return;
 
         Intent serviceIntent = new Intent(context, serviceCls);
 
@@ -613,9 +605,7 @@ public class Utils {
     }
 
     public static void stopService(Context context, Class<? extends Service> serviceCls) {
-        if (!isServiceRunning(context, serviceCls)) {
-            return;
-        }
+        if (!isServiceRunning(context, serviceCls)) return;
 
         Intent serviceIntent = new Intent(context, serviceCls);
 
@@ -827,9 +817,7 @@ public class Utils {
     }
 
     private static void restartTheAppInt(Context context, Video video, long posMs) {
-        if (video == null || !video.hasVideo()) {
-            return;
-        }
+        if (video == null || !video.hasVideo()) return;
 
         try {
             Intent intent = new Intent(
@@ -984,9 +972,7 @@ public class Utils {
     }
 
     public static void addMyCallback(List<Runnable> myCallbacks, Runnable callback) {
-        if (myCallbacks == null || callback == null) {
-            return;
-        }
+        if (myCallbacks == null || callback == null) return;
 
         if (!myCallbacks.contains(callback)) {
             myCallbacks.add(callback);
@@ -994,9 +980,7 @@ public class Utils {
     }
 
     public static void addMyCallback(WeakHashSet<Runnable> myCallbacks, Runnable callback) {
-        if (myCallbacks == null || callback == null) {
-            return;
-        }
+        if (myCallbacks == null || callback == null) return;
 
         if (!myCallbacks.contains(callback)) {
             myCallbacks.add(callback);
@@ -1004,9 +988,7 @@ public class Utils {
     }
 
     public static void runMyCallbacks(List<Runnable> myCallbacks) {
-        if (myCallbacks == null || myCallbacks.isEmpty()) {
-            return;
-        }
+        if (myCallbacks == null || myCallbacks.isEmpty()) return;
 
         // Copy-then-Clear approach to fix possible stackoverflow
         List<Runnable> callbacks = new ArrayList<>(myCallbacks);
@@ -1020,9 +1002,7 @@ public class Utils {
     }
 
     public static void runMyCallbacks(WeakHashSet<Runnable> myCallbacks) {
-        if (myCallbacks == null || myCallbacks.isEmpty()) {
-            return;
-        }
+        if (myCallbacks == null || myCallbacks.isEmpty()) return;
 
         // Copy-then-Clear approach to fix possible stackoverflow
         List<Runnable> callbacks = myCallbacks.asList();

@@ -112,9 +112,7 @@ public class ArrayObjectAdapter extends ObjectAdapter {
      */
     public void addAll(int index, Collection items) {
         int itemsCount = items.size();
-        if (itemsCount == 0) {
-            return;
-        }
+        if (itemsCount == 0) return;
         mItems.addAll(index, items);
         notifyItemRangeInserted(index, itemsCount);
     }
@@ -189,9 +187,7 @@ public class ArrayObjectAdapter extends ObjectAdapter {
      */
     public void clear() {
         int itemCount = mItems.size();
-        if (itemCount == 0) {
-            return;
-        }
+        if (itemCount == 0) return;
         mItems.clear();
         notifyItemRangeRemoved(0, itemCount);
     }

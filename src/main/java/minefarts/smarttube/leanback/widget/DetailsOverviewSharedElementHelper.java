@@ -116,13 +116,9 @@ final class DetailsOverviewSharedElementHelper extends SharedElementCallback {
         if (DEBUG) {
             Log.d(TAG, "onSharedElementStart " + mActivityToRunTransition);
         }
-        if (sharedElements.size() < 1) {
-            return;
-        }
+        if (sharedElements.size() < 1) return;
         View overviewView = sharedElements.get(0);
-        if (mViewHolder == null || mViewHolder.mOverviewFrame != overviewView) {
-            return;
-        }
+        if (mViewHolder == null || mViewHolder.mOverviewFrame != overviewView) return;
         View snapshot = sharedElementSnapshots.get(0);
         if (hasImageViewScaleChange(snapshot)) {
             saveImageViewScale();
@@ -153,13 +149,9 @@ final class DetailsOverviewSharedElementHelper extends SharedElementCallback {
         if (DEBUG) {
             Log.d(TAG, "onSharedElementEnd " + mActivityToRunTransition);
         }
-        if (sharedElements.size() < 1) {
-            return;
-        }
+        if (sharedElements.size() < 1) return;
         View overviewView = sharedElements.get(0);
-        if (mViewHolder == null || mViewHolder.mOverviewFrame != overviewView) {
-            return;
-        }
+        if (mViewHolder == null || mViewHolder.mOverviewFrame != overviewView) return;
         restoreImageViewScale();
         // temporary let action row take focus so we defer button background animation
         mViewHolder.mActionsRow.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
@@ -178,9 +170,7 @@ final class DetailsOverviewSharedElementHelper extends SharedElementCallback {
             throw new IllegalArgumentException();
         }
         if (activity == mActivityToRunTransition
-                && TextUtils.equals(sharedElementName, mSharedElementName)) {
-            return;
-        }
+                && TextUtils.equals(sharedElementName, mSharedElementName)) return;
         if (mActivityToRunTransition != null) {
             ActivityCompat.setEnterSharedElementCallback(mActivityToRunTransition, null);
         }

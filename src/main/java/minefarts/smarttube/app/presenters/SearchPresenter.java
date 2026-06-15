@@ -107,17 +107,13 @@ public class SearchPresenter extends BasePresenter<SearchView> {
 
     @Override
     public void onVideoItemLongClicked(Video item) {
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
         VideoMenuPresenter.instance(getContext()).showMenu(item);
     }
 
     public void onTagLongClicked(Tag item) {
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
         AppDialogUtil.showConfirmationDialog(
             getContext(),
@@ -181,13 +177,9 @@ public class SearchPresenter extends BasePresenter<SearchView> {
     }
 
     private void continueGroup(VideoGroup group) {
-        if (RxHelper.isAnyActionRunning(mScrollAction)) {
-            return;
-        }
+        if (RxHelper.isAnyActionRunning(mScrollAction)) return;
 
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
         Log.d(TAG, "continueGroup: start continue group: " + group.getTitle());
 
@@ -259,9 +251,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
     }
 
     private void startSearchInt() {
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
         if (mIsVoice) {
             getView().startVoiceRecognition();
@@ -406,9 +396,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
     }
 
     private void startPlayFirstVideo(VideoGroup group) {
-        if (!mStartPlay || group == null || group.isEmpty()) {
-            return;
-        }
+        if (!mStartPlay || group == null || group.isEmpty()) return;
 
         mStartPlay = false;
 
@@ -421,9 +409,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
     }
 
     private void loadSearchResult() {
-        if (getView() == null) {
-            return;
-        }
+        if (getView() == null) return;
 
         String searchText = getView().getSearchText();
 

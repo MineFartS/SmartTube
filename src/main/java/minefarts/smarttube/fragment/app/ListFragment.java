@@ -264,9 +264,7 @@ public class ListFragment extends Fragment {
         if (mProgressContainer == null) {
             throw new IllegalStateException("Can't be used with a custom content view");
         }
-        if (mListShown == shown) {
-            return;
-        }
+        if (mListShown == shown) return;
         mListShown = shown;
         if (shown) {
             if (animate) {
@@ -322,9 +320,7 @@ public class ListFragment extends Fragment {
     }
 
     private void ensureList() {
-        if (mList != null) {
-            return;
-        }
+        if (mList != null) return;
         View root = getView();
         if (root == null) {
             throw new IllegalStateException("Content view not yet created");

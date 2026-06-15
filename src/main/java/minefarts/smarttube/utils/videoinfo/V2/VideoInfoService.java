@@ -135,9 +135,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private void initInfoTypeIfNeeded() {
-        if (mVideoInfoType != null) {
-            return;
-        }
+        if (mVideoInfoType != null) return;
         
         restoreVideoInfoType();
     }
@@ -146,9 +144,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         initInfoTypeIfNeeded();
 
         // Try to reset pot cache for the last video
-        if (!mIsUnplayable && PoTokenGate.resetCache(getClient())) {
-            return;
-        }
+        if (!mIsUnplayable && PoTokenGate.resetCache(getClient())) return;
         // The Premium is likely broken
         if (getData().isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS)) {
             // Skip additional formats fetching that could produce an error
@@ -283,17 +279,13 @@ public class VideoInfoService extends VideoInfoServiceBase {
     }
 
     private void persistVideoInfoType() {
-        if (!GlobalPreferences.isInitialized()) {
-            return;
-        }
+        if (!GlobalPreferences.isInitialized()) return;
 
         getData().setVideoInfoType(mVideoInfoType != null ? mVideoInfoType.ordinal() : -1);
     }
 
     private void persistRecentTypeIfNeeded(VideoInfo videoInfo) {
-        if (videoInfo == null || videoInfo.isUnplayable() || mRecentInfoType == null || mRecentInfoType == mVideoInfoType) {
-            return;
-        }
+        if (videoInfo == null || videoInfo.isUnplayable() || mRecentInfoType == null || mRecentInfoType == mVideoInfoType) return;
 
         mVideoInfoType = mRecentInfoType;
         persistVideoInfoType();

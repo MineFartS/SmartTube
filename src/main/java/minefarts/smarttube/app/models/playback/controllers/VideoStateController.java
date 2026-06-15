@@ -38,8 +38,6 @@ public class VideoStateController extends BasePlayerController {
     private static final long LIVE_THRESH_MS = LIVE_BUFFER_MS + 5_000;
 
     private boolean mIsPlayEnabled;
-    private boolean mIsPlayBlocked;
-    private long mNewVideoTimeMs;
 
     private static float mPositionSec;
     private static String mVideoId;
@@ -64,11 +62,7 @@ public class VideoStateController extends BasePlayerController {
             onTickle();
         }
 
-        if (!item.equals(getVideo())) {
-            mNewVideoTimeMs = System.currentTimeMillis();
-        }
-
-        setPlayEnabled(true); // video just added
+        mIsPlayEnabled = true; // video just added
 
         // Don't do reset on videoLoaded state because this will influences minimized music videos.
         if (getStateService() != null && item != null) {
@@ -117,7 +111,7 @@ public class VideoStateController extends BasePlayerController {
             return true;
         }
 
-        setPlayEnabled(true);
+        mIsPlayEnabled = true;
 
         onTickle();
 
@@ -135,7 +129,7 @@ public class VideoStateController extends BasePlayerController {
 
     @Override
     public void onSuggestionItemClicked(Video item) {
-        setPlayEnabled(true); // autoplay video from suggestions
+        mIsPlayEnabled = true; // autoplay video from suggestions
 
         onTickle();
     }
@@ -143,7 +137,7 @@ public class VideoStateController extends BasePlayerController {
     @Override
     public void onEngineInitialized() {
         // Show user info instead of black screen.
-        if (!getPlayEnabled()) {
+        if (!mIsPlayEnabled) {
             getPlayer().showOverlay(true);
         }
 
@@ -155,7 +149,7 @@ public class VideoStateController extends BasePlayerController {
         
         // Save previous state
         if (getPlayer().containsMedia()) {
-            setPlayEnabled(getPlayer().getPlayWhenReady());
+            mIsPlayEnabled = getPlayer().getPlayWhenReady();
             onTickle();
         }
     }
@@ -184,12 +178,9 @@ public class VideoStateController extends BasePlayerController {
         onTickle(); // start watching?
     }
 
-
     @Override
     public void onEngineError(int type, int rendererIndex, Throwable error) {
-        if (getPlayer() == null) {
-            return;
-        }
+        if (getPlayer() == null) return;
 
         // Oops. Error happens while playing (network lost etc).
         if (getPlayer().getPositionMs() > 1_000) {
@@ -201,7 +192,8 @@ public class VideoStateController extends BasePlayerController {
     public void onVideoLoaded(Video item) {
         if (getPlayer() == null|| item == null) return;
         
-        restoreSubtitleFormat();
+        FormatItem result = getPlayerData().getFormat(FormatItem.TYPE_SUBTITLE);
+        getPlayer().setFormat(result);
 
         State state = getStateService().getByVideoId(item.videoId);
 
@@ -216,9 +208,7 @@ public class VideoStateController extends BasePlayerController {
             getPlayer().setPositionMs(state.positionMs);
         }
 
-        if (!mIsPlayBlocked) {
-            getPlayer().setPlayWhenReady(getPlayEnabled());
-        }
+        getPlayer().setPlayWhenReady(mIsPlayEnabled);
 
         if (item.pendingPosMs > 0) {
             getPlayer().setPositionMs(item.pendingPosMs);
@@ -237,12 +227,12 @@ public class VideoStateController extends BasePlayerController {
 
     @Override
     public void onPlay() {
-        setPlayEnabled(true);
+        mIsPlayEnabled = true;
     }
 
     @Override
     public void onPause() {
-        setPlayEnabled(false);
+        mIsPlayEnabled = false;
         onTickle();
     }
 
@@ -289,16 +279,11 @@ public class VideoStateController extends BasePlayerController {
 
     @Override
     public void onSourceChanged(Video item) {
-
         if (getPlayer() == null) return;
 
         getPlayer().setFormat(getPlayerData().getFormat(FormatItem.TYPE_VIDEO));
         getPlayer().setFormat(getPlayerData().getFormat(FormatItem.TYPE_AUDIO));
-
-        // Subtitle restoration must wait until ExoPlayer has prepared mapped track info.
-        // Restoring too early causes TrackSelectorManager failures.
     }
-
 
     @Override
     public void onSpeedChanged(float speed) {
@@ -309,7 +294,6 @@ public class VideoStateController extends BasePlayerController {
 
     @Override
     public void onButtonClicked(int buttonId, int buttonState) {
-
         super.onButtonClicked(buttonId, buttonState);
 
         if (buttonId == R.id.action_video_speed) {
@@ -436,27 +420,6 @@ public class VideoStateController extends BasePlayerController {
 
         });
 
-    }
-
-    private void restoreSubtitleFormat() {
-
-        FormatItem result = getPlayerData().getFormat(FormatItem.TYPE_SUBTITLE);
-
-        getPlayer().setFormat(result);
-    
-    }
-
-    public void blockPlay(boolean block) {
-        mIsPlayBlocked = block;
-    }
-
-    public void setPlayEnabled(boolean isPlayEnabled) {
-        Log.d(TAG, "setPlayEnabled %s", isPlayEnabled);
-        mIsPlayEnabled = isPlayEnabled;
-    }
-
-    public boolean getPlayEnabled() {
-        return mIsPlayEnabled;
     }
 
 }

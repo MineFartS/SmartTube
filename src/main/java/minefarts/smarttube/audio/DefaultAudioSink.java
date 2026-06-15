@@ -738,9 +738,7 @@ public final class DefaultAudioSink implements AudioSink {
             log.d("writeBuffer : offset = " + buffer.position() + ", limit = " + buffer.limit()
                     + ", presentationTimeUs = " + avSyncPresentationTimeUs);
         }
-        if (!buffer.hasRemaining()) {
-            return;
-        }
+        if (!buffer.hasRemaining()) return;
         if (outputBuffer != null) {
             Assertions.checkArgument(outputBuffer == buffer);
         } else {
@@ -905,9 +903,7 @@ public final class DefaultAudioSink implements AudioSink {
 
     @Override
     public void setAudioAttributes(AudioAttributes audioAttributes) {
-        if (this.audioAttributes.equals(audioAttributes)) {
-            return;
-        }
+        if (this.audioAttributes.equals(audioAttributes)) return;
         this.audioAttributes = audioAttributes;
         if (tunneling) {
             // The audio attributes are ignored in tunneling mode, so no need to reset.
@@ -928,9 +924,7 @@ public final class DefaultAudioSink implements AudioSink {
 
     @Override
     public void setAuxEffectInfo(AuxEffectInfo auxEffectInfo) {
-        if (this.auxEffectInfo.equals(auxEffectInfo)) {
-            return;
-        }
+        if (this.auxEffectInfo.equals(auxEffectInfo)) return;
         int effectId = auxEffectInfo.effectId;
         float sendLevel = auxEffectInfo.sendLevel;
         if (audioTrack != null) {
@@ -1067,9 +1061,7 @@ public final class DefaultAudioSink implements AudioSink {
      * Releases {@link #keepSessionIdAudioTrack} asynchronously, if it is non-{@code null}.
      */
     private void releaseKeepSessionIdAudioTrack() {
-        if (keepSessionIdAudioTrack == null) {
-            return;
-        }
+        if (keepSessionIdAudioTrack == null) return;
 
         // AudioTrack.release can take some time, so we call it on a background thread.
         final AudioTrack toRelease = keepSessionIdAudioTrack;

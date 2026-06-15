@@ -86,9 +86,7 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
 
     @Override
     public void setPosition(int index) {
-        if (index < 0) {
-            return;
-        }
+        if (index < 0) return;
 
         mSelectedItemIndex1 = index;
 
@@ -100,9 +98,7 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
 
     @Override
     public void selectItem(Video item) {
-        if (item == null) {
-            return;
-        }
+        if (item == null) return;
 
         mSelectedItem1 = item;
 
@@ -257,9 +253,7 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
             return;
         }
 
-        if (group.isEmpty()) {
-            return;
-        }
+        if (group.isEmpty()) return;
 
         mGridAdapter1.add(group);
 
@@ -284,9 +278,7 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
             return;
         }
 
-        if (group.isEmpty()) {
-            return;
-        }
+        if (group.isEmpty()) return;
 
         mGridAdapter2.add(group);
 
@@ -329,9 +321,7 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
 
     private void addSearchHeader() {
         
-        if (mGridAdapter1 == null || mGridAdapter1.getHeader() != null) {
-            return;
-        }
+        if (mGridAdapter1 == null || mGridAdapter1.getHeader() != null) return;
 
         setPosition(1);
 

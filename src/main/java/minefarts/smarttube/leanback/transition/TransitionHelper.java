@@ -275,9 +275,7 @@ public final class TransitionHelper {
     }
 
     public static void addTransitionListener(Object transition, final TransitionListener listener) {
-        if (listener == null) {
-            return;
-        }
+        if (listener == null) return;
         if (Build.VERSION.SDK_INT >= 19) {
             Transition t = (Transition) transition;
             listener.mImpl = new Transition.TransitionListener() {

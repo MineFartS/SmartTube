@@ -168,9 +168,7 @@ public abstract class PlaybackGlue {
      * @param host The host for the PlaybackGlue. Set to null to detach from the host.
      */
     public final void setHost(PlaybackGlueHost host) {
-        if (mPlaybackGlueHost == host) {
-            return;
-        }
+        if (mPlaybackGlueHost == host) return;
         if (mPlaybackGlueHost != null) {
             mPlaybackGlueHost.attachToGlue(null);
         }

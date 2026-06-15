@@ -189,9 +189,7 @@ public class ChannelPresenter extends BasePresenter<ChannelView> {
     }
 
     public void openChannel(String channelId) {
-        if (channelId == null) {
-            return;
-        }
+        if (channelId == null) return;
 
         disposeActions();
 
@@ -279,9 +277,7 @@ public class ChannelPresenter extends BasePresenter<ChannelView> {
     private void continueGroup(VideoGroup group) {
         boolean scrollInProgress = mScrollAction != null && !mScrollAction.isDisposed();
 
-        if (scrollInProgress) {
-            return;
-        }
+        if (scrollInProgress) return;
 
         if (getView() == null) {
             Log.e(TAG, "Can't continue group. The view is null.");

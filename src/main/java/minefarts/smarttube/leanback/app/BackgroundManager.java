@@ -769,9 +769,7 @@ public final class BackgroundManager {
     }
 
     void postChangeRunnable() {
-        if (mChangeRunnable == null || !mChangeRunnablePending) {
-            return;
-        }
+        if (mChangeRunnable == null || !mChangeRunnablePending) return;
 
         // Postpone a pending change runnable until: no existing change animation in progress &&
         // activity is resumed (in the foreground) && layerdrawable fully opaque.
@@ -798,9 +796,7 @@ public final class BackgroundManager {
     }
 
     private void lazyInit() {
-        if (mLayerDrawable != null) {
-            return;
-        }
+        if (mLayerDrawable != null) return;
 
         LayerDrawable layerDrawable = (LayerDrawable) ContextCompat
                 .getDrawable(mContext, R.drawable.lb_background).mutate();
@@ -811,9 +807,7 @@ public final class BackgroundManager {
     }
 
     private void updateImmediate() {
-        if (!mAttached) {
-            return;
-        }
+        if (!mAttached) return;
         lazyInit();
 
         if (mBackgroundDrawable == null) {
@@ -839,9 +833,7 @@ public final class BackgroundManager {
         mService.setColor(color);
         mBackgroundColor = color;
         mBackgroundDrawable = null;
-        if (mLayerDrawable == null) {
-            return;
-        }
+        if (mLayerDrawable == null) return;
         setDrawableInternal(getDefaultDrawable());
     }
 
@@ -856,9 +848,7 @@ public final class BackgroundManager {
 
         mService.setDrawable(drawable);
         mBackgroundDrawable = drawable;
-        if (mLayerDrawable == null) {
-            return;
-        }
+        if (mLayerDrawable == null) return;
         if (drawable == null) {
             setDrawableInternal(getDefaultDrawable());
         } else {

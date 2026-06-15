@@ -222,9 +222,7 @@ public class ContentBlockController extends BasePlayerController {
         }
 
         // Fix looping messages at the end of the video (playback mode: pause at the end of the video)
-        if (!getPlayer().isPlaying()) {
-            return;
-        }
+        if (!getPlayer().isPlaying()) return;
 
         long positionMs = getPlayer().getPositionMs();
 

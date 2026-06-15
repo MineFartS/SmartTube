@@ -96,9 +96,7 @@ public class BrowseSectionFragmentFactory extends BrowseSupportFragment.Fragment
     }
 
     public void updateCurrentFragment(SettingsGroup group) {
-        if (group == null) {
-            return;
-        }
+        if (group == null) return;
 
         if (mCurrentFragment == null) {
             Log.e(TAG, "Page row fragment not initialized for group: " + group.getTitle());
@@ -113,9 +111,7 @@ public class BrowseSectionFragmentFactory extends BrowseSupportFragment.Fragment
     }
 
     public void updateCurrentFragment(VideoGroup group) {
-        if (group == null) {
-            return;
-        }
+        if (group == null) return;
 
         if (mCurrentFragment == null) {
             Log.e(TAG, "Page row fragment not initialized for group: " + group.getTitle());
@@ -158,9 +154,7 @@ public class BrowseSectionFragmentFactory extends BrowseSupportFragment.Fragment
     }
 
     public void setCurrentFragmentItemIndex(int index) {
-        if (index < 0) {
-            return;
-        }
+        if (index < 0) return;
 
         mSelectedItemIndex = index;
         mSelectedItem = null;
@@ -172,9 +166,7 @@ public class BrowseSectionFragmentFactory extends BrowseSupportFragment.Fragment
     }
 
     public void selectCurrentFragmentItem(Video item) {
-        if (item == null) {
-            return;
-        }
+        if (item == null) return;
 
         mSelectedItem = item;
         mSelectedItemIndex = -1;

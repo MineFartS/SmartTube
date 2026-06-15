@@ -146,9 +146,7 @@ public abstract class SearchTagsFragmentBase extends SearchSupportFragment
     }
 
     private void performTagSearch(TagAdapter adapter) {
-        if (mSearchTagsProvider == null) {
-            return;
-        }
+        if (mSearchTagsProvider == null) return;
 
         String query = adapter.getAdapterOptions().get(PaginationAdapter.KEY_TAG);
         mSearchTagsProvider.search(query, results -> {

@@ -180,9 +180,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
     private void appendExcludeChannelButton(AppDialogPresenter settingsPresenter) {
         Video video = PlaybackPresenter.instance(getContext()).getVideo();
 
-        if (video == null || getViewManager().getTopView() != PlaybackFragment2.class) {
-            return;
-        }
+        if (video == null || getViewManager().getTopView() != PlaybackFragment2.class) return;
 
         settingsPresenter.appendSingleButton(AppDialogUtil.createExcludeFromContentBlockButton(
             getContext(), 

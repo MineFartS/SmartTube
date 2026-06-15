@@ -238,9 +238,7 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
         Integer currentNameResId = menuNames.get(menuItem);
 
-        if (currentNameResId == null) {
-            return;
-        }
+        if (currentNameResId == null) return;
 
         List<Long> menuItemsOrdered = mMainUIData.getMenuItemsOrdered();
 

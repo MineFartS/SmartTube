@@ -291,9 +291,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
 
     @Override
     public void discardBuffer(long positionUs, boolean toKeyframe) {
-        if (isPendingReset()) {
-            return;
-        }
+        if (isPendingReset()) return;
         boolean[] trackEnabledStates = getPreparedState().trackEnabledStates;
         int trackCount = sampleQueues.length;
         for (int i = 0; i < trackCount; i++) {
@@ -474,9 +472,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
     private void maybeStartDeferredRetry(int track) {
         boolean[] trackIsAudioVideoFlags = getPreparedState().trackIsAudioVideoFlags;
         if (!pendingDeferredRetry || !trackIsAudioVideoFlags[track]
-                || sampleQueues[track].hasNextSample()) {
-            return;
-        }
+                || sampleQueues[track].hasNextSample()) return;
         pendingResetPositionUs = 0;
         pendingDeferredRetry = false;
         notifyDiscontinuity = true;
@@ -615,9 +611,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableType;
 
     private void maybeFinishPrepare() {
         SeekMap seekMap = this.seekMap;
-        if (released || prepared || !sampleQueuesBuilt || seekMap == null) {
-            return;
-        }
+        if (released || prepared || !sampleQueuesBuilt || seekMap == null) return;
         for (SampleQueue sampleQueue : sampleQueues) {
             if (sampleQueue.getUpstreamFormat() == null) {
                 return;

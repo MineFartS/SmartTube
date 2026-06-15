@@ -199,9 +199,7 @@ public class RecyclerViewParallax extends Parallax<RecyclerViewParallax.ChildPos
      * @param recyclerView RecyclerView to register onScrollListener.
      */
     public void setRecyclerView(RecyclerView recyclerView) {
-        if (mRecylerView == recyclerView) {
-            return;
-        }
+        if (mRecylerView == recyclerView) return;
         if (mRecylerView != null) {
             mRecylerView.removeOnScrollListener(mOnScrollListener);
             mRecylerView.removeOnLayoutChangeListener(mOnLayoutChangeListener);

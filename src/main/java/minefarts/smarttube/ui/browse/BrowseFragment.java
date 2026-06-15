@@ -305,14 +305,10 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
 
     @Override
     public void addSection(int index, BrowseSection section) {
-        if (section == null) {
-            return;
-        }
+        if (section == null) return;
 
         if (mSections.get(section.getId()) != null
-                && (index == -1 || indexOf(section.getId()) == index)) {
-            return;
-        }
+                && (index == -1 || indexOf(section.getId()) == index)) return;
 
         removeSection(section);
 
@@ -322,9 +318,7 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
 
     @Override
     public void removeSection(BrowseSection section) {
-        if (section == null) {
-            return;
-        }
+        if (section == null) return;
 
         mSections.remove(section.getId());
         removeHeader(section);
@@ -419,9 +413,7 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
      */
     private void startHeadersTransitionSafe(boolean withHeaders) {
         // Fix: IllegalStateException: "Can not perform this action after onSaveInstanceState"
-        if (!Utils.checkActivity(getActivity())) {
-            return;
-        }
+        if (!Utils.checkActivity(getActivity())) return;
 
         try {
             startHeadersTransition(withHeaders);

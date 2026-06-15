@@ -71,9 +71,7 @@ public class ChannelUploadsMenuPresenter extends BaseMenuPresenter {
     }
 
     private void appendOpenChannelButton() {
-        if (!ChannelPresenter.canOpenChannel(mVideo)) {
-            return;
-        }
+        if (!ChannelPresenter.canOpenChannel(mVideo)) return;
 
         mDialogPresenter.appendSingleButton(
                 UiOptionItem.from(getContext().getString(R.string.open_channel), optionItem -> ChannelPresenter.instance(getContext()).openChannel(mVideo)));
@@ -89,15 +87,11 @@ public class ChannelUploadsMenuPresenter extends BaseMenuPresenter {
     }
 
     private void appendMarkAsWatched() {
-        if (mVideo == null || !mVideo.hasNewContent) {
-            return;
-        }
+        if (mVideo == null || !mVideo.hasNewContent) return;
 
         boolean contentAlreadyLoaded = mVideo.groupPosition == 0;
 
-        if (contentAlreadyLoaded) {
-            return;
-        }
+        if (contentAlreadyLoaded) return;
 
         mDialogPresenter.appendSingleButton(
                 UiOptionItem.from(getContext().getString(R.string.mark_as_watched), optionItem -> {

@@ -511,9 +511,7 @@ public class PlaybackBannerControlGlue<T extends PlayerAdapter>
     }
 
     private void updatePlaybackState(boolean isPlaying) {
-        if (mControlsRow == null) {
-            return;
-        }
+        if (mControlsRow == null) return;
 
         if (!isPlaying) {
             onUpdateProgress();
@@ -639,9 +637,7 @@ public class PlaybackBannerControlGlue<T extends PlayerAdapter>
 
     @Override
     public void play() {
-        if (!mPlayerAdapter.isPrepared()) {
-            return;
-        }
+        if (!mPlayerAdapter.isPrepared()) return;
 
         // Solves the situation that a player pause at the end and click play button. At this case
         // the player will restart from the beginning.

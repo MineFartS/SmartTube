@@ -703,13 +703,9 @@ abstract public class OnboardingSupportFragment extends Fragment {
      */
     protected final void startEnterAnimation(boolean force) {
         final Context context = getContext();
-        if (context == null) {
-            return;
-        }
+        if (context == null) return;
         hideLogoView();
-        if (mEnterAnimationFinished && !force) {
-            return;
-        }
+        if (mEnterAnimationFinished && !force) return;
         List<Animator> animators = new ArrayList<>();
         Animator animator = AnimatorInflater.loadAnimator(context,
                 R.animator.lb_onboarding_page_indicator_enter);
@@ -737,9 +733,7 @@ abstract public class OnboardingSupportFragment extends Fragment {
         }
 
         // Return if we don't have any animations.
-        if (animators.isEmpty()) {
-            return;
-        }
+        if (animators.isEmpty()) return;
         mAnimator = new AnimatorSet();
         mAnimator.playTogether(animators);
         mAnimator.start();

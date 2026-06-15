@@ -492,9 +492,7 @@ public class RowsSupportFragment extends BaseRowSupportFragment implements
     public void setSelectedPosition(int rowPosition, boolean smooth,
             final Presenter.ViewHolderTask rowHolderTask) {
         VerticalGridView verticalView = getVerticalGridView();
-        if (verticalView == null) {
-            return;
-        }
+        if (verticalView == null) return;
         ViewHolderTask task = null;
         if (rowHolderTask != null) {
             // This task will execute once the scroll completes. Once the scrolling finishes,
@@ -539,9 +537,7 @@ public class RowsSupportFragment extends BaseRowSupportFragment implements
 
     @Override
     public void setAlignment(int windowAlignOffsetFromTop) {
-        if (windowAlignOffsetFromTop == ALIGN_TOP_NOT_SET) {
-            return;
-        }
+        if (windowAlignOffsetFromTop == ALIGN_TOP_NOT_SET) return;
         mAlignedTop = windowAlignOffsetFromTop;
         final VerticalGridView gridView = getVerticalGridView();
 

@@ -110,9 +110,7 @@ public class SparseArrayObjectAdapter extends ObjectAdapter {
      */
     public void clear() {
         final int itemCount = mItems.size();
-        if (itemCount == 0) {
-            return;
-        }
+        if (itemCount == 0) return;
         mItems.clear();
         notifyItemRangeRemoved(0, itemCount);
     }

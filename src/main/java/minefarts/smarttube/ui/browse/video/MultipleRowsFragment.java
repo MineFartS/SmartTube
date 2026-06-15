@@ -194,9 +194,7 @@ public abstract class MultipleRowsFragment extends RowsSupportFragment implement
 
     @Override
     public void update(VideoGroup group) {
-        if (isComputingLayout(group)) {
-            return;
-        }
+        if (isComputingLayout(group)) return;
 
         if (mVideoGroupAdapters == null) {
             mPendingUpdates.add(group);
@@ -232,9 +230,7 @@ public abstract class MultipleRowsFragment extends RowsSupportFragment implement
             return;
         }
 
-        if (group.isEmpty()) {
-            return;
-        }
+        if (group.isEmpty()) return;
 
         VideoGroupObjectAdapter existingAdapter = GridFragmentHelper.findRelatedAdapter(mVideoGroupAdapters, group, this::freeze);
 
@@ -279,9 +275,7 @@ public abstract class MultipleRowsFragment extends RowsSupportFragment implement
 
     @Override
     public void setPosition(int index) {
-        if (index < 0) {
-            return;
-        }
+        if (index < 0) return;
 
         if (mRowsAdapter != null && index < mRowsAdapter.size()) {
             setSelectedPosition(index, false);
