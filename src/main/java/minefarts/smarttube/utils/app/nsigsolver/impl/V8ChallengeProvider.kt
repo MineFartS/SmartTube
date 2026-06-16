@@ -8,7 +8,6 @@ import com.eclipsesource.v8.V8ScriptExecutionException
 
 import minefarts.smarttube.ContextManager
 import minefarts.smarttube.utils.mylogger.Log
-import minefarts.smarttube.utils.app.nsigsolver.common.withLock
 import minefarts.smarttube.utils.app.nsigsolver.common.YouTubeInfoExtractor
 import minefarts.smarttube.utils.app.nsigsolver.common.CachedData
 import minefarts.smarttube.utils.app.nsigsolver.provider.ChallengeOutput
@@ -21,38 +20,24 @@ import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeType
 import minefarts.smarttube.utils.app.nsigsolver.runtime.solverOutputType
 import minefarts.smarttube.utils.app.nsigsolver.runtime.SolverOutput
 
-val sGson = Gson()
 
 internal object V8ChallengeProvider {
     
+    private val sGson = Gson()
     private val v8Runtime = ThreadLocal<V8>()
     private val v8Lock = Any()
+
+    private val assets
+        get() = ContextManager.get()?.assets
 
     /**
      * Execute a JavaScript string in the V8 runtime
      */
     private fun runV8(stdin: String): String { synchronized(v8Lock) {
-        
-        val runtime = v8Runtime.get() ?: throw JsChallengeProviderError("V8 runtime not initialized yet")
-        
-        return runtime.withLock {
-            it.executeStringScript(stdin) ?: throw JsChallengeProviderError("V8 runtime error: empty response")
-        }
 
-    }}
-
-    /**
-     * Solve multiple JS challenges and return the results
-     */
-    fun bulkSolve(requests: List<JsChallengeRequest>): Sequence<JsChallengeProviderResponse> = sequence {
-
-        val validatedRequests: MutableList<JsChallengeRequest> = mutableListOf()
-        
         if (v8Runtime.get() == null) {
             
             v8Runtime.set(V8.createV8Runtime())
-
-            val assets = ContextManager.get()?.assets
 
             for (name in listOf("lib", "core")) {
 
@@ -66,17 +51,17 @@ internal object V8ChallengeProvider {
 
         }
         
-        for (request in requests) {
-            try {
-                // Validate request using built-in settings
-                if (request.type !in listOf(JsChallengeType.N, JsChallengeType.SIG)) {
-                    throw JsChallengeProviderRejectedRequest("JS Challenge type ${request.type} is not supported by the provider ${this::class.simpleName}")
-                }
-                validatedRequests.add(request)
-            } catch (e: JsChallengeProviderRejectedRequest) {
-                yield(JsChallengeProviderResponse(request=request, error=e))
-            }
-        }
+        val runtime = v8Runtime.get()
+
+        return runtime!!.executeStringScript(stdin)
+            ?: throw JsChallengeProviderError("V8 runtime error: empty response")
+
+    }}
+
+    /**
+     * Solve multiple JS challenges and return the results
+     */
+    fun bulkSolve(vararg requests: JsChallengeRequest): Sequence<JsChallengeProviderResponse> = sequence {
         
         val grouped: Map<String, List<JsChallengeRequest>> = requests.groupBy { it.input.playerUrl }
 
@@ -142,13 +127,8 @@ internal object V8ChallengeProvider {
 
     fun getPlayer(playerUrl: String?): String {
 
-        var mPlayerUrl = playerUrl
-        
-        if (mPlayerUrl == null)
-            mPlayerUrl = ""
-
         return try {
-            YouTubeInfoExtractor.loadPlayer(mPlayerUrl)
+            YouTubeInfoExtractor.loadPlayer(playerUrl ?: "")
         } catch (e: Exception) {
             throw JsChallengeProviderError("Failed to load player for JS challenge: $playerUrl", e)
         }
