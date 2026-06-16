@@ -726,25 +726,52 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     }
 
     private void updateVideoRows(BrowseSection section, Observable<List<MediaGroup>> groups, boolean authCheck) {
+        Log.d(TAG, "loadRowsHeader: Start loading section: " + section.getTitle());
 
         if (authCheck && !getSignInService().isSigned()) return;
 
         disposeActions();
 
-        if (getView() == null)
-            getViewManager().startView(BrowseView.class);
+            if (getView() == null) {
+                Log.e(TAG, "Browse view has been unloaded from the memory. Low RAM?");
+                getViewManager().startView(BrowseView.class);
+                return;
+            }
+            
+            getView().showProgressBar(true);
 
         VideoGroup firstGroup = VideoGroup.from(section);
         firstGroup.setAction(VideoGroup.ACTION_REPLACE);
         getView().updateSection(firstGroup);
 
-        if (groups == null) return;
+            if (groups == null) {
+                // No group. Maybe just clear.
+                getView().showProgressBar(false);
+                return;
+            }
 
         Disposable updateAction = groups.subscribe(
 
             mediaGroups -> {
 
+                getView().showProgressBar(false);
+
+                if (isHomeSection()) {
+                    Helpers.removeIf(
+                        mediaGroups, 
+                        value -> Helpers.containsAny(
+                            value.getTitle(),
+                            "Primetime", // Free movies and shows row
+                            "News", // Top news
+                            "news", // Top news
+                            "NBA TV", // Sports
+                            "The Life of a Showgirl"
+                        )
+                    );
+                }
+
                 for (MediaGroup mediaGroup : mediaGroups) {
+                    if (mediaGroup.isEmpty()) continue;
 
                     VideoGroup videoGroup = VideoGroup.from(mediaGroup, section);
 
@@ -769,12 +796,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
 
     }
 
-    private void updateVideoGrid(
-        BrowseSection section, 
-        Observable<MediaGroup> group, 
-        int column, 
-        boolean authCheck
-    ) {
+    private void updateVideoGrid(BrowseSection section, Observable<MediaGroup> group, int column, boolean authCheck) {
         
         Log.d(TAG, "loadMultiGridHeader: Start loading section: " + section.getTitle());
 
