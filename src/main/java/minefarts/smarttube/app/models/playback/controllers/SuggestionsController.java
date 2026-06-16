@@ -3,12 +3,12 @@ package minefarts.smarttube.app.models.playback.controllers;
 import android.text.TextUtils;
 import android.util.Pair;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import minefarts.smarttube.utils.service.ContentService;
 import minefarts.smarttube.utils.MediaItemService;
 import minefarts.smarttube.utils.data.ChapterItem;
-import minefarts.smarttube.utils.data.DislikeData;
 import minefarts.smarttube.utils.service.data.MediaGroup;
 import minefarts.smarttube.utils.service.data.MediaItemMetadata;
 import minefarts.smarttube.utils.helpers.Helpers;
@@ -29,11 +29,18 @@ import minefarts.smarttube.utils.BrowseProcessorManager;
 import minefarts.smarttube.utils.ServiceManager;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.app.models.data.DislikesResult;
+import minefarts.smarttube.google.common.helpers.RetrofitHelper;
+import minefarts.smarttube.utils.videoinfo.V2.VideoInfoService;
+import minefarts.smarttube.utils.videoinfo.V2.VideoInfoApi;
+
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
 
 public class SuggestionsController extends BasePlayerController {
 
@@ -41,9 +48,11 @@ public class SuggestionsController extends BasePlayerController {
 
     private final List<Disposable> mActions = new ArrayList<>();
 
+    private BrowseProcessorManager mBrowseProcessor;
     private MediaItemService mMediaItemService;
     private ContentService mContentService;
-    private BrowseProcessorManager mBrowseProcessor;
+    private VideoInfoApi mVideoInfoApi;
+
     private Video mNextSectionVideo;
     private int mFocusCount;
     private int mNextRetryCount;
@@ -68,6 +77,7 @@ public class SuggestionsController extends BasePlayerController {
         );
         mMediaItemService = ServiceManager.getMediaItemService();
         mContentService = ServiceManager.getContentService();
+        mVideoInfoApi = VideoInfoService.instance().mVideoInfoApi;
     }
 
     @Override
@@ -246,21 +256,17 @@ public class SuggestionsController extends BasePlayerController {
 
         // NOTE: Load suggestions from mediaItem isn't robust. Because playlistId may be initialized from RemoteControlManager.
         // Video might be loaded from Channels section (has playlistParams)
-        observable = mMediaItemService.getMetadataObserve(video.videoId, video.getPlaylistId(), video.playlistIndex, video.playlistParams);
+        observable = mMediaItemService.getMetadataObserve(
+            video.videoId, 
+            video.getPlaylistId(), 
+            video.playlistIndex, 
+            video.playlistParams
+        );
 
-        Disposable metadataAction = observable
-                .subscribe(
-                        callback::onMetadata,
-                        error -> {
-                            // Usual errors here is something with title parsing
-                            String message = error.getMessage();
-                            Log.e(TAG, "loadSuggestions error: %s", message);
-                            if (!Helpers.containsAny(message, "fromNullable result is null")) {
-                                MessageHelpers.showLongMessage(getContext(), "loadSuggestions error: %s", message);
-                            }
-                            error.printStackTrace();
-                        }
-                );
+        Disposable metadataAction = observable.subscribe(
+            callback::onMetadata,
+            e -> e.printStackTrace()
+        );
 
         mActions.add(metadataAction);
     }
@@ -613,16 +619,23 @@ public class SuggestionsController extends BasePlayerController {
     private void appendDislikes(Video video) {
         if (video == null) return;
 
-        Observable<DislikeData> dislikeDataObserve = mMediaItemService.getDislikeDataObserve(video.videoId);
-
-        Disposable dislikeAction = dislikeDataObserve.subscribe(
-                dislikeData -> {
-                    video.sync(dislikeData);
-                    getPlayer().setVideo(video);
-                },
-                error -> Log.e(TAG, "Dislike not working...")
+        Disposable dislikeAction = RxHelper.fromCallable(() -> getDislikeData(video.videoId)).subscribe(
+            dislikeData -> {
+                video.sync(dislikeData);
+                getPlayer().setVideo(video);
+            }
         );
 
         mActions.add(dislikeAction);
     }
+
+    @Nullable
+    public DislikesResult getDislikeData(@Nullable String videoId) {
+        if (videoId == null) return null;
+
+        Call<DislikesResult> wrapper = mVideoInfoApi.getDislikes(videoId);
+
+        return (DislikesResult) RetrofitHelper.get(wrapper);
+    }
+    
 }

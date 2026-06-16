@@ -1,7 +1,6 @@
 package minefarts.smarttube.utils.next.v2
 
 import minefarts.smarttube.google.common.converters.gson.WithGson
-import minefarts.smarttube.utils.next.v2.gen.DislikesResult
 import minefarts.smarttube.utils.next.v2.gen.UnlocalizedTitleResult
 import minefarts.smarttube.utils.next.v2.gen.WatchNextResult
 import minefarts.smarttube.utils.next.v2.gen.WatchNextResultContinuation
@@ -32,9 +31,6 @@ internal interface WatchNextApi {
         @Body watchNextQuery: String, 
         @Header("X-Goog-Visitor-Id") visitorId: String
     ): Call<WatchNextResultContinuation?>
-
-    @GET("https://returnyoutubedislikeapi.com/votes")
-    fun getDislikes(@Query("videoId") videoId: String): Call<DislikesResult?>
 
     @GET("https://www.youtube.com/oembed")
     fun getUnlocalizedTitle(@Query("url") url: String): Call<UnlocalizedTitleResult?>

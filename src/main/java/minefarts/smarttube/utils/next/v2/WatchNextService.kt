@@ -1,6 +1,5 @@
 package minefarts.smarttube.utils.next.v2
 
-import minefarts.smarttube.utils.data.DislikeData
 import minefarts.smarttube.utils.service.data.MediaGroup
 import minefarts.smarttube.utils.data.MediaItem
 import minefarts.smarttube.utils.service.data.MediaItemMetadata
@@ -12,12 +11,9 @@ import minefarts.smarttube.google.common.helpers.RetrofitHelper
 import minefarts.smarttube.google.common.helpers.YouTubeHelper
 import minefarts.smarttube.utils.common.models.impl.mediagroup.MediaGroupOptions
 import minefarts.smarttube.utils.common.models.impl.mediagroup.SuggestionsGroup
-import minefarts.smarttube.utils.next.v2.gen.DislikesResult
 import minefarts.smarttube.utils.next.v2.gen.UnlocalizedTitleResult
 import minefarts.smarttube.utils.next.v2.gen.WatchNextResult
 import minefarts.smarttube.utils.next.v2.gen.WatchNextResultContinuation
-import minefarts.smarttube.utils.next.v2.gen.getDislikeCount
-import minefarts.smarttube.utils.next.v2.gen.getLikeCount
 import minefarts.smarttube.utils.next.v2.gen.isEmpty
 import minefarts.smarttube.utils.next.v2.impl.MediaItemMetadataImpl
 import minefarts.smarttube.utils.SignInService
@@ -25,7 +21,7 @@ import minefarts.smarttube.utils.common.helpers.AppClient
 
 internal open class WatchNextService {
 
-    private var mWatchNextApi = RetrofitHelper.create(WatchNextApi::class.java)
+    private val mWatchNextApi = RetrofitHelper.create(WatchNextApi::class.java)
     
     private val mAppService = AppService.instance()
 
@@ -72,28 +68,6 @@ internal open class WatchNextService {
         return SuggestionsGroup.from(continuation, mediaGroup)
     }
 
-    fun getDislikeData(videoId: String?): DislikeData? {
-        return getDislikesResult(videoId)?.let {
-             object : DislikeData {
-                 override fun getVideoId(): String? {
-                     return it.id
-                 }
-
-                 override fun getLikeCount(): String? {
-                     return it.getLikeCount()
-                 }
-
-                 override fun getDislikeCount(): String? {
-                     return it.getDislikeCount()
-                 }
-
-                 override fun getViewCount(): Long {
-                     return it.viewCount ?: 0
-                 }
-             }
-        }
-    }
-
     fun getUnlocalizedTitle(videoId: String?): String? {
         return getUnlocalizedTitleResult(videoId)?.title
     }
@@ -120,16 +94,6 @@ internal open class WatchNextService {
         return RetrofitHelper.get(wrapper, auth)
     }
 
-    private fun getDislikesResult(videoId: String?): DislikesResult? {
-        if (videoId == null) {
-            return null
-        }
-
-        val wrapper = mWatchNextApi.getDislikes(videoId)
-
-        return RetrofitHelper.get(wrapper)
-    }
-
     private fun getUnlocalizedTitleResult(videoId: String?): UnlocalizedTitleResult? {
         if (videoId == null) {
             return null
@@ -140,10 +104,4 @@ internal open class WatchNextService {
         return RetrofitHelper.get(wrapper)
     }
 
-    /**
-     * For testing (mocking) purposes only
-     */
-    fun setWatchNextApi(watchNextApi: WatchNextApi) {
-        mWatchNextApi = watchNextApi
-    }
 }
