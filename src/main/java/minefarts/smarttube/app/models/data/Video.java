@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 import minefarts.smarttube.utils.data.ItemGroup;
 import minefarts.smarttube.utils.data.ChapterItem;
-import minefarts.smarttube.utils.data.DislikeData;
+import minefarts.smarttube.app.models.data.DislikesResult;
 import minefarts.smarttube.utils.service.data.MediaGroup;
 import minefarts.smarttube.utils.data.MediaItem;
 import minefarts.smarttube.utils.data.MediaItemFormatInfo;
@@ -747,7 +747,7 @@ public final class Video {
         isUnplayable = formatInfo.isUnplayable();
     }
 
-    public void sync(DislikeData dislikeData) {
+    public void sync(DislikesResult dislikeData) {
         if (dislikeData == null) return;
 
         String likeCountNew = dislikeData.getLikeCount();

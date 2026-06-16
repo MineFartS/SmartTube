@@ -3,7 +3,6 @@ package minefarts.smarttube.utils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import minefarts.smarttube.utils.data.DislikeData;
 import minefarts.smarttube.utils.data.MediaItem;
 import minefarts.smarttube.utils.data.MediaItemFormatInfo;
 import minefarts.smarttube.utils.service.data.MediaItemMetadata;
@@ -363,10 +362,6 @@ public class MediaItemService {
         return RxHelper.fromRunnable(() -> createPlaylist(playlistName, item));
     }
 
-    public Observable<DislikeData> getDislikeDataObserve(String videoId) {
-        return RxHelper.fromCallable(() -> getWatchNextService().getDislikeData(videoId));
-    }
-
     public Observable<String> getUnlocalizedTitleObserve(String videoId) {
         return RxHelper.fromCallable(() -> getWatchNextService().getUnlocalizedTitle(videoId));
     }
@@ -392,7 +387,7 @@ public class MediaItemService {
     }
 
     @NonNull
-    private static WatchNextService getWatchNextService() {
+    public static WatchNextService getWatchNextService() {
         return WatchNextServiceWrapper.INSTANCE;
     }
 

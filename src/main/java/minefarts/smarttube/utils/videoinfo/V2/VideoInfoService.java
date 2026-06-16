@@ -39,7 +39,9 @@ import retrofit2.Call;
 import kotlin.Pair;
 
 public class VideoInfoService extends VideoInfoServiceBase {
+
     private static final String TAG = VideoInfoService.class.getSimpleName();
+    
     private static VideoInfoService sInstance;
 
     public VideoInfoApi mVideoInfoApi;
@@ -84,8 +86,10 @@ public class VideoInfoService extends VideoInfoServiceBase {
     private PlayerDataExtractor mPlayerDataExtractor = null;
     @Nullable
     private AppClient mVideoInfoType = null;
+    
     @Nullable
     private AppClient mRecentInfoType = null;
+    
     private boolean mAuthBlock;
     private List<TranslationLanguage> mCachedTranslationLanguages;
     private boolean mIsUnplayable;

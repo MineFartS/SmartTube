@@ -4,12 +4,16 @@ import minefarts.smarttube.google.common.converters.jsonpath.WithJsonPath;
 import minefarts.smarttube.utils.videoinfo.models.VideoInfo;
 import minefarts.smarttube.utils.videoinfo.models.VideoInfoHls;
 import minefarts.smarttube.utils.videoinfo.models.VideoInfoReel;
+import minefarts.smarttube.app.models.data.DislikesResult;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 @WithJsonPath
 public interface VideoInfoApi {
@@ -44,6 +48,11 @@ public interface VideoInfoApi {
     Call<VideoInfo> getVideoInfoWeb(
         @Body String videoQuery, 
         @Header("x-goog-visitor-id") String visitorId
+    );
+
+    @GET("https://returnyoutubedislikeapi.com/votes")
+    Call<DislikesResult> getDislikes(
+        @Query("videoId") String videoId
     );
     
 }
