@@ -37,18 +37,14 @@ public class VideoStateController extends BasePlayerController {
     private static final long LIVE_BUFFER_MS = 15_000;
     private static final long LIVE_THRESH_MS = LIVE_BUFFER_MS + 5_000;
 
+    private static final TrackingApi mTrackingApi = RetrofitHelper.create(TrackingApi.class);
+    
     private boolean mIsPlayEnabled;
 
     private static float mPositionSec;
     private static String mVideoId;
 
     private Disposable mFormatInfoUpdateDisposable;
-
-    private final TrackingApi mTrackingApi;
-
-    public VideoStateController() {
-        mTrackingApi = RetrofitHelper.create(TrackingApi.class);
-    }
 
     /**
      * Fired after user clicked on video in browse activity<br/>
