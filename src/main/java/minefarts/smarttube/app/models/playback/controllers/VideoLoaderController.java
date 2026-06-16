@@ -1,7 +1,6 @@
 package minefarts.smarttube.app.models.playback.controllers;
 
 import android.annotation.SuppressLint;
-import android.util.Pair;
 import android.content.Context;
 
 import minefarts.smarttube.utils.MediaItemService;
@@ -85,8 +84,6 @@ public class VideoLoaderController extends BasePlayerController {
         }
     };
 
-    private Pair<Integer, Long> mBufferingCount;
-
     @Override
     public void onInit() {
         mSuggestionsController = getController(SuggestionsController.class);
@@ -112,14 +109,7 @@ public class VideoLoaderController extends BasePlayerController {
     }
 
     @Override
-    public void onBuffering() {
-        Utils.postDelayed(this::updateBufferingCountIfNeeded, BUFFERING_THRESHOLD_MS);
-        savePosition();
-    }
-
-    @Override
     public void onSeekEnd() {
-        mBufferingCount = null;
         savePosition();
     }
 
@@ -130,17 +120,12 @@ public class VideoLoaderController extends BasePlayerController {
         loadVideo(Helpers.firstNonNull(mPendingVideo, getVideo()));
         getPlayer().setButtonState(R.id.action_repeat, getPlayerData().getPlaybackMode());
         mPendingVideo = null;
-
     }
 
     @Override
     public void onEngineReleased() {
-        
-        mBufferingCount = null;
-
         RxHelper.disposeActions(mFormatInfoAction, mMpdStreamAction);
-        Utils.removeCallbacks(mReloadVideo, this::onNextClicked, mRestartEngine, mMetadataSync, this::updateBufferingCountIfNeeded, mRebootApp);
-
+        Utils.removeCallbacks(mReloadVideo, this::onNextClicked, mRestartEngine, mMetadataSync, mRebootApp);
     }
 
     @Override
@@ -713,57 +698,6 @@ public class VideoLoaderController extends BasePlayerController {
                 }
             }
             
-        }
-
-    }
-
-    @Override
-    public void onPlay() {
-        Utils.removeCallbacks(this::updateBufferingCountIfNeeded);
-    }
-
-    @Override
-    public void onPause() {
-        Utils.removeCallbacks(this::updateBufferingCountIfNeeded);
-    }
-
-    private void updateBufferingCountIfNeeded() {
-        
-        final long currentTimeMs = System.currentTimeMillis();
-        int bufferingCount = 0;
-        long previousTimeMs = 0;
-
-        if (mBufferingCount != null) {
-            bufferingCount = mBufferingCount.first;
-            previousTimeMs = mBufferingCount.second;
-        }
-
-        if (currentTimeMs - previousTimeMs < BUFFERING_WINDOW_MS) {
-            bufferingCount++;
-        } else {
-            bufferingCount = 1;
-        }
-
-        mBufferingCount = new Pair<>(bufferingCount, currentTimeMs);
-
-        if (mBufferingCount != null && mBufferingCount.first > BUFFERING_RECURRENCE_COUNT) {
-
-            mBufferingCount = null;
-            if (getPlayer() == null || getVideo() == null) return;
-
-            // Stream end check (hangs on buffering)
-            if ((!getVideo().isLive || getVideo().isLiveEnd)
-                    && getPlayer().getDurationMs() - getPlayer().getPositionMs() < STREAM_END_THRESHOLD_MS) {
-                getMainController().onPlayEnd();
-            } else if (!getVideo().isLive && !getVideo().isLiveEnd) {
-                MessageHelpers.showLongMessage(getContext(), "Playback buffering fix");
-                ServiceManager.invalidateCache();
-                restartEngine();
-            }
-
-        } else {
-            // Count continuous buffering as a new occurrences....
-            Utils.postDelayed(this::updateBufferingCountIfNeeded, BUFFERING_CONTINUATION_MS);
         }
 
     }
