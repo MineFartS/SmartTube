@@ -45,6 +45,7 @@ public class VideoLoaderController extends BasePlayerController {
     private static ChannelUploadsPresenter mChannelUploadsPresenter;
     private static SearchPresenter mSearchPresenter;
     private static MediaItemService mMediaItemService;
+    private final VideoStateController mVideoStateController;
 
     public VideoLoaderController(PlaybackPresenter playbackPresenter) {
         mContext = getContext();
@@ -53,6 +54,7 @@ public class VideoLoaderController extends BasePlayerController {
         mChannelUploadsPresenter = ChannelUploadsPresenter.instance(getContext());
         mSearchPresenter = SearchPresenter.instance(getContext());
         mMediaItemService = ServiceManager.getMediaItemService();
+        mVideoStateController = new VideoStateController();
     }
     
     private Video mPendingVideo;
@@ -61,12 +63,11 @@ public class VideoLoaderController extends BasePlayerController {
     private Disposable mFormatInfoAction;
     private Disposable mMpdStreamAction;
 
-    private final Runnable mReloadVideo = () -> {
-        getMainController().onNewVideo(getVideo());
-    };
+    private final Runnable mReloadVideo = () -> getMainController().onNewVideo(getVideo());
     
     private final Runnable mMetadataSync = () -> {
         if (getPlayer() != null) {
+            savePosition();
             waitMetadataSync(getVideo(), false);
         }
     };
@@ -89,6 +90,7 @@ public class VideoLoaderController extends BasePlayerController {
     @Override
     public void onInit() {
         mSuggestionsController = getController(SuggestionsController.class);
+        savePosition();
     }
 
     @Override
@@ -112,11 +114,13 @@ public class VideoLoaderController extends BasePlayerController {
     @Override
     public void onBuffering() {
         Utils.postDelayed(this::updateBufferingCountIfNeeded, BUFFERING_THRESHOLD_MS);
+        savePosition();
     }
 
     @Override
     public void onSeekEnd() {
         mBufferingCount = null;
+        savePosition();
     }
 
     @Override
@@ -175,6 +179,8 @@ public class VideoLoaderController extends BasePlayerController {
     public boolean onPreviousClicked() {
         if (getPlayer() == null) return true;
 
+        savePosition();
+
         openVideoInt(mSuggestionsController.getPrevious());
 
         getPlayer().showOverlay(true);
@@ -185,6 +191,8 @@ public class VideoLoaderController extends BasePlayerController {
     @Override
     public boolean onNextClicked() {
         if (getPlayer() == null || getVideo() == null) return true;
+
+        savePosition();
 
         Video next = mSuggestionsController.getNext();
 
@@ -203,6 +211,8 @@ public class VideoLoaderController extends BasePlayerController {
     @Override
     public void onPlayEnd() {
         if (getPlayer() == null) return;
+
+        savePosition();
 
         // Stop the playback if the user is browsing options or reading comments
         int playbackMode = getPlaybackMode();
@@ -233,6 +243,15 @@ public class VideoLoaderController extends BasePlayerController {
         Utils.removeCallbacks(mRestartEngine, mRebootApp);
 
         return false;
+    }
+
+    private synchronized void savePosition() {
+        if (getPlayer() == null || getVideo() == null) return;
+
+        mVideoStateController.updateHistory(
+            getVideo(),
+            getPlayer().getPositionMs()
+        );
     }
 
     // Force load and play!
