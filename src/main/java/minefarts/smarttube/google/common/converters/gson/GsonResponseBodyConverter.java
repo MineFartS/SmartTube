@@ -8,17 +8,22 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 
 import minefarts.smarttube.utils.helpers.Helpers;
-import minefarts.smarttube.utils.app.nsigsolver.impl.V8ChallengeProvider;
+
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 
 import java.io.IOException;
 import java.io.StringReader;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-
+/**
+ * Retrofit Gson converter used across YouTube endpoints.
+ * <p>
+ * Some endpoints occasionally return non-JSON (HTML/error text) or a JSON string instead of an
+ * object. In such cases Gson would throw e.g.:
+ * "Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $."
+ * <p>
+ * We handle this at the boundary to provide a clearer error message to callers.
+ */
 final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
   
     private final Gson gson;
@@ -46,13 +51,6 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
 
         // Common failure: expected object but got a JSON string.
         if (firstToken == JsonToken.STRING) {
-
-            Document doc = Jsoup.parse(body);
-
-            for (Element script : doc.select("script")) {
-                V8ChallengeProvider.INSTANCE.runV8(script.data());
-            }
-
             throw new JsonSyntaxException("Expected JSON object but got STRING payload: " + safeSnippet(body));
         }
 

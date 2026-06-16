@@ -31,7 +31,7 @@ internal object V8ChallengeProvider {
     /**
      * Execute a JavaScript string in the V8 runtime
      */
-    fun runV8(stdin: String): String { synchronized(v8Lock) {
+    private fun runV8(stdin: String): String { synchronized(v8Lock) {
         
         val runtime = v8Runtime.get() ?: throw JsChallengeProviderError("V8 runtime not initialized yet")
         
