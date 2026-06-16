@@ -26,14 +26,9 @@ public class AccountSettingsPresenter extends BasePresenter<Void> {
     @SuppressLint("StaticFieldLeak")
     private static AccountSettingsPresenter sInstance;
 
-    public AccountSettingsPresenter(Context context) {
-        super(context);
-    }
-
     public static AccountSettingsPresenter instance(Context context) {
-        if (sInstance == null) {
-            sInstance = new AccountSettingsPresenter(context);
-        }
+        if (sInstance == null)
+            sInstance = new AccountSettingsPresenter();
 
         sInstance.setContext(context);
 

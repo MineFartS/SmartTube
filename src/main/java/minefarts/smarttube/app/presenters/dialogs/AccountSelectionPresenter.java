@@ -22,16 +22,13 @@ public class AccountSelectionPresenter extends BasePresenter<Void> {
     
     @SuppressLint("StaticFieldLeak")
     private static AccountSelectionPresenter sInstance;
-    private final SignInService mSignInService;
 
-    public AccountSelectionPresenter(Context context) {
-        super(context);
-        mSignInService = ServiceManager.getSignInService();
-    }
+    SignInService mSignInService;
 
     public static AccountSelectionPresenter instance(Context context) {
         if (sInstance == null) {
-            sInstance = new AccountSelectionPresenter(context);
+            sInstance = new AccountSelectionPresenter();
+            sInstance.mSignInService = ServiceManager.getSignInService();
         }
 
         sInstance.setContext(context);

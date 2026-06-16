@@ -34,12 +34,14 @@ public class AppService {
     private String mClientPlaybackNonce;
 
     AppApi mAppApi;
+    MediaServiceData mData;
 
     public static AppService instance() {
  
         if (sInstance == null) {
             sInstance = new AppService();
             sInstance.mAppApi = RetrofitHelper.create(AppApi.class);
+            sInstance.mData = MediaServiceData.instance();
         }
 
         return sInstance;
@@ -119,15 +121,6 @@ public class AppService {
         return mClientPlaybackNonce;
     }
 
-    /**
-     * Used in get_video_info
-     */
-    public String getSignatureTimestamp() {
-        if (getPlayerDataExtractor() == null) return null;
-
-        return getPlayerDataExtractor().getSignatureTimestamp();
-    }
-
     @NonNull
     public Context getContext() {
 
@@ -195,13 +188,13 @@ public class AppService {
         
         Call<AppInfo> wrapper = mAppApi.getAppInfo(
             ExoMediaSourceFactory.USER_AGENT_TV, 
-            getData().mVisitorCookie
+            mData.mVisitorCookie
         );
 
         Response<AppInfo> response = RetrofitHelper.getResponse(wrapper);
 
         if (response != null) {
-            getData().setVisitorCookie(
+            mData.setVisitorCookie(
                 RetrofitHelper.getCookies(response)
             );
             return response.body();
@@ -218,10 +211,6 @@ public class AppService {
         getAppInfoData();
         getClientData(getClientUrl());
         getPlayerDataExtractor();
-    }
-
-    protected MediaServiceData getData() {
-        return MediaServiceData.instance();
     }
 
 }

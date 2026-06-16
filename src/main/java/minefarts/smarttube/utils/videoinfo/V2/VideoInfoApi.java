@@ -36,13 +36,6 @@ public interface VideoInfoApi {
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/player")
-    Call<VideoInfoHls> getVideoInfoHls(
-        @Body String videoQuery, 
-        @Header("x-goog-visitor-id") String visitorId
-    );
-
-    @Headers("Content-Type: application/json")
-    @POST("https://www.youtube.com/youtubei/v1/player")
     Call<VideoInfo> getVideoInfo(
         @Body String videoQuery
     );

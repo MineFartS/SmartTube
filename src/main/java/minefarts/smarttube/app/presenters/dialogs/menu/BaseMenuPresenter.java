@@ -38,11 +38,6 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
     private boolean mIsExcludeFromContentBlockEnabled;
     private boolean mIsRenamePlaylistEnabled;
 
-    protected BaseMenuPresenter(Context context) {
-        super(context);
-        updateEnabledMenuItems();
-    }
-
     protected abstract Video getVideo();
     protected BrowseSection getSection() { return null; }
     protected abstract AppDialogPresenter getDialogPresenter();
@@ -453,4 +448,5 @@ public abstract class BaseMenuPresenter extends BasePresenter<Void> {
         mIsExcludeFromContentBlockEnabled = mainUIData.isMenuItemEnabled(MainUIData.MENU_ITEM_EXCLUDE_FROM_CONTENT_BLOCK);
 
     }
+
 }

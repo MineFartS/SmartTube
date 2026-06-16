@@ -29,7 +29,8 @@ import java.util.Map;
 
 public class SectionMenuPresenter extends BaseMenuPresenter {
 
-    private final AppDialogPresenter mDialogPresenter;
+    AppDialogPresenter mDialogPresenter;
+    
     private Video mVideo;
     private BrowseSection mSection;
     private boolean mIsMarkAllChannelsWatchedEnabled;
@@ -38,15 +39,14 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
     private boolean mIsRenameSectionEnabled;
     private final Map<Long, MenuAction> mMenuMapping = new HashMap<>();
 
-    private SectionMenuPresenter(Context context) {
-        super(context);
-        mDialogPresenter = AppDialogPresenter.instance(context);
-
-        initMenuMapping();
-    }
-
     public static SectionMenuPresenter instance(Context context) {
-        return new SectionMenuPresenter(context);
+        SectionMenuPresenter pres = new SectionMenuPresenter();
+
+        pres.mDialogPresenter = AppDialogPresenter.instance(context);
+        pres.initMenuMapping();
+        pres.setContext(context);
+
+        return pres;
     }
 
     @Override
@@ -232,7 +232,7 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
     
     }
 
-    private void initMenuMapping() {
+    void initMenuMapping() {
         mMenuMapping.clear();
 
         for (ContextMenuProvider provider : new ContextMenuManager(getContext()).getProviders()) {

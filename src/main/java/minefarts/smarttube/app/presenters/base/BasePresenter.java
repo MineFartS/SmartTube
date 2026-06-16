@@ -64,10 +64,6 @@ public abstract class BasePresenter<T> {
         // NOP
     }
 
-    public BasePresenter(Context context) {
-        setContext(context);
-    }
-
     public void setView(T view) {
         if (checkView(view)) {
             mView = new WeakReference<>(view);

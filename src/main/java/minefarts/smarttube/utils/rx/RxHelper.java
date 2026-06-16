@@ -84,7 +84,7 @@ public class RxHelper {
         return false;
     }
 
-    private static boolean isActionRunning(Disposable action) {
+    public static boolean isActionRunning(Disposable action) {
         return action != null && !action.isDisposed();
     }
 

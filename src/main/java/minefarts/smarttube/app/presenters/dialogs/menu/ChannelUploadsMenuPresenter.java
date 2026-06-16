@@ -22,19 +22,20 @@ import java.util.List;
 
 public class ChannelUploadsMenuPresenter extends BaseMenuPresenter {
     
-    private final MediaItemService mItemManager;
-    private final AppDialogPresenter mDialogPresenter;
+    MediaItemService mItemManager;
+    AppDialogPresenter mDialogPresenter;
+    
     private Video mVideo;
     private VideoMenuCallback mCallback;
 
-    private ChannelUploadsMenuPresenter(Context context) {
-        super(context);
-        mItemManager = ServiceManager.getMediaItemService();
-        mDialogPresenter = AppDialogPresenter.instance(context);
-    }
-
     public static ChannelUploadsMenuPresenter instance(Context context) {
-        return new ChannelUploadsMenuPresenter(context);
+        ChannelUploadsMenuPresenter pres = new ChannelUploadsMenuPresenter();
+
+        pres.mItemManager = ServiceManager.getMediaItemService();
+        pres.mDialogPresenter = AppDialogPresenter.instance(context);
+        pres.setContext(context);
+
+        return pres;
     }
 
     @Override

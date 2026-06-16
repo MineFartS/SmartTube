@@ -48,6 +48,7 @@ import minefarts.smarttube.app.presenters.settings.MainUISettingsPresenter;
 import minefarts.smarttube.app.presenters.settings.PlayerSettingsPresenter;
 import minefarts.smarttube.app.presenters.settings.RemoteControlSettingsPresenter;
 import minefarts.smarttube.exoplayer.selector.FormatItem.VideoPreset;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -67,53 +68,52 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     
     @SuppressLint("StaticFieldLeak")
     private static BrowsePresenter sInstance;
-
-    private static final BrowseService2Wrapper mBrowseService = BrowseService2Wrapper.INSTANCE;
     
-    private final List<BrowseSection> mSections;
-    private final List<BrowseSection> mErrorSections;
-    private final Map<Integer, Observable<MediaGroup>> mGridMapping;
-    private final Map<Integer, Observable<List<MediaGroup>>> mRowMapping;
-    private final Map<Integer, Callable<List<SettingsItem>>> mSettingsGridMapping;
-    private final Map<Integer, Callable<List<Video>>> mLocalGridMappings;
-    private final Map<Integer, BrowseSection> mSectionsMapping;
-    private final BrowseProcessorManager mBrowseProcessor;
-    private final ChannelUploadsPresenter mChannelUploadsPresenter;
-    private final VideoStateService mVideoStateService;
-    private final List<Disposable> mActions;
-    private final Runnable mRefreshSection = this::refresh;
-    private BrowseSection mCurrentSection;
-    private Video mCurrentVideo;
-    private long mLastUpdateTimeMs = -1;
-    private int mBootSectionIndex;
-    private int mBootstrapSectionId = -1;
-
-    private BrowsePresenter(Context context) {
-        super(context);
-
-        mSections = new ArrayList<>();
-        mErrorSections = new ArrayList<>();
-        mGridMapping = new HashMap<>();
-        mRowMapping = new HashMap<>();
-        mSettingsGridMapping = new HashMap<>();
-        mLocalGridMappings = new HashMap<>();
-        mSectionsMapping = new HashMap<>();
-
-        ServiceManager.addAccountListener(this);
-
-        mBrowseProcessor = new BrowseProcessorManager(getContext(), this::syncItem);
-        mChannelUploadsPresenter = ChannelUploadsPresenter.instance(getContext());
-        mVideoStateService = VideoStateService.instance(getContext());
-        
-        mActions = new ArrayList<>();
-
-        initSectionMappings();
-        updatePlaylistsStyle();
-    }
+    List<BrowseSection> mSections;
+    List<BrowseSection> mErrorSections;
+    Map<Integer, Observable<MediaGroup>> mGridMapping;
+    Map<Integer, Observable<List<MediaGroup>>> mRowMapping;
+    Map<Integer, Callable<List<SettingsItem>>> mSettingsGridMapping;
+    Map<Integer, Callable<List<Video>>> mLocalGridMappings;
+    Map<Integer, BrowseSection> mSectionsMapping;
+    
+    static final BrowseService2Wrapper mBrowseService = BrowseService2Wrapper.INSTANCE;
+    BrowseProcessorManager mBrowseProcessor;
+    ChannelUploadsPresenter mChannelUploadsPresenter;
+    VideoStateService mVideoStateService;
+    VideoLoaderController mVideoLoaderController;
+    
+    List<Disposable> mActions;
+    Runnable mRefreshSection = this::refresh;
+    BrowseSection mCurrentSection;
+    Video mCurrentVideo;
+    long mLastUpdateTimeMs = -1;
+    int mBootSectionIndex;
+    int mBootstrapSectionId = -1;
 
     public static BrowsePresenter instance(Context context) {
         if (sInstance == null) {
-            sInstance = new BrowsePresenter(context);
+            sInstance = new BrowsePresenter();
+
+            sInstance.mSections = new ArrayList<>();
+            sInstance.mErrorSections = new ArrayList<>();
+            sInstance.mGridMapping = new HashMap<>();
+            sInstance.mRowMapping = new HashMap<>();
+            sInstance.mSettingsGridMapping = new HashMap<>();
+            sInstance.mLocalGridMappings = new HashMap<>();
+            sInstance.mSectionsMapping = new HashMap<>();
+
+            ServiceManager.addAccountListener(sInstance);
+
+            sInstance.mBrowseProcessor = new BrowseProcessorManager(context, sInstance::syncItem);
+            sInstance.mChannelUploadsPresenter = ChannelUploadsPresenter.instance(context);
+            sInstance.mVideoStateService = VideoStateService.instance(context);
+            sInstance.mVideoLoaderController = PlaybackPresenter.instance(context).getController(VideoLoaderController.class);
+            
+            sInstance.mActions = new ArrayList<>();
+
+            sInstance.initSectionMappings();
+            sInstance.updatePlaylistsStyle();
         }
 
         sInstance.setContext(context);
@@ -168,7 +168,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
         }
     }
 
-    private void initSectionMappings() {
+    void initSectionMappings() {
         
         //===================================================================
         // mSectionsMapping
@@ -487,7 +487,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     public void onVideoItemClicked(Video item) {
         if (getContext() == null) return;
 
-        VideoLoaderController.openVideo(item);
+        mVideoLoaderController.openVideo(item);
     }
 
     @Override

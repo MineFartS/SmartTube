@@ -16,9 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AppDialogPresenter extends BasePresenter<AppDialogView> {
+    
     @SuppressLint("StaticFieldLeak")
     private static AppDialogPresenter sInstance;
-    private final Handler mHandler;
+    
     private final Runnable mCloseDialog = this::closeDialog;
     private final WeakHashSet<Runnable> mOnStart = new WeakHashSet<>();
     private final WeakHashSet<Runnable> mOnFinish = new WeakHashSet<>();
@@ -26,10 +27,8 @@ public class AppDialogPresenter extends BasePresenter<AppDialogView> {
     private long mTimeoutMs;
     private boolean mIsTransparent;
     private boolean mIsOverlay;
-    private List<OptionCategory> mCategories;
     private boolean mIsExpandable = true;
     private int mId;
-
     private String mBackupTitle;
     private List<OptionCategory> mBackupCategories;
     private int mBackupId;
@@ -37,15 +36,14 @@ public class AppDialogPresenter extends BasePresenter<AppDialogView> {
     private boolean mBackupIsOverlay;
     private boolean mBackupIsExpandable;
 
-    public AppDialogPresenter(Context context) {
-        super(context);
-        mCategories = new ArrayList<>();
-        mHandler = new Handler(Looper.getMainLooper());
-    }
+    Handler mHandler;
+    List<OptionCategory> mCategories;
 
     public static AppDialogPresenter instance(Context context) {
         if (sInstance == null) {
-            sInstance = new AppDialogPresenter(context);
+            sInstance = new AppDialogPresenter();
+            sInstance.mCategories = new ArrayList<>();
+            sInstance.mHandler = new Handler(Looper.getMainLooper());
         }
 
         sInstance.setContext(context);

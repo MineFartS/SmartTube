@@ -22,6 +22,7 @@ import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter.VideoM
 import minefarts.smarttube.app.views.ChannelUploadsView;
 import minefarts.smarttube.utils.BrowseProcessorManager;
 import minefarts.smarttube.utils.ServiceManager;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -29,24 +30,26 @@ import io.reactivex.disposables.Disposable;
 import java.util.List;
 
 public class ChannelUploadsPresenter extends BasePresenter<ChannelUploadsView> {
+    
     private static final String TAG = ChannelUploadsPresenter.class.getSimpleName();
+    
     @SuppressLint("StaticFieldLeak")
     private static ChannelUploadsPresenter sInstance;
-    private final BrowseProcessorManager mBrowseProcessor;
+    
+    BrowseProcessorManager mBrowseProcessor;
+    VideoLoaderController mVideoLoaderController;
+    
     private Disposable mUpdateAction;
     private Disposable mScrollAction;
     private Video mChannel;
     private MediaGroup mPendingGroup;
     private VideoGroup mBaseGroup;
 
-    public ChannelUploadsPresenter(Context context) {
-        super(context);
-        mBrowseProcessor = new BrowseProcessorManager(getContext(), this::syncItem);
-    }
-
     public static ChannelUploadsPresenter instance(Context context) {
         if (sInstance == null) {
-            sInstance = new ChannelUploadsPresenter(context);
+            sInstance = new ChannelUploadsPresenter();
+            sInstance.mBrowseProcessor = new BrowseProcessorManager(context, sInstance::syncItem);
+            sInstance.mVideoLoaderController = PlaybackPresenter.instance(context).getController(VideoLoaderController.class);
         }
 
         sInstance.setContext(context);
@@ -80,13 +83,8 @@ public class ChannelUploadsPresenter extends BasePresenter<ChannelUploadsView> {
     }
 
     @Override
-    public void onVideoItemSelected(Video item) {
-        // NOP
-    }
-
-    @Override
     public void onVideoItemClicked(Video item) {
-        VideoLoaderController.openVideo(item);
+        mVideoLoaderController.openVideo(item);
     }
 
     @Override

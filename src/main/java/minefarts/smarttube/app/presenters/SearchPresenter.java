@@ -22,6 +22,7 @@ import minefarts.smarttube.utils.BrowseProcessorManager;
 import minefarts.smarttube.utils.ServiceManager;
 import minefarts.smarttube.prefs.AccountsData;
 import minefarts.smarttube.utils.AppDialogUtil;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
 
 import io.reactivex.disposables.Disposable;
 
@@ -32,10 +33,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class SearchPresenter extends BasePresenter<SearchView> {
+
     private static final String TAG = SearchPresenter.class.getSimpleName();
+    
     @SuppressLint("StaticFieldLeak")
     private static SearchPresenter sInstance;
-    private final BrowseProcessorManager mBrowseProcessor;
+    
+    BrowseProcessorManager mBrowseProcessor;
+    VideoLoaderController mVideoLoaderController;
+    
     private Disposable mScrollAction;
     private Disposable mLoadAction;
     private String mSearchText;
@@ -47,14 +53,11 @@ public class SearchPresenter extends BasePresenter<SearchView> {
     private int mFeatureOptions;
     private int mSortingOptions;
 
-    private SearchPresenter(Context context) {
-        super(context);
-        mBrowseProcessor = new BrowseProcessorManager(getContext(), this::syncItem);
-    }
-
     public static SearchPresenter instance(Context context) {
         if (sInstance == null) {
-            sInstance = new SearchPresenter(context);
+            sInstance = new SearchPresenter();
+            sInstance.mBrowseProcessor = new BrowseProcessorManager(context, sInstance::syncItem);
+            sInstance.mVideoLoaderController = PlaybackPresenter.instance(context).getController(VideoLoaderController.class);
         }
 
         sInstance.setContext(context);
@@ -94,15 +97,10 @@ public class SearchPresenter extends BasePresenter<SearchView> {
     }
 
     @Override
-    public void onVideoItemSelected(Video item) {
-        // NOP
-    }
-
-    @Override
     public void onVideoItemClicked(Video item) {
         if (getView() == null) return;
 
-        VideoLoaderController.openVideo(item);
+        mVideoLoaderController.openVideo(item);
     }
 
     @Override

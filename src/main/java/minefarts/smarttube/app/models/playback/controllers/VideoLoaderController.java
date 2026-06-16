@@ -55,12 +55,6 @@ public class VideoLoaderController extends BasePlayerController {
         mMediaItemService = ServiceManager.getMediaItemService();
         mVideoStateController = new VideoStateController();
     }
-   
-    private static final long STREAM_END_THRESHOLD_MS = 180_000;
-    private static final long BUFFERING_THRESHOLD_MS = 3_000;
-    private static final long BUFFERING_WINDOW_MS = 60_000;
-    private static final long BUFFERING_RECURRENCE_COUNT = 5;
-    private static final long BUFFERING_CONTINUATION_MS = 20_000;
     
     private Video mPendingVideo;
     private int mLastErrorType = -1;
