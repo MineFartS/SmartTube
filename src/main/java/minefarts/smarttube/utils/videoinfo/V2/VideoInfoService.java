@@ -25,9 +25,13 @@ import java.util.List;
 import retrofit2.Call;
 
 public class VideoInfoService extends VideoInfoServiceBase {
+
     private static final String TAG = VideoInfoService.class.getSimpleName();
+    
     private static VideoInfoService sInstance;
-    private final VideoInfoApi mVideoInfoApi;
+    
+    public VideoInfoApi mVideoInfoApi;
+    
     // VIDEO_INFO_TV can bypass "Sign in to confirm you're not a bot" (rare case)
     // VIDEO_INFO_WEB_EMBED - the best one, with no occasional 403 errors
     // VIDEO_INFO_IOS can work without NSig.
@@ -47,21 +51,21 @@ public class VideoInfoService extends VideoInfoServiceBase {
             AppClient.WEB_SAFARI,
             AppClient.WEB, // Fix video clip blocked in current location
     };
+
     @Nullable
     private AppClient mVideoInfoType = null;
+    
     @Nullable
     private AppClient mRecentInfoType = null;
+    
     private boolean mAuthBlock;
     private List<TranslationLanguage> mCachedTranslationLanguages;
     private boolean mIsUnplayable;
-
-    private VideoInfoService() {
-        mVideoInfoApi = RetrofitHelper.create(VideoInfoApi.class);
-    }
-
+    
     public static VideoInfoService instance() {
         if (sInstance == null) {
             sInstance = new VideoInfoService();
+            sInstance.mVideoInfoApi = RetrofitHelper.create(VideoInfoApi.class);
         }
 
         return sInstance;
