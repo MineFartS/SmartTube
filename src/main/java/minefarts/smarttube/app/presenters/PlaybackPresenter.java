@@ -94,13 +94,6 @@ public class PlaybackPresenter extends BasePresenter<PlaybackFragment2> implemen
     public void openVideo(Video video) {
         if (video == null) return;
 
-        if (getView() != null && getView().isEmbed()) { // switching from the embed player to the fullscreen one
-            // The embed player doesn't disposed properly
-            // NOTE: don't release after init check because this depends on timings
-            getView().finishReally();
-            setView(null);
-        }
-
         onNewVideo(video);
 
         getViewManager().startView(PlaybackFragment2.class);

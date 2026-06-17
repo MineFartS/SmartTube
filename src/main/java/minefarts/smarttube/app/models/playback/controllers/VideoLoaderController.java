@@ -39,13 +39,13 @@ public class VideoLoaderController extends BasePlayerController {
     
     private static final String TAG = VideoLoaderController.class.getSimpleName();
 
-    private static Context mContext;
-    private static PlaybackPresenter mPlaybackPresenter;
-    private static ChannelUploadsPresenter mChannelUploadsPresenter;
-    private static SearchPresenter mSearchPresenter;
-    private static MediaItemService mMediaItemService;
+    private final Context mContext;
+    private final PlaybackPresenter mPlaybackPresenter;
+    private final ChannelUploadsPresenter mChannelUploadsPresenter;
+    private final SearchPresenter mSearchPresenter;
+    private final MediaItemService mMediaItemService;
     private final VideoStateController mVideoStateController;
-
+    
     public VideoLoaderController(PlaybackPresenter playbackPresenter) {
         mContext = getContext();
 
@@ -56,39 +56,25 @@ public class VideoLoaderController extends BasePlayerController {
         mVideoStateController = new VideoStateController();
     }
     
+    private SuggestionsController mSuggestionsController;
+
+    @Override
+    public void onInit() {
+        mSuggestionsController = getController(SuggestionsController.class);
+    }
+    
     private Video mPendingVideo;
     private int mLastErrorType = -1;
-    private SuggestionsController mSuggestionsController;
     private Disposable mFormatInfoAction;
     private Disposable mMpdStreamAction;
 
     private final Runnable mReloadVideo = () -> getMainController().onNewVideo(getVideo());
     
-    private final Runnable mMetadataSync = () -> {
-        if (getPlayer() != null) {
-            savePosition();
-            waitMetadataSync(getVideo(), false);
-        }
-    };
-
     private final Runnable mRestartEngine = () -> {
         if (getPlayer() != null) {
             getPlayer().restartEngine(); // properly save position of the current track
         }
     };
-
-    private final Runnable mRebootApp = () -> {
-        Video video = getVideo();
-        if (getPlayer() != null) {
-            Utils.restartTheApp(getContext(), video, getPlayer().getPositionMs());
-        }
-    };
-
-    @Override
-    public void onInit() {
-        mSuggestionsController = getController(SuggestionsController.class);
-        savePosition();
-    }
 
     @Override
     public void onNewVideo(Video item) {
@@ -109,11 +95,6 @@ public class VideoLoaderController extends BasePlayerController {
     }
 
     @Override
-    public void onSeekEnd() {
-        savePosition();
-    }
-
-    @Override
     public void onEngineInitialized() {
         if (getPlayer() == null) return;
         
@@ -125,7 +106,7 @@ public class VideoLoaderController extends BasePlayerController {
     @Override
     public void onEngineReleased() {
         RxHelper.disposeActions(mFormatInfoAction, mMpdStreamAction);
-        Utils.removeCallbacks(mReloadVideo, this::onNextClicked, mRestartEngine, mMetadataSync, mRebootApp);
+        Utils.removeCallbacks(mReloadVideo, this::onNextClicked, mRestartEngine);
     }
 
     @Override
@@ -181,12 +162,8 @@ public class VideoLoaderController extends BasePlayerController {
 
         Video next = mSuggestionsController.getNext();
 
-        if (next != null) {
-            next.isShuffled = getVideo().isShuffled;
-            openVideoInt(next);
-        } else {
-            waitMetadataSync(getVideo(), true);
-        }
+        next.isShuffled = getVideo().isShuffled;
+        openVideoInt(next);
 
         getPlayer().showOverlay(true);
 
@@ -225,7 +202,7 @@ public class VideoLoaderController extends BasePlayerController {
     public boolean onKeyDown(int keyCode) {
         if (getPlayer() == null) return false;
 
-        Utils.removeCallbacks(mRestartEngine, mRebootApp);
+        Utils.removeCallbacks(mRestartEngine);
 
         return false;
     }
@@ -241,44 +218,25 @@ public class VideoLoaderController extends BasePlayerController {
 
     // Force load and play!
     private void loadVideo(Video item) {
-        if (getPlayer() != null && item != null) {
+        if (getPlayer() == null || item == null) return;
             
-            Queue.setCurrent(item);
-            
-            getPlayer().setVideo(item);
-            getPlayer().resetPlayerState();
-
-            getPlayer().showProgressBar(true);
-            onEngineReleased();
-
-            mFormatInfoAction = mMediaItemService.getFormatInfoObserve(getVideo().videoId).subscribe(
-                this::processFormatInfo,
-                error -> {
-                    getPlayer().showProgressBar(false);
-                    runFormatErrorAction(error);
-                }
-            );
-            
-        }
-    }
-
-    private void waitMetadataSync(Video current, boolean showLoadingMsg) {
+        onEngineReleased();
         
-        if (current == null) return;
+        Queue.setCurrent(item);
+        
+        getPlayer().setVideo(item);
+        getPlayer().resetPlayerState();
 
-        if (current.nextMediaItem != null) {
-            openVideoInt(Video.from(current.nextMediaItem));
-        } else if (!current.isSynced) { // Maybe there's nothing left. E.g. when casting from phone
-            // Wait in a loop while suggestions have been loaded...
-            if (showLoadingMsg) {
-                MessageHelpers.showMessageThrottled(getContext(), R.string.wait_data_loading);
+        getPlayer().showProgressBar(true);
+
+        mFormatInfoAction = mMediaItemService.getFormatInfoObserve(getVideo().videoId).subscribe(
+            this::processFormatInfo,
+            error -> {
+                getPlayer().showProgressBar(false);
+                runFormatErrorAction(error);
             }
-            // Short videos next fix (suggestions aren't loaded yet)
-            boolean isEnded = getPlayer() != null && Math.abs(getPlayer().getDurationMs() - getPlayer().getPositionMs()) < 100;
-            if (isEnded) {
-                Utils.postDelayed(mMetadataSync, 1_000);
-            }
-        }
+        );
+        
     }
 
     private void processFormatInfo(MediaItemFormatInfo formatInfo) {
@@ -384,7 +342,7 @@ public class VideoLoaderController extends BasePlayerController {
 
     }
 
-    public static void openVideo(Video item) {
+    public void openVideo(Video item) {
         
         if (item.hasVideo() && !item.isPlaylistInChannel()) {
             mPlaybackPresenter.openVideo(item);
@@ -664,8 +622,6 @@ public class VideoLoaderController extends BasePlayerController {
 
     @Override
     public void onMetadata(MediaItemMetadata metadata) {
-
-        ServiceManager.disposeActions();
 
         if (getPlayer() == null || getPlayerData() == null || getVideo() == null || getVideo().playlistInfo == null ||
                 getPlayerData().getPlaybackMode() != PlaybackFragment2.PLAYBACK_MODE_SHUFFLE) return;

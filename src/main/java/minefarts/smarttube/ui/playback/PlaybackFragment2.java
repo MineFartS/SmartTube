@@ -108,6 +108,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
 import java.util.Set;
+import java.lang.ref.WeakReference;
 
 /**
  * {@link PlaybackGlueHost} implementation
@@ -289,7 +290,7 @@ public class PlaybackFragment2
 
         mSelectedVideoId = savedInstanceState != null ? savedInstanceState.getString(SELECTED_VIDEO_ID, null) : null;
         mVideoGroupAdapters = new HashMap<>();
-        mBackgroundManager = getLeanbackActivity().getBackgroundManager();
+        mBackgroundManager = ((LeanbackActivity) getActivity()).getBackgroundManager();
         mBackgroundManager.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.player_background));
 
         mPlaybackPresenter = PlaybackPresenter.instance(getContext());
@@ -816,14 +817,15 @@ public class PlaybackFragment2
     // Begin Ui events
 
     public void setVideo(Video video) {
-        mExoPlayerController.setVideo(video);
+
+        mExoPlayerController.mVideo = new WeakReference<>(video);
 
         if (mPlayerGlue != null && video != null) {
             // Preserve player formatting
             mPlayerGlue.setTitle(video.getTitleFull() != null ? video.getTitleFull() : "...");
             mPlayerGlue.setSubtitle(video.getSecondTitleFull() != null ? createSubtitle(video) : "...");
-            mPlayerGlue.setVideo(video);
         }
+        
     }
 
     public void showBackground(String url) {
@@ -1109,7 +1111,7 @@ public class PlaybackFragment2
     }
 
     public void finish() {
-        LeanbackActivity activity = getLeanbackActivity();
+        LeanbackActivity activity = (LeanbackActivity) getActivity();
 
         if (activity != null) {
             activity.finish();
@@ -1120,7 +1122,7 @@ public class PlaybackFragment2
      * Force finish (PIP etc)
      */
     public void finishReally() {
-        LeanbackActivity activity = getLeanbackActivity();
+        LeanbackActivity activity = (LeanbackActivity) getActivity();
 
         if (activity != null) {
             activity.finishReally();
@@ -1443,10 +1445,6 @@ public class PlaybackFragment2
 
     /* End PlayerController */
 
-    private LeanbackActivity getLeanbackActivity() {
-        return (LeanbackActivity) getActivity();
-    }
-
     /**
      * Simply recreates exoplayer objects (silently) if prev track (current from this perspective) isn't empty<br/>
      * Fixes video artifacts when switching to the next video.<br/>
@@ -1460,10 +1458,6 @@ public class PlaybackFragment2
         setChatReceiver(null);
         setSeekBarSegments(null);
         setSeekPreviewTitle(null);
-    }
-
-    public Boolean isEmbed() {
-        return false;
     }
 
     /**

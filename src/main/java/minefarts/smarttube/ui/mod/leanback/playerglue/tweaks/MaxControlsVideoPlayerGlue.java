@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+
 import minefarts.smarttube.leanback.media.PlayerAdapter;
 import minefarts.smarttube.leanback.widget.AbstractDetailsDescriptionPresenter;
 import minefarts.smarttube.leanback.widget.PlaybackControlsRow;
@@ -11,7 +12,6 @@ import minefarts.smarttube.leanback.widget.PlaybackRowPresenter;
 import minefarts.smarttube.leanback.media.PlaybackBaseControlGlue;
 import minefarts.smarttube.leanback.widget.RowPresenter;
 import minefarts.smarttube.utils.helpers.Helpers;
-import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.ui.SeekBarSegment;
 import minefarts.smarttube.leanback.media.PlaybackTransportControlGlue;
 import minefarts.smarttube.ui.mod.leanback.playerglue.tweaks.PlaybackTransportRowPresenter.TopEdgeFocusListener;
@@ -23,7 +23,6 @@ import java.util.List;
 public abstract class MaxControlsVideoPlayerGlue<T extends PlayerAdapter>
         extends PlaybackTransportControlGlue<T> implements TopEdgeFocusListener {
 
-    private Video mVideo;
     private WeakReference<PlaybackTransportRowPresenter.ViewHolder> mTransportViewHolder;
     private WeakReference<AbstractDetailsDescriptionPresenter.ViewHolder> mDescriptionViewHolder;
 
@@ -112,10 +111,6 @@ public abstract class MaxControlsVideoPlayerGlue<T extends PlayerAdapter>
         if (getTransportViewHolder() != null) {
             getTransportViewHolder().setDateVisibility(show);
         }
-    }
-
-    public void setVideo(Video video) {
-        mVideo = video;
     }
 
     @Override
