@@ -24,19 +24,16 @@ public class AppUpdatePresenter extends BasePresenter<Void> implements AppUpdate
     @SuppressLint("StaticFieldLeak")
     private static AppUpdatePresenter sInstance;
     
-    private final AppUpdateChecker mUpdateChecker;
-    private final AppDialogPresenter mSettingsPresenter;
-    private boolean mIsForceCheck;
+    AppUpdateChecker mUpdateChecker;
+    AppDialogPresenter mSettingsPresenter;
 
-    public AppUpdatePresenter(Context context) {
-        super(context);
-        mUpdateChecker = new AppUpdateChecker(context, this);
-        mSettingsPresenter = AppDialogPresenter.instance(context);
-    }
+    private boolean mIsForceCheck;
 
     public static AppUpdatePresenter instance(Context context) {
         if (sInstance == null) {
-            sInstance = new AppUpdatePresenter(context);
+            sInstance = new AppUpdatePresenter();
+            sInstance.mUpdateChecker = new AppUpdateChecker(context, sInstance);
+            sInstance.mSettingsPresenter = AppDialogPresenter.instance(context);
         }
 
         sInstance.setContext(context);

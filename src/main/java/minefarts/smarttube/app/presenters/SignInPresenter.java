@@ -19,20 +19,18 @@ public class SignInPresenter extends BasePresenter<SignInView> {
 
     @SuppressLint("StaticFieldLeak")
     private static SignInPresenter sInstance;
+
     private boolean mIsWaiting;
 
-    private final SignInService mSignInService;
+    SignInService mSignInService;
+    
     private Disposable mSignInAction;
     private Runnable mCallback;
-
-    protected SignInPresenter(Context context) {
-        super(context);
-        mSignInService = SignInService.instance();
-    }
-
+    
     public static SignInPresenter instance(Context context) {
         if (sInstance == null) {
-            sInstance = new SignInPresenter(context);
+            sInstance = new SignInPresenter();
+            sInstance.mSignInService = SignInService.instance();
         }
 
         sInstance.setContext(context);

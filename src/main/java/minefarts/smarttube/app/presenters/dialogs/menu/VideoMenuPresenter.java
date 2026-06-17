@@ -111,7 +111,10 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
     }
 
     private VideoMenuPresenter(Context context) {
-        super(context);
+        super();
+
+        setContext(context);        
+        updateEnabledMenuItems();
         
         mMediaItemService = ServiceManager.getMediaItemService();
         mDialogPresenter = AppDialogPresenter.instance(context);

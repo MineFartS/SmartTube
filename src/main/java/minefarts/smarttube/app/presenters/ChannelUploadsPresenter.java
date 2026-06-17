@@ -29,24 +29,24 @@ import io.reactivex.disposables.Disposable;
 import java.util.List;
 
 public class ChannelUploadsPresenter extends BasePresenter<ChannelUploadsView> {
+    
     private static final String TAG = ChannelUploadsPresenter.class.getSimpleName();
+    
     @SuppressLint("StaticFieldLeak")
     private static ChannelUploadsPresenter sInstance;
-    private final BrowseProcessorManager mBrowseProcessor;
+    
+    BrowseProcessorManager mBrowseProcessor;
+    
     private Disposable mUpdateAction;
     private Disposable mScrollAction;
     private Video mChannel;
     private MediaGroup mPendingGroup;
     private VideoGroup mBaseGroup;
 
-    public ChannelUploadsPresenter(Context context) {
-        super(context);
-        mBrowseProcessor = new BrowseProcessorManager(getContext(), this::syncItem);
-    }
-
     public static ChannelUploadsPresenter instance(Context context) {
         if (sInstance == null) {
-            sInstance = new ChannelUploadsPresenter(context);
+            sInstance = new ChannelUploadsPresenter();
+            sInstance.mBrowseProcessor = new BrowseProcessorManager(context, sInstance::syncItem);
         }
 
         sInstance.setContext(context);
@@ -77,11 +77,6 @@ public class ChannelUploadsPresenter extends BasePresenter<ChannelUploadsView> {
         mChannel = null;
         mPendingGroup = null;
         mBaseGroup = null;
-    }
-
-    @Override
-    public void onVideoItemSelected(Video item) {
-        // NOP
     }
 
     @Override

@@ -47,14 +47,9 @@ public class SplashPresenter extends BasePresenter<SplashView> {
         boolean process(Intent intent);
     }
 
-    private SplashPresenter(Context context) {
-        super(context);
-    }
-
     public static SplashPresenter instance(Context context) {
-        if (sInstance == null) {
-            sInstance = new SplashPresenter(context);
-        }
+        if (sInstance == null)
+            sInstance = new SplashPresenter();
 
         sInstance.setContext(context);
 

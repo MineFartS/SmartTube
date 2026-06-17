@@ -59,10 +59,10 @@ public class ChannelPresenter extends BasePresenter<ChannelView> {
     @SuppressLint("StaticFieldLeak")
     private static ChannelPresenter sInstance;
     
-    private final BrowseProcessorManager mBrowseProcessor;
-    private final BrowseService2 mBrowseService;
-    private final BrowseApi2 mBrowseApi;
-    private final BrowseApiHelper mBrowseApiHelper;
+    BrowseProcessorManager mBrowseProcessor;
+    BrowseService2 mBrowseService;
+    BrowseApi2 mBrowseApi;
+    BrowseApiHelper mBrowseApiHelper;
     
     private String mChannelId;
     private final List<List<MediaGroup>> mPendingGroups = new ArrayList<>();
@@ -79,23 +79,13 @@ public class ChannelPresenter extends BasePresenter<ChannelView> {
         void onUploadsRow(Observable<MediaGroup> row);
     }
 
-    public ChannelPresenter(Context context) {
-        
-        super(context);
-        
-        mBrowseProcessor = new BrowseProcessorManager(getContext(), this::syncItem);
-
-        mBrowseService = getContentService().getBrowseService2();
-
-        mBrowseApi = RetrofitHelper.create(BrowseApi2.class);
-
-        mBrowseApiHelper = BrowseApiHelper.INSTANCE;
-
-    }
-
     public static ChannelPresenter instance(Context context) {
         if (sInstance == null) {
-            sInstance = new ChannelPresenter(context);
+            sInstance = new ChannelPresenter();
+            sInstance.mBrowseProcessor = new BrowseProcessorManager(context, sInstance::syncItem);
+            sInstance.mBrowseService = sInstance.getContentService().getBrowseService2();
+            sInstance.mBrowseApi = RetrofitHelper.create(BrowseApi2.class);
+            sInstance.mBrowseApiHelper = BrowseApiHelper.INSTANCE;
         }
 
         sInstance.setContext(context);
@@ -134,11 +124,6 @@ public class ChannelPresenter extends BasePresenter<ChannelView> {
         mChannelId = null;
         mPendingGroups.clear();
         disposeActions();
-    }
-
-    @Override
-    public void onVideoItemSelected(Video item) {
-        // NOP
     }
 
     @Override

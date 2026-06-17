@@ -23,15 +23,15 @@ import java.util.Set;
 
 public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
     
-    private final ContentBlockData mContentBlockData;
-
-    public ContentBlockSettingsPresenter(Context context) {
-        super(context);
-        mContentBlockData = ContentBlockData.instance(context);
-    }
+    ContentBlockData mContentBlockData;
 
     public static ContentBlockSettingsPresenter instance(Context context) {
-        return new ContentBlockSettingsPresenter(context);
+        ContentBlockSettingsPresenter pres = new ContentBlockSettingsPresenter();
+
+        pres.mContentBlockData = ContentBlockData.instance(context);
+        pres.setContext(context);
+
+        return pres;
     }
 
     public void show(Runnable onFinish) {

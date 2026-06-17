@@ -2,6 +2,7 @@ package minefarts.smarttube.app.presenters.settings;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+
 import minefarts.smarttube.utils.ServiceManager;
 import minefarts.smarttube.utils.RemoteControlService;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
@@ -21,20 +22,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RemoteControlSettingsPresenter extends BasePresenter<Void> {
+    
     @SuppressLint("StaticFieldLeak")
     private static RemoteControlSettingsPresenter sInstance;
-    private final RemoteControlData mRemoteControlData;
-    private final RemoteControlService mRemoteManager;
-
-    public RemoteControlSettingsPresenter(Context context) {
-        super(context);
-        mRemoteManager = ServiceManager.getRemoteControlService();
-        mRemoteControlData = RemoteControlData.instance(context);
-    }
+    
+    RemoteControlData mRemoteControlData;
+    RemoteControlService mRemoteManager;
 
     public static RemoteControlSettingsPresenter instance(Context context) {
         if (sInstance == null) {
-            sInstance = new RemoteControlSettingsPresenter(context);
+            sInstance = new RemoteControlSettingsPresenter();
+            sInstance.mRemoteManager = ServiceManager.getRemoteControlService();
+            sInstance.mRemoteControlData = RemoteControlData.instance(context);
         }
 
         sInstance.setContext(context);
