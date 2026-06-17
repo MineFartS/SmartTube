@@ -22,6 +22,7 @@ import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter.VideoM
 import minefarts.smarttube.app.views.ChannelUploadsView;
 import minefarts.smarttube.utils.BrowseProcessorManager;
 import minefarts.smarttube.utils.ServiceManager;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -36,6 +37,7 @@ public class ChannelUploadsPresenter extends BasePresenter<ChannelUploadsView> {
     private static ChannelUploadsPresenter sInstance;
     
     BrowseProcessorManager mBrowseProcessor;
+    VideoLoaderController mVideoLoaderController;
     
     private Disposable mUpdateAction;
     private Disposable mScrollAction;
@@ -47,6 +49,7 @@ public class ChannelUploadsPresenter extends BasePresenter<ChannelUploadsView> {
         if (sInstance == null) {
             sInstance = new ChannelUploadsPresenter();
             sInstance.mBrowseProcessor = new BrowseProcessorManager(context, sInstance::syncItem);
+            sInstance.mVideoLoaderController = PlaybackPresenter.instance(context).getController(VideoLoaderController.class);
         }
 
         sInstance.setContext(context);
@@ -81,7 +84,7 @@ public class ChannelUploadsPresenter extends BasePresenter<ChannelUploadsView> {
 
     @Override
     public void onVideoItemClicked(Video item) {
-        VideoLoaderController.openVideo(item);
+        mVideoLoaderController.openVideo(item);
     }
 
     @Override

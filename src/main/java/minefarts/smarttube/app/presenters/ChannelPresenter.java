@@ -28,6 +28,7 @@ import minefarts.smarttube.utils.common.helpers.AppClient;
 import minefarts.smarttube.google.common.helpers.RetrofitHelper;
 import minefarts.smarttube.utils.browse.BrowseApi2;
 import minefarts.smarttube.utils.common.models.impl.mediagroup.BrowseMediaGroup;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
 
 import retrofit2.Call;
 
@@ -63,6 +64,7 @@ public class ChannelPresenter extends BasePresenter<ChannelView> {
     BrowseService2 mBrowseService;
     BrowseApi2 mBrowseApi;
     BrowseApiHelper mBrowseApiHelper;
+    VideoLoaderController mVideoLoaderController;
     
     private String mChannelId;
     private final List<List<MediaGroup>> mPendingGroups = new ArrayList<>();
@@ -86,6 +88,7 @@ public class ChannelPresenter extends BasePresenter<ChannelView> {
             sInstance.mBrowseService = sInstance.getContentService().getBrowseService2();
             sInstance.mBrowseApi = RetrofitHelper.create(BrowseApi2.class);
             sInstance.mBrowseApiHelper = BrowseApiHelper.INSTANCE;
+            sInstance.mVideoLoaderController = PlaybackPresenter.instance(context).getController(VideoLoaderController.class);
         }
 
         sInstance.setContext(context);
@@ -128,7 +131,7 @@ public class ChannelPresenter extends BasePresenter<ChannelView> {
 
     @Override
     public void onVideoItemClicked(Video item) {
-        VideoLoaderController.openVideo(item);
+        mVideoLoaderController.openVideo(item);
     }
 
     @Override

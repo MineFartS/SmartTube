@@ -22,6 +22,7 @@ import minefarts.smarttube.utils.BrowseProcessorManager;
 import minefarts.smarttube.utils.ServiceManager;
 import minefarts.smarttube.prefs.AccountsData;
 import minefarts.smarttube.utils.AppDialogUtil;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
 
 import io.reactivex.disposables.Disposable;
 
@@ -39,6 +40,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
     private static SearchPresenter sInstance;
     
     BrowseProcessorManager mBrowseProcessor;
+    VideoLoaderController mVideoLoaderController;
     
     private Disposable mScrollAction;
     private Disposable mLoadAction;
@@ -55,6 +57,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
         if (sInstance == null) {
             sInstance = new SearchPresenter();
             sInstance.mBrowseProcessor = new BrowseProcessorManager(context, sInstance::syncItem);
+            sInstance.mVideoLoaderController = PlaybackPresenter.instance(context).getController(VideoLoaderController.class);
         }
 
         sInstance.setContext(context);
@@ -97,7 +100,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
     public void onVideoItemClicked(Video item) {
         if (getView() == null) return;
 
-        VideoLoaderController.openVideo(item);
+        mVideoLoaderController.openVideo(item);
     }
 
     @Override

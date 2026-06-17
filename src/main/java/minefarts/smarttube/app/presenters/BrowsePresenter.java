@@ -48,6 +48,7 @@ import minefarts.smarttube.app.presenters.settings.MainUISettingsPresenter;
 import minefarts.smarttube.app.presenters.settings.PlayerSettingsPresenter;
 import minefarts.smarttube.app.presenters.settings.RemoteControlSettingsPresenter;
 import minefarts.smarttube.exoplayer.selector.FormatItem.VideoPreset;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -107,6 +108,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
             sInstance.mBrowseProcessor = new BrowseProcessorManager(context, sInstance::syncItem);
             sInstance.mChannelUploadsPresenter = ChannelUploadsPresenter.instance(context);
             sInstance.mVideoStateService = VideoStateService.instance(context);
+            sInstance.mVideoLoaderController = PlaybackPresenter.instance(context).getController(VideoLoaderController.class);
             
             sInstance.mActions = new ArrayList<>();
 
@@ -485,7 +487,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
     public void onVideoItemClicked(Video item) {
         if (getContext() == null) return;
 
-        VideoLoaderController.openVideo(item);
+        mVideoLoaderController.openVideo(item);
     }
 
     @Override
