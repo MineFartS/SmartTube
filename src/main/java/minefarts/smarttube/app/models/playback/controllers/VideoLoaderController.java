@@ -118,10 +118,8 @@ public class VideoLoaderController extends BasePlayerController {
             Log.e(TAG, "Unhandled exception in onEngineError recovery", t);
             // Avoid silent crashes: attempt safe reload instead of crashing.
             try {
-                reloadVideo();
-            } catch (Throwable ignored) {
-                // last resort: do nothing
-            }
+                scheduleReloadVideoTimer(1_000);
+            } catch (Throwable ignored) {}
         }
     }
 
@@ -261,10 +259,12 @@ public class VideoLoaderController extends BasePlayerController {
         } else if (acceptAdaptiveFormats(formatInfo) && formatInfo.containsDashFormats()) {
             Log.d(TAG, "Loading regular video in dash format...");
             player.openDash(formatInfo);
+        
         } else if (acceptAdaptiveFormats(formatInfo) && formatInfo.containsSabrFormats()) {
             Log.d(TAG, "Loading video in sabr format...");
             player.openSabr(formatInfo);
-        } else if (acceptDashLive(formatInfo)) {
+
+        } else if (formatInfo.isLive() && formatInfo.containsDashUrl()) {
             String dashUrl = formatInfo.getDashManifestUrl();
             if (dashUrl == null) {
                 runFormatErrorAction(new IllegalStateException("Dash manifest url is null"));
@@ -272,6 +272,7 @@ public class VideoLoaderController extends BasePlayerController {
             }
             Log.d(TAG, "Loading live video (current or past live stream) in dash format...");
             player.openDashUrl(dashUrl);
+        
         } else if (formatInfo.isLive() && formatInfo.containsHlsUrl()) {
             String hlsUrl = formatInfo.getHlsManifestUrl();
             if (hlsUrl == null) {
@@ -280,6 +281,7 @@ public class VideoLoaderController extends BasePlayerController {
             }
             Log.d(TAG, "Loading live video (current or past live stream) in hls format...");
             player.openHlsUrl(hlsUrl);
+        
         } else if (formatInfo.containsUrlFormats()) {
             List<String> urlList = formatInfo.createUrlList();
             if (urlList == null || urlList.isEmpty()) {
@@ -287,17 +289,23 @@ public class VideoLoaderController extends BasePlayerController {
                 return;
             }
             Log.d(TAG, "Loading url list video. This is always LQ...");
-            player.openUrlList(applyFix(urlList));
+            
+            if (mLastErrorType == PlayerEventListener.ERROR_TYPE_SOURCE)
+                Collections.reverse(urlList);
+
+            player.openUrlList(urlList);
+            
         } else {
             Log.d(TAG, "Empty format info received. Seems future live translation. No video data to pass to the player.");
             player.setTitle(formatInfo.getPlayabilityStatus());
             player.showProgressBar(false);
             mSuggestionsController.loadSuggestions(getVideo());
             bgImageUrl = getVideo().getBackgroundUrl();
-            scheduleReloadVideoTimer(30 * 1_000);
+            scheduleReloadVideoTimer(30_000);
         }
 
         player.showBackground(bgImageUrl); // remove bg (if video playing) or set another bg
+
     }
 
     private void scheduleReloadVideoTimer(int delayMs) {
@@ -371,14 +379,17 @@ public class VideoLoaderController extends BasePlayerController {
         if (Helpers.containsAny(message, "Unexpected token", "Syntax error", "invalid argument") || // temporal fix
                 Helpers.equalsAny(className, "PoTokenException", "BadWebViewException")) {
             ServiceManager.applyNoPlaybackFix();
-            reloadVideo();
+            scheduleReloadVideoTimer(1_000);
+
         } else if (Helpers.containsAny(message, "is not defined")) {
             ServiceManager.invalidateCache();
-            reloadVideo();
+            scheduleReloadVideoTimer(1_000);
+        
         } else if (isNullPlayerUrl) {
             // Avoid tight retry loop when upstream returns partial/empty data.
             Log.e(TAG, "playerUrl is null, scheduling delayed reload...");
             scheduleReloadVideoTimer(3_000);
+        
         } else {
             Log.e(TAG, "Probably no internet connection");
             scheduleReloadVideoTimer(1_000);
@@ -394,18 +405,6 @@ public class VideoLoaderController extends BasePlayerController {
             return;
         }
 
-        boolean restart = applyEngineErrorAction(type, rendererIndex, error);
-
-        if (restart) {
-            restartEngine();
-        } else {
-            reloadVideo();
-        }
-
-    }
-
-    private boolean applyEngineErrorAction(int type, int rendererIndex, Throwable error) {
-        
         boolean restartEngine = true;
         boolean showMessage = true;
         String errorContent = error != null ? error.getMessage() : null;
@@ -472,11 +471,15 @@ public class VideoLoaderController extends BasePlayerController {
             showMessage = false;
         }
 
-        if (showMessage) {
+        if (showMessage)
             MessageHelpers.showLongMessage(getContext(), errorMessage);
+
+        if (restartEngine) {
+            scheduleRestartEngineTimer(1_000);
+        } else {
+            scheduleReloadVideoTimer(1_000);
         }
 
-        return restartEngine;
     }
 
     @SuppressLint("StringFormatMatches")
@@ -530,23 +533,6 @@ public class VideoLoaderController extends BasePlayerController {
         return errorTitle;
     }
 
-    private void restartEngine() {
-        scheduleRestartEngineTimer(1_000);
-    }
-
-    private void reloadVideo() {
-        scheduleReloadVideoTimer(1_000);
-    }
-
-    private List<String> applyFix(List<String> urlList) {
-        // Sometimes top url cannot be played
-        if (mLastErrorType == PlayerEventListener.ERROR_TYPE_SOURCE) {
-            Collections.reverse(urlList);
-        }
-
-        return urlList;
-    }
-
     private void applyPlaybackMode(int playbackMode) {
         if (getPlayer() == null) return;
 
@@ -563,13 +549,16 @@ public class VideoLoaderController extends BasePlayerController {
                     }
                     break;
                 }
+            
             case PlaybackFragment2.PLAYBACK_MODE_ALL:
             case PlaybackFragment2.PLAYBACK_MODE_SHUFFLE:
                 onNextClicked();
                 break;
+
             case PlaybackFragment2.PLAYBACK_MODE_ONE:
                 getPlayer().setPositionMs(100); // fix frozen image on Android 4?
                 break;
+
             case PlaybackFragment2.PLAYBACK_MODE_CLOSE:
                 // Close player if suggestions not shown
                 // Except when playing from queue
@@ -583,6 +572,7 @@ public class VideoLoaderController extends BasePlayerController {
                     }
                 }
                 break;
+
             case PlaybackFragment2.PLAYBACK_MODE_PAUSE:
                 // Stop player after each video.
                 // Except when playing from queue
@@ -594,32 +584,25 @@ public class VideoLoaderController extends BasePlayerController {
                     getPlayer().showSuggestions(true);
                 }
                 break;
+
             case PlaybackFragment2.PLAYBACK_MODE_LIST:
                 // if video has a playlist load next or restart playlist
                 if (video.hasNextPlaylist() || Queue.getNext() != null) {
                     onNextClicked();
                 } else {
-                    restartPlaylistIfNeeded();
+                    VideoGroup group = getVideo().getGroup(); // Get the VideoGroup (playlist)
+
+                    if (group != null && !group.isEmpty() && getVideo().belongsToSamePlaylistGroup()) {
+                        openVideoInt(group.get(0));
+                    } else {
+                        Log.e(TAG, "VideoGroup is null or empty. Can't restart playlist.");
+                        getPlayer().setPositionMs(getPlayer().getDurationMs());
+                        getPlayer().setPlayWhenReady(false);
+                        getPlayer().showSuggestions(true);
+                    }
                 }
                 break;
-            default:
-                Log.e(TAG, "Undetected repeat mode " + playbackMode);
-                break;
-        }
-    }
 
-    private void restartPlaylistIfNeeded() {
-        if (getPlayer() == null || getVideo() == null) return;
-        
-        VideoGroup group = getVideo().getGroup(); // Get the VideoGroup (playlist)
-
-        if (group != null && !group.isEmpty() && getVideo().belongsToSamePlaylistGroup()) {
-            openVideoInt(group.get(0));
-        } else {
-            Log.e(TAG, "VideoGroup is null or empty. Can't restart playlist.");
-            getPlayer().setPositionMs(getPlayer().getDurationMs());
-            getPlayer().setPlayWhenReady(false);
-            getPlayer().showSuggestions(true);
         }
     }
 
@@ -630,10 +613,6 @@ public class VideoLoaderController extends BasePlayerController {
         boolean atStart = (formatInfo.getStartTimeMs() == 0);
 
         return !(isLive && atStart);
-    }
-
-    private boolean acceptDashLive(MediaItemFormatInfo formatInfo) {
-        return formatInfo.isLive() && formatInfo.containsDashUrl();
     }
 
     @Override
