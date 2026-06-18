@@ -10,12 +10,18 @@ Invoke-ADB
 
 Clear-Host
 
+Invoke-Gradle --stop
+
 $gARGS = @()
 
 if ($Force) {
 
     Remove-Item `
         ".gradle" `
+        -Force -Recurse -Verbose
+
+    Remove-Item `
+        ".build" `
         -Force -Recurse -Verbose
 
     Remove-Item `
@@ -26,8 +32,6 @@ if ($Force) {
     $gARGS += '--refresh-dependencies'
 
 }
-
-taskkill.exe /im java.exe /f
 
 if (Test-ADBConnection) {
     $gARGS += ":installDebug"
