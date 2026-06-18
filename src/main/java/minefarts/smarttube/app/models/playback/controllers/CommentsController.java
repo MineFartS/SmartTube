@@ -49,6 +49,8 @@ public class CommentsController extends BasePlayerController {
     }
 
     private void openCommentsDialog() {
+        
+        fitVideoIntoDialog();
 
         onFinish();
 
