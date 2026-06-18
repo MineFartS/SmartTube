@@ -230,19 +230,7 @@ public abstract class BasePlayerController extends ServiceManager implements Pla
 
     @Override
     public void onButtonClicked(int buttonId, int buttonState) {
-        
-        if (getPlayer() == null) return;
-
-        AppDialogPresenter settingsPresenter = getAppDialogPresenter();
-
-        settingsPresenter.setOnStart(
-            () -> getPlayer().setVideoGravity(Gravity.START | Gravity.CENTER_VERTICAL)
-        );
-
-        settingsPresenter.setOnFinish(
-            () -> getPlayer().setVideoGravity(Gravity.CENTER)
-        );
-
+        // NOP
     }
 
     @Override
@@ -305,6 +293,45 @@ public abstract class BasePlayerController extends ServiceManager implements Pla
 
     protected PlaybackPresenter getPlaybackPresenter() {
         return PlaybackPresenter.instance(getContext());
+    }
+
+    public void fitVideoIntoDialog() {
+        if (getPlayer() == null) return;
+
+        AppDialogPresenter settingsPresenter = getAppDialogPresenter();
+
+        settingsPresenter.setOnStart(() -> {
+            if (settingsPresenter.isOverlay()) return;
+
+            getPlayer().showControls(false);
+            
+            FormatItem videoFormat = getPlayer().getVideoFormat();
+
+            if (videoFormat == null || videoFormat.getTrack() == null) return;
+            
+            Format format = videoFormat.getTrack().format;
+
+            final float srcRatio = (format.width / format.height);
+            final float dstRatio = (16 / 9f);
+            final float scale = (dstRatio / srcRatio);
+            float zoom = 63;
+            
+            // skip cinema ratio
+            if (scale > 1) zoom *= scale;
+            
+            // shorts overzoom fix
+            if (zoom > 130) return;
+
+            getPlayer().mVideoSurfaceRoot.setZoomPercents(Math.round(zoom));
+            getPlayer().setVideoGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+
+        });
+
+        settingsPresenter.setOnFinish(() -> {
+            getPlayer().mVideoSurfaceRoot.setZoomPercents(100);
+            getPlayer().setVideoGravity(Gravity.CENTER);
+        });
+
     }
 
 }

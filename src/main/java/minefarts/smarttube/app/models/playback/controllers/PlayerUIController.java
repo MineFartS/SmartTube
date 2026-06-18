@@ -89,6 +89,10 @@ public class PlayerUIController extends BasePlayerController {
     @Override
     public void onInit() {
         mSuggestionsController = getController(SuggestionsController.class);
+
+        if (getPlayer() != null)
+            getPlayer().mVideoSurfaceRoot.setZoomPercents(100);
+        
     }
 
     @Override
@@ -190,6 +194,8 @@ public class PlayerUIController extends BasePlayerController {
     private void onSubtitleLongClicked() {
         if (getPlayer() == null) return;
 
+        fitVideoIntoDialog();
+
         AppDialogPresenter settingsPresenter = getAppDialogPresenter();
 
         settingsPresenter.appendSingleButton(
@@ -222,6 +228,7 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private void onPlaylistAddClicked() {
+        fitVideoIntoDialog();
 
         if (mPlaylistInfos == null) {
             AppDialogUtil.showAddToPlaylistDialog(getContext(), getVideo(),
@@ -358,6 +365,7 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private void onVideoInfoClicked() {
+        fitVideoIntoDialog();
 
         Video video = getVideo();
 

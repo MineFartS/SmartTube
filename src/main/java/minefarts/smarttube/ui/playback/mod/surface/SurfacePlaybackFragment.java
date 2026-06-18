@@ -22,8 +22,9 @@ import android.util.Log;
  */
 public class SurfacePlaybackFragment extends PlaybackSupportFragment {
 
+    public AspectRatioFrameLayout mVideoSurfaceRoot;
+    
     private SurfaceWrapper mVideoSurfaceWrapper;
-    private AspectRatioFrameLayout mVideoSurfaceRoot;
     private int mBackgroundResId;
 
     @Override
@@ -51,10 +52,38 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
         surfaceView.setLayoutParams(params);
 
         mVideoSurfaceRoot.addView(surfaceView, 0);
+        mVideoSurfaceRoot.aspectRatioListener = (a, b, c) -> scaleIfNeeded();
 
         // Scaling/ratio calculations removed. Let layout handle video sizing.
         setBackgroundType(PlaybackSupportFragment.BG_LIGHT);
         return root;
+    }
+
+    private void scaleIfNeeded() {
+        if (mVideoSurfaceRoot.getWidth() == 0
+            || mVideoSurfaceRoot.getHeight() == 0
+        ) return;
+
+        float angle = mVideoSurfaceRoot.getRotation();
+
+        int width, height;
+
+        if (angle == 90f || angle == 270f) {
+            float ratio = mVideoSurfaceRoot.getWidth() / ((float) mVideoSurfaceRoot.getHeight());
+            width = mVideoSurfaceRoot.getHeight();
+            height = (int) (width / ratio);
+        } else {
+            width = mVideoSurfaceRoot.getWidth();
+            height = mVideoSurfaceRoot.getHeight();
+        }
+
+        // https://stackoverflow.com/questions/52196362/how-resize-textureview-to-fullscreen-when-rotation-90
+        View textureView = mVideoSurfaceWrapper.getSurfaceView();
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) textureView.getLayoutParams();
+        params.width = width;
+        params.height = height;
+        params.gravity = Gravity.CENTER;
+        textureView.setLayoutParams(params);
     }
 
     /**
@@ -78,10 +107,6 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
         mVideoSurfaceWrapper = null;
         super.onDestroyView();
     }
-
-    // Removed: scaleIfNeeded() was calculating aspect ratio/scale based on container rotation.
-    // This caused incorrect fitting; now we rely on layout/Player sizing instead.
-
 
     /**
      * Setup player's background used when controls are showed.
