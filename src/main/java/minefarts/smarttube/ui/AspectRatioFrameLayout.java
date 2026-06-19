@@ -52,15 +52,25 @@ public final class AspectRatioFrameLayout extends FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec); // Zoom 100%
         if (videoAspectRatio <= 0) return;
 
-        float width = getMeasuredWidth();
-        float height = getMeasuredHeight();
-        
-        final float viewAspectRatio = (float) width / height;
+        final int parentWidth = getMeasuredWidth();
+        final int parentHeight = getMeasuredHeight();
+        if (parentWidth <= 0 || parentHeight <= 0) return;
 
-        if (videoAspectRatio / viewAspectRatio > 1) {
-            height = (width / videoAspectRatio);
+        // Keep the content's aspect ratio by letterboxing (never stretching).
+        // We compute the maximum area that preserves videoAspectRatio inside parent bounds.
+        float width = parentWidth;
+        float height = parentHeight;
+
+        float parentAspectRatio = (float) parentWidth / (float) parentHeight;
+
+        if (videoAspectRatio > parentAspectRatio) {
+            // Video is wider than the available space => limit by height.
+            height = parentHeight;
+            width = height * videoAspectRatio;
         } else {
-            width  = (height * videoAspectRatio);
+            // Video is taller than the available space => limit by width.
+            width = parentWidth;
+            height = width / videoAspectRatio;
         }
 
         if (scale > 0 && scale != 1) {
@@ -68,14 +78,19 @@ public final class AspectRatioFrameLayout extends FrameLayout {
             height *= scale;
         }
 
-        aspectRatioUpdateDispatcher.scheduleUpdate(videoAspectRatio, viewAspectRatio);
+        // Clamp to the parent bounds to avoid any overflow that could lead to stretch artifacts.
+        width = Math.min(width, parentWidth);
+        height = Math.min(height, parentHeight);
+
+        // Use the real "natural" view aspect ratio before we change the size.
+        aspectRatioUpdateDispatcher.scheduleUpdate(videoAspectRatio, parentAspectRatio);
 
         super.onMeasure(
-            MeasureSpec.makeMeasureSpec((int) width,  MeasureSpec.EXACTLY),
-            MeasureSpec.makeMeasureSpec((int) height, MeasureSpec.EXACTLY)
+            MeasureSpec.makeMeasureSpec(Math.round(width), MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec(Math.round(height), MeasureSpec.EXACTLY)
         );
-    
     }
 
-}
+    }
+
 
