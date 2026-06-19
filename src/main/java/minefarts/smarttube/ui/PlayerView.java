@@ -790,11 +790,6 @@ public class PlayerView extends FrameLayout {
     controller.setExtraAdGroupMarkers(extraAdGroupTimesMs, extraPlayedAdGroups);
   }
 
-    public void setAspectRatioListener(AspectRatioListener listener) {
-        Assertions.checkState(contentFrame != null);
-        contentFrame.aspectRatioListener = listener;
-    }
-
   /**
    * Gets the view onto which video is rendered. This is a:
    *

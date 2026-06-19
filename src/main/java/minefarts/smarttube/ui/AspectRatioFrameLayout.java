@@ -15,10 +15,11 @@ import java.lang.annotation.RetentionPolicy;
 // A {@link FrameLayout} that resizes itself to match a specified aspect ratio.
 public final class AspectRatioFrameLayout extends FrameLayout {
   
+    private final AspectRatioUpdateDispatcher aspectRatioUpdateDispatcher;
     @Nullable public AspectRatioListener aspectRatioListener;
 
     private float videoAspectRatio;
-    private int zoomPercents;
+    private float scale;
 
     public AspectRatioFrameLayout(Context context) {
         this(context, null);
@@ -30,7 +31,8 @@ public final class AspectRatioFrameLayout extends FrameLayout {
 
     public AspectRatioFrameLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        zoomPercents = -1;
+        scale = -1;
+        aspectRatioUpdateDispatcher = new AspectRatioUpdateDispatcher(this);
     }
 
     public void setAspectRatio(float widthHeightRatio) {
@@ -41,36 +43,37 @@ public final class AspectRatioFrameLayout extends FrameLayout {
     }
 
     public void setZoomPercents(int percents) {
-        if (zoomPercents != percents) {
-            zoomPercents = percents;
-            requestLayout();
-        }
+        scale = (percents / 100);
+        requestLayout();
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        // Aspect ratio not set.
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec); // Zoom 100%
         if (videoAspectRatio <= 0) return;
 
-        int width = getMeasuredWidth();
-        int height = getMeasuredHeight();
-        if (width == 0 || height == 0) return;
+        float width = getMeasuredWidth();
+        float height = getMeasuredHeight();
+        
+        final float viewAspectRatio = (float) width / height;
 
-        if (zoomPercents > 0 && zoomPercents != 100) {
-            width  *= (zoomPercents / 100);
-            height *= (zoomPercents / 100);
-        }
-
-        if (videoAspectRatio > (width / height)) {
-            height = (int) (width  / videoAspectRatio);
+        if (videoAspectRatio / viewAspectRatio > 1) {
+            height = (width / videoAspectRatio);
         } else {
-            width  = (int) (height * videoAspectRatio);
+            width  = (height * videoAspectRatio);
         }
 
-        // Use computed dimensions to letterbox/pillarbox the video within the parent.
-        setMeasuredDimension(width, height);
+        if (scale > 0 && scale != 1) {
+            width  *= scale;
+            height *= scale;
+        }
+
+        aspectRatioUpdateDispatcher.scheduleUpdate(videoAspectRatio, viewAspectRatio);
+
+        super.onMeasure(
+            MeasureSpec.makeMeasureSpec((int) width,  MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec((int) height, MeasureSpec.EXACTLY)
+        );
     
     }
 
