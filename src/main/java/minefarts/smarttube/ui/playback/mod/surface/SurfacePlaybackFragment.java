@@ -22,8 +22,9 @@ import android.util.Log;
  */
 public class SurfacePlaybackFragment extends PlaybackSupportFragment {
 
+    public AspectRatioFrameLayout mVideoSurfaceRoot;
+    
     private SurfaceWrapper mVideoSurfaceWrapper;
-    private AspectRatioFrameLayout mVideoSurfaceRoot;
     private int mBackgroundResId;
 
     @Override
@@ -78,10 +79,6 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
         mVideoSurfaceWrapper = null;
         super.onDestroyView();
     }
-
-    // Removed: scaleIfNeeded() was calculating aspect ratio/scale based on container rotation.
-    // This caused incorrect fitting; now we rely on layout/Player sizing instead.
-
 
     /**
      * Setup player's background used when controls are showed.

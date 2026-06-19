@@ -301,7 +301,6 @@ public abstract class BasePlayerController extends ServiceManager implements Pla
         AppDialogPresenter settingsPresenter = getAppDialogPresenter();
 
         settingsPresenter.setOnStart(() -> {
-        
             if (settingsPresenter.isOverlay()) return;
 
             getPlayer().showControls(false);
@@ -323,18 +322,14 @@ public abstract class BasePlayerController extends ServiceManager implements Pla
             // shorts overzoom fix
             if (zoom > 130) return;
 
-            //getPlayer().setZoomPercents(Math.round(totalZoom));
-
+            getPlayer().mVideoSurfaceRoot.setZoomPercents(Math.round(zoom));
             getPlayer().setVideoGravity(Gravity.START | Gravity.CENTER_VERTICAL);
 
         });
 
         settingsPresenter.setOnFinish(() -> {
-
-            //getPlayer().setZoomPercents(100);
-
+            getPlayer().mVideoSurfaceRoot.setZoomPercents(100);
             getPlayer().setVideoGravity(Gravity.CENTER);
-
         });
 
     }

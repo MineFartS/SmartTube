@@ -18,6 +18,7 @@ public final class AspectRatioFrameLayout extends FrameLayout {
     @Nullable public AspectRatioListener aspectRatioListener;
 
     private float videoAspectRatio;
+    private int zoomPercents;
 
     public AspectRatioFrameLayout(Context context) {
         this(context, null);
@@ -29,11 +30,19 @@ public final class AspectRatioFrameLayout extends FrameLayout {
 
     public AspectRatioFrameLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        zoomPercents = -1;
     }
 
     public void setAspectRatio(float widthHeightRatio) {
         if (this.videoAspectRatio != widthHeightRatio) {
             this.videoAspectRatio = widthHeightRatio;
+            requestLayout();
+        }
+    }
+
+    public void setZoomPercents(int percents) {
+        if (zoomPercents != percents) {
+            zoomPercents = percents;
             requestLayout();
         }
     }
@@ -48,6 +57,11 @@ public final class AspectRatioFrameLayout extends FrameLayout {
         int width = getMeasuredWidth();
         int height = getMeasuredHeight();
         if (width == 0 || height == 0) return;
+
+        if (zoomPercents > 0 && zoomPercents != 100) {
+            width  *= (zoomPercents / 100);
+            height *= (zoomPercents / 100);
+        }
 
         if (videoAspectRatio > (width / height)) {
             height = (int) (width  / videoAspectRatio);

@@ -89,6 +89,10 @@ public class PlayerUIController extends BasePlayerController {
     @Override
     public void onInit() {
         mSuggestionsController = getController(SuggestionsController.class);
+
+        if (getPlayer() != null)
+            getPlayer().mVideoSurfaceRoot.setZoomPercents(100);
+        
     }
 
     @Override
