@@ -45,8 +45,7 @@ public class VideoLoaderController extends BasePlayerController {
     private final SearchPresenter mSearchPresenter;
     private final MediaItemService mMediaItemService;
     private final VideoStateController mVideoStateController;
-    private final SuggestionsController mSuggestionsController;
-
+    
     public VideoLoaderController(PlaybackPresenter playbackPresenter) {
         mContext = getContext();
 
@@ -55,6 +54,12 @@ public class VideoLoaderController extends BasePlayerController {
         mSearchPresenter = SearchPresenter.instance(getContext());
         mMediaItemService = ServiceManager.getMediaItemService();
         mVideoStateController = new VideoStateController();
+    }
+    
+    private SuggestionsController mSuggestionsController;
+
+    @Override
+    public void onInit() {
         mSuggestionsController = getController(SuggestionsController.class);
     }
     
