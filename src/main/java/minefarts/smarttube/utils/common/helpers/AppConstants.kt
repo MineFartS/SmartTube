@@ -1,16 +1,32 @@
 package minefarts.smarttube.utils.common.helpers
 
 internal object AppConstants {
+
     @JvmField
     val playerUrls = listOf(
         // NOTE: tv player should be in the top (ias ones may not validate correctly)
+        "https://www.youtube.com/s/player/c2f7551f/tv-player-es6.vflset/tv-player-es6.js",
+        "https://www.youtube.com/s/player/8180e7ff/tv-player-es6.vflset/tv-player-es6.js",
+        "https://www.youtube.com/s/player/76ad2fe8/tv-player-ias.vflset/tv-player-ias.js",
+        "https://www.youtube.com/s/player/76ad2fe8/tv-player-es6.vflset/tv-player-es6.js",
+        "https://www.youtube.com/s/player/21cd2156/tv-player-es6.vflset/tv-player-es6.js",
+        "https://www.youtube.com/s/player/74edf1a3/tv-player-es6.vflset/tv-player-es6.js",
+        "https://www.youtube.com/s/player/18d29a11/tv-player-es6.vflset/tv-player-es6.js",
+        "https://www.youtube.com/s/player/e42f4bf8/tv-player-es6.vflset/tv-player-es6.js",
+        "https://www.youtube.com/s/player/56211dc2/tv-player-es6.vflset/tv-player-es6.js",
+        "https://www.youtube.com/s/player/6c5cb4f4/tv-player-es6.vflset/tv-player-es6.js",
+        "https://www.youtube.com/s/player/99f55c01/tv-player-es6.vflset/tv-player-es6.js",
+        "https://www.youtube.com/s/player/ecc3e9a7/tv-player-es6.vflset/tv-player-es6.js",
+        "https://www.youtube.com/s/player/140dafda/tv-player-es6.vflset/tv-player-es6.js",
+        "https://www.youtube.com/s/player/3510b6ff/tv-player-es6.vflset/tv-player-es6.js",
+        "https://www.youtube.com/s/player/721caf0b/tv-player-es6.vflset/tv-player-es6.js",
         "https://www.youtube.com/s/player/ab89db3f/tv-player-es6.vflset/tv-player-es6.js",
         "https://www.youtube.com/s/player/21176969/tv-player-es6.vflset/tv-player-es6.js",
         "https://www.youtube.com/s/player/bcd893b3/tv-player-es6.vflset/tv-player-es6.js",
         "https://www.youtube.com/s/player/17ad44a3/tv-player-es6.vflset/tv-player-es6.js",
         "https://www.youtube.com/s/player/a61444a1/tv-player-ias.vflset/tv-player-ias.js",
         "https://www.youtube.com/s/player/2b83d2e0/tv-player-ias.vflset/tv-player-ias.js",
-        "https://www.youtube.com/s/player/0004de42/tv-player-ias.vflset/tv-player-ias.js", // the lastest working old type
+        "https://www.youtube.com/s/player/0004de42/tv-player-ias.vflset/tv-player-ias.js",
         "https://www.youtube.com/s/player/9f49a55a/tv-player-ias.vflset/tv-player-ias.js",
         "https://www.youtube.com/s/player/010fbc8d/tv-player-es6.vflset/tv-player-es6.js",
         "https://www.youtube.com/s/player/69b31e11/tv-player-es6-tcc.vflset/tv-player-es6-tcc.js", // 503 error

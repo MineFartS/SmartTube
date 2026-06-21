@@ -4,9 +4,14 @@ import android.content.Context
 import android.hardware.usb.UsbManager
 import android.os.Build
 import android.os.PowerManager
+import android.webkit.WebView
+import android.webkit.ValueCallback
+
 import minefarts.smarttube.utils.mylogger.Log
 
 private const val TAG = "WebViewUtil"
+
+internal const val potLibPrefix = "potokennp2/"
 
 internal fun isThermalServiceAvailable(context: Context): Boolean {
     // Only Android 10 has the issue
@@ -85,4 +90,18 @@ internal fun hasUsbServiceBug(context: Context): Boolean {
     }
 
     return false
+}
+
+/**
+ * API 19+: executes JS and returns result via callback.
+ *
+ * API < 19: executes JS without result (callback ignored).
+ */
+internal fun WebView.evaluateJavascriptLegacy(script: String, resultCallback: ValueCallback<String>?) {
+    if (Build.VERSION.SDK_INT >= 19) {
+        evaluateJavascript(script, resultCallback)
+    } else {
+        // NOTE: callbacks not supported. Use jsInterface instead
+        loadUrl("javascript:(function() { $script })();")
+    }
 }

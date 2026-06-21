@@ -12,7 +12,6 @@ import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.prefs.GlobalPreferences;
 import minefarts.smarttube.utils.prefs.SharedPreferencesBase;
 import minefarts.smarttube.utils.rx.RxHelper;
-import minefarts.smarttube.utils.app.PoTokenGate;
 import minefarts.smarttube.utils.app.models.cached.AppInfoCached;
 import minefarts.smarttube.utils.app.models.cached.ClientDataCached;
 import minefarts.smarttube.utils.app.models.PlayerData;
@@ -256,10 +255,6 @@ public class MediaServiceData {
         persistState();
 
         MediaItemService.instance().invalidateCache(); // Remove current cached video
-    }
-
-    public boolean isPotSupported() {
-        return PoTokenGate.isWebPotSupported();
     }
 
     private void restoreState() {
