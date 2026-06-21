@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 import minefarts.smarttube.utils.SignInService;
 import minefarts.smarttube.utils.service.YouTubeLiveChatService;
-import minefarts.smarttube.utils.service.YouTubeCommentsService;
+import minefarts.smarttube.utils.comments.CommentsService;
 import minefarts.smarttube.utils.service.YouTubeNotificationsService;
 import minefarts.smarttube.utils.videoinfo.models.VideoInfo;
 import minefarts.smarttube.utils.videoinfo.V2.VideoInfoService;
@@ -41,7 +41,6 @@ import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.utils.playlist.PlaylistService;
 import minefarts.smarttube.utils.app.AppService;
 import minefarts.smarttube.utils.ChannelGroupService;
-import minefarts.smarttube.utils.CommentsService;
 import minefarts.smarttube.utils.LiveChatService;
 import minefarts.smarttube.utils.RemoteControlService;
 import minefarts.smarttube.utils.channelgroups.ChannelGroupServiceImpl;
@@ -455,8 +454,8 @@ public class ServiceManager {
         return YouTubeLiveChatService.instance();
     }
 
-    public static YouTubeCommentsService getCommentsService() {
-        return YouTubeCommentsService.INSTANCE;
+    public static CommentsService getCommentsService() {
+        return CommentsService.INSTANCE;
     }
 
     public static ContentService getContentService() {

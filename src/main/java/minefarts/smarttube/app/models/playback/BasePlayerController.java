@@ -7,7 +7,6 @@ import android.view.Gravity;
 import androidx.annotation.Nullable;
 
 import minefarts.smarttube.Format;
-import minefarts.smarttube.utils.CommentsService;
 import minefarts.smarttube.utils.service.ContentService;
 import minefarts.smarttube.utils.MediaItemService;
 import minefarts.smarttube.utils.NotificationsService;
