@@ -6,7 +6,7 @@ import android.view.View;
 
 import minefarts.smarttube.fragment.app.Fragment;
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
-import minefarts.smarttube.utils.CommentsService;
+import minefarts.smarttube.utils.comments.CommentsService;
 import minefarts.smarttube.utils.service.ContentService;
 import minefarts.smarttube.utils.MediaItemService;
 import minefarts.smarttube.utils.NotificationsService;
