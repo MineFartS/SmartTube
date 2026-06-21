@@ -19,6 +19,9 @@ import minefarts.smarttube.utils.next.v2.impl.MediaItemMetadataImpl
 import minefarts.smarttube.utils.SignInService
 import minefarts.smarttube.utils.common.helpers.AppClient
 
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
+
 internal open class WatchNextService {
 
     private val mWatchNextApi = RetrofitHelper.create(WatchNextApi::class.java)
@@ -83,7 +86,11 @@ internal open class WatchNextService {
     }
 
     private fun getWatchNext(query: String): WatchNextResult? {
-        val wrapper = mWatchNextApi.getWatchNextResult(query, mAppService.visitorData)
+        
+        // Force OkHttp to pass the string payload as unescaped, raw JSON
+        val requestBody = query.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+        
+        val wrapper = mWatchNextApi.getWatchNextResult(requestBody, mAppService.visitorData)
 
         return RetrofitHelper.get(wrapper)
     }
