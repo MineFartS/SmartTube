@@ -8,17 +8,19 @@ import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
+
 import androidx.annotation.MainThread
-import androidx.annotation.RequiresApi
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
+
 import minefarts.smarttube.utils.mylogger.Log
 import minefarts.smarttube.utils.okhttp.OkHttpManager
+
 import io.reactivex.SingleEmitter
+
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-@RequiresApi(19)
 internal class PoTokenWebView private constructor(
     context: Context,
     private var onInitDone: () -> Unit
@@ -86,7 +88,7 @@ internal class PoTokenWebView private constructor(
     private fun loadHtmlAndObtainBotguard(context: Context) {
         Log.d(TAG, "loadHtmlAndObtainBotguard() called")
 
-        val html = context.assets.open("po_token.html").bufferedReader()
+        val html = context.assets.open("${potLibPrefix}po_token.html").bufferedReader()
             .use { it.readText() }
 
         webView.loadDataWithBaseURL(
@@ -118,7 +120,7 @@ internal class PoTokenWebView private constructor(
         val parsedChallengeData = parseChallengeData(responseBody)
 
         runOnMainThread {
-            webView.evaluateJavascript(
+            webView.evaluateJavascriptLegacy(
                 """try {
                     data = $parsedChallengeData
                     runBotGuard(data).then(function (result) {
@@ -168,13 +170,18 @@ internal class PoTokenWebView private constructor(
         expirationMs = System.currentTimeMillis() + ((expirationTimeInSeconds - 600) * 1_000)
 
         runOnMainThread {
-            webView.evaluateJavascript(
-                "this.integrityToken = $integrityToken"
-            ) {
-                Log.d(TAG, "initialization finished, expiration=${expirationTimeInSeconds}s")
-                onInitDone()
-            }
+            webView.evaluateJavascriptLegacy(
+                """this.integrityToken = $integrityToken
+                   ${JS_INTERFACE}.onJsInitializationDone($expirationTimeInSeconds)""",
+                null
+            )
         }
+    }
+
+    @JavascriptInterface
+    fun onJsInitializationDone(expirationTimeInSeconds: Long) {
+        Log.d(TAG, "initialization finished, expiration=${expirationTimeInSeconds}s")
+        onInitDone()
     }
     //endregion
 
@@ -186,12 +193,13 @@ internal class PoTokenWebView private constructor(
 
         addPoTokenEmitter(identifier) {
             pot = it
+            latch.countDown()
         }
 
         val u8Identifier = stringToU8(identifier)
 
         runOnMainThread {
-            webView.evaluateJavascript(
+            webView.evaluateJavascriptLegacy(
                 """try {
                         identifier = "$identifier"
                         u8Identifier = $u8Identifier
@@ -205,7 +213,8 @@ internal class PoTokenWebView private constructor(
                     } catch (error) {
                         $JS_INTERFACE.onObtainPoTokenError(identifier, error + "\n" + error.stack)
                     }""",
-            ) { latch.countDown() }
+                null
+            )
         }
 
         latch.await()
@@ -344,7 +353,7 @@ internal class PoTokenWebView private constructor(
      */
     @MainThread
     override fun close() {
-
+        webView.clearHistory()
         // clears RAM cache and disk cache (globally for all WebViews)
         webView.clearCache(true)
 

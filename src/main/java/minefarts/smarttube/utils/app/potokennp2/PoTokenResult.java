@@ -1,7 +1,8 @@
-package minefarts.smarttube.utils.app.potokennp2.misc;
+package minefarts.smarttube.utils.app.potokennp2;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import java.util.Objects;
 
 /**

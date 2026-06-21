@@ -220,7 +220,7 @@ public class VideoInfoService {
         String videoInfoQuery = new QueryBuilder(client)
             .setVideoId(videoId)
             .setClickTrackingParams(clickTrackingParams)
-            .setPoToken(PoTokenGate.getPoToken(client, videoId))
+            .setPoToken(PoTokenGate.getColdStartPoToken(client, videoId))
             .setVisitorData(PoTokenGate.getVisitorData(client))
             .enableGeoFix(client == AppClient.GEO) // may broke other functionality
             .build();

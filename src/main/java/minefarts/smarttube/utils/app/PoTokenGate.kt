@@ -1,185 +1,55 @@
 package minefarts.smarttube.utils.app
 
-import android.os.Build.VERSION
-import android.os.Handler
-import android.os.Looper
-import androidx.annotation.RequiresApi
-
+import minefarts.smarttube.utils.app.potoken.PoTokenService
 import minefarts.smarttube.utils.app.potokencloud.PoTokenCloudService
-import minefarts.smarttube.utils.app.potokennp2.misc.PoTokenResult
-import minefarts.smarttube.utils.common.helpers.AppClient
-import minefarts.smarttube.utils.app.potokennp2.misc.PoTokenProvider
-import minefarts.smarttube.utils.helpers.DeviceHelpers
-import minefarts.smarttube.utils.mylogger.Log
-import minefarts.smarttube.utils.app.AppService
-import minefarts.smarttube.utils.app.potokennp2.visitor.VisitorService
+import minefarts.smarttube.utils.app.potokennp2.PoTokenProvider
+import minefarts.smarttube.utils.app.potokennp2.PoTokenResult
 import minefarts.smarttube.utils.app.potokennp2.PoTokenGenerator
 import minefarts.smarttube.utils.app.potokennp2.PoTokenWebView
+import minefarts.smarttube.utils.common.helpers.AppClient
 
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
-
-private enum class PoTokenType {
-    /**
-     * A poToken generated from videoId.
-     *
-     * Used in player requests.
-      */
-    CONTENT,
-
-    /**
-     * A generic poToken.
-     *
-     * Used in SABR requests.
-     */
-    SESSION
-}
-
-public object PoTokenGate {
-
-    val TAG = PoTokenGate::class.simpleName
-    private val webViewSupported by lazy { DeviceHelpers.isWebViewSupported() }
-    private var webViewBadImpl = false // whether the system has a bad WebView implementation
-
-    private object WebPoTokenGenLock
-    private var webPoTokenVisitorData: String? = null
-    private var webPoTokenStreamingPot: String? = null
-    private var webPoTokenGenerator: PoTokenGenerator? = null
-
+/**
+ * PoTokenType
+ *
+ * `CONTENT` A poToken generated from videoId.
+ * Used in DASH/SABR requests (e.g. `pot` param).
+ * Previously used in player requests.
+ *
+ * `SESSION` A poToken generated from visitorData.
+ * Usage is unknown. Previously used in DASH/SABR requests (e.g. `pot` param).
+ */
+internal object PoTokenGate {
     private var mWebPoToken: PoTokenResult? = null
     private var mCacheResetTimeMs: Long = -1
 
-    @RequiresApi(19)
-    private fun getWebClientPoToken(
-        videoId: String, 
-        forceRecreate: Boolean
-    ): PoTokenResult {
-
-        // just a helper class since Kotlin does not have builtin support for 4-tuples
-        data class Quadruple<T1, T2, T3, T4>(val t1: T1, val t2: T2, val t3: T3, val t4: T4)
-
-        val (poTokenGenerator, visitorData, streamingPot, hasBeenRecreated) =
-            synchronized(WebPoTokenGenLock) {
-                val shouldRecreate = webPoTokenGenerator == null || webPoTokenVisitorData == null || webPoTokenStreamingPot == null ||
-                   forceRecreate || webPoTokenGenerator!!.isExpired()
-
-                if (shouldRecreate) {
-                    // IMPORTANT: VisitorService performs network I/O.
-                    // getWebClientPoToken() can be called from UI thread,
-                    // so we must fetch visitorData off-main.
-                    webPoTokenVisitorData = try {
-                        val latch = CountDownLatch(1)
-                        var visitor: String? = null
-                        Thread {
-                            try {
-                                visitor = VisitorService.getVisitorData()
-                            } finally {
-                                latch.countDown()
-                            }
-                        }.start()
-                        latch.await(5, TimeUnit.SECONDS)
-                        visitor
-                    } catch (_: Throwable) {
-                        null
-                    }
-
-
-                    val latch = if (webPoTokenGenerator != null) CountDownLatch(1) else null
-
-                    // close the current webPoTokenGenerator on the main thread
-                    webPoTokenGenerator?.let {
-                        Handler(Looper.getMainLooper()).post {
-                            try {
-                                it.close()
-                            } finally {
-                                latch?.countDown()
-                            }
-                        }
-                    }
-
-                    latch?.await(3, TimeUnit.SECONDS)
-
-                    // create a new webPoTokenGenerator
-                    webPoTokenGenerator = PoTokenWebView
-                        .newPoTokenGenerator(AppService.instance().context)
-
-                    // The streaming poToken needs to be generated exactly once before generating
-                    // any other (player) tokens.
-                    webPoTokenStreamingPot = webPoTokenGenerator!!
-                        .generatePoToken(webPoTokenVisitorData!!)
-                }
-
-                return@synchronized Quadruple(
-                    webPoTokenGenerator!!,
-                    webPoTokenVisitorData!!,
-                    webPoTokenStreamingPot!!,
-                    shouldRecreate
-                )
-            }
-
-        val playerPot = try {
-            // Not using synchronized here, since poTokenGenerator would be able to generate
-            // multiple poTokens in parallel if needed. The only important thing is for exactly one
-            // visitorData/streaming poToken to be generated before anything else.
-            if (videoId.isEmpty()) "" else poTokenGenerator.generatePoToken(videoId)
-        } catch (throwable: Throwable) {
-            if (hasBeenRecreated) {
-                // the poTokenGenerator has just been recreated (and possibly this is already the
-                // second time we try), so there is likely nothing we can do
-                throw throwable
-            } else {
-                // retry, this time recreating the [webPoTokenGenerator] from scratch;
-                // this might happen for example if NewPipe goes in the background and the WebView
-                // content is lost
-                Log.e(TAG, "Failed to obtain poToken, retrying", throwable)
-                return getWebClientPoToken(videoId = videoId, forceRecreate = true)
-            }
-        }
-
-        Log.d(
-            TAG,
-            "poToken for $videoId: playerPot=$playerPot, " +
-                    "streamingPot=$streamingPot, visitor_data=$visitorData"
-        )
-
-        return PoTokenResult(videoId, visitorData, playerPot, streamingPot)
-    }
-
-    @JvmStatic
-    public fun isWebPotExpired() = isWebPotSupported() && webPoTokenGenerator?.isExpired() ?: true
-
-    @JvmStatic
-    public fun isWebPotSupported() = VERSION.SDK_INT >= 19 && webViewSupported && !webViewBadImpl
-
-    private fun resetCache() {
-        webPoTokenVisitorData = null
-        webPoTokenStreamingPot = null
+    init {
+        PoTokenProvider.poTokenFactory = PoTokenWebView
     }
 
     private fun getWebContentPoToken(videoId: String): String? {
-        if (mWebPoToken?.videoId == videoId && !isWebPotExpired()) {
+        if (mWebPoToken?.videoId == videoId && !PoTokenProvider.isWebPotExpired()) {
             return mWebPoToken?.playerRequestPoToken
         }
 
-        mWebPoToken = if (isWebPotSupported())
-            getWebClientPoToken(videoId, false)
+        mWebPoToken = if (PoTokenProvider.isWebPotSupported())
+            PoTokenProvider.getWebClientPoToken(videoId)
         else null
 
         return mWebPoToken?.playerRequestPoToken
     }
 
     private fun getWebSessionPoToken(): String? {
-        return if (isWebPotSupported()) {
+        return if (PoTokenProvider.isWebPotSupported()) {
             if (mWebPoToken == null)
-                mWebPoToken = getWebClientPoToken("", false)
+                mWebPoToken = PoTokenProvider.getWebClientPoToken("")
             mWebPoToken?.streamingDataPoToken
         } else PoTokenCloudService.getPoToken()
     }
     
     private fun updatePoToken() {
-        if (isWebPotSupported()) {
+        if (PoTokenProvider.isWebPotSupported()) {
             //mNpPoToken = null // only refresh
-            mWebPoToken = getWebClientPoToken("", false) // refresh and preload
+            mWebPoToken = PoTokenProvider.getWebClientPoToken("") // refresh and preload
         } else {
             PoTokenCloudService.updatePoToken()
         }
@@ -193,6 +63,10 @@ public object PoTokenGate {
             else -> null
         }
     }
+
+    @JvmStatic
+    fun getColdStartPoToken(client: AppClient, videoId: String): String? =
+        if (client.isWebPotRequired) PoTokenService.generateColdStartToken(videoId) else null
 
     @JvmStatic
     fun getVisitorData(client: AppClient): String? {
@@ -210,6 +84,11 @@ public object PoTokenGate {
         }
     }
 
+    @JvmStatic
+    fun resetCache() {
+        resetWebCache()
+    }
+
     fun getWebVisitorData(): String? {
         return mWebPoToken?.visitorData
     }
@@ -219,9 +98,9 @@ public object PoTokenGate {
         if (currentTimeMs < mCacheResetTimeMs)
             return false
 
-        if (isWebPotSupported()) {
+        if (PoTokenProvider.isWebPotSupported()) {
             mWebPoToken = null
-            resetCache()
+            PoTokenProvider.resetCache()
         } else
             PoTokenCloudService.resetCache()
 
@@ -229,5 +108,4 @@ public object PoTokenGate {
 
         return true
     }
-
 }
