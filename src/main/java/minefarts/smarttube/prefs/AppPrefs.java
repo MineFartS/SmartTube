@@ -8,8 +8,8 @@ import minefarts.smarttube.utils.misc.WeakHashSet;
 import minefarts.smarttube.utils.prefs.SharedPreferencesBase;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.presenters.service.SidebarService;
-import minefarts.smarttube.utils.ServiceManager;
-import minefarts.smarttube.utils.ServiceManager.AccountChangeListener;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
+import minefarts.smarttube.app.models.playback.BasePlayerController.AccountChangeListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +41,7 @@ public class AppPrefs extends SharedPreferencesBase implements AccountChangeList
     }
 
     private void initProfiles() {
-        ServiceManager.addAccountListener(this);
+        BasePlayerController.addAccountListener(this);
     }
 
     @Override
@@ -63,7 +63,6 @@ public class AppPrefs extends SharedPreferencesBase implements AccountChangeList
 
         putBoolean(MULTI_PROFILES, enabled);
         onProfileChanged();
-        //selectAccount(enabled ? ServiceManager.getSelectedAccount() : null);
     }
 
     public boolean isMultiProfilesEnabled() {

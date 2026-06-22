@@ -22,13 +22,13 @@ import minefarts.smarttube.app.views.ChannelView;
 import minefarts.smarttube.ui.playback.PlaybackFragment2;
 import minefarts.smarttube.app.views.SearchView;
 import minefarts.smarttube.app.views.ViewManager;
-import minefarts.smarttube.utils.ServiceManager;
 import minefarts.smarttube.utils.TickleManager;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.prefs.SearchData;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.ContextManager;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
 
 import java.lang.ref.WeakReference;
 import java.util.Collections;
@@ -253,23 +253,23 @@ public abstract class BasePresenter<T> {
     }
 
     protected CommentsService getCommentsService() {
-        return ServiceManager.getCommentsService();
+        return BasePlayerController.getCommentsService();
     }
 
     protected ContentService getContentService() {
-        return ServiceManager.getContentService();
+        return BasePlayerController.getContentService();
     }
 
     protected SignInService getSignInService() {
-        return ServiceManager.getSignInService();
+        return BasePlayerController.getSignInService();
     }
 
     protected NotificationsService getNotificationsService() {
-        return ServiceManager.getNotificationsService();
+        return BasePlayerController.getNotificationsService();
     }
 
     protected MediaItemService getMediaItemService() {
-        return ServiceManager.getMediaItemService();
+        return BasePlayerController.getMediaItemService();
     }
 
     protected ViewManager getViewManager() {

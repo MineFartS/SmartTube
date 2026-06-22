@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.KeyEvent;
 import androidx.annotation.Nullable;
-import minefarts.smarttube.utils.ServiceManager;
 import minefarts.smarttube.utils.RemoteControlService;
 import minefarts.smarttube.utils.service.data.Command;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
@@ -44,7 +43,7 @@ public class RemoteController extends BasePlayerController implements OnDataChan
     public RemoteController(Context context) {
 
         // Start receiving a commands as early as possible
-        mRemoteControlService = ServiceManager.getRemoteControlService();
+        mRemoteControlService = getRemoteControlService();
 
         mRemoteControlData = RemoteControlData.instance(context);
         mRemoteControlData.setOnChange(this);

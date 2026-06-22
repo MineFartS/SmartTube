@@ -16,7 +16,7 @@ import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
 import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
 import minefarts.smarttube.app.presenters.dialogs.menu.providers.ContextMenuProvider;
-import minefarts.smarttube.utils.ServiceManager;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.utils.SimpleEditDialog;
 
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ public class ChannelGroupMenuProvider extends ContextMenuProvider {
         } else {
             MessageHelpers.showMessage(mContext, R.string.wait_data_loading);
 
-            ServiceManager.loadMetadata(item, metadata -> {
+            BasePlayerController.loadMetadata(item, metadata -> {
                 item.sync(metadata);
                 showGroupDialog(item, callback);
             });

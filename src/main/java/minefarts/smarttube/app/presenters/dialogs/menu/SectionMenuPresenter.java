@@ -19,7 +19,7 @@ import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter.VideoM
 import minefarts.smarttube.app.presenters.dialogs.menu.providers.ContextMenuManager;
 import minefarts.smarttube.app.presenters.dialogs.menu.providers.ContextMenuProvider;
 import minefarts.smarttube.app.views.SplashView;
-import minefarts.smarttube.utils.ServiceManager;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.utils.SimpleEditDialog;
 
@@ -77,7 +77,7 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
         mSection = section;
         mVideo = section.getData() instanceof Video ? (Video) section.getData() : null;
 
-        ServiceManager.authCheck(
+        BasePlayerController.authCheck(
             this::obtainPlaylistsAndShowDialogSigned, 
             this::prepareAndShowDialogUnsigned
         );
@@ -204,7 +204,7 @@ public class SectionMenuPresenter extends BaseMenuPresenter {
             }
 
             MessageHelpers.showMessage(getContext(), next.getTitle());
-            ServiceManager.loadChannelUploads(next, (groupTmp) -> processNextChannel(iterator));
+            BasePlayerController.loadChannelUploads(next, (groupTmp) -> processNextChannel(iterator));
         } else {
             MessageHelpers.showMessage(getContext(), R.string.msg_done);
         }

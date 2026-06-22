@@ -27,7 +27,7 @@ import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.presenters.dialogs.AppUpdatePresenter;
 import minefarts.smarttube.utils.MotherActivity;
 import minefarts.smarttube.utils.Utils;
-import minefarts.smarttube.utils.ServiceManager;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.ui.playback.PlaybackFragment2;
 
 import java.util.HashMap;
@@ -277,7 +277,7 @@ public class ViewManager {
     }
 
     public void clearCaches() {
-        ServiceManager.invalidateCache();
+        BasePlayerController.invalidateCache();
         // Note, also deletes cached flags (internal cache)
         // Note, deletes cached apks (external cache)
         FileHelpers.deleteCache(mContext);

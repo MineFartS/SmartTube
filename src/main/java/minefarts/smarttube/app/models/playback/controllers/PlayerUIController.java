@@ -4,7 +4,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.KeyEvent;
 import minefarts.smarttube.utils.MediaItemService;
-import minefarts.smarttube.utils.ServiceManager;
 import minefarts.smarttube.utils.service.data.MediaGroup;
 import minefarts.smarttube.utils.data.MediaItem;
 import minefarts.smarttube.utils.service.data.MediaItemMetadata;
@@ -83,7 +82,7 @@ public class PlayerUIController extends BasePlayerController {
     public PlayerUIController() {
         mHandler = new Handler(Looper.getMainLooper());
 
-        mMediaItemService = ServiceManager.getMediaItemService();
+        mMediaItemService = getMediaItemService();
     }
 
     @Override
@@ -576,15 +575,13 @@ public class PlayerUIController extends BasePlayerController {
 
         String videoId = getVideo().videoId;
         mPlaylistInfos = null;
-        Disposable playlistsInfoAction =
-                ServiceManager.getMediaItemService().getPlaylistsInfoObserve(videoId)
-                        .subscribe(
-                                videoPlaylistInfos -> {
-                                    mPlaylistInfos = videoPlaylistInfos;
-                                    setPlaylistAddButtonState();
-                                },
-                                error -> Log.e(TAG, "Add to recent playlist error: %s", error.getMessage())
-                        );
+        Disposable playlistsInfoAction = getMediaItemService().getPlaylistsInfoObserve(videoId).subscribe(
+            videoPlaylistInfos -> {
+                mPlaylistInfos = videoPlaylistInfos;
+                setPlaylistAddButtonState();
+            },
+            error -> Log.e(TAG, "Add to recent playlist error: %s", error.getMessage())
+        );
     }
 
     private void setPlaylistAddButtonState() {
@@ -680,7 +677,7 @@ public class PlayerUIController extends BasePlayerController {
         for (NotificationState item : getVideo().notificationStates) {
             items.add(UiOptionItem.from(item.getTitle(), optionItem -> {
                 if (optionItem.isSelected()) {
-                    ServiceManager.setNotificationState(item, error -> MessageHelpers.showMessage(getContext(), error.getLocalizedMessage()));
+                    setNotificationState(item, error -> MessageHelpers.showMessage(getContext(), error.getLocalizedMessage()));
                     getVideo().isSubscribed = true;
                     getPlayer().setButtonState(R.id.action_subscribe, 1);
                 }

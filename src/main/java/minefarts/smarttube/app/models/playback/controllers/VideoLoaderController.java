@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 
 import minefarts.smarttube.utils.MediaItemService;
-import minefarts.smarttube.utils.ServiceManager;
 import minefarts.smarttube.utils.service.data.MediaFormat;
 import minefarts.smarttube.utils.data.MediaItemFormatInfo;
 import minefarts.smarttube.utils.service.data.MediaItemMetadata;
@@ -52,7 +51,7 @@ public class VideoLoaderController extends BasePlayerController {
         mPlaybackPresenter = playbackPresenter;
         mChannelUploadsPresenter = ChannelUploadsPresenter.instance(getContext());
         mSearchPresenter = SearchPresenter.instance(getContext());
-        mMediaItemService = ServiceManager.getMediaItemService();
+        mMediaItemService = getMediaItemService();
         mVideoStateController = new VideoStateController();
     }
     
@@ -348,7 +347,7 @@ public class VideoLoaderController extends BasePlayerController {
             mPlaybackPresenter.openVideo(item);
         
         } else if (item.hasChannel() || item.belongsToChannelUploads()) {
-            ServiceManager.chooseChannelPresenter(mContext, item);
+            chooseChannelPresenter(mContext, item);
         
         } else if (item.hasPlaylist() || item.hasNestedItems()) {
             mChannelUploadsPresenter.openChannel(item);
@@ -383,11 +382,11 @@ public class VideoLoaderController extends BasePlayerController {
 
         if (Helpers.containsAny(message, "Unexpected token", "Syntax error", "invalid argument") || // temporal fix
                 Helpers.equalsAny(className, "PoTokenException", "BadWebViewException")) {
-            ServiceManager.applyNoPlaybackFix();
+            applyNoPlaybackFix();
             scheduleReloadVideoTimer(1_000);
 
         } else if (Helpers.containsAny(message, "is not defined")) {
-            ServiceManager.invalidateCache();
+            invalidateCache();
             scheduleReloadVideoTimer(1_000);
         
         } else if (isNullPlayerUrl) {
@@ -442,13 +441,13 @@ public class VideoLoaderController extends BasePlayerController {
             // "Response code: 404", "Response code: 429", "Invalid integer size",
             // "Unexpected ArrayIndexOutOfBoundsException", "Unexpected IndexOutOfBoundsException"
             if (Helpers.startsWithAny(errorContent, "Response code: 403")) {
-                ServiceManager.applyNoPlaybackFix();
+                applyNoPlaybackFix();
             
             } else if (getPlayer() != null && !FormatItem.SUBTITLE_NONE.equals(getPlayer().getSubtitleFormat())) {
                 getPlayerData().setFormat(FormatItem.SUBTITLE_NONE); // Response code: 429
             
             } else {
-                ServiceManager.applyNoPlaybackFix(); // Response code: 403
+                applyNoPlaybackFix(); // Response code: 403
             }
             
             restartEngine = false;
@@ -631,7 +630,7 @@ public class VideoLoaderController extends BasePlayerController {
             Video video = new Video();
             video.playlistId = getVideo().playlistId;
             video.playlistIndex = Utils.getRandomIndex(getVideo().playlistInfo.getCurrentIndex(), getVideo().playlistInfo.getSize());
-            ServiceManager.loadMetadata(video, randomMetadata -> {
+            loadMetadata(video, randomMetadata -> {
                 if (randomMetadata.getNextVideo() == null) {
                     return;
                 }

@@ -36,7 +36,7 @@ import minefarts.smarttube.exoplayer.selector.FormatItem;
 import minefarts.smarttube.exoplayer.selector.FormatItem.VideoPreset;
 import minefarts.smarttube.exoplayer.selector.TrackSelectorManager;
 import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
-import minefarts.smarttube.utils.ServiceManager;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.utils.MotherActivity;
 import minefarts.smarttube.prefs.ContentBlockData;
 import minefarts.smarttube.prefs.GeneralData;
@@ -225,7 +225,7 @@ public class AppDialogUtil {
                     } else {
                         MessageHelpers.showMessage(context, R.string.wait_data_loading);
 
-                        ServiceManager.loadMetadata(
+                        BasePlayerController.loadMetadata(
                                 video,
                                 metadata -> {
                                     video.sync(metadata);
@@ -377,7 +377,7 @@ public class AppDialogUtil {
         if (video.hasPlaylist()) {
             showPlaylistOrderDialog(context, video.playlistId, onClose);
         } else if (video.belongsToUserPlaylists()) {
-            ServiceManager.loadChannelUploads(video, group -> {
+            BasePlayerController.loadChannelUploads(video, group -> {
                 if (group.getMediaItems() == null || group.getMediaItems().isEmpty()) {
                     return;
                 }

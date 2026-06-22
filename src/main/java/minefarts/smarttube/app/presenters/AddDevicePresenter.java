@@ -2,7 +2,7 @@ package minefarts.smarttube.app.presenters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import minefarts.smarttube.utils.ServiceManager;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.views.AddDeviceView;
@@ -50,11 +50,10 @@ public class AddDevicePresenter extends BasePresenter<AddDeviceView> {
     }
 
     private void updateDeviceCode() {
-        mDeviceCodeAction = ServiceManager.getRemoteControlService().getPairingCodeObserve()
-                .subscribe(
-                        deviceCode -> getView().showCode(deviceCode),
-                        error -> Log.e(TAG, "Get pairing code error: %s", error.getMessage())
-                );
+        mDeviceCodeAction = BasePlayerController.getRemoteControlService().getPairingCodeObserve().subscribe(
+            deviceCode -> getView().showCode(deviceCode),
+            error -> Log.e(TAG, "Get pairing code error: %s", error.getMessage())
+        );
     }
 
     public void start() {

@@ -9,7 +9,7 @@ import minefarts.smarttube.utils.data.ItemGroup;
 import minefarts.smarttube.utils.data.ItemGroup.Item;
 import minefarts.smarttube.prefs.AppPrefs;
 import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
-import minefarts.smarttube.utils.ServiceManager;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
 
 import java.io.File;
 import java.util.List;
@@ -27,7 +27,7 @@ public class ChannelGroupServiceWrapper implements ProfileChangeListener {
         mContext = context.getApplicationContext();
         mPrefs = AppPrefs.instance(context);
         mPrefs.addListener(this);
-        mService = ServiceManager.getChannelGroupService();
+        mService = BasePlayerController.getChannelGroupService();
         restoreState();
     }
 

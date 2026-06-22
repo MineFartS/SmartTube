@@ -3,7 +3,7 @@ package minefarts.smarttube.app.presenters.dialogs.menu;
 import android.content.Context;
 
 import minefarts.smarttube.utils.MediaItemService;
-import minefarts.smarttube.utils.ServiceManager;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.utils.data.PlaylistInfo;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
@@ -116,7 +116,7 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         setContext(context);        
         updateEnabledMenuItems();
         
-        mMediaItemService = ServiceManager.getMediaItemService();
+        mMediaItemService = BasePlayerController.getMediaItemService();
         mDialogPresenter = AppDialogPresenter.instance(context);
         mVideoStateService = VideoStateService.instance(context);
         mVideoStateController = new VideoStateController();
@@ -299,7 +299,7 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         mVideo = video;
         sVideoHolder = new WeakReference<>(video);
 
-        ServiceManager.authCheck(
+        BasePlayerController.authCheck(
             
             () -> {
                 mPlaylistInfos = null;
@@ -412,7 +412,7 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         mDialogPresenter.appendSingleButton(
                 UiOptionItem.from(getContext().getString(
                         mVideo.isPlaylistAsChannel() ? R.string.open_playlist : R.string.open_channel), optionItem -> {
-                    ServiceManager.chooseChannelPresenter(getContext(), mVideo);
+                    BasePlayerController.chooseChannelPresenter(getContext(), mVideo);
                     mDialogPresenter.closeDialog();
                 }));
     }
@@ -546,7 +546,7 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
 
         mDialogPresenter.appendSingleButton(
                 UiOptionItem.from(getContext().getString(R.string.remove_from_subscriptions), optionItem -> {
-                    ServiceManager.hideNotification(mVideo);
+                    BasePlayerController.hideNotification(mVideo);
                     if (mCallback != null) {
                         mCallback.onItemAction(mVideo, VideoMenuCallback.ACTION_REMOVE);
                     }
@@ -597,12 +597,12 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
                 UiOptionItem.from(getContext().getString(R.string.action_video_info),
                         optionItem -> {
                             MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
-                            ServiceManager.loadMetadata(mVideo, metadata -> {
+                            BasePlayerController.loadMetadata(mVideo, metadata -> {
                                 String description = metadata.getDescription();
                                 if (description != null) {
                                     showLongTextDialog(description);
                                 } else {
-                                    ServiceManager.loadFormatInfo(mVideo, formatInfo -> {
+                                    BasePlayerController.loadFormatInfo(mVideo, formatInfo -> {
                                         String newDescription = formatInfo.getDescription();
                                         if (newDescription != null) {
                                             showLongTextDialog(newDescription);
@@ -625,7 +625,7 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
                 UiOptionItem.from(getContext().getString(R.string.open_comments),
                         optionItem -> {
                             MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
-                            ServiceManager.loadMetadata(mVideo, metadata -> {
+                            BasePlayerController.loadMetadata(mVideo, metadata -> {
                                 CommentsController controller = new CommentsController(getContext(), metadata);
                                 controller.onButtonClicked(R.id.action_chat, 1);
                             });

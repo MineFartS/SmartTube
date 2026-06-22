@@ -5,8 +5,8 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import minefarts.smarttube.utils.oauth.Account;
 import minefarts.smarttube.utils.helpers.Helpers;
-import minefarts.smarttube.utils.ServiceManager;
-import minefarts.smarttube.utils.ServiceManager.AccountChangeListener;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
+import minefarts.smarttube.app.models.playback.BasePlayerController.AccountChangeListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +50,7 @@ public class AccountsData implements AccountChangeListener {
     private AccountsData(Context context) {
         mContext = context;
         mAppPrefs = AppPrefs.instance(mContext);
-        ServiceManager.addAccountListener(this);
+        BasePlayerController.addAccountListener(this);
         restoreState();
     }
 
@@ -124,7 +124,7 @@ public class AccountsData implements AccountChangeListener {
     }
 
     private String getAccountName() {
-        Account account = ServiceManager.getSelectedAccount();
+        Account account = BasePlayerController.getSelectedAccount();
         return account != null ? account.getName() : null;
     }
 

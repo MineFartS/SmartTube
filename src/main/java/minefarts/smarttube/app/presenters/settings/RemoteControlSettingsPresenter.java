@@ -3,7 +3,6 @@ package minefarts.smarttube.app.presenters.settings;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import minefarts.smarttube.utils.ServiceManager;
 import minefarts.smarttube.utils.RemoteControlService;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.helpers.PermissionHelpers;
@@ -17,6 +16,7 @@ import minefarts.smarttube.prefs.RemoteControlData;
 import minefarts.smarttube.utils.rx.RxHelper;
 import minefarts.smarttube.utils.AppDialogUtil;
 import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class RemoteControlSettingsPresenter extends BasePresenter<Void> {
     public static RemoteControlSettingsPresenter instance(Context context) {
         if (sInstance == null) {
             sInstance = new RemoteControlSettingsPresenter();
-            sInstance.mRemoteManager = ServiceManager.getRemoteControlService();
+            sInstance.mRemoteManager = BasePlayerController.getRemoteControlService();
             sInstance.mRemoteControlData = RemoteControlData.instance(context);
         }
 

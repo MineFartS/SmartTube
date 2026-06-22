@@ -33,8 +33,8 @@ import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter.VideoM
 import minefarts.smarttube.app.presenters.dialogs.menu.providers.channelgroup.ChannelGroupServiceWrapper;
 import minefarts.smarttube.app.views.BrowseView;
 import minefarts.smarttube.utils.BrowseProcessorManager;
-import minefarts.smarttube.utils.ServiceManager;
-import minefarts.smarttube.utils.ServiceManager.AccountChangeListener;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
+import minefarts.smarttube.app.models.playback.BasePlayerController.AccountChangeListener;
 import minefarts.smarttube.prefs.AccountsData;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.prefs.PlayerTweaksData;
@@ -103,7 +103,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
             sInstance.mLocalGridMappings = new HashMap<>();
             sInstance.mSectionsMapping = new HashMap<>();
 
-            ServiceManager.addAccountListener(sInstance);
+            BasePlayerController.addAccountListener(sInstance);
 
             sInstance.mBrowseProcessor = new BrowseProcessorManager(context, sInstance::syncItem);
             sInstance.mChannelUploadsPresenter = ChannelUploadsPresenter.instance(context);
@@ -876,7 +876,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
             getView() == null 
             || group == null
             || (getCurrentSection() != null && mLocalGridMappings.containsKey(getCurrentSection().getId()))
-            || (!force && !ServiceManager.shouldContinueTheGroup(getContext(), group, isGridSection()))
+            || (!force && !BasePlayerController.shouldContinueTheGroup(getContext(), group, isGridSection()))
         ) return;
 
         Log.d(TAG, "continueGroup: start continue group: " + group.getTitle());

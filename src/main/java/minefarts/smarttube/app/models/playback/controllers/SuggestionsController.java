@@ -26,7 +26,6 @@ import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.utils.BrowseProcessorManager;
-import minefarts.smarttube.utils.ServiceManager;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.app.models.data.DislikesResult;
@@ -68,8 +67,8 @@ public class SuggestionsController extends BasePlayerController {
             getContext(), 
             PlaybackPresenter.instance(getContext())::syncItem
         );
-        mMediaItemService = ServiceManager.getMediaItemService();
-        mContentService = ServiceManager.getContentService();
+        mMediaItemService = getMediaItemService();
+        mContentService = getContentService();
         mVideoInfoApi = VideoInfoService.instance().mVideoInfoApi;
     }
 
@@ -441,7 +440,7 @@ public class SuggestionsController extends BasePlayerController {
     private void continueGroupIfNeeded(VideoGroup group) {
         if (getPlayer() == null) return;
 
-        if (ServiceManager.shouldContinueRowGroup(getContext(), group)) {
+        if (shouldContinueRowGroup(getContext(), group)) {
             continueGroup(
                 group, null,
                 getPlayer().isSuggestionsShown()

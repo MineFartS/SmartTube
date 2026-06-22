@@ -5,7 +5,7 @@ import android.content.Context;
 
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.views.SignInView;
-import minefarts.smarttube.utils.ServiceManager;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.rx.RxHelper;
 import minefarts.smarttube.app.presenters.dialogs.AccountSelectionPresenter;
@@ -91,7 +91,7 @@ public class SignInPresenter extends BasePresenter<SignInView> {
     }
 
     private void updateUserCode() {
-        mSignInAction = ServiceManager.getSignInService().signInObserve().subscribe(
+        mSignInAction = BasePlayerController.getSignInService().signInObserve().subscribe(
             userCode -> getView().showCode(userCode, "https://youtube.com/tv/activate"),
             error -> {
                 Log.e(TAG, "Sign in error: %s", error.getMessage());

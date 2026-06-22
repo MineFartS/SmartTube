@@ -8,15 +8,18 @@ import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import minefarts.smarttube.R;
 import minefarts.smarttube.utils.service.data.MediaGroup;
 import minefarts.smarttube.utils.data.MediaItem;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.rx.AppSchedulerProvider;
 import minefarts.smarttube.utils.rx.SchedulerProvider;
-import minefarts.smarttube.utils.ServiceManager;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
+
 import io.reactivex.disposables.CompositeDisposable;
 
 import java.util.ArrayList;
@@ -129,7 +132,7 @@ public class VideoContentProvider extends ContentProvider {
     private Cursor search(String query, int limit) {
         MatrixCursor matrixCursor = new MatrixCursor(queryProjection);
 
-        List<MediaGroup> searchRows = ServiceManager.getContentService().getSearch(query);
+        List<MediaGroup> searchRows = BasePlayerController.getContentService().getSearch(query);
         mSearch = searchRows != null && !searchRows.isEmpty() ? searchRows.get(0) : null;
 
         if (mSearch != null) {
@@ -149,7 +152,7 @@ public class VideoContentProvider extends ContentProvider {
     }
 
     private void nextSearch(MatrixCursor cursor, int limit) {
-        mSearch = ServiceManager.getContentService().continueGroup(mSearch);
+        mSearch = BasePlayerController.getContentService().continueGroup(mSearch);
 
         if (mSearch != null) {
             List<MediaItem> mediaItems = mSearch.getMediaItems();
