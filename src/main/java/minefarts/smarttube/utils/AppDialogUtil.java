@@ -138,14 +138,6 @@ public class AppDialogUtil {
                 }));
     }
 
-    private static void setFormat(FormatItem formatItem, PlaybackFragment2 playerData, Runnable onFormatSelected) {
-        
-        playerData.setFormat(formatItem);
-    
-        onFormatSelected.run();
-    
-    }
-
     public static OptionCategory createAudioLanguageCategory(Context context) {
         return createAudioLanguageCategory(context, () -> {});
     }

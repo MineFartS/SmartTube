@@ -26,7 +26,6 @@ import minefarts.smarttube.exoplayer.errors.TrackErrorFixer;
 import minefarts.smarttube.exoplayer.other.VolumeBooster;
 import minefarts.smarttube.exoplayer.selector.ExoFormatItem;
 import minefarts.smarttube.exoplayer.selector.FormatItem;
-import minefarts.smarttube.exoplayer.selector.TrackInfoFormatter2;
 import minefarts.smarttube.exoplayer.selector.TrackSelectorManager;
 import minefarts.smarttube.exoplayer.selector.TrackSelectorUtil;
 import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
@@ -40,11 +39,12 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 public class ExoPlayerController implements Player.EventListener {
+
     private static final String TAG = ExoPlayerController.class.getSimpleName();
+    
     private final Context mContext;
     private final ExoMediaSourceFactory mMediaSourceFactory;
     public  final TrackSelectorManager mTrackSelectorManager;
-    private final TrackInfoFormatter2 mTrackFormatter;
     private final TrackErrorFixer mTrackErrorFixer;
     private boolean mOnSourceChanged;
     public WeakReference<Video> mVideo;
@@ -54,7 +54,7 @@ public class ExoPlayerController implements Player.EventListener {
 
     private boolean mIsEnded;
     private Runnable mOnVideoLoaded;
-
+    
     public ExoPlayerController(Context context, PlayerEventListener eventListener) {
 
         PlayerTweaksData playerTweaksData = PlayerTweaksData.instance(context);
@@ -62,7 +62,6 @@ public class ExoPlayerController implements Player.EventListener {
         mContext = context.getApplicationContext();
         mMediaSourceFactory = new ExoMediaSourceFactory(context);
         mTrackSelectorManager = new TrackSelectorManager(context);
-        mTrackFormatter = new TrackInfoFormatter2();
         mTrackErrorFixer = new TrackErrorFixer(mTrackSelectorManager);
         mMediaSourceFactory.setTrackErrorFixer(mTrackErrorFixer);
         mEventListener = eventListener;
@@ -262,15 +261,8 @@ public class ExoPlayerController implements Player.EventListener {
 
         for (TrackSelection selection : trackSelections.getAll()) {
             if (selection != null) {
-                // EXO: 2.12.1
-                //Format format = selection.getSelectedFormat();
-
-                // EXO: 2.13.1
                 Format format = selection.getFormat(0);
-
                 mEventListener.onTrackChanged(ExoFormatItem.from(format));
-
-                mTrackFormatter.setFormat(format);
             }
         }
         
@@ -371,7 +363,6 @@ public class ExoPlayerController implements Player.EventListener {
 
             mPlayer.setPlaybackParameters(new PlaybackParameters(speed));
 
-            mTrackFormatter.setSpeed(speed);
             mEventListener.onSpeedChanged(speed);
 
         }
