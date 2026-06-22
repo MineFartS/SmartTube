@@ -11,7 +11,7 @@ import minefarts.smarttube.app.presenters.BrowsePresenter;
 import minefarts.smarttube.app.presenters.SignInPresenter;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.presenters.dialogs.AccountSelectionPresenter;
-import minefarts.smarttube.utils.ServiceManager;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.prefs.AccountsData;
 import minefarts.smarttube.prefs.AppPrefs;
 import minefarts.smarttube.utils.AppDialogUtil;
@@ -40,7 +40,7 @@ public class AccountSettingsPresenter extends BasePresenter<Void> {
     }
 
     public void show() {
-        ServiceManager.loadAccounts(this::createAndShowDialog);
+        BasePlayerController.loadAccounts(this::createAndShowDialog);
     }
 
     private void createAndShowDialog(List<Account> accounts) {

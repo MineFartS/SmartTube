@@ -17,7 +17,6 @@ import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.presenters.dialogs.menu.providers.ContextMenuManager;
 import minefarts.smarttube.app.presenters.dialogs.menu.providers.ContextMenuProvider;
 import minefarts.smarttube.app.presenters.service.SidebarService;
-import minefarts.smarttube.utils.ServiceManager;
 import minefarts.smarttube.prefs.AppPrefs;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.prefs.MainUIData;

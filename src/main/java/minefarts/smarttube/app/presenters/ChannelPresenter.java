@@ -20,7 +20,6 @@ import minefarts.smarttube.utils.BrowseProcessorManager;
 import minefarts.smarttube.utils.rx.RxHelper;
 import minefarts.smarttube.utils.LoadingManager;
 import minefarts.smarttube.utils.browse.BrowseService2;
-import minefarts.smarttube.utils.ServiceManager;
 import minefarts.smarttube.utils.common.models.impl.mediagroup.MediaGroupOptions;
 import minefarts.smarttube.utils.browse.gen.BrowseResult;
 import minefarts.smarttube.utils.browse.BrowseApiHelper;
@@ -29,6 +28,7 @@ import minefarts.smarttube.google.common.helpers.RetrofitHelper;
 import minefarts.smarttube.utils.browse.BrowseApi2;
 import minefarts.smarttube.utils.common.models.impl.mediagroup.BrowseMediaGroup;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
 
 import retrofit2.Call;
 
@@ -211,7 +211,7 @@ public class ChannelPresenter extends BasePresenter<ChannelView> {
 
     private void disposeActions() {
         RxHelper.disposeActions(mUpdateAction, mScrollAction);
-        ServiceManager.disposeActions();
+        BasePlayerController.disposeActions();
         mSortType = SortType.NEWEST;
         mBrowseProcessor.dispose();
     }
@@ -238,7 +238,7 @@ public class ChannelPresenter extends BasePresenter<ChannelView> {
     }
 
     public void updateRows(List<MediaGroup> mediaGroups) {
-        if (getView() == null) { // starting from outside (e.g. ServiceManager)
+        if (getView() == null) { // starting from outside (e.g. BasePlayerController)
             mChannelId = null;
             mPendingGroups.add(mediaGroups);
             getViewManager().startView(ChannelView.class);
@@ -315,7 +315,7 @@ public class ChannelPresenter extends BasePresenter<ChannelView> {
             } else if (item.videoId != null) {
                 LoadingManager.showLoading(getContext(), true);
                 //MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
-                ServiceManager.loadMetadata(item, metadata -> {
+                BasePlayerController.loadMetadata(item, metadata -> {
                     LoadingManager.showLoading(getContext(), false);
                     callback.onChannelId(metadata.getChannelId());
                     item.channelId = metadata.getChannelId();

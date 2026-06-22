@@ -12,7 +12,6 @@ import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.ui.playback.PlaybackFragment2;
-import minefarts.smarttube.utils.ServiceManager;
 import minefarts.smarttube.prefs.ContentBlockData;
 import minefarts.smarttube.utils.AppDialogUtil;
 import minefarts.smarttube.utils.Utils;

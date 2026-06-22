@@ -19,7 +19,7 @@ import minefarts.smarttube.app.presenters.dialogs.AccountSelectionPresenter;
 import minefarts.smarttube.app.presenters.dialogs.BootDialogPresenter;
 import minefarts.smarttube.app.views.SplashView;
 import minefarts.smarttube.app.views.ViewManager;
-import minefarts.smarttube.utils.ServiceManager;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.prefs.AccountsData;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.utils.IntentExtractor;
@@ -93,7 +93,7 @@ public class SplashPresenter extends BasePresenter<SplashView> {
     }
 
     private void runBackgroundTasks() {
-        ServiceManager.refreshCacheIfNeeded(); // warm up player engine
+        BasePlayerController.refreshCacheIfNeeded(); // warm up player engine
         Utils.updateChannels(getContext());
     }
 

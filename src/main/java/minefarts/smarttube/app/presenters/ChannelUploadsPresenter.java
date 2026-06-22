@@ -21,7 +21,7 @@ import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter;
 import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
 import minefarts.smarttube.app.views.ChannelUploadsView;
 import minefarts.smarttube.utils.BrowseProcessorManager;
-import minefarts.smarttube.utils.ServiceManager;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 
 import io.reactivex.Observable;
@@ -177,7 +177,7 @@ public class ChannelUploadsPresenter extends BasePresenter<ChannelUploadsView> {
 
     private void disposeActions() {
         RxHelper.disposeActions(mUpdateAction, mScrollAction);
-        ServiceManager.disposeActions();
+        BasePlayerController.disposeActions();
         mBrowseProcessor.dispose();
     }
 
@@ -252,7 +252,7 @@ public class ChannelUploadsPresenter extends BasePresenter<ChannelUploadsView> {
         // The view could be running in the background
         getViewManager().startView(ChannelUploadsView.class);
 
-        if (getView() == null) { // starting from outside (e.g. ServiceManager)
+        if (getView() == null) { // starting from outside (e.g. BasePlayerController)
             mPendingGroup = mediaGroup; // start loading from this group
             return;
         }

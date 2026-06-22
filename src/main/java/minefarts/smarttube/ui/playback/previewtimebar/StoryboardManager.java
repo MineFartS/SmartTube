@@ -11,7 +11,7 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import minefarts.smarttube.utils.MediaItemService;
-import minefarts.smarttube.utils.ServiceManager;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.utils.formatbuilders.storyboard.YouTubeStoryParser.Size;
 import minefarts.smarttube.utils.service.data.MediaItemStoryboard;
 import minefarts.smarttube.utils.mylogger.Log;
@@ -47,7 +47,7 @@ public class StoryboardManager {
 
     public StoryboardManager(Context context) {
         mContext = context;
-        mMediaItemService = ServiceManager.getMediaItemService();
+        mMediaItemService = BasePlayerController.getMediaItemService();
     }
 
     public void init(Video video, long lengthMs) {

@@ -3,7 +3,6 @@ package minefarts.smarttube.app.presenters.dialogs;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import minefarts.smarttube.utils.ServiceManager;
 import minefarts.smarttube.utils.SignInService;
 import minefarts.smarttube.utils.oauth.Account;
 import minefarts.smarttube.R;
@@ -14,6 +13,7 @@ import minefarts.smarttube.app.presenters.settings.AccountSettingsPresenter;
 import minefarts.smarttube.prefs.AccountsData;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class AccountSelectionPresenter extends BasePresenter<Void> {
     public static AccountSelectionPresenter instance(Context context) {
         if (sInstance == null) {
             sInstance = new AccountSelectionPresenter();
-            sInstance.mSignInService = ServiceManager.getSignInService();
+            sInstance.mSignInService = BasePlayerController.getSignInService();
         }
 
         sInstance.setContext(context);
@@ -50,7 +50,7 @@ public class AccountSelectionPresenter extends BasePresenter<Void> {
     }
 
     public void nextAccountOrDialog() {
-        ServiceManager.loadAccounts(this::nextAccountOrDialog);
+        BasePlayerController.loadAccounts(this::nextAccountOrDialog);
     }
 
     public void unhold() {

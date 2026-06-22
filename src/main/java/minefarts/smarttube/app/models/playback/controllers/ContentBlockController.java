@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import minefarts.smarttube.utils.MediaItemService;
-import minefarts.smarttube.utils.ServiceManager;
 import minefarts.smarttube.utils.service.data.MediaItemMetadata;
 import minefarts.smarttube.utils.data.SponsorSegment;
 import minefarts.smarttube.utils.helpers.Helpers;
@@ -94,7 +93,7 @@ public class ContentBlockController extends BasePlayerController {
 
     @Override
     public void onInit() {
-        mMediaItemService = ServiceManager.getMediaItemService();
+        mMediaItemService = getMediaItemService();
         mSponsorBlockApi = RetrofitHelper.create(SponsorBlockApi.class);
     }
 

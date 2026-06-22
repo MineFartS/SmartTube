@@ -3,7 +3,7 @@ package minefarts.smarttube.app.presenters.dialogs.menu;
 import android.content.Context;
 
 import minefarts.smarttube.utils.MediaItemService;
-import minefarts.smarttube.utils.ServiceManager;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.utils.data.MediaItem;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.rx.RxHelper;
@@ -31,7 +31,7 @@ public class ChannelUploadsMenuPresenter extends BaseMenuPresenter {
     public static ChannelUploadsMenuPresenter instance(Context context) {
         ChannelUploadsMenuPresenter pres = new ChannelUploadsMenuPresenter();
 
-        pres.mItemManager = ServiceManager.getMediaItemService();
+        pres.mItemManager = BasePlayerController.getMediaItemService();
         pres.mDialogPresenter = AppDialogPresenter.instance(context);
         pres.setContext(context);
 
@@ -88,17 +88,18 @@ public class ChannelUploadsMenuPresenter extends BaseMenuPresenter {
     }
 
     private void appendMarkAsWatched() {
-        if (mVideo == null || !mVideo.hasNewContent) return;
-
-        boolean contentAlreadyLoaded = mVideo.groupPosition == 0;
-
-        if (contentAlreadyLoaded) return;
-
-        mDialogPresenter.appendSingleButton(
-                UiOptionItem.from(getContext().getString(R.string.mark_as_watched), optionItem -> {
-                    ServiceManager.loadChannelUploads(mVideo, (group) -> {});
-                    MessageHelpers.showMessage(getContext(), R.string.channel_marked_as_watched);
-                }));
+        if (mVideo == null 
+            || !mVideo.hasNewContent
+            || mVideo.groupPosition == 0 //contentAlreadyLoaded
+        ) return;
+        
+        mDialogPresenter.appendSingleButton(UiOptionItem.from(
+            getContext().getString(R.string.mark_as_watched), 
+            optionItem -> {
+                BasePlayerController.loadChannelUploads(mVideo, (group) -> {});
+                MessageHelpers.showMessage(getContext(), R.string.channel_marked_as_watched);
+            }
+        ));
     }
 
 }

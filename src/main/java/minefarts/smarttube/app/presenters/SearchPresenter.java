@@ -19,7 +19,6 @@ import minefarts.smarttube.app.models.playback.controllers.VideoLoaderController
 import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter;
 import minefarts.smarttube.app.views.SearchView;
 import minefarts.smarttube.utils.BrowseProcessorManager;
-import minefarts.smarttube.utils.ServiceManager;
 import minefarts.smarttube.prefs.AccountsData;
 import minefarts.smarttube.utils.AppDialogUtil;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;

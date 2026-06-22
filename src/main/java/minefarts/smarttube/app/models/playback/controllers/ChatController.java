@@ -11,7 +11,6 @@ import minefarts.smarttube.app.models.playback.ui.ChatReceiver;
 import minefarts.smarttube.app.models.playback.ui.ChatReceiverImpl;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
-import minefarts.smarttube.utils.ServiceManager;
 import io.reactivex.disposables.Disposable;
 
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ public class ChatController extends BasePlayerController {
 
     @Override
     public void onInit() {
-        mChatService = ServiceManager.getLiveChatService();
+        mChatService = getLiveChatService();
     }
 
     @Override

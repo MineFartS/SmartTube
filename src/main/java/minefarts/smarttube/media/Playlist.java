@@ -5,7 +5,7 @@ import androidx.tvprovider.media.tv.TvContractCompat;
 import minefarts.smarttube.google.common.helpers.ServiceHelper;
 import minefarts.smarttube.media.ClipService.GroupCallback;
 import minefarts.smarttube.utils.service.ContentService;
-import minefarts.smarttube.utils.ServiceManager;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.utils.service.data.MediaGroup;
 import minefarts.smarttube.utils.data.MediaItem;
 import minefarts.smarttube.utils.helpers.Helpers;
@@ -157,7 +157,7 @@ public final class Playlist {
     private List<Clip> createClips() {
         if (mCallback == null) return null;
 
-        ContentService contentService = ServiceManager.getContentService();
+        ContentService contentService = BasePlayerController.getContentService();
         MediaGroup selectedGroup = mCallback.call(contentService);
 
         if (selectedGroup != null) {
