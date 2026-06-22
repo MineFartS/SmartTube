@@ -218,25 +218,25 @@ public class VideoLoaderController extends BasePlayerController {
 
     // Force load and play!
     private void loadVideo(Video item) {
-        if (getPlayer() != null && item != null) {
+        if (getPlayer() == null || item == null) return;
             
-            Queue.setCurrent(item);
-            
-            getPlayer().setVideo(item);
-            getPlayer().resetPlayerState();
+        onEngineReleased();
+        
+        Queue.setCurrent(item);
+        
+        getPlayer().setVideo(item);
+        getPlayer().resetPlayerState();
 
-            getPlayer().showProgressBar(true);
-            onEngineReleased();
+        getPlayer().showProgressBar(true);
 
-            mFormatInfoAction = mMediaItemService.getFormatInfoObserve(getVideo().videoId).subscribe(
-                this::processFormatInfo,
-                error -> {
-                    getPlayer().showProgressBar(false);
-                    runFormatErrorAction(error);
-                }
-            );
-            
-        }
+        mFormatInfoAction = mMediaItemService.getFormatInfoObserve(getVideo().videoId).subscribe(
+            this::processFormatInfo,
+            error -> {
+                getPlayer().showProgressBar(false);
+                runFormatErrorAction(error);
+            }
+        );
+        
     }
 
     private void processFormatInfo(MediaItemFormatInfo formatInfo) {

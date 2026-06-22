@@ -34,6 +34,7 @@ import minefarts.smarttube.exoplayer.selector.track.VideoTrack;
 import minefarts.smarttube.exoplayer.versions.ExoUtils;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.ui.mod.leanback.playerglue.tweaks.MaxControlsVideoPlayerGlue;
+
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -46,7 +47,7 @@ public class ExoPlayerController implements Player.EventListener {
     private final TrackInfoFormatter2 mTrackFormatter;
     private final TrackErrorFixer mTrackErrorFixer;
     private boolean mOnSourceChanged;
-    private WeakReference<Video> mVideo;
+    public WeakReference<Video> mVideo;
     private final PlayerEventListener mEventListener;
     private SimpleExoPlayer mPlayer;
     private MaxControlsVideoPlayerGlue mPlayerView;
@@ -200,10 +201,6 @@ public class ExoPlayerController implements Player.EventListener {
     
     public void setPlayerView(MaxControlsVideoPlayerGlue playerView) {
         mPlayerView = playerView;
-    }
-    
-    public void setVideo(Video video) {
-        mVideo = new WeakReference<>(video);
     }
     
     public Video getVideo() {
