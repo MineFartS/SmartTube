@@ -1,5 +1,7 @@
 package minefarts.smarttube.utils.videoinfo.V2;
 
+import android.util.Base64;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -28,6 +30,7 @@ import minefarts.smarttube.utils.videoinfo.models.formats.AdaptiveVideoFormat;
 import minefarts.smarttube.utils.videoinfo.models.formats.VideoFormat;
 import minefarts.smarttube.utils.app.playerdata.PlayerDataExtractor;
 import minefarts.smarttube.utils.common.helpers.QueryBuilder;
+import minefarts.smarttube.app.models.playback.controllers.VideoStateController;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -99,7 +102,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         initInfoTypeIfNeeded();
 
-        AppService.instance().resetClientPlaybackNonce(); // unique value per each video info
+        VideoStateController.resetCPN();
 
         mAuthBlock = true;
 
