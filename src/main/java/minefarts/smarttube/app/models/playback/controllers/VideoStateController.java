@@ -46,6 +46,8 @@ public class VideoStateController extends BasePlayerController {
 
     private Disposable mFormatInfoUpdateDisposable;
 
+    public static String mClientPlaybackNonce;
+
     /**
      * Fired after user clicked on video in browse activity<br/>
      * or video is opened from the intent
@@ -390,7 +392,7 @@ public class VideoStateController extends BasePlayerController {
                     video.videoId,
                     lengthSec,
                     mPositionSec,
-                    getAppService().getClientPlaybackNonce(),
+                    mClientPlaybackNonce,
                     formatInfo.getEventId(),
                     formatInfo.getVisitorMonitoringData(),
                     formatInfo.getOfParam()
@@ -406,7 +408,7 @@ public class VideoStateController extends BasePlayerController {
                 mPositionSec,
                 positionSec,
                 positionSec,
-                getAppService().getClientPlaybackNonce(),
+                mClientPlaybackNonce,
                 formatInfo.getEventId(),
                 formatInfo.getVisitorMonitoringData(),
                 formatInfo.getOfParam()

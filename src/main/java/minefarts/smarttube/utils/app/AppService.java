@@ -1,7 +1,6 @@
 package minefarts.smarttube.utils.app;
 
 import android.content.Context;
-import android.util.Base64;
 
 import androidx.annotation.NonNull;
 
@@ -18,7 +17,6 @@ import minefarts.smarttube.ContextManager;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.security.SecureRandom;
 
 import kotlin.Pair;
 
@@ -27,12 +25,8 @@ import retrofit2.Response;
 
 public class AppService {
 
-    private static final SecureRandom secureRandom = new SecureRandom();
-
     private static AppService sInstance;
     
-    private String mClientPlaybackNonce;
-
     AppApi mAppApi;
     MediaServiceData mData;
 
@@ -94,31 +88,6 @@ public class AppService {
         }
 
         return result;
-    }
-
-    public void resetClientPlaybackNonce() {
-
-        byte[] randomBytes = new byte[32];
-        
-        secureRandom.nextBytes(randomBytes);
-
-        mClientPlaybackNonce = Base64.encodeToString(
-            randomBytes, 
-            Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP
-        );
-
-    }
-
-    /**
-     * NOTE: Unique per video info instance<br/>
-     * A nonce is a unique value chosen by an entity in a protocol, and it is used to protect that entity against attacks which fall under the very large umbrella of "replay".
-     */
-    public String getClientPlaybackNonce() {
-        
-        if (mClientPlaybackNonce == null)
-            resetClientPlaybackNonce();
-
-        return mClientPlaybackNonce;
     }
 
     @NonNull
