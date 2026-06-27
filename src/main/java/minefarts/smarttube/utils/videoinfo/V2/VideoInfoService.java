@@ -103,11 +103,7 @@ public class VideoInfoService {
 
         initInfoTypeIfNeeded();
 
-        VideoStateController.mClientPlaybackNonce = Base64.encodeToString(
-            new byte[32], 
-            Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP
-        );
-
+        VideoStateController.resetCPN();
 
         mAuthBlock = true;
 

@@ -29,6 +29,8 @@ import java.util.List;
 
 import retrofit2.Call;
 
+import android.util.Base64;
+
 public class VideoStateController extends BasePlayerController {
 
     private static final String TAG = VideoStateController.class.getSimpleName();
@@ -47,6 +49,14 @@ public class VideoStateController extends BasePlayerController {
     private Disposable mFormatInfoUpdateDisposable;
 
     public static String mClientPlaybackNonce;
+
+    public static void resetCPN() {
+        mClientPlaybackNonce = Base64.encodeToString(
+            new byte[32], 
+            Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP
+        );
+    }
+
 
     /**
      * Fired after user clicked on video in browse activity<br/>
