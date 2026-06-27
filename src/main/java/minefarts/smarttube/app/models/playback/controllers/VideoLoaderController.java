@@ -161,8 +161,10 @@ public class VideoLoaderController extends BasePlayerController {
 
         Video next = mSuggestionsController.getNext();
 
-        next.isShuffled = getVideo().isShuffled;
-        openVideoInt(next);
+        if (next != null) {
+            next.isShuffled = getVideo().isShuffled;
+            openVideoInt(next);
+        }
 
         getPlayer().showOverlay(true);
 

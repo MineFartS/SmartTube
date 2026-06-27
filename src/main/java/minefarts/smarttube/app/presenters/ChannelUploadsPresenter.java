@@ -37,6 +37,8 @@ public class ChannelUploadsPresenter extends BasePresenter<ChannelUploadsView> {
     private static ChannelUploadsPresenter sInstance;
     
     BrowseProcessorManager mBrowseProcessor;
+    PlaybackPresenter mPlaybackPresenter;
+
     VideoLoaderController mVideoLoaderController;
     
     private Disposable mUpdateAction;
@@ -49,7 +51,7 @@ public class ChannelUploadsPresenter extends BasePresenter<ChannelUploadsView> {
         if (sInstance == null) {
             sInstance = new ChannelUploadsPresenter();
             sInstance.mBrowseProcessor = new BrowseProcessorManager(context, sInstance::syncItem);
-            sInstance.mVideoLoaderController = PlaybackPresenter.instance(context).getController(VideoLoaderController.class);
+            sInstance.mPlaybackPresenter = PlaybackPresenter.instance(context);
         }
 
         sInstance.setContext(context);
@@ -84,6 +86,10 @@ public class ChannelUploadsPresenter extends BasePresenter<ChannelUploadsView> {
 
     @Override
     public void onVideoItemClicked(Video item) {
+
+        if (mVideoLoaderController == null)
+            mVideoLoaderController = mPlaybackPresenter.getController(VideoLoaderController.class);
+
         mVideoLoaderController.openVideo(item);
     }
 
