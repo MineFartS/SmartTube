@@ -216,7 +216,7 @@ import minefarts.smarttube.io.mod.Objects;
  * <h3 id="internal">3.2 Internal</h3>
  *
  * <p>
- * This shows an example of how internal cancellation processing could be implemented.
+ * This shows an example of how public cancellation processing could be implemented.
  * <b>Note</b> the decision logic and throwing a {@link CancelException} could be implemented
  * in any of the <i>lifecycle</i> methods.
  * </p>

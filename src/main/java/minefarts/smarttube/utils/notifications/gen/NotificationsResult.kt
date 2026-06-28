@@ -1,5 +1,5 @@
 package minefarts.smarttube.utils.notifications.gen
 
-internal data class NotificationsResult(
+public data class NotificationsResult(
     val actions: List<NotificationAction?>?
 )

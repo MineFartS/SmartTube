@@ -2,7 +2,7 @@ package minefarts.smarttube.utils.chat.gen
 
 import minefarts.smarttube.utils.next.v2.gen.ContinuationItem
 
-internal data class LiveChatResult(
+public data class LiveChatResult(
     val continuationContents: ContinuationContents?
 ) {
     data class ContinuationContents(

@@ -3,7 +3,7 @@ package minefarts.smarttube.utils.innertube.helpers
 import minefarts.smarttube.utils.innertube.models.InnertubeContext
 import minefarts.smarttube.utils.innertube.models.SessionDataResult
 
-internal object ApiHelpers {
+public object ApiHelpers {
     fun createSessionDataHeaders(): Map<String, String> {
         // TODO: replace with the real values
         return mapOf(

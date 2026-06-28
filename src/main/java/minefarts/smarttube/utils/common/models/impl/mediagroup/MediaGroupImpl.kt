@@ -20,7 +20,7 @@ import minefarts.smarttube.utils.notifications.gen.getItems
 /**
  *  Always renders first tab
  */
-internal data class BrowseMediaGroup(
+public data class BrowseMediaGroup(
     private val browseResult: BrowseResult,
     private val options: MediaGroupOptions,
     private val liveResult: BrowseResult? = null
@@ -31,7 +31,7 @@ internal data class BrowseMediaGroup(
     override fun getTitleInt(): String? = browseResult.getTitle()
 }
 
-internal data class BrowseMediaGroupTV(
+public data class BrowseMediaGroupTV(
     private val browseResult: BrowseResultTV,
     private val options: MediaGroupOptions,
     private val overrideItems: List<ItemWrapper?>? = null,
@@ -43,7 +43,7 @@ internal data class BrowseMediaGroupTV(
     override fun getTitleInt(): String? = null
 }
 
-internal data class LiveMediaGroup(
+public data class LiveMediaGroup(
     private val liveResult: BrowseResult,
     private val options: MediaGroupOptions
 ): BaseMediaGroup(options) {
@@ -52,7 +52,7 @@ internal data class LiveMediaGroup(
     override fun getTitleInt(): String? = liveResult.getTitle()
 }
 
-internal data class ContinuationMediaGroup(
+public data class ContinuationMediaGroup(
     private val continuationResult: ContinuationResult,
     private val options: MediaGroupOptions
 ): BaseMediaGroup(options) {
@@ -61,7 +61,7 @@ internal data class ContinuationMediaGroup(
     override fun getTitleInt(): String? = null
 }
 
-internal data class WatchNexContinuationMediaGroup(
+public data class WatchNexContinuationMediaGroup(
     private val continuation: WatchNextResultContinuation,
     private val options: MediaGroupOptions,
     private val overrideItems: List<ItemWrapper?>? = null,
@@ -73,7 +73,7 @@ internal data class WatchNexContinuationMediaGroup(
     private fun getLastShelf() = continuation.getShelves()?.lastOrNull() // Get main content of Channels section and skip SHORTS
 }
 
-internal data class RichSectionMediaGroup(
+public data class RichSectionMediaGroup(
     private val richSectionRenderer: RichSectionRenderer,
     private val options: MediaGroupOptions
 ): BaseMediaGroup(options) {
@@ -82,7 +82,7 @@ internal data class RichSectionMediaGroup(
     override fun getTitleInt(): String? = richSectionRenderer.getTitle()
 }
 
-internal data class ShelfSectionMediaGroup(
+public data class ShelfSectionMediaGroup(
     private val shelf: Shelf,
     private val options: MediaGroupOptions
 ): BaseMediaGroup(options) {
@@ -91,7 +91,7 @@ internal data class ShelfSectionMediaGroup(
     override fun getTitleInt(): String? = shelf.getTitle()
 }
 
-internal data class ItemSectionMediaGroup(
+public data class ItemSectionMediaGroup(
     private val itemSectionRenderer: ShelfListWrapper,
     private val options: MediaGroupOptions
 ): BaseMediaGroup(options) {
@@ -104,7 +104,7 @@ internal data class ItemSectionMediaGroup(
     override fun getParamsInt(): String? = itemSectionRenderer.getParams()
 }
 
-internal data class TabMediaGroup(
+public data class TabMediaGroup(
     private val tabRenderer: TabRenderer,
     private val options: MediaGroupOptions
 ): BaseMediaGroup(options) {
@@ -115,7 +115,7 @@ internal data class TabMediaGroup(
     override fun getParamsInt(): String? = tabRenderer.endpoint?.getParams()
 }
 
-internal data class KidsSectionMediaGroup(
+public data class KidsSectionMediaGroup(
     private val anchoredSectionRenderer: AnchoredSectionRenderer,
     private val options: MediaGroupOptions
 ): BaseMediaGroup(options) {
@@ -124,7 +124,7 @@ internal data class KidsSectionMediaGroup(
     override fun getTitleInt(): String? = anchoredSectionRenderer.getTitle()
 }
 
-internal data class ChipMediaGroup(
+public data class ChipMediaGroup(
     private val chipCloudChipRenderer: ChipCloudChipRenderer,
     private val options: MediaGroupOptions
 ): BaseMediaGroup(options) {
@@ -133,11 +133,11 @@ internal data class ChipMediaGroup(
     override fun getTitleInt(): String? = chipCloudChipRenderer.getTitle()
 }
 
-internal const val SORT_DEFAULT: Int = 0
-internal const val SORT_BY_NAME: Int = 1
-internal const val SORT_BY_NEW_CONTENT: Int = 2
+public const val SORT_DEFAULT: Int = 0
+public const val SORT_BY_NAME: Int = 1
+public const val SORT_BY_NEW_CONTENT: Int = 2
 
-internal data class GuideMediaGroup(
+public data class GuideMediaGroup(
     private val guideResult: GuideResult,
     private val options: MediaGroupOptions,
     private val sort: Int = SORT_DEFAULT
@@ -162,7 +162,7 @@ internal data class GuideMediaGroup(
     }
 }
 
-internal data class ChannelListMediaGroup(
+public data class ChannelListMediaGroup(
     private val tabs: List<TabRenderer>,
     private val options: MediaGroupOptions,
     private val sortBy: Int = SORT_DEFAULT
@@ -193,7 +193,7 @@ internal data class ChannelListMediaGroup(
     }
 }
 
-internal data class RecommendedMediaGroup(
+public data class RecommendedMediaGroup(
     private val guideItem: GuideItem,
     private val options: MediaGroupOptions
 ): BaseMediaGroup(options) {
@@ -204,7 +204,7 @@ internal data class RecommendedMediaGroup(
     override fun getParamsInt(): String? = guideItem.getParams()
 }
 
-internal data class ShortsMediaGroup(
+public data class ShortsMediaGroup(
     private val items: List<MediaItem?>,
     private val continuation: String? = null,
     private val options: MediaGroupOptions
@@ -215,7 +215,7 @@ internal data class ShortsMediaGroup(
     override val mediaItemList = items
 }
 
-internal data class NotificationsMediaGroup(
+public data class NotificationsMediaGroup(
     private val result: NotificationsResult
 ): BaseMediaGroup(MediaGroupOptions(MediaGroup.TYPE_NOTIFICATIONS)) {
     override fun getItemWrappersInt(): List<ItemWrapper?>? = null
@@ -224,7 +224,7 @@ internal data class NotificationsMediaGroup(
     override val mediaItemList by lazy { result.getItems()?.mapNotNull { it?.let { NotificationMediaItem(it) } } }
 }
 
-internal data class SubscribedShortsMediaGroup(
+public data class SubscribedShortsMediaGroup(
     private val items: List<ItemWrapper?>
 ): BaseMediaGroup(MediaGroupOptions(MediaGroup.TYPE_SHORTS)) {
     override fun getItemWrappersInt(): List<ItemWrapper?> = items
@@ -232,7 +232,7 @@ internal data class SubscribedShortsMediaGroup(
     override fun getTitleInt(): String? = null
 }
 
-internal data class EmptyMediaGroup(
+public data class EmptyMediaGroup(
     private val reloadPageKey: String,
     private val type: Int,
     private val title: String? = null

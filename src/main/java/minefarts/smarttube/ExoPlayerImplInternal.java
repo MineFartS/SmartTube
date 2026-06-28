@@ -1389,7 +1389,7 @@ final class ExoPlayerImplInternal
 
   /**
    * Converts a {@link SeekPosition} into the corresponding (periodUid, periodPositionUs) for the
-   * internal timeline.
+   * public timeline.
    *
    * @param seekPosition The position to resolve.
    * @param trySubsequentPeriods Whether the position can be resolved to a subsequent matching
@@ -1408,7 +1408,7 @@ final class ExoPlayerImplInternal
     }
     if (seekTimeline.isEmpty()) {
       // The application performed a blind seek with an empty timeline (most likely based on
-      // knowledge of what the future timeline will be). Use the internal timeline.
+      // knowledge of what the future timeline will be). Use the public timeline.
       seekTimeline = timeline;
     }
     // Map the SeekPosition to a position in the corresponding timeline.
@@ -1421,17 +1421,17 @@ final class ExoPlayerImplInternal
       return null;
     }
     if (timeline == seekTimeline) {
-      // Our internal timeline is the seek timeline, so the mapped position is correct.
+      // Our public timeline is the seek timeline, so the mapped position is correct.
       return periodPosition;
     }
-    // Attempt to find the mapped period in the internal timeline.
+    // Attempt to find the mapped period in the public timeline.
     int periodIndex = timeline.getIndexOfPeriod(periodPosition.first);
     if (periodIndex != C.INDEX_UNSET) {
-      // We successfully located the period in the internal timeline.
+      // We successfully located the period in the public timeline.
       return periodPosition;
     }
     if (trySubsequentPeriods) {
-      // Try and find a subsequent period from the seek timeline in the internal timeline.
+      // Try and find a subsequent period from the seek timeline in the public timeline.
       Object periodUid = resolveSubsequentPeriod(periodPosition.first, seekTimeline, timeline);
       if (periodUid != null) {
         // We found one. Map the SeekPosition onto the corresponding default position.
@@ -1890,8 +1890,8 @@ final class ExoPlayerImplInternal
     public void setPositionDiscontinuity(@DiscontinuityReason int discontinuityReason) {
       if (positionDiscontinuity
           && this.discontinuityReason != Player.DISCONTINUITY_REASON_INTERNAL) {
-        // We always prefer non-internal discontinuity reasons. We also assume that we won't report
-        // more than one non-internal discontinuity per message iteration.
+        // We always prefer non-public discontinuity reasons. We also assume that we won't report
+        // more than one non-public discontinuity per message iteration.
         Assertions.checkArgument(discontinuityReason == Player.DISCONTINUITY_REASON_INTERNAL);
         return;
       }

@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.next.v2.gen
 
-internal data class WatchNextResultContinuation(
+public data class WatchNextResultContinuation(
     val continuationContents: ContinuationContents?,
     val contents: Contents?
 ) {

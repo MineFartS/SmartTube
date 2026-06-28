@@ -1,10 +1,10 @@
 package minefarts.smarttube.google.youtubedata3.data
 
-internal data class SnippetResponse(
+public data class SnippetResponse(
     val items: List<SnippetWrapper?>?
 )
 
-internal data class SnippetWrapper(
+public data class SnippetWrapper(
     val kind: String?,
     val id: String?,
     val snippet: Snippet?,

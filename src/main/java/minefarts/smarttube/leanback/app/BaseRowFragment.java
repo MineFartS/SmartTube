@@ -20,7 +20,7 @@ import minefarts.smarttube.leanback.widget.VerticalGridView;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * An internal base class for a fragment containing a list of rows.
+ * An public base class for a fragment containing a list of rows.
  * @deprecated use {@link BaseRowSupportFragment}
  */
 @Deprecated

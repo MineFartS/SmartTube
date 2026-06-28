@@ -45,7 +45,7 @@ private interface InnertubeConfigApi {
 
 }
 
-internal class Session private constructor(
+public class Session private constructor(
     val context: InnertubeContext,
     val apiKey: String,
     val apiVersion: String,
@@ -113,7 +113,7 @@ internal class Session private constructor(
     }
 }
 
-internal data class SessionOptions(
+public data class SessionOptions(
     val lang: String?,
     val location: String?,
     val userAgent: String?,

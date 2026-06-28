@@ -2,7 +2,7 @@ package minefarts.smarttube.utils.notifications
 
 import minefarts.smarttube.utils.common.helpers.PostDataHelper
 
-internal object NotificationsApiHelper {
+public object NotificationsApiHelper {
     fun getNotificationsQuery(): String {
         return PostDataHelper.createQueryTV("\"notificationsMenuRequestType\":\"NOTIFICATIONS_MENU_REQUEST_TYPE_INBOX\"")
     }

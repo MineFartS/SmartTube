@@ -18,7 +18,7 @@ import minefarts.smarttube.leanback.widget.VerticalGridView;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * An internal base class for a fragment containing a list of rows.
+ * An public base class for a fragment containing a list of rows.
  */
 abstract class BaseRowSupportFragment extends Fragment {
     private static final String CURRENT_SELECTED_POSITION = "currentSelectedPosition";

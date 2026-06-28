@@ -4,7 +4,7 @@ import minefarts.smarttube.utils.common.helpers.AppClient
 import minefarts.smarttube.utils.common.helpers.PostDataType
 import minefarts.smarttube.utils.common.helpers.QueryBuilder
 
-internal object WatchNextApiHelper {
+public object WatchNextApiHelper {
     fun getWatchNextQuery(client: AppClient, videoId: String): String {
         return getWatchNextQuery(client, videoId, null, 0)
     }

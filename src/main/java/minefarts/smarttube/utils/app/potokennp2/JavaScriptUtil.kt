@@ -11,7 +11,7 @@ import okio.ByteString.Companion.toByteString
  * Parses the raw challenge data obtained from the Create endpoint and returns an object that can be
  * embedded in a JavaScript snippet.
  */
-internal fun parseChallengeData(rawChallengeData: String): String {
+public fun parseChallengeData(rawChallengeData: String): String {
     val scrambled = JsonParser.array().from(rawChallengeData)
 
     val challengeData = if (scrambled.size > 1 && scrambled.isString(1)) {
@@ -55,7 +55,7 @@ internal fun parseChallengeData(rawChallengeData: String): String {
  * `Uint8Array` that can be embedded directly in JavaScript code, and an [Int] representing the
  * duration of this token in seconds.
  */
-internal fun parseIntegrityTokenData(rawIntegrityTokenData: String): Pair<String, Long> {
+public fun parseIntegrityTokenData(rawIntegrityTokenData: String): Pair<String, Long> {
     val integrityTokenData = JsonParser.array().from(rawIntegrityTokenData)
     return base64ToU8(integrityTokenData.getString(0)) to integrityTokenData.getLong(1)
 }
@@ -64,7 +64,7 @@ internal fun parseIntegrityTokenData(rawIntegrityTokenData: String): Pair<String
  * Converts a string (usually the identifier used as input to `obtainPoToken`) to a JavaScript
  * `Uint8Array` that can be embedded directly in JavaScript code.
  */
-internal fun stringToU8(identifier: String): String {
+public fun stringToU8(identifier: String): String {
     return newUint8Array(identifier.toByteArray())
 }
 
@@ -73,7 +73,7 @@ internal fun stringToU8(identifier: String): String {
  * (e.g. "97,98,99" would be "abc"), which is the output of `Uint8Array::toString()` in JavaScript,
  * and converts it to the specific base64 representation for poTokens.
  */
-internal fun u8ToBase64(poToken: String): String {
+public fun u8ToBase64(poToken: String): String {
     return poToken.split(",")
         .map { it.toUByte().toByte() }
         .toByteArray()

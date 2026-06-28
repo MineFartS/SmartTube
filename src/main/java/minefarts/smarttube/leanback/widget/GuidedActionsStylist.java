@@ -794,7 +794,7 @@ public class GuidedActionsStylist implements FragmentAnimationProvider {
     }
 
     /**
-     * @deprecated This method is for internal library use only and should not
+     * @deprecated This method is for public library use only and should not
      *             be called directly.
      */
     @Deprecated

@@ -18,7 +18,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- * A package internal representation of TTML node.
+ * A package public representation of TTML node.
  */
 /* package */ final class TtmlNode {
 

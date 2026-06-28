@@ -8,7 +8,7 @@ import java.util.regex.Pattern
 /**
  * yt_dlp.extractor.youtube._video.YoutubeIE._parse_sig_js
  */
-internal object SigExtractor {
+public object SigExtractor {
     private val TAG = SigExtractor::class.java.simpleName
     private val mSigPattern = Pattern.compile("""(?xs)
                 \b([a-zA-Z0-9_$]+)&&\(\1=([a-zA-Z0-9_$]{2,})\(decodeURIComponent\(\1\)\)""", Pattern.COMMENTS)

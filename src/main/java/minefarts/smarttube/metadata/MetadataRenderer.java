@@ -53,7 +53,7 @@ public final class MetadataRenderer extends BaseRenderer implements Callback {
    *     If the output makes use of standard Android UI components, then this should normally be the
    *     looper associated with the application's main thread, which can be obtained using {@link
    *     android.app.Activity#getMainLooper()}. Null may be passed if the output should be called
-   *     directly on the player's internal rendering thread.
+   *     directly on the player's public rendering thread.
    */
   public MetadataRenderer(MetadataOutput output, @Nullable Looper outputLooper) {
     this(output, outputLooper, MetadataDecoderFactory.DEFAULT);
@@ -65,7 +65,7 @@ public final class MetadataRenderer extends BaseRenderer implements Callback {
    *     If the output makes use of standard Android UI components, then this should normally be the
    *     looper associated with the application's main thread, which can be obtained using {@link
    *     android.app.Activity#getMainLooper()}. Null may be passed if the output should be called
-   *     directly on the player's internal rendering thread.
+   *     directly on the player's public rendering thread.
    * @param decoderFactory A factory from which to obtain {@link MetadataDecoder} instances.
    */
   public MetadataRenderer(

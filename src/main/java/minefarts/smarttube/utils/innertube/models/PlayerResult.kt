@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.innertube.models
 
-internal data class PlayerResult(
+public data class PlayerResult(
     val playabilityStatus: PlayabilityStatus?,
     val streamingData: StreamingData?
 ) {
@@ -10,14 +10,14 @@ internal data class PlayerResult(
     )
 }
 
-internal data class StreamingData(
+public data class StreamingData(
     val expiresInSeconds: String?,
     val formats: List<LegacyFormat>?,
     val adaptiveFormats: List<AdaptiveFormat>?,
     val serverAbrStreamingUrl: String?
 )
 
-internal data class LegacyFormat(
+public data class LegacyFormat(
     val itag: Int?,
     val mimeType: String?,
     val bitrate: Int?,
@@ -36,7 +36,7 @@ internal data class LegacyFormat(
     val qualityOrdinal: String?
 )
 
-internal data class AdaptiveFormat(
+public data class AdaptiveFormat(
     val itag: Int?,
     val mimeType: String?,
     val bitrate: Int?,

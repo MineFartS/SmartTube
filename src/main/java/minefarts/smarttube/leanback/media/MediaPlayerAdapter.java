@@ -153,7 +153,7 @@ public class MediaPlayerAdapter extends PlayerAdapter {
     }
 
     /**
-     * Release internal MediaPlayer. Should not use the object after call release().
+     * Release public MediaPlayer. Should not use the object after call release().
      */
     public void release() {
         changeToUnitialized();

@@ -6,7 +6,7 @@ import minefarts.smarttube.utils.mylogger.Log
 import minefarts.smarttube.google.common.js.JSInterpret
 import java.util.regex.Pattern
 
-internal object NSigExtractor {
+public object NSigExtractor {
     private val TAG = NSigExtractor::class.java.simpleName
     private val mNFuncPattern = com.florianingerl.util.regex.Pattern.compile("""(?x)
             (?:

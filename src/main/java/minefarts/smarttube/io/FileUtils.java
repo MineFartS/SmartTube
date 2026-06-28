@@ -2032,7 +2032,7 @@ public class FileUtils {
      * <p>
      * This method opens an <code>InputStream</code> for the file.
      * When you have finished with the iterator you should close the stream
-     * to free internal resources. This can be done by calling the
+     * to free public resources. This can be done by calling the
      * {@link LineIterator#close()} or
      * {@link LineIterator#closeQuietly(LineIterator)} method.
      * </p>
@@ -2636,7 +2636,7 @@ public class FileUtils {
         }
 
         if (file.isDirectory()) {
-            return sizeOfDirectoryBig0(file); // internal method
+            return sizeOfDirectoryBig0(file); // public method
         }
         return BigInteger.valueOf(file.length());
 
@@ -2686,7 +2686,7 @@ public class FileUtils {
 
         for (final File file : files) {
             if (!isSymlink(file)) {
-                size += sizeOf0(file); // internal method
+                size += sizeOf0(file); // public method
                 if (size < 0) {
                     break;
                 }
@@ -3081,7 +3081,7 @@ public class FileUtils {
         writeByteArrayToFile(file, data, 0, data.length, append);
     }
 
-    // internal method; if file does not exist will return 0
+    // public method; if file does not exist will return 0
 
     /**
      * Writes {@code len} bytes from the specified byte array starting

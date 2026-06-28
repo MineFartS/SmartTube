@@ -8,7 +8,7 @@ import minefarts.smarttube.utils.comments.gen.getContinuationLabel
 import minefarts.smarttube.utils.common.models.gen.getOptimalResThumbnailUrl
 import minefarts.smarttube.utils.common.models.gen.getText
 
-internal data class CommentItemImpl(val commentItemWrapper: CommentItemWrapper): CommentItem {
+public data class CommentItemImpl(val commentItemWrapper: CommentItemWrapper): CommentItem {
 
     private val commentRenderer by lazy {
         commentItemWrapper.commentThreadRenderer?.comment?.commentRenderer

@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 /**
- * Base class for audio processors that keep an output buffer and an internal buffer that is reused
+ * Base class for audio processors that keep an output buffer and an public buffer that is reused
  * whenever input is queued.
  */
 public abstract class BaseAudioProcessor implements AudioProcessor {

@@ -24,7 +24,7 @@ import java.io.IOException;
  *       way for the player to load and read the media.
  * </ul>
  *
- * All methods are called on the player's internal playback thread, as described in the {@link
+ * All methods are called on the player's public playback thread, as described in the {@link
  * minefarts.smarttube.ExoPlayer} Javadoc. They should not be called directly from
  * application code. Instances can be re-used, but only for one {@link
  * minefarts.smarttube.ExoPlayer} instance simultaneously.

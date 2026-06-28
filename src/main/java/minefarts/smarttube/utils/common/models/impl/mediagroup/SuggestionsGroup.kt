@@ -6,7 +6,7 @@ import minefarts.smarttube.utils.next.v2.gen.*
 import minefarts.smarttube.utils.common.models.impl.mediaitem.WrapperMediaItem
 import java.util.*
 
-internal data class SuggestionsGroup(
+public data class SuggestionsGroup(
     val shelf: ShelfRenderer
 ): MediaGroup(-1) {
     

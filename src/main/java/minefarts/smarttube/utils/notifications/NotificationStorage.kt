@@ -6,7 +6,7 @@ import minefarts.smarttube.utils.channelgroups.ChannelGroupServiceImpl
 import minefarts.smarttube.utils.channelgroups.models.ItemImpl
 import minefarts.smarttube.utils.service.internal.MediaServicePrefs
 
-internal object NotificationStorage: MediaServicePrefs.ProfileChangeListener {
+public object NotificationStorage: MediaServicePrefs.ProfileChangeListener {
     private const val NOTIFICATION_DATA = "notification_data"
     private const val MIN_LIKE_COUNT = 5
 

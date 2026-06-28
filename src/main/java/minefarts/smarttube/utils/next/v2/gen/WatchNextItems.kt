@@ -5,7 +5,7 @@ import minefarts.smarttube.utils.browse.gen.SectionWrapper
 import minefarts.smarttube.utils.browse.gen.Shelf
 import minefarts.smarttube.utils.common.models.gen.*
 
-internal data class NextVideoItem(
+public data class NextVideoItem(
     val item: Item?,
     val endpoint: Endpoint?
 ) {
@@ -18,7 +18,7 @@ internal data class NextVideoItem(
 
 }
 
-internal data class ShelfRenderer(
+public data class ShelfRenderer(
     val title: TextItem?,
     val content: Content?,
     val headerRenderer: HeaderRenderer?,
@@ -72,7 +72,7 @@ internal data class ShelfRenderer(
 
 }
 
-internal data class ChipItem(
+public data class ChipItem(
         val chipCloudChipRenderer: ChipCloudChipRenderer?
 ) {
 
@@ -107,13 +107,13 @@ internal data class ChipItem(
     
 }
 
-internal data class GridContinuationWrapper(
+public data class GridContinuationWrapper(
     val items: List<ItemWrapper?>?,
     val contents: List<ItemWrapper?>?, // TV
     val continuations: List<ContinuationItem?>?
 )
 
-internal data class TvSurfaceContentContinuation(
+public data class TvSurfaceContentContinuation(
     val content: Content?
 ) {
     data class Content(
@@ -122,12 +122,12 @@ internal data class TvSurfaceContentContinuation(
     )
 }
 
-internal data class SectionListContinuation(
+public data class SectionListContinuation(
     val contents: List<Shelf?>?,
     val continuations: List<ContinuationItem?>?
 )
 
-internal data class ContinuationItem(
+public data class ContinuationItem(
     val reloadContinuationData: ReloadContinuationData?,
     val nextContinuationData: NextContinuationData?,
     val nextRadioContinuationData: NextContinuationData?,
@@ -149,7 +149,7 @@ internal data class ContinuationItem(
     )
 }
 
-internal data class VideoOwnerItem(
+public data class VideoOwnerItem(
     val thumbnail: ThumbnailItem?,
     val title: TextItem?,
     val subscribed: Boolean?,
@@ -167,7 +167,7 @@ internal data class VideoOwnerItem(
     )
 }
 
-internal data class VideoMetadataRenderer(
+public data class VideoMetadataRenderer(
     val owner: Owner?,
     val title: TextItem?,
     val byline: TextItem?,
@@ -212,13 +212,13 @@ internal data class VideoMetadataRenderer(
     }
 }
 
-internal data class LikeButtonRenderer(
+public data class LikeButtonRenderer(
     val likeStatus: String?,
     val likeCount: Int?,
     val likeCountText: TextItem?
 )
 
-internal data class ButtonStateItem(
+public data class ButtonStateItem(
     val subscribeButton: SubscribeButton?,
     val likeButton: LikeButton?,
     val dislikeButton: DislikeButton?,
@@ -247,7 +247,7 @@ internal data class ButtonStateItem(
     )
 }
 
-internal data class PlaylistInfo(
+public data class PlaylistInfo(
     val title: String?,
     val currentIndex: Int?,
     val playlistId: String?,
@@ -258,7 +258,7 @@ internal data class PlaylistInfo(
 
 //////////
 
-internal data class EngagementPanel(
+public data class EngagementPanel(
     val engagementPanelSectionListRenderer: EngagementPanelSectionListRenderer?
 ) {
     data class EngagementPanelSectionListRenderer(
@@ -297,7 +297,7 @@ internal data class EngagementPanel(
     }
 }
 
-internal data class VideoDescriptionHeaderRenderer(
+public data class VideoDescriptionHeaderRenderer(
     val title: TextItem?,
     val channel: TextItem?,
     val views: TextItem?,
@@ -306,12 +306,12 @@ internal data class VideoDescriptionHeaderRenderer(
     val factoid: List<Factoid?>?
 )
 
-internal data class ExpandableVideoDescriptionBodyRenderer(
+public data class ExpandableVideoDescriptionBodyRenderer(
     val descriptionBodyText: TextItem?,
     val label: TextItem?
 )
 
-internal data class Factoid(
+public data class Factoid(
     val factoidRenderer: FactoidRenderer?
 ) {
     data class FactoidRenderer(
@@ -321,7 +321,7 @@ internal data class Factoid(
     )
 }
 
-internal data class Menu(
+public data class Menu(
     val sortFilterSubMenuRenderer: SortFilterSubMenuRenderer?
 ) {
     data class SortFilterSubMenuRenderer(
@@ -329,17 +329,17 @@ internal data class Menu(
     )
 }
 
-internal data class SubMenuItem(
+public data class SubMenuItem(
     val continuation: ContinuationItem?
 )
 
 ///////// Chapters V1
 
-internal data class ChapterItem(
+public data class ChapterItem(
     val chapterRenderer: ChapterRenderer?
 )
 
-internal data class ChapterRenderer(
+public data class ChapterRenderer(
     val title: TextItem?,
     val timeRangeStartMillis: Long?,
     val thumbnail: ThumbnailItem?
@@ -347,7 +347,7 @@ internal data class ChapterRenderer(
 
 ///////// Chapters V2
 
-internal data class ChapterItemWrapper(
+public data class ChapterItemWrapper(
     val chapterRenderer: ChapterRenderer?,
     val macroMarkersListItemRenderer: MacroMarkersListItemRenderer?,
 
@@ -358,20 +358,20 @@ internal data class ChapterItemWrapper(
     val thumbnailDetails: ThumbnailItem?
 )
 
-internal data class MacroMarkersListItemRenderer(
+public data class MacroMarkersListItemRenderer(
     val title: TextItem?,
     val timeDescription: TextItem?,
     val thumbnail: ThumbnailItem?,
     val onTap: TapItem?
 )
 
-internal data class TapItem(
+public data class TapItem(
     val watchEndpoint: WatchEndpointItem?
 )
 
 ///////// Chapters V3
 
-internal data class Marker(
+public data class Marker(
     val title: TextItem?,
     val startMillis: String?,
     val durationMillis: String?,
@@ -380,7 +380,7 @@ internal data class Marker(
 
 //////////
 
-internal data class NextVideoRenderer(
+public data class NextVideoRenderer(
     val maybeHistoryEndpointRenderer: NextVideoItem?,
     val autoplayEndpointRenderer: NextVideoItem?,
     val autoplayVideoWrapperRenderer: AutoplayVideoWrapperRenderer?

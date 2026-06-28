@@ -11,7 +11,7 @@ import minefarts.smarttube.utils.app.AppService
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-internal object PoTokenProvider {
+public object PoTokenProvider {
     val TAG = PoTokenProvider::class.simpleName
     private val webViewSupported by lazy { DeviceHelpers.isWebViewSupported() }
     private var webViewBadImpl = false // whether the system has a bad WebView implementation

@@ -3,7 +3,7 @@ package minefarts.smarttube.utils.innertube.models
 import minefarts.smarttube.google.common.converters.jsonpath.JsonPath
 import minefarts.smarttube.google.common.converters.jsonpath.JsonPathObj
 
-internal class SessionDataResult {
+public class SessionDataResult {
     @JsonPath("$[0][2]")
     var ytcfg: YtCfg? = null
         private set
@@ -15,7 +15,7 @@ internal class SessionDataResult {
         get() = ytcfg?.apiKey
 }
 
-internal class YtCfg: JsonPathObj {
+public class YtCfg: JsonPathObj {
     @JsonPath("$[1]")
     var apiKey: String? = null
         private set
@@ -25,7 +25,7 @@ internal class YtCfg: JsonPathObj {
         private set
 }
 
-internal class DeviceInfo : JsonPathObj {
+public class DeviceInfo : JsonPathObj {
     @JsonPath("$[0]")
     var hl: String? = null
         private set

@@ -12,7 +12,7 @@ import minefarts.smarttube.io.EndianUtils;
 /**
  * DataInput for systems relying on little endian data formats.
  * When read, values will be changed from little endian to big
- * endian formats for internal usage.
+ * endian formats for public usage.
  * <p>
  * <b>Origin of code: </b>Avalon Excalibur (IO)
  * </p>

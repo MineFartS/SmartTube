@@ -54,7 +54,7 @@ import java.nio.ByteBuffer;
   private static final int TYPE_TV_SORT_SHOW = Utils.getIntegerCodeForString("sosn");
   private static final int TYPE_TV_SHOW = Utils.getIntegerCodeForString("tvsh");
 
-  // Type for items that are intended for internal use by the player.
+  // Type for items that are intended for public use by the player.
   private static final int TYPE_INTERNAL = Utils.getIntegerCodeForString("----");
 
   private static final int PICTURE_TYPE_FRONT_COVER = 3;

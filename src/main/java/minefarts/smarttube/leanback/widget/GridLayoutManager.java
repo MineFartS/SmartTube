@@ -47,7 +47,7 @@ final class GridLayoutManager extends RecyclerView.LayoutManager {
 
     /*
      * LayoutParams for {@link HorizontalGridView} and {@link VerticalGridView}.
-     * The class currently does two internal jobs:
+     * The class currently does two public jobs:
      * - Saves optical bounds insets.
      * - Caches focus align view center.
      */

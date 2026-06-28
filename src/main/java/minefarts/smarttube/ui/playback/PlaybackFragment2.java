@@ -337,7 +337,7 @@ public class PlaybackFragment2
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
 
-        // We should use internal progress manager because it's used in many places like Exo engine etc.
+        // We should use public progress manager because it's used in many places like Exo engine etc.
         // ProgressBar.setRootView already called at this moment.
         ProgressBarManager.setup(getProgressBarManager(), (ViewGroup) root);
 

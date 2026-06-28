@@ -9,7 +9,7 @@ import minefarts.smarttube.google.common.helpers.ServiceHelper
 
 private const val ITEM_DELIM = "&ci;"
 
-internal data class ItemImpl(
+public data class ItemImpl(
     private val channelId: String? = null,
     private val title: String? = null,
     private val iconUrl: String? = null,

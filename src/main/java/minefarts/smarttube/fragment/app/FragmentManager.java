@@ -410,7 +410,7 @@ public abstract class FragmentManager {
             @NonNull PrintWriter writer, @Nullable String[] args);
 
     /**
-     * Control whether the framework's internal fragment manager debugging
+     * Control whether the framework's public fragment manager debugging
      * logs are turned on.  If enabled, you will see output in logcat as
      * the framework performs fragment operations.
      */

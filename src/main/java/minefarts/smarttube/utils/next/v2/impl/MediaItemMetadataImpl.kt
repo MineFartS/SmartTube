@@ -17,7 +17,7 @@ import minefarts.smarttube.utils.service.data.MediaItemMetadata
 import minefarts.smarttube.utils.next.v1.models.VideoMetadata
 import minefarts.smarttube.utils.service.data.MediaGroup
 
-internal data class MediaItemMetadataImpl(
+public data class MediaItemMetadataImpl(
     val watchNextResult: WatchNextResult,
     val suggestionsResult: WatchNextResult? = null
 ) : MediaItemMetadata() {

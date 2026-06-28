@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.channelgroups.importing.newpipe.gen
 
-internal data class NewPipeSubscriptionsGroup(
+public data class NewPipeSubscriptionsGroup(
     val subscriptions: List<SubscriptionsItem>?
 ) {
     data class SubscriptionsItem(

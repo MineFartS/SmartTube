@@ -4,15 +4,15 @@ import minefarts.smarttube.utils.prefs.SharedPreferencesBase
 import minefarts.smarttube.utils.app.AppService
 import java.lang.ref.WeakReference
 
-internal class CacheError(message: String, cause: Exception? = null): Exception(message, cause)
+public class CacheError(message: String, cause: Exception? = null): Exception(message, cause)
 
-internal data class CachedData(
+public data class CachedData(
     val code: String,
     val version: String? = null,
     val variant: String? = null
 )
 
-internal object CacheService {
+public object CacheService {
     private const val PREF_NAME = "yt_cache_service2"
     private const val KEY_DELIM = "%KEY%"
     private val prefs: MutableMap<String, WeakReference<SharedPreferencesBase>> = mutableMapOf()

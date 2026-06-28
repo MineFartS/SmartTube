@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.innertube.models
 
-internal data class SessionData(
+public data class SessionData(
     val apiKey: String,
     val apiVersion: String,
     val configData: String,

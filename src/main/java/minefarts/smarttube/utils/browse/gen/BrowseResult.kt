@@ -11,7 +11,7 @@ import minefarts.smarttube.utils.next.v2.gen.EngagementPanel
  *
  * browse_subs_chrome_12.02.2023.json
  */
-internal data class BrowseResult(
+public data class BrowseResult(
     val contents: Contents?,
     val header: Header?,
     val onResponseReceivedActions: List<OnResponseReceivedAction?>?
@@ -30,16 +30,16 @@ internal data class BrowseResult(
     )
 }
 
-internal data class Tab(
+public data class Tab(
     val tabRenderer: TabRenderer?,
     val expandableTabRenderer: TabRenderer?
 )
 
-internal data class ContinuationResult(
+public data class ContinuationResult(
     val onResponseReceivedActions: List<OnResponseReceivedAction?>?
 )
 
-internal data class OnResponseReceivedAction(
+public data class OnResponseReceivedAction(
     val appendContinuationItemsAction: AppendContinuationItemsAction?,
     val reloadContinuationItemsCommand: ReloadContinuationItemsCommand?,
     val navigateAction: NavigateAction?
@@ -58,7 +58,7 @@ internal data class OnResponseReceivedAction(
     )
 }
 
-internal data class GuideResult(
+public data class GuideResult(
     val items: List<Item?>?,
     val responseContext: ResponseContext?
 ) {
@@ -85,7 +85,7 @@ internal data class GuideResult(
     }
 }
 
-internal data class BrowseResultKids(
+public data class BrowseResultKids(
     val contents: Contents?
 ) {
     data class Contents(
@@ -101,7 +101,7 @@ internal data class BrowseResultKids(
     }
 }
 
-internal data class ReelResult(
+public data class ReelResult(
     val replacementEndpoint: ReplacementEndpoint?,
     val overlay: Overlay?,
     val sequenceContinuation: String?, // first continuation
@@ -125,7 +125,7 @@ internal data class ReelResult(
     }
 }
 
-internal data class ReelContinuationResult(
+public data class ReelContinuationResult(
     val entries: List<EntryItem?>?,
     val continuationEndpoint: NavigationEndpoint?,
     val continuation: String?
@@ -139,7 +139,7 @@ internal data class ReelContinuationResult(
     }
 }
 
-internal data class BrowseResultTV(
+public data class BrowseResultTV(
     val contents: Contents?
 ) {
     data class Contents(

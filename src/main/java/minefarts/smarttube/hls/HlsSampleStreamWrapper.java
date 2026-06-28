@@ -928,7 +928,7 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 
     /**
      * Builds tracks that are exposed by this {@link HlsSampleStreamWrapper} instance, as well as
-     * internal data-structures required for operation.
+     * public data-structures required for operation.
      *
      * <p>
      * Tracks in HLS are complicated. A HLS master playlist contains a number of "variants". Each
@@ -991,7 +991,7 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
         TrackGroup chunkSourceTrackGroup = chunkSource.getTrackGroup();
         int chunkSourceTrackCount = chunkSourceTrackGroup.length;
 
-        // Instantiate the necessary internal data-structures.
+        // Instantiate the necessary public data-structures.
         primaryTrackGroupIndex = C.INDEX_UNSET;
         trackGroupToSampleQueueIndex = new int[extractorTrackCount];
         for (int i = 0; i < extractorTrackCount; i++) {

@@ -11,7 +11,7 @@ import minefarts.smarttube.utils.channelgroups.models.ItemImpl
 import minefarts.smarttube.utils.app.nsigsolver.common.YouTubeInfoExtractor
 import java.io.File
 
-internal object PocketTubeService: GroupImportService {
+public object PocketTubeService: GroupImportService {
     override fun importGroups(url: Uri): List<ItemGroup>? {
         val pocketTubeContent = YouTubeInfoExtractor.downloadWebpageSilent(url.toString()) ?: return null
 

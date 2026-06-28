@@ -5,7 +5,7 @@ import minefarts.smarttube.utils.common.models.gen.NavigationEndpointItem
 import minefarts.smarttube.utils.common.models.gen.TextItem
 import minefarts.smarttube.utils.common.models.gen.ThumbnailItem
 
-internal data class CommentItemWrapper(
+public data class CommentItemWrapper(
     val commentThreadRenderer: CommentThreadRenderer?,
     val commentRenderer: CommentRenderer? // the active comment
 ) {
@@ -18,7 +18,7 @@ internal data class CommentItemWrapper(
     }
 }
 
-internal data class CommentRenderer(
+public data class CommentRenderer(
     val commentId: String?,
     val authorText: TextItem?,
     val authorThumbnail: ThumbnailItem?,

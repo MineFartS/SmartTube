@@ -7,7 +7,7 @@ import retrofit2.http.HeaderMap
 import retrofit2.http.Url
 
 @WithRegExp
-internal interface FileApi {
+public interface FileApi {
     @GET
     fun getContent(@Url fileUrl: String?): Call<FileContent?>?
 

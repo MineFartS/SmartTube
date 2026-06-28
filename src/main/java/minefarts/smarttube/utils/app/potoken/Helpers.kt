@@ -2,7 +2,7 @@ package minefarts.smarttube.utils.app.potoken
 
 import android.util.Base64
 
-internal open class BGError(
+public open class BGError(
     val code: String,
     message: String,
     val info: Map<String, Any>? = null
@@ -15,7 +15,7 @@ private val base64UrlToBase64Map = mapOf(
     '_' to '/'
 )
 
-internal fun base64ToU8(base64: String): ByteArray {
+public fun base64ToU8(base64: String): ByteArray {
     var base64Mod = base64
 
     if (base64UrlCharRegex.containsMatchIn(base64)) {
@@ -35,7 +35,7 @@ internal fun base64ToU8(base64: String): ByteArray {
     return Base64.decode(base64Mod, Base64.DEFAULT)
 }
 
-internal fun u8ToBase64(u8: ByteArray, base64url: Boolean = false): String {
+public fun u8ToBase64(u8: ByteArray, base64url: Boolean = false): String {
     val flags = if (base64url) {
         Base64.NO_PADDING or Base64.NO_WRAP or Base64.URL_SAFE
     } else {

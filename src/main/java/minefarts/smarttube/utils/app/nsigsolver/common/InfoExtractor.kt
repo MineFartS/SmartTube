@@ -9,9 +9,9 @@ import okhttp3.Request
 
 import com.eclipsesource.v8.V8
 
-internal fun formatError(firstMsg: String?, secondMsg: String) = firstMsg?.let { "$it: $secondMsg" } ?: secondMsg
+public fun formatError(firstMsg: String?, secondMsg: String) = firstMsg?.let { "$it: $secondMsg" } ?: secondMsg
 
-internal abstract class InfoExtractor {
+public abstract class InfoExtractor {
     suspend fun downloadWebpage(url: String, tries: Int = 1, timeoutMs: Long = 1_000, errorMsg: String? = null): String {
         var tryCount = 0
 

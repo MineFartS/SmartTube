@@ -6,7 +6,7 @@ import minefarts.smarttube.utils.playlistgroups.PlaylistGroupServiceImpl
 import minefarts.smarttube.utils.service.data.MediaGroup
 import minefarts.smarttube.utils.service.data.YouTubeMediaItem
 
-internal object WatchNextServiceWrapper: WatchNextService() {
+public object WatchNextServiceWrapper: WatchNextService() {
     override fun getMetadata(videoId: String?, playlistId: String?, playlistIndex: Int, playlistParams: String?): MediaItemMetadata? {
         return super.getMetadata(videoId, playlistId, playlistIndex, playlistParams)?.let {
             if (playlistId != null && it.suggestions?.firstOrNull()?.mediaItems?.firstOrNull()?.playlistId != playlistId) {

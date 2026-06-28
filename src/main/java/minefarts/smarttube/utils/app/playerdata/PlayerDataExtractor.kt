@@ -10,7 +10,7 @@ import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeRequest
 import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeType
 import minefarts.smarttube.utils.service.internal.MediaServiceData
 
-internal class PlayerDataExtractor(val playerUrl: String?) {
+public class PlayerDataExtractor(val playerUrl: String?) {
 
     private val fixedPlayerUrl: String = playerUrl?.replace("-es6", "-ias").orEmpty()
     

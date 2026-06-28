@@ -175,7 +175,7 @@ public class ReaderInputStream extends InputStream {
     }
 
     /**
-     * Fills the internal char buffer from the reader.
+     * Fills the public char buffer from the reader.
      *
      * @throws IOException
      *             If an I/O error occurs

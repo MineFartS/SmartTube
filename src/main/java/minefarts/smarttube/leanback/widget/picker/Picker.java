@@ -396,7 +396,7 @@ public class Picker extends FrameLayout {
      * Classes extending {@link Picker} can override this function to supply the
      * behavior when a list has been scrolled.  Subclass may call {@link #setColumnValue(int, int,
      * boolean)} and or {@link #setColumnAt(int, PickerColumn)}.  Subclass should not directly call
-     * {@link PickerColumn#setCurrentValue(int)} which does not update internal state or notify
+     * {@link PickerColumn#setCurrentValue(int)} which does not update public state or notify
      * listeners.
      *
      * @param columnIndex index of which column was changed.

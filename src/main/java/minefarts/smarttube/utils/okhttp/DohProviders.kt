@@ -86,7 +86,7 @@ object DohProviders {
         return result
     }
 
-    internal fun parseUrl(s: String): HttpUrl {
+    public fun parseUrl(s: String): HttpUrl {
         return s.toHttpUrlOrNull() ?: throw NullPointerException("unable to parse url")
     }
 

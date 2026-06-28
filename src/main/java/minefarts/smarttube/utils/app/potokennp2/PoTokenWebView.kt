@@ -21,7 +21,7 @@ import io.reactivex.SingleEmitter
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-internal class PoTokenWebView private constructor(
+public class PoTokenWebView private constructor(
     context: Context,
     private var onInitDone: () -> Unit
 ) : PoTokenGenerator {

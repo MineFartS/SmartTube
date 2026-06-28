@@ -11,7 +11,7 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 
 @WithGson
-internal interface BrowseApi2 {
+public interface BrowseApi2 {
 
     @Headers(
         "Content-Type: application/json",

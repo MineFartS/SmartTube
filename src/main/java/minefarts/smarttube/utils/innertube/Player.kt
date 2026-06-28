@@ -8,7 +8,7 @@ import minefarts.smarttube.utils.innertube.helpers.URLS
 import minefarts.smarttube.utils.innertube.helpers.getRandomUserAgent
 import minefarts.smarttube.utils.innertube.helpers.getStringBetweenStrings
 
-internal class Player private constructor(
+public class Player private constructor(
     val jsContent: String?,
     val playerUrl: String?
 ) {

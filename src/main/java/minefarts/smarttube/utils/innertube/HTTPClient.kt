@@ -34,7 +34,7 @@ private interface InnertubePlayerApi {
 
 }
 
-internal class HTTPClient(val session: Session) {
+public class HTTPClient(val session: Session) {
 
     private val requestApi = RetrofitHelper.create(InnertubePlayerApi::class.java)
 
@@ -222,13 +222,13 @@ internal class HTTPClient(val session: Session) {
     }
 }
 
-internal data class RequestInit(
+public data class RequestInit(
     val baseURL: String? = null,
     val headers: MutableMap<String, String> = mutableMapOf("Content-Type" to "application/json"),
     val body: RequestInitBody
 )
 
-internal class RequestInitBody(
+public class RequestInitBody(
     val videoId: String,
     var client: String? = null,
     // other values specific for player....

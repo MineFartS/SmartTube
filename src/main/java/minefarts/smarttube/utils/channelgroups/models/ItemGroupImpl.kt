@@ -11,7 +11,7 @@ import minefarts.smarttube.google.common.helpers.ServiceHelper
 private const val ITEM_DELIM = "&sgi;"
 private const val LIST_DELIM = "&sga;"
 
-internal data class ItemGroupImpl(
+public data class ItemGroupImpl(
     //private val id: String = Helpers.getRandomNumber(ChannelGroupServiceImpl.SUBSCRIPTION_GROUP_ID + 100, Integer.MAX_VALUE).toString(),
     private val id: String = ServiceHelper.generateRandomId(12),
     private val title: String,

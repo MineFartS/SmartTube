@@ -7,7 +7,7 @@ import minefarts.smarttube.utils.browse.BrowseApiHelper
 import minefarts.smarttube.utils.common.models.gen.*
 import minefarts.smarttube.utils.common.models.impl.mediaitem.WrapperMediaItem
 
-internal abstract class BaseMediaGroup(
+public abstract class BaseMediaGroup(
     private val options: MediaGroupOptions
 ): MediaGroup(-1) {
     

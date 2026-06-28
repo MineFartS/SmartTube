@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.innertube.helpers
 
-internal object URLS {
+public object URLS {
 
     const val YT_BASE = "https://www.youtube.com"
     const val YT_MUSIC_BASE = "https://music.youtube.com"
@@ -21,7 +21,7 @@ internal object URLS {
 
 }
 
-internal object CLIENTS {
+public object CLIENTS {
 
     val IOS = CLIENT(
         NAME = "iOS",
@@ -107,7 +107,7 @@ internal object CLIENTS {
     )
 }
 
-internal data class CLIENT(
+public data class CLIENT(
 
     val NAME: String,
     
@@ -136,7 +136,7 @@ internal data class CLIENT(
 /**
  * The keys correspond to the `NAME` fields in {@linkcode CLIENTS} constant
  */
-internal val CLIENT_NAME_IDS: Map<String, String> = mapOf(
+public val CLIENT_NAME_IDS: Map<String, String> = mapOf(
     "iOS" to "5",
     "WEB" to "1",
     "MWEB" to "2",
@@ -152,7 +152,7 @@ internal val CLIENT_NAME_IDS: Map<String, String> = mapOf(
     "WEB_CREATOR" to "62"
 )
 
-internal val SUPPORTED_CLIENTS = listOf(
+public val SUPPORTED_CLIENTS = listOf(
     "IOS",
     "WEB",
     "MWEB",

@@ -10,7 +10,7 @@ import java.nio.charset.Charset
 
 import kotlin.random.Random
 
-internal object PoTokenService {
+public object PoTokenService {
     private const val REQUEST_KEY = "O43z0dpjhgX20SCx4KAo"
     private val appService = AppService.instance()
     

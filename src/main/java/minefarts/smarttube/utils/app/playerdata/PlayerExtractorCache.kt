@@ -2,7 +2,7 @@ package minefarts.smarttube.utils.app.playerdata
 
 import minefarts.smarttube.utils.helpers.Helpers
 
-internal data class PlayerExtractorCache(
+public data class PlayerExtractorCache(
     val playerUrl: String?,
     val signatureTimestamp: String?
 ) {

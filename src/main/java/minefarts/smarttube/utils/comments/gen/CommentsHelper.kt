@@ -6,16 +6,16 @@ import minefarts.smarttube.utils.common.models.gen.getDefaultParams
 import minefarts.smarttube.utils.common.models.gen.getToggleParams
 import minefarts.smarttube.utils.next.v2.gen.getContinuationToken
 
-internal fun CommentsResult.getComments(): List<CommentItemWrapper?>? = continuationContents?.itemSectionContinuation?.contents
-internal fun CommentsResult.getContinuationKey(): String? = continuationContents?.itemSectionContinuation?.continuations
+public fun CommentsResult.getComments(): List<CommentItemWrapper?>? = continuationContents?.itemSectionContinuation?.contents
+public fun CommentsResult.getContinuationKey(): String? = continuationContents?.itemSectionContinuation?.continuations
     ?.getContinuationToken()
-internal fun CommentsResult.getActiveCommentItem(): CommentRenderer? = getComments()?.getOrNull(0)?.commentRenderer
+public fun CommentsResult.getActiveCommentItem(): CommentRenderer? = getComments()?.getOrNull(0)?.commentRenderer
 
-internal fun CommentItemWrapper.getCommentItem() = commentThreadRenderer?.comment?.commentRenderer
+public fun CommentItemWrapper.getCommentItem() = commentThreadRenderer?.comment?.commentRenderer
 
-internal fun CommentRenderer.getContinuationKey() = detailViewEndpoint?.getContinuations()?.getContinuationToken()
-internal fun CommentRenderer.getContinuationLabel() = repliesCount?.getAccessibilityLabel()
-internal fun CommentRenderer.getLikeParams() = actionButtons?.commentActionButtonsRenderer?.likeButton?.toggleButtonRenderer?.getDefaultParams()
-internal fun CommentRenderer.getUnLikeParams() = actionButtons?.commentActionButtonsRenderer?.likeButton?.toggleButtonRenderer?.getToggleParams()
-internal fun CommentRenderer.getDislikeParams() = actionButtons?.commentActionButtonsRenderer?.dislikeButton?.toggleButtonRenderer?.getDefaultParams()
-internal fun CommentRenderer.getUnDislikeParams() = actionButtons?.commentActionButtonsRenderer?.dislikeButton?.toggleButtonRenderer?.getToggleParams()
+public fun CommentRenderer.getContinuationKey() = detailViewEndpoint?.getContinuations()?.getContinuationToken()
+public fun CommentRenderer.getContinuationLabel() = repliesCount?.getAccessibilityLabel()
+public fun CommentRenderer.getLikeParams() = actionButtons?.commentActionButtonsRenderer?.likeButton?.toggleButtonRenderer?.getDefaultParams()
+public fun CommentRenderer.getUnLikeParams() = actionButtons?.commentActionButtonsRenderer?.likeButton?.toggleButtonRenderer?.getToggleParams()
+public fun CommentRenderer.getDislikeParams() = actionButtons?.commentActionButtonsRenderer?.dislikeButton?.toggleButtonRenderer?.getDefaultParams()
+public fun CommentRenderer.getUnDislikeParams() = actionButtons?.commentActionButtonsRenderer?.dislikeButton?.toggleButtonRenderer?.getToggleParams()

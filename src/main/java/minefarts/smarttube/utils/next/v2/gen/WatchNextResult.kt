@@ -2,7 +2,7 @@ package minefarts.smarttube.utils.next.v2.gen
 
 import minefarts.smarttube.utils.common.models.gen.ItemWrapper
 
-internal data class WatchNextResult(
+public data class WatchNextResult(
     val contents: Contents?,
     val transportControls: TransportControls?,
     val playerOverlays: PlayerOverlays?,

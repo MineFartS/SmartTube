@@ -18,7 +18,7 @@ import minefarts.smarttube.utils.common.helpers.AppClient
  * `SESSION` A poToken generated from visitorData.
  * Usage is unknown. Previously used in DASH/SABR requests (e.g. `pot` param).
  */
-internal object PoTokenGate {
+public object PoTokenGate {
     private var mWebPoToken: PoTokenResult? = null
     private var mCacheResetTimeMs: Long = -1
 

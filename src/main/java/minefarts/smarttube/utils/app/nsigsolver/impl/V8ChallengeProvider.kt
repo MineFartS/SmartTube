@@ -21,7 +21,7 @@ import minefarts.smarttube.utils.app.nsigsolver.runtime.solverOutputType
 import minefarts.smarttube.utils.app.nsigsolver.runtime.SolverOutput
 
 
-internal object V8ChallengeProvider {
+public object V8ChallengeProvider {
     
     private val sGson = Gson()
     private val v8Runtime = ThreadLocal<V8>()

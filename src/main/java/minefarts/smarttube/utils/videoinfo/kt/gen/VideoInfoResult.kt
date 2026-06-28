@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.videoinfo.kt.gen
 
-internal data class VideoInfoResult(
+public data class VideoInfoResult(
     val streamingData: StreamingData?
 ) {
     data class StreamingData(

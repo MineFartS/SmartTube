@@ -2,7 +2,7 @@ package minefarts.smarttube.utils
 
 import minefarts.smarttube.google.common.helpers.RetrofitHelper
 
-internal object UtilsService {
+public object UtilsService {
     private val mUtilsApi = RetrofitHelper.create(UtilsApi::class.java)
 
     @JvmStatic

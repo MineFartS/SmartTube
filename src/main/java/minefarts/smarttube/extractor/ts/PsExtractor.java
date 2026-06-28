@@ -308,7 +308,7 @@ public final class PsExtractor implements Extractor {
      * <p>
      * Following a call to this method, the data passed to the next invocation of
      * {@link #consume(ParsableByteArray)} will not be a continuation of the data that was
-     * previously passed. Hence the reader should reset any internal state.
+     * previously passed. Hence the reader should reset any public state.
      */
     public void seek() {
       seenFirstDts = false;
