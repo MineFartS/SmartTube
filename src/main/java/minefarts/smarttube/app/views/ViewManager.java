@@ -276,14 +276,6 @@ public class ViewManager {
         return mIsPlayerOnlyModeEnabled;
     }
 
-    public void clearCaches() {
-        BasePlayerController.invalidateCache();
-        // Note, also deletes cached flags (public cache)
-        // Note, deletes cached apks (external cache)
-        FileHelpers.deleteCache(mContext);
-        LocaleUpdater.clearCache();
-    }
-
     /**
      * Finishes the app without killing it (by moves tasks to back).<br/>
      * The app continue to run in the background.
@@ -301,17 +293,10 @@ public class ViewManager {
 
             PlaybackPresenter.instance(activity).forceFinish();
 
-            // NOTE: The device may hung (SecurityException: requires android.permission.BIND_ACCESSIBILITY_SERVICE)
-            //exitToHomeScreen(); // fix open another app from the history stack
-
             // Fix: can't start finished app activity from history.
             // Do reset state because the app should continue to run in the background.
             // NOTE: Don't rely on MotherActivity.onDestroy() because activity can be killed silently.
             RxHelper.runAsync(() -> {
-                clearCaches();
-                SplashPresenter.unhold();
-                BrowsePresenter.unhold();
-                AppUpdatePresenter.unhold();
                 MotherActivity.invalidate();
                 runOnFinish();
                 mIsMoveToBackEnabled = false;

@@ -53,10 +53,6 @@ public class AccountSelectionPresenter extends BasePresenter<Void> {
         BasePlayerController.loadAccounts(this::nextAccountOrDialog);
     }
 
-    public void unhold() {
-        sInstance = null;
-    }
-
     private void createAndShowDialog(List<Account> accounts, boolean force) {
         if (accounts.size() <= 1 && !force) return;
 
@@ -64,7 +60,7 @@ public class AccountSelectionPresenter extends BasePresenter<Void> {
 
         appendAccountSelection(accounts, dialogPresenter);
 
-        dialogPresenter.showDialog(getContext().getString(R.string.settings_accounts), this::unhold);
+        dialogPresenter.showDialog(getContext().getString(R.string.settings_accounts));
     }
 
     private void appendAccountSelection(List<Account> accounts, AppDialogPresenter settingsPresenter) {

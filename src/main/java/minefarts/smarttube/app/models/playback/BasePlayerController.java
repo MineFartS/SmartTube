@@ -784,29 +784,12 @@ public abstract class BasePlayerController implements PlayerEventListener {
         return ChannelGroupServiceImpl.INSTANCE;
     }
 
-    public static void invalidateCache() {
-        LocaleManager.unhold();
-        getSignInService().invalidateCache(); // sections infinite loading fix (request timed out fix)
-        getMediaItemService().invalidateCache();
-        getVideoInfoService().resetInfoType();
-    }
-
     public static void refreshCacheIfNeeded() {
         if (RxHelper.isAnyActionRunning(mRefreshCoreDataAction)) return;
 
         mRefreshCoreDataAction = RxHelper.execute(
             RxHelper.fromRunnable(getAppService()::refreshCacheIfNeeded)
         );
-    }
-
-    public static void applyNoPlaybackFix() {
-        getMediaItemService().invalidateCache();
-        getVideoInfoService().switchNextFormat();
-    }
-
-    public static void applySubtitleFix() {
-        getMediaItemService().invalidateCache();
-        getVideoInfoService().switchNextSubtitle();
     }
 
     @NonNull

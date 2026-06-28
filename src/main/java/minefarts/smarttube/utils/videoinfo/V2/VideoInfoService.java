@@ -89,7 +89,7 @@ public class VideoInfoService {
     private PlayerDataExtractor mPlayerDataExtractor = null;
 
     @Nullable
-    private AppClient mVideoInfoType = null;
+    public AppClient mVideoInfoType = null;
     
     @Nullable
     private AppClient mRecentInfoType = null;
@@ -177,8 +177,6 @@ public class VideoInfoService {
     public void switchNextFormat() {
         initInfoTypeIfNeeded();
 
-        // Try to reset pot cache for the last video
-        if (!mIsUnplayable && PoTokenGate.resetCache(getClient())) return;
         // The Premium is likely broken
         if (mData.isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS)) {
             // Skip additional formats fetching that could produce an error
@@ -192,12 +190,6 @@ public class VideoInfoService {
 
     public void switchNextSubtitle() {
         CaptionTrack.sFormat = Helpers.getNextValue(CaptionTrack.CaptionFormat.values(), CaptionTrack.sFormat);
-    }
-
-    public void resetInfoType() {
-        mVideoInfoType = null;
-        persistVideoInfoType();
-        PoTokenGate.resetCache(getClient());
     }
 
     private VideoInfo getVideoInfoWithRentFix(AppClient client, String videoId, String clickTrackingParams) {
@@ -297,7 +289,7 @@ public class VideoInfoService {
         
     }
 
-    private void persistVideoInfoType() {
+    public void persistVideoInfoType() {
         if (!GlobalPreferences.isInitialized()) return;
 
         mData.setVideoInfoType(mVideoInfoType != null ? mVideoInfoType.ordinal() : -1);
@@ -310,7 +302,7 @@ public class VideoInfoService {
         persistVideoInfoType();
     }
 
-    protected AppClient getClient() {
+    public AppClient getClient() {
         return mRecentInfoType != null ? mRecentInfoType : getDefaultClient();
     }
 

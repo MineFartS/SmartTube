@@ -17,9 +17,13 @@ public object PoTokenProvider {
     private var webViewBadImpl = false // whether the system has a bad WebView implementation
 
     private object WebPoTokenGenLock
-    private var webPoTokenVisitorData: String? = null
-    private var webPoTokenStreamingPot: String? = null
     private var webPoTokenGenerator: PoTokenGenerator? = null
+    
+    @JvmField
+    public var webPoTokenVisitorData: String? = null
+    
+    @JvmField
+    public var webPoTokenStreamingPot: String? = null
     
     var poTokenFactory: PoTokenGenerator.Factory? = null
     

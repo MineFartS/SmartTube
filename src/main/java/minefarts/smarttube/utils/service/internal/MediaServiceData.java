@@ -55,7 +55,7 @@ public class MediaServiceData {
     private int mHiddenContent;
     private MediaServiceCache mCachedPrefs;
     private GlobalPreferences mGlobalPrefs;
-    private PoTokenResponse mPoToken;
+    public PoTokenResponse mPoToken;
     private AppInfoCached mAppInfo;
     private AppInfoCached mFailedAppInfo;
     private PlayerData mPlayerData;
@@ -180,8 +180,6 @@ public class MediaServiceData {
         }
 
         persistState();
-
-        MediaItemService.instance().invalidateCache(); // Remove current cached video
     }
 
     public boolean isContentHidden(int content) {
@@ -253,8 +251,6 @@ public class MediaServiceData {
     public void setMoreSubtitlesUnlocked(boolean unlock) {
         mIsMoreSubtitlesUnlocked = unlock;
         persistState();
-
-        MediaItemService.instance().invalidateCache(); // Remove current cached video
     }
 
     private void restoreState() {

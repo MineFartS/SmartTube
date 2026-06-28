@@ -33,7 +33,7 @@ import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.app.presenters.SearchPresenter;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.utils.LoadingManager;
-
+import minefarts.smarttube.CacheManager;
 import minefarts.smarttube.utils.service.ContentService;
 import minefarts.smarttube.utils.data.ChapterItem;
 import minefarts.smarttube.utils.service.data.MediaGroup;
@@ -461,7 +461,6 @@ public class VideoLoaderController extends BasePlayerController {
             scheduleReloadVideoTimer(1_000);
 
         } else if (Helpers.containsAny(message, "is not defined")) {
-            invalidateCache();
             scheduleReloadVideoTimer(1_000);
         
         } else if (isNullPlayerUrl) {
@@ -559,6 +558,11 @@ public class VideoLoaderController extends BasePlayerController {
             scheduleReloadVideoTimer(1_000);
         }
 
+    }
+
+    private void applyNoPlaybackFix() {
+        CacheManager.clear();
+        getVideoInfoService().switchNextFormat();
     }
 
     @SuppressLint("StringFormatMatches")

@@ -19,8 +19,9 @@ import minefarts.smarttube.utils.common.helpers.AppClient
  * Usage is unknown. Previously used in DASH/SABR requests (e.g. `pot` param).
  */
 public object PoTokenGate {
-    private var mWebPoToken: PoTokenResult? = null
-    private var mCacheResetTimeMs: Long = -1
+    
+    @JvmField
+    public var mWebPoToken: PoTokenResult? = null
 
     init {
         PoTokenProvider.poTokenFactory = PoTokenWebView
@@ -76,36 +77,8 @@ public object PoTokenGate {
         }
     }
 
-    @JvmStatic
-    fun resetCache(client: AppClient): Boolean {
-        return when {
-            client.isWebPotRequired -> resetWebCache()
-            else -> false
-        }
-    }
-
-    @JvmStatic
-    fun resetCache() {
-        resetWebCache()
-    }
-
     fun getWebVisitorData(): String? {
         return mWebPoToken?.visitorData
     }
 
-    private fun resetWebCache(): Boolean {
-        val currentTimeMs = System.currentTimeMillis()
-        if (currentTimeMs < mCacheResetTimeMs)
-            return false
-
-        if (PoTokenProvider.isWebPotSupported()) {
-            mWebPoToken = null
-            PoTokenProvider.resetCache()
-        } else
-            PoTokenCloudService.resetCache()
-
-        mCacheResetTimeMs = currentTimeMs + 60_000
-
-        return true
-    }
 }

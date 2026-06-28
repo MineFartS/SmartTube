@@ -35,10 +35,6 @@ public class AccountSettingsPresenter extends BasePresenter<Void> {
         return sInstance;
     }
 
-    public void unhold() {
-        sInstance = null;
-    }
-
     public void show() {
         BasePlayerController.loadAccounts(this::createAndShowDialog);
     }
@@ -75,8 +71,7 @@ public class AccountSettingsPresenter extends BasePresenter<Void> {
         Account account = getSignInService().getSelectedAccount();
 
         settingsPresenter.showDialog(
-            account != null ? account.getName() : getContext().getString(R.string.settings_accounts), 
-            this::unhold
+            account != null ? account.getName() : getContext().getString(R.string.settings_accounts)
         );
     
     }

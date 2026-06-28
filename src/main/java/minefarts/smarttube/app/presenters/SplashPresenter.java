@@ -56,13 +56,6 @@ public class SplashPresenter extends BasePresenter<SplashView> {
         return sInstance;
     }
 
-    public static void unhold() {
-        if (sInstance != null) {
-            Utils.removeCallbacks(sInstance::runBackgroundTasks);
-        }
-        sInstance = null;
-    }
-
     @Override
     public void onViewInitialized() {
         if (getView() == null) return;

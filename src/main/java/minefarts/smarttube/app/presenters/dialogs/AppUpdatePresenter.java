@@ -41,10 +41,6 @@ public class AppUpdatePresenter extends BasePresenter<Void> implements AppUpdate
         return sInstance;
     }
 
-    public static void unhold() {
-        sInstance = null;
-    }
-
     public void start(boolean forceCheck) {
 
         String url = "https://github.com/yuliskov/SmartTubeNext/releases/download/latest/smarttube_stable2.json";
@@ -113,8 +109,7 @@ public class AppUpdatePresenter extends BasePresenter<Void> implements AppUpdate
                 "%s %s", 
                 getContext().getString(R.string.app_name), 
                 versionName
-            ), 
-            AppUpdatePresenter::unhold
+            )
         );
         
     }

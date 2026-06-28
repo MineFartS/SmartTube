@@ -48,10 +48,6 @@ public class BrowseService {
         return sInstance;
     }
 
-    public static void unhold() {
-        sInstance = null;
-    }
-
     public GridTab getSubscriptions() {
         return getGridTab(mBrowseApi.getSubscriptionsQuery(AppClient.WEB));
     }

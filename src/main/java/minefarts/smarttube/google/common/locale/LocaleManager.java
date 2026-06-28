@@ -10,26 +10,20 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class LocaleManager {
-    private static LocaleManager sInstance;
+
+    public static LocaleManager sInstance;
+    
     private String mLang;
     private String mCountry;
     private int mOffsetFromUtcMinutes;
 
-    private LocaleManager() {
-        initLang();
-        initUtcOffset();
-    }
-
     public static LocaleManager instance() {
         if (sInstance == null) {
             sInstance = new LocaleManager();
+            sInstance.initLang();
         }
 
         return sInstance;
-    }
-
-    public static void unhold() {
-        sInstance = null;
     }
 
     public String getLanguage() {
@@ -58,7 +52,7 @@ public class LocaleManager {
         return mOffsetFromUtcMinutes;
     }
 
-    private void initLang() {
+    protected void initLang() {
         Locale locale = getLocale();
 
         if (VERSION.SDK_INT >= 21) {
@@ -70,9 +64,7 @@ public class LocaleManager {
         }
 
         mCountry = locale.getCountry();
-    }
 
-    private void initUtcOffset() {
         TimeZone tz = TimeZone.getDefault();
         Date now = new Date();
         mOffsetFromUtcMinutes = tz.getOffset(now.getTime()) / 1_000 / 60;
