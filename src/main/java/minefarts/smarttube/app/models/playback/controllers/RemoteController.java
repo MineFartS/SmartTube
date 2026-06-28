@@ -275,7 +275,7 @@ public class RemoteController extends BasePlayerController implements OnDataChan
                         video.remotePlaylistId = command.getPlaylistId();
                         video.playlistParams = null;
                         video.isRemote = true;
-                        getController(SuggestionsController.class).loadSuggestions(video);
+                        getController(VideoLoaderController.class).loadSuggestions(video);
                     }
                 }
                 break;

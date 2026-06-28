@@ -13,7 +13,6 @@ import minefarts.smarttube.app.models.playback.controllers.CommentsController;
 import minefarts.smarttube.app.models.playback.controllers.ContentBlockController;
 import minefarts.smarttube.app.models.playback.controllers.PlayerUIController;
 import minefarts.smarttube.app.models.playback.controllers.RemoteController;
-import minefarts.smarttube.app.models.playback.controllers.SuggestionsController;
 import minefarts.smarttube.app.models.playback.controllers.VideoLoaderController;
 import minefarts.smarttube.app.models.playback.controllers.VideoStateController;
 import minefarts.smarttube.app.models.playback.PlayerEventListener;
@@ -50,7 +49,6 @@ public class PlaybackPresenter extends BasePresenter<PlaybackFragment2> implemen
         if (sInstance == null) {
             sInstance = new PlaybackPresenter();
             sInstance.mEventListeners.add(new VideoStateController());
-            sInstance.mEventListeners.add(new SuggestionsController());
             sInstance.mEventListeners.add(new PlayerUIController());
             sInstance.mEventListeners.add(new VideoLoaderController(sInstance));
             sInstance.mEventListeners.add(new RemoteController(context));

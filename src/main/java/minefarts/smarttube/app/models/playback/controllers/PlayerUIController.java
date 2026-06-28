@@ -49,7 +49,6 @@ public class PlayerUIController extends BasePlayerController {
     
     private final Handler mHandler;
     private final MediaItemService mMediaItemService;
-    private SuggestionsController mSuggestionsController;
     private List<PlaylistInfo> mPlaylistInfos;
 
     private boolean mEngineReady;
@@ -87,11 +86,8 @@ public class PlayerUIController extends BasePlayerController {
 
     @Override
     public void onInit() {
-        mSuggestionsController = getController(SuggestionsController.class);
-
         if (getPlayer() != null)
-            getPlayer().mVideoSurfaceRoot.setZoomPercents(100);
-        
+            getPlayer().mVideoSurfaceRoot.setZoomPercents(100);        
     }
 
     @Override
