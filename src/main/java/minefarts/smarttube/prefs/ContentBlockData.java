@@ -55,14 +55,72 @@ public class ContentBlockData {
             R.color.magenta
         );
         
-        restoreState();
+        /* 0 */ mIsSponsorBlockEnabled = mDataStore.get(0, VERSION.SDK_INT>19);
+        /* 1 */ String actions = mDataStore.get(1);
+        /* 2 */ String excludedChannels = mDataStore.get(2);
+        /* 3 */ String colorCategories = mDataStore.get(3);
+
+        if (excludedChannels != null) {
+            String[] channelsArr = Helpers.splitArray(excludedChannels);
+
+            mExcludedChannels.clear();
+
+            mExcludedChannels.addAll(Arrays.asList(channelsArr));
+        } else {
+            mExcludedChannels.clear();
+        }
+
+        if (actions != null) {
+            String[] actionsArr = Helpers.splitArray(actions);
+
+            mActions.clear();
+
+            for (String action : actionsArr) {
+                mActions.add(SegmentAction.from(action));
+            }
+        }
+
+        if (colorCategories != null) {
+            
+            String[] categoriesArr = Helpers.splitArray(colorCategories);
+
+            mColorCategories.clear();
+
+            mColorCategories.addAll(Arrays.asList(categoriesArr));
+
+        } else {
+
+            // Enable Color Marker for all Segments
+            mColorCategories.addAll(getAllCategories());
+
+        }
+
+        // Easy add new segments
+        for (String segmentCategory : getAllCategories()) {
+
+            if (getAction(segmentCategory) == ACTION_UNDEFINED) {
+                
+                // Skip sponsor by default & ignore everything else
+                if (segmentCategory == SponsorSegment.CATEGORY_SPONSOR) {
+
+                    // Skip Segment
+                    mActions.add(SegmentAction.from(segmentCategory, ACTION_SKIP_WITH_TOAST));
+                
+                } else {
+
+                    // Don't Skip Segment
+                    mActions.add(SegmentAction.from(segmentCategory, ACTION_DO_NOTHING));
+
+                }
+
+            }
+        }
     
     }
 
     public static ContentBlockData instance(Context context) {
-        if (sInstance == null) {
+        if (sInstance == null)
             sInstance = new ContentBlockData(context.getApplicationContext());
-        }
 
         return sInstance;
     }
@@ -154,85 +212,6 @@ public class ContentBlockData {
         persistState();
     }
 
-    public void persistActions() {
-        persistState();
-    }
-
-    public boolean isActionsEnabled() {
-        for (SegmentAction action : mActions) {
-            if (action.actionType != ACTION_DO_NOTHING) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private void restoreState() {
-
-        /* 0 */ mIsSponsorBlockEnabled = mDataStore.get(0, VERSION.SDK_INT>19);
-        /* 1 */ String actions = mDataStore.get(1);
-        /* 2 */ String excludedChannels = mDataStore.get(2);
-        /* 3 */ String colorCategories = mDataStore.get(3);
-
-        if (excludedChannels != null) {
-            String[] channelsArr = Helpers.splitArray(excludedChannels);
-
-            mExcludedChannels.clear();
-
-            mExcludedChannels.addAll(Arrays.asList(channelsArr));
-        } else {
-            mExcludedChannels.clear();
-        }
-
-        if (actions != null) {
-            String[] actionsArr = Helpers.splitArray(actions);
-
-            mActions.clear();
-
-            for (String action : actionsArr) {
-                mActions.add(SegmentAction.from(action));
-            }
-        }
-
-        if (colorCategories != null) {
-            
-            String[] categoriesArr = Helpers.splitArray(colorCategories);
-
-            mColorCategories.clear();
-
-            mColorCategories.addAll(Arrays.asList(categoriesArr));
-
-        } else {
-
-            // Enable Color Marker for all Segments
-            mColorCategories.addAll(getAllCategories());
-
-        }
-
-        // Easy add new segments
-        for (String segmentCategory : getAllCategories()) {
-
-            if (getAction(segmentCategory) == ACTION_UNDEFINED) {
-                
-                // Skip sponsor by default & ignore everything else
-                if (segmentCategory == SponsorSegment.CATEGORY_SPONSOR) {
-
-                    // Skip Segment
-                    mActions.add(SegmentAction.from(segmentCategory, ACTION_SKIP_WITH_TOAST));
-                
-                } else {
-
-                    // Don't Skip Segment
-                    mActions.add(SegmentAction.from(segmentCategory, ACTION_DO_NOTHING));
-
-                }
-
-            }
-        }
-
-    }
-
     public void persistState() {
         
         String colorCategories = Helpers.mergeArray(mColorCategories.toArray());
@@ -245,4 +224,5 @@ public class ContentBlockData {
         /* 3 */ mDataStore.put(3, colorCategories);
             
     }
+    
 }

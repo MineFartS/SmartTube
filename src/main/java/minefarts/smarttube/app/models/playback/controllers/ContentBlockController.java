@@ -40,10 +40,7 @@ import java.util.Set;
 public class ContentBlockController extends BasePlayerController {
 
     private static final String TAG = ContentBlockController.class.getSimpleName();
-    
-    private static final long POLL_INTERVAL_MS = 1_000;
-    private static final int CONTENT_BLOCK_ID = 144;
-    
+        
     private MediaItemService mMediaItemService;
     private SponsorBlockApi mSponsorBlockApi;
 
@@ -193,8 +190,10 @@ public class ContentBlockController extends BasePlayerController {
     }
 
     private Observable<Long> startSponsorWatcher(List<SponsorSegment> segments) {
+
         if (segments == null || segments.isEmpty()) {
-            mActiveSegments = mOriginalSegments = null;
+            mActiveSegments = null;
+            mOriginalSegments = null;
             return Observable.empty();
         }
 
@@ -202,20 +201,18 @@ public class ContentBlockController extends BasePlayerController {
 
         mActiveSegments = new ArrayList<>(segments);
 
-        if (getContentBlockData().isColorMarkersEnabled()) {
+        if (getContentBlockData().isColorMarkersEnabled())
             getPlayer().setSeekBarSegments(toSeekBarSegments(segments));
-        }
-        if (getContentBlockData().isActionsEnabled()) {
-            // Warn. Try to not access player object here.
-            // Or you'll get "Player is accessed on the wrong thread" error.
-            return RxHelper.interval(POLL_INTERVAL_MS, TimeUnit.MILLISECONDS);
-        } else {
-            return Observable.empty();
-        }
+
+        return RxHelper.interval(1_000, TimeUnit.MILLISECONDS);
     }
 
     private void skipSegment(long interval) {
-        if (mActiveSegments == null || mActiveSegments.isEmpty() || getVideo() == null || !Helpers.equals(mVideoId, getVideo().videoId)) {
+        if (mActiveSegments == null 
+            || mActiveSegments.isEmpty() 
+            || getVideo() == null 
+            || !Helpers.equals(mVideoId, getVideo().videoId)
+        ) {
             onEngineReleased();
             return;
         }
@@ -225,47 +222,49 @@ public class ContentBlockController extends BasePlayerController {
 
         long positionMs = getPlayer().getPositionMs();
 
-        List<SponsorSegment> foundSegments = findMatchedSegments(positionMs, mActiveSegments, false);
+        List<SponsorSegment> foundSegments = null;
+
+        if (mActiveSegments != null) {
+
+            for (SponsorSegment segment : mActiveSegments) {
+                int action = getContentBlockData().getAction(segment.getCategory());
+                boolean isSkipAction = (action == ContentBlockData.ACTION_SKIP_WITH_TOAST);
+
+                if (foundSegments == null) {
+                    if (isPositionInsideSegment(positionMs, segment)) {
+                        foundSegments = new ArrayList<>();
+                        foundSegments.add(segment);
+
+                        if (!isSkipAction) break; // Action grouping aren't supported for dialogs
+                    }
+                } else {
+                    SponsorSegment lastSegment = foundSegments.get(foundSegments.size() - 1);
+                    if (isSkipAction && isPositionInsideSegment(lastSegment.getEndMs()+3_000, segment)) {
+                        foundSegments.add(segment);
+                    }
+                }
+            }
+
+        }
 
         applyActions(foundSegments);
 
         // Skip each segment only once
-        if (foundSegments != null) {
+        if (foundSegments != null)
             mActiveSegments.removeAll(foundSegments);
-        }
-    }
-
-    private boolean isPositionInsideSegment(long positionMs, SponsorSegment segment, boolean fullMatch) {
-
-        if (fullMatch) {
-            return positionMs >= segment.getStartMs() && positionMs <= segment.getEndMs();
-        } else {
-            long windowSizeMs = (long) (2_000 * getPlayer().getSpeed());
-            return positionMs >= segment.getStartMs() && positionMs <= Math.min(segment.getStartMs() + windowSizeMs, segment.getEndMs());
-        }
-    }
-
-    private void messageSkip(long skipPosMs, String category) {
-        if (mLastSkipPosMs == skipPosMs) return;
-
-        MessageHelpers.showMessage(
-            getContext(),
-            getContext().getString(
-                R.string.msg_skipping_segment, 
-                category
-            )
-        );
-    
-        setPositionMs(skipPosMs);
         
-        closeTransparentDialog();
-    
+    }
+
+    private boolean isPositionInsideSegment(long positionMs, SponsorSegment segment) {
+        return positionMs >= segment.getStartMs() 
+            && positionMs <= Math.min(
+                segment.getStartMs() + (long) (2_000 * getPlayer().getSpeed()), 
+                segment.getEndMs()
+            );
     }
 
     private List<SeekBarSegment> toSeekBarSegments(List<SponsorSegment> segments) {
-        if (segments == null) {
-            return null;
-        }
+        if (segments == null) return null;
 
         List<SeekBarSegment> result = new ArrayList<>();
 
@@ -296,41 +295,6 @@ public class ContentBlockController extends BasePlayerController {
         getPlayer().setPositionMs(Math.min(positionMs, durationMs));
     }
 
-    /**
-     * @param fullMatch Match only the beginning or the full segment length
-     */
-    private List<SponsorSegment> findMatchedSegments(long positionMs, List<SponsorSegment> segments, boolean fullMatch) {
-        if (segments == null) {
-            return null;
-        }
-
-        List<SponsorSegment> foundSegment = null;
-
-        for (SponsorSegment segment : segments) {
-            int action = getContentBlockData().getAction(segment.getCategory());
-            boolean isSkipAction = (action == ContentBlockData.ACTION_SKIP_WITH_TOAST);
-
-            if (foundSegment == null) {
-                if (isPositionInsideSegment(positionMs, segment, fullMatch)) {
-                    foundSegment = new ArrayList<>();
-                    foundSegment.add(segment);
-
-                    // Action grouping aren't supported for dialogs
-                    if (!isSkipAction) {
-                        break;
-                    }
-                }
-            } else {
-                SponsorSegment lastSegment = foundSegment.get(foundSegment.size() - 1);
-                if (isSkipAction && isPositionInsideSegment(lastSegment.getEndMs() + 3_000, segment, fullMatch)) {
-                    foundSegment.add(segment);
-                }
-            }
-        }
-
-        return foundSegment;
-    }
-
     private void applyActions(List<SponsorSegment> foundSegments) {
         if (foundSegments == null) {
             mLastSkipPosMs = 0;
@@ -345,22 +309,30 @@ public class ContentBlockController extends BasePlayerController {
         // Fix infinite skip loop by ignoring short segments. TextureView has a seek bug.
         long skipDurationMs = Math.min(skipPosMs, getPlayer().getDurationMs()) - getPlayer().getPositionMs();
 
-        if (skipDurationMs >= 10_000) {
-            messageSkip(skipPosMs, lastSegment.getCategory());
+        if (skipDurationMs >= 10_000 && mLastSkipPosMs != skipPosMs) {
+
+            MessageHelpers.showMessage(
+                getContext(),
+                getContext().getString(
+                    R.string.msg_skipping_segment, 
+                    lastSegment.getCategory()
+                )
+            );
+        
+            setPositionMs(skipPosMs);
+
+            AppDialogPresenter dialogPresenter = AppDialogPresenter.instance(getContext());
+
+            if (dialogPresenter.isDialogShown() && dialogPresenter.getId() == 144)
+                dialogPresenter.closeDialog();
+
         }
 
         mLastSkipPosMs = skipPosMs;
     }
 
-    private void closeTransparentDialog() {
-        AppDialogPresenter dialogPresenter = AppDialogPresenter.instance(getContext());
-
-        if (dialogPresenter.isDialogShown() && dialogPresenter.getId() == CONTENT_BLOCK_ID) {
-            dialogPresenter.closeDialog();
-        }
-    }
-
     private boolean isChannelExcluded(String channelId) {
         return !mSkipExclude && getContentBlockData().isChannelExcluded(channelId);
     }
+
 }

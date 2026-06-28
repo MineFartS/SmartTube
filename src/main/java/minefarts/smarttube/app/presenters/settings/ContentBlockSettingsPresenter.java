@@ -115,7 +115,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
                         
                         dialogPresenter.showDialog(
                             action.segmentCategory, 
-                            mContentBlockData::persistActions
+                            mContentBlockData::persistState
                         );
 
                     }
