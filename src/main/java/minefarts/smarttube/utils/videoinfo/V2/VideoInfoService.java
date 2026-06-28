@@ -30,7 +30,7 @@ import minefarts.smarttube.utils.videoinfo.models.formats.AdaptiveVideoFormat;
 import minefarts.smarttube.utils.videoinfo.models.formats.VideoFormat;
 import minefarts.smarttube.utils.app.playerdata.PlayerDataExtractor;
 import minefarts.smarttube.utils.common.helpers.QueryBuilder;
-import minefarts.smarttube.app.models.playback.controllers.VideoStateController;
+import minefarts.smarttube.CacheManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,7 +88,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     private PlayerDataExtractor mPlayerDataExtractor = null;
     @Nullable
-    private AppClient mVideoInfoType = null;
+    public AppClient mVideoInfoType = null;
     
     @Nullable
     private AppClient mRecentInfoType = null;
@@ -102,7 +102,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
         initInfoTypeIfNeeded();
 
-        VideoStateController.resetCPN();
+        CacheManager.clear();
 
         mAuthBlock = true;
 
@@ -176,8 +176,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
     public void switchNextFormat() {
         initInfoTypeIfNeeded();
 
-        // Try to reset pot cache for the last video
-        if (!mIsUnplayable && PoTokenGate.resetCache(getClient())) return;
         // The Premium is likely broken
         if (mData.isFormatEnabled(MediaServiceData.FORMATS_EXTENDED_HLS)) {
             // Skip additional formats fetching that could produce an error
@@ -191,12 +189,6 @@ public class VideoInfoService extends VideoInfoServiceBase {
 
     public void switchNextSubtitle() {
         CaptionTrack.sFormat = Helpers.getNextValue(CaptionTrack.CaptionFormat.values(), CaptionTrack.sFormat);
-    }
-
-    public void resetInfoType() {
-        mVideoInfoType = null;
-        persistVideoInfoType();
-        PoTokenGate.resetCache(getClient());
     }
 
     private VideoInfo getVideoInfoWithRentFix(AppClient client, String videoId, String clickTrackingParams) {
@@ -296,7 +288,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         
     }
 
-    private void persistVideoInfoType() {
+    public void persistVideoInfoType() {
         if (!GlobalPreferences.isInitialized()) return;
 
         mData.setVideoInfoType(mVideoInfoType != null ? mVideoInfoType.ordinal() : -1);
@@ -309,7 +301,7 @@ public class VideoInfoService extends VideoInfoServiceBase {
         persistVideoInfoType();
     }
 
-    protected AppClient getClient() {
+    public AppClient getClient() {
         return mRecentInfoType != null ? mRecentInfoType : getDefaultClient();
     }
 

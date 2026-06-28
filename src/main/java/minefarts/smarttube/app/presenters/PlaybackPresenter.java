@@ -32,7 +32,7 @@ public class PlaybackPresenter extends BasePresenter<PlaybackFragment2> implemen
     @SuppressLint("StaticFieldLeak")
     private static PlaybackPresenter sInstance;
     
-    List<PlayerEventListener> mEventListeners = new CopyOnWriteArrayList<PlayerEventListener>() {
+    public List<PlayerEventListener> mEventListeners = new CopyOnWriteArrayList<PlayerEventListener>() {
         @Override
         public boolean add(PlayerEventListener listener) {
             ((BasePlayerController) listener).setMainController(PlaybackPresenter.this);

@@ -38,17 +38,6 @@ public class SignInPresenter extends BasePresenter<SignInView> {
         return sInstance;
     }
 
-    public void unhold() {
-        RxHelper.disposeActions(mSignInAction);
-        sInstance = null;
-    }
-
-    @Override
-    public void onViewDestroyed() {
-        super.onViewDestroyed();
-        unhold();
-    }
-
     @Override
     public void onViewInitialized() {
         

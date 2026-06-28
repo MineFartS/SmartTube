@@ -33,7 +33,7 @@ import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.app.presenters.SearchPresenter;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.utils.LoadingManager;
-
+import minefarts.smarttube.CacheManager;
 import minefarts.smarttube.utils.service.ContentService;
 import minefarts.smarttube.utils.data.ChapterItem;
 import minefarts.smarttube.utils.service.data.MediaGroup;
@@ -279,38 +279,22 @@ public class VideoLoaderController extends BasePlayerController {
     private void loadVideo(Video item) {
         if (getPlayer() == null || item == null) return;
             
-        // Ensure we don't apply stale async results for previous videos.
-        RxHelper.disposeActions(mFormatInfoAction, mMpdStreamAction);
         mFormatInfoAction = null;
         mMpdStreamAction = null;
 
-        onEngineReleased();
+        CacheManager.clear();
         
         Queue.setCurrent(item);
         
         getPlayer().setVideo(item);
         getPlayer().resetPlayerState();
-
         getPlayer().showProgressBar(true);
 
-        
-        final String expectedVideoId = item.videoId;
+        mFormatInfoAction = mMediaItemService.getFormatInfoObserve(item.videoId).subscribe(
+            this::processFormatInfo,
+            this::runFormatErrorAction
+        );
 
-        mFormatInfoAction = mMediaItemService
-            .getFormatInfoObserve(expectedVideoId)
-            .subscribe(
-                formatInfo -> {
-                    // Guard against race: user might have switched videos while formatInfo was loading.
-                    if (getVideo() == null || !expectedVideoId.equals(getVideo().videoId)) return;
-                    processFormatInfo(formatInfo);
-                },
-                error -> {
-                    // Only react if we're still on the same video.
-                    if (getVideo() == null || !expectedVideoId.equals(getVideo().videoId)) return;
-                    getPlayer().showProgressBar(false);
-                    runFormatErrorAction(error);
-                }
-            );
     }
 
     private void processFormatInfo(MediaItemFormatInfo formatInfo) {
@@ -461,7 +445,6 @@ public class VideoLoaderController extends BasePlayerController {
             scheduleReloadVideoTimer(1_000);
 
         } else if (Helpers.containsAny(message, "is not defined")) {
-            invalidateCache();
             scheduleReloadVideoTimer(1_000);
         
         } else if (isNullPlayerUrl) {
@@ -559,6 +542,11 @@ public class VideoLoaderController extends BasePlayerController {
             scheduleReloadVideoTimer(1_000);
         }
 
+    }
+
+    private void applyNoPlaybackFix() {
+        CacheManager.clear();
+        getVideoInfoService().switchNextFormat();
     }
 
     @SuppressLint("StringFormatMatches")

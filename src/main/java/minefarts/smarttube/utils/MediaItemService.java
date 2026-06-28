@@ -48,23 +48,17 @@ public class MediaItemService {
 
     private static MediaItemService sInstance;
     
-    private MediaItemFormatInfo mCachedFormatInfo;
-    private final ActionsApi mActionsApi;
-
-    private MediaItemService() {
-        mActionsApi = RetrofitHelper.create(ActionsApi.class);
-    }
+    public MediaItemFormatInfo mCachedFormatInfo;
+    
+    ActionsApi mActionsApi;
 
     public static MediaItemService instance() {
-
-        if (sInstance == null)
+        if (sInstance == null) {
             sInstance = new MediaItemService();
+            sInstance.mActionsApi = RetrofitHelper.create(ActionsApi.class);
+        }
 
         return sInstance;
-    }
-
-    public void invalidateCache() {
-        mCachedFormatInfo = null;
     }
 
     private MediaItemFormatInfo getFormatInfo(String videoId) {

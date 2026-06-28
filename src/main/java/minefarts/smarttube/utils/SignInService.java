@@ -22,6 +22,7 @@ import minefarts.smarttube.google.common.models.auth.info.AccountInt;
 import minefarts.smarttube.utils.videoinfo.V2.VideoInfoService;
 import minefarts.smarttube.utils.oauth.OAuth2Api;
 import minefarts.smarttube.google.common.helpers.RetrofitHelper;
+import minefarts.smarttube.CacheManager;
 
 import io.reactivex.Observable;
 
@@ -54,8 +55,8 @@ public class SignInService {
     private static final long TOKEN_REFRESH_PERIOD_MS = 60 * 60 * 1_000; // NOTE: auth token max lifetime is 60 min
 
     private final WeakHashSet<OnAccountChange> mListeners = new WeakHashSet<>();
-    private String mCachedAuthorizationHeader;
-    private long mCacheUpdateTime;
+    public String mCachedAuthorizationHeader;
+    public long mCacheUpdateTime;
     private boolean mStorageSynced;
     private UserCode mUserCodeResult;
     private Runnable mOnChange;
@@ -81,9 +82,8 @@ public class SignInService {
     }
 
     public static SignInService instance() {
-        if (sInstance == null) {
+        if (sInstance == null)
             sInstance = new SignInService();
-        }
 
         return sInstance;
     }
@@ -108,11 +108,6 @@ public class SignInService {
     public boolean isSigned() {
         // Condition created for the case when a device in offline mode.
         return getSelectedAccount() != null;
-    }
-
-    public void invalidateCache() {
-        mCachedAuthorizationHeader = null;
-        mCacheUpdateTime = 0;
     }
 
     public String printDebugInfo() {
@@ -221,7 +216,6 @@ public class SignInService {
         addAccount(tempAccount);
 
         // Use initial account to create auth header and fetch the accounts below
-        invalidateCache();
         checkAuth();
 
         // Remove initial account (with only refresh key)
@@ -349,9 +343,7 @@ public class SignInService {
     }
 
     private void onAccountChanged() {
-        invalidateCache();
-        VideoInfoService.instance().resetInfoType(); // reset to the default format
-
+        CacheManager.clear();
         notifyListeners();
     }
 
@@ -359,8 +351,7 @@ public class SignInService {
      * Sync avatars, names and emails
      */
     public void syncStorage() {
-        if (mStorageSynced)
-            return;
+        if (mStorageSynced) return;
 
         List<Account> storedAccounts = getAccounts();
 

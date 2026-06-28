@@ -10,8 +10,11 @@ import java.util.Locale;
 import java.util.StringTokenizer;
 
 public class LocaleUpdater {
+
     private static final String TAG = LocaleUpdater.class.getSimpleName();
-    private static Locale sCachedLocale;
+    
+    public static Locale sCachedLocale;
+    
     private final GlobalPreferences mPrefs;
     private final Context mContext;
 
@@ -146,7 +149,4 @@ public class LocaleUpdater {
         res.updateConfiguration(configuration, res.getDisplayMetrics());
     }
 
-    public static void clearCache() {
-        sCachedLocale = null;
-    }
 }

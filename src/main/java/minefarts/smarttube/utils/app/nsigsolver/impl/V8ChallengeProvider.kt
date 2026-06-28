@@ -20,11 +20,12 @@ import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeType
 import minefarts.smarttube.utils.app.nsigsolver.runtime.solverOutputType
 import minefarts.smarttube.utils.app.nsigsolver.runtime.SolverOutput
 
-
 public object V8ChallengeProvider {
     
+    @JvmField
+    public val v8Runtime = ThreadLocal<V8>()
+
     private val sGson = Gson()
-    private val v8Runtime = ThreadLocal<V8>()
     private val v8Lock = Any()
 
     private val assets

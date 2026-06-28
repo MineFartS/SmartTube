@@ -121,10 +121,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
         return sInstance;
     }
 
-    public static void unhold() {
-        sInstance = null;
-    }
-
     @Override
     public void onViewInitialized() {
         super.onViewInitialized();

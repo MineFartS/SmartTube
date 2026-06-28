@@ -26,17 +26,6 @@ public class AddDevicePresenter extends BasePresenter<AddDeviceView> {
         return sInstance;
     }
 
-    public void unhold() {
-        RxHelper.disposeActions(mDeviceCodeAction);
-        sInstance = null;
-    }
-
-    @Override
-    public void onViewDestroyed() {
-        super.onViewDestroyed();
-        unhold();
-    }
-
     @Override
     public void onViewInitialized() {
         RxHelper.disposeActions(mDeviceCodeAction);
