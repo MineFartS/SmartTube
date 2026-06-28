@@ -894,21 +894,78 @@ public class VideoLoaderController extends BasePlayerController {
     }
 
     public Video getNext() {
-        Video result = null;
         Video next = Queue.getNext();
-        Video current = getPlayer().getVideo();
+        Video current = getPlayer() != null ? getPlayer().getVideo() : null;
 
         if (next != null) {
             next.fromQueue = true;
-            result = next;
-        } else if (mNextSectionVideo != null) {
-            result = mNextSectionVideo;
-        } else if (current != null && current.nextMediaItem != null) {
-            result = Video.from(current.nextMediaItem);
+            return next;
         }
 
-        return result;
+        if (mNextSectionVideo != null) {
+            return mNextSectionVideo;
+        }
+
+        if (current != null && current.nextMediaItem != null) {
+            return Video.from(current.nextMediaItem);
+        }
+
+        // Fallback: suggestions/metadata might not be loaded yet.
+        // Compute the next item from the current VideoGroup ordering.
+        if (current == null) return null;
+
+        VideoGroup group = current.getGroup();
+        if (group == null || group.isEmpty()) return null;
+
+        List<Video> videos = group.getVideos();
+        if (videos == null || videos.isEmpty()) return null;
+
+        int currentIndex = videos.indexOf(current);
+        if (currentIndex < 0) {
+            // If the current video isn't found in group ordering, try first upcoming-safe pick.
+            for (Video v : videos) {
+                if (v != null && v.hasVideo() && !v.isUpcoming) return v;
+            }
+            return null;
+        }
+
+        if (getPlaybackMode() == PlaybackFragment2.PLAYBACK_MODE_SHUFFLE) {
+            // Random pick within the group, but prefer a non-upcoming item.
+            int maxTries = Math.min(20, Math.max(1, videos.size()));
+            int size = videos.size();
+
+            for (int i = 0; i < maxTries; i++) {
+                int randomIndex = Utils.getRandomIndex(currentIndex, size);
+                if (randomIndex < 0 || randomIndex >= size) continue;
+
+                Video candidate = videos.get(randomIndex);
+                if (candidate != null && candidate.hasVideo() && !candidate.isUpcoming) {
+                    return candidate;
+                }
+            }
+
+            // As a last resort, pick the first valid item after current.
+            for (int i = currentIndex + 1; i < size; i++) {
+                Video candidate = videos.get(i);
+                if (candidate != null && candidate.hasVideo() && !candidate.isUpcoming) return candidate;
+            }
+
+            return null;
+        }
+
+        // Non-shuffle: first playable item after current.
+        for (int i = currentIndex + 1; i < videos.size(); i++) {
+            Video candidate = videos.get(i);
+            if (candidate != null && candidate.hasVideo() && !candidate.isUpcoming) {
+                return candidate;
+            }
+        }
+
+        return null;
     }
+
+    
+
 
     public Video getPrevious() {
         Video current = getPlayer().getVideo();
