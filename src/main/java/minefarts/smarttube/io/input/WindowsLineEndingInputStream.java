@@ -34,7 +34,7 @@ public class WindowsLineEndingInputStream  extends InputStream {
     }
 
     /**
-     * Reads the next item from the target, updating internal flags in the process
+     * Reads the next item from the target, updating public flags in the process
      * @return the next int read from the target stream
      * @throws IOException upon error
      */

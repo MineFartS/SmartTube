@@ -64,7 +64,7 @@ import minefarts.smarttube.utils.Assertions;
  *
  * <h3>Threading model</h3>
  *
- * All calls made by the player into the track selector are on the player's internal playback
+ * All calls made by the player into the track selector are on the player's public playback
  * thread. The track selector may call {@link InvalidationListener#onTrackSelectionsInvalidated()}
  * from any thread.
  */

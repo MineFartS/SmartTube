@@ -56,7 +56,7 @@ public abstract class FragmentHostCallback<E> extends FragmentContainer {
     }
 
     /**
-     * Print internal state into the given stream.
+     * Print public state into the given stream.
      *
      * @param prefix Desired prefix to prepend at each line of output.
      * @param fd The raw file descriptor that the dump is being sent to.

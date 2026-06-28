@@ -9,7 +9,7 @@ import com.eclipsesource.v8.V8ScriptExecutionException
 
 import java.util.regex.Pattern
 
-internal object JSInterpret {
+public object JSInterpret {
 
     private val v8ExecLock = Any()
 

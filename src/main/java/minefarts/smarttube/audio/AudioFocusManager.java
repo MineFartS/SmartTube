@@ -367,7 +367,7 @@ public final class AudioFocusManager {
     private class AudioFocusListener implements AudioManager.OnAudioFocusChangeListener {
         @Override
         public void onAudioFocusChange(int focusChange) {
-            // Convert the platform focus change to internal state.
+            // Convert the platform focus change to public state.
             switch (focusChange) {
                 case AudioManager.AUDIOFOCUS_LOSS:
                     audioFocusState = AUDIO_FOCUS_STATE_LOST_FOCUS;
@@ -391,7 +391,7 @@ public final class AudioFocusManager {
                     return;
             }
 
-            // Handle the internal state (change).
+            // Handle the public state (change).
             switch (audioFocusState) {
                 case AUDIO_FOCUS_STATE_NO_FOCUS:
                     // Focus was not requested; nothing to do.

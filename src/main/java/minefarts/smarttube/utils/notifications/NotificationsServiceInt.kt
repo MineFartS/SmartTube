@@ -8,7 +8,7 @@ import minefarts.smarttube.google.common.helpers.RetrofitHelper
 import minefarts.smarttube.utils.common.models.impl.NotificationStateImpl
 import minefarts.smarttube.utils.common.models.impl.mediaitem.NotificationMediaItem
 
-internal open class NotificationsServiceInt {
+public open class NotificationsServiceInt {
     private val mService: NotificationsApi = RetrofitHelper.create(NotificationsApi::class.java)
 
     open fun getItems(): MediaGroup? {

@@ -202,7 +202,7 @@ public interface TsPayloadReader {
    *
    * <p>Following a call to this method, the data passed to the next invocation of {@link #consume}
    * will not be a continuation of the data that was previously passed. Hence the reader should
-   * reset any internal state.
+   * reset any public state.
    */
   void seek();
 

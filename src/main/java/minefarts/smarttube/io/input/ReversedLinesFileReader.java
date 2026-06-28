@@ -231,7 +231,7 @@ public class ReversedLinesFileReader implements Closeable {
      * Creates a ReversedLinesFileReader with the given block size and encoding.
      *
      * @param file      the file to be read
-     * @param blockSize size of the internal buffer (for ideal performance this
+     * @param blockSize size of the public buffer (for ideal performance this
      *                  should match with the block size of the underlying file
      *                  system).
      * @param charset  the encoding of the file, null uses the default Charset.
@@ -246,7 +246,7 @@ public class ReversedLinesFileReader implements Closeable {
      * Creates a ReversedLinesFileReader with the given block size and encoding.
      *
      * @param file      the file to be read
-     * @param blockSize size of the internal buffer (for ideal performance this
+     * @param blockSize size of the public buffer (for ideal performance this
      *                  should match with the block size of the underlying file
      *                  system).
      * @param charsetName  the encoding of the file, null uses the default Charset.
@@ -278,7 +278,7 @@ public class ReversedLinesFileReader implements Closeable {
      * Creates a ReversedLinesFileReader with the given block size and encoding.
      *
      * @param file      the file to be read
-     * @param blockSize size of the internal buffer (for ideal performance this
+     * @param blockSize size of the public buffer (for ideal performance this
      *                  should match with the block size of the underlying file
      *                  system).
      * @param charset  the encoding of the file, null uses the default Charset.
@@ -347,7 +347,7 @@ public class ReversedLinesFileReader implements Closeable {
      * Creates a ReversedLinesFileReader with the given block size and encoding.
      *
      * @param file        the file to be read
-     * @param blockSize   size of the internal buffer (for ideal performance this
+     * @param blockSize   size of the public buffer (for ideal performance this
      *                    should match with the block size of the underlying file
      *                    system).
      * @param charsetName the encoding of the file, null uses the default Charset.

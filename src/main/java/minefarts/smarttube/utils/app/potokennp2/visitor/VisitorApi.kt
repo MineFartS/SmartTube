@@ -8,7 +8,7 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 
 @WithGson
-internal interface VisitorApi {
+public interface VisitorApi {
     @Headers(
         "Content-Type: application/json",
         "accept-language: en-US, en;q=0.9",

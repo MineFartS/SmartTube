@@ -3,24 +3,24 @@ package minefarts.smarttube.utils.chat.gen
 import minefarts.smarttube.utils.common.models.gen.TextItem
 import minefarts.smarttube.utils.common.models.gen.ThumbnailItem
 
-internal data class LiveChatAction(
+public data class LiveChatAction(
     val addBannerToLiveChatCommand: AddBannerToLiveChatCommand?,
     val addChatItemAction: AddChatItemAction?
 )
 
-internal data class AddBannerToLiveChatCommand(
+public data class AddBannerToLiveChatCommand(
     val bannerRenderer: BannerRenderer?
 )
 
-internal data class AddChatItemAction(
+public data class AddChatItemAction(
     val item: LiveChatTextMessageRendererItem?
 )
 
-internal data class LiveChatTextMessageRendererItem(
+public data class LiveChatTextMessageRendererItem(
     val liveChatTextMessageRenderer: LiveChatTextMessageRenderer?
 )
 
-internal data class LiveChatTextMessageRenderer(
+public data class LiveChatTextMessageRenderer(
     val message: TextItem?,
     val authorName: TextItem?,
     val authorPhoto: ThumbnailItem?,
@@ -28,19 +28,19 @@ internal data class LiveChatTextMessageRenderer(
     val authorExternalChannelId: String?
 )
 
-internal data class LiveChatBannerHeaderRendererItem(
+public data class LiveChatBannerHeaderRendererItem(
     val liveChatBannerHeaderRenderer: LiveChatBannerHeaderRenderer?
 )
 
-internal data class LiveChatBannerHeaderRenderer(
+public data class LiveChatBannerHeaderRenderer(
     val text: TextItem?
 )
 
-internal data class BannerRenderer(
+public data class BannerRenderer(
     val liveChatBannerRenderer: LiveChatBannerRenderer?
 )
 
-internal data class LiveChatBannerRenderer(
+public data class LiveChatBannerRenderer(
     val header: LiveChatBannerHeaderRendererItem?,
     val contents: LiveChatTextMessageRendererItem?
 )

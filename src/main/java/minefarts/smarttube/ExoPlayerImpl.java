@@ -214,9 +214,9 @@ public final class ExoPlayerImpl extends BasePlayer implements ExoPlayer {
     PlaybackInfo playbackInfo =
         getResetPlaybackInfo(
             resetPosition, resetState, /* playbackState= */ Player.STATE_BUFFERING);
-    // Trigger internal prepare first before updating the playback info and notifying external
+    // Trigger public prepare first before updating the playback info and notifying external
     // listeners to ensure that new operations issued in the listener notifications reach the
-    // player after this prepare. The internal player can't change the playback info immediately
+    // player after this prepare. The public player can't change the playback info immediately
     // because it uses a callback.
     hasPendingPrepare = true;
     pendingOperationAcks++;
@@ -377,9 +377,9 @@ public final class ExoPlayerImpl extends BasePlayer implements ExoPlayer {
             /* resetPosition= */ reset,
             /* resetState= */ reset,
             /* playbackState= */ Player.STATE_IDLE);
-    // Trigger internal stop first before updating the playback info and notifying external
+    // Trigger public stop first before updating the playback info and notifying external
     // listeners to ensure that new operations issued in the listener notifications reach the
-    // player after this stop. The internal player can't change the playback info immediately
+    // player after this stop. The public player can't change the playback info immediately
     // because it uses a callback.
     pendingOperationAcks++;
     internalPlayer.stop(reset);
@@ -580,7 +580,7 @@ public final class ExoPlayerImpl extends BasePlayer implements ExoPlayer {
     pendingOperationAcks -= operationAcks;
     if (pendingOperationAcks == 0) {
       if (playbackInfo.startPositionUs == C.TIME_UNSET) {
-        // Replace internal unset start position with externally visible start position of zero.
+        // Replace public unset start position with externally visible start position of zero.
         playbackInfo =
             playbackInfo.resetToNewPosition(
                 playbackInfo.periodId, /* startPositionUs= */ 0, playbackInfo.contentPositionUs);

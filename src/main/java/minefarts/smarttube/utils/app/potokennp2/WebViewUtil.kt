@@ -11,9 +11,9 @@ import minefarts.smarttube.utils.mylogger.Log
 
 private const val TAG = "WebViewUtil"
 
-internal const val potLibPrefix = "potokennp2/"
+public const val potLibPrefix = "potokennp2/"
 
-internal fun isThermalServiceAvailable(context: Context): Boolean {
+public fun isThermalServiceAvailable(context: Context): Boolean {
     // Only Android 10 has the issue
     if (Build.VERSION.SDK_INT != 29)
         return true
@@ -34,7 +34,7 @@ internal fun isThermalServiceAvailable(context: Context): Boolean {
     }
 }
 
-internal fun hasThermalServiceBug(context: Context): Boolean {
+public fun hasThermalServiceBug(context: Context): Boolean {
     // Only Android 10 has the issue
     if (Build.VERSION.SDK_INT != 29)
         return false
@@ -60,7 +60,7 @@ internal fun hasThermalServiceBug(context: Context): Boolean {
  *
  * Trying to fix: NullPointerException: 'int android.hardware.usb.UsbDevice.getInterfaceCount()' on a null object reference
  */
-internal fun hasUsbServiceBug(context: Context): Boolean {
+public fun hasUsbServiceBug(context: Context): Boolean {
     // Only Android 12 and up has the issue
     if (Build.VERSION.SDK_INT != 31)
         return false
@@ -97,7 +97,7 @@ internal fun hasUsbServiceBug(context: Context): Boolean {
  *
  * API < 19: executes JS without result (callback ignored).
  */
-internal fun WebView.evaluateJavascriptLegacy(script: String, resultCallback: ValueCallback<String>?) {
+public fun WebView.evaluateJavascriptLegacy(script: String, resultCallback: ValueCallback<String>?) {
     if (Build.VERSION.SDK_INT >= 19) {
         evaluateJavascript(script, resultCallback)
     } else {

@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
  * <p>
  * <code>LineIterator</code> holds a reference to an open <code>Reader</code>.
  * When you have finished with the iterator you should close the reader
- * to free internal resources. This can be done by closing the reader directly,
+ * to free public resources. This can be done by closing the reader directly,
  * or by calling the {@link #close()} or {@link #closeQuietly(LineIterator)}
  * method on the iterator.
  * <p>

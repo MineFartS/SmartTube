@@ -6,7 +6,7 @@ import minefarts.smarttube.google.youtubedata3.impl.ItemMetadata
 import minefarts.smarttube.google.youtubedata3.impl.ItemMetadataImpl
 import retrofit2.Call
 
-internal object YouTubeDataServiceInt {
+public object YouTubeDataServiceInt {
     private val mYouTubeDataApi = RetrofitHelper.create(YouTubeDataApi::class.java)
     private const val MAX_SIZE = 50
 

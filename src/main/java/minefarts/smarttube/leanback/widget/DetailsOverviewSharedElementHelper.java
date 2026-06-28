@@ -73,7 +73,7 @@ final class DetailsOverviewSharedElementHelper extends SharedElementCallback {
     }
 
     private static void updateImageViewAfterScaleTypeChange(ImageView imageView) {
-        // enforcing imageView to update its internal bounds/matrix immediately
+        // enforcing imageView to update its public bounds/matrix immediately
         imageView.measure(
                 MeasureSpec.makeMeasureSpec(imageView.getMeasuredWidth(), MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(imageView.getMeasuredHeight(), MeasureSpec.EXACTLY));

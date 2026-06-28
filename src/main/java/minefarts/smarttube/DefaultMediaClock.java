@@ -103,7 +103,7 @@ import minefarts.smarttube.utils.StandaloneMediaClock;
   }
 
   /**
-   * Syncs internal clock if needed and returns current clock position in microseconds.
+   * Syncs public clock if needed and returns current clock position in microseconds.
    */
   public long syncAndGetPositionUs() {
     if (isUsingRendererClock()) {

@@ -278,7 +278,7 @@ public class ViewManager {
 
     public void clearCaches() {
         BasePlayerController.invalidateCache();
-        // Note, also deletes cached flags (internal cache)
+        // Note, also deletes cached flags (public cache)
         // Note, deletes cached apks (external cache)
         FileHelpers.deleteCache(mContext);
         LocaleUpdater.clearCache();

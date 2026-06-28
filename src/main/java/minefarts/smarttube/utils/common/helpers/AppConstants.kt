@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.common.helpers
 
-internal object AppConstants {
+public object AppConstants {
 
     @JvmField
     val playerUrls = listOf(

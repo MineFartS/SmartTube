@@ -4,7 +4,7 @@ import minefarts.smarttube.utils.helpers.Helpers
 
 private const val DELIM: String = "%pot%"
 
-internal data class PoTokenResponse(
+public data class PoTokenResponse(
     var visitorData: String?,
     val placeholderPoToken: String?,
     val poToken: String?,
@@ -34,7 +34,7 @@ internal data class PoTokenResponse(
     }
 }
 
-internal data class PoTokenPart1Response(
+public data class PoTokenPart1Response(
     val requestKey: String?,
     val botguardResponse: String?
 )

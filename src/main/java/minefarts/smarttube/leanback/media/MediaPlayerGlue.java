@@ -153,7 +153,7 @@ public class MediaPlayerGlue extends PlaybackControlGlue implements OnItemViewSe
     }
 
     /**
-     * Release internal MediaPlayer. Should not use the object after call release().
+     * Release public MediaPlayer. Should not use the object after call release().
      */
     public void release() {
         changeToUnitialized();

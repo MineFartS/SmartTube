@@ -18,7 +18,7 @@ private const val PARAM_SIGNATURE_SPECIAL_MARK = "lsig"
 private const val PARAM_EVENT_ID = "ei"
 private const val PARAM_N = "n"
 
-internal class VideoUrlHolder(private var url: String? = null,
+public class VideoUrlHolder(private var url: String? = null,
                               private var cipher: String? = null,
                               private var signatureCipher: String? = null) {
     private var extractedSParam: String? = null

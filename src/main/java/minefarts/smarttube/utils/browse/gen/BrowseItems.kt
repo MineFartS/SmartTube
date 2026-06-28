@@ -4,7 +4,7 @@ import minefarts.smarttube.utils.common.models.gen.*
 import minefarts.smarttube.utils.next.v2.gen.ContinuationItem
 import minefarts.smarttube.utils.next.v2.gen.ShelfRenderer
 
-internal data class SectionWrapper(
+public data class SectionWrapper(
     val itemSectionRenderer: ShelfListWrapper?,
     val richItemRenderer: RichItemRenderer?,
     val richSectionRenderer: RichSectionRenderer?,
@@ -16,7 +16,7 @@ internal data class SectionWrapper(
     val musicResponsiveHeaderRenderer: RadioItem?
 )
 
-internal data class TabRenderer(
+public data class TabRenderer(
     val title: String?,
     val content: Content?,
     val endpoint: NavigationEndpointItem?,
@@ -33,11 +33,11 @@ internal data class TabRenderer(
     )
 }
 
-internal data class SectionListRenderer(
+public data class SectionListRenderer(
     val contents: List<SectionWrapper?>?
 )
 
-internal data class RichGridRenderer(
+public data class RichGridRenderer(
     val contents: List<SectionWrapper?>?,
     val header: Header?
 ) {
@@ -46,7 +46,7 @@ internal data class RichGridRenderer(
     )
 }
 
-internal data class FeedFilterChipBarRenderer(
+public data class FeedFilterChipBarRenderer(
     val contents: List<Content?>?
 ) {
     data class Content(
@@ -55,7 +55,7 @@ internal data class FeedFilterChipBarRenderer(
 }
 
 // WhatToWatch only
-internal data class RichSectionRenderer(
+public data class RichSectionRenderer(
     val content: Content?
 ) {
     data class Content(
@@ -73,7 +73,7 @@ internal data class RichSectionRenderer(
     }
 }
 
-internal data class TvSurfaceContentRenderer(
+public data class TvSurfaceContentRenderer(
     val content: Content?,
     val continuation: ContinuationItem?
 ) {
@@ -84,7 +84,7 @@ internal data class TvSurfaceContentRenderer(
     )
 }
 
-internal data class TwoColumnRenderer(
+public data class TwoColumnRenderer(
     val leftColumn: LeftColumn?,
     val rightColumn: RightColumn?
 ) {
@@ -100,7 +100,7 @@ internal data class TwoColumnRenderer(
     )
 }
 
-internal data class TvSecondaryNavRenderer(
+public data class TvSecondaryNavRenderer(
     val sections: List<Section?>?
 ) {
     data class Section(
@@ -113,37 +113,37 @@ internal data class TvSecondaryNavRenderer(
 }
 
 // Subscriptions, Sports
-internal data class ShelfListWrapper(
+public data class ShelfListWrapper(
     val contents: List<Shelf?>?,
     val continuations: List<ContinuationItem?>?
 )
 
 // Common item (WhatToWatch, Subscriptions)
-internal data class RichItemRenderer(
+public data class RichItemRenderer(
     val content: ItemWrapper?
 )
 
 // Common item (WhatToWatch, Subscriptions)
-internal data class ContinuationItemRenderer(
+public data class ContinuationItemRenderer(
     val continuationEndpoint: NavigationEndpoint?
 )
 
-internal data class ContinuationCommand(
+public data class ContinuationCommand(
     val token: String?
 )
 
-internal data class ChipCloudChipRenderer(
+public data class ChipCloudChipRenderer(
     val text: TextItem?,
     val navigationEndpoint: NavigationEndpoint? // possible duplicate?
 )
 
-internal data class NavigationEndpoint(
+public data class NavigationEndpoint(
     val continuationCommand: ContinuationCommand?
 )
 
 /////
 
-internal data class GuideItem(
+public data class GuideItem(
     val thumbnail: ThumbnailItem?,
     val formattedTitle: TextItem?,
     val navigationEndpoint: NavigationEndpointItem?,
@@ -156,7 +156,7 @@ internal data class GuideItem(
 }
 
 // Kids only
-internal data class AnchoredSectionRenderer(
+public data class AnchoredSectionRenderer(
     val title: String?,
     val navigationEndpoint: NavigationEndpointItem?,
     val content: ContentItem?
@@ -179,7 +179,7 @@ internal data class AnchoredSectionRenderer(
 }
 
 // Reel only. Basic data. No title or description.
-internal data class ReelWatchEndpoint(
+public data class ReelWatchEndpoint(
     val videoId: String?,
     val playerParams: String?,
     val params: String?,
@@ -187,7 +187,7 @@ internal data class ReelWatchEndpoint(
 )
 
 // Reel only. Extended data.
-internal data class ReelPlayerHeaderRenderer(
+public data class ReelPlayerHeaderRenderer(
     val reelTitleText: TextItem?,
     val channelTitleText: TextItem?,
     val timestampText: TextItem?,
@@ -197,19 +197,19 @@ internal data class ReelPlayerHeaderRenderer(
 )
 
 // Corresponds to the row
-internal data class Shelf(
+public data class Shelf(
     val shelfRenderer: ShelfRenderer?,
     val playlistVideoListRenderer: PlaylistVideoListRenderer?,
     val gridRenderer: GridRenderer?,
     val videoRenderer: VideoItem?
 )
 
-internal data class PlaylistVideoListRenderer(
+public data class PlaylistVideoListRenderer(
     val contents: List<ItemWrapper?>?,
     val continuations: List<ContinuationItem?>?
 )
 
-internal data class GridRenderer(
+public data class GridRenderer(
     val items: List<ItemWrapper?>?,
     val continuations: List<ContinuationItem?>?
 )

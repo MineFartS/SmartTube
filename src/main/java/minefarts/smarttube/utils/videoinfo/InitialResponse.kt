@@ -9,7 +9,7 @@ import minefarts.smarttube.google.common.js.JSInterpret
 import minefarts.smarttube.utils.videoinfo.models.VideoInfo
 import java.util.regex.Pattern
 
-internal object InitialResponse {
+public object InitialResponse {
     private val YT_INITIAL_PLAYER_RESPONSE_RE: Pattern = Pattern.compile("""ytInitialPlayerResponse\s*=""")
 
     @Suppress("UNCHECKED_CAST")

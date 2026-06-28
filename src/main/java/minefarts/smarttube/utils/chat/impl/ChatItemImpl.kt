@@ -5,7 +5,7 @@ import minefarts.smarttube.utils.chat.gen.LiveChatAction
 import minefarts.smarttube.utils.common.models.gen.getOptimalResThumbnailUrl
 import minefarts.smarttube.utils.common.models.gen.getText
 
-internal data class ChatItemImpl(val liveChatAction: LiveChatAction): ChatItem {
+public data class ChatItemImpl(val liveChatAction: LiveChatAction): ChatItem {
     private val messageRenderer by lazy {
         liveChatAction.addChatItemAction?.item?.liveChatTextMessageRenderer ?:
         liveChatAction.addBannerToLiveChatCommand?.bannerRenderer?.liveChatBannerRenderer?.contents?.liveChatTextMessageRenderer

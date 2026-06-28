@@ -8,7 +8,7 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 
 @WithGson
-internal interface NotificationsApi {
+public interface NotificationsApi {
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/notification/get_notification_menu")

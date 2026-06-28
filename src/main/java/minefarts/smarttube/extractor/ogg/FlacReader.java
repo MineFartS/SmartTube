@@ -139,7 +139,7 @@ import java.util.List;
     }
 
     /**
-     * Parses a FLAC file seek table metadata structure and initializes internal fields.
+     * Parses a FLAC file seek table metadata structure and initializes public fields.
      *
      * @param data A {@link ParsableByteArray} including whole seek table metadata block. Its
      *     position should be set to the beginning of the block.

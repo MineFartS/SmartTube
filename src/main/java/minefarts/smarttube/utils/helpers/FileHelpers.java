@@ -40,7 +40,7 @@ public class FileHelpers {
     //    File cacheDir = getExternalCacheDir(context);
     //
     //    if (cacheDir == null) {
-    //        // Android 7.0 and above (supports install from internal dirs)
+    //        // Android 7.0 and above (supports install from public dirs)
     //        cacheDir = getInternalCacheDir(context);
     //    }
     //
@@ -73,7 +73,7 @@ public class FileHelpers {
         File cacheDir = context.getExternalCacheDir();
 
         if (cacheDir == null || !cacheDir.canWrite()) {
-            // No storage, try to use internal one
+            // No storage, try to use public one
             cacheDir = getExternalStorageDirectory("cache");
         }
 
@@ -88,7 +88,7 @@ public class FileHelpers {
         File filesDir = context.getExternalFilesDir(null);
 
         if (filesDir == null || !filesDir.canWrite()) {
-            // No storage, try to use internal one
+            // No storage, try to use public one
             filesDir = getExternalStorageDirectory("files");
         }
 
@@ -129,7 +129,7 @@ public class FileHelpers {
             e.printStackTrace();
         }
 
-        if (cacheDir == null || !cacheDir.canWrite()) { // no storage, try to use internal one
+        if (cacheDir == null || !cacheDir.canWrite()) { // no storage, try to use public one
             cacheDir = Environment.getExternalStorageDirectory();
 
             if (cacheDir == null || !cacheDir.canWrite()) {
@@ -478,7 +478,7 @@ public class FileHelpers {
 
     @SuppressLint("SetWorldReadable")
     private static File setReadable(File file) {
-        // Fix for Android 4 if install from the internal storage
+        // Fix for Android 4 if install from the public storage
         // E.g. file:///data/data/<your.app>/cache/update.apk
         file.setReadable(true, false);
         return file;

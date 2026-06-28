@@ -114,7 +114,7 @@ public class NullReader extends Reader {
     }
 
     /**
-     * Closes this Reader - resets the internal state to
+     * Closes this Reader - resets the public state to
      * the initial values.
      *
      * @throws IOException If an error occurs.

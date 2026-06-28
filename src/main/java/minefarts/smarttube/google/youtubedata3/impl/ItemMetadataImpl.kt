@@ -2,7 +2,7 @@ package minefarts.smarttube.google.youtubedata3.impl
 
 import minefarts.smarttube.google.youtubedata3.data.*
 
-internal class ItemMetadataImpl(private val snippetWrapper: SnippetWrapper): ItemMetadata {
+public class ItemMetadataImpl(private val snippetWrapper: SnippetWrapper): ItemMetadata {
      override val title: String? by lazy { snippetWrapper.getTitle() }
      override val cardImageUrl: String? by lazy { snippetWrapper.getThumbnailUrl() }
      override val channelId: String? by lazy { snippetWrapper.getChannelId() }

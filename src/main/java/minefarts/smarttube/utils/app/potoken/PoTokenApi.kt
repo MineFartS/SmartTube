@@ -18,7 +18,7 @@ private const val GRPC_CLIENT = "grpc-web-javascript/0.1"
 private const val PROTOBUF_CONTENT = "application/json+protobuf"
 
 @WithGson
-internal interface PoTokenApi {
+public interface PoTokenApi {
 
     @Headers(
         "Content-Type: $PROTOBUF_CONTENT",

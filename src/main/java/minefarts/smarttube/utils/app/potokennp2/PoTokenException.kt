@@ -1,11 +1,11 @@
 package minefarts.smarttube.utils.app.potokennp2
 
-internal class PoTokenException(message: String) : RuntimeException(message)
+public class PoTokenException(message: String) : RuntimeException(message)
 
 // to be thrown if the WebView provided by the system is broken
-internal class BadWebViewException(message: String) : RuntimeException(message)
+public class BadWebViewException(message: String) : RuntimeException(message)
 
-internal fun buildExceptionForJsError(error: String): Throwable {
+public fun buildExceptionForJsError(error: String): Throwable {
     return if (error.contains("SyntaxError"))
         BadWebViewException(error)
     else

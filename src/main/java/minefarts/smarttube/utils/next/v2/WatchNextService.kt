@@ -22,7 +22,7 @@ import minefarts.smarttube.utils.common.helpers.AppClient
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 
-internal open class WatchNextService {
+public open class WatchNextService {
 
     private val mWatchNextApi = RetrofitHelper.create(WatchNextApi::class.java)
     

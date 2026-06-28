@@ -34,7 +34,7 @@ import minefarts.smarttube.utils.ParsableByteArray;
    * <p>
    * Following a call to this method, the data passed to the next invocation of
    * {@link #consume(ParsableByteArray, long)} will not be a continuation of the data that
-   * was previously passed. Hence the reader should reset any internal state.
+   * was previously passed. Hence the reader should reset any public state.
    */
   public abstract void seek();
 

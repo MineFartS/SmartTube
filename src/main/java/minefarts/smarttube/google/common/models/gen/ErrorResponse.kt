@@ -1,6 +1,6 @@
 package minefarts.smarttube.google.common.models.gen
 
-internal data class ErrorResponse(
+public data class ErrorResponse(
     val error: ErrorRoot?
 ) {
     data class ErrorRoot(
@@ -17,7 +17,7 @@ internal data class ErrorResponse(
     }
 }
 
-internal data class AuthErrorResponse(
+public data class AuthErrorResponse(
     val error: String?,
     val error_description: String?
 )

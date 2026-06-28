@@ -9,7 +9,7 @@ import minefarts.smarttube.utils.next.v2.gen.Menu
 import minefarts.smarttube.utils.next.v2.gen.VideoMetadataRenderer
 import minefarts.smarttube.utils.next.v2.gen.VideoOwnerItem
 
-internal data class NavigationEndpointItem(
+public data class NavigationEndpointItem(
     val browseEndpoint: BrowseEndpoint?,
     val watchEndpoint: WatchEndpointItem?,
     val reelWatchEndpoint: ReelWatchEndpoint?,
@@ -77,7 +77,7 @@ internal data class NavigationEndpointItem(
     }
 }
 
-internal data class WatchEndpointItem(
+public data class WatchEndpointItem(
     val videoId: String?,
     val playlistId: String?,
     val index: Int,
@@ -85,16 +85,16 @@ internal data class WatchEndpointItem(
     val startTimeSeconds: Int?
 )
 
-internal data class ChannelsEndpoint(
+public data class ChannelsEndpoint(
     val channelIds: List<String?>?,
     val params: String?
 )
 
-internal data class CommentEndpoint(
+public data class CommentEndpoint(
     val action: String?
 )
 
-internal data class DefaultServiceEndpoint(
+public data class DefaultServiceEndpoint(
     val authDeterminedCommand: AuthDeterminedCommand?
 ) {
     data class AuthDeterminedCommand(
@@ -102,17 +102,17 @@ internal data class DefaultServiceEndpoint(
     )
 }
 
-internal data class ToggledServiceEndpoint(
+public data class ToggledServiceEndpoint(
     val subscribeEndpoint: ChannelsEndpoint?,
     val unsubscribeEndpoint: ChannelsEndpoint?,
     val performCommentActionEndpoint: CommentEndpoint?
 )
 
-internal data class ShowEngagementPanelEndpoint(
+public data class ShowEngagementPanelEndpoint(
     val engagementPanel: EngagementPanel?
 )
 
-internal data class ButtonContentWrapper(
+public data class ButtonContentWrapper(
     val videoOwnerRenderer: VideoOwnerItem?,
     val toggleButtonRenderer: ToggleButtonRenderer?,
     val buttonRenderer: ButtonRenderer?,
@@ -120,21 +120,21 @@ internal data class ButtonContentWrapper(
     val likeButtonRenderer: LikeButtonRenderer?
 )
 
-internal data class ButtonRenderer(
+public data class ButtonRenderer(
     val isDisabled: Boolean?,
     val text: TextItem?,
     val icon: IconItem?,
     val navigationEndpoint: NavigationEndpointItem?
 )
 
-internal data class ToggleButtonRenderer(
+public data class ToggleButtonRenderer(
     val isToggled: Boolean?,
     val isDisabled: Boolean?,
     val defaultServiceEndpoint: ToggledServiceEndpoint?,
     val toggledServiceEndpoint: ToggledServiceEndpoint?
 )
 
-internal data class SubscribeButtonRenderer(
+public data class SubscribeButtonRenderer(
     val subscribed: Boolean?,
     val channelId: String?,
     val subscriberCountText: TextItem?,
@@ -145,15 +145,15 @@ internal data class SubscribeButtonRenderer(
     val onSubscribeEndpoints: List<ToggledServiceEndpoint?>?
 )
 
-internal data class CompactLinkRenderer(
+public data class CompactLinkRenderer(
     val serviceEndpoint: ServiceEndpoint?
 )
 
-internal data class MusicPlayButtonRenderer(
+public data class MusicPlayButtonRenderer(
     val playNavigationEndpoint: NavigationEndpointItem?
 )
 
-internal data class TextItem(
+public data class TextItem(
     val runs: List<Run?>?,
     val simpleText: String?,
     val content: String?,
@@ -171,11 +171,11 @@ internal data class TextItem(
     }
 }
 
-internal data class IconItem(
+public data class IconItem(
     val iconType: String?
 )
 
-internal data class LiveChatEmoji(
+public data class LiveChatEmoji(
     val emojiId: String?,
     val image: ThumbnailItem?,
     val variantIds: List<String?>?,
@@ -183,7 +183,7 @@ internal data class LiveChatEmoji(
     val isCustomEmoji: Boolean?
 )
 
-internal data class ThumbnailItem(
+public data class ThumbnailItem(
     val thumbnails: List<Thumbnail?>?,
     val sources: List<Thumbnail?>?
 ) {
@@ -194,7 +194,7 @@ internal data class ThumbnailItem(
     )
 }
 
-internal data class AccessibilityItem(
+public data class AccessibilityItem(
     val accessibilityData: AccessibilityData?
 ) {
     data class AccessibilityData(
@@ -202,7 +202,7 @@ internal data class AccessibilityItem(
     )
 }
 
-internal data class ItemWrapper(
+public data class ItemWrapper(
     val tileRenderer: TileItem? = null,
     val gridVideoRenderer: VideoItem? = null,
     val videoRenderer: VideoItem? = null,
@@ -227,7 +227,7 @@ internal data class ItemWrapper(
     val lockupViewModel: LockupItem? = null, // Home video items v2
 )
 
-internal data class TileItem(
+public data class TileItem(
     val style: String?,
     val metadata: Metadata?,
     val header: Header?,
@@ -276,7 +276,7 @@ internal data class TileItem(
     }
 }
 
-internal data class TileMetadataRenderer(
+public data class TileMetadataRenderer(
     val title: TextItem?,
     val lines: List<Line?>?
 ) {
@@ -307,7 +307,7 @@ internal data class TileMetadataRenderer(
     }
 }
 
-internal data class VideoItem(
+public data class VideoItem(
     val thumbnail: ThumbnailItem?,
     val title: TextItem?,
     val headline: TextItem?,
@@ -353,7 +353,7 @@ internal data class VideoItem(
 
 }
 
-internal data class MusicItem(
+public data class MusicItem(
     val thumbnail: ThumbnailItem?,
     val primaryText: TextItem?,
     val secondaryText: TextItem?,
@@ -363,7 +363,7 @@ internal data class MusicItem(
     val menu: MenuWrapper?
 )
 
-internal data class RadioItem(
+public data class RadioItem(
     val thumbnail: ThumbnailItem?,
     val thumbnailRenderer: ThumbnailRenderer?,
     val title: TextItem?,
@@ -372,7 +372,7 @@ internal data class RadioItem(
     val menu: MenuWrapper?
 )
 
-internal data class ChannelItem(
+public data class ChannelItem(
     val thumbnail: ThumbnailItem?,
     val title: TextItem?,
     val displayName: TextItem?,
@@ -382,7 +382,7 @@ internal data class ChannelItem(
 )
 
 // Fully replace with VideoItem?
-internal data class PlaylistItem(
+public data class PlaylistItem(
     val thumbnail: ThumbnailItem?,
     val thumbnails: List<ThumbnailItem?>?,
     val thumbnailRenderer: ThumbnailRenderer?,
@@ -392,7 +392,7 @@ internal data class PlaylistItem(
     val playlistId: String?
 )
 
-internal data class ShortsItem(
+public data class ShortsItem(
     val accessibilityText: String?,
     val thumbnail: ThumbnailItem?,
     val onTap: OnTap?,
@@ -406,11 +406,11 @@ internal data class ShortsItem(
 
 }
 
-internal data class OnTap(
+public data class OnTap(
     val innertubeCommand: InnertubeCommand?
 )
 
-internal data class InnertubeCommand(
+public data class InnertubeCommand(
     val reelWatchEndpoint: ReelWatchEndpoint?,
     val watchEndpoint: WatchEndpointItem?,
     val showSheetCommand: ShowSheetCommand?,
@@ -449,7 +449,7 @@ internal data class InnertubeCommand(
     }
 }
 
-internal data class LockupItem(
+public data class LockupItem(
     val contentImage: ContentImage?, // thumbnail
     val metadata: MetadataItem?, // title, subtitle, channelId
     val rendererContext: RendererContext? // videoId
@@ -533,7 +533,7 @@ internal data class LockupItem(
     }
 }
 
-internal data class RendererContext(
+public data class RendererContext(
     val commandContext: CommandContext?
 ) {
     data class CommandContext(
@@ -541,7 +541,7 @@ internal data class RendererContext(
     )
 }
 
-internal data class ThumbnailRenderer(
+public data class ThumbnailRenderer(
     val playlistVideoThumbnailRenderer: ThumbnailRenderer?,
     val playlistCustomThumbnailRenderer: ThumbnailRenderer?,
     val musicThumbnailRenderer: ThumbnailRenderer?
@@ -551,7 +551,7 @@ internal data class ThumbnailRenderer(
     )
 }
 
-internal data class MenuWrapper(
+public data class MenuWrapper(
     val menuRenderer: MenuRenderer?
 ) {
     data class MenuRenderer(
@@ -559,7 +559,7 @@ internal data class MenuWrapper(
     )
 }
 
-internal data class MenuItem(
+public data class MenuItem(
     val menuServiceItemRenderer: MenuServiceItemRenderer?,
     val menuNavigationItemRenderer: MenuNavigationItemRenderer?
 ) {
@@ -574,7 +574,7 @@ internal data class MenuItem(
     )
 }
 
-internal data class ServiceEndpoint(
+public data class ServiceEndpoint(
     val feedbackEndpoint: FeedbackEndpoint?,
     val recordNotificationInteractionsEndpoint: RecordNotificationInteractionsEndpoint?,
     val commandExecutorCommand: CommandExecutorCommand?
@@ -589,15 +589,15 @@ internal data class ServiceEndpoint(
     )
 }
 
-internal data class ExecutorCommand(
+public data class ExecutorCommand(
     val feedbackEndpoint: FeedbackEndpoint?
 )
 
-internal data class FeedbackEndpoint(
+public data class FeedbackEndpoint(
     val feedbackToken: String?
 )
 
-internal data class RichThumbnailItem(
+public data class RichThumbnailItem(
     val movingThumbnailRenderer: MovingThumbnailRenderer?
 ) {
     data class MovingThumbnailRenderer(
@@ -605,7 +605,7 @@ internal data class RichThumbnailItem(
     )
 }
 
-internal data class ThumbnailOverlayItem(
+public data class ThumbnailOverlayItem(
     val thumbnailOverlayTimeStatusRenderer: ThumbnailOverlayTimeStatusRenderer?,
     val thumbnailOverlayResumePlaybackRenderer: ThumbnailOverlayResumePlaybackRenderer?,
     val tileMetadataRenderer: TileMetadataRenderer?,
@@ -620,7 +620,7 @@ internal data class ThumbnailOverlayItem(
     )
 }
 
-internal data class NotificationPreferenceButton(
+public data class NotificationPreferenceButton(
     val subscriptionNotificationToggleButtonRenderer: SubscriptionNotificationToggleButtonRenderer?
 ) {
     data class SubscriptionNotificationToggleButtonRenderer(
@@ -629,7 +629,7 @@ internal data class NotificationPreferenceButton(
     )
 }
 
-internal data class NotificationStateItem(
+public data class NotificationStateItem(
     val stateId: Int?,
     val nextStateId: Int?,
     val inlineMenuButton: InlineMenuButton?
@@ -652,12 +652,12 @@ internal data class NotificationStateItem(
     }
 }
 
-internal data class ResponseContext(
+public data class ResponseContext(
     val serviceTrackingParams: List<TrackingParam?>?,
     val globalConfigGroup: GlobalConfigGroup?
 )
 
-internal data class TrackingParam(
+public data class TrackingParam(
     val service: String?,
     val params: List<Param?>?
 ) {
@@ -667,7 +667,7 @@ internal data class TrackingParam(
     )
 }
 
-internal data class GlobalConfigGroup(
+public data class GlobalConfigGroup(
     val rawColdConfigGroup: RawColdConfigGroup?,
     val coldHashData: String?,
     val hotHashData: String?
@@ -677,13 +677,13 @@ internal data class GlobalConfigGroup(
     )
 }
 
-internal data class OverlayPanelHeaderRenderer(
+public data class OverlayPanelHeaderRenderer(
     val title: TextItem?,
     val subtitle: TextItem?,
     val image: ThumbnailItem?
 )
 
-internal data class EngagementPanelTitleHeaderRenderer(
+public data class EngagementPanelTitleHeaderRenderer(
     val menu: Menu?,
     val title: TextItem?
 )

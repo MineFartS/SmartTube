@@ -6,7 +6,7 @@ import minefarts.smarttube.utils.common.models.gen.getStateId
 import minefarts.smarttube.utils.common.models.gen.getStateParams
 import minefarts.smarttube.utils.common.models.gen.getTitle
 
-internal open class NotificationStateImpl(
+public open class NotificationStateImpl(
     val notificationStateItem: NotificationStateItem,
     val selectedSateId: Int?,
     val channelId: String?,

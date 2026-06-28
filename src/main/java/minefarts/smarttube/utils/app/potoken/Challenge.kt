@@ -5,7 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonArray
 import minefarts.smarttube.google.common.helpers.RetrofitHelper
 
-internal class Challenge {
+public class Challenge {
     data class Result(val messageId: String?,
                       val interpreterJavascript: InterpreterJavascript?,
                       val interpreterHash: String?,

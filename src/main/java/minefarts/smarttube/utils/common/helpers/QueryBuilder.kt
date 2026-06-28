@@ -4,12 +4,12 @@ import minefarts.smarttube.utils.helpers.Helpers
 import minefarts.smarttube.utils.app.AppService
 import minefarts.smarttube.google.common.locale.LocaleManager
 
-internal enum class PostDataType { Player, Browse }
+public enum class PostDataType { Player, Browse }
 
 // Use protobuf to bypass geo blocking
 private const val GEO_PARAMS: String = "CgIQBg%3D%3D"
 
-internal class QueryBuilder(private val client: AppClient) {
+public class QueryBuilder(private val client: AppClient) {
     private val localeManager by lazy { LocaleManager.instance() }
     private val appService by lazy { AppService.instance() }
     private var type: PostDataType = PostDataType.Player

@@ -5,7 +5,7 @@ import minefarts.smarttube.utils.data.CommentItem
 import minefarts.smarttube.utils.comments.gen.CommentsResult
 import minefarts.smarttube.utils.next.v2.gen.getContinuationToken
 
-internal data class CommentGroupImpl(val commentsResult: CommentsResult): CommentGroup {
+public data class CommentGroupImpl(val commentsResult: CommentsResult): CommentGroup {
     private val itemSectionContinuation by lazy {
         commentsResult.continuationContents?.itemSectionContinuation
     }

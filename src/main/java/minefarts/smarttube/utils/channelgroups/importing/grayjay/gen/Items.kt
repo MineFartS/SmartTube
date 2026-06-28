@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.channelgroups.importing.grayjay.gen
 
-internal data class GrayJayGroup(
+public data class GrayJayGroup(
     val id: String,
     val name: String,
     val image: GrayJayImage?,

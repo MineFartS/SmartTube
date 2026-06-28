@@ -15,7 +15,7 @@ import android.text.style.UnderlineSpan;
 import java.util.Map;
 
 /**
- * Package internal utility class to render styled <code>TtmlNode</code>s.
+ * Package public utility class to render styled <code>TtmlNode</code>s.
  */
 /* package */ final class TtmlRenderUtil {
 

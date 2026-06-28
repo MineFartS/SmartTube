@@ -7,7 +7,7 @@ import minefarts.smarttube.google.common.helpers.YouTubeHelper
 import minefarts.smarttube.utils.next.v2.gen.*
 import minefarts.smarttube.utils.notifications.gen.*
 
-internal class WrapperMediaItem(private val itemWrapper: ItemWrapper): BaseMediaItem() {
+public class WrapperMediaItem(private val itemWrapper: ItemWrapper): BaseMediaItem() {
 
     override val typeItem by lazy { itemWrapper.getType() }
     
@@ -70,7 +70,7 @@ internal class WrapperMediaItem(private val itemWrapper: ItemWrapper): BaseMedia
 
 }
 
-internal class NextMediaItem(private val nextVideoItem: NextVideoItem): BaseMediaItem() {
+public class NextMediaItem(private val nextVideoItem: NextVideoItem): BaseMediaItem() {
     
     override val videoIdItem by lazy { nextVideoItem.getVideoId() }
     
@@ -92,7 +92,7 @@ internal class NextMediaItem(private val nextVideoItem: NextVideoItem): BaseMedi
 
 }
 
-internal class ShuffleMediaItem(private val navigationEndpointItem: NavigationEndpointItem): BaseMediaItem() {
+public class ShuffleMediaItem(private val navigationEndpointItem: NavigationEndpointItem): BaseMediaItem() {
     
     override val videoIdItem by lazy { navigationEndpointItem.getVideoId() }
     
@@ -106,7 +106,7 @@ internal class ShuffleMediaItem(private val navigationEndpointItem: NavigationEn
 
 }
 
-internal class GuideMediaItem(private val guideItem: GuideItem): BaseMediaItem() {
+public class GuideMediaItem(private val guideItem: GuideItem): BaseMediaItem() {
     
     override val titleItem by lazy { guideItem.getTitle() }
     
@@ -122,7 +122,7 @@ internal class GuideMediaItem(private val guideItem: GuideItem): BaseMediaItem()
 
 }
 
-internal class TabMediaItem(
+public class TabMediaItem(
     private val tabItem: TabRenderer, 
     private val groupType: Int
 ): BaseMediaItem() {
@@ -143,7 +143,7 @@ internal class TabMediaItem(
 
 }
 
-internal class ShortsMediaItem(
+public class ShortsMediaItem(
     private val reel: ReelWatchEndpoint?, 
     private val reelDetails: ReelResult
 ): BaseMediaItem() {
@@ -170,7 +170,7 @@ internal class ShortsMediaItem(
 
 }
 
-internal class NotificationMediaItem(private val item: NotificationItem): BaseMediaItem() {
+public class NotificationMediaItem(private val item: NotificationItem): BaseMediaItem() {
     
     override val videoIdItem by lazy { item.getVideoId() }
     

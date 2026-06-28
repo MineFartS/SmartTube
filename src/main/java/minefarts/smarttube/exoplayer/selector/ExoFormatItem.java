@@ -172,17 +172,17 @@ public class ExoFormatItem implements FormatItem {
 
         switch (type) {
             case TYPE_VIDEO:
-                // Fake format. It's used in app internal comparison routine.
+                // Fake format. It's used in app public comparison routine.
                 mediaTrack.format = Format.createVideoSampleFormat(
                         id, null, codecs, -1, -1, width, height, frameRate, null, null);
                 break;
             case TYPE_AUDIO:
-                // Fake format. It's used in app internal comparison routine.
+                // Fake format. It's used in app public comparison routine.
                 mediaTrack.format = Format.createAudioSampleFormat(
                         id, null, codecs, bitrate, -1,0, 0, null, null, 0, language);
                 break;
             case TYPE_SUBTITLE:
-                // Fake format. It's used in app internal comparison routine.
+                // Fake format. It's used in app public comparison routine.
                 mediaTrack.format = Format.createTextSampleFormat(
                         id, null, -1, language);
                 break;
@@ -284,7 +284,7 @@ public class ExoFormatItem implements FormatItem {
                 break;
         }
 
-        // Fake format. It's used in app internal comparison routine.
+        // Fake format. It's used in app public comparison routine.
         mediaTrack.format = Format.createVideoSampleFormat(
                 null, null, codec, -1, -1, width, height, fps, null, null);
 
@@ -306,7 +306,7 @@ public class ExoFormatItem implements FormatItem {
                 break;
         }
 
-        // Fake format. It's used in app internal comparison routine.
+        // Fake format. It's used in app public comparison routine.
         mediaTrack.format = Format.createAudioSampleFormat(
                 null, null, codec, -1, -1,0, 0, null, null, 0, null);
 

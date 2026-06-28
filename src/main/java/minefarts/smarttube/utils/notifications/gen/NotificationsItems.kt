@@ -5,7 +5,7 @@ import minefarts.smarttube.utils.common.models.gen.NavigationEndpointItem
 import minefarts.smarttube.utils.common.models.gen.TextItem
 import minefarts.smarttube.utils.common.models.gen.ThumbnailItem
 
-internal data class NotificationAction(
+public data class NotificationAction(
     val openPopupAction: OpenPopupAction?
 ) {
     data class OpenPopupAction(
@@ -29,7 +29,7 @@ internal data class NotificationAction(
     }
 }
 
-internal data class NotificationItem(
+public data class NotificationItem(
     val notificationRenderer: NotificationRenderer?
 ) {
     data class NotificationRenderer(

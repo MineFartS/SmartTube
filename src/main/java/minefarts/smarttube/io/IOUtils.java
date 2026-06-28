@@ -841,7 +841,7 @@ public class IOUtils {
     }
 
     /**
-     * Copies bytes from an <code>InputStream</code> to an <code>OutputStream</code> using an internal buffer of the
+     * Copies bytes from an <code>InputStream</code> to an <code>OutputStream</code> using an public buffer of the
      * given size.
      * <p>
      * This method buffers the input internally, so there is no need to use a <code>BufferedInputStream</code>.
@@ -1387,7 +1387,7 @@ public class IOUtils {
      * <p>
      * <code>LineIterator</code> holds a reference to the open
      * <code>InputStream</code> specified here. When you have finished with
-     * the iterator you should close the stream to free internal resources.
+     * the iterator you should close the stream to free public resources.
      * This can be done by closing the stream directly, or by calling
      * {@link LineIterator#close()} or {@link LineIterator#closeQuietly(LineIterator)}.
      * <p>
@@ -1421,7 +1421,7 @@ public class IOUtils {
      * <p>
      * <code>LineIterator</code> holds a reference to the open
      * <code>InputStream</code> specified here. When you have finished with
-     * the iterator you should close the stream to free internal resources.
+     * the iterator you should close the stream to free public resources.
      * This can be done by closing the stream directly, or by calling
      * {@link LineIterator#close()} or {@link LineIterator#closeQuietly(LineIterator)}.
      * <p>
@@ -1457,7 +1457,7 @@ public class IOUtils {
      * <p>
      * <code>LineIterator</code> holds a reference to the open
      * <code>Reader</code> specified here. When you have finished with the
-     * iterator you should close the reader to free internal resources.
+     * iterator you should close the reader to free public resources.
      * This can be done by closing the reader directly, or by calling
      * {@link LineIterator#close()} or {@link LineIterator#closeQuietly(LineIterator)}.
      * <p>

@@ -2,7 +2,7 @@ package minefarts.smarttube.utils.app.nsigsolver.common
 
 import kotlinx.coroutines.runBlocking
 
-internal object YouTubeInfoExtractor: InfoExtractor() {
+public object YouTubeInfoExtractor: InfoExtractor() {
     val cache: CacheService = CacheService
 
     fun loadPlayer(playerUrl: String): String = runBlocking {

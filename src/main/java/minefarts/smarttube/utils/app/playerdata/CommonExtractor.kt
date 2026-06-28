@@ -5,7 +5,7 @@ import minefarts.smarttube.utils.mylogger.Log
 import minefarts.smarttube.google.common.js.JSInterpret
 import java.util.regex.Pattern
 
-internal object CommonExtractor {
+public object CommonExtractor {
     private val TAG = CommonExtractor::class.java.simpleName
     private val mGlobalVarPattern: Pattern = Pattern.compile("""(?x)
             (["'])use\s+strict\1;\s*

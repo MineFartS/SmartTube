@@ -15,7 +15,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.util.concurrent.CopyOnWriteArrayList
 
-internal object RssService {
+public object RssService {
     private const val RSS_URL: String = "https://www.youtube.com/feeds/videos.xml?channel_id="
     private const val MAX_ITEMS = 100 // NOTE: Limit the result. Unlimited has veeery long loading and often crashing.
 

@@ -11,7 +11,7 @@ import retrofit2.http.*
 import okhttp3.RequestBody
 
 @WithGson
-internal interface WatchNextApi {
+public interface WatchNextApi {
 
     @Headers("Content-Type: application/json")
     @POST("https://www.youtube.com/youtubei/v1/next")

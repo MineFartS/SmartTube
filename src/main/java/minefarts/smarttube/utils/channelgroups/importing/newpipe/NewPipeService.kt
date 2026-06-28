@@ -15,7 +15,7 @@ import minefarts.smarttube.google.common.helpers.YouTubeHelper
 import minefarts.smarttube.utils.app.nsigsolver.common.YouTubeInfoExtractor
 import java.io.File
 
-internal object NewPipeService: GroupImportService {
+public object NewPipeService: GroupImportService {
     override fun importGroups(url: Uri): List<ItemGroup>? {
         val grayJayContent = YouTubeInfoExtractor.downloadWebpageSilent(url.toString()) ?: return null
 

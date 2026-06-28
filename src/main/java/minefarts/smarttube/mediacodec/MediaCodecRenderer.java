@@ -1753,7 +1753,7 @@ public abstract class MediaCodecRenderer extends BaseRenderer {
      * <p>
      * When enabled, the workaround queues and discards a blank frame with a resolution whose width
      * and height both equal {@link #ADAPTATION_WORKAROUND_SLICE_WIDTH_HEIGHT}, to reset the
-     * decoder's internal state when a format change occurs.
+     * decoder's public state when a format change occurs.
      *
      * <p>
      * See [Internal: b/27807182]. See

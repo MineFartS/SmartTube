@@ -4,7 +4,7 @@ import minefarts.smarttube.utils.helpers.Helpers
 
 private const val DELIM: String = "%nsd%"
 
-internal data class NSigData(
+public data class NSigData(
     val nFuncPlayerUrl: String,
     val nFuncParams: List<String>,
     val nFuncCode: String

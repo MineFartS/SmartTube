@@ -10,7 +10,7 @@ private const val ALL = 0 // Enable notifications
 private const val PERSONALIZED = 1 // Disable notifications
 private const val NONE = 2 // Disable notifications
 
-internal object NotificationsServiceIntWrapper: NotificationsServiceInt() {
+public object NotificationsServiceIntWrapper: NotificationsServiceInt() {
     override fun getItems(): MediaGroup? {
         return try {
             super.getItems()
@@ -35,7 +35,7 @@ internal object NotificationsServiceIntWrapper: NotificationsServiceInt() {
     }
 }
 
-internal class NotificationStateImplWrapper(
+public class NotificationStateImplWrapper(
     notificationStateItem: NotificationStateItem,
     selectedSateId: Int?,
     channelId: String?,

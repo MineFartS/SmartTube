@@ -7,7 +7,7 @@ import minefarts.smarttube.utils.service.internal.MediaServiceData
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
-internal object PoTokenCloudService {
+public object PoTokenCloudService {
     private const val RETRY_DELAY_MS: Long = 20_000
     private const val PO_TOKEN_LIFETIME_MS: Long = 12 * 60 * 60 * 1_000
     private val api = RetrofitHelper.create(PoTokenCloudApi::class.java)

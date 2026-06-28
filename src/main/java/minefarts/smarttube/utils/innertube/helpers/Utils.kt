@@ -10,7 +10,7 @@ import java.util.regex.Pattern
  * @param endString end string
  * @return the string between start and end, or null if not found
  */
-internal fun getStringBetweenStrings(data: String, startString: String, endString: String): String? {
+public fun getStringBetweenStrings(data: String, startString: String, endString: String): String? {
     val regex = escapeStringRegexp(startString) + "(.*?)" + escapeStringRegexp(endString)
     val pattern = Pattern.compile(regex, Pattern.DOTALL)
     val matcher = pattern.matcher(data)
@@ -26,31 +26,31 @@ internal fun getStringBetweenStrings(data: String, startString: String, endStrin
  * @param input input string
  * @return escaped string
  */
-internal fun escapeStringRegexp(input: String): String {
+public fun escapeStringRegexp(input: String): String {
     // Escape special regex characters
     val escaped = input.replace("([|\\\\{}()\\[\\]^$+*?.])".toRegex(), "\\\\$1")
     // Replace dash
     return escaped.replace("-", "\\x2d")
 }
 
-internal enum class DeviceCategory {
+public enum class DeviceCategory {
     MOBILE,
     DESKTOP
 }
 
-internal fun UserAgents.byCategory(category: DeviceCategory): List<String> =
+public fun UserAgents.byCategory(category: DeviceCategory): List<String> =
     when (category) {
         DeviceCategory.DESKTOP -> desktop
         DeviceCategory.MOBILE -> mobile
     }
 
-internal fun getRandomUserAgent(type: DeviceCategory): String {
+public fun getRandomUserAgent(type: DeviceCategory): String {
     return UserAgents
         .byCategory(type)
         .random()
 }
 
-internal fun toJsonString(obj: Any): String {
+public fun toJsonString(obj: Any): String {
     val gson = GsonBuilder().create() // nulls are ignored by default
     return gson.toJson(obj)
 }

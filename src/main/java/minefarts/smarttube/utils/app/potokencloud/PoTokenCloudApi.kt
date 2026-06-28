@@ -10,7 +10,7 @@ import retrofit2.http.Query
 import retrofit2.http.Url
 
 @WithGson
-internal interface PoTokenCloudApi {
+public interface PoTokenCloudApi {
 
     @GET
     fun getPoToken(

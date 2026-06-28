@@ -4,7 +4,7 @@ import minefarts.smarttube.utils.common.helpers.AppClient
 import java.util.Date
 import java.util.TimeZone
 
-internal class InnertubeContext(
+public class InnertubeContext(
     options: SessionArgs, deviceInfo: DeviceInfo
 ) {
     val client: Client = Client(options, deviceInfo)
@@ -70,7 +70,7 @@ internal class InnertubeContext(
 }
 
 // TODO: replace with the real values
-internal data class SessionArgs(
+public data class SessionArgs(
     val lang: String? = null,
     val location: String? = null,
     val visitorData: String? = null,

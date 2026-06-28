@@ -42,7 +42,7 @@ val REEL_DETAILS = "\"disablePlayerResponse\":true,\"params\":\"%s\",\"playerReq
 val REEL_CONTINUATION = "\"sequenceParams\":\"%s\""
 val CONTINUATION = "\"continuation\":\"%s\""
 
-internal object BrowseApiHelper {
+public object BrowseApiHelper {
 
     const val WATCH_LATER_CHANNEL_ID = "VLWL"
     const val LIKED_CHANNEL_ID = "VLLL"
