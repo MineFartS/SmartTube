@@ -279,38 +279,22 @@ public class VideoLoaderController extends BasePlayerController {
     private void loadVideo(Video item) {
         if (getPlayer() == null || item == null) return;
             
-        // Ensure we don't apply stale async results for previous videos.
-        RxHelper.disposeActions(mFormatInfoAction, mMpdStreamAction);
         mFormatInfoAction = null;
         mMpdStreamAction = null;
 
-        onEngineReleased();
+        CacheManager.clear();
         
         Queue.setCurrent(item);
         
         getPlayer().setVideo(item);
         getPlayer().resetPlayerState();
-
         getPlayer().showProgressBar(true);
 
-        
-        final String expectedVideoId = item.videoId;
+        mFormatInfoAction = mMediaItemService.getFormatInfoObserve(item.videoId).subscribe(
+            this::processFormatInfo,
+            this::runFormatErrorAction
+        );
 
-        mFormatInfoAction = mMediaItemService
-            .getFormatInfoObserve(expectedVideoId)
-            .subscribe(
-                formatInfo -> {
-                    // Guard against race: user might have switched videos while formatInfo was loading.
-                    if (getVideo() == null || !expectedVideoId.equals(getVideo().videoId)) return;
-                    processFormatInfo(formatInfo);
-                },
-                error -> {
-                    // Only react if we're still on the same video.
-                    if (getVideo() == null || !expectedVideoId.equals(getVideo().videoId)) return;
-                    getPlayer().showProgressBar(false);
-                    runFormatErrorAction(error);
-                }
-            );
     }
 
     private void processFormatInfo(MediaItemFormatInfo formatInfo) {

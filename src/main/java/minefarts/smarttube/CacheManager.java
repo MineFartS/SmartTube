@@ -11,15 +11,15 @@ import minefarts.smarttube.utils.app.PoTokenGate;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
 import minefarts.smarttube.utils.helpers.FileHelpers;
 import minefarts.smarttube.app.models.playback.controllers.VideoStateController;
+import minefarts.smarttube.app.models.playback.PlayerEventListener;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
 
 import android.util.Base64;
 import android.content.Context;
+import android.os.Looper;
+import android.os.Handler;
 
 public class CacheManager {
-
-    private static final SignInService sSignInService = SignInService.instance();
-
-    private static final MediaItemService sMediaItemService = MediaItemService.instance();
 
     public static void clear() {
 
@@ -76,6 +76,16 @@ public class CacheManager {
             new byte[32], 
             Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP
         );
+
+        //=======================
+        // PlaybackPresenter
+
+        PlaybackPresenter PP = PlaybackPresenter.instance(context);
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        for (PlayerEventListener listener : PP.mEventListeners) {
+            handler.post(listener::onEngineReleased);
+        }
 
         //=======================
 
