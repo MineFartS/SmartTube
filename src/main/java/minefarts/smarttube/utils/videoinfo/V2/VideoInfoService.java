@@ -30,7 +30,7 @@ import minefarts.smarttube.utils.videoinfo.models.formats.AdaptiveVideoFormat;
 import minefarts.smarttube.utils.videoinfo.models.formats.VideoFormat;
 import minefarts.smarttube.utils.app.playerdata.PlayerDataExtractor;
 import minefarts.smarttube.utils.common.helpers.QueryBuilder;
-import minefarts.smarttube.app.models.playback.controllers.VideoStateController;
+import minefarts.smarttube.CacheManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -103,7 +103,7 @@ public class VideoInfoService {
 
         initInfoTypeIfNeeded();
 
-        VideoStateController.resetCPN();
+        CacheManager.clear();
 
         mAuthBlock = true;
 

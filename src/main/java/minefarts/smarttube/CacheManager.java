@@ -10,7 +10,9 @@ import minefarts.smarttube.utils.app.potokennp2.PoTokenProvider;
 import minefarts.smarttube.utils.app.PoTokenGate;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
 import minefarts.smarttube.utils.helpers.FileHelpers;
+import minefarts.smarttube.app.models.playback.controllers.VideoStateController;
 
+import android.util.Base64;
 import android.content.Context;
 
 public class CacheManager {
@@ -66,6 +68,14 @@ public class CacheManager {
 
         FileHelpers.deleteContent(FileHelpers.getInternalCacheDir(context));
         FileHelpers.deleteContent(FileHelpers.getExternalCacheDir(context));
+
+        //=======================
+        // VideoStateController
+
+        VideoStateController.mClientPlaybackNonce = Base64.encodeToString(
+            new byte[32], 
+            Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP
+        );
 
         //=======================
 

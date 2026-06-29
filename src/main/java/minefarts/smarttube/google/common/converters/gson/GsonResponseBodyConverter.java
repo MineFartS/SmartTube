@@ -8,7 +8,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 
 import minefarts.smarttube.utils.helpers.Helpers;
-import minefarts.smarttube.app.models.playback.controllers.VideoStateController;
+import minefarts.smarttube.CacheManager;
 
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
@@ -52,7 +52,7 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
 
         // Common failure: expected object but got a JSON string.
         if (firstToken == JsonToken.STRING) {
-            VideoStateController.resetCPN();
+            CacheManager.clear();
             throw new JsonSyntaxException("Expected JSON object but got STRING payload: " + safeSnippet(body));
         }
 
