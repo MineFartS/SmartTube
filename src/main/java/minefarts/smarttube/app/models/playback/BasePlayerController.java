@@ -87,7 +87,6 @@ public abstract class BasePlayerController implements PlayerEventListener {
     private static final List<AccountChangeListener> mAccountListeners = new CopyOnWriteArrayList<>();
 
     private PlaybackPresenter mMainController;
-    private Context mContext;
 
     public void setMainController(PlaybackPresenter mainController) {
         mMainController = mainController;
@@ -111,14 +110,11 @@ public abstract class BasePlayerController implements PlayerEventListener {
         return mMainController != null ? mMainController.getVideo() : null;
     }
 
-    protected void setAltContext(Context context) {
-        mContext = context;
-    }
-
     public Context getContext() {
-        return ContextManager.set(
-            mMainController != null ? mMainController.getContext() : mContext
-        );
+        if (mMainController != null)
+            ContextManager.set(mMainController.getContext());
+        
+        return ContextManager.get();
     }
 
     public Activity getActivity() {
