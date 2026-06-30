@@ -617,20 +617,25 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
     }
 
     private void appendOpenCommentsButton() {
-        if (!mIsOpenCommentsButtonEnabled || mVideo == null) return;
+        if (!mIsOpenCommentsButtonEnabled 
+            || mVideo == null
+            || mVideo.videoId == null 
+            || mVideo.isLive 
+            || mVideo.isUpcoming
+        ) return;
 
-        if (mVideo.videoId == null || mVideo.isLive || mVideo.isUpcoming) return;
-
-        mDialogPresenter.appendSingleButton(
-                UiOptionItem.from(getContext().getString(R.string.open_comments),
-                        optionItem -> {
-                            MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
-                            BasePlayerController.loadMetadata(mVideo, metadata -> {
-                                CommentsController controller = new CommentsController(getContext(), metadata);
-                                controller.onButtonClicked(R.id.action_chat, 1);
-                            });
-                        }
-                ));
+        mDialogPresenter.appendSingleButton(UiOptionItem.from(
+            getContext().getString(R.string.open_comments),
+            optionItem -> {
+                MessageHelpers.showMessage(getContext(), R.string.wait_data_loading);
+                BasePlayerController.loadMetadata(mVideo, metadata -> {
+                    CommentsController controller = new CommentsController();
+                    controller.onInit();
+                    controller.onMetadata(metadata);
+                    controller.onButtonClicked(R.id.action_chat, 1);
+                });
+            }
+        ));
     }
 
     private void appendPlayVideoButton() {

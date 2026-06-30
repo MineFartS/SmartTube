@@ -17,6 +17,10 @@ import minefarts.smarttube.app.models.playback.ui.CommentsReceiver.Backup;
 import minefarts.smarttube.app.models.playback.ui.AbstractCommentsReceiver;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
+import minefarts.smarttube.utils.comments.gen.CommentsResult;
+import minefarts.smarttube.utils.comments.impl.CommentGroupImpl;
+
+import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
 public class CommentsController extends BasePlayerController {
@@ -28,15 +32,6 @@ public class CommentsController extends BasePlayerController {
     private String mCommentsKey;
     private String mTitle;
     private Pair<String, Backup> mBackup;
-
-    public CommentsController() {
-    }
-
-    public CommentsController(Context context, MediaItemMetadata metadata) {
-        setAltContext(context);
-        onInit();
-        onMetadata(metadata);
-    }
 
     @Override
     public void onMetadata(MediaItemMetadata metadata) {
@@ -150,14 +145,18 @@ public class CommentsController extends BasePlayerController {
         RxHelper.disposeActions(mCommentsAction);
     }
 
-    private void loadComments(CommentsReceiver receiver, String commentsKey) {
+    private void loadComments(CommentsReceiver receiver, String key) {
+        if (key == null) return;
 
         onFinish();
 
-        // Cancel any in-flight comments request for the previous video.
-        RxHelper.disposeActions(mCommentsAction);
+        Observable<CommentGroup> observe = RxHelper.fromCallable(() -> {
+            CommentsResult commentsResult = getCommentsService().getCommentsResult(key);
+            if (commentsResult == null) return null;
+            return new CommentGroupImpl(commentsResult);
+        });
 
-        mCommentsAction = getCommentsService().getCommentsObserve(commentsKey).subscribe(
+        mCommentsAction = observe.subscribe(
             receiver::addCommentGroup,
             error -> {
                 String message = error != null ? error.getMessage() : null;
@@ -167,6 +166,7 @@ public class CommentsController extends BasePlayerController {
                 receiver.addCommentGroup(null);
             }
         );
+
     }
 
     private void showDialog(CommentsReceiver receiver, String title) {
