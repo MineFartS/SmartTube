@@ -78,13 +78,20 @@ public class CacheManager {
         );
 
         //=======================
+
+    }
+
+    public static void releaseEngine() {
+
+        Context context = ContextManager.get();
+
+        //=======================
         // PlaybackPresenter
 
         PlaybackPresenter PP = PlaybackPresenter.instance(context);
-        Handler handler = new Handler(Looper.getMainLooper());
 
         for (PlayerEventListener listener : PP.mEventListeners) {
-            handler.post(listener::onEngineReleased);
+            listener.onEngineReleased();
         }
 
         //=======================

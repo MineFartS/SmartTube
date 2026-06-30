@@ -282,7 +282,7 @@ public class VideoLoaderController extends BasePlayerController {
         mFormatInfoAction = null;
         mMpdStreamAction = null;
 
-        CacheManager.clear();
+        CacheManager.releaseEngine();
         
         Queue.setCurrent(item);
         
