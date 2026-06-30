@@ -13,6 +13,7 @@ import minefarts.smarttube.utils.helpers.FileHelpers;
 import minefarts.smarttube.app.models.playback.controllers.VideoStateController;
 import minefarts.smarttube.app.models.playback.PlayerEventListener;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
+import minefarts.smarttube.utils.app.nsigsolver.impl.V8ChallengeProvider;
 
 import android.util.Base64;
 import android.content.Context;
@@ -76,6 +77,13 @@ public class CacheManager {
             new byte[32], 
             Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP
         );
+
+        //=======================
+        // V8ChallengeProvider
+
+        V8ChallengeProvider V8CP = V8ChallengeProvider.INSTANCE;
+
+        V8CP.v8Runtime.remove();
 
         //=======================
 
