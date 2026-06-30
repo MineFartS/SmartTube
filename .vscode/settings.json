@@ -24,13 +24,13 @@
     "java.configuration.detectJdksAtStart": true,
     "java.configuration.runtimes": [{
         "name": "JavaSE-17",
-        "path": "${workspaceFolder}/jdk/",
+        "path": "${workspaceFolder}/lib/jdk17/",
         "default": true
     }],
 
     "terminal.integrated.env.windows": {
-        "JAVA_HOME": "${workspaceFolder}/jdk",
-        "PATH": "${workspaceFolder}/jdk/bin;${workspaceFolder}/sdk/platform-tools;${env:PATH}"
+        "JAVA_HOME": "${workspaceFolder}/lib/jdk17/",
+        "PATH": "${workspaceFolder}/lib/jdk17/bin;${workspaceFolder}/lib/sdk/platform-tools;${env:PATH}"
     },
     "notebook.defaultFormatter": "redhat.java",
 
