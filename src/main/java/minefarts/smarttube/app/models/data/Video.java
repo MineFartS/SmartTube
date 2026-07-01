@@ -311,9 +311,7 @@ public final class Video {
     }
 
     public String getAuthor() {
-        if (author != null) {
-            return author;
-        }
+        if (author != null) return author;
 
         String mainTitle = metadataTitle != null ? metadataTitle : title;
         CharSequence subtitle = metadataSecondTitle != null ? metadataSecondTitle : secondTitle;
@@ -791,9 +789,7 @@ public final class Video {
     }
 
     private MediaItem findNextVideo(MediaItemMetadata metadata) {
-        if (metadata == null) {
-            return null;
-        }
+        if (metadata == null) return null;
 
         MediaItem nextVideo = metadata.getNextVideo();
 
@@ -816,9 +812,7 @@ public final class Video {
     }
 
     public long getLiveDurationMs() {
-        if (startTimeMs == 0) {
-            return 0;
-        }
+        if (startTimeMs == 0) return 0;
 
         // Disable updates if stream ended while watching
         if (!isLive) {
@@ -845,9 +839,8 @@ public final class Video {
 
     private long getPositionFromPercentWatched() {
         // Ignore up to 10% watched because the video might be opened on phone and closed immediately.
-        if (percentWatched <= RESTORE_POSITION_PERCENTS || percentWatched >= 100) {
+        if (percentWatched <= RESTORE_POSITION_PERCENTS || percentWatched >= 100)
             return 0;
-        }
 
         long posMs = (long) (durationMs / 100f * percentWatched);
         return posMs > 0 && posMs < durationMs ? posMs : 0;
@@ -858,9 +851,8 @@ public final class Video {
     }
 
     public void sync(State state) {
-        if (state != null) {
-            percentWatched = state.positionMs / (state.durationMs / 100f);
-        }
+        if (state == null) return;
+        percentWatched = state.positionMs / (state.durationMs / 100f);
     }
 
     /**
@@ -873,9 +865,7 @@ public final class Video {
     }
 
     public String createPlaylistTitle() {
-        if (!hasPlaylist()) {
-            return null;
-        }
+        if (!hasPlaylist()) return null;
         
         // Trying to properly format channel playlists, mixes etc
         boolean isChannelPlaylistItem = getGroupTitle() != null && belongsToSameAuthorGroup() && belongsToSamePlaylistGroup();
@@ -886,9 +876,7 @@ public final class Video {
     }
 
     public String createChannelTitle() {
-        if (!hasReloadPageKey() && !hasChannel()) {
-            return null;
-        }
+        if (!hasReloadPageKey() && !hasChannel()) return null;
         
         // Trying to properly format channel playlists, mixes etc
         boolean hasChannel = hasChannel() && !isChannel();
@@ -897,4 +885,5 @@ public final class Video {
         String subtitle = isUserPlaylistItem ? getGroupTitle() : hasChannel || isChannel() ? null : getAuthor();
         return title != null && subtitle != null ? String.format("%s - %s", title, subtitle) : String.format("%s", title != null ? title : subtitle);
     }
+
 }
