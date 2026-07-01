@@ -45,6 +45,7 @@ import minefarts.smarttube.app.models.data.DislikesResult;
 import minefarts.smarttube.google.common.helpers.RetrofitHelper;
 import minefarts.smarttube.utils.videoinfo.V2.VideoInfoService;
 import minefarts.smarttube.utils.videoinfo.V2.VideoInfoApi;
+import minefarts.smarttube.google.youtubedata3.YouTubeDataServiceInt;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -285,15 +286,21 @@ public class VideoLoaderController extends BasePlayerController {
         CacheManager.clear();
         
         Queue.setCurrent(item);
-        
-        getPlayer().setVideo(item);
-        getPlayer().resetPlayerState();
-        getPlayer().showProgressBar(true);
 
-        mFormatInfoAction = mMediaItemService.getFormatInfoObserve(item.videoId).subscribe(
-            this::processFormatInfo,
-            this::runFormatErrorAction
-        );
+        mMediaItemService.getMetadataObserve(item.videoId).subscribe(mim -> {
+
+            item.sync(mim);
+        
+            getPlayer().setVideo(item);
+            getPlayer().resetPlayerState();
+            getPlayer().showProgressBar(true);
+
+            mFormatInfoAction = mMediaItemService.getFormatInfoObserve(item.videoId).subscribe(
+                this::processFormatInfo,
+                this::runFormatErrorAction
+            );
+
+        });
 
     }
 
