@@ -6,6 +6,9 @@ import minefarts.smarttube.utils.SignInService;
 import minefarts.smarttube.utils.MediaItemService;
 import minefarts.smarttube.utils.videoinfo.V2.VideoInfoService;
 import minefarts.smarttube.utils.common.helpers.AppClient;
+import minefarts.smarttube.utils.app.AppService;
+import minefarts.smarttube.utils.app.AppApi;
+
 import minefarts.smarttube.utils.app.potokennp2.PoTokenProvider;
 import minefarts.smarttube.utils.app.PoTokenGate;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
@@ -31,6 +34,7 @@ public class CacheManager {
         
         SIS.mCachedAuthorizationHeader = null;
         SIS.mCacheUpdateTime = 0;
+
 
         //=======================
         // LocaleUpdater
@@ -84,6 +88,17 @@ public class CacheManager {
         V8ChallengeProvider V8CP = V8ChallengeProvider.INSTANCE;
 
         V8CP.v8Runtime.remove();
+
+        //=======================
+        // App Service
+
+        SignInService SIS = SignInService.instance();
+        AppService AS = AppService.instance();
+
+        AS.mVisitorCookie = null;
+
+        SIS.mCachedAuthorizationHeader = null;
+        SIS.mCacheUpdateTime = 0;
 
         //=======================
 

@@ -27,15 +27,15 @@ public class AppService {
 
     private static AppService sInstance;
     
+    public String mVisitorCookie = null;
+
     AppApi mAppApi;
-    MediaServiceData mData;
 
     public static AppService instance() {
  
         if (sInstance == null) {
             sInstance = new AppService();
             sInstance.mAppApi = RetrofitHelper.create(AppApi.class);
-            sInstance.mData = MediaServiceData.instance();
         }
 
         return sInstance;
@@ -106,20 +106,8 @@ public class AppService {
         if (clientUrl == null) return null;
 
         Call<ClientData> wrapper = mAppApi.getClientData(clientUrl);
-        ClientData clientData = RetrofitHelper.get(wrapper);
-
-        String legacyClientUrl = clientUrl
-            .replace("/dg=0/", "/exm=base/ed=1/")
-            .replace("/m=base", "/m=main");
-
-        // Seems that legacy script encountered.
-        if (clientData == null) {
-            clientData = RetrofitHelper.get(
-                mAppApi.getClientData(legacyClientUrl)
-            );
-        }
-
-        return clientData;
+        
+        return RetrofitHelper.get(wrapper);
     }
 
     public String getClientId() {
@@ -157,15 +145,13 @@ public class AppService {
         
         Call<AppInfo> wrapper = mAppApi.getAppInfo(
             ExoMediaSourceFactory.USER_AGENT_TV, 
-            mData.mVisitorCookie
+            mVisitorCookie
         );
 
         Response<AppInfo> response = RetrofitHelper.getResponse(wrapper);
 
         if (response != null) {
-            mData.setVisitorCookie(
-                RetrofitHelper.getCookies(response)
-            );
+            mVisitorCookie = RetrofitHelper.getCookies(response);
             return response.body();
         }
 

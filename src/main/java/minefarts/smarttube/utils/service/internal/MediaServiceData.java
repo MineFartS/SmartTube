@@ -50,7 +50,6 @@ public class MediaServiceData {
     private String mDeviceId;
     private String mOldAppVersion;
     private int mVideoInfoType;
-    public String mVisitorCookie;
     private int mEnabledFormats;
     private int mHiddenContent;
     private MediaServiceCache mCachedPrefs;
@@ -156,11 +155,6 @@ public class MediaServiceData {
 
     public void setPlayerExtractorCache(PlayerExtractorCache playerCache) {
         mPlayerExtractorCache = playerCache;
-        persistState();
-    }
-
-    public void setVisitorCookie(String visitorCookie) {
-        mVisitorCookie = visitorCookie;
         persistState();
     }
 
@@ -271,7 +265,7 @@ public class MediaServiceData {
         /* 08 */ mClientData = Helpers.parseItem(split, 8, ClientDataCached::fromString);
         /* 09 */ mHiddenContent = Helpers.parseInt(split, 9, CONTENT_SHORTS | CONTENT_UPCOMING);
         /* 10 */ mIsMoreSubtitlesUnlocked = Helpers.parseBoolean(split, 10);
-        /* 11 */ mVisitorCookie = Helpers.parseStr(split, 11);
+
         /* 12 */ mFailedAppInfo = Helpers.parseItem(split, 12, AppInfoCached::fromString);
 
         // Hide watched content by default
@@ -302,7 +296,7 @@ public class MediaServiceData {
         /* 08 */ mClientData, 
         /* 09 */ mHiddenContent,
         /* 10 */ mIsMoreSubtitlesUnlocked, 
-        /* 11 */ mVisitorCookie, 
+        /* 11 */ null, 
         /* 12 */ mFailedAppInfo
         ));
     
