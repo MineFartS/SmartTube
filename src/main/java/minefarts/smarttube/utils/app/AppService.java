@@ -12,6 +12,7 @@ import minefarts.smarttube.utils.app.playerdata.PlayerDataExtractor;
 import minefarts.smarttube.exoplayer.ExoMediaSourceFactory;
 import minefarts.smarttube.google.common.helpers.RetrofitHelper;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
+import minefarts.smarttube.google.common.helpers.ServiceHelper;
 import minefarts.smarttube.ContextManager;
 
 import java.util.ArrayList;
@@ -27,14 +28,14 @@ public class AppService {
 
     private static AppService sInstance;
     
+    public String mVisitorCookie = null;
+
     AppApi mAppApi;
-    MediaServiceData mData;
 
     public static AppService instance() {
         if (sInstance == null) {
             sInstance = new AppService();
             sInstance.mAppApi = RetrofitHelper.create(AppApi.class);
-            sInstance.mData = MediaServiceData.instance();
         }
 
         return sInstance;
@@ -101,37 +102,29 @@ public class AppService {
         return ContextManager.get();
     }
 
-    protected ClientData getClientData(String clientUrl) {
-        if (clientUrl == null) return null;
+    private ClientData getClientData() {
+        
+        AppInfo appInfo = getAppInfoData();
+        if (appInfo == null) return null;
 
-        Call<ClientData> wrapper = mAppApi.getClientData(clientUrl);
-        ClientData clientData = RetrofitHelper.get(wrapper);
-
-        String legacyClientUrl = clientUrl
-            .replace("/dg=0/", "/exm=base/ed=1/")
-            .replace("/m=base", "/m=main");
-
-        // Seems that legacy script encountered.
-        if (clientData == null) {
-            clientData = RetrofitHelper.get(
-                mAppApi.getClientData(legacyClientUrl)
-            );
-        }
-
-        return clientData;
+        Call<ClientData> wrapper = mAppApi.getClientData(
+            ServiceHelper.tidyUrl(appInfo.mClientUrl)
+        );
+        
+        return RetrofitHelper.get(wrapper);
     }
 
     public String getClientId() {
-        ClientData clientData = getClientData(getClientUrl());
-        return clientData != null ? clientData.getClientId() : null;
+        ClientData clientData = getClientData();
+        return clientData != null ? clientData.mClientId : null;
     }
 
     /**
      * Constant used in AuthApi
      */
     public String getClientSecret() {
-        ClientData clientData = getClientData(getClientUrl());
-        return clientData != null ? clientData.getClientSecret() : null;
+        ClientData clientData = getClientData();
+        return clientData != null ? clientData.mClientSecret : null;
     }
 
     /**
@@ -144,31 +137,28 @@ public class AppService {
 
     public String getPlayerUrl() {
         AppInfo appInfo = getAppInfoData();
-        return appInfo != null ? appInfo.getPlayerUrl() : null;
-    }
-
-    public String getClientUrl() {
-        AppInfo appInfo = getAppInfoData();
-        return appInfo != null ? appInfo.getClientUrl() : null;
+        if (appInfo == null) return null;
+        return ServiceHelper.tidyUrl(appInfo.mPlayerUrl);
     }
 
     private AppInfo getAppInfoData() {
         
         Call<AppInfo> wrapper = mAppApi.getAppInfo(
             ExoMediaSourceFactory.USER_AGENT_TV, 
-            mData.mVisitorCookie
+            mVisitorCookie
         );
 
         Response<AppInfo> response = RetrofitHelper.getResponse(wrapper);
 
-        if (response == null) return null;
+if (response == null) return null;
 
-        List<String> result = new ArrayList<>();
-
-        List<String> cookies = response.headers().values("Set-Cookie");
-
-        for (String cookie : cookies) {
-            result.add(cookie.split(";")[0]);
+List<String> result = new ArrayList<>();
+if (response != null) {
+    List<String> cookies = response.headers().values("Set-Cookie");
+    for (String cookie : cookies) {
+        result.add(cookie.split(";")[0]);
+    }
+}
         }
 
         mVisitorCookie = result.isEmpty() ? null : Helpers.join("; ", result.toArray(new CharSequence[0]));
@@ -182,7 +172,7 @@ public class AppService {
 
     public void refreshCacheIfNeeded() {
         getAppInfoData();
-        getClientData(getClientUrl());
+        getClientData();
         getPlayerDataExtractor();
     }
 
