@@ -845,7 +845,9 @@ public class PlaybackFragment2
         //=================================================
 
         parts.add(
-            video.getSecondTitleFull().replace("Published on ", "")
+            video.getSecondTitleFull()
+                .replace("Published on ", "")
+                .replace("Premiered ", "")
         );
 
         //=================================================
