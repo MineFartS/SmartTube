@@ -12,8 +12,8 @@ import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.prefs.GlobalPreferences;
 import minefarts.smarttube.utils.prefs.SharedPreferencesBase;
 import minefarts.smarttube.utils.rx.RxHelper;
-import minefarts.smarttube.utils.app.models.cached.AppInfoCached;
-import minefarts.smarttube.utils.app.models.cached.ClientDataCached;
+import minefarts.smarttube.utils.app.models.AppInfo;
+import minefarts.smarttube.utils.app.models.ClientData;
 import minefarts.smarttube.utils.app.models.PlayerData;
 import minefarts.smarttube.utils.app.playerdata.NSigData;
 import minefarts.smarttube.utils.app.playerdata.PlayerExtractorCache;
@@ -55,11 +55,11 @@ public class MediaServiceData {
     private MediaServiceCache mCachedPrefs;
     private GlobalPreferences mGlobalPrefs;
     public PoTokenResponse mPoToken;
-    private AppInfoCached mAppInfo;
-    private AppInfoCached mFailedAppInfo;
+    private AppInfo mAppInfo;
+    private AppInfo mFailedAppInfo;
     private PlayerData mPlayerData;
     private PlayerExtractorCache mPlayerExtractorCache;
-    private ClientDataCached mClientData;
+    private ClientData mClientData;
     private NSigData mNSigData;
     private NSigData mSigData;
     private boolean mIsMoreSubtitlesUnlocked;
@@ -200,11 +200,11 @@ public class MediaServiceData {
         persistState();
     }
 
-    public AppInfoCached getAppInfo() {
+    public AppInfo getAppInfo() {
         return mAppInfo;
     }
 
-    public void setAppInfo(AppInfoCached appInfo) {
+    public void setAppInfo(AppInfo appInfo) {
         if (appInfo != null) {
             mFailedAppInfo = null;
         }
@@ -216,11 +216,11 @@ public class MediaServiceData {
         persistState();
     }
 
-    public AppInfoCached getFailedAppInfo() {
+    public AppInfo getFailedAppInfo() {
         return mFailedAppInfo;
     }
 
-    public void setFailedAppInfo(AppInfoCached appInfo) {
+    public void setFailedAppInfo(AppInfo appInfo) {
         if (Helpers.equals(mFailedAppInfo, appInfo)) return;
 
         mFailedAppInfo = appInfo;
@@ -228,11 +228,11 @@ public class MediaServiceData {
         persistState();
     }
 
-    public ClientDataCached getClientData() {
+    public ClientData getClientData() {
         return mClientData;
     }
 
-    public void setClientData(ClientDataCached clientData) {
+    public void setClientData(ClientData clientData) {
         mClientData = clientData;
 
         persistState();
@@ -260,13 +260,9 @@ public class MediaServiceData {
         /* 03 */ mVideoInfoType = Helpers.parseInt(split, 3, -1);
         /* 04 */ mEnabledFormats = Helpers.parseInt(split, 4, FORMATS_DASH | FORMATS_URL);
         /* 05 */ mPoToken = Helpers.parseItem(split, 5, PoTokenResponse::fromString);
-        /* 06 */ mAppInfo = Helpers.parseItem(split, 6, AppInfoCached::fromString);
-        /* 07 */ mPlayerData = Helpers.parseItem(split, 7, PlayerData::fromString);
-        /* 08 */ mClientData = Helpers.parseItem(split, 8, ClientDataCached::fromString);
+
         /* 09 */ mHiddenContent = Helpers.parseInt(split, 9, CONTENT_SHORTS | CONTENT_UPCOMING);
         /* 10 */ mIsMoreSubtitlesUnlocked = Helpers.parseBoolean(split, 10);
-
-        /* 12 */ mFailedAppInfo = Helpers.parseItem(split, 12, AppInfoCached::fromString);
 
         // Hide watched content by default
         setContentHidden(MediaServiceData.CONTENT_WATCHED, true);
@@ -274,7 +270,8 @@ public class MediaServiceData {
         boolean isAppUpdated = mOldAppVersion != null && !Helpers.equals(mOldAppVersion, appVersion);
 
         if (isAppUpdated) {
-            resetSensitiveData();
+            mVideoInfoType = -1;
+            mFailedAppInfo = null;
         }
 
         mOldAppVersion = appVersion;
@@ -291,20 +288,13 @@ public class MediaServiceData {
         /* 03 */ mVideoInfoType,
         /* 04 */ mEnabledFormats,
         /* 05 */ mPoToken,
-        /* 06 */ mAppInfo, 
-        /* 07 */ mPlayerData, 
-        /* 08 */ mClientData, 
+        /* 06 */ null, 
+        /* 07 */ null, 
+        /* 08 */ null, 
         /* 09 */ mHiddenContent,
-        /* 10 */ mIsMoreSubtitlesUnlocked, 
-        /* 11 */ null, 
-        /* 12 */ mFailedAppInfo
+        /* 10 */ mIsMoreSubtitlesUnlocked
         ));
     
-    }
-
-    private void resetSensitiveData() {
-        mVideoInfoType = -1;
-        mFailedAppInfo = null;
     }
 
 }

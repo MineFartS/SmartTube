@@ -34,7 +34,16 @@ public class CacheManager {
         
         SIS.mCachedAuthorizationHeader = null;
         SIS.mCacheUpdateTime = 0;
+        
+        SIS.mCachedAuthorizationHeader = null;
+        SIS.mCacheUpdateTime = 0;
+        
+        //=======================
+        // AppService
+        
+        AppService AS = AppService.instance();
 
+        AS.mVisitorCookie = null;
 
         //=======================
         // LocaleUpdater
@@ -88,17 +97,6 @@ public class CacheManager {
         V8ChallengeProvider V8CP = V8ChallengeProvider.INSTANCE;
 
         V8CP.v8Runtime.remove();
-
-        //=======================
-        // App Service
-
-        SignInService SIS = SignInService.instance();
-        AppService AS = AppService.instance();
-
-        AS.mVisitorCookie = null;
-
-        SIS.mCachedAuthorizationHeader = null;
-        SIS.mCacheUpdateTime = 0;
 
         //=======================
 
