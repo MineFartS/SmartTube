@@ -31,6 +31,16 @@ public class CacheManager {
         
         SIS.mCachedAuthorizationHeader = null;
         SIS.mCacheUpdateTime = 0;
+        
+        SIS.mCachedAuthorizationHeader = null;
+        SIS.mCacheUpdateTime = 0;
+        
+        //=======================
+        // AppService
+        
+        AppService AS = AppService.instance();
+
+        AS.mVisitorCookie = null;
 
         //=======================
         // LocaleUpdater
