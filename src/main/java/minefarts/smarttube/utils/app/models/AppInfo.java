@@ -14,7 +14,7 @@ public class AppInfo {
      * Path example: <b>/s/player/e49bfb00/tv-player-ias.vflset/tv-player-ias.js</b>
      */
     @RegExp("\"player_url\":\"(.*?)\"")
-    private String mPlayerUrl;
+    public String mPlayerUrl;
 
     /**
      * Url for m=base script<br/>
@@ -26,7 +26,7 @@ public class AppInfo {
         "\\.src = '(.*?m=base)'", // Cobalt path
         "\\.src = '(.*?)'; .\\.id = 'base-js'"
     }) // New Cobalt path
-    private String mClientUrl;
+    public String mClientUrl;
 
     /**
      * E.g. Cgs5azZUVjRoazRuNCiY8s6GBg%3D%3D
@@ -34,23 +34,4 @@ public class AppInfo {
     @RegExp("\"visitorData\":\"(.*?)\"")
     public String mVisitorData;
 
-    public String getPlayerUrl() {
-        return ServiceHelper.tidyUrl(mPlayerUrl);
-    }
-
-    public String getClientUrl() {
-        return ServiceHelper.tidyUrl(mClientUrl);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof AppInfo) {
-            AppInfo target = (AppInfo) obj;
-            return Helpers.equals(getPlayerUrl(), target.getPlayerUrl()) &&
-                    Helpers.equals(getClientUrl(), target.getClientUrl()) &&
-                    Helpers.equals(mVisitorData, target.mVisitorData);
-        }
-
-        return super.equals(obj);
-    }
 }

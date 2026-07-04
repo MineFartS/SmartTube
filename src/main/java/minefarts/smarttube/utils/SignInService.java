@@ -542,11 +542,10 @@ public class SignInService {
         if (tokenResult != null && tokenResult.getRefreshToken() != null) {
             return tokenResult;
         } else {
-            String msg = String.format("Error. Refresh token is empty!\nDebug data: device code: %s, client id: %s, client secret: %s\nError msg: %s",
-                    deviceCode,
-                    null, // mAppService.getClientId()
-                    null, // mAppService.getClientSecret()
-                    tokenResult != null ? tokenResult.getError() : "");
+            String msg = String.format("Error. Refresh token is empty!\nDevice code: %s\nError msg: %s",
+                deviceCode,
+                tokenResult != null ? tokenResult.getError() : ""
+            );
 
             Log.e(TAG, msg);
             throw new IllegalStateException(msg);

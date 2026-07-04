@@ -8,33 +8,23 @@ import minefarts.smarttube.google.common.converters.regexp.RegExp;
  * We should use the first one because other ones contain wrong client id.
  */
 public class ClientData {
-    /**
-     *  We need first occurrence of the pattern (Android TV device).<br/>
-     *  NOTE: old patterns (if match found) contain wrong client id (Http 401 error).
-     */
-    @RegExp({
-            "clientId:\"([-\\w]+\\.apps\\.googleusercontent\\.com)\",\\n?[$\\w]+:\"\\w+\"",
-            //"var [$\\w]+=\"([-\\w]+\\.apps\\.googleusercontent\\.com)\",\\n?[$\\w]+=\"\\w+\"",
-            //"\"([-\\w]+\\.apps\\.googleusercontent\\.com)\",[$\\w]+=\"\\w+\""
-    })
-    private String mClientId;
 
     /**
      *  We need first occurrence of the pattern (Android TV device).<br/>
      *  NOTE: old patterns (if match found) contain wrong client id (Http 401 error).
      */
     @RegExp({
-            "clientId:\"[-\\w]+\\.apps\\.googleusercontent\\.com\",\\n?[$\\w]+:\"(\\w+)\"",
-            //"var [$\\w]+=\"[-\\w]+\\.apps\\.googleusercontent\\.com\",\\n?[$\\w]+=\"(\\w+)\"",
-            //"\"[-\\w]+\\.apps\\.googleusercontent\\.com\",[$\\w]+=\"(\\w+)\""
+        "clientId:\"([-\\w]+\\.apps\\.googleusercontent\\.com)\",\\n?[$\\w]+:\"\\w+\""
     })
-    private String mClientSecret;
+    public String mClientId;
 
-    public String getClientId() {
-        return mClientId;
-    }
-    
-    public String getClientSecret() {
-        return mClientSecret;
-    }
+    /**
+     *  We need first occurrence of the pattern (Android TV device).<br/>
+     *  NOTE: old patterns (if match found) contain wrong client id (Http 401 error).
+     */
+    @RegExp({
+        "clientId:\"[-\\w]+\\.apps\\.googleusercontent\\.com\",\\n?[$\\w]+:\"(\\w+)\""
+    })
+    public String mClientSecret;
+
 }

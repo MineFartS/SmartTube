@@ -12,6 +12,7 @@ import minefarts.smarttube.utils.app.playerdata.PlayerDataExtractor;
 import minefarts.smarttube.exoplayer.ExoMediaSourceFactory;
 import minefarts.smarttube.google.common.helpers.RetrofitHelper;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
+import minefarts.smarttube.google.common.helpers.ServiceHelper;
 import minefarts.smarttube.ContextManager;
 
 import java.util.ArrayList;
@@ -101,25 +102,29 @@ public class AppService {
         return ContextManager.get();
     }
 
-    protected ClientData getClientData(String clientUrl) {
-        if (clientUrl == null) return null;
+    private ClientData getClientData() {
+        
+        AppInfo appInfo = getAppInfoData();
+        if (appInfo == null) return null;
 
-        Call<ClientData> wrapper = mAppApi.getClientData(clientUrl);
+        Call<ClientData> wrapper = mAppApi.getClientData(
+            ServiceHelper.tidyUrl(appInfo.mClientUrl)
+        );
         
         return RetrofitHelper.get(wrapper);
     }
 
     public String getClientId() {
-        ClientData clientData = getClientData(getClientUrl());
-        return clientData != null ? clientData.getClientId() : null;
+        ClientData clientData = getClientData();
+        return clientData != null ? clientData.mClientId : null;
     }
 
     /**
      * Constant used in AuthApi
      */
     public String getClientSecret() {
-        ClientData clientData = getClientData(getClientUrl());
-        return clientData != null ? clientData.getClientSecret() : null;
+        ClientData clientData = getClientData();
+        return clientData != null ? clientData.mClientSecret : null;
     }
 
     /**
@@ -132,12 +137,8 @@ public class AppService {
 
     public String getPlayerUrl() {
         AppInfo appInfo = getAppInfoData();
-        return appInfo != null ? appInfo.getPlayerUrl() : null;
-    }
-
-    public String getClientUrl() {
-        AppInfo appInfo = getAppInfoData();
-        return appInfo != null ? appInfo.getClientUrl() : null;
+        if (appInfo == null) return null;
+        return ServiceHelper.tidyUrl(appInfo.mPlayerUrl);
     }
 
     private AppInfo getAppInfoData() {
@@ -170,7 +171,7 @@ public class AppService {
 
     public void refreshCacheIfNeeded() {
         getAppInfoData();
-        getClientData(getClientUrl());
+        getClientData();
         getPlayerDataExtractor();
     }
 
