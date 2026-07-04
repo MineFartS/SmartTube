@@ -32,12 +32,6 @@ public class CacheManager {
 
         SignInService SIS = SignInService.instance();
         
-        SIS.mCachedAuthorizationHeader = null;
-        SIS.mCacheUpdateTime = 0;
-        
-        SIS.mCachedAuthorizationHeader = null;
-        SIS.mCacheUpdateTime = 0;
-        
         //=======================
         // AppService
         

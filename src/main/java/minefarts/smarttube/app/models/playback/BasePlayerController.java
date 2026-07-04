@@ -692,11 +692,6 @@ public abstract class BasePlayerController implements PlayerEventListener {
         return getSignInService().getSelectedAccount();
     }
 
-    public static String printAccountDebugInfo() {
-        return getSignInService().printDebugInfo();
-    }
-
-
     public static void onAccountChanged(Account account) {
         for (AccountChangeListener listener : mAccountListeners) {
             listener.onAccountChanged(account);

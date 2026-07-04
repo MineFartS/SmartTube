@@ -55,7 +55,6 @@ public class SignInService {
     private static final long TOKEN_REFRESH_PERIOD_MS = 60 * 60 * 1_000; // NOTE: auth token max lifetime is 60 min
 
     private final WeakHashSet<OnAccountChange> mListeners = new WeakHashSet<>();
-    public String mCachedAuthorizationHeader;
     public long mCacheUpdateTime;
     private boolean mStorageSynced;
     private UserCode mUserCodeResult;
@@ -108,29 +107,6 @@ public class SignInService {
     public boolean isSigned() {
         // Condition created for the case when a device in offline mode.
         return getSelectedAccount() != null;
-    }
-
-    public String printDebugInfo() {
-        String name = "none";
-        String header = "none";
-        String token = "none";
-
-        if (mCachedAuthorizationHeader != null) {
-            header = "ok";
-        }
-
-        Account account = getSelectedAccount();
-
-        if (account instanceof YouTubeAccount) {
-            if (account.getName() != null) {
-                name = "ok";
-            }
-            if (((YouTubeAccount) account).getRefreshToken() != null) {
-                token = "ok";
-            }
-        }
-
-        return String.format("name=%s;header=%s;token=%s", name, header, token);
     }
 
     public Observable<Boolean> isSignedObserve() {
@@ -426,8 +402,7 @@ public class SignInService {
 
     public void checkAuth() {
 
-        if (mCachedAuthorizationHeader != null 
-            && Helpers.equals(mCachedAuthorizationHeader, RetrofitOkHttpHelper.getAuthHeaders().get("Authorization"))
+        if (getAuthorizationHeader() != null 
             && System.currentTimeMillis() - mCacheUpdateTime < TOKEN_REFRESH_PERIOD_MS
         ) return;
 
@@ -456,19 +431,18 @@ public class SignInService {
     }
 
     public String getAuthorizationHeader() {
-        return mCachedAuthorizationHeader;
+        return RetrofitOkHttpHelper.getAuthHeaders().get("Authorization");
     }
 
     public void setAuthorizationHeader(String authorizationHeader) {
-
-        mCachedAuthorizationHeader = authorizationHeader;
+;
         mCacheUpdateTime = System.currentTimeMillis();
 
         Map<String, String> headers = RetrofitOkHttpHelper.getAuthHeaders();
         headers.clear();
 
-        if (mCachedAuthorizationHeader != null && getSelectedAccount() != null) {
-            headers.put("Authorization", mCachedAuthorizationHeader);
+        if (getSelectedAccount() != null) {
+            headers.put("Authorization", authorizationHeader);
             String pageIdToken = ((YouTubeAccount) getSelectedAccount()).getPageIdToken();
             if (pageIdToken != null) {
                 // Apply branded account rights (restricted videos). Branded refresh token with current account page id.
