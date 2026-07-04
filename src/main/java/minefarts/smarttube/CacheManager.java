@@ -7,7 +7,6 @@ import minefarts.smarttube.utils.MediaItemService;
 import minefarts.smarttube.utils.videoinfo.V2.VideoInfoService;
 import minefarts.smarttube.utils.common.helpers.AppClient;
 import minefarts.smarttube.utils.app.AppService;
-
 import minefarts.smarttube.utils.app.potokennp2.PoTokenProvider;
 import minefarts.smarttube.utils.app.PoTokenGate;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
@@ -30,12 +29,6 @@ public class CacheManager {
         // SignInService
 
         SignInService SIS = SignInService.instance();
-        
-        SIS.mCachedAuthorizationHeader = null;
-        SIS.mCacheUpdateTime = 0;
-        
-        SIS.mCachedAuthorizationHeader = null;
-        SIS.mCacheUpdateTime = 0;
         
         //=======================
         // AppService
