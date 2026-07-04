@@ -14,7 +14,7 @@ public open class NotificationsServiceInt {
     open fun getItems(): MediaGroup? {
         val result = mService.getNotifications(NotificationsApiHelper.getNotificationsQuery())
 
-        return RetrofitHelper.getWithErrors(result)?.let { NotificationsMediaGroup(it) }
+        return RetrofitHelper.get(result, true, true)?.let { NotificationsMediaGroup(it) }
     }
 
     open fun hideNotification(item: MediaItem?) {
@@ -49,6 +49,6 @@ public open class NotificationsServiceInt {
 
         val result = mService.getModifyNotification(NotificationsApiHelper.getModifyNotificationQuery(modifyNotificationParams))
 
-        RetrofitHelper.getWithErrors(result)
+        RetrofitHelper.get(result, true, true)
     }
 }

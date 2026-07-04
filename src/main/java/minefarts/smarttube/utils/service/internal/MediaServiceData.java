@@ -57,10 +57,8 @@ public class MediaServiceData {
     private GlobalPreferences mGlobalPrefs;
     public PoTokenResponse mPoToken;
     private AppInfo mAppInfo;
-    private AppInfo mFailedAppInfo;
     private PlayerData mPlayerData;
     private PlayerExtractorCache mPlayerExtractorCache;
-    private ClientData mClientData;
     private NSigData mNSigData;
     private NSigData mSigData;
     private boolean mIsMoreSubtitlesUnlocked;
@@ -211,35 +209,9 @@ public class MediaServiceData {
     }
 
     public void setAppInfo(AppInfo appInfo) {
-        if (appInfo != null) {
-            mFailedAppInfo = null;
-        }
-
         if (Helpers.equals(mAppInfo, appInfo)) return;
 
         mAppInfo = appInfo;
-
-        persistState();
-    }
-
-    public AppInfo getFailedAppInfo() {
-        return mFailedAppInfo;
-    }
-
-    public void setFailedAppInfo(AppInfo appInfo) {
-        if (Helpers.equals(mFailedAppInfo, appInfo)) return;
-
-        mFailedAppInfo = appInfo;
-
-        persistState();
-    }
-
-    public ClientData getClientData() {
-        return mClientData;
-    }
-
-    public void setClientData(ClientData clientData) {
-        mClientData = clientData;
 
         persistState();
     }
@@ -280,7 +252,6 @@ public class MediaServiceData {
 
         if (isAppUpdated) {
             mVideoInfoType = -1;
-            mFailedAppInfo = null;
         }
 
         mOldAppVersion = appVersion;

@@ -4,12 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
-import com.jayway.jsonpath.Configuration;
-import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.ParseContext;
-import com.jayway.jsonpath.spi.json.GsonJsonProvider;
-import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
-
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.google.common.converters.gson.WithGson;
@@ -18,12 +12,10 @@ import minefarts.smarttube.google.common.converters.jsonpath.WithJsonPath;
 import minefarts.smarttube.google.common.converters.jsonpath.WithJsonPathSkip;
 import minefarts.smarttube.google.common.converters.jsonpath.converter.JsonPathConverterFactory;
 import minefarts.smarttube.google.common.converters.jsonpath.converter.JsonPathSkipConverterFactory;
-import minefarts.smarttube.google.common.converters.jsonpath.typeadapter.JsonPathSkipTypeAdapter;
-import minefarts.smarttube.google.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import minefarts.smarttube.google.common.converters.querystring.WithQueryString;
 import minefarts.smarttube.google.common.converters.querystring.converter.QueryStringConverterFactory;
 import minefarts.smarttube.google.common.converters.regexp.WithRegExp;
-import minefarts.smarttube.google.common.converters.regexp.converter.RegExpConverterFactory;
+import minefarts.smarttube.google.common.converters.regexp.RegExpConverterFactory;
 import minefarts.smarttube.google.common.helpers.RetrofitOkHttpHelper;
 import minefarts.smarttube.google.common.models.gen.AuthErrorResponse;
 import minefarts.smarttube.google.common.models.gen.ErrorResponse;
@@ -54,18 +46,9 @@ public class RetrofitHelper {
         return get(wrapper, auth, false);
     }
 
-    public static <T> T getWithErrors(Call<T> wrapper) {
-        return getWithErrors(wrapper, true);
-    }
-
-    public static <T> T getWithErrors(Call<T> wrapper, boolean auth) {
-        return get(wrapper, auth, true);
-    }
-
-    private static <T> T get(Call<T> wrapper, boolean auth, boolean withErrors) {
-        if (!auth) {
+    public static <T> T get(Call<T> wrapper, boolean auth, boolean withErrors) {
+        if (!auth)
             RetrofitOkHttpHelper.addAuthSkip(wrapper.request());
-        }
 
         Response<T> response = getResponse(wrapper);
 
@@ -133,56 +116,6 @@ public class RetrofitHelper {
         }
 
         return null;
-    }
-
-    public static <T> JsonPathTypeAdapter<T> adaptJsonPathSkip(Class<?> clazz) {
-        Configuration conf = Configuration
-                .builder()
-                .mappingProvider(new GsonMappingProvider())
-                .jsonProvider(new GsonJsonProvider())
-                .build();
-
-        ParseContext parser = JsonPath.using(conf);
-
-        return new JsonPathSkipTypeAdapter<>(parser, clazz);
-    }
-
-    /**
-     * Get cookie pair as a string: cookieName=cookieValue
-     */
-    public static <T> String getCookie(Response<T> response, String cookieName) {
-        if (response == null) {
-            return null;
-        }
-
-        List<String> cookies = response.headers().values("Set-Cookie");
-
-        for (String cookie : cookies) {
-            if (cookie.startsWith(cookieName)) {
-                return cookie.split(";")[0];
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Get cookie pairs as a colon delimited string: cookieName=cookieValue; cookieName=cookieValue
-     */
-    public static <T> String getCookies(Response<T> response) {
-        if (response == null) {
-            return null;
-        }
-
-        List<String> result = new ArrayList<>();
-
-        List<String> cookies = response.headers().values("Set-Cookie");
-
-        for (String cookie : cookies) {
-            result.add(cookie.split(";")[0]);
-        }
-
-        return result.isEmpty() ? null : Helpers.join("; ", result.toArray(new CharSequence[0]));
     }
 
     public static <T> T create(Class<T> clazz) {

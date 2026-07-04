@@ -1,6 +1,6 @@
-package minefarts.smarttube.google.common.converters.regexp.converter;
+package minefarts.smarttube.google.common.converters.regexp;
 
-import minefarts.smarttube.google.common.converters.regexp.typeadapter.RegExpTypeAdapter;
+import minefarts.smarttube.google.common.converters.regexp.RegExpTypeAdapter;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 

@@ -1,9 +1,5 @@
 package minefarts.smarttube.google.common.js
 
-import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
-import com.google.gson.reflect.TypeToken
-
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8ScriptExecutionException
 
@@ -11,12 +7,8 @@ import java.util.regex.Pattern
 
 public object JSInterpret {
 
-    private val v8ExecLock = Any()
-
     private val MATCHING_PARENS = mapOf('(' to ')', '{' to '}', '[' to ']')
     private val QUOTES = setOf('\'', '"', '/')
-
-    private val gson = Gson()
 
     fun extractFunctionFromCode(argNames: List<String>, code: String): (List<String>) -> String? {
         return { args: List<String> ->
@@ -52,20 +44,6 @@ public object JSInterpret {
         val codeBlock = matcher.group(2) ?: ""
         val (code, _) = separateAtParen(codeBlock)
         return Pair(args, code)
-    }
-
-    fun interpretExpression(jsCode: String): List<String>? {
-        val result = evaluate("JSON.stringify($jsCode)")
-
-        val listType = object : TypeToken<List<String>>() {}.type
-
-        val response: List<String>? = try {
-            gson.fromJson(result, listType)
-        } catch (e: JsonSyntaxException) {
-            null
-        }
-        
-        return response
     }
 
     /**
@@ -180,7 +158,7 @@ public object JSInterpret {
         return null
     }
 
-    private fun evaluate(source: String): String? {
+    public fun evaluate(source: String): String? {
         return try {
             evaluateWithErrors(source)
         } catch (e: V8ScriptExecutionException) {

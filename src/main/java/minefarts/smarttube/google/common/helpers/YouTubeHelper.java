@@ -18,6 +18,9 @@ import minefarts.smarttube.utils.service.internal.MediaServiceData;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+
+import javax.annotation.Nonnull;
 
 public final class YouTubeHelper {
     public static final String TEXT_DELIM = "•";
@@ -275,7 +278,7 @@ public final class YouTubeHelper {
      */
     @NonNull
     public static String generateTParameter() {
-        return RandomStringFromAlphabetGenerator.generate(12);
+        return generate(12);
     }
 
     /**
@@ -284,6 +287,32 @@ public final class YouTubeHelper {
      */
     @NonNull
     public static String generateCPNParameter() {
-        return RandomStringFromAlphabetGenerator.generate(16);
+        return generate(16);
     }
+
+    private static final String ALPHABET =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+
+    /**
+     * Generate a random string from an alphabet.
+     *
+     * @param length   the length of the returned string (greater than 0)
+     * @return a random string of the requested length made of only characters from the provided
+     * alphabet
+     */
+    @Nonnull
+    private static String generate(final int length) {
+        
+        Random random = Helpers.getRandom();
+        final StringBuilder stringBuilder = new StringBuilder(length);
+        
+        for (int i = 0; i < length; i++) {
+            stringBuilder.append(
+                ALPHABET.charAt(random.nextInt(ALPHABET.length()))
+            );
+        }
+        
+        return stringBuilder.toString();
+    }
+
 }

@@ -1,12 +1,20 @@
 package minefarts.smarttube.utils.app.playerdata
 
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
+import com.google.gson.reflect.TypeToken
+
 import minefarts.smarttube.utils.mylogger.Log
 import minefarts.smarttube.google.common.js.JSInterpret
+
 import java.util.regex.Pattern
 
 public object CommonExtractor {
+
     private val TAG = CommonExtractor::class.java.simpleName
+
+    private val gson = Gson()
+    
     private val mGlobalVarPattern: Pattern = Pattern.compile("""(?x)
             (["'])use\s+strict\1;\s*
             (
@@ -39,15 +47,26 @@ public object CommonExtractor {
     }
 
     fun interpretPlayerJsGlobalVar(globalVarData: Triple<String?, String?, String?>): Triple<String?, List<String>?, String?> {
+        
         val (_, varName, varValue) = globalVarData
 
-        val globalList = varValue?.let { JSInterpret.interpretExpression(it) }
+        val globalList: List<String>? = varValue?.let {
+
+            val result = JSInterpret.evaluate("JSON.stringify($it)")
+            val listType = object : TypeToken<List<String>>() {}.type
+
+            try {
+                gson.fromJson(result, listType)
+            } catch (e: JsonSyntaxException) {
+                null
+            }
+        }
 
         var varCode: String? = null
 
         if (varName != null && globalList != null) {
             Log.d(TAG, "Creating global array variable \"$varName\"")
-            varCode = "var $varName=${Gson().toJson(globalList)}"
+            varCode = "var $varName=${gson.toJson(globalList)}"
         }
 
         return Triple(varName, globalList, varCode)
@@ -62,4 +81,5 @@ public object CommonExtractor {
             null
         }
     }
+
 }

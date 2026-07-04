@@ -2,6 +2,7 @@ package minefarts.smarttube.utils.app.nsigsolver.impl
 
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
+import com.google.gson.reflect.TypeToken
 
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8ScriptExecutionException
@@ -11,14 +12,13 @@ import minefarts.smarttube.utils.mylogger.Log
 import minefarts.smarttube.utils.app.nsigsolver.common.YouTubeInfoExtractor
 import minefarts.smarttube.utils.app.nsigsolver.common.CachedData
 import minefarts.smarttube.utils.app.nsigsolver.provider.ChallengeOutput
-import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeProviderError
-import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeProviderRejectedRequest
 import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeProviderResponse
 import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeRequest
 import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeResponse
 import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeType
-import minefarts.smarttube.utils.app.nsigsolver.runtime.solverOutputType
 import minefarts.smarttube.utils.app.nsigsolver.runtime.SolverOutput
+
+public class JsChallengeProviderError(message: String, cause: Exception? = null): Exception(message, cause)
 
 public object V8ChallengeProvider {
     
@@ -26,7 +26,6 @@ public object V8ChallengeProvider {
     public val v8Runtime = ThreadLocal<V8>()
 
     private val sGson = Gson()
-    private val v8Lock = Any()
 
     private val assets
         get() = ContextManager.get()?.assets
@@ -141,14 +140,11 @@ public object V8ChallengeProvider {
                 )
             }
 
-            val stdout = runV8("""
-                JSON.stringify(
-                    jsc(${sGson.toJson(data)})
-                );
-            """)
-
             val output: SolverOutput = try {
-                sGson.fromJson(stdout, solverOutputType)
+                sGson.fromJson(
+                    runV8("JSON.stringify( jsc(${sGson.toJson(data)}) )"), 
+                    object : TypeToken<SolverOutput>() {}.type
+                )
             } catch (e: JsonSyntaxException) {
                 throw JsChallengeProviderError("Cannot parse solver output", e)
             }
@@ -166,7 +162,8 @@ public object V8ChallengeProvider {
                         request, null, JsChallengeProviderError(responseData.error ?: "Unknown solver output error")))
                 } else {
                     yield(JsChallengeProviderResponse(
-                        request, JsChallengeResponse(request.type, ChallengeOutput(responseData.data))
+                        request, 
+                        JsChallengeResponse(request.type, ChallengeOutput(responseData.data))
                     ))
                 }
             }

@@ -523,7 +523,7 @@ public class SignInService {
             refreshToken
         );
 
-        return RetrofitHelper.getWithErrors(wrapper);
+        return RetrofitHelper.get(wrapper, true, true);
     }
 
     public AccessToken getAccessTokenWait(String deviceCode) throws InterruptedException {

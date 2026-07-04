@@ -31,7 +31,6 @@ public class AppService {
     MediaServiceData mData;
 
     public static AppService instance() {
- 
         if (sInstance == null) {
             sInstance = new AppService();
             sInstance.mAppApi = RetrofitHelper.create(AppApi.class);
@@ -162,14 +161,19 @@ public class AppService {
 
         Response<AppInfo> response = RetrofitHelper.getResponse(wrapper);
 
-        if (response != null) {
-            mData.setVisitorCookie(
-                RetrofitHelper.getCookies(response)
-            );
-            return response.body();
+        if (response == null) return null;
+
+        List<String> result = new ArrayList<>();
+
+        List<String> cookies = response.headers().values("Set-Cookie");
+
+        for (String cookie : cookies) {
+            result.add(cookie.split(";")[0]);
         }
 
-        return null;
+        mVisitorCookie = result.isEmpty() ? null : Helpers.join("; ", result.toArray(new CharSequence[0]));
+
+        return response.body();
     }
 
     public PlayerDataExtractor getPlayerDataExtractor() {

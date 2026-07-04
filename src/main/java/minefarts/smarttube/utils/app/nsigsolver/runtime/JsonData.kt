@@ -1,9 +1,5 @@
 package minefarts.smarttube.utils.app.nsigsolver.runtime
 
-import com.google.gson.reflect.TypeToken
-
-public val solverOutputType = object : TypeToken<SolverOutput>() {}.type
-
 public data class SolverOutput(
     val type: String,
     val error: String?,

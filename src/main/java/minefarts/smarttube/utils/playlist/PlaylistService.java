@@ -46,7 +46,7 @@ public class PlaylistService {
         
         Call<ActionResult> wrapper = mPlaylistManager.editPlaylist(PlaylistApiHelper.getRenamePlaylistsQuery(playlistId, newName));
 
-        RetrofitHelper.getWithErrors(wrapper);
+        RetrofitHelper.get(wrapper, true, true);
 
     }
 
@@ -54,7 +54,7 @@ public class PlaylistService {
         
         Call<ActionResult> wrapper = mPlaylistManager.editPlaylist(PlaylistApiHelper.getPlaylistOrderQuery(playlistId, playlistOrder));
 
-        RetrofitHelper.getWithErrors(wrapper);
+        RetrofitHelper.get(wrapper, true, true);
 
     }
 
@@ -62,7 +62,7 @@ public class PlaylistService {
         
         Call<ActionResult> wrapper = mPlaylistManager.saveForeignPlaylist(PlaylistApiHelper.getSaveRemoveForeignPlaylistQuery(playlistId));
 
-        RetrofitHelper.getWithErrors(wrapper);
+        RetrofitHelper.get(wrapper, true, true);
 
     }
 
@@ -71,12 +71,12 @@ public class PlaylistService {
         // Try to remove foreign playlist first
         Call<ActionResult> removeWrapper = mPlaylistManager.removeForeignPlaylist(PlaylistApiHelper.getSaveRemoveForeignPlaylistQuery(playlistId));
         
-        RetrofitHelper.getWithErrors(removeWrapper);
+        RetrofitHelper.get(removeWrapper, true, true);
 
         // Then, delete user playlist
         Call<ActionResult> deleteWrapper = mPlaylistManager.removePlaylist(PlaylistApiHelper.getRemovePlaylistQuery(playlistId));
         
-        RetrofitHelper.getWithErrors(deleteWrapper);
+        RetrofitHelper.get(deleteWrapper, true, true);
     
     }
 
@@ -84,7 +84,7 @@ public class PlaylistService {
         
         Call<ActionResult> wrapper = mPlaylistManager.createPlaylist(PlaylistApiHelper.getCreatePlaylistQuery(playlistName, videoId));
 
-        RetrofitHelper.getWithErrors(wrapper);
+        RetrofitHelper.get(wrapper, true, true);
 
     }
     

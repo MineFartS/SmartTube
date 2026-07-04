@@ -73,7 +73,7 @@ public class AuthService {
                         mAppService.getClientId(),
                         mAppService.getClientSecret())
         );
-        return RetrofitHelper.getWithErrors(wrapper);
+        return RetrofitHelper.get(wrapper, true, true);
     }
 
     public AccessToken updateAccessTokenRaw(String rawJsonAuthData) {

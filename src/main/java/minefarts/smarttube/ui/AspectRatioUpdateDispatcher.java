@@ -4,7 +4,6 @@ class AspectRatioUpdateDispatcher implements Runnable {
 
     private float targetAspectRatio;
     private float naturalAspectRatio;
-    private boolean aspectRatioMismatch;
     private boolean isScheduled;
 
     final AspectRatioFrameLayout arfl;

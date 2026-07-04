@@ -203,7 +203,7 @@ public final class Playlist {
                         v.getDurationMs(),
                         v.getBackgroundImageUrl(),
                         v.getCardImageUrl(),
-                        ServiceHelper.videoIdToFullUrl(v.getVideoId()),
+                        "https://www.youtube.com/watch?v="+v.getVideoId(),
                         null,
                         false,
                         v.isLive(),

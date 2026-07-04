@@ -29,23 +29,6 @@ public class ServiceHelper {
     // Regex to extract hours, minutes, and seconds
     private static final Pattern sIsoDurationPattern = Pattern.compile("PT(?:(\\d+)H)?(?:(\\d+)M)?(?:(\\d+)S)?");
 
-    @Nullable
-    public static String videoIdToFullUrl(String videoId) {
-        if (videoId == null) {
-            return null;
-        }
-
-        return String.format("https://www.youtube.com/watch?v=%s", videoId);
-    }
-
-    public static String channelIdToFullUrl(String channelId) {
-        if (channelId == null) {
-            return null;
-        }
-
-        return String.format("https://www.youtube.com/channel/%s", channelId);
-    }
-
     /**
      * Convert YouTube video length text to milliseconds<br/>
      * Example of input text: <b>4:44:51</b>

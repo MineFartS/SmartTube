@@ -1,4 +1,4 @@
-package minefarts.smarttube.google.common.converters.regexp.typeadapter;
+package minefarts.smarttube.google.common.converters.regexp;
 
 import android.content.Context;
 import com.jayway.jsonpath.PathNotFoundException;
