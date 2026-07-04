@@ -15,10 +15,14 @@ import minefarts.smarttube.utils.lounge.models.info.PairingCodeV2;
 import minefarts.smarttube.utils.lounge.models.info.TokenInfo;
 import minefarts.smarttube.utils.lounge.models.info.TokenInfoList;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
+import minefarts.smarttube.google.common.converters.jsonpath.typeadapter.JsonPathSkipTypeAdapter;
+import minefarts.smarttube.google.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Request.Builder;
 import okhttp3.Response;
+
 import retrofit2.Call;
 
 import java.io.BufferedReader;
@@ -32,14 +36,24 @@ import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import com.jayway.jsonpath.spi.json.GsonJsonProvider;
+import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.ParseContext;
+import com.jayway.jsonpath.JsonPath;
+
 public class LoungeService {
+    
     private static final String TAG = LoungeService.class.getSimpleName();
     private static final long TOKEN_ACTIVE_TIME_MS = 30 * 60 * 1_000;
+
     private static LoungeService sInstance;
-    private final BindManager mBindManager;
-    private final InfoManager mInfoManager;
-    private final CommandManager mCommandManager;
-    private final JsonPathTypeAdapter<CommandList> mLineSkipAdapter;
+
+    BindManager mBindManager;
+    InfoManager mInfoManager;
+    CommandManager mCommandManager;
+    JsonPathTypeAdapter<CommandList> mLineSkipAdapter;
+    
     private String mScreenName;
     private String mLoungeToken;
     private String mDeviceId;
@@ -51,16 +65,23 @@ public class LoungeService {
     private String mPlaylistIndex;
     private String mPlaylistId;
 
-    private LoungeService() {
-        mBindManager = RetrofitHelper.create(BindManager.class);
-        mInfoManager = RetrofitHelper.create(InfoManager.class);
-        mCommandManager = RetrofitHelper.create(CommandManager.class);
-        mLineSkipAdapter = RetrofitHelper.adaptJsonPathSkip(CommandList.class);
-    }
-
     public static LoungeService instance() {
         if (sInstance == null) {
             sInstance = new LoungeService();
+            sInstance.mBindManager = RetrofitHelper.create(BindManager.class);
+            sInstance.mInfoManager = RetrofitHelper.create(InfoManager.class);
+            sInstance.mCommandManager = RetrofitHelper.create(CommandManager.class);
+
+            Configuration conf = Configuration
+                .builder()
+                .mappingProvider(new GsonMappingProvider())
+                .jsonProvider(new GsonJsonProvider())
+                .build();
+
+            sInstance.mLineSkipAdapter = new JsonPathSkipTypeAdapter<>(
+                JsonPath.using(conf), 
+                CommandList.class
+            );
         }
 
         return sInstance;

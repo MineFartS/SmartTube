@@ -30,22 +30,8 @@ public class LocaleManager {
         return mLang;
     }
 
-    /**
-     * Used in tests only
-     */
-    public void setLanguage(String lang) {
-        mLang = lang;
-    }
-
     public String getCountry() {
         return mCountry;
-    }
-
-    /**
-     * Used in tests only
-     */
-    public void setCountry(String country) {
-        mCountry = country;
     }
 
     public int getUtcOffsetMinutes() {
@@ -86,4 +72,5 @@ public class LocaleManager {
 
         return locale;
     }
+    
 }

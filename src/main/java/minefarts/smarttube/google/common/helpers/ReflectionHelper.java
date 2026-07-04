@@ -18,15 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ReflectionHelper {
-    public static Class<?> getGenericParamType(Field field) {
-        Type[] params = getGenericParams(field);
-
-        if (params != null && params.length == 1) {
-            return (Class<?>) params[0];
-        }
-
-        return null;
-    }
 
     public static Type[] getGenericParams(Field field) {
         Type genericFieldType = field.getGenericType();
@@ -106,4 +97,5 @@ public class ReflectionHelper {
 
         return false;
     }
+    
 }

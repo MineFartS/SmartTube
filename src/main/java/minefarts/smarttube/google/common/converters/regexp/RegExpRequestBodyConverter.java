@@ -1,7 +1,7 @@
-package minefarts.smarttube.google.common.converters.regexp.converter;
+package minefarts.smarttube.google.common.converters.regexp;
 
 import android.util.Log;
-import minefarts.smarttube.google.common.converters.regexp.typeadapter.RegExpTypeAdapter;
+import minefarts.smarttube.google.common.converters.regexp.RegExpTypeAdapter;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Converter;

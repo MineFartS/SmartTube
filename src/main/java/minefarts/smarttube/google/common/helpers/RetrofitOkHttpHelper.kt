@@ -18,47 +18,13 @@ object RetrofitOkHttpHelper {
     val authHeaders = mutableMapOf<String, String>()
 
     @JvmStatic
-    val client: OkHttpClient by lazy { createClient() }
-
-    @JvmStatic
     fun addAuthSkip(request: Request) {
         if (!authSkipList.contains(request))
             authSkipList.add(request)
     }
 
-    private val commonHeaders = mapOf(
-        // Enable compression in production
-        "Accept-Encoding" to "gzip, deflate, br",
-    )
-
-    private val apiHeaders = mapOf(
-        "User-Agent" to ExoMediaSourceFactory.USER_AGENT_TV,
-        "Referer" to "https://www.youtube.com/tv"
-    )
-
-    private val apiPrefixes = arrayOf(
-        "https://www.googleapis.com/upload/drive/v3",
-        "https://www.googleapis.com/drive/v3",
-        "https://m.youtube.com/youtubei/v1/",
-        "https://www.youtube.com/youtubei/v1/",
-        "https://youtubei.googleapis.com/youtubei/v1",
-        "https://www.youtube.com/api/stats/",
-        "https://clients1.google.com/complete/"
-    )
-
-    // NOTE: visitor header could broke many apis. E.g. VisitorService
-    private val visitorApiSuffixes = arrayOf(
-        "/youtubei/v1/browse",
-        "/youtubei/v1/search",
-        "/youtubei/v1/player",
-        "/youtubei/v1/reel/",
-        "/youtubei/v1/next",
-        "/api/stats/",
-    )
-
-    private val tParamSuffixes = listOf("/browse", "/next", "/reel", "/playlist")
-
-    private fun createClient(): OkHttpClient {
+    @JvmStatic
+    val client: OkHttpClient by lazy {
         
         val builder = OkHttpManager.instance().client.newBuilder()
         
@@ -128,8 +94,40 @@ object RetrofitOkHttpHelper {
             chain.proceed(requestBuilder.build())
         }
 
-        return builder.build()
+        builder.build()
     }
+
+    private val commonHeaders = mapOf(
+        // Enable compression in production
+        "Accept-Encoding" to "gzip, deflate, br",
+    )
+
+    private val apiHeaders = mapOf(
+        "User-Agent" to ExoMediaSourceFactory.USER_AGENT_TV,
+        "Referer" to "https://www.youtube.com/tv"
+    )
+
+    private val apiPrefixes = arrayOf(
+        "https://www.googleapis.com/upload/drive/v3",
+        "https://www.googleapis.com/drive/v3",
+        "https://m.youtube.com/youtubei/v1/",
+        "https://www.youtube.com/youtubei/v1/",
+        "https://youtubei.googleapis.com/youtubei/v1",
+        "https://www.youtube.com/api/stats/",
+        "https://clients1.google.com/complete/"
+    )
+
+    // NOTE: visitor header could broke many apis. E.g. VisitorService
+    private val visitorApiSuffixes = arrayOf(
+        "/youtubei/v1/browse",
+        "/youtubei/v1/search",
+        "/youtubei/v1/player",
+        "/youtubei/v1/reel/",
+        "/youtubei/v1/next",
+        "/api/stats/",
+    )
+
+    private val tParamSuffixes = listOf("/browse", "/next", "/reel", "/playlist")
 
     private fun applyHeaders(
         newHeaders: Map<String, String?>, 

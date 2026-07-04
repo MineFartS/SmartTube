@@ -7,7 +7,6 @@ import minefarts.smarttube.utils.MediaItemService;
 import minefarts.smarttube.utils.videoinfo.V2.VideoInfoService;
 import minefarts.smarttube.utils.common.helpers.AppClient;
 import minefarts.smarttube.utils.app.AppService;
-import minefarts.smarttube.utils.app.AppApi;
 
 import minefarts.smarttube.utils.app.potokennp2.PoTokenProvider;
 import minefarts.smarttube.utils.app.PoTokenGate;
@@ -94,9 +93,7 @@ public class CacheManager {
         //=======================
         // V8ChallengeProvider
 
-        V8ChallengeProvider V8CP = V8ChallengeProvider.INSTANCE;
-
-        V8CP.v8Runtime.remove();
+        V8ChallengeProvider.v8Runtime.remove();
 
         //=======================
 

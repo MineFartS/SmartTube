@@ -1,13 +1,14 @@
 package minefarts.smarttube.utils.app.nsigsolver.common
 
 import minefarts.smarttube.utils.okhttp.OkHttpManager
-import minefarts.smarttube.utils.app.nsigsolver.provider.InfoExtractorError
 
 import kotlinx.coroutines.delay
 
 import okhttp3.Request
 
 import com.eclipsesource.v8.V8
+
+public class InfoExtractorError(message: String, cause: Exception? = null): Exception(message, cause)
 
 public fun formatError(firstMsg: String?, secondMsg: String) = firstMsg?.let { "$it: $secondMsg" } ?: secondMsg
 

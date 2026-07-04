@@ -51,7 +51,9 @@ public class SearchableActivity extends Activity {
         MediaItem video = VideoContentProvider.findVideoWithId(id);
 
         if (video != null) {
-            return video.getVideoId() != null ? ServiceHelper.videoIdToFullUrl(video.getVideoId()) : ServiceHelper.channelIdToFullUrl(video.getChannelId());
+            return video.getVideoId() != null 
+            ? "https://www.youtube.com/watch?v="+video.getVideoId() 
+            : "https://www.youtube.com/channel/"+video.getChannelId();
         }
 
         return null;

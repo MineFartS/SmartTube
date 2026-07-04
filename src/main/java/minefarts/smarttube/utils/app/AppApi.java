@@ -12,6 +12,7 @@ import retrofit2.http.Url;
 
 @WithRegExp
 public interface AppApi {
+    
     /**
      * Get player version that associated with specified user agent.<br/>
      * Note, that user agent should be obtained from the Smart TV device.<br/>
@@ -19,7 +20,9 @@ public interface AppApi {
      * Lang change tv's url: https://www.youtube.com/tv?hrld=1
      */
     @GET("https://www.youtube.com/tv")
-    Call<AppInfo> getAppInfo(@Header("User-Agent") String userAgent);
+    Call<AppInfo> getAppInfo(
+        @Header("User-Agent") String userAgent
+    );
 
     /**
      * Get player version that associated with specified user agent.<br/>
@@ -29,13 +32,18 @@ public interface AppApi {
      * Lang change tv's url: https://www.youtube.com/tv?hrld=1
      */
     @GET("https://www.youtube.com/tv")
-    Call<AppInfo> getAppInfo(@Header("User-Agent") String userAgent, @Header("Cookie") String visitorInfoLive);
+    Call<AppInfo> getAppInfo(
+        @Header("User-Agent") String userAgent, 
+        @Header("Cookie") String visitorInfoLive
+    );
 
     /**
      * Returns useful player data such as Decipher function and Client Playback Nonce (CPN) constant
      */
     @GET
-    Call<PlayerData> getPlayerData(@Url String playerUrl);
+    Call<PlayerData> getPlayerData(
+        @Url String playerUrl
+    );
 
     /**
      * Contains constants used in Auth<br/>
@@ -43,5 +51,8 @@ public interface AppApi {
      * Located inside base.js (modern clients) or main.js (Cobalt/Legacy)
      */
     @GET
-    Call<ClientData> getClientData(@Url String clientUrl);
+    Call<ClientData> getClientData(
+        @Url String clientUrl
+    );
+
 }
