@@ -10,15 +10,12 @@ import com.eclipsesource.v8.V8ScriptExecutionException
 import minefarts.smarttube.ContextManager
 import minefarts.smarttube.utils.mylogger.Log
 import minefarts.smarttube.utils.app.nsigsolver.common.YouTubeInfoExtractor
-import minefarts.smarttube.utils.app.nsigsolver.common.CachedData
 import minefarts.smarttube.utils.app.nsigsolver.provider.ChallengeOutput
 import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeProviderResponse
 import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeRequest
 import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeResponse
 import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeType
 import minefarts.smarttube.utils.app.nsigsolver.runtime.SolverOutput
-
-public class JsChallengeProviderError(message: String, cause: Exception? = null): Exception(message, cause)
 
 public object V8ChallengeProvider {
     
@@ -35,26 +32,26 @@ public object V8ChallengeProvider {
 
         if (v8Runtime.get() == null) {
             
-            v8Runtime.set(V8.createV8Runtime())
+            val runtime = V8.createV8Runtime()
 
             for (name in listOf("lib", "core")) {
 
                 val path = "nsigsolver/yt.solver.$name.js"
 
                 assets!!.open(path).bufferedReader().use { 
-                    runV8(it.readText())
+                    runtime!!.executeStringScript(it.readText())
                 }
                 
             }
 
+            v8Runtime.set(runtime)
+
         }
-        
-        val runtime = v8Runtime.get()
 
-        return runtime!!.executeStringScript(stdin)
-            ?: throw JsChallengeProviderError("V8 runtime error: empty response")
+        return v8Runtime.get()!!.executeStringScript(stdin)
+            ?: throw RuntimeException("V8 runtime error: empty response")
 
-    }}
+    }
 
     /**
      * Solve multiple JS challenges and return the results
@@ -65,51 +62,30 @@ public object V8ChallengeProvider {
 
         for ((playerUrl, groupedRequests) in grouped) {
 
-            val player = YouTubeInfoExtractor.cache.load(
-                "challenge-solver", 
-                "player:$playerUrl"
-            )?.code
-
-            val data: MutableMap<String, Any> = if (player == null) {
-                mutableMapOf(
-                    "type" to "player",
-                    "player" to getPlayer(playerUrl),
-                    "output_preprocessed" to true
-                )
-            } else {
-                mutableMapOf(
-                    "type" to "preprocessed",
-                    "preprocessed_player" to player,
-                )
-            }
-
-            data["requests"] = groupedRequests.map { request ->
-                mapOf(
+            val data = mutableMapOf(
+                "type" to "player",
+                "player" to getPlayer(playerUrl),
+                "output_preprocessed" to true,
+                "requests" to groupedRequests.map { request -> mapOf(
                     "type" to request.type.value,
                     "challenges" to request.input.challenges
-                )
-            }
+                )}
+            )
 
-            val output: SolverOutput = try {
-                sGson.fromJson(
-                    runV8("JSON.stringify( jsc(${sGson.toJson(data)}) )"), 
-                    object : TypeToken<SolverOutput>() {}.type
-                )
-            } catch (e: JsonSyntaxException) {
-                throw JsChallengeProviderError("Cannot parse solver output", e)
-            }
+            val output: SolverOutput = sGson.fromJson(
+                runV8("JSON.stringify( jsc(${sGson.toJson(data)}) )"), 
+                object : TypeToken<SolverOutput>() {}.type
+            )
 
             if (output.type == "error")
-                throw JsChallengeProviderError(output.error ?: "Unknown solver output error")
-
-            val preprocessed = output.preprocessed_player
-            if (preprocessed != null)
-                YouTubeInfoExtractor.cache.store("challenge-solver", "player:$playerUrl", CachedData(preprocessed))
+                throw RuntimeException(output.error ?: "")
 
             for ((request, responseData) in groupedRequests.zip(output.responses)) {
                 if (responseData.type == "error") {
                     yield(JsChallengeProviderResponse(
-                        request, null, JsChallengeProviderError(responseData.error ?: "Unknown solver output error")))
+                        request, null, 
+                        RuntimeException(responseData.error ?: "Unknown solver output error")
+                    ))
                 } else {
                     yield(JsChallengeProviderResponse(
                         request, 
@@ -126,7 +102,7 @@ public object V8ChallengeProvider {
         return try {
             YouTubeInfoExtractor.loadPlayer(playerUrl ?: "")
         } catch (e: Exception) {
-            throw JsChallengeProviderError("Failed to load player for JS challenge: $playerUrl", e)
+            throw RuntimeException("Failed to load player for JS challenge: $playerUrl", e)
         }
 
     }
