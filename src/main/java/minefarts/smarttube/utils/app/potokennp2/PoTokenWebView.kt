@@ -24,11 +24,15 @@ import java.util.concurrent.TimeUnit
 public class PoTokenWebView private constructor(
     context: Context,
     private var onInitDone: () -> Unit
-) : PoTokenGenerator {
+) {
+
     private val webView = WebView(context)
     private val poTokenEmitters = mutableListOf<Pair<String, (String) -> Unit>>()
     private var expirationMs: Long = -1
     var initError: Throwable? = null
+
+    private val mainloop
+        get() = Handler(Looper.getMainLooper())
 
     //region Initialization
     init {
@@ -48,7 +52,7 @@ public class PoTokenWebView private constructor(
         webView.addJavascriptInterface(this, JS_INTERFACE)
 
         webView.webChromeClient = object : WebChromeClient() {
-            override fun onConsoleMessage(m: ConsoleMessage): Boolean {
+            fun onConsoleMessage(m: ConsoleMessage): Boolean {
                 if (m.message().contains("Uncaught")) {
                     // There should not be any uncaught errors while executing the code, because
                     // everything that can fail is guarded by try-catch. Therefore, this likely
@@ -119,7 +123,7 @@ public class PoTokenWebView private constructor(
 
         val parsedChallengeData = parseChallengeData(responseBody)
 
-        runOnMainThread {
+        mainloop.post {
             webView.evaluateJavascriptLegacy(
                 """try {
                     data = $parsedChallengeData
@@ -169,7 +173,7 @@ public class PoTokenWebView private constructor(
         //expirationInstant = Instant.now().plusSeconds(expirationTimeInSeconds - 600)
         expirationMs = System.currentTimeMillis() + ((expirationTimeInSeconds - 600) * 1_000)
 
-        runOnMainThread {
+        mainloop.post {
             webView.evaluateJavascriptLegacy(
                 """this.integrityToken = $integrityToken
                    ${JS_INTERFACE}.onJsInitializationDone($expirationTimeInSeconds)""",
@@ -186,7 +190,7 @@ public class PoTokenWebView private constructor(
     //endregion
 
     //region Obtaining poTokens
-    override fun generatePoToken(identifier: String): String {
+    fun generatePoToken(identifier: String): String {
         Log.d(TAG, "generatePoToken() called with identifier $identifier")
         val latch = CountDownLatch(1)
         lateinit var pot: String
@@ -198,7 +202,7 @@ public class PoTokenWebView private constructor(
 
         val u8Identifier = stringToU8(identifier)
 
-        runOnMainThread {
+        mainloop.post {
             webView.evaluateJavascriptLegacy(
                 """try {
                         identifier = "$identifier"
@@ -248,9 +252,7 @@ public class PoTokenWebView private constructor(
         popPoTokenEmitter(identifier)?.invoke(poToken)
     }
 
-    override fun isExpired(): Boolean {
-        // MOD: java.time backport
-        //return Instant.now().isAfter(expirationInstant)
+    fun isExpired(): Boolean {
         return System.currentTimeMillis() > expirationMs
     }
 
@@ -341,7 +343,7 @@ public class PoTokenWebView private constructor(
     private fun onInitializationErrorCloseAndCancel(error: Throwable) {
         initError = error
         popAllPoTokenEmitters()
-        runOnMainThread {
+        mainloop.post {
             close()
             // throw error
             onInitDone()
@@ -352,7 +354,7 @@ public class PoTokenWebView private constructor(
      * Releases all [webView] and [disposables] resources.
      */
     @MainThread
-    override fun close() {
+    fun close() {
         webView.clearHistory()
         // clears RAM cache and disk cache (globally for all WebViews)
         webView.clearCache(true)
@@ -366,7 +368,7 @@ public class PoTokenWebView private constructor(
     }
     //endregion
 
-    companion object : PoTokenGenerator.Factory {
+    companion object {
         private val TAG = PoTokenWebView::class.simpleName
         // Public API key used by BotGuard, which has been got by looking at BotGuard requests
         private const val GOOGLE_API_KEY = "AIzaSyDyT5W0Jh49F30Pqqtyfdf7pDLFKLJoAnw" // NOSONAR
@@ -375,7 +377,7 @@ public class PoTokenWebView private constructor(
             "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.3"
         private const val JS_INTERFACE = "PoTokenWebView"
 
-        override fun newPoTokenGenerator(context: Context): PoTokenGenerator {
+        fun newPoTokenGenerator(context: Context): PoTokenGenerator {
             if (hasThermalServiceBug(context)) {
                 throw BadWebViewException("ThermalService isn't available")
             }
@@ -389,13 +391,13 @@ public class PoTokenWebView private constructor(
             lateinit var potWv: PoTokenWebView
             var initError: Throwable? = null
 
-            runOnMainThread {
+            mainloop.post {
                 potWv = try {
                     PoTokenWebView(context) { latch.countDown() }
                 } catch (e: Throwable) {
                     initError = BadWebViewException("${e::class.simpleName}: ${e.message}")
                     latch.countDown()
-                    return@runOnMainThread
+                    return@mainloop.post
                 }
                 potWv.loadHtmlAndObtainBotguard(context)
             }
@@ -408,16 +410,5 @@ public class PoTokenWebView private constructor(
             return potWv
         }
 
-        /**
-         * Runs [runnable] on the main thread using `Handler(Looper.getMainLooper()).post()`, and
-         * if the `post` fails emits an error on [emitterIfPostFails].
-         */
-        private fun runOnMainThread(
-            runnable: Runnable
-        ) {
-            if (!Handler(Looper.getMainLooper()).post(runnable)) {
-                throw PoTokenException("Could not run on main thread")
-            }
-        }
     }
 }
