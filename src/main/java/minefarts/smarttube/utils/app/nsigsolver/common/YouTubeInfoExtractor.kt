@@ -14,8 +14,6 @@ import com.eclipsesource.v8.V8
 
 public class InfoExtractorError(message: String, cause: Exception? = null): Exception(message, cause)
 
-public fun formatError(firstMsg: String?, secondMsg: String) = firstMsg?.let { "$it: $secondMsg" } ?: secondMsg
-
 object YouTubeInfoExtractor {
 
     private val httpClient = OkHttpClient.Builder()
@@ -38,52 +36,27 @@ object YouTubeInfoExtractor {
             .build()
 
         httpClient.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) {
+            if (!response.isSuccessful)
                 throw IOException("Unexpected HTTP code: ${response.code}")
-            }
 
-            val bodyText = response.body?.string() ?: throw IOException("Empty response body from player URL")
+            val bodyText = response.body?.string() 
+                ?: throw IOException("Empty response body from player URL")
 
-            if (bodyText.trim().startsWith("<!DOCTYPE html") || bodyText.contains("<html")) {
+            if (bodyText.trim().startsWith("<!DOCTYPE html") || bodyText.contains("<html"))
                 throw IOException("YouTube returned an HTML verification/captcha page instead of base.js code.")
-            }
 
             return bodyText
         }
     }
 
-    suspend fun downloadWebpage(url: String, tries: Int = 1, timeoutMs: Long = 1_000, errorMsg: String? = null): String {
-        var tryCount = 0
-
-        while (true) {
-            try {
-                val request = Request.Builder().url(url).build()
-                val content = OkHttpManager.instance().client.newCall(request).execute().use {
-                    if (!it.isSuccessful) throw InfoExtractorError(formatError(errorMsg, "Unexpected code $it"))
-                    it.body?.string()
-                }
-                return content ?: throw InfoExtractorError(formatError(errorMsg, "Empty content received for the $url"))
-            } catch (e: Exception) {
-                tryCount++
-                if (tryCount >= tries)
-                    throw InfoExtractorError(formatError(errorMsg, "Can't load the $url"), e)
-                if (timeoutMs > 0)
-                    delay(timeoutMs)
-            }
-        }
-    }
-
-    fun downloadWebpageWithRetries(url: String, errorMsg: String? = null): String = runBlocking {
-        return@runBlocking downloadWebpage(url, tries = 3, errorMsg = errorMsg)
-    }
-
-    fun downloadWebpageSilent(url: String): String? {
-        return try {
-            downloadWebpageWithRetries(url)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
+    @Synchronized
+    fun downloadWebpage(url: String): String {
+        val request = Request.Builder().url(url).build()
+        
+        return OkHttpManager.instance().client.newCall(request).execute().use {
+            if (!it.isSuccessful) throw InfoExtractorError("Unexpected code $it")
+            it.body?.string()
+        } ?: throw InfoExtractorError("Empty content received for the $url")
     }
 
 }

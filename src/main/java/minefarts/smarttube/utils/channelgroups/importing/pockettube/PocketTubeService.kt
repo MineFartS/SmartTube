@@ -12,10 +12,16 @@ import minefarts.smarttube.utils.app.nsigsolver.common.YouTubeInfoExtractor
 import java.io.File
 
 public object PocketTubeService: GroupImportService {
-    override fun importGroups(url: Uri): List<ItemGroup>? {
-        val pocketTubeContent = YouTubeInfoExtractor.downloadWebpageSilent(url.toString()) ?: return null
 
-        return parseGroups(pocketTubeContent)
+    override fun importGroups(url: Uri): List<ItemGroup>? {
+        return try {
+            return parseGroups(
+                YouTubeInfoExtractor.downloadWebpage(url.toString())
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 
     override fun importGroups(file: File): List<ItemGroup>? {
@@ -46,4 +52,5 @@ public object PocketTubeService: GroupImportService {
 
         return result
     }
+    
 }
