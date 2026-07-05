@@ -4,7 +4,6 @@ import minefarts.smarttube.utils.app.potoken.PoTokenService
 import minefarts.smarttube.utils.app.potokencloud.PoTokenCloudService
 import minefarts.smarttube.utils.app.potokennp2.PoTokenProvider
 import minefarts.smarttube.utils.app.potokennp2.PoTokenResult
-import minefarts.smarttube.utils.app.potokennp2.PoTokenGenerator
 import minefarts.smarttube.utils.app.potokennp2.PoTokenWebView
 import minefarts.smarttube.utils.common.helpers.AppClient
 
