@@ -114,8 +114,29 @@ public object V8ChallengeProvider {
                 )}
             )
 
+            val script = """
+                (function() {
+                    var result;
+                    try {
+                        result = jsc(${sGson.toJson(data)});
+                        if (result === undefined || result === null) {
+                            result = { 
+                                type: "error", 
+                                error: "jsc wrapper returned undefined or null" 
+                            };
+                        }
+                    } catch (err) {
+                        result = { 
+                            type: "error", 
+                            error: err.message || err.toString()
+                        };
+                    }
+                    return JSON.stringify(result);
+                })()
+            """.trimIndent()
+
             val output: SolverOutput = sGson.fromJson(
-                runV8("JSON.stringify( jsc(${sGson.toJson(data)}) )"), 
+                runV8(script), 
                 object : TypeToken<SolverOutput>() {}.type
             )
 
