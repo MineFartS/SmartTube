@@ -1,5 +1,5 @@
 package minefarts.smarttube.utils.actions.models;
 
-import minefarts.smarttube.google.common.converters.jsonpath.JsonPath;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
 
 public class ActionResult {}

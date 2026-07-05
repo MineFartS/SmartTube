@@ -9,6 +9,8 @@ Thumbs.db
 # Build Cache
 .gradle
 **/build/
+aar
+google-services.json
 
 # Build Logs
 *.log

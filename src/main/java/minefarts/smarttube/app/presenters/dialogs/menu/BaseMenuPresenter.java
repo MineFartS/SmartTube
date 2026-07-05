@@ -3,9 +3,9 @@ package minefarts.smarttube.app.presenters.dialogs.menu;
 import android.content.Context;
 
 import minefarts.smarttube.utils.MediaItemService;
-import minefarts.smarttube.utils.service.data.MediaGroup;
-import minefarts.smarttube.utils.data.MediaItem;
-import minefarts.smarttube.utils.data.PlaylistInfo;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.rx.RxHelper;

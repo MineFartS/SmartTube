@@ -3,8 +3,17 @@ package minefarts.smarttube.app.presenters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import minefarts.smarttube.utils.service.data.MediaGroup;
-import minefarts.smarttube.utils.data.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.youtubeapi.browse.v2.BrowseService2;
+import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.MediaGroupOptions;
+import com.liskovsoft.youtubeapi.browse.v2.gen.BrowseResult;
+import com.liskovsoft.youtubeapi.browse.v2.BrowseApiHelper;
+import com.liskovsoft.youtubeapi.common.helpers.AppClient;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.browse.v2.BrowseApi;
+import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.BrowseMediaGroup;
+
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
@@ -19,22 +28,15 @@ import minefarts.smarttube.app.views.ChannelView;
 import minefarts.smarttube.utils.BrowseProcessorManager;
 import minefarts.smarttube.utils.rx.RxHelper;
 import minefarts.smarttube.utils.LoadingManager;
-import minefarts.smarttube.utils.browse.BrowseService2;
-import minefarts.smarttube.utils.common.models.impl.mediagroup.MediaGroupOptions;
-import minefarts.smarttube.utils.browse.gen.BrowseResult;
-import minefarts.smarttube.utils.browse.BrowseApiHelper;
-import minefarts.smarttube.utils.common.helpers.AppClient;
-import minefarts.smarttube.google.common.helpers.RetrofitHelper;
-import minefarts.smarttube.utils.browse.BrowseApi2;
-import minefarts.smarttube.utils.common.models.impl.mediagroup.BrowseMediaGroup;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
-
 import retrofit2.Call;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Comparator;
@@ -61,8 +63,7 @@ public class ChannelPresenter extends BasePresenter<ChannelView> {
     private static ChannelPresenter sInstance;
     
     BrowseProcessorManager mBrowseProcessor;
-    BrowseService2 mBrowseService;
-    BrowseApi2 mBrowseApi;
+    BrowseApi mBrowseApi;
     BrowseApiHelper mBrowseApiHelper;
     VideoLoaderController mVideoLoaderController;
     
@@ -85,8 +86,7 @@ public class ChannelPresenter extends BasePresenter<ChannelView> {
         if (sInstance == null) {
             sInstance = new ChannelPresenter();
             sInstance.mBrowseProcessor = new BrowseProcessorManager(context, sInstance::syncItem);
-            sInstance.mBrowseService = sInstance.getContentService().getBrowseService2();
-            sInstance.mBrowseApi = RetrofitHelper.create(BrowseApi2.class);
+            sInstance.mBrowseApi = RetrofitHelper.create(BrowseApi.class);
             sInstance.mBrowseApiHelper = BrowseApiHelper.INSTANCE;
             sInstance.mVideoLoaderController = PlaybackPresenter.instance(context).getController(VideoLoaderController.class);
         }
@@ -381,13 +381,21 @@ public class ChannelPresenter extends BasePresenter<ChannelView> {
                 mBrowseApiHelper.getChannelSearchQuery(AppClient.WEB, getChannelId(), query)
             );
 
-            BrowseMediaGroup items = new BrowseMediaGroup(
-                RetrofitHelper.get(search, false), 
-                new MediaGroupOptions(MediaGroup.TYPE_CHANNEL_UPLOADS),
-                null
-            );
-
-            VideoGroup update = VideoGroup.from(items);
+            MediaGroupOptions mgo;
+            try {
+                Class<?> companionClass = Class.forName("MediaGroupOptions$Companion");
+                Object companionInstance = MediaGroupOptions.Companion;
+                Method privateMethod = companionClass.getDeclaredMethod("create", String.class);
+                privateMethod.setAccessible(true);
+                mgo = (MediaGroupOptions) privateMethod.invoke(MediaGroup.TYPE_SEARCH, getChannelId());
+            } catch (NoSuchMethodException | IllegalAccessException | ClassNotFoundException | InvocationTargetException ig) {
+                return;
+            }
+            
+            VideoGroup update = VideoGroup.from(new BrowseMediaGroup(
+                RetrofitHelper.get(search, false),
+                mgo, null
+            ));
 
             if (getView() == null || update.isEmpty()) return;
 

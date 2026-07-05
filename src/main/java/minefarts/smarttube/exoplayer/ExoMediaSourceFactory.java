@@ -34,7 +34,7 @@ import minefarts.smarttube.upstream.DefaultDataSourceFactory;
 import minefarts.smarttube.upstream.DefaultHttpDataSourceFactory;
 import minefarts.smarttube.upstream.HttpDataSource;
 import minefarts.smarttube.upstream.HttpDataSource.BaseFactory;
-import minefarts.smarttube.utils.data.MediaItemFormatInfo;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import minefarts.smarttube.utils.helpers.FileHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.okhttp.OkHttpManager;

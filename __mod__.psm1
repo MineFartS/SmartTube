@@ -4,7 +4,7 @@ $ADB = "$ANDROID_SDK\platform-tools\adb.exe"
 
 $JAVA_HOME = "$PSScriptRoot\lib\jdk17"
 
-$APP_ID = "minefarts.smarttube"
+$APP_ID = "app.smarttube.stable"
 
 function Test-ADBConnection {
 
@@ -16,13 +16,36 @@ function Test-ADBConnection {
     
 }
 
+function Add-YuliskovPkg ([String]$Name) {
+
+    $Dst = "$PSScriptRoot/aar/$Name.aar"
+
+    if (-not (Test-Path $Dst)) {
+
+        Copy-Item "local.properties" "lib/yuliskov/local.properties" -Force
+
+        New-Item 'aar' -ItemType Directory
+
+        Set-Location "$PSScriptRoot/lib/yuliskov/"
+
+        Invoke-Gradle ":$($Name):assemble"
+
+        Get-ChildItem -Path . -Filter "$Name*debug.aar" -Recurse `
+            | Move-Item -Destination $Dst
+
+        Set-Location $PSScriptRoot
+
+    }
+
+}
+
 function Invoke-Gradle {
     param(
         [Parameter(ValueFromRemainingArguments)]
         $cmdargs
     )
 
-    ."$PSScriptRoot\gradlew.bat" @cmdargs
+    .\gradlew.bat @cmdargs
 
 }
 
@@ -79,6 +102,11 @@ function Repair-Environment {
     Write-Output "sdk.dir=$ANDROID_SDK" >> 'local.properties'
 
     (Get-Content -Path "local.properties") -replace '\\', '/' | Set-Content -Encoding utf8 "local.properties"
+
+    Copy-Item "lib/yuliskov/smarttubetv/google-services.json" "google-services.json"
+
+    $Env:JAVA_HOME = $JAVA_HOME
+    $Env:PATH += ";$JAVA_HOME/bin"
 
 }
 

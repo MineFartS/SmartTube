@@ -3,9 +3,9 @@ package minefarts.smarttube.app.models.playback.controllers;
 import android.content.Context;
 import android.util.Pair;
 
-import minefarts.smarttube.utils.data.CommentGroup;
-import minefarts.smarttube.utils.data.CommentItem;
-import minefarts.smarttube.utils.service.data.MediaItemMetadata;
+import com.liskovsoft.mediaserviceinterfaces.data.CommentGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.CommentItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
@@ -17,8 +17,8 @@ import minefarts.smarttube.app.models.playback.ui.CommentsReceiver.Backup;
 import minefarts.smarttube.app.models.playback.ui.AbstractCommentsReceiver;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
-import minefarts.smarttube.utils.comments.gen.CommentsResult;
-import minefarts.smarttube.utils.comments.impl.CommentGroupImpl;
+import com.liskovsoft.youtubeapi.comments.gen.CommentsResult;
+import com.liskovsoft.youtubeapi.comments.impl.CommentGroupImpl;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -150,11 +150,7 @@ public class CommentsController extends BasePlayerController {
 
         onFinish();
 
-        Observable<CommentGroup> observe = RxHelper.fromCallable(() -> {
-            CommentsResult commentsResult = getCommentsService().getCommentsResult(key);
-            if (commentsResult == null) return null;
-            return new CommentGroupImpl(commentsResult);
-        });
+        Observable<CommentGroup> observe = getCommentsService().getCommentsObserve(key);
 
         mCommentsAction = observe.subscribe(
             receiver::addCommentGroup,

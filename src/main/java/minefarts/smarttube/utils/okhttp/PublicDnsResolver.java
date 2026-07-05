@@ -81,11 +81,10 @@ public class PublicDnsResolver implements Dns {
             Lookup lookup = new Lookup(hostname, type);
             lookup.setResolver(resolver);
 
-            Record[] records = lookup.run();
             List<InetAddress> addresses = new ArrayList<>();
-
+            org.xbill.DNS.Record[] records = lookup.run();
             if (records != null) {
-                for (Record record : records) {
+                for (org.xbill.DNS.Record record : records) {
                     if (record instanceof ARecord && type == Type.A) {
                         addresses.add(((ARecord) record).getAddress());
                     } else if (record instanceof AAAARecord && type == Type.AAAA) {

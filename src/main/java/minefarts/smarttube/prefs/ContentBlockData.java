@@ -3,7 +3,7 @@ package minefarts.smarttube.prefs;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build.VERSION;
-import minefarts.smarttube.utils.data.SponsorSegment;
+import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.prefs.GlobalPreferences;
 import minefarts.smarttube.R;

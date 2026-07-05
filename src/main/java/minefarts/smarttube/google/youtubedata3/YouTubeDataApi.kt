@@ -1,8 +1,8 @@
 package minefarts.smarttube.google.youtubedata3
 
-import minefarts.smarttube.utils.SignInService
+import com.liskovsoft.youtubeapi.service.YouTubeSignInService
 import minefarts.smarttube.google.youtubedata3.data.SnippetResponse
-import minefarts.smarttube.google.common.converters.gson.WithGson
+import com.liskovsoft.googlecommon.common.converters.gson.WithGson
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

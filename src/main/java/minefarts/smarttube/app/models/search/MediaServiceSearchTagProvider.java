@@ -2,7 +2,7 @@ package minefarts.smarttube.app.models.search;
 
 import android.text.TextUtils;
 
-import minefarts.smarttube.utils.service.ContentService;
+import com.liskovsoft.mediaserviceinterfaces.ContentService;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.app.models.search.vineyard.Tag;

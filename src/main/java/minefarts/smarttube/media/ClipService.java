@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 
 import minefarts.smarttube.R;
-import minefarts.smarttube.utils.service.data.MediaGroup;
-import minefarts.smarttube.utils.service.ContentService;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.ContentService;
 
 public class ClipService {
     private static final int SUBSCRIPTIONS_ID = 1;

@@ -8,11 +8,29 @@ import android.util.Pair;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.liskovsoft.mediaserviceinterfaces.ContentService;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
+import com.liskovsoft.mediaserviceinterfaces.LiveChatService;
+import com.liskovsoft.mediaserviceinterfaces.CommentsService;
+import com.liskovsoft.youtubeapi.service.YouTubeNotificationsService;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
+import com.liskovsoft.mediaserviceinterfaces.data.NotificationState;
+import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
+import com.liskovsoft.youtubeapi.app.AppService;
+import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl;
+import com.liskovsoft.googlecommon.common.locale.LocaleManager;
+import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
+import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
+import com.liskovsoft.mediaserviceinterfaces.ServiceManager;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
+import com.liskovsoft.mediaserviceinterfaces.RemoteControlService;
+import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
+
 import minefarts.smarttube.Format;
-import minefarts.smarttube.utils.service.ContentService;
 import minefarts.smarttube.utils.MediaItemService;
-import minefarts.smarttube.utils.SignInService;
-import minefarts.smarttube.utils.service.data.MediaItemMetadata;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.PlayerEventListener;
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
@@ -30,18 +48,7 @@ import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.prefs.RemoteControlData;
 import minefarts.smarttube.prefs.SearchData;
-import minefarts.smarttube.utils.service.internal.MediaServiceData;
 import minefarts.smarttube.ContextManager;
-import minefarts.smarttube.utils.service.YouTubeLiveChatService;
-import minefarts.smarttube.utils.comments.CommentsService;
-import minefarts.smarttube.utils.service.YouTubeNotificationsService;
-import minefarts.smarttube.utils.videoinfo.V2.VideoInfoService;
-import minefarts.smarttube.utils.oauth.Account;
-import minefarts.smarttube.utils.service.data.MediaGroup;
-import minefarts.smarttube.utils.data.MediaItem;
-import minefarts.smarttube.utils.data.MediaItemFormatInfo;
-import minefarts.smarttube.utils.data.NotificationState;
-import minefarts.smarttube.utils.data.PlaylistInfo;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.rx.RxHelper;
@@ -53,10 +60,6 @@ import minefarts.smarttube.prefs.AppPrefs;
 import minefarts.smarttube.utils.LoadingManager;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.utils.playlist.PlaylistService;
-import minefarts.smarttube.utils.app.AppService;
-import minefarts.smarttube.utils.RemoteControlService;
-import minefarts.smarttube.utils.channelgroups.ChannelGroupServiceImpl;
-import minefarts.smarttube.google.common.locale.LocaleManager;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -71,6 +74,8 @@ public abstract class BasePlayerController implements PlayerEventListener {
     
     private static final String TAG = BasePlayerController.class.getSimpleName();
 
+    private static final ServiceManager YTSM = YouTubeServiceManager.instance();
+    
     private static Disposable mRefreshCoreDataAction;
     private static Disposable mMetadataAction;
     private static Disposable mUploadsAction;
@@ -743,24 +748,24 @@ public abstract class BasePlayerController implements PlayerEventListener {
         }, error -> LoadingManager.showLoading(context, false));
     }
 
-    public static SignInService getSignInService() {
-        return SignInService.instance();
+    public static YouTubeSignInService getSignInService() {
+        return YouTubeSignInService.instance();
     }
 
     public static RemoteControlService getRemoteControlService() {
-        return RemoteControlService.instance();
+        return YTSM.getRemoteControlService();
     }
 
-    public static YouTubeLiveChatService getLiveChatService() {
-        return YouTubeLiveChatService.instance();
+    public static LiveChatService getLiveChatService() {
+        return YTSM.getLiveChatService();
     }
 
     public static CommentsService getCommentsService() {
-        return CommentsService.INSTANCE;
+        return YTSM.getCommentsService();
     }
 
     public static ContentService getContentService() {
-        return ContentService.instance();
+        return YTSM.getContentService();
     }
 
     public static MediaItemService getMediaItemService() {

@@ -1,7 +1,7 @@
 package minefarts.smarttube.ui.widgets.chat;
 
-import minefarts.smarttube.utils.data.ChatItem;
-import minefarts.smarttube.utils.data.CommentItem;
+import com.liskovsoft.mediaserviceinterfaces.data.ChatItem;
+import com.liskovsoft.mediaserviceinterfaces.data.CommentItem;
 import minefarts.smarttube.commons.models.IUser;
 
 public class ChatItemAuthor implements IUser {

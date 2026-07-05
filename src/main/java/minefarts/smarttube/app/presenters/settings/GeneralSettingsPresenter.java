@@ -3,7 +3,7 @@ package minefarts.smarttube.app.presenters.settings;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import minefarts.smarttube.utils.service.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.okhttp.OkHttpManager;
@@ -25,7 +25,7 @@ import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.prefs.SearchData;
 import minefarts.smarttube.utils.AppDialogUtil;
 import minefarts.smarttube.utils.SimpleEditDialog;
-import minefarts.smarttube.utils.service.internal.MediaServiceData;
+import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -139,24 +139,39 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
         options.add(
             UiOptionItem.from(
                 "Hide watched videos",
-                option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_WATCHED, option.isSelected()),
-                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_WATCHED)
+                option -> {
+                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_WATCHED_HOME, option.isSelected());
+                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_WATCHED_WATCH_LATER, option.isSelected());
+                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_WATCHED_SUBSCRIPTIONS, option.isSelected());
+                },
+                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_WATCHED_HOME) ||
+                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_WATCHED_WATCH_LATER) ||
+                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_WATCHED_SUBSCRIPTIONS)
             )
         );
 
         options.add(
             UiOptionItem.from(
                 "Shorts",
-                option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_SHORTS, option.isSelected()),
-                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_SHORTS)
+                option -> mMediaServiceData.setContentHidden(
+                    MediaServiceData.CONTENT_SHORTS_ALL, 
+                    option.isSelected()
+                ),
+                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_SHORTS_ALL)
             )
         );
 
         options.add(
             UiOptionItem.from(
                 "Upcoming Streams",
-                option -> mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_UPCOMING, option.isSelected()),
-                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_UPCOMING)
+                option -> {
+                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_UPCOMING_HOME, option.isSelected());
+                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_UPCOMING_CHANNEL, option.isSelected());
+                    mMediaServiceData.setContentHidden(MediaServiceData.CONTENT_UPCOMING_SUBSCRIPTIONS, option.isSelected());
+                },
+                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_UPCOMING_HOME) ||
+                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_UPCOMING_CHANNEL) ||
+                mMediaServiceData.isContentHidden(MediaServiceData.CONTENT_UPCOMING_SUBSCRIPTIONS)
             )
         );
 

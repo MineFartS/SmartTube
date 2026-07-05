@@ -4,7 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import minefarts.smarttube.utils.data.ItemGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;

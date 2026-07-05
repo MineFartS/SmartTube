@@ -4,8 +4,8 @@ import android.content.Context;
 
 import androidx.annotation.Nullable;
 
-import minefarts.smarttube.utils.service.data.MediaGroup;
-import minefarts.smarttube.utils.data.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.BrowseSection;

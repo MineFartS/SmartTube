@@ -1,7 +1,7 @@
 package minefarts.smarttube.utils.playlist;
 
 import minefarts.smarttube.utils.actions.models.ActionResult;
-import minefarts.smarttube.google.common.converters.jsonpath.WithJsonPath;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPath;
 import minefarts.smarttube.utils.playlist.models.PlaylistsResult;
 import retrofit2.Call;
 import retrofit2.http.Body;

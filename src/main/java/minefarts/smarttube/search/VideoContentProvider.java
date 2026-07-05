@@ -13,8 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import minefarts.smarttube.R;
-import minefarts.smarttube.utils.service.data.MediaGroup;
-import minefarts.smarttube.utils.data.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.rx.AppSchedulerProvider;
 import minefarts.smarttube.utils.rx.SchedulerProvider;

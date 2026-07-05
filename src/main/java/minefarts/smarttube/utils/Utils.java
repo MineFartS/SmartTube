@@ -103,14 +103,14 @@ import minefarts.smarttube.exoplayer.selector.FormatItem.VideoPreset;
 import minefarts.smarttube.exoplayer.selector.TrackSelectorUtil;
 import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
 import minefarts.smarttube.utils.MotherActivity;
-import minefarts.smarttube.utils.RemoteControlService;
+import com.liskovsoft.mediaserviceinterfaces.RemoteControlService;
 import minefarts.smarttube.utils.RemoteControlWorker;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.prefs.HiddenPrefs;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.prefs.RemoteControlData;
-import minefarts.smarttube.utils.service.internal.MediaServiceData;
+import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import minefarts.smarttube.C;
 import minefarts.smarttube.ExoPlayerLibraryInfo;
 import minefarts.smarttube.Format;
@@ -591,25 +591,18 @@ public class Utils {
         notificationManager.notify(notificationId, notification);
     }
 
-    public static void startService(Context context, Class<? extends Service> serviceCls) {
-        if (isServiceRunning(context, serviceCls)) return;
-
-        Intent serviceIntent = new Intent(context, serviceCls);
-
-        // https://stackoverflow.com/questions/46445265/android-8-0-java-lang-illegalstateexception-not-allowed-to-start-service-inten
-        if (VERSION.SDK_INT >= 26) {
-            context.startForegroundService(serviceIntent);
+    public static void startService(Context context, Class<?> serviceClass) {
+        Intent intent = new Intent(context, serviceClass);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(intent);
         } else {
-            context.startService(serviceIntent);
+            context.startService(intent);
         }
     }
 
-    public static void stopService(Context context, Class<? extends Service> serviceCls) {
-        if (!isServiceRunning(context, serviceCls)) return;
-
-        Intent serviceIntent = new Intent(context, serviceCls);
-
-        context.stopService(serviceIntent);
+    public static void stopService(Context context, Class<?> serviceClass) {
+        Intent intent = new Intent(context, serviceClass);
+        context.stopService(intent);
     }
 
     public static void showRepeatInfo(Context context, int modeIndex) {
@@ -1029,9 +1022,6 @@ public class Utils {
         MainUIData.instance(context).persistState();
         GeneralData.instance(context).persistState();
         MediaServiceData mediaServiceData = MediaServiceData.instance();
-        if (mediaServiceData != null) {
-            mediaServiceData.persistState();
-        }
     }
 
         /**

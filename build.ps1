@@ -16,13 +16,15 @@ $gARGS = @()
 
 if ($Force) {
 
+    taskkill.exe /im java.exe /f
+    taskkill.exe /im adb.exe /f
+
     Remove-Item `
         ".gradle" `
         -Force -Recurse -Verbose
 
-    Remove-Item `
-        ".build" `
-        -Force -Recurse -Verbose
+    Get-ChildItem -Path . -Directory -Filter "build" -Recurse `
+        | Remove-Item -Recurse -Force
 
     Remove-Item `
         "$env:USERPROFILE\.gradle\caches" `
@@ -33,6 +35,10 @@ if ($Force) {
 
 }
 
+Add-YuliskovPkg 'youtubeapi'
+Add-YuliskovPkg 'mediaserviceinterfaces'
+Add-YuliskovPkg 'sharedutils'
+
 if (Test-ADBConnection) {
     $gARGS += ":installDebug"
 } else {
@@ -41,4 +47,4 @@ if (Test-ADBConnection) {
 
 Clear-Host
 
-Invoke-Gradle @gARGS
+Invoke-Gradle @gARGS @args

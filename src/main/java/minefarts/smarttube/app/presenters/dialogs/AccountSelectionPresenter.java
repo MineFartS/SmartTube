@@ -3,8 +3,9 @@ package minefarts.smarttube.app.presenters.dialogs;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import minefarts.smarttube.utils.SignInService;
-import minefarts.smarttube.utils.oauth.Account;
+import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
+import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
+
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
@@ -23,7 +24,7 @@ public class AccountSelectionPresenter extends BasePresenter<Void> {
     @SuppressLint("StaticFieldLeak")
     private static AccountSelectionPresenter sInstance;
 
-    SignInService mSignInService;
+    YouTubeSignInService mSignInService;
 
     public static AccountSelectionPresenter instance(Context context) {
         if (sInstance == null) {

@@ -19,3 +19,9 @@
 	url = https://github.com/MineFartS/Python-Embed.git
     branch = 3.14.5
     ignore = all
+
+[submodule "lib/yuliskov"]
+	path = lib/yuliskov
+	url = https://github.com/yuliskov/SmartTube
+    ignore = all
+

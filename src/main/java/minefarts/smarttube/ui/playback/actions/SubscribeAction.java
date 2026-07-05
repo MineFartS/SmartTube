@@ -2,18 +2,19 @@ package minefarts.smarttube.ui.playback.actions;
 
 import android.content.Context;
 
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
+import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper;
+import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
+import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl;
+import com.liskovsoft.youtubeapi.next.v2.WatchNextServiceWrapper;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
-import minefarts.smarttube.google.common.helpers.RetrofitHelper;
-import minefarts.smarttube.utils.common.helpers.PostDataHelper;
-import minefarts.smarttube.utils.SignInService;
 import minefarts.smarttube.utils.actions.ActionsApi;
 import minefarts.smarttube.utils.actions.models.ActionResult;
-import minefarts.smarttube.utils.channelgroups.ChannelGroupServiceImpl;
 import minefarts.smarttube.utils.rx.RxHelper;
-import minefarts.smarttube.utils.next.v2.WatchNextServiceWrapper;
-import minefarts.smarttube.utils.service.data.MediaItemMetadata;
 
 import io.reactivex.Observable;
 
@@ -26,7 +27,7 @@ public class SubscribeAction extends TwoStateAction {
 
     private static final ActionsApi mActionsApi = RetrofitHelper.create(ActionsApi.class);
     
-    private static final SignInService mSignInService = SignInService.instance();
+    private static final YouTubeSignInService mSignInService = YouTubeSignInService.instance();
 
     private static final WatchNextServiceWrapper mWatchNextService = WatchNextServiceWrapper.INSTANCE;
 
@@ -94,7 +95,7 @@ public class SubscribeAction extends TwoStateAction {
         
         }
 
-        ChannelGroupServiceImpl.subscribe(video.isSubscribed, video.channelId);
+        ChannelGroupServiceImpl.subscribe(video.isSubscribed, video.channelId, null, null);
 
         RetrofitHelper.get(wrapper);
 

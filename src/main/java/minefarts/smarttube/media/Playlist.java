@@ -2,12 +2,12 @@ package minefarts.smarttube.media;
 
 import androidx.tvprovider.media.tv.TvContractCompat;
 
-import minefarts.smarttube.google.common.helpers.ServiceHelper;
+import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 import minefarts.smarttube.media.ClipService.GroupCallback;
-import minefarts.smarttube.utils.service.ContentService;
+import com.liskovsoft.mediaserviceinterfaces.ContentService;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
-import minefarts.smarttube.utils.service.data.MediaGroup;
-import minefarts.smarttube.utils.data.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import minefarts.smarttube.utils.helpers.Helpers;
 
 import java.util.ArrayList;

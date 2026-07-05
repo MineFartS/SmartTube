@@ -15,7 +15,7 @@ import minefarts.smarttube.source.MergingMediaSource;
 import minefarts.smarttube.source.TrackGroupArray;
 import minefarts.smarttube.trackselection.TrackSelection;
 import minefarts.smarttube.trackselection.TrackSelectionArray;
-import minefarts.smarttube.utils.data.MediaItemFormatInfo;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.BuildConfig;

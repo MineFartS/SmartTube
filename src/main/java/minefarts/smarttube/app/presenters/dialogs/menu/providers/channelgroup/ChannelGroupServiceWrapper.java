@@ -4,12 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 
+import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup.Item;
+
 import minefarts.smarttube.utils.ChannelGroupService;
-import minefarts.smarttube.utils.data.ItemGroup;
-import minefarts.smarttube.utils.data.ItemGroup.Item;
 import minefarts.smarttube.prefs.AppPrefs;
 import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
+import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl;
 
 import java.io.File;
 import java.util.List;
@@ -20,7 +22,7 @@ public class ChannelGroupServiceWrapper implements ProfileChangeListener {
     @SuppressLint("StaticFieldLeak")
     private static ChannelGroupServiceWrapper sInstance;
     private final Context mContext;
-    private final ChannelGroupService mService;
+    private final ChannelGroupServiceImpl mService;
     private final AppPrefs mPrefs;
 
     private ChannelGroupServiceWrapper(Context context) {

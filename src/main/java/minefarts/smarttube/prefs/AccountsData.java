@@ -3,7 +3,7 @@ package minefarts.smarttube.prefs;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import androidx.annotation.NonNull;
-import minefarts.smarttube.utils.oauth.Account;
+import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.app.models.playback.BasePlayerController.AccountChangeListener;

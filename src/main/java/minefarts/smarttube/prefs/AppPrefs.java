@@ -3,7 +3,7 @@ package minefarts.smarttube.prefs;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
-import minefarts.smarttube.utils.oauth.Account;
+import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
 import minefarts.smarttube.utils.misc.WeakHashSet;
 import minefarts.smarttube.utils.prefs.SharedPreferencesBase;
 import minefarts.smarttube.R;

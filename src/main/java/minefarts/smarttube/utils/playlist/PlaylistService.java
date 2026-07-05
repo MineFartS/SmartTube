@@ -1,8 +1,8 @@
 package minefarts.smarttube.utils.playlist;
 
-import minefarts.smarttube.utils.data.PlaylistInfo;
+import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
 import minefarts.smarttube.utils.actions.models.ActionResult;
-import minefarts.smarttube.google.common.helpers.RetrofitHelper;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import minefarts.smarttube.utils.playlist.impl.YouTubePlaylistInfo;
 import minefarts.smarttube.utils.playlist.models.PlaylistsResult;
 
@@ -46,7 +46,7 @@ public class PlaylistService {
         
         Call<ActionResult> wrapper = mPlaylistManager.editPlaylist(PlaylistApiHelper.getRenamePlaylistsQuery(playlistId, newName));
 
-        RetrofitHelper.get(wrapper, true, true);
+        RetrofitHelper.getWithErrors(wrapper);
 
     }
 
@@ -54,7 +54,7 @@ public class PlaylistService {
         
         Call<ActionResult> wrapper = mPlaylistManager.editPlaylist(PlaylistApiHelper.getPlaylistOrderQuery(playlistId, playlistOrder));
 
-        RetrofitHelper.get(wrapper, true, true);
+        RetrofitHelper.getWithErrors(wrapper);
 
     }
 
@@ -62,7 +62,7 @@ public class PlaylistService {
         
         Call<ActionResult> wrapper = mPlaylistManager.saveForeignPlaylist(PlaylistApiHelper.getSaveRemoveForeignPlaylistQuery(playlistId));
 
-        RetrofitHelper.get(wrapper, true, true);
+        RetrofitHelper.getWithErrors(wrapper);
 
     }
 
@@ -71,12 +71,12 @@ public class PlaylistService {
         // Try to remove foreign playlist first
         Call<ActionResult> removeWrapper = mPlaylistManager.removeForeignPlaylist(PlaylistApiHelper.getSaveRemoveForeignPlaylistQuery(playlistId));
         
-        RetrofitHelper.get(removeWrapper, true, true);
+        RetrofitHelper.getWithErrors(removeWrapper);
 
         // Then, delete user playlist
         Call<ActionResult> deleteWrapper = mPlaylistManager.removePlaylist(PlaylistApiHelper.getRemovePlaylistQuery(playlistId));
         
-        RetrofitHelper.get(deleteWrapper, true, true);
+        RetrofitHelper.getWithErrors(deleteWrapper);
     
     }
 
@@ -84,7 +84,7 @@ public class PlaylistService {
         
         Call<ActionResult> wrapper = mPlaylistManager.createPlaylist(PlaylistApiHelper.getCreatePlaylistQuery(playlistName, videoId));
 
-        RetrofitHelper.get(wrapper, true, true);
+        RetrofitHelper.getWithErrors(wrapper);
 
     }
     

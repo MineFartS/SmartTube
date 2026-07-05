@@ -1,23 +1,27 @@
 package minefarts.smarttube.ui.playback.previewtimebar;
 
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemStoryboard.Size;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemStoryboard;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.collection.ArraySet;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
+
 import minefarts.smarttube.utils.MediaItemService;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
-import minefarts.smarttube.utils.formatbuilders.storyboard.YouTubeStoryParser.Size;
-import minefarts.smarttube.utils.service.data.MediaItemStoryboard;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.rx.RxHelper;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.utils.ViewUtil;
+
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 

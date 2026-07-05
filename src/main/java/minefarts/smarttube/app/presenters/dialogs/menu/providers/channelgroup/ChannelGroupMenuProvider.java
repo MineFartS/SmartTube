@@ -5,7 +5,7 @@ import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
-import minefarts.smarttube.utils.data.ItemGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.rx.RxHelper;
