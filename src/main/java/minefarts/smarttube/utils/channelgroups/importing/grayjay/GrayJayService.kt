@@ -15,10 +15,16 @@ import minefarts.smarttube.utils.app.nsigsolver.common.YouTubeInfoExtractor
 import java.io.File
 
 public object GrayJayService: GroupImportService {
+    
     override fun importGroups(url: Uri): List<ItemGroup>? {
-        val grayJayContent = YouTubeInfoExtractor.downloadWebpageSilent(url.toString()) ?: return null
-
-        return parseGroups(grayJayContent)
+        return try {
+            return parseGroups(
+                YouTubeInfoExtractor.downloadWebpage(url.toString())
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 
     override fun importGroups(file: File): List<ItemGroup>? {
@@ -58,4 +64,5 @@ public object GrayJayService: GroupImportService {
 
         return result
     }
+
 }

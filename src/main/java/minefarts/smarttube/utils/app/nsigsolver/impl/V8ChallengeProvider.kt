@@ -104,7 +104,7 @@ public object V8ChallengeProvider {
 
         for ((playerUrl, groupedRequests) in grouped) {
 
-            val data = mutableMapOf(
+            val data = mapOf(
                 "type" to "player",
                 "player" to getPlayer(playerUrl),
                 "output_preprocessed" to true,
@@ -114,29 +114,8 @@ public object V8ChallengeProvider {
                 )}
             )
 
-            val script = """
-                (function() {
-                    var result;
-                    try {
-                        result = jsc(${sGson.toJson(data)});
-                        if (result === undefined || result === null) {
-                            result = { 
-                                type: "error", 
-                                error: "jsc wrapper returned undefined or null" 
-                            };
-                        }
-                    } catch (err) {
-                        result = { 
-                            type: "error", 
-                            error: err.message || err.toString()
-                        };
-                    }
-                    return JSON.stringify(result);
-                })()
-            """.trimIndent()
-
             val output: SolverOutput = sGson.fromJson(
-                runV8(script), 
+                runV8("JSON.stringify( jsc(${sGson.toJson(data)}) )"), 
                 object : TypeToken<SolverOutput>() {}.type
             )
 
