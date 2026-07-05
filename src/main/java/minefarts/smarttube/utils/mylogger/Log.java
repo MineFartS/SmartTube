@@ -52,7 +52,7 @@ public final class Log {
         @Nullable Object message,
         Object... formatArgs
     ) {
-        w(tag, message, Traceback(), formatArgs);
+        w(tag, message, null, formatArgs);
     }
 
     public static void w(
@@ -70,7 +70,14 @@ public final class Log {
         @Nullable Object message,
         Object... formatArgs
     ) {
-        e(tag, message, Traceback(), formatArgs);
+
+        StackTraceElement[] traceback = Arrays.stream(Thread.currentThread().getStackTrace())
+            .filter(ste -> !ste.getClassName().contains("utils.mylogger.Log"))
+            .toArray(StackTraceElement[]::new);
+        Throwable ex = new Throwable();
+        ex.setStackTrace(traceback);
+
+        e(tag, message, ex, formatArgs);
     }
 
     public static void e(
@@ -102,19 +109,6 @@ public final class Log {
         }
 
         return fmsg + "\n";
-    }
-
-    private static Throwable Traceback() {
-
-        StackTraceElement[] traceback = Arrays.stream(Thread.currentThread().getStackTrace())
-            .filter(ste -> !ste.getClassName().contains("utils.mylogger.Log"))
-            .toArray(StackTraceElement[]::new);
-
-        Throwable ex = new Throwable();
-
-        ex.setStackTrace(traceback);
-    
-        return ex;
     }
 
 }
