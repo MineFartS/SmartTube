@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 
@@ -439,6 +441,46 @@ public class VideoInfoService {
                 return getDashInfoContent(format.getUrl());
             }
         }
+    }
+
+    /**
+     * Call this helper method when building the innerTube JSON request object 
+     * inside getVideoInfo, browse, or continueGroup requests.
+     */
+    private Map<String, Object> buildSafeInnerTubeContext() {
+        Map<String, Object> context = new HashMap<>();
+        Map<String, Object> client = new HashMap<>();
+
+        // Spoof a modern, stable Android TV instance configuration
+        client.put("clientName", "ANDROID_TV");
+        client.put("clientVersion", "2.17.008"); // Update to current stable Android TV target
+        client.put("osName", "Android");
+        client.put("osVersion", "11");
+        client.put("platform", "TV");
+        client.put("hl", "en");
+        client.put("gl", "US");
+        client.put("utcOffsetMinutes", 0);
+
+        context.put("client", client);
+        
+        Map<String, Object> user = new HashMap<>();
+        user.put("lockedSafetyMode", false);
+        context.put("user", user);
+
+        return context;
+    }
+
+    /**
+     * Ensure your OkHttp/Retrofit construction injects these headers globally 
+     * for all InnerTube JSON endpoints.
+     */
+    public static Map<String, String> getInnerTubeHeaders() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("User-Agent", "com.google.android.youtube.tv/2.17.008 (Linux; U; Android 11; Build/RQ3A.210605.005)");
+        headers.put("X-Goog-Api-Format-Version", "2");
+        headers.put("Origin", "https://youtube.com");
+        return headers;
     }
 
 }
