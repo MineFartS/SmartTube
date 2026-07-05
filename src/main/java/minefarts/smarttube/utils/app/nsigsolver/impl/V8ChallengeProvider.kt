@@ -102,7 +102,7 @@ public object V8ChallengeProvider {
         return try {
             YouTubeInfoExtractor.loadPlayer(playerUrl ?: "")
         } catch (e: Exception) {
-            throw RuntimeException("Failed to load player for JS challenge: $playerUrl", e)
+            throw RuntimeException("Failed to load player for JS challenge: $playerUrl")
         }
 
     }

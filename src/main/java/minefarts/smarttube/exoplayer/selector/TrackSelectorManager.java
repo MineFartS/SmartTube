@@ -83,7 +83,7 @@ public class TrackSelectorManager {
         if (mRenderers[rendererIndex] != null && mRenderers[rendererIndex].mediaTracks != null) return;
 
         if (mTrackSelector == null) {
-            Log.e(TAG, "Can't init renderer %s. TrackSelector is null!", rendererIndex);
+            Log.w(TAG, "Can't init renderer %s. TrackSelector is null!", rendererIndex);
             return;
         }
 
@@ -107,12 +107,12 @@ public class TrackSelectorManager {
 
     private void initTrackGroups(int rendererIndex, MappedTrackInfo trackInfo, Parameters parameters) {
         if (trackInfo == null) {
-            Log.e(TAG, "Can't perform track selection. Mapped track info isn't initialized yet!");
+            Log.w(TAG, "Can't perform track selection. Mapped track info isn't initialized yet!");
             return;
         }
 
         if (parameters == null) {
-            Log.e(TAG, "Can't perform track selection. Track parameters isn't initialized yet!");
+            Log.w(TAG, "Can't perform track selection. Track parameters isn't initialized yet!");
             return;
         }
 
@@ -227,12 +227,12 @@ public class TrackSelectorManager {
 
     private Pair<Definition, MediaTrack> createSelection(TrackGroupArray groups, MediaTrack selectedTrack) {
         if (selectedTrack == null) {
-            Log.e(TAG, "Can't create selection. Selected track is null.");
+            Log.w(TAG, "Can't create selection. Selected track is null.");
             return null;
         }
 
         if (mRenderers[selectedTrack.rendererIndex] == null) {
-            Log.e(TAG, "Can't create selection. Renderer isn't initialized.");
+            Log.w(TAG, "Can't create selection. Renderer isn't initialized.");
             return null;
         }
 
@@ -245,7 +245,7 @@ public class TrackSelectorManager {
             definitionPair = new Pair<>(definition, matchedTrack);
             setSelection(matchedTrack.rendererIndex, matchedTrack.groupIndex, matchedTrack.trackIndex);
         } else {
-            Log.e(TAG, "Can't create selection. No match for the track %s", selectedTrack);
+            Log.w(TAG, "Can't create selection. No match for the track %s", selectedTrack);
         }
 
         return definitionPair;
@@ -320,7 +320,7 @@ public class TrackSelectorManager {
         mSelectedTracks[rendererIndex] = track;
 
         if (mRenderers[rendererIndex] == null || mRenderers[rendererIndex].mediaTracks == null || mRenderers[rendererIndex].sortedTracks == null) {
-            Log.e(TAG, "Renderer isn't initialized. Waiting for later selection...");
+            Log.w(TAG, "Renderer isn't initialized. Waiting for later selection...");
             return;
         }
 
@@ -329,7 +329,7 @@ public class TrackSelectorManager {
         // If the restored/selected subtitle track is no longer present in the current TrackGroupArray,
         // don't try to apply an override (ExoPlayer will fail to find the selection).
         if (matchedTrack == null || matchedTrack.groupIndex == -1) {
-            Log.e(TAG, "selectTrack: Can't match selected track. renderer=%s origin=%s matched=%s. Clearing subtitle selection override.",
+            Log.w(TAG, "selectTrack: Can't match selected track. renderer=%s origin=%s matched=%s. Clearing subtitle selection override.",
                     rendererIndex,
                     track.format,
                     matchedTrack == null ? null : matchedTrack.format);
@@ -407,7 +407,7 @@ public class TrackSelectorManager {
                 MediaTrack[] trackGroup = mediaTracks[groupIndex];
 
                 if (trackGroup == null) {
-                    Log.e(TAG, "Track selection error. Media track group %s is empty.", groupIndex);
+                    Log.w(TAG, "Track selection error. Media track group %s is empty.", groupIndex);
                     continue;
                 }
 
@@ -489,7 +489,7 @@ public class TrackSelectorManager {
                     rendererIndex, renderer.trackGroups, new SelectionOverride(selectedTrack.groupIndex, selectedTrack.trackIndex)
             ));
         } else {
-            Log.e(TAG, "Something went wrong. Selected track not found");
+            Log.w(TAG, "Something went wrong. Selected track not found");
             mTrackSelector.setParameters(mTrackSelector.buildUponParameters().clearSelectionOverrides(rendererIndex)); // Auto quality button selected
         }
     }

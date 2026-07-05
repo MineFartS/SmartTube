@@ -472,7 +472,7 @@ public class PlayerUIController extends BasePlayerController {
         Video video = getVideo();
 
         if (video == null) {
-            Log.e(TAG, "Seems that video isn't initialized yet. Cancelling...");
+            Log.w(TAG, "Seems that video isn't initialized yet. Cancelling...");
             return;
         }
 
