@@ -31,7 +31,7 @@ function Add-YuliskovPkg ([String]$Name) {
         Invoke-Gradle ":$($Name):assemble"
 
         Get-ChildItem -Path . -Filter "$Name*debug.aar" -Recurse `
-            | Sort-Object { $_.Name -like "*ststable*" } -Descending `
+            | Sort-Object { $_.Name -like "*stbeta*" } -Descending `
             | Select-Object -First 1 `
             | Move-Item -Destination $Dst -Verbose
 
