@@ -31,7 +31,9 @@ function Add-YuliskovPkg ([String]$Name) {
         Invoke-Gradle ":$($Name):assemble"
 
         Get-ChildItem -Path . -Filter "$Name*debug.aar" -Recurse `
-            | Move-Item -Destination $Dst
+            | Sort-Object { $_.Name -like "*ststable*" } -Descending `
+            | Select-Object -First 1 `
+            | Move-Item -Destination $Dst -Verbose
 
         Set-Location $PSScriptRoot
 
@@ -91,7 +93,7 @@ function Repair-Environment {
 
     Set-Location $PSScriptRoot
 
-    git.exe submodule update --init --recursive --remote
+    git.exe submodule update --init --recursive
     
     if (-not (Test-Path "$ANDROID_SDK\.knownPackages")) {
         $env:JAVA_HOME = $JAVA_HOME
