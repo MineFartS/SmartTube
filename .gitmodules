@@ -25,7 +25,3 @@
 	url = https://github.com/yuliskov/SmartTube
     ignore = all
 
-[submodule "lib/ejs"]
-	path = lib/ejs
-	url = https://github.com/yt-dlp/ejs
-    ignore = all
