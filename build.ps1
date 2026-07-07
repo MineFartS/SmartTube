@@ -23,20 +23,9 @@ $gARGS = @()
 if ($Force) {
 
     taskkill.exe /im java.exe /f
-    taskkill.exe /im adb.exe /f
-
-    Invoke-ADB
-
-    Remove-Item `
-        ".gradle" `
-        -Force -Recurse -Verbose
 
     Get-ChildItem -Path . -Directory -Filter "build" -Recurse `
         | Remove-Item -Recurse -Force
-
-    Remove-Item `
-        "$env:USERPROFILE\.gradle\caches" `
-        -Force -Recurse -Verbose
 
     # Recompile js yt solvers
     Set-Location "$lib/ejs"
