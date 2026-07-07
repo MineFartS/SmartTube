@@ -57,6 +57,7 @@ import java.util.Collections;
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
 import retrofit2.Call;
@@ -138,6 +139,8 @@ public class VideoLoaderController extends BasePlayerController {
     @Override
     public void onEngineInitialized() {
         if (getPlayer() == null) return;
+
+        initRuntime();
         
         loadVideo(Helpers.firstNonNull(mPendingVideo, getVideo()));
         getPlayer().setButtonState(R.id.action_repeat, getPlayerData().getPlaybackMode());
@@ -283,6 +286,8 @@ public class VideoLoaderController extends BasePlayerController {
     // Force load and play!
     private void loadVideo(Video item) {
         if (getPlayer() == null || item == null) return;
+
+        initRuntime();
             
         mFormatInfoAction = null;
         mMpdStreamAction = null;
@@ -1255,6 +1260,26 @@ public class VideoLoaderController extends BasePlayerController {
             return null;
         }
         
+    }
+
+    private void initRuntime() {
+        try {
+            Class<?> providerClass = Class.forName(
+                "com.liskovsoft.youtubeapi.app.nsigsolver.impl.V8ChallengeProvider"
+            );
+            Field instanceField = providerClass.getDeclaredField("INSTANCE");
+            instanceField.setAccessible(true);
+            Object provider = instanceField.get(null);
+
+            Method initRuntimeMethod = providerClass.getDeclaredMethod("initRuntime");
+            initRuntimeMethod.setAccessible(true);
+            initRuntimeMethod.invoke(provider);
+        } catch (ClassNotFoundException 
+                | NoSuchFieldException 
+                | NoSuchMethodException 
+                | IllegalAccessException 
+                | InvocationTargetException e
+        ) {/* NOP */}
     }
     
 
