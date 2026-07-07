@@ -11,6 +11,7 @@ Thumbs.db
 **/build/
 aar
 google-services.json
+src/main/assets
 
 # Build Logs
 *.log

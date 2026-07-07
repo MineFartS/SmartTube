@@ -31,6 +31,7 @@ import minefarts.smarttube.utils.playlist.PlaylistService;
 import minefarts.smarttube.utils.playlist.PlaylistServiceWrapper;
 import minefarts.smarttube.utils.actions.models.ActionResult;
 import minefarts.smarttube.utils.actions.ActionsApi;
+import minefarts.smarttube.CacheManager;
 
 import io.reactivex.Observable;
 
@@ -42,6 +43,8 @@ import java.util.Set;
 import retrofit2.Call;
 
 public class MediaItemService {
+
+    private static final String TAG = MediaItemService.class.getSimpleName();
     
     public final static int PLAYLIST_ORDER_ADDED_DATE_NEWER_FIRST = 1;
     public final static int PLAYLIST_ORDER_ADDED_DATE_OLDER_FIRST = 2;
@@ -64,61 +67,44 @@ public class MediaItemService {
         return sInstance;
     }
 
-    private MediaItemFormatInfo getFormatInfo(String videoId) {
-
-        if (mCachedFormatInfo == null ||
-            !videoId.equals(mCachedFormatInfo.getVideoId())
-        ) {
-            
-            getSignInService().checkAuth();
-            
-            VideoInfo videoInfo = getVideoInfoService().getVideoInfo(videoId, null);
-            
-            MediaItemFormatInfo formatInfo = createFormatInfo(videoInfo);
-
-            if (formatInfo != null) {
-                mCachedFormatInfo = formatInfo;
-            }
-        }
-
-        return mCachedFormatInfo;
-    }
-
-    @Nullable
-    private MediaItemFormatInfo createFormatInfo(VideoInfo videoInfo) {
-        if (videoInfo == null) {
-            return null;
-        }
-
+    public MediaItemFormatInfo getFormatInfo(String videoId) {
         try {
-            Method fromMethod = MediaItemFormatInfo.class.getMethod("from", VideoInfo.class);
-            return (MediaItemFormatInfo) fromMethod.invoke(null, videoInfo);
-        } catch (NoSuchMethodException ignored) {
-            for (String className : new String[]{
-                    "com.liskovsoft.youtubeapi.common.models.impl.mediaitem.MediaItemFormatInfo",
-                    "com.liskovsoft.youtubeapi.common.models.impl.mediaitem.MediaItemFormatInfoImpl",
-                    "com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfoImpl"
-            }) {
-                try {
-                    Class<?> implClass = Class.forName(className);
-                    if (MediaItemFormatInfo.class.isAssignableFrom(implClass)) {
-                        Constructor<?> ctor = implClass.getDeclaredConstructor(VideoInfo.class);
-                        ctor.setAccessible(true);
-                        return (MediaItemFormatInfo) ctor.newInstance(videoInfo);
-                    }
-                } catch (Exception ignored2) {
-                    // try next candidate
+            VideoInfo videoInfo = getVideoInfoService().getVideoInfo(videoId, null);
+            return (MediaItemFormatInfo) videoInfo;
+        } catch (Exception e) {
+            // Handle V8 runtime errors from youtubeapi
+            String errorMsg = e.getMessage();
+            Throwable cause = e.getCause();
+            
+            if (errorMsg != null && (errorMsg.contains("jsc is not a function") || 
+                                          errorMsg.contains("V8 runtime error"))) {
+                Log.e(TAG, "V8 signature challenge error - rethrowing for retry", e);
+                throw new RuntimeException("V8SignatureChallengeError", e);
+            }
+            
+            if (cause != null && cause.getMessage() != null) {
+                String causeMsg = cause.getMessage();
+                if (causeMsg.contains("jsc is not a function") || 
+                    causeMsg.contains("V8 runtime error")) {
+                    Log.e(TAG, "V8 signature challenge error (from cause) - rethrowing for retry", e);
+                    throw new RuntimeException("V8SignatureChallengeError", e);
                 }
             }
-        } catch (Exception ignored) {
-            // unsupported dependency version
+            
+            throw e;
         }
-
-        return null;
     }
 
     public Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId) {
-        return RxHelper.fromCallable(() -> getFormatInfo(videoId));
+        return RxHelper.fromCallable(() -> getFormatInfo(videoId))
+                .doOnError(error -> {
+                    if (error.getMessage() != null && 
+                        error.getMessage().contains("V8SignatureChallengeError")) {
+                        Log.e(TAG, "Format info retrieval failed with V8 error, clearing cache", error);
+                        // Clear any cached player data that might be corrupted
+                        CacheManager.clear();
+                    }
+                });
     }
 
     public MediaItemStoryboard getStoryboard(MediaItem item) {

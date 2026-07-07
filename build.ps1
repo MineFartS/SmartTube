@@ -22,6 +22,7 @@ if ($Force) {
         | Remove-Item -Recurse -Force
 
     Remove-Item 'aar' -Recurse -Force
+    Remove-Item "src\main\assets" -Recurse -Force
 
     $gARGS += 'clean'
     $gARGS += '--refresh-dependencies'
@@ -31,6 +32,11 @@ if ($Force) {
 Add-YuliskovPkg 'youtubeapi'
 Add-YuliskovPkg 'mediaserviceinterfaces'
 Add-YuliskovPkg 'sharedutils'
+
+Copy-Item `
+    "lib\yuliskov\MediaServiceCore\youtubeapi\src\main\assets\*" `
+    "src\main\assets" `
+    -Recurse -Verbose
 
 if (Test-ADBConnection) {
     $gARGS += ":installDebug"

@@ -1,10 +1,5 @@
 package minefarts.smarttube;
 
-import com.liskovsoft.youtubeapi.app.potokennp2.core.PoTokenProvider;
-import com.liskovsoft.googlecommon.common.locale.LocaleManager;
-import com.liskovsoft.youtubeapi.common.helpers.AppClient;
-import com.liskovsoft.youtubeapi.app.PoTokenGate;
-
 import minefarts.smarttube.utils.locale.LocaleUpdater;
 import minefarts.smarttube.utils.MediaItemService;
 import minefarts.smarttube.utils.helpers.FileHelpers;
@@ -14,8 +9,6 @@ import minefarts.smarttube.app.presenters.PlaybackPresenter;
 
 import android.util.Base64;
 import android.content.Context;
-import android.os.Looper;
-import android.os.Handler;
 
 public class CacheManager {
 
