@@ -1,8 +1,10 @@
 
-$ANDROID_SDK = "$PSScriptRoot\lib\sdk"
+$lib = "$PSScriptRoot\lib"
+
+$ANDROID_SDK = "$lib\sdk"
 $ADB = "$ANDROID_SDK\platform-tools\adb.exe"
 
-$JAVA_HOME = "$PSScriptRoot\lib\jdk17"
+$JAVA_HOME = "$lib\jdk17"
 
 $APP_ID = "app.smarttube.stable"
 
@@ -26,7 +28,7 @@ function Add-YuliskovPkg ([String]$Name) {
 
         New-Item 'aar' -ItemType Directory
 
-        Set-Location "$PSScriptRoot/lib/yuliskov/"
+        Set-Location "$lib/yuliskov/"
 
         Invoke-Gradle ":$($Name):assemble"
 
@@ -83,7 +85,7 @@ function Invoke-Python {
         $cmdargs
     )
 
-    & "$PSScriptRoot\lib\py314\python.exe" @cmdargs
+    & "$lib\py314\python.exe" @cmdargs
 
 }
 
@@ -93,20 +95,12 @@ function Repair-Environment {
 
     git.exe submodule update --init --recursive --remote
     
+    $Env:JAVA_HOME = $JAVA_HOME
+    $Env:PATH += ";$JAVA_HOME/bin;$lib"
+    
     if (-not (Test-Path "$ANDROID_SDK\.knownPackages")) {
-        $env:JAVA_HOME = $JAVA_HOME
         & "$ANDROID_SDK\Accept.ps1"
     }
-
-    Write-Output "org.gradle.java.home=$JAVA_HOME" > 'local.properties'
-    Write-Output "sdk.dir=$ANDROID_SDK" >> 'local.properties'
-
-    (Get-Content -Path "local.properties") -replace '\\', '/' | Set-Content -Encoding utf8 "local.properties"
-
-    Copy-Item "lib/yuliskov/smarttubetv/google-services.json" "google-services.json"
-
-    $Env:JAVA_HOME = $JAVA_HOME
-    $Env:PATH += ";$JAVA_HOME/bin"
 
 }
 
