@@ -26,11 +26,6 @@ if ($Force) {
     $gARGS += 'clean'
     $gARGS += '--refresh-dependencies'
 
-    # Find the latest lib/yuliskov release force-checkout to it 
-    git -C lib/yuliskov fetch --tags
-    git -C lib/yuliskov checkout $(git -C lib/yuliskov describe --tags --abbrev=0 $(git -C lib/yuliskov rev-list --tags --max-count=1))
-    git -C lib/yuliskov submodule update --init --recursive --force
-
 }
 
 Add-YuliskovPkg 'youtubeapi'
