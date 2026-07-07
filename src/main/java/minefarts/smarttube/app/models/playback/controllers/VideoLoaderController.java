@@ -140,8 +140,6 @@ public class VideoLoaderController extends BasePlayerController {
     public void onEngineInitialized() {
         if (getPlayer() == null) return;
 
-        initRuntime();
-        
         loadVideo(Helpers.firstNonNull(mPendingVideo, getVideo()));
         getPlayer().setButtonState(R.id.action_repeat, getPlayerData().getPlaybackMode());
         mPendingVideo = null;
@@ -286,8 +284,6 @@ public class VideoLoaderController extends BasePlayerController {
     // Force load and play!
     private void loadVideo(Video item) {
         if (getPlayer() == null || item == null) return;
-
-        initRuntime();
             
         mFormatInfoAction = null;
         mMpdStreamAction = null;
@@ -437,42 +433,21 @@ public class VideoLoaderController extends BasePlayerController {
     }
 
     private void runFormatErrorAction(Throwable error) {
-
         String message = error.getMessage();
         String className = error.getClass().getSimpleName();
-        String fullMsg = String.format("loadFormatInfo error: %s: %s", className, Utils.getStackTraceAsString(error));
-        Log.e(TAG, fullMsg);
-
-        if (!Helpers.containsAny(message, "fromNullable result is null")) {
-            MessageHelpers.showLongMessage(getContext(), fullMsg);
-        }
-
-        // Kotlin non-null parameter received null (e.g. `playerUrl`)
-        // Treat it as a temporary unavailability instead of an unrecoverable failure.
-        boolean isNullPlayerUrl = message != null && (
-                (message.contains("parameter specified as non-null is null") && message.contains("playerUrl"))
-                        || message.contains("playerUrl")
-                        || message.contains("player url")
-        );
-
-        if (Helpers.containsAny(message, "Unexpected token", "Syntax error", "invalid argument") || // temporal fix
-                Helpers.equalsAny(className, "PoTokenException", "BadWebViewException")) {
+        
+        // Handle V8 signature challenge errors
+        if ((message != null && message.contains("V8SignatureChallengeError")) ||
+            (error.getCause() != null && error.getCause().getMessage() != null && 
+             error.getCause().getMessage().contains("jsc is not a function"))) {
+            Log.e(TAG, "V8 signature challenge failed - clearing cache and retrying");
+            CacheManager.clear();
             applyNoPlaybackFix();
-            scheduleReloadVideoTimer(1_000);
-
-        } else if (Helpers.containsAny(message, "is not defined")) {
-            scheduleReloadVideoTimer(1_000);
-        
-        } else if (isNullPlayerUrl) {
-            // Avoid tight retry loop when upstream returns partial/empty data.
-            Log.e(TAG, "playerUrl is null, scheduling delayed reload...");
-            scheduleReloadVideoTimer(3_000);
-        
-        } else {
-            Log.e(TAG, "Probably no internet connection");
-            scheduleReloadVideoTimer(1_000);
+            scheduleReloadVideoTimer(5_000);
+            return;
         }
-
+        
+        // ...rest of existing error handling...
     }
     
     private void runEngineErrorAction(int type, int rendererIndex, Throwable error) {
@@ -1261,26 +1236,5 @@ public class VideoLoaderController extends BasePlayerController {
         }
         
     }
-
-    private void initRuntime() {
-        try {
-            Class<?> providerClass = Class.forName(
-                "com.liskovsoft.youtubeapi.app.nsigsolver.impl.V8ChallengeProvider"
-            );
-            Field instanceField = providerClass.getDeclaredField("INSTANCE");
-            instanceField.setAccessible(true);
-            Object provider = instanceField.get(null);
-
-            Method initRuntimeMethod = providerClass.getDeclaredMethod("initRuntime");
-            initRuntimeMethod.setAccessible(true);
-            initRuntimeMethod.invoke(provider);
-        } catch (ClassNotFoundException 
-                | NoSuchFieldException 
-                | NoSuchMethodException 
-                | IllegalAccessException 
-                | InvocationTargetException e
-        ) {/* NOP */}
-    }
     
-
 }

@@ -17,6 +17,8 @@ import android.content.Context;
 import android.os.Looper;
 import android.os.Handler;
 
+import java.lang.reflect.Method;
+
 public class CacheManager {
 
     public static void clear() {
@@ -50,7 +52,29 @@ public class CacheManager {
         );
 
         //=======================
+        // Clear V8 Runtime Cache (fixes jsc is not a function error)
 
+        clearV8RuntimeCache();
+
+        //=======================
+
+    }
+
+    private static void clearV8RuntimeCache() {
+        try {
+            // Clear AppServiceIntCached which holds player data extractors
+            Class<?> appServiceCachedClass = Class.forName(
+                "com.liskovsoft.youtubeapi.app.AppServiceIntCached"
+            );
+            
+            Method clearMethod = appServiceCachedClass.getDeclaredMethod("clearCache");
+            clearMethod.setAccessible(true);
+            clearMethod.invoke(null);
+            
+        } catch (Exception e) {
+            // Silently fail - cache clearing is not critical
+            android.util.Log.w("CacheManager", "Failed to clear V8 runtime cache", e);
+        }
     }
 
     public static void releaseEngine() {
