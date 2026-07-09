@@ -2,7 +2,7 @@ package minefarts.smarttube.app.models.playback;
 
 import minefarts.smarttube.ExoPlaybackException;
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import minefarts.smarttube.utils.service.data.MediaItemMetadata;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.utils.TickleManager.TickleListener;
 import minefarts.smarttube.exoplayer.selector.FormatItem;

@@ -1,7 +1,7 @@
 package minefarts.smarttube.utils.playlist.impl;
 
-import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup;
-import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
+import minefarts.smarttube.utils.data.ItemGroup;
+import minefarts.smarttube.utils.data.PlaylistInfo;
 import minefarts.smarttube.utils.playlist.models.PlaylistInfoItem;
 import minefarts.smarttube.utils.playlist.models.PlaylistsResult;
 

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import minefarts.smarttube.utils.MediaItemService;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import minefarts.smarttube.utils.data.MediaItem;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.rx.RxHelper;
 import minefarts.smarttube.R;

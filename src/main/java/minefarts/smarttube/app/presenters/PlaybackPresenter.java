@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import minefarts.smarttube.utils.service.data.MediaItemMetadata;
 import minefarts.smarttube.app.models.data.Queue;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
@@ -21,7 +21,7 @@ import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter;
 import minefarts.smarttube.ui.playback.PlaybackFragment2;
 import minefarts.smarttube.exoplayer.selector.FormatItem;
 import minefarts.smarttube.utils.Utils;
-import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
+import minefarts.smarttube.google.common.helpers.ServiceHelper;
 
 import java.lang.ref.WeakReference;
 import java.util.List;

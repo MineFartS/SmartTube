@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.feedback.models;
 
-import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
+import minefarts.smarttube.google.common.converters.jsonpath.JsonPath;
 
 public class FeedbackResponse {
     @JsonPath("$.feedbackResponses[0].isProcessed")

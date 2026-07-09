@@ -6,11 +6,8 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
-import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
-import com.liskovsoft.sharedutils.prefs.GlobalPreferences;
-import com.liskovsoft.youtubeapi.browse.v2.BrowseService2Wrapper;
-
+import minefarts.smarttube.utils.oauth.Account;
+import minefarts.smarttube.utils.service.data.MediaGroup;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.locale.LocaleUtility;
 import minefarts.smarttube.utils.mylogger.Log;
@@ -42,6 +39,7 @@ import minefarts.smarttube.prefs.AccountsData;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.utils.browse.BrowseService2Wrapper;
 import minefarts.smarttube.app.presenters.settings.AboutSettingsPresenter;
 import minefarts.smarttube.app.presenters.settings.AccountSettingsPresenter;
 import minefarts.smarttube.app.presenters.settings.ContentBlockSettingsPresenter;
@@ -116,8 +114,6 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
 
             sInstance.initSectionMappings();
             sInstance.updatePlaylistsStyle();
-
-            GlobalPreferences.instance(context); // initialize preferences
         }
 
         sInstance.setContext(context);

@@ -6,8 +6,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.KeyEvent;
 import androidx.annotation.Nullable;
-import com.liskovsoft.mediaserviceinterfaces.RemoteControlService;
-import com.liskovsoft.mediaserviceinterfaces.data.Command;
+import minefarts.smarttube.utils.RemoteControlService;
+import minefarts.smarttube.utils.service.data.Command;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.rx.RxHelper;
@@ -151,10 +151,7 @@ public class RemoteController extends BasePlayerController implements OnDataChan
         RxHelper.disposeActions(mPostStartPlayAction);
 
         mPostStartPlayAction = RxHelper.execute(
-                mRemoteControlService.postStartPlayingObserve(
-                    videoId, positionMs, durationMs, 
-                    isPlaying ? 1 : 0
-                )
+                mRemoteControlService.postStartPlayingObserve(videoId, positionMs, durationMs, isPlaying)
         );
     }
 
@@ -164,10 +161,7 @@ public class RemoteController extends BasePlayerController implements OnDataChan
         RxHelper.disposeActions(mPostStateAction);
 
         mPostStateAction = RxHelper.execute(
-            mRemoteControlService.postStateChangeObserve(
-                positionMs, durationMs, 
-                isPlaying ? 1 : 0
-            )
+                mRemoteControlService.postStateChangeObserve(positionMs, durationMs, isPlaying)
         );
     }
 

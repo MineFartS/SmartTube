@@ -4,9 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import minefarts.smarttube.utils.MediaItemService;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
-import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegmentImpl;
-import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
+import minefarts.smarttube.utils.service.data.MediaItemMetadata;
+import minefarts.smarttube.utils.data.SponsorSegment;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
@@ -24,8 +23,8 @@ import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.utils.block.SponsorBlockApi;
 import minefarts.smarttube.utils.prefs.GlobalPreferences;
 import minefarts.smarttube.utils.block.data.SegmentList;
-import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
-import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
+import minefarts.smarttube.google.common.helpers.RetrofitHelper;
+import minefarts.smarttube.google.common.helpers.ServiceHelper;
 import minefarts.smarttube.utils.block.data.Segment;
 
 import retrofit2.Call;
@@ -160,11 +159,11 @@ public class ContentBlockController extends BasePlayerController {
         List<SponsorSegment> result = new ArrayList<>();
 
         for (Segment segment : segments.mSegments) {
-            SponsorSegment sponsorSegment = new SponsorSegmentImpl();
-            ((SponsorSegmentImpl) sponsorSegment).mStartMs = (long) (segment.mStart * 1_000);
-            ((SponsorSegmentImpl) sponsorSegment).mEndMs = (long) (segment.mEnd * 1_000);
-            ((SponsorSegmentImpl) sponsorSegment).mCategory = segment.mCategory;
-            ((SponsorSegmentImpl) sponsorSegment).mAction = segment.mActionType;
+            SponsorSegment sponsorSegment = new SponsorSegment();
+            sponsorSegment.mStartMs = (long) (segment.mStart * 1_000);
+            sponsorSegment.mEndMs = (long) (segment.mEnd * 1_000);
+            sponsorSegment.mCategory = segment.mCategory;
+            sponsorSegment.mAction = segment.mActionType;
             result.add(sponsorSegment);
         }
 

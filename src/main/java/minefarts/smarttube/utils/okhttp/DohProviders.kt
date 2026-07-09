@@ -3,6 +3,7 @@ package minefarts.smarttube.utils.okhttp
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.dnsoverhttps.DnsOverHttps
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 import java.net.InetAddress
 import java.net.UnknownHostException
@@ -10,6 +11,12 @@ import java.util.ArrayList
 
 /**
  * Temporary registry of known DNS over HTTPS providers.
+ *
+ * https://github.com/yschimke/okurl/blob/main/src/main/kotlin/com/baulsupp/okurl/network/dnsoverhttps/DohProviders.kt
+ *
+ * https://stackoverflow.com/questions/52458671/android-retrofit-okhttp-use-8-8-8-8-programatically-for-dns-lookup
+ *
+ * https://github.com/curl/curl/wiki/DNS-over-HTTPS
  */
 object DohProviders {
     @JvmStatic
@@ -80,8 +87,7 @@ object DohProviders {
     }
 
     public fun parseUrl(s: String): HttpUrl {
-        // Use HttpUrl.parse for OkHttp versions without the Kotlin extension
-        return HttpUrl.parse(s) ?: throw NullPointerException("unable to parse url")
+        return s.toHttpUrlOrNull() ?: throw NullPointerException("unable to parse url")
     }
 
     private fun getByIp(host: String): InetAddress {

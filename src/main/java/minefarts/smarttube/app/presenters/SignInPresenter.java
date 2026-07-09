@@ -5,10 +5,11 @@ import android.content.Context;
 
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.views.SignInView;
+import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.rx.RxHelper;
 import minefarts.smarttube.app.presenters.dialogs.AccountSelectionPresenter;
-import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
+import minefarts.smarttube.utils.SignInService;
 
 import io.reactivex.disposables.Disposable;
 
@@ -21,7 +22,7 @@ public class SignInPresenter extends BasePresenter<SignInView> {
 
     private boolean mIsWaiting;
 
-    YouTubeSignInService mSignInService;
+    SignInService mSignInService;
     
     private Disposable mSignInAction;
     private Runnable mCallback;
@@ -29,7 +30,7 @@ public class SignInPresenter extends BasePresenter<SignInView> {
     public static SignInPresenter instance(Context context) {
         if (sInstance == null) {
             sInstance = new SignInPresenter();
-            sInstance.mSignInService = YouTubeSignInService.instance();
+            sInstance.mSignInService = SignInService.instance();
         }
 
         sInstance.setContext(context);
@@ -79,7 +80,7 @@ public class SignInPresenter extends BasePresenter<SignInView> {
     }
 
     private void updateUserCode() {
-        mSignInAction = mSignInService.signInObserve().subscribe(
+        mSignInAction = BasePlayerController.getSignInService().signInObserve().subscribe(
             userCode -> getView().showCode(userCode, "https://youtube.com/tv/activate"),
             error -> {
                 Log.e(TAG, "Sign in error: %s", error.getMessage());

@@ -1,7 +1,7 @@
 package minefarts.smarttube.app.models.playback.ui;
 
-import com.liskovsoft.mediaserviceinterfaces.data.CommentGroup;
-import com.liskovsoft.mediaserviceinterfaces.data.CommentItem;
+import minefarts.smarttube.utils.data.CommentGroup;
+import minefarts.smarttube.utils.data.CommentItem;
 
 public interface CommentsReceiver {
     interface Callback {

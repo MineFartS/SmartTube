@@ -1,7 +1,7 @@
 package minefarts.smarttube.utils.block;
 
 import minefarts.smarttube.utils.block.data.SegmentList;
-import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPath;
+import minefarts.smarttube.google.common.converters.jsonpath.WithJsonPath;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

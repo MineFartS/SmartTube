@@ -19,7 +19,7 @@ import minefarts.smarttube.ui.playback.PlaybackFragment2;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.prefs.SearchData;
 import minefarts.smarttube.utils.AppDialogUtil;
-import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
+import minefarts.smarttube.utils.service.internal.MediaServiceData;
 
 import java.util.ArrayList;
 import java.util.List;

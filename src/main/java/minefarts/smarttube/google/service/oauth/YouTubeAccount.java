@@ -1,10 +1,10 @@
 package minefarts.smarttube.google.service.oauth;
 
 import androidx.annotation.NonNull;
-import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
+import minefarts.smarttube.utils.oauth.Account;
 import minefarts.smarttube.utils.helpers.Helpers;
-import com.liskovsoft.googlecommon.common.models.auth.info.AccountInt;
-import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
+import minefarts.smarttube.google.common.models.auth.info.AccountInt;
+import minefarts.smarttube.google.common.helpers.YouTubeHelper;
 
 public class YouTubeAccount implements Account {
     private int mId;

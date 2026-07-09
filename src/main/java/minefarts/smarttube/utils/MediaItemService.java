@@ -3,40 +3,37 @@ package minefarts.smarttube.utils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemStoryboard;
-import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
-import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.BaseMediaItem;
-import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
-import com.liskovsoft.youtubeapi.next.v2.WatchNextServiceWrapper;
-import com.liskovsoft.youtubeapi.playlistgroups.PlaylistGroupServiceImpl;
-import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
-import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
-import com.liskovsoft.youtubeapi.browse.v1.BrowseService;
-import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
-import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl;
-import com.liskovsoft.youtubeapi.notifications.NotificationStorage;
-import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
-import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
-import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
-import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
-
+import minefarts.smarttube.utils.data.MediaItem;
+import minefarts.smarttube.utils.data.MediaItemFormatInfo;
+import minefarts.smarttube.utils.service.data.MediaItemMetadata;
+import minefarts.smarttube.utils.service.data.MediaItemStoryboard;
+import minefarts.smarttube.utils.data.PlaylistInfo;
+import minefarts.smarttube.utils.data.SponsorSegment;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.rx.RxHelper;
+import minefarts.smarttube.utils.common.models.impl.mediaitem.BaseMediaItem;
 import minefarts.smarttube.utils.feedback.FeedbackService;
+import minefarts.smarttube.utils.next.v2.WatchNextService;
+import minefarts.smarttube.utils.next.v2.WatchNextServiceWrapper;
 import minefarts.smarttube.utils.playlist.PlaylistService;
 import minefarts.smarttube.utils.playlist.PlaylistServiceWrapper;
+import minefarts.smarttube.utils.playlistgroups.PlaylistGroupServiceImpl;
+import minefarts.smarttube.utils.service.data.YouTubeMediaItem;
+import minefarts.smarttube.utils.videoinfo.V2.VideoInfoService;
+import minefarts.smarttube.utils.videoinfo.models.VideoInfo;
+import minefarts.smarttube.utils.SignInService;
 import minefarts.smarttube.utils.actions.models.ActionResult;
+import minefarts.smarttube.utils.browse.BrowseService;
+import minefarts.smarttube.google.common.helpers.RetrofitHelper;
+import minefarts.smarttube.utils.channelgroups.ChannelGroupServiceImpl;
+import minefarts.smarttube.utils.notifications.NotificationStorage;
+import minefarts.smarttube.utils.common.helpers.PostDataHelper;
 import minefarts.smarttube.utils.actions.ActionsApi;
 import minefarts.smarttube.CacheManager;
 
 import io.reactivex.Observable;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
 
@@ -67,32 +64,23 @@ public class MediaItemService {
         return sInstance;
     }
 
-    public MediaItemFormatInfo getFormatInfo(String videoId) {
-        try {
+    private MediaItemFormatInfo getFormatInfo(String videoId) {
+
+        if (mCachedFormatInfo == null || 
+            mCachedFormatInfo.getVideoId() != videoId
+        ) {
+            
+            getSignInService().checkAuth();
+            
             VideoInfo videoInfo = getVideoInfoService().getVideoInfo(videoId, null);
-            return (MediaItemFormatInfo) videoInfo;
-        } catch (Exception e) {
-            // Handle V8 runtime errors from youtubeapi
-            String errorMsg = e.getMessage();
-            Throwable cause = e.getCause();
             
-            if (errorMsg != null && (errorMsg.contains("jsc is not a function") || 
-                                          errorMsg.contains("V8 runtime error"))) {
-                Log.e(TAG, "V8 signature challenge error - rethrowing for retry", e);
-                throw new RuntimeException("V8SignatureChallengeError", e);
-            }
+            MediaItemFormatInfo formatInfo = MediaItemFormatInfo.from(videoInfo);
             
-            if (cause != null && cause.getMessage() != null) {
-                String causeMsg = cause.getMessage();
-                if (causeMsg.contains("jsc is not a function") || 
-                    causeMsg.contains("V8 runtime error")) {
-                    Log.e(TAG, "V8 signature challenge error (from cause) - rethrowing for retry", e);
-                    throw new RuntimeException("V8SignatureChallengeError", e);
-                }
-            }
-            
-            throw e;
+            mCachedFormatInfo = formatInfo;
+
         }
+
+        return mCachedFormatInfo;
     }
 
     public Observable<MediaItemFormatInfo> getFormatInfoObserve(String videoId) {
@@ -384,8 +372,8 @@ public class MediaItemService {
     }
 
     @NonNull
-    private static YouTubeSignInService getSignInService() {
-        return YouTubeSignInService.instance();
+    private static SignInService getSignInService() {
+        return SignInService.instance();
     }
 
     @NonNull

@@ -6,7 +6,7 @@ $ADB = "$ANDROID_SDK\platform-tools\adb.exe"
 
 $JAVA_HOME = "$lib\jdk17"
 
-$APP_ID = "app.smarttube.stable"
+$APP_ID = "minefarts.smarttube"
 
 function Test-ADBConnection {
 
@@ -18,64 +18,13 @@ function Test-ADBConnection {
     
 }
 
-$YuliskovMap = @{
-    'private class' = 'public class'
-    'internal class' = 'public class'
-    'internal object class' = 'public object class'
-    'internal abstract class' = 'public abstract class'
-    'internal data class' = 'public data class'
-    'internal open class' = 'public open class'
-    'internal enum class' = 'public enum class'
-    'internal interface' = 'public interface'
-    'internal object' = 'public object'
-}
-
-function Add-YuliskovPkg ([String]$Name) {
-
-    $Dst = "$PSScriptRoot/aar/$Name.aar"
-
-    if (-not (Test-Path $Dst)) {
-
-        Copy-Item "local.properties" "lib/yuliskov/local.properties" -Force
-
-        New-Item 'aar' -ItemType Directory
-
-        Set-Location "$PSScriptRoot/lib/yuliskov/"
-
-        Get-ChildItem -Directory -Recurse -Filter $Name `
-        | Get-ChildItem -Directory -Filter "build" -Recurse `
-            | Remove-Item -Recurse -Force -Verbose
-
-        Get-ChildItem -Directory -Recurse -Filter $Name `
-        | Get-ChildItem -File -Recurse -Include '*.kt','*.java' `
-        | ForEach-Object { $_
-            $text = Get-Content $_.FullName
-            foreach ($key in $YuliskovMap.Keys) {
-                $text = $text -creplace $key, $YuliskovMap[$key]
-            }
-            Set-Content -Value $text -Path $_.FullName
-        }
-
-        Invoke-Gradle ":$($Name):assemble"
-
-        Get-ChildItem -Path . -Filter "$Name*debug.aar" -Recurse `
-            | Sort-Object { $_.Name -like "*stbeta*" } -Descending `
-            | Select-Object -First 1 `
-            | Move-Item -Destination $Dst -Verbose
-
-        Set-Location $PSScriptRoot
-
-    }
-
-}
-
 function Invoke-Gradle {
     param(
         [Parameter(ValueFromRemainingArguments)]
         $cmdargs
     )
 
-    .\gradlew.bat @cmdargs
+    ."$PSScriptRoot\gradlew.bat" @cmdargs
 
 }
 

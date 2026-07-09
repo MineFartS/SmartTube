@@ -1,6 +1,6 @@
 package minefarts.smarttube.google.youtubedata3
 
-import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
+import minefarts.smarttube.google.common.helpers.RetrofitHelper
 import minefarts.smarttube.google.youtubedata3.data.SnippetResponse
 import minefarts.smarttube.google.youtubedata3.impl.ItemMetadata
 import retrofit2.Call

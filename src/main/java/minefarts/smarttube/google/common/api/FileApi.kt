@@ -1,0 +1,19 @@
+package minefarts.smarttube.google.common.api
+
+import minefarts.smarttube.google.common.converters.regexp.WithRegExp
+import retrofit2.Call
+import retrofit2.http.GET
+import retrofit2.http.HeaderMap
+import retrofit2.http.Url
+
+@WithRegExp
+public interface FileApi {
+    @GET
+    fun getContent(@Url fileUrl: String?): Call<FileContent?>?
+
+    @GET
+    fun getContent(@HeaderMap headers: Map<String, String>, @Url fileUrl: String?): Call<FileContent?>?
+
+    @GET
+    fun getHeaders(@Url fileUrl: String?): Call<Void?>?
+}

@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.feedback;
 
-import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPath;
+import minefarts.smarttube.google.common.converters.jsonpath.WithJsonPath;
 import minefarts.smarttube.utils.feedback.models.FeedbackResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;

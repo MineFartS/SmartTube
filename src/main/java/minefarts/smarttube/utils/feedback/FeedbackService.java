@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.feedback;
 
-import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
+import minefarts.smarttube.google.common.helpers.RetrofitHelper;
 import minefarts.smarttube.utils.feedback.models.FeedbackResponse;
 import retrofit2.Call;
 

@@ -3,7 +3,7 @@ package minefarts.smarttube.app.presenters.settings;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.liskovsoft.mediaserviceinterfaces.RemoteControlService;
+import minefarts.smarttube.utils.RemoteControlService;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.helpers.PermissionHelpers;
 import minefarts.smarttube.R;

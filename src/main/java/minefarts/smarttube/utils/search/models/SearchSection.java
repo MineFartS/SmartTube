@@ -1,9 +1,9 @@
 package minefarts.smarttube.utils.search.models;
 
 import minefarts.smarttube.utils.helpers.Helpers;
-import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
-import com.liskovsoft.googlecommon.common.models.V2.TextItem;
-import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
+import minefarts.smarttube.google.common.converters.jsonpath.JsonPath;
+import minefarts.smarttube.google.common.models.V2.TextItem;
+import minefarts.smarttube.utils.common.models.items.ItemWrapper;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package minefarts.smarttube.app.models.playback.ui;
 
-import com.liskovsoft.mediaserviceinterfaces.data.ChatItem;
+import minefarts.smarttube.utils.data.ChatItem;
 
 public class ChatReceiverImpl implements ChatReceiver {
     private Callback mCallback;

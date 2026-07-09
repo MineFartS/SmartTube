@@ -2,8 +2,8 @@ package minefarts.smarttube.utils;
 
 import android.net.Uri;
 
-import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup;
-import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup.Item;
+import minefarts.smarttube.utils.data.ItemGroup;
+import minefarts.smarttube.utils.data.ItemGroup.Item;
 
 import java.io.File;
 import java.util.List;

@@ -3,18 +3,18 @@ package minefarts.smarttube.utils.playlist;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
-import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
+import minefarts.smarttube.utils.data.ItemGroup;
+import minefarts.smarttube.utils.data.MediaItem;
+import minefarts.smarttube.utils.service.data.MediaItemMetadata;
+import minefarts.smarttube.utils.data.PlaylistInfo;
 import minefarts.smarttube.utils.helpers.Helpers;
-import com.liskovsoft.youtubeapi.browse.v2.BrowseApiHelper;
-import com.liskovsoft.youtubeapi.channelgroups.models.ItemGroupImpl;
-import com.liskovsoft.youtubeapi.channelgroups.models.ItemImpl;
-import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
-import com.liskovsoft.youtubeapi.next.v2.WatchNextServiceWrapper;
+import minefarts.smarttube.utils.browse.BrowseApiHelper;
+import minefarts.smarttube.utils.channelgroups.models.ItemGroupImpl;
+import minefarts.smarttube.utils.channelgroups.models.ItemImpl;
+import minefarts.smarttube.utils.next.v2.WatchNextService;
+import minefarts.smarttube.utils.next.v2.WatchNextServiceWrapper;
 import minefarts.smarttube.utils.playlist.impl.YouTubePlaylistInfo;
-import com.liskovsoft.youtubeapi.playlistgroups.PlaylistGroupServiceImpl;
+import minefarts.smarttube.utils.playlistgroups.PlaylistGroupServiceImpl;
 
 import java.util.ArrayList;
 import java.util.Collections;

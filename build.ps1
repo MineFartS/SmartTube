@@ -21,27 +21,12 @@ if ($Force) {
     Get-ChildItem -Directory -Filter "build" -Recurse `
         | Remove-Item -Recurse -Force
 
-    Remove-Item 'aar' -Recurse -Force
     Remove-Item "src\main\assets" -Recurse -Force
 
     $gARGS += 'clean'
     $gARGS += '--refresh-dependencies'
 
 }
-
-Copy-Item `
-    "src\main\java\com\liskovsoft\youtubeapi\app\nsigsolver\impl\V8ChallengeProvider.kt" `
-    "lib\yuliskov\MediaServiceCore\youtubeapi\src\main\java\com\liskovsoft\youtubeapi\app\nsigsolver\impl\V8ChallengeProvider.kt" `
-    -Force -Verbose
-
-Copy-Item `
-    "lib/yuliskov/smarttubetv/google-services.json" `
-    "google-services.json" `
-    -Force -Verbose
-
-Add-YuliskovPkg 'youtubeapi'
-Add-YuliskovPkg 'mediaserviceinterfaces'
-Add-YuliskovPkg 'sharedutils'
 
 if (-not (Test-Path "src\main\assets\nsigsolver\yt.solver.lib.js")) {
 

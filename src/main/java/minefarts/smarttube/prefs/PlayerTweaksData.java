@@ -7,7 +7,7 @@ import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.prefs.GlobalPreferences;
 import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
 import minefarts.smarttube.utils.Utils;
-import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
+import minefarts.smarttube.utils.service.internal.MediaServiceData;
 
 public class PlayerTweaksData implements ProfileChangeListener {
 

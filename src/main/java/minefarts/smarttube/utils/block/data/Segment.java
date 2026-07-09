@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.block.data;
 
-import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
+import minefarts.smarttube.google.common.converters.jsonpath.JsonPath;
 
 public class Segment {
     

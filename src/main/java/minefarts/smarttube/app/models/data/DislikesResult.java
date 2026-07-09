@@ -2,8 +2,8 @@ package minefarts.smarttube.app.models.data;
 
 import androidx.annotation.Nullable;
 
-import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
-import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
+import minefarts.smarttube.google.common.helpers.ServiceHelper;
+import minefarts.smarttube.google.common.converters.jsonpath.JsonPath;
 
 public class DislikesResult {
 

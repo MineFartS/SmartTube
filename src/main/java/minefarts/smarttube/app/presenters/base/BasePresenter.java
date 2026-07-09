@@ -4,14 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 
-import com.liskovsoft.mediaserviceinterfaces.CommentsService;
-import com.liskovsoft.mediaserviceinterfaces.ContentService;
-import com.liskovsoft.mediaserviceinterfaces.NotificationsService;
-import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
-
 import minefarts.smarttube.fragment.app.Fragment;
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
+import minefarts.smarttube.utils.comments.CommentsService;
+import minefarts.smarttube.utils.service.ContentService;
 import minefarts.smarttube.utils.MediaItemService;
+import minefarts.smarttube.utils.NotificationsService;
+import minefarts.smarttube.utils.SignInService;
 import minefarts.smarttube.app.models.data.Queue;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.data.VideoGroup;
@@ -261,7 +260,7 @@ public abstract class BasePresenter<T> {
         return BasePlayerController.getContentService();
     }
 
-    protected YouTubeSignInService getSignInService() {
+    protected SignInService getSignInService() {
         return BasePlayerController.getSignInService();
     }
 

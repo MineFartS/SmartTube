@@ -6,9 +6,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 
-import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
+import minefarts.smarttube.google.common.helpers.ServiceHelper;
 import minefarts.smarttube.utils.AppUtil;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import minefarts.smarttube.utils.data.MediaItem;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 

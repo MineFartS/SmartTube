@@ -1,8 +1,8 @@
 package minefarts.smarttube.app.models.playback.controllers;
 
-import com.liskovsoft.mediaserviceinterfaces.LiveChatService;
-import com.liskovsoft.mediaserviceinterfaces.data.ChatItem;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import minefarts.smarttube.utils.LiveChatService;
+import minefarts.smarttube.utils.data.ChatItem;
+import minefarts.smarttube.utils.service.data.MediaItemMetadata;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.rx.RxHelper;
 import minefarts.smarttube.R;

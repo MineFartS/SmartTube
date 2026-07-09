@@ -3,15 +3,12 @@ package minefarts.smarttube.app.models.playback.controllers;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.KeyEvent;
-
-import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
-import com.liskovsoft.mediaserviceinterfaces.data.NotificationState;
-import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
-import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
-
 import minefarts.smarttube.utils.MediaItemService;
+import minefarts.smarttube.utils.service.data.MediaGroup;
+import minefarts.smarttube.utils.data.MediaItem;
+import minefarts.smarttube.utils.service.data.MediaItemMetadata;
+import minefarts.smarttube.utils.data.NotificationState;
+import minefarts.smarttube.utils.data.PlaylistInfo;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.KeyHelpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
@@ -34,6 +31,7 @@ import minefarts.smarttube.exoplayer.selector.track.SubtitleTrack;
 import minefarts.smarttube.prefs.SearchData;
 import minefarts.smarttube.utils.AppDialogUtil;
 import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.utils.SignInService;
 import minefarts.smarttube.ui.playback.actions.SubscribeAction;
 
 import io.reactivex.Observable;
@@ -326,7 +324,7 @@ public class PlayerUIController extends BasePlayerController {
             dislike ? 0 : 1
         );
 
-        if (!YouTubeSignInService.instance().isSigned()) {
+        if (!SignInService.instance().isSigned()) {
             getPlayer().setButtonState(R.id.action_thumbs_down, 0);
             MessageHelpers.showMessage(getContext(), R.string.msg_signed_users_only);
             return;
@@ -346,7 +344,7 @@ public class PlayerUIController extends BasePlayerController {
             like ? 0 : 1
         );
 
-        if (!YouTubeSignInService.instance().isSigned()) {
+        if (!SignInService.instance().isSigned()) {
 
             getPlayer().setButtonState(R.id.action_thumbs_up, 0);
             

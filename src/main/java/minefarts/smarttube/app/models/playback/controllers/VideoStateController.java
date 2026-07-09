@@ -1,17 +1,14 @@
 package minefarts.smarttube.app.models.playback.controllers;
 
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
-import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
-import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
-import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
-
+import minefarts.smarttube.utils.service.data.MediaItemMetadata;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Queue;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
+import minefarts.smarttube.utils.data.MediaItemFormatInfo;
+import minefarts.smarttube.utils.videoinfo.models.VideoInfo;
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
 import minefarts.smarttube.app.models.playback.service.State;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
@@ -19,6 +16,8 @@ import minefarts.smarttube.exoplayer.selector.FormatItem;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.utils.AppDialogUtil;
 import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.utils.service.internal.MediaServiceData;
+import minefarts.smarttube.google.common.helpers.RetrofitHelper;
 import minefarts.smarttube.app.models.playback.ui.OptionCategory;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 
@@ -370,7 +369,7 @@ public class VideoStateController extends BasePlayerController {
                 return;
             }
 
-            /*if (!formatInfo.isAuth() && !formatInfo.isUnplayable() && getSignInService().isSigned()) {
+            if (!formatInfo.isAuth() && !formatInfo.isUnplayable() && getSignInService().isSigned()) {
 
                 VideoInfo videoInfo = getVideoInfoService().getAuthVideoInfo(
                     formatInfo.getVideoId(),
@@ -379,11 +378,11 @@ public class VideoStateController extends BasePlayerController {
 
                 formatInfo.sync(MediaItemFormatInfo.from(videoInfo));
 
-            }*/
+            }
 
             float positionSec = positionMs / 1_000f;
             float lengthSec = Helpers.parseFloat(formatInfo.getLengthSeconds());
-            
+
             if (mVideoId == null || !mVideoId.equals(video.videoId)) {
 
                 mVideoId = video.videoId;

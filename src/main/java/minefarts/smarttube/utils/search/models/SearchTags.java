@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.search.models;
 
-import com.liskovsoft.googlecommon.common.converters.jsonpath.JsonPath;
+import minefarts.smarttube.google.common.converters.jsonpath.JsonPath;
 
 import java.util.List;
 
