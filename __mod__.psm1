@@ -16,6 +16,18 @@ function Test-ADBConnection {
     
 }
 
+$YuliskovMap = @{
+    'private class' = 'public class'
+    'internal class' = 'public class'
+    'internal object class' = 'public object class'
+    'internal abstract class' = 'public abstract class'
+    'internal data class' = 'public data class'
+    'internal open class' = 'public open class'
+    'internal enum class' = 'public enum class'
+    'internal interface' = 'public interface'
+    'internal object' = 'public object'
+}
+
 function Add-YuliskovPkg ([String]$Name) {
 
     $Dst = "$PSScriptRoot/aar/$Name.aar"
@@ -27,6 +39,20 @@ function Add-YuliskovPkg ([String]$Name) {
         New-Item 'aar' -ItemType Directory
 
         Set-Location "$PSScriptRoot/lib/yuliskov/"
+
+        Get-ChildItem -Directory -Recurse -Filter $Name `
+        | Get-ChildItem -Directory -Filter "build" -Recurse `
+            | Remove-Item -Recurse -Force -Verbose
+
+        Get-ChildItem -Directory -Recurse -Filter $Name `
+        | Get-ChildItem -File -Recurse -Include '*.kt','*.java' `
+        | ForEach-Object { $_
+            $text = Get-Content $_.FullName
+            foreach ($key in $YuliskovMap.Keys) {
+                $text = $text -creplace $key, $YuliskovMap[$key]
+            }
+            Set-Content -Value $text -Path $_.FullName
+        }
 
         Invoke-Gradle ":$($Name):assemble"
 
