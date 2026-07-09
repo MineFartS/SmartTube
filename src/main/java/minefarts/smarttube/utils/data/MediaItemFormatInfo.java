@@ -5,6 +5,7 @@ import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.rx.RxHelper;
 import minefarts.smarttube.utils.app.AppService;
+import minefarts.smarttube.utils.app.PoTokenGate;
 import minefarts.smarttube.utils.common.helpers.AppClient;
 import minefarts.smarttube.utils.formatbuilders.hlsbuilder.YouTubeUrlListBuilder;
 import minefarts.smarttube.utils.formatbuilders.mpdbuilder.YouTubeMPDBuilder;
@@ -67,7 +68,7 @@ public class MediaItemFormatInfo {
     private String mClickTrackingParams;
     private String mVideoPlaybackUstreamerConfig;
     private String mServerAbrStreamingUrl;
-    public String mPoToken;
+    private String mPoToken;
     private AppClient mClient;
 
     private static final Pattern durationPattern1 = Pattern.compile("dur=([^&]*)");
@@ -136,7 +137,7 @@ public class MediaItemFormatInfo {
         formatInfo.mPaidContentText = videoInfo.getPaidContentText();
         formatInfo.mVideoPlaybackUstreamerConfig = videoInfo.getVideoPlaybackUstreamerConfig();
         formatInfo.mServerAbrStreamingUrl = videoInfo.getServerAbrStreamingUrl();
-        formatInfo.mPoToken = videoInfo.mPoToken;
+        formatInfo.mPoToken = videoInfo.getPoToken();
         formatInfo.mClient = videoInfo.getClient();
 
         List<CaptionTrack> captionTracks = videoInfo.getCaptionTracks();
@@ -348,6 +349,10 @@ public class MediaItemFormatInfo {
 
     public String getServerAbrStreamingUrl() {
         return mServerAbrStreamingUrl;
+    }
+
+    public String getPoToken() {
+        return mPoToken;
     }
 
     public ClientInfo getClientInfo() {

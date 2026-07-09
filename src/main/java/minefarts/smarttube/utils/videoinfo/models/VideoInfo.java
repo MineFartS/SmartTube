@@ -109,7 +109,7 @@ public class VideoInfo {
     private boolean mIsStreamSeekable;
     private List<CaptionTrack> mMergedCaptionTracks;
     private boolean mIsAuth;
-    public String mPoToken;
+    private String mPoToken;
     private AppClient mClient;
     private VideoUrlHolder mUrlHolder;
 

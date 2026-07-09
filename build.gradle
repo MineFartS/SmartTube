@@ -97,7 +97,6 @@ apply plugin: 'com.google.firebase.crashlytics'
 repositories {
     google()
     mavenCentral()
-    maven { url 'https://maven.lavalink.dev/releases' }
     maven { url 'https://jitpack.io' }
 }
 
@@ -139,8 +138,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     implementation 'com.github.zjupure:webpdecoder:2.0.4.11.0'    
-
-    implementation 'dev.lavalink.youtube:common:1.18.1'
 
     implementation 'dnsjava:dnsjava:2.1.9'
     
