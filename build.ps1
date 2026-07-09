@@ -47,8 +47,6 @@ if (-not (Test-Path "src\main\assets\nsigsolver\yt.solver.lib.js")) {
     }
     
     Pop-Location
-
-    Invoke-Deno run -A "src\main\assets\potokennp2\generate.ts"
         
 }
 
