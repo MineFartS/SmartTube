@@ -30,11 +30,6 @@ if ($Force) {
 
 if (-not (Test-Path "src\main\assets\nsigsolver\yt.solver.lib.js")) {
 
-    Copy-Item `
-        "lib\yuliskov\MediaServiceCore\youtubeapi\src\main\assets\*" `
-        "src\main\assets" `
-        -Recurse -Verbose
-
     Push-Location "$lib\ejs"
     
     Invoke-Deno install
@@ -50,9 +45,11 @@ if (-not (Test-Path "src\main\assets\nsigsolver\yt.solver.lib.js")) {
             '-o' "$PSScriptRoot\src\main\assets\nsigsolver\$($_.Name)"
                 
     }
-        
-    Pop-Location
     
+    Pop-Location
+
+    Invoke-Deno run -A "src\main\assets\potokennp2\generate.ts"
+        
 }
 
 if (Test-ADBConnection) {
