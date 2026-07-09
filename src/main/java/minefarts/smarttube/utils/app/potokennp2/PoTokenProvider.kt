@@ -17,7 +17,7 @@ public object PoTokenProvider {
     private var webViewBadImpl = false // whether the system has a bad WebView implementation
 
     private object WebPoTokenGenLock
-    private var webPoTokenGenerator: PoTokenWebView? = null
+    private var webPoTokenGenerator: PoTokenGenerator? = null
     
     @JvmField
     public var webPoTokenVisitorData: String? = null
@@ -25,10 +25,12 @@ public object PoTokenProvider {
     @JvmField
     public var webPoTokenStreamingPot: String? = null
     
-    var poTokenFactory: PoTokenWebView.Factory? = null
+    var poTokenFactory: PoTokenGenerator.Factory? = null
     
     fun getWebClientPoToken(videoId: String): PoTokenResult? {
-        if (!isWebPotSupported()) return null
+        if (!isWebPotSupported()) {
+            return null
+        }
 
         try {
             return getWebClientPoToken(videoId = videoId, forceRecreate = false)
@@ -49,7 +51,7 @@ public object PoTokenProvider {
     /**
      * @param forceRecreate whether to force the recreation of [webPoTokenGenerator], to be used in
      * case the current [webPoTokenGenerator] threw an error last time
-     * [PoTokenWebView.generatePoToken] was called
+     * [PoTokenGenerator.generatePoToken] was called
      */
     private fun getWebClientPoToken(videoId: String, forceRecreate: Boolean): PoTokenResult {
         // just a helper class since Kotlin does not have builtin support for 4-tuples
@@ -81,6 +83,10 @@ public object PoTokenProvider {
                     }
 
                     latch?.await(3, TimeUnit.SECONDS)
+
+                    //// create a new webPoTokenGenerator
+                    //webPoTokenGenerator = (poTokenFactory ?: PoTokenWebView)
+                    //    .newPoTokenGenerator(AppService.instance().context)
 
                     // create a new webPoTokenGenerator
                     val context = AppService.instance().context
@@ -148,5 +154,9 @@ public object PoTokenProvider {
 
     @JvmStatic
     fun isWebPotSupported() = webViewSupported && !webViewBadImpl
-    
+
+    fun resetCache() {
+        webPoTokenVisitorData = null
+        webPoTokenStreamingPot = null
+    }
 }
