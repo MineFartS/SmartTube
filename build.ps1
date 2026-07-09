@@ -29,6 +29,11 @@ if ($Force) {
 
 }
 
+Copy-Item `
+    "src\main\java\com\liskovsoft\youtubeapi\app\nsigsolver\impl\V8ChallengeProvider.kt" `
+    "lib\yuliskov\MediaServiceCore\youtubeapi\src\main\java\com\liskovsoft\youtubeapi\app\nsigsolver\impl\V8ChallengeProvider.kt" `
+    -Force -Verbose
+
 Add-YuliskovPkg 'youtubeapi'
 Add-YuliskovPkg 'mediaserviceinterfaces'
 Add-YuliskovPkg 'sharedutils'
@@ -43,7 +48,5 @@ if (Test-ADBConnection) {
 } else {
     $gARGS += ":build"
 }
-
-Clear-Host
 
 Invoke-Gradle @gARGS @args
