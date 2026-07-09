@@ -1,8 +1,10 @@
 
-$ANDROID_SDK = "$PSScriptRoot\lib\sdk"
+$lib = "$PSScriptRoot\lib"
+
+$ANDROID_SDK = "$lib\sdk"
 $ADB = "$ANDROID_SDK\platform-tools\adb.exe"
 
-$JAVA_HOME = "$PSScriptRoot\lib\jdk17"
+$JAVA_HOME = "$lib\jdk17"
 
 $APP_ID = "app.smarttube.stable"
 
@@ -77,6 +79,16 @@ function Invoke-Gradle {
 
 }
 
+function Invoke-Deno {
+    param(
+        [Parameter(ValueFromRemainingArguments)]
+        $cmdargs
+    )
+
+    & "$lib\deno.exe" @cmdargs
+
+}
+
 function Invoke-ADB {
     param(
         [Parameter(ValueFromRemainingArguments)]
@@ -119,7 +131,7 @@ function Repair-Environment {
 
     Set-Location $PSScriptRoot
 
-    git.exe submodule update --init --recursive
+    git.exe submodule update --init --recursive --remote
     
     if (-not (Test-Path "$ANDROID_SDK\.knownPackages")) {
         $env:JAVA_HOME = $JAVA_HOME
@@ -131,10 +143,8 @@ function Repair-Environment {
 
     (Get-Content -Path "local.properties") -replace '\\', '/' | Set-Content -Encoding utf8 "local.properties"
 
-    Copy-Item "lib/yuliskov/smarttubetv/google-services.json" "google-services.json"
-
     $Env:JAVA_HOME = $JAVA_HOME
-    $Env:PATH += ";$JAVA_HOME/bin"
+    $Env:PATH += ";$JAVA_HOME/bin;$lib"
 
 }
 

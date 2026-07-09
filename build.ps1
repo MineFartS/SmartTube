@@ -34,14 +34,41 @@ Copy-Item `
     "lib\yuliskov\MediaServiceCore\youtubeapi\src\main\java\com\liskovsoft\youtubeapi\app\nsigsolver\impl\V8ChallengeProvider.kt" `
     -Force -Verbose
 
+Copy-Item `
+    "lib/yuliskov/smarttubetv/google-services.json" `
+    "google-services.json" `
+    -Force -Verbose
+
 Add-YuliskovPkg 'youtubeapi'
 Add-YuliskovPkg 'mediaserviceinterfaces'
 Add-YuliskovPkg 'sharedutils'
 
-Copy-Item `
-    "lib\yuliskov\MediaServiceCore\youtubeapi\src\main\assets\*" `
-    "src\main\assets" `
-    -Recurse -Verbose
+if (-not (Test-Path "src\main\assets\nsigsolver\yt.solver.lib.js")) {
+
+    Copy-Item `
+        "lib\yuliskov\MediaServiceCore\youtubeapi\src\main\assets\*" `
+        "src\main\assets" `
+        -Recurse -Verbose
+
+    Push-Location "$lib\ejs"
+    
+    Invoke-Deno install
+    $env:EJS_BUILD_INSTALLER = "deno"
+
+    Invoke-Python "hatch_build.py"
+
+    Get-ChildItem -Path "dist" -Filter "*.js" -File -Recurse | ForEach-Object {
+
+        Invoke-Deno run -A `
+            npm:@swc/cli@0.8.1/swc `
+            $_.FullName `
+            '-o' "$PSScriptRoot\src\main\assets\nsigsolver\$($_.Name)"
+                
+    }
+        
+    Pop-Location
+    
+}
 
 if (Test-ADBConnection) {
     $gARGS += ":installDebug"
