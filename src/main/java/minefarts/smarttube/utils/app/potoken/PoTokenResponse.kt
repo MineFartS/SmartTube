@@ -1,4 +1,4 @@
-package minefarts.smarttube.utils.app.potokencloud
+package minefarts.smarttube.utils.app.potoken
 
 import minefarts.smarttube.utils.helpers.Helpers
 

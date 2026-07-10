@@ -1,4 +1,4 @@
-package minefarts.smarttube.utils.app.potokennp2
+package minefarts.smarttube.utils.app.potoken
 
 import javax.annotation.Nonnull
 import javax.annotation.Nullable

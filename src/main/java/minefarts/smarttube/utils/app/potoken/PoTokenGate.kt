@@ -1,17 +1,11 @@
-package minefarts.smarttube.utils.app
+package minefarts.smarttube.utils.app.potoken
 
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 
-import minefarts.smarttube.utils.app.potokencloud.PoTokenCloudService
-import minefarts.smarttube.utils.app.potokennp2.PoTokenProvider
-import minefarts.smarttube.utils.app.potokennp2.PoTokenResult
-import minefarts.smarttube.utils.app.potokennp2.PoTokenGenerator
-import minefarts.smarttube.utils.app.potokennp2.PoTokenWebView
 import minefarts.smarttube.utils.common.helpers.AppClient
 import minefarts.smarttube.google.common.helpers.RetrofitHelper
 import minefarts.smarttube.utils.app.AppService
-import minefarts.smarttube.utils.app.potoken.*
 
 import java.nio.charset.Charset
 

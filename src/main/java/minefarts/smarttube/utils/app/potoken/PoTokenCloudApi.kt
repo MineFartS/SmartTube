@@ -1,6 +1,7 @@
-package minefarts.smarttube.utils.app.potokencloud
+package minefarts.smarttube.utils.app.potoken
 
 import minefarts.smarttube.google.common.converters.gson.WithGson
+
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET

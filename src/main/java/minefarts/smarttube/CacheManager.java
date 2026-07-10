@@ -6,7 +6,7 @@ import minefarts.smarttube.utils.MediaItemService;
 import minefarts.smarttube.utils.videoinfo.V2.VideoInfoService;
 import minefarts.smarttube.utils.common.helpers.AppClient;
 import minefarts.smarttube.utils.app.AppService;
-import minefarts.smarttube.utils.app.PoTokenGate;
+import minefarts.smarttube.utils.app.potoken.PoTokenGate;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
 import minefarts.smarttube.utils.helpers.FileHelpers;
 import minefarts.smarttube.app.models.playback.controllers.VideoStateController;

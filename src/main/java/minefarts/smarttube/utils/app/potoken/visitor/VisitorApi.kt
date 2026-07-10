@@ -1,6 +1,6 @@
-package minefarts.smarttube.utils.app.potokennp2.visitor
+package minefarts.smarttube.utils.app.potoken.visitor
 
-import minefarts.smarttube.utils.app.potokennp2.visitor.data.VisitorResult
+import minefarts.smarttube.utils.app.potoken.visitor.data.VisitorResult
 import minefarts.smarttube.google.common.converters.gson.WithGson
 import retrofit2.Call
 import retrofit2.http.Body

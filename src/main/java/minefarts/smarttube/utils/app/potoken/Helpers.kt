@@ -2,38 +2,29 @@ package minefarts.smarttube.utils.app.potoken
 
 import android.util.Base64
 
+public class PoTokenException(message: String) : RuntimeException(message)
+
+// to be thrown if the WebView provided by the system is broken
+public class BadWebViewException(message: String) : RuntimeException(message)
+
+public fun buildExceptionForJsError(error: String): Throwable {
+    return if (error.contains("SyntaxError"))
+        BadWebViewException(error)
+    else
+        PoTokenException(error)
+}
+
+public data class BotGuardConfig(
+    val api: PoTokenApi, 
+    val identifier: String, 
+    val requestKey: String
+)
+
 public open class BGError(
     val code: String,
     message: String,
     val info: Map<String, Any>? = null
 ) : Exception(message)
-
-private val base64UrlCharRegex = Regex("[-_]")
-
-private val base64UrlToBase64Map = mapOf(
-    '-' to '+',
-    '_' to '/'
-)
-
-public fun base64ToU8(base64: String): ByteArray {
-    var base64Mod = base64
-
-    if (base64UrlCharRegex.containsMatchIn(base64)) {
-        base64Mod = buildString(base64.length) {
-            for (c in base64) {
-                append(base64UrlToBase64Map[c] ?: c)
-            }
-        }
-    }
-
-    // Add padding if missing (JS atob tolerates this)
-    val padding = (4 - base64Mod.length % 4) % 4
-    if (padding != 0) {
-        base64Mod += "=".repeat(padding)
-    }
-
-    return Base64.decode(base64Mod, Base64.DEFAULT)
-}
 
 public fun u8ToBase64(u8: ByteArray, base64url: Boolean = false): String {
     val flags = if (base64url) {
@@ -44,3 +35,4 @@ public fun u8ToBase64(u8: ByteArray, base64url: Boolean = false): String {
 
     return Base64.encodeToString(u8, flags)
 }
+

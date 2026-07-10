@@ -1,9 +1,9 @@
-package minefarts.smarttube.utils.app.potokennp2
+package minefarts.smarttube.utils.app.potoken
 
 import android.os.Handler
 import android.os.Looper
 
-import minefarts.smarttube.utils.app.potokennp2.visitor.VisitorService
+import minefarts.smarttube.utils.app.potoken.visitor.VisitorService
 import minefarts.smarttube.utils.helpers.DeviceHelpers
 import minefarts.smarttube.utils.mylogger.Log
 import minefarts.smarttube.utils.app.AppService

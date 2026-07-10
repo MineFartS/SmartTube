@@ -1,9 +1,10 @@
-package minefarts.smarttube.utils.app.potokencloud
+package minefarts.smarttube.utils.app.potoken
 
 import minefarts.smarttube.utils.helpers.Helpers
 import minefarts.smarttube.utils.app.AppService
 import minefarts.smarttube.google.common.helpers.RetrofitHelper
 import minefarts.smarttube.utils.service.internal.MediaServiceData
+
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
@@ -52,8 +53,13 @@ public object PoTokenCloudService {
                 && (System.currentTimeMillis() - poToken.timestamp < PO_TOKEN_LIFETIME_MS)
 
     private suspend fun getPoTokenResponse(identifier: String): PoTokenResponse? {
+        
         var poToken: PoTokenResponse? = null
-        val baseUrls = PO_TOKEN_CLOUD_BASE_URLS.toMutableList()
+
+        val baseUrls = mutableListOf(
+            "https://service1.com",
+            "https://service2.com"
+        )
 
         while (baseUrls.isNotEmpty()) {
             val baseUrl = baseUrls[Helpers.getRandomNumber(0, baseUrls.size - 1)]
