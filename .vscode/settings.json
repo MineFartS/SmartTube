@@ -12,6 +12,7 @@
         ".gradle": true,
         ".vscode": true,
         "**/build": true,
+        "aar": true,
         "lib": true
     },
 
