@@ -1,3 +1,4 @@
+Add-Type -AssemblyName System.Text.RegularExpressions
 
 $lib = "$PSScriptRoot\lib"
 
@@ -18,13 +19,56 @@ function Test-ADBConnection {
     
 }
 
+$AccessPatterns = @(
+    # Classes
+    '\b(private|protected|internal)(?=\s+(?:(?:abstract|sealed|data|enum|open|inner|final|synchronized)\s+)*(?:class|interface|object)\b)',
+
+    # Functions
+    '\b(private|protected|internal)(?=\s+(?:(?:synchronized|final|abstract|inline|external|tailrec|operator|infix)\s+)*(?:fun|void\s+\w+|[\w<>\[\]]+\s+\w+(?=\s*\()))(?!\s+(?:[^\{]*?\b(?:open|override)\b))'
+)
+
+function Add-YuliskovPkg ([String]$Name) {
+
+    $Dst = "$PSScriptRoot/aar/$Name.aar"
+
+    if (-not (Test-Path $Dst)) {
+
+        Copy-Item "local.properties" "lib/yuliskov/local.properties" -Force
+
+        New-Item 'aar' -ItemType Directory -ErrorAction SilentlyContinue
+
+        Set-Location "$PSScriptRoot/lib/yuliskov/"
+
+        $projectDir = Get-ChildItem -Directory -Recurse -Filter $Name
+
+        $projectDir | Get-ChildItem -File -Recurse | Where-Object Extension -match '\.(kt|java)$' | ForEach-Object { $_
+            $text = Get-Content $_.FullName
+            foreach ($pat in $AccessPatterns.Keys) {
+                $text = [regex]::Replace($text, $pat, 'public')
+            }
+            Set-Content -Value $text -Path $_.FullName
+        }
+
+        Invoke-Gradle ":$($Name):assemble"
+
+        $projectDir | Get-ChildItem -Filter "$Name*debug.aar" -Recurse `
+            | Sort-Object { $_.Name -like "*stbeta*" } -Descending `
+            | Select-Object -First 1 `
+            | Move-Item -Destination $Dst -Verbose
+
+        Set-Location $PSScriptRoot
+
+    }
+
+}
+
 function Invoke-Gradle {
     param(
         [Parameter(ValueFromRemainingArguments)]
         $cmdargs
     )
 
-    ."$PSScriptRoot\gradlew.bat" @cmdargs
+    .\gradlew.bat @cmdargs
 
 }
 
@@ -81,6 +125,7 @@ function Repair-Environment {
     Set-Location $PSScriptRoot
 
     git.exe submodule update --init --recursive --remote
+    git.exe submodule update --init --recursive --remote --force lib/yuliskov
     
     $Env:JAVA_HOME = $JAVA_HOME
     $Env:PATH += ";$JAVA_HOME/bin;$lib"

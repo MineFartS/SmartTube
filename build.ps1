@@ -29,11 +29,16 @@ if ($Force) {
         -Force -Recurse -Verbose
 
     Remove-Item "src\main\assets\nsigsolver" -Recurse -Force
+    Remove-Item 'aar' -Recurse -Force
 
     $gARGS += 'clean'
     $gARGS += '--refresh-dependencies'
 
 }
+
+Add-YuliskovPkg 'youtubeapi'
+Add-YuliskovPkg 'mediaserviceinterfaces'
+Add-YuliskovPkg 'sharedutils'
 
 if (-not (Test-Path "src\main\assets\nsigsolver\*.js")) {
 

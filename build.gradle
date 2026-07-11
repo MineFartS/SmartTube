@@ -102,6 +102,10 @@ repositories {
 
 dependencies {
 
+    implementation files('aar/mediaserviceinterfaces.aar')
+    implementation files('aar/youtubeapi.aar')
+    implementation files('aar/sharedutils.aar')
+
     compileOnly 'org.checkerframework:checker-qual:2.5.0'
     compileOnly 'org.checkerframework:checker-compat-qual:2.5.0'
 
