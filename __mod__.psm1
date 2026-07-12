@@ -42,6 +42,8 @@ function Add-YuliskovPkg ([String]$Name) {
 
         Set-Location "$PSScriptRoot/lib/yuliskov/"
 
+        Invoke-Gradle ":$($Name):clean" '--refresh-dependencies'
+
         Get-ChildItem -Directory -Recurse -Filter $Name `
         | Get-ChildItem -Directory -Filter "build" -Recurse `
             | Remove-Item -Recurse -Force -Verbose
@@ -75,7 +77,7 @@ function Invoke-Gradle {
         $cmdargs
     )
 
-    .\gradlew.bat @cmdargs
+    .\gradlew.bat @cmdargs '--no-daemon'
 
 }
 
@@ -131,7 +133,7 @@ function Repair-Environment {
 
     Set-Location $PSScriptRoot
 
-    git.exe submodule update --init --recursive --remote
+    git.exe submodule update --init --recursive --remote --force
     
     if (-not (Test-Path "$ANDROID_SDK\.knownPackages")) {
         $env:JAVA_HOME = $JAVA_HOME
