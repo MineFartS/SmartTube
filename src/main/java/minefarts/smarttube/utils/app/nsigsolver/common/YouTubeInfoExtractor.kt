@@ -37,9 +37,9 @@ object YouTubeInfoExtractor {
 
         httpClient.newCall(request).execute().use { response ->
             if (!response.isSuccessful)
-                throw IOException("Unexpected HTTP code: ${response.code}")
+                throw IOException("Unexpected HTTP code: ${response.code()}")
 
-            val bodyText = response.body?.string() 
+            val bodyText = response.body()?.string() 
                 ?: throw IOException("Empty response body from player URL")
 
             if (bodyText.trim().startsWith("<!DOCTYPE html") || bodyText.contains("<html"))
@@ -55,7 +55,7 @@ object YouTubeInfoExtractor {
         
         return OkHttpManager.instance().client.newCall(request).execute().use {
             if (!it.isSuccessful) throw InfoExtractorError("Unexpected code $it")
-            it.body?.string()
+            it.body()?.string()
         } ?: throw InfoExtractorError("Empty content received for the $url")
     }
 

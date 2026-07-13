@@ -3,7 +3,6 @@ package minefarts.smarttube.utils.okhttp
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.dnsoverhttps.DnsOverHttps
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 import java.net.InetAddress
 import java.net.UnknownHostException
@@ -87,7 +86,7 @@ object DohProviders {
     }
 
     public fun parseUrl(s: String): HttpUrl {
-        return s.toHttpUrlOrNull() ?: throw NullPointerException("unable to parse url")
+        return HttpUrl.parse(s) ?: throw NullPointerException("unable to parse url")
     }
 
     private fun getByIp(host: String): InetAddress {
