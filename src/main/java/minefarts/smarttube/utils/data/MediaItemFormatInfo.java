@@ -1,12 +1,11 @@
 package minefarts.smarttube.utils.data;
 
-import com.liskovsoft.youtubeapi.app.PoTokenGate;
-
 import minefarts.smarttube.utils.data.MediaSubtitle;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.rx.RxHelper;
 import minefarts.smarttube.utils.app.AppService;
+import minefarts.smarttube.utils.app.potoken.PoTokenGate;
 import minefarts.smarttube.utils.common.helpers.AppClient;
 import minefarts.smarttube.utils.formatbuilders.hlsbuilder.YouTubeUrlListBuilder;
 import minefarts.smarttube.utils.formatbuilders.mpdbuilder.YouTubeMPDBuilder;

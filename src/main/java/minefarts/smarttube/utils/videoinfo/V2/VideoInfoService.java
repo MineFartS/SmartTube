@@ -5,12 +5,11 @@ import android.util.Base64;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.liskovsoft.youtubeapi.app.PoTokenGate;
-
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.prefs.GlobalPreferences;
 import minefarts.smarttube.utils.app.AppService;
+import minefarts.smarttube.utils.app.potoken.PoTokenGate;
 import minefarts.smarttube.utils.common.helpers.AppClient;
 import minefarts.smarttube.google.common.helpers.RetrofitHelper;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
@@ -218,8 +217,8 @@ public class VideoInfoService {
         String videoInfoQuery = new QueryBuilder(client)
             .setVideoId(videoId)
             .setClickTrackingParams(clickTrackingParams)
-            .setPoToken(PoTokenGate.getColdStartPoToken(client.toLiskov(), videoId))
-            .setVisitorData(PoTokenGate.getVisitorData(client.toLiskov()))
+            .setPoToken(PoTokenGate.getColdStartPoToken(client, videoId))
+            .setVisitorData(PoTokenGate.getVisitorData(client))
             .enableGeoFix(client == AppClient.GEO) // may broke other functionality
             .build();
 
@@ -348,7 +347,7 @@ public class VideoInfoService {
             applySignatures(urlHolders, result.getSecond());
         }
 
-        String poToken = PoTokenGate.getPoToken(getClient().toLiskov());
+        String poToken = PoTokenGate.getPoToken(getClient());
         videoInfo.setPoToken(poToken);
 
         if (poToken != null) {

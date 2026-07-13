@@ -4,8 +4,6 @@ import minefarts.smarttube.utils.data.MediaItemFormatInfo
 import minefarts.smarttube.utils.helpers.Helpers
 import minefarts.smarttube.exoplayer.ExoMediaSourceFactory
 
-typealias AppClient2 = com.liskovsoft.youtubeapi.common.helpers.AppClient
-
 private const val JSON_POST_DATA_BASE = "{\"context\":{\"client\":{\"clientName\":\"%s\",\"clientVersion\":\"%s\"," +
         "\"clientScreen\":\"%s\",\"userAgent\":\"%s\",%s\"acceptLanguage\":\"%%s\",\"acceptRegion\":\"%%s\"," +
         "\"utcOffsetMinutes\":\"%%s\",\"visitorData\":\"%%s\"},%%s\"user\":{\"enableSafetyMode\":false,\"lockedSafetyMode\":false}}," +
@@ -165,24 +163,4 @@ public enum class AppClient(
     companion object {
         fun hasName(name: String): Boolean = values().any { it.name == name }
     }
-
-    public fun toLiskov(): AppClient2 {
-
-        val constructor = AppClient2::class.java.declaredConstructors[0]
-        constructor.isAccessible = true
-
-        return constructor.newInstance(
-            this.clientName,
-            this.clientVersion,
-            this.innerTubeName,
-            this.userAgent,
-            this.referer,
-            this.clientScreen,
-            this.params,
-            this.postData,
-            this.postDataBrowse
-        ) as AppClient2
-
-    }
-
 }
