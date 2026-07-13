@@ -42,14 +42,14 @@ function Add-YuliskovPkg ([String]$Name) {
 
         Set-Location "$PSScriptRoot/lib/yuliskov/"
 
-        Invoke-Gradle ":$($Name):clean" '--refresh-dependencies'
+        $project_dir = Get-ChildItem -Directory -Recurse -Filter $Name | Select-Object -First 1
 
-        Get-ChildItem -Directory -Recurse -Filter $Name `
-        | Get-ChildItem -Directory -Filter "build" -Recurse `
+        $project_dir | Get-ChildItem -Directory -Filter "build" -Recurse `
             | Remove-Item -Recurse -Force -Verbose
 
-        Get-ChildItem -Directory -Recurse -Filter $Name `
-        | Get-ChildItem -File -Recurse -Include '*.kt','*.java' `
+        Remove-Item "$project_dir\src\main\res" -Force -Recurse
+
+        $project_dir | Get-ChildItem -File -Recurse -Include '*.kt','*.java' `
         | ForEach-Object { $_
             $text = Get-Content $_.FullName
             foreach ($key in $YuliskovMap.Keys) {
@@ -60,7 +60,7 @@ function Add-YuliskovPkg ([String]$Name) {
 
         Invoke-Gradle ":$($Name):assemble"
 
-        Get-ChildItem -Path . -Filter "$Name*debug.aar" -Recurse `
+        Get-ChildItem -Filter "$Name*debug.aar" -Recurse `
             | Sort-Object { $_.Name -like "*stbeta*" } -Descending `
             | Select-Object -First 1 `
             | Move-Item -Destination $Dst -Verbose

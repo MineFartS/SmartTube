@@ -18,12 +18,14 @@ if ($Force) {
 
     taskkill.exe /im java.exe /f
 
+    Remove-Item "$env:USERPROFILE\.gradle\caches" -Recurse -Force -Verbose
+    Remove-Item '.gradle' -Recurse -Force  -Verbose
+    Remove-Item 'aar' -Recurse -Force  -Verbose
+    Remove-Item "src\main\assets" -Recurse -Force -Verbose
+    
     Get-ChildItem -Directory -Filter "build" -Recurse `
-        | Remove-Item -Recurse -Force
-
-    Remove-Item 'aar' -Recurse -Force
-    Remove-Item "src\main\assets" -Recurse -Force
-
+        | Remove-Item -Recurse -Force -Verbose
+    
     $gARGS += 'clean'
     $gARGS += '--refresh-dependencies'
 
