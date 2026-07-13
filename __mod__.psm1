@@ -133,7 +133,7 @@ function Repair-Environment {
 
     Set-Location $PSScriptRoot
 
-    git.exe submodule update --init --recursive --remote --force
+    git.exe submodule update --init --recursive --remote
     
     if (-not (Test-Path "$ANDROID_SDK\.knownPackages")) {
         $env:JAVA_HOME = $JAVA_HOME
