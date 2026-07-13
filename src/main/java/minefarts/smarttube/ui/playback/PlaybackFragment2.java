@@ -844,6 +844,7 @@ public class PlaybackFragment2
 
         parts.add(
             video.getSecondTitleFull()
+                .replace("Streamed live on ", "")
                 .replace("Published on ", "")
                 .replace("Premiered ", "")
         );
