@@ -40,6 +40,10 @@ function Add-YuliskovPkg ([String]$Name) {
         Set-Location "$PSScriptRoot/lib/yuliskov/"
 
         $projectDir = Get-ChildItem -Directory -Recurse -Filter $Name
+        
+        $projectDir | ForEach-Object {
+            Remove-Item "$_\src\main\res" -Force -Recurse
+        }
 
         $projectDir | Get-ChildItem -File -Recurse | Where-Object Extension -match '\.(kt|java)$' | ForEach-Object { $_
             $text = Get-Content $_.FullName
