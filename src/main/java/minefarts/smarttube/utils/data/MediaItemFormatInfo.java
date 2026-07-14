@@ -3,7 +3,7 @@ package minefarts.smarttube.utils.data;
 import minefarts.smarttube.utils.data.MediaSubtitle;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
-import minefarts.smarttube.utils.rx.RxHelper;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.utils.app.AppService;
 import minefarts.smarttube.utils.app.potoken.PoTokenGate;
 import minefarts.smarttube.utils.common.helpers.AppClient;

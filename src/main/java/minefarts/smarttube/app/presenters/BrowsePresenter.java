@@ -11,7 +11,7 @@ import minefarts.smarttube.utils.service.data.MediaGroup;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.locale.LocaleUtility;
 import minefarts.smarttube.utils.mylogger.Log;
-import minefarts.smarttube.utils.rx.RxHelper;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.BrowseSection;
 import minefarts.smarttube.app.models.data.Queue;

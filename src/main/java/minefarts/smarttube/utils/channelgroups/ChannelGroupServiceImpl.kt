@@ -6,7 +6,7 @@ import minefarts.smarttube.utils.ChannelGroupService
 import minefarts.smarttube.utils.data.ItemGroup
 import minefarts.smarttube.utils.data.ItemGroup.Item
 import minefarts.smarttube.utils.helpers.Helpers
-import minefarts.smarttube.utils.rx.RxHelper
+import com.liskovsoft.sharedutils.rx.RxHelper
 import minefarts.smarttube.utils.channelgroups.importing.grayjay.GrayJayService
 import minefarts.smarttube.utils.channelgroups.importing.newpipe.NewPipeService
 import minefarts.smarttube.utils.channelgroups.importing.pockettube.PocketTubeService

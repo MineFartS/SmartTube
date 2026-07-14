@@ -11,7 +11,7 @@ import minefarts.smarttube.utils.SignInService;
 import minefarts.smarttube.utils.actions.ActionsApi;
 import minefarts.smarttube.utils.actions.models.ActionResult;
 import minefarts.smarttube.utils.channelgroups.ChannelGroupServiceImpl;
-import minefarts.smarttube.utils.rx.RxHelper;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.utils.next.v2.WatchNextServiceWrapper;
 import minefarts.smarttube.utils.service.data.MediaItemMetadata;
 

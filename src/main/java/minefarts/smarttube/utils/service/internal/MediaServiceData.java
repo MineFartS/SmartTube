@@ -11,7 +11,7 @@ import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.prefs.GlobalPreferences;
 import minefarts.smarttube.utils.prefs.SharedPreferencesBase;
-import minefarts.smarttube.utils.rx.RxHelper;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.utils.app.models.AppInfo;
 import minefarts.smarttube.utils.app.models.ClientData;
 import minefarts.smarttube.utils.app.models.PlayerData;

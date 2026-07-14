@@ -15,7 +15,7 @@ import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.locale.LocaleUpdater;
 import minefarts.smarttube.utils.misc.WeakHashSet;
 import minefarts.smarttube.utils.mylogger.Log;
-import minefarts.smarttube.utils.rx.RxHelper;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
 import minefarts.smarttube.app.presenters.ChannelPresenter;

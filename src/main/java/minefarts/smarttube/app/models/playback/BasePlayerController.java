@@ -44,7 +44,7 @@ import minefarts.smarttube.utils.data.NotificationState;
 import minefarts.smarttube.utils.data.PlaylistInfo;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
-import minefarts.smarttube.utils.rx.RxHelper;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.app.models.data.VideoGroup;
 import minefarts.smarttube.app.presenters.ChannelPresenter;
 import minefarts.smarttube.app.presenters.ChannelUploadsPresenter;

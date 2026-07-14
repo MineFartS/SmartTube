@@ -8,7 +8,7 @@ import minefarts.smarttube.utils.service.data.Command;
 import minefarts.smarttube.utils.RemoteControlService;
 import minefarts.smarttube.utils.service.data.Command;
 import minefarts.smarttube.utils.prefs.GlobalPreferences;
-import minefarts.smarttube.utils.rx.RxHelper;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.utils.lounge.LoungeService;
 
 import io.reactivex.Observable;

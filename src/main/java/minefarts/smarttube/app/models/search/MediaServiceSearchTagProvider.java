@@ -6,7 +6,7 @@ import minefarts.smarttube.utils.service.ContentService;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.app.models.search.vineyard.Tag;
-import minefarts.smarttube.utils.rx.RxHelper;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 
 import io.reactivex.disposables.Disposable;
 

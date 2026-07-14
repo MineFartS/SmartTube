@@ -4,7 +4,7 @@ import minefarts.smarttube.utils.NotificationsService
 import minefarts.smarttube.utils.service.data.MediaGroup
 import minefarts.smarttube.utils.data.MediaItem
 import minefarts.smarttube.utils.data.NotificationState
-import minefarts.smarttube.utils.rx.RxHelper
+import com.liskovsoft.sharedutils.rx.RxHelper
 import minefarts.smarttube.utils.notifications.NotificationsServiceInt
 import minefarts.smarttube.utils.notifications.NotificationsServiceIntWrapper
 import minefarts.smarttube.utils.SignInService

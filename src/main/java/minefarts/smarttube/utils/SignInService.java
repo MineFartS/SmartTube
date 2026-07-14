@@ -12,7 +12,7 @@ import minefarts.smarttube.google.common.models.auth.AccessToken;
 import minefarts.smarttube.google.common.helpers.RetrofitOkHttpHelper;
 import minefarts.smarttube.google.service.oauth.YouTubeAccount;
 import minefarts.smarttube.utils.oauth.SignInCode;
-import minefarts.smarttube.utils.rx.RxHelper;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.utils.service.internal.MediaServicePrefs;
 import minefarts.smarttube.utils.oauth.Account;
 import minefarts.smarttube.utils.misc.WeakHashSet;
