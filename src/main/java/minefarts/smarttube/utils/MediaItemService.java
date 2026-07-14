@@ -11,7 +11,7 @@ import minefarts.smarttube.utils.data.PlaylistInfo;
 import minefarts.smarttube.utils.data.SponsorSegment;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
-import minefarts.smarttube.utils.rx.RxHelper;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.utils.common.models.impl.mediaitem.BaseMediaItem;
 import minefarts.smarttube.utils.feedback.FeedbackService;
 import minefarts.smarttube.utils.next.v2.WatchNextService;

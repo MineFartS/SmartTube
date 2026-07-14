@@ -10,7 +10,7 @@ import minefarts.smarttube.utils.RemoteControlService;
 import minefarts.smarttube.utils.service.data.Command;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
-import minefarts.smarttube.utils.rx.RxHelper;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.BasePlayerController;

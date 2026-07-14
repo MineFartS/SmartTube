@@ -15,7 +15,7 @@ import minefarts.smarttube.utils.rss.RssService;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
 import minefarts.smarttube.utils.UtilsService;
 import minefarts.smarttube.utils.browse.BrowseService;
-import minefarts.smarttube.utils.rx.RxHelper;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.utils.common.models.impl.mediagroup.BaseMediaGroup;
 import minefarts.smarttube.google.common.helpers.YouTubeHelper;
 import minefarts.smarttube.utils.search.SearchService;

@@ -3,7 +3,7 @@ package minefarts.smarttube.utils;
 import android.view.KeyEvent;
 
 import minefarts.smarttube.utils.mylogger.Log;
-import minefarts.smarttube.utils.rx.RxHelper;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.utils.Utils;

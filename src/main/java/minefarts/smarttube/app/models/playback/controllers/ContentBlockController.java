@@ -17,7 +17,7 @@ import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.settings.ContentBlockSettingsPresenter;
 import minefarts.smarttube.prefs.ContentBlockData;
-import minefarts.smarttube.utils.rx.RxHelper;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.utils.block.SponsorBlockApi;

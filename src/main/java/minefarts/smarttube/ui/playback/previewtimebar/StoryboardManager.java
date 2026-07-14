@@ -15,7 +15,7 @@ import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.utils.formatbuilders.storyboard.YouTubeStoryParser.Size;
 import minefarts.smarttube.utils.service.data.MediaItemStoryboard;
 import minefarts.smarttube.utils.mylogger.Log;
-import minefarts.smarttube.utils.rx.RxHelper;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.utils.ViewUtil;
 import io.reactivex.Observable;

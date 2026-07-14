@@ -13,7 +13,7 @@ import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.utils.MotherActivity;
 import minefarts.smarttube.prefs.RemoteControlData;
-import minefarts.smarttube.utils.rx.RxHelper;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.utils.AppDialogUtil;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.app.models.playback.BasePlayerController;

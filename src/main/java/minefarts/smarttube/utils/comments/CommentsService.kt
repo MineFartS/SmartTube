@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.comments
 
-import minefarts.smarttube.utils.rx.RxHelper
+import com.liskovsoft.sharedutils.rx.RxHelper
 import minefarts.smarttube.utils.comments.gen.getDislikeParams
 import minefarts.smarttube.utils.comments.gen.getLikeParams
 import minefarts.smarttube.utils.comments.gen.getActiveCommentItem

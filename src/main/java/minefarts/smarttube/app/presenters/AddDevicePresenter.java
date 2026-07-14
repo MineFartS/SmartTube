@@ -6,7 +6,7 @@ import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.views.AddDeviceView;
-import minefarts.smarttube.utils.rx.RxHelper;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 import io.reactivex.disposables.Disposable;
 
 public class AddDevicePresenter extends BasePresenter<AddDeviceView> {

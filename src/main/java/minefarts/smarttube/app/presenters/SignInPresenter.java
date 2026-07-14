@@ -7,7 +7,7 @@ import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.views.SignInView;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.utils.mylogger.Log;
-import minefarts.smarttube.utils.rx.RxHelper;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.app.presenters.dialogs.AccountSelectionPresenter;
 import minefarts.smarttube.utils.SignInService;
 

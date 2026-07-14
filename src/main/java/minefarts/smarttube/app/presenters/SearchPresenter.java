@@ -7,7 +7,7 @@ import minefarts.smarttube.utils.service.ContentService;
 import minefarts.smarttube.utils.service.data.MediaGroup;
 import minefarts.smarttube.utils.data.SearchOptions;
 import minefarts.smarttube.utils.mylogger.Log;
-import minefarts.smarttube.utils.rx.RxHelper;
+import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.data.VideoGroup;
