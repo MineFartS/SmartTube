@@ -17,7 +17,6 @@ import minefarts.smarttube.utils.app.models.ClientData;
 import minefarts.smarttube.utils.app.models.PlayerData;
 import minefarts.smarttube.utils.app.playerdata.NSigData;
 import minefarts.smarttube.utils.app.playerdata.PlayerExtractorCache;
-import minefarts.smarttube.utils.app.potoken.PoTokenResponse;
 import minefarts.smarttube.utils.MediaItemService;
 
 import java.util.UUID;
@@ -54,7 +53,6 @@ public class MediaServiceData {
     private int mHiddenContent;
     private MediaServiceCache mCachedPrefs;
     private GlobalPreferences mGlobalPrefs;
-    public PoTokenResponse mPoToken;
     private AppInfo mAppInfo;
     private PlayerData mPlayerData;
     private PlayerExtractorCache mPlayerExtractorCache;
@@ -188,16 +186,6 @@ public class MediaServiceData {
         persistState();
     }
 
-    public PoTokenResponse getPoToken() {
-        return mPoToken;
-    }
-
-    public void setPoToken(PoTokenResponse poToken) {
-        mPoToken = poToken;
-
-        persistState();
-    }
-
     public AppInfo getAppInfo() {
         return mAppInfo;
     }
@@ -231,7 +219,6 @@ public class MediaServiceData {
         /* 02 */ mOldAppVersion = Helpers.parseStr(split, 2);
         /* 03 */ mVideoInfoType = Helpers.parseInt(split, 3, -1);
         /* 04 */ mEnabledFormats = Helpers.parseInt(split, 4, FORMATS_DASH | FORMATS_URL);
-        /* 05 */ mPoToken = Helpers.parseItem(split, 5, PoTokenResponse::fromString);
 
         /* 09 */ mHiddenContent = Helpers.parseInt(split, 9, CONTENT_SHORTS | CONTENT_UPCOMING);
         /* 10 */ mIsMoreSubtitlesUnlocked = Helpers.parseBoolean(split, 10);
@@ -258,7 +245,7 @@ public class MediaServiceData {
         /* 02 */ mOldAppVersion, 
         /* 03 */ mVideoInfoType,
         /* 04 */ mEnabledFormats,
-        /* 05 */ mPoToken,
+        /* 05 */ null,
         /* 06 */ null, 
         /* 07 */ null, 
         /* 08 */ null, 
