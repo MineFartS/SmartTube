@@ -135,19 +135,16 @@ function Repair-Environment {
 
     git.exe submodule update --init --recursive --remote
     
-    if (-not (Test-Path "$ANDROID_SDK\.knownPackages")) {
-        $env:JAVA_HOME = $JAVA_HOME
-        & "$ANDROID_SDK\Accept.ps1"
-    }
+    $Env:JAVA_HOME = $JAVA_HOME
+    $Env:PATH += ";$JAVA_HOME/bin;$lib"
+    
+    & "$ANDROID_SDK\Accept.ps1"
 
     Write-Output "org.gradle.java.home=$JAVA_HOME" > 'local.properties'
     Write-Output "sdk.dir=$ANDROID_SDK" >> 'local.properties'
 
     (Get-Content -Path "local.properties") -replace '\\', '/' | Set-Content -Encoding utf8 "local.properties"
-
-    $Env:JAVA_HOME = $JAVA_HOME
-    $Env:PATH += ";$JAVA_HOME/bin;$lib"
-
+    
 }
 
 Export-ModuleMember `
