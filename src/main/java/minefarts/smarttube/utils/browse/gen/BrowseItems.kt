@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.browse.gen
 
-import minefarts.smarttube.utils.common.models.gen.*
+import com.liskovsoft.youtubeapi.common.models.gen.*
 import minefarts.smarttube.utils.next.v2.gen.ContinuationItem
 import minefarts.smarttube.utils.next.v2.gen.ShelfRenderer
 

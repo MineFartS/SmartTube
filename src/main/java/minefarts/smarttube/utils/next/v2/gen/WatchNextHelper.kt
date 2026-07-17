@@ -4,7 +4,7 @@ import minefarts.smarttube.google.common.helpers.YouTubeHelper
 import minefarts.smarttube.utils.browse.gen.PlaylistVideoListRenderer
 import minefarts.smarttube.utils.browse.gen.Shelf
 import minefarts.smarttube.utils.browse.gen.getItems
-import minefarts.smarttube.utils.common.models.gen.*
+import com.liskovsoft.youtubeapi.common.models.gen.*
 
 //////
 

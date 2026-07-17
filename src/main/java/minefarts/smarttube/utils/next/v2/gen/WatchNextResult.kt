@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.next.v2.gen
 
-import minefarts.smarttube.utils.common.models.gen.ItemWrapper
+import com.liskovsoft.youtubeapi.common.models.gen.ItemWrapper
 
 public data class WatchNextResult(
     val contents: Contents?,

@@ -3,7 +3,7 @@ package minefarts.smarttube.google.common.converters.querystring.converter;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.querystringparser.UrlQueryString;
 import minefarts.smarttube.utils.querystringparser.UrlQueryStringFactory;
-import minefarts.smarttube.utils.common.helpers.AppConstants;
+import com.liskovsoft.youtubeapi.common.helpers.AppConstants;
 import minefarts.smarttube.google.common.converters.jsonpath.typeadapter.JsonPathTypeAdapter;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;

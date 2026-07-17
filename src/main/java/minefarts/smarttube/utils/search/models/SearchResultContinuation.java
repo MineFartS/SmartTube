@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.search.models;
 
-import minefarts.smarttube.utils.common.models.items.ItemWrapper;
+import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import minefarts.smarttube.google.common.converters.jsonpath.JsonPath;
 
 import java.util.List;

@@ -8,7 +8,7 @@ import minefarts.smarttube.utils.data.PlaylistInfo;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.browse.models.sections.Chip;
-import minefarts.smarttube.utils.common.models.items.VideoItem;
+import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import minefarts.smarttube.utils.next.v1.models.ButtonStates;
 import minefarts.smarttube.utils.next.v1.models.SuggestedSection;
 import minefarts.smarttube.utils.next.v1.models.VideoMetadata;

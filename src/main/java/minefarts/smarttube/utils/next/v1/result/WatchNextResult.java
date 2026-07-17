@@ -1,8 +1,8 @@
 package minefarts.smarttube.utils.next.v1.result;
 
 import minefarts.smarttube.google.common.converters.jsonpath.JsonPath;
-import minefarts.smarttube.utils.common.models.items.ItemWrapper;
-import minefarts.smarttube.utils.common.models.items.VideoItem;
+import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
+import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import minefarts.smarttube.utils.next.v1.models.ButtonStates;
 import minefarts.smarttube.utils.next.v1.models.VideoMetadata;
 import minefarts.smarttube.utils.next.v1.models.NextVideo;

@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.notifications
 
-import minefarts.smarttube.utils.common.helpers.PostDataHelper
+import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper
 
 public object NotificationsApiHelper {
     fun getNotificationsQuery(): String {

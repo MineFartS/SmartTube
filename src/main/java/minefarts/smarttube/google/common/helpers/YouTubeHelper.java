@@ -11,8 +11,8 @@ import minefarts.smarttube.utils.prefs.GlobalPreferences;
 import minefarts.smarttube.utils.querystringparser.UrlQueryString;
 import minefarts.smarttube.utils.querystringparser.UrlQueryStringFactory;
 import minefarts.smarttube.google.common.models.items.Thumbnail;
-import minefarts.smarttube.utils.common.models.gen.ThumbnailItem;
-import minefarts.smarttube.utils.common.models.impl.mediagroup.SuggestionsGroup;
+import com.liskovsoft.youtubeapi.common.models.gen.ThumbnailItem;
+import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup;
 import minefarts.smarttube.utils.service.data.MediaGroup;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
 
@@ -38,7 +38,7 @@ public final class YouTubeHelper {
 
     /**
      * Find optimal thumbnail for tv screen<br/>
-     * For Kotlin counterpart see: {@link minefarts.smarttube.utils.common.models.gen.CommonHelperKt#getOptimalResThumbnailUrl(ThumbnailItem)}
+     * For Kotlin counterpart see: {@link com.liskovsoft.youtubeapi.common.models.gen.CommonHelperKt#getOptimalResThumbnailUrl(ThumbnailItem)}
      */
     public static String findOptimalResThumbnailUrl(List<Thumbnail> thumbnails) {
         if (thumbnails == null) {
@@ -55,7 +55,7 @@ public final class YouTubeHelper {
     }
 
     /**
-     * For Kotlin counterpart see: {@link minefarts.smarttube.utils.common.models.gen.CommonHelperKt#getHighResThumbnailUrl(ThumbnailItem)}
+     * For Kotlin counterpart see: {@link com.liskovsoft.youtubeapi.common.models.gen.CommonHelperKt#getHighResThumbnailUrl(ThumbnailItem)}
      */
     public static String findHighResThumbnailUrl(List<Thumbnail> thumbnails) {
         if (thumbnails == null) {

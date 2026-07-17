@@ -9,7 +9,7 @@ import androidx.core.text.BidiFormatter;
 
 import minefarts.smarttube.utils.service.data.MediaGroup;
 import minefarts.smarttube.utils.helpers.Helpers;
-import minefarts.smarttube.utils.common.helpers.AppConstants;
+import com.liskovsoft.youtubeapi.common.helpers.AppConstants;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

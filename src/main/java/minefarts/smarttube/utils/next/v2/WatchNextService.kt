@@ -9,15 +9,15 @@ import minefarts.smarttube.utils.channelgroups.ChannelGroupServiceImpl
 import minefarts.smarttube.utils.channelgroups.models.ItemImpl
 import minefarts.smarttube.google.common.helpers.RetrofitHelper
 import minefarts.smarttube.google.common.helpers.YouTubeHelper
-import minefarts.smarttube.utils.common.models.impl.mediagroup.MediaGroupOptions
-import minefarts.smarttube.utils.common.models.impl.mediagroup.SuggestionsGroup
+import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.MediaGroupOptions
+import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup
 import minefarts.smarttube.utils.next.v2.gen.UnlocalizedTitleResult
 import minefarts.smarttube.utils.next.v2.gen.WatchNextResult
 import minefarts.smarttube.utils.next.v2.gen.WatchNextResultContinuation
 import minefarts.smarttube.utils.next.v2.gen.isEmpty
 import minefarts.smarttube.utils.next.v2.impl.MediaItemMetadataImpl
 import minefarts.smarttube.utils.SignInService
-import minefarts.smarttube.utils.common.helpers.AppClient
+import com.liskovsoft.youtubeapi.common.helpers.AppClient
 
 import okhttp3.MediaType
 import okhttp3.RequestBody

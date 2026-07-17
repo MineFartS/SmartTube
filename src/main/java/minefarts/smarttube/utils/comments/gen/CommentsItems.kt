@@ -1,9 +1,9 @@
 package minefarts.smarttube.utils.comments.gen
 
-import minefarts.smarttube.utils.common.models.gen.ButtonContentWrapper
-import minefarts.smarttube.utils.common.models.gen.NavigationEndpointItem
-import minefarts.smarttube.utils.common.models.gen.TextItem
-import minefarts.smarttube.utils.common.models.gen.ThumbnailItem
+import com.liskovsoft.youtubeapi.common.models.gen.ButtonContentWrapper
+import com.liskovsoft.youtubeapi.common.models.gen.NavigationEndpointItem
+import com.liskovsoft.youtubeapi.common.models.gen.TextItem
+import com.liskovsoft.youtubeapi.common.models.gen.ThumbnailItem
 
 public data class CommentItemWrapper(
     val commentThreadRenderer: CommentThreadRenderer?,

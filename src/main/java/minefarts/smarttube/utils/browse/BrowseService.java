@@ -13,7 +13,7 @@ import minefarts.smarttube.utils.browse.models.sections.SectionTabContinuation;
 import minefarts.smarttube.utils.browse.models.sections.SectionTabList;
 import minefarts.smarttube.google.common.helpers.RetrofitHelper;
 import minefarts.smarttube.google.common.helpers.RetrofitOkHttpHelper;
-import minefarts.smarttube.utils.common.helpers.AppClient;
+import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 
 import retrofit2.Call;
 

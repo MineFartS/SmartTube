@@ -5,12 +5,12 @@ import minefarts.smarttube.utils.data.ChapterItem
 import minefarts.smarttube.utils.data.NotificationState
 import minefarts.smarttube.utils.data.PlaylistInfo
 import minefarts.smarttube.google.common.helpers.ServiceHelper
-import minefarts.smarttube.utils.common.models.gen.*
+import com.liskovsoft.youtubeapi.common.models.gen.*
 import minefarts.smarttube.utils.next.v2.gen.WatchNextResult
-import minefarts.smarttube.utils.common.models.impl.mediagroup.SuggestionsGroup
-import minefarts.smarttube.utils.common.models.impl.mediaitem.NextMediaItem
+import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup
+import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.NextMediaItem
 import minefarts.smarttube.google.common.helpers.YouTubeHelper
-import minefarts.smarttube.utils.common.models.impl.mediaitem.ShuffleMediaItem
+import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.ShuffleMediaItem
 import minefarts.smarttube.utils.next.v2.gen.*
 import minefarts.smarttube.utils.notifications.NotificationStateImplWrapper
 import minefarts.smarttube.utils.service.data.MediaItemMetadata

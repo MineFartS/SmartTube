@@ -3,7 +3,7 @@ package minefarts.smarttube.utils.browse.models.grid;
 import androidx.annotation.Nullable;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.google.common.converters.jsonpath.JsonPath;
-import minefarts.smarttube.utils.common.models.items.ItemWrapper;
+import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import minefarts.smarttube.google.common.models.items.Thumbnail;
 
 import java.util.List;

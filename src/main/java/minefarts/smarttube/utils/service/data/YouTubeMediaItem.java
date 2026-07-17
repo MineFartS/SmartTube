@@ -7,14 +7,14 @@ import minefarts.smarttube.utils.service.data.MediaItemMetadata;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.browse.models.grid.GridTab;
 import minefarts.smarttube.google.common.helpers.ServiceHelper;
-import minefarts.smarttube.utils.common.models.items.ChannelItem;
-import minefarts.smarttube.utils.common.models.items.ItemWrapper;
-import minefarts.smarttube.utils.common.models.items.MusicItem;
-import minefarts.smarttube.utils.common.models.items.PlaylistItem;
-import minefarts.smarttube.utils.common.models.items.RadioItem;
-import minefarts.smarttube.utils.common.models.items.VideoItem;
+import com.liskovsoft.youtubeapi.common.models.items.ChannelItem;
+import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
+import com.liskovsoft.youtubeapi.common.models.items.MusicItem;
+import com.liskovsoft.youtubeapi.common.models.items.PlaylistItem;
+import com.liskovsoft.youtubeapi.common.models.items.RadioItem;
+import com.liskovsoft.youtubeapi.common.models.items.VideoItem;
 import minefarts.smarttube.utils.next.v1.models.NextVideo;
-import minefarts.smarttube.utils.common.models.V2.TileItem;
+import com.liskovsoft.youtubeapi.common.models.V2.TileItem;
 import minefarts.smarttube.google.common.helpers.YouTubeHelper;
 
 public class YouTubeMediaItem implements MediaItem {

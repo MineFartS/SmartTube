@@ -20,13 +20,13 @@ import minefarts.smarttube.utils.BrowseProcessorManager;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.utils.LoadingManager;
 import minefarts.smarttube.utils.browse.BrowseService2;
-import minefarts.smarttube.utils.common.models.impl.mediagroup.MediaGroupOptions;
+import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.MediaGroupOptions;
 import minefarts.smarttube.utils.browse.gen.BrowseResult;
 import minefarts.smarttube.utils.browse.BrowseApiHelper;
-import minefarts.smarttube.utils.common.helpers.AppClient;
+import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import minefarts.smarttube.google.common.helpers.RetrofitHelper;
 import minefarts.smarttube.utils.browse.BrowseApi2;
-import minefarts.smarttube.utils.common.models.impl.mediagroup.BrowseMediaGroup;
+import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.BrowseMediaGroup;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
 

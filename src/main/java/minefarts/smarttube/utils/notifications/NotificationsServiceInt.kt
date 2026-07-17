@@ -3,10 +3,10 @@ package minefarts.smarttube.utils.notifications
 import minefarts.smarttube.utils.service.data.MediaGroup
 import minefarts.smarttube.utils.data.MediaItem
 import minefarts.smarttube.utils.data.NotificationState
-import minefarts.smarttube.utils.common.models.impl.mediagroup.NotificationsMediaGroup
+import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.NotificationsMediaGroup
 import minefarts.smarttube.google.common.helpers.RetrofitHelper
-import minefarts.smarttube.utils.common.models.impl.NotificationStateImpl
-import minefarts.smarttube.utils.common.models.impl.mediaitem.NotificationMediaItem
+import com.liskovsoft.youtubeapi.common.models.impl.NotificationStateImpl
+import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.NotificationMediaItem
 
 public open class NotificationsServiceInt {
     private val mService: NotificationsApi = RetrofitHelper.create(NotificationsApi::class.java)

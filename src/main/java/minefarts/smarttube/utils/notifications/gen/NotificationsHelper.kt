@@ -1,7 +1,7 @@
 package minefarts.smarttube.utils.notifications.gen
 
-import minefarts.smarttube.utils.common.models.gen.getNotificationToken
-import minefarts.smarttube.utils.common.models.gen.getText
+import com.liskovsoft.youtubeapi.common.models.gen.getNotificationToken
+import com.liskovsoft.youtubeapi.common.models.gen.getText
 
 public fun NotificationsResult.getItems(): List<NotificationItem?>? =
     actions?.firstOrNull()?.openPopupAction?.popup?.multiPageMenuRenderer?.sections?.firstOrNull()?.multiPageMenuNotificationSectionRenderer?.items

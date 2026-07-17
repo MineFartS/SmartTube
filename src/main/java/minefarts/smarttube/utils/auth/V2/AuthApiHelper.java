@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.auth.V2;
 
-import minefarts.smarttube.utils.common.helpers.PostDataHelper;
+import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
 
 public class AuthApiHelper {

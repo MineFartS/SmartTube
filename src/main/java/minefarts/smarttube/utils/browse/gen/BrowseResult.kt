@@ -1,9 +1,9 @@
 package minefarts.smarttube.utils.browse.gen
 
-import minefarts.smarttube.utils.common.models.gen.MenuWrapper
-import minefarts.smarttube.utils.common.models.gen.NavigationEndpointItem
-import minefarts.smarttube.utils.common.models.gen.PlaylistItem
-import minefarts.smarttube.utils.common.models.gen.ResponseContext
+import com.liskovsoft.youtubeapi.common.models.gen.MenuWrapper
+import com.liskovsoft.youtubeapi.common.models.gen.NavigationEndpointItem
+import com.liskovsoft.youtubeapi.common.models.gen.PlaylistItem
+import com.liskovsoft.youtubeapi.common.models.gen.ResponseContext
 import minefarts.smarttube.utils.next.v2.gen.EngagementPanel
 
 /**

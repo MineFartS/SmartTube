@@ -1,9 +1,9 @@
 package minefarts.smarttube.utils.notifications.gen
 
-import minefarts.smarttube.utils.common.models.gen.MenuWrapper
-import minefarts.smarttube.utils.common.models.gen.NavigationEndpointItem
-import minefarts.smarttube.utils.common.models.gen.TextItem
-import minefarts.smarttube.utils.common.models.gen.ThumbnailItem
+import com.liskovsoft.youtubeapi.common.models.gen.MenuWrapper
+import com.liskovsoft.youtubeapi.common.models.gen.NavigationEndpointItem
+import com.liskovsoft.youtubeapi.common.models.gen.TextItem
+import com.liskovsoft.youtubeapi.common.models.gen.ThumbnailItem
 
 public data class NotificationAction(
     val openPopupAction: OpenPopupAction?

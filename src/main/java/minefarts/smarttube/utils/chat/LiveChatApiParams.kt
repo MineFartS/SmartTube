@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.chat
 
-import minefarts.smarttube.utils.common.helpers.PostDataHelper
+import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper
 
 public object LiveChatApiParams {
     fun getLiveChatQuery(chatKey: String): String {

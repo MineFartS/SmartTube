@@ -6,7 +6,7 @@ import minefarts.smarttube.utils.browse.models.grid.GridTabContinuation;
 import minefarts.smarttube.utils.browse.models.sections.Chip;
 import minefarts.smarttube.utils.browse.models.sections.SectionContinuation;
 import minefarts.smarttube.utils.browse.models.sections.Section;
-import minefarts.smarttube.utils.common.models.items.ItemWrapper;
+import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 import minefarts.smarttube.utils.next.v1.models.SuggestedSection;
 import minefarts.smarttube.utils.next.v1.result.WatchNextResultContinuation;
 import minefarts.smarttube.utils.search.models.SearchResult;

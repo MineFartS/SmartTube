@@ -3,7 +3,7 @@ package minefarts.smarttube.utils.next.v2.gen
 import minefarts.smarttube.utils.browse.gen.GridRenderer
 import minefarts.smarttube.utils.browse.gen.SectionWrapper
 import minefarts.smarttube.utils.browse.gen.Shelf
-import minefarts.smarttube.utils.common.models.gen.*
+import com.liskovsoft.youtubeapi.common.models.gen.*
 
 public data class NextVideoItem(
     val item: Item?,

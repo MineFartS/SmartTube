@@ -2,8 +2,8 @@ package minefarts.smarttube.utils.chat.impl
 
 import minefarts.smarttube.utils.data.ChatItem
 import minefarts.smarttube.utils.chat.gen.LiveChatAction
-import minefarts.smarttube.utils.common.models.gen.getOptimalResThumbnailUrl
-import minefarts.smarttube.utils.common.models.gen.getText
+import com.liskovsoft.youtubeapi.common.models.gen.getOptimalResThumbnailUrl
+import com.liskovsoft.youtubeapi.common.models.gen.getText
 
 public data class ChatItemImpl(val liveChatAction: LiveChatAction): ChatItem {
     private val messageRenderer by lazy {

@@ -5,12 +5,13 @@ import android.util.Base64;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.liskovsoft.youtubeapi.app.PoTokenGate;
+
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.prefs.GlobalPreferences;
 import minefarts.smarttube.utils.app.AppService;
-import minefarts.smarttube.utils.app.potoken.PoTokenGate;
-import minefarts.smarttube.utils.common.helpers.AppClient;
+import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import minefarts.smarttube.google.common.helpers.RetrofitHelper;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
 import minefarts.smarttube.utils.videoinfo.InitialResponse;
@@ -29,7 +30,7 @@ import minefarts.smarttube.utils.videoinfo.models.DashInfoUrl;
 import minefarts.smarttube.utils.videoinfo.models.formats.AdaptiveVideoFormat;
 import minefarts.smarttube.utils.videoinfo.models.formats.VideoFormat;
 import minefarts.smarttube.utils.app.playerdata.PlayerDataExtractor;
-import minefarts.smarttube.utils.common.helpers.QueryBuilder;
+import com.liskovsoft.youtubeapi.common.helpers.QueryBuilder;
 import minefarts.smarttube.CacheManager;
 
 import java.util.ArrayList;

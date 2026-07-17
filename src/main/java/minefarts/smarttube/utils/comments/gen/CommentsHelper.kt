@@ -1,9 +1,9 @@
 package minefarts.smarttube.utils.comments.gen
 
-import minefarts.smarttube.utils.common.models.gen.getAccessibilityLabel
-import minefarts.smarttube.utils.common.models.gen.getContinuations
-import minefarts.smarttube.utils.common.models.gen.getDefaultParams
-import minefarts.smarttube.utils.common.models.gen.getToggleParams
+import com.liskovsoft.youtubeapi.common.models.gen.getAccessibilityLabel
+import com.liskovsoft.youtubeapi.common.models.gen.getContinuations
+import com.liskovsoft.youtubeapi.common.models.gen.getDefaultParams
+import com.liskovsoft.youtubeapi.common.models.gen.getToggleParams
 import minefarts.smarttube.utils.next.v2.gen.getContinuationToken
 
 public fun CommentsResult.getComments(): List<CommentItemWrapper?>? = continuationContents?.itemSectionContinuation?.contents

@@ -3,7 +3,7 @@ package minefarts.smarttube.utils.search.models;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.google.common.converters.jsonpath.JsonPath;
 import minefarts.smarttube.google.common.models.V2.TextItem;
-import minefarts.smarttube.utils.common.models.items.ItemWrapper;
+import com.liskovsoft.youtubeapi.common.models.items.ItemWrapper;
 
 import java.util.List;
 

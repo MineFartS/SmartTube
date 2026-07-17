@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.playlist;
 
-import minefarts.smarttube.utils.common.helpers.PostDataHelper;
+import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper;
 
 public class PlaylistApiHelper {
     private static final String PLAYLISTS_INFO_QUERY = "\"videoIds\":[\"%s\"]";

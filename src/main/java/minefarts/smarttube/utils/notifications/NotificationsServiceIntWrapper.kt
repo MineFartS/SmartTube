@@ -2,8 +2,8 @@ package minefarts.smarttube.utils.notifications
 
 import minefarts.smarttube.utils.service.data.MediaGroup
 import minefarts.smarttube.utils.data.NotificationState
-import minefarts.smarttube.utils.common.models.gen.NotificationStateItem
-import minefarts.smarttube.utils.common.models.impl.NotificationStateImpl
+import com.liskovsoft.youtubeapi.common.models.gen.NotificationStateItem
+import com.liskovsoft.youtubeapi.common.models.impl.NotificationStateImpl
 import minefarts.smarttube.utils.rss.RssService
 
 private const val ALL = 0 // Enable notifications
