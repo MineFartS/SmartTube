@@ -18,6 +18,8 @@ if ($Force) {
 
     taskkill.exe /im java.exe /f
 
+    git.exe submodule update --init --recursive --remote --force
+
     Remove-Item "$env:USERPROFILE\.gradle\caches" -Recurse -Force -Verbose
     Remove-Item '.gradle' -Recurse -Force  -Verbose
     Remove-Item 'aar' -Recurse -Force  -Verbose
