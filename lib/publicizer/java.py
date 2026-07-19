@@ -14,6 +14,6 @@ def java_replacer(match: re.Match):
 
 def rewrite(content):
     content = JAVA_PACKAGE_PRIVATE.sub('public', content)
-    content = JAVA_BLANK_MODIFIER.sub(java_replacer, content)
+    #content = JAVA_BLANK_MODIFIER.sub(java_replacer, content)
     return content
 

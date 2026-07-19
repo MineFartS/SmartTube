@@ -101,7 +101,7 @@ function Repair-Environment {
 
     (Get-Content -Path "local.properties") -replace '\\', '/' | Set-Content -Encoding utf8 "local.properties"
 
-    Invoke-Python '-m' 'pip' 'install' 'philh_myftp_biz==2026.07.18' 'tree-sitter' 'tree-sitter-kotlin'
+    Invoke-Python '-m' 'pip' 'install' 'philh_myftp_biz==2026.07.18'
     
 }
 
