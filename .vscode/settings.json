@@ -38,5 +38,7 @@
         "PATH": "${workspaceFolder}/lib/jdk17/bin;${workspaceFolder}/lib/sdk/platform-tools;${env:PATH}"
     },
     "notebook.defaultFormatter": "redhat.java",
+    "python.defaultInterpreterPath": "${workspaceFolder}/lib/py314",
+    "python-envs.defaultEnvManager": "ms-python.python:system",
 
 }

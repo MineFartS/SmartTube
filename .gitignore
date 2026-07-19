@@ -13,6 +13,7 @@ src/main/assets/potokennp2/po_token.html
 src/main/assets/nsigsolver/yt.solver.*.js
 aar
 src/Transformer**.class
+**/__pycache__
 
 # Build Logs
 *.log

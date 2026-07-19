@@ -25,17 +25,15 @@ function Add-YuliskovPkg ([String]$Name) {
                 
         Copy-Item "local.properties" "lib/yuliskov/local.properties" -Force
         New-Item 'aar' -ItemType Directory -ErrorAction SilentlyContinue
-
-        Invoke-Python '-m' 'pip' 'install' 'philh_myftp_biz' 'tree-sitter' 'tree-sitter-kotlin'
         
-        Get-ChildItem -Directory -Recurse -Filter $Name | ForEach-Object {
-            Invoke-Python 'src/publicize.py' $_.FullName
-        }
-
         Set-Location "$PSScriptRoot/lib/yuliskov/"
+
+        Get-ChildItem -Directory -Recurse -Filter $Name | ForEach-Object {
+            Invoke-Python "$PSScriptRoot/lib/publicizer/run.py" $_.FullName
+        }
         
         # Build the AAR binary
-        Invoke-Gradle ":$($Name):assemble"
+        Invoke-Gradle ":$($Name):assembleDebug"
 
         # Relocate the AAR Binary
         Get-ChildItem -Filter "$Name*debug.aar" -Recurse `
@@ -88,10 +86,13 @@ function Repair-Environment {
 
     Set-Location $PSScriptRoot
 
-    git.exe submodule update --init --recursive --remote --force
+    git.exe submodule update --init --recursive --remote
+    git.exe submodule update --init --recursive --remote --force lib/yuliskov
     
     $Env:JAVA_HOME = $JAVA_HOME
-    $Env:PATH += ";$JAVA_HOME/bin;$lib"
+    $Env:PATH += ";$lib"
+    $Env:PATH += ";$JAVA_HOME/bin"
+    $Env:PATH += ";$lib/kotlinc/bin"
     
     & "$ANDROID_SDK\Accept.ps1"
 
@@ -99,6 +100,8 @@ function Repair-Environment {
     Write-Output "sdk.dir=$ANDROID_SDK" >> 'local.properties'
 
     (Get-Content -Path "local.properties") -replace '\\', '/' | Set-Content -Encoding utf8 "local.properties"
+
+    Invoke-Python '-m' 'pip' 'install' 'philh_myftp_biz==2026.07.18' 'tree-sitter' 'tree-sitter-kotlin'
     
 }
 
