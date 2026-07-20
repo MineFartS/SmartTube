@@ -11,8 +11,6 @@ import minefarts.smarttube.utils.mylogger.Log
 
 private const val TAG = "WebViewUtil"
 
-public const val potLibPrefix = "potokennp2/"
-
 public fun isThermalServiceAvailable(context: Context): Boolean {
     // Only Android 10 has the issue
     if (Build.VERSION.SDK_INT != 29)

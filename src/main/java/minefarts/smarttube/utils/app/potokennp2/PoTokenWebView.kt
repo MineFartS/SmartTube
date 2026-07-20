@@ -92,8 +92,7 @@ public class PoTokenWebView private constructor(
     private fun loadHtmlAndObtainBotguard(context: Context) {
         Log.d(TAG, "loadHtmlAndObtainBotguard() called")
 
-        val html = context.assets.open("${potLibPrefix}po_token.html").bufferedReader()
-            .use { it.readText() }
+        val html = context.assets.open("potokennp2/po_token.html").bufferedReader().use { it.readText() }
 
         webView.loadDataWithBaseURL(
             "https://www.youtube.com",

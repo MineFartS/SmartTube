@@ -1,8 +1,10 @@
 
-$ANDROID_SDK = "$PSScriptRoot\lib\sdk"
+$lib = "$PSScriptRoot\lib"
+
+$ANDROID_SDK = "$lib\sdk"
 $ADB = "$ANDROID_SDK\platform-tools\adb.exe"
 
-$JAVA_HOME = "$PSScriptRoot\lib\jdk17"
+$JAVA_HOME = "$lib\jdk17"
 
 $APP_ID = "minefarts.smarttube"
 
@@ -23,6 +25,16 @@ function Invoke-Gradle {
     )
 
     ."$PSScriptRoot\gradlew.bat" @cmdargs
+
+}
+
+function Invoke-Deno {
+    param(
+        [Parameter(ValueFromRemainingArguments)]
+        $cmdargs
+    )
+
+    & "$lib\deno.exe" @cmdargs
 
 }
 
@@ -70,15 +82,14 @@ function Repair-Environment {
 
     git.exe submodule update --init --recursive --remote
     
-    if (-not (Test-Path "$ANDROID_SDK\.knownPackages")) {
-        $env:JAVA_HOME = $JAVA_HOME
-        & "$ANDROID_SDK\Accept.ps1"
-    }
+    $Env:JAVA_HOME = $JAVA_HOME
+    $Env:PATH += ";$JAVA_HOME/bin;$lib"
 
     Write-Output "org.gradle.java.home=$JAVA_HOME" > 'local.properties'
     Write-Output "sdk.dir=$ANDROID_SDK" >> 'local.properties'
-
     (Get-Content -Path "local.properties") -replace '\\', '/' | Set-Content -Encoding utf8 "local.properties"
+
+    & "$ANDROID_SDK\Accept.ps1"
 
 }
 

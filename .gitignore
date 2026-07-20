@@ -9,6 +9,7 @@ Thumbs.db
 # Build Cache
 .gradle
 **/build/
+src/main/assets/nsigsolver
 
 # Build Logs
 *.log

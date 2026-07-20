@@ -19,3 +19,8 @@
 	url = https://github.com/MineFartS/Python-Embed.git
     branch = 3.14.5
     ignore = all
+
+[submodule "lib/ejs"]
+	path = lib/ejs
+	url = https://github.com/yt-dlp/ejs
+    ignore = all
