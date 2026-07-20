@@ -25,7 +25,7 @@ public object PoTokenProvider {
     @JvmField
     public var webPoTokenStreamingPot: String? = null
     
-    var poTokenFactory: PoTokenWebView.Factory? = null
+    var poTokenFactory: Any? = null
     
     fun getWebClientPoToken(videoId: String): PoTokenResult? {
         if (!isWebPotSupported()) return null
@@ -55,66 +55,65 @@ public object PoTokenProvider {
         // just a helper class since Kotlin does not have builtin support for 4-tuples
         data class Quadruple<T1, T2, T3, T4>(val t1: T1, val t2: T2, val t3: T3, val t4: T4)
 
-        val (poTokenGenerator, visitorData, streamingPot, hasBeenRecreated) =
-            synchronized(WebPoTokenGenLock) {
-                val shouldRecreate = webPoTokenGenerator == null || webPoTokenVisitorData == null || webPoTokenStreamingPot == null ||
-                   forceRecreate || webPoTokenGenerator!!.isExpired()
+        val (poTokenGenerator, visitorData, streamingPot, hasBeenRecreated) = synchronized(WebPoTokenGenLock) {
+            val shouldRecreate = webPoTokenGenerator == null || webPoTokenVisitorData == null || webPoTokenStreamingPot == null ||
+                forceRecreate || webPoTokenGenerator!!.isExpired()
 
-                if (shouldRecreate) {
-                    // MOD: my visitor data
-                    //webPoTokenVisitorData = AppService.instance().visitorData
-                    webPoTokenVisitorData = VisitorService.getVisitorData()
+            if (shouldRecreate) {
+                // MOD: my visitor data
+                //webPoTokenVisitorData = AppService.instance().visitorData
+                webPoTokenVisitorData = VisitorService.getVisitorData()
 
-                    val latch = if (webPoTokenGenerator != null) CountDownLatch(1) else null
+                val latch = if (webPoTokenGenerator != null) CountDownLatch(1) else null
 
-                    // close the current webPoTokenGenerator on the main thread
-                    webPoTokenGenerator?.let {
-                        Handler(Looper.getMainLooper()).post {
-                            try {
-                                it.close()
-                            } catch (_: Exception) {
-                                // NullPointerException: android.webkit.WebViewClassic.clearHistory (WebViewClassic.java:3670)
-                            } finally {
-                                latch?.countDown()
-                            }
+                // close the current webPoTokenGenerator on the main thread
+                webPoTokenGenerator?.let {
+                    Handler(Looper.getMainLooper()).post {
+                        try {
+                            it.close()
+                        } catch (_: Exception) {
+                            // NullPointerException: android.webkit.WebViewClassic.clearHistory (WebViewClassic.java:3670)
+                        } finally {
+                            latch?.countDown()
                         }
                     }
-
-                    latch?.await(3, TimeUnit.SECONDS)
-
-                    // create a new webPoTokenGenerator
-                    val context = AppService.instance().context
-                    webPoTokenGenerator = try {
-                        (poTokenFactory ?: PoTokenWebView)
-                            .newPoTokenGenerator(context)
-                    } catch (e: Exception) {
-                        when (e) {
-                            is BadWebViewException, is PoTokenException -> {
-                                // BadWebViewException: Error invoking onRunBotguardResult
-                                // PoTokenException: mintCallback is not defined
-                                // PoTokenWebView2/3 may fail due to too many requests. Switching to the default variant.
-                                if (poTokenFactory != null && poTokenFactory != PoTokenWebView)
-                                    PoTokenWebView.newPoTokenGenerator(context)
-                                else
-                                    throw e
-                            }
-                            else -> throw e
-                        }
-                    }
-
-                    // The streaming poToken needs to be generated exactly once before generating
-                    // any other (player) tokens.
-                    webPoTokenStreamingPot = webPoTokenGenerator!!
-                        .generatePoToken(webPoTokenVisitorData!!)
                 }
 
-                return@synchronized Quadruple(
-                    webPoTokenGenerator!!,
-                    webPoTokenVisitorData!!,
-                    webPoTokenStreamingPot!!,
-                    shouldRecreate
-                )
+                latch?.await(3, TimeUnit.SECONDS)
+
+                // create a new webPoTokenGenerator
+                val context = AppService.instance().context
+                webPoTokenGenerator = try {
+                    PoTokenWebView
+                        .newPoTokenGenerator(context)
+                } catch (e: Exception) {
+                    when (e) {
+                        is BadWebViewException, is PoTokenException -> {
+                            // BadWebViewException: Error invoking onRunBotguardResult
+                            // PoTokenException: mintCallback is not defined
+                            // PoTokenWebView2/3 may fail due to too many requests. Switching to the default variant.
+                            if (poTokenFactory != null && poTokenFactory != PoTokenWebView)
+                                PoTokenWebView.newPoTokenGenerator(context)
+                            else
+                                throw e
+                        }
+                        else -> throw e
+                    }
+                }
+
+                // The streaming poToken needs to be generated exactly once before generating
+                // any other (player) tokens.
+                webPoTokenStreamingPot = webPoTokenGenerator!!
+                    .generatePoToken(webPoTokenVisitorData!!)
             }
+
+            return@synchronized Quadruple(
+                webPoTokenGenerator!!,
+                webPoTokenVisitorData!!,
+                webPoTokenStreamingPot!!,
+                shouldRecreate
+            )
+        }
 
         val playerPot = try {
             // Not using synchronized here, since poTokenGenerator would be able to generate

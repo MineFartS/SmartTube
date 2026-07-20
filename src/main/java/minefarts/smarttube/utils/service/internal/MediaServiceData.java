@@ -236,9 +236,6 @@ public class MediaServiceData {
         /* 09 */ mHiddenContent = Helpers.parseInt(split, 9, CONTENT_SHORTS | CONTENT_UPCOMING);
         /* 10 */ mIsMoreSubtitlesUnlocked = Helpers.parseBoolean(split, 10);
 
-        /* 12 */ mFailedAppInfo = Helpers.parseItem(split, 12, AppInfoCached::fromString);
-
-
         // Hide watched content by default
         setContentHidden(MediaServiceData.CONTENT_WATCHED, true);
 
@@ -266,10 +263,7 @@ public class MediaServiceData {
         /* 07 */ null, 
         /* 08 */ null, 
         /* 09 */ mHiddenContent,
-        /* 10 */ mIsMoreSubtitlesUnlocked, 
-        /* 11 */ null, 
-        /* 12 */ mFailedAppInfo
-
+        /* 10 */ mIsMoreSubtitlesUnlocked
         ));
     
     }

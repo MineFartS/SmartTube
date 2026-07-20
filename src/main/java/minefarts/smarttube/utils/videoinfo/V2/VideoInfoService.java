@@ -43,7 +43,7 @@ import retrofit2.Call;
 
 import kotlin.Pair;
 
-public class VideoInfoService extends VideoInfoServiceBase {
+public class VideoInfoService {
 
     private static final String TAG = VideoInfoService.class.getSimpleName();
     

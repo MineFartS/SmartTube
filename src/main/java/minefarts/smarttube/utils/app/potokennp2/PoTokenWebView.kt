@@ -21,6 +21,9 @@ import io.reactivex.SingleEmitter
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
+public val mainloop
+    get() = Handler(Looper.getMainLooper())
+
 public class PoTokenWebView private constructor(
     context: Context,
     private var onInitDone: () -> Unit
@@ -30,9 +33,6 @@ public class PoTokenWebView private constructor(
     private val poTokenEmitters = mutableListOf<Pair<String, (String) -> Unit>>()
     private var expirationMs: Long = -1
     var initError: Throwable? = null
-
-    private val mainloop
-        get() = Handler(Looper.getMainLooper())
 
     //region Initialization
     init {
@@ -52,7 +52,7 @@ public class PoTokenWebView private constructor(
         webView.addJavascriptInterface(this, JS_INTERFACE)
 
         webView.webChromeClient = object : WebChromeClient() {
-            fun onConsoleMessage(m: ConsoleMessage): Boolean {
+            override fun onConsoleMessage(m: ConsoleMessage): Boolean {
                 if (m.message().contains("Uncaught")) {
                     // There should not be any uncaught errors while executing the code, because
                     // everything that can fail is guarded by try-catch. Therefore, this likely
@@ -123,7 +123,7 @@ public class PoTokenWebView private constructor(
 
         val parsedChallengeData = parseChallengeData(responseBody)
 
-        mainloop.post {
+        Handler(Looper.getMainLooper()).post {
             webView.evaluateJavascriptLegacy(
                 """try {
                     data = $parsedChallengeData
@@ -377,7 +377,7 @@ public class PoTokenWebView private constructor(
             "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.3"
         private const val JS_INTERFACE = "PoTokenWebView"
 
-        fun newPoTokenGenerator(context: Context): PoTokenGenerator {
+        fun newPoTokenGenerator(context: Context): PoTokenWebView {
             if (hasThermalServiceBug(context)) {
                 throw BadWebViewException("ThermalService isn't available")
             }
@@ -397,7 +397,7 @@ public class PoTokenWebView private constructor(
                 } catch (e: Throwable) {
                     initError = BadWebViewException("${e::class.simpleName}: ${e.message}")
                     latch.countDown()
-                    return@mainloop.post
+                    return@post
                 }
                 potWv.loadHtmlAndObtainBotguard(context)
             }

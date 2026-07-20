@@ -27,52 +27,13 @@ public object V8ChallengeProvider {
     private val assets
         get() = ContextManager.get()?.assets
 
-    fun iterScriptSources(): Sequence<Pair<ScriptSource, (ScriptType) -> Script?>> = sequence {
-        for ((source, func) in iterScriptSources2()) {
-            if (source == ScriptSource.WEB || source == ScriptSource.BUILTIN)
-                yield(Pair(ScriptSource.BUILTIN, ::v8NpmSource))
-            yield(Pair(source, func))
-        }
-    }
-
-    private fun v8NpmSource(scriptType: ScriptType): Script? {
+    @Synchronized
+    private fun runV8(stdin: String): String {
         
-        if (scriptType != ScriptType.LIB)
-            return null
-        // V8-specific lib scripts that uses Deno NPM imports
-        
-        val code = loadScript(
-            v8NpmLibFilename, 
-            "Failed to read v8 challenge solver lib script"
-        )
-
-        return Script(
-            scriptType, 
-            ScriptVariant.V8_NPM,
-            ScriptSource.BUILTIN, 
-            scriptVersion, 
-            code
-        )
-    }
-
-    private fun runJsRuntime(stdin: String): String {
-        synchronized(v8Lock) {
-            try {
-                initRuntime()
-                return runV8(stdin)
-            } finally {
-                disposeRuntime()
-            }
-        }
-    }
-
-    /**
-     * Execute a JavaScript string in the V8 runtime
-     */
-    private fun runV8(stdin: String): String { synchronized(v8Lock) {
         if (v8Runtime.get() == null) {
             
             val runtime = V8.createV8Runtime()
+            v8Runtime.set(runtime)
 
             for (name in listOf("lib", "core")) {
 
@@ -83,11 +44,7 @@ public object V8ChallengeProvider {
                 }
                 
             }
-        }
-    
-    }
-
-            v8Runtime.set(runtime)
+            
         }
 
         return v8Runtime.get()!!.executeStringScript(stdin)
