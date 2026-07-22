@@ -61,7 +61,8 @@ public class VideoLoaderController extends BasePlayerController {
     
     private static final String TAG = VideoLoaderController.class.getSimpleName();
 
-    private final Context mContext;
+    private static final int MAX_PLAYLIST_CONTINUATIONS = 20;
+
     private final PlaybackPresenter mPlaybackPresenter;
     private final ChannelUploadsPresenter mChannelUploadsPresenter;
     private final SearchPresenter mSearchPresenter;
@@ -69,10 +70,9 @@ public class VideoLoaderController extends BasePlayerController {
     private final VideoStateController mVideoStateController;
     
     public VideoLoaderController(PlaybackPresenter playbackPresenter) {
-        mContext = getContext();
         mPlaybackPresenter = playbackPresenter;
-        mChannelUploadsPresenter = ChannelUploadsPresenter.instance(mContext);
-        mSearchPresenter = SearchPresenter.instance(mContext);
+        mChannelUploadsPresenter = ChannelUploadsPresenter.instance(getContext());
+        mSearchPresenter = SearchPresenter.instance(getContext());
         mMediaItemService = getMediaItemService();
         mVideoStateController = new VideoStateController();
     }
@@ -93,16 +93,11 @@ public class VideoLoaderController extends BasePlayerController {
 
     private final List<Disposable> mActions = new ArrayList<>();
 
-    private Video mNextSectionVideo;
-    private int mFocusCount;
-    private int mNextRetryCount;
-
     private List<ChapterItem> mChapters;
-
-    private static final int MAX_PLAYLIST_CONTINUATIONS = 20;
+    private Video mNextSectionVideo;
+    private int mNextRetryCount;
+    private int mFocusCount;
     
-    private Video mPendingVideo;
-    private int mLastErrorType = -1;
     private Disposable mFormatInfoAction;
     private Disposable mMpdStreamAction;
 
@@ -114,30 +109,16 @@ public class VideoLoaderController extends BasePlayerController {
     };
 
     @Override
-    public void onNewVideo(Video item) {
-        if (item == null) return;
-
-        if (!item.fromQueue && !item.belongsToPlaybackQueue()) {
-            Queue.add(item);
-        } else {
-            item.fromQueue = false;
-        }
-
-        if (getPlayer() != null && getPlayer().isEngineInitialized()) { // player is initialized
-            // Fix improperly resized video after exit from PIP (Device Formuler Z8 Pro)
-            loadVideo(item); // force play immediately even the same video
-        } else {
-            mPendingVideo = item;
-        }
-    }
-
-    @Override
     public void onEngineInitialized() {
         if (getPlayer() == null) return;
         
-        loadVideo(Helpers.firstNonNull(mPendingVideo, getVideo()));
-        getPlayer().setButtonState(R.id.action_repeat, getPlayerData().getPlaybackMode());
-        mPendingVideo = null;
+        onNewVideo(getVideo());
+
+        getPlayer().setButtonState(
+            R.id.action_repeat, 
+            getPlayerData().getPlaybackMode()
+        );
+
     }
 
     @Override
@@ -147,8 +128,10 @@ public class VideoLoaderController extends BasePlayerController {
         Utils.removeCallbacks(mReloadVideo, this::onNextClicked, mRestartEngine);
 
         RxHelper.disposeActions(mActions);
+
         mChapters = null;
         mNextSectionVideo = null;
+
         if (mBrowseProcessor != null)
             mBrowseProcessor.dispose();
 
@@ -164,7 +147,6 @@ public class VideoLoaderController extends BasePlayerController {
         Log.e(TAG, "Player error occurred: %s. Trying to fix…", type);
         Log.e(TAG, "Renderer index: " + rendererIndex + ", error: " + error);
 
-        mLastErrorType = type;
         try {
             runEngineErrorAction(type, rendererIndex, error);
         } catch (Throwable t) {
@@ -177,28 +159,12 @@ public class VideoLoaderController extends BasePlayerController {
     }
 
     @Override
-    public void onVideoLoaded(Video video) {
-
-        loadSuggestions(video);
-
-        if (getPlayer() == null) return;
-
-        mLastErrorType = -1;
-
-        getPlayer().setButtonState(
-            R.id.action_repeat, 
-            video.finishOnEnded ? PlaybackFragment2.PLAYBACK_MODE_CLOSE : getPlayerData().getPlaybackMode()
-        );
-
-    }
-
-    @Override
     public boolean onPreviousClicked() {
         if (getPlayer() == null) return true;
 
         savePosition();
 
-        openVideoInt(getPrevious());
+        onNewVideo(getPrevious());
 
         getPlayer().showOverlay(true);
 
@@ -215,7 +181,7 @@ public class VideoLoaderController extends BasePlayerController {
 
         if (next != null) {
             next.isShuffled = getVideo().isShuffled;
-            openVideoInt(next);
+            onNewVideo(next);
         }
 
         getPlayer().showOverlay(true);
@@ -248,10 +214,7 @@ public class VideoLoaderController extends BasePlayerController {
 
         List<Video> afterCurrent = Queue.getAllAfterCurrent();
 
-        if (afterCurrent != null && afterCurrent.contains(item))
-            item.fromQueue = true;
-
-        openVideoInt(item);
+        onNewVideo(item);
 
         if (getPlayer() != null)
             getPlayer().showControls(false);
@@ -260,10 +223,7 @@ public class VideoLoaderController extends BasePlayerController {
 
     @Override
     public boolean onKeyDown(int keyCode) {
-        if (getPlayer() == null) return false;
-
         Utils.removeCallbacks(mRestartEngine);
-
         return false;
     }
 
@@ -276,8 +236,8 @@ public class VideoLoaderController extends BasePlayerController {
         );
     }
 
-    // Force load and play!
-    private void loadVideo(Video item) {
+    @Override
+    public void onNewVideo(Video item) {
         if (getPlayer() == null || item == null) return;
             
         mFormatInfoAction = null;
@@ -317,7 +277,7 @@ public class VideoLoaderController extends BasePlayerController {
 
             player.setTitle(formatInfo.getPlayabilityStatus());
             player.showProgressBar(false);
-            loadSuggestions(getVideo());
+            onVideoLoaded(getVideo());
             bgImageUrl = getVideo().getBackgroundUrl();
 
             // 18+ video or the video is hidden/removed
@@ -358,18 +318,13 @@ public class VideoLoaderController extends BasePlayerController {
                 runFormatErrorAction(new IllegalStateException("Url list is null or empty"));
                 return;
             }
-            Log.d(TAG, "Loading url list video. This is always LQ...");
-            
-            if (mLastErrorType == PlayerEventListener.ERROR_TYPE_SOURCE)
-                Collections.reverse(urlList);
-
             player.openUrlList(urlList);
             
         } else {
             Log.d(TAG, "Empty format info received. Seems future live translation. No video data to pass to the player.");
             player.setTitle(formatInfo.getPlayabilityStatus());
             player.showProgressBar(false);
-            loadSuggestions(getVideo());
+            onVideoLoaded(getVideo());
             bgImageUrl = getVideo().getBackgroundUrl();
             scheduleReloadVideoTimer(30_000);
         }
@@ -393,27 +348,13 @@ public class VideoLoaderController extends BasePlayerController {
         Utils.postDelayed(mRestartEngine, delayMs);
     }
 
-    private void openVideoInt(Video item) {
-        if (item == null) return;
-
-        onEngineReleased();
-
-        if (item.hasVideo()) {
-            // NOTE: Next clicked: instant playback even a mix
-            getMainController().onNewVideo(item);
-        } else {
-            openVideo(item);
-        }
-
-    }
-
     public void openVideo(Video item) {
         
         if (item.hasVideo() && !item.isPlaylistInChannel()) {
             mPlaybackPresenter.openVideo(item);
         
         } else if (item.hasChannel() || item.belongsToChannelUploads()) {
-            chooseChannelPresenter(mContext, item);
+            chooseChannelPresenter(getContext(), item);
         
         } else if (item.hasPlaylist() || item.hasNestedItems()) {
             mChannelUploadsPresenter.openChannel(item);
@@ -667,7 +608,7 @@ public class VideoLoaderController extends BasePlayerController {
                     VideoGroup group = getVideo().getGroup(); // Get the VideoGroup (playlist)
 
                     if (group != null && !group.isEmpty() && getVideo().belongsToSamePlaylistGroup()) {
-                        openVideoInt(group.get(0));
+                        onNewVideo(group.get(0));
                     } else {
                         Log.e(TAG, "VideoGroup is null or empty. Can't restart playlist.");
                         getPlayer().setPositionMs(getPlayer().getDurationMs());
@@ -849,7 +790,8 @@ public class VideoLoaderController extends BasePlayerController {
         mActions.add(dislikeAction);
     }
 
-    public void loadSuggestions(Video video) {
+    @Override
+    public void onVideoLoaded(Video video) {
         if (video == null || getPlayer() == null) return;
 
         // Frees a lot of memory
@@ -857,7 +799,10 @@ public class VideoLoaderController extends BasePlayerController {
             getPlayer().clearSuggestions();
         }
         
-        loadMetadata2(video, metadata -> updateSuggestions(metadata, video));
+        loadMetadata2(
+            video, 
+            metadata -> updateSuggestions(metadata, video)
+        );
     }
 
     private void loadMetadata2(
@@ -868,7 +813,7 @@ public class VideoLoaderController extends BasePlayerController {
         onEngineReleased();
 
         if (video == null) {
-            Log.e(TAG, "loadSuggestions: video is null");
+            Log.e(TAG, "onVideoLoaded: video is null");
             return;
         }
         // NOTE: Load suggestions from mediaItem isn't robust. Because playlistId may be initialized from RemoteControlManager.
@@ -893,7 +838,6 @@ public class VideoLoaderController extends BasePlayerController {
         Video current = getPlayer() != null ? getPlayer().getVideo() : null;
 
         if (next != null) {
-            next.fromQueue = true;
             return next;
         }
 
@@ -959,9 +903,6 @@ public class VideoLoaderController extends BasePlayerController {
         return null;
     }
 
-    
-
-
     public Video getPrevious() {
         Video current = getPlayer().getVideo();
 
@@ -987,21 +928,7 @@ public class VideoLoaderController extends BasePlayerController {
         }
 
         if (result == null) {
-            Video previous = Queue.getPrevious();
-
-            if (previous != null) {
-                previous.fromQueue = true;
-                result = previous;
-            }
-        }
-
-        if (result == null) {
-            Video previous = Queue.getPrevious();
-
-            if (previous != null) {
-                previous.fromQueue = true;
-                result = previous;
-            }
+            result = Queue.getPrevious();
         }
 
         return result;
@@ -1070,7 +997,7 @@ public class VideoLoaderController extends BasePlayerController {
             List<MediaGroup> suggestions = mediaItemMetadata.getSuggestions();
 
             if (suggestions == null) {
-                Log.e(TAG, "loadSuggestions: Can't obtain suggestions for video: "+video.getTitle());
+                Log.e(TAG, "onVideoLoaded: Can't obtain suggestions for video: "+video.getTitle());
             } else {
 
                 int groupIndex = -1;

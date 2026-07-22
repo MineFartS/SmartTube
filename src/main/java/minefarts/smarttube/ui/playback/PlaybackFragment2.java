@@ -226,8 +226,12 @@ public class PlaybackFragment2
     private final int mMaxBufferBytes;
     private final PlaybackFragment2 mPlayerData;
     private final PlayerTweaksData mPlayerTweaksData;
-    private static AudioAttributes sAudioAttributes;
-
+    
+    private static final AudioAttributes sAudioAttributes = new AudioAttributes.Builder()
+        .setUsage(C.USAGE_MEDIA)
+        .setContentType(C.CONTENT_TYPE_MOVIE)
+        .build();
+    
     private static BandwidthMeter mBandwidthMeter;
 
     // Required for Android XML fragment inflation
@@ -245,12 +249,10 @@ public class PlaybackFragment2
 
         mBandwidthMeter = new DefaultBandwidthMeter.Builder(context).build();
 
-        long deviceRam = DeviceHelpers.getDeviceRam(context);
-
         // If ram is too big, bigger then max int value DeviceRam will return a negative number...
         // use 196MB as that can only happens if device has more than 17GB of RAM, so 196 is enough and safe
         // https://github.com/yuliskov/SmartYouTubeTV/issues/532
-        mMaxBufferBytes = deviceRam <= 0 ? 196_000_000 : (int)(deviceRam / 18);
+        mMaxBufferBytes = (int) (DeviceHelpers.getDeviceRam(context) / 18);
 
         restoreState();
     }
@@ -611,27 +613,10 @@ public class PlaybackFragment2
             mBandwidthMeter
         );
 
-        if (player != null) {
-            try {
+        player.setAudioAttributes(sAudioAttributes, true);
 
-                if (sAudioAttributes == null) {
-                    sAudioAttributes = new AudioAttributes.Builder()
-                        .setUsage(C.USAGE_MEDIA)
-                        .setContentType(C.CONTENT_TYPE_MOVIE)
-                        .build();
-                }
-
-                player.setAudioAttributes(sAudioAttributes, true);
-
-            } catch (SecurityException e) { // uid 10390 not allowed to perform TAKE_AUDIO_FOCUS
-                e.printStackTrace();
-            }
-        }
-
-        float volume = 2.0f;
-
-        if (volume > 1f && Build.VERSION.SDK_INT >= 19) {
-            VolumeBooster mVolumeBooster = new VolumeBooster(true, volume, player);
+        if (Build.VERSION.SDK_INT >= 19) {
+            VolumeBooster mVolumeBooster = new VolumeBooster(true, 2.0f, player);
             player.addAudioListener(mVolumeBooster);
         }
 

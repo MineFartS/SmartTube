@@ -61,15 +61,16 @@ public object V8ChallengeProvider {
 
         for ((playerUrl, groupedRequests) in grouped) {
 
-            val data = mapOf(
+            val data = mutableMapOf<String, Any?>(
                 "type" to "player",
                 "player" to getPlayer(playerUrl),
                 "output_preprocessed" to true,
-                "requests" to groupedRequests.map { request -> mapOf(
-                    "type" to request.type.value,
-                    "challenges" to request.input.challenges
-                )}
             )
+
+            data["requests"] = groupedRequests.map { request -> mapOf(
+                "type" to request.type.value,
+                "challenges" to request.input.challenges
+            )}
 
             val output: SolverOutput = sGson.fromJson(
                 runV8("JSON.stringify( jsc(${sGson.toJson(data)}) )"), 

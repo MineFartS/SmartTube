@@ -39,6 +39,7 @@ public class RemoteController extends BasePlayerController implements OnDataChan
     private Disposable mActionUp;
     private ContentObserver mVolumeObserver;
     private long mVolumeSelfChangeMs;
+    private VideoLoaderController mVideoLoader;
 
     public RemoteController(Context context) {
 
@@ -64,6 +65,7 @@ public class RemoteController extends BasePlayerController implements OnDataChan
 
     @Override
     public void onInit() {
+
         if (mRemoteControlData.isDeviceLinkEnabled()) {
             if (mListeningAction != null && !mListeningAction.isDisposed()) return;
             Utils.postDelayed(mStartListeningInt, APP_INIT_DELAY_MS);
@@ -72,6 +74,9 @@ public class RemoteController extends BasePlayerController implements OnDataChan
             unregisterVolumeObserver();
             Utils.removeCallbacks(mStartListeningInt);
         }
+
+        mVideoLoader = getController(VideoLoaderController.class);
+
     }
 
     @Override
@@ -275,7 +280,7 @@ public class RemoteController extends BasePlayerController implements OnDataChan
                         video.remotePlaylistId = command.getPlaylistId();
                         video.playlistParams = null;
                         video.isRemote = true;
-                        getController(VideoLoaderController.class).loadSuggestions(video);
+                        mVideoLoader.onVideoLoaded(video);
                     }
                 }
                 break;
@@ -297,7 +302,6 @@ public class RemoteController extends BasePlayerController implements OnDataChan
                 if (getPlayer() != null) {
                     movePlayerToForeground();
                     getPlayer().setPlayWhenReady(true);
-                    //postStartPlaying(getController().getVideo(), true);
                     postPlay(true);
                 } else {
                     // Already connected
@@ -308,7 +312,6 @@ public class RemoteController extends BasePlayerController implements OnDataChan
                 if (getPlayer() != null) {
                     movePlayerToForeground();
                     getPlayer().setPlayWhenReady(false);
-                    //postStartPlaying(getController().getVideo(), false);
                     postPlay(false);
                 } else {
                     // Already connected
@@ -318,7 +321,7 @@ public class RemoteController extends BasePlayerController implements OnDataChan
             case Command.TYPE_NEXT:
                 if (getMainController() != null) {
                     movePlayerToForeground();
-                    getController(VideoLoaderController.class).onNextClicked();
+                    mVideoLoader.onNextClicked();
                 } else {
                     openNewVideo(getVideo());
                 }
@@ -327,7 +330,7 @@ public class RemoteController extends BasePlayerController implements OnDataChan
                 if (getMainController() != null && getPlayer() != null) {
                     movePlayerToForeground();
                     // Switch immediately. Skip position reset logic.
-                    getController(VideoLoaderController.class).onPreviousClicked();
+                    mVideoLoader.onPreviousClicked();
                 } else {
                     openNewVideo(getVideo());
                 }

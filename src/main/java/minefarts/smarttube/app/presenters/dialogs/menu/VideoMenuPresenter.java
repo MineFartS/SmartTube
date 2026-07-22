@@ -690,7 +690,6 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
                                     mCallback.onItemAction(mVideo, VideoMenuCallback.ACTION_REMOVE_FROM_QUEUE);
                                 }
                             } else {
-                                mVideo.fromQueue = true;
                                 Queue.add(mVideo);
                                 if (mCallback != null) {
                                     mCallback.onItemAction(mVideo, VideoMenuCallback.ACTION_ADD_TO_QUEUE);
@@ -716,7 +715,6 @@ public class VideoMenuPresenter extends BaseMenuPresenter {
         mDialogPresenter.appendSingleButton(UiOptionItem.from(
             getContext().getString(R.string.play_next),
             optionItem -> {
-                mVideo.fromQueue = true;
                 Queue.next(mVideo);
                 if (mCallback != null) {
                     mCallback.onItemAction(mVideo, VideoMenuCallback.ACTION_PLAY_NEXT);

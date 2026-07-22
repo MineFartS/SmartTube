@@ -90,7 +90,6 @@ public final class Video {
     public String channelGroupId;
     public long startTimeMs;
     public long pendingPosMs;
-    public boolean fromQueue;
     public boolean isPending;
     public boolean finishOnEnded;
 
@@ -773,7 +772,6 @@ public final class Video {
         video.metadataSecondTitle = metadataSecondTitle;
         video.percentWatched = percentWatched;
         video.cardImageUrl = cardImageUrl;
-        video.fromQueue = fromQueue;
         video.bgImageUrl = bgImageUrl;
         video.isLive = isLive;
         video.isUpcoming = isUpcoming;

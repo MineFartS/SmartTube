@@ -154,7 +154,6 @@ public class VideoStateController extends BasePlayerController {
 
     @Override
     public void onTickle() {
-
         if (getPlayer() == null 
             || getVideo() == null
             || getVideo().percentWatched < 1
@@ -235,10 +234,6 @@ public class VideoStateController extends BasePlayerController {
     }
 
     @Override
-    public void onTrackSelected(FormatItem track) {
-    }
-
-    @Override
     public void onPlayEnd() {
         
         if (getPlayer() == null) return;
@@ -246,12 +241,7 @@ public class VideoStateController extends BasePlayerController {
         long durMs = getPlayer().getDurationMs();
 
         if (durMs > 0) {
-
-            updateHistory(
-                getVideo(), 
-                durMs
-            );
-
+            updateHistory(getVideo(), durMs);
         }
         
     }
