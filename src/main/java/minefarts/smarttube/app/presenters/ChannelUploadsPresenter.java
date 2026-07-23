@@ -218,7 +218,7 @@ public class ChannelUploadsPresenter extends BasePresenter<ChannelUploadsView> {
                             mBrowseProcessor.process(newGroup);
                         },
                         error -> {
-                            Log.e(TAG, "continueGroup error: %s", error.getMessage());
+                            Log.w(TAG, "continueGroup error: %s", error.getMessage());
                             if (getView() != null) {
                                 getView().showProgressBar(false);
                             }

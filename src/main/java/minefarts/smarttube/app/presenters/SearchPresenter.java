@@ -194,7 +194,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
                             mBrowseProcessor.process(newGroup);
                         },
                         error -> {
-                            Log.e(TAG, "continueGroup error: %s", error.getMessage());
+                            Log.w(TAG, "continueGroup error: %s", error.getMessage());
                             if (getView() != null) {
                                 getView().showProgressBar(false);
                             }

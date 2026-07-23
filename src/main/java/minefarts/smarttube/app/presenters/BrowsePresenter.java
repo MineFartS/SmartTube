@@ -893,7 +893,7 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Accoun
             },
             
             error -> {
-                Log.e(TAG, "continueGroup error: %s", error.getMessage());
+                Log.w(TAG, "continueGroup error: %s", error.getMessage());
                 if (getView() != null) {
                     getView().showProgressBar(false);
                 }

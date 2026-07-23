@@ -242,8 +242,6 @@ public class VideoLoaderController extends BasePlayerController {
             
         mFormatInfoAction = null;
         mMpdStreamAction = null;
-
-        CacheManager.clear();
         
         Queue.setCurrent(item);
 
@@ -757,7 +755,7 @@ public class VideoLoaderController extends BasePlayerController {
             },
             
             error -> {
-                Log.e(TAG, "continueGroup error: %s", error.getMessage());
+                Log.w(TAG, "continueGroup error: %s", error.getMessage());
                 if (getPlayer() != null)
                     getPlayer().showProgressBar(false);
             }
