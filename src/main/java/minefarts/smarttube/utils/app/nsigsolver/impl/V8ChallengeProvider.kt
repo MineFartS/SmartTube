@@ -9,7 +9,6 @@ import com.eclipsesource.v8.V8ScriptExecutionException
 
 import minefarts.smarttube.ContextManager
 import minefarts.smarttube.utils.mylogger.Log
-import minefarts.smarttube.utils.app.nsigsolver.common.YouTubeInfoExtractor
 import minefarts.smarttube.utils.app.nsigsolver.provider.ChallengeOutput
 import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeProviderResponse
 import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeRequest

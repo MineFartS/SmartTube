@@ -3,7 +3,6 @@ package minefarts.smarttube.utils.app.playerdata
 import com.eclipsesource.v8.V8ScriptExecutionException
 import minefarts.smarttube.google.common.helpers.YouTubeHelper
 import minefarts.smarttube.utils.helpers.Helpers
-import minefarts.smarttube.utils.app.nsigsolver.common.YouTubeInfoExtractor
 import minefarts.smarttube.utils.app.nsigsolver.impl.V8ChallengeProvider
 import minefarts.smarttube.utils.app.nsigsolver.provider.ChallengeInput
 import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeRequest

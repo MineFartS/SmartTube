@@ -9,9 +9,6 @@ public class DislikesResult {
 
     @JsonPath("$.id")
     private String id;
-
-    @JsonPath("$.dateCreated")
-    private String dateCreated;
     
     @JsonPath("$.likes")
     private Integer likes;
@@ -19,14 +16,8 @@ public class DislikesResult {
     @JsonPath("$.dislikes")
     private Integer dislikes;
     
-    @JsonPath("$.rating")
-    private Integer rating;
-    
     @JsonPath("$.viewCount")
     private Long viewCount;
-    
-    @JsonPath("$.deleted")
-    private Boolean deleted;
         
     @Nullable
     public String getVideoId() {

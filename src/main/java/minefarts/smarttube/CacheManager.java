@@ -54,6 +54,7 @@ public class CacheManager {
         // VideoInfoService
 
         VideoInfoService VIS = VideoInfoService.instance();
+
         VIS.mVideoInfoType = null;
         VIS.persistVideoInfoType();
         
@@ -61,6 +62,7 @@ public class CacheManager {
         // MediaServiceData
 
         MediaServiceData MSD = MediaServiceData.instance();
+        
         MSD.mPoToken = null;
 
         //=======================
@@ -83,23 +85,6 @@ public class CacheManager {
         // V8ChallengeProvider
 
         V8ChallengeProvider.v8Runtime.remove();
-
-        //=======================
-
-    }
-
-    public static void releaseEngine() {
-
-        Context context = ContextManager.get();
-
-        //=======================
-        // PlaybackPresenter
-
-        PlaybackPresenter PP = PlaybackPresenter.instance(context);
-
-        for (PlayerEventListener listener : PP.mEventListeners) {
-            listener.onEngineReleased();
-        }
 
         //=======================
 
