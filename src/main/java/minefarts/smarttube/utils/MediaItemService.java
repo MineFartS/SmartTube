@@ -28,7 +28,7 @@ import minefarts.smarttube.utils.browse.BrowseService;
 import minefarts.smarttube.google.common.helpers.RetrofitHelper;
 import minefarts.smarttube.utils.channelgroups.ChannelGroupServiceImpl;
 import minefarts.smarttube.utils.notifications.NotificationStorage;
-import minefarts.smarttube.utils.common.helpers.PostDataHelper;
+import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper;
 import minefarts.smarttube.utils.actions.ActionsApi;
 
 import io.reactivex.Observable;

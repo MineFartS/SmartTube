@@ -1,8 +1,8 @@
 package minefarts.smarttube.utils.browse
 
 import minefarts.smarttube.utils.browse.models.grid.GridTab
-import minefarts.smarttube.utils.common.helpers.AppClient
-import minefarts.smarttube.utils.common.helpers.PostDataHelper
+import com.liskovsoft.youtubeapi.common.helpers.AppClient
+import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper
 
 val CHANNEL = "\"browseId\":\"%s\""
 val CHANNEL_FULL = "\"browseId\":\"%s\",\"params\":\"%s\""

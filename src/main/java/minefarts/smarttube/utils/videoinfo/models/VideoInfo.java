@@ -6,7 +6,7 @@ import minefarts.smarttube.utils.querystringparser.UrlQueryStringFactory;
 import minefarts.smarttube.google.common.converters.jsonpath.JsonPath;
 import minefarts.smarttube.google.common.helpers.ServiceHelper;
 import minefarts.smarttube.google.common.models.V2.TextItem;
-import minefarts.smarttube.utils.common.helpers.AppClient;
+import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import minefarts.smarttube.utils.videoinfo.models.formats.AdaptiveVideoFormat;
 import minefarts.smarttube.utils.videoinfo.models.formats.RegularVideoFormat;
 

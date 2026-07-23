@@ -17,7 +17,7 @@ import minefarts.smarttube.utils.next.v2.gen.WatchNextResultContinuation
 import minefarts.smarttube.utils.next.v2.gen.isEmpty
 import minefarts.smarttube.utils.next.v2.impl.MediaItemMetadataImpl
 import minefarts.smarttube.utils.SignInService
-import minefarts.smarttube.utils.common.helpers.AppClient
+import com.liskovsoft.youtubeapi.common.helpers.AppClient
 
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody

@@ -693,7 +693,7 @@ public class SabrManifestParser {
     }
 
     private ClientInfo createClientInfo(MediaItemFormatInfo formatInfo) {
-        MediaItemFormatInfo.ClientInfo clientInfo = formatInfo.getClientInfo();
+        com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo.ClientInfo clientInfo = formatInfo.getClientInfo();
 
         return ClientInfo.newBuilder()
                 .setClientName(ClientName.valueOf(clientInfo.getClientName()))

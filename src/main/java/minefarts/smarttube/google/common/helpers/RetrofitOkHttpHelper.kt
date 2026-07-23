@@ -1,7 +1,7 @@
 package minefarts.smarttube.google.common.helpers
 
 import minefarts.smarttube.utils.okhttp.OkHttpManager
-import minefarts.smarttube.utils.common.helpers.AppConstants
+import com.liskovsoft.youtubeapi.common.helpers.AppConstants
 import minefarts.smarttube.utils.app.AppService
 import minefarts.smarttube.exoplayer.ExoMediaSourceFactory
 

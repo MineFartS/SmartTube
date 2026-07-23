@@ -47,6 +47,8 @@ final public class GlobalPreferences extends SharedPreferencesBase {
             sCallbacks.clear();
         }
 
+        com.liskovsoft.sharedutils.prefs.GlobalPreferences.instance(context);
+
         return sInstance;
     }
 

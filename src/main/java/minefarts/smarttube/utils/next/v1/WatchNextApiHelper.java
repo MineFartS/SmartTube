@@ -2,7 +2,7 @@ package minefarts.smarttube.utils.next.v1;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import minefarts.smarttube.utils.common.helpers.PostDataHelper;
+import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper;
 
 public class WatchNextApiHelper {
     public static String getWatchNextQuery(@NonNull String videoId) {

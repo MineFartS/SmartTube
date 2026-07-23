@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.innertube.models
 
-import minefarts.smarttube.utils.common.helpers.AppClient
+import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import java.util.Date
 import java.util.TimeZone
 

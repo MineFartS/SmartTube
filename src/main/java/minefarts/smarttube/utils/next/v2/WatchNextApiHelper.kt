@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.next.v2
 
-import minefarts.smarttube.utils.common.helpers.AppClient
+import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import minefarts.smarttube.utils.common.helpers.PostDataType
 import minefarts.smarttube.utils.common.helpers.QueryBuilder
 

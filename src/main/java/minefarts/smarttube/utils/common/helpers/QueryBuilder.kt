@@ -4,6 +4,8 @@ import minefarts.smarttube.utils.helpers.Helpers
 import minefarts.smarttube.utils.app.AppService
 import minefarts.smarttube.google.common.locale.LocaleManager
 
+import com.liskovsoft.youtubeapi.common.helpers.AppClient
+
 public enum class PostDataType { Player, Browse }
 
 // Use protobuf to bypass geo blocking

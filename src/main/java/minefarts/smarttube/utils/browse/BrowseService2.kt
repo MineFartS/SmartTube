@@ -3,10 +3,10 @@ package minefarts.smarttube.utils.browse
 import minefarts.smarttube.utils.service.data.MediaGroup
 import minefarts.smarttube.utils.data.MediaItem
 import minefarts.smarttube.utils.browse.gen.*
-import minefarts.smarttube.utils.common.helpers.AppClient
+import com.liskovsoft.youtubeapi.common.helpers.AppClient
 import minefarts.smarttube.utils.common.models.impl.mediagroup.*
 import minefarts.smarttube.google.common.helpers.RetrofitHelper
-import minefarts.smarttube.utils.common.helpers.PostDataHelper
+import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper
 import minefarts.smarttube.utils.common.models.gen.ItemWrapper
 import minefarts.smarttube.utils.common.models.gen.getPlaylistId
 import minefarts.smarttube.utils.common.models.impl.mediaitem.ShortsMediaItem

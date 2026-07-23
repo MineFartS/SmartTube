@@ -7,7 +7,7 @@ import minefarts.smarttube.utils.search.models.SearchResult;
 import minefarts.smarttube.utils.search.models.SearchResultContinuation;
 import minefarts.smarttube.utils.search.models.SearchTags;
 import minefarts.smarttube.utils.prefs.GlobalPreferences;
-import minefarts.smarttube.utils.common.helpers.PostDataHelper;
+import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper;
 import minefarts.smarttube.utils.data.SearchOptions;
 import minefarts.smarttube.utils.helpers.Helpers;
 
