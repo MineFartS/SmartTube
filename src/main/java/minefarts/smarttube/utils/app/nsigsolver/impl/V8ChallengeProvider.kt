@@ -17,6 +17,8 @@ import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeResponse
 import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeType
 import minefarts.smarttube.utils.app.nsigsolver.runtime.SolverOutput
 
+typealias V8ChallengeProvider2 = com.liskovsoft.youtubeapi.app.nsigsolver.impl.V8ChallengeProvider
+
 public object V8ChallengeProvider {
     
     @JvmField
@@ -63,7 +65,7 @@ public object V8ChallengeProvider {
 
             val data = mutableMapOf<String, Any?>(
                 "type" to "player",
-                "player" to getPlayer(playerUrl),
+                "player" to V8ChallengeProvider2.getPlayer(playerUrl),
                 "output_preprocessed" to true,
             )
 
@@ -93,16 +95,6 @@ public object V8ChallengeProvider {
                     ))
                 }
             }
-        }
-
-    }
-
-    fun getPlayer(playerUrl: String?): String {
-
-        return try {
-            YouTubeInfoExtractor.loadPlayer(playerUrl ?: "")
-        } catch (e: Exception) {
-            throw RuntimeException("Failed to load player for JS challenge: $playerUrl")
         }
 
     }
