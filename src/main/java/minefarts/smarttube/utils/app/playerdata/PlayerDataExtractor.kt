@@ -3,7 +3,7 @@ package minefarts.smarttube.utils.app.playerdata
 import com.eclipsesource.v8.V8ScriptExecutionException
 import minefarts.smarttube.google.common.helpers.YouTubeHelper
 import minefarts.smarttube.utils.helpers.Helpers
-import minefarts.smarttube.utils.app.nsigsolver.impl.V8ChallengeProvider
+import minefarts.smarttube.utils.app.nsigsolver.impl.V8ChallengeProviderShim
 import minefarts.smarttube.utils.app.nsigsolver.provider.ChallengeInput
 import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeRequest
 import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeType
@@ -35,7 +35,7 @@ public class PlayerDataExtractor(val playerUrl: String?) {
         if (!nFuncCode || !sFuncCode) {
             try {
                                 
-                val result = V8ChallengeProvider.bulkSolve(
+                val result = V8ChallengeProviderShim.bulkSolve(
                     JsChallengeRequest(JsChallengeType.N, ChallengeInput(fixedPlayerUrl, listOf(param))),
                     JsChallengeRequest(JsChallengeType.SIG, ChallengeInput(fixedPlayerUrl, listOf(param)))
                 )
@@ -104,7 +104,7 @@ public class PlayerDataExtractor(val playerUrl: String?) {
             buildRequest(sParams, sFuncCode, JsChallengeType.SIG)
         ).toTypedArray()
                 
-        val result = V8ChallengeProvider.bulkSolve(*requests)
+        val result = V8ChallengeProviderShim.bulkSolve(*requests)
                 
         var nProcessed: List<String?>? = null
         var sProcessed: List<String?>? = null

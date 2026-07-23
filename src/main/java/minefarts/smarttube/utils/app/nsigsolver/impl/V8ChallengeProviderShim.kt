@@ -7,6 +7,8 @@ import com.google.gson.reflect.TypeToken
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8ScriptExecutionException
 
+import com.liskovsoft.youtubeapi.app.nsigsolver.impl.V8ChallengeProvider
+
 import minefarts.smarttube.ContextManager
 import minefarts.smarttube.utils.mylogger.Log
 import minefarts.smarttube.utils.app.nsigsolver.provider.ChallengeOutput
@@ -16,55 +18,17 @@ import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeResponse
 import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeType
 import minefarts.smarttube.utils.app.nsigsolver.runtime.SolverOutput
 
-typealias V8ChallengeProvider2 = com.liskovsoft.youtubeapi.app.nsigsolver.impl.V8ChallengeProvider
-
-public object V8ChallengeProvider {
-    
-    @JvmField
-    public val v8Runtime = ThreadLocal<V8>()
+public object V8ChallengeProviderShim {
 
     private val sGson = Gson()
 
-    private val assets
-        get() = ContextManager.get()?.assets
-
-    @Synchronized
-    private fun runV8(stdin: String): String {
-        
-        if (v8Runtime.get() == null) {
-            
-            val runtime = V8.createV8Runtime()
-            v8Runtime.set(runtime)
-
-            for (name in listOf("lib", "core")) {
-
-                val path = "nsigsolver/yt.solver.$name.js"
-
-                assets!!.open(path).bufferedReader().use { 
-                    runtime!!.executeStringScript(it.readText())
-                }
-                
-            }
-            
-        }
-
-        return v8Runtime.get()!!.executeStringScript(stdin)
-            ?: throw RuntimeException("V8 runtime error: empty response")
-
-    }
-
-    /**
-     * Solve multiple JS challenges and return the results
-     */
     fun bulkSolve(vararg requests: JsChallengeRequest): Sequence<JsChallengeProviderResponse> = sequence {
-        
-        val grouped: Map<String, List<JsChallengeRequest>> = requests.groupBy { it.input.playerUrl }
 
-        for ((playerUrl, groupedRequests) in grouped) {
+        for ((playerUrl, groupedRequests) in requests.groupBy{it.input.playerUrl}) {
 
             val data = mutableMapOf<String, Any?>(
                 "type" to "player",
-                "player" to V8ChallengeProvider2.getPlayer(playerUrl),
+                "player" to V8ChallengeProvider.getPlayer(playerUrl),
                 "output_preprocessed" to true,
             )
 
@@ -73,8 +37,11 @@ public object V8ChallengeProvider {
                 "challenges" to request.input.challenges
             )}
 
+            V8ChallengeProvider.initRuntime()
+            val stdin = "JSON.stringify( jsc(${sGson.toJson(data)}) )"
+
             val output: SolverOutput = sGson.fromJson(
-                runV8("JSON.stringify( jsc(${sGson.toJson(data)}) )"), 
+                V8ChallengeProvider.runV8(stdin),
                 object : TypeToken<SolverOutput>() {}.type
             )
 
