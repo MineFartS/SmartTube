@@ -224,7 +224,6 @@ public class PlaybackFragment2
     private List<String> mLastAudioLanguages;
 
     private final int mMaxBufferBytes;
-    private final PlaybackFragment2 mPlayerData;
     private final PlayerTweaksData mPlayerTweaksData;
     
     private static final AudioAttributes sAudioAttributes = new AudioAttributes.Builder()
@@ -244,7 +243,6 @@ public class PlaybackFragment2
         mPrefs = AppPrefs.instance(context);
         mPrefs.addListener(this);
 
-        mPlayerData = PlaybackFragment2.instance(context);
         mPlayerTweaksData = PlayerTweaksData.instance(context);
 
         mBandwidthMeter = new DefaultBandwidthMeter.Builder(context).build();
@@ -252,7 +250,8 @@ public class PlaybackFragment2
         // If ram is too big, bigger then max int value DeviceRam will return a negative number...
         // use 196MB as that can only happens if device has more than 17GB of RAM, so 196 is enough and safe
         // https://github.com/yuliskov/SmartYouTubeTV/issues/532
-        mMaxBufferBytes = (int) (DeviceHelpers.getDeviceRam(context) / 18);
+        long deviceRam = DeviceHelpers.getDeviceRam(context);
+        mMaxBufferBytes = deviceRam <= 0 ? 196_000_000 : (int)(deviceRam / 18);
 
         restoreState();
     }
