@@ -16,20 +16,13 @@ $gARGS = @()
 
 if ($Force) {
 
-    Remove-Item `
-        ".gradle" `
-        -Force -Recurse -Verbose
+    Stop-Process -Name "java*"
 
-    Remove-Item `
-        ".build" `
-        -Force -Recurse -Verbose
-
-    Remove-Item `
-        "$env:USERPROFILE\.gradle\caches" `
-        -Force -Recurse -Verbose
-
-    Remove-Item "src\main\assets\nsigsolver" -Recurse -Force
-    Remove-Item 'aar' -Recurse -Force
+    @(
+        ".gradle", ".build", "aar",
+        "$env:USERPROFILE\.gradle\caches",
+        "src\main\assets\nsigsolver"
+    ) | Remove-Item -Force -Recurse -Verbose -ErrorAction SilentlyContinue
 
     $gARGS += 'clean'
     $gARGS += '--refresh-dependencies'

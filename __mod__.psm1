@@ -33,6 +33,8 @@ function Add-YuliskovPkg ([String]$Name) {
 
     if (-not (Test-Path $Dst)) {
 
+        git.exe submodule update --init --recursive --remote --force lib/yuliskov
+
         Copy-Item "local.properties" "lib/yuliskov/local.properties" -Force
 
         New-Item 'aar' -ItemType Directory -ErrorAction SilentlyContinue
@@ -45,10 +47,10 @@ function Add-YuliskovPkg ([String]$Name) {
             Remove-Item "$_\src\main\res" -Force -Recurse
         }
 
-        $projectDir | Get-ChildItem -File -Recurse | Where-Object Extension -match '\.(kt|java)$' | ForEach-Object { $_
-            $text = Get-Content $_.FullName
-            foreach ($pat in $AccessPatterns.Keys) {
-                $text = [regex]::Replace($text, $pat, 'public')
+        $projectDir | Get-ChildItem -File -Recurse | Where-Object Extension -match 'kt|java' | ForEach-Object { $_
+            $text = Get-Content $_.FullName -Raw
+            $AccessPatterns | ForEach-Object {
+                $text = [regex]::Replace($text, $_, 'public')
             }
             Set-Content -Value $text -Path $_.FullName
         }
@@ -66,31 +68,15 @@ function Add-YuliskovPkg ([String]$Name) {
 
 }
 
-function Invoke-Gradle {
-    param(
-        [Parameter(ValueFromRemainingArguments)]
-        $cmdargs
-    )
-
+function Invoke-Gradle ([Parameter(ValueFromRemainingArguments)] $cmdargs) {
     .\gradlew.bat @cmdargs
-
 }
 
-function Invoke-Deno {
-    param(
-        [Parameter(ValueFromRemainingArguments)]
-        $cmdargs
-    )
-
+function Invoke-Deno ([Parameter(ValueFromRemainingArguments)] $cmdargs) {
     & "$lib\deno.exe" @cmdargs
-
 }
 
-function Invoke-ADB {
-    param(
-        [Parameter(ValueFromRemainingArguments)]
-        $cmdargs
-    )
+function Invoke-ADB ([Parameter(ValueFromRemainingArguments)] $cmdargs) {
 
     if (-not (Test-ADBConnection)) {
 
@@ -114,14 +100,8 @@ function Invoke-ADB {
 
 }
 
-function Invoke-Python {
-    param(
-        [Parameter(ValueFromRemainingArguments)]
-        $cmdargs
-    )
-
+function Invoke-Python ([Parameter(ValueFromRemainingArguments)] $cmdargs) {
     & "$PSScriptRoot\lib\py314\python.exe" @cmdargs
-
 }
 
 function Repair-Environment {
@@ -129,7 +109,6 @@ function Repair-Environment {
     Set-Location $PSScriptRoot
 
     git.exe submodule update --init --recursive --remote
-    git.exe submodule update --init --recursive --remote --force lib/yuliskov
     
     $Env:JAVA_HOME = $JAVA_HOME
     $Env:PATH += ";$JAVA_HOME/bin;$lib"
