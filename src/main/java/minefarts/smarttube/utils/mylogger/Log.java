@@ -111,4 +111,19 @@ public final class Log {
         return fmsg + "\n";
     }
 
+    public static void printLine() {
+        printLine("");
+    }
+
+    public static void printLine(String message) {
+        
+        StackTraceElement element = Thread.currentThread().getStackTrace()[0];
+        
+        String fileName = element.getFileName();
+        int lineNumber = element.getLineNumber();
+        String methodName = element.getMethodName();
+                
+        i("printLine()", "(%s:%d) [%s] - %s", fileName, lineNumber, methodName, message);
+    }
+
 }
