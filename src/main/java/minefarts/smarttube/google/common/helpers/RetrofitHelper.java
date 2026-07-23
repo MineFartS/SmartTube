@@ -21,6 +21,7 @@ import minefarts.smarttube.google.common.models.gen.AuthErrorResponse;
 import minefarts.smarttube.google.common.models.gen.ErrorResponse;
 
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.lang.annotation.Annotation;
 import java.net.ConnectException;
 import java.util.ArrayList;
@@ -104,9 +105,14 @@ public class RetrofitHelper {
         } catch (ConnectException e) {
             // ConnectException - server is down or address is banned (returnyoutubedislikeapi.com)
             e.printStackTrace();
+        } catch (InterruptedIOException e) {
+            // InterruptedIOException - Thread was interrupted (e.g., RxJava subscription disposed).
+            // This is a normal condition in reactive/async flows, not a fatal error.
+            // Restore the interrupt status and return null gracefully.
+            Thread.currentThread().interrupt();
+            Log.d(TAG, "Request was interrupted (thread interrupted)");
         } catch (IOException e) {
             // SocketException - no internet
-            // InterruptedIOException - Thread interrupted. Thread died!!
             // UnknownHostException: Unable to resolve host (DNS error) Thread died?
             e.printStackTrace();
 
