@@ -68,6 +68,13 @@ function Add-YuliskovPkg ([String]$Name) {
 
 }
 
+function Import-NSigSolver ($src) {
+    Invoke-Deno run -A `
+        npm:@swc/cli@0.8.1/swc `
+        $src.FullName `
+        '-o' "$PSScriptRoot\src\main\assets\nsigsolver\$($src.Name)"
+}
+
 function Invoke-Gradle ([Parameter(ValueFromRemainingArguments)] $cmdargs) {
     .\gradlew.bat @cmdargs
 }

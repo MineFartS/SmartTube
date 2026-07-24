@@ -28,6 +28,14 @@ public object V8ChallengeProvider {
     private val assets
         get() = ContextManager.get()?.assets
 
+    private val nsigsolvers = listOf(
+        "astring-1.9.0.min",
+        "meriyah-6.1.4.min",
+        "polyfill",
+        "yt.solver.lib",
+        "yt.solver.core"
+    )
+
     @Synchronized
     private fun runV8(stdin: String): String {
         
@@ -36,14 +44,10 @@ public object V8ChallengeProvider {
             val runtime = V8.createV8Runtime()
             v8Runtime.set(runtime)
 
-            for (name in listOf("lib", "core")) {
-
-                val path = "nsigsolver/yt.solver.$name.js"
-
-                assets!!.open(path).bufferedReader().use { 
+            for (name in nsigsolvers) {
+                assets!!.open("nsigsolver/$name.js").bufferedReader().use { 
                     runtime!!.executeStringScript(it.readText())
                 }
-                
             }
             
         }
