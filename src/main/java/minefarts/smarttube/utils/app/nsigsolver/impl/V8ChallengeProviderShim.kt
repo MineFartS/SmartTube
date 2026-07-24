@@ -22,6 +22,9 @@ public object V8ChallengeProviderShim {
 
     private val sGson = Gson()
 
+    private val assets
+        get() = ContextManager.get()?.assets
+
     fun bulkSolve(vararg requests: JsChallengeRequest): Sequence<JsChallengeProviderResponse> = sequence {
 
         for ((playerUrl, groupedRequests) in requests.groupBy{it.input.playerUrl}) {
@@ -38,10 +41,15 @@ public object V8ChallengeProviderShim {
             )}
 
             V8ChallengeProvider.initRuntime()
-            val stdin = "JSON.stringify( jsc(${sGson.toJson(data)}) )"
+            
+            for (name in listOf("lib", "core")) {
+                assets!!.open("nsigsolver/yt.solver.$name.js").bufferedReader().use { 
+                    V8ChallengeProvider.runV8(it.readText())
+                }
+            }
 
             val output: SolverOutput = sGson.fromJson(
-                V8ChallengeProvider.runV8(stdin),
+                V8ChallengeProvider.runV8("JSON.stringify( jsc(${sGson.toJson(data)}) )"),
                 object : TypeToken<SolverOutput>() {}.type
             )
 
