@@ -8,6 +8,8 @@ import androidx.annotation.Nullable;
 
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import com.liskovsoft.youtubeapi.app.potokencloud.PoTokenResponse;
+import com.liskovsoft.youtubeapi.app.playerdata.NSigData;
+import com.liskovsoft.youtubeapi.app.playerdata.PlayerExtractorCache;
 
 import minefarts.smarttube.utils.helpers.AppInfoHelpers;
 import minefarts.smarttube.utils.helpers.Helpers;
@@ -17,8 +19,6 @@ import minefarts.smarttube.utils.prefs.SharedPreferencesBase;
 import minefarts.smarttube.utils.app.models.AppInfo;
 import minefarts.smarttube.utils.app.models.ClientData;
 import minefarts.smarttube.utils.app.models.PlayerData;
-import minefarts.smarttube.utils.app.playerdata.NSigData;
-import minefarts.smarttube.utils.app.playerdata.PlayerExtractorCache;
 import minefarts.smarttube.utils.MediaItemService;
 
 import java.util.UUID;

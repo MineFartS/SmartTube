@@ -8,15 +8,15 @@ import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8ScriptExecutionException
 
 import com.liskovsoft.youtubeapi.app.nsigsolver.impl.V8ChallengeProvider
+import com.liskovsoft.youtubeapi.app.nsigsolver.provider.ChallengeOutput
+import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeProviderResponse
+import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeRequest
+import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeResponse
+import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeType
+import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.SolverOutput
 
 import minefarts.smarttube.ContextManager
 import minefarts.smarttube.utils.mylogger.Log
-import minefarts.smarttube.utils.app.nsigsolver.provider.ChallengeOutput
-import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeProviderResponse
-import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeRequest
-import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeResponse
-import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeType
-import minefarts.smarttube.utils.app.nsigsolver.runtime.SolverOutput
 
 public object V8ChallengeProviderShim {
 

@@ -1,9 +1,11 @@
 package minefarts.smarttube.utils.channelgroups.importing.newpipe
 
 import android.net.Uri
+
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
+
 import minefarts.smarttube.google.youtubedata3.YouTubeDataServiceInt
 import minefarts.smarttube.utils.data.ItemGroup
 import minefarts.smarttube.utils.data.ItemGroup.Item
@@ -12,7 +14,9 @@ import minefarts.smarttube.utils.channelgroups.importing.newpipe.gen.NewPipeSubs
 import minefarts.smarttube.utils.channelgroups.models.ItemGroupImpl
 import minefarts.smarttube.utils.channelgroups.models.ItemImpl
 import minefarts.smarttube.google.common.helpers.YouTubeHelper
-import minefarts.smarttube.utils.app.nsigsolver.common.YouTubeInfoExtractor
+
+import com.liskovsoft.youtubeapi.app.nsigsolver.common.YouTubeInfoExtractor
+
 import java.io.File
 
 public object NewPipeService: GroupImportService {
@@ -20,7 +24,7 @@ public object NewPipeService: GroupImportService {
     override fun importGroups(url: Uri): List<ItemGroup>? {
         return try {
             return parseGroups(
-                YouTubeInfoExtractor.downloadWebpage(url.toString())
+                YouTubeInfoExtractor.downloadWebpageWithRetries(url.toString())
             )
         } catch (e: Exception) {
             e.printStackTrace()

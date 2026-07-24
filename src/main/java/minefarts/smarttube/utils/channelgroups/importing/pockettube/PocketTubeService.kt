@@ -8,7 +8,7 @@ import minefarts.smarttube.utils.data.ItemGroup.Item
 import minefarts.smarttube.utils.channelgroups.importing.GroupImportService
 import minefarts.smarttube.utils.channelgroups.models.ItemGroupImpl
 import minefarts.smarttube.utils.channelgroups.models.ItemImpl
-import minefarts.smarttube.utils.app.nsigsolver.common.YouTubeInfoExtractor
+import com.liskovsoft.youtubeapi.app.nsigsolver.common.YouTubeInfoExtractor
 import java.io.File
 
 public object PocketTubeService: GroupImportService {
@@ -16,7 +16,7 @@ public object PocketTubeService: GroupImportService {
     override fun importGroups(url: Uri): List<ItemGroup>? {
         return try {
             return parseGroups(
-                YouTubeInfoExtractor.downloadWebpage(url.toString())
+                YouTubeInfoExtractor.downloadWebpageWithRetries(url.toString())
             )
         } catch (e: Exception) {
             e.printStackTrace()

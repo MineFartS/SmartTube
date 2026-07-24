@@ -1,18 +1,21 @@
 package minefarts.smarttube.utils.rss
 
+import com.liskovsoft.youtubeapi.app.nsigsolver.common.YouTubeInfoExtractor
+
 import minefarts.smarttube.utils.data.MediaItem
 import minefarts.smarttube.utils.helpers.Helpers
 import minefarts.smarttube.utils.browse.BrowseService2
 import minefarts.smarttube.utils.browse.BrowseService2Wrapper
-import minefarts.smarttube.utils.app.nsigsolver.common.YouTubeInfoExtractor
 import minefarts.smarttube.utils.service.data.MediaGroup
 import minefarts.smarttube.utils.service.data.YouTubeMediaItem
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+
 import java.util.concurrent.CopyOnWriteArrayList
 
 public object RssService {
@@ -67,7 +70,7 @@ public object RssService {
 
     private suspend fun fetchFeed(channelId: String): List<MediaItem>? = withContext(Dispatchers.IO) {
         try {
-            val rssContent = YouTubeInfoExtractor.downloadWebpage(RSS_URL + channelId)
+            val rssContent = YouTubeInfoExtractor.downloadWebpageWithRetries(RSS_URL + channelId)
             val result = YouTubeRssParser(Helpers.toStream(rssContent)).parse()
             syncWithChannel(channelId, result)
             result

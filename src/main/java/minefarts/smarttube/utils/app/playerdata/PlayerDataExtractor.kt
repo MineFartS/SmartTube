@@ -1,12 +1,13 @@
 package minefarts.smarttube.utils.app.playerdata
 
 import com.eclipsesource.v8.V8ScriptExecutionException
-import minefarts.smarttube.google.common.helpers.YouTubeHelper
+
+import com.liskovsoft.youtubeapi.app.nsigsolver.provider.ChallengeInput
+import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeRequest
+import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeType
+
 import minefarts.smarttube.utils.helpers.Helpers
 import minefarts.smarttube.utils.app.nsigsolver.impl.V8ChallengeProviderShim
-import minefarts.smarttube.utils.app.nsigsolver.provider.ChallengeInput
-import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeRequest
-import minefarts.smarttube.utils.app.nsigsolver.provider.JsChallengeType
 import minefarts.smarttube.utils.service.internal.MediaServiceData
 
 public class PlayerDataExtractor(val playerUrl: String?) {
@@ -41,12 +42,13 @@ public class PlayerDataExtractor(val playerUrl: String?) {
                 )
 
                 for (item in result) {
-                    when (item.response?.type) {
+                    val response = item.response
+                    when (response?.type) {
                         JsChallengeType.N ->
-                            if (item.response.output.results[param]?.let { it != param } ?: false)
+                            if (response.output.results[param]?.let { it != param } ?: false)
                                 nFuncCode = true
                         JsChallengeType.SIG ->
-                            if (item.response.output.results[param]?.let { it != param } ?: false)
+                            if (response.output.results[param]?.let { it != param } ?: false)
                                 sFuncCode = true
                         else -> {}
                     }
@@ -110,11 +112,12 @@ public class PlayerDataExtractor(val playerUrl: String?) {
         var sProcessed: List<String?>? = null
 
         for (item in result) {
-            when (item.response?.type) {
+            val response = item.response
+            when (response?.type) {
                 JsChallengeType.N ->
-                    nProcessed = nParams?.map { item.response.output.results[it] }
+                    nProcessed = nParams?.map { response.output.results[it] }
                 JsChallengeType.SIG ->
-                    sProcessed = sParams?.map { item.response.output.results[it] }
+                    sProcessed = sParams?.map { response.output.results[it] }
                 else -> {}
             }
         }
