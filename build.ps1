@@ -33,26 +33,15 @@ Add-YuliskovPkg 'youtubeapi'
 Add-YuliskovPkg 'mediaserviceinterfaces'
 Add-YuliskovPkg 'sharedutils'
 
-if (-not (Test-Path "src\main\assets\nsigsolver\*.js")) {
+$YTSolver = "src\main\assets\yt.solver.js"
 
-    Set-Location "$lib\yuliskov\MediaServiceCore\youtubeapi\src\main\assets\nsigsolver\"
+if (-not (Test-Path $YTSolver)) {
 
-    Get-ChildItem -Filter "*.js" -File | ForEach-Object {
-        Import-NSigSolver $_
-    }
+    Invoke-Python "$lib\ejs\hatch_build.py"
 
-    Set-Location "$lib\ejs"
-    
-    Invoke-Deno install
-    $env:EJS_BUILD_INSTALLER = "deno"
+    New-Item "src\main\assets\nsigsolver\" -ItemType Directory
 
-    Invoke-Python "hatch_build.py"
-
-    Get-ChildItem -Path "dist" -Filter "*.js" -File | ForEach-Object {
-        Import-NSigSolver $_
-    }
-    
-    Set-Location $PSScriptRoot
+    Copy-Item "$lib\ejs\dist\yt.solver.js" $YTSolver
 
 }
 

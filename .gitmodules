@@ -27,5 +27,5 @@
 
 [submodule "lib/ejs"]
 	path = lib/ejs
-	url = https://github.com/yt-dlp/ejs
+	url = https://github.com/MineFartS/yt-ejs
     ignore = all

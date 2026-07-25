@@ -1,11 +1,12 @@
 package minefarts.smarttube;
 
+import com.liskovsoft.youtubeapi.common.helpers.AppClient;
+
 import minefarts.smarttube.google.common.locale.LocaleManager;
 import minefarts.smarttube.utils.locale.LocaleUpdater;
 import minefarts.smarttube.utils.SignInService;
 import minefarts.smarttube.utils.MediaItemService;
 import minefarts.smarttube.utils.videoinfo.V2.VideoInfoService;
-import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 import minefarts.smarttube.utils.app.AppService;
 import minefarts.smarttube.utils.app.AppApi;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
@@ -13,7 +14,6 @@ import minefarts.smarttube.utils.helpers.FileHelpers;
 import minefarts.smarttube.app.models.playback.controllers.VideoStateController;
 import minefarts.smarttube.app.models.playback.PlayerEventListener;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
-import minefarts.smarttube.utils.app.nsigsolver.impl.V8ChallengeProvider;
 
 import android.util.Base64;
 import android.content.Context;
@@ -80,11 +80,6 @@ public class CacheManager {
             new byte[32], 
             Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP
         );
-
-        //=======================
-        // V8ChallengeProvider
-
-        V8ChallengeProvider.v8Runtime.remove();
 
         //=======================
 

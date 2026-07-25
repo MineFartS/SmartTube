@@ -5,12 +5,25 @@ import minefarts.smarttube.google.common.api.FileApi
 import minefarts.smarttube.google.common.converters.jsonpath.converter.JsonPathConverterFactory
 import minefarts.smarttube.google.common.converters.jsonpath.converter.JsonPathResponseBodyConverter
 import minefarts.smarttube.google.common.helpers.RetrofitHelper
-import minefarts.smarttube.google.common.js.JSInterpret
 import minefarts.smarttube.utils.videoinfo.models.VideoInfo
 import java.util.regex.Pattern
 
+
 public object InitialResponse {
+    
     private val YT_INITIAL_PLAYER_RESPONSE_RE: Pattern = Pattern.compile("""ytInitialPlayerResponse\s*=""")
+
+    private fun searchJson(startPattern: Pattern, content: String, endPattern: Pattern = Pattern.compile(";"),
+                   containsPattern: Pattern = Pattern.compile("""\{(?s:.+?)\}""")): String? {
+        val jsonRegex = Pattern.compile("""(?:$startPattern)\s*($containsPattern)\s*(?:$endPattern)""")
+        val matcher = jsonRegex.matcher(content)
+
+        if (matcher.find() && matcher.groupCount() == 1) {
+            return matcher.group(1)
+        }
+
+        return null
+    }
 
     @Suppress("UNCHECKED_CAST")
     @JvmStatic
@@ -20,7 +33,7 @@ public object InitialResponse {
         val result = RetrofitHelper.get(resultWrapper, auth)
 
         result?.content?.let {
-            val jsonStr = JSInterpret.searchJson(YT_INITIAL_PLAYER_RESPONSE_RE, it)
+            val jsonStr = searchJson(YT_INITIAL_PLAYER_RESPONSE_RE, it)
 
             val factory = JsonPathConverterFactory()
             val converter = factory.responseBodyConverter(VideoInfo::class.java, null, null)

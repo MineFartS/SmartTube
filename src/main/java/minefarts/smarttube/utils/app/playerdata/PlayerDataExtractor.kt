@@ -1,13 +1,11 @@
 package minefarts.smarttube.utils.app.playerdata
 
-import com.eclipsesource.v8.V8ScriptExecutionException
-
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.ChallengeInput
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeRequest
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeType
 
 import minefarts.smarttube.utils.helpers.Helpers
-import minefarts.smarttube.utils.app.nsigsolver.impl.V8ChallengeProvider
+import minefarts.smarttube.utils.app.nsigsolver.V8ChallengeProvider
 import minefarts.smarttube.utils.service.internal.MediaServiceData
 
 public class PlayerDataExtractor(val playerUrl: String?) {

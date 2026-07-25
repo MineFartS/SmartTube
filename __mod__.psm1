@@ -68,19 +68,8 @@ function Add-YuliskovPkg ([String]$Name) {
 
 }
 
-function Import-NSigSolver ($src) {
-    Invoke-Deno run -A `
-        npm:@swc/cli@0.8.1/swc `
-        $src.FullName `
-        '-o' "$PSScriptRoot\src\main\assets\nsigsolver\$($src.Name)"
-}
-
 function Invoke-Gradle ([Parameter(ValueFromRemainingArguments)] $cmdargs) {
     .\gradlew.bat @cmdargs
-}
-
-function Invoke-Deno ([Parameter(ValueFromRemainingArguments)] $cmdargs) {
-    & "$lib\deno.exe" @cmdargs
 }
 
 function Invoke-ADB ([Parameter(ValueFromRemainingArguments)] $cmdargs) {
@@ -118,7 +107,7 @@ function Repair-Environment {
     git.exe submodule update --init --recursive --remote
     
     $Env:JAVA_HOME = $JAVA_HOME
-    $Env:PATH += ";$JAVA_HOME/bin;$lib"
+    $Env:PATH += ";$JAVA_HOME/bin"
 
     Write-Output "org.gradle.java.home=$JAVA_HOME" > 'local.properties'
     Write-Output "sdk.dir=$ANDROID_SDK" >> 'local.properties'
