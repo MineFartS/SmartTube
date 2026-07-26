@@ -34,7 +34,8 @@ public object V8ChallengeProvider {
     
     private val v8Executor = Executors.newSingleThreadExecutor() 
 
-    private var v8Runtime: V8Runtime? = null
+    @JvmField
+    public var v8Runtime: V8Runtime? = null
 
     private fun jsc(data: Map<String, Any>): SolverOutput = v8Executor.submit<SolverOutput> {
 

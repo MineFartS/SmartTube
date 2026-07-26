@@ -8,6 +8,8 @@ import android.util.Pair;
 import androidx.core.content.ContextCompat;
 import androidx.annotation.Nullable;
 
+import com.liskovsoft.sharedutils.rx.RxHelper;
+
 import minefarts.smarttube.utils.MediaItemService;
 import minefarts.smarttube.utils.service.data.MediaFormat;
 import minefarts.smarttube.utils.data.MediaItemFormatInfo;
@@ -15,7 +17,6 @@ import minefarts.smarttube.utils.service.data.MediaItemMetadata;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
-import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Queue;
 import minefarts.smarttube.app.models.data.SimpleMediaItem;
@@ -46,6 +47,7 @@ import minefarts.smarttube.google.common.helpers.RetrofitHelper;
 import minefarts.smarttube.utils.videoinfo.V2.VideoInfoService;
 import minefarts.smarttube.utils.videoinfo.V2.VideoInfoApi;
 import minefarts.smarttube.google.youtubedata3.YouTubeDataServiceInt;
+import minefarts.smarttube.utils.app.nsigsolver.V8ChallengeProvider;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -240,6 +242,8 @@ public class VideoLoaderController extends BasePlayerController {
     public void onNewVideo(Video item) {
         if (getPlayer() == null || item == null) return;
             
+        V8ChallengeProvider.INSTANCE.v8Runtime = null;
+
         mFormatInfoAction = null;
         mMpdStreamAction = null;
         
