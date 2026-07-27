@@ -1,13 +1,29 @@
 Add-Type -AssemblyName System.Text.RegularExpressions
 
-$lib = "$PSScriptRoot\lib"
+$ErrorActionPreference = 'Stop'
+$PSNativeCommandUseErrorActionPreference = $true
 
-$ANDROID_SDK = "$lib\sdk"
-$ADB = "$ANDROID_SDK\platform-tools\adb.exe"
+#==================================================
 
-$JAVA_HOME = "$lib\jdk17"
+Set-Location $PSScriptRoot
 
-$APP_ID = "minefarts.smarttube"
+$JDK = "$PSScriptRoot\lib\jdk17"
+$SDK = "$PSScriptRoot\lib\sdk"
+
+$ADB = "$SDK\platform-tools\adb.exe"
+
+$Env:JAVA_HOME = $JDK
+$Env:PATH += ";$JDK/bin"
+
+git.exe submodule update --init --recursive --remote
+
+Write-Output "org.gradle.java.home=$JDK" > 'local.properties'
+Write-Output "sdk.dir=$SDK" >> 'local.properties'
+(Get-Content -Path "local.properties") -replace '\\', '/' | Set-Content -Encoding utf8 "local.properties"
+
+& "$SDK\Accept.ps1"
+
+#==================================================
 
 function Test-ADBConnection {
 
@@ -23,53 +39,55 @@ $AccessPatterns = @(
     # Classes
     '\b(private|protected|internal)(?=\s+(?:(?:abstract|sealed|data|enum|open|inner|final|synchronized)\s+)*(?:class|interface|object)\b)',
 
-    # Functions
+    # Kotlin Functions
     '\b(private|protected|internal)(?=\s+(?:(?:synchronized|final|abstract|inline|external|tailrec|operator|infix)\s+)*(?:fun|void\s+\w+|[\w<>\[\]]+\s+\w+(?=\s*\()))(?!\s+(?:[^\{]*?\b(?:open|override)\b))'
 )
 
-function Add-YuliskovPkg ([String]$Name) {
+function Add-YuliskovPkg ([String]$Name, [String]$Path) {
 
     $Dst = "$PSScriptRoot/aar/$Name.aar"
 
-    if (-not (Test-Path $Dst)) {
+    if (Test-Path $Dst) { return; }
 
-        git.exe submodule update --init --recursive --remote --force lib/yuliskov
+    $Path = Get-Item "lib/yuliskov/$Path"
 
-        Copy-Item "local.properties" "lib/yuliskov/local.properties" -Force
+    git.exe submodule update --init --recursive --remote --force lib/yuliskov
 
-        New-Item 'aar' -ItemType Directory -ErrorAction SilentlyContinue
+    Copy-Item "local.properties" "lib/yuliskov/local.properties" -Force
 
-        Set-Location "$PSScriptRoot/lib/yuliskov/"
+    New-Item 'aar' -ItemType Directory -ErrorAction SilentlyContinue
 
-        $projectDir = Get-ChildItem -Directory -Recurse -Filter $Name
-        
-        $projectDir | ForEach-Object {
-            Remove-Item "$_\src\main\res" -Force -Recurse
+    Remove-Item "$Path\src\main\res" -Force -Recurse -ErrorAction SilentlyContinue
+
+    Get-ChildItem $Path -File -Recurse | Where-Object Extension -match 'kt|java' | ForEach-Object { $_
+        $text = Get-Content $_.FullName -Raw
+        $AccessPatterns | ForEach-Object {
+            $text = [regex]::Replace($text, $_, 'public')
         }
-
-        $projectDir | Get-ChildItem -File -Recurse | Where-Object Extension -match 'kt|java' | ForEach-Object { $_
-            $text = Get-Content $_.FullName -Raw
-            $AccessPatterns | ForEach-Object {
-                $text = [regex]::Replace($text, $_, 'public')
-            }
-            Set-Content -Value $text -Path $_.FullName
-        }
-
-        Invoke-Gradle ":$($Name):assemble"
-
-        $projectDir | Get-ChildItem -Filter "$Name*debug.aar" -Recurse `
-            | Sort-Object { $_.Name -like "*stbeta*" } -Descending `
-            | Select-Object -First 1 `
-            | Move-Item -Destination $Dst -Verbose
-
-        Set-Location $PSScriptRoot
-
+        Set-Content -Value $text -Path $_.FullName
     }
+    
+    Invoke-Gradle ":$($Name):assemble" "--no-daemon"
+
+    Get-ChildItem $Path -Filter "$Name*debug.aar" -Recurse `
+        | Sort-Object { $_.Name -like "*stbeta*" } -Descending `
+        | Select-Object -First 1 `
+        | Move-Item -Destination $Dst -Verbose
+
+    Get-Item $Dst -ErrorAction Stop
 
 }
 
-function Invoke-Gradle ([Parameter(ValueFromRemainingArguments)] $cmdargs) {
+function Invoke-Gradle ([Switch]$Yuliskov, [Parameter(ValueFromRemainingArguments)] $cmdargs) {
+    if ($Yuliskov) {
+        Push-Location "$PSScriptRoot/lib/yuliskov/"
+    } else {
+        Push-Location $PSScriptRoot
+    }
+    
     .\gradlew.bat @cmdargs
+
+    Pop-Location
 }
 
 function Invoke-ADB ([Parameter(ValueFromRemainingArguments)] $cmdargs) {
@@ -77,15 +95,18 @@ function Invoke-ADB ([Parameter(ValueFromRemainingArguments)] $cmdargs) {
     if (-not (Test-ADBConnection)) {
 
         Write-Host "No ADB device is connected"
-        Write-Host "Enter Target IP Address or leave blank to skip install"
+        Write-Host "Enter Target IP Address or leave blank to skip"
         $IP = Read-Host 'Target IP Address'
 
-        if ($IP -eq "") {return $false}
+        if ($IP -ne "") {
 
-        & $ADB connect $IP
+            & $ADB connect $IP
 
-        while (-not (Test-ADBConnection)) {
-            Write-Host 'Awaiting Connection ...'
+            while (-not (Test-ADBConnection)) {
+                Write-Host 'Awaiting Connection ...'
+                Start-Sleep 3
+            }
+
         }
         
     }
@@ -100,22 +121,7 @@ function Invoke-Python ([Parameter(ValueFromRemainingArguments)] $cmdargs) {
     & "$PSScriptRoot\lib\py314\python.exe" @cmdargs
 }
 
-function Repair-Environment {
-
-    Set-Location $PSScriptRoot
-
-    git.exe submodule update --init --recursive --remote
-    
-    $Env:JAVA_HOME = $JAVA_HOME
-    $Env:PATH += ";$JAVA_HOME/bin"
-
-    Write-Output "org.gradle.java.home=$JAVA_HOME" > 'local.properties'
-    Write-Output "sdk.dir=$ANDROID_SDK" >> 'local.properties'
-    (Get-Content -Path "local.properties") -replace '\\', '/' | Set-Content -Encoding utf8 "local.properties"
-
-    & "$ANDROID_SDK\Accept.ps1"
-
-}
+#==================================================
 
 Export-ModuleMember `
     -Function * `
