@@ -5,6 +5,7 @@ import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
 
 import java.util.concurrent.Executors
+import java.util.concurrent.ExecutorService
 
 import com.caoccao.javet.interop.V8Host
 import com.caoccao.javet.interop.V8Runtime
@@ -32,8 +33,9 @@ public object V8ChallengeProvider {
     private val assets
         get() = ContextManager.get()?.assets!!
     
-    private val v8Executor = Executors.newSingleThreadExecutor() 
-
+    @JvmField
+    public var v8Executor: ExecutorService = Executors.newSingleThreadExecutor()
+    
     @JvmField
     public var v8Runtime: V8Runtime? = null
 

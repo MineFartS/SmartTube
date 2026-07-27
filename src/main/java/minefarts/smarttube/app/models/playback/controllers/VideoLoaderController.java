@@ -242,7 +242,7 @@ public class VideoLoaderController extends BasePlayerController {
     public void onNewVideo(Video item) {
         if (getPlayer() == null || item == null) return;
             
-        V8ChallengeProvider.INSTANCE.v8Runtime = null;
+        CacheManager.clear();
 
         mFormatInfoAction = null;
         mMpdStreamAction = null;
