@@ -75,19 +75,12 @@ function Add-YuliskovPkg ([String]$Name, [String]$Path) {
         | Move-Item -Destination $Dst -Verbose
 
     Get-Item $Dst -ErrorAction Stop
-
 }
 
-function Invoke-Gradle ([Switch]$Yuliskov, [Parameter(ValueFromRemainingArguments)] $cmdargs) {
-    if ($Yuliskov) {
-        Push-Location "$PSScriptRoot/lib/yuliskov/"
-    } else {
-        Push-Location $PSScriptRoot
-    }
-    
+function Invoke-Gradle ([Parameter(ValueFromRemainingArguments)] $cmdargs) {
+    .\gradlew.bat --stop
     .\gradlew.bat @cmdargs
-
-    Pop-Location
+    .\gradlew.bat --stop
 }
 
 function Invoke-ADB ([Parameter(ValueFromRemainingArguments)] $cmdargs) {
