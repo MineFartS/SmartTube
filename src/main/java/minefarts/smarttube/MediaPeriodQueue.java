@@ -7,7 +7,7 @@ import minefarts.smarttube.source.MediaPeriod;
 import minefarts.smarttube.source.MediaSource;
 import minefarts.smarttube.source.MediaSource.MediaPeriodId;
 import minefarts.smarttube.trackselection.TrackSelector;
-import minefarts.smarttube.upstream.Allocator;
+import com.google.android.exoplayer2.upstream.Allocator;
 import minefarts.smarttube.utils.Assertions;
 
 /**

@@ -13,7 +13,7 @@ import minefarts.smarttube.extractor.mp4.PsshAtomUtil;
 import minefarts.smarttube.extractor.mp4.TrackEncryptionBox;
 import minefarts.smarttube.ss.manifest.SsManifest.ProtectionElement;
 import minefarts.smarttube.ss.manifest.SsManifest.StreamElement;
-import minefarts.smarttube.upstream.ParsingLoadable;
+import com.google.android.exoplayer2.upstream.ParsingLoadable;
 import minefarts.smarttube.utils.Assertions;
 import minefarts.smarttube.utils.CodecSpecificDataUtil;
 import minefarts.smarttube.utils.MimeTypes;

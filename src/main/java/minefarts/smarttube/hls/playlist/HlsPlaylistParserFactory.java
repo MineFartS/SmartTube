@@ -1,6 +1,6 @@
 package minefarts.smarttube.hls.playlist;
 
-import minefarts.smarttube.upstream.ParsingLoadable;
+import com.google.android.exoplayer2.upstream.ParsingLoadable;
 
 /** Factory for {@link HlsPlaylist} parsers. */
 public interface HlsPlaylistParserFactory {

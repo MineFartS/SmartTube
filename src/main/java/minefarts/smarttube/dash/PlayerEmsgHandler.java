@@ -17,7 +17,7 @@ import minefarts.smarttube.metadata.emsg.EventMessageDecoder;
 import minefarts.smarttube.source.SampleQueue;
 import minefarts.smarttube.source.chunk.Chunk;
 import minefarts.smarttube.dash.manifest.DashManifest;
-import minefarts.smarttube.upstream.Allocator;
+import com.google.android.exoplayer2.upstream.Allocator;
 import minefarts.smarttube.utils.ParsableByteArray;
 import minefarts.smarttube.utils.Utils;
 

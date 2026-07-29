@@ -17,7 +17,7 @@ import minefarts.smarttube.hls.HlsTrackMetadataEntry.VariantInfo;
 import minefarts.smarttube.hls.playlist.HlsMasterPlaylist.Rendition;
 import minefarts.smarttube.hls.playlist.HlsMasterPlaylist.Variant;
 import minefarts.smarttube.hls.playlist.HlsMediaPlaylist.Segment;
-import minefarts.smarttube.upstream.ParsingLoadable;
+import com.google.android.exoplayer2.upstream.ParsingLoadable;
 import minefarts.smarttube.utils.Assertions;
 import minefarts.smarttube.utils.MimeTypes;
 import minefarts.smarttube.utils.UriUtil;

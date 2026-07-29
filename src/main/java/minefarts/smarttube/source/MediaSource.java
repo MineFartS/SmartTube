@@ -5,8 +5,8 @@ import androidx.annotation.Nullable;
 import minefarts.smarttube.C;
 import minefarts.smarttube.ExoPlayer;
 import minefarts.smarttube.Timeline;
-import minefarts.smarttube.upstream.Allocator;
-import minefarts.smarttube.upstream.TransferListener;
+import com.google.android.exoplayer2.upstream.Allocator;
+import com.google.android.exoplayer2.upstream.TransferListener;
 import java.io.IOException;
 
 /**

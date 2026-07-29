@@ -19,7 +19,7 @@ import minefarts.smarttube.RendererCapabilities;
 import minefarts.smarttube.RendererConfiguration;
 import minefarts.smarttube.source.TrackGroup;
 import minefarts.smarttube.source.TrackGroupArray;
-import minefarts.smarttube.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import minefarts.smarttube.utils.Assertions;
 import minefarts.smarttube.utils.Utils;
 

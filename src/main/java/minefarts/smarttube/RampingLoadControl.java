@@ -2,7 +2,7 @@ package minefarts.smarttube;
 
 import minefarts.smarttube.source.TrackGroupArray;
 import minefarts.smarttube.trackselection.TrackSelectionArray;
-import minefarts.smarttube.upstream.Allocator;
+import com.google.android.exoplayer2.upstream.Allocator;
 import minefarts.smarttube.utils.Assertions;
 
 public final class RampingLoadControl implements LoadControl {

@@ -10,7 +10,7 @@ import minefarts.smarttube.C;
 import minefarts.smarttube.Format;
 import minefarts.smarttube.Player;
 import minefarts.smarttube.source.MediaSource.MediaPeriodId;
-import minefarts.smarttube.upstream.DataSpec;
+import com.google.android.exoplayer2.upstream.DataSpec;
 import minefarts.smarttube.utils.Assertions;
 import java.io.IOException;
 import java.util.Collections;

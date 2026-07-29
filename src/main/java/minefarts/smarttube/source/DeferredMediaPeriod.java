@@ -5,7 +5,7 @@ import minefarts.smarttube.C;
 import minefarts.smarttube.SeekParameters;
 import minefarts.smarttube.source.MediaSource.MediaPeriodId;
 import minefarts.smarttube.trackselection.TrackSelection;
-import minefarts.smarttube.upstream.Allocator;
+import com.google.android.exoplayer2.upstream.Allocator;
 import java.io.IOException;
 
 /**

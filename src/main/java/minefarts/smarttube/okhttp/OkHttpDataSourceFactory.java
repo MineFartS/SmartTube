@@ -1,10 +1,10 @@
 package minefarts.smarttube.okhttp;
 
 import androidx.annotation.Nullable;
-import minefarts.smarttube.upstream.HttpDataSource;
-import minefarts.smarttube.upstream.HttpDataSource.BaseFactory;
-import minefarts.smarttube.upstream.HttpDataSource.Factory;
-import minefarts.smarttube.upstream.TransferListener;
+import com.google.android.exoplayer2.upstream.HttpDataSource;
+import com.google.android.exoplayer2.upstream.HttpDataSource.BaseFactory;
+import com.google.android.exoplayer2.upstream.HttpDataSource.Factory;
+import com.google.android.exoplayer2.upstream.TransferListener;
 import okhttp3.CacheControl;
 import okhttp3.Call;
 

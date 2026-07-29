@@ -12,7 +12,7 @@ import minefarts.smarttube.trackselection.TrackSelection;
 import minefarts.smarttube.trackselection.TrackSelectionArray;
 import minefarts.smarttube.trackselection.TrackSelector;
 import minefarts.smarttube.trackselection.TrackSelectorResult;
-import minefarts.smarttube.upstream.Allocator;
+import com.google.android.exoplayer2.upstream.Allocator;
 import minefarts.smarttube.utils.Assertions;
 import minefarts.smarttube.utils.mylogger.Log;
 import org.checkerframework.checker.nullness.compatqual.NullableType;

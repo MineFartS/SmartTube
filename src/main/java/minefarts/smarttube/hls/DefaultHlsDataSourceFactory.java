@@ -1,6 +1,6 @@
 package minefarts.smarttube.hls;
 
-import minefarts.smarttube.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DataSource;
 
 /**
  * Default implementation of {@link HlsDataSourceFactory}.

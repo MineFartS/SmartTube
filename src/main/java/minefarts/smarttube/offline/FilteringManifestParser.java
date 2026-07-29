@@ -2,7 +2,7 @@ package minefarts.smarttube.offline;
 
 import android.net.Uri;
 import androidx.annotation.Nullable;
-import minefarts.smarttube.upstream.ParsingLoadable.Parser;
+import com.google.android.exoplayer2.upstream.ParsingLoadable.Parser;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;

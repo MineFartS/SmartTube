@@ -4,8 +4,8 @@ import androidx.annotation.Nullable;
 import minefarts.smarttube.source.chunk.ChunkSource;
 import minefarts.smarttube.ss.manifest.SsManifest;
 import minefarts.smarttube.trackselection.TrackSelection;
-import minefarts.smarttube.upstream.LoaderErrorThrower;
-import minefarts.smarttube.upstream.TransferListener;
+import com.google.android.exoplayer2.upstream.LoaderErrorThrower;
+import com.google.android.exoplayer2.upstream.TransferListener;
 
 /**
  * A {@link ChunkSource} for SmoothStreaming.

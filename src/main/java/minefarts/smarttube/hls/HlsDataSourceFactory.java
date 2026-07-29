@@ -1,7 +1,7 @@
 package minefarts.smarttube.hls;
 
 import minefarts.smarttube.C;
-import minefarts.smarttube.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DataSource;
 
 /**
  * Creates {@link DataSource}s for HLS playlists, encryption and media chunks.

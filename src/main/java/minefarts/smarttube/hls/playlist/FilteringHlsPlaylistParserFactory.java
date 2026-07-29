@@ -2,7 +2,7 @@ package minefarts.smarttube.hls.playlist;
 
 import minefarts.smarttube.offline.FilteringManifestParser;
 import minefarts.smarttube.offline.StreamKey;
-import minefarts.smarttube.upstream.ParsingLoadable;
+import com.google.android.exoplayer2.upstream.ParsingLoadable;
 import java.util.List;
 
 /**

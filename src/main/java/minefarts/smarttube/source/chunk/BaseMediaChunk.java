@@ -2,8 +2,8 @@ package minefarts.smarttube.source.chunk;
 
 import minefarts.smarttube.C;
 import minefarts.smarttube.Format;
-import minefarts.smarttube.upstream.DataSource;
-import minefarts.smarttube.upstream.DataSpec;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DataSpec;
 
 /**
  * A base implementation of {@link MediaChunk} that outputs to a {@link BaseMediaChunkOutput}.

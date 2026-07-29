@@ -3,7 +3,7 @@ package minefarts.smarttube;
 import minefarts.smarttube.source.TrackGroup;
 import minefarts.smarttube.source.TrackGroupArray;
 import minefarts.smarttube.trackselection.TrackSelectionArray;
-import minefarts.smarttube.upstream.Allocator;
+import com.google.android.exoplayer2.upstream.Allocator;
 
 /**
  * Controls buffering of media.

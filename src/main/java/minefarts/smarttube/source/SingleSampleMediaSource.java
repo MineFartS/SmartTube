@@ -5,12 +5,12 @@ import android.os.Handler;
 import androidx.annotation.Nullable;
 import minefarts.smarttube.Format;
 import minefarts.smarttube.Timeline;
-import minefarts.smarttube.upstream.Allocator;
-import minefarts.smarttube.upstream.DataSource;
-import minefarts.smarttube.upstream.DataSpec;
-import minefarts.smarttube.upstream.DefaultLoadErrorHandlingPolicy;
-import minefarts.smarttube.upstream.LoadErrorHandlingPolicy;
-import minefarts.smarttube.upstream.TransferListener;
+import com.google.android.exoplayer2.upstream.Allocator;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DataSpec;
+import com.google.android.exoplayer2.upstream.DefaultLoadErrorHandlingPolicy;
+import com.google.android.exoplayer2.upstream.LoadErrorHandlingPolicy;
+import com.google.android.exoplayer2.upstream.TransferListener;
 import minefarts.smarttube.utils.Assertions;
 import java.io.IOException;
 

@@ -16,7 +16,7 @@ import minefarts.smarttube.dash.manifest.SegmentBase.SegmentList;
 import minefarts.smarttube.dash.manifest.SegmentBase.SegmentTemplate;
 import minefarts.smarttube.dash.manifest.SegmentBase.SegmentTimelineElement;
 import minefarts.smarttube.dash.manifest.SegmentBase.SingleSegmentBase;
-import minefarts.smarttube.upstream.ParsingLoadable;
+import com.google.android.exoplayer2.upstream.ParsingLoadable;
 import minefarts.smarttube.utils.Assertions;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.MimeTypes;

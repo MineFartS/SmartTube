@@ -7,7 +7,7 @@ import minefarts.smarttube.source.DefaultMediaSourceEventListener;
 import minefarts.smarttube.source.MediaSource.MediaPeriodId;
 import minefarts.smarttube.source.chunk.Chunk;
 import minefarts.smarttube.source.chunk.ContainerMediaChunk;
-import minefarts.smarttube.upstream.HttpDataSource.InvalidResponseCodeException;
+import com.google.android.exoplayer2.upstream.HttpDataSource.InvalidResponseCodeException;
 import minefarts.smarttube.utils.MimeTypes;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;

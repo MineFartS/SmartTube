@@ -2,8 +2,8 @@ package minefarts.smarttube;
 
 import minefarts.smarttube.source.TrackGroupArray;
 import minefarts.smarttube.trackselection.TrackSelectionArray;
-import minefarts.smarttube.upstream.Allocator;
-import minefarts.smarttube.upstream.DefaultAllocator;
+import com.google.android.exoplayer2.upstream.Allocator;
+import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import minefarts.smarttube.utils.Assertions;
 import minefarts.smarttube.utils.Utils;
 

@@ -9,7 +9,7 @@ import minefarts.smarttube.RendererConfiguration;
 import minefarts.smarttube.Timeline;
 import minefarts.smarttube.source.MediaSource.MediaPeriodId;
 import minefarts.smarttube.source.TrackGroupArray;
-import minefarts.smarttube.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import minefarts.smarttube.utils.Assertions;
 
 /**

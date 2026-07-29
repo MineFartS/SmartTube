@@ -4,7 +4,7 @@ import android.os.Handler;
 import androidx.annotation.CallSuper;
 import androidx.annotation.Nullable;
 import minefarts.smarttube.Timeline;
-import minefarts.smarttube.upstream.TransferListener;
+import com.google.android.exoplayer2.upstream.TransferListener;
 import minefarts.smarttube.utils.Assertions;
 import minefarts.smarttube.utils.Utils;
 import java.io.IOException;

@@ -9,8 +9,8 @@ import minefarts.smarttube.source.chunk.ChunkSource;
 import minefarts.smarttube.sabr.PlayerEmsgHandler.PlayerTrackEmsgHandler;
 import minefarts.smarttube.sabr.manifest.SabrManifest;
 import minefarts.smarttube.trackselection.TrackSelection;
-import minefarts.smarttube.upstream.LoaderErrorThrower;
-import minefarts.smarttube.upstream.TransferListener;
+import com.google.android.exoplayer2.upstream.LoaderErrorThrower;
+import com.google.android.exoplayer2.upstream.TransferListener;
 
 import java.util.List;
 

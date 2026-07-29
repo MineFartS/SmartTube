@@ -6,7 +6,7 @@ import minefarts.smarttube.C;
 import minefarts.smarttube.source.TrackGroup;
 import minefarts.smarttube.source.chunk.MediaChunk;
 import minefarts.smarttube.source.chunk.MediaChunkIterator;
-import minefarts.smarttube.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import java.util.List;
 import java.util.Random;
 import org.checkerframework.checker.nullness.compatqual.NullableType;

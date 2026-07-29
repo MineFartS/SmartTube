@@ -3,12 +3,12 @@ package minefarts.smarttube.offline;
 import android.net.Uri;
 import androidx.annotation.Nullable;
 import minefarts.smarttube.C;
-import minefarts.smarttube.upstream.DataSpec;
-import minefarts.smarttube.upstream.cache.Cache;
-import minefarts.smarttube.upstream.cache.CacheDataSource;
-import minefarts.smarttube.upstream.cache.CacheKeyFactory;
-import minefarts.smarttube.upstream.cache.CacheUtil;
-import minefarts.smarttube.utils.PriorityTaskManager;
+import com.google.android.exoplayer2.upstream.DataSpec;
+import com.google.android.exoplayer2.upstream.cache.Cache;
+import com.google.android.exoplayer2.upstream.cache.CacheDataSource;
+import com.google.android.exoplayer2.upstream.cache.CacheKeyFactory;
+import com.google.android.exoplayer2.upstream.cache.CacheUtil;
+import com.google.android.exoplayer2.util.PriorityTaskManager;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 

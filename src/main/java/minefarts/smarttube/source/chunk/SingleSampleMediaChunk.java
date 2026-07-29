@@ -5,8 +5,8 @@ import minefarts.smarttube.Format;
 import minefarts.smarttube.extractor.DefaultExtractorInput;
 import minefarts.smarttube.extractor.ExtractorInput;
 import minefarts.smarttube.extractor.TrackOutput;
-import minefarts.smarttube.upstream.DataSource;
-import minefarts.smarttube.upstream.DataSpec;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DataSpec;
 import minefarts.smarttube.utils.Utils;
 import java.io.IOException;
 

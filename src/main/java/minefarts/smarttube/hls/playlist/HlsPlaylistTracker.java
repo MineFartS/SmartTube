@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 import minefarts.smarttube.C;
 import minefarts.smarttube.source.MediaSourceEventListener.EventDispatcher;
 import minefarts.smarttube.hls.HlsDataSourceFactory;
-import minefarts.smarttube.upstream.LoadErrorHandlingPolicy;
+import com.google.android.exoplayer2.upstream.LoadErrorHandlingPolicy;
 import java.io.IOException;
 
 /**

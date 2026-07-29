@@ -122,7 +122,7 @@ import minefarts.smarttube.SeekParameters;
 import minefarts.smarttube.audio.AudioRendererEventListener;
 import minefarts.smarttube.drm.DrmSessionManager;
 import minefarts.smarttube.drm.FrameworkMediaCrypto;
-import minefarts.smarttube.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DataSource;
 import minefarts.smarttube.video.VideoRendererEventListener;
 
 import java.io.UnsupportedEncodingException;

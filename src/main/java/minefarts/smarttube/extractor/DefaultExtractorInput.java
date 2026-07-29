@@ -1,7 +1,7 @@
 package minefarts.smarttube.extractor;
 
 import minefarts.smarttube.C;
-import minefarts.smarttube.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DataSource;
 import minefarts.smarttube.utils.Assertions;
 import minefarts.smarttube.utils.Utils;
 import java.io.EOFException;

@@ -2,19 +2,19 @@ package minefarts.smarttube.offline;
 
 import androidx.annotation.Nullable;
 import minefarts.smarttube.C;
-import minefarts.smarttube.upstream.DataSink;
-import minefarts.smarttube.upstream.DataSource;
-import minefarts.smarttube.upstream.DummyDataSource;
-import minefarts.smarttube.upstream.FileDataSourceFactory;
-import minefarts.smarttube.upstream.PriorityDataSourceFactory;
-import minefarts.smarttube.upstream.cache.Cache;
-import minefarts.smarttube.upstream.cache.CacheDataSink;
-import minefarts.smarttube.upstream.cache.CacheDataSinkFactory;
-import minefarts.smarttube.upstream.cache.CacheDataSource;
-import minefarts.smarttube.upstream.cache.CacheDataSourceFactory;
-import minefarts.smarttube.upstream.cache.CacheKeyFactory;
-import minefarts.smarttube.upstream.cache.CacheUtil;
-import minefarts.smarttube.utils.PriorityTaskManager;
+import com.google.android.exoplayer2.upstream.DataSink;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DummyDataSource;
+import com.google.android.exoplayer2.upstream.FileDataSourceFactory;
+import com.google.android.exoplayer2.upstream.PriorityDataSourceFactory;
+import com.google.android.exoplayer2.upstream.cache.Cache;
+import com.google.android.exoplayer2.upstream.cache.CacheDataSink;
+import com.google.android.exoplayer2.upstream.cache.CacheDataSinkFactory;
+import com.google.android.exoplayer2.upstream.cache.CacheDataSource;
+import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory;
+import com.google.android.exoplayer2.upstream.cache.CacheKeyFactory;
+import com.google.android.exoplayer2.upstream.cache.CacheUtil;
+import com.google.android.exoplayer2.util.PriorityTaskManager;
 
 /** A helper class that holds necessary parameters for {@link Downloader} construction. */
 public final class DownloaderConstructorHelper {

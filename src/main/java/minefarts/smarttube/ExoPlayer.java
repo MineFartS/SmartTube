@@ -13,7 +13,7 @@ import minefarts.smarttube.source.ProgressiveMediaSource;
 import minefarts.smarttube.source.SingleSampleMediaSource;
 import minefarts.smarttube.text.TextRenderer;
 import minefarts.smarttube.trackselection.TrackSelector;
-import minefarts.smarttube.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DataSource;
 import minefarts.smarttube.video.MediaCodecVideoRenderer;
 
 public interface ExoPlayer extends Player {

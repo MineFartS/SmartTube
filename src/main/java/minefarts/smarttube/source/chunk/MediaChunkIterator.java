@@ -1,6 +1,6 @@
 package minefarts.smarttube.source.chunk;
 
-import minefarts.smarttube.upstream.DataSpec;
+import com.google.android.exoplayer2.upstream.DataSpec;
 import java.util.NoSuchElementException;
 
 /**

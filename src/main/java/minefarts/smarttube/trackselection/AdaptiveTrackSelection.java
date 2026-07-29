@@ -6,7 +6,7 @@ import minefarts.smarttube.Format;
 import minefarts.smarttube.source.TrackGroup;
 import minefarts.smarttube.source.chunk.MediaChunk;
 import minefarts.smarttube.source.chunk.MediaChunkIterator;
-import minefarts.smarttube.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import minefarts.smarttube.utils.Assertions;
 import minefarts.smarttube.utils.Clock;
 import minefarts.smarttube.utils.Utils;
