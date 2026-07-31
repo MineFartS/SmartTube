@@ -67,7 +67,7 @@ function Add-YuliskovPkg ([String]$Name, [String]$Path) {
         Set-Content -Value $text -Path $_.FullName
     }
     
-    Invoke-Gradle ":$($Name):assemble" "--no-daemon"
+    Invoke-Gradle -Yuliskov ":$($Name):assemble" "--no-daemon"
 
     Get-ChildItem $Path -Filter "$Name*debug.aar" -Recurse `
         | Sort-Object { $_.Name -like "*stbeta*" } -Descending `
@@ -77,10 +77,18 @@ function Add-YuliskovPkg ([String]$Name, [String]$Path) {
     Get-Item $Dst -ErrorAction Stop
 }
 
-function Invoke-Gradle ([Parameter(ValueFromRemainingArguments)] $cmdargs) {
+function Invoke-Gradle ([Switch]$Yuliskov, [Parameter(ValueFromRemainingArguments)] $cmdargs) {
+    if ($Yuliskov) {
+        Push-Location "$PSScriptRoot/lib/yuliskov"
+    } else {
+        Push-Location $PSScriptRoot
+    }
+
     .\gradlew.bat --stop
     .\gradlew.bat @cmdargs
     .\gradlew.bat --stop
+
+    Pop-Location
 }
 
 function Invoke-ADB ([Parameter(ValueFromRemainingArguments)] $cmdargs) {
