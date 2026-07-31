@@ -45,7 +45,7 @@ $AccessPatterns = @(
 
 function Add-YuliskovPkg ([String]$Name, [String]$Path) {
 
-    $Dst = "$PSScriptRoot/aar/$Name.aar"
+    $Dst = "$PSScriptRoot/lib/aar/$Name.aar"
 
     if (Test-Path $Dst) { return; }
 
@@ -54,10 +54,6 @@ function Add-YuliskovPkg ([String]$Name, [String]$Path) {
     git.exe submodule update --init --recursive --remote --force lib/yuliskov
 
     Copy-Item "local.properties" "lib/yuliskov/local.properties" -Force
-
-    New-Item 'aar' -ItemType Directory -ErrorAction SilentlyContinue
-
-    Remove-Item "$Path\src\main\res" -Force -Recurse -ErrorAction SilentlyContinue
 
     Get-ChildItem $Path -File -Recurse | Where-Object Extension -match 'kt|java' | ForEach-Object { $_
         $text = Get-Content $_.FullName -Raw

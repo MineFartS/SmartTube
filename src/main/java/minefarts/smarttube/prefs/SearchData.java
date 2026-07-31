@@ -1,8 +1,8 @@
-package minefarts.smarttube.prefs;
+package com.liskovsoft.smartyoutubetv2.common.prefs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import minefarts.smarttube.utils.helpers.Helpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 
 public class SearchData {
 

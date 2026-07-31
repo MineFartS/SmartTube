@@ -2,13 +2,15 @@ package minefarts.smarttube.media;
 
 import androidx.tvprovider.media.tv.TvContractCompat;
 
-import minefarts.smarttube.google.common.helpers.ServiceHelper;
+import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
+import com.liskovsoft.mediaserviceinterfaces.ContentService;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.BasePlayerController;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.youtubeapi.service.YouTubeServiceManager;
+
 import minefarts.smarttube.media.ClipService.GroupCallback;
-import minefarts.smarttube.utils.service.ContentService;
-import minefarts.smarttube.app.models.playback.BasePlayerController;
-import minefarts.smarttube.utils.service.data.MediaGroup;
-import minefarts.smarttube.utils.data.MediaItem;
-import minefarts.smarttube.utils.helpers.Helpers;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -157,7 +159,7 @@ public final class Playlist {
     private List<Clip> createClips() {
         if (mCallback == null) return null;
 
-        ContentService contentService = BasePlayerController.getContentService();
+        ContentService contentService = YouTubeServiceManager.instance().getContentService();
         MediaGroup selectedGroup = mCallback.call(contentService);
 
         if (selectedGroup != null) {

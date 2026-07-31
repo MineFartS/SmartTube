@@ -10,7 +10,9 @@ Thumbs.db
 .gradle
 **/build/
 src/main/assets/yt.solver.js
-aar
+lib/aar/*
+!lib/aar/smarttubetv.aar
+!lib/aar/exoplayer-**.aar
 
 # Build Logs
 *.log

@@ -2,17 +2,15 @@ package minefarts.smarttube.commons;
 
 import android.view.View;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 /**
- * Base ViewHolder
+ * Stub for chatkit ViewHolder.
  */
-public abstract class ViewHolder<DATA> extends RecyclerView.ViewHolder {
-
-    public abstract void onBind(DATA data);
+public abstract class ViewHolder<DATA> {
+    public View itemView;
 
     public ViewHolder(View itemView) {
-        super(itemView);
+        this.itemView = itemView;
     }
 
+    public abstract void onBind(DATA data);
 }

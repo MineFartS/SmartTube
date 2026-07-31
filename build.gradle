@@ -20,7 +20,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.google.protobuf'
 
-
 android {
     
     namespace 'minefarts.smarttube'
@@ -102,19 +101,21 @@ repositories {
 
 dependencies {
 
-    implementation files('aar/mediaserviceinterfaces.aar')
-    implementation files('aar/youtubeapi.aar')
-    implementation files('aar/sharedutils.aar')
-    implementation files('aar/exoplayer-library-core.aar')
+    implementation project(':mediaserviceinterfaces')
+    implementation project(':youtubeapi')
+    implementation project(':sharedutils')
+    implementation project(':common')
+    implementation project(':exoplayer-library-core')
+    implementation project(':exoplayer-extension-okhttp')
+    implementation project(':exoplayer-library-smoothstreaming')
+    implementation project(':exoplayer-library-dash')
+    implementation project(':exoplayer-library-hls')
+    implementation project(':exoplayer-library-ui')
+    implementation project(':exoplayer-library-sabr')
+    implementation project(':exoplayer-extension-leanback')
+    implementation project(':exoplayer-extension-mediasession')
+    implementation project(':smarttubetv')
 
-    compileOnly 'org.checkerframework:checker-qual:2.5.0'
-    compileOnly 'org.checkerframework:checker-compat-qual:2.5.0'
-
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
-
-    api 'androidx.activity:activity:1.0.0'
-    api 'androidx.media:media:1.0.1'
     implementation 'androidx.tvprovider:tvprovider:1.0.0'
     implementation 'androidx.leanback:leanback:1.0.0'
     implementation 'androidx.leanback:leanback-preference:1.0.0'
@@ -126,7 +127,6 @@ dependencies {
     implementation 'androidx.browser:browser:1.3.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'androidx.media:media:1.0.1'
     implementation 'androidx.core:core:1.9.0'
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.viewpager:viewpager:1.0.0'
@@ -135,14 +135,6 @@ dependencies {
     implementation 'androidx.interpolator:interpolator:1.0.0'
     implementation 'androidx.preference:preference:1.1.0'
     implementation 'androidx.webkit:webkit:1.7.0'
-    implementation 'com.google.android.material:material:1.5.0'
-    implementation "com.google.android.flexbox:flexbox:3.0.0"
-
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
-    implementation 'com.github.bumptech.glide:annotations:4.11.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
-
-    implementation 'com.github.zjupure:webpdecoder:2.0.4.11.0'    
 
     implementation 'dnsjava:dnsjava:2.1.9'
     
@@ -152,47 +144,24 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0'
 
     implementation 'com.google.guava:guava:31.1-android'
+    implementation "com.google.android.flexbox:flexbox:3.0.0"
+    implementation 'com.google.android.material:material:1.4.0' 
+    implementation 'com.google.code.gson:gson:2.8.2'
 
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
 
-    implementation 'com.jakewharton:process-phoenix:3.0.0'
-
-    implementation('com.google.firebase:firebase-crashlytics:17.2.2') {
-        transitive = true
-    }
-
-    implementation 'net.gotev:speech:1.1.7'
 
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
-
-    api 'com.squareup.okhttp3:okhttp:3.12.5'
     implementation 'com.squareup.okhttp3:okhttp:3.12.13'
     implementation 'com.squareup.okhttp3:okhttp-dnsoverhttps:3.12.13'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.13'
-    implementation 'com.squareup.okhttp3:okhttp-brotli:4.1.0'
-    implementation 'com.localebro:okhttpprofiler:1.0.8'
-
-    implementation 'org.chromium.net:cronet-api:98.4758.101'
-    implementation 'org.chromium.net:cronet-embedded:98.4758.101'
-
-    implementation 'com.google.code.gson:gson:2.8.2'
-    implementation 'com.google.net.cronet:cronet-okhttp:0.1.0'
-    implementation 'com.google.protobuf:protobuf-java:3.17.3'
-
-    implementation 'com.jakewharton:disklrucache:2.0.2'
-
-    implementation 'info.guardianproject.netcipher:netcipher:2.1.0'
 
     implementation 'com.jayway.jsonpath:json-path:2.4.0'
 
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
-
-    implementation 'com.github.florianingerl.util:regex:1.1.11'
-
-    implementation 'com.grack:nanojson:1.7'
 
     implementation 'com.caoccao.javet:javet-android:1.0.7'
 

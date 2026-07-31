@@ -1,12 +1,15 @@
-package minefarts.smarttube.prefs;
+package com.liskovsoft.smartyoutubetv2.common.prefs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+
 import androidx.annotation.NonNull;
-import minefarts.smarttube.utils.oauth.Account;
-import minefarts.smarttube.utils.helpers.Helpers;
-import minefarts.smarttube.app.models.playback.BasePlayerController;
-import minefarts.smarttube.app.models.playback.BasePlayerController.AccountChangeListener;
+
+import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.BasePlayerController;
+import com.liskovsoft.smartyoutubetv2.common.misc.MediaServiceManager;
+import com.liskovsoft.smartyoutubetv2.common.misc.MediaServiceManager.AccountChangeListener;
+import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +23,7 @@ public class AccountsData implements AccountChangeListener {
     private boolean mIsSelectAccountOnBootEnabled;
     private boolean mIsPasswordAccepted;
     private final Map<String, PasswordItem> mPasswords = new HashMap<>();
+    private MediaServiceManager mMSM;
 
     private static class PasswordItem {
         public String accountName;
@@ -50,7 +54,8 @@ public class AccountsData implements AccountChangeListener {
     private AccountsData(Context context) {
         mContext = context;
         mAppPrefs = AppPrefs.instance(mContext);
-        BasePlayerController.addAccountListener(this);
+        mMSM = MediaServiceManager.instance();
+        mMSM.addAccountListener(this);
         restoreState();
     }
 
@@ -124,7 +129,7 @@ public class AccountsData implements AccountChangeListener {
     }
 
     private String getAccountName() {
-        Account account = BasePlayerController.getSelectedAccount();
+        Account account = mMSM.getSelectedAccount();
         return account != null ? account.getName() : null;
     }
 

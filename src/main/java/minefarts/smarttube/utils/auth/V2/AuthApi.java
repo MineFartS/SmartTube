@@ -1,9 +1,9 @@
 package minefarts.smarttube.utils.auth.V2;
 
-import minefarts.smarttube.google.common.models.auth.AccessToken;
-import minefarts.smarttube.google.common.models.auth.UserCode;
-import minefarts.smarttube.google.common.models.auth.info.AccountsList;
-import minefarts.smarttube.google.common.converters.jsonpath.WithJsonPath;
+import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
+import com.liskovsoft.googlecommon.common.models.auth.UserCode;
+import com.liskovsoft.googlecommon.common.models.auth.info.AccountsList;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPath;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

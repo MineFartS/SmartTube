@@ -10,15 +10,15 @@ import java.util.concurrent.ExecutorService
 import com.caoccao.javet.interop.V8Host
 import com.caoccao.javet.interop.V8Runtime
 
-import minefarts.smarttube.ContextManager
-import minefarts.smarttube.utils.mylogger.Log
-
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.ChallengeOutput
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeProviderResponse
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeRequest
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeResponse
 import com.liskovsoft.youtubeapi.app.nsigsolver.provider.JsChallengeType
 import com.liskovsoft.youtubeapi.app.nsigsolver.runtime.SolverOutput
+
+import minefarts.smarttube.ContextManager
+import minefarts.smarttube.utils.mylogger.Log
 
 typealias V8ChallengeProvider2 = com.liskovsoft.youtubeapi.app.nsigsolver.impl.V8ChallengeProvider
 

@@ -1,10 +1,10 @@
-package minefarts.smarttube.prefs.common;
+package com.liskovsoft.smartyoutubetv2.common.prefs.common;
 
 import android.content.Context;
 
-import minefarts.smarttube.utils.helpers.Helpers;
-import minefarts.smarttube.prefs.AppPrefs;
-import minefarts.smarttube.utils.Utils;
+import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv2.common.prefs.AppPrefs;
+import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

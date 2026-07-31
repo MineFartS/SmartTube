@@ -7,7 +7,7 @@ import androidx.annotation.RequiresApi;
 import minefarts.smarttube.media.ClipService;
 import minefarts.smarttube.media.Playlist;
 import minefarts.smarttube.recommendations.RecommendationsProvider;
-import minefarts.smarttube.utils.helpers.Helpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.prefs.GlobalPreferences;
 

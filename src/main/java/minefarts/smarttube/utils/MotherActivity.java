@@ -15,28 +15,34 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import minefarts.smarttube.fragment.app.FragmentActivity;
-import minefarts.smarttube.utils.helpers.Helpers;
-import minefarts.smarttube.utils.helpers.KeyHelpers;
-import minefarts.smarttube.utils.locale.LocaleContextWrapper;
-import minefarts.smarttube.utils.locale.LocaleUpdater;
+import androidx.fragment.app.FragmentActivity;
+
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.R;
-import minefarts.smarttube.app.presenters.PlaybackPresenter;
-import minefarts.smarttube.app.views.ViewManager;
-import minefarts.smarttube.prefs.GeneralData;
-import minefarts.smarttube.prefs.MainUIData;
-import minefarts.smarttube.ui.playback.PlaybackFragment2;
-import minefarts.smarttube.prefs.PlayerTweaksData;
-import minefarts.smarttube.utils.service.internal.MediaServiceData;
+
+import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.sharedutils.helpers.KeyHelpers;
+import com.liskovsoft.sharedutils.locale.LocaleContextWrapper;
+import com.liskovsoft.sharedutils.locale.LocaleUpdater;
+import com.liskovsoft.smartyoutubetv2.common.app.presenters.PlaybackPresenter;
+import com.liskovsoft.smartyoutubetv2.common.app.views.ViewManager;
+import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
+import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
+import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
+import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerTweaksData;
+import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
+import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MotherActivity extends FragmentActivity {
+
     private static final String TAG = MotherActivity.class.getSimpleName();
+
     private static final float DEFAULT_DENSITY = 2.0f; // xhdpi
     private static final float DEFAULT_WIDTH = 1920f; // xhdpi
+
     private static DisplayMetrics sCachedDisplayMetrics;
 
     // Make static in case Don't keep activities enabled in Developer settings
@@ -127,7 +133,7 @@ public class MotherActivity extends FragmentActivity {
     }
 
     @Override
-    protected void attachBaseContext(Context context) {
+    public void attachBaseContext(Context context) {
         Context contextWrapper = null;
 
         if (context != null) {
@@ -139,17 +145,16 @@ public class MotherActivity extends FragmentActivity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         try {
             super.onResume();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
 
-        // 4K fix with AFR
-        applyCustomConfig();
+        initDpi();
 
-        applyFullscreenModeIfNeeded();
+        Helpers.makeActivityFullscreen2(this);
 
     }
 
@@ -157,49 +162,11 @@ public class MotherActivity extends FragmentActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        applyCustomConfig();
-    }
-
-    private void initDpi() {
-        getResources().getDisplayMetrics().setTo(getDisplayMetrics(this));
-    }
-
-    private DisplayMetrics getDisplayMetrics(Context context) {
-        // BUG: adapt to resolution change (e.g. on AFR)
-        // Don't disable caching or you will experience weird sizes on cards in video suggestions (e.g. after exit from PIP)!
-        if (sCachedDisplayMetrics == null) {
-            // NOTE: Don't replace with getResources().getDisplayMetrics(). Shows wrong metrics here!
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            
-            // Take into the account screen orientation (e.g. when running on phone)
-            int widthPixels = Math.max(displayMetrics.widthPixels, displayMetrics.heightPixels);
-            float widthRatio = DEFAULT_WIDTH / widthPixels;
-            float density = DEFAULT_DENSITY / widthRatio;
-            displayMetrics.density = density;
-            displayMetrics.scaledDensity = density;
-            sCachedDisplayMetrics = displayMetrics;
-        }
-
-        return sCachedDisplayMetrics;
-    }
-
-    private void applyCustomConfig() {
-        // NOTE: dpi should come after locale update to prevent resources overriding.
-
-        // Fix sudden language change.
-        // Could happen when screen goes off or after PIP mode.
-        LocaleUpdater.applySavedLocale(this);
-
-        // Fix sudden dpi change.
-        // Could happen when screen goes off or after PIP mode.
         initDpi();
     }
 
-    private void applyFullscreenModeIfNeeded() {
-        // Most of the fullscreen tweaks could be performed in styles but not all.
-        // E.g. Hide bottom navigation bar (couldn't be done in styles).
-        Helpers.makeActivityFullscreen2(this);
+    private void initDpi() {
+        LocaleUpdater.applySavedLocale(this);
     }
 
     @Override
@@ -216,7 +183,7 @@ public class MotherActivity extends FragmentActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (mOnResults != null) {
@@ -247,18 +214,6 @@ public class MotherActivity extends FragmentActivity {
     }
 
     /**
-     * Use this method only upon exiting from the app.<br/>
-     * Big troubles with AFR resolution switch!
-     */
-    public static void invalidate() {
-        sCachedDisplayMetrics = null;
-    }
-
-    public static DisplayMetrics getCachedDisplayMetrics() {
-        return sCachedDisplayMetrics;
-    }
-
-    /**
      * Comments focus fix<br/>
      * https://stackoverflow.com/questions/34277425/recyclerview-items-lose-focus
      */
@@ -283,27 +238,24 @@ public class MotherActivity extends FragmentActivity {
         mEnableThrottleKeyDown = enable;
     }
 
-    protected ViewManager getViewManager() {
+    public ViewManager getViewManager() {
         return ViewManager.instance(this);
     }
 
-    protected GeneralData getGeneralData() {
+    public GeneralData getGeneralData() {
         return GeneralData.instance(this);
     }
 
-    protected PlayerTweaksData getPlayerTweaksData() {
+    public PlayerTweaksData getPlayerTweaksData() {
         return PlayerTweaksData.instance(this);
     }
 
-    protected PlaybackFragment2 getPlayerData() {
-        return PlaybackFragment2.instance(this);
-    }
-
-    protected MainUIData getMainUIData() {
+    public MainUIData getMainUIData() {
         return MainUIData.instance(this);
     }
 
-    protected MediaServiceData getMediaServiceData() {
+    public MediaServiceData getMediaServiceData() {
         return MediaServiceData.instance();
     }
+
 }

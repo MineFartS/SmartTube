@@ -8,10 +8,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 
-import minefarts.smarttube.utils.configparser.AssetPropertyParser2;
-import minefarts.smarttube.utils.configparser.ConfigParser;
-import minefarts.smarttube.utils.helpers.AppInfoHelpers;
-import minefarts.smarttube.utils.helpers.GlobalConstants;
+import com.liskovsoft.sharedutils.configparser.AssetPropertyParser2;
+import com.liskovsoft.sharedutils.configparser.ConfigParser;
+import com.liskovsoft.sharedutils.helpers.AppInfoHelpers;
+import com.liskovsoft.sharedutils.helpers.GlobalConstants;
 
 public class AppUtil {
     private final Context mContext;

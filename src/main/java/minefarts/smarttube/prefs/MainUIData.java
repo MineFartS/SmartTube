@@ -1,17 +1,18 @@
-package minefarts.smarttube.prefs;
+package com.liskovsoft.smartyoutubetv2.common.prefs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 
-import minefarts.smarttube.utils.helpers.Helpers;
+import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
+
 import minefarts.smarttube.R;
-import minefarts.smarttube.app.presenters.dialogs.menu.providers.ContextMenuManager;
-import minefarts.smarttube.app.presenters.dialogs.menu.providers.ContextMenuProvider;
-import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
-import minefarts.smarttube.prefs.common.DataChangeBase;
+import com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs.menu.providers.ContextMenuManager;
+import com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs.menu.providers.ContextMenuProvider;
+import com.liskovsoft.smartyoutubetv2.common.prefs.AppPrefs.ProfileChangeListener;
+import com.liskovsoft.smartyoutubetv2.common.prefs.common.DataChangeBase;
 import minefarts.smarttube.utils.DataStore;
-import minefarts.smarttube.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;

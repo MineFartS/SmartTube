@@ -221,6 +221,11 @@
     <string name="exo_item_list"><xliff:g id="list" example="apple, pear">%1$s</xliff:g>, <xliff:g id="item" example="banana">%2$s</xliff:g></string>
     
     <string name="header_home">Home</string>
+    
+    <string name="header_news"></string>
+    <string name="header_music"></string>
+    <string name="header_gaming"></string>
+    <string name="header_search"></string>
 
     <string name="header_subscriptions">Subscriptions</string>
     <string name="header_history">History</string>

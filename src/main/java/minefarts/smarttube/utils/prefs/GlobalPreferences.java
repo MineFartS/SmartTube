@@ -5,7 +5,7 @@ import android.content.Context;
 
 import androidx.annotation.Nullable;
 
-import minefarts.smarttube.utils.helpers.DateHelper;
+import com.liskovsoft.sharedutils.helpers.DateHelper;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

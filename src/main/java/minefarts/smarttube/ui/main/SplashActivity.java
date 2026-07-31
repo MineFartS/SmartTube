@@ -2,8 +2,10 @@ package minefarts.smarttube.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import minefarts.smarttube.app.presenters.SplashPresenter;
-import minefarts.smarttube.app.views.SplashView;
+
+import com.liskovsoft.smartyoutubetv2.common.app.presenters.SplashPresenter;
+import com.liskovsoft.smartyoutubetv2.common.app.views.SplashView;
+
 import minefarts.smarttube.utils.MotherActivity;
 
 public class SplashActivity extends MotherActivity implements SplashView {
@@ -20,8 +22,6 @@ public class SplashActivity extends MotherActivity implements SplashView {
         mPresenter = SplashPresenter.instance(this);
         mPresenter.setView(this);
         mPresenter.onViewInitialized();
-
-        //finish();
     }
 
     @Override
@@ -53,4 +53,5 @@ public class SplashActivity extends MotherActivity implements SplashView {
             e.printStackTrace();
         }
     }
+    
 }

@@ -1,10 +1,10 @@
-package minefarts.smarttube.prefs;
+package com.liskovsoft.smartyoutubetv2.common.prefs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 
 import minefarts.smarttube.utils.prefs.SharedPreferencesBase;
-import minefarts.smarttube.utils.Utils;
+import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 
 public class HiddenPrefs extends SharedPreferencesBase {
     @SuppressLint("StaticFieldLeak")
