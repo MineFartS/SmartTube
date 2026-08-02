@@ -37,10 +37,10 @@ function Test-ADBConnection {
 
 $AccessPatterns = @(
     # Classes
-    '\b(private|protected|internal)(?=\s+(?:(?:abstract|sealed|data|enum|open|inner|final|synchronized)\s+)*(?:class|interface|object)\b)',
+    '\b(private|protected|internal)(?=\s+(?:@\w+\s+)*(?:(?:abstract|sealed|data|enum|open|inner|final|synchronized)\s+)*(?:class|interface|object)\b)',
 
-    # Kotlin Functions
-    '\b(private|protected|internal)(?=\s+(?:(?:synchronized|final|abstract|inline|external|tailrec|operator|infix)\s+)*(?:fun|void\s+\w+|[\w<>\[\]]+\s+\w+(?=\s*\()))(?!\s+(?:[^\{]*?\b(?:open|override)\b))'
+    # Functions
+    '\b(private|protected|internal)(?=\s+(?:@\w+\s+)*(?:(?:synchronized|final|abstract|inline|external|tailrec|operator|infix)\s+)*(?:fun|void\s+\w+|[\w<>\[\]]+\s+\w+(?=\s*\()))(?!\s+(?:[^\{]*?\b(?:open|override)\b))'
 )
 
 function Add-YuliskovPkg ([String]$Name, [String]$Path) {
@@ -55,6 +55,13 @@ function Add-YuliskovPkg ([String]$Name, [String]$Path) {
 
     Copy-Item "local.properties" "lib/yuliskov/local.properties" -Force
 
+    $tasks = Invoke-Gradle -Yuliskov ":$($Name):tasks"
+
+    $assemblecmd = "assembleDebug"
+    if ($tasks | Select-String "assembleStstable") {
+        $assemblecmd = "assembleStstableDebug"
+    }
+
     Get-ChildItem $Path -File -Recurse | Where-Object Extension -match 'kt|java' | ForEach-Object { $_
         $text = Get-Content $_.FullName -Raw
         $AccessPatterns | ForEach-Object {
@@ -63,10 +70,10 @@ function Add-YuliskovPkg ([String]$Name, [String]$Path) {
         Set-Content -Value $text -Path $_.FullName
     }
     
-    Invoke-Gradle -Yuliskov ":$($Name):assemble" "--no-daemon"
+    Invoke-Gradle -Yuliskov ":$($Name):$assemblecmd" "--no-daemon"
 
     Get-ChildItem $Path -Filter "$Name*debug.aar" -Recurse `
-        | Sort-Object { $_.Name -like "*stbeta*" } -Descending `
+        | Sort-Object { $_.Name -like "*ststable*" } -Descending `
         | Select-Object -First 1 `
         | Move-Item -Destination $Dst -Verbose
 
