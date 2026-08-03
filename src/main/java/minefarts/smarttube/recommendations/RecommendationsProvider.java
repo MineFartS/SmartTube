@@ -13,7 +13,7 @@ import minefarts.smarttube.media.Clip;
 import minefarts.smarttube.media.Playlist;
 import minefarts.smarttube.utils.AppUtil;
 import minefarts.smarttube.utils.mylogger.Log;
-import com.liskovsoft.sharedutils.okhttp.OkHttpManager;
+import minefarts.smarttube.utils.okhttp.OkHttpManager;
 import okhttp3.Response;
 
 @RequiresApi(21)

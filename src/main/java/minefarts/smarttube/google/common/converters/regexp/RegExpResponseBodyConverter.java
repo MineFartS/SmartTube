@@ -1,0 +1,22 @@
+package minefarts.smarttube.google.common.converters.regexp;
+
+import minefarts.smarttube.google.common.converters.regexp.RegExpTypeAdapter;
+import okhttp3.ResponseBody;
+import retrofit2.Converter;
+
+final class RegExpResponseBodyConverter<T> implements Converter<ResponseBody, T> {
+    private final RegExpTypeAdapter<T> mAdapter;
+
+    RegExpResponseBodyConverter(RegExpTypeAdapter<T> adapter) {
+        mAdapter = adapter;
+    }
+
+    @Override
+    public T convert(ResponseBody value) {
+        try {
+            return mAdapter.read(value.byteStream());
+        } finally {
+            value.close();
+        }
+    }
+}

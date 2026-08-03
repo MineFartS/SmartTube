@@ -1,6 +1,6 @@
-package com.liskovsoft.smartyoutubetv2.common.prefs.common;
+package minefarts.smarttube.prefs.common;
 
-import com.liskovsoft.sharedutils.misc.WeakHashSet;
+import minefarts.smarttube.utils.misc.WeakHashSet;
 
 public abstract class DataChangeBase {
 

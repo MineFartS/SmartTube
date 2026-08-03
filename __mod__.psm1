@@ -45,9 +45,11 @@ $AccessPatterns = @(
 
 function Add-YuliskovPkg ([String]$Name, [String]$Path) {
 
-    $Dst = "$PSScriptRoot/lib/aar/$Name.aar"
+    $Dst = "$PSScriptRoot/aar/$Name.aar"
 
     if (Test-Path $Dst) { return; }
+
+    New-Item "aar" -ItemType Directory -ErrorAction SilentlyContinue
 
     $Path = Get-Item "lib/yuliskov/$Path"
 

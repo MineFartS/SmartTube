@@ -1,6 +1,6 @@
 
 // Iter through children of lib/aar
-(new File(rootDir, '/lib/aar/')).eachFile { aarFile ->
+(new File(rootDir, '/aar/')).eachFile { aarFile ->
 
     // Parse project name from file name
     String name = aarFile.name.replaceAll(/\.aar$/, '')

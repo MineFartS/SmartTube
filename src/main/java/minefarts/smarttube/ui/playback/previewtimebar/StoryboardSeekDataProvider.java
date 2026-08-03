@@ -1,0 +1,47 @@
+package minefarts.smarttube.ui.playback.previewtimebar;
+
+import android.content.Context;
+import minefarts.smarttube.leanback.media.PlaybackGlue;
+import minefarts.smarttube.leanback.widget.PlaybackSeekDataProvider;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.leanback.media.PlaybackTransportControlGlue;
+
+public class StoryboardSeekDataProvider extends PlaybackSeekDataProvider {
+    private final StoryboardManager mStoryboardManager;
+
+    public StoryboardSeekDataProvider(Context context) {
+        mStoryboardManager = new StoryboardManager(context);
+    }
+
+    public void init(Video video, long lengthMs) {
+        mStoryboardManager.init(video, lengthMs);
+    }
+
+    @Override
+    public long[] getSeekPositions() {
+        return mStoryboardManager.getSeekPositions();
+    }
+
+    @Override
+    public void getThumbnail(int index, ResultCallback callback) {
+        mStoryboardManager.getBitmap(index, bitmap -> callback.onThumbnailLoaded(bitmap, index));
+    }
+
+    public static void setSeekProvider(PlaybackTransportControlGlue<?> glue) {
+        if (glue.isPrepared()) {
+            glue.setSeekProvider(new StoryboardSeekDataProvider(glue.getContext()));
+        } else {
+            glue.addPlayerCallback(new PlaybackGlue.PlayerCallback() {
+                @Override
+                public void onPreparedStateChanged(PlaybackGlue glue) {
+                    if (glue.isPrepared()) {
+                        glue.removePlayerCallback(this);
+                        PlaybackTransportControlGlue<?> transportControlGlue =
+                                (PlaybackTransportControlGlue<?>) glue;
+                        transportControlGlue.setSeekProvider(new StoryboardSeekDataProvider(glue.getContext()));
+                    }
+                }
+            });
+        }
+    }
+}

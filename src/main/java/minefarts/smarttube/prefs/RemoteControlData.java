@@ -1,10 +1,10 @@
-package com.liskovsoft.smartyoutubetv2.common.prefs;
+package minefarts.smarttube.prefs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import com.liskovsoft.sharedutils.helpers.Helpers;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
-import com.liskovsoft.smartyoutubetv2.common.prefs.common.DataChangeBase;
+import minefarts.smarttube.utils.helpers.Helpers;
+import minefarts.smarttube.app.models.data.Video;
+import minefarts.smarttube.prefs.common.DataChangeBase;
 
 public class RemoteControlData extends DataChangeBase {
     private static final String DEVICE_LINK_DATA = "device_link_data";

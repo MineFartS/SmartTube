@@ -1,0 +1,13 @@
+package minefarts.smarttube.upstream.cache;
+
+/** Metadata associated with a cache file. */
+/* package */ final class CacheFileMetadata {
+
+  public final long length;
+  public final long lastTouchTimestamp;
+
+  public CacheFileMetadata(long length, long lastTouchTimestamp) {
+    this.length = length;
+    this.lastTouchTimestamp = lastTouchTimestamp;
+  }
+}

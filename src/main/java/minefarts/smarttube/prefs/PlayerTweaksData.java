@@ -1,13 +1,13 @@
-package com.liskovsoft.smartyoutubetv2.common.prefs;
+package minefarts.smarttube.prefs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.prefs.GlobalPreferences;
-import com.liskovsoft.smartyoutubetv2.common.prefs.AppPrefs.ProfileChangeListener;
-import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
-import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
+import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
+import minefarts.smarttube.utils.Utils;
+import minefarts.smarttube.utils.service.internal.MediaServiceData;
 
 public class PlayerTweaksData implements ProfileChangeListener {
 

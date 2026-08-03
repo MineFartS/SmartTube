@@ -8,7 +8,7 @@ import android.webkit.URLUtil;
 
 import minefarts.smarttube.other.downloadmanager.DownloadManager;
 import minefarts.smarttube.other.downloadmanager.DownloadManager.MyRequest;
-import com.liskovsoft.sharedutils.helpers.FileHelpers;
+import minefarts.smarttube.utils.helpers.FileHelpers;
 
 import java.io.File;
 

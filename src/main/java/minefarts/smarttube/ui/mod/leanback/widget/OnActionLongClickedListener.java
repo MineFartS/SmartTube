@@ -1,0 +1,13 @@
+package minefarts.smarttube.ui.mod.leanback.widget;
+
+import minefarts.smarttube.leanback.widget.Action;
+
+/**
+ * Interface for receiving notification when an {@link Action} is long clicked.
+ */
+public interface OnActionLongClickedListener {
+    /**
+     * Callback fired when the host fragment receives an action.
+     */
+    boolean onActionLongClicked(Action action);
+}

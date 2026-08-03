@@ -1,21 +1,27 @@
 package minefarts.smarttube.utils.helpers;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
-/**
- * Stub implementation of LRU list.
- */
-public class LruList<T> extends LinkedHashMap<Integer, T> {
-    private final int maxSize;
+public class LruList<T> extends ArrayList<T> {
 
-    public LruList(int maxSize) {
-        super(maxSize, 0.75f, true);
-        this.maxSize = maxSize;
+    private final int maxEntries;
+
+    public LruList(int maxEntries) {
+        super();
+
+        this.maxEntries = maxEntries;
     }
-
+    
     @Override
-    protected boolean removeEldestEntry(Map.Entry<Integer, T> eldest) {
-        return size() > maxSize;
+    public boolean add(T element) {
+
+        if (contains(element))
+            remove(element);
+
+        if (size() >= maxEntries)
+            remove(0);
+
+        return super.add(element);
     }
-}
+
+};

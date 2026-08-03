@@ -71,8 +71,7 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         tools:node="merge"
-        tools:ignore="GoogleAppIndexingWarning,LockedOrientationActivity,UnusedAttribute,MissingTvBanner"
-    >
+        tools:ignore="GoogleAppIndexingWarning,LockedOrientationActivity,UnusedAttribute,MissingTvBanner">
 
         
         <activity
@@ -109,6 +108,10 @@
 
             </intent-filter>
         </receiver>
+        <service
+            android:name="minefarts.smarttube.utils.RemoteControlService"
+            android:enabled="true"
+            android:foregroundServiceType="connectedDevice"/>
 
         <activity
             android:name="minefarts.smarttube.ui.main.SplashActivity"
@@ -222,7 +225,7 @@
         <!-- BEGIN Launchers (used inside tvQuickActions. Don't rename them or move!) -->
 
         <activity
-            android:name="com.liskovsoft.smartyoutubetv2.tv.launchers.HomeLauncherActivity"
+            android:name="minefarts.smarttube.launchers.HomeLauncherActivity"
             android:logo="@drawable/icon_home"
             android:icon="@drawable/icon_home"
             android:label="Home"
@@ -232,7 +235,7 @@
             android:screenOrientation="unspecified"/>
 
         <activity
-            android:name="com.liskovsoft.smartyoutubetv2.tv.launchers.ChannelsLauncherActivity"
+            android:name="minefarts.smarttube.launchers.ChannelsLauncherActivity"
             android:logo="@drawable/icon_channels"
             android:icon="@drawable/icon_channels"
             android:label="@string/header_channels"
@@ -242,7 +245,7 @@
             android:screenOrientation="unspecified"/>
 
         <activity
-            android:name="com.liskovsoft.smartyoutubetv2.tv.launchers.SubscriptionsLauncherActivity"
+            android:name="minefarts.smarttube.launchers.SubscriptionsLauncherActivity"
             android:logo="@drawable/icon_subscriptions"
             android:icon="@drawable/icon_subscriptions"
             android:label="Subscriptions"
@@ -252,7 +255,7 @@
             android:screenOrientation="unspecified"/>
 
         <activity
-            android:name="com.liskovsoft.smartyoutubetv2.tv.launchers.HistoryLauncherActivity"
+            android:name="minefarts.smarttube.launchers.HistoryLauncherActivity"
             android:logo="@drawable/icon_history"
             android:icon="@drawable/icon_history"
             android:label="@string/header_history"
@@ -262,7 +265,7 @@
             android:screenOrientation="unspecified"/>
 
         <activity
-            android:name="com.liskovsoft.smartyoutubetv2.tv.launchers.PlaylistsLauncherActivity"
+            android:name="minefarts.smarttube.launchers.PlaylistsLauncherActivity"
             android:logo="@drawable/icon_playlist"
             android:icon="@drawable/icon_playlist"
             android:label="@string/header_playlists"

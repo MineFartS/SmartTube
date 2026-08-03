@@ -1,13 +1,13 @@
-package com.liskovsoft.smartyoutubetv2.common.prefs;
+package minefarts.smarttube.prefs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build.VERSION;
-import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.smarttube.utils.data.SponsorSegment;
+import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.prefs.GlobalPreferences;
 import minefarts.smarttube.R;
-import com.liskovsoft.smartyoutubetv2.common.app.models.playback.controllers.SponsorBlockController.SegmentAction;
+import minefarts.smarttube.app.models.playback.controllers.ContentBlockController.SegmentAction;
 import minefarts.smarttube.utils.DataStore;
 
 import java.util.Arrays;

@@ -5,8 +5,8 @@ import android.content.pm.PackageInfo;
 import android.net.Uri;
 
 import minefarts.smarttube.other.SettingsManager;
-import com.liskovsoft.sharedutils.helpers.FileHelpers;
-import com.liskovsoft.sharedutils.helpers.Helpers;
+import minefarts.smarttube.utils.helpers.FileHelpers;
+import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 
 import java.util.Arrays;

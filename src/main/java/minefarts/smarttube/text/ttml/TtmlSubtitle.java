@@ -1,0 +1,66 @@
+package minefarts.smarttube.text.ttml;
+
+import androidx.annotation.VisibleForTesting;
+import minefarts.smarttube.C;
+import minefarts.smarttube.text.Cue;
+import minefarts.smarttube.text.Subtitle;
+import minefarts.smarttube.utils.Utils;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * A representation of a TTML subtitle.
+ */
+/* package */ final class TtmlSubtitle implements Subtitle {
+
+  private final TtmlNode root;
+  private final long[] eventTimesUs;
+  private final Map<String, TtmlStyle> globalStyles;
+  private final Map<String, TtmlRegion> regionMap;
+  private final Map<String, String> imageMap;
+
+  public TtmlSubtitle(
+      TtmlNode root,
+      Map<String, TtmlStyle> globalStyles,
+      Map<String, TtmlRegion> regionMap,
+      Map<String, String> imageMap) {
+    this.root = root;
+    this.regionMap = regionMap;
+    this.imageMap = imageMap;
+    this.globalStyles =
+        globalStyles != null ? Collections.unmodifiableMap(globalStyles) : Collections.emptyMap();
+    this.eventTimesUs = root.getEventTimesUs();
+  }
+
+  @Override
+  public int getNextEventTimeIndex(long timeUs) {
+    int index = Utils.binarySearchCeil(eventTimesUs, timeUs, false, false);
+    return index < eventTimesUs.length ? index : C.INDEX_UNSET;
+  }
+
+  @Override
+  public int getEventTimeCount() {
+    return eventTimesUs.length;
+  }
+
+  @Override
+  public long getEventTime(int index) {
+    return eventTimesUs[index];
+  }
+
+  @VisibleForTesting
+  /* package */ TtmlNode getRoot() {
+    return root;
+  }
+
+  @Override
+  public List<Cue> getCues(long timeUs) {
+    return root.getCues(timeUs, globalStyles, regionMap, imageMap);
+  }
+
+  @VisibleForTesting
+  /* package */ Map<String, TtmlStyle> getGlobalStyles() {
+    return globalStyles;
+  }
+}

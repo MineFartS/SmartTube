@@ -1,17 +1,19 @@
 package minefarts.smarttube;
 
-import com.liskovsoft.googlecommon.common.locale.LocaleManager;
-import com.liskovsoft.sharedutils.locale.LocaleUpdater;
-import com.liskovsoft.sharedutils.helpers.FileHelpers;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
-import com.liskovsoft.youtubeapi.service.YouTubeSignInService;
-import com.liskovsoft.youtubeapi.service.YouTubeMediaItemService;
-import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
-import com.liskovsoft.youtubeapi.app.AppService;
-import com.liskovsoft.youtubeapi.app.AppApi;
-import com.liskovsoft.smartyoutubetv2.common.app.models.playback.listener.PlayerEventListener;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.PlaybackPresenter;
 
+import minefarts.smarttube.google.common.locale.LocaleManager;
+import minefarts.smarttube.utils.locale.LocaleUpdater;
+import minefarts.smarttube.utils.SignInService;
+import minefarts.smarttube.utils.MediaItemService;
+import minefarts.smarttube.utils.videoinfo.V2.VideoInfoService;
+import minefarts.smarttube.utils.app.AppService;
+import minefarts.smarttube.utils.app.AppApi;
+import minefarts.smarttube.utils.service.internal.MediaServiceData;
+import minefarts.smarttube.utils.helpers.FileHelpers;
+import minefarts.smarttube.app.models.playback.controllers.VideoStateController;
+import minefarts.smarttube.app.models.playback.PlayerEventListener;
+import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.utils.app.nsigsolver.V8ChallengeProvider;
 
 import java.util.concurrent.Executors;
@@ -25,46 +27,62 @@ public class CacheManager {
 
     public static void clear() {
 
-        Context context = ContextManager.get();
-
         //=======================
-        // YouTubeSignInService
+        // SignInService
 
-        YouTubeSignInService SIS = YouTubeSignInService.instance();
+        SignInService SIS = SignInService.instance();
 
-        SIS.invalidateCache();
+        SIS.mCacheUpdateTime = 0;
         
         //=======================
         // AppService
         
         AppService AS = AppService.instance();
 
-        AS.invalidateCache();
-        AS.resetClientPlaybackNonce();
+        AS.mVisitorCookie = null;
 
         //=======================
         // LocaleUpdater
 
-        LocaleUpdater.clearCache();
+        LocaleUpdater.sCachedLocale = null;
 
         //=======================
-        // YouTubeMediaItemService
+        // MediaItemService
 
-        YouTubeMediaItemService MIS = YouTubeMediaItemService.instance();
+        MediaItemService MIS = MediaItemService.instance();
 
-        MIS.invalidateCache();
+        MIS.mCachedFormatInfo = null;
+
+        //=======================
+        // VideoInfoService
+
+        VideoInfoService VIS = VideoInfoService.instance();
+
+        VIS.mVideoInfoType = null;
+        VIS.persistVideoInfoType();
         
         //=======================
         // MediaServiceData
 
         MediaServiceData MSD = MediaServiceData.instance();
         
-        MSD.setPoToken(null);
+        MSD.mPoToken = null;
 
         //=======================
         // FileHelpers
 
-        FileHelpers.deleteCache(context);
+        Context context = ContextManager.get();
+
+        FileHelpers.deleteContent(FileHelpers.getInternalCacheDir(context));
+        FileHelpers.deleteContent(FileHelpers.getExternalCacheDir(context));
+
+        //=======================
+        // VideoStateController
+
+        VideoStateController.mClientPlaybackNonce = Base64.encodeToString(
+            new byte[32], 
+            Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP
+        );
 
         //=======================
         // V8ChallengeProvider

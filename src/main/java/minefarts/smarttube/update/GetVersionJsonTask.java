@@ -7,8 +7,8 @@ import android.os.AsyncTask;
 import minefarts.smarttube.other.downloadmanager.DownloadManager;
 import minefarts.smarttube.other.downloadmanager.DownloadManager.MyRequest;
 import minefarts.smarttube.utils.mylogger.Log;
-import com.liskovsoft.sharedutils.helpers.DeviceHelpers;
-import  com.liskovsoft.sharedutils.locale.LocaleUtility;
+import minefarts.smarttube.utils.helpers.DeviceHelpers;
+import minefarts.smarttube.utils.locale.LocaleUtility;
 
 import org.json.JSONException;
 import org.json.JSONObject;

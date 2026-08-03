@@ -2,21 +2,13 @@ package minefarts.smarttube.commons;
 
 import android.widget.ImageView;
 
+import androidx.annotation.Nullable;
+
 /**
- * Stub for chatkit ImageLoader.
+ * Callback for implementing images loading in message list
  */
-public abstract class ImageLoader {
-    public abstract void loadImage(ImageView imageView, String url);
+public interface ImageLoader {
 
-    public void loadImage(ImageView imageView, String url, Object payload) {
-        loadImage(imageView, url);
-    }
+    void loadImage(ImageView imageView, @Nullable String url, @Nullable Object payload);
 
-    public static ImageLoader create(com.bumptech.glide.RequestManager glide) {
-        return new ImageLoader() {
-            @Override public void loadImage(ImageView imageView, String url) {
-                // stub
-            }
-        };
-    }
 }
