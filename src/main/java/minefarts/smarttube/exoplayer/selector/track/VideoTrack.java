@@ -1,6 +1,6 @@
 package minefarts.smarttube.exoplayer.selector.track;
 
-import minefarts.smarttube.Format;
+import com.google.android.exoplayer2.Format;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.exoplayer.selector.TrackSelectorUtil;
 
@@ -234,3 +234,4 @@ public class VideoTrack extends MediaTrack {
         return format.height > 1080;
     }
 }
+

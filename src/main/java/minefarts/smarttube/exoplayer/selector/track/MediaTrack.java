@@ -1,8 +1,8 @@
 package minefarts.smarttube.exoplayer.selector.track;
 
-import minefarts.smarttube.Format;
-import minefarts.smarttube.source.TrackGroupArray;
-import minefarts.smarttube.trackselection.TrackSelection.Definition;
+import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.trackselection.TrackSelection.Definition;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.exoplayer.selector.TrackSelectorManager;
 import minefarts.smarttube.exoplayer.selector.TrackSelectorUtil;
@@ -224,3 +224,4 @@ public abstract class MediaTrack {
         return codec.contains("mp4a");
     }
 }
+

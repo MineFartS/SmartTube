@@ -1,7 +1,7 @@
 package minefarts.smarttube.utils.service;
 
 import minefarts.smarttube.utils.LiveChatService;
-import minefarts.smarttube.utils.data.ChatItem;
+import com.liskovsoft.mediaserviceinterfaces.data.ChatItem;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.utils.chat.LiveChatServiceInt;
 import io.reactivex.Observable;

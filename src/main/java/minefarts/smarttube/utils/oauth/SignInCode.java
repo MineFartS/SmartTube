@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.oauth;
 
-import minefarts.smarttube.google.common.models.auth.UserCode;
+import com.liskovsoft.googlecommon.common.models.auth.UserCode;
 
 public class SignInCode {
 

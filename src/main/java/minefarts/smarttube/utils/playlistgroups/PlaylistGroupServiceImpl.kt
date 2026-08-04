@@ -1,11 +1,11 @@
 package minefarts.smarttube.utils.playlistgroups
 
-import minefarts.smarttube.utils.data.ItemGroup
-import minefarts.smarttube.utils.data.ItemGroup.Item
-import minefarts.smarttube.utils.data.MediaItem
+import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup
+import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup.Item
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
 import minefarts.smarttube.utils.helpers.Helpers
 import com.liskovsoft.sharedutils.rx.RxHelper
-import minefarts.smarttube.utils.channelgroups.models.ItemGroupImpl
+import com.liskovsoft.youtubeapi.channelgroups.models.ItemGroupImpl
 import minefarts.smarttube.utils.service.internal.MediaServicePrefs
 import io.reactivex.disposables.Disposable
 

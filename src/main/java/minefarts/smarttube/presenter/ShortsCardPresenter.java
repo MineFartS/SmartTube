@@ -2,6 +2,7 @@ package minefarts.smarttube.presenter;
 
 import android.content.Context;
 import android.util.Pair;
+
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.R;
 import minefarts.smarttube.ui.browse.video.GridFragmentHelper;

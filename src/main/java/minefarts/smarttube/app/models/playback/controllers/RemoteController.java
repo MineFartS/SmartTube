@@ -7,7 +7,7 @@ import android.os.Looper;
 import android.view.KeyEvent;
 import androidx.annotation.Nullable;
 import minefarts.smarttube.utils.RemoteControlService;
-import minefarts.smarttube.utils.service.data.Command;
+import com.liskovsoft.mediaserviceinterfaces.data.Command;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;

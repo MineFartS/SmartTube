@@ -4,11 +4,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.KeyEvent;
 import minefarts.smarttube.utils.MediaItemService;
-import minefarts.smarttube.utils.service.data.MediaGroup;
-import minefarts.smarttube.utils.data.MediaItem;
-import minefarts.smarttube.utils.service.data.MediaItemMetadata;
-import minefarts.smarttube.utils.data.NotificationState;
-import minefarts.smarttube.utils.data.PlaylistInfo;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.mediaserviceinterfaces.data.NotificationState;
+import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.KeyHelpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
@@ -87,7 +87,7 @@ public class PlayerUIController extends BasePlayerController {
     @Override
     public void onInit() {
         if (getPlayer() != null)
-            getPlayer().mVideoSurfaceRoot.setZoomPercents(100);        
+getPlayer().mVideoSurfaceRoot.setZoom(100);
     }
 
     @Override

@@ -1,12 +1,12 @@
 package minefarts.smarttube.utils.service
 
 import minefarts.smarttube.utils.NotificationsService
-import minefarts.smarttube.utils.service.data.MediaGroup
-import minefarts.smarttube.utils.data.MediaItem
-import minefarts.smarttube.utils.data.NotificationState
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem
+import com.liskovsoft.mediaserviceinterfaces.data.NotificationState
 import com.liskovsoft.sharedutils.rx.RxHelper
-import minefarts.smarttube.utils.notifications.NotificationsServiceInt
-import minefarts.smarttube.utils.notifications.NotificationsServiceIntWrapper
+import com.liskovsoft.youtubeapi.notifications.NotificationsServiceInt
+import com.liskovsoft.youtubeapi.notifications.NotificationsServiceIntWrapper
 import minefarts.smarttube.utils.SignInService
 
 import io.reactivex.Observable

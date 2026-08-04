@@ -39,5 +39,6 @@
         "PATH": "${workspaceFolder}/lib/jdk17/bin;${workspaceFolder}/lib/sdk/platform-tools;${env:PATH}"
     },
     "notebook.defaultFormatter": "redhat.java",
+    "chat.disableAIFeatures": true,
 
 }

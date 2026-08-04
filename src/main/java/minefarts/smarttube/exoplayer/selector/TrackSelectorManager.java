@@ -5,15 +5,15 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.util.Pair;
 
-import minefarts.smarttube.Format;
-import minefarts.smarttube.source.TrackGroup;
-import minefarts.smarttube.source.TrackGroupArray;
-import minefarts.smarttube.trackselection.DefaultTrackSelector;
-import minefarts.smarttube.trackselection.DefaultTrackSelector.Parameters;
-import minefarts.smarttube.trackselection.DefaultTrackSelector.SelectionOverride;
-import minefarts.smarttube.trackselection.MappingTrackSelector.MappedTrackInfo;
-import minefarts.smarttube.trackselection.TrackSelection;
-import minefarts.smarttube.trackselection.TrackSelection.Definition;
+import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.source.TrackGroup;
+import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.Parameters;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.SelectionOverride;
+import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
+import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelection.Definition;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.exoplayer.selector.track.AudioTrack;
@@ -690,3 +690,4 @@ public class TrackSelectorManager {
     }
 
 }
+

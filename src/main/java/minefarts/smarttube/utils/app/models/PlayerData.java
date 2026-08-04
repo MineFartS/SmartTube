@@ -3,8 +3,8 @@ package minefarts.smarttube.utils.app.models;
 import androidx.annotation.NonNull;
 
 import minefarts.smarttube.utils.helpers.Helpers;
-import minefarts.smarttube.google.common.converters.FieldNullable;
-import minefarts.smarttube.google.common.converters.regexp.RegExp;
+import com.liskovsoft.googlecommon.common.converters.FieldNullable;
+import com.liskovsoft.googlecommon.common.converters.regexp.RegExp;
 import minefarts.smarttube.utils.app.playerdata.PlayerDataExtractor;
 
 import java.util.regex.Pattern;

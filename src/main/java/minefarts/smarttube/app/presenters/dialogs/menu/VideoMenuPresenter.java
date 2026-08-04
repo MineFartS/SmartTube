@@ -4,7 +4,7 @@ import android.content.Context;
 
 import minefarts.smarttube.utils.MediaItemService;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
-import minefarts.smarttube.utils.data.PlaylistInfo;
+import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
@@ -29,7 +29,7 @@ import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.utils.AppDialogUtil;
 import minefarts.smarttube.ui.playback.actions.SubscribeAction;
 import minefarts.smarttube.app.models.playback.controllers.VideoStateController;
-import minefarts.smarttube.utils.service.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;

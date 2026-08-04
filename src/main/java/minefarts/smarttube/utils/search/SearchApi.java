@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.search;
 
-import minefarts.smarttube.google.common.converters.jsonpath.WithJsonPath;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPath;
 import minefarts.smarttube.utils.search.models.SearchResult;
 import minefarts.smarttube.utils.search.models.SearchResultContinuation;
 import minefarts.smarttube.utils.search.models.SearchTags;

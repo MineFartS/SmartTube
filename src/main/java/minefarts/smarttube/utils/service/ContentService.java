@@ -3,25 +3,25 @@ package minefarts.smarttube.utils.service;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import minefarts.smarttube.utils.data.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+import com.liskovsoft.youtubeapi.browse.v2.BrowseService2;
+import com.liskovsoft.youtubeapi.browse.v2.BrowseService2Wrapper;
+import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
+import com.liskovsoft.youtubeapi.next.v2.WatchNextServiceWrapper;
+import com.liskovsoft.youtubeapi.rss.RssService;
+import com.liskovsoft.sharedutils.rx.RxHelper;
+import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.SuggestionsGroup;
+import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.BaseMediaGroup;
+import com.liskovsoft.youtubeapi.search.v2.SearchService2;
+import com.liskovsoft.youtubeapi.search.v2.SearchService2Wrapper;
+
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
-import minefarts.smarttube.utils.browse.BrowseService2;
-import minefarts.smarttube.utils.browse.BrowseService2Wrapper;
-import minefarts.smarttube.utils.common.models.impl.mediagroup.SuggestionsGroup;
-import minefarts.smarttube.utils.next.v2.WatchNextService;
-import minefarts.smarttube.utils.next.v2.WatchNextServiceWrapper;
-import minefarts.smarttube.utils.rss.RssService;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
-import minefarts.smarttube.utils.UtilsService;
-import minefarts.smarttube.utils.browse.BrowseService;
-import com.liskovsoft.sharedutils.rx.RxHelper;
-import minefarts.smarttube.utils.common.models.impl.mediagroup.BaseMediaGroup;
-import minefarts.smarttube.google.common.helpers.YouTubeHelper;
-import minefarts.smarttube.utils.search.SearchService;
-import minefarts.smarttube.utils.search.models.SearchResult;
-import minefarts.smarttube.utils.service.data.MediaGroup;
 import minefarts.smarttube.utils.SignInService;
+import minefarts.smarttube.utils.UtilsService;
+import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -50,16 +50,14 @@ public class ContentService {
     public List<MediaGroup> getSearch(String searchText) {
         checkSigned();
 
-        SearchResult search = getSearchService().getSearch(searchText);
-        return MediaGroup.from(search, MediaGroup.TYPE_SEARCH);
+        return getSearchService2().getSearch(searchText);
     }
 
     
     public List<MediaGroup> getSearch(String searchText, int options) {
         checkSigned();
 
-        SearchResult search = getSearchService().getSearch(searchText, options);
-        return MediaGroup.from(search, MediaGroup.TYPE_SEARCH);
+        return getSearchService2().getSearch(searchText, options);
     }
 
     
@@ -76,7 +74,7 @@ public class ContentService {
     public List<String> getSearchTags(String searchText) {
         checkSigned();
 
-        return getSearchService().getSearchTags(searchText);
+        return getSearchService2().getSearchTags(searchText);
     }
 
     
@@ -485,23 +483,14 @@ public class ContentService {
 
         switch (mediaGroup.getType()) {
             case MediaGroup.TYPE_SEARCH:
-                return MediaGroup.from(
-                        getSearchService().continueSearch(nextKey),
-                        mediaGroup);
+                return getSearchService2().continueSearch(nextKey);
             case MediaGroup.TYPE_HISTORY:
             case MediaGroup.TYPE_SUBSCRIPTIONS:
             case MediaGroup.TYPE_USER_PLAYLISTS:
             case MediaGroup.TYPE_CHANNEL_UPLOADS:
             case MediaGroup.TYPE_UNDEFINED:
-                return MediaGroup.from(
-                        getBrowseService().continueGridTab(nextKey),
-                        mediaGroup
-                );
             default:
-                return MediaGroup.from(
-                        getBrowseService().continueSection(nextKey),
-                        mediaGroup
-                );
+                return getBrowseService2().continueGroup(mediaGroup);
         }
     }
 
@@ -540,7 +529,7 @@ public class ContentService {
     }
 
     
-    public Observable<MediaGroup> getPlaylistsObserve() {
+public Observable<MediaGroup> getPlaylistsObserve() {
         return RxHelper.fromCallable(this::getPlaylists);
     }
 
@@ -555,19 +544,14 @@ public class ContentService {
         return SignInService.instance();
     }
 
-    @NonNull
-    private static SearchService getSearchService() {
-        return SearchService.instance();
-    }
-
-    @NonNull
-    private static BrowseService getBrowseService() {
-        return BrowseService.instance();
-    }
-
-    @NonNull
+@NonNull
     public static BrowseService2 getBrowseService2() {
         return BrowseService2Wrapper.INSTANCE;
+    }
+
+    @NonNull
+    private static SearchService2 getSearchService2() {
+        return SearchService2Wrapper.INSTANCE;
     }
 
     @NonNull

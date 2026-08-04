@@ -8,12 +8,15 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
+
 import minefarts.smarttube.leanback.app.PlaybackSupportFragment;
-import minefarts.smarttube.ui.AspectRatioFrameLayout;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.utils.ViewUtil;
 import minefarts.smarttube.R;
+
 import android.util.Log;
 
 /**
@@ -51,8 +54,8 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
                 Gravity.CENTER);
         surfaceView.setLayoutParams(params);
 
-        mVideoSurfaceRoot.addView(surfaceView, 0);
-        mVideoSurfaceRoot.aspectRatioListener = (a, b, c) -> scaleIfNeeded();
+mVideoSurfaceRoot.addView(surfaceView, 0);
+        mVideoSurfaceRoot.setAspectRatioListener((a, b, c) -> scaleIfNeeded());
 
         // Scaling/ratio calculations removed. Let layout handle video sizing.
         setBackgroundType(PlaybackSupportFragment.BG_LIGHT);
@@ -134,3 +137,4 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
     }
     
 }
+

@@ -111,19 +111,22 @@ import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.prefs.RemoteControlData;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
-import minefarts.smarttube.C;
-import minefarts.smarttube.ExoPlayerLibraryInfo;
-import minefarts.smarttube.Format;
-import minefarts.smarttube.ParserException;
-import minefarts.smarttube.Renderer;
-import minefarts.smarttube.RendererCapabilities;
-import minefarts.smarttube.RenderersFactory;
-import minefarts.smarttube.SeekParameters;
-import minefarts.smarttube.audio.AudioRendererEventListener;
-import minefarts.smarttube.drm.DrmSessionManager;
-import minefarts.smarttube.drm.FrameworkMediaCrypto;
-import minefarts.smarttube.upstream.DataSource;
-import minefarts.smarttube.video.VideoRendererEventListener;
+import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.ExoPlayerLibraryInfo;
+import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.ParserException;
+import com.google.android.exoplayer2.Renderer;
+import com.google.android.exoplayer2.RendererCapabilities;
+import com.google.android.exoplayer2.RenderersFactory;
+import com.google.android.exoplayer2.SeekParameters;
+import com.google.android.exoplayer2.audio.AudioRendererEventListener;
+import com.google.android.exoplayer2.drm.DrmSessionManager;
+import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.util.Assertions;
+import com.google.android.exoplayer2.util.MimeTypes;
+import com.google.android.exoplayer2.util.ParsableByteArray;
+import com.google.android.exoplayer2.video.VideoRendererEventListener;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -2903,3 +2906,4 @@ public class Utils {
     }
 
 }
+

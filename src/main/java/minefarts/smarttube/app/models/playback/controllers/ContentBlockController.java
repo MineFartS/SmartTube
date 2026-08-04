@@ -4,8 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import minefarts.smarttube.utils.MediaItemService;
-import minefarts.smarttube.utils.service.data.MediaItemMetadata;
-import minefarts.smarttube.utils.data.SponsorSegment;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
+import com.liskovsoft.youtubeapi.service.data.YouTubeSponsorSegment;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
@@ -23,8 +24,8 @@ import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.utils.block.SponsorBlockApi;
 import minefarts.smarttube.utils.prefs.GlobalPreferences;
 import minefarts.smarttube.utils.block.data.SegmentList;
-import minefarts.smarttube.google.common.helpers.RetrofitHelper;
-import minefarts.smarttube.google.common.helpers.ServiceHelper;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
+import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 import minefarts.smarttube.utils.block.data.Segment;
 
 import retrofit2.Call;
@@ -50,7 +51,33 @@ public class ContentBlockController extends BasePlayerController {
     private boolean mSkipExclude;
     private Disposable mSegmentsAction;
 
-    private String mVideoId;
+private String mVideoId;
+
+    private static class SimpleSponsorSegment implements SponsorSegment {
+        private final long mStartMs;
+        private final long mEndMs;
+        private final String mCategory;
+        private final String mAction;
+
+        SimpleSponsorSegment(long startMs, long endMs, String category, String action) {
+            mStartMs = startMs;
+            mEndMs = endMs;
+            mCategory = category;
+            mAction = action;
+        }
+
+        @Override
+        public long getStartMs() { return mStartMs; }
+
+        @Override
+        public long getEndMs() { return mEndMs; }
+
+        @Override
+        public String getCategory() { return mCategory; }
+
+        @Override
+        public String getAction() { return mAction; }
+    }
 
     public static class SegmentAction {
         public String segmentCategory;
@@ -158,12 +185,13 @@ public class ContentBlockController extends BasePlayerController {
 
         List<SponsorSegment> result = new ArrayList<>();
 
-        for (Segment segment : segments.mSegments) {
-            SponsorSegment sponsorSegment = new SponsorSegment();
-            sponsorSegment.mStartMs = (long) (segment.mStart * 1_000);
-            sponsorSegment.mEndMs = (long) (segment.mEnd * 1_000);
-            sponsorSegment.mCategory = segment.mCategory;
-            sponsorSegment.mAction = segment.mActionType;
+for (Segment segment : segments.mSegments) {
+            SponsorSegment sponsorSegment = new SimpleSponsorSegment(
+                (long) (segment.mStart * 1_000),
+                (long) (segment.mEnd * 1_000),
+                segment.mCategory,
+                segment.mActionType
+            );
             result.add(sponsorSegment);
         }
 

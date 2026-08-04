@@ -1,7 +1,7 @@
 package minefarts.smarttube.utils.service.internal
 
 import minefarts.smarttube.utils.SignInService.OnAccountChange
-import minefarts.smarttube.utils.oauth.Account
+import com.liskovsoft.mediaserviceinterfaces.oauth.Account
 import minefarts.smarttube.utils.misc.WeakHashSet
 import minefarts.smarttube.utils.prefs.SharedPreferencesBase
 import minefarts.smarttube.utils.app.AppService

@@ -2,12 +2,12 @@ package minefarts.smarttube.exoplayer.versions.selector;
 
 import android.util.Pair;
 import androidx.annotation.Nullable;
-import minefarts.smarttube.ExoPlaybackException;
-import minefarts.smarttube.RendererCapabilities;
-import minefarts.smarttube.source.TrackGroupArray;
-import minefarts.smarttube.trackselection.DefaultTrackSelector;
-import minefarts.smarttube.trackselection.TrackSelection.Definition;
-import minefarts.smarttube.trackselection.TrackSelection.Factory;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.RendererCapabilities;
+import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelection.Definition;
+import com.google.android.exoplayer2.trackselection.TrackSelection.Factory;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.exoplayer.selector.TrackSelectorManager;
 import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
@@ -128,3 +128,4 @@ public class RestoreTrackSelector extends DefaultTrackSelector {
     }
 
 }
+

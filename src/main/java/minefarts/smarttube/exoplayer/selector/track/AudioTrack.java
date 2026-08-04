@@ -1,6 +1,6 @@
 package minefarts.smarttube.exoplayer.selector.track;
 
-import minefarts.smarttube.Format;
+import com.google.android.exoplayer2.Format;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.exoplayer.selector.TrackSelectorUtil;
 
@@ -77,3 +77,4 @@ public class AudioTrack extends MediaTrack {
         return TrackSelectorUtil.isDrc(format1) == TrackSelectorUtil.isDrc(format2);
     }
 }
+

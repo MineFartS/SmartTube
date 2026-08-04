@@ -1,9 +1,9 @@
 package minefarts.smarttube.exoplayer.versions;
 
-import minefarts.smarttube.ExoPlayer;
-import minefarts.smarttube.mediacodec.MediaCodecInfo;
-import minefarts.smarttube.mediacodec.MediaCodecUtil;
-import minefarts.smarttube.mediacodec.MediaCodecUtil.DecoderQueryException;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.mediacodec.MediaCodecInfo;
+import com.google.android.exoplayer2.mediacodec.MediaCodecUtil;
+import com.google.android.exoplayer2.mediacodec.MediaCodecUtil.DecoderQueryException;
 
 public class ExoUtils {
     private static String sVideoDecoderName;
@@ -54,3 +54,4 @@ public class ExoUtils {
         return sVideoDecoderName;
     }
 }
+

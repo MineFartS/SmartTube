@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils
 
-import minefarts.smarttube.google.common.converters.regexp.WithRegExp
+import com.liskovsoft.googlecommon.common.converters.regexp.WithRegExp
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

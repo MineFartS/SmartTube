@@ -5,15 +5,15 @@ import android.content.Context;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
-import minefarts.smarttube.google.common.helpers.RetrofitHelper;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper;
 import minefarts.smarttube.utils.SignInService;
 import minefarts.smarttube.utils.actions.ActionsApi;
 import minefarts.smarttube.utils.actions.models.ActionResult;
-import minefarts.smarttube.utils.channelgroups.ChannelGroupServiceImpl;
+import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import minefarts.smarttube.utils.next.v2.WatchNextServiceWrapper;
-import minefarts.smarttube.utils.service.data.MediaItemMetadata;
+import com.liskovsoft.youtubeapi.next.v2.WatchNextServiceWrapper;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 
 import io.reactivex.Observable;
 
@@ -94,7 +94,7 @@ public class SubscribeAction extends TwoStateAction {
         
         }
 
-        ChannelGroupServiceImpl.subscribe(video.isSubscribed, video.channelId);
+        ChannelGroupServiceImpl.subscribe(video.isSubscribed, video.channelId, video.getAuthor(), video.getCardImageUrl());
 
         RetrofitHelper.get(wrapper);
 

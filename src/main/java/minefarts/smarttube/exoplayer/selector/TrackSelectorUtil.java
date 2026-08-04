@@ -2,9 +2,9 @@ package minefarts.smarttube.exoplayer.selector;
 
 import android.text.TextUtils;
 import android.util.Pair;
-import minefarts.smarttube.Format;
-import minefarts.smarttube.Player;
-import minefarts.smarttube.utils.MimeTypes;
+import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.util.MimeTypes;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.exoplayer.selector.track.SubtitleTrack;
 
@@ -37,7 +37,7 @@ public class TrackSelectorUtil {
         mResolutionMap.put(1920, 1080);
         mResolutionMap.put(2048, 1440); // Tom Zanetti - Didn't Know
         mResolutionMap.put(2560, 1440);
-        mResolutionMap.put(3120, 2160); // Мастерская Синдиката - Мы собрали суперкар КУВАЛДОЙ!
+        mResolutionMap.put(3120, 2160); // ÃÅ“ÃÂ°Ã‘ÂÃ‘â€šÃÂµÃ‘â‚¬Ã‘ÂÃÂºÃÂ°Ã‘Â ÃÂ¡ÃÂ¸ÃÂ½ÃÂ´ÃÂ¸ÃÂºÃÂ°Ã‘â€šÃÂ° - ÃÅ“Ã‘â€¹ Ã‘ÂÃÂ¾ÃÂ±Ã‘â‚¬ÃÂ°ÃÂ»ÃÂ¸ Ã‘ÂÃ‘Æ’ÃÂ¿ÃÂµÃ‘â‚¬ÃÂºÃÂ°Ã‘â‚¬ ÃÅ¡ÃÂ£Ãâ€™ÃÂÃâ€ºÃâ€ÃÅ¾Ãâ„¢!
         mResolutionMap.put(3840, 2160);
         mResolutionMap.put(7680, 4320);
     }
@@ -306,7 +306,7 @@ public class TrackSelectorUtil {
         int originHeight = height;
 
         // Non-regular examples
-        // Мастерская Синдиката - Мы собрали суперкар КУВАЛДОЙ! - 2560x1182
+        // ÃÅ“ÃÂ°Ã‘ÂÃ‘â€šÃÂµÃ‘â‚¬Ã‘ÂÃÂºÃÂ°Ã‘Â ÃÂ¡ÃÂ¸ÃÂ½ÃÂ´ÃÂ¸ÃÂºÃÂ°Ã‘â€šÃÂ° - ÃÅ“Ã‘â€¹ Ã‘ÂÃÂ¾ÃÂ±Ã‘â‚¬ÃÂ°ÃÂ»ÃÂ¸ Ã‘ÂÃ‘Æ’ÃÂ¿ÃÂµÃ‘â‚¬ÃÂºÃÂ°Ã‘â‚¬ ÃÅ¡ÃÂ£Ãâ€™ÃÂÃâ€ºÃâ€ÃÅ¾Ãâ„¢! - 2560x1182
         // [AMATORY] ALL STARS: LIVE IN MOSCOW 2021 - 2560x1088 
 
         if (height < 160) { // 256x144
@@ -409,3 +409,4 @@ public class TrackSelectorUtil {
         return new Pair<>(prefix, String.valueOf(originHeight));
     }
 }
+

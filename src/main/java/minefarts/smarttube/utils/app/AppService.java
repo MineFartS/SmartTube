@@ -10,9 +10,9 @@ import minefarts.smarttube.utils.app.models.AppInfo;
 import minefarts.smarttube.utils.app.models.ClientData;
 import minefarts.smarttube.utils.app.playerdata.PlayerDataExtractor;
 import minefarts.smarttube.exoplayer.ExoMediaSourceFactory;
-import minefarts.smarttube.google.common.helpers.RetrofitHelper;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
-import minefarts.smarttube.google.common.helpers.ServiceHelper;
+import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 import minefarts.smarttube.ContextManager;
 
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package minefarts.smarttube.app.models.playback.controllers;
 
-import minefarts.smarttube.google.common.converters.jsonpath.WithJsonPath;
+import com.liskovsoft.googlecommon.common.converters.jsonpath.WithJsonPath;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

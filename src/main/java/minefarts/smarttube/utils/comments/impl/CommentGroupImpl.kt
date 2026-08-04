@@ -1,9 +1,9 @@
 package minefarts.smarttube.utils.comments.impl
 
-import minefarts.smarttube.utils.data.CommentGroup
-import minefarts.smarttube.utils.data.CommentItem
+import com.liskovsoft.mediaserviceinterfaces.data.CommentGroup
+import com.liskovsoft.mediaserviceinterfaces.data.CommentItem
 import minefarts.smarttube.utils.comments.gen.CommentsResult
-import minefarts.smarttube.utils.next.v2.gen.getContinuationToken
+import com.liskovsoft.youtubeapi.next.v2.gen.getContinuationToken
 
 public data class CommentGroupImpl(val commentsResult: CommentsResult): CommentGroup {
     private val itemSectionContinuation by lazy {

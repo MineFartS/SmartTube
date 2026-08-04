@@ -6,7 +6,7 @@ import minefarts.smarttube.utils.comments.gen.getLikeParams
 import minefarts.smarttube.utils.comments.gen.getActiveCommentItem
 import minefarts.smarttube.utils.comments.gen.getUnLikeParams
 import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper
-import minefarts.smarttube.google.common.helpers.RetrofitHelper
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 
 import io.reactivex.Observable
 

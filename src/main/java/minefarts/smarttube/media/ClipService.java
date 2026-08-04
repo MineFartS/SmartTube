@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 
 import minefarts.smarttube.R;
-import minefarts.smarttube.utils.service.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import minefarts.smarttube.utils.service.ContentService;
 
 public class ClipService {

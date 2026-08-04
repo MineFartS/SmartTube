@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 
 import minefarts.smarttube.utils.SignInService;
-import minefarts.smarttube.utils.oauth.Account;
+import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;

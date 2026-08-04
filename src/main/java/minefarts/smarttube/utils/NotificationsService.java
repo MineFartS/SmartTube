@@ -1,8 +1,8 @@
 package minefarts.smarttube.utils;
 
-import minefarts.smarttube.utils.service.data.MediaGroup;
-import minefarts.smarttube.utils.data.MediaItem;
-import minefarts.smarttube.utils.data.NotificationState;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.data.NotificationState;
 import io.reactivex.Observable;
 
 public interface NotificationsService {

@@ -5,9 +5,15 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.KeyEvent;
 import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
+
 import minefarts.smarttube.leanback.media.PlaybackGlueHost;
 import minefarts.smarttube.leanback.media.PlaybackTransportControlGlue;
 import minefarts.smarttube.leanback.media.PlayerAdapter;
@@ -17,9 +23,6 @@ import minefarts.smarttube.leanback.widget.ObjectAdapter;
 import minefarts.smarttube.leanback.widget.PlaybackControlsRow;
 import minefarts.smarttube.leanback.widget.PlaybackControlsRow.MultiAction;
 import minefarts.smarttube.leanback.widget.PlaybackRowPresenter;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.prefs.PlayerTweaksData;

@@ -4,18 +4,18 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Build.VERSION;
 
-import minefarts.smarttube.C;
-import minefarts.smarttube.ExoPlaybackException;
-import minefarts.smarttube.Format;
-import minefarts.smarttube.PlaybackParameters;
-import minefarts.smarttube.Player;
-import minefarts.smarttube.ui.playback.SimpleExoPlayer;
-import minefarts.smarttube.source.MediaSource;
-import minefarts.smarttube.source.MergingMediaSource;
-import minefarts.smarttube.source.TrackGroupArray;
-import minefarts.smarttube.trackselection.TrackSelection;
-import minefarts.smarttube.trackselection.TrackSelectionArray;
-import minefarts.smarttube.utils.data.MediaItemFormatInfo;
+import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.MergingMediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.BuildConfig;
@@ -409,3 +409,4 @@ public class ExoPlayerController implements Player.EventListener {
     }
 
 }
+

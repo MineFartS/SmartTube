@@ -1,14 +1,14 @@
 package minefarts.smarttube.exoplayer.errors;
 
 import androidx.annotation.Nullable;
-import minefarts.smarttube.ExoPlaybackException;
-import minefarts.smarttube.mediacodec.MediaCodecRenderer.DecoderInitializationException;
-import minefarts.smarttube.source.DefaultMediaSourceEventListener;
-import minefarts.smarttube.source.MediaSource.MediaPeriodId;
-import minefarts.smarttube.source.chunk.Chunk;
-import minefarts.smarttube.source.chunk.ContainerMediaChunk;
-import minefarts.smarttube.upstream.HttpDataSource.InvalidResponseCodeException;
-import minefarts.smarttube.utils.MimeTypes;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.mediacodec.MediaCodecRenderer.DecoderInitializationException;
+import com.google.android.exoplayer2.source.DefaultMediaSourceEventListener;
+import com.google.android.exoplayer2.source.MediaSource.MediaPeriodId;
+import com.google.android.exoplayer2.source.chunk.Chunk;
+import com.google.android.exoplayer2.source.chunk.ContainerMediaChunk;
+import com.google.android.exoplayer2.upstream.HttpDataSource.InvalidResponseCodeException;
+import com.google.android.exoplayer2.util.MimeTypes;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.exoplayer.selector.TrackSelectorManager;
@@ -133,3 +133,4 @@ public class TrackErrorFixer extends DefaultMediaSourceEventListener {
         fixError(error);
     }
 }
+

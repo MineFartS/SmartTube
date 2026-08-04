@@ -3,7 +3,7 @@ package minefarts.smarttube.utils.app;
 import minefarts.smarttube.utils.app.models.AppInfo;
 import minefarts.smarttube.utils.app.models.ClientData;
 import minefarts.smarttube.utils.app.models.PlayerData;
-import minefarts.smarttube.google.common.converters.regexp.WithRegExp;
+import com.liskovsoft.googlecommon.common.converters.regexp.WithRegExp;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

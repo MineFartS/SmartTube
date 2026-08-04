@@ -3,7 +3,7 @@ package minefarts.smarttube.app.presenters.settings;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import minefarts.smarttube.utils.service.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.okhttp.OkHttpManager;

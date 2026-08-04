@@ -2,11 +2,11 @@ package minefarts.smarttube;
 
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
 
-import minefarts.smarttube.google.common.locale.LocaleManager;
+import com.liskovsoft.googlecommon.common.locale.LocaleManager;
 import minefarts.smarttube.utils.locale.LocaleUpdater;
 import minefarts.smarttube.utils.SignInService;
 import minefarts.smarttube.utils.MediaItemService;
-import minefarts.smarttube.utils.videoinfo.V2.VideoInfoService;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
 import minefarts.smarttube.utils.app.AppService;
 import minefarts.smarttube.utils.app.AppApi;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
@@ -58,8 +58,7 @@ public class CacheManager {
 
         VideoInfoService VIS = VideoInfoService.instance();
 
-        VIS.mVideoInfoType = null;
-        VIS.persistVideoInfoType();
+        VIS.resetInfoType();
         
         //=======================
         // MediaServiceData

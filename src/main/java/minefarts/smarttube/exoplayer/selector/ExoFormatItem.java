@@ -2,8 +2,8 @@ package minefarts.smarttube.exoplayer.selector;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import minefarts.smarttube.Format;
-import minefarts.smarttube.utils.MimeTypes;
+import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.util.MimeTypes;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
 import minefarts.smarttube.exoplayer.selector.track.SubtitleTrack;
@@ -408,3 +408,4 @@ public class ExoFormatItem implements FormatItem {
         return mTrack;
     }
 }
+

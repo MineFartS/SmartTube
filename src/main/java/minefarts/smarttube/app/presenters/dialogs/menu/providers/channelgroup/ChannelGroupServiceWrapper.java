@@ -4,9 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 
-import minefarts.smarttube.utils.ChannelGroupService;
-import minefarts.smarttube.utils.data.ItemGroup;
-import minefarts.smarttube.utils.data.ItemGroup.Item;
+import com.liskovsoft.mediaserviceinterfaces.ChannelGroupService;
+import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup.Item;
 import minefarts.smarttube.prefs.AppPrefs;
 import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
 import minefarts.smarttube.app.models.playback.BasePlayerController;

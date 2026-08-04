@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 
 import minefarts.smarttube.utils.service.ContentService;
-import minefarts.smarttube.utils.service.data.MediaGroup;
-import minefarts.smarttube.utils.data.SearchOptions;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.SearchOptions;
 import minefarts.smarttube.utils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.R;

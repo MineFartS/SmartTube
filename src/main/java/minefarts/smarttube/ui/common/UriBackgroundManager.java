@@ -7,13 +7,16 @@ import android.net.Uri;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import minefarts.smarttube.leanback.app.BackgroundManager;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+
+import minefarts.smarttube.leanback.app.BackgroundManager;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.R;

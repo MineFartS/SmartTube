@@ -11,9 +11,9 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 
 import minefarts.smarttube.utils.MediaItemService;
-import minefarts.smarttube.utils.data.ItemGroup;
-import minefarts.smarttube.utils.data.MediaItem;
-import minefarts.smarttube.utils.data.PlaylistInfo;
+import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.helpers.PermissionHelpers;

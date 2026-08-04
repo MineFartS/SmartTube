@@ -1,7 +1,7 @@
 package minefarts.smarttube.utils.chat
 
 import minefarts.smarttube.utils.chat.gen.LiveChatResult
-import minefarts.smarttube.google.common.converters.gson.WithGson
+import com.liskovsoft.googlecommon.common.converters.gson.WithGson
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Headers

@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils
 
-import minefarts.smarttube.google.common.converters.regexp.RegExp
+import com.liskovsoft.googlecommon.common.converters.regexp.RegExp
 
 public class ChannelId {
     /**

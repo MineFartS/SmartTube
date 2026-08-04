@@ -13,10 +13,10 @@ import android.view.accessibility.CaptioningManager.CaptionStyle;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
-import minefarts.smarttube.text.CaptionStyleCompat;
-import minefarts.smarttube.text.Cue;
-import minefarts.smarttube.text.TextOutput;
-import minefarts.smarttube.ui.SubtitleView;
+import com.google.android.exoplayer2.text.CaptionStyleCompat;
+import com.google.android.exoplayer2.text.Cue;
+import com.google.android.exoplayer2.text.TextOutput;
+import com.google.android.exoplayer2.ui.SubtitleView;
 
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.R;
@@ -120,3 +120,4 @@ public class SubtitleManager implements TextOutput, OnDataChange {
     }
 
 }
+

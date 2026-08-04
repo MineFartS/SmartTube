@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.chat.gen
 
-import minefarts.smarttube.utils.next.v2.gen.ContinuationItem
+import com.liskovsoft.youtubeapi.next.v2.gen.ContinuationItem
 
 public data class LiveChatResult(
     val continuationContents: ContinuationContents?

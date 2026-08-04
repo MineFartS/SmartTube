@@ -1,12 +1,12 @@
 package minefarts.smarttube.utils.chat
 
-import minefarts.smarttube.utils.data.ChatItem
+import com.liskovsoft.mediaserviceinterfaces.data.ChatItem
 import minefarts.smarttube.utils.mylogger.Log
 import minefarts.smarttube.utils.chat.gen.LiveChatResult
 import minefarts.smarttube.utils.chat.gen.getActions
 import minefarts.smarttube.utils.chat.gen.getContinuation
 import minefarts.smarttube.utils.chat.impl.ChatItemImpl
-import minefarts.smarttube.google.common.helpers.RetrofitHelper
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 import java.io.InterruptedIOException
 import java.net.SocketTimeoutException
 

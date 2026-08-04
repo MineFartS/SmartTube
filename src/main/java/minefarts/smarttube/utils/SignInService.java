@@ -3,25 +3,24 @@ package minefarts.smarttube.utils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import minefarts.smarttube.utils.oauth.Account;
+import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.prefs.GlobalPreferences;
 import minefarts.smarttube.utils.auth.V2.AuthService;
-import minefarts.smarttube.google.common.models.auth.AccessToken;
-import minefarts.smarttube.google.common.helpers.RetrofitOkHttpHelper;
-import minefarts.smarttube.google.service.oauth.YouTubeAccount;
+import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitOkHttpHelper;
+import com.liskovsoft.googlecommon.service.oauth.YouTubeAccount;
 import minefarts.smarttube.utils.oauth.SignInCode;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.utils.service.internal.MediaServicePrefs;
-import minefarts.smarttube.utils.oauth.Account;
 import minefarts.smarttube.utils.misc.WeakHashSet;
 import minefarts.smarttube.utils.app.AppService;
-import minefarts.smarttube.google.common.models.auth.UserCode;
-import minefarts.smarttube.google.common.models.auth.info.AccountInt;
-import minefarts.smarttube.utils.videoinfo.V2.VideoInfoService;
+import com.liskovsoft.googlecommon.common.models.auth.UserCode;
+import com.liskovsoft.googlecommon.common.models.auth.info.AccountInt;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
 import minefarts.smarttube.utils.oauth.OAuth2Api;
-import minefarts.smarttube.google.common.helpers.RetrofitHelper;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import minefarts.smarttube.CacheManager;
 
 import io.reactivex.Observable;
@@ -497,7 +496,7 @@ public class SignInService {
             refreshToken
         );
 
-        return RetrofitHelper.get(wrapper, true, true);
+        return RetrofitHelper.getWithErrors(wrapper);
     }
 
     public AccessToken getAccessTokenWait(String deviceCode) throws InterruptedException {

@@ -105,6 +105,14 @@ dependencies {
     implementation project(':mediaserviceinterfaces')
     implementation project(':youtubeapi')
     implementation project(':sharedutils')
+    implementation project(':exoplayer-library-core')
+    implementation project(':exoplayer-library-ui')
+    implementation project(':exoplayer-library-dash')
+    implementation project(':exoplayer-library-sabr')
+    implementation project(':exoplayer-library-hls')
+    implementation project(':exoplayer-library-smoothstreaming')
+    implementation project(':exoplayer-extension-mediasession')
+    implementation project(':exoplayer-extension-okhttp')
 
     compileOnly 'org.checkerframework:checker-qual:2.5.0'
     compileOnly 'org.checkerframework:checker-compat-qual:2.5.0'

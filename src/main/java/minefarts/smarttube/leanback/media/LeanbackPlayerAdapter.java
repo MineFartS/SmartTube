@@ -10,18 +10,18 @@ import minefarts.smarttube.leanback.media.SurfaceHolderGlueHost;
 import android.util.Pair;
 import android.view.Surface;
 import android.view.SurfaceHolder;
-import minefarts.smarttube.C;
-import minefarts.smarttube.ControlDispatcher;
-import minefarts.smarttube.DefaultControlDispatcher;
-import minefarts.smarttube.ExoPlaybackException;
-import minefarts.smarttube.ExoPlayerLibraryInfo;
-import minefarts.smarttube.PlaybackPreparer;
-import minefarts.smarttube.Player;
-import minefarts.smarttube.Player.DiscontinuityReason;
-import minefarts.smarttube.Player.TimelineChangeReason;
-import minefarts.smarttube.Timeline;
+import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.ControlDispatcher;
+import com.google.android.exoplayer2.DefaultControlDispatcher;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayerLibraryInfo;
+import com.google.android.exoplayer2.PlaybackPreparer;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.Player.DiscontinuityReason;
+import com.google.android.exoplayer2.Player.TimelineChangeReason;
+import com.google.android.exoplayer2.Timeline;
 import minefarts.smarttube.utils.ErrorMessageProvider;
-import minefarts.smarttube.video.VideoListener;
+import com.google.android.exoplayer2.video.VideoListener;
 
 /** Leanback {@code PlayerAdapter} implementation for {@link Player}. */
 public final class LeanbackPlayerAdapter extends PlayerAdapter implements Runnable {
@@ -307,3 +307,4 @@ public final class LeanbackPlayerAdapter extends PlayerAdapter implements Runnab
     }
 
 }
+

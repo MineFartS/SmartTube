@@ -3,7 +3,6 @@ package minefarts.smarttube.adapter;
 import minefarts.smarttube.leanback.widget.ObjectAdapter;
 import minefarts.smarttube.leanback.widget.Presenter;
 import minefarts.smarttube.leanback.widget.PresenterSelector;
-
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.misc.WeakHashSet;
 import minefarts.smarttube.app.models.data.Video;

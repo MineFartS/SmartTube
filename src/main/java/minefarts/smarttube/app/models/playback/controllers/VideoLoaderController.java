@@ -11,9 +11,9 @@ import androidx.annotation.Nullable;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 
 import minefarts.smarttube.utils.MediaItemService;
-import minefarts.smarttube.utils.service.data.MediaFormat;
-import minefarts.smarttube.utils.data.MediaItemFormatInfo;
-import minefarts.smarttube.utils.service.data.MediaItemMetadata;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaFormat;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
@@ -36,17 +36,14 @@ import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.utils.LoadingManager;
 import minefarts.smarttube.CacheManager;
 import minefarts.smarttube.utils.service.ContentService;
-import minefarts.smarttube.utils.data.ChapterItem;
-import minefarts.smarttube.utils.service.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.ChapterItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import minefarts.smarttube.app.models.playback.ui.SeekBarSegment;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.utils.BrowseProcessorManager;
 import minefarts.smarttube.prefs.GeneralData;
-import minefarts.smarttube.app.models.data.DislikesResult;
-import minefarts.smarttube.google.common.helpers.RetrofitHelper;
-import minefarts.smarttube.utils.videoinfo.V2.VideoInfoService;
-import minefarts.smarttube.utils.videoinfo.V2.VideoInfoApi;
-import minefarts.smarttube.google.youtubedata3.YouTubeDataServiceInt;
+import com.liskovsoft.mediaserviceinterfaces.data.DislikeData;
+import com.liskovsoft.googleapi.youtubedata3.YouTubeDataServiceInt;
 import minefarts.smarttube.utils.app.nsigsolver.V8ChallengeProvider;
 
 import io.reactivex.Observable;
@@ -56,8 +53,6 @@ import java.util.function.Consumer;
 import java.util.Collections;
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
 
 public class VideoLoaderController extends BasePlayerController {
     
@@ -79,9 +74,8 @@ public class VideoLoaderController extends BasePlayerController {
         mVideoStateController = new VideoStateController();
     }
 
-    private BrowseProcessorManager mBrowseProcessor;
+private BrowseProcessorManager mBrowseProcessor;
     private ContentService mContentService;
-    private VideoInfoApi mVideoInfoApi;
 
     @Override
     public void onInit() {
@@ -90,7 +84,6 @@ public class VideoLoaderController extends BasePlayerController {
             PlaybackPresenter.instance(getContext())::syncItem
         );
         mContentService = getContentService();
-        mVideoInfoApi = VideoInfoService.instance().mVideoInfoApi;
     }
 
     private final List<Disposable> mActions = new ArrayList<>();
@@ -275,9 +268,9 @@ public class VideoLoaderController extends BasePlayerController {
 
         getVideo().sync(formatInfo);
 
-        if (formatInfo.isUnplayable()) {
+if (formatInfo.isUnplayable()) {
 
-            player.setTitle(formatInfo.getPlayabilityStatus());
+            player.setTitle(formatInfo.getPlayabilityReason());
             player.showProgressBar(false);
             onVideoLoaded(getVideo());
             bgImageUrl = getVideo().getBackgroundUrl();
@@ -323,8 +316,8 @@ public class VideoLoaderController extends BasePlayerController {
             player.openUrlList(urlList);
             
         } else {
-            Log.d(TAG, "Empty format info received. Seems future live translation. No video data to pass to the player.");
-            player.setTitle(formatInfo.getPlayabilityStatus());
+Log.d(TAG, "Empty format info received. Seems future live translation. No video data to pass to the player.");
+            player.setTitle(formatInfo.getPlayabilityReason());
             player.showProgressBar(false);
             onVideoLoaded(getVideo());
             bgImageUrl = getVideo().getBackgroundUrl();
@@ -1167,12 +1160,10 @@ public class VideoLoaderController extends BasePlayerController {
     }
 
     @Nullable
-    public DislikesResult getDislikeData(@Nullable String videoId) {
+    public DislikeData getDislikeData(@Nullable String videoId) {
         if (videoId == null) return null;
 
-        Call<DislikesResult> wrapper = mVideoInfoApi.getDislikes(videoId);
-
-        return (DislikesResult) RetrofitHelper.get(wrapper);
+        return MediaItemService.getWatchNextService().getDislikeData(videoId);
     }
     
 

@@ -3,33 +3,34 @@ package minefarts.smarttube.utils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import minefarts.smarttube.utils.data.MediaItem;
-import minefarts.smarttube.utils.data.MediaItemFormatInfo;
-import minefarts.smarttube.utils.service.data.MediaItemMetadata;
-import minefarts.smarttube.utils.service.data.MediaItemStoryboard;
-import minefarts.smarttube.utils.data.PlaylistInfo;
-import minefarts.smarttube.utils.data.SponsorSegment;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemStoryboard;
+import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
+import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
+import com.liskovsoft.youtubeapi.common.models.impl.mediaitem.BaseMediaItem;
+import com.liskovsoft.youtubeapi.next.v2.WatchNextService;
+import com.liskovsoft.youtubeapi.next.v2.WatchNextServiceWrapper;
+import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItem;
+import com.liskovsoft.youtubeapi.notifications.NotificationStorage;
+import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
+import com.liskovsoft.youtubeapi.videoinfo.models.VideoInfo;
+import com.liskovsoft.youtubeapi.service.data.YouTubeMediaItemFormatInfo;
+import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl;
+import com.liskovsoft.sharedutils.rx.RxHelper;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
+
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
-import com.liskovsoft.sharedutils.rx.RxHelper;
-import minefarts.smarttube.utils.common.models.impl.mediaitem.BaseMediaItem;
 import minefarts.smarttube.utils.feedback.FeedbackService;
-import minefarts.smarttube.utils.next.v2.WatchNextService;
-import minefarts.smarttube.utils.next.v2.WatchNextServiceWrapper;
 import minefarts.smarttube.utils.playlist.PlaylistService;
 import minefarts.smarttube.utils.playlist.PlaylistServiceWrapper;
 import minefarts.smarttube.utils.playlistgroups.PlaylistGroupServiceImpl;
-import minefarts.smarttube.utils.service.data.YouTubeMediaItem;
-import minefarts.smarttube.utils.videoinfo.V2.VideoInfoService;
-import minefarts.smarttube.utils.videoinfo.models.VideoInfo;
-import minefarts.smarttube.utils.SignInService;
 import minefarts.smarttube.utils.actions.models.ActionResult;
-import minefarts.smarttube.utils.browse.BrowseService;
-import minefarts.smarttube.google.common.helpers.RetrofitHelper;
-import minefarts.smarttube.utils.channelgroups.ChannelGroupServiceImpl;
-import minefarts.smarttube.utils.notifications.NotificationStorage;
-import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper;
 import minefarts.smarttube.utils.actions.ActionsApi;
+import minefarts.smarttube.utils.SignInService;
 
 import io.reactivex.Observable;
 
@@ -71,7 +72,7 @@ public class MediaItemService {
             
             VideoInfo videoInfo = getVideoInfoService().getVideoInfo(videoId, null);
             
-            MediaItemFormatInfo formatInfo = MediaItemFormatInfo.from(videoInfo);
+            MediaItemFormatInfo formatInfo = YouTubeMediaItemFormatInfo.from(videoInfo);
             
             mCachedFormatInfo = formatInfo;
 

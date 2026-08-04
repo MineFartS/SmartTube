@@ -8,11 +8,11 @@ import android.util.Pair;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import minefarts.smarttube.Format;
+import com.google.android.exoplayer2.Format;
 import minefarts.smarttube.utils.service.ContentService;
 import minefarts.smarttube.utils.MediaItemService;
 import minefarts.smarttube.utils.SignInService;
-import minefarts.smarttube.utils.service.data.MediaItemMetadata;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import minefarts.smarttube.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.PlayerEventListener;
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
@@ -35,13 +35,13 @@ import minefarts.smarttube.ContextManager;
 import minefarts.smarttube.utils.service.YouTubeLiveChatService;
 import minefarts.smarttube.utils.comments.CommentsService;
 import minefarts.smarttube.utils.service.YouTubeNotificationsService;
-import minefarts.smarttube.utils.videoinfo.V2.VideoInfoService;
-import minefarts.smarttube.utils.oauth.Account;
-import minefarts.smarttube.utils.service.data.MediaGroup;
-import minefarts.smarttube.utils.data.MediaItem;
-import minefarts.smarttube.utils.data.MediaItemFormatInfo;
-import minefarts.smarttube.utils.data.NotificationState;
-import minefarts.smarttube.utils.data.PlaylistInfo;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
+import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
+import com.liskovsoft.mediaserviceinterfaces.data.NotificationState;
+import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
@@ -55,8 +55,8 @@ import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.utils.playlist.PlaylistService;
 import minefarts.smarttube.utils.app.AppService;
 import minefarts.smarttube.utils.RemoteControlService;
-import minefarts.smarttube.utils.channelgroups.ChannelGroupServiceImpl;
-import minefarts.smarttube.google.common.locale.LocaleManager;
+import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl;
+import com.liskovsoft.googlecommon.common.locale.LocaleManager;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -368,13 +368,13 @@ public abstract class BasePlayerController implements PlayerEventListener {
             // shorts overzoom fix
             if (zoom > 130) return;
 
-            getPlayer().mVideoSurfaceRoot.setZoomPercents(Math.round(zoom));
+getPlayer().mVideoSurfaceRoot.setZoom(Math.round(zoom));
             getPlayer().setVideoGravity(Gravity.START | Gravity.CENTER_VERTICAL);
 
         });
 
         settingsPresenter.setOnFinish(() -> {
-            getPlayer().mVideoSurfaceRoot.setZoomPercents(100);
+getPlayer().mVideoSurfaceRoot.setZoom(100);
             getPlayer().setVideoGravity(Gravity.CENTER);
         });
 
@@ -798,3 +798,4 @@ public abstract class BasePlayerController implements PlayerEventListener {
     }
 
 }
+

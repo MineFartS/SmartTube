@@ -6,43 +6,44 @@ import android.net.Uri;
 import android.text.TextUtils;
 import androidx.annotation.NonNull;
 
-import minefarts.smarttube.C;
-import minefarts.smarttube.okhttp.OkHttpDataSourceFactory;
-import minefarts.smarttube.extractor.DefaultExtractorsFactory;
-import minefarts.smarttube.source.ExtractorMediaSource;
-import minefarts.smarttube.source.MediaSource;
-import minefarts.smarttube.dash.DashChunkSource;
-import minefarts.smarttube.dash.DashMediaSource;
-import minefarts.smarttube.dash.DefaultDashChunkSource;
-import minefarts.smarttube.dash.manifest.DashManifest;
-import minefarts.smarttube.dash.manifest.DashManifestParser;
-import minefarts.smarttube.dash.manifest.DashManifestParser2;
-import minefarts.smarttube.dash.manifest.Period;
-import minefarts.smarttube.dash.manifest.ProgramInformation;
-import minefarts.smarttube.dash.manifest.UtcTimingElement;
-import minefarts.smarttube.hls.HlsMediaSource;
-import minefarts.smarttube.sabr.DefaultSabrChunkSource;
-import minefarts.smarttube.sabr.SabrChunkSource;
-import minefarts.smarttube.sabr.SabrMediaSource;
-import minefarts.smarttube.sabr.manifest.SabrManifest;
-import minefarts.smarttube.sabr.manifest.SabrManifestParser;
-import minefarts.smarttube.ss.DefaultSsChunkSource;
-import minefarts.smarttube.ss.SsMediaSource;
-import minefarts.smarttube.upstream.DataSource;
-import minefarts.smarttube.upstream.DataSource.Factory;
-import minefarts.smarttube.upstream.DefaultDataSourceFactory;
-import minefarts.smarttube.upstream.DefaultHttpDataSourceFactory;
-import minefarts.smarttube.upstream.HttpDataSource;
-import minefarts.smarttube.upstream.HttpDataSource.BaseFactory;
-import minefarts.smarttube.utils.data.MediaItemFormatInfo;
+import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DataSource.Factory;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.upstream.HttpDataSource;
+import com.google.android.exoplayer2.upstream.HttpDataSource.BaseFactory;
+import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.hls.HlsMediaSource;
+import com.google.android.exoplayer2.source.sabr.DefaultSabrChunkSource;
+import com.google.android.exoplayer2.source.sabr.SabrChunkSource;
+import com.google.android.exoplayer2.source.sabr.SabrMediaSource;
+import com.google.android.exoplayer2.source.sabr.manifest.SabrManifest;
+import com.google.android.exoplayer2.source.sabr.manifest.SabrManifestParser;
+import com.google.android.exoplayer2.source.smoothstreaming.DefaultSsChunkSource;
+import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
+import com.google.android.exoplayer2.source.dash.DashChunkSource;
+import com.google.android.exoplayer2.source.dash.DashMediaSource;
+import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource;
+import com.google.android.exoplayer2.source.dash.manifest.DashManifest;
+import com.google.android.exoplayer2.source.dash.manifest.DashManifestParser;
+import com.google.android.exoplayer2.source.dash.manifest.DashManifestParser2;
+import com.google.android.exoplayer2.source.dash.manifest.Period;
+import com.google.android.exoplayer2.source.dash.manifest.ProgramInformation;
+import com.google.android.exoplayer2.source.dash.manifest.UtcTimingElement;
+
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import minefarts.smarttube.utils.helpers.FileHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.okhttp.OkHttpManager;
+import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.exoplayer.errors.DashDefaultLoadErrorHandlingPolicy;
 import minefarts.smarttube.exoplayer.errors.SabrDefaultLoadErrorHandlingPolicy;
 import minefarts.smarttube.exoplayer.errors.TrackErrorFixer;
 import minefarts.smarttube.prefs.PlayerTweaksData;
-import minefarts.smarttube.utils.Utils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -257,10 +258,10 @@ public class ExoMediaSourceFactory {
         return mMediaDataSourceFactory;
     }
 
-    // EXO: 2.10 - 2.12
+// EXO: 2.10 - 2.12
     private static class StaticDashManifestParser extends DashManifestParser {
         @Override
-        protected DashManifest buildMediaPresentationDescription(
+        public DashManifest buildMediaPresentationDescription(
                 long availabilityStartTime,
                 long durationMs,
                 long minBufferTimeMs,
@@ -290,3 +291,4 @@ public class ExoMediaSourceFactory {
     }
 
 }
+

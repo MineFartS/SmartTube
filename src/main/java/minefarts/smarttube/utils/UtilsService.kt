@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils
 
-import minefarts.smarttube.google.common.helpers.RetrofitHelper
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper
 
 public object UtilsService {
     private val mUtilsApi = RetrofitHelper.create(UtilsApi::class.java)

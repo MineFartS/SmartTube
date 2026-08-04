@@ -4,11 +4,11 @@ import androidx.annotation.Nullable;
 
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.app.AppService;
-import minefarts.smarttube.google.common.models.auth.AccessToken;
-import minefarts.smarttube.google.common.models.auth.UserCode;
-import minefarts.smarttube.google.common.models.auth.info.AccountInt;
-import minefarts.smarttube.google.common.models.auth.info.AccountsList;
-import minefarts.smarttube.google.common.helpers.RetrofitHelper;
+import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
+import com.liskovsoft.googlecommon.common.models.auth.UserCode;
+import com.liskovsoft.googlecommon.common.models.auth.info.AccountInt;
+import com.liskovsoft.googlecommon.common.models.auth.info.AccountsList;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import retrofit2.Call;
 
 import java.util.List;
@@ -73,7 +73,7 @@ public class AuthService {
                         mAppService.getClientId(),
                         mAppService.getClientSecret())
         );
-        return RetrofitHelper.get(wrapper, true, true);
+        return RetrofitHelper.getWithErrors(wrapper);
     }
 
     public AccessToken updateAccessTokenRaw(String rawJsonAuthData) {

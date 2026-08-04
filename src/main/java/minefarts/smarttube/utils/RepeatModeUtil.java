@@ -1,7 +1,7 @@
 package minefarts.smarttube.utils;
 
 import androidx.annotation.IntDef;
-import minefarts.smarttube.Player;
+import com.google.android.exoplayer2.Player;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -78,3 +78,4 @@ public final class RepeatModeUtil {
   }
 
 }
+

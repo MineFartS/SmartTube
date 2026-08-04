@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 
-import minefarts.smarttube.utils.oauth.Account;
-import minefarts.smarttube.utils.service.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;

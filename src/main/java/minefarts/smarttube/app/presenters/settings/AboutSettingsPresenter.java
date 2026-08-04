@@ -18,7 +18,7 @@ import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
-import minefarts.smarttube.utils.service.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 

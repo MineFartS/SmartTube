@@ -1,12 +1,12 @@
 package minefarts.smarttube.utils.comments.impl
 
-import minefarts.smarttube.utils.data.CommentItem
+import com.liskovsoft.mediaserviceinterfaces.data.CommentItem
 import minefarts.smarttube.utils.helpers.Helpers
 import minefarts.smarttube.utils.comments.gen.CommentItemWrapper
 import minefarts.smarttube.utils.comments.gen.getContinuationKey
 import minefarts.smarttube.utils.comments.gen.getContinuationLabel
-import minefarts.smarttube.utils.common.models.gen.getOptimalResThumbnailUrl
-import minefarts.smarttube.utils.common.models.gen.getText
+import com.liskovsoft.youtubeapi.common.models.gen.getOptimalResThumbnailUrl
+import com.liskovsoft.youtubeapi.common.models.gen.getText
 
 public data class CommentItemImpl(val commentItemWrapper: CommentItemWrapper): CommentItem {
 

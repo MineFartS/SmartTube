@@ -5,8 +5,8 @@ import android.os.Build.VERSION;
 
 import androidx.annotation.Nullable;
 
-import minefarts.smarttube.ui.playback.SimpleExoPlayer;
-import minefarts.smarttube.audio.AudioListener;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.audio.AudioListener;
 import minefarts.smarttube.utils.mylogger.Log;
 
 public class VolumeBooster implements AudioListener {
@@ -78,3 +78,4 @@ public class VolumeBooster implements AudioListener {
         return mIsSupported;
     }
 }
+

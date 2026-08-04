@@ -6,8 +6,8 @@ import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import android.text.TextUtils;
 
-import minefarts.smarttube.C;
-import minefarts.smarttube.ExoPlayerLibraryInfo;
+import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.ExoPlayerLibraryInfo;
 import minefarts.smarttube.utils.mylogger.Log;
 
 import java.nio.ByteBuffer;
@@ -140,3 +140,4 @@ public final class GlUtil {
     }
   }
 }
+

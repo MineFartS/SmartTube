@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.app.models;
 
-import minefarts.smarttube.google.common.converters.regexp.RegExp;
+import com.liskovsoft.googlecommon.common.converters.regexp.RegExp;
 
 /**
  * Data contained inside m=base js file (modern clients) or m=main js file (Cobalt/Legacy)<br/>

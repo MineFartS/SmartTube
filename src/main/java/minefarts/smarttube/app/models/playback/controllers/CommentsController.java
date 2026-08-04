@@ -3,9 +3,9 @@ package minefarts.smarttube.app.models.playback.controllers;
 import android.content.Context;
 import android.util.Pair;
 
-import minefarts.smarttube.utils.data.CommentGroup;
-import minefarts.smarttube.utils.data.CommentItem;
-import minefarts.smarttube.utils.service.data.MediaItemMetadata;
+import com.liskovsoft.mediaserviceinterfaces.data.CommentGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.CommentItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;

@@ -1,7 +1,7 @@
 package minefarts.smarttube.exoplayer.selector.track;
 
 import minefarts.smarttube.utils.helpers.Helpers;
-import minefarts.smarttube.utils.videoinfo.models.TranslatedCaptionTrack;
+import com.liskovsoft.youtubeapi.videoinfo.models.TranslatedCaptionTrack;
 
 import java.util.regex.Pattern;
 

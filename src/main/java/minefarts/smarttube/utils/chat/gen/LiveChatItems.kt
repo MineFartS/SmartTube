@@ -1,7 +1,7 @@
 package minefarts.smarttube.utils.chat.gen
 
-import minefarts.smarttube.utils.common.models.gen.TextItem
-import minefarts.smarttube.utils.common.models.gen.ThumbnailItem
+import com.liskovsoft.youtubeapi.common.models.gen.TextItem
+import com.liskovsoft.youtubeapi.common.models.gen.ThumbnailItem
 
 public data class LiveChatAction(
     val addBannerToLiveChatCommand: AddBannerToLiveChatCommand?,

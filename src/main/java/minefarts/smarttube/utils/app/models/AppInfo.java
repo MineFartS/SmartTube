@@ -1,8 +1,8 @@
 package minefarts.smarttube.utils.app.models;
 
 import minefarts.smarttube.utils.helpers.Helpers;
-import minefarts.smarttube.google.common.converters.regexp.RegExp;
-import minefarts.smarttube.google.common.helpers.ServiceHelper;
+import com.liskovsoft.googlecommon.common.converters.regexp.RegExp;
+import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 
 /**
  * Parser for https://www.youtube.com/tv
