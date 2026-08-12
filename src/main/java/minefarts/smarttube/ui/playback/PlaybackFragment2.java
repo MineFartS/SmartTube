@@ -631,15 +631,18 @@ public class PlaybackFragment2
     private void initializePlayer() {
         if (mPlayer != null) return;
 
-        // -------- Create Player --------
-        // Use default or pass your bandwidthMeter here: bandwidthMeter = new DefaultBandwidthMeter.Builder(getContext()).build()
-        DefaultTrackSelector trackSelector = new RestoreTrackSelector(new AdaptiveTrackSelection.Factory());
-        mTrackSelectorManager.setTrackSelector(trackSelector);
+    // -------- Create Player --------
+    DefaultTrackSelector trackSelector = new RestoreTrackSelector(new AdaptiveTrackSelection.Factory());
+    mTrackSelectorManager.setTrackSelector(trackSelector);
 
-        DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(getContext());
-        mPlayer = createPlayer(renderersFactory, trackSelector);
+    DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(getContext());
+    
+    renderersFactory.setEnableDecoderFallback(true);
+    renderersFactory.setMediaCodecSelector(new FireStickMediaCodecSelector());
 
-        mExoPlayerController.setPlayer(mPlayer);
+    mPlayer = createPlayer(renderersFactory, trackSelector);
+
+    mExoPlayerController.setPlayer(mPlayer);
 
         // -------- Create Player Glue --------
         PlayerAdapter playerAdapter = new LeanbackPlayerAdapter(getContext(), mPlayer, UPDATE_DELAY_MS); // NOTE: possible context memory leak
