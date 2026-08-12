@@ -3,7 +3,7 @@
     "deadCodeDetector.exclude": [
         ".gradle",
         "**/build",
-        "**/assets/nsigsolver/*.js",
+        "src/main/assets/yt.solver.js",
         "lib"
     ],
     "deadCodeDetector.analyzeOnSave": false,

@@ -84,8 +84,6 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
-import com.jakewharton.processphoenix.ProcessPhoenix;
-
 import minefarts.smarttube.utils.helpers.DeviceHelpers;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
@@ -170,7 +168,6 @@ public class Utils {
     private static final int RANDOM_FAIL_REPEAT_TIMES = 10;
     private static final String REMOTE_CONTROL_RECEIVER_CLASS_NAME = "minefarts.smarttube.utils.RemoteControlReceiver";
     private static final String UPDATE_CHANNELS_RECEIVER_CLASS_NAME = "minefarts.smarttube.channels.UpdateChannelsReceiver";
-    private static final String BOOTSTRAP_ACTIVITY_CLASS_NAME = "minefarts.smarttube.ui.main.SplashActivity";
     private static final String TASK_ID = RemoteControlWorker.class.getSimpleName();
     private static final String TAG = Utils.class.getSimpleName();
     private static final String QR_CODE_URL_TEMPLATE = "https://api.qrserver.com/v1/create-qr-code/?data=%s";
@@ -799,44 +796,6 @@ public class Utils {
         removeCallbacks(sForceFinishTheApp);
     }
 
-    public static void restartTheApp(Context context) {
-        persistState(context);
-        postDelayed(() -> restartTheAppInt(context), 1_000);
-    }
-
-    private static void restartTheAppInt(Context context) {
-        try {
-            Intent intent = new Intent(context, Class.forName(BOOTSTRAP_ACTIVITY_CLASS_NAME));
-            intent.putExtra(IntentExtractor.RESTART_INTENT, true);
-            ProcessPhoenix.triggerRebirth(context, intent);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void restartTheApp(Context context, Video video, long posMs) {
-        persistState(context);
-        postDelayed(() -> restartTheAppInt(context, video, posMs), 1_000);
-    }
-
-    private static void restartTheAppInt(Context context, Video video, long posMs) {
-        if (video == null || !video.hasVideo()) return;
-
-        try {
-            Intent intent = new Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(String.format("https://www.youtube.com/watch?v=%s&t=%ss", video.videoId, posMs / 1_000)),
-                    context,
-                    Class.forName(BOOTSTRAP_ACTIVITY_CLASS_NAME)
-            );
-            intent.putExtra(IntentExtractor.RESTART_INTENT, true);
-            
-            ProcessPhoenix.triggerRebirth(context, intent);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
     private static void startReceiver(Context context, String receiverClassName) {
         // Can't use class directly! ATV module is disabled for some flavors.
         Class<?> clazz = null;
@@ -860,19 +819,6 @@ public class Utils {
         } else {
             Log.e(TAG, "Channels receiver class not found: " + receiverClassName);
         }
-    }
-
-    /**
-     * More info: https://stackoverflow.com/questions/6609414/how-do-i-programmatically-restart-an-android-app
-     */
-    private static void triggerRebirth(Context context, Class<?> rootActivity) {
-        Intent intent = new Intent(context, rootActivity);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
-        if (context instanceof MotherActivity) {
-            ((MotherActivity) context).finishReally();
-        }
-        Runtime.getRuntime().exit(0);
     }
 
     public static void triggerRebirth3(Context context, Class<?> myClass) {
