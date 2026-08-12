@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- MOD: intention to add subtitle/debug view -->
-<!-- More info: https://github.com/google/ExoPlayer/issues/6587 -->
+
 <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,20 +10,14 @@
         android:layout_height="match_parent"
         tools:ignore="UnusedAttribute, RtlHardcoded">
 
-    <!-- Original place for VideoSurfaceView -->
-
-    <!-- Add subtitle view. Hides all views behind them. Should be placed at the top. -->
-    <minefarts.smarttube.ui.AspectRatioFrameLayout
+    <com.google.android.exoplayer2.ui.AspectRatioFrameLayout
         android:id="@+id/surface_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center">
-        <!-- Modified place for VideoSurfaceView -->
-    </minefarts.smarttube.ui.AspectRatioFrameLayout>
+    </com.google.android.exoplayer2.ui.AspectRatioFrameLayout>
 
-    <!-- MOD: fix subs width issues on vertical videos by placing subs outside of the aspect layout -->
-    <!-- MOD: add subtitle padding -->
-    <minefarts.smarttube.ui.SubtitleView
+    <com.google.android.exoplayer2.ui.SubtitleView
         android:id="@+id/leanback_subtitles"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
