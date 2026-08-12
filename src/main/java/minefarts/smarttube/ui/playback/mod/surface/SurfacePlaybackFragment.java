@@ -39,25 +39,33 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
 
         ViewGroup root = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
 
-        if (root == null)
+        if (root == null) {
             throw new IllegalStateException("Can't create root of SurfacePlaybackFragment");
+        }
 
+        // 1. ALWAYS find your layout container first
+        mVideoSurfaceRoot = root.findViewById(R.id.surface_root);
+        
+        // 2. Fail fast with an explicit dev error if the layout XML is missing the view ID
+        if (mVideoSurfaceRoot == null) {
+            throw new NullPointerException("SurfacePlaybackFragment: R.id.surface_root not found in layout! Check your XML custom view tags.");
+        }
+
+        // 3. Initialize your surface wrapper AFTER the root container is ready
         mVideoSurfaceWrapper = new SurfaceViewWrapper(getContext(), root);
 
-        mVideoSurfaceRoot = root.findViewById(R.id.surface_root);
-
         View surfaceView = mVideoSurfaceWrapper.getSurfaceView();
-        FrameLayout.LayoutParams params =
-            new FrameLayout.LayoutParams(
+        if (surfaceView != null) {
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 Gravity.CENTER);
-        surfaceView.setLayoutParams(params);
-
-mVideoSurfaceRoot.addView(surfaceView, 0);
+            surfaceView.setLayoutParams(params);
+            mVideoSurfaceRoot.addView(surfaceView, 0);
+        }
+        
         mVideoSurfaceRoot.setAspectRatioListener((a, b, c) -> scaleIfNeeded());
 
-        // Scaling/ratio calculations removed. Let layout handle video sizing.
         setBackgroundType(PlaybackSupportFragment.BG_LIGHT);
         return root;
     }
