@@ -26,19 +26,12 @@ import minefarts.smarttube.ui.search.tags.SearchTagsActivity;
 import minefarts.smarttube.ui.signin.SignInActivity;
 
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.io.File;
 
 public class MainApplication extends MultiDexApplication {
     
     static {
-        // fix youtube bandwidth throttling (best - false)???
-        // false is better for streams (less buffering)
         System.setProperty("http.keepAlive", "false");
-        // fix ipv6 infinite video buffering???
-        // Better to remove this fix at all. Users complain about infinite loading.
-        //System.setProperty("java.net.preferIPv6Addresses", "true");
-        // Another IPv6 fix (no effect)
-        // https://stackoverflow.com/questions/1920623/sometimes-httpurlconnection-getinputstream-executes-too-slowly
-        //System.setProperty("java.net.preferIPv4Stack" , "true");
     }
 
     public static Context context;
@@ -47,13 +40,28 @@ public class MainApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
 
+        //===========================================================================
+
+        // Target the problematic WebView cache path
+        File webViewCache = new File(getCacheDir(), "WebView");
+        
+        // If it exists but is a file, delete it so it can become a folder
+        if (webViewCache.exists() && !webViewCache.isDirectory())
+            webViewCache.delete();
+        
+        // Force create the directory structure
+        if (!webViewCache.exists())
+            webViewCache.mkdirs();
+
+        //===========================================================================
+
         ViewManager viewManager = ViewManager.instance(this);
 
         viewManager.setRoot(BrowseActivity.class);
 
-        viewManager.register(SplashView.class, SplashActivity.class); // no parent, because it's root activity
+        viewManager.register(SplashView.class, SplashActivity.class);
 
-        viewManager.register(BrowseView.class, BrowseActivity.class); // no parent, because it's root activity
+        viewManager.register(BrowseView.class, BrowseActivity.class);
 
         viewManager.register(PlaybackFragment2.class, PlaybackActivity.class, BrowseActivity.class);
 
@@ -68,6 +76,8 @@ public class MainApplication extends MultiDexApplication {
         viewManager.register(ChannelView.class, ChannelActivity.class, BrowseActivity.class);
 
         viewManager.register(ChannelUploadsView.class, ChannelUploadsActivity.class, BrowseActivity.class);
+
+        //===========================================================================
 
     }
 
