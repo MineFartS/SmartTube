@@ -41,9 +41,9 @@ Add-YuliskovPkg 'exoplayer-extension-okhttp' '/exoplayer-amzn-2.10.6/extensions/
 
 if (-not (Test-Path $YTSolver)) {
 
-    Invoke-Python "lib\ejs\hatch_build.py"
+    Invoke-Python "lib\ejs2\hatch_build.py"
 
-    Copy-Item "lib\ejs\dist\yt.solver.js" $YTSolver
+    Copy-Item "lib\ejs2\dist\yt.solver.js" $YTSolver
 
 }
 
