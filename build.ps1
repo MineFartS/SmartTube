@@ -30,6 +30,7 @@ if ($Force) {
 Add-YuliskovPkg 'mediaserviceinterfaces' '/MediaServiceCore/mediaserviceinterfaces/'
 Add-YuliskovPkg 'youtubeapi' '/MediaServiceCore/youtubeapi/'
 Add-YuliskovPkg 'sharedutils' '/SharedModules/sharedutils/'
+Add-YuliskovPkg 'common' '/common/'
 Add-YuliskovPkg 'exoplayer-library-core' '/exoplayer-amzn-2.10.6/library/core/'
 Add-YuliskovPkg 'exoplayer-library-ui' '/exoplayer-amzn-2.10.6/library/ui/'
 Add-YuliskovPkg 'exoplayer-library-dash' '/exoplayer-amzn-2.10.6/library/dash/'

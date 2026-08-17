@@ -84,6 +84,7 @@ dependencies {
     implementation project(':mediaserviceinterfaces')
     implementation project(':youtubeapi')
     implementation project(':sharedutils')
+    implementation project(':common')
     implementation project(':exoplayer-library-core')
     implementation project(':exoplayer-library-ui')
     implementation project(':exoplayer-library-dash')
