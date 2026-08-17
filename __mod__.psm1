@@ -90,7 +90,7 @@ function Invoke-Gradle ([Switch]$Yuliskov, [Parameter(ValueFromRemainingArgument
     }
 
     .\gradlew.bat --stop
-    .\gradlew.bat @cmdargs
+    .\gradlew.bat @cmdargs --max-workers=3 --no-daemon
     .\gradlew.bat --stop
 
     Pop-Location
