@@ -1,179 +1,63 @@
+
+apply from: gradle.ext.sharedModulesConstants
+
+wrapper {
+    gradleVersion = gradleVersion
+    distributionType = Wrapper.DistributionType.BIN
+}
+
 buildscript {
+    
+    apply from: gradle.ext.sharedModulesConstants
 
     repositories {
         google()
         mavenCentral()
     }
-
+    
     dependencies {
-        classpath 'com.google.gms:google-services:4.3.10'
-        classpath 'com.google.android.gms:strict-version-matcher-plugin:1.2.0'
-        classpath 'com.android.tools.build:gradle:4.2.2'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10'
+        classpath 'com.android.tools.build:gradle:4.0.0+'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:' + kotlinVersion
     }
 
 }
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
+allprojects {
 
-android {
-    
-    namespace 'minefarts.smarttube'
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-nowarn" // Hide warnings
     }
 
-    compileSdkVersion 33
-
-    buildToolsVersion '30.0.3'
-
-    defaultConfig {
-
-        applicationId "minefarts.smarttube"
-
-        minSdkVersion 21
-        targetSdkVersion 26
-
-        def now = new Date()
-        versionName now.format('yy.MM.dd')
-        versionCode now.format('yyMMdd').toInteger()
-
-        buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
-
-        multiDexEnabled = true
-
-        splits {
-            abi {
-                enable true
-                reset()
-                include 'armeabi-v7a', 'x86', 'arm64-v8a'
-                universalApk false
-            }
-        }
-    
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
- 
-    buildTypes {
-        debug {
-            minifyEnabled false
-            shrinkResources false
-        }
+    
+    configurations.all {
+        // WorkManager conflict resolution
+        resolutionStrategy.force 'androidx.lifecycle:lifecycle-livedata-core:' + liveDataVersion
+        resolutionStrategy.force 'androidx.lifecycle:lifecycle-livedata:' + liveDataVersion
+        resolutionStrategy.force 'androidx.lifecycle:lifecycle-runtime:' + liveDataVersion
+        // Force Android 4 compatible okHttp version
+        resolutionStrategy.force 'com.squareup.okhttp3:okhttp:' + okhttpVersion
+        // Downgrade kotlin version for WorkManager
+        resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:' + kotlinVersion
+        resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:' + kotlinVersion
+        resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib:' + kotlinVersion
+        resolutionStrategy.force 'org.jetbrains.kotlinx:kotlinx-coroutines-android:' + kotlinxVersion
+        resolutionStrategy.force 'androidx.core:core-ktx:' + kotlinCoreXVersion
+        resolutionStrategy.force 'androidx.core:core:' + coreXLibraryVersion
+        resolutionStrategy.force 'androidx.annotation:annotation:' + annotationXLibraryVersion
+        // Downgrade Cronet version for cronet-okhttp
+        resolutionStrategy.force 'org.chromium.net:cronet-api:' + cronetApiVersion
+        resolutionStrategy.force 'androidx.multidex:multidex:' + multiDexVersion
+
+        // Replace with modded library (leanback-1.0.0)
+        exclude group: 'androidx.leanback', module: 'leanback'
+
+        // Replace with modded library (fragment-1.1.0)
+        exclude group: 'androidx.fragment', module: 'fragment'
+
     }
-
-    flavorDimensions "default"
-
-    lintOptions {
-        abortOnError false
-    }
-
-}
-
-apply plugin: 'com.google.gms.google-services'
-
-repositories {
-    google()
-    mavenCentral()
-    maven { url 'https://jitpack.io' }
-}
-
-dependencies {
-
-    implementation project(':mediaserviceinterfaces')
-    implementation project(':youtubeapi')
-    implementation project(':sharedutils')
-    implementation project(':common')
-    implementation project(':fragment')
-    implementation project(':chatkit')
-    implementation project(':exoplayer-library-core')
-    implementation project(':exoplayer-library-ui')
-    implementation project(':exoplayer-library-dash')
-    implementation project(':exoplayer-library-sabr')
-    implementation project(':exoplayer-library-hls')
-    implementation project(':exoplayer-library-smoothstreaming')
-    implementation project(':exoplayer-extension-mediasession')
-    implementation project(':exoplayer-extension-okhttp')
-    implementation project(':exoplayer-extension-leanback')
-
-    implementation project(':smarttubetv')
-
-    compileOnly 'org.checkerframework:checker-qual:2.5.0'
-    compileOnly 'org.checkerframework:checker-compat-qual:2.5.0'
-
-    // Core & Architecture
-    implementation 'androidx.core:core:1.9.0'
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.activity:activity:1.6.0'
-    implementation 'androidx.fragment:fragment:1.5.0'
-    implementation 'androidx.appcompat:appcompat:1.5.0'
-    implementation 'androidx.multidex:multidex:2.0.1'
-
-    // Android TV & Leanback
-    implementation 'androidx.tvprovider:tvprovider:1.0.0'
-    implementation 'androidx.leanback:leanback:1.0.0'
-    implementation 'androidx.leanback:leanback-preference:1.0.0'
-    implementation 'androidx.recommendation:recommendation:1.0.0'
-
-    // Media & Playback
-    implementation 'androidx.media:media:1.2.0' 
-
-    // UI Components & Layouts
-    implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    implementation 'androidx.viewpager:viewpager:1.0.0'
-    implementation 'com.google.android.material:material:1.5.0'
-    implementation 'com.google.android.flexbox:flexbox:3.0.0'
-    implementation 'androidx.preference:preference:1.2.0'
-
-    // System Utilities & Background Processing
-    implementation 'androidx.work:work-runtime:2.7.1'
-    implementation 'androidx.browser:browser:1.4.0'
-    implementation 'androidx.webkit:webkit:1.7.0'
-    
-    // Framework Architecture
-    implementation 'androidx.annotation:annotation:1.5.0'
-    implementation 'androidx.loader:loader:1.0.0'
-    implementation 'androidx.interpolator:interpolator:1.0.0'
-
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
-    implementation 'com.github.bumptech.glide:annotations:4.11.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
-
-    implementation 'dnsjava:dnsjava:2.1.9'
-    
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
-
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
-
-    implementation 'net.gotev:speech:1.1.7'
-
-    api 'com.squareup.okhttp3:okhttp:3.12.5'
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
-    
-    implementation 'com.squareup.okhttp3:okhttp:3.12.13'
-    implementation 'com.squareup.okhttp3:okhttp-dnsoverhttps:3.12.13'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.13'
-    implementation 'com.squareup.okhttp3:okhttp-brotli:4.1.0'
-    
-    implementation 'com.localebro:okhttpprofiler:1.0.8'
-
-    implementation 'com.google.code.gson:gson:2.8.2'
-
-    implementation 'com.jakewharton:disklrucache:2.0.2'
-
-    implementation 'info.guardianproject.netcipher:netcipher:2.1.0'
-
-    implementation 'com.jayway.jsonpath:json-path:2.4.0'
-
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
-
-    implementation 'com.grack:nanojson:1.7'
-
-    implementation 'com.caoccao.javet:javet-android:1.0.7'
-
 }

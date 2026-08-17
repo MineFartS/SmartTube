@@ -43,18 +43,18 @@ Add-YuliskovPkg 'exoplayer-extension-mediasession' '/exoplayer-amzn-2.10.6/exten
 Add-YuliskovPkg 'exoplayer-extension-okhttp' '/exoplayer-amzn-2.10.6/extensions/okhttp/'
 Add-YuliskovPkg 'exoplayer-extension-leanback' '/exoplayer-amzn-2.10.6/extensions/leanback/'
 
-if (-not (Test-Path $YTSolver)) {
+#if (-not (Test-Path $YTSolver)) {
 
-    Invoke-Python "lib\ejs2\hatch_build.py"
+#    Invoke-Python "lib\ejs2\hatch_build.py"
 
-    Copy-Item "lib\ejs2\dist\yt.solver.js" $YTSolver
+#    Copy-Item "lib\ejs2\dist\yt.solver.js" $YTSolver
 
-}
+#}
 
 if (Test-ADBConnection) {
-    $gARGS += ":installDebug"
+    $gARGS += ":smarttubetv:installStstableDebug"
 } else {
-    $gARGS += ":build"
+    $gARGS += ":smarttubetv:build"
 }
 
 Clear-Host

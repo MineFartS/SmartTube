@@ -1,23 +1,37 @@
+include ':smarttubetv', ':common', ':chatkit', ':leanbackassistant', ':leanback-1.0.0', ':fragment-1.1.0'
 
-// Iter through children of lib/aar
-(new File(rootDir, '/aar/')).eachFile { aarFile ->
+// SharedModules
+gradle.ext.sharedModulesRoot = new File(settingsDir, 'pkg/SharedModules')
+apply from: new File(gradle.ext.sharedModulesRoot, 'core_settings.gradle')
 
-    // Parse project name from file name
-    String name = aarFile.name.replaceAll(/\.aar$/, '')
+gradle.ext.sharedModulesConstants = new File(gradle.ext.sharedModulesRoot, '/../constants.gradle')
 
-    // Register project
-    include ":${name}"
-    project(":${name}").projectDir = new File(rootDir, "/build/stubs/${name}/")
-    
-    // Wire the AAR binary as the project output artifact
-    gradle.rootProject {
-        project(":${name}") {
-            configurations.create('default')
-            artifacts {
-                add('default', aarFile)
-            }
-        }
-    }
+// MediaServiceCore
+gradle.ext.mediaServiceCoreRoot = new File(settingsDir, 'pkg/MediaServiceCore')
+apply from: new File(gradle.ext.mediaServiceCoreRoot, 'core_settings.gradle')
 
-}
+// exoplayer-amzn-2.10.6
+gradle.ext.exoplayerRoot = new File(settingsDir, 'pkg/exoplayer-amzn-2.10.6')
+gradle.ext.exoplayerModulePrefix = 'exoplayer-'
+apply from: new File(
+    gradle.ext.exoplayerRoot, 
+    'core_settings.gradle'
+)
 
+// smarttubetv
+project(':smarttubetv').projectDir = new File(settingsDir, 'pkg/smarttubetv')
+
+// common
+project(':common').projectDir = new File(settingsDir, 'pkg/common')
+
+// fragment-1.1.0
+project(':fragment-1.1.0').projectDir = new File(settingsDir, 'pkg/fragment-1.1.0')
+
+// chatkit
+project(':chatkit').projectDir = new File(settingsDir, 'pkg/chatkit')
+
+// leanbackassistant
+project(':leanbackassistant').projectDir = new File(settingsDir, 'pkg/leanbackassistant')
+
+// leanback-1.0.0
+project(':leanback-1.0.0').projectDir = new File(settingsDir, 'pkg/leanback-1.0.0')

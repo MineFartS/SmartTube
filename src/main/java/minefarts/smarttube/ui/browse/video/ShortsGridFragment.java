@@ -1,8 +1,0 @@
-package minefarts.smarttube.ui.browse.video;
-
-public class ShortsGridFragment extends VideoGridFragment {
-    @Override
-    protected boolean isShorts() {
-        return true;
-    }
-}
