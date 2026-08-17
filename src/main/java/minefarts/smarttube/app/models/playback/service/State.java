@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import minefarts.smarttube.utils.helpers.Helpers;
-import minefarts.smarttube.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.prefs.AppPrefs;
 import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
 import minefarts.smarttube.utils.Utils;

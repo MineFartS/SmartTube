@@ -6,8 +6,8 @@ import minefarts.smarttube.leanback.widget.Presenter;
 import minefarts.smarttube.leanback.widget.PresenterSelector;
 
 import minefarts.smarttube.utils.helpers.Helpers;
-import minefarts.smarttube.app.models.data.Video;
-import minefarts.smarttube.app.models.data.VideoGroup;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
 
 import java.util.ArrayList;
 import java.util.Collections;

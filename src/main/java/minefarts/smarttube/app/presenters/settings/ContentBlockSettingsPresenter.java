@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import androidx.core.content.ContextCompat;
 
 import minefarts.smarttube.R;
-import minefarts.smarttube.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.controllers.ContentBlockController.SegmentAction;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;

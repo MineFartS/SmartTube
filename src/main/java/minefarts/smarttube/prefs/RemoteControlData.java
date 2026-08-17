@@ -3,7 +3,7 @@ package minefarts.smarttube.prefs;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import minefarts.smarttube.utils.helpers.Helpers;
-import minefarts.smarttube.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.prefs.common.DataChangeBase;
 
 public class RemoteControlData extends DataChangeBase {

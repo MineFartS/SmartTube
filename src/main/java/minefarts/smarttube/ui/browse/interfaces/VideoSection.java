@@ -1,7 +1,7 @@
 package minefarts.smarttube.ui.browse.interfaces;
 
-import minefarts.smarttube.app.models.data.Video;
-import minefarts.smarttube.app.models.data.VideoGroup;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
 
 public interface VideoSection extends Section {
     void update(VideoGroup group);

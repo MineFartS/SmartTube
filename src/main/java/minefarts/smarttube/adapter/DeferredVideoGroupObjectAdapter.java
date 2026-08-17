@@ -1,6 +1,6 @@
 package minefarts.smarttube.adapter;
 
-import minefarts.smarttube.app.models.data.VideoGroup;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
 import minefarts.smarttube.presenter.VideoCardPresenter;
 
 public class DeferredVideoGroupObjectAdapter extends VideoGroupObjectAdapter {

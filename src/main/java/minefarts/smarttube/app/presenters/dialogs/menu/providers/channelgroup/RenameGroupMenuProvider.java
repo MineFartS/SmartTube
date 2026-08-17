@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup;
 import minefarts.smarttube.R;
-import minefarts.smarttube.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
 import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;

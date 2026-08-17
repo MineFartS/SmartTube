@@ -2,7 +2,7 @@ package minefarts.smarttube.presenter;
 
 import minefarts.smarttube.leanback.widget.AbstractDetailsDescriptionPresenter;
 
-import minefarts.smarttube.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 
 public class DetailsDescriptionPresenter extends AbstractDetailsDescriptionPresenter {
 

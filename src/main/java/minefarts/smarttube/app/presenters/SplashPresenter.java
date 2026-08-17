@@ -12,7 +12,7 @@ import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.prefs.GlobalPreferences;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.R;
-import minefarts.smarttube.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.presenters.dialogs.AccountSelectionPresenter;

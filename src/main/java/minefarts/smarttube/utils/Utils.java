@@ -91,7 +91,7 @@ import minefarts.smarttube.utils.misc.WeakHashSet;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.BuildConfig;
 import minefarts.smarttube.R;
-import minefarts.smarttube.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.ui.playback.PlaybackFragment2;
 import minefarts.smarttube.app.models.playback.service.VideoStateService;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;

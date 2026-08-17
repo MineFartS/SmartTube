@@ -11,7 +11,7 @@ import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.R;
-import minefarts.smarttube.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.app.models.playback.ui.SeekBarSegment;
 import minefarts.smarttube.app.models.playback.ui.UiOptionItem;

@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import com.liskovsoft.mediaserviceinterfaces.data.ChatItem;
 import com.liskovsoft.mediaserviceinterfaces.data.CommentItem;
 import minefarts.smarttube.utils.helpers.Helpers;
-import minefarts.smarttube.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.R;
 import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;

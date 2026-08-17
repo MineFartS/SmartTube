@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
-import minefarts.smarttube.app.models.data.Video;
-import minefarts.smarttube.app.models.data.VideoGroup;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.adapter.VideoGroupObjectAdapter;
 import minefarts.smarttube.presenter.ChannelHeaderPresenter;

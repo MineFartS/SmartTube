@@ -1,6 +1,6 @@
 package minefarts.smarttube.app.views;
 
-import minefarts.smarttube.app.models.data.VideoGroup;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
 
 public interface ChannelUploadsView {
     void update(VideoGroup videoGroup);

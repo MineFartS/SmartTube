@@ -19,7 +19,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.BuildConfig;
-import minefarts.smarttube.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.PlayerEventListener;
 import minefarts.smarttube.exoplayer.ExoMediaSourceFactory;
 import minefarts.smarttube.exoplayer.errors.TrackErrorFixer;

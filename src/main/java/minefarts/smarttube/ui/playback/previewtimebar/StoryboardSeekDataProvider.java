@@ -3,7 +3,7 @@ package minefarts.smarttube.ui.playback.previewtimebar;
 import android.content.Context;
 import minefarts.smarttube.leanback.media.PlaybackGlue;
 import minefarts.smarttube.leanback.widget.PlaybackSeekDataProvider;
-import minefarts.smarttube.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.leanback.media.PlaybackTransportControlGlue;
 
 public class StoryboardSeekDataProvider extends PlaybackSeekDataProvider {

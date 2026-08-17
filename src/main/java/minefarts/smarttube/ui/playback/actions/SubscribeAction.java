@@ -3,7 +3,7 @@ package minefarts.smarttube.ui.playback.actions;
 import android.content.Context;
 
 import minefarts.smarttube.R;
-import minefarts.smarttube.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.common.helpers.PostDataHelper;

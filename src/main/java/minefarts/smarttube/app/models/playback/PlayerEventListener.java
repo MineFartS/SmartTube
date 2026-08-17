@@ -3,7 +3,7 @@ package minefarts.smarttube.app.models.playback;
 import com.google.android.exoplayer2.ExoPlaybackException;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
-import minefarts.smarttube.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.utils.TickleManager.TickleListener;
 import minefarts.smarttube.exoplayer.selector.FormatItem;
 import minefarts.smarttube.exoplayer.selector.TrackSelectorManager;

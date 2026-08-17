@@ -1,10 +1,10 @@
 package minefarts.smarttube.app.views;
 
-import minefarts.smarttube.app.models.data.SettingsGroup;
-import minefarts.smarttube.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.SettingsGroup;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.app.models.errors.ErrorFragmentData;
-import minefarts.smarttube.app.models.data.BrowseSection;
-import minefarts.smarttube.app.models.data.VideoGroup;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.BrowseSection;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
 
 public interface BrowseView {
     void addSection(int index, BrowseSection section);

@@ -18,7 +18,7 @@ import com.bumptech.glide.request.transition.Transition;
 
 import minefarts.smarttube.leanback.app.BackgroundManager;
 import minefarts.smarttube.utils.helpers.Helpers;
-import minefarts.smarttube.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.R;
 import minefarts.smarttube.utils.ViewUtil;
 

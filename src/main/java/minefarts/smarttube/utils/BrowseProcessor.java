@@ -1,7 +1,7 @@
 package minefarts.smarttube.utils;
 
-import minefarts.smarttube.app.models.data.Video;
-import minefarts.smarttube.app.models.data.VideoGroup;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
 
 public interface BrowseProcessor {
     interface OnItemReady {

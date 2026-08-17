@@ -2,7 +2,7 @@ package minefarts.smarttube.app.presenters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import minefarts.smarttube.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.views.DetailsView;
 import minefarts.smarttube.app.views.ViewManager;

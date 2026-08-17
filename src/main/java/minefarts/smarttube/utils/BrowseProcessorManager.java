@@ -2,7 +2,7 @@ package minefarts.smarttube.utils;
 
 import android.content.Context;
 
-import minefarts.smarttube.app.models.data.VideoGroup;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
 
 import java.util.ArrayList;
 

@@ -20,7 +20,7 @@ import com.bumptech.glide.request.target.Target;
 
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
-import minefarts.smarttube.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.R;
 import minefarts.smarttube.presenter.base.LongClickPresenter;

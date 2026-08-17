@@ -4,7 +4,7 @@ import android.content.Context;
 import androidx.multidex.MultiDexApplication;
 
 import minefarts.smarttube.utils.helpers.Helpers;
-import minefarts.smarttube.app.models.data.BrowseSection;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.BrowseSection;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
 import minefarts.smarttube.app.views.AddDeviceView;
 import minefarts.smarttube.app.views.AppDialogView;

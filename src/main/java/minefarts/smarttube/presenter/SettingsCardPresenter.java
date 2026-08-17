@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import minefarts.smarttube.leanback.widget.Presenter;
 import minefarts.smarttube.utils.helpers.Helpers;
-import minefarts.smarttube.app.models.data.SettingsItem;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.SettingsItem;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.R;
 import minefarts.smarttube.utils.ViewUtil;

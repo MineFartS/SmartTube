@@ -6,7 +6,7 @@ import android.content.Context;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import minefarts.smarttube.app.models.data.Queue;
-import minefarts.smarttube.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.app.models.playback.controllers.ChatController;
 import minefarts.smarttube.app.models.playback.controllers.CommentsController;

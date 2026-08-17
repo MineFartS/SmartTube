@@ -5,7 +5,7 @@ import android.content.Context;
 
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.prefs.GlobalPreferences;
-import minefarts.smarttube.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.utils.DataStore;

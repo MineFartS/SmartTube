@@ -18,7 +18,7 @@ import com.liskovsoft.mediaserviceinterfaces.data.MediaItemStoryboard.Size;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 
 import minefarts.smarttube.app.models.playback.BasePlayerController;
-import minefarts.smarttube.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.utils.MediaItemService;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.ViewUtil;

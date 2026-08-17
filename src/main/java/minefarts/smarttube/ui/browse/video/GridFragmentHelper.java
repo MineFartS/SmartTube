@@ -6,7 +6,7 @@ import android.util.DisplayMetrics;
 import android.util.Pair;
 
 import minefarts.smarttube.utils.helpers.Helpers;
-import minefarts.smarttube.app.models.data.VideoGroup;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
 import minefarts.smarttube.app.views.ViewManager;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.R;

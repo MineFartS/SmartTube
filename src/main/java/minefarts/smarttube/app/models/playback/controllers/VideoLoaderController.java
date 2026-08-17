@@ -19,9 +19,9 @@ import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Queue;
-import minefarts.smarttube.app.models.data.SimpleMediaItem;
-import minefarts.smarttube.app.models.data.Video;
-import minefarts.smarttube.app.models.data.VideoGroup;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.SimpleMediaItem;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.app.models.playback.PlayerEventListener;
 import minefarts.smarttube.ui.playback.PlaybackFragment2;
@@ -343,9 +343,13 @@ Log.d(TAG, "Empty format info received. Seems future live translation. No video 
         Utils.postDelayed(mRestartEngine, delayMs);
     }
 
+    public boolean isPlaylistInChannel(Video item) {
+        return item.belongsToChannel() && item.hasPlaylist() && !item.belongsToSamePlaylistGroup();
+    }
+
     public void openVideo(Video item) {
         
-        if (item.hasVideo() && !item.isPlaylistInChannel()) {
+        if (item.hasVideo() && !isPlaylistInChannel(item)) {
             mPlaybackPresenter.openVideo(item);
         
         } else if (item.hasChannel() || item.belongsToChannelUploads()) {
