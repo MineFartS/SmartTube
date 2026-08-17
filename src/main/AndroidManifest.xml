@@ -166,7 +166,7 @@
         <!-- noHistory is essential for dialogs. Because otherwise you'll see previous dialog content when opening. -->
         <!-- behind is important too. This fix crashes on Android 8 (api 26) and above. -->
         <!-- More info about behind: https://stackoverflow.com/a/52426009/1279056 -->
-        <activity android:name="minefarts.smarttube.ui.dialogs.AppDialogActivity"
+        <activity android:name="com.liskovsoft.smartyoutubetv2.tv.ui.dialogs.AppDialogActivity"
                   android:noHistory="true"
                   android:excludeFromRecents="true"
                   android:launchMode="singleInstance"

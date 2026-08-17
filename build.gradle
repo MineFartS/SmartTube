@@ -86,6 +86,7 @@ dependencies {
     implementation project(':sharedutils')
     implementation project(':common')
     implementation project(':fragment')
+    implementation project(':chatkit')
     implementation project(':exoplayer-library-core')
     implementation project(':exoplayer-library-ui')
     implementation project(':exoplayer-library-dash')

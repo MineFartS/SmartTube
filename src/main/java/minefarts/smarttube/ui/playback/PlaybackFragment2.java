@@ -91,7 +91,7 @@ import com.liskovsoft.smartyoutubetv2.common.app.models.playback.listener.Player
 import minefarts.smarttube.R;
 import minefarts.smarttube.ui.browse.video.GridFragmentHelper;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.previewtimebar.StoryboardSeekDataProvider;
-import minefarts.smarttube.ui.widgets.chat.LiveChatView;
+import com.liskovsoft.smartyoutubetv2.tv.ui.widgets.chat.LiveChatView;
 import minefarts.smarttube.utils.locale.LocaleUtility;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.utils.helpers.Helpers;

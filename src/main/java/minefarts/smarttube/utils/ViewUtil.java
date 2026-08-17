@@ -24,8 +24,8 @@ import com.bumptech.glide.request.RequestOptions;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.R;
 import com.liskovsoft.smartyoutubetv2.tv.adapter.VideoGroupObjectAdapter;
-import minefarts.smarttube.ui.widgets.marqueetextview.MarqueeTextView;
-import minefarts.smarttube.ui.widgets.speedmarquee.SpeedMarquee;
+import com.liskovsoft.smartyoutubetv2.tv.ui.widgets.marqueetextview.MarqueeTextView;
+import com.liskovsoft.smartyoutubetv2.tv.ui.widgets.speedmarquee.SpeedMarquee;
 
 public class ViewUtil {
     /**

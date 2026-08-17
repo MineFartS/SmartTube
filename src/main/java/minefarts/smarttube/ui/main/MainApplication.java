@@ -20,7 +20,7 @@ import minefarts.smarttube.ui.adddevice.AddDeviceActivity;
 import minefarts.smarttube.ui.browse.BrowseActivity;
 import minefarts.smarttube.ui.channel.ChannelActivity;
 import minefarts.smarttube.ui.channeluploads.ChannelUploadsActivity;
-import minefarts.smarttube.ui.dialogs.AppDialogActivity;
+import com.liskovsoft.smartyoutubetv2.tv.ui.dialogs.AppDialogActivity;
 import minefarts.smarttube.ui.playback.PlaybackActivity;
 import com.liskovsoft.smartyoutubetv2.tv.ui.search.tags.SearchTagsActivity;
 import minefarts.smarttube.ui.signin.SignInActivity;
