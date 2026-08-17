@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import minefarts.smarttube.leanback.widget.BaseCardView;
+import androidx.leanback.widget.BaseCardView;
 import minefarts.smarttube.R;
 
 public class LoadingCardView extends BaseCardView {

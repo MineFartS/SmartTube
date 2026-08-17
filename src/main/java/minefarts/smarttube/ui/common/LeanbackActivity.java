@@ -14,7 +14,7 @@ import minefarts.smarttube.prefs.RemoteControlData;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.ui.common.keyhandler.DoubleBackManager2;
 import minefarts.smarttube.ui.playback.PlaybackActivity;
-import minefarts.smarttube.ui.search.tags.SearchTagsActivity;
+import com.liskovsoft.smartyoutubetv2.tv.ui.search.tags.SearchTagsActivity;
 
 /**
  * This parent class contains common methods that run in every activity such as search.

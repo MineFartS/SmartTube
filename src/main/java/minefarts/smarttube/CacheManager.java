@@ -1,19 +1,17 @@
 package minefarts.smarttube;
 
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
-
 import com.liskovsoft.googlecommon.common.locale.LocaleManager;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
+
+import com.liskovsoft.youtubeapi.app.AppService;
+
 import minefarts.smarttube.utils.locale.LocaleUpdater;
 import minefarts.smarttube.utils.SignInService;
 import minefarts.smarttube.utils.MediaItemService;
-import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
-import minefarts.smarttube.utils.app.AppService;
-import minefarts.smarttube.utils.app.AppApi;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
 import minefarts.smarttube.utils.helpers.FileHelpers;
 import minefarts.smarttube.app.models.playback.controllers.VideoStateController;
-import minefarts.smarttube.app.models.playback.PlayerEventListener;
-import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.utils.app.nsigsolver.V8ChallengeProvider;
 
 import java.util.concurrent.Executors;
@@ -39,7 +37,7 @@ public class CacheManager {
         
         AppService AS = AppService.instance();
 
-        AS.mVisitorCookie = null;
+        AS.invalidateCache();
 
         //=======================
         // LocaleUpdater

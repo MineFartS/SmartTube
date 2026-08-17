@@ -3,15 +3,17 @@ package minefarts.smarttube.app.presenters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import minefarts.smarttube.utils.service.ContentService;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.SearchOptions;
-import minefarts.smarttube.utils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import minefarts.smarttube.R;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
-import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.UiOptionItem;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionItem;
+
+import minefarts.smarttube.utils.service.ContentService;
+import minefarts.smarttube.utils.mylogger.Log;
+import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.search.MediaServiceSearchTagProvider;
 import minefarts.smarttube.app.models.search.vineyard.Tag;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
@@ -284,7 +286,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
     }
 
     private void appendFilterByDateCategory(AppDialogPresenter settingsPresenter) {
-        List<UiOptionItem> options = new ArrayList<>();
+        List<OptionItem> options = new ArrayList<>();
 
         for (int[] pair : new int[][] {
                 {R.string.upload_date_any, 0},
@@ -305,7 +307,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
     }
 
     private void appendFilterByDurationCategory(AppDialogPresenter settingsPresenter) {
-        List<UiOptionItem> options = new ArrayList<>();
+        List<OptionItem> options = new ArrayList<>();
 
         for (int[] pair : new int[][] {
                 {R.string.video_duration_any, 0},
@@ -324,7 +326,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
     }
 
     private void appendFilterByTypeCategory(AppDialogPresenter settingsPresenter) {
-        List<UiOptionItem> options = new ArrayList<>();
+        List<OptionItem> options = new ArrayList<>();
 
         for (int[] pair : new int[][] {
                 {R.string.content_type_any, 0},
@@ -344,7 +346,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
     }
 
     private void appendFilterByFeatureCategory(AppDialogPresenter settingsPresenter) {
-        List<UiOptionItem> options = new ArrayList<>();
+        List<OptionItem> options = new ArrayList<>();
 
         for (int[] pair : new int[][] {
                 {R.string.video_feature_live, SearchOptions.FEATURE_LIVE},
@@ -369,7 +371,7 @@ public class SearchPresenter extends BasePresenter<SearchView> {
         ritems.put("View Count",  SearchOptions.SORT_BY_VIEW_COUNT);
         ritems.put("Rating",      SearchOptions.SORT_BY_RATING);
 
-        List<UiOptionItem> options = new ArrayList<>();
+        List<OptionItem> options = new ArrayList<>();
 
         for (Entry<String, Integer> i : ritems.entrySet()) {
             options.add(UiOptionItem.from(

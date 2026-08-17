@@ -3,12 +3,14 @@ package minefarts.smarttube.app.presenters.dialogs;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.UiOptionItem;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionItem;
+
 import minefarts.smarttube.update.AppUpdateChecker;
 import minefarts.smarttube.update.AppUpdateCheckerListener;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.errors.ErrorFragmentData;
-import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
@@ -142,8 +144,8 @@ public class AppUpdatePresenter extends BasePresenter<Void> implements AppUpdate
         });
     }
 
-    private List<UiOptionItem> createChangelogOptions(ArrayList<String> changelog) {
-        List<UiOptionItem> options = new ArrayList<>();
+    private List<OptionItem> createChangelogOptions(ArrayList<String> changelog) {
+        List<OptionItem> options = new ArrayList<>();
 
         for (String change : changelog) {
             options.add(UiOptionItem.from(change));

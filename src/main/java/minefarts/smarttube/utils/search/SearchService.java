@@ -1,6 +1,6 @@
 package minefarts.smarttube.utils.search;
 
-import minefarts.smarttube.utils.app.AppService;
+import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.googlecommon.common.locale.LocaleManager;
 import minefarts.smarttube.utils.search.models.SearchResult;

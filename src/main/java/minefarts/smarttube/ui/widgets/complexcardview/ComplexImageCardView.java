@@ -6,7 +6,7 @@ import android.os.Looper;
 import android.util.AttributeSet;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
-import minefarts.smarttube.leanback.widget.ImageCardView;
+import androidx.leanback.widget.ImageCardView;
 
 import minefarts.smarttube.R;
 import minefarts.smarttube.utils.ViewUtil;

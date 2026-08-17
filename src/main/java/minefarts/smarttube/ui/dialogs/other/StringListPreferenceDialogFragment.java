@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 import minefarts.smarttube.R;
-import minefarts.smarttube.ui.mod.leanback.preference.LeanbackListPreferenceDialogFragment;
+import com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.preference.LeanbackListPreferenceDialogFragment;
 import minefarts.smarttube.utils.ViewUtil;
 
 import java.util.Set;

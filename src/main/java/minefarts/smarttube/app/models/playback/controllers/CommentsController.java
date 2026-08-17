@@ -6,16 +6,17 @@ import android.util.Pair;
 import com.liskovsoft.mediaserviceinterfaces.data.CommentGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.CommentItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.sharedutils.rx.RxHelper;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.CommentsReceiver;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.CommentsReceiver.Backup;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.AbstractCommentsReceiver;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.UiOptionItem;
+
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
-import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
-import minefarts.smarttube.app.models.playback.ui.CommentsReceiver;
-import minefarts.smarttube.app.models.playback.ui.CommentsReceiver.Backup;
-import minefarts.smarttube.app.models.playback.ui.AbstractCommentsReceiver;
-import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.utils.comments.gen.CommentsResult;
 import minefarts.smarttube.utils.comments.impl.CommentGroupImpl;
@@ -32,6 +33,9 @@ public class CommentsController extends BasePlayerController {
     private String mCommentsKey;
     private String mTitle;
     private Pair<String, Backup> mBackup;
+
+    @Override
+    public void onTickle() {}
 
     @Override
     public void onMetadata(MediaItemMetadata metadata) {

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import androidx.core.content.ContextCompat;
-import minefarts.smarttube.leanback.widget.PlaybackControlsRow.MultiAction;
+import androidx.leanback.widget.PlaybackControlsRow.MultiAction;
 
 import minefarts.smarttube.ui.playback.PlaybackFragment2;
 import minefarts.smarttube.R;

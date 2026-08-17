@@ -10,7 +10,7 @@ import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
 import minefarts.smarttube.app.views.ViewManager;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.R;
-import minefarts.smarttube.adapter.VideoGroupObjectAdapter;
+import com.liskovsoft.smartyoutubetv2.tv.adapter.VideoGroupObjectAdapter;
 
 import java.util.HashMap;
 import java.util.Map;

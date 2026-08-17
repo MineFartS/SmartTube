@@ -6,7 +6,7 @@ import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
-import minefarts.smarttube.fragment.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import minefarts.smarttube.utils.helpers.KeyHelpers;
 import minefarts.smarttube.utils.mylogger.Log;

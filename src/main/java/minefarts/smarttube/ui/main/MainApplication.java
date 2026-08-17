@@ -22,7 +22,7 @@ import minefarts.smarttube.ui.channel.ChannelActivity;
 import minefarts.smarttube.ui.channeluploads.ChannelUploadsActivity;
 import minefarts.smarttube.ui.dialogs.AppDialogActivity;
 import minefarts.smarttube.ui.playback.PlaybackActivity;
-import minefarts.smarttube.ui.search.tags.SearchTagsActivity;
+import com.liskovsoft.smartyoutubetv2.tv.ui.search.tags.SearchTagsActivity;
 import minefarts.smarttube.ui.signin.SignInActivity;
 
 import java.lang.Thread.UncaughtExceptionHandler;

@@ -390,9 +390,9 @@ public class ViewManager {
             return ((Fragment) view).isVisible();
         }
 
-        if (view instanceof minefarts.smarttube.fragment.app.Fragment) {
+        if (view instanceof androidx.fragment.app.Fragment) {
             // Proper way to check the visibility
-            return ((minefarts.smarttube.fragment.app.Fragment) view).getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED);
+            return ((androidx.fragment.app.Fragment) view).getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED);
         }
 
         return false;
@@ -411,8 +411,8 @@ public class ViewManager {
             motherActivity = ((MotherActivity) ((Fragment) view).getActivity());
         }
 
-        if (view instanceof minefarts.smarttube.fragment.app.Fragment && ((minefarts.smarttube.fragment.app.Fragment) view).getActivity() instanceof MotherActivity) {
-            motherActivity = ((MotherActivity) ((minefarts.smarttube.fragment.app.Fragment) view).getActivity());
+        if (view instanceof androidx.fragment.app.Fragment && ((androidx.fragment.app.Fragment) view).getActivity() instanceof MotherActivity) {
+            motherActivity = ((MotherActivity) ((androidx.fragment.app.Fragment) view).getActivity());
         }
 
         return motherActivity;

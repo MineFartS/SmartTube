@@ -18,7 +18,7 @@ import androidx.preference.PreferenceFragment;
 import androidx.preference.PreferenceScreen;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
-import minefarts.smarttube.app.models.playback.ui.OptionCategory;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionCategory;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.views.AppDialogView;
 import minefarts.smarttube.utils.MotherActivity;
@@ -31,7 +31,7 @@ import minefarts.smarttube.ui.dialogs.other.CommentsPreferenceDialogFragment;
 import minefarts.smarttube.ui.dialogs.other.RadioListPreferenceDialogFragment;
 import minefarts.smarttube.ui.dialogs.other.StringListPreference;
 import minefarts.smarttube.ui.dialogs.other.StringListPreferenceDialogFragment;
-import minefarts.smarttube.ui.mod.leanback.preference.LeanbackListPreferenceDialogFragment;
+import com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.preference.LeanbackListPreferenceDialogFragment;
 import minefarts.smarttube.utils.ViewUtil;
 
 import java.util.List;
@@ -45,7 +45,7 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
     private boolean mIsPaused;
     private int mId;
 
-    private static final String PREFERENCE_FRAGMENT_TAG = "minefarts.smarttube.leanback.preference.LeanbackSettingsFragment.PREFERENCE_FRAGMENT";
+    private static final String PREFERENCE_FRAGMENT_TAG = "androidx.leanback.preference.LeanbackSettingsFragment.PREFERENCE_FRAGMENT";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

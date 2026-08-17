@@ -3,17 +3,17 @@ package minefarts.smarttube.ui.browse.video;
 import android.os.Bundle;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
-import minefarts.smarttube.leanback.app.RowsSupportFragment;
-import minefarts.smarttube.leanback.widget.ArrayObjectAdapter;
-import minefarts.smarttube.leanback.widget.ClassPresenterSelector;
-import minefarts.smarttube.leanback.widget.HeaderItem;
-import minefarts.smarttube.leanback.widget.ListRow;
-import minefarts.smarttube.leanback.widget.ListRowPresenter;
-import minefarts.smarttube.leanback.widget.OnItemViewSelectedListener;
-import minefarts.smarttube.leanback.widget.Presenter;
-import minefarts.smarttube.leanback.widget.Row;
-import minefarts.smarttube.leanback.widget.RowPresenter;
-import minefarts.smarttube.leanback.widget.RowPresenter.ViewHolder;
+import androidx.leanback.app.RowsSupportFragment;
+import androidx.leanback.widget.ArrayObjectAdapter;
+import androidx.leanback.widget.ClassPresenterSelector;
+import androidx.leanback.widget.HeaderItem;
+import androidx.leanback.widget.ListRow;
+import androidx.leanback.widget.ListRowPresenter;
+import androidx.leanback.widget.OnItemViewSelectedListener;
+import androidx.leanback.widget.Presenter;
+import androidx.leanback.widget.Row;
+import androidx.leanback.widget.RowPresenter;
+import androidx.leanback.widget.RowPresenter.ViewHolder;
 import androidx.recyclerview.widget.RecyclerView;
 
 import minefarts.smarttube.utils.helpers.Helpers;
@@ -21,13 +21,13 @@ import minefarts.smarttube.utils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
-import minefarts.smarttube.adapter.VideoGroupObjectAdapter;
-import minefarts.smarttube.presenter.ChannelHeaderPresenter;
-import minefarts.smarttube.presenter.ChannelHeaderPresenter.ChannelHeaderCallback;
-import minefarts.smarttube.presenter.ShortsCardPresenter;
-import minefarts.smarttube.presenter.VideoCardPresenter;
-import minefarts.smarttube.presenter.CustomListRowPresenter;
-import minefarts.smarttube.presenter.base.OnItemLongPressedListener;
+import com.liskovsoft.smartyoutubetv2.tv.adapter.VideoGroupObjectAdapter;
+import com.liskovsoft.smartyoutubetv2.tv.presenter.ChannelHeaderPresenter;
+import com.liskovsoft.smartyoutubetv2.tv.presenter.ChannelHeaderPresenter.ChannelHeaderCallback;
+import com.liskovsoft.smartyoutubetv2.tv.presenter.ShortsCardPresenter;
+import com.liskovsoft.smartyoutubetv2.tv.presenter.VideoCardPresenter;
+import com.liskovsoft.smartyoutubetv2.tv.presenter.CustomListRowPresenter;
+import com.liskovsoft.smartyoutubetv2.tv.presenter.base.OnItemLongPressedListener;
 import minefarts.smarttube.ui.browse.interfaces.VideoSection;
 import minefarts.smarttube.ui.common.LeanbackActivity;
 import minefarts.smarttube.ui.common.UriBackgroundManager;
@@ -315,7 +315,7 @@ public abstract class MultipleRowsFragment extends RowsSupportFragment implement
         }
     }
 
-    private final class ItemViewClickedListener implements minefarts.smarttube.leanback.widget.OnItemViewClickedListener {
+    private final class ItemViewClickedListener implements androidx.leanback.widget.OnItemViewClickedListener {
         @Override
         public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
                                   RowPresenter.ViewHolder rowViewHolder, Row row) {

@@ -3,7 +3,7 @@ package minefarts.smarttube.ui.widgets.focus;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import minefarts.smarttube.leanback.widget.BrowseFrameLayout;
+import androidx.leanback.widget.BrowseFrameLayout;
 
 public class FocusFixBrowseFrameLayout extends BrowseFrameLayout {
     public FocusFixBrowseFrameLayout(Context context) {

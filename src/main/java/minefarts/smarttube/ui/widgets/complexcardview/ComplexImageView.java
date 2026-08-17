@@ -57,7 +57,7 @@ public class ComplexImageView extends RelativeLayout {
 
     /**
      * Main trick is to apply visibility to child image views<br/>
-     * See: minefarts.smarttube.leanback.widget.BaseCardView#findChildrenViews()
+     * See: androidx.leanback.widget.BaseCardView#findChildrenViews()
      */
     @Override
     public void setVisibility(int visibility) {

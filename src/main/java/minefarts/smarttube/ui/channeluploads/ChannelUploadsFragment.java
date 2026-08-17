@@ -7,12 +7,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import minefarts.smarttube.leanback.widget.VerticalGridView;
+import androidx.leanback.widget.VerticalGridView;
 import minefarts.smarttube.app.presenters.ChannelUploadsPresenter;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.views.ChannelUploadsView;
 import minefarts.smarttube.ui.browse.video.VideoGridFragment;
-import minefarts.smarttube.ui.mod.leanback.misc.ProgressBarManager;
+import com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.misc.ProgressBarManager;
 
 public class ChannelUploadsFragment extends VideoGridFragment implements ChannelUploadsView {
 

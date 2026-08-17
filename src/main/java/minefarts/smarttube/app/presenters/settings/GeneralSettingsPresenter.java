@@ -4,13 +4,15 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionCategory;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.UiOptionItem;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionItem;
+
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.okhttp.OkHttpManager;
 import minefarts.smarttube.R;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
-import minefarts.smarttube.app.models.playback.ui.OptionCategory;
-import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
@@ -89,7 +91,7 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
     private void appendEnabledSections(AppDialogPresenter settingsPresenter) {
         
-        List<UiOptionItem> options = new ArrayList<>();
+        List<OptionItem> options = new ArrayList<>();
 
         Map<Integer, Integer> sections = mSidebarService.getDefaultSections();
 
@@ -126,7 +128,7 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
     private void appendHideVideos(AppDialogPresenter settingsPresenter) {
         
-        List<UiOptionItem> options = new ArrayList<>();
+        List<OptionItem> options = new ArrayList<>();
 
         options.add(
             UiOptionItem.from(
@@ -177,7 +179,7 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
     private void appendContextMenuItemsCategory(AppDialogPresenter settingsPresenter) {
 
-        List<UiOptionItem> options = new ArrayList<>();
+        List<OptionItem> options = new ArrayList<>();
 
         Map<Long, Integer> menuNames = getMenuNames();
 
@@ -219,7 +221,7 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
         
         AppDialogPresenter dialog = AppDialogPresenter.instance(getContext());
 
-        List<UiOptionItem> options = new ArrayList<>();
+        List<OptionItem> options = new ArrayList<>();
 
         Map<Long, Integer> menuNames = getMenuNames();
 
@@ -273,7 +275,7 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
     private void appendMiscCategory(AppDialogPresenter settingsPresenter) {
         
-        List<UiOptionItem> options = new ArrayList<>();
+        List<OptionItem> options = new ArrayList<>();
 
         options.add(
             UiOptionItem.from(

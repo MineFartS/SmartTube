@@ -1,6 +1,6 @@
 package minefarts.smarttube.ui.playback.actions;
 
-import minefarts.smarttube.leanback.widget.Action;
+import androidx.leanback.widget.Action;
 
 /**
  * An action for displaying smaller icon.

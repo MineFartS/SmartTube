@@ -20,10 +20,29 @@ import android.view.InputEvent;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Looper;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.leanback.app.RowsSupportFragment;
+import androidx.leanback.media.PlayerAdapter;
+import androidx.leanback.widget.ArrayObjectAdapter;
+import androidx.leanback.widget.ClassPresenterSelector;
+import androidx.leanback.widget.HeaderItem;
+import androidx.leanback.widget.ListRow;
+import androidx.leanback.widget.ListRowPresenter;
+import androidx.leanback.widget.ObjectAdapter;
+import androidx.leanback.widget.OnItemViewSelectedListener;
+import androidx.leanback.widget.Presenter;
+import androidx.leanback.widget.Row;
+import androidx.leanback.widget.RowPresenter;
+import androidx.leanback.widget.RowPresenter.ViewHolder;
+import androidx.leanback.widget.PlaybackSeekDataProvider;
+import androidx.leanback.widget.PlaybackSeekUi;
+import androidx.leanback.widget.VerticalGridView;
+import androidx.leanback.app.PlaybackSupportFragmentGlueHost;
+import androidx.leanback.media.PlaybackGlue;
+import androidx.leanback.media.PlaybackGlueHost;
+import androidx.leanback.media.SurfaceHolderGlueHost;
 
 import com.google.android.exoplayer2.ControlDispatcher;
 import com.google.android.exoplayer2.DefaultControlDispatcher;
@@ -40,70 +59,50 @@ import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.ext.leanback.LeanbackPlayerAdapter;
 
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
-
-import minefarts.smarttube.exoplayer.selector.ExoFormatItem;
-import minefarts.smarttube.exoplayer.versions.selector.RestoreTrackSelector;
-import minefarts.smarttube.ui.browse.video.GridFragmentHelper;
-import minefarts.smarttube.ui.mod.leanback.misc.ProgressBarManager;
-import minefarts.smarttube.ui.playback.other.BackboneQueueNavigator;
-import minefarts.smarttube.ui.playback.previewtimebar.StoryboardSeekDataProvider;
-import minefarts.smarttube.ui.widgets.chat.LiveChatView;
-import minefarts.smarttube.utils.locale.LocaleUtility;
-
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.ChatReceiver;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.SeekBarSegment;
+import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.ExoFormatItem;
+import com.liskovsoft.smartyoutubetv2.common.exoplayer.versions.selector.RestoreTrackSelector;
+import com.liskovsoft.smartyoutubetv2.common.exoplayer.controller.ExoPlayerController;
+import com.liskovsoft.smartyoutubetv2.common.exoplayer.other.SubtitleManager;
+import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem;
+import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.track.MediaTrack;
+import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.TrackSelectorManager;
+import com.liskovsoft.smartyoutubetv2.common.exoplayer.other.VolumeBooster;
+import com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.misc.ProgressBarManager;
+import com.liskovsoft.smartyoutubetv2.tv.ui.playback.mod.surface.SurfacePlaybackFragmentGlueHost;
+import com.liskovsoft.smartyoutubetv2.tv.ui.playback.other.BackboneQueueNavigator;
+import com.liskovsoft.smartyoutubetv2.tv.ui.playback.other.VideoPlayerGlue;
+import com.liskovsoft.smartyoutubetv2.tv.ui.playback.other.VideoPlayerGlue.OnActionClickedListener;
+import com.liskovsoft.smartyoutubetv2.tv.presenter.VideoCardPresenter;
+import com.liskovsoft.smartyoutubetv2.tv.presenter.ShortsCardPresenter;
+import com.liskovsoft.smartyoutubetv2.tv.presenter.base.OnItemLongPressedListener;
+import com.liskovsoft.smartyoutubetv2.tv.presenter.CustomListRowPresenter;
+import com.liskovsoft.smartyoutubetv2.tv.adapter.VideoGroupObjectAdapter;
+import com.liskovsoft.smartyoutubetv2.tv.adapter.VideoGroupObjectAdapter;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.listener.PlayerEventListener;
 
 import minefarts.smarttube.R;
-import minefarts.smarttube.leanback.app.RowsSupportFragment;
-import minefarts.smarttube.leanback.media.PlayerAdapter;
-import minefarts.smarttube.leanback.widget.ArrayObjectAdapter;
-import minefarts.smarttube.leanback.widget.ClassPresenterSelector;
-import minefarts.smarttube.leanback.widget.HeaderItem;
-import minefarts.smarttube.leanback.widget.ListRow;
-import minefarts.smarttube.leanback.widget.ListRowPresenter;
-import minefarts.smarttube.leanback.widget.ObjectAdapter;
-import minefarts.smarttube.leanback.widget.OnItemViewSelectedListener;
-import minefarts.smarttube.leanback.widget.Presenter;
-import minefarts.smarttube.leanback.widget.Row;
-import minefarts.smarttube.leanback.widget.RowPresenter;
-import minefarts.smarttube.leanback.widget.RowPresenter.ViewHolder;
-import minefarts.smarttube.leanback.widget.PlaybackSeekDataProvider;
-import minefarts.smarttube.leanback.widget.PlaybackSeekUi;
-import minefarts.smarttube.leanback.widget.VerticalGridView;
-import minefarts.smarttube.leanback.media.LeanbackPlayerAdapter;
-import minefarts.smarttube.leanback.app.PlaybackSupportFragmentGlueHost;
-import minefarts.smarttube.leanback.media.PlaybackGlue;
-import minefarts.smarttube.leanback.media.PlaybackGlueHost;
-import minefarts.smarttube.leanback.media.SurfaceHolderGlueHost;
+import minefarts.smarttube.ui.browse.video.GridFragmentHelper;
+import com.liskovsoft.smartyoutubetv2.tv.ui.playback.previewtimebar.StoryboardSeekDataProvider;
+import minefarts.smarttube.ui.widgets.chat.LiveChatView;
+import minefarts.smarttube.utils.locale.LocaleUtility;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
-import minefarts.smarttube.app.models.playback.ui.ChatReceiver;
-import minefarts.smarttube.app.models.playback.ui.SeekBarSegment;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
-import minefarts.smarttube.exoplayer.controller.ExoPlayerController;
-import minefarts.smarttube.exoplayer.other.SubtitleManager;
-import minefarts.smarttube.exoplayer.selector.FormatItem;
-import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
-import minefarts.smarttube.exoplayer.selector.TrackSelectorManager;
-import minefarts.smarttube.exoplayer.other.VolumeBooster;
 import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
 import minefarts.smarttube.prefs.AppPrefs;
 import minefarts.smarttube.prefs.PlayerTweaksData;
-import minefarts.smarttube.ui.playback.mod.surface.SurfacePlaybackFragment;
-import minefarts.smarttube.ui.playback.other.VideoPlayerGlue;
-import minefarts.smarttube.ui.playback.other.VideoPlayerGlue.OnActionClickedListener;
+import com.liskovsoft.smartyoutubetv2.tv.ui.playback.mod.surface.SurfacePlaybackFragment;
 import minefarts.smarttube.ui.common.UriBackgroundManager;
 import minefarts.smarttube.ui.common.LeanbackActivity;
-import minefarts.smarttube.presenter.VideoCardPresenter;
-import minefarts.smarttube.presenter.ShortsCardPresenter;
-import minefarts.smarttube.presenter.base.OnItemLongPressedListener;
-import minefarts.smarttube.presenter.CustomListRowPresenter;
-import minefarts.smarttube.adapter.VideoGroupObjectAdapter;
-import minefarts.smarttube.adapter.VideoGroupObjectAdapter;
 import minefarts.smarttube.utils.helpers.DeviceHelpers;
 
 import java.io.InputStream;
@@ -114,33 +113,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
 import java.util.Set;
-import java.lang.ref.WeakReference;
-
-/**
- * {@link PlaybackGlueHost} implementation
- * the interaction between {@link PlaybackGlue} and {@link minefarts.smarttube.leanback.app.VideoSupportFragment}.
- */
-class SurfacePlaybackFragmentGlueHost extends PlaybackSupportFragmentGlueHost implements SurfaceHolderGlueHost {
-
-    @SuppressWarnings("HidingField") // Supertype field is package scope to avoid synthetic accessor
-    private final SurfacePlaybackFragment mFragment;
-
-    public SurfacePlaybackFragmentGlueHost(SurfacePlaybackFragment fragment) {
-        super(fragment);
-        this.mFragment = fragment;
-    }
-
-    /**
-     * Sets the {@link SurfaceHolder.Callback} on the host.
-     * {@link PlaybackGlueHost} is assumed to either host the {@link SurfaceHolder} or
-     * have a reference to the component hosting it for rendering the video.
-     */
-    @Override
-    public void setSurfaceHolderCallback(SurfaceHolder.Callback callback) {
-        mFragment.setSurfaceHolderCallback(callback);
-    }
-
-}
+import java.lang.reflect.Field;
 
 public class PlaybackFragment2
     extends SurfacePlaybackFragment 
@@ -302,8 +275,18 @@ public class PlaybackFragment2
 
         mPlaybackPresenter = PlaybackPresenter.instance(getContext());
         mPlaybackPresenter.setView(this);
-        mExoPlayerController = new ExoPlayerController(getContext(), mPlaybackPresenter);
-        mTrackSelectorManager = mExoPlayerController.mTrackSelectorManager;
+        mExoPlayerController = new ExoPlayerController(
+            getContext(), 
+            (PlayerEventListener) mPlaybackPresenter
+        );
+        
+        try {
+            Field pf = ExoPlayerController.class.getDeclaredField("mTrackSelectorManager");
+            pf.setAccessible(true);
+            mTrackSelectorManager = (TrackSelectorManager) pf.get(mExoPlayerController);            
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
 
         // Fix open previous video
         if (mPlaybackPresenter.getVideo() != null)
@@ -658,7 +641,7 @@ public class PlaybackFragment2
         mExoPlayerController.setPlayerView(mPlayerGlue);
     
         // -------- Create Subtitle Manager --------
-        mSubtitleManager = new SubtitleManager(getActivity(), R.id.leanback_subtitles);
+        mSubtitleManager = new SubtitleManager(getView().findViewById(R.id.leanback_subtitles));
 
         if (mPlayer.getTextComponent() != null) 
             mPlayer.getTextComponent().addTextOutput(mSubtitleManager);
@@ -734,7 +717,7 @@ public class PlaybackFragment2
         }
     }
 
-    private final class ItemViewClickedListener implements minefarts.smarttube.leanback.widget.OnItemViewClickedListener {
+    private final class ItemViewClickedListener implements androidx.leanback.widget.OnItemViewClickedListener {
         public void onItemClicked(
                 Presenter.ViewHolder itemViewHolder,
                 Object item,
@@ -811,7 +794,7 @@ public class PlaybackFragment2
 
     public void setVideo(Video video) {
 
-        mExoPlayerController.mVideo = new WeakReference<>(video);
+        mExoPlayerController.setVideo(video);
 
         if (mPlayerGlue != null && video != null) {
             // Preserve player formatting
@@ -1023,12 +1006,7 @@ public class PlaybackFragment2
     }
 
     public List<FormatItem> getSubtitleFormats() {
-
-        Set<MediaTrack> tracks = mTrackSelectorManager.getAvailableTracks(
-            mTrackSelectorManager.RENDERER_INDEX_SUBTITLE
-        );
-        
-        return ExoFormatItem.from(tracks);
+        return mExoPlayerController.getSubtitleFormats();
     }
 
     public FormatItem getVideoFormat() {

@@ -7,15 +7,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.core.content.ContextCompat;
-import minefarts.smarttube.fragment.app.Fragment;
-import minefarts.smarttube.leanback.app.BrowseSupportFragment;
-import minefarts.smarttube.leanback.app.BrowseSupportFragment.MainFragmentAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.leanback.app.BrowseSupportFragment;
+import androidx.leanback.app.BrowseSupportFragment.MainFragmentAdapter;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.app.models.errors.CategoryEmptyError;
 import minefarts.smarttube.app.models.errors.ErrorFragmentData;
 import minefarts.smarttube.app.models.errors.SignInError;
 import minefarts.smarttube.R;
-import minefarts.smarttube.ui.mod.fragments.ErrorSupportFragment;
+import com.liskovsoft.smartyoutubetv2.tv.ui.mod.fragments.ErrorSupportFragment;
 
 public class ErrorDialogFragment extends ErrorSupportFragment implements BrowseSupportFragment.MainFragmentAdapterProvider {
     

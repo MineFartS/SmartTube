@@ -6,9 +6,10 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
+import com.liskovsoft.smartyoutubetv2.common.misc.TickleManager.TickleListener;
+
 import minefarts.smarttube.utils.helpers.DateHelper;
 import minefarts.smarttube.utils.TickleManager;
-import minefarts.smarttube.utils.TickleManager.TickleListener;
 
 /**
  * Note, same view is used inside player and in as global time view

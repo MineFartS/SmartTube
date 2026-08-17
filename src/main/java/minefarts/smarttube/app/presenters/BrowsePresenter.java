@@ -47,7 +47,7 @@ import minefarts.smarttube.app.presenters.settings.GeneralSettingsPresenter;
 import minefarts.smarttube.app.presenters.settings.MainUISettingsPresenter;
 import minefarts.smarttube.app.presenters.settings.PlayerSettingsPresenter;
 import minefarts.smarttube.app.presenters.settings.RemoteControlSettingsPresenter;
-import minefarts.smarttube.exoplayer.selector.FormatItem.VideoPreset;
+import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem.VideoPreset;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 
 import java.util.ArrayList;

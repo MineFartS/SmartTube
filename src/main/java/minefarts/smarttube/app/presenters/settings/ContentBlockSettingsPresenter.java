@@ -4,10 +4,12 @@ import android.content.Context;
 import android.text.TextUtils;
 import androidx.core.content.ContextCompat;
 
-import minefarts.smarttube.R;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.UiOptionItem;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionItem;
+
+import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.playback.controllers.ContentBlockController.SegmentAction;
-import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
@@ -64,7 +66,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
 
         boolean isChannelExcluded = ContentBlockData.instance(getContext()).isChannelExcluded(channelId);
 
-        UiOptionItem sponsorBlockOption = UiOptionItem.from(getContext().getString(R.string.enable),
+        OptionItem sponsorBlockOption = UiOptionItem.from(getContext().getString(R.string.enable),
             option -> {
                 mContentBlockData.enableSponsorBlock(option.isSelected());
                 ContentBlockData.instance(getContext()).stopExcludingChannel(channelId);
@@ -78,7 +80,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
 
     private void appendActionsSection(AppDialogPresenter settingsPresenter) {
 
-        List<UiOptionItem> options = new ArrayList<>();
+        List<OptionItem> options = new ArrayList<>();
 
         for (SegmentAction action : mContentBlockData.getActions()) {
             options.add(
@@ -93,7 +95,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
                     
                         AppDialogPresenter dialogPresenter = AppDialogPresenter.instance(getContext());
 
-                        List<UiOptionItem> nestedOptions = new ArrayList<>();
+                        List<OptionItem> nestedOptions = new ArrayList<>();
                         
                         nestedOptions.add(
                             UiOptionItem.from(
@@ -132,7 +134,7 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
 
     private void appendColorMarkersSection(AppDialogPresenter settingsPresenter) {
 
-        List<UiOptionItem> options = new ArrayList<>();
+        List<OptionItem> options = new ArrayList<>();
 
         for (String segmentCategory : mContentBlockData.getAllCategories()) {
             options.add(
@@ -162,12 +164,12 @@ public class ContentBlockSettingsPresenter extends BasePresenter<Void> {
 
     private void appendLinks(AppDialogPresenter settingsPresenter) {
         
-        UiOptionItem statsCheckOption = UiOptionItem.from(
+        OptionItem statsCheckOption = UiOptionItem.from(
             getContext().getString(R.string.content_block_status),
             option -> Utils.openLink(getContext(), "https://status.sponsor.ajay.app")
         );
 
-        UiOptionItem webSiteOption = UiOptionItem.from(
+        OptionItem webSiteOption = UiOptionItem.from(
             getContext().getString(R.string.about_sponsorblock),
             option -> Utils.openLink(getContext(), "https://sponsor.ajay.app")
         );

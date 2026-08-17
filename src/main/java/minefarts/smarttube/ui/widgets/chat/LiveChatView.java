@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
-import minefarts.smarttube.app.models.playback.ui.ChatReceiver;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.ChatReceiver;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.utils.ViewUtil;
 import minefarts.smarttube.messages.MessagesListAdapter;

@@ -2,20 +2,22 @@ package minefarts.smarttube.app.presenters.dialogs.menu;
 
 import android.content.Context;
 
+import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
+import com.liskovsoft.sharedutils.rx.RxHelper;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.service.VideoStateService.State;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.UiOptionItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+
 import minefarts.smarttube.utils.MediaItemService;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
-import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
-import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Queue;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.controllers.CommentsController;
 import minefarts.smarttube.app.models.playback.VideoStateService;
-import com.liskovsoft.smartyoutubetv2.common.app.models.playback.service.VideoStateService.State;
-import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
 import minefarts.smarttube.app.presenters.ChannelPresenter;
@@ -29,7 +31,6 @@ import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.utils.AppDialogUtil;
 import minefarts.smarttube.ui.playback.actions.SubscribeAction;
 import minefarts.smarttube.app.models.playback.controllers.VideoStateController;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;

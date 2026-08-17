@@ -3,31 +3,34 @@ package minefarts.smarttube.app.models.playback.controllers;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.KeyEvent;
-import minefarts.smarttube.utils.MediaItemService;
+
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.mediaserviceinterfaces.data.NotificationState;
 import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
+import com.liskovsoft.sharedutils.rx.RxHelper;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionCategory;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.UiOptionItem;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionItem;
+
+import minefarts.smarttube.utils.MediaItemService;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.KeyHelpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
-import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.R;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.ui.playback.PlaybackFragment2;
-import minefarts.smarttube.app.models.playback.ui.OptionCategory;
-import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.ChannelPresenter;
 import minefarts.smarttube.app.presenters.SearchPresenter;
 import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter;
 import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
-import minefarts.smarttube.exoplayer.selector.FormatItem;
-import minefarts.smarttube.exoplayer.selector.track.SubtitleTrack;
+import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem;
+import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.track.SubtitleTrack;
 import minefarts.smarttube.prefs.SearchData;
 import minefarts.smarttube.utils.AppDialogUtil;
 import minefarts.smarttube.utils.Utils;
@@ -54,6 +57,9 @@ public class PlayerUIController extends BasePlayerController {
     private boolean mEngineReady;
     private boolean mIsMetadataLoaded;
     private long mOverlayHideTimeMs;
+    
+    @Override
+    public void onTickle() {}
     
     private final Runnable mSuggestionsResetHandler = () -> {
         if (getPlayer() == null) return;
@@ -87,7 +93,7 @@ public class PlayerUIController extends BasePlayerController {
     @Override
     public void onInit() {
         if (getPlayer() != null)
-getPlayer().mVideoSurfaceRoot.setZoom(100);
+        getVideoSurfaceRoot().setZoom(100);
     }
 
     @Override
@@ -631,7 +637,7 @@ getPlayer().mVideoSurfaceRoot.setZoom(100);
                 });
 
         AppDialogPresenter settingsPresenter = getAppDialogPresenter();
-        settingsPresenter.appendRadioCategory(category.title, category.options);
+        settingsPresenter.appendRadioCategory(category.title.toString(), category.options);
         settingsPresenter.showDialog();
     }
 
@@ -668,7 +674,7 @@ getPlayer().mVideoSurfaceRoot.setZoom(100);
 
         AppDialogPresenter settingsPresenter = getAppDialogPresenter();
 
-        List<UiOptionItem> items = new ArrayList<>();
+        List<OptionItem> items = new ArrayList<>();
 
         for (NotificationState item : getVideo().notificationStates) {
             items.add(UiOptionItem.from(item.getTitle(), optionItem -> {

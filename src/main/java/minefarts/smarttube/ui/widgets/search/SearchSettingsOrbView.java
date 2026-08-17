@@ -3,7 +3,7 @@ package minefarts.smarttube.ui.widgets.search;
 import android.content.Context;
 import android.util.AttributeSet;
 import androidx.core.content.ContextCompat;
-import minefarts.smarttube.leanback.widget.SearchOrbView;
+import androidx.leanback.widget.SearchOrbView;
 import minefarts.smarttube.R;
 
 /**

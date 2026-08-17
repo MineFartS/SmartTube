@@ -6,25 +6,31 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.KeyEvent;
 import androidx.annotation.Nullable;
-import minefarts.smarttube.utils.RemoteControlService;
+
 import com.liskovsoft.mediaserviceinterfaces.data.Command;
+import com.liskovsoft.sharedutils.rx.RxHelper;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem;
+
+import minefarts.smarttube.utils.RemoteControlService;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
-import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.R;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.ui.playback.PlaybackFragment2;
-import minefarts.smarttube.exoplayer.selector.FormatItem;
 import minefarts.smarttube.prefs.common.DataChangeBase.OnDataChange;
 import minefarts.smarttube.prefs.RemoteControlData;
 import minefarts.smarttube.utils.Utils;
+
 import io.reactivex.disposables.Disposable;
+
 import java.util.List;
 import java.util.Locale;
 
 public class RemoteController extends BasePlayerController implements OnDataChange {
+
     private static final String TAG = RemoteController.class.getSimpleName();
+    
     private static final long APP_INIT_DELAY_MS = 10_000;
     private final Runnable mStartListeningInt = this::startListeningInt;
     private final RemoteControlService mRemoteControlService;
@@ -40,6 +46,9 @@ public class RemoteController extends BasePlayerController implements OnDataChan
     private ContentObserver mVolumeObserver;
     private long mVolumeSelfChangeMs;
     private VideoLoaderController mVideoLoader;
+
+    @Override
+    public void onTickle() {}
 
     public RemoteController(Context context) {
 

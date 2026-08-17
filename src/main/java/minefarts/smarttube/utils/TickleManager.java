@@ -1,24 +1,21 @@
 package minefarts.smarttube.utils;
 
+import com.liskovsoft.smartyoutubetv2.common.misc.TickleManager.TickleListener;
+
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.utils.misc.WeakHashSet;
 
 public class TickleManager {
+
     private static final String TAG = TickleManager.class.getSimpleName();
+    
     private static TickleManager sInstance;
+    
     private final Runnable mUpdateHandler = this::updateTickle;
     // Usually listener is a view. So use weak refs to not hold it forever.
     private final WeakHashSet<TickleListener> mListeners = new WeakHashSet<>();
     private boolean mIsEnabled = true;
-
-    public interface TickleListener {
-        
-        default void onTickle() {
-            // NOP
-        }
-        
-    }
 
     private TickleManager() {
     }

@@ -2,13 +2,16 @@ package minefarts.smarttube.app.presenters.settings;
 
 import android.content.Context;
 
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.UiOptionItem;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+
 import minefarts.smarttube.update.AppUpdateChecker;
 import minefarts.smarttube.utils.helpers.AppInfoHelpers;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.locale.LocaleUtility;
 import minefarts.smarttube.R;
-import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.dialogs.AppUpdatePresenter;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
@@ -18,7 +21,6 @@ import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.utils.service.internal.MediaServiceData;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 
@@ -79,7 +81,7 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendUpdateCheckButton(AppDialogPresenter settingsPresenter) {
-        UiOptionItem updateCheckOption = UiOptionItem.from(
+        OptionItem updateCheckOption = UiOptionItem.from(
             getContext().getString(R.string.check_for_updates),
             option -> AppUpdatePresenter.instance(getContext()).start(true)
         );
@@ -93,7 +95,7 @@ public class AboutSettingsPresenter extends BasePresenter<Void> {
 
         if (changes == null || changes.isEmpty()) return;
 
-        List<UiOptionItem> changelog = new ArrayList<>();
+        List<OptionItem> changelog = new ArrayList<>();
 
         for (String change : changes) {
             changelog.add(UiOptionItem.from(change));

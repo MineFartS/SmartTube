@@ -5,11 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.Nullable;
-import minefarts.smarttube.leanback.widget.VerticalGridView;
+import androidx.leanback.widget.VerticalGridView;
 import androidx.preference.ListPreference;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
-import minefarts.smarttube.ui.mod.leanback.preference.LeanbackListPreferenceDialogFragment;
+import com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.preference.LeanbackListPreferenceDialogFragment;
 import minefarts.smarttube.utils.ViewUtil;
 
 public class RadioListPreferenceDialogFragment extends LeanbackListPreferenceDialogFragment {

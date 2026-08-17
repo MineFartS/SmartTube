@@ -16,7 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
-import minefarts.smarttube.leanback.app.BackgroundManager;
+import androidx.leanback.app.BackgroundManager;
 import minefarts.smarttube.utils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.R;

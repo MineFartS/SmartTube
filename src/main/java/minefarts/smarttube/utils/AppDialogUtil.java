@@ -10,32 +10,34 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import minefarts.smarttube.utils.MediaItemService;
 import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
+import com.liskovsoft.sharedutils.rx.RxHelper;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionCategory;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.UiOptionItem;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionItem;
+
+import minefarts.smarttube.utils.MediaItemService;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.helpers.PermissionHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
-import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.data.Queue;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.ui.playback.PlaybackFragment2;
-import minefarts.smarttube.app.models.playback.ui.OptionCategory;
-import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
 import minefarts.smarttube.app.presenters.dialogs.menu.providers.channelgroup.ChannelGroupServiceWrapper;
 import minefarts.smarttube.app.views.ViewManager;
-import minefarts.smarttube.exoplayer.selector.ExoFormatItem;
-import minefarts.smarttube.exoplayer.selector.FormatItem;
-import minefarts.smarttube.exoplayer.selector.FormatItem.VideoPreset;
-import minefarts.smarttube.exoplayer.selector.TrackSelectorManager;
-import minefarts.smarttube.exoplayer.selector.track.MediaTrack;
+import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.ExoFormatItem;
+import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem;
+import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem.VideoPreset;
+import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.TrackSelectorManager;
+import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.track.MediaTrack;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
 import minefarts.smarttube.utils.MotherActivity;
 import minefarts.smarttube.prefs.ContentBlockData;
@@ -146,7 +148,7 @@ public class AppDialogUtil {
         PlaybackFragment2 playerData = PlaybackFragment2.instance(context);
         String title = context.getString(R.string.audio_language);
 
-        List<UiOptionItem> options = new ArrayList<>();
+        List<OptionItem> options = new ArrayList<>();
 
         List<String> addedCodes = new ArrayList<>();
         List<String> lastLanguages = playerData.getLastAudioLanguages();
@@ -206,7 +208,7 @@ public class AppDialogUtil {
         
     }
 
-    public static UiOptionItem createExcludeFromContentBlockButton(
+    public static OptionItem createExcludeFromContentBlockButton(
         Context context,
         Video video, 
         Runnable onClose
@@ -245,7 +247,7 @@ public class AppDialogUtil {
 
     public static OptionCategory createPlaybackModeCategory(Context context, Runnable onModeSelected) {
         PlaybackFragment2 playerData = PlaybackFragment2.instance(context);
-        List<UiOptionItem> options = new ArrayList<>();
+        List<OptionItem> options = new ArrayList<>();
 
         for (int[] pair : new int[][] {
                 {R.string.repeat_mode_all, PlaybackFragment2.PLAYBACK_MODE_ALL},
@@ -280,7 +282,7 @@ public class AppDialogUtil {
     public static void showConfirmationDialog(Context context, String title, Runnable onConfirm, Runnable onCancel) {
         AppDialogPresenter settingsPresenter = AppDialogPresenter.instance(context);
 
-        List<UiOptionItem> options = new ArrayList<>();
+        List<OptionItem> options = new ArrayList<>();
 
         options.add(UiOptionItem.from(
             "Cancel",
@@ -330,8 +332,13 @@ public class AppDialogUtil {
     }
 
     private static void appendPlaylistDialogContent(
-            Context context, Video video, VideoMenuCallback callback, AppDialogPresenter dialogPresenter, List<PlaylistInfo> playlistInfos) {
-        List<UiOptionItem> options = new ArrayList<>();
+        Context context, 
+        Video video, 
+        VideoMenuCallback callback, 
+        AppDialogPresenter dialogPresenter, 
+        List<PlaylistInfo> playlistInfos
+    ) {
+        List<OptionItem> options = new ArrayList<>();
 
         for (PlaylistInfo playlistInfo : playlistInfos) {
             options.add(UiOptionItem.from(
@@ -395,7 +402,7 @@ public class AppDialogUtil {
 
         GeneralData generalData = GeneralData.instance(context);
 
-        List<UiOptionItem> options = new ArrayList<>();
+        List<OptionItem> options = new ArrayList<>();
 
         for (int[] pair : new int[][] {
                 {R.string.playlist_order_added_date_newer_first, MediaItemService.PLAYLIST_ORDER_ADDED_DATE_NEWER_FIRST},

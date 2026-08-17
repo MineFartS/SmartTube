@@ -2,10 +2,13 @@ package minefarts.smarttube.app.presenters.settings;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+
 import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.UiOptionItem;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionItem;
+
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.R;
-import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
 import minefarts.smarttube.app.presenters.SignInPresenter;
@@ -79,7 +82,7 @@ public class AccountSettingsPresenter extends BasePresenter<Void> {
     private void appendSelectAccountSection(List<Account> accounts, AppDialogPresenter settingsPresenter) {
         if (accounts == null || accounts.isEmpty()) return;
 
-        List<UiOptionItem> optionItems = new ArrayList<>();
+        List<OptionItem> optionItems = new ArrayList<>();
 
         optionItems.add(UiOptionItem.from(
                 getContext().getString(R.string.dialog_account_none), optionItem -> {
@@ -109,7 +112,7 @@ public class AccountSettingsPresenter extends BasePresenter<Void> {
     private void appendSignOutSection(List<Account> accounts, AppDialogPresenter settingsPresenter) {
         if (accounts == null || accounts.isEmpty()) return;
 
-        List<UiOptionItem> optionItems = new ArrayList<>();
+        List<OptionItem> optionItems = new ArrayList<>();
 
         for (Account account : accounts) {
             optionItems.add(UiOptionItem.from(

@@ -4,16 +4,18 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Pair;
 
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionCategory;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.UiOptionItem;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionItem;
+
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.prefs.GlobalPreferences;
 import minefarts.smarttube.R;
-import minefarts.smarttube.app.models.playback.ui.OptionCategory;
-import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.presenters.service.SidebarService;
-import minefarts.smarttube.exoplayer.selector.TrackSelectorUtil;
+import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.TrackSelectorUtil;
 import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.ui.playback.PlaybackFragment2;
 import minefarts.smarttube.prefs.PlayerTweaksData;
@@ -78,7 +80,7 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
 
     private void appendMiscCategory(AppDialogPresenter settingsPresenter) {
 
-        List<UiOptionItem> options = new ArrayList<>();
+        List<OptionItem> options = new ArrayList<>();
 
         options.add(UiOptionItem.from(getContext().getString(R.string.player_section_playlist),
                 option -> mPlayerTweaksData.setSectionPlaylistEnabled(option.isSelected()),

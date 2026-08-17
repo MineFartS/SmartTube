@@ -2,14 +2,15 @@ package minefarts.smarttube.app.presenters.dialogs.menu;
 
 import android.content.Context;
 
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.sharedutils.rx.RxHelper;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.UiOptionItem;
+
 import minefarts.smarttube.utils.MediaItemService;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
-import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.R;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
-import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.ChannelPresenter;
 import minefarts.smarttube.app.presenters.ChannelUploadsPresenter;

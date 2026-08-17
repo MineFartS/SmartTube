@@ -4,7 +4,7 @@ import minefarts.smarttube.utils.SignInService.OnAccountChange
 import com.liskovsoft.mediaserviceinterfaces.oauth.Account
 import minefarts.smarttube.utils.misc.WeakHashSet
 import minefarts.smarttube.utils.prefs.SharedPreferencesBase
-import minefarts.smarttube.utils.app.AppService
+import com.liskovsoft.youtubeapi.app.AppService
 import minefarts.smarttube.utils.SignInService
 
 private const val PREF_NAME = "yt_service_prefs"

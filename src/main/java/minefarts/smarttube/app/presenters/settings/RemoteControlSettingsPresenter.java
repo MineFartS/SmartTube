@@ -3,17 +3,19 @@ package minefarts.smarttube.app.presenters.settings;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.UiOptionItem;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionItem;
+import com.liskovsoft.sharedutils.rx.RxHelper;
+
 import minefarts.smarttube.utils.RemoteControlService;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.helpers.PermissionHelpers;
 import minefarts.smarttube.R;
-import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AddDevicePresenter;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.utils.MotherActivity;
 import minefarts.smarttube.prefs.RemoteControlData;
-import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.utils.AppDialogUtil;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
@@ -100,37 +102,41 @@ public class RemoteControlSettingsPresenter extends BasePresenter<Void> {
     }
 
     private void appendRemoveAllDevicesButton(AppDialogPresenter settingsPresenter) {
-        List<UiOptionItem> options = new ArrayList<>();
+        
+        List<OptionItem> options = new ArrayList<>();
 
-        UiOptionItem confirmItem = UiOptionItem.from(
-                getContext().getString(R.string.btn_confirm), option -> {
-                    RxHelper.execute(mRemoteManager.resetDataObserve());
-                    MessageHelpers.showMessage(getContext(), R.string.msg_done);
-                    settingsPresenter.closeDialog();
+        OptionItem confirmItem = UiOptionItem.from(
+            getContext().getString(R.string.btn_confirm), 
+            option -> {
+                RxHelper.execute(mRemoteManager.resetDataObserve());
+                MessageHelpers.showMessage(getContext(), R.string.msg_done);
+                settingsPresenter.closeDialog();
 
-                    mRemoteControlData.enableDeviceLink(false);
-                    Utils.updateRemoteControlService(getContext());
-                }
+                mRemoteControlData.enableDeviceLink(false);
+                Utils.updateRemoteControlService(getContext());
+            }
         );
 
         options.add(confirmItem);
 
         settingsPresenter.appendStringsCategory(getContext().getString(R.string.dialog_remove_all_devices), options);
+    
     }
 
     private void appendMiscCategory(AppDialogPresenter settingsPresenter) {
-        List<UiOptionItem> options = new ArrayList<>();
+
+        List<OptionItem> options = new ArrayList<>();
 
         options.add(UiOptionItem.from(getContext().getString(R.string.finish_on_disconnect),
                 option -> mRemoteControlData.enableFinishOnDisconnect(option.isSelected()),
                 mRemoteControlData.isFinishOnDisconnectEnabled()));
-        //options.add(UiOptionItem.from(getContext().getString(R.string.show_connect_messages),
-        //        option -> mRemoteControlData.enableConnectMessages(option.isSelected()),
-        //        mRemoteControlData.isConnectMessagesEnabled()));
+
         options.add(UiOptionItem.from(getContext().getString(R.string.disable_remote_history),
                 option -> mRemoteControlData.disableRemoteHistory(option.isSelected()),
                 mRemoteControlData.isRemoteHistoryDisabled()));
 
         settingsPresenter.appendCheckedCategory(getContext().getString(R.string.player_other), options);
+    
     }
+
 }

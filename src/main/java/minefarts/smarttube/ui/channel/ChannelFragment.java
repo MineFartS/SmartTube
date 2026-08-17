@@ -11,9 +11,9 @@ import minefarts.smarttube.app.presenters.ChannelPresenter;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.views.ChannelView;
 import minefarts.smarttube.prefs.MainUIData;
-import minefarts.smarttube.presenter.ChannelHeaderPresenter.ChannelHeaderCallback;
+import com.liskovsoft.smartyoutubetv2.tv.presenter.ChannelHeaderPresenter.ChannelHeaderCallback;
 import minefarts.smarttube.ui.browse.video.MultipleRowsFragment;
-import minefarts.smarttube.ui.mod.leanback.misc.ProgressBarManager;
+import com.liskovsoft.smartyoutubetv2.tv.ui.mod.leanback.misc.ProgressBarManager;
 import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
 
 public class ChannelFragment extends MultipleRowsFragment implements ChannelView {

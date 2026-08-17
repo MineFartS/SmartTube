@@ -3,7 +3,7 @@ package minefarts.smarttube.utils.auth.V2;
 import androidx.annotation.Nullable;
 
 import minefarts.smarttube.utils.mylogger.Log;
-import minefarts.smarttube.utils.app.AppService;
+import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.googlecommon.common.models.auth.AccessToken;
 import com.liskovsoft.googlecommon.common.models.auth.UserCode;
 import com.liskovsoft.googlecommon.common.models.auth.info.AccountInt;

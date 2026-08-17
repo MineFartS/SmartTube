@@ -1,7 +1,7 @@
 package minefarts.smarttube.ui.signin;
 
 import android.os.Bundle;
-import minefarts.smarttube.leanback.app.GuidedStepSupportFragment;
+import androidx.leanback.app.GuidedStepSupportFragment;
 import minefarts.smarttube.ui.common.LeanbackActivity;
 
 public class SignInActivity extends LeanbackActivity {

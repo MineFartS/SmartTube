@@ -3,29 +3,29 @@ package minefarts.smarttube.app.models.playback.controllers;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
-import minefarts.smarttube.utils.MediaItemService;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
 import com.liskovsoft.youtubeapi.service.data.YouTubeSponsorSegment;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.SeekBarSegment;
+import com.liskovsoft.sharedutils.rx.RxHelper;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
+import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
+
+import minefarts.smarttube.utils.MediaItemService;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.R;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
-import minefarts.smarttube.app.models.playback.ui.SeekBarSegment;
-import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.settings.ContentBlockSettingsPresenter;
 import minefarts.smarttube.prefs.ContentBlockData;
-import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.utils.block.SponsorBlockApi;
 import minefarts.smarttube.utils.prefs.GlobalPreferences;
 import minefarts.smarttube.utils.block.data.SegmentList;
-import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
-import com.liskovsoft.googlecommon.common.helpers.ServiceHelper;
 import minefarts.smarttube.utils.block.data.Segment;
 
 import retrofit2.Call;
@@ -51,7 +51,10 @@ public class ContentBlockController extends BasePlayerController {
     private boolean mSkipExclude;
     private Disposable mSegmentsAction;
 
-private String mVideoId;
+    private String mVideoId;
+
+    @Override
+    public void onTickle() {}
 
     private static class SimpleSponsorSegment implements SponsorSegment {
         private final long mStartMs;

@@ -1,22 +1,26 @@
 package minefarts.smarttube.app.models.playback.controllers;
 
-import minefarts.smarttube.utils.LiveChatService;
 import com.liskovsoft.mediaserviceinterfaces.data.ChatItem;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
-import minefarts.smarttube.utils.mylogger.Log;
 import com.liskovsoft.sharedutils.rx.RxHelper;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.ChatReceiver;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.ChatReceiverImpl;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.UiOptionItem;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionItem;
+
+import minefarts.smarttube.utils.LiveChatService;
+import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.R;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
-import minefarts.smarttube.app.models.playback.ui.ChatReceiver;
-import minefarts.smarttube.app.models.playback.ui.ChatReceiverImpl;
-import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
+
 import io.reactivex.disposables.Disposable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChatController extends BasePlayerController {
+
     private static final String TAG = ChatController.class.getSimpleName();
     /**
      * NOTE: Don't remove duplicates! They contain different chars.
@@ -25,6 +29,9 @@ public class ChatController extends BasePlayerController {
     private LiveChatService mChatService;
     private Disposable mChatAction;
     private String mLiveChatKey;
+
+    @Override
+    public void onTickle() {}
 
     @Override
     public void onInit() {
@@ -93,7 +100,7 @@ public class ChatController extends BasePlayerController {
 
         if (buttonId == R.id.action_chat) {
 
-            List<UiOptionItem> options = new ArrayList<>();
+            List<OptionItem> options = new ArrayList<>();
 
             options.add(UiOptionItem.from(
                 getContext().getString(R.string.option_disabled),

@@ -31,6 +31,7 @@ Add-YuliskovPkg 'mediaserviceinterfaces' '/MediaServiceCore/mediaserviceinterfac
 Add-YuliskovPkg 'youtubeapi' '/MediaServiceCore/youtubeapi/'
 Add-YuliskovPkg 'sharedutils' '/SharedModules/sharedutils/'
 Add-YuliskovPkg 'common' '/common/'
+Add-YuliskovPkg 'fragment' '/fragment-1.1.0/'
 Add-YuliskovPkg 'exoplayer-library-core' '/exoplayer-amzn-2.10.6/library/core/'
 Add-YuliskovPkg 'exoplayer-library-ui' '/exoplayer-amzn-2.10.6/library/ui/'
 Add-YuliskovPkg 'exoplayer-library-dash' '/exoplayer-amzn-2.10.6/library/dash/'
@@ -39,6 +40,7 @@ Add-YuliskovPkg 'exoplayer-library-hls' '/exoplayer-amzn-2.10.6/library/hls/'
 Add-YuliskovPkg 'exoplayer-library-smoothstreaming' '/exoplayer-amzn-2.10.6/library/smoothstreaming/'
 Add-YuliskovPkg 'exoplayer-extension-mediasession' '/exoplayer-amzn-2.10.6/extensions/mediasession/'
 Add-YuliskovPkg 'exoplayer-extension-okhttp' '/exoplayer-amzn-2.10.6/extensions/okhttp/'
+Add-YuliskovPkg 'exoplayer-extension-leanback' '/exoplayer-amzn-2.10.6/extensions/leanback/'
 
 if (-not (Test-Path $YTSolver)) {
 

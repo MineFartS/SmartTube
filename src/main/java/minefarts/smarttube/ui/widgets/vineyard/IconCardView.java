@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import minefarts.smarttube.leanback.widget.BaseCardView;
+import androidx.leanback.widget.BaseCardView;
 import minefarts.smarttube.R;
 
 public class IconCardView extends BaseCardView {

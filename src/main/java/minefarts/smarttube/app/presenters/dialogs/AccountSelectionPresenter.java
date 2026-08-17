@@ -3,10 +3,12 @@ package minefarts.smarttube.app.presenters.dialogs;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import minefarts.smarttube.utils.SignInService;
 import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.UiOptionItem;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionItem;
+
+import minefarts.smarttube.utils.SignInService;
 import minefarts.smarttube.R;
-import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.app.presenters.settings.AccountSettingsPresenter;
@@ -64,7 +66,7 @@ public class AccountSelectionPresenter extends BasePresenter<Void> {
     }
 
     private void appendAccountSelection(List<Account> accounts, AppDialogPresenter settingsPresenter) {
-        List<UiOptionItem> optionItems = new ArrayList<>();
+        List<OptionItem> optionItems = new ArrayList<>();
 
         optionItems.add(UiOptionItem.from(
                 getContext().getString(R.string.dialog_account_none), optionItem -> {

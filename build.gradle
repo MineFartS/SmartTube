@@ -85,6 +85,7 @@ dependencies {
     implementation project(':youtubeapi')
     implementation project(':sharedutils')
     implementation project(':common')
+    implementation project(':fragment')
     implementation project(':exoplayer-library-core')
     implementation project(':exoplayer-library-ui')
     implementation project(':exoplayer-library-dash')
@@ -93,6 +94,8 @@ dependencies {
     implementation project(':exoplayer-library-smoothstreaming')
     implementation project(':exoplayer-extension-mediasession')
     implementation project(':exoplayer-extension-okhttp')
+    implementation project(':exoplayer-extension-leanback')
+
     implementation project(':smarttubetv')
 
     compileOnly 'org.checkerframework:checker-qual:2.5.0'

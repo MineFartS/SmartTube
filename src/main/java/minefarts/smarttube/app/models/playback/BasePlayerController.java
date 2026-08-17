@@ -9,20 +9,36 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
+
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.listener.PlayerEventListener;
+import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem;
+import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.TrackSelectorUtil;
+import com.liskovsoft.smartyoutubetv2.tv.ui.playback.mod.surface.SurfacePlaybackFragment;
+import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
+import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
+import com.liskovsoft.mediaserviceinterfaces.data.NotificationState;
+import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
+import com.liskovsoft.sharedutils.rx.RxHelper;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
+import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl;
+import com.liskovsoft.googlecommon.common.locale.LocaleManager;
+import com.liskovsoft.youtubeapi.app.AppService;
+
 import minefarts.smarttube.utils.service.ContentService;
 import minefarts.smarttube.utils.MediaItemService;
 import minefarts.smarttube.utils.SignInService;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
-import minefarts.smarttube.app.models.playback.PlayerEventListener;
 import minefarts.smarttube.app.models.playback.VideoStateService;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.app.presenters.SearchPresenter;
 import minefarts.smarttube.ui.playback.PlaybackFragment2;
 import minefarts.smarttube.app.views.ViewManager;
-import minefarts.smarttube.exoplayer.selector.FormatItem;
-import minefarts.smarttube.exoplayer.selector.TrackSelectorUtil;
 import minefarts.smarttube.utils.MotherActivity;
 import minefarts.smarttube.prefs.ContentBlockData;
 import minefarts.smarttube.prefs.GeneralData;
@@ -35,17 +51,8 @@ import minefarts.smarttube.ContextManager;
 import minefarts.smarttube.utils.service.YouTubeLiveChatService;
 import minefarts.smarttube.utils.comments.CommentsService;
 import minefarts.smarttube.utils.service.YouTubeNotificationsService;
-import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;
-import com.liskovsoft.mediaserviceinterfaces.oauth.Account;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
-import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
-import com.liskovsoft.mediaserviceinterfaces.data.NotificationState;
-import com.liskovsoft.mediaserviceinterfaces.data.PlaylistInfo;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
 import minefarts.smarttube.utils.mylogger.Log;
-import com.liskovsoft.sharedutils.rx.RxHelper;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
 import minefarts.smarttube.app.presenters.ChannelPresenter;
 import minefarts.smarttube.app.presenters.ChannelUploadsPresenter;
 import minefarts.smarttube.prefs.AccountsData;
@@ -53,10 +60,7 @@ import minefarts.smarttube.prefs.AppPrefs;
 import minefarts.smarttube.utils.LoadingManager;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.utils.playlist.PlaylistService;
-import minefarts.smarttube.utils.app.AppService;
 import minefarts.smarttube.utils.RemoteControlService;
-import com.liskovsoft.youtubeapi.channelgroups.ChannelGroupServiceImpl;
-import com.liskovsoft.googlecommon.common.locale.LocaleManager;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -66,6 +70,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.lang.reflect.Field;
 
 public abstract class BasePlayerController implements PlayerEventListener {
     
@@ -368,16 +373,27 @@ public abstract class BasePlayerController implements PlayerEventListener {
             // shorts overzoom fix
             if (zoom > 130) return;
 
-getPlayer().mVideoSurfaceRoot.setZoom(Math.round(zoom));
+            getVideoSurfaceRoot().setZoom(Math.round(zoom));
             getPlayer().setVideoGravity(Gravity.START | Gravity.CENTER_VERTICAL);
 
         });
 
         settingsPresenter.setOnFinish(() -> {
-getPlayer().mVideoSurfaceRoot.setZoom(100);
+            getVideoSurfaceRoot().setZoom(100);
             getPlayer().setVideoGravity(Gravity.CENTER);
         });
 
+    }
+
+    public AspectRatioFrameLayout getVideoSurfaceRoot() {
+        try {
+            Field pf = SurfacePlaybackFragment.class.getDeclaredField("mVideoSurfaceRoot");
+            pf.setAccessible(true);
+            return (AspectRatioFrameLayout) pf.get(getPlayer());
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static interface OnMetadata {

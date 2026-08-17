@@ -3,7 +3,7 @@ package minefarts.smarttube.ui.playback.actions;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import androidx.core.content.ContextCompat;
-import minefarts.smarttube.leanback.widget.Action;
+import androidx.leanback.widget.Action;
 import minefarts.smarttube.R;
 
 /**

@@ -3,7 +3,7 @@ package minefarts.smarttube.ui.widgets.layout;
 import android.content.Context;
 import android.util.AttributeSet;
 import androidx.annotation.NonNull;
-import minefarts.smarttube.leanback.widget.HorizontalGridView;
+import androidx.leanback.widget.HorizontalGridView;
 import androidx.recyclerview.widget.RecyclerView;
 import minefarts.smarttube.utils.mylogger.Log;
 

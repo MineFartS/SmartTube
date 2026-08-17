@@ -5,14 +5,14 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import minefarts.smarttube.leanback.widget.ClassPresenterSelector;
-import minefarts.smarttube.leanback.widget.OnItemViewClickedListener;
-import minefarts.smarttube.leanback.widget.OnItemViewSelectedListener;
-import minefarts.smarttube.leanback.widget.Presenter;
-import minefarts.smarttube.leanback.widget.Row;
-import minefarts.smarttube.leanback.widget.RowPresenter;
-import minefarts.smarttube.leanback.widget.VerticalGridPresenter;
-import minefarts.smarttube.leanback.widget.VerticalGridView;
+import androidx.leanback.widget.ClassPresenterSelector;
+import androidx.leanback.widget.OnItemViewClickedListener;
+import androidx.leanback.widget.OnItemViewSelectedListener;
+import androidx.leanback.widget.Presenter;
+import androidx.leanback.widget.Row;
+import androidx.leanback.widget.RowPresenter;
+import androidx.leanback.widget.VerticalGridPresenter;
+import androidx.leanback.widget.VerticalGridView;
 
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
@@ -21,19 +21,19 @@ import minefarts.smarttube.app.presenters.base.BasePresenter;
 import minefarts.smarttube.utils.TickleManager;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.R;
-import minefarts.smarttube.adapter.HeaderVideoGroupObjectAdapter;
-import minefarts.smarttube.adapter.VideoGroupObjectAdapter;
-import minefarts.smarttube.presenter.ChannelCardPresenter;
-import minefarts.smarttube.presenter.CustomVerticalGridPresenter;
-import minefarts.smarttube.presenter.SearchFieldPresenter;
-import minefarts.smarttube.presenter.SearchFieldPresenter.SearchFieldCallback;
-import minefarts.smarttube.presenter.VideoCardPresenter;
-import minefarts.smarttube.presenter.base.LongClickPresenter;
-import minefarts.smarttube.presenter.base.OnItemLongPressedListener;
+import com.liskovsoft.smartyoutubetv2.tv.adapter.HeaderVideoGroupObjectAdapter;
+import com.liskovsoft.smartyoutubetv2.tv.adapter.VideoGroupObjectAdapter;
+import com.liskovsoft.smartyoutubetv2.tv.presenter.ChannelCardPresenter;
+import com.liskovsoft.smartyoutubetv2.tv.presenter.CustomVerticalGridPresenter;
+import com.liskovsoft.smartyoutubetv2.tv.presenter.SearchFieldPresenter;
+import com.liskovsoft.smartyoutubetv2.tv.presenter.SearchFieldPresenter.SearchFieldCallback;
+import com.liskovsoft.smartyoutubetv2.tv.presenter.VideoCardPresenter;
+import com.liskovsoft.smartyoutubetv2.tv.presenter.base.LongClickPresenter;
+import com.liskovsoft.smartyoutubetv2.tv.presenter.base.OnItemLongPressedListener;
 import minefarts.smarttube.ui.browse.interfaces.VideoSection;
 import minefarts.smarttube.ui.common.LeanbackActivity;
 import minefarts.smarttube.ui.common.UriBackgroundManager;
-import minefarts.smarttube.ui.mod.fragments.MultiGridFragment;
+import com.liskovsoft.smartyoutubetv2.tv.ui.mod.fragments.MultiGridFragment;
 import minefarts.smarttube.utils.ViewUtil;
 
 import java.util.ArrayList;
@@ -386,7 +386,7 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
         }
     }
 
-    private final class ItemViewClickedListener2 implements minefarts.smarttube.leanback.widget.OnItemViewClickedListener {
+    private final class ItemViewClickedListener2 implements androidx.leanback.widget.OnItemViewClickedListener {
         @Override
         public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
                                   RowPresenter.ViewHolder rowViewHolder, Row row) {

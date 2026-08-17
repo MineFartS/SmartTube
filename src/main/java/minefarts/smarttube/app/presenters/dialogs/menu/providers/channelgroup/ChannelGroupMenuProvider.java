@@ -6,12 +6,14 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 
 import com.liskovsoft.mediaserviceinterfaces.data.ItemGroup;
+import com.liskovsoft.sharedutils.rx.RxHelper;
+import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.UiOptionItem;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionItem;
+
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.MessageHelpers;
-import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.R;
-import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
-import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.BrowsePresenter;
 import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter.VideoMenuCallback;
@@ -71,7 +73,7 @@ public class ChannelGroupMenuProvider extends ContextMenuProvider {
 
         List<ItemGroup> groups = mService.getChannelGroups();
 
-        List<UiOptionItem> options = new ArrayList<>();
+        List<OptionItem> options = new ArrayList<>();
 
         // Create new group or enter url
         String editDialogTitle = mContext.getString(R.string.new_subscriptions_group);

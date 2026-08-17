@@ -1,6 +1,6 @@
 package minefarts.smarttube.app.views;
 
-import minefarts.smarttube.app.models.playback.ui.OptionCategory;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionCategory;
 
 import java.util.List;
 

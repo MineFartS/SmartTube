@@ -15,7 +15,7 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import minefarts.smarttube.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.helpers.KeyHelpers;
 import minefarts.smarttube.utils.locale.LocaleContextWrapper;

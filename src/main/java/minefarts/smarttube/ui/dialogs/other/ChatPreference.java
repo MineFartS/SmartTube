@@ -3,7 +3,7 @@ package minefarts.smarttube.ui.dialogs.other;
 import android.content.Context;
 import android.util.AttributeSet;
 import androidx.preference.DialogPreference;
-import minefarts.smarttube.app.models.playback.ui.ChatReceiver;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.ChatReceiver;
 
 public class ChatPreference extends DialogPreference {
     private ChatReceiver mChatReceiver;

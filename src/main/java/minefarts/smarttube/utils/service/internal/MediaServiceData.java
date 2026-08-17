@@ -16,9 +16,9 @@ import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.utils.prefs.GlobalPreferences;
 import minefarts.smarttube.utils.prefs.SharedPreferencesBase;
-import minefarts.smarttube.utils.app.models.AppInfo;
-import minefarts.smarttube.utils.app.models.ClientData;
-import minefarts.smarttube.utils.app.models.PlayerData;
+import com.liskovsoft.youtubeapi.app.models.AppInfo;
+import com.liskovsoft.youtubeapi.app.models.ClientData;
+import com.liskovsoft.youtubeapi.app.models.PlayerData;
 import minefarts.smarttube.utils.MediaItemService;
 
 import java.util.UUID;

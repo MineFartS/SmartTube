@@ -15,7 +15,7 @@ import minefarts.smarttube.utils.oauth.SignInCode;
 import com.liskovsoft.sharedutils.rx.RxHelper;
 import minefarts.smarttube.utils.service.internal.MediaServicePrefs;
 import minefarts.smarttube.utils.misc.WeakHashSet;
-import minefarts.smarttube.utils.app.AppService;
+import com.liskovsoft.youtubeapi.app.AppService;
 import com.liskovsoft.googlecommon.common.models.auth.UserCode;
 import com.liskovsoft.googlecommon.common.models.auth.info.AccountInt;
 import com.liskovsoft.youtubeapi.videoinfo.V2.VideoInfoService;

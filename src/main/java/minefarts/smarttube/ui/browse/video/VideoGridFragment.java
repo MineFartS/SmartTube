@@ -5,11 +5,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import minefarts.smarttube.leanback.widget.OnItemViewSelectedListener;
-import minefarts.smarttube.leanback.widget.Presenter;
-import minefarts.smarttube.leanback.widget.Row;
-import minefarts.smarttube.leanback.widget.RowPresenter;
-import minefarts.smarttube.leanback.widget.VerticalGridPresenter;
+import androidx.leanback.widget.OnItemViewSelectedListener;
+import androidx.leanback.widget.Presenter;
+import androidx.leanback.widget.Row;
+import androidx.leanback.widget.RowPresenter;
+import androidx.leanback.widget.VerticalGridPresenter;
 import minefarts.smarttube.utils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
@@ -19,15 +19,15 @@ import minefarts.smarttube.utils.TickleManager;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.utils.LoadingManager;
 import minefarts.smarttube.R;
-import minefarts.smarttube.adapter.VideoGroupObjectAdapter;
-import minefarts.smarttube.presenter.CustomVerticalGridPresenter;
-import minefarts.smarttube.presenter.ShortsCardPresenter;
-import minefarts.smarttube.presenter.VideoCardPresenter;
-import minefarts.smarttube.presenter.base.OnItemLongPressedListener;
+import com.liskovsoft.smartyoutubetv2.tv.adapter.VideoGroupObjectAdapter;
+import com.liskovsoft.smartyoutubetv2.tv.presenter.CustomVerticalGridPresenter;
+import com.liskovsoft.smartyoutubetv2.tv.presenter.ShortsCardPresenter;
+import com.liskovsoft.smartyoutubetv2.tv.presenter.VideoCardPresenter;
+import com.liskovsoft.smartyoutubetv2.tv.presenter.base.OnItemLongPressedListener;
 import minefarts.smarttube.ui.browse.interfaces.VideoSection;
 import minefarts.smarttube.ui.common.LeanbackActivity;
 import minefarts.smarttube.ui.common.UriBackgroundManager;
-import minefarts.smarttube.ui.mod.fragments.GridFragment;
+import com.liskovsoft.smartyoutubetv2.tv.ui.mod.fragments.GridFragment;
 import minefarts.smarttube.utils.ViewUtil;
 
 import java.util.ArrayList;
@@ -215,7 +215,7 @@ public class VideoGridFragment extends GridFragment implements VideoSection {
     @Override
     public void clear() {
         if (mGridAdapter != null) {
-            // Fix: Invalid item position -1(-1). Item count:84 minefarts.smarttube.leanback.widget.VerticalGridView
+            // Fix: Invalid item position -1(-1). Item count:84 androidx.leanback.widget.VerticalGridView
             freeze(true);
 
             mGridAdapter.clear();
@@ -246,7 +246,7 @@ public class VideoGridFragment extends GridFragment implements VideoSection {
         }
     }
 
-    private final class ItemViewClickedListener implements minefarts.smarttube.leanback.widget.OnItemViewClickedListener {
+    private final class ItemViewClickedListener implements androidx.leanback.widget.OnItemViewClickedListener {
         @Override
         public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
                                   RowPresenter.ViewHolder rowViewHolder, Row row) {

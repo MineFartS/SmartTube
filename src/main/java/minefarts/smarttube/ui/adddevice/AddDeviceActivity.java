@@ -1,7 +1,7 @@
 package minefarts.smarttube.ui.adddevice;
 
 import android.os.Bundle;
-import minefarts.smarttube.leanback.app.GuidedStepSupportFragment;
+import androidx.leanback.app.GuidedStepSupportFragment;
 import minefarts.smarttube.ui.common.LeanbackActivity;
 
 public class AddDeviceActivity extends LeanbackActivity {

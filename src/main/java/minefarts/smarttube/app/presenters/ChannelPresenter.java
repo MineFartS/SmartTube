@@ -5,28 +5,30 @@ import android.content.Context;
 
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItem;
-import minefarts.smarttube.utils.helpers.Helpers;
-import minefarts.smarttube.utils.helpers.MessageHelpers;
-import minefarts.smarttube.utils.mylogger.Log;
-import minefarts.smarttube.R;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
-import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
-import minefarts.smarttube.app.presenters.base.BasePresenter;
-import minefarts.smarttube.app.models.playback.controllers.VideoLoaderController;
-import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter;
-import minefarts.smarttube.app.views.ChannelView;
-import minefarts.smarttube.utils.BrowseProcessorManager;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.UiOptionItem;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionItem;
 import com.liskovsoft.sharedutils.rx.RxHelper;
-import minefarts.smarttube.utils.LoadingManager;
 import com.liskovsoft.youtubeapi.browse.v2.BrowseService2;
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.MediaGroupOptions;
 import com.liskovsoft.youtubeapi.browse.v2.gen.BrowseResult;
 import com.liskovsoft.youtubeapi.browse.v2.BrowseApiHelper;
 import com.liskovsoft.youtubeapi.common.helpers.AppClient;
-import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
 import com.liskovsoft.youtubeapi.browse.v2.BrowseApi;
 import com.liskovsoft.youtubeapi.common.models.impl.mediagroup.BrowseMediaGroup;
+import com.liskovsoft.googlecommon.common.helpers.RetrofitHelper;
+
+import minefarts.smarttube.utils.helpers.Helpers;
+import minefarts.smarttube.utils.helpers.MessageHelpers;
+import minefarts.smarttube.utils.mylogger.Log;
+import minefarts.smarttube.R;
+import minefarts.smarttube.app.presenters.base.BasePresenter;
+import minefarts.smarttube.app.models.playback.controllers.VideoLoaderController;
+import minefarts.smarttube.app.presenters.dialogs.menu.VideoMenuPresenter;
+import minefarts.smarttube.app.views.ChannelView;
+import minefarts.smarttube.utils.BrowseProcessorManager;
+import minefarts.smarttube.utils.LoadingManager;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.app.models.playback.BasePlayerController;
 
@@ -349,7 +351,7 @@ public class ChannelPresenter extends BasePresenter<ChannelView> {
 
         AppDialogPresenter dialogPresenter = AppDialogPresenter.instance(getContext());
 
-        List<UiOptionItem> options = new ArrayList<>();
+        List<OptionItem> options = new ArrayList<>();
 
         options.add(UiOptionItem.from(
             "Popularity",

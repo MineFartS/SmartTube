@@ -8,7 +8,7 @@ import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
-import minefarts.smarttube.fragment.app.Fragment;
+import androidx.fragment.app.Fragment;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.mylogger.Log;
 import minefarts.smarttube.ui.playback.PlaybackFragment2;

@@ -7,9 +7,11 @@ import androidx.preference.ListPreference;
 import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.SwitchPreference;
+
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionCategory;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.OptionItem;
+
 import minefarts.smarttube.utils.helpers.MessageHelpers;
-import minefarts.smarttube.app.models.playback.ui.OptionCategory;
-import minefarts.smarttube.app.models.playback.ui.UiOptionItem;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.R;
 import minefarts.smarttube.ui.dialogs.other.ChatPreference;
@@ -91,7 +93,7 @@ public class AppPreferenceManager {
     private Preference createChatPreference(OptionCategory category) {
         ChatPreference pref = new ChatPreference(mContext);
 
-        UiOptionItem optionItem = category.options.get(0);
+        OptionItem optionItem = category.options.get(0);
         pref.setChatReceiver(optionItem.getChatReceiver());
 
         initDialogPreference(category, pref);
@@ -102,7 +104,7 @@ public class AppPreferenceManager {
     private Preference createCommentsPreference(OptionCategory category) {
         CommentsPreference pref = new CommentsPreference(mContext);
 
-        UiOptionItem optionItem = category.options.get(0);
+        OptionItem optionItem = category.options.get(0);
         pref.setCommentsReceiver(optionItem.getCommentsReceiver());
 
         initDialogPreference(category, pref);
@@ -114,7 +116,7 @@ public class AppPreferenceManager {
         Preference result = null;
 
         if (category.options.size() == 1) {
-            UiOptionItem item = category.options.get(0);
+            OptionItem item = category.options.get(0);
             Preference preference = new Preference(mContext);
             preference.setPersistent(false);
             preference.setTitle(item.getTitle());
@@ -133,7 +135,7 @@ public class AppPreferenceManager {
         Preference result = null;
 
         if (category.options.size() == 1) {
-            UiOptionItem item = category.options.get(0);
+            OptionItem item = category.options.get(0);
             Preference preference = new SwitchPreference(mContext);
             preference.setPersistent(false);
             preference.setTitle(item.getTitle());
@@ -175,7 +177,7 @@ public class AppPreferenceManager {
         pref.setValue(prefData.defaultValue);
 
         pref.setOnPreferenceChangeListener((preference, newValue) -> {
-            for (UiOptionItem optionItem : category.options) {
+            for (OptionItem optionItem : category.options) {
                 if (newValue.equals(optionItem.toString())) {
                     optionItem.onSelect(true);
                     break;
@@ -198,7 +200,7 @@ public class AppPreferenceManager {
         pref.setOnPreferenceChangeListener((preference, newValue) -> {
             if (newValue instanceof Set) {
                 Set<?> values = ((Set<?>) newValue); // All checked items. That don't means that this items is pressed recently.
-                for (UiOptionItem item : category.options) {
+                for (OptionItem item : category.options) {
                     boolean isSelected = false;
                     for (Object value : values) {
                         isSelected = value.equals(item.toString());
@@ -209,20 +211,20 @@ public class AppPreferenceManager {
 
                     if (item.isSelected() != isSelected) {
                         if (isSelected) {
-                            UiOptionItem[] requiredItems = item.getRequired();
+                            OptionItem[] requiredItems = item.getRequired();
 
                             if (requiredItems != null) {
-                                for (UiOptionItem requiredItem : requiredItems) {
+                                for (OptionItem requiredItem : requiredItems) {
                                     if (!requiredItem.isSelected()) {
                                         MessageHelpers.showMessageThrottled(mContext, mContext.getString(R.string.require_checked, requiredItem.getTitle()));
                                     }
                                 }
                             }
 
-                            UiOptionItem[] radioItems = item.getRadio();
+                            OptionItem[] radioItems = item.getRadio();
 
                             if (radioItems != null) {
-                                for (UiOptionItem radioItem : radioItems) {
+                                for (OptionItem radioItem : radioItems) {
                                     radioItem.onSelect(false);
                                 }
 
@@ -243,14 +245,14 @@ public class AppPreferenceManager {
         });
     }
 
-    public ListPreferenceData createListPreferenceData(List<UiOptionItem> items) {
+    public ListPreferenceData createListPreferenceData(List<OptionItem> items) {
         CharSequence[] titles = new CharSequence[items.size()];
         CharSequence[] hashes = new CharSequence[items.size()];
         String defaultValue = null;
         Set<String> defaultValues = new HashSet<>(); // used in multi set lists
 
         for (int i = 0; i < items.size(); i++) {
-            UiOptionItem optionItem = items.get(i);
+            OptionItem optionItem = items.get(i);
 
             CharSequence title = optionItem.getTitle();
             String value = optionItem.toString();

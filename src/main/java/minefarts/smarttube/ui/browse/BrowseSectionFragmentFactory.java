@@ -1,9 +1,9 @@
 package minefarts.smarttube.ui.browse;
 
-import minefarts.smarttube.fragment.app.Fragment;
-import minefarts.smarttube.leanback.app.BrowseSupportFragment;
-import minefarts.smarttube.leanback.widget.HeaderItem;
-import minefarts.smarttube.leanback.widget.Row;
+import androidx.fragment.app.Fragment;
+import androidx.leanback.app.BrowseSupportFragment;
+import androidx.leanback.widget.HeaderItem;
+import androidx.leanback.widget.Row;
 import minefarts.smarttube.utils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.BrowseSection;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.SettingsGroup;

@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import minefarts.smarttube.leanback.widget.BaseCardView;
+import androidx.leanback.widget.BaseCardView;
 import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.R;

@@ -1,6 +1,6 @@
 package minefarts.smarttube.ui.browse;
 
-import minefarts.smarttube.leanback.widget.HeaderItem;
+import androidx.leanback.widget.HeaderItem;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.BrowseSection;
 
 public class SectionHeaderItem extends HeaderItem {
