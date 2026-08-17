@@ -1,4 +1,4 @@
-package minefarts.smarttube.app.models.playback.service;
+package minefarts.smarttube.app.models.playback;
 
 import android.util.Log;
 import android.annotation.SuppressLint;
@@ -6,12 +6,15 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import minefarts.smarttube.utils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
+import com.liskovsoft.smartyoutubetv2.common.app.models.playback.service.VideoStateService.State;
+
+import minefarts.smarttube.utils.helpers.Helpers;
 import minefarts.smarttube.prefs.AppPrefs;
 import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.utils.helpers.LruList;
+
 import java.util.List;
 
 public class VideoStateService implements ProfileChangeListener {
@@ -82,7 +85,7 @@ public class VideoStateService implements ProfileChangeListener {
 
     public void save(State state) {
 
-        removeByVideoId(state.videoId);
+        removeByVideoId(state.video.videoId);
 
         mStates.add(state);
         

@@ -93,7 +93,7 @@ import minefarts.smarttube.BuildConfig;
 import minefarts.smarttube.R;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.ui.playback.PlaybackFragment2;
-import minefarts.smarttube.app.models.playback.service.VideoStateService;
+import minefarts.smarttube.app.models.playback.VideoStateService;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.app.presenters.SplashPresenter;
 import minefarts.smarttube.app.views.ViewManager;

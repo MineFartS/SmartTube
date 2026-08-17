@@ -381,7 +381,7 @@ public class ChannelPresenter extends BasePresenter<ChannelView> {
                 mBrowseApiHelper.getChannelSearchQuery(AppClient.WEB, getChannelId(), query)
             );
 
-BrowseMediaGroup items = new BrowseMediaGroup(
+            BrowseMediaGroup items = new BrowseMediaGroup(
                 RetrofitHelper.get(search, false), 
                 MediaGroupOptions.Companion.create(MediaGroup.TYPE_CHANNEL_UPLOADS, null),
                 null
@@ -391,7 +391,8 @@ BrowseMediaGroup items = new BrowseMediaGroup(
 
             if (getView() == null || update.isEmpty()) return;
 
-            update.sort(mSortType.func);
+            // TODO: Fix Channel Sorting
+            //update.sort(mSortType.func);
             update.setId(112);
             update.setPosition(0);
             update.setAction(VideoGroup.ACTION_REPLACE);

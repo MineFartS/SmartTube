@@ -15,7 +15,7 @@ import minefarts.smarttube.utils.SignInService;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemMetadata;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import minefarts.smarttube.app.models.playback.PlayerEventListener;
-import minefarts.smarttube.app.models.playback.service.VideoStateService;
+import minefarts.smarttube.app.models.playback.VideoStateService;
 import minefarts.smarttube.app.presenters.AppDialogPresenter;
 import minefarts.smarttube.app.presenters.PlaybackPresenter;
 import minefarts.smarttube.app.presenters.SearchPresenter;
