@@ -11,6 +11,7 @@ Thumbs.db
 **/build/
 src/main/assets/yt.solver.js
 aar/*
+!aar/smarttubetv.aar
 
 # Build Logs
 *.log

@@ -92,6 +92,7 @@ dependencies {
     implementation project(':exoplayer-library-smoothstreaming')
     implementation project(':exoplayer-extension-mediasession')
     implementation project(':exoplayer-extension-okhttp')
+    implementation project(':smarttubetv')
 
     compileOnly 'org.checkerframework:checker-qual:2.5.0'
     compileOnly 'org.checkerframework:checker-compat-qual:2.5.0'
