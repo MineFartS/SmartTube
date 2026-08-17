@@ -17,7 +17,7 @@ import minefarts.smarttube.prefs.GeneralData;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.utils.Utils;
 import minefarts.smarttube.R;
-import minefarts.smarttube.ui.common.LeanbackActivity;
+import com.liskovsoft.smartyoutubetv2.tv.ui.common.LeanbackActivity;
 
 /**
  * Loads PlaybackFragment2 and delegates input from a game controller.
@@ -130,7 +130,7 @@ public class PlaybackActivity extends LeanbackActivity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         mIsBackPressed = false;
         super.onResume();
     }

@@ -101,8 +101,8 @@ import minefarts.smarttube.prefs.AppPrefs.ProfileChangeListener;
 import minefarts.smarttube.prefs.AppPrefs;
 import minefarts.smarttube.prefs.PlayerTweaksData;
 import com.liskovsoft.smartyoutubetv2.tv.ui.playback.mod.surface.SurfacePlaybackFragment;
-import minefarts.smarttube.ui.common.UriBackgroundManager;
-import minefarts.smarttube.ui.common.LeanbackActivity;
+import com.liskovsoft.smartyoutubetv2.tv.ui.common.UriBackgroundManager;
+import com.liskovsoft.smartyoutubetv2.tv.ui.common.LeanbackActivity;
 import minefarts.smarttube.utils.helpers.DeviceHelpers;
 
 import java.io.InputStream;

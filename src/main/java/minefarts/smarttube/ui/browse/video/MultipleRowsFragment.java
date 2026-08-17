@@ -29,8 +29,8 @@ import com.liskovsoft.smartyoutubetv2.tv.presenter.VideoCardPresenter;
 import com.liskovsoft.smartyoutubetv2.tv.presenter.CustomListRowPresenter;
 import com.liskovsoft.smartyoutubetv2.tv.presenter.base.OnItemLongPressedListener;
 import minefarts.smarttube.ui.browse.interfaces.VideoSection;
-import minefarts.smarttube.ui.common.LeanbackActivity;
-import minefarts.smarttube.ui.common.UriBackgroundManager;
+import com.liskovsoft.smartyoutubetv2.tv.ui.common.LeanbackActivity;
+import com.liskovsoft.smartyoutubetv2.tv.ui.common.UriBackgroundManager;
 import minefarts.smarttube.utils.ViewUtil;
 
 import java.lang.ref.WeakReference;

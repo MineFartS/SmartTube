@@ -20,8 +20,8 @@ import minefarts.smarttube.R;
 import com.liskovsoft.smartyoutubetv2.tv.presenter.SettingsCardPresenter;
 import minefarts.smarttube.ui.browse.interfaces.SettingsSection;
 import minefarts.smarttube.ui.browse.video.GridFragmentHelper;
-import minefarts.smarttube.ui.common.LeanbackActivity;
-import minefarts.smarttube.ui.common.UriBackgroundManager;
+import com.liskovsoft.smartyoutubetv2.tv.ui.common.LeanbackActivity;
+import com.liskovsoft.smartyoutubetv2.tv.ui.common.UriBackgroundManager;
 import com.liskovsoft.smartyoutubetv2.tv.ui.mod.fragments.GridFragment;
 import minefarts.smarttube.utils.ViewUtil;
 

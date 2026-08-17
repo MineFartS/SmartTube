@@ -3,7 +3,7 @@ package minefarts.smarttube.ui.browse;
 import android.os.Bundle;
 import minefarts.smarttube.prefs.MainUIData;
 import minefarts.smarttube.R;
-import minefarts.smarttube.ui.common.LeanbackActivity;
+import com.liskovsoft.smartyoutubetv2.tv.ui.common.LeanbackActivity;
 
 public class BrowseActivity extends LeanbackActivity {
 

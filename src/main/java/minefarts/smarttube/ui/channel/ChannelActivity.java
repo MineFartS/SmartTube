@@ -2,7 +2,7 @@ package minefarts.smarttube.ui.channel;
 
 import android.os.Bundle;
 import minefarts.smarttube.R;
-import minefarts.smarttube.ui.common.LeanbackActivity;
+import com.liskovsoft.smartyoutubetv2.tv.ui.common.LeanbackActivity;
 
 public class ChannelActivity extends LeanbackActivity {
     
