@@ -17,9 +17,8 @@ if ($Force) {
     Stop-Process -Name "java*"
 
     @(
-        ".gradle", ".build", "aar", $YTSolver,
+        ".gradle", "build", $YTSolver,
         "$env:USERPROFILE\.gradle\caches"
-        
     ) | Remove-Item -Force -Recurse -Verbose -ErrorAction SilentlyContinue
 
     $gARGS += 'clean'

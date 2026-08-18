@@ -36,12 +36,10 @@ function Test-ADBConnection {
 
 function Add-YuliskovPkg ([String]$Name, [String]$Path) {
 
-    $Dst = "$PSScriptRoot/aar/$Name.aar"
+    $Dst = "$PSScriptRoot/pkg/$Name.aar"
     $Src = "$PSScriptRoot/lib/yuliskov/$Path"
 
     if (Test-Path $Dst) { return; }
-
-    New-Item "aar" -ItemType Directory -ErrorAction SilentlyContinue
 
     git.exe submodule update --init --recursive --remote --force lib/yuliskov
 

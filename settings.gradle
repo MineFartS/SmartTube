@@ -18,7 +18,7 @@ settings.rootProject.children.each { proj ->
             project(":${proj.name}") {
                 configurations.maybeCreate("default")                
                 artifacts {
-                    add('default', new File(rootDir, "aar/${proj.name}.aar"))
+                    add('default', new File(rootDir, "pkg/${proj.name}.aar"))
                 }
             }
         }
