@@ -64,39 +64,75 @@ apply from: new File (rootDir, "lib/yuliskov/MediaServiceCore/SharedModules/cons
 
 dependencies {
 
-    implementation 'androidx.leanback:leanback:' + leanbackXVersion
-    implementation 'androidx.leanback:leanback-preference:' + leanbackXVersion
-    implementation 'androidx.recommendation:recommendation:' + leanbackXVersion
+    // LOCAL STATIC BINARIES
+    implementation fileTree(dir:'src/main/aar', include:['*.aar'])
+
+    // NETWORKING & RETROFIT ENGINE
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+    
+    // NETWORK DEBUGGING & LOGGING INTERCEPTORS
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+    implementation 'com.localebro:okhttpprofiler:1.0.8'
+    
+    // SCHEMA PARSING & DATA UTILITIES
+    implementation 'com.jayway.jsonpath:json-path:2.9.0'
+    implementation 'org.slf4j:slf4j-api:1.7.36'
+    implementation 'com.grack:nanojson:1.7'
+
+    // BACKGROUND JOB MANAGEMENT
+    implementation 'androidx.work:work-runtime:2.7.1'
+
+    // CORE PLATFORM BINDINGS
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.core:core-ktx:1.7.0'
+
+    // LEANBACK TV PREFERENCES
+    implementation('androidx.leanback:leanback-preference:' + leanbackXVersion) {
+        exclude group: 'androidx.leanback', module: 'leanback'
+    }
+
     implementation 'androidx.annotation:annotation:' + annotationXVersion
     implementation 'androidx.recyclerview:recyclerview:' + recyclerviewXVersion
     implementation 'androidx.media:media:' + mediaXVersion
     implementation 'androidx.multidex:multidex:' + multiDexVersion
+    implementation 'androidx.loader:loader:1.1.0'
+    implementation 'androidx.webkit:webkit:1.6.0'
 
+    // GLIDE IMAGE LOADING PIPELINE
     implementation 'com.github.bumptech.glide:glide:' + glideVersion
     implementation 'com.github.bumptech.glide:annotations:' + glideVersion
     annotationProcessor 'com.github.bumptech.glide:compiler:' + glideVersion
-    
     implementation 'com.github.zjupure:webpdecoder:' + webpDecoderVersion
 
-    implementation project(':exoplayer-library-core')
-    implementation project(':exoplayer-library-ui')
-    
-    implementation project(':exoplayer-extension-leanback')
-    implementation project(':exoplayer-extension-mediasession')
-
-    implementation project(':fragment-1.1.0')
-    implementation project(':leanback-1.0.0')
-    implementation project(':common')
-    implementation project(':sharedutils')
-    implementation project(':mediaserviceinterfaces')
-    implementation project(':youtubeapi')
-    implementation project(':chatkit')
-
+    // REACTIVE PROGRAMMING BINDINGS
     implementation 'io.reactivex.rxjava2:rxandroid:' + rxAndroidVersion
     implementation 'io.reactivex.rxjava2:rxjava:' + rxJavaVersion
 
+    // ACCESSIBILITY & LAYOUT EXTENSIONS
     implementation 'net.gotev:speech:' + gotevSpeechVersion
-
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
-    
 }
+
+
+configurations.all {
+
+    // FORCE-REMOVE REMOTE FRAGMENT ENGINE:
+    // This stops transitive dependencies (like AppCompat or Glide) from fetching 
+    // remote fragment classes that conflict with your local 'fragment-1.1.0.aar'.
+    exclude group: 'androidx.fragment', module: 'fragment'
+    
+    // SLF4J 2.x DOWNGRADE STRATEGY:
+    // 'json-path' implicitly pulls SLF4J 2.0.11, which uses Java 9+ Module structures.
+    // This block forces Gradle to drop 2.0.11 and use 1.7.36 so the legacy D8 dexer doesn't crash.
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        if (details.requested.group == 'org.slf4j' && details.requested.name == 'slf4j-api') {
+            details.useVersion '1.7.36'
+            details.because 'SLF4J 2.x uses Java module markers that crash the legacy AGP 4.2.2 D8 dexer'
+        }
+    }
+
+}
+
+
