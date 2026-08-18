@@ -65,6 +65,8 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
     private boolean mIsPlayerInForeground;
     private boolean mFocusOnContent;
 
+    public void updateBadge() {/* NOP */}
+
     @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle savedInstanceState) {

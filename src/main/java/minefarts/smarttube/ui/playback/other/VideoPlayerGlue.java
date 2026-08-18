@@ -65,7 +65,9 @@ import java.util.concurrent.TimeUnit;
  * row.
  */
 public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> implements OnActionLongClickedListener {
+    
     private static final long TEN_SECONDS = TimeUnit.SECONDS.toMillis(10);
+    
     private static final String TAG = VideoPlayerGlue.class.getSimpleName();
     private final PlaybackControlsRow.SkipPreviousAction mSkipPreviousAction;
     private final PlaybackControlsRow.SkipNextAction mSkipNextAction;
@@ -115,6 +117,8 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         putAction(new ContentBlockAction(context));
 
     }
+
+    public void setQualityInfo(String info) {/*NOP*/}
 
     @Override
     protected void onCreatePrimaryActions(ArrayObjectAdapter adapter) {

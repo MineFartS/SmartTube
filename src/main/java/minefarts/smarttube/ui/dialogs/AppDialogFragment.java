@@ -37,7 +37,9 @@ import minefarts.smarttube.util.ViewUtil;
 import java.util.List;
 
 public class AppDialogFragment extends LeanbackSettingsFragment implements AppDialogView {
+
     private static final String TAG = AppDialogFragment.class.getSimpleName();
+    
     private AppDialogPresenter mPresenter;
     private AppPreferenceManager mManager;
     private boolean mIsTransparent;
@@ -47,6 +49,9 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
 
     private static final String PREFERENCE_FRAGMENT_TAG =
             "androidx.leanback.preference.LeanbackSettingsFragment.PREFERENCE_FRAGMENT";
+
+    @Override
+    public boolean canGoBack() {return false;}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -121,8 +126,14 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
         return fragment;
     }
 
-    @Override
-    public void show(List<OptionCategory> categories, String title, boolean isExpandable, boolean isTransparent, boolean isOverlay, int id) {
+    public void show(
+        List<OptionCategory> categories, 
+        CharSequence title, 
+        boolean isExpandable, 
+        boolean isTransparent, 
+        boolean isOverlay, 
+        int id
+    ) {
         if (!Utils.checkActivity(getActivity())) {
             return;
         }
@@ -139,7 +150,7 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
                 onPreferenceDisplayDialog(null, mManager.createPreference(category));
             }
         } else {
-            AppPreferenceFragment fragment = buildPreferenceFragment(categories, title);
+            AppPreferenceFragment fragment = buildPreferenceFragment(categories, title.toString());
             startPreferenceFragment(fragment);
         }
     }

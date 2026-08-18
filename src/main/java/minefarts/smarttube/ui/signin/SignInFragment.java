@@ -50,6 +50,11 @@ public class SignInFragment extends GuidedStepSupportFragment implements SignInV
     }
 
     @Override
+    public void showCode(String userCode, String signInUrl, String fullSignInUrl) {
+        setTitle(userCode, fullSignInUrl);
+    }
+
+    @Override
     public void showCode(String userCode, String signInUrl) {
         setTitle(userCode, signInUrl);
     }

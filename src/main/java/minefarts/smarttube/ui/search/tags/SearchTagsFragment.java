@@ -42,6 +42,9 @@ public class SearchTagsFragment extends SearchTagsFragmentBase {
     private boolean mIsFragmentCreated;
 
     @Override
+    public void removeSearchTag(Tag t) {/*NOP*/}
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(null); // Real restore takes place in the presenter
 

@@ -30,13 +30,11 @@ import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 import java.io.InputStream;
 import java.util.List;
 
-/**
- * https://chatgpt.com/c/6806b729-1ab0-8010-94f0-56f6b71cdbfb
- */
 public class EmbedPlayerView extends PlayerView implements PlaybackView {
 
     public static final int QUALITY_LOW = 0;
     public static final int QUALITY_NORMAL = 1;
+
     private SimpleExoPlayer mPlayer;
     private ExoPlayerInitializer mPlayerInitializer;
     private ExoPlayerController mExoPlayerController;
@@ -62,6 +60,24 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
         super(context, attrs, defStyleAttr);
         hideView();
     }
+
+    @Override
+    public void setVideoFlipEnabled(boolean enabled) {/* NOP */}
+    
+    @Override
+    public void setRotationAngle(int angle) {/* NOP */}
+
+    @Override
+    public void setAspectRatio(float ratio) {/* NOP */}
+    
+    @Override
+    public void updateEndingTime() {/* NOP */}
+    
+    @Override
+    public void showDebugInfo(boolean show) {/* NOP */}
+    
+    @Override
+    public int getButtonState(int but) {return -1;}
 
     private void hideView() {
         setAlpha(0);

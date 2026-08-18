@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -41,6 +40,7 @@ import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.util.Util;
+
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -60,6 +60,8 @@ import com.liskovsoft.smartyoutubetv2.common.exoplayer.versions.selector.Restore
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerTweaksData;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
+import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
+
 import minefarts.smarttube.R;
 import minefarts.smarttube.adapter.VideoGroupObjectAdapter;
 import minefarts.smarttube.presenter.CustomListRowPresenter;
@@ -78,8 +80,8 @@ import minefarts.smarttube.ui.playback.other.VideoPlayerGlue.OnActionClickedList
 import minefarts.smarttube.ui.playback.previewtimebar.StoryboardSeekDataProvider;
 import minefarts.smarttube.ui.widgets.chat.LiveChatView;
 import minefarts.smarttube.ui.widgets.time.DateTimeView;
-import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
 
+import java.lang.reflect.Field;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -119,6 +121,24 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     private Video mPendingFocus;
     private long mProgressShowTimeMs;
     private String mSelectedVideoId;
+
+    @Override
+    public void setVideoFlipEnabled(boolean enabled) {/*NOP*/}
+    
+    @Override
+    public void setRotationAngle(int angle) {/*NOP*/}
+
+    @Override
+    public void setAspectRatio(float ratio) {/*NOP*/}
+    
+    @Override
+    public void updateEndingTime() {/*NOP*/}
+    
+    @Override
+    public void showDebugInfo(boolean show) {/*NOP*/}
+    
+    @Override
+    public int getButtonState(int but) {return -1;}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -459,7 +479,7 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     }
 
     private void createSubtitleManager() {
-        mSubtitleManager = new SubtitleManager(getActivity(), R.id.leanback_subtitles);
+        mSubtitleManager = new SubtitleManager(getView().findViewById(R.id.leanback_subtitles));
 
         // subs renderer
         if (mPlayer.getTextComponent() != null) {
@@ -714,10 +734,18 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
 
         String secondTitle = video.secondTitle.toString();
 
+        CharSequence metadataSecondTitle;
+        try {
+            Field field = Video.class.getDeclaredField("metadataSecondTitle");
+            field.setAccessible(true);
+            metadataSecondTitle = (CharSequence) field.get(video);
+        } catch (NoSuchFieldException|IllegalAccessException e) {
+            metadataSecondTitle = null;
+        }
+
         // Use old title if segments missing (ex: Mixes)
-        if (!secondTitle.contains(DELIM) && (video.metadataSecondTitle != null)) {
-            secondTitle = video.metadataSecondTitle.toString();
-            secondTitle = secondTitle.replace("Published on ", "");
+        if (!secondTitle.contains(DELIM) && (metadataSecondTitle != null)) {
+            secondTitle = metadataSecondTitle.toString().replace("Published on ", "");
         }
 
         parts.add(secondTitle);
