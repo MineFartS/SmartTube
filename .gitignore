@@ -6,7 +6,6 @@ Thumbs.db
 # Build Cache
 .gradle
 **/build/
-src/main/assets/yt.solver.js
 
 # Build Logs
 *.log

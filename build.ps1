@@ -10,14 +10,12 @@ Clear-Host
 
 $gARGS = @()
 
-$YTSolver = "src\main\assets\yt.solver.js"
-
 if ($Force) {
 
     Stop-Process -Name "java*"
 
     @(
-        ".gradle", "build", $YTSolver,
+        ".gradle", "build",
         "$env:USERPROFILE\.gradle\caches"
     ) | Remove-Item -Force -Recurse -Verbose -ErrorAction SilentlyContinue
 
@@ -39,14 +37,6 @@ Add-YuliskovPkg 'sharedutils' '/SharedModules/sharedutils/'
 Add-YuliskovPkg 'mediaserviceinterfaces' '/MediaServiceCore/mediaserviceinterfaces/'
 Add-YuliskovPkg 'youtubeapi' '/MediaServiceCore/youtubeapi/'
 Add-YuliskovPkg 'chatkit' '/chatkit/'
-
-#if (-not (Test-Path $YTSolver)) {
-
-#    Invoke-Python "lib\ejs2\hatch_build.py"
-
-#    Copy-Item "lib\ejs2\dist\yt.solver.js" $YTSolver
-
-#}
 
 if (Test-ADBConnection) {
     $gARGS += ":installDebug"
