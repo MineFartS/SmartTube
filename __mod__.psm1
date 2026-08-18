@@ -36,7 +36,7 @@ function Test-ADBConnection {
 
 function Add-YuliskovPkg ([String]$Name, [String]$Path) {
 
-    $Dst = "$PSScriptRoot/pkg/$Name.aar"
+    $Dst = "$PSScriptRoot/src/main/aar/$Name.aar"
     $Src = "$PSScriptRoot/lib/yuliskov/$Path"
 
     if (Test-Path $Dst) { return; }

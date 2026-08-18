@@ -1,29 +1,22 @@
 
-include ':smarttubetv'
-include ':exoplayer-library', ':exoplayer-extension-leanback', ':exoplayer-extension-mediasession'
-include ':fragment-1.1.0', ':leanback-1.0.0', ':common', ':sharedutils', ':mediaserviceinterfaces', ':youtubeapi', ':chatkit'
-include ':commons-io-2.8.0', ':j2v8'
+(new File(rootDir, '/src/main/aar/')).eachFile { aarFile ->
 
-gradle.ext.sharedModulesConstants = new File(rootDir, 'pkg/constants.gradle')
+    // Parse project name from file name
+    String name = aarFile.name.replaceAll(/\.aar$/, '')
 
-settings.rootProject.children.each { proj ->
-
-    proj.projectDir = new File(rootDir, "pkg/${proj.name}")
-
-    if (!proj.projectDir.exists()) {
-
-        proj.projectDir = new File(rootDir, "build/stubs/${proj.name}")
-        
-        gradle.rootProject {
-            project(":${proj.name}") {
-                configurations.maybeCreate("default")                
-                artifacts {
-                    add('default', new File(rootDir, "pkg/${proj.name}.aar"))
-                }
+    // Register project
+    include ":${name}"
+    project(":${name}").projectDir = new File(rootDir, "/build/stubs/${name}/")
+    
+    // Wire the AAR binary as the project output artifact
+    gradle.rootProject {
+        project(":${name}") {
+            configurations.create('default')
+            artifacts {
+                add('default', aarFile)
             }
         }
-        
     }
-        
+
 }
 

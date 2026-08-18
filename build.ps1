@@ -26,7 +26,9 @@ if ($Force) {
 
 }
 
-Add-YuliskovPkg 'exoplayer-library' '/exoplayer-amzn-2.10.6/library/all/'
+Add-YuliskovPkg 'exoplayer-library-core' '/exoplayer-amzn-2.10.6/library/core/'
+Add-YuliskovPkg 'exoplayer-library-ui' '/exoplayer-amzn-2.10.6/library/ui/'
+
 Add-YuliskovPkg 'exoplayer-extension-leanback' '/exoplayer-amzn-2.10.6/extensions/leanback/'
 Add-YuliskovPkg 'exoplayer-extension-mediasession' '/exoplayer-amzn-2.10.6/extensions/mediasession/'
 
@@ -38,9 +40,6 @@ Add-YuliskovPkg 'mediaserviceinterfaces' '/MediaServiceCore/mediaserviceinterfac
 Add-YuliskovPkg 'youtubeapi' '/MediaServiceCore/youtubeapi/'
 Add-YuliskovPkg 'chatkit' '/chatkit/'
 
-Add-YuliskovPkg 'commons-io-2.8.0' '/SharedModules/commons-io-2.8.0/'
-Add-YuliskovPkg 'j2v8' '/SharedModules/j2v8/'
-
 #if (-not (Test-Path $YTSolver)) {
 
 #    Invoke-Python "lib\ejs2\hatch_build.py"
@@ -50,9 +49,9 @@ Add-YuliskovPkg 'j2v8' '/SharedModules/j2v8/'
 #}
 
 if (Test-ADBConnection) {
-    $gARGS += ":smarttubetv:installStstableDebug"
+    $gARGS += ":installDebug"
 } else {
-    $gARGS += ":smarttubetv:build"
+    $gARGS += ":build"
 }
 
 Clear-Host
