@@ -13,5 +13,5 @@ $Level = if ($Verbose) {"V"} else {"W"}
 Invoke-Python 'lib/pidcat/pidcat.py' `
     "minefarts.smarttube" `
     '--min-level' $Level `
-    '--sdk' $SDK `
+    '--sdk' $Env:ANDROID_SDK_ROOT `
     '--clear'

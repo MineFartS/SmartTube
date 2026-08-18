@@ -6,27 +6,23 @@ $ErrorActionPreference = 'Stop'
 
 Set-Location $PSScriptRoot
 
-$JDK = "$PSScriptRoot\lib\jdk17"
-$SDK = "$PSScriptRoot\lib\sdk"
+$Env:JAVA_HOME = "$PSScriptRoot\lib\jdk17"
+$Env:PATH += ";$Env:JAVA_HOME\bin"
 
-$ADB = "$SDK\platform-tools\adb.exe"
-
-$Env:JAVA_HOME = $JDK
-$Env:PATH += ";$JDK/bin"
+$Env:ANDROID_SDK_ROOT = "$PSScriptRoot\lib\sdk"
+$Env:PATH += ";$Env:ANDROID_SDK_ROOT\platform-tools"
 
 git.exe submodule update --init --recursive --remote
 
-Write-Output "org.gradle.java.home=$JDK" > 'local.properties'
-Write-Output "sdk.dir=$SDK" >> 'local.properties'
-(Get-Content -Path "local.properties") -replace '\\', '/' | Set-Content -Encoding utf8 "local.properties"
-
-& "$SDK\Accept.ps1"
+if (-not (Test-Path "$Env:ANDROID_SDK_ROOT\.knownPackages")) {
+    & "$Env:ANDROID_SDK_ROOT\Accept.ps1"
+}
 
 #==================================================
 
 function Test-ADBConnection {
 
-    $devices = & $ADB devices `
+    $devices = adb.exe devices `
         | Select-String -NotMatch "List of devices attached" `
         | Where-Object { $_.ToString().Trim().Length -gt 0 }
 
@@ -40,19 +36,8 @@ function Add-YuliskovPkg ([String]$Name, [String]$Path) {
     $Src = "$PSScriptRoot/lib/yuliskov/$Path"
 
     if (Test-Path $Dst) { return; }
-
-    git.exe submodule update --init --recursive --remote --force lib/yuliskov
-
-    Copy-Item "local.properties" "lib/yuliskov/local.properties" -Force
-
-    $tasks = Invoke-Gradle -Yuliskov ":$($Name):tasks"
-
-    $assemblecmd = "assembleDebug"
-    if ($tasks | Select-String "assembleStstable") {
-        $assemblecmd = "assembleStstableDebug"
-    }
     
-    Invoke-Gradle -Yuliskov ":$($Name):$assemblecmd" "--no-daemon"
+    Invoke-Gradle -Yuliskov ":$($Name):assemble"
 
     Get-ChildItem $Src -Filter "$Name*debug.aar" -Recurse `
         | Sort-Object { $_.Name -like "*ststable*" } -Descending `
@@ -69,9 +54,7 @@ function Invoke-Gradle ([Switch]$Yuliskov, [Parameter(ValueFromRemainingArgument
         Push-Location $PSScriptRoot
     }
 
-    .\gradlew.bat --stop
     .\gradlew.bat @cmdargs --max-workers=3 --no-daemon
-    .\gradlew.bat --stop
 
     Pop-Location
 }
@@ -86,7 +69,7 @@ function Invoke-ADB ([Parameter(ValueFromRemainingArguments)] $cmdargs) {
 
         if ($IP -ne "") {
 
-            & $ADB connect $IP
+            adb.exe connect $IP
 
             while (-not (Test-ADBConnection)) {
                 Write-Host 'Awaiting Connection ...'
@@ -98,7 +81,7 @@ function Invoke-ADB ([Parameter(ValueFromRemainingArguments)] $cmdargs) {
     }
 
     if ($cmdargs.Count -gt 0) {
-        & $ADB @cmdargs
+        adb.exe @cmdargs
     }
 
 }
