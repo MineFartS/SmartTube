@@ -1,7 +1,6 @@
 Add-Type -AssemblyName System.Text.RegularExpressions
 
 $ErrorActionPreference = 'Stop'
-$PSNativeCommandUseErrorActionPreference = $true
 
 #==================================================
 
@@ -35,23 +34,14 @@ function Test-ADBConnection {
     
 }
 
-$AccessPatterns = @(
-    # Classes
-    '\b(private|protected|internal)(?=\s+(?:@\w+\s+)*(?:(?:abstract|sealed|data|enum|open|inner|final|synchronized)\s+)*(?:class|interface|object)\b)',
-
-    # Functions
-    '\b(private|protected|internal)(?=\s+(?:@\w+\s+)*(?:(?:synchronized|final|abstract|inline|external|tailrec|operator|infix)\s+)*(?:fun|void\s+\w+|[\w<>\[\]]+\s+\w+(?=\s*\()))(?!\s+(?:[^\{]*?\b(?:open|override)\b))'
-)
-
 function Add-YuliskovPkg ([String]$Name, [String]$Path) {
 
     $Dst = "$PSScriptRoot/aar/$Name.aar"
+    $Src = "$PSScriptRoot/lib/yuliskov/$Path"
 
     if (Test-Path $Dst) { return; }
 
     New-Item "aar" -ItemType Directory -ErrorAction SilentlyContinue
-
-    $Path = Get-Item "lib/yuliskov/$Path"
 
     git.exe submodule update --init --recursive --remote --force lib/yuliskov
 
@@ -63,18 +53,10 @@ function Add-YuliskovPkg ([String]$Name, [String]$Path) {
     if ($tasks | Select-String "assembleStstable") {
         $assemblecmd = "assembleStstableDebug"
     }
-
-    Get-ChildItem $Path -File -Recurse | Where-Object Extension -match 'kt|java' | ForEach-Object { $_
-        $text = Get-Content $_.FullName -Raw
-        $AccessPatterns | ForEach-Object {
-            $text = [regex]::Replace($text, $_, 'public')
-        }
-        Set-Content -Value $text -Path $_.FullName
-    }
     
     Invoke-Gradle -Yuliskov ":$($Name):$assemblecmd" "--no-daemon"
 
-    Get-ChildItem $Path -Filter "$Name*debug.aar" -Recurse `
+    Get-ChildItem $Src -Filter "$Name*debug.aar" -Recurse `
         | Sort-Object { $_.Name -like "*ststable*" } -Descending `
         | Select-Object -First 1 `
         | Move-Item -Destination $Dst -Verbose
