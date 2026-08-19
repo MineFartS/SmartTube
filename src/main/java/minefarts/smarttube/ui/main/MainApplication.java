@@ -5,6 +5,7 @@ import android.os.Build.VERSION;
 import androidx.multidex.MultiDexApplication;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.BrowseSection;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.BrowsePresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.views.AddDeviceView;
@@ -39,17 +40,10 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import java.security.Provider;
 import java.security.Security;
 
-public class MainApplication extends MultiDexApplication { // fix: Didn't find class "com.google.firebase.provider.FirebaseInitProvider"
+public class MainApplication extends MultiDexApplication {
+    
     static {
-        // fix youtube bandwidth throttling (best - false)???
-        // false is better for streams (less buffering)
         System.setProperty("http.keepAlive", "false");
-        // fix ipv6 infinite video buffering???
-        // Better to remove this fix at all. Users complain about infinite loading.
-        //System.setProperty("java.net.preferIPv6Addresses", "true");
-        // Another IPv6 fix (no effect)
-        // https://stackoverflow.com/questions/1920623/sometimes-httpurlconnection-getinputstream-executes-too-slowly
-        //System.setProperty("java.net.preferIPv4Stack" , "true");
     }
 
     @Override
@@ -83,6 +77,7 @@ public class MainApplication extends MultiDexApplication { // fix: Didn't find c
 
         setupGlobalExceptionHandler();
         setupViewManager();
+        disableSections();
     }
 
     private void setupViewManager() {
@@ -186,4 +181,26 @@ public class MainApplication extends MultiDexApplication { // fix: Didn't find c
             }
         }
     }
+    
+    private void disableSections() {
+
+        BrowsePresenter bp = BrowsePresenter.instance(this);
+        
+        bp.enableSection(MediaGroup.TYPE_MUSIC, false);
+        bp.enableSection(MediaGroup.TYPE_NEWS, false);
+        bp.enableSection(MediaGroup.TYPE_GAMING, false);
+        bp.enableSection(MediaGroup.TYPE_CHANNEL, false);
+        bp.enableSection(MediaGroup.TYPE_KIDS_HOME, false);
+        bp.enableSection(MediaGroup.TYPE_TRENDING, false);
+        bp.enableSection(MediaGroup.TYPE_SHORTS, false);
+        bp.enableSection(MediaGroup.TYPE_NOTIFICATIONS, false);
+        bp.enableSection(MediaGroup.TYPE_SPORTS, false);
+        bp.enableSection(MediaGroup.TYPE_MOVIES, false);
+        bp.enableSection(MediaGroup.TYPE_LIVE, false);
+        bp.enableSection(MediaGroup.TYPE_MY_VIDEOS, false);
+        bp.enableSection(MediaGroup.TYPE_PLAYBACK_QUEUE, false);
+        bp.enableSection(MediaGroup.TYPE_BLOCKED_CHANNELS, false);
+
+    }
+
 }
