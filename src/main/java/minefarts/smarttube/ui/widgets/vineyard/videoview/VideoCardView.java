@@ -10,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import androidx.leanback.widget.BaseCardView;
+
 import minefarts.smarttube.R;
-import minefarts.smarttube.util.vineyard.NetworkUtil;
 
 public class VideoCardView extends BaseCardView {
     public static final int CARD_TYPE_FLAG_IMAGE_ONLY = 0;
@@ -165,9 +167,14 @@ public class VideoCardView extends BaseCardView {
     }
 
     public void startVideo() {
-        if (NetworkUtil.isNetworkConnected(getContext())) {
+
+        NetworkInfo netw = ((ConnectivityManager) getContext()
+            .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+        
+        if (netw != null && netw.isConnectedOrConnecting()) {
             mPreviewCard.setLoading();
         }
+
     }
 
     public void stopVideo() {
