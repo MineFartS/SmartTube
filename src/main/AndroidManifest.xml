@@ -18,21 +18,19 @@
     <uses-permission android:name="${applicationId}.ACCESS_VIDEO_DATA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
-    <!-- NOTE: use older api -->
     <uses-sdk tools:overrideLibrary="
         androidx.leanback.preference,
         androidx.recommendation,
-        org.xwalk.core,
-        com.algolia.instantsearch.voice,
-        androidx.leanback, androidx.tvprovider,
-        com.github.rubensousa.previewseekbar,
-        com.github.rubensousa.previewseekbar.exoplayer,
+        androidx.leanback, 
+        androidx.tvprovider,
         com.google.android.exoplayer2.ext.leanback,
         com.google.android.exoplayer2.ext.vp9,
         com.google.android.exoplayer2.testutil,
         com.google.android.exoplayer2.ext.okhttp,
-        io.nn.alpha"/>
+        com.google.firebase.crashlytics,
+        com.google.firebase.iid"/>
 
     <uses-feature
         android:name="android.hardware.microphone"
@@ -49,7 +47,8 @@
     <application
         android:name="minefarts.smarttube.ui.main.MainApplication"
         android:usesCleartextTraffic="true"
-        android:allowBackup="false"
+        android:allowBackup="true"
+        android:allowAudioPlaybackCapture="true"
         android:hardwareAccelerated="true"
         android:largeHeap="true"
         android:banner="@mipmap/app_banner"
@@ -59,7 +58,7 @@
         android:theme="@style/App.Theme.Leanback.Browse"
         tools:node="merge"
         tools:replace="android:theme,android:allowBackup"
-        tools:ignore="GoogleAppIndexingWarning,LockedOrientationActivity,UnusedAttribute">
+        tools:ignore="GoogleAppIndexingWarning,LockedOrientationActivity,UnusedAttribute,DiscouragedApi">
 
         <!-- Screen Mirror (e.g. DIAL) for Amazon TV -->
         <!-- Not implemented yet( -->
@@ -117,16 +116,40 @@
             </intent-filter>
         </activity>
 
+        <!-- Alt app launcher icon -->
+        <activity-alias android:label="@string/app_name"
+                        android:icon="@mipmap/app_icon_alt"
+                        android:name="minefarts.smarttube.ui.main.SplashActivityAlt"
+                        android:exported="true"
+                        android:enabled="false"
+                        android:targetActivity="minefarts.smarttube.ui.main.SplashActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
         <!-- noHistory is essential for dialogs. Because otherwise you'll see previous dialog content when opening. -->
-        <!-- behind is important too. This fix crashes on Android 8 (api 26) and above. -->
+        <!-- screenOrientation="behind" is important too. This fix crashes on Android 8 (api 26) and above, except few devices. -->
         <!-- More info about behind: https://stackoverflow.com/a/52426009/1279056 -->
         <activity android:name="minefarts.smarttube.ui.dialogs.AppDialogActivity"
                   android:noHistory="true"
                   android:excludeFromRecents="true"
                   android:launchMode="singleInstance"
                   android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|layoutDirection"
-                  android:screenOrientation="behind"
+                  android:screenOrientation="unspecified"
                   android:theme="@style/App.Theme.Leanback.Preferences"/>
+
+        <!-- Android 8 fallback -->
+        <activity android:name="minefarts.smarttube.ui.dialogs.AppDialogActivityOpaque"
+            android:noHistory="true"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|layoutDirection"
+            android:screenOrientation="unspecified"
+            android:theme="@style/App.Theme.Leanback.Preferences.Opaque"/>
 
         <activity
             android:name="minefarts.smarttube.ui.browse.BrowseActivity"
@@ -176,6 +199,12 @@
                   android:screenOrientation="unspecified"
                   android:theme="@style/App.Theme.Leanback.GuidedStep"/>
 
+        <activity
+            android:name="minefarts.smarttube.ui.webbrowser.WebBrowserActivity"
+            android:launchMode="singleInstance"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|layoutDirection"
+            android:screenOrientation="unspecified"/>
+
         <!-- BEGIN Launchers (used inside tvQuickActions. Don't rename them or move!) -->
 
         <activity
@@ -183,6 +212,36 @@
             android:logo="@drawable/icon_home"
             android:icon="@drawable/icon_home"
             android:label="@string/header_home"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|layoutDirection"
+            android:screenOrientation="unspecified"/>
+
+        <activity
+            android:name="minefarts.smarttube.launchers.NewsLauncherActivity"
+            android:logo="@drawable/icon_news"
+            android:icon="@drawable/icon_news"
+            android:label="@string/header_news"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|layoutDirection"
+            android:screenOrientation="unspecified"/>
+
+        <activity
+            android:name="minefarts.smarttube.launchers.MusicLauncherActivity"
+            android:logo="@drawable/icon_music"
+            android:icon="@drawable/icon_music"
+            android:label="@string/header_music"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|layoutDirection"
+            android:screenOrientation="unspecified"/>
+
+        <activity
+            android:name="minefarts.smarttube.launchers.GamesLauncherActivity"
+            android:logo="@drawable/icon_gaming"
+            android:icon="@drawable/icon_gaming"
+            android:label="@string/header_gaming"
             android:exported="true"
             android:launchMode="singleInstance"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|layoutDirection"
@@ -223,6 +282,16 @@
             android:logo="@drawable/icon_playlist"
             android:icon="@drawable/icon_playlist"
             android:label="@string/header_playlists"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|layoutDirection"
+            android:screenOrientation="unspecified"/>
+
+        <activity
+            android:name="minefarts.smarttube.launchers.SearchLauncherActivity"
+            android:logo="@drawable/action_search"
+            android:icon="@drawable/action_search"
+            android:label="@string/action_search"
             android:exported="true"
             android:launchMode="singleInstance"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|layoutDirection"

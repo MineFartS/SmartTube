@@ -9,7 +9,6 @@ import androidx.leanback.widget.Row;
 import androidx.leanback.widget.RowPresenter;
 import androidx.leanback.widget.VerticalGridPresenter;
 
-import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.BrowsePresenter;
@@ -17,6 +16,7 @@ import com.liskovsoft.smartyoutubetv2.common.app.presenters.interfaces.VideoGrou
 import com.liskovsoft.smartyoutubetv2.common.misc.TickleManager;
 import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
 import com.liskovsoft.smartyoutubetv2.common.utils.LoadingManager;
+import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 import minefarts.smarttube.R;
 import minefarts.smarttube.adapter.VideoGroupObjectAdapter;
 import minefarts.smarttube.presenter.CustomVerticalGridPresenter;
@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VideoGridFragment extends GridFragment implements VideoSection {
-
+    private static final String TAG = VideoGridFragment.class.getSimpleName();
     private static final int RESTORE_MAX_SIZE = 10_000;
     private VideoGroupObjectAdapter mGridAdapter;
     private final List<VideoGroup> mPendingUpdates = new ArrayList<>();
@@ -42,15 +42,21 @@ public class VideoGridFragment extends GridFragment implements VideoSection {
     private VideoCardPresenter mCardPresenter;
     private int mSelectedItemIndex = -1;
     private Video mSelectedItem;
+    private float mVideoGridScale;
     private final Runnable mRestoreTask = this::restorePosition;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (getActivity() == null) {
+            throw new IllegalStateException("VideoGridFragment doesn't attached to the activity");
+        }
+
         mMainPresenter = getMainPresenter();
         mCardPresenter = isShorts() ? new ShortsCardPresenter() : new VideoCardPresenter();
         mBackgroundManager = ((LeanbackActivity) getActivity()).getBackgroundManager();
+        mVideoGridScale = MainUIData.instance(getActivity()).getVideoGridScale();
 
         setupAdapter();
         setupEventListeners();
@@ -85,12 +91,9 @@ public class VideoGridFragment extends GridFragment implements VideoSection {
     private void setupAdapter() {
         VerticalGridPresenter presenter = new CustomVerticalGridPresenter();
         presenter.setNumberOfColumns(
-                GridFragmentHelper.getMaxColsNum(
-                    getContext(), 
-                    isShorts() ? R.dimen.shorts_card_width : R.dimen.card_width, 
-                    1.0f // Scale
-                )
+                GridFragmentHelper.getMaxColsNum(getContext(), isShorts() ? R.dimen.shorts_card_width : R.dimen.card_width, mVideoGridScale)
         );
+        presenter.enableChildRoundedCorners(getMainUIData().isUiTweakEnabled(MainUIData.UI_TWEAK_ROUNDED_CORNERS));
         setGridPresenter(presenter);
 
         if (mGridAdapter == null) {
@@ -191,8 +194,6 @@ public class VideoGridFragment extends GridFragment implements VideoSection {
     }
 
     private void restorePosition() {
-        LoadingManager.showLoading(getContext(), true); // Restore task takes some time
-
         setPosition(mSelectedItemIndex);
         selectItem(mSelectedItem);
 
@@ -207,6 +208,9 @@ public class VideoGridFragment extends GridFragment implements VideoSection {
         } else {
             mMainPresenter.onScrollEnd((Video) mGridAdapter.get(mGridAdapter.size() - 1));
         }
+
+        // Run after all rx handlers
+        Utils.post(() -> LoadingManager.showLoading(getContext(), true));
     }
 
     /**
@@ -240,6 +244,10 @@ public class VideoGridFragment extends GridFragment implements VideoSection {
 
     protected boolean isShorts() {
         return false;
+    }
+
+    private MainUIData getMainUIData() {
+        return MainUIData.instance(getContext());
     }
 
     private final class ItemViewLongPressedListener implements OnItemLongPressedListener {

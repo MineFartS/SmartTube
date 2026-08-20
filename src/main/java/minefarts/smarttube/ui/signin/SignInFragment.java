@@ -26,7 +26,9 @@ import java.util.List;
 public class SignInFragment extends GuidedStepSupportFragment implements SignInView {
     private static final String TAG = SignInFragment.class.getSimpleName();
     private static final int CONTINUE = 2;
+    private static final int OPEN_BROWSER = 3;
     private SignInPresenter mSignInPresenter;
+    private String mFullSignInUrl;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,26 +52,26 @@ public class SignInFragment extends GuidedStepSupportFragment implements SignInV
     }
 
     @Override
-    public void showCode(String userCode, String signInUrl, String fullSignInUrl) {
-        setTitle(userCode, fullSignInUrl);
+    public void showCode(String userCode, String signInUrl) {
+        setTitle(userCode, signInUrl, null);
     }
 
     @Override
-    public void showCode(String userCode, String signInUrl) {
-        setTitle(userCode, signInUrl);
+    public void showCode(String userCode, String signInUrl, String fullSignInUrl) {
+        setTitle(userCode, signInUrl, fullSignInUrl);
     }
 
-    private void setTitle(String userCode, String signInUrl) {
-        if (TextUtils.isEmpty(userCode)) {
+    private void setTitle(String userCode, String signInUrl, String fullSignInUrl) {
+        if (getContext() == null || TextUtils.isEmpty(userCode)) {
             return;
         }
 
         getGuidanceStylist().getTitleView().setText(userCode);
 
-        String fullSignInUrl = signInUrl + "?user_code=" + userCode.replace(" ", "-");
+        mFullSignInUrl = fullSignInUrl != null ? fullSignInUrl : signInUrl;
 
         Glide.with(getContext())
-                .load(Utils.toQrCodeLink(fullSignInUrl))
+                .load(Utils.toQrCodeLink(mFullSignInUrl))
                 .placeholder(R.drawable.activate_account_qrcode)
                 .apply(ViewUtil.glideOptions())
                 .error(R.drawable.activate_account_qrcode)
@@ -101,15 +103,27 @@ public class SignInFragment extends GuidedStepSupportFragment implements SignInV
 
     @Override
     public void onCreateActions(@NonNull List<GuidedAction> actions, Bundle savedInstanceState) {
-        actions.add(new GuidedAction.Builder()
+        GuidedAction login = new GuidedAction.Builder()
                 .id(CONTINUE)
                 .title(getString(R.string.signin_view_action_text))
-                        .build());
+                .build();
+        GuidedAction openBrowser = new GuidedAction.Builder()
+                .id(OPEN_BROWSER)
+                .title(getString(R.string.login_from_browser))
+                .build();
+        actions.add(login);
+        actions.add(openBrowser);
     }
 
     @Override
     public void onGuidedActionClicked(GuidedAction action) {
-        mSignInPresenter.onActionClicked();
+        if (action.getId() == CONTINUE) {
+            mSignInPresenter.onActionClicked();
+        } else if (action.getId() == OPEN_BROWSER) {
+            if (mFullSignInUrl != null) {
+                Utils.openLinkExt(getContext(), mFullSignInUrl);
+            }
+        }
     }
 
     private final RequestListener<Drawable> mErrorListener = new RequestListener<Drawable>() {

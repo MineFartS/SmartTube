@@ -11,12 +11,12 @@ import android.widget.FrameLayout;
 import androidx.leanback.app.PlaybackSupportFragment;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout.ResizeMode;
+import com.google.android.exoplayer2.ui.SubtitleView;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.smartyoutubetv2.common.app.models.playback.manager.PlayerEngine;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerTweaksData;
 import minefarts.smarttube.util.ViewUtil;
-import android.util.Log;
 
 /**
  * Subclass of {@link PlaybackSupportFragment} that is responsible for providing a {@link SurfaceView}
@@ -25,36 +25,30 @@ import android.util.Log;
 public class SurfacePlaybackFragment extends PlaybackSupportFragment {
     private SurfaceWrapper mVideoSurfaceWrapper;
     private AspectRatioFrameLayout mVideoSurfaceRoot;
+    private SubtitleView mLeanbackSubtitles;
+    private int mSubtitlesPadding;
     private int mBackgroundResId;
-    
-    private static final String TAG = "SurfacePlaybackFragment";
+    private float mAspectRatio;
+    private float mPixelRatio = 1.0f;
+    private float mVideoAspectRatio;
 
     @Override
     public View onCreateView(
-        LayoutInflater inflater, 
-        ViewGroup container, 
-        Bundle savedInstanceState
-    ) {
-    
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) super.onCreateView(inflater, container, savedInstanceState);
-        
+        if (root == null) {
+            throw new IllegalStateException("Can't create root of SurfacePlaybackFragment");
+        }
+        mVideoSurfaceWrapper = (PlayerTweaksData.instance(getContext()).isTextureViewEnabled() ||
+                PlayerData.instance(getContext()).getRotationAngle() != 0) ?
+                new TextureViewWrapper(getContext(), root) : new SurfaceViewWrapper(getContext(), root);
         mVideoSurfaceRoot = root.findViewById(minefarts.smarttube.R.id.surface_root);
-        if (mVideoSurfaceRoot == null) {
-            Log.e(TAG, "surface_root not found in layout");
-            return root;
-        }
-        
-        if (mVideoSurfaceWrapper == null) {
-            mVideoSurfaceWrapper = new SurfaceViewWrapper(getContext(), root);
-        }
-        
         mVideoSurfaceRoot.addView(mVideoSurfaceWrapper.getSurfaceView(), 0);
         mVideoSurfaceRoot.setAspectRatioListener((targetAspectRatio, naturalAspectRatio, aspectRatioMismatch) -> scaleIfNeeded());
-        
+        mLeanbackSubtitles = root.findViewById(minefarts.smarttube.R.id.leanback_subtitles);
+        mSubtitlesPadding = mLeanbackSubtitles.getPaddingLeft();
         setBackgroundType(PlaybackSupportFragment.BG_LIGHT);
-        
         return root;
-    
     }
 
     /**
@@ -64,6 +58,12 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
         if (mVideoSurfaceWrapper != null) {
             mVideoSurfaceWrapper.setSurfaceHolderCallback(callback);
         }
+    }
+
+    @Override
+    protected void onVideoSizeChanged(int width, int height) {
+        mVideoAspectRatio = ((float) width) / height;
+        mVideoSurfaceRoot.setAspectRatio(calculateAspectRatio());
     }
 
     /**
@@ -95,6 +95,11 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
 
     protected void setZoom(int percents) {
         mVideoSurfaceRoot.setZoom(percents);
+    }
+
+    protected void setAspect(float aspectRatio) {
+        mAspectRatio = aspectRatio;
+        mVideoSurfaceRoot.setAspectRatio(calculateAspectRatio());
     }
 
     protected void setRotation(int angle) {
@@ -165,6 +170,10 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
         textureView.setLayoutParams(params);
     }
 
+    protected void setPixelRatio(float pixelRatio) {
+        mPixelRatio = pixelRatio;
+    }
+
     /**
      * Setup player's background used when controls are showed.
      * @param resId background
@@ -184,6 +193,42 @@ public class SurfacePlaybackFragment extends PlaybackSupportFragment {
 
     protected void setGravity(int gravity) {
         ViewUtil.setGravity(mVideoSurfaceRoot, gravity);
+
+        scaleSubtitles(gravity);
     }
 
+    private void scaleSubtitles(int gravity) {
+        if ((gravity & Gravity.START) == Gravity.START) {
+            scaleSubtitles(scaleSubsWidth(), scaleSubsPadding(), Gravity.START);
+        } else if ((gravity & Gravity.END) == Gravity.END) {
+            scaleSubtitles(scaleSubsWidth(), scaleSubsPadding(), Gravity.END);
+        } else if ((gravity & Gravity.CENTER) == Gravity.CENTER) {
+            scaleSubtitles(ViewGroup.LayoutParams.MATCH_PARENT, mSubtitlesPadding, Gravity.CENTER);
+        }
+    }
+
+    private void scaleSubtitles(int width, int padding, int gravity) {
+        ViewUtil.setWidth(mLeanbackSubtitles, width);
+        ViewUtil.setPadding(mLeanbackSubtitles, padding);
+        ViewUtil.setGravity(mLeanbackSubtitles, gravity);
+    }
+
+    private int scaleSubsWidth() {
+        View parent = (View) mLeanbackSubtitles.getParent();
+        return parent.getWidth() / 100 * calculateZoom();
+    }
+
+    private int scaleSubsPadding() {
+        return mSubtitlesPadding / 100 * calculateZoom();
+    }
+
+    private int calculateZoom() {
+        View parent = (View) mLeanbackSubtitles.getParent();
+        int widthRatio = mVideoSurfaceRoot.getWidth() * 100 / parent.getWidth();
+        return mVideoSurfaceRoot.getZoom() * widthRatio / 100;
+    }
+
+    private float calculateAspectRatio() {
+        return (mAspectRatio == 0 ? mVideoAspectRatio : mAspectRatio) * mPixelRatio;
+    }
 }

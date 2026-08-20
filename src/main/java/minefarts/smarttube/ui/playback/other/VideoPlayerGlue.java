@@ -27,20 +27,32 @@ import minefarts.smarttube.R;
 import minefarts.smarttube.ui.mod.leanback.playerglue.tweaks.MaxControlsVideoPlayerGlue;
 import minefarts.smarttube.ui.mod.leanback.playerglue.tweaks.PlaybackTransportRowPresenter;
 import minefarts.smarttube.ui.mod.leanback.widget.OnActionLongClickedListener;
+import minefarts.smarttube.ui.playback.actions.AFRAction;
 import minefarts.smarttube.ui.playback.actions.ActionHelpers;
 import minefarts.smarttube.ui.playback.actions.ChannelAction;
 import minefarts.smarttube.ui.playback.actions.ChatAction;
 import minefarts.smarttube.ui.playback.actions.ClosedCaptioningAction;
 import minefarts.smarttube.ui.playback.actions.ContentBlockAction;
+import minefarts.smarttube.ui.playback.actions.FlipAction;
 import minefarts.smarttube.ui.playback.actions.HighQualityAction;
+import minefarts.smarttube.ui.playback.actions.RotateAction;
+import minefarts.smarttube.ui.playback.actions.ScreenDimmingAction;
+import minefarts.smarttube.ui.playback.actions.SeekIntervalAction;
+import minefarts.smarttube.ui.playback.actions.ShareAction;
+import minefarts.smarttube.ui.playback.actions.SoundOffAction;
 import minefarts.smarttube.ui.playback.actions.VideoInfoAction;
+import minefarts.smarttube.ui.playback.actions.PipAction;
+import minefarts.smarttube.ui.playback.actions.PlaybackQueueAction;
 import minefarts.smarttube.ui.playback.actions.PlaylistAddAction;
 import minefarts.smarttube.ui.playback.actions.PlaybackModeAction;
+import minefarts.smarttube.ui.playback.actions.SearchAction;
 import minefarts.smarttube.ui.playback.actions.SubscribeAction;
 import minefarts.smarttube.ui.playback.actions.TwoStateAction;
 import minefarts.smarttube.ui.playback.actions.ThumbsDownAction;
 import minefarts.smarttube.ui.playback.actions.ThumbsUpAction;
 import minefarts.smarttube.ui.playback.actions.VideoSpeedAction;
+import minefarts.smarttube.ui.playback.actions.VideoStatsAction;
+import minefarts.smarttube.ui.playback.actions.VideoZoomAction;
 import minefarts.smarttube.util.ViewUtil;
 
 import java.util.HashMap;
@@ -65,9 +77,7 @@ import java.util.concurrent.TimeUnit;
  * row.
  */
 public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> implements OnActionLongClickedListener {
-    
     private static final long TEN_SECONDS = TimeUnit.SECONDS.toMillis(10);
-    
     private static final String TAG = VideoPlayerGlue.class.getSimpleName();
     private final PlaybackControlsRow.SkipPreviousAction mSkipPreviousAction;
     private final PlaybackControlsRow.SkipNextAction mSkipNextAction;
@@ -80,10 +90,9 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
     private int mPreviousAction = KeyEvent.ACTION_UP;
 
     public VideoPlayerGlue(
-        Context context,
-        PlayerAdapter playerAdapter,
-        OnActionClickedListener actionListener
-    ) {
+            Context context,
+            PlayerAdapter playerAdapter,
+            OnActionClickedListener actionListener) {
         super(context, playerAdapter);
 
         mPlayerTweaksData = PlayerTweaksData.instance(getContext());
@@ -98,11 +107,9 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
 
         ThumbsUpAction thumbsUpAction = new ThumbsUpAction(context);
         ThumbsDownAction thumbsDownAction = new ThumbsDownAction(context);
-
         thumbsUpAction.setBoundAction(thumbsDownAction);
-        putAction(thumbsUpAction);
-
         thumbsDownAction.setBoundAction(thumbsUpAction);
+        putAction(thumbsUpAction);
         putAction(thumbsDownAction);
 
         putAction(new HighQualityAction(context));
@@ -113,12 +120,21 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         putAction(new SubscribeAction(context));
         putAction(new VideoInfoAction(context));
         putAction(new VideoSpeedAction(context));
+        putAction(new VideoStatsAction(context));
+        putAction(new SearchAction(context));
+        putAction(new PipAction(context));
+        putAction(new AFRAction(context));
+        putAction(new ScreenDimmingAction(context));
         putAction(new ChatAction(context));
+        putAction(new PlaybackQueueAction(context));
         putAction(new ContentBlockAction(context));
-
+        putAction(new ShareAction(context));
+        putAction(new SeekIntervalAction(context));
+        putAction(new VideoZoomAction(context));
+        putAction(new RotateAction(context));
+        putAction(new FlipAction(context));
+        putAction(new SoundOffAction(context));
     }
-
-    public void setQualityInfo(String info) {/*NOP*/}
 
     @Override
     protected void onCreatePrimaryActions(ArrayObjectAdapter adapter) {
@@ -126,7 +142,6 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         // Will display as follows:
         // play/pause, previous, rewind, fast forward, next
         //   > /||      |<        <<        >>         >|
-        
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_PLAY_PAUSE)) {
             super.onCreatePrimaryActions(adapter);
         }
@@ -134,28 +149,54 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_PREVIOUS)) {
             adapter.add(mSkipPreviousAction);
         }
-
+        //adapter.add(mRewindAction);
+        //adapter.add(mFastForwardAction);
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_NEXT)) {
             adapter.add(mSkipNextAction);
         }
-
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_REPEAT_MODE)) {
             adapter.add(mActions.get(R.id.action_repeat));
         }
-
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_VIDEO_SPEED)) {
             adapter.add(mActions.get(R.id.action_video_speed));
         }
-
+        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_PIP)) {
+            adapter.add(mActions.get(R.id.action_pip));
+        }
+        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_SCREEN_DIMMING)) {
+            adapter.add(mActions.get(R.id.action_screen_dimming));
+        }
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_CHAT)) {
             adapter.add(mActions.get(R.id.action_chat));
         }
-
+        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_SEARCH)) {
+            adapter.add(mActions.get(R.id.action_search));
+        }
+        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_SHARE)) {
+            adapter.add(mActions.get(R.id.action_share));
+        }
+        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_SEEK_INTERVAL)) {
+            adapter.add(mActions.get(R.id.action_seek_interval));
+        }
+        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_VIDEO_ZOOM)) {
+            adapter.add(mActions.get(R.id.action_video_zoom));
+        }
+        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_VIDEO_ROTATE)) {
+            adapter.add(mActions.get(R.id.action_rotate));
+        }
+        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_VIDEO_FLIP)) {
+            adapter.add(mActions.get(R.id.action_flip));
+        }
+        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_SOUND_OFF)) {
+            adapter.add(mActions.get(R.id.action_sound_off));
+        }
+        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_AFR)) {
+            adapter.add(mActions.get(R.id.action_afr));
+        }
     }
 
     @Override
     protected void onCreateSecondaryActions(ArrayObjectAdapter adapter) {
-
         // Does nothing
         super.onCreateSecondaryActions(adapter);
 
@@ -187,10 +228,15 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_VIDEO_INFO)) {
             adapter.add(mActions.get(R.id.action_info));
         }
+        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_PLAYBACK_QUEUE)) {
+            adapter.add(mActions.get(R.id.action_playback_queue));
+        }
         if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_CONTENT_BLOCK)) {
             adapter.add(mActions.get(R.id.action_content_block));
         }
-
+        if (mPlayerTweaksData.isPlayerButtonEnabled(PlayerTweaksData.PLAYER_BUTTON_VIDEO_STATS)) {
+            adapter.add(mActions.get(R.id.action_video_stats));
+        }
     }
 
     @Override
@@ -257,6 +303,10 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
             newPosition = Math.min(newPosition, getDuration());
             getPlayerAdapter().seekTo(newPosition);
         }
+    }
+
+    public int getButtonState(int buttonId) {
+        return getActionIndex(mActions.get(buttonId));
     }
 
     public void setButtonState(int buttonId, int buttonState) {
@@ -330,6 +380,10 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
             return false;
         }
 
+        if (checkShortActionDisabled(action)) {
+            return true;
+        }
+
         boolean handled = false;
 
         // Primary actions are handled manually.
@@ -356,8 +410,11 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
     }
 
     private boolean dispatchLongClickAction(Action action) {
-        
         if (action == null) {
+            return false;
+        }
+
+        if (checkLongActionDisabled(action)) {
             return false;
         }
 
@@ -371,13 +428,11 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         return handled;
     }
 
-    private int getActionIndex(Action action) {
+    private void incrementActionIndex(Action action) {
         if (action instanceof PlaybackControlsRow.MultiAction) {
             PlaybackControlsRow.MultiAction multiAction = (PlaybackControlsRow.MultiAction) action;
-            return multiAction.getIndex();
+            multiAction.nextIndex();
         }
-
-        return 0;
     }
 
     /**
@@ -407,6 +462,40 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         }
     }
 
+    private void removePrimaryAction(Action action) {
+        ArrayObjectAdapter adapter = (ArrayObjectAdapter) getControlsRow().getPrimaryActionsAdapter();
+        if (adapter != null) {
+            adapter.remove(action);
+        }
+    }
+
+    private void removeSecondaryAction(Action action) {
+        ArrayObjectAdapter adapter = (ArrayObjectAdapter) getControlsRow().getSecondaryActionsAdapter();
+        if (adapter != null) {
+            adapter.remove(action);
+        }
+    }
+
+    private void addPrimaryAction(Action action, int position) {
+        ArrayObjectAdapter adapter = (ArrayObjectAdapter) getControlsRow().getPrimaryActionsAdapter();
+        addAction(action, position, adapter);
+    }
+
+    private void addSecondaryAction(Action action, int position) {
+        ArrayObjectAdapter adapter = (ArrayObjectAdapter) getControlsRow().getSecondaryActionsAdapter();
+        addAction(action, position, adapter);
+    }
+
+    private void addAction(Action action, int position, ArrayObjectAdapter adapter) {
+        if (adapter != null) {
+            int index = adapter.indexOf(action);
+            if (index == -1) {
+                int size = adapter.size();
+                adapter.add(Math.min(position, size), action);
+            }
+        }
+    }
+
     private Action findAction(int keyCode) {
         Action action = null;
         PlaybackControlsRow controlsRow = getControlsRow();
@@ -428,6 +517,15 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         mActions.put((int) action.getId(), action);
     }
 
+    private int getActionIndex(Action action) {
+        if (action instanceof PlaybackControlsRow.MultiAction) {
+            PlaybackControlsRow.MultiAction multiAction = (PlaybackControlsRow.MultiAction) action;
+            return multiAction.getIndex();
+        }
+
+        return 0;
+    }
+
     private void setActionIndex(Action action, int actionIndex) {
         if (actionIndex == -1) { // button disabled
             disableAction(action);
@@ -443,6 +541,25 @@ public class VideoPlayerGlue extends MaxControlsVideoPlayerGlue<PlayerAdapter> i
         invalidateUi(action);
     }
 
+    /**
+     * Long press actions usually more important than short ones. So, try to use it first in case long click is disabled.
+     */
+    private boolean checkShortActionDisabled(Action action) {
+        if (!mGeneralData.isOkButtonLongPressDisabled() && mPlayerTweaksData.isButtonLongClickEnabled()) {
+            return false;
+        }
+
+        return (action == mActions.get(R.id.lb_control_closed_captioning) || action == mActions.get(R.id.action_video_speed)) &&
+                dispatchLongClickAction(action); // replace short with long
+    }
+
+    private boolean checkLongActionDisabled(Action action) {
+        if (!mGeneralData.isOkButtonLongPressDisabled() && mPlayerTweaksData.isButtonLongClickEnabled()) {
+            return false;
+        }
+
+        return action.getId() == R.id.action_chat;
+    }
 
     @Override
     protected void onAttachedToHost(PlaybackGlueHost host) {

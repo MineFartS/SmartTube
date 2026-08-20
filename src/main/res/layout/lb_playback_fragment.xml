@@ -76,7 +76,20 @@
             android:shadowRadius="1.6"
             android:textStyle="bold"
             style="?attr/playbackControlsTimeStyle"/>
-
+        <!-- Global ending time -->
+        <minefarts.smarttube.ui.widgets.time.EndingTimeView
+            android:id="@+id/global_ending_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:visibility="gone"
+            android:textColor="@color/white"
+            android:shadowColor="@color/black"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="1.6"
+            android:textStyle="bold"
+            style="?attr/playbackControlsTimeStyle"/>
     </LinearLayout>
 
     <!-- Add debug view -->
@@ -87,6 +100,12 @@
                  android:visibility="gone"
                  android:layout_gravity="top|right"
                  android:background="#70000000"/>
+
+    <ViewStub
+        android:id="@+id/youtube_overlay_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/youtube_overlay"/>
 
     <androidx.leanback.widget.NonOverlappingFrameLayout
         android:id="@+id/playback_fragment_background"

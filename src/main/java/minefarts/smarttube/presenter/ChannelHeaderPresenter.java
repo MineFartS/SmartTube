@@ -46,10 +46,10 @@ public class ChannelHeaderPresenter extends RowPresenter {
     private static final String TAG = ChannelHeaderPresenter.class.getSimpleName();
     private static final String EXTRA_LEANBACK_BADGE_PRESENT = "LEANBACK_BADGE_PRESENT";
     private static final int REQUEST_SPEECH = 0x00000010;
-
+    private static final int RESULTS_CHANGED = 0x1;
     private static final int QUERY_COMPLETE = 0x2;
-
-
+    private boolean mIsKeyboardAutoShowEnabled;
+    private boolean mIsKeyboardFixEnabled;
     private Drawable mBadgeDrawable;
     private int mStatus;
     private String mTitle;
@@ -95,25 +95,33 @@ public class ChannelHeaderPresenter extends RowPresenter {
     }
 
     private void init(View header) {
-
         Context context = header.getContext();
         SearchData searchData = SearchData.instance(context);
-        
+        mIsKeyboardAutoShowEnabled = searchData.isKeyboardAutoShowEnabled();
+        mIsKeyboardFixEnabled = searchData.isKeyboardFixEnabled();
         SearchBar searchBar = header.findViewById(R.id.lb_search_bar);
         SearchOrbView searchOrbView = searchBar.findViewById(R.id.lb_search_bar_search_orb);
         SpeechOrbView speechOrbView = searchBar.findViewById(R.id.lb_search_bar_speech_orb);
         SearchEditText searchTextEditor = searchBar.findViewById(R.id.lb_search_text_editor);
-
-        // Channel view settings icon
-        SearchOrbView searchSettingsOrbView = searchBar.findViewById(R.id.search_settings_orb); 
-        
+        SearchOrbView searchSettingsOrbView = searchBar.findViewById(R.id.search_settings_orb);
         // Default recognizer. Used when there's no speech callbacks specified.
         searchBar.setSpeechRecognizer(SpeechRecognizer.createSpeechRecognizer(context));
-
+        searchBar.setOnFocusChangeListener((v, focused) -> {
+            Log.d(TAG, "search bar focused");
+        });
         searchBar.setPermissionListener(() -> PermissionHelpers.verifyMicPermissions(context));
+        searchTextEditor.setSelectAllOnFocus(true); // Select all on focus (easy clear previous search)
+        searchTextEditor.setOnFocusChangeListener((v, focused) -> {
+            Log.d(TAG, "on search field focused");
 
-        // Select all on focus (easy clear previous search)
-        searchTextEditor.setSelectAllOnFocus(true);
+            if (mIsKeyboardAutoShowEnabled && focused) {
+                Helpers.showKeyboardAlt(v.getContext(), v);
+            }
+        });
+
+        if (mIsKeyboardFixEnabled) {
+            KeyHelpers.fixEnterKey(searchTextEditor);
+        }
 
         searchOrbView.setOnFocusChangeListener((v, focused) -> {
             if (focused) {
@@ -153,7 +161,20 @@ public class ChannelHeaderPresenter extends RowPresenter {
         SearchOrbView searchSettingsOrbView = searchBar.findViewById(R.id.search_settings_orb);
         String channelName = provider.getChannelTitle();
         searchBar.setTitle(channelName != null ? channelName : context.getString(R.string.content_type_channel));
-        
+        switch (SearchData.instance(context).getSpeechRecognizerType()) {
+            case SearchData.SPEECH_RECOGNIZER_SYSTEM:
+                // NOP
+                break;
+            case SearchData.SPEECH_RECOGNIZER_INTENT:
+                searchBar.setSpeechRecognizer(null);
+                searchBar.setSpeechRecognitionCallback(new RecognizerIntentCallback(context, provider, searchBar));
+                break;
+            case SearchData.SPEECH_RECOGNIZER_GOTEV:
+                searchBar.setSpeechRecognizer(null);
+                Speech.init(context);
+                searchBar.setSpeechRecognitionCallback(new GotevCallback(context, provider, searchBar, speechOrbView));
+                break;
+        }
         searchBar.setSearchBarListener(new SearchBar.SearchBarListener() {
             @Override
             public void onSearchQueryChange(String query) {
@@ -189,8 +210,9 @@ public class ChannelHeaderPresenter extends RowPresenter {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
-            
+            public void afterTextChanged(Editable s) {
+                //Utils.enableScreensaver(getActivity(), true);
+            }
         });
         searchOrbView.setOnOrbClickedListener(v -> submitQuery(provider, getSearchBarText(searchTextEditor)));
         searchSettingsOrbView.setOnOrbClickedListener(v -> provider.onSearchSettingsClicked());
@@ -365,7 +387,19 @@ public class ChannelHeaderPresenter extends RowPresenter {
         }
     }
 
-    private void stopSpeechService(Context context) {}
+    private void stopSpeechService(Context context) {
+        // Note: Other services don't need to be stopped
+
+        if (SearchData.instance(context).getSpeechRecognizerType() != SearchData.SPEECH_RECOGNIZER_GOTEV) {
+            return;
+        }
+
+        try {
+            Speech.getInstance().stopListening();
+        } catch (IllegalArgumentException | NoSuchMethodError e) { // Speech service not registered/Android 4 (no such method)
+            e.printStackTrace();
+        }
+    }
 
     private void setTitle(SearchBar searchBar, String title) {
         mTitle = title;
@@ -401,5 +435,10 @@ public class ChannelHeaderPresenter extends RowPresenter {
         if (speechOrbView != null) {
             speechOrbView.showNotListening();
         }
+
+        //if (mSearchTextEditor != null) {
+        //    // Hide "Speak to search" when not listening
+        //    mSearchTextEditor.setHint("");
+        //}
     }
 }

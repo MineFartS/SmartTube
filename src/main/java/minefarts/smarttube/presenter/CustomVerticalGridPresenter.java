@@ -17,8 +17,6 @@ public class CustomVerticalGridPresenter extends VerticalGridPresenter {
     public CustomVerticalGridPresenter(int layoutResId, int rootResId) {
         super(ViewUtil.FOCUS_ZOOM_FACTOR, ViewUtil.FOCUS_DIMMER_ENABLED);
 
-        enableChildRoundedCorners(ViewUtil.ROUNDED_CORNERS_ENABLED);
-
         mLayoutResId = layoutResId;
         mRootResId = rootResId;
     }
@@ -35,6 +33,15 @@ public class CustomVerticalGridPresenter extends VerticalGridPresenter {
         }
 
         ViewHolder viewHolder = super.createGridViewHolder(parent);
+
+        // Not working!!!
+        // Tweaking grid to fix broken UI layout on some devices like Shield
+        //if (viewHolder.getGridView() != null) {
+        //    viewHolder.getGridView().setGravity(Gravity.TOP | Gravity.START);
+        //    viewHolder.getGridView().setItemViewCacheSize(0);
+        //    //viewHolder.getGridView().setItemAlignmentOffsetPercent(0);
+        //    //viewHolder.getGridView().setItemAlignmentOffsetWithPadding(true);
+        //}
 
         return viewHolder;
     }

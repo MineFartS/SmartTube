@@ -101,11 +101,9 @@ public class SearchFieldPresenter extends Presenter {
 
     private Pair<Integer, Integer> getCardDimensPx(Context context) {
         return GridFragmentHelper.getCardDimensPx(
-            context, 
-            R.dimen.channel_card_width,
-            R.dimen.channel_card_height,
-            1.0f, // Scale
-            true
-        );
+                context, R.dimen.channel_card_width,
+                R.dimen.channel_card_height,
+                MainUIData.instance(context).getVideoGridScale(),
+                true);
     }
 }

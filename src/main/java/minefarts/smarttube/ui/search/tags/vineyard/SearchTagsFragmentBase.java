@@ -2,7 +2,7 @@ package minefarts.smarttube.ui.search.tags.vineyard;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +21,7 @@ import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv2.common.app.models.search.SearchTagsProvider;
 import com.liskovsoft.smartyoutubetv2.common.app.models.search.vineyard.Tag;
 import com.liskovsoft.smartyoutubetv2.common.app.views.SearchView;
+import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.SearchData;
 import minefarts.smarttube.R;
 import minefarts.smarttube.adapter.vineyard.PaginationAdapter;
@@ -42,8 +43,11 @@ import java.util.List;
 
 public abstract class SearchTagsFragmentBase extends SearchSupportFragment
         implements SearchSupportFragment.SearchResultProvider, SearchView {
+    private static final String TAG = SearchTagsFragmentBase.class.getSimpleName();
+    private static final int REQUEST_SPEECH = 0x00000010;
 
     private TagAdapter mSearchTagsAdapter;
+    //private ObjectAdapter mItemResultsAdapter;
     private ArrayObjectAdapter mResultsAdapter; // contains tags adapter and results adapter (see attachAdapter method)
     private ListRowPresenter mResultsPresenter;
     private TagPresenter mTagsPresenter;
@@ -58,11 +62,10 @@ public abstract class SearchTagsFragmentBase extends SearchSupportFragment
 
         mProgressBarManager = new ProgressBarManager();
         mResultsPresenter = new CustomListRowPresenter();
+        mResultsPresenter.enableChildRoundedCorners(getMainUIData().isUiTweakEnabled(MainUIData.UI_TWEAK_ROUNDED_CORNERS));
         mResultsAdapter = new ArrayObjectAdapter(mResultsPresenter);
         mTagsPresenter = new TagPresenter();
-        mTagsPresenter.setOnItemClickListener(this::onItemViewClicked);
-        mTagsPresenter.setOnItemSelectedListener(this::onItemViewSelected);
-        mSearchTagsAdapter = new TagAdapter(requireActivity(), mTagsPresenter, "");
+        mSearchTagsAdapter = new TagAdapter(getContext(), mTagsPresenter, "");
         setSearchResultProvider(this);
         setupListenersAndPermissions();
     }
@@ -88,7 +91,21 @@ public abstract class SearchTagsFragmentBase extends SearchSupportFragment
         mIsStopping = true;
     }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_SPEECH:
+                switch (resultCode) {
+                    case Activity.RESULT_OK:
+                        setSearchQuery(data, true);
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        Log.i(TAG, "Recognizer canceled");
+                        break;
+                }
+                break;
+        }
+    }
 
     @Override
     public ObjectAdapter getResultsAdapter() {
@@ -124,15 +141,52 @@ public abstract class SearchTagsFragmentBase extends SearchSupportFragment
         return mResultsAdapter.size() > 0;
     }
 
+    @SuppressWarnings("deprecation")
     private void setupListenersAndPermissions() {
-
         setOnItemViewClickedListener((itemViewHolder, item, rowViewHolder, row) -> onItemViewClicked(item));
-        
         setOnItemViewSelectedListener((itemViewHolder, item, rowViewHolder, row) -> onItemViewSelected(item));
-    
+
+        // All needed permissions acquired inside SearchBar component.
+        // See: androidx.leanback.widget.SearchBar.startRecognition()
+        //if (SpeechRecognizer.isRecognitionAvailable(getContext())) {
+        //    PermissionHelpers.verifyMicPermissions(getContext());
+        //}
+
+        // NOTE: External recognizer makes voice search behave unexpectedly (broken by Google app updates).
+        // You should avoid using it till there be a solution.
+
+        switch (getSearchData().getSpeechRecognizerType()) {
+            case SearchData.SPEECH_RECOGNIZER_SYSTEM:
+                // Don't uncomment. Sometimes system recognizer works on lower api
+                // Do nothing unless we have old api.
+                // Internal recognizer needs API >= 23. See: androidx.leanback.widget.SearchBar.startRecognition()
+                //if (Build.VERSION.SDK_INT < 23) {
+                //    setSpeechRecognitionCallback(mDefaultCallback);
+                //}
+                break;
+            case SearchData.SPEECH_RECOGNIZER_INTENT:
+                setSpeechRecognitionCallback(mDefaultCallback);
+                break;
+            case SearchData.SPEECH_RECOGNIZER_GOTEV:
+                Speech.init(getContext());
+                setSpeechRecognitionCallback(mGotevCallback);
+                break;
+        }
     }
 
-    protected void stopSpeechService() {}
+    protected void stopSpeechService() {
+        // Note: Other services don't need to be stopped
+
+        if (getSearchData().getSpeechRecognizerType() != SearchData.SPEECH_RECOGNIZER_GOTEV) {
+            return;
+        }
+
+        try {
+            Speech.getInstance().stopListening();
+        } catch (IllegalArgumentException | NoSuchMethodError e) { // Speech service not registered/Android 4 (no such method)
+            e.printStackTrace();
+        }
+    }
 
     protected void loadSearchTags(String searchQuery) {
         searchTaggedPosts(searchQuery);
@@ -154,7 +208,23 @@ public abstract class SearchTagsFragmentBase extends SearchSupportFragment
         mSearchTagsProvider.search(query, results -> {
             adapter.addAllItems(results);
             attachAdapter(0, adapter);
+            // Same suggestions in the keyboard
+            //displayCompletions(toCompletions(results));
         });
+    }
+
+    private List<String> toCompletions(List<Tag> results) {
+        List<String> result = null;
+
+        if (results != null) {
+            result = new ArrayList<>();
+
+            for (Tag tag : results) {
+                result.add(tag.tag);
+            }
+        }
+
+        return result;
     }
 
     /**
@@ -201,6 +271,15 @@ public abstract class SearchTagsFragmentBase extends SearchSupportFragment
         }
     }
 
+    protected void removeTag(Tag tag) {
+        if (containsAdapter(mSearchTagsAdapter)) {
+            mSearchTagsAdapter.remove(tag);
+            if (mSearchTagsAdapter.size() == 0) {
+                detachAdapter(0);
+            }
+        }
+    }
+
     protected boolean containsAdapter(ObjectAdapter adapter) {
         if (mResultsAdapter != null) {
             for (int i = 0; i < mResultsAdapter.size(); i++) {
@@ -214,4 +293,86 @@ public abstract class SearchTagsFragmentBase extends SearchSupportFragment
         return false;
     }
 
+    private MainUIData getMainUIData() {
+        return MainUIData.instance(getContext());
+    }
+
+    private SearchData getSearchData() {
+        return SearchData.instance(getContext());
+    }
+
+    @SuppressWarnings("deprecation")
+    private final SpeechRecognitionCallback mDefaultCallback = () -> {
+        if (isAdded()) {
+            if (PermissionHelpers.hasMicPermissions(getContext())) {
+                MessageHelpers.showMessage(getContext(), R.string.disable_mic_permission);
+            }
+
+            try {
+                startActivityForResult(getRecognizerIntent(), REQUEST_SPEECH);
+            } catch (ActivityNotFoundException e) {
+                Log.e(TAG, "Cannot find activity for speech recognizer", e);
+            } catch (NullPointerException e) {
+                Log.e(TAG, "Speech recognizer can't obtain applicationInfo", e);
+            }
+        } else {
+            Log.e(TAG, "Can't perform search. Fragment is detached.");
+        }
+    };
+
+    @SuppressWarnings("deprecation")
+    private final SpeechRecognitionCallback mGotevCallback = () -> {
+        if (isAdded()) {
+            try {
+                // you must have android.permission.RECORD_AUDIO granted at this point
+                PermissionHelpers.verifyMicPermissions(getContext());
+                Speech.getInstance().startListening(new SpeechDelegate() {
+                    @Override
+                    public void onStartOfSpeech() {
+                        Log.i(TAG, "speech recognition is now active");
+                        showListening();
+                    }
+
+                    @Override
+                    public void onSpeechRmsChanged(float value) {
+                        Log.d(TAG, "rms is now: " + value);
+                    }
+
+                    @Override
+                    public void onSpeechPartialResults(List<String> results) {
+                        StringBuilder str = new StringBuilder();
+                        for (String res : results) {
+                            str.append(res).append(" ");
+                        }
+
+                        String result = str.toString().trim();
+                        Log.i(TAG, "partial result: " + result);
+                        setSearchQuery(result, true);
+
+                        showNotListening();
+                    }
+
+                    @Override
+                    public void onSpeechResult(String result) {
+                        Log.i(TAG, "result: " + result);
+                        setSearchQuery(result, true);
+
+                        showNotListening();
+                    }
+                });
+            } catch (SpeechRecognitionNotAvailable | GoogleVoiceTypingDisabledException exc) {
+                Log.e(TAG, "Speech recognition is not available on this device!");
+                // You can prompt the user if he wants to install Google App to have
+                // speech recognition, and then you can simply call:
+                try {
+                    SpeechUtil.redirectUserToGoogleAppOnPlayStore(getContext());
+                } catch (ActivityNotFoundException | NullPointerException e) {
+                    // NullPointerException: android.os.Parcel.readException (Parcel.java:1478)
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            Log.e(TAG, "Can't perform search. Fragment is detached.");
+        }
+    };
 }

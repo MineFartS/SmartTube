@@ -116,4 +116,18 @@ public class HeaderVideoGroupObjectAdapter extends VideoGroupObjectAdapter {
         add(result);
     }
 
+    @Override
+    public void notifyItemRangeChanged(int positionStart, int itemCount) {
+        super.notifyItemRangeChanged(mHeader != null ? positionStart + 1 : positionStart, itemCount);
+    }
+
+    @Override
+    protected void notifyItemRangeInserted(int positionStart, int itemCount) {
+        super.notifyItemRangeInserted(mHeader != null ? positionStart + 1 : positionStart, itemCount);
+    }
+
+    @Override
+    protected void notifyItemRangeRemoved(int positionStart, int itemCount) {
+        super.notifyItemRangeRemoved(mHeader != null ? positionStart + 1 : positionStart, itemCount);
+    }
 }

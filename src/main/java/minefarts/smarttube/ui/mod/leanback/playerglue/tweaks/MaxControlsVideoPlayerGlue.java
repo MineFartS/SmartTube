@@ -23,7 +23,7 @@ import java.util.List;
 
 public abstract class MaxControlsVideoPlayerGlue<T extends PlayerAdapter>
         extends PlaybackTransportControlGlue<T> implements TopEdgeFocusListener, PlayerView {
-
+    private String mQualityInfo;
     private Video mVideo;
     private WeakReference<PlaybackTransportRowPresenter.ViewHolder> mTransportViewHolder;
     private WeakReference<AbstractDetailsDescriptionPresenter.ViewHolder> mDescriptionViewHolder;
@@ -47,13 +47,22 @@ public abstract class MaxControlsVideoPlayerGlue<T extends PlayerAdapter>
                         mDescriptionViewHolder = new WeakReference<>(viewHolder);
 
                         fixClippedTitle(viewHolder);
-
+                        //fixOverlappedTitle(viewHolder);
                         fixThumbOverlapping(viewHolder);
 
                         PlaybackBaseControlGlue<?> glue = (PlaybackBaseControlGlue<?>) obj;
                         viewHolder.getTitle().setText(glue.getTitle());
                         viewHolder.getSubtitle().setText(glue.getSubtitle());
+                        // MOD: add extra title line
+                        //viewHolder.getBody().setText(glue.getBody());
+                    }
 
+                    private void fixOverlappedTitle(ViewHolder viewHolder) {
+                        // Fix overlapped title on big size fonts
+                        Integer titleLineSpacing = (Integer) Helpers.getField(viewHolder, "mTitleLineSpacing");
+                        if (titleLineSpacing != null) {
+                            Helpers.setField(viewHolder, "mTitleLineSpacing", titleLineSpacing * 1.2);
+                        }
                     }
 
                     private void fixClippedTitle(ViewHolder viewHolder) {
@@ -75,34 +84,30 @@ public abstract class MaxControlsVideoPlayerGlue<T extends PlayerAdapter>
                 };
 
         PlaybackTransportRowPresenter rowPresenter = new PlaybackTransportRowPresenter() {
-
             @Override
             protected void onBindRowViewHolder(RowPresenter.ViewHolder vh, Object item) {
-
                 super.onBindRowViewHolder(vh, item);
-
                 vh.setOnKeyListener(MaxControlsVideoPlayerGlue.this);
 
                 ViewHolder viewHolder = (ViewHolder) vh;
-
                 mTransportViewHolder = new WeakReference<>(viewHolder);
 
                 viewHolder.setTopEdgeFocusListener(MaxControlsVideoPlayerGlue.this);
-
+                viewHolder.setQualityInfo(mQualityInfo);
                 viewHolder.setDateVisibility(isControlsVisible());
-
+                // Don't uncomment
+                // Reset to defaults
+                //viewHolder.setSeekPreviewTitle(null);
+                // Don't uncomment
+                //viewHolder.setSeekBarSegments(null);
             }
-
             @Override
             protected void onUnbindRowViewHolder(RowPresenter.ViewHolder vh) {
                 super.onUnbindRowViewHolder(vh);
                 vh.setOnKeyListener(null);
             }
-
         };
-
         rowPresenter.setDescriptionPresenter(detailsPresenter);
-
         return rowPresenter;
     }
 
@@ -112,6 +117,15 @@ public abstract class MaxControlsVideoPlayerGlue<T extends PlayerAdapter>
 
         if (getTransportViewHolder() != null) {
             getTransportViewHolder().setDateVisibility(show);
+        }
+    }
+
+    @Override
+    public void setQualityInfo(String info) {
+        mQualityInfo = info;
+
+        if (getTransportViewHolder() != null) {
+            getTransportViewHolder().setQualityInfo(info);
         }
     }
 
@@ -141,11 +155,19 @@ public abstract class MaxControlsVideoPlayerGlue<T extends PlayerAdapter>
     @Override
     protected void onUpdateControlsVisibility() {
         super.onUpdateControlsVisibility();
+
+        if (isControlsVisible()) {
+            updateLiveEndingTime();
+        }
     }
 
     @Override
     protected void onUpdateProgress() {
         super.onUpdateProgress();
+
+        if (isControlsVisible()) {
+            updateLiveEndingTime();
+        }
     }
 
     public void setSeekPreviewTitle(String title) {
@@ -161,6 +183,31 @@ public abstract class MaxControlsVideoPlayerGlue<T extends PlayerAdapter>
     public void setSeekBarSegments(List<SeekBarSegment> segments) {
         if (getTransportViewHolder() != null) {
             getTransportViewHolder().setSeekBarSegments(segments);
+        }
+    }
+
+    private void updateLiveEndingTime() {
+        if (mVideo == null) {
+            return;
+        }
+
+        long liveDurationMs = mVideo.getLiveDurationMs();
+
+        if (liveDurationMs == 0) {
+            return;
+        }
+
+        PlaybackControlsRow controlsRow = getControlsRow();
+        PlayerAdapter playerAdapter = getPlayerAdapter();
+
+        if (controlsRow == null || playerAdapter == null) {
+            return;
+        }
+
+        // Apply duration on videos with uncommon length.
+        if (playerAdapter.getDuration() > Video.MAX_LIVE_DURATION_MS) {
+            controlsRow.setDuration(
+                    playerAdapter.isPrepared() ? liveDurationMs : -1);
         }
     }
 

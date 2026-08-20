@@ -49,7 +49,7 @@ public class ChatItemMessage implements IMessage {
                     commentItem.getPublishedDate(),
                     commentItem.getReplyCount(),
                     commentItem.isLiked() ? String.format("(%s)", context.getString(R.string.you_liked)) : null);
-            message.mText = TextUtils.concat(Utils.bold(header), "\n", commentItem.getMessage());
+            message.mText = TextUtils.concat(Utils.bold(header), "\n", Utils.createSmallNewLine(), commentItem.getMessage());
         }
         message.mAuthor = ChatItemAuthor.from(commentItem);
         message.mCreatedAt = new Date();
@@ -129,6 +129,22 @@ public class ChatItemMessage implements IMessage {
         if (split.length == 1) {
             return MAX_LENGTH;
         }
+
+        List<String> splitNoLongLines = new ArrayList<>();
+        for (String line : split) {
+            while (line.length() > LINE_LENGTH) {
+                int breakPoint = line.lastIndexOf(' ', LINE_LENGTH);
+
+                if (breakPoint == -1) {
+                    breakPoint = LINE_LENGTH;
+                }
+
+                splitNoLongLines.add(line.substring(0, breakPoint));
+                line = line.substring(breakPoint).trim();
+            }
+            splitNoLongLines.add(line);
+        }
+        split = splitNoLongLines.toArray(new String[0]);
 
         int realCount = 0;
         int fakeCount = 0;

@@ -36,10 +36,9 @@ import minefarts.smarttube.util.ViewUtil;
 
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class AppDialogFragment extends LeanbackSettingsFragment implements AppDialogView {
-
     private static final String TAG = AppDialogFragment.class.getSimpleName();
-    
     private AppDialogPresenter mPresenter;
     private AppPreferenceManager mManager;
     private boolean mIsTransparent;
@@ -49,9 +48,6 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
 
     private static final String PREFERENCE_FRAGMENT_TAG =
             "androidx.leanback.preference.LeanbackSettingsFragment.PREFERENCE_FRAGMENT";
-
-    @Override
-    public boolean canGoBack() {return false;}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,7 +86,7 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
     @Override
     public void onPreferenceStartInitialScreen() {
         // FIX: Can not perform this action after onSaveInstanceState
-
+        // Possible fix: Unable to add window -- token android.os.BinderProxy is not valid; is your activity running?
         if (!Utils.checkActivity(getActivity())) {
             return;
         }
@@ -118,7 +114,7 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
         return false;
     }
 
-    private AppPreferenceFragment buildPreferenceFragment(List<OptionCategory> categories, String title) {
+    private AppPreferenceFragment buildPreferenceFragment(List<OptionCategory> categories, CharSequence title) {
         AppPreferenceFragment fragment = new AppPreferenceFragment();
         fragment.setCategories(categories);
         fragment.setTitle(title);
@@ -126,14 +122,8 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
         return fragment;
     }
 
-    public void show(
-        List<OptionCategory> categories, 
-        CharSequence title, 
-        boolean isExpandable, 
-        boolean isTransparent, 
-        boolean isOverlay, 
-        int id
-    ) {
+    @Override
+    public void show(List<OptionCategory> categories, CharSequence title, boolean isExpandable, boolean isTransparent, boolean isOverlay, int id) {
         if (!Utils.checkActivity(getActivity())) {
             return;
         }
@@ -150,7 +140,7 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
                 onPreferenceDisplayDialog(null, mManager.createPreference(category));
             }
         } else {
-            AppPreferenceFragment fragment = buildPreferenceFragment(categories, title.toString());
+            AppPreferenceFragment fragment = buildPreferenceFragment(categories, title);
             startPreferenceFragment(fragment);
         }
     }
@@ -158,6 +148,7 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
     @Override
     public boolean onPreferenceDisplayDialog(@Nullable PreferenceFragment caller, @NonNull Preference pref) {
         // Fix: IllegalStateException: Activity has been destroyed
+        // Possible fix: Unable to add window -- token android.os.BinderProxy is not valid; is your activity running?
         if (!Utils.checkActivity(getActivity())) {
             return false;
         }
@@ -206,7 +197,10 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
             f.setPreference(pref);
             startPreferenceFragment(f);
         }
-
+        // TODO
+        // else if (pref instanceof EditTextPreference) {
+        //
+        //        }
         else {
             // Single button item. Imitate click on it (expandable = true).
             if (pref.getOnPreferenceClickListener() != null) {
@@ -216,6 +210,9 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
             return false;
         }
 
+        // NOTE: Transparent CheckedList should be placed here (just in case you'll need it).
+
+        //return super.onPreferenceDisplayDialog(caller, pref);
         return true;
     }
 
@@ -250,7 +247,7 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
 
     @Override
     public void goBack() {
-        if (getChildFragmentManager() != null && getChildFragmentManager().getBackStackEntryCount() > 0) {
+        if (canGoBack()) {
             getChildFragmentManager().popBackStack();
         } else {
             finish();
@@ -261,6 +258,11 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
     public void clearBackstack() {
         // this manager holds entire back stack
         Helpers.setField(this, "mChildFragmentManager", null);
+    }
+
+    @Override
+    public boolean canGoBack() {
+        return getChildFragmentManager() != null && getChildFragmentManager().getBackStackEntryCount() > 0;
     }
 
     @Override
@@ -297,7 +299,7 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
         private List<OptionCategory> mCategories;
         private Context mExtractedContext;
         private AppPreferenceManager mManager;
-        private String mTitle;
+        private CharSequence mTitle;
         private boolean mIsTransparent;
 
         @Override
@@ -359,7 +361,9 @@ public class AppDialogFragment extends LeanbackSettingsFragment implements AppDi
             mCategories = categories;
         }
 
-        public void setTitle(String title) {
+        public void setTitle(CharSequence title) {
+            super.setTitle(title);
+
             mTitle = title;
         }
 

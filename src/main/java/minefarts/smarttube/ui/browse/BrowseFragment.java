@@ -7,6 +7,8 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -25,21 +27,17 @@ import com.liskovsoft.smartyoutubetv2.common.app.models.data.SettingsGroup;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
 import com.liskovsoft.smartyoutubetv2.common.app.models.errors.ErrorFragmentData;
-import com.liskovsoft.smartyoutubetv2.common.app.models.playback.service.VideoStateService;
-import com.liskovsoft.smartyoutubetv2.common.app.models.playback.service.VideoStateService.State;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.BrowsePresenter;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.PlaybackPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.SearchPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.SplashPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.views.BrowseView;
-import com.liskovsoft.smartyoutubetv2.common.app.views.ViewManager;
+import com.liskovsoft.smartyoutubetv2.common.misc.CrashRestorer;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 import minefarts.smarttube.R;
 import minefarts.smarttube.presenter.IconHeaderItemPresenter;
 import minefarts.smarttube.ui.browse.dialog.ErrorDialogFragment;
 import minefarts.smarttube.ui.mod.leanback.headers.ExtendedHeadersSupportFragment;
 import minefarts.smarttube.ui.mod.leanback.misc.ProgressBarManager;
-import minefarts.smarttube.ui.widgets.browse.NavigateTitleView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,35 +46,26 @@ import java.util.Map;
  * Main class to show BrowseFragment with header and rows of videos
  */
 public class BrowseFragment extends BrowseSupportFragment implements BrowseView {
-
-    private static final String SELECTED_HEADER_INDEX = "SelectedHeaderIndex";
-    private static final String SELECTED_VIDEO = "SelectedVideo";
-    private static final String IS_PLAYER_IN_FOREGROUND = "IsPlayerInForeground";
+    private static final String TAG = BrowseFragment.class.getSimpleName();
     private ArrayObjectAdapter mSectionRowAdapter;
     private BrowsePresenter mBrowsePresenter;
     private Map<Integer, BrowseSection> mSections;
     private BrowseSectionFragmentFactory mSectionFragmentFactory;
     private Handler mHandler;
     private ProgressBarManager mProgressBarManager;
-    private NavigateTitleView mTitleView;
     private boolean mIsFragmentCreated;
-    private int mSelectedHeaderIndex = -1;
-    private Video mSelectedVideo;
-    private boolean mIsPlayerInForeground;
     private boolean mFocusOnContent;
+    private CrashRestorer mCrashRestorer;
 
-    public void updateBadge() {/* NOP */}
-
-    @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(null);
 
-        if (savedInstanceState != null) {
-            mSelectedHeaderIndex = savedInstanceState.getInt(SELECTED_HEADER_INDEX, -1);
-            mSelectedVideo = Video.fromString(savedInstanceState.getString(SELECTED_VIDEO));
-            mIsPlayerInForeground = savedInstanceState.getBoolean(IS_PLAYER_IN_FOREGROUND, false);
+        if (getContext() == null) {
+            return;
         }
+        
+        mCrashRestorer = new CrashRestorer(getContext(), savedInstanceState);
         mIsFragmentCreated = true;
 
         mSections = new HashMap<>();
@@ -93,25 +82,19 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        // Store position in case activity is crashed
-        outState.putInt(SELECTED_HEADER_INDEX, getSelectedPosition());
-        if (mBrowsePresenter.getCurrentVideo() != null) {
-            outState.putString(SELECTED_VIDEO, mBrowsePresenter.getCurrentVideo().toString());
-            outState.putBoolean(IS_PLAYER_IN_FOREGROUND,
-                    ViewManager.instance(getContext()).isPlayerInForeground());
-        }
+        // Called when the activity is paused
+        mCrashRestorer.persistHeaderIndex(outState, getSelectedPosition());
+        mCrashRestorer.persistVideo(outState, mBrowsePresenter.getCurrentVideo());
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
 
         mProgressBarManager.setRootView((ViewGroup) root);
-        mTitleView = root.findViewById(R.id.browse_title_group);
 
         return root;
     }
@@ -126,24 +109,12 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
 
         mBrowsePresenter.onViewInitialized();
 
-        if (mSelectedHeaderIndex != -1) {
-            // Restore state after crash
-            selectSection(mSelectedHeaderIndex, true);
-            mSelectedHeaderIndex = -1;
-
-            // Restore state after crash
-            selectSectionItem(mSelectedVideo);
-            if (PlaybackPresenter.instance(getContext()).getPlayer() == null
-                    && mIsPlayerInForeground) {
-                VideoStateService stateService = VideoStateService.instance(getContext());
-                boolean isVideoStateSynced = mSelectedVideo == null
-                        || stateService.getByVideoId(mSelectedVideo.videoId) != null;
-                State lastState = stateService.getLastState();
-                PlaybackPresenter.instance(getContext()).openVideo(
-                        lastState != null && isVideoStateSynced ? lastState.video : mSelectedVideo);
-            }
-            mSelectedVideo = null;
-        }
+        // Restore state after crash
+        mCrashRestorer.restoreHeader((idx, video) -> {
+            selectSection(idx, true);
+            selectSectionItem(video);
+        });
+        mCrashRestorer.restorePlayback();
     }
 
     @Override
@@ -152,36 +123,40 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
     }
 
     private void setupEventListeners() {
-        getHeadersSupportFragment().setOnHeaderClickedListener((viewHolder, row) -> {
-            long headerId = row.getHeaderItem().getId();
-            int newPosition = indexOf(headerId);
+        getHeadersSupportFragment().setOnHeaderClickedListener(
+                (viewHolder, row) -> {
+                    long headerId = row.getHeaderItem().getId();
+                    int newPosition = indexOf(headerId);
 
-            if (getHeadersSupportFragment().getSelectedPosition() != newPosition) {
-                // touch screen support
-                getHeadersSupportFragment().setSelectedPosition(newPosition);
-            } else {
-                // update section when clicked or pressed
-                mBrowsePresenter.onSectionFocused((int) headerId);
-                startHeadersTransitionSafe(false);
-            }
-        });
+                    if (getHeadersSupportFragment().getSelectedPosition() != newPosition) {
+                        // touch screen support
+                        getHeadersSupportFragment().setSelectedPosition(newPosition);
+                    } else {
+                        // update section when clicked or pressed
+                        mBrowsePresenter.onSectionFocused((int) headerId);
+                        startHeadersTransitionSafe(false);
+                    }
+                }
+        );
 
-        ((ExtendedHeadersSupportFragment) getHeadersSupportFragment())
-                .setOnHeaderLongPressedListener((viewHolder, row) -> {
+        ((ExtendedHeadersSupportFragment) getHeadersSupportFragment()).setOnHeaderLongPressedListener(
+                (viewHolder, row) -> {
                     long headerId = row.getHeaderItem().getId();
 
                     mBrowsePresenter.onSectionLongPressed((int) headerId);
-                });
+                }
+        );
 
-        setOnSearchClickedListener(
-                view -> SearchPresenter.instance(getActivity()).startSearch(null));
+        setOnSearchClickedListener(view -> SearchPresenter.instance(getContext()).startSearch(null));
     }
 
     private void setupFragmentFactory() {
-        mSectionFragmentFactory = new BrowseSectionFragmentFactory((row) -> {
-            focusOnContentIfNeeded();
-            mBrowsePresenter.onSectionFocused(getSelectedHeaderId());
-        });
+        mSectionFragmentFactory = new BrowseSectionFragmentFactory(
+                (row) -> {
+                    focusOnContentIfNeeded();
+                    mBrowsePresenter.onSectionFocused(getSelectedHeaderId());
+                }
+        );
 
         getMainFragmentRegistry().registerFragment(PageRow.class, mSectionFragmentFactory);
     }
@@ -206,28 +181,26 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
     }
 
     private void setupUi() {
+        if (getContext() == null) {
+            return;
+        }
+
         setHeadersState(HEADERS_ENABLED);
         setHeadersTransitionOnBackEnabled(true);
 
-        int brandColorRes = Helpers.getThemeAttr(getActivity(), R.attr.brandColor);
-        int brandAccentColorRes = Helpers.getThemeAttr(getActivity(), R.attr.brandAccentColor);
-        int appLogoRes = Helpers.getThemeAttr(getActivity(), R.attr.appLogo);
+        int brandColorRes = Helpers.getThemeAttr(getContext(), R.attr.brandColor);
+        int brandAccentColorRes = Helpers.getThemeAttr(getContext(), R.attr.brandAccentColor);
 
-        Drawable bridgeIcon = Utils.getDrawable(getActivity(),
-                SplashPresenter.instance(getActivity()).getBridgePackageName(), "app_icon");
-
-        // Top right corner logo
-        setBadgeDrawable(bridgeIcon != null ? bridgeIcon
-                : appLogoRes > 0 ? ContextCompat.getDrawable(getActivity(), appLogoRes) : null);
+        updateBadge();
 
         // This title replaces badge in case one is null
-        // setTitle(getString(R.string.browse_title));
+        //setTitle(getString(R.string.browse_title));
 
         // Set fastLane (or headers) background color
-        setBrandColor(ContextCompat.getColor(getActivity(), brandColorRes));
+        setBrandColor(ContextCompat.getColor(getContext(), brandColorRes));
 
         // Set search icon color.
-        setSearchAffordanceColor(ContextCompat.getColor(getActivity(), brandAccentColorRes));
+        setSearchAffordanceColor(ContextCompat.getColor(getContext(), brandAccentColorRes));
 
         setHeaderPresenterSelector(new PresenterSelector() {
             private final Map<Integer, Presenter> mPresenterMap = new HashMap<>();
@@ -267,13 +240,11 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
             return -1;
         }
 
-        return (int) ((PageRow) mSectionRowAdapter.get(getSelectedPosition())).getHeaderItem()
-                .getId();
+        return (int) ((PageRow) mSectionRowAdapter.get(getSelectedPosition())).getHeaderItem().getId();
     }
-
+    
     public void updateErrorIfEmpty(ErrorFragmentData data) {
-        mHandler.postDelayed(() -> showErrorIfEmpty(data), 500); // need delay because header may be
-                                                                 // not updated
+        mHandler.postDelayed(() -> showErrorIfEmpty(data), 500); // need delay because header may be not updated
     }
 
     @Override
@@ -288,7 +259,7 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
     }
 
     private void replaceMainFragment(Fragment fragment) {
-        // Object mainFragment = Helpers.getField(this,"mMainFragment");
+        //Object mainFragment = Helpers.getField(this,"mMainFragment");
         Fragment mainFragment = getMainFragment();
 
         if (mainFragment != null && fragment != null && mainFragment != fragment) {
@@ -296,12 +267,10 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
 
             FragmentTransaction ft = getChildFragmentManager().beginTransaction();
             ft.replace(R.id.scale_frame, fragment);
-            // mFocusOnContent = !isShowingHeaders(); // Fix focus lost when error fragment shown
-            // and sidebar is hidden
+            //mFocusOnContent = !isShowingHeaders(); // Fix focus lost when error fragment shown and sidebar is hidden
             mFocusOnContent = hasFocus(); // Maintain focus
             ft.runOnCommit(this::focusOnContentIfNeeded);
-            ft.commitAllowingStateLoss(); // FIX: "Can not perform this action after
-                                          // onSaveInstanceState"
+            ft.commitAllowingStateLoss(); // FIX: "Can not perform this action after onSaveInstanceState"
         }
     }
 
@@ -311,8 +280,7 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
             return;
         }
 
-        if (mSections.get(section.getId()) != null
-                && (index == -1 || indexOf(section.getId()) == index)) {
+        if (mSections.get(section.getId()) != null && (index == -1 || indexOf(section.getId()) == index)) {
             return;
         }
 
@@ -367,12 +335,9 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
                 mBrowsePresenter.onSectionFocused(getSelectedHeaderId());
             }
 
-            // Need select again if current header is removed previously (can't check for it right
-            // now)
+            // Need select again if current header is removed previously (can't check for it right now)
             // Fallback to the last section if index above size
-            setSelectedPosition(
-                    index < mSectionRowAdapter.size() ? index : mSectionRowAdapter.size() - 1,
-                    false);
+            setSelectedPosition(index < mSectionRowAdapter.size() ? index : mSectionRowAdapter.size() - 1, false);
         }
     }
 
@@ -513,8 +478,7 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
      * More info: {@link TitleHelper}
      */
     private void fixInvisibleSearchOrb() {
-        if (isShowingTitle() && getTitleView() != null
-                && getTitleView().getVisibility() != View.VISIBLE) {
+        if (isShowingTitle() && getTitleView() != null && getTitleView().getVisibility() != View.VISIBLE) {
             getTitleView().setVisibility(View.VISIBLE);
         }
     }
@@ -541,5 +505,25 @@ public class BrowseFragment extends BrowseSupportFragment implements BrowseView 
     @Override
     public boolean isEmpty() {
         return mSectionFragmentFactory == null || mSectionFragmentFactory.isEmpty();
+    }
+
+    @Override
+    public void updateBadge() {
+        if (getContext() == null) {
+            return;
+        }
+
+        SplashPresenter splashPresenter = SplashPresenter.instance(getContext());
+
+        if (splashPresenter == null) {
+            return;
+        }
+
+        int appLogoRes = Helpers.getThemeAttr(getContext(), R.attr.appLogo);
+
+        Drawable bridgeIcon = Utils.getDrawable(getContext(), splashPresenter.getBridgePackageName(), "app_icon");
+
+        // Top right corner logo
+        setBadgeDrawable(bridgeIcon != null ? bridgeIcon : appLogoRes > 0 ? ContextCompat.getDrawable(getContext(), appLogoRes) : null);
     }
 }

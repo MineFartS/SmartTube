@@ -149,6 +149,9 @@ dependencies {
     // Caching utilities
     implementation 'com.jakewharton:disklrucache:2.0.2'
 
+    // Security provider required by MainApplication.java
+    implementation 'org.conscrypt:conscrypt-android:2.5.2'
+
 }
 
 configurations.configureEach {

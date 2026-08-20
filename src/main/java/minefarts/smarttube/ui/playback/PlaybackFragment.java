@@ -1,18 +1,19 @@
 package minefarts.smarttube.ui.playback;
 
-import android.app.Activity;
+import android.media.session.PlaybackState;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -30,6 +31,10 @@ import androidx.leanback.widget.Row;
 import androidx.leanback.widget.RowPresenter;
 import androidx.leanback.widget.RowPresenter.ViewHolder;
 
+import com.github.vkay94.dtpv.DoubleTapPlayerAdapter;
+import com.github.vkay94.dtpv.DoubleTapPlayerView;
+import com.github.vkay94.dtpv.youtube.YouTubeOverlay;
+import com.github.vkay94.dtpv.youtube.YouTubeOverlay.PerformListener;
 import com.google.android.exoplayer2.ControlDispatcher;
 import com.google.android.exoplayer2.DefaultControlDispatcher;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -40,7 +45,6 @@ import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.util.Util;
-
 import com.liskovsoft.mediaserviceinterfaces.data.MediaItemFormatInfo;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
@@ -52,16 +56,16 @@ import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.SeekBarSegme
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.PlaybackPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.views.PlaybackView;
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.controller.ExoPlayerController;
+import com.liskovsoft.smartyoutubetv2.common.exoplayer.other.DebugInfoManager;
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.other.ExoPlayerInitializer;
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.other.SubtitleManager;
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem;
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.versions.renderer.CustomOverridesRenderersFactory;
 import com.liskovsoft.smartyoutubetv2.common.exoplayer.versions.selector.RestoreTrackSelector;
+import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerTweaksData;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
-import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
-
 import minefarts.smarttube.R;
 import minefarts.smarttube.adapter.VideoGroupObjectAdapter;
 import minefarts.smarttube.presenter.CustomListRowPresenter;
@@ -72,6 +76,7 @@ import minefarts.smarttube.ui.browse.video.GridFragmentHelper;
 import minefarts.smarttube.ui.common.LeanbackActivity;
 import minefarts.smarttube.ui.common.UriBackgroundManager;
 import minefarts.smarttube.ui.mod.leanback.misc.ProgressBarManager;
+import minefarts.smarttube.ui.mod.leanback.playerglue.tweaks.PlaybackTransportRowPresenter;
 import minefarts.smarttube.ui.playback.mod.SeekModePlaybackFragment;
 import minefarts.smarttube.ui.playback.mod.surface.SurfacePlaybackFragmentGlueHost;
 import minefarts.smarttube.ui.playback.other.BackboneQueueNavigator;
@@ -80,27 +85,23 @@ import minefarts.smarttube.ui.playback.other.VideoPlayerGlue.OnActionClickedList
 import minefarts.smarttube.ui.playback.previewtimebar.StoryboardSeekDataProvider;
 import minefarts.smarttube.ui.widgets.chat.LiveChatView;
 import minefarts.smarttube.ui.widgets.time.DateTimeView;
+import minefarts.smarttube.ui.widgets.time.EndingTimeView;
+import com.liskovsoft.googlecommon.common.helpers.YouTubeHelper;
 
-import java.lang.reflect.Field;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Plays selected video, loads playlist and related videos, and delegates playback to
  * {@link VideoPlayerGlue}.
  */
 public class PlaybackFragment extends SeekModePlaybackFragment implements PlaybackView {
-
     private static final String TAG = PlaybackFragment.class.getSimpleName();
-
     private static final String SELECTED_VIDEO_ID = "SelectedVideoId";
     private static final int UPDATE_DELAY_MS = 100;
     private static final int SUGGESTIONS_START_INDEX = 1;
-
     private VideoPlayerGlue mPlayerGlue;
     private SimpleExoPlayer mPlayer;
     private PlaybackPresenter mPlaybackPresenter;
@@ -112,37 +113,26 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     private ExoPlayerController mExoPlayerController;
     private ExoPlayerInitializer mPlayerInitializer;
     private SubtitleManager mSubtitleManager;
+    private DebugInfoManager mDebugInfoManager;
     private UriBackgroundManager mBackgroundManager;
     private RowsSupportFragment mRowsSupportFragment;
+    private boolean mIsUIAnimationsEnabled = false;
     private boolean mIsEngineBlocked;
     private MediaSessionCompat mMediaSession;
     private MediaSessionConnector mMediaSessionConnector;
+    private DoubleTapPlayerAdapter mDoubleTapPlayerAdapter;
+    private YouTubeOverlay mYouTubeOverlay;
     private Boolean mIsControlsShownPreviously;
     private Video mPendingFocus;
-    private long mProgressShowTimeMs;
     private String mSelectedVideoId;
-
-    @Override
-    public void setVideoFlipEnabled(boolean enabled) {/*NOP*/}
-    
-    @Override
-    public void setRotationAngle(int angle) {/*NOP*/}
-
-    @Override
-    public void setAspectRatio(float ratio) {/*NOP*/}
-    
-    @Override
-    public void updateEndingTime() {/*NOP*/}
-    
-    @Override
-    public void showDebugInfo(boolean show) {/*NOP*/}
-    
-    @Override
-    public int getButtonState(int but) {return -1;}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(null); // trying to fix bug with presets
+
+        if (getContext() == null) {
+            throw new IllegalStateException("Can't create PlaybackFragment: the context is null");
+        }
 
         mSelectedVideoId = savedInstanceState != null ? savedInstanceState.getString(SELECTED_VIDEO_ID, null) : null;
         mVideoGroupAdapters = new HashMap<>();
@@ -268,6 +258,13 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     }
 
     public void onDispatchTouchEvent(MotionEvent event) {
+        if (mDoubleTapPlayerAdapter != null && !isOverlayShown()) {
+            boolean handled = mDoubleTapPlayerAdapter.onTouchEvent(event);
+
+            if (handled)
+                return;
+        }
+
         applyTickle(event);
     }
 
@@ -276,21 +273,8 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     }
 
     private void applyTickle(MotionEvent event) {
-        int gestureAreaWidthPx = 100;
-
-        // Reserve left area for gestures
-        if (event.getAxisValue(MotionEvent.AXIS_X) < gestureAreaWidthPx) {
-            return;
-        }
-
-        // Reserve right area for gestures
-        if (getActivity() != null) {
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-            if (event.getAxisValue(MotionEvent.AXIS_X) > (displayMetrics.widthPixels - gestureAreaWidthPx)) {
-                return;
-            }
+        if (getView() != null && !isOverlayShown()) {
+            getView().requestFocus(); // fix mouse DPAD emulation on API 28+
         }
 
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -369,7 +353,7 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
 
         releasePlayer();
         // Improve memory usage??? Player may hangs on a second after close
-        Runtime.getRuntime().gc();
+        //Runtime.getRuntime().gc();
         initializePlayer();
     }
 
@@ -414,26 +398,59 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     }
 
     private void destroyPlayerObjects() {
-        // Fix access calls when player isn't initialized
-        mExoPlayerController.release();
-        if (mMediaSessionConnector != null) {
-            mMediaSessionConnector.setPlayer(null);
-        }
-        if (mMediaSession != null) {
-            mMediaSession.release();
-        }
+        setAdapter(null); // PlayerGlue->LeanbackPlayerAdapter->Context memory leak fix
         if (mRowsAdapter != null) {
             mRowsAdapter.clear();
+            mRowsAdapter = null;
         }
-
-        setAdapter(null); // PlayerGlue->LeanbackPlayerAdapter->Context memory leak fix
-
+        // pollution exo SegmentBase.SegmentTimelineElement 3 million allocation and grown after the player reinstantiation
+        setPlaybackRow(null);
+        setOnPlaybackItemViewClickedListener(null);
+        setHostCallback(null);
+        setPlaybackSeekUiClient(null);
+        setPlaybackRowPresenter(null);
+        setOnKeyInterceptListener(null);
+        if (mRowsSupportFragment != null && mRowsSupportFragment.getVerticalGridView() != null) {
+            mRowsSupportFragment.getVerticalGridView().setAdapter(null);
+            mRowsSupportFragment.getBridgeAdapter().clear();
+            mRowsSupportFragment.getBridgeAdapter().getPresenterMapper().clear();
+            mRowsSupportFragment = null;
+        }
+        if (mMediaSessionConnector != null) {
+            mMediaSessionConnector.setPlayer(null);
+            mMediaSessionConnector.setControlDispatcher(null);
+            mMediaSessionConnector.setMediaMetadataProvider(null);
+            mMediaSessionConnector.setQueueNavigator(null);
+            mMediaSessionConnector = null;
+        }
+        if (mMediaSession != null) {
+            mMediaSession.setActive(false);
+            mMediaSession.release();
+            mMediaSession = null;
+        }
+        if (mPlayerGlue != null) {
+            ((PlaybackTransportRowPresenter) mPlayerGlue.getPlaybackRowPresenter()).setOnActionLongClickedListener(null);
+            ((PlaybackTransportRowPresenter) mPlayerGlue.getPlaybackRowPresenter()).setOnActionClickedListener(null);
+            mPlayerGlue.getPlayerAdapter().onDetachedFromHost();
+            mPlayerGlue.setHost(null);
+            mPlayerGlue = null;
+        }
+        if (mDebugInfoManager != null) {
+            mDebugInfoManager.show(false);
+            mDebugInfoManager = null;
+        }
+        mPlayerInitializer.release();
+        // Fix access calls when player isn't initialized
+        mExoPlayerController.release();
         mPlayer = null;
-        mPlayerGlue = null;
-        mRowsAdapter = null;
         mSubtitleManager = null;
-        mMediaSessionConnector = null;
-        mMediaSession = null;
+        if (mYouTubeOverlay != null) {
+            mYouTubeOverlay
+                    .player(null)
+                    .playerView(null)
+                    .performListener(null);
+        }
+        mDoubleTapPlayerAdapter = null;
     }
 
     private void createPlayerObjects() {
@@ -443,17 +460,24 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
 
         createPlayerGlue();
 
-        createSubtitleManager();
+        //createSubtitleManager();
+
+        //createDebugManager();
 
         createMediaSession();
 
         initializePlayerRows();
 
+        initializeGlobalClock();
+
+        initializeGlobalEndingTime();
+
+        initializePixelRatio();
+
+        initializeDoubleTapHandler();
     }
 
     private void createPlayer() {
-        //mExoPlayerController.setEventListener(mPlaybackPresenter);
-
         // Use default or pass your bandwidthMeter here: bandwidthMeter = new DefaultBandwidthMeter.Builder(getContext()).build()
         DefaultTrackSelector trackSelector = new RestoreTrackSelector(new AdaptiveTrackSelection.Factory());
         mExoPlayerController.setTrackSelector(trackSelector);
@@ -475,16 +499,110 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
         StoryboardSeekDataProvider.setSeekProvider(mPlayerGlue);
         hideControlsOverlay(true); // fix player ui not synced correctly
 
+        mIsUIAnimationsEnabled = getPlayerTweaksData().isUIAnimationsEnabled();
+
         mExoPlayerController.setPlayerView(mPlayerGlue);
     }
 
     private void createSubtitleManager() {
-        mSubtitleManager = new SubtitleManager(getView().findViewById(R.id.leanback_subtitles));
-
-        // subs renderer
-        if (mPlayer.getTextComponent() != null) {
-            mPlayer.getTextComponent().addTextOutput(mSubtitleManager);
+        if (getView() == null || mPlayer == null) {
+            return;
         }
+
+        if (mSubtitleManager == null) {
+            mSubtitleManager = new SubtitleManager(getView().findViewById(R.id.leanback_subtitles));
+
+            // subs renderer
+            if (mPlayer.getTextComponent() != null) {
+                mPlayer.getTextComponent().addTextOutput(mSubtitleManager);
+            }
+        }
+    }
+
+    private void createDebugManager() {
+        if (getView() == null) {
+            return;
+        }
+
+        if (mDebugInfoManager == null) {
+            mDebugInfoManager = new DebugInfoManager(getView().findViewById(R.id.debug_view_group), mPlayer, mPlayerInitializer);
+        }
+    }
+
+    private void initializeGlobalClock() {
+        if (getView() == null) {
+            return;
+        }
+
+        DateTimeView clock = getView().findViewById(R.id.global_time);
+        clock.showDate(false);
+        clock.setVisibility(getPlayerData().isGlobalClockEnabled() ? View.VISIBLE : View.GONE);
+    }
+
+    private void initializeGlobalEndingTime() {
+        if (getView() == null) {
+            return;
+        }
+
+        EndingTimeView endingTime = getView().findViewById(R.id.global_ending_time);
+        endingTime.setVisibility(getPlayerData().isGlobalEndingTimeEnabled() ? View.VISIBLE : View.GONE);
+    }
+
+    private void initializePixelRatio() {
+        setPixelRatio(getPlayerTweaksData().getPixelRatio());
+    }
+
+    private void initializeDoubleTapHandler() {
+        if (getContext() == null || getView() == null || !Helpers.isTouchSupported(getContext())) {
+            return;
+        }
+
+        if (mYouTubeOverlay == null) {
+            ViewStub youTubeOverlayStub = getView().findViewById(R.id.youtube_overlay_stub);
+            if (youTubeOverlayStub != null) {
+                mYouTubeOverlay = (YouTubeOverlay) youTubeOverlayStub.inflate();
+            } else {
+                mYouTubeOverlay = getView().findViewById(R.id.youtube_overlay);
+            }
+        }
+
+        mDoubleTapPlayerAdapter = new DoubleTapPlayerAdapter(getView());
+        mDoubleTapPlayerAdapter.onSingleTap(this::applyTickle);
+        mDoubleTapPlayerAdapter.controller(mYouTubeOverlay);
+        mYouTubeOverlay
+                .player(mPlayer)
+                .playerView(mDoubleTapPlayerAdapter)
+                .seekSeconds(getPlayerData().getSeekIncrementMs() / 1_000)
+                .performListener(new PerformListener() {
+            @Override
+            public void onAnimationStart() {
+                mYouTubeOverlay.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd() {
+                mYouTubeOverlay.setVisibility(View.GONE);
+            }
+
+            @Override
+            public Boolean shouldForward(@NonNull Player player, @NonNull DoubleTapPlayerView playerView, float posX) {
+                if (player.getPlaybackState() == PlaybackState.STATE_ERROR ||
+                        player.getPlaybackState() == PlaybackState.STATE_NONE ||
+                        player.getPlaybackState() == PlaybackState.STATE_STOPPED) {
+
+                    playerView.cancelInDoubleTapMode();
+                    return false;
+                }
+
+                if (player.getCurrentPosition() > 500 && posX < playerView.getPlayerWidth() * 0.35)
+                    return false;
+
+                if (player.getCurrentPosition() < player.getDuration() && posX > playerView.getPlayerWidth() * 0.65)
+                    return true;
+
+                return false;
+            }
+        });
     }
 
     private void createMediaSession() {
@@ -494,10 +612,9 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
         }
 
         // NOTE: No way to disable only a notifications. We need to disable the media session instead.
-
-        mMediaSession = new MediaSessionCompat(getContext(), getContext().getPackageName());
-
-        mMediaSession.setActive(Helpers.isAndroidTVLauncher(getContext()));
+        boolean disableNotifications = getPlayerTweaksData().isPlaybackNotificationsDisabled();
+        mMediaSession = new MediaSessionCompat(getContext().getApplicationContext(), getContext().getPackageName()); // NOTE: mem leak fix (SegmentTimelineElement)
+        mMediaSession.setActive(!disableNotifications);
         mMediaSessionConnector = new MediaSessionConnector(mMediaSession);
 
         try {
@@ -544,8 +661,20 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
             }
         });
 
-        mMediaSessionConnector.setControlDispatcher(new DefaultControlDispatcher());
+        // Fix exoplayer pause when switching AFR. The code seems buggy.
+        mMediaSessionConnector.setControlDispatcher(new DefaultControlDispatcher() {
+            @Override
+            public boolean dispatchSetPlayWhenReady(Player player, boolean playWhenReady) {
+                // Fix exoplayer pause after activity is resumed (AFR switching).
+                // It's tied to activity state transitioning because window has different mode.
+                // NOTE: may be a problems with background playback or bluetooth button events
+                if (System.currentTimeMillis() - getPlayerData().getAfrSwitchTimeMs() < 5_000) {
+                    return false;
+                }
 
+                return super.dispatchSetPlayWhenReady(player, playWhenReady);
+            }
+        });
     }
 
     private void initializePlayerRows() {
@@ -587,8 +716,13 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
 
                 updatePlayerBackground();
 
+                // Don't select the pending item here because multiple items will be focused.
+                //if (selected) {
+                //    focusPendingSuggestedItem();
+                //}
             }
         };
+        mRowPresenter.enableChildRoundedCorners(getMainUIData().isUiTweakEnabled(MainUIData.UI_TWEAK_ROUNDED_CORNERS));
 
         mCardPresenter = new VideoCardPresenter();
         mShortsPresenter = new ShortsCardPresenter();
@@ -651,7 +785,6 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
                 }
             }
         }
-
     }
 
     private class PlayerActionListener implements VideoPlayerGlue.OnActionClickedListener {
@@ -721,89 +854,25 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     }
 
     private CharSequence createSubtitle(Video video) {
+        CharSequence result = video.getSecondTitleFull();
 
-        if (getContext() == null) {
-            return "";
+        if (getContext() != null && video.isLive) {
+            result = TextUtils.concat( result, " ", Video.TERTIARY_TEXT_DELIM, " ", Utils.color(getContext().getString(R.string.badge_live), ContextCompat.getColor(getContext(), R.color.red)));
         }
 
-        String DELIM = " " + Video.TERTIARY_TEXT_DELIM + " ";
-
-        List<String> parts = new ArrayList();
-
-        //=================================================
-
-        String secondTitle = video.secondTitle.toString();
-
-        CharSequence metadataSecondTitle;
-        try {
-            Field field = Video.class.getDeclaredField("metadataSecondTitle");
-            field.setAccessible(true);
-            metadataSecondTitle = (CharSequence) field.get(video);
-        } catch (NoSuchFieldException|IllegalAccessException e) {
-            metadataSecondTitle = null;
+        if (getContext() != null && video.likeCount != null) {
+            result = TextUtils.concat(result, " ", Video.TERTIARY_TEXT_DELIM, " ", video.likeCount, Helpers.NON_BREAKING_SPACE, Helpers.THUMB_UP); // color of thumb cannot be changed
         }
 
-        // Use old title if segments missing (ex: Mixes)
-        if (!secondTitle.contains(DELIM) && (metadataSecondTitle != null)) {
-            secondTitle = metadataSecondTitle.toString().replace("Published on ", "");
+        if (getContext() != null && video.dislikeCount != null) {
+            result = TextUtils.concat(result, " ", Video.TERTIARY_TEXT_DELIM, " ", video.dislikeCount, Helpers.NON_BREAKING_SPACE, Helpers.THUMB_DOWN); // color of thumb cannot be changed
         }
 
-        parts.add(secondTitle);
-
-        //=================================================
-
-        if (video.isLive) {
-
-            CharSequence color = Utils.color(
-                getContext().getString(R.string.badge_live), 
-                ContextCompat.getColor(
-                    getContext(), 
-                    R.color.red
-                )
-            );
-
-            parts.add(color.toString());
-
+        if (getContext() != null && video.subscriberCount != null) {
+            result = TextUtils.concat(result, " ", Video.TERTIARY_TEXT_DELIM, " ", video.subscriberCount.replace(" ", Helpers.NON_BREAKING_SPACE));
         }
 
-        //=================================================
-
-        if (video.likeCount != null) {
-            parts.add( 
-                video.likeCount +
-                Helpers.NON_BREAKING_SPACE +
-                Helpers.THUMB_UP
-            );
-        }
-
-        //=================================================
-
-        if (video.dislikeCount != null) {
-            parts.add(
-                video.dislikeCount + 
-                Helpers.NON_BREAKING_SPACE + 
-                Helpers.THUMB_DOWN
-            );
-        }
-
-        //=================================================
-
-        if (video.subscriberCount != null) {
-            parts.add(
-                video.subscriberCount.replace(" ", Helpers.NON_BREAKING_SPACE)
-            );
-        }
-
-        //=================================================
-
-        String result = "";
-
-        for (String part : parts) {
-            result += DELIM;
-            result += part;
-        }
-
-        return (CharSequence) result.substring(3);
+        return result;
     }
 
     private CharSequence createNextTitle(Video video) {
@@ -834,22 +903,16 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
             return;
         }
 
-        if (show) {
-            getProgressBarManager().show();
-            mProgressShowTimeMs = System.currentTimeMillis();
-        } else {
-            getProgressBarManager().hide();
-        }
-    }
-
-    @Override
-    protected void onBufferingStateChanged(boolean start) {
-        // Fix progress stop when playing videos non-stop (stop buffer event from previous video called)
-        if (!start && System.currentTimeMillis() - mProgressShowTimeMs < 100) {
+        // Fix interrupted progress (by suggestions, etc). The video player can handle these states correctly.
+        if (mExoPlayerController.isLoading() || mExoPlayerController.isBuffering()) {
             return;
         }
 
-        super.onBufferingStateChanged(start);
+        if (show) {
+            getProgressBarManager().show();
+        } else {
+            getProgressBarManager().hide();
+        }
     }
 
     @Override
@@ -860,9 +923,17 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     }
 
     @Override
+    public void updateEndingTime() {
+        if (getView() != null) {
+            EndingTimeView endingTime = getView().findViewById(R.id.global_ending_time);
+            endingTime.update();
+        }
+    }
+
+    @Override
     public void setChatReceiver(ChatReceiver chatReceiver) {
-        if (getActivity() != null) {
-            LiveChatView liveChat = getActivity().findViewById(R.id.live_chat);
+        if (getView() != null) {
+            LiveChatView liveChat = getView().findViewById(R.id.live_chat);
             liveChat.setChatReceiver(chatReceiver);
         }
     }
@@ -970,9 +1041,9 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     }
 
     @Override
-    public void setFormat(FormatItem option) {
+    public void setFormat(FormatItem formatItem) {
         // Android 4.4 fix for format selection dialog (player destroyed when dialog is focused)
-        mExoPlayerController.selectFormat(option);
+        mExoPlayerController.selectFormat(formatItem);
     }
 
     @Override
@@ -1070,6 +1141,21 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     }
 
     @Override
+    public void setAspectRatio(float ratio) {
+        setAspect(ratio);
+    }
+
+    @Override
+    public void setRotationAngle(int angle) {
+        setRotation(angle);
+    }
+
+    @Override
+    public void setVideoFlipEnabled(boolean enabled) {
+        setFlipEnabled(enabled);
+    }
+
+    @Override
     public void setVideoGravity(int gravity) {
         setGravity(gravity);
     }
@@ -1138,8 +1224,7 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
 
     @Override
     public void showControlsOverlay(boolean runAnimation) {
-        
-        super.showControlsOverlay(true);
+        super.showControlsOverlay(mIsUIAnimationsEnabled);
 
         // Do throttle. Called so many times. Rely on boxing because initial state is unknown.
         if (mIsControlsShownPreviously != null && mIsControlsShownPreviously) {
@@ -1161,8 +1246,7 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
 
     @Override
     public void hideControlsOverlay(boolean runAnimation) {
-        
-        super.hideControlsOverlay(true);
+        super.hideControlsOverlay(mIsUIAnimationsEnabled);
 
         // Do throttle. Called so many times. Rely on boxing because initial state is unknown.
         if (mIsControlsShownPreviously != null && !mIsControlsShownPreviously) {
@@ -1224,6 +1308,15 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     }
 
     @Override
+    public int getButtonState(int buttonId) {
+        if (mPlayerGlue == null) {
+            return -1;
+        }
+
+        return mPlayerGlue.getButtonState(buttonId);
+    }
+
+    @Override
     public void setButtonState(int buttonId, int buttonState) {
         if (mPlayerGlue != null) {
             mPlayerGlue.setButtonState(buttonId, buttonState);
@@ -1254,10 +1347,24 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     }
 
     @Override
+    public void showDebugInfo(boolean show) {
+        createDebugManager();
+        if (mDebugInfoManager != null) {
+            mDebugInfoManager.show(show);
+        }
+    }
+
+    @Override
     public void showSubtitles(boolean show) {
+        createSubtitleManager();
         if (mSubtitleManager != null) {
             mSubtitleManager.show(show);
         }
+    }
+
+    public boolean isDebugInfoShown() {
+        createDebugManager();
+        return mDebugInfoManager != null && mDebugInfoManager.isShown();
     }
 
     @Override
@@ -1507,16 +1614,16 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
      * PIP mode fix
      */
     private void showHideWidgets(boolean show) {
-        Activity activity = getActivity();
+        View root = getView();
 
-        if (activity != null) {
-            View overlay = activity.findViewById(R.id.player_overlay_wrapper);
+        if (root != null) {
+            View overlay = root.findViewById(R.id.player_overlay_wrapper);
 
             if (overlay != null) {
                 overlay.setVisibility(show ? View.VISIBLE : View.GONE);
             }
 
-            View liveChat = activity.findViewById(R.id.live_chat_wrapper);
+            View liveChat = root.findViewById(R.id.live_chat_wrapper);
 
             if (liveChat != null) {
                 liveChat.setVisibility(show ? View.VISIBLE : View.GONE);
@@ -1525,9 +1632,24 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     }
 
     /**
-     * UI couldn't be properly displayed in PIP mode
+     * UI couldn't be properly displayed in PIP mode<br/>
+     * Also UI may auto hide if user holds seek (< or > buttons).
      */
     private boolean forbidShowOverlay(boolean show) {
-        return show && isInPIPMode();
+        boolean showUiInPip = show && isInPIPMode();
+        boolean hideUiSeeking = !show && mPlayerGlue != null && mPlayerGlue.isSeeking();
+        return showUiInPip || hideUiSeeking;
+    }
+
+    private MainUIData getMainUIData() {
+        return MainUIData.instance(getContext());
+    }
+
+    private PlayerData getPlayerData() {
+        return PlayerData.instance(getContext());
+    }
+
+    private PlayerTweaksData getPlayerTweaksData() {
+        return PlayerTweaksData.instance(getContext());
     }
 }

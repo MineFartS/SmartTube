@@ -25,6 +25,7 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import minefarts.smarttube.R;
 import minefarts.smarttube.adapter.VideoGroupObjectAdapter;
 import minefarts.smarttube.ui.widgets.marqueetextview.MarqueeTextView;
+import minefarts.smarttube.ui.widgets.marqueetextviewcompat.MarqueeTextViewCompat;
 import minefarts.smarttube.ui.widgets.speedmarquee.SpeedMarquee;
 
 public class ViewUtil {
@@ -32,6 +33,7 @@ public class ViewUtil {
      * Focused card zoom factor
      */
     public static final int FOCUS_ZOOM_FACTOR = FocusHighlight.ZOOM_FACTOR_SMALL;
+    //public static final int FOCUS_ZOOM_FACTOR = FocusHighlight.ZOOM_FACTOR_NONE;
     /**
      * Dim focused card?
      */
@@ -45,7 +47,6 @@ public class ViewUtil {
      */
     public static final int GRID_SCROLL_CONTINUE_NUM = 10;
     public static final int ROW_SCROLL_CONTINUE_NUM = 4;
-    public static final boolean ROUNDED_CORNERS_ENABLED = true;
 
     /**
      * Checks whether text is truncated (e.g. has ... at the end)
@@ -66,7 +67,7 @@ public class ViewUtil {
     }
 
     public static void disableMarquee(TextView... textViews) {
-        if (VERSION.SDK_INT <= 19 || textViews == null || textViews.length == 0) { // Android 4: Broken grid layout fix
+        if (VERSION.SDK_INT <= 19 || textViews == null) { // Android 4: Broken grid layout fix
             return;
         }
 
@@ -83,7 +84,7 @@ public class ViewUtil {
      * <a href="https://stackoverflow.com/questions/3332924/textview-marquee-not-working">More info</a>
      */
     public static void enableMarquee(TextView... textViews) {
-        if (VERSION.SDK_INT <= 19 || textViews == null || textViews.length == 0) { // Android 4: Broken grid layout fix
+        if (VERSION.SDK_INT <= 19 || textViews == null) { // Android 4: Broken grid layout fix
             return;
         }
 
@@ -94,7 +95,7 @@ public class ViewUtil {
                 textView.setHorizontallyScrolling(true);
 
                 // App dialog title fix.
-                textView.setSelected(true);
+                //textView.setSelected(true);
 
                 applyMarqueeRtlParams(textView, true);
             }
@@ -102,11 +103,13 @@ public class ViewUtil {
     }
 
     public static void applyMarqueeRtlParams(TextView textView, boolean scroll) {
-
         if (!Helpers.isTextRTL(textView.getText())) {
-
-            textView.setTextDirection(TextView.TEXT_DIRECTION_FIRST_STRONG);
-            
+            // TextView may be reused from rtl context. Do reset.
+            // NOTE: don't enable commented options because Setting item's text won't be centered.
+            //textView.setTextAlignment(View.TEXT_ALIGNMENT_GRAVITY);
+            textView.setTextDirection(View.TEXT_DIRECTION_LTR);
+            textView.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+            //textView.setGravity(Gravity.TOP | Gravity.START);
             return;
         }
 
@@ -114,7 +117,8 @@ public class ViewUtil {
             // Fix: right scrolling on rtl languages
             // Fix: text disappear on rtl languages
             textView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
-            textView.setTextDirection(TextView.TEXT_DIRECTION_RTL);
+            textView.setTextDirection(View.TEXT_DIRECTION_RTL);
+            textView.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
             textView.setGravity(Gravity.START);
         } else {
             // Fix: text disappear on rtl languages
@@ -123,7 +127,13 @@ public class ViewUtil {
     }
 
     public static void setTextScrollSpeed(TextView textView, float speed) {
-        if (textView instanceof MarqueeTextView) {
+        if (VERSION.SDK_INT <= 19) { // Android 4: Broken grid layout fix
+            return;
+        }
+
+        if (textView instanceof MarqueeTextViewCompat) {
+            ((MarqueeTextViewCompat) textView).setMarqueeSpeedFactor(speed);
+        } else if (textView instanceof MarqueeTextView) {
             ((MarqueeTextView) textView).setMarqueeSpeedFactor(speed);
         } else if (textView instanceof SpeedMarquee) {
             ((SpeedMarquee) textView).setSpeed(speed);
@@ -156,7 +166,7 @@ public class ViewUtil {
         if (obj instanceof ListRow) {
             ListRow row = (ListRow) obj;
             VideoGroupObjectAdapter adapter = (VideoGroupObjectAdapter) row.getAdapter();
-            return adapter == null || adapter.size() == 0;
+            return adapter == null || adapter.isEmpty();
         }
 
         return true;
@@ -222,16 +232,53 @@ public class ViewUtil {
         iconView.setColorFilter(filter);
     }
 
-    public static void setGravity(FrameLayout frameLayout, int gravity) {
-        if (frameLayout == null) {
+    public static void setGravity(View view, int gravity) {
+        if (view == null) {
             return;
         }
 
-        ViewGroup.LayoutParams lp = frameLayout.getLayoutParams();
+        ViewGroup.LayoutParams lp = view.getLayoutParams();
         if (lp instanceof FrameLayout.LayoutParams) {
             FrameLayout.LayoutParams flp = (FrameLayout.LayoutParams) lp;
             flp.gravity = gravity;
-            frameLayout.setLayoutParams(flp);
+            view.setLayoutParams(flp);
         }
+    }
+
+    public static void setWidth(View view, int width) {
+        if (view == null) {
+            return;
+        }
+
+        ViewGroup.LayoutParams lp = view.getLayoutParams();
+        if (lp != null) {
+            lp.width = width;
+            view.setLayoutParams(lp);
+        }
+    }
+
+    public static void setPadding(View view, int padding) {
+        if (view == null) {
+            return;
+        }
+
+        view.setPadding(padding, view.getPaddingTop(), padding, view.getPaddingBottom());
+    }
+
+    /**
+     * Fix SDK 28+ GridLayoutManager broken navigation when using Japanese fonts
+     */
+    public static void fixApi28BrokenGridNavigation(TextView textView) {
+        if (VERSION.SDK_INT >= 28) {
+            // 1. Disable dynamic line spacing for special characters (prevents expansion for CJK glyphs)
+            textView.setFallbackLineSpacing(false);
+        }
+
+        // 2. Remove system font padding to ensure consistent baseline and height
+        textView.setIncludeFontPadding(false);
+
+        // 3. Add fixed internal padding to create a "safe zone" for both Latin and Japanese text
+        int paddingExtra = (int) (4 * textView.getResources().getDisplayMetrics().density);
+        textView.setPadding(textView.getPaddingLeft(), paddingExtra, textView.getPaddingRight(), paddingExtra);
     }
 }

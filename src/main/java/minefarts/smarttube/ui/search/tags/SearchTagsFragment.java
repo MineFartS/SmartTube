@@ -3,6 +3,8 @@ package minefarts.smarttube.ui.search.tags;
 import android.os.Bundle;
 import android.speech.SpeechRecognizer;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.leanback.widget.HeaderItem;
 import androidx.leanback.widget.ListRow;
@@ -17,6 +19,7 @@ import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
 import com.liskovsoft.smartyoutubetv2.common.app.models.search.MediaServiceSearchTagProvider;
 import com.liskovsoft.smartyoutubetv2.common.app.models.search.vineyard.Tag;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.SearchPresenter;
+import com.liskovsoft.smartyoutubetv2.common.misc.CrashRestorer;
 import com.liskovsoft.smartyoutubetv2.common.prefs.SearchData;
 import minefarts.smarttube.adapter.VideoGroupObjectAdapter;
 import minefarts.smarttube.presenter.ShortsCardPresenter;
@@ -40,14 +43,17 @@ public class SearchTagsFragment extends SearchTagsFragmentBase {
     private ShortsCardPresenter mShortsPresenter;
     private SearchData mSearchData;
     private boolean mIsFragmentCreated;
-
-    @Override
-    public void removeSearchTag(Tag t) {/*NOP*/}
+    private CrashRestorer mCrashRestorer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(null); // Real restore takes place in the presenter
 
+        if (getContext() == null) {
+            throw new IllegalStateException("Can't create SearchTagsFragment: the context is null");
+        }
+
+        mCrashRestorer = new CrashRestorer(getContext(), savedInstanceState);
         mIsFragmentCreated = true;
         mSearchPresenter = SearchPresenter.instance(getContext());
         mSearchPresenter.setView(this);
@@ -57,7 +63,9 @@ public class SearchTagsFragment extends SearchTagsFragmentBase {
         mSearchData = SearchData.instance(getContext());
 
         setupEventListeners();
-        
+        setKeyboardAutoShowEnabled(mSearchData.isKeyboardAutoShowEnabled());
+        setKeyboardFixEnabled(mSearchData.isKeyboardFixEnabled());
+        setTypingCorrectionDisabled(mSearchData.isTypingCorrectionDisabled());
     }
 
     private void setupEventListeners() {
@@ -68,10 +76,21 @@ public class SearchTagsFragment extends SearchTagsFragmentBase {
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // Called when the activity is paused
+        mCrashRestorer.persistVideo(outState, mSearchPresenter.getCurrentVideo());
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         mSearchPresenter.onViewInitialized();
+
+        // Restore state after crash
+        mCrashRestorer.restorePlayback();
     }
 
     @Override
@@ -141,6 +160,11 @@ public class SearchTagsFragment extends SearchTagsFragmentBase {
     }
 
     @Override
+    public void removeSearchTag(Tag tag) {
+        removeTag(tag);
+    }
+
+    @Override
     public void setTagsProvider(MediaServiceSearchTagProvider provider) {
         setSearchTagsProvider(provider);
     }
@@ -181,18 +205,13 @@ public class SearchTagsFragment extends SearchTagsFragmentBase {
 
     @Override
     protected void focusOnResults() {
-
-        if (!TextUtils.isEmpty(mNewQuery)) {
-        
+        if (mSearchData.isFocusOnResultsEnabled() && !TextUtils.isEmpty(mNewQuery)) {
             super.focusOnResults();
-        
             if (getRowsSupportFragment() != null) {
                 // Move selection to the videos (second row)
                 getRowsSupportFragment().setSelectedPosition(findResultsIndex());
             }
-
         }
-        
     }
 
     /**
@@ -227,6 +246,7 @@ public class SearchTagsFragment extends SearchTagsFragmentBase {
     @Override
     protected void onItemViewSelected(Object item) {
         if (item instanceof Video) {
+            mSearchPresenter.onVideoItemSelected((Video) item);
             checkScrollEnd((Video) item);
         }
     }

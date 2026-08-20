@@ -20,7 +20,7 @@ import minefarts.smarttube.R;
 import minefarts.smarttube.util.ViewUtil;
 
 public class UriBackgroundManager {
-
+    private static final String TAG = UriBackgroundManager.class.getSimpleName();
     private static final int BACKGROUND_UPDATE_DELAY_MS = 300;
     private Uri mBackgroundURI;
     private Drawable mDefaultBackground;
@@ -31,7 +31,6 @@ public class UriBackgroundManager {
     private final Handler mHandler;
     private int mBackgroundColor = -1;
 
-    @SuppressWarnings("deprecation")
     public UriBackgroundManager(Activity activity) {
         mActivity = activity;
         mHandler = new Handler();
@@ -42,8 +41,7 @@ public class UriBackgroundManager {
     private void prepareBackgroundManager() {
         mBackgroundManager = BackgroundManager.getInstance(mActivity);
         mBackgroundManager.attach(mActivity.getWindow());
-        mDefaultBackground = ContextCompat.getDrawable(mActivity,
-                Helpers.getThemeAttr(mActivity, R.attr.shelfBackground));
+        mDefaultBackground = ContextCompat.getDrawable(mActivity, Helpers.getThemeAttr(mActivity, R.attr.shelfBackground));
         mBackgroundTask = new UpdateBackgroundTask();
         mMetrics = new DisplayMetrics();
         mActivity.getWindowManager().getDefaultDisplay().getMetrics(mMetrics);
@@ -125,12 +123,18 @@ public class UriBackgroundManager {
         int width = mMetrics.widthPixels;
         int height = mMetrics.heightPixels;
 
-        RequestOptions options = ViewUtil.glideOptions().centerCrop().error(mDefaultBackground);
+        RequestOptions options = ViewUtil.glideOptions()
+                .centerCrop()
+                .error(mDefaultBackground);
 
-        Glide.with(mActivity).asBitmap().load(uri).apply(options)
+        Glide.with(mActivity)
+                .asBitmap()
+                .load(uri)
+                .apply(options)
                 .into(new SimpleTarget<Bitmap>(width, height) {
                     @Override
-                    public void onResourceReady(@NonNull Bitmap resource,
+                    public void onResourceReady(
+                            @NonNull Bitmap resource,
                             Transition<? super Bitmap> transition) {
                         mBackgroundManager.setBitmap(resource);
                     }

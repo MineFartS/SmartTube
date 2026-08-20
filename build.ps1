@@ -45,6 +45,7 @@ Add-YuliskovPkg 'youtubeapi' '/MediaServiceCore/youtubeapi/'
 Add-YuliskovPkg 'chatkit' '/chatkit/'
 Add-YuliskovPkg 'leanbackassistant' '/leanbackassistant/'
 Add-YuliskovPkg 'slidableactivity' '/slidableactivity/'
+Add-YuliskovPkg 'doubletapplayerview' '/doubletapplayerview/'
 
 if (Test-ADBConnection) {
     $gARGS += ":installDebug"

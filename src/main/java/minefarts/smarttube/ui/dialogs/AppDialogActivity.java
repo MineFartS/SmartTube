@@ -24,7 +24,8 @@ public class AppDialogActivity extends MotherActivity {
     private static final String TAG = AppDialogActivity.class.getSimpleName();
     private AppDialogFragment mFragment;
     private GlobalKeyTranslator mGlobalKeyTranslator;
-    
+    private boolean mIsBackPressed;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,13 +38,48 @@ public class AppDialogActivity extends MotherActivity {
     }
 
     @Override
+    protected void initTheme() {
+        int settingsThemeResId = MainUIData.instance(this).getColorScheme().settingsThemeResId;
+        if (settingsThemeResId > 0) {
+            setTheme(settingsThemeResId);
+        }
+    }
+
+    private void setupActivity() {
+        // Fix crash in AppSettingsActivity: "Only fullscreen opaque activities can request orientation"
+        // Error happen only on Android O (api 26) when you set "portrait" orientation in manifest
+        // So, to fix the problem, set orientation here instead of manifest
+        // More info: https://stackoverflow.com/questions/48072438/java-lang-illegalstateexception-only-fullscreen-opaque-activities-can-request-o
+        if (VERSION.SDK_INT != 26) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+    }
+
+    @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+        //if (KeyHelpers.isConfirmKey(event.getKeyCode()) && !event.isLongPress()) {
+        //    return true;
+        //}
+
+        //return mGlobalKeyTranslator.translate(event) || super.dispatchKeyEvent(event);
         KeyEvent newEvent = mGlobalKeyTranslator.translate(event);
         return handleNavigation(newEvent) || super.dispatchKeyEvent(newEvent);
     }
+
+    @Override
+    public void onBackPressed() {
+        mIsBackPressed = true;
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onResume() {
+        mIsBackPressed = false;
+        super.onResume();
+    }
     
     private boolean handleNavigation(KeyEvent event) {
-        if (event == null || !hasWindowFocus()) {
+        if (event == null) {
             return false;
         }
 
@@ -78,6 +114,12 @@ public class AppDialogActivity extends MotherActivity {
         // NOTE: Fragment's onDestroy/onDestroyView are not reliable way to catch dialog finish
         Log.d(TAG, "Dialog finish");
         if (mFragment != null) { // fragment isn't created yet (expandable = true)
+            // Fix mouse DPAD emulation on API 28+
+            if (mIsBackPressed && mFragment.canGoBack()) {
+                mFragment.goBack();
+                return;
+            }
+
             mFragment.onFinish();
         }
 

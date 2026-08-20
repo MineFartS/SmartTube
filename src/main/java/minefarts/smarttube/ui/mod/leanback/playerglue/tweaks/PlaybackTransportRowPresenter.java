@@ -1,4 +1,18 @@
-
+/*
+ * Copyright (C) 2017 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package minefarts.smarttube.ui.mod.leanback.playerglue.tweaks;
 
 import android.content.Context;
@@ -65,12 +79,10 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
      * A ViewHolder for the PlaybackControlsRow supporting seek UI.
      */
     public class ViewHolder extends PlaybackRowPresenter.ViewHolder implements PlaybackSeekUi {
-
         private static final long SPEED_INCREASE_PERIOD_MS = 1000;
         private static final double SPEED_INCREASE_FACTOR = 1.5;
         private static final int CONTROLS_MODE_FULL = 0;
         private static final int CONTROLS_MODE_COMPACT = 1;
-
         final Presenter.ViewHolder mDescriptionViewHolder;
         final ImageView mImageView;
         final ViewGroup mDescriptionDock;
@@ -78,6 +90,8 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
         final ViewGroup mSecondaryControlsDock;
         final TextView mTotalTime;
         final TextView mCurrentTime;
+        final TextView mEndingTime;
+        final TextView mQualityInfo;
         final TextView mDateTime;
         final ViewGroup mAdditionalInfo;
         final ViewGroup mTimeInfo;
@@ -87,17 +101,14 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
         final TextView mThumbsBarTitle;
         final ViewGroup mThumbsBarWrapper;
         final String mRemainingTimeFormat;
-
+        final String mEndingTimeFormat;
         long mTotalTimeInMs = Long.MIN_VALUE;
         long mCurrentTimeInMs = Long.MIN_VALUE;
         long mRemainingTimeInMs = Long.MIN_VALUE;
         long mSecondaryProgressInMs;
-
         final StringBuilder mTempBuilder = new StringBuilder();
-
         ControlBarPresenter.ViewHolder mControlsVh;
         ControlBarPresenter.ViewHolder mSecondaryControlsVh;
-        
         BoundData mControlsBoundData = new BoundData();
         BoundData mSecondaryBoundData = new BoundData();
         Presenter.ViewHolder mSelectedViewHolder;
@@ -123,7 +134,7 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
             @Override
             public void onCurrentPositionChanged(PlaybackControlsRow row, long ms) {
                 setCurrentPosition(ms);
-
+                setEndingTime(ms);
                 updateTotalTime();
             }
 
@@ -281,7 +292,7 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
         long calculateSeekIncrement() {
             if (mSeekIncrementMs == -1) {
                 mSeekStartTimeMs = System.currentTimeMillis();
-                mSeekIncrementMs = 10_000; // 10 seconds
+                mSeekIncrementMs = mPlayerData.getSeekIncrementMs();
             } else {
                 // increase seek speed by 1.5 every 1 second
                 long timePassed = System.currentTimeMillis() - mSeekStartTimeMs;
@@ -384,9 +395,25 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
             if (!startSeek()) {
                 return false;
             }
-            
-            mThumbsBar.setNumberOfThumbs(1);
-            updateProgressInSeekMod(forward);
+
+            switch (mPlayerData.getSeekPreviewMode()) {
+                case PlayerData.SEEK_PREVIEW_CAROUSEL_SLOW:
+                    // Calculate thumbs size based on width
+                    mThumbsBar.setNumberOfThumbs(-1);
+                    updateProgressInSeek(forward);
+                    break;
+                case PlayerData.SEEK_PREVIEW_CAROUSEL_FAST:
+                    // Calculate thumbs size based on width
+                    mThumbsBar.setNumberOfThumbs(-1);
+                    updateProgressInSeekMod(forward);
+                    break;
+                default:
+                    mThumbsBar.setNumberOfThumbs(1);
+                    updateProgressInSeekMod(forward);
+                    break;
+            }
+
+            mThumbsBar.setThumbsRotation(mPlayerData.getRotationAngle());
 
             return true;
         }
@@ -398,20 +425,20 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
          *                             ViewHolder. The description view will be added into tree.
          */
         public ViewHolder(View rootView, Presenter descriptionPresenter) {
-
             super(rootView);
-
             mPlayerData = PlayerData.instance(rootView.getContext());
-
-            PlaybackTransportRowPresenter.this.mPlaybackControlsPresenter.setSyncedFocusIndexEnabled(true);
-            PlaybackTransportRowPresenter.this.mSecondaryControlsPresenter.setSyncedFocusIndexEnabled(true);
-
+            // MOD: switch between navigation modes
+            PlayerTweaksData tweaksData = PlayerTweaksData.instance(rootView.getContext());
+            PlaybackTransportRowPresenter.this.mPlaybackControlsPresenter.setSharedFocusEnabled(tweaksData.isSyncRowButtonIndexEnabled());
+            PlaybackTransportRowPresenter.this.mSecondaryControlsPresenter.setSharedFocusEnabled(tweaksData.isSyncRowButtonIndexEnabled());
             mImageView = (ImageView) rootView.findViewById(R.id.image);
             mDescriptionDock = (ViewGroup) rootView.findViewById(R.id.description_dock);
             mCurrentTime = (TextView) rootView.findViewById(R.id.current_time);
             mTotalTime = (TextView) rootView.findViewById(R.id.total_time);
+            mQualityInfo = (TextView) rootView.findViewById(minefarts.smarttube.R.id.quality_info);
             mDateTime = (TextView) rootView.findViewById(minefarts.smarttube.R.id.date_time);
-
+            mEndingTime = (TextView) rootView.findViewById(minefarts.smarttube.R.id.ending_time);
+            mEndingTimeFormat = rootView.getContext().getString(minefarts.smarttube.R.string.player_ending_time);
             mRemainingTimeFormat = rootView.getContext().getString(minefarts.smarttube.R.string.player_remaining_time);
             mAdditionalInfo = (ViewGroup) rootView.findViewById(minefarts.smarttube.R.id.additional_info);
             mTimeInfo = (ViewGroup) rootView.findViewById(minefarts.smarttube.R.id.time_info);
@@ -454,6 +481,11 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
                                 onBackward();
                             } else {
                                 // MOD: resume immediately after seeking
+
+                                if ((mPlayerData.isSeekConfirmPauseEnabled() || mPlayerData.isSeekConfirmPlayEnabled()) && keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+                                    return true;
+                                }
+
                                 stopSeek(false);
                             }
                             return true;
@@ -464,6 +496,12 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
                                 setControlsMode(CONTROLS_MODE_COMPACT);
                                 onForward();
                             } else {
+                                // MOD: resume immediately after seeking
+
+                                if ((mPlayerData.isSeekConfirmPauseEnabled() || mPlayerData.isSeekConfirmPlayEnabled()) && keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+                                    return true;
+                                }
+
                                 stopSeek(false);
                             }
                             return true;
@@ -716,8 +754,50 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
             mProgressBar.setSecondaryProgress((int) progressRatio);
         }
 
+        void setEndingTime(long currentTimeMs) {
+            long remainingTimeMs = mTotalTimeInMs - currentTimeMs;
+
+            if (mRemainingTimeInMs != remainingTimeMs) {
+                mRemainingTimeInMs = remainingTimeMs;
+                onSetEndingTimeLabel(remainingTimeMs);
+            }
+        }
+
+        protected void onSetEndingTimeLabel(long remainingTimeMs) {
+            remainingTimeMs = applySpeedCorrection(remainingTimeMs);
+
+            if (mEndingTime != null) {
+                if (mPlayerData.isRemainingTimeEnabled()) {
+                    formatTime(remainingTimeMs, mTempBuilder);
+                    mEndingTime.setText(String.format(mRemainingTimeFormat, mTempBuilder.toString()));
+                    mEndingTime.setVisibility(View.VISIBLE);
+                } else if (mPlayerData.isEndingTimeEnabled()) {
+                    mEndingTime.setText(String.format(mEndingTimeFormat,
+                            DateHelper.toShortTime(System.currentTimeMillis() + remainingTimeMs)));
+                    mEndingTime.setVisibility(View.VISIBLE);
+                } else {
+                    mEndingTime.setVisibility(View.GONE);
+                }
+            }
+        }
+
+        void setQualityInfo(String content) {
+            if (content != null) {
+                if (mPlayerData.isQualityInfoEnabled()) {
+                    mQualityInfo.setText(content);
+                    mQualityInfo.setVisibility(View.VISIBLE);
+                } else {
+                    mQualityInfo.setVisibility(View.GONE);
+                }
+            }
+        }
+
         void setDateVisibility(boolean isVisible) {
-            mDateTime.setVisibility(View.GONE);
+            if (mPlayerData.isClockEnabled()) {
+                mDateTime.setVisibility(View.VISIBLE);
+            } else {
+                mDateTime.setVisibility(View.GONE);
+            }
         }
 
         void setSeekPreviewTitle(String title) {
@@ -868,7 +948,7 @@ public class PlaybackTransportRowPresenter extends PlaybackRowPresenter {
     }
 
     /**
-     * MODIFIED: Sets the listener for {@link Action} long click events.
+     * MOD: Sets the listener for {@link Action} long click events.
      */
     public void setOnActionLongClickedListener(OnActionLongClickedListener listener) {
         mOnActionLongClickedListener = listener;

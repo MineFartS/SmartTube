@@ -1,9 +1,11 @@
 package minefarts.smarttube.presenter.vineyard;
 
+import android.os.Build.VERSION;
 import android.view.ViewGroup;
 
 import androidx.core.content.ContextCompat;
 import com.liskovsoft.sharedutils.helpers.Helpers;
+import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
 import minefarts.smarttube.R;
 import com.liskovsoft.smartyoutubetv2.common.app.models.search.vineyard.Tag;
 import com.liskovsoft.smartyoutubetv2.common.app.models.search.vineyard.User;
@@ -15,25 +17,6 @@ public class TagPresenter extends LongClickPresenter {
     private static int sDefaultTextColor;
     private static int sSelectedBackgroundColor;
     private static int sSelectedTextColor;
-
-    private OnItemClickListener mClickListener;
-    private OnItemSelectedListener mSelectedListener;
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        mClickListener = listener;
-    }
-
-    public void setOnItemSelectedListener(OnItemSelectedListener listener) {
-        mSelectedListener = listener;
-    }
-
-    public interface OnItemClickListener {
-        void onItemClicked(Object item);
-    }
-
-    public interface OnItemSelectedListener {
-        void onItemSelected(Object item);
-    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent) {
@@ -59,6 +42,9 @@ public class TagPresenter extends LongClickPresenter {
         cardView.setFocusableInTouchMode(true);
         updateCardBackgroundColor(cardView, false);
         updateCardTextColor(cardView, false);
+        //if (VERSION.SDK_INT >= 23 && MainUIData.instance(parent.getContext()).isUiTweakEnabled(MainUIData.UI_TWEAK_ROUNDED_CORNERS)) {
+        //    cardView.setForeground(ContextCompat.getDrawable(parent.getContext(), R.drawable.lb_card_outline));
+        //}
         return new ViewHolder(cardView);
     }
 
@@ -73,17 +59,6 @@ public class TagPresenter extends LongClickPresenter {
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, Object item) {
         super.onBindViewHolder(viewHolder, item);
-
-        viewHolder.view.setOnClickListener(v -> {
-            if (mClickListener != null) {
-                mClickListener.onItemClicked(item);
-            }
-        });
-        viewHolder.view.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus && mSelectedListener != null) {
-                mSelectedListener.onItemSelected(item);
-            }
-        });
 
         if (item instanceof Tag) {
             Tag post = (Tag) item;
@@ -106,8 +81,7 @@ public class TagPresenter extends LongClickPresenter {
 
     @Override
     public void onUnbindViewHolder(ViewHolder viewHolder) {
-        viewHolder.view.setOnClickListener(null);
-        viewHolder.view.setOnFocusChangeListener(null);
+
     }
 
 }

@@ -11,11 +11,13 @@ import com.liskovsoft.smartyoutubetv2.common.app.models.data.VideoGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class VideoGroupObjectAdapter extends ObjectAdapter {
     private static final WeakHashSet<VideoGroupObjectAdapter> sAdapterRegistry = new WeakHashSet<>();
     private final List<Video> mVideoItems = new ArrayList<>();
-    private final List<VideoGroup> mVideoGroups = new ArrayList<>(); // keep groups from being garbage collected
+    // CopyOnWriteArrayList to fix Fatal Exception: java.lang.ArrayIndexOutOfBoundsException: length=10; index=-1
+    private final List<VideoGroup> mVideoGroups = new CopyOnWriteArrayList<>(); // keep groups from being garbage collected
     private static final int TYPE_ADD = 0;
     private static final int TYPE_REMOVE = 1;
     private static final int TYPE_SYNC = 2;
@@ -214,7 +216,7 @@ public class VideoGroupObjectAdapter extends ObjectAdapter {
     }
 
     public boolean isEmpty() {
-        return mVideoItems.isEmpty();
+        return size() == 0;
     }
 
     private void removeFromGroup(Video video) {
@@ -225,10 +227,15 @@ public class VideoGroupObjectAdapter extends ObjectAdapter {
 
     private void notifyOtherAdapters(VideoGroup group, int type) {
         sAdapterRegistry.forEach(adapter -> {
-            if (adapter == this || adapter.isEmpty())
+            if (adapter == this || adapter.isEmpty()) {
                 return;
+            }
 
             List<VideoGroup> groups = adapter.getAllGroups();
+
+            if (groups.isEmpty()) {
+                return;
+            }
 
             VideoGroup lastGroup = groups.get(groups.size() - 1);
             boolean adapterFound = lastGroup.getId() == group.getId();

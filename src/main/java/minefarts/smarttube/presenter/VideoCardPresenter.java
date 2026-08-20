@@ -22,28 +22,25 @@ import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.Video;
 import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
-
+import com.liskovsoft.smartyoutubetv2.common.utils.ClickbaitRemover;
 import minefarts.smarttube.R;
 import minefarts.smarttube.presenter.base.LongClickPresenter;
 import minefarts.smarttube.ui.browse.video.GridFragmentHelper;
 import minefarts.smarttube.ui.widgets.complexcardview.ComplexImageCardView;
 import minefarts.smarttube.util.ViewUtil;
 
-import java.util.regex.Pattern;
-
 /*
  * A CardPresenter is used to generate Views and bind Objects to them on demand.
  * It contains an Image CardView
  */
 public class VideoCardPresenter extends LongClickPresenter {
-
     private static final String TAG = VideoCardPresenter.class.getSimpleName();
-
     private int mDefaultBackgroundColor = -1;
     private int mDefaultTextColor = -1;
     private int mSelectedBackgroundColor = -1;
     private int mSelectedTextColor = -1;
     private int mCardPreviewType;
+    private int mThumbQuality;
     private int mWidth;
     private int mHeight;
 
@@ -61,6 +58,12 @@ public class VideoCardPresenter extends LongClickPresenter {
                 ContextCompat.getColor(context, R.color.card_selected_text_grey);
 
         mCardPreviewType = getCardPreviewType(context);
+        mThumbQuality = getThumbQuality(context);
+
+        boolean isCardMultilineTitleEnabled = isCardMultilineTitleEnabled(context);
+        boolean isCardMultilineSubtitleEnabled = isCardMultilineSubtitleEnabled(context);
+        boolean isCardTextAutoScrollEnabled = isCardTextAutoScrollEnabled(context);
+        float cardTextScrollSpeed = getCardTextScrollSpeed(context);
 
         updateDimensions(context);
 
@@ -72,15 +75,19 @@ public class VideoCardPresenter extends LongClickPresenter {
             }
         };
 
-        cardView.setTitleLinesNum(2);
-        cardView.setContentLinesNum(2);
-
-        cardView.setTextScrollSpeed(2.5f);
+        cardView.setTitleLinesNum(isCardMultilineTitleEnabled ? 2 : 1);
+        cardView.setContentLinesNum(isCardMultilineSubtitleEnabled ? 2 : 1);
+        cardView.enableTextAutoScroll(isCardTextAutoScrollEnabled);
+        cardView.setTextScrollSpeed(cardTextScrollSpeed);
         cardView.setFocusable(true);
         cardView.setFocusableInTouchMode(true);
         cardView.enableBadge(isBadgeEnabled());
         cardView.enableTitle(isTitleEnabled());
         cardView.enableContent(isContentEnabled());
+        cardView.setBackgroundColor(mDefaultBackgroundColor); // background is temporarily visible during animations
+        //if (VERSION.SDK_INT >= 23 && MainUIData.instance(context).isUiTweakEnabled(MainUIData.UI_TWEAK_ROUNDED_CORNERS)) {
+        //    cardView.setForeground(ContextCompat.getDrawable(context, R.drawable.lb_card_outline));
+        //}
         updateCardBackgroundColor(cardView, false);
         return new ViewHolder(cardView);
     }
@@ -91,7 +98,9 @@ public class VideoCardPresenter extends LongClickPresenter {
 
         // Both background colors should be set because the view's
         // background is temporarily visible during animations.
-        view.setBackgroundColor(backgroundColor);
+        // NOTE: has visual bug with rounded corners
+        //view.setBackgroundColor(backgroundColor);
+
         View infoField = view.findViewById(R.id.info_field);
         if (infoField != null) {
             infoField.setBackgroundColor(backgroundColor);
@@ -137,19 +146,32 @@ public class VideoCardPresenter extends LongClickPresenter {
         cardView.setMainImageDimensions(mWidth, mHeight);
 
         if (context instanceof Activity && ((Activity) context).isDestroyed()) {
+            // Glide.with(context): IllegalArgumentException: You cannot start a load for a destroyed activity
             return;
         }
 
         Glide.with(context)
-            .load(video.getCardImageUrl())
-            .apply(ViewUtil.glideOptions())
-            .override(mWidth, mHeight) // improve image compression on low end devices
-            .diskCacheStrategy(VERSION.SDK_INT > 21 ? DiskCacheStrategy.ALL : DiskCacheStrategy.NONE)
-            .listener(mErrorListener)
-            .error(R.drawable.card_placeholder) // R.color.lb_grey
-            .into(cardView.getMainImageView());
-    
-        }
+                //.asBitmap() // disable animation (webp, gif)
+                .load(ClickbaitRemover.updateThumbnail(video, mThumbQuality))
+                //.placeholder(mDefaultCardImage)
+                .apply(ViewUtil.glideOptions())
+                // improve image compression on low end devices
+                .override(mWidth, mHeight)
+                // minefarts.smarttube.util.CacheGlideModule
+                // Cache makes app crashing on old android versions
+                .diskCacheStrategy(VERSION.SDK_INT > 21 ? DiskCacheStrategy.ALL : DiskCacheStrategy.NONE)
+                .listener(mErrorListener)
+                .error(
+                    // Updated thumbnail url not found
+                    Glide.with(context)
+                        .load(video.cardImageUrl) // always working
+                        //.placeholder(mDefaultCardImage)
+                        .apply(ViewUtil.glideOptions())
+                        .listener(mErrorListener)
+                        .error(R.drawable.card_placeholder) // R.color.lb_grey
+                )
+                .into(cardView.getMainImageView());
+    }
 
     @Override
     public void onUnbindViewHolder(Presenter.ViewHolder viewHolder) {
@@ -173,16 +195,31 @@ public class VideoCardPresenter extends LongClickPresenter {
     }
     
     protected Pair<Integer, Integer> getCardDimensPx(Context context) {
-        return GridFragmentHelper.getCardDimensPx(
-            context, 
-            R.dimen.card_width, 
-            R.dimen.card_height, 
-            1.0f //Scale
-        );
+        return GridFragmentHelper.getCardDimensPx(context, R.dimen.card_width, R.dimen.card_height, MainUIData.instance(context).getVideoGridScale());
+    }
+
+    protected boolean isCardTextAutoScrollEnabled(Context context) {
+        return MainUIData.instance(context).isCardTextAutoScrollEnabled();
     }
 
     protected int getCardPreviewType(Context context) {
         return MainUIData.instance(context).getCardPreviewType();
+    }
+
+    protected boolean isCardMultilineTitleEnabled(Context context) {
+        return MainUIData.instance(context).isCardMultilineTitleEnabled();
+    }
+
+    protected boolean isCardMultilineSubtitleEnabled(Context context) {
+        return MainUIData.instance(context).isCardMultilineSubtitleEnabled();
+    }
+
+    protected float getCardTextScrollSpeed(Context context) {
+        return MainUIData.instance(context).getCardTextScrollSpeed();
+    }
+
+    protected int getThumbQuality(Context context) {
+        return MainUIData.instance(context).getThumbQuality();
     }
 
     protected boolean isContentEnabled() {
@@ -210,4 +247,16 @@ public class VideoCardPresenter extends LongClickPresenter {
         }
     };
 
+    private final RequestListener<Bitmap> mErrorListener2 = new RequestListener<Bitmap>() {
+        @Override
+        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+            Log.e(TAG, "Glide load failed: " + e);
+            return false;
+        }
+
+        @Override
+        public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+            return false;
+        }
+    };
 }

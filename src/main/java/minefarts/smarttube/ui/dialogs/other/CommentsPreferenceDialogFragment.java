@@ -167,6 +167,10 @@ public class CommentsPreferenceDialogFragment extends LeanbackPreferenceDialogFr
             ViewUtil.enableTransparentDialog(getActivity(), view);
         }
 
+        if (PlayerTweaksData.instance(getActivity()).isCommentsPlacedLeft()) {
+            ViewUtil.enableLeftDialog(getActivity(), container);
+        }
+
         return view;
     }
 

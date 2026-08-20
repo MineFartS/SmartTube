@@ -49,6 +49,14 @@ public class PlaybackActivity extends LeanbackActivity {
     }
 
     @Override
+    protected void initTheme() {
+        int playerThemeResId = MainUIData.instance(this).getColorScheme().playerThemeResId;
+        if (playerThemeResId > 0) {
+            setTheme(playerThemeResId);
+        }
+    }
+
+    @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (mPlaybackFragment != null) {
             mPlaybackFragment.onDispatchKeyEvent(event);
@@ -152,6 +160,10 @@ public class PlaybackActivity extends LeanbackActivity {
     public void finish() {
         Log.d(TAG, "Finishing activity...");
 
+        //if (isBackgroundBackEnabled()) {
+        //    mPlaybackFragment.blockEngine(true);
+        //}
+
         // NOTE: When exiting PIP mode onPause is called immediately after onResume
 
         // Also, avoid enter pip on stop!
@@ -169,14 +181,36 @@ public class PlaybackActivity extends LeanbackActivity {
             getViewManager().blockTop(this);
             getViewManager().startParentView(this);
         } else {
-            super.finish();
+            if (getPlayerTweaksData().isKeepFinishedActivityEnabled()) {
+                //moveTaskToBack(true); // Don't do this or you'll have problems when player overlaps other apps (e.g. casting)
+                getViewManager().startParentView(this);
+
+                // Player with TextureView keeps running in background because onStop() fired with huge delay (~5sec).
+                mPlaybackFragment.maybeReleasePlayer();
+            } else {
+                super.finish();
+            }
         }
     }
 
     @Override
     public void finishReally() {
-        mPlaybackFragment.onFinish();
         super.finishReally();
+
+        mPlaybackFragment.onFinish();
+    }
+
+    @Override
+    protected void onPause() {
+        boolean hasDialogBug = AppDialogPresenter.instance(this).isDialogShown() && Build.VERSION.SDK_INT <= 23;
+        boolean isScreenOff = getPlayerData().getBackgroundMode() != PlayerData.BACKGROUND_MODE_DEFAULT && Utils.isHardScreenOff(this);
+
+        if (hasDialogBug || isScreenOff) {
+            mPlaybackFragment.blockEngine(true);
+        }
+
+        // Run the code before the contained fragment
+        super.onPause();
     }
 
     @Override
@@ -251,7 +285,8 @@ public class PlaybackActivity extends LeanbackActivity {
                     mPlaybackFragment.blockEngine(true);
                     // Ensure to opening this activity when the user will return to the app
                     getViewManager().blockTop(this);
-
+                    // Enable collapse app to Home launcher
+                    //getViewManager().enableMoveToBack(true);
                 }
                 break;
             case PlayerData.BACKGROUND_MODE_SOUND:
@@ -259,7 +294,7 @@ public class PlaybackActivity extends LeanbackActivity {
                     // Ensure to continue a playback
                     mPlaybackFragment.blockEngine(true);
                     getViewManager().blockTop(this);
-
+                    //getViewManager().enableMoveToBack(true);
                 }
                 break;
         }
@@ -287,16 +322,22 @@ public class PlaybackActivity extends LeanbackActivity {
 
     @TargetApi(24)
     private boolean wannaEnterToPip() {
-
+        //return mPlaybackFragment != null && mPlaybackFragment.getBackgroundMode() == PlayerEngine.BACKGROUND_MODE_PIP && !isInPictureInPictureMode();
+        //return mPlaybackFragment != null && mPlaybackFragment.isEngineBlocked() && !isInPictureInPictureMode();
         boolean isPip = getPlayerData().getBackgroundMode() == PlayerData.BACKGROUND_MODE_PIP || isEngineBlocked();
         return isPip && !isInPictureInPictureMode();
     }
 
     private boolean doNotDestroy() {
         sIsInPipMode = isInPipMode();
-
+        //return sIsInPipMode || mPlaybackFragment.getBackgroundMode() == PlayerEngine.BACKGROUND_MODE_SOUND;
+        //return sIsInPipMode || mPlaybackFragment.isEngineBlocked();
         boolean isBackground = getPlayerData().getBackgroundMode() == PlayerEngine.BACKGROUND_MODE_SOUND || isEngineBlocked();
         return sIsInPipMode || isBackground;
     }
 
+    //private boolean isBackgroundBackEnabled() {
+    //    return getGeneralData().getBackgroundPlaybackShortcut() == GeneralData.BACKGROUND_PLAYBACK_SHORTCUT_BACK ||
+    //            getGeneralData().getBackgroundPlaybackShortcut() == GeneralData.BACKGROUND_PLAYBACK_SHORTCUT_HOME_BACK;
+    //}
 }

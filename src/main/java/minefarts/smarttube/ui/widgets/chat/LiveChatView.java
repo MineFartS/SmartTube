@@ -72,9 +72,12 @@ public class LiveChatView extends com.stfalcon.chatkit.messages.MessagesList {
     }
 
     private void alignChat() {
+        int gravity = Gravity.RIGHT;
 
-        ((FrameLayout.LayoutParams)((ViewGroup) getParent()).getLayoutParams()).gravity = Gravity.RIGHT;
-    
+        if (PlayerTweaksData.instance(getContext()).isChatPlacedLeft()) {
+            gravity = Gravity.LEFT;
+        }
+
+        ((FrameLayout.LayoutParams)((ViewGroup) getParent()).getLayoutParams()).gravity = gravity;
     }
-
 }

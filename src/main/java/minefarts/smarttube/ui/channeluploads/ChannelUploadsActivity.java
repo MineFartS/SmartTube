@@ -5,7 +5,7 @@ import minefarts.smarttube.R;
 import minefarts.smarttube.ui.common.LeanbackActivity;
 
 public class ChannelUploadsActivity extends LeanbackActivity {
-    
+    private static final String TAG = ChannelUploadsActivity.class.getSimpleName();
     private ChannelUploadsFragment mFragment;
 
     @Override
@@ -21,5 +21,4 @@ public class ChannelUploadsActivity extends LeanbackActivity {
 
         mFragment.onFinish();
     }
-    
 }

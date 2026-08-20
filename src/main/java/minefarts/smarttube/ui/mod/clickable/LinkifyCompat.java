@@ -1,4 +1,18 @@
-
+/*
+ * Copyright (C) 2016 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package minefarts.smarttube.ui.mod.clickable;
 
@@ -138,6 +152,11 @@ public final class LinkifyCompat {
         }
 
         pruneOverlaps(links, text);
+
+        // MOD: force enable scrolling even there's no links in text
+        //if (links.size() == 0 && timeLinks.size() == 0) {
+        //    return false;
+        //}
 
         for (LinkSpec link: links) {
             if (link.frameworkAddedSpan == null) {
@@ -386,7 +405,7 @@ public final class LinkifyCompat {
     }
 
     private static boolean shouldAddLinksFallbackToFramework() {
-        // MODIFIED: use custom realization always
+        // MOD: use custom realization always
         //return Build.VERSION.SDK_INT >= 28;
         return false;
     }
@@ -439,7 +458,7 @@ public final class LinkifyCompat {
             int end = m.end();
 
             if (matchFilter == null || matchFilter.acceptMatch(s, start, end)) {
-                // MODIFIED: Support link without a prefix
+                // MOD: Support link without a prefix
                 String url = schemes != null ? makeUrl(m.group(0), schemes, m, transformFilter) : m.group(0);
 
                 if (url != null && !url.isEmpty()) {

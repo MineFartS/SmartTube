@@ -7,6 +7,7 @@ import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
 
 public abstract class LongClickPresenter extends Presenter {
     private OnItemLongPressedListener mLongPressedListener;
+    private Boolean mLongPressDisabled;
 
     public void setOnItemViewLongPressedListener(OnItemLongPressedListener listener) {
         mLongPressedListener = listener;
@@ -17,9 +18,12 @@ public abstract class LongClickPresenter extends Presenter {
      */
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, Object item) {
+        if (mLongPressDisabled == null) {
+            mLongPressDisabled = GeneralData.instance(viewHolder.view.getContext()).isOkButtonLongPressDisabled();
+        }
 
         viewHolder.view.setOnLongClickListener(v -> {
-            if (mLongPressedListener != null) {
+            if (mLongPressedListener != null && !mLongPressDisabled) {
                 mLongPressedListener.onItemLongPressed(viewHolder, item);
 
                 return true; // don't provoke single click event

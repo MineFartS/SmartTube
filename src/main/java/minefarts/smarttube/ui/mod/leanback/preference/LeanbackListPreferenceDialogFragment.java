@@ -1,15 +1,26 @@
-
+/*
+ * Copyright (C) 2015 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License
+ */
 
 package minefarts.smarttube.ui.mod.leanback.preference;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.ClickableSpan;
-import android.text.style.URLSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +34,6 @@ import androidx.preference.DialogPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.MultiSelectListPreference;
 import androidx.recyclerview.widget.RecyclerView;
-import com.liskovsoft.sharedutils.helpers.MessageHelpers;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.PlaybackPresenter;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 import minefarts.smarttube.ui.mod.clickable.LinkifyCompat;
@@ -138,6 +148,7 @@ public class LeanbackListPreferenceDialogFragment extends LeanbackPreferenceDial
         }
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     public @Nullable View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -161,6 +172,11 @@ public class LeanbackListPreferenceDialogFragment extends LeanbackPreferenceDial
         if (!TextUtils.isEmpty(message)) {
             final TextView messageView = (TextView) view.findViewById(android.R.id.message);
 
+            // Modified. Make textView focusable and clickable.
+            //messageView.setAutoLinkMask(Linkify.WEB_URLS);
+            //messageView.setMovementMethod(LinkMovementMethod.getInstance()); // allow to move if no links in desc
+            //messageView.setLinksClickable(true); // NOTE: don't prevent click actions
+
             messageView.setFocusable(true);
             messageView.setVisibility(View.VISIBLE);
             messageView.setText(message);
@@ -170,6 +186,16 @@ public class LeanbackListPreferenceDialogFragment extends LeanbackPreferenceDial
 
                 @Override
                 public void onUrlClick(String link) {
+                    // Can't handle all intents internally (e.g. channel url)
+                    //Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                    //intent.setClass(context, SplashActivity.class);
+                    //
+                    //if (intent.resolveActivity(context.getPackageManager()) != null) {
+                    //    context.startActivity(intent);
+                    //} else {
+                    //    Utils.showMultiChooser(context, Uri.parse(link));
+                    //}
+
                     Utils.openUrlInternally(context, Uri.parse(link));
                 }
 
@@ -187,7 +213,8 @@ public class LeanbackListPreferenceDialogFragment extends LeanbackPreferenceDial
         return view;
     }
 
-    public RecyclerView.Adapter onCreateAdapter() {
+    public RecyclerView.Adapter<ViewHolder> onCreateAdapter() {
+        //final DialogPreference preference = getPreference();
         if (mMulti) {
             return new AdapterMulti(mEntries, mEntryValues, mInitialSelections);
         } else {

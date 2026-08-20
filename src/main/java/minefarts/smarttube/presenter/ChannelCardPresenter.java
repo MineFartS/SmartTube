@@ -1,7 +1,9 @@
 package minefarts.smarttube.presenter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build.VERSION;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,12 +53,21 @@ public class ChannelCardPresenter extends LongClickPresenter {
 
         updateDimensions(context);
 
+        @SuppressLint("InflateParams")
         View container = LayoutInflater.from(context).inflate(R.layout.channel_card, null);
         container.setBackgroundColor(mDefaultBackgroundColor);
+        //if (VERSION.SDK_INT >= 23 && MainUIData.instance(context).isUiTweakEnabled(MainUIData.UI_TWEAK_ROUNDED_CORNERS)) {
+        //    container.setForeground(ContextCompat.getDrawable(context, R.drawable.lb_card_outline));
+        //}
 
         TextView textView = container.findViewById(R.id.channel_title);
         textView.setBackgroundColor(mDefaultBackgroundColor);
         textView.setTextColor(mDefaultTextColor);
+
+        boolean autoScrollEnabled = isCardTextAutoScrollEnabled(context);
+        if (autoScrollEnabled) {
+            ViewUtil.setTextScrollSpeed(textView, getCardTextScrollSpeed(context));
+        }
 
         container.setOnFocusChangeListener((v, hasFocus) -> {
             int backgroundColor = hasFocus ? mSelectedBackgroundColor :
@@ -65,6 +76,10 @@ public class ChannelCardPresenter extends LongClickPresenter {
             
             textView.setBackgroundColor(backgroundColor);
             textView.setTextColor(textColor);
+
+            if (!autoScrollEnabled) {
+                return;
+            }
 
             if (hasFocus) {
                 ViewUtil.enableMarquee(textView);
@@ -100,7 +115,7 @@ public class ChannelCardPresenter extends LongClickPresenter {
                 .load(video.cardImageUrl)
                 .apply(ViewUtil.glideOptions())
                 .listener(mErrorListener)
-
+                //.error(R.drawable.card_placeholder) // R.color.lb_grey
                 .into(imageView);
     }
 
@@ -120,12 +135,18 @@ public class ChannelCardPresenter extends LongClickPresenter {
 
     protected Pair<Integer, Integer> getCardDimensPx(Context context) {
         return GridFragmentHelper.getCardDimensPx(
-                context,
-                R.dimen.channel_card_width,
+                context, R.dimen.channel_card_width,
                 R.dimen.channel_card_height,
-                1.0f, // Scale
-                true
-            );
+                MainUIData.instance(context).getVideoGridScale(),
+                true);
+    }
+
+    protected boolean isCardTextAutoScrollEnabled(Context context) {
+        return MainUIData.instance(context).isCardTextAutoScrollEnabled();
+    }
+
+    protected float getCardTextScrollSpeed(Context context) {
+        return MainUIData.instance(context).getCardTextScrollSpeed();
     }
 
     private final RequestListener<Drawable> mErrorListener = new RequestListener<Drawable>() {

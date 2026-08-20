@@ -68,4 +68,14 @@ public class PlaybackModeAction extends MultiAction {
         setLabels(labels);
     }
 
+    //@Override
+    //public void setLabels(String[] labels) {
+    //    for (int i = 0; i < labels.length; i++) {
+    //        if (labels[i] != null) {
+    //            labels[i] = Utils.updateTooltip(mContext, labels[i]);
+    //        }
+    //    }
+    //
+    //    super.setLabels(labels);
+    //}
 }

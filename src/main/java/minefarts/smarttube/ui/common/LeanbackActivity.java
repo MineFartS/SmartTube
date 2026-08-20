@@ -6,11 +6,11 @@ import android.view.KeyEvent;
 
 import com.liskovsoft.sharedutils.mylogger.Log;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.SearchPresenter;
+import com.liskovsoft.smartyoutubetv2.common.autoframerate.ModeSyncManager;
 import com.liskovsoft.smartyoutubetv2.common.misc.GlobalKeyTranslator;
 import com.liskovsoft.smartyoutubetv2.common.misc.MotherActivity;
 import com.liskovsoft.smartyoutubetv2.common.misc.PlayerKeyTranslator;
 import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
-import com.liskovsoft.smartyoutubetv2.common.prefs.RemoteControlData;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 import minefarts.smarttube.ui.common.keyhandler.DoubleBackManager2;
 import minefarts.smarttube.ui.playback.PlaybackActivity;
@@ -20,28 +20,23 @@ import minefarts.smarttube.ui.search.tags.SearchTagsActivity;
  * This parent class contains common methods that run in every activity such as search.
  */
 public abstract class LeanbackActivity extends MotherActivity {
-
     private static final String TAG = LeanbackActivity.class.getSimpleName();
-    
     private UriBackgroundManager mBackgroundManager;
+    private ModeSyncManager mModeSyncManager;
     private DoubleBackManager2 mDoubleBackManager;
     private GlobalKeyTranslator mGlobalKeyTranslator;
+    private final Runnable sOnFinish = () -> Utils.forceFinishTheApp(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
- 
         super.onCreate(savedInstanceState);
- 
         mBackgroundManager = new UriBackgroundManager(this);
-        
+        mModeSyncManager = ModeSyncManager.instance();
         mDoubleBackManager = new DoubleBackManager2(this);
-        
         mGlobalKeyTranslator = this instanceof PlaybackActivity ?
-            new PlayerKeyTranslator(this) :
-            new GlobalKeyTranslator(this);
-        
+                new PlayerKeyTranslator(this) :
+                new GlobalKeyTranslator(this);
         mGlobalKeyTranslator.apply();
- 
     }
 
     @Override
@@ -78,6 +73,8 @@ public abstract class LeanbackActivity extends MotherActivity {
 
         mGlobalKeyTranslator.apply(); // adapt to state changes (like enter/exit from PIP mode)
 
+        mModeSyncManager.restore(this);
+
         getViewManager().addTop(this);
     }
 
@@ -93,9 +90,39 @@ public abstract class LeanbackActivity extends MotherActivity {
         mBackgroundManager.onDestroy();
     }
 
-    @Override // user pressed back key
+    @Override
     public void finish() {
-        finishReally();
+        // user pressed back key
+        if (!getViewManager().hasParentView(this)) {
+            switch (getGeneralData().getAppExitShortcut()) {
+                case GeneralData.EXIT_DOUBLE_BACK:
+                    mDoubleBackManager.enableDoubleBackExit(this::finishTheApp);
+                    break;
+                case GeneralData.EXIT_SINGLE_BACK:
+                    finishTheApp();
+                    break;
+            }
+        } else if (this instanceof PlaybackActivity) {
+            switch (getGeneralData().getPlayerExitShortcut()) {
+                case GeneralData.EXIT_DOUBLE_BACK:
+                    mDoubleBackManager.enableDoubleBackExit(this::finishReally);
+                    break;
+                case GeneralData.EXIT_SINGLE_BACK:
+                    finishReally();
+                    break;
+            }
+        } else if (this instanceof SearchTagsActivity) {
+            switch (getGeneralData().getSearchExitShortcut()) {
+                case GeneralData.EXIT_DOUBLE_BACK:
+                    mDoubleBackManager.enableDoubleBackExit(this::finishReally);
+                    break;
+                case GeneralData.EXIT_SINGLE_BACK:
+                    finishReally();
+                    break;
+            }
+        } else {
+            finishReally();
+        }
     }
 
     @Override
@@ -105,4 +132,9 @@ public abstract class LeanbackActivity extends MotherActivity {
         super.finishReally();
     }
 
+    private void finishTheApp() {
+        getViewManager().addOnFinish(sOnFinish);
+
+        Utils.properlyFinishTheApp(this);
+    }
 }

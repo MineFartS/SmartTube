@@ -30,11 +30,13 @@ import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 import java.io.InputStream;
 import java.util.List;
 
+/**
+ * https://chatgpt.com/c/6806b729-1ab0-8010-94f0-56f6b71cdbfb
+ */
 public class EmbedPlayerView extends PlayerView implements PlaybackView {
-
+    private static final String TAG = EmbedPlayerView.class.getSimpleName();
     public static final int QUALITY_LOW = 0;
     public static final int QUALITY_NORMAL = 1;
-
     private SimpleExoPlayer mPlayer;
     private ExoPlayerInitializer mPlayerInitializer;
     private ExoPlayerController mExoPlayerController;
@@ -60,24 +62,6 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
         super(context, attrs, defStyleAttr);
         hideView();
     }
-
-    @Override
-    public void setVideoFlipEnabled(boolean enabled) {/* NOP */}
-    
-    @Override
-    public void setRotationAngle(int angle) {/* NOP */}
-
-    @Override
-    public void setAspectRatio(float ratio) {/* NOP */}
-    
-    @Override
-    public void updateEndingTime() {/* NOP */}
-    
-    @Override
-    public void showDebugInfo(boolean show) {/* NOP */}
-    
-    @Override
-    public int getButtonState(int but) {return -1;}
 
     private void hideView() {
         setAlpha(0);
@@ -163,6 +147,11 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
     }
 
     @Override
+    public int getButtonState(int buttonId) {
+        return -1;
+    }
+
+    @Override
     public void setButtonState(int buttonId, int buttonState) {
 
     }
@@ -179,6 +168,11 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
 
     @Override
     public void setNextTitle(Video nextVideo) {
+
+    }
+
+    @Override
+    public void showDebugInfo(boolean show) {
 
     }
 
@@ -204,6 +198,11 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
 
     @Override
     public void setSeekBarSegments(List<SeekBarSegment> segments) {
+
+    }
+
+    @Override
+    public void updateEndingTime() {
 
     }
 
@@ -467,6 +466,26 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
     }
 
     @Override
+    public int getResizeMode() {
+        return super.getResizeMode();
+    }
+
+    @Override
+    public void setAspectRatio(float ratio) {
+
+    }
+
+    @Override
+    public void setRotationAngle(int angle) {
+
+    }
+
+    @Override
+    public void setVideoFlipEnabled(boolean enabled) {
+
+    }
+
+    @Override
     public void setVideoGravity(int gravity) {
         
     }
@@ -494,12 +513,13 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
         }
 
         if (mPlaybackPresenter == null) {
-            mPlaybackPresenter = PlaybackPresenter.instance(getContext());
+            mPlaybackPresenter = getPlaybackPresenter();
         }
 
         // Fullscreen playback is running. Skipping
+        // Fix Android TV 12 playing on Home (top view check)
         PlaybackView view = mPlaybackPresenter.getView();
-        if (view == null || view instanceof EmbedPlayerView || !PlaybackPresenter.instance(getContext()).isEngineInitialized()) {
+        if (view == null || view instanceof EmbedPlayerView || (!mPlaybackPresenter.isEngineInitialized() && getViewManager().getTopView() != PlaybackView.class)) {
             initPlayer();
             createPlayerObjects();
             mPlaybackPresenter.onNewVideo(video);
@@ -538,7 +558,6 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
         //mPlayer.setRepeatMode(Player.REPEAT_MODE_ONE);
 
         mExoPlayerController.setPlayer(mPlayer);
-        //mExoPlayerController.setVideo(mVideo);
         mExoPlayerController.selectFormat(mQuality == QUALITY_LOW ? FormatItem.VIDEO_SUB_SD_AVC_30 : FormatItem.VIDEO_SD_AVC_30);
         // Don't use subs! Not efficient. High cpu load. Cause input lags.
         mExoPlayerController.selectFormat(FormatItem.SUBTITLE_NONE);
@@ -559,6 +578,7 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
             if (mPlaybackPresenter.getView() == null || mPlaybackPresenter.getView() == this) {
                 mPlaybackPresenter.onEngineReleased();
             }
+            mPlayerInitializer.release();
             mExoPlayerController.setOnVideoLoaded(null);
             // Fix access calls when player isn't initialized
             mExoPlayerController.release();
@@ -571,7 +591,7 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
 
     private void syncPositionIfNeeded() {
         if (!mIsMute && isPositionChanged()) {
-            BasePresenter<?> presenter = ViewManager.instance(getContext()).getTopPresenter();
+            BasePresenter<?> presenter = getViewManager().getTopPresenter();
             if (presenter != null) {
                 presenter.syncItem(mVideo);
             }
@@ -596,5 +616,13 @@ public class EmbedPlayerView extends PlayerView implements PlaybackView {
         if (mExoPlayerController != null) {
             mExoPlayerController.setVolume(mute ? 0 : 1f);
         }
+    }
+
+    private ViewManager getViewManager() {
+        return ViewManager.instance(getContext());
+    }
+
+    private PlaybackPresenter getPlaybackPresenter() {
+        return PlaybackPresenter.instance(getContext());
     }
 }

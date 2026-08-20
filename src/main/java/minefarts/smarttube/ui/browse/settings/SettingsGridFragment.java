@@ -12,8 +12,8 @@ import androidx.leanback.widget.VerticalGridPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.SettingsGroup;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.SettingsItem;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.BrowsePresenter;
-import com.liskovsoft.smartyoutubetv2.common.app.presenters.PlaybackPresenter;
 import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
+import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
 import com.liskovsoft.smartyoutubetv2.common.utils.SimpleEditDialog;
 import com.liskovsoft.smartyoutubetv2.common.utils.Utils;
 import minefarts.smarttube.R;
@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SettingsGridFragment extends GridFragment implements SettingsSection {
-
+    private static final String TAG = SettingsGridFragment.class.getSimpleName();
     private ArrayObjectAdapter mSettingsAdapter;
     private BrowsePresenter mMainPresenter;
     private UriBackgroundManager mBackgroundManager;
@@ -70,7 +70,7 @@ public class SettingsGridFragment extends GridFragment implements SettingsSectio
 
     private void setupAdapter() {
         VerticalGridPresenter presenter = new VerticalGridPresenter(ViewUtil.FOCUS_ZOOM_FACTOR, ViewUtil.FOCUS_DIMMER_ENABLED);
-        presenter.enableChildRoundedCorners(ViewUtil.ROUNDED_CORNERS_ENABLED);
+        presenter.enableChildRoundedCorners(getMainUIData().isUiTweakEnabled(MainUIData.UI_TWEAK_ROUNDED_CORNERS));
         presenter.setNumberOfColumns(GridFragmentHelper.getMaxColsNum(getContext(), R.dimen.settings_card_width));
         setGridPresenter(presenter);
 
@@ -114,22 +114,45 @@ public class SettingsGridFragment extends GridFragment implements SettingsSectio
         }
     }
 
-    private final class ItemViewClickedListener implements OnItemViewClickedListener {
-    
-        @Override
-        public void onItemClicked(
-            Presenter.ViewHolder itemViewHolder, 
-            Object item,
-            RowPresenter.ViewHolder rowViewHolder, 
-            Row row
-        ) {
-
-            if (item instanceof SettingsItem) {
-                ((SettingsItem) item).onClick.run();
-            }
-
-        }
-    
+    private MainUIData getMainUIData() {
+        return MainUIData.instance(getContext());
     }
 
+    private GeneralData getGeneralData() {
+        return GeneralData.instance(getContext());
+    }
+
+    private final class ItemViewClickedListener implements OnItemViewClickedListener {
+        @Override
+        public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
+                                  RowPresenter.ViewHolder rowViewHolder, Row row) {
+
+            if (item instanceof SettingsItem) {
+                String password = getGeneralData().getSettingsPassword();
+
+                if (password == null) {
+                    ((SettingsItem) item).onClick.run();
+                } else {
+                    SimpleEditDialog.showPassword(
+                            getContext(),
+                            getContext().getString(R.string.enter_settings_password),
+                            null,
+                            newValue -> {
+                                if (Utils.passwordMatch(password, newValue)) {
+                                    ((SettingsItem) item).onClick.run();
+                                    return true;
+                                }
+                                return false;
+                            });
+                }
+
+                // Close PIP inside Settings section
+                //if (PlaybackPresenter.instance(getContext()).isInPipMode()) {
+                //    PlaybackPresenter.instance(getContext()).forceFinish();
+                //}
+            } else {
+                Toast.makeText(getContext(), item.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }

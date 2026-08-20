@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MultiVideoGridFragment extends MultiGridFragment implements VideoSection {
-
+    private static final String TAG = MultiVideoGridFragment.class.getSimpleName();
     private HeaderVideoGroupObjectAdapter mGridAdapter1;
     private VideoGroupObjectAdapter mGridAdapter2;
     private final List<VideoGroup> mPendingUpdates1 = new ArrayList<>();
@@ -50,8 +50,9 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
     private LongClickPresenter mCardPresenter1;
     private LongClickPresenter mCardPresenter2;
     private int mSelectedItemIndex1 = -1;
-
+    private int mSelectedItemIndex2 = -1;
     private Video mSelectedItem1;
+    private float mVideoGridScale;
     private final Runnable mRestore1Task = this::restorePosition1;
 
     @Override
@@ -62,6 +63,7 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
         mCardPresenter1 = new ChannelCardPresenter();
         mCardPresenter2 = new VideoCardPresenter();
         mBackgroundManager = ((LeanbackActivity) getActivity()).getBackgroundManager();
+        mVideoGridScale = MainUIData.instance(getActivity()).getVideoGridScale();
 
         setupAdapter();
         setupEventListeners();
@@ -120,6 +122,13 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
     public void update(VideoGroup group) {
         if (group.getPosition() == 0) {
             addSearchHeader();
+
+            // Smooth remove animation
+            if (group.getAction() == VideoGroup.ACTION_REMOVE) {
+                updateGroup1(group);
+                return;
+            }
+
             freeze1(true);
             updateGroup1(group);
             freeze1(false);
@@ -206,17 +215,13 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
     private void setupAdapter() {
         // Left vertical list of channels
         VerticalGridPresenter presenter1 = new CustomVerticalGridPresenter(R.layout.lb_vertical_grid1, R.id.browse_grid1);
+        presenter1.enableChildRoundedCorners(getMainUIData().isUiTweakEnabled(MainUIData.UI_TWEAK_ROUNDED_CORNERS));
         presenter1.setNumberOfColumns(1);
 
         // Right grid of channel's content
         VerticalGridPresenter presenter2 = new CustomVerticalGridPresenter(R.layout.lb_vertical_grid2, R.id.browse_grid2);
-        
-        int maxColsNum = GridFragmentHelper.getMaxColsNum(
-            getContext(), 
-            R.dimen.card_width, 
-            1.0f // Scale
-        );
-        
+        presenter2.enableChildRoundedCorners(getMainUIData().isUiTweakEnabled(MainUIData.UI_TWEAK_ROUNDED_CORNERS));
+        int maxColsNum = GridFragmentHelper.getMaxColsNum(getContext(), R.dimen.card_width, mVideoGridScale);
         presenter2.setNumberOfColumns(Math.max(maxColsNum, 1) - 1);
 
         setGridPresenter1(presenter1);
@@ -328,8 +333,7 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
     }
 
     private void addSearchHeader() {
-        
-        if (mGridAdapter1 == null || mGridAdapter1.getHeader() != null) {
+        if (mGridAdapter1 == null || mGridAdapter1.getHeader() != null || !getMainUIData().isChannelsFilterEnabled()) {
             return;
         }
 
@@ -354,7 +358,7 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
             return mPendingUpdates1.isEmpty();
         }
 
-        return mGridAdapter1.size() == 0;
+        return mGridAdapter1.isEmpty();
     }
 
     private boolean isEmpty2() {
@@ -362,7 +366,7 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
             return mPendingUpdates2.isEmpty();
         }
 
-        return mGridAdapter2.size() == 0;
+        return mGridAdapter2.isEmpty();
     }
 
     /**
@@ -383,6 +387,10 @@ public class MultiVideoGridFragment extends MultiGridFragment implements VideoSe
             getBrowseGrid2().setScrollEnabled(!freeze);
             getBrowseGrid2().setAnimateChildLayout(!freeze);
         }
+    }
+
+    private MainUIData getMainUIData() {
+        return MainUIData.instance(getContext());
     }
 
     private final class ItemViewLongPressedListener implements OnItemLongPressedListener {

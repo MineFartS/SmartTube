@@ -1,4 +1,16 @@
-
+/*
+ * Copyright (C) 2014 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package minefarts.smarttube.ui.mod.leanback.playerglue.tweaks;
 
 import android.content.Context;
@@ -56,7 +68,7 @@ class ControlBarPresenter extends Presenter {
     }
 
     /**
-     * MODIFIED: Listener for control long clicked events.
+     * MOD: Listener for control long clicked events.
      */
     interface OnControlLongClickedListener {
         boolean onControlLongClicked(Presenter.ViewHolder controlViewHolder, Object item,
@@ -85,7 +97,7 @@ class ControlBarPresenter extends Presenter {
             }
             mControlBar.setDefaultFocusToMiddle(mDefaultFocusToMiddle);
             mControlBar.setFocusRecovery(mFocusRecovery);
-            mControlBar.setSyncedFocusIndexEnabled(mIsSyncedFocusIndexEnabled);
+            mControlBar.setSharedFocusEnabled(mIsSharedFocusEnabled);
             mControlBar.setOnChildFocusedListener(new ControlBar.OnChildFocusedListener() {
                 @Override
                 public void onChildFocusedListener(View child, View focused) {
@@ -172,7 +184,7 @@ class ControlBarPresenter extends Presenter {
                         }
                     }
                 });
-                // MODIFIED: player controls: enable long clicks
+                // MOD: player controls: enable long clicks
                 ((ControlButtonPresenterSelector.ControlButtonPresenter) presenter).setOnLongClickListener(vh, new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
@@ -209,7 +221,7 @@ class ControlBarPresenter extends Presenter {
     private static int sControlIconWidth;
     boolean mDefaultFocusToMiddle = true;
     boolean mFocusRecovery = true;
-    boolean mIsSyncedFocusIndexEnabled = true;
+    boolean mIsSharedFocusEnabled = true;
 
     /**
      * Constructor for a ControlBarPresenter.
@@ -235,7 +247,7 @@ class ControlBarPresenter extends Presenter {
     }
 
     /**
-     * MODIFIED: Sets the listener for control long clicked events.
+     * MOD: Sets the listener for control long clicked events.
      */
     public void setOnControlLongClickedListener(OnControlLongClickedListener listener) {
         mOnControlLongClickedListener = listener;
@@ -331,7 +343,7 @@ class ControlBarPresenter extends Presenter {
     /**
      * MOD: global navigation
      */
-    void setSyncedFocusIndexEnabled(boolean enabled) {
-        mIsSyncedFocusIndexEnabled = enabled;
+    void setSharedFocusEnabled(boolean enabled) {
+        mIsSharedFocusEnabled = enabled;
     }
 }
