@@ -10,6 +10,12 @@ $HidePats = @(
     'A resource failed to call close'
     'TRACE Starting certificate trust'
     'Accessing hidden (field|method)'
+    'Cancelling event due to'
+    'Verification of(.*)took(.*)ms'
+    'Late-enabling -Xcheck:jni'
+    "Unknown chunk type '200'"
+    'AWV - '
+    'Access token is null!'
 )
 
 $HideTags = @(
@@ -35,12 +41,24 @@ $HideTags = @(
     'PerfStatsManager'
     'MultiDex'
     'libc'
+    'InputMethodManager'
+    'cr_ApkInfo'
+    'HDRVideoUtils'
+    'cr_LibraryLoader'
+    'cr_CachingUmaRecorder'
+    'cr_CombinedPProvider'
+    'cr_PolicyProvider'
+    'cr_WVCFactoryProvider'
+    'cr_AppResProvider'
+    'art'
+    'FrameworkJumpTable'
+    'MTK_GRALLOC'
+    'VMetricsFramework.Event'
 )
 
 Invoke-Python 'lib/pidcat/pidcat.py' `
     "minefarts.smarttube" `
     '--min-level' 'V' `
-    '--sdk' $Env:ANDROID_SDK_ROOT `
     '--regex' ('^(?!.*(' + ($HidePats -join '|') + '))') `
     @($HideTags | ForEach-Object { '--ignore-tag', $_ }) `
     '--clear'
