@@ -107,6 +107,10 @@ dependencies {
     implementation 'androidx.webkit:webkit:1.7.0'
     implementation 'net.gotev:speech:1.1.7'
 
+    // Core window extensions required by modern chromium system webviews
+    implementation 'androidx.window:window:1.1.0'
+    implementation 'androidx.window:window-core:1.1.0'
+
     // Image loading
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     implementation 'com.github.bumptech.glide:annotations:4.11.0'
@@ -144,7 +148,12 @@ dependencies {
 }
 
 configurations.configureEach {
+
     exclude group: 'androidx.fragment', module: 'fragment'
     exclude group: 'androidx.fragment', module: 'fragment-ktx'
     exclude group: 'androidx.leanback', module: 'leanback'
+
+    exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'
+    exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
+    
 }
