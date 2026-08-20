@@ -1,3 +1,4 @@
+
 buildscript {
 
     repositories {
@@ -6,10 +7,10 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.google.gms:google-services:4.3.10'
-        classpath 'com.google.android.gms:strict-version-matcher-plugin:1.2.0'
         classpath 'com.android.tools.build:gradle:4.2.2'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10'
+        classpath 'com.google.gms:google-services:4.3.15'
+        classpath 'com.google.android.gms:strict-version-matcher-plugin:1.2.4'
     }
 
 }
@@ -18,38 +19,44 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    
+
     namespace 'minefarts.smarttube'
+    
+    compileSdkVersion 33
+    
+    buildToolsVersion '30.0.3'
+
+    defaultConfig {
+
+        applicationId "minefarts.smarttube"
+        
+        minSdkVersion 21
+        targetSdkVersion 33
+
+        def now = new Date()
+        versionName now.format('yy.MM.dd')
+        versionCode now.format('yyMMdd').toInteger()
+        
+        multiDexEnabled true 
+    
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    compileSdkVersion 33
-
-    buildToolsVersion '30.0.3'
-
-    defaultConfig {
-
-        applicationId "minefarts.smarttube"
-
-        minSdkVersion 21
-        targetSdkVersion 26
-
-        def now = new Date()
-        versionName now.format('yy.MM.dd')
-        versionCode now.format('yyMMdd').toInteger()
-    
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
- 
+
     buildTypes {
         debug {
             minifyEnabled false
             shrinkResources false
         }
     }
-
+    
 }
 
 apply plugin: 'com.google.gms.google-services'
@@ -60,79 +67,84 @@ repositories {
     maven { url 'https://jitpack.io' }
 }
 
-apply from: new File (rootDir, "lib/yuliskov/MediaServiceCore/SharedModules/constants.gradle")
-
 dependencies {
 
-    // LOCAL STATIC BINARIES
-    implementation fileTree(dir:'src/main/aar', include:['*.aar'])
+    // Pre-compiled yuliskov binaries
+    implementation fileTree(dir: 'src/main/aar', include: ['*.aar'])
 
-    // NETWORKING & RETROFIT ENGINE
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
-    
-    // NETWORK DEBUGGING & LOGGING INTERCEPTORS
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+    // Static analysis quality
+    compileOnly 'org.checkerframework:checker-qual:2.5.0'
+    compileOnly 'org.checkerframework:checker-compat-qual:2.5.0'
+
+    // Jetpack core & architecture
+    implementation 'androidx.core:core:1.9.0'
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.activity:activity:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.5.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.annotation:annotation:1.5.0'
+    implementation 'androidx.loader:loader:1.0.0'
+    implementation 'androidx.interpolator:interpolator:1.0.0'
+
+    // Android TV & Leanback
+    implementation 'androidx.tvprovider:tvprovider:1.0.0'
+    implementation 'androidx.recommendation:recommendation:1.0.0'
+    implementation 'androidx.leanback:leanback-preference:1.0.0'
+
+    // Media & playback
+    implementation 'androidx.media:media:1.2.0' 
+
+    // UI components & layouts
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.viewpager:viewpager:1.0.0'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+    implementation 'androidx.preference:preference:1.2.0'
+
+    // System utilities & background processing
+    implementation 'androidx.work:work-runtime:2.7.1'
+    implementation 'androidx.browser:browser:1.4.0'
+    implementation 'androidx.webkit:webkit:1.7.0'
+    implementation 'net.gotev:speech:1.1.7'
+
+    // Image loading
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'com.github.bumptech.glide:annotations:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+    // Networking (OkHttp 3.12.x pipeline & Retrofit)
+    implementation 'com.squareup.okhttp3:okhttp:3.12.13'
+    implementation 'com.squareup.okhttp3:okhttp-dnsoverhttps:3.12.13'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.13'
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.localebro:okhttpprofiler:1.0.8'
-    
-    // SCHEMA PARSING & DATA UTILITIES
-    implementation 'com.jayway.jsonpath:json-path:2.9.0'
-    implementation 'org.slf4j:slf4j-api:1.7.36'
+    implementation 'dnsjava:dnsjava:2.1.9'
+    implementation 'info.guardianproject.netcipher:netcipher:2.1.0'
+
+    // JSON processing
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.jayway.jsonpath:json-path:2.4.0'
     implementation 'com.grack:nanojson:1.7'
 
-    // BACKGROUND JOB MANAGEMENT
-    implementation 'androidx.work:work-runtime:2.7.1'
+    // Asynchronous programming
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
 
-    // CORE PLATFORM BINDINGS
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'androidx.core:core-ktx:1.7.0'
+    // Kotlin runtime & coroutines
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
 
-    // LEANBACK TV PREFERENCES
-    implementation('androidx.leanback:leanback-preference:' + leanbackXVersion) {
-        exclude group: 'androidx.leanback', module: 'leanback'
-    }
+    // Embedded JavaScript engine
+    implementation 'com.caoccao.javet:javet-android:1.0.7'
 
-    implementation 'androidx.annotation:annotation:' + annotationXVersion
-    implementation 'androidx.recyclerview:recyclerview:' + recyclerviewXVersion
-    implementation 'androidx.media:media:' + mediaXVersion
-    implementation 'androidx.multidex:multidex:' + multiDexVersion
-    implementation 'androidx.loader:loader:1.1.0'
-    implementation 'androidx.webkit:webkit:1.6.0'
+    // Caching utilities
+    implementation 'com.jakewharton:disklrucache:2.0.2'
 
-    // GLIDE IMAGE LOADING PIPELINE
-    implementation 'com.github.bumptech.glide:glide:' + glideVersion
-    implementation 'com.github.bumptech.glide:annotations:' + glideVersion
-    annotationProcessor 'com.github.bumptech.glide:compiler:' + glideVersion
-    implementation 'com.github.zjupure:webpdecoder:' + webpDecoderVersion
-
-    // REACTIVE PROGRAMMING BINDINGS
-    implementation 'io.reactivex.rxjava2:rxandroid:' + rxAndroidVersion
-    implementation 'io.reactivex.rxjava2:rxjava:' + rxJavaVersion
-
-    // ACCESSIBILITY & LAYOUT EXTENSIONS
-    implementation 'net.gotev:speech:' + gotevSpeechVersion
-    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 }
 
-
-configurations.all {
-
-    // FORCE-REMOVE REMOTE FRAGMENT ENGINE:
-    // This stops transitive dependencies (like AppCompat or Glide) from fetching 
-    // remote fragment classes that conflict with your local 'fragment-1.1.0.aar'.
+configurations.configureEach {
     exclude group: 'androidx.fragment', module: 'fragment'
-    
-    // SLF4J 2.x DOWNGRADE STRATEGY:
-    // 'json-path' implicitly pulls SLF4J 2.0.11, which uses Java 9+ Module structures.
-    // This block forces Gradle to drop 2.0.11 and use 1.7.36 so the legacy D8 dexer doesn't crash.
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        if (details.requested.group == 'org.slf4j' && details.requested.name == 'slf4j-api') {
-            details.useVersion '1.7.36'
-            details.because 'SLF4J 2.x uses Java module markers that crash the legacy AGP 4.2.2 D8 dexer'
-        }
-    }
-
+    exclude group: 'androidx.fragment', module: 'fragment-ktx'
+    exclude group: 'androidx.leanback', module: 'leanback'
 }
-
-
