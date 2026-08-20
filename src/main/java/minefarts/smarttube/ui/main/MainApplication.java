@@ -39,7 +39,6 @@ public class MainApplication extends MultiDexApplication {
         super.onCreate();
         setupViewManager();
         disableSections();
-        if (Boolean.FALSE.booleanValue()) linkStubs();
     }
 
     private void setupViewManager() {
@@ -87,11 +86,6 @@ public class MainApplication extends MultiDexApplication {
         bp.enableSection(MediaGroup.TYPE_PLAYBACK_QUEUE, false);
         bp.enableSection(MediaGroup.TYPE_BLOCKED_CHANNELS, false);
 
-    }
-
-    private void linkStubs() {
-        androidx.window.extensions.core.util.function.Consumer<?> dummyWindow = null;
-        android.os.PowerManager.OnThermalStatusChangedListener dummyThermal = null;
     }
 
 }

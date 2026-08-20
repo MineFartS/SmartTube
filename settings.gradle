@@ -1,3 +1,0 @@
-
-include ':stubs'
-project(':stubs').projectDir = new File(rootDir, 'src/stubs')
