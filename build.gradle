@@ -69,6 +69,8 @@ repositories {
 
 dependencies {
 
+    implementation project(':stubs')
+
     // Pre-compiled yuliskov binaries
     implementation fileTree(dir: 'src/main/aar', include: ['*.aar'])
 
@@ -155,5 +157,5 @@ configurations.configureEach {
 
     exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'
     exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
-    
+
 }
