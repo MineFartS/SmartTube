@@ -43,6 +43,8 @@ Add-YuliskovPkg 'appupdatechecker2' '/SharedModules/appupdatechecker2/'
 Add-YuliskovPkg 'mediaserviceinterfaces' '/MediaServiceCore/mediaserviceinterfaces/'
 Add-YuliskovPkg 'youtubeapi' '/MediaServiceCore/youtubeapi/'
 Add-YuliskovPkg 'chatkit' '/chatkit/'
+Add-YuliskovPkg 'leanbackassistant' '/leanbackassistant/'
+Add-YuliskovPkg 'slidableactivity' '/slidableactivity/'
 
 if (Test-ADBConnection) {
     $gARGS += ":installDebug"
