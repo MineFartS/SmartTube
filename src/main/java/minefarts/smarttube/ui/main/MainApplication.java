@@ -6,6 +6,7 @@ import androidx.multidex.MultiDexApplication;
 
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
+import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.BrowseSection;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.BrowsePresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.views.AddDeviceView;
@@ -24,6 +25,7 @@ import com.liskovsoft.smartyoutubetv2.common.prefs.NetworkData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerTweaksData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
+import com.liskovsoft.smartyoutubetv2.common.prefs.SponsorBlockData;
 
 import minefarts.smarttube.ui.adddevice.AddDeviceActivity;
 import minefarts.smarttube.ui.browse.BrowseActivity;
@@ -82,6 +84,7 @@ public class MainApplication extends MultiDexApplication {
         disableSections();
         disablePlayerButtons();
         disableContextMenuOptions();
+        disableContentBlock();
         
     }
 
@@ -241,6 +244,30 @@ public class MainApplication extends MultiDexApplication {
         MUID.setMenuItemIndex(1, MainUIData.MENU_ITEM_NOT_INTERESTED);
         MUID.setMenuItemIndex(2, MainUIData.MENU_ITEM_NOT_RECOMMEND_CHANNEL);
         MUID.setMenuItemIndex(3, MainUIData.MENU_ITEM_OPEN_CHANNEL);
+
+    }
+
+    private void disableContentBlock() {
+
+        String[] segments = {
+            SponsorSegment.CATEGORY_INTRO,
+            SponsorSegment.CATEGORY_OUTRO,
+            SponsorSegment.CATEGORY_SELF_PROMO,
+            SponsorSegment.CATEGORY_INTERACTION,
+            SponsorSegment.CATEGORY_MUSIC_OFF_TOPIC,
+            SponsorSegment.CATEGORY_PREVIEW_RECAP,
+            SponsorSegment.CATEGORY_POI_HIGHLIGHT,
+            SponsorSegment.CATEGORY_FILLER,
+        };
+
+        SponsorBlockData SBD = SponsorBlockData.instance(this);
+
+        for (String segment : segments) {
+            SBD.disableColorMarker(segment);
+            SBD.setAction(segment, SponsorBlockData.ACTION_DO_NOTHING);
+        }
+
+        SBD.setDontSkipSegmentAgainEnabled(true);
 
     }
 
