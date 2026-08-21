@@ -78,6 +78,8 @@ public class MainApplication extends MultiDexApplication {
         setupGlobalExceptionHandler();
         setupViewManager();
         disableSections();
+        disablePlayerButtons();
+        
     }
 
     private void setupViewManager() {
@@ -181,7 +183,7 @@ public class MainApplication extends MultiDexApplication {
             }
         }
     }
-    
+
     private void disableSections() {
 
         BrowsePresenter bp = BrowsePresenter.instance(this);
@@ -201,6 +203,18 @@ public class MainApplication extends MultiDexApplication {
         bp.enableSection(MediaGroup.TYPE_PLAYBACK_QUEUE, false);
         bp.enableSection(MediaGroup.TYPE_BLOCKED_CHANNELS, false);
 
+    }
+
+    private void disablePlayerButtons() {
+        
+        PlayerTweaksData PTD = PlayerTweaksData.instance(this);
+
+        PTD.setPlayerButtonDisabled(PlayerTweaksData.PLAYER_BUTTON_VIDEO_STATS);
+        PTD.setPlayerButtonDisabled(PlayerTweaksData.PLAYER_BUTTON_SCREEN_DIMMING);
+        PTD.setPlayerButtonDisabled(PlayerTweaksData.PLAYER_BUTTON_SEARCH);
+        PTD.setPlayerButtonDisabled(PlayerTweaksData.PLAYER_BUTTON_PIP);
+        PTD.setPlayerButtonDisabled(PlayerTweaksData.PLAYER_BUTTON_HIGH_QUALITY);
+        
     }
 
 }
