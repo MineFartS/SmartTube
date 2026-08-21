@@ -1,0 +1,26 @@
+
+def aarDir = new File(rootDir, 'src/main/aar')
+
+include ':yuliskov-bin'
+project(':yuliskov-bin').projectDir = aarDir
+
+gradle.ext.aarFiles = aarDir.listFiles().findAll { it.isFile() && it.name.endsWith('.aar') }
+
+gradle.ext.aarFiles.each { aarFile ->
+
+    def name = aarFile.name.substring(0, aarFile.name.lastIndexOf('.'))
+
+    include ":$name"
+    project(":$name").projectDir = new File(rootDir, "build/stubs/$name")
+    
+    gradle.rootProject {
+        project(":$name") {
+            configurations.maybeCreate("default")                
+            artifacts {
+                add('default', aarFile)
+            }
+        }
+    }
+        
+}
+

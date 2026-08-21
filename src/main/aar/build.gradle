@@ -1,0 +1,34 @@
+
+apply plugin: 'com.android.library'
+apply plugin: 'com.kezong.fat-aar'
+
+android {
+
+    compileSdkVersion 34
+    namespace 'yuliskov.bin'
+    
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 34
+        resConfigs "en"
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+        }
+    }
+
+    aaptOptions {
+        // Force AAPT2 to ignore duplicate entries and invalid translation variable formats
+        additionalParameters "--allow-duplicate-resources", "--no-version-vectors"
+    }
+}
+
+dependencies {
+    gradle.ext.aarFiles.each { aarFile ->
+        def name = aarFile.name.substring(0, aarFile.name.lastIndexOf('.'))
+        embed project(":$name")
+    }
+}
+
