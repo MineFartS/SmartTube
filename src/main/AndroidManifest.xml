@@ -29,7 +29,6 @@
         com.google.android.exoplayer2.ext.vp9,
         com.google.android.exoplayer2.testutil,
         com.google.android.exoplayer2.ext.okhttp,
-        com.google.firebase.crashlytics,
         com.google.firebase.iid"/>
 
     <uses-feature
