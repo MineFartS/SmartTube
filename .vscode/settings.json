@@ -13,7 +13,6 @@
         ".gradle": true,
         ".vscode": true,
         "**/build": true,
-        "aar": true,
         "lib/ejs2": true,
         "lib/jdk17": true,
         "lib/pidcat": true,

@@ -1,5 +1,7 @@
+apply from: gradle.ext.sharedModulesConstants
 
 buildscript {
+    apply from: gradle.ext.sharedModulesConstants
 
     repositories {
         google()
@@ -7,47 +9,71 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.2'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10'
+        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:' + kotlinVersion
         classpath 'com.google.gms:google-services:4.3.15'
-        classpath 'com.google.android.gms:strict-version-matcher-plugin:1.2.4'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.1'
     }
 
 }
 
+allprojects {
+
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+    
+    configurations.all {
+        
+        resolutionStrategy.force 'com.squareup.okhttp3:okhttp:' + okhttpVersion
+        resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:' + kotlinVersion
+        resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:' + kotlinVersion
+        resolutionStrategy.force 'org.jetbrains.kotlin:kotlin-stdlib:' + kotlinVersion
+        resolutionStrategy.force 'org.jetbrains.kotlinx:kotlinx-coroutines-android:' + kotlinxVersion
+        resolutionStrategy.force 'androidx.core:core-ktx:' + kotlinCoreXVersion
+        resolutionStrategy.force 'androidx.core:core:' + coreXVersion
+        resolutionStrategy.force 'androidx.annotation:annotation:' + annotationXVersion
+        resolutionStrategy.force 'org.chromium.net:cronet-api:' + cronetApiVersion
+        resolutionStrategy.force 'androidx.multidex:multidex:' + multiDexVersion
+
+        exclude group: 'androidx.leanback', module: 'leanback'
+        exclude group: 'androidx.fragment', module: 'fragment'
+
+    }
+    
+}
+
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
 
 android {
 
     namespace 'minefarts.smarttube'
-    
-    compileSdkVersion 33
-    
-    buildToolsVersion '30.0.3'
 
+    compileSdkVersion project.ext.compileSdkVersion
+    buildToolsVersion project.ext.buildToolsVersion
+    
     defaultConfig {
 
         applicationId "minefarts.smarttube"
-        
-        minSdkVersion 21
-        targetSdkVersion 33
+
+        minSdkVersion project.ext.minSdkVersion
+        targetSdkVersion project.ext.targetSdkVersion
 
         def now = new Date()
         versionName now.format('yy.MM.dd')
         versionCode now.format('yyMMdd').toInteger()
         
         multiDexEnabled true 
+
+        missingDimensionStrategy 'default', 'ststable'
     
     }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = '1.8'
     }
 
     buildTypes {
@@ -61,106 +87,50 @@ android {
 
 apply plugin: 'com.google.gms.google-services'
 
-repositories {
-    google()
-    mavenCentral()
-    maven { url 'https://jitpack.io' }
-}
-
 dependencies {
 
-    // Pre-compiled yuliskov binaries
-    implementation fileTree(dir: 'src/main/aar', include: ['*.aar'])
+    implementation 'androidx.leanback:leanback:' + leanbackXVersion
+    implementation 'androidx.leanback:leanback-preference:' + leanbackXVersion
+    implementation 'androidx.recommendation:recommendation:' + leanbackXVersion
+    implementation 'androidx.annotation:annotation:' + annotationXVersion
+    implementation 'androidx.recyclerview:recyclerview:' + recyclerviewXVersion
+    implementation 'androidx.media:media:' + mediaXVersion
+    implementation 'androidx.constraintlayout:constraintlayout:' + constraintLayoutXVersion
 
-    // Static analysis quality
-    compileOnly 'org.checkerframework:checker-qual:2.5.0'
-    compileOnly 'org.checkerframework:checker-compat-qual:2.5.0'
+    implementation 'com.github.bumptech.glide:glide:' + glideVersion
+    implementation 'com.github.bumptech.glide:annotations:' + glideVersion
+    annotationProcessor 'com.github.bumptech.glide:compiler:' + glideVersion
+    implementation 'com.github.zjupure:webpdecoder:' + webpDecoderVersion
+    implementation 'androidx.multidex:multidex:' + multiDexVersion
 
-    // Static Logger
-    implementation 'org.slf4j:slf4j-nop:1.7.36'
+    implementation project(':exoplayer-library-core')
+    implementation project(':exoplayer-library-ui')
+    implementation project(':exoplayer-extension-leanback')
+    implementation project(':exoplayer-extension-mediasession')
 
-    // Jetpack core & architecture
-    implementation 'androidx.core:core:1.9.0'
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.activity:activity:1.6.0'
-    implementation 'androidx.appcompat:appcompat:1.5.0'
-    implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'androidx.annotation:annotation:1.5.0'
-    implementation 'androidx.loader:loader:1.0.0'
-    implementation 'androidx.interpolator:interpolator:1.0.0'
+    implementation project(':fragment-1.1.0')
+    implementation project(':leanback-1.0.0')
+    implementation project(':common')
+    implementation project(':sharedutils')
+    implementation project(':mediaserviceinterfaces')
+    implementation project(':youtubeapi')
+    implementation project(':chatkit')
+    implementation project(':doubletapplayerview')
 
-    // Android TV & Leanback
-    implementation 'androidx.tvprovider:tvprovider:1.0.0'
-    implementation 'androidx.recommendation:recommendation:1.0.0'
-    implementation 'androidx.leanback:leanback-preference:1.0.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:' + rxAndroidVersion
+    implementation 'io.reactivex.rxjava2:rxjava:' + rxJavaVersion
 
-    // Media & playback
-    implementation 'androidx.media:media:1.2.0' 
+    implementation('com.google.firebase:firebase-crashlytics:' + firebaseCrashlyticsVersion) {
+        transitive = true
+    }
 
-    // UI components & layouts
-    implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    implementation 'androidx.viewpager:viewpager:1.0.0'
-    implementation 'com.google.android.material:material:1.5.0'
-    implementation 'com.google.android.flexbox:flexbox:3.0.0'
-    implementation 'androidx.preference:preference:1.2.0'
+    implementation('com.google.firebase:firebase-crashlytics:' + firebaseCrashlyticsVersion) {
+        transitive = true
+    }
 
-    // System utilities & background processing
-    implementation 'androidx.work:work-runtime:2.8.1'
-    implementation "androidx.work:work-multiprocess:2.8.1" 
-    implementation 'androidx.browser:browser:1.4.0'
-    implementation 'androidx.webkit:webkit:1.7.0'
-    implementation 'net.gotev:speech:1.1.7'
+    implementation 'net.gotev:speech:' + gotevSpeechVersion
 
-    // Core window extensions required by modern chromium system webviews
-    implementation 'androidx.window:window:1.1.0'
-    implementation 'androidx.window:window-core:1.1.0'
-
-    // Image loading
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
-    implementation 'com.github.bumptech.glide:annotations:4.11.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
-
-    // Networking (OkHttp 3.12.x pipeline & Retrofit)
-    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
-    implementation 'com.squareup.okhttp3:okhttp-dnsoverhttps:4.10.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.localebro:okhttpprofiler:1.0.8'
-    implementation 'dnsjava:dnsjava:2.1.9'
-    implementation 'info.guardianproject.netcipher:netcipher:2.1.0'
-
-    // JSON processing
-    implementation 'com.google.code.gson:gson:2.8.2'
-    implementation 'com.jayway.jsonpath:json-path:2.4.0'
-    implementation 'com.grack:nanojson:1.7'
-
-    // Asynchronous programming
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
-
-    // Kotlin runtime & coroutines
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
-
-    // Embedded JavaScript engine
-    implementation 'com.caoccao.javet:javet-android:1.0.7'
-
-    // Caching utilities
-    implementation 'com.jakewharton:disklrucache:2.0.2'
-
-    // Security provider required by MainApplication.java
-    implementation 'org.conscrypt:conscrypt-android:2.5.2'
+    implementation 'org.conscrypt:conscrypt-android:' + conscryptVersion
 
 }
 
-configurations.configureEach {
-
-    exclude group: 'androidx.fragment', module: 'fragment'
-    exclude group: 'androidx.fragment', module: 'fragment-ktx'
-    exclude group: 'androidx.leanback', module: 'leanback'
-
-    exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'
-    exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
-    
-}
