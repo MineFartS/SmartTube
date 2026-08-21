@@ -23,6 +23,8 @@ import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.NetworkData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerTweaksData;
+import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
+
 import minefarts.smarttube.ui.adddevice.AddDeviceActivity;
 import minefarts.smarttube.ui.browse.BrowseActivity;
 import minefarts.smarttube.ui.channel.ChannelActivity;
@@ -79,6 +81,7 @@ public class MainApplication extends MultiDexApplication {
         setupViewManager();
         disableSections();
         disablePlayerButtons();
+        disableContextMenuOptions();
         
     }
 
@@ -215,6 +218,30 @@ public class MainApplication extends MultiDexApplication {
         PTD.setPlayerButtonDisabled(PlayerTweaksData.PLAYER_BUTTON_PIP);
         PTD.setPlayerButtonDisabled(PlayerTweaksData.PLAYER_BUTTON_HIGH_QUALITY);
         
+    }
+
+    private void disableContextMenuOptions() {
+
+        MainUIData MUID = MainUIData.instance(this);
+        
+        MUID.setMenuItemEnabled(MainUIData.MENU_ITEM_MARK_AS_WATCHED);
+        
+        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_STREAM_REMINDER);
+        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_CREATE_PLAYLIST);
+        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_RENAME_PLAYLIST);
+        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_ADD_TO_NEW_PLAYLIST);
+        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_BLOCK_CHANNEL);
+        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_REMOVE_FROM_SUBSCRIPTIONS);
+        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_PLAYLIST_ORDER);
+        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_PLAY_NEXT);
+        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_PIN_TO_SIDEBAR);
+        MUID.setMenuItemDisabled(MainUIData.MENU_ITEM_SAVE_REMOVE_PLAYLIST);
+
+        MUID.setMenuItemIndex(0, MainUIData.MENU_ITEM_MARK_AS_WATCHED);
+        MUID.setMenuItemIndex(1, MainUIData.MENU_ITEM_NOT_INTERESTED);
+        MUID.setMenuItemIndex(2, MainUIData.MENU_ITEM_NOT_RECOMMEND_CHANNEL);
+        MUID.setMenuItemIndex(3, MainUIData.MENU_ITEM_OPEN_CHANNEL);
+
     }
 
 }
