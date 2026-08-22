@@ -7,6 +7,7 @@ import androidx.multidex.MultiDexApplication;
 import com.liskovsoft.sharedutils.helpers.Helpers;
 import com.liskovsoft.mediaserviceinterfaces.data.MediaGroup;
 import com.liskovsoft.mediaserviceinterfaces.data.SponsorSegment;
+import com.liskovsoft.smartyoutubetv2.common.exoplayer.other.SubtitleManager.SubtitleStyle;
 import com.liskovsoft.smartyoutubetv2.common.app.models.data.BrowseSection;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.BrowsePresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.views.AddDeviceView;
@@ -87,6 +88,7 @@ public class MainApplication extends MultiDexApplication {
         disableContextMenuOptions();
         disableContentBlock();
         hideContent();
+        configSubtitles();
         
     }
 
@@ -297,6 +299,17 @@ public class MainApplication extends MultiDexApplication {
         for (int content : content_types) {
             MSD.setContentHidden(content, true);
         }
+
+    }
+
+    private void configSubtitles() {
+
+        PlayerData PD = PlayerData.instance(this);
+
+        PD.setSubtitleScale(.7f);
+
+        SubtitleStyle white_semi_trans = PD.getSubtitleStyles().get(1);
+        PD.setSubtitleStyle(white_semi_trans);
 
     }
 
