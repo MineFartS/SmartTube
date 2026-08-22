@@ -24,6 +24,11 @@ if ($Force) {
 
 }
 
+Copy-Item `
+    -Path 'patch\*' `
+    -Destination 'lib\yuliskov' `
+    -Force -Verbose -Recurse
+
 if (Test-ADBConnection) {
     $gARGS += ":installDebug"
 } else {

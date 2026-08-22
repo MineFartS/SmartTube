@@ -12,7 +12,8 @@ $Env:PATH += ";$Env:JAVA_HOME\bin"
 $Env:ANDROID_SDK_ROOT = "$PSScriptRoot\lib\sdk"
 $Env:PATH += ";$Env:ANDROID_SDK_ROOT\platform-tools"
 
-git.exe submodule update --init --recursive --remote
+git.exe submodule update --init --remote
+git.exe submodule update --init --recursive --remote --force lib/yuliskov
 
 if (-not (Test-Path "$Env:ANDROID_SDK_ROOT\.knownPackages")) {
     & "$Env:ANDROID_SDK_ROOT\Accept.ps1"
