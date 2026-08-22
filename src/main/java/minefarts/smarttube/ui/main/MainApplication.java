@@ -26,6 +26,7 @@ import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerTweaksData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.SponsorBlockData;
+import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 
 import minefarts.smarttube.ui.adddevice.AddDeviceActivity;
 import minefarts.smarttube.ui.browse.BrowseActivity;
@@ -85,6 +86,7 @@ public class MainApplication extends MultiDexApplication {
         disablePlayerButtons();
         disableContextMenuOptions();
         disableContentBlock();
+        hideContent();
         
     }
 
@@ -268,6 +270,33 @@ public class MainApplication extends MultiDexApplication {
         }
 
         SBD.setDontSkipSegmentAgainEnabled(true);
+
+    }
+
+    private void hideContent() {
+
+        MediaServiceData MSD = MediaServiceData.instance();
+
+        int[] content_types = {
+
+            MediaServiceData.CONTENT_WATCHED_HOME,
+
+            MediaServiceData.CONTENT_SHORTS_SUBSCRIPTIONS,
+            MediaServiceData.CONTENT_SHORTS_SEARCH,
+            MediaServiceData.CONTENT_SHORTS_HOME,
+            MediaServiceData.CONTENT_SHORTS_CHANNEL,
+            MediaServiceData.CONTENT_SHORTS_HISTORY,
+            MediaServiceData.CONTENT_SHORTS_TRENDING,
+
+            MediaServiceData.CONTENT_UPCOMING_SUBSCRIPTIONS,
+            MediaServiceData.CONTENT_UPCOMING_HOME,
+            MediaServiceData.CONTENT_UPCOMING_CHANNEL,
+
+        };
+
+        for (int content : content_types) {
+            MSD.setContentHidden(content, true);
+        }
 
     }
 
