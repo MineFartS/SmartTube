@@ -57,7 +57,7 @@ $HideTags = @(
 )
 
 Invoke-Python 'lib/pidcat/pidcat.py' `
-    "minefarts.smarttube" `
+    "org.smarttube.stable" `
     '--min-level' 'V' `
     '--regex' ('^(?!.*(' + ($HidePats -join '|') + '))') `
     @($HideTags | ForEach-Object { '--ignore-tag', $_ }) `

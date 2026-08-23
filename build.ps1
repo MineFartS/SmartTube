@@ -14,10 +14,8 @@ if ($Force) {
 
     Stop-Process -Name "java*"
 
-    @(
-        ".gradle", "build",
-        "$env:USERPROFILE\.gradle\caches"
-    ) | Remove-Item -Force -Recurse -Verbose -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE\.gradle\caches" `
+        -Force -Recurse -Verbose -ErrorAction SilentlyContinue
 
     $gARGS += 'clean'
     $gARGS += '--refresh-dependencies'
@@ -30,9 +28,9 @@ Copy-Item `
     -Force -Verbose -Recurse
 
 if (Test-ADBConnection) {
-    $gARGS += ":installDebug"
+    $gARGS += ":smarttubetv:installStstableDebug"
 } else {
-    $gARGS += ":build"
+    $gARGS += ":smarttubetv:buildStstableDebug"
 }
 
 Clear-Host
