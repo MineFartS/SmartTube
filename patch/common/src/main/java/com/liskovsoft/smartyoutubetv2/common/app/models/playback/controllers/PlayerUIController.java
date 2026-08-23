@@ -180,6 +180,7 @@ public class PlayerUIController extends BasePlayerController {
             getPlayer().setFormat(format);
             getPlayerData().setFormat(format);
             getPlayer().setButtonState(R.id.lb_control_closed_captioning, !FormatItem.SUBTITLE_NONE.equals(matchedFormat) && !enabled ? PlayerUI.BUTTON_ON : PlayerUI.BUTTON_OFF);
+            enableSubtitleForChannel(!enabled);
         } else {
             // Match not found
             onSubtitleLongClicked();
@@ -187,29 +188,31 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private void onSubtitleLongClicked() {
-        if (getPlayer() == null || getPlayer().getSubtitleFormats() == null) {
-            return;
-        }
+        if (getPlayer() == null) return;
 
         fitVideoIntoDialog();
 
         AppDialogPresenter settingsPresenter = getAppDialogPresenter();
 
-        List<FormatItem> eng_formats = getPlayer().getSubtitleFormats().stream()
-            .filter(f -> f.getLanguage() != null && f.getLanguage().contains("english"))
-            .collect(Collectors.toList());
-
         settingsPresenter.appendSingleButton(UiOptionItem.from("Subtitle Language", optionItem -> {
+            
+            List<FormatItem> eng_formats = getPlayer().getSubtitleFormats().stream()
+                .filter(f -> f.getLanguage() != null && f.getLanguage().contains("english"))
+                .collect(Collectors.toList());
+            
             settingsPresenter.appendRadioCategory("Subtitle Language", UiOptionItem.from(
                 eng_formats,
                 option -> {
                     FormatItem format = UiOptionItem.toFormat(option);
+                    enableSubtitleForChannel(!format.isDefault());
                     getPlayer().setFormat(format);
                     getPlayerData().setFormat(format);
                 },
                 getContext().getString(R.string.subtitles_disabled)
             ));
+
             settingsPresenter.showDialog();
+
         }));
 
         settingsPresenter.appendSingleSwitch(AppDialogUtil.createSubtitleChannelOption(getContext()));
@@ -887,6 +890,19 @@ public class PlayerUIController extends BasePlayerController {
 
     private boolean isSubtitleEnabled() {
         return !getPlayerData().isSubtitlesPerChannelEnabled() || getPlayerData().isSubtitlesPerChannelEnabled(getChannelId());
+    }
+
+    private void enableSubtitleForChannel(boolean enable) {
+        if (getPlayer() == null || !getPlayerData().isSubtitlesPerChannelEnabled()) {
+            return;
+        }
+
+        String channelId = getChannelId();
+        if (enable) {
+            getPlayerData().enableSubtitlesPerChannel(channelId);
+        } else {
+            getPlayerData().disableSubtitlesPerChannel(channelId);
+        }
     }
 
     private String getChannelId() {
