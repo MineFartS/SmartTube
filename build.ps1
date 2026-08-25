@@ -17,6 +17,8 @@ if ($Force) {
     Remove-Item "$env:USERPROFILE\.gradle\caches" `
         -Force -Recurse -Verbose -ErrorAction SilentlyContinue
 
+    git.exe submodule update --recursive --remote --force lib/yuliskov
+
     $gARGS += 'clean'
     $gARGS += '--refresh-dependencies'
 
