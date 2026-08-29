@@ -905,7 +905,7 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private boolean isSubtitleEnabled() {
-        return !getPlayerData().isSubtitlesPerChannelEnabled() || getPlayerData().isSubtitlesPerChannelEnabled(getChannelId());
+        return getPlayerData().getLastSubtitleFormat() != FormatItem.SUBTITLE_NONE;
     }
 
     private void enableSubtitleForChannel(boolean enable) {
