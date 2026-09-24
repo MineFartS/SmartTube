@@ -129,6 +129,8 @@ public class TweakSettings {
             MediaServiceData.CONTENT_UPCOMING_HOME,
             MediaServiceData.CONTENT_UPCOMING_CHANNEL,
 
+            MediaServiceData.CONTENT_MIXES,
+
         };
 
         for (int content : content_types) {
