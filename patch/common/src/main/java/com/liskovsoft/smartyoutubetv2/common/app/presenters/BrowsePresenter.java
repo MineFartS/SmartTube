@@ -1029,6 +1029,13 @@ public class BrowsePresenter extends BasePresenter<BrowseView> implements Sectio
 
         Helpers.removeIf(mediaGroups, value -> Helpers.containsAny(
                 value.getTitle(),
+                "Start a Music Mix",
+                "Top channels you watch",
+                "Recommended shows",
+                "Continue watching",
+                "Mood and genre mixes",
+                "Listen again",
+                "Explore more topics",
                 "Primetime", // Free movies and shows row
                 "News", // Top news
                 "news", // Top news
