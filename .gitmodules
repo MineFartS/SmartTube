@@ -23,5 +23,5 @@
 [submodule "lib/yuliskov"]
 	path = lib/yuliskov
 	url = https://github.com/yuliskov/SmartTube
-    ignore = all
+    ignore = dirty
 
