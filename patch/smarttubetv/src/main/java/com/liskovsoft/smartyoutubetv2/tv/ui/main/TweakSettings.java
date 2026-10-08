@@ -148,6 +148,8 @@ public class TweakSettings {
         SubtitleStyle white_semi_trans = PD.getSubtitleStyles().get(1);
         PD.setSubtitleStyle(white_semi_trans);
 
+        PD.setSubtitlePosition(0);
+
     }
 
 }
