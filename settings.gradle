@@ -1,0 +1,48 @@
+
+def yuliskov(path) {
+    return new File(rootDir, "lib/yuliskov/$path")
+}
+
+gradle.ext.sharedModulesConstants = yuliskov('SharedModules/constants.gradle')
+
+// Amazon Exo Player
+gradle.ext.exoplayerModulePrefix = 'exoplayer-'
+gradle.ext.exoplayerRoot = yuliskov('exoplayer-amzn-2.10.6')
+apply from: yuliskov("exoplayer-amzn-2.10.6/core_settings.gradle")
+
+// Shared Modules
+['sharedutils', 'sharedtests', 'commons-io-2.8.0', 'j2v8', 'appupdatechecker2'].each {
+    include ":$it"
+    project(":$it").projectDir = yuliskov("SharedModules/$it")
+}
+
+// Media Service Core
+['mediaserviceinterfaces', 'youtubeapi'].each {
+    include ":$it"
+    project(":$it").projectDir = yuliskov("MediaServiceCore/$it")
+}
+
+include ':fragment-1.1.0'
+project(':fragment-1.1.0').projectDir = yuliskov('fragment-1.1.0')
+
+include ':leanback-1.0.0'
+project(':leanback-1.0.0').projectDir = yuliskov('leanback-1.0.0')
+
+include ':common'
+project(':common').projectDir = yuliskov('common')
+
+include ':chatkit'
+project(':chatkit').projectDir = yuliskov('chatkit')
+
+include ':doubletapplayerview'
+project(':doubletapplayerview').projectDir = yuliskov('doubletapplayerview')
+
+include ':filepicker-lib'
+project(':filepicker-lib').projectDir = yuliskov('filepicker-lib')
+
+include ':leanbackassistant'
+project(':leanbackassistant').projectDir = yuliskov('leanbackassistant')
+
+include ':slidableactivity'
+project(':slidableactivity').projectDir = yuliskov('slidableactivity')
+

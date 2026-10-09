@@ -14,8 +14,10 @@ if ($Force) {
 
     Stop-Process -Name "java*"
 
-    Remove-Item "$env:USERPROFILE\.gradle\caches" `
-        -Force -Recurse -Verbose -ErrorAction SilentlyContinue
+    @(
+        ".gradle", "build",
+        "$env:USERPROFILE\.gradle\caches"
+    ) | Remove-Item -Force -Recurse -Verbose -ErrorAction SilentlyContinue
 
     git.exe submodule update --init --recursive --force lib/yuliskov
 
@@ -30,9 +32,9 @@ Copy-Item `
     -Force -Verbose -Recurse
 
 if (Test-ADBConnection) {
-    $gARGS += ":smarttubetv:installStstableDebug"
+    $gARGS += ":installDebug"
 } else {
-    $gARGS += ":smarttubetv:buildStstableDebug"
+    $gARGS += ":build"
 }
 
 Clear-Host
