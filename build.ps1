@@ -8,16 +8,16 @@ Invoke-ADB
 
 Clear-Host
 
-$gARGS = @()
+$gARGS = @('-p', "$PSScriptRoot\smarttubetv")
 
 if ($Force) {
 
     Stop-Process -Name "java*"
 
-    @(
-        ".gradle", "build",
-        "$env:USERPROFILE\.gradle\caches"
-    ) | Remove-Item -Force -Recurse -Verbose -ErrorAction SilentlyContinue
+    Remove-Item `
+        -Path "$env:USERPROFILE\.gradle\caches" `
+        -Force -Recurse -Verbose `
+        -ErrorAction SilentlyContinue
 
     git.exe submodule update --init --recursive --force lib/yuliskov
 

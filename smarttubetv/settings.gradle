@@ -1,6 +1,6 @@
 
 def yuliskov(path) {
-    return new File(rootDir, "lib/yuliskov/$path")
+    return new File(rootDir, "../lib/yuliskov/$path")
 }
 
 gradle.ext.sharedModulesConstants = yuliskov('SharedModules/constants.gradle')
