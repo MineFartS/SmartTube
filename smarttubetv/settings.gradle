@@ -29,7 +29,7 @@ include ':leanback-1.0.0'
 project(':leanback-1.0.0').projectDir = yuliskov('leanback-1.0.0')
 
 include ':common'
-project(':common').projectDir = yuliskov('common')
+project(':common').projectDir = new File(rootDir, "../common")
 
 include ':chatkit'
 project(':chatkit').projectDir = yuliskov('chatkit')
