@@ -88,6 +88,8 @@ public class MainApplication extends MultiDexApplication { // fix: Didn't find c
         setupGlobalExceptionHandler();
         setupViewManager();
 
+        TweakSettings.tweak(this);
+
     }
 
     private void setupViewManager() {

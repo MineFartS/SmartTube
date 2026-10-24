@@ -856,6 +856,10 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
     private CharSequence createSubtitle(Video video) {
         CharSequence result = video.getSecondTitleFull();
 
+        result = result.toString()
+            .replace("Published on ", "")
+            .replace("Premiered ", "");
+
         if (getContext() != null && video.isLive) {
             result = TextUtils.concat( result, " ", Video.TERTIARY_TEXT_DELIM, " ", Utils.color(getContext().getString(R.string.badge_live), ContextCompat.getColor(getContext(), R.color.red)));
         }
