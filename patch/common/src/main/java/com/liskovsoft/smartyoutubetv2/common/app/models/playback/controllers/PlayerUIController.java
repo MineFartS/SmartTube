@@ -187,7 +187,9 @@ public class PlayerUIController extends BasePlayerController {
     }
 
     private void onSubtitleLongClicked() {
-        if (getPlayer() == null) return;
+        if (getPlayer() == null) {
+            return;
+        }
 
         fitVideoIntoDialog();
 
@@ -1115,10 +1117,12 @@ public class PlayerUIController extends BasePlayerController {
                 AppDialogUtil.createPlayerScreenOffDimmingCategory(getContext(), () -> {
                     prepareScreenOff();
                     applyScreenOff(PlayerUI.BUTTON_OFF);
+                    applyScreenOffTimeout(PlayerUI.BUTTON_OFF);
                 });
         OptionCategory category =
                 AppDialogUtil.createPlayerScreenOffTimeoutCategory(getContext(), () -> {
                     prepareScreenOff();
+                    applyScreenOff(PlayerUI.BUTTON_OFF);
                     applyScreenOffTimeout(PlayerUI.BUTTON_OFF);
                 });
         settingsPresenter.appendRadioCategory(dimmingCategory.title, dimmingCategory.options);

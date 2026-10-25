@@ -495,6 +495,8 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
         mPlayerGlue = new VideoPlayerGlue(getContext(), playerAdapter, playerActionListener); // NOTE: possible context memory leak
         mPlayerGlue.setHost(new SurfacePlaybackFragmentGlueHost(this));
         mPlayerGlue.setSeekEnabled(true);
+        // Static sabr timeline doesn't know the live stream state. Ask the controller when needed (like dash does)
+        mPlayerGlue.setLiveStateProvider(mExoPlayerController);
         mPlayerGlue.setControlsOverlayAutoHideEnabled(false); // don't show controls on some player events like play/pause/end
         StoryboardSeekDataProvider.setSeekProvider(mPlayerGlue);
         hideControlsOverlay(true); // fix player ui not synced correctly
@@ -634,6 +636,7 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
 
             MediaMetadataCompat.Builder metadataBuilder = new MediaMetadataCompat.Builder();
 
+            metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, getVideo().videoId);
             metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, getVideo().getTitleFull());
             metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, getVideo().getTitleFull());
             metadataBuilder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, getVideo().getAuthor());
@@ -998,15 +1001,7 @@ public class PlaybackFragment extends SeekModePlaybackFragment implements Playba
 
     @Override
     public long getDurationMs() {
-        long durationMs = mExoPlayerController.getDurationMs();
-
-        long liveDurationMs = getVideo() != null ? getVideo().getLiveDurationMs() : 0;
-
-        if (durationMs > Video.MAX_LIVE_DURATION_MS && liveDurationMs != 0) {
-            durationMs = liveDurationMs;
-        }
-
-        return durationMs;
+        return mExoPlayerController.getDurationMs();
     }
 
     @Override
