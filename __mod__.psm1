@@ -6,17 +6,10 @@ $ErrorActionPreference = 'Stop'
 
 Set-Location $PSScriptRoot
 
-$Env:JAVA_HOME = "$PSScriptRoot\lib\jdk17"
-$Env:PATH += ";$Env:JAVA_HOME\bin"
-
-$Env:ANDROID_SDK_ROOT = "$PSScriptRoot\lib\sdk"
-$Env:PATH += ";$Env:ANDROID_SDK_ROOT\platform-tools"
-
 git.exe submodule update --init --recursive
 
-if (-not (Test-Path "$Env:ANDROID_SDK_ROOT\.knownPackages")) {
-    & "$Env:ANDROID_SDK_ROOT\Accept.ps1"
-}
+& "$PSScriptRoot\lib\jdk17\env.ps1"
+& "$PSScriptRoot\lib\sdk\env.ps1"
 
 #==================================================
 
