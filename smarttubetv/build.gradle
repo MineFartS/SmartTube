@@ -102,19 +102,19 @@ dependencies {
     implementation 'com.github.zjupure:webpdecoder:' + webpDecoderVersion
     implementation 'androidx.multidex:multidex:' + multiDexVersion
 
-    implementation project(':exoplayer-library-core')
-    implementation project(':exoplayer-library-ui')
-    implementation project(':exoplayer-extension-leanback')
-    implementation project(':exoplayer-extension-mediasession')
+    implementation yuliskov("exoplayer-library-core")
+    implementation yuliskov("exoplayer-library-ui")
+    implementation yuliskov("exoplayer-extension-leanback")
+    implementation yuliskov("exoplayer-extension-mediasession")
 
-    implementation project(':fragment-1.1.0')
-    implementation project(':leanback-1.0.0')
-    implementation project(':common')
-    implementation project(':sharedutils')
-    implementation project(':mediaserviceinterfaces')
-    implementation project(':youtubeapi')
-    implementation project(':chatkit')
-    implementation project(':doubletapplayerview')
+    implementation yuliskov("fragment-1.1.0")
+    implementation yuliskov("leanback-1.0.0")
+    implementation yuliskov("common")
+    implementation yuliskov("sharedutils")
+    implementation yuliskov("mediaserviceinterfaces")
+    implementation yuliskov("youtubeapi")
+    implementation yuliskov("chatkit")
+    implementation yuliskov("doubletapplayerview")
 
     implementation 'io.reactivex.rxjava2:rxandroid:' + rxAndroidVersion
     implementation 'io.reactivex.rxjava2:rxjava:' + rxJavaVersion
