@@ -1,15 +1,9 @@
 
-def shas = [
-    SmartTube       : "711ce2f97f",
-    SharedModules   : "e12618a07a",
-    MediaServiceCore: "3c733fefd1"
-]
-
 gradle.beforeProject { project ->
     project.ext.yuliskov = { pkg ->
-        return "com.github.yuliskov.SmartTube:${pkg}:${shas.SmartTube}"
+        return "com.github.yuliskov.SmartTube:${pkg}:pr-jitpack_export-SNAPSHOT"
     }
 }
 
-gradle.ext.sharedModulesConstants = "https://raw.githubusercontent.com/yuliskov/SharedModules/${shas.SharedModules}/constants.gradle"
+gradle.ext.sharedModulesConstants = "https://raw.githubusercontent.com/yuliskov/SharedModules/e12618a07a/constants.gradle"
 
