@@ -1,0 +1,22 @@
+
+def yuliskov(path) {
+    return new File(rootDir, "../lib/yuliskov/$path")
+}
+
+gradle.ext.sharedModulesConstants = yuliskov('SharedModules/constants.gradle')
+
+include ':common'
+project(':common').projectDir = new File(rootDir, "../common")
+
+new File(rootDir, "src/main/aar").listFiles().each { File aar ->
+    String name = aar.name.replaceFirst(/\.aar$/, "")
+    include ":${name}"
+
+    gradle.rootProject {
+        project(":${name}") {
+            configurations.maybeCreate("default")
+            artifacts.add("default", aar)
+        }
+    }
+}
+

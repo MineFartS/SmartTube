@@ -85,6 +85,8 @@ dependencies {
     // Pre-compiled yuliskov binaries
     implementation fileTree(dir: 'src/main/aar', include: ['*.aar'])
 
+    implementation project(':common')
+
     // Static analysis quality
     compileOnly 'org.checkerframework:checker-qual:2.5.0'
     compileOnly 'org.checkerframework:checker-compat-qual:2.5.0'
