@@ -19,6 +19,19 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
+    sourceSets {
+        main {
+            def yuliskov = { n -> "../lib/yuliskov/" + n + "/src/main/res" }
+            res.srcDirs = [
+                yuliskov("common"),
+                'src/main/res'
+            ]
+        }
+    }
+}
+
+
+android {
 
     namespace 'minefarts.smarttube'
     
