@@ -1,9 +1,0 @@
-
-gradle.beforeProject { project ->
-    project.ext.yuliskov = { pkg ->
-        return "com.github.yuliskov.SmartTube:${pkg}:pr-jitpack_export-SNAPSHOT"
-    }
-}
-
-gradle.ext.sharedModulesConstants = "https://raw.githubusercontent.com/yuliskov/SharedModules/e12618a07a/constants.gradle"
-

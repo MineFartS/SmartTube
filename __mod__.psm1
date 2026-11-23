@@ -23,11 +23,33 @@ function Test-ADBConnection {
     
 }
 
+function Add-YuliskovPkg ([String]$Name, [String]$Path) {
+
+    $Dst = "$PSScriptRoot/smarttubetv/src/main/aar/$Name.aar"
+    $Src = "$PSScriptRoot/lib/yuliskov/$Path"
+
+    if (Test-Path $Dst) { return; }
+    
+    Invoke-Gradle -Yuliskov ":$($Name):assemble"
+
+    Get-ChildItem $Src -Filter "$Name*debug.aar" -Recurse `
+        | Sort-Object { $_.Name -like "*ststable*" } -Descending `
+        | Select-Object -First 1 `
+        | Move-Item -Destination $Dst -Verbose
+
+    Get-Item $Dst -ErrorAction Stop
+}
+
 function Invoke-Gradle ([Switch]$Yuliskov, [Parameter(ValueFromRemainingArguments)] $cmdargs) {
-    & "$PSScriptRoot/lib/yuliskov/gradlew.bat" `
-        @cmdargs `
-        --max-workers=3 `
-        --no-daemon
+    if ($Yuliskov) {
+        Push-Location "$PSScriptRoot/lib/yuliskov"
+    } else {
+        Push-Location $PSScriptRoot
+    }
+
+    & "$PSScriptRoot\lib\yuliskov\gradlew.bat" @cmdargs --max-workers=3 --no-daemon
+
+    Pop-Location
 }
 
 function Invoke-ADB ([Parameter(ValueFromRemainingArguments)] $cmdargs) {
